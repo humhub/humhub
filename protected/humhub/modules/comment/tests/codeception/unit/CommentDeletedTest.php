@@ -47,7 +47,7 @@ class CommentDeletedTest extends HumHubDbTestCase
 
         $this->assertStringContainsString('&lt;b&gt;hi&lt;/b&gt;', $html);
         $this->assertStringNotContainsString('&amp;lt;b&amp;gt;', $html);
-        $this->assertStringContainsString('<b>hi</b>', $notification->getMailSubject());
-        $this->assertSame([], $notification->getMailActions());
+        $this->assertStringContainsString('<b>hi</b>', $notification->asMailSubject());
+        $this->assertSame([], $notification->getActions());
     }
 }

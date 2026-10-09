@@ -20,6 +20,7 @@ use yii\helpers\Url;
  * One message of a channel: one or several notifications of one recipient, handed to
  * {@see BaseTarget::deliver()}.
  *
+ * @api for channel providers
  * @since 1.20
  */
 final readonly class DeliveryBatch
@@ -44,12 +45,12 @@ final readonly class DeliveryBatch
     }
 
     /**
-     * One: the notification's own subject (one line); several: "{count} new notifications".
+     * One: the notification's own subject ({@see BaseNotification::asMailSubject()}, one line); several: "{count} new notifications".
      */
     public function getSubject(): string
     {
         if ($this->isSingle()) {
-            return preg_replace('/\s*\R\s*/', ' ', trim($this->first()->getMailSubject()));
+            return preg_replace('/\s*\R\s*/', ' ', trim($this->first()->asMailSubject()));
         }
 
         return Yii::t(

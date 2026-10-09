@@ -154,9 +154,9 @@ class CommentTest extends HumHubDbTestCase
         $notification = NotificationManager::load($row);
         $this->assertSame(2, $notification->groupCount);
         // the mail previews the comment, the sentence names the commented post
-        $this->assertSame($second->id, $notification->getMailContentRecord()->id);
+        $this->assertSame($second->id, $notification->getPreviewRecord()->id);
         $this->assertStringContainsString(Post::findOne(['id' => 2])->message, $notification->asWeb());
-        $this->assertStringContainsString('just commented your', $notification->getMailSubject());
+        $this->assertStringContainsString('just commented your', $notification->asMailSubject());
         $this->assertSame($second->getUrl(), $notification->getUrl());
     }
 
@@ -179,7 +179,7 @@ class CommentTest extends HumHubDbTestCase
 
         $this->assertSame(
             User::findOne(['id' => 3])->displayName . ' commented post "' . Post::findOne(['id' => 2])->message . '"',
-            NotificationManager::fromRecord($record)->getMailSubject(),
+            NotificationManager::fromRecord($record)->asMailSubject(),
         );
     }
 

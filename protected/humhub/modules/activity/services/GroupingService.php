@@ -8,6 +8,11 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\user\models\User;
 use yii\db\Expression;
 
+/**
+ * Groups an activity with its siblings, see {@see BaseActivity::getGroupingQuery()}.
+ *
+ * @internal
+ */
 final class GroupingService
 {
     private ?array $_groupedUsers = null;

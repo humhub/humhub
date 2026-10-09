@@ -14,6 +14,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Exception\ModuleException;
 use Codeception\Module\Yii2;
+use humhub\components\db\AfterCommit;
 use humhub\libs\UUID;
 use humhub\models\RecordMap;
 use humhub\models\UrlOembed;
@@ -56,6 +57,7 @@ trait HumHubHelperTrait
     protected function tearDown(): void
     {
         static::logReset();
+        AfterCommit::$immediate = false;
 
         parent::tearDown();
     }
@@ -423,7 +425,7 @@ trait HumHubHelperTrait
 
     /**
      * The notifications of the given class about the given source - matched like
-     * {@see \humhub\modules\notification\components\NotificationManager::delete()} matches them:
+     * {@see \humhub\modules\notification\components\BaseNotification::revoke()} matches them:
      * a content or content record by its content (not an addon under it), a container by its
      * container, a content addon or any other record by its record map id.
      *

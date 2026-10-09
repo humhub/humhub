@@ -17,23 +17,19 @@ use yii\helpers\Url;
  * Sends notifications by e-mail: one mail per {@see DeliveryBatch}, rendered by
  * `@notification/views/mails/notification` and its plaintext twin.
  *
- * The `summary` mode (the activity summary mail carries the notifications instead) is not offered
- * until the summary mail has a notification block; a stored `summary` value falls back to the
- * global default or `adaptive`, see {@see \humhub\modules\notification\services\NotificationSettingsService::getMode()}.
+ * The activity summary mail ({@see \humhub\modules\activity\components\MailSummary}) only
+ * mentions the number of unread notifications.
  *
  * @since 1.2, rewritten in 1.20
  */
-class MailTarget extends BaseTarget
+final class MailTarget extends BaseTarget
 {
-    /**
-     * @inheritdoc
-     */
-    public string $id = 'email';
+    public const ID = 'email';
 
     /**
      * @inheritdoc
      */
-    public array $modes = [self::MODE_ADAPTIVE, self::MODE_OFF];
+    public string $id = self::ID;
 
     /**
      * @inheritdoc

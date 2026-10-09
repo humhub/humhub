@@ -8,9 +8,8 @@
 
 namespace humhub\modules\comment\notifications;
 
-use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationPriority;
 use Yii;
 
@@ -29,9 +28,9 @@ final class CommentDeletedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**
@@ -47,7 +46,7 @@ final class CommentDeletedNotification extends BaseNotification
      *
      * @inheritdoc
      */
-    public function getMailActions(): array
+    public function getActions(): array
     {
         return [];
     }
@@ -57,32 +56,17 @@ final class CommentDeletedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('CommentModule.notifications', 'Your comment \'{commentText}\' has been deleted by {displayName} for \'{reason}\'', [
-            'displayName' => $params['displayName'],
-            'commentText' => $params['commentText'],
-            'reason' => $params['reason'],
-        ]);
+        return Yii::t('CommentModule.notifications', 'Your comment \'{commentText}\' has been deleted by {displayName} for \'{reason}\'', $params);
     }
 
     /**
      * @inheritdoc
      */
-    protected function getMessageParamsPlain(int $maxLength): array
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsPlain($maxLength), [
+        return [
             'commentText' => (string)($this->payload['commentText'] ?? ''),
             'reason' => (string)($this->payload['reason'] ?? ''),
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getMessageParamsWeb(): array
-    {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'commentText' => Html::encode((string)($this->payload['commentText'] ?? '')),
-            'reason' => Html::encode((string)($this->payload['reason'] ?? '')),
-        ]);
+        ];
     }
 }

@@ -14,7 +14,6 @@ use humhub\modules\friendship\FriendshipEvent;
 use humhub\modules\friendship\notifications\FriendshipApprovedNotification;
 use humhub\modules\friendship\notifications\FriendshipDeclinedNotification;
 use humhub\modules\friendship\notifications\FriendshipRequestNotification;
-use humhub\modules\notification\components\NotificationManager;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\db\IntegrityException;
@@ -111,13 +110,13 @@ class Friendship extends ActiveRecord
 
             if ($state === self::STATE_REQUEST_SENT) {
                 // Send Request Notification
-                NotificationManager::dispatch(FriendshipRequestNotification::class, $this->friendUser, $this, $this->user);
+                FriendshipRequestNotification::send($this->friendUser, $this, $this->user);
             } elseif ($state === self::STATE_FRIENDS) {
                 // Remove request notification
-                NotificationManager::delete(FriendshipRequestNotification::class, null, $this->user, $this->friendUser);
+                FriendshipRequestNotification::revoke(user: $this->user, originator: $this->friendUser);
 
                 // User approved friends request notification
-                NotificationManager::dispatch(FriendshipApprovedNotification::class, $this->friendUser, $this, $this->user);
+                FriendshipApprovedNotification::send($this->friendUser, $this, $this->user);
 
                 $this->trigger(self::EVENT_FRIENDSHIP_CREATED, new FriendshipEvent([
                     'user1' => $this->user,
@@ -291,7 +290,7 @@ class Friendship extends ActiveRecord
             $myFriendship->delete();
         } elseif ($friendsFriendship !== null) {
             // Is declined friendship request - send declined notification
-            NotificationManager::dispatch(FriendshipDeclinedNotification::class, $friend, null, $user);
+            FriendshipDeclinedNotification::send($friend, originator: $user);
         }
 
         if ($myFriendship !== null && $friendsFriendship !== null) {

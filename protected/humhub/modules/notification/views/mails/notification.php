@@ -6,10 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\message\MessageFormat;
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationAction;
 use humhub\modules\notification\targets\DeliveryBatch;
 use humhub\modules\space\models\Space;
 use humhub\widgets\mails\MailButton;
@@ -21,8 +23,8 @@ use yii\helpers\Url;
 /**
  * The notification mail of a {@see DeliveryBatch}, inside the global mail layout.
  *
- * One notification: its sentence, its mail body, the preview of its content record and its actions
- * as buttons. Several: a headline, the sentences (with their mail body) and a "View" link each -
+ * One notification: its sentence, its excerpt, the preview of its preview record and its actions
+ * as buttons. Several: a headline, the sentences (with their excerpt) and a "View" link each -
  * those without a space first, the others under the heading of their space - and a button to the
  * overview.
  */
@@ -61,10 +63,10 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                 <td height="15"></td>
                             </tr>
 
-                            <?php if (($body = $notification->getMailBody()) !== null): ?>
+                            <?php if (($excerpt = $notification->renderExcerpt(MessageFormat::Html)) !== null): ?>
                                 <tr>
                                     <td valign="top" align="left" style="<?= $textStyle ?>">
-                                        <p style="margin: 0"><?= nl2br(Html::encode($body)) ?></p>
+                                        <p style="margin: 0"><?= $excerpt ?></p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -72,7 +74,7 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                 </tr>
                             <?php endif ?>
 
-                            <?php if ($record = $notification->getMailContentRecord()): ?>
+                            <?php if ($record = $notification->getPreviewRecord()): ?>
                                 <tr>
                                     <td valign="top" align="left">
                                         <?= MailContentEntry::widget([
@@ -89,13 +91,13 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                 </tr>
                             <?php endif ?>
 
-                            <?php if ($actions = $notification->getMailActions()): ?>
+                            <?php if ($actions = $notification->getActions()): ?>
                                 <tr>
                                     <td valign="top">
                                         <?= MailButtonList::widget(['buttons' => array_map(
-                                            static fn(array $action): string => MailButton::widget([
-                                                'url' => Html::encode($action['url']),
-                                                'text' => Html::encode($action['label']),
+                                            static fn(NotificationAction $action): string => MailButton::widget([
+                                                'url' => Html::encode($action->url),
+                                                'text' => Html::encode($action->label),
                                             ]),
                                             $actions,
                                         )]) ?>
@@ -140,8 +142,8 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                             <?= $notification->asMailHtml() ?>
                                             - <a href="<?= Html::encode($notification->getEntryUrl()) ?>"
                                                  style="<?= $linkStyle ?>"><?= Yii::t('NotificationModule.base', 'View') ?></a>
-                                            <?php if (($body = $notification->getMailBody()) !== null): ?>
-                                                <p style="margin: 5px 0 0"><?= nl2br(Html::encode($body)) ?></p>
+                                            <?php if (($excerpt = $notification->renderExcerpt(MessageFormat::Html)) !== null): ?>
+                                                <p style="margin: 5px 0 0"><?= $excerpt ?></p>
                                             <?php endif ?>
                                         </td>
                                     </tr>

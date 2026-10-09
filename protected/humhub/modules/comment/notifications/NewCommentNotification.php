@@ -10,9 +10,9 @@ namespace humhub\modules\comment\notifications;
 
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
@@ -34,9 +34,9 @@ final class NewCommentNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::social();
+        return NotificationCategory::social();
     }
 
     /**
@@ -68,17 +68,13 @@ final class NewCommentNotification extends BaseNotification
     }
 
     /**
+     * The comments on one content.
+     *
      * @inheritdoc
      */
-    public function getGroupingQuery(): ?ActiveQueryNotification
+    public static function grouping(): ?Grouping
     {
-        if ($this->content === null) {
-            return null;
-        }
-
-        return Notification::find()
-            ->andWhere(['notification.class' => self::class])
-            ->andWhere(['notification.content_id' => $this->content->id]);
+        return Grouping::byContent();
     }
 
     /**
@@ -86,9 +82,9 @@ final class NewCommentNotification extends BaseNotification
      *
      * @inheritdoc
      */
-    public function getMailContentRecord(): ?ContentOwner
+    public function getPreviewRecord(): ?ContentOwner
     {
-        return $this->sourceRecord instanceof Comment ? $this->sourceRecord : parent::getMailContentRecord();
+        return $this->sourceRecord instanceof Comment ? $this->sourceRecord : parent::getPreviewRecord();
     }
 
     /**
@@ -96,56 +92,30 @@ final class NewCommentNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        if ($this->groupCount > 1) {
-            return Yii::t('CommentModule.notification', '{displayNames} commented {contentTitle}.', [
-                'displayNames' => $params['displayNames'],
-                'contentTitle' => $params['content'],
-            ]);
-        }
-
-        return Yii::t('CommentModule.notification', '{displayName} commented {contentTitle}.', [
-            'displayName' => $params['displayName'],
-            'contentTitle' => $params['content'],
-        ]);
+        return Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function getMailSubject(): string
+    protected function getMailSubject(array $params): string
     {
-        $params = $this->getMessageParamsPlain($this->webContentLength);
         if (!isset($params['content'])) {
-            return parent::getMailSubject();
+            return parent::getMailSubject($params);
         }
 
         $space = $this->getSpace();
         $isOwner = (int)$this->content?->created_by === (int)$this->recipient->id;
-
-        if ($this->groupCount > 1) {
-            $names = ['displayNames' => $params['displayNames'], 'contentTitle' => $params['content']];
-
-            if ($isOwner) {
-                return $space
-                    ? Yii::t('CommentModule.notification', '{displayNames} just commented your {contentTitle} in Space {space}', $names + ['space' => $space->displayName])
-                    : Yii::t('CommentModule.notification', '{displayNames} just commented your {contentTitle}', $names);
-            }
-
-            return $space
-                ? Yii::t('CommentModule.notification', '{displayNames} commented {contentTitle} in Space {space}', $names + ['space' => $space->displayName])
-                : Yii::t('CommentModule.notification', '{displayNames} commented {contentTitle}', $names);
-        }
-
-        $name = ['displayName' => $params['displayName'], 'contentTitle' => $params['content']];
+        $params['space'] = $space?->displayName;
 
         if ($isOwner) {
             return $space
-                ? Yii::t('CommentModule.notification', '{displayName} just commented your {contentTitle} in Space {space}', $name + ['space' => $space->displayName])
-                : Yii::t('CommentModule.notification', '{displayName} just commented your {contentTitle}', $name);
+                ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content} in Space {space}', $params)
+                : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content}', $params);
         }
 
         return $space
-            ? Yii::t('CommentModule.notification', '{displayName} commented {contentTitle} in Space {space}', $name + ['space' => $space->displayName])
-            : Yii::t('CommentModule.notification', '{displayName} commented {contentTitle}', $name);
+            ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content} in Space {space}', $params)
+            : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}', $params);
     }
 }

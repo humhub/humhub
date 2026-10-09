@@ -80,7 +80,7 @@ class LikeTest extends HumHubDbTestCase
         $web = $notification->asWeb();
         $this->assertStringContainsString(User::findOne(['id' => 2])->displayName, $web);
         $this->assertStringContainsString(User::findOne(['id' => 3])->displayName, $web);
-        $this->assertStringContainsString(' likes your ', $notification->getMailSubject());
+        $this->assertStringContainsString(' like your ', $notification->asMailSubject());
 
         // un-like by User2 removes their notification
         $this->assertTrue((new LikeService($post))->unlike());

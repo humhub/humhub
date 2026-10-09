@@ -4,6 +4,7 @@ namespace humhub\modules\activity\tests\codeception\unit;
 
 use Codeception\Module\Yii2;
 use humhub\components\mail\Message;
+use humhub\helpers\Html;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\jobs\SendMailSummary;
@@ -13,6 +14,8 @@ use humhub\modules\comment\activities\NewCommentActivity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\models\Content;
+use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\activities\MemberAddedActivity;
 use humhub\modules\space\models\Space;
@@ -20,6 +23,7 @@ use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\helpers\Url;
 
 class MailSummaryTest extends HumHubDbTestCase
 {
@@ -474,6 +478,117 @@ class MailSummaryTest extends HumHubDbTestCase
         // User3 only applied for membership and therefore must not receive the space activities
         $summaryUser3 = $this->createSummary(User::findOne(['id' => 4]), MailSummary::INTERVAL_DAILY);
         $this->assertEmpty($summaryUser3->getActivities());
+    }
+
+    public function testSummaryShowsTheUnreadNotificationCount()
+    {
+        $user = $this->userWithSummaryActivity();
+        $this->notify($user, ['originator_id' => 3]);
+        $this->notify($user, ['originator_id' => 4]);
+
+        $this->assertTrue($this->createSummary($user, MailSummary::INTERVAL_DAILY)->send());
+
+        /* @var $mail Message */
+        $mail = $this->getModule('Yii2')->grabLastSentEmail();
+        $html = $mail->getSymfonyEmail()->getHtmlBody();
+        $text = (string) $mail->getSymfonyEmail()->getTextBody();
+        $overviewUrl = Url::to(['/notification/overview'], true);
+
+        $this->assertStringContainsString('You have 2 unread notifications', $html);
+        $this->assertStringContainsString(Html::encode($overviewUrl), $html);
+        $this->assertStringContainsString('You have 2 unread notifications: ' . $overviewUrl, $text);
+        $this->assertLessThan(strpos($text, 'Latest updates'), strpos($text, 'You have 2 unread notifications'), 'the count comes first');
+    }
+
+    public function testSummaryWithoutUnreadNotificationsHasNoCountLine()
+    {
+        $user = $this->userWithSummaryActivity();
+        $this->notify($user, ['seen_at' => date('Y-m-d H:i:s')]);
+
+        $this->assertTrue($this->createSummary($user, MailSummary::INTERVAL_DAILY)->send());
+
+        /* @var $mail Message */
+        $mail = $this->getModule('Yii2')->grabLastSentEmail();
+        $overviewUrl = Url::to(['/notification/overview'], true);
+        foreach ([$mail->getSymfonyEmail()->getHtmlBody(), $mail->getSymfonyEmail()->getTextBody()] as $body) {
+            $this->assertStringNotContainsString('unread notification', $body);
+            $this->assertStringNotContainsString($overviewUrl, $body);
+        }
+    }
+
+    public function testNoSummaryForUnreadNotificationsAlone()
+    {
+        $user = $this->notificationSummaryUser();
+        $this->notify($user);
+
+        MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
+
+        $this->assertMailSent(0);
+    }
+
+    public function testSendRestoresTheViewParams()
+    {
+        $user = $this->userWithSummaryActivity();
+        Yii::$app->view->params['unsubscribeUrl'] = 'previous';
+
+        try {
+            $this->assertTrue($this->createSummary($user, MailSummary::INTERVAL_DAILY)->send());
+
+            $this->assertSame('previous', Yii::$app->view->params['unsubscribeUrl']);
+            $this->assertArrayNotHasKey('showUnsubscribe', Yii::$app->view->params);
+        } finally {
+            unset(Yii::$app->view->params['unsubscribeUrl']);
+        }
+    }
+
+    /**
+     * User1 gets the daily summary of created contents, everyone else none; the user has no
+     * notifications.
+     */
+    private function userWithSummaryActivity(): User
+    {
+        $user = $this->notificationSummaryUser([ContentCreatedActivity::class]);
+        $this->becomeUser('Admin');
+        $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Summary with notifications']);
+        $this->assertTrue($post->save());
+        Notification::deleteAll(['user_id' => $user->id]);
+
+        return $user;
+    }
+
+    /**
+     * User1 gets the daily summary, without activities (unless given), everyone else none; the
+     * user has no notifications.
+     *
+     * @param string[] $activities
+     */
+    private function notificationSummaryUser(array $activities = []): User
+    {
+        $this->becomeUser('Admin');
+        (new MailSummaryForm(['interval' => MailSummary::INTERVAL_NONE]))->save();
+        $user = User::findOne(['id' => 2]);
+        (new MailSummaryForm([
+            'user' => $user,
+            'interval' => MailSummary::INTERVAL_DAILY,
+            'activities' => $activities,
+        ]))->save();
+        Notification::deleteAll(['user_id' => $user->id]);
+
+        return $user;
+    }
+
+    private function notify(User $user, array $attributes = []): Notification
+    {
+        $record = new Notification(array_merge([
+            'class' => TestNotification::class,
+            'user_id' => $user->id,
+            'originator_id' => 1,
+            'listed' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+        ], $attributes));
+        $this->assertTrue($record->save());
+
+        return $record;
     }
 
     private function assertContainsActivity($activityClass, $activities, $message = null)

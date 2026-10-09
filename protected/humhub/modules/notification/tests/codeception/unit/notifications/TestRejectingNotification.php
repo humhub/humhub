@@ -9,7 +9,7 @@
 namespace humhub\modules\notification\tests\codeception\unit\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\user\models\User;
 use RuntimeException;
 
@@ -18,9 +18,9 @@ use RuntimeException;
  */
 final class TestRejectingNotification extends BaseNotification
 {
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::social();
+        return NotificationCategory::social();
     }
 
     public function canReceive(User $user): bool

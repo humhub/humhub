@@ -179,35 +179,39 @@ class NotificationApiCest
         Assert::assertContains($unseen, $this->grabIds($I));
     }
 
-    public function testFiltersByGroup(ApiTester $I)
+    public function testFiltersByCategory(ApiTester $I)
     {
-        $I->wantTo('filter my notifications by notification group');
-        // Real classes, since a group filter resolves to the notification classes the modules
+        $I->wantTo('filter my notifications by notification category');
+        // Real classes, since a category filter resolves to the notification classes the modules
         // currently register.
-        $social = $this->seedNotification(1, FollowedNotification::class);
+        $followers = $this->seedNotification(1, FollowedNotification::class);
         $direct = $this->seedNotification(1, FriendshipRequestNotification::class);
 
         $I->amLoggedInAs(1);
 
-        $I->sendGet('notification?groups[]=social&limit=50');
+        $I->sendGet('notification?categories[]=followers&limit=50');
         $I->seeResponseCodeIs(200);
         $ids = $this->grabIds($I);
-        Assert::assertContains($social, $ids);
+        Assert::assertContains($followers, $ids);
         Assert::assertNotContains($direct, $ids);
 
-        $I->sendGet('notification?groups[]=social&groups[]=direct&limit=50');
+        $I->sendGet('notification?categories[]=social&limit=50');
+        $I->seeResponseCodeIs(200);
+        Assert::assertNotContains($followers, $this->grabIds($I));
+
+        $I->sendGet('notification?categories[]=followers&categories[]=direct&limit=50');
         $I->seeResponseCodeIs(200);
         $ids = $this->grabIds($I);
-        Assert::assertContains($social, $ids);
+        Assert::assertContains($followers, $ids);
         Assert::assertContains($direct, $ids);
 
-        // A group nothing belongs to leaves the list empty rather than unfiltered.
-        $I->sendGet('notification?groups[]=there-is-no-such-group&limit=50');
+        // A category nothing belongs to leaves the list empty rather than unfiltered.
+        $I->sendGet('notification?categories[]=there-is-no-such-category&limit=50');
         $I->seeResponseCodeIs(200);
         Assert::assertEmpty($this->grabIds($I));
 
         // So does an empty selection.
-        $I->sendGet('notification?groups[]=&limit=50');
+        $I->sendGet('notification?categories[]=&limit=50');
         $I->seeResponseCodeIs(200);
         Assert::assertEmpty($this->grabIds($I));
     }

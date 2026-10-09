@@ -8,10 +8,9 @@
 
 namespace humhub\modules\admin\notifications;
 
-use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 use yii\helpers\Url;
 
@@ -29,9 +28,9 @@ final class NewVersionAvailableNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::admin();
+        return NotificationCategory::admin();
     }
 
     /**
@@ -49,33 +48,14 @@ final class NewVersionAvailableNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('AdminModule.notification', 'There is a new HumHub Version ({version}) available.', [
-            'version' => $params['version'],
-        ]);
+        return Yii::t('AdminModule.notification', 'There is a new HumHub Version ({version}) available.', $params);
     }
 
     /**
      * @inheritdoc
      */
-    protected function getMessageParamsPlain(int $maxLength): array
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsPlain($maxLength), [
-            'version' => $this->getVersion(),
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getMessageParamsWeb(): array
-    {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'version' => Html::strong(Html::encode($this->getVersion())),
-        ]);
-    }
-
-    private function getVersion(): string
-    {
-        return (string)($this->payload['version'] ?? HumHubAPI::getLatestHumHubVersion());
+        return ['version' => (string)($this->payload['version'] ?? HumHubAPI::getLatestHumHubVersion())];
     }
 }

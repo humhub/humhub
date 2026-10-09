@@ -88,7 +88,7 @@ class NotificationListServiceTest extends HumHubDbTestCase
         $this->assertSame([$ids[3], $ids[2], $ids[1], $ids[0]], $this->ids($service->page(50)));
     }
 
-    public function testGroupFilter()
+    public function testCategoryFilter()
     {
         $this->setRegisteredNotifications([TestNotification::class, TestDirectNotification::class]);
         [$social, $direct] = $this->insert([TestNotification::class, TestDirectNotification::class]);
@@ -97,8 +97,8 @@ class NotificationListServiceTest extends HumHubDbTestCase
         $this->assertSame([$social], $this->ids($service->page(50, null, ['social'])));
         $this->assertSame([$direct], $this->ids($service->page(50, null, ['direct'])));
         $this->assertSame([$direct, $social], $this->ids($service->page(50, null, ['social', 'direct'])));
-        // ids matching no group, or none at all, are a filter of their own: an empty list
-        $this->assertSame([], $this->ids($service->page(50, null, ['no-such-group'])));
+        // ids matching no category, or none at all, are a filter of their own: an empty list
+        $this->assertSame([], $this->ids($service->page(50, null, ['no-such-category'])));
         $this->assertSame([], $this->ids($service->page(50, null, [])));
         // the badge is independent of the filter
         $this->assertSame(2, $service->page(50, null, [])['unseenCount']);
@@ -108,7 +108,7 @@ class NotificationListServiceTest extends HumHubDbTestCase
     {
         // post 2: public post on the admin's profile
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestContentNotification::class, [2], $post);
+        TestContentNotification::send([2], $post);
         $about = (int)Notification::find()->forUser(2)->andWhere(['class' => TestContentNotification::class])->select('id')->scalar();
         [$other] = $this->insert([TestNotification::class]);
         $service = new NotificationListService();

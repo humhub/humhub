@@ -30,7 +30,7 @@
                     class="form-check-input"
                     type="checkbox"
                     :checked="selected.includes(filter.id)"
-                    @change="toggleGroup(filter.id, $event.target.checked)"
+                    @change="toggleCategory(filter.id, $event.target.checked)"
                 >
                 <label class="form-check-label" :for="'notification-filter-' + filter.id">{{ filter.title }}</label>
             </div>
@@ -40,19 +40,19 @@
 
 <script>
 /**
- * The notification overview's filter sidebar: the seen state and the notification groups
- * (`direct`, `social`, `content`, `admin` and the groups modules add).
+ * The notification overview's filter sidebar: the seen state and the notification categories
+ * (`direct`, `social`, `followers`, `content`, `admin` and the categories modules add).
  *
- * Emits `change` with `{groups, seen}` on every interaction; the island turns that into a
- * request (see `NotificationOverview.vue`). The groups arrive as the `filters` prop — they are
+ * Emits `change` with `{categories, seen}` on every interaction; the island turns that into a
+ * request (see `NotificationOverview.vue`). The categories arrive as the `filters` prop — they are
  * module-defined and localized, so the server hands over the list to render checkboxes for.
  *
  * ## Deliberate deviations from the server-rendered filter
  *
  * - The seen state is a button group instead of `radioList(['template' => 'pills'])` — the same
  *   three options with the same icons, but without reproducing that ActiveField template.
- * - The "All" checkbox works both ways (checking it selects every group, unchecking it clears
- *   them) and reflects "every group selected", which is what the legacy JS did with its own
+ * - The "All" checkbox works both ways (checking it selects every category, unchecking it clears
+ *   them) and reflects "every category selected", which is what the legacy JS did with its own
  *   click handlers in `humhub.notification.js`.
  *
  * @since 1.20
@@ -61,9 +61,9 @@ import { i18n } from '@humhub/vue';
 
 export default {
     props: {
-        // [{id, title}] - the notification groups the server offers (localized).
+        // [{id, title}] - the notification categories the server offers (localized).
         filters: { type: Array, default: () => [] },
-        // Currently selected group ids.
+        // Currently selected category ids.
         selected: { type: Array, default: () => [] },
         // '' (all), 'unseen' or 'seen'.
         seen: { type: String, default: '' },
@@ -94,18 +94,18 @@ export default {
             this.emitChange({ seen: value });
         },
         toggleAll(checked) {
-            this.emitChange({ groups: checked ? this.filters.map((filter) => filter.id) : [] });
+            this.emitChange({ categories: checked ? this.filters.map((filter) => filter.id) : [] });
         },
-        toggleGroup(id, checked) {
-            const groups = checked
+        toggleCategory(id, checked) {
+            const categories = checked
                 ? [...this.selected, id]
                 : this.selected.filter((candidate) => candidate !== id);
 
-            this.emitChange({ groups });
+            this.emitChange({ categories });
         },
         emitChange(changed) {
             this.$emit('change', {
-                groups: changed.groups !== undefined ? changed.groups : [...this.selected],
+                categories: changed.categories !== undefined ? changed.categories : [...this.selected],
                 seen: changed.seen !== undefined ? changed.seen : this.seen,
             });
         },

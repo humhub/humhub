@@ -11,7 +11,6 @@ namespace humhub\modules\comment\services;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\notifications\CommentDeletedNotification;
 use humhub\modules\content\helpers\ContentHelper;
-use humhub\modules\notification\components\NotificationManager;
 use Yii;
 
 /**
@@ -37,15 +36,13 @@ class CommentDeleteService
     public function delete(bool $notify = false, string $reason = ''): bool
     {
         if ($notify) {
-            NotificationManager::dispatch(
-                CommentDeletedNotification::class,
+            CommentDeletedNotification::send(
                 $this->comment->createdBy,
-                null,
-                Yii::$app->user->getIdentity(),
-                ['payload' => [
+                originator: Yii::$app->user->getIdentity(),
+                payload: [
                     'commentText' => ContentHelper::getContentPlainTextPreview($this->comment, 30),
                     'reason' => $reason,
-                ]],
+                ],
             );
         }
 

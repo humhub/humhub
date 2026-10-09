@@ -10,18 +10,45 @@ namespace humhub\modules\notification\services;
 
 use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
 use yii\db\Expression;
 
 /**
- * Grouping of a notification with the recipient's other notifications of its grouping query.
+ * Grouping of a notification with the recipient's other notifications matched by the
+ * {@see Grouping} of its class ({@see BaseNotification::grouping()}).
  *
+ * The group query of a notification: the recipient's notifications of the same class, created in
+ * the same time bucket, matching it in the columns of the grouping (and unseen, for
+ * {@see Grouping::unseenOnly()}). The members of a group share the `grouping_key` - the id of the
+ * group head, its newest member.
+ *
+ * @internal
  * @since 1.20
  */
 final class GroupingService
 {
+    /**
+     * The columns a {@see Grouping} matches - `notification.content_id`, `notification.source_record_id`,
+     * `notification.contentcontainer_id`, `notification.originator_id` and the `object_model` of the content.
+     */
+    public const CONTENT = 'content';
+    public const SOURCE = 'source';
+    public const CONTAINER = 'container';
+    public const ORIGINATOR = 'originator';
+    public const CONTENT_TYPE = 'contentType';
+
+    private const COLUMNS = [
+        self::CONTENT => 'content_id',
+        self::SOURCE => 'source_record_id',
+        self::CONTAINER => 'contentcontainer_id',
+        self::ORIGINATOR => 'originator_id',
+    ];
+
+    private readonly ?Grouping $grouping;
+
     private ?array $_groupedUsers = null;
 
     private ?int $_groupedUsersCount = null;
@@ -36,9 +63,53 @@ final class GroupingService
 
     public function __construct(private readonly BaseNotification $notification)
     {
-        $this->groupQuery = $this->notification->getGroupingQuery()
-            ?->forUser($this->notification->recipient)
-            ->timeBucket($this->notification->groupingTimeBucketSeconds, $this->notification->record->created_at);
+        $this->grouping = $notification::grouping();
+        $this->groupQuery = $this->buildGroupQuery();
+    }
+
+    /**
+     * The query of the notifications this one is grouped with; `null` when it is not grouped: its
+     * class has no grouping, or the notification lacks a column the grouping requires.
+     */
+    private function buildGroupQuery(): ?ActiveQueryNotification
+    {
+        if ($this->grouping === null) {
+            return null;
+        }
+
+        $record = $this->notification->record;
+        $query = Notification::find()
+            ->andWhere(['notification.class' => $record->class])
+            ->forUser($this->notification->recipient)
+            ->timeBucket($this->grouping->getTimeBucket(), $record->created_at);
+
+        foreach ($this->grouping->getRequired() as $name) {
+            $value = $record->getAttribute(self::COLUMNS[$name]);
+            if ($value === null) {
+                return null;
+            }
+            $query->andWhere(['notification.' . self::COLUMNS[$name] => $value]);
+        }
+
+        foreach ($this->grouping->getMatched() as $name) {
+            if ($name === self::CONTENT_TYPE) {
+                $objectModel = $this->notification->content?->object_model;
+                if ($objectModel === null) {
+                    return null;
+                }
+                $query->select('notification.*')
+                    ->innerJoin('content', 'content.id = notification.content_id')
+                    ->andWhere(['content.object_model' => $objectModel]);
+                continue;
+            }
+            $query->andWhere(['notification.' . self::COLUMNS[$name] => $record->getAttribute(self::COLUMNS[$name])]);
+        }
+
+        if ($this->grouping->isUnseenOnly()) {
+            $query->andWhere(['notification.seen_at' => null]);
+        }
+
+        return $query;
     }
 
     /**
@@ -59,7 +130,7 @@ final class GroupingService
                 ->andWhere(['notification.grouping_key' => $this->notification->record->grouping_key])
                 ->andWhere(['notification.user_id' => $this->notification->recipient->id])
                 // The notification's own originator is named separately by the sentence
-                // (`BaseNotification::formatDisplayNames()`), so they are not one of the "others".
+                // (the `displayNames` message parameter), so they are not one of the "others".
                 ->andWhere(['!=', 'notification.originator_id', $this->notification->originator?->id ?? 0])
                 ->andWhere(['!=', 'notification.originator_id', $this->notification->recipient->id])
                 // One row per person: the sentence counts people ("and 3 more"), not notifications.
@@ -190,7 +261,7 @@ final class GroupingService
             return;
         }
 
-        if ($count < $this->notification->groupingThreshold) {
+        if ($count < $this->getThreshold()) {
             Notification::updateAll(['grouping_key' => new Expression('id')], $othersCondition);
         } elseif ((int)$record->grouping_key === (int)$record->id) {
             Notification::updateAll(['grouping_key' => (int)(clone $others)->max('id')], $othersCondition);
@@ -217,7 +288,7 @@ final class GroupingService
     private function needsGrouping(): bool
     {
         return $this->groupQuery !== null
-            && $this->groupQuery->count() >= $this->notification->groupingThreshold;
+            && $this->groupQuery->count() >= $this->getThreshold();
     }
 
     /**
@@ -253,6 +324,11 @@ final class GroupingService
             'notification.user_id' => $this->notification->record->user_id,
             'notification.grouping_key' => $this->notification->record->grouping_key,
         ];
+    }
+
+    private function getThreshold(): int
+    {
+        return $this->grouping?->getThreshold() ?? 2;
     }
 
     private function resetCaches(): void

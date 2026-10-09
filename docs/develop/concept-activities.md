@@ -47,8 +47,8 @@ final class TaskCreatedActivity extends BaseContentActivity implements Configura
 
 There are no view files. The same `getMessage()` renders the entry in the activity box
 (`asWeb()`), the HTML summary mail (`asMailHtml()`) and its plain-text version (`asMailText()`);
-only `$params` differs — on the web and in the HTML mail the names are bold and encoded, in plain
-text they are not:
+only `$params` differs — on the web and in the HTML mail values are HTML-encoded and names are
+bold, in plain text they are not. The built-in parameters:
 
 | Parameter | Meaning |
 |---|---|
@@ -57,14 +57,60 @@ text they are not:
 | `groupCount` | how many activities the entry stands for (1 when ungrouped) |
 | `content` | type and preview of the content: *post "Release notes"* (`BaseContentActivity` only) |
 | `contentTitle` | the preview alone (`BaseContentActivity` only) |
+| `spaceName` | the name of the space (`BaseSpaceActivity` only) |
 
-Add parameters of your own by overriding `getMessageParamsWeb()`, `getMessageParamsMailHtml()`
-and `getMessageParamsMailText()` with `array_merge(parent::…(), [...])`, as
-`NewCommentActivity` does for the comment text. The object is constructed from its `Activity`
-record and exposes `$record`, `$user`, `$contentContainer`, `$createdAt` and `$groupCount`;
-`BaseContentActivity` adds `$content`, `$contentActiveRecord` (checked against
-`$contentActiveRecordClass`) and `$contentAddon` (e.g. the comment). `getUrl()` links the entry:
+### Message parameters of your own
+
+Declare them once in `getMessageParams()`; the core renders them for each output, exactly as for
+[notifications](concept-notifications.md). A value is a plain string or a
+`humhub\components\message\MessageParam`:
+
+```php
+use humhub\components\message\MessageParam;
+
+protected function getMessageParams(): array
+{
+    return [
+        'task' => MessageParam::emphasis($this->contentActiveRecord->title), // <strong>…</strong> / “…”
+        'assignee' => MessageParam::user($this->contentActiveRecord->assignee), // <strong>…</strong> / as it is
+        'reason' => MessageParam::text($this->reason, maxLength: 100),       // encoded / as it is
+        'list' => $this->contentActiveRecord->list->name,                      // a plain string: like text()
+    ];
+}
+```
+
+| Value | Activity box and HTML mail | Plain text mail |
+|---|---|---|
+| plain string, `MessageParam::text()` | HTML-encoded | as it is |
+| `MessageParam::emphasis()` | HTML-encoded in `<strong>` | in “quotes” |
+| `MessageParam::user()` | the display name, HTML-encoded in `<strong>` | the display name |
+| a number | as it is (e.g. for an ICU `plural`) | as it is |
+
+Your parameters are merged over the built-in ones, so a key like `content` replaces the built-in
+value — `LikeActivity` names the liked comment that way. For a preview of the length of the
+output being rendered, `BaseContentActivity::getPreviewLength()` returns `$webContentLength` (60)
+for the activity box and `$mailContentLength` (300) for mails, as `NewCommentActivity` does for
+the comment text. When you extend a class that has parameters of its own, merge
+`parent::getMessageParams()`.
+
+Up to 1.19, parameters were added by overriding `getMessageParamsWeb()`,
+`getMessageParamsMailHtml()` and `getMessageParamsMailText()` (and names formatted with
+`formatDisplayNames()`). These methods are **deprecated** since 1.20 and `@internal`: they keep
+working — an override is still called and its result wins, also over `getMessageParams()` — but
+new code uses `getMessageParams()` alone.
+
+### The rest of the class
+
+The object is constructed from its `Activity` record and exposes `$record`, `$user`,
+`$contentContainer`, `$createdAt` and `$groupCount`; `BaseContentActivity` adds `$content`,
+`$contentActiveRecord` (checked against `$contentActiveRecordClass`) and `$contentAddon` (e.g. the
+comment), `BaseSpaceActivity` adds `$space` and `inSpaceContext()`. `getUrl()` links the entry:
 the content addon, else the content, else the container.
+
+What a module may use or override is marked `@api` — `getMessage()`, `getMessageParams()`,
+`getUrl()`, `getGroupingQuery()`, the properties above, `ConfigurableActivityInterface` and
+`ActivityManager::dispatch()`; everything marked `@internal` (the grouping and rendering services,
+the deprecated parameter methods) may change without notice.
 
 ## Dispatching
 
@@ -110,6 +156,9 @@ An activity implementing `ConfigurableActivityInterface` — static `getTitle()`
 `getDescription()` — appears as a checkbox under *E-Mail Summaries*, in the account settings and
 in the administrator's defaults, so users can leave it out of their summary mail. Without the
 interface it is always included.
+
+The summary mail also mentions the number of unread notifications, with a link to the
+notification overview; it is not sent for notifications alone.
 
 ## API
 

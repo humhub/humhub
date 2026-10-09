@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\activities;
 
-use humhub\helpers\Html;
+use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
@@ -45,24 +45,14 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
         }
     }
 
-    protected function getMessageParamsMailText(): array
+    /**
+     * @inheritdoc
+     */
+    protected function getMessageParams(): array
     {
-        return array_merge(
-            parent::getMessageParamsMailText(),
-            [
-                'followedDisplayName' => $this->followedUser->displayName,
-            ],
-        );
-    }
-
-    protected function getMessageParamsWeb(): array
-    {
-        return array_merge(
-            parent::getMessageParamsWeb(),
-            [
-                'followedDisplayName' => Html::strong(Html::encode($this->followedUser->displayName)),
-            ],
-        );
+        return [
+            'followedDisplayName' => MessageParam::user($this->followedUser),
+        ];
     }
 
     public function getGroupingQuery(): ?ActiveQueryActivity

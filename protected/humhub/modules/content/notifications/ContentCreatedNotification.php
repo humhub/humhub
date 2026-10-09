@@ -8,10 +8,9 @@
 
 namespace humhub\modules\content\notifications;
 
-use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
-use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -31,27 +30,19 @@ class ContentCreatedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::content();
+        return NotificationCategory::content();
     }
 
     /**
+     * The new contents of one type, by one originator, in one container.
+     *
      * @inheritdoc
      */
-    public function getGroupingQuery(): ?ActiveQueryNotification
+    public static function grouping(): ?Grouping
     {
-        if ($this->content === null) {
-            return null;
-        }
-
-        return Notification::find()
-            ->select('notification.*')
-            ->innerJoin('content', 'content.id = notification.content_id')
-            ->andWhere(['notification.class' => static::class])
-            ->andWhere(['notification.originator_id' => $this->record->originator_id])
-            ->andWhere(['notification.contentcontainer_id' => $this->record->contentcontainer_id])
-            ->andWhere(['content.object_model' => $this->content->object_model]);
+        return Grouping::byContainer()->andOriginator()->andContentType();
     }
 
     /**
@@ -59,67 +50,39 @@ class ContentCreatedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        if ($this->groupCount > 1) {
-            return Yii::t('ContentModule.notifications', '{displayName} created {groupCount} new entries.', [
-                'displayName' => $params['displayName'],
-                'groupCount' => $params['groupCount'],
-            ]);
+        if ($this->groupCount === 1 && $this->isOnRecipientProfile()) {
+            return Yii::t('ContentModule.notifications', '{displayName} posted on your profile {contentTitle}.', $params);
         }
 
-        if ($this->isOnRecipientProfile()) {
-            return Yii::t('ContentModule.notifications', '{displayName} posted on your profile {contentTitle}.', [
-                'displayName' => $params['displayName'],
-                'contentTitle' => $params['contentTitle'],
-            ]);
-        }
-
-        return Yii::t('ContentModule.notifications', '{displayName} created {contentTitle}.', [
-            'displayName' => $params['displayName'],
-            'contentTitle' => $params['content'],
-        ]);
+        return Yii::t('ContentModule.notifications', '{groupCount, plural, =1{{displayName} created {content}.} other{{displayName} created # new entries.}}', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function getMailSubject(): string
+    protected function getMailSubject(array $params): string
     {
         if ($this->groupCount > 1) {
-            return parent::getMailSubject();
+            return parent::getMailSubject($params);
         }
 
-        $params = $this->getMessageParamsPlain($this->webContentLength);
-        $contentInfo = $params['content'];
         $explicit = (bool)($this->payload['explicit'] ?? false);
         $space = $this->getSpace();
+        $params = [
+            'originator' => $params['displayName'],
+            'contentInfo' => $params['content'] ?? '',
+            'space' => $space?->displayName,
+        ];
 
         if ($space !== null) {
-            if ($explicit) {
-                return Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo} in {space}', [
-                    'originator' => $params['displayName'],
-                    'space' => $space->displayName,
-                    'contentInfo' => $contentInfo,
-                ]);
-            }
-
-            return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo} in Space {space}', [
-                'originator' => $params['displayName'],
-                'space' => $space->displayName,
-                'contentInfo' => $contentInfo,
-            ]);
+            return $explicit
+                ? Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo} in {space}', $params)
+                : Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo} in Space {space}', $params);
         }
 
-        if ($explicit) {
-            return Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo}', [
-                'originator' => $params['displayName'],
-                'contentInfo' => $contentInfo,
-            ]);
-        }
-
-        return Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo}', [
-            'originator' => $params['displayName'],
-            'contentInfo' => $contentInfo,
-        ]);
+        return $explicit
+            ? Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo}', $params)
+            : Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo}', $params);
     }
 
     /**

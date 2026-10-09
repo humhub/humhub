@@ -74,7 +74,7 @@ export default {
         // the overview page costs no request.
         initial: { type: Object, default: null },
         // Filters, forwarded to the endpoint (see notificationApi.js).
-        groups: { type: Array, default: null },
+        categories: { type: Array, default: null },
         seen: { type: String, default: null },
         pageSize: { type: Number, default: 6 },
         showMoreButton: { type: Boolean, default: false },
@@ -127,7 +127,7 @@ export default {
             return fetchNotifications({
                 cursor,
                 limit: this.pageSize,
-                groups: this.groups,
+                categories: this.categories,
                 seen: this.seen,
             }).then((response) => {
                 this.items = replace ? response.results : [...this.items, ...response.results];

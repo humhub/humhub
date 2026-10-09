@@ -8,7 +8,7 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\services\NotificationSettingsService;
 use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\targets\DeliveryBatch;
@@ -36,45 +36,45 @@ class BaseTargetTest extends HumHubDbTestCase
         $this->assertTrue((new MailTarget())->isEnabled(TestNotification::class));
     }
 
-    public function testMailTargetIsDisabledByModeOff()
+    public function testInactiveTargetIsDisabled()
     {
-        (new NotificationSettingsService($this->user()))->setMode(new MailTarget(), NotificationSettingsService::MODE_OFF);
-        $this->assertFalse((new MailTarget())->isEnabled(TestNotification::class, $this->user()));
-        $this->assertFalse((new MailTarget())->isEnabled(TestDirectNotification::class, $this->user()));
+        $this->assertFalse((new MailTarget(['active' => false]))->isEnabled(TestNotification::class, $this->user()));
+        $this->assertFalse((new MailTarget(['active' => false]))->isEnabled(TestDirectNotification::class, $this->user()));
     }
 
-    public function testMailTargetIsDisabledByModeSummary()
+    public function testMailTargetIsDisabledByCategorySwitch()
     {
-        // the core mail target offers no summary mode yet
-        $target = new MailTarget(['modes' => [NotificationSettingsService::MODE_ADAPTIVE, NotificationSettingsService::MODE_SUMMARY, NotificationSettingsService::MODE_OFF]]);
-        (new NotificationSettingsService($this->user()))->setMode($target, NotificationSettingsService::MODE_SUMMARY);
-        $this->assertFalse($target->isEnabled(TestNotification::class, $this->user()));
-    }
-
-    public function testStoredSummaryModeKeepsTheMailTargetEnabled()
-    {
-        Yii::$app->getModule('notification')->settings->user($this->user())->set('email.mode', NotificationSettingsService::MODE_SUMMARY);
-        $this->assertTrue((new MailTarget())->isEnabled(TestNotification::class, $this->user()));
-    }
-
-    public function testMailTargetIsDisabledByGroupSwitch()
-    {
-        (new NotificationSettingsService($this->user()))->setGroup(new MailTarget(), NotificationGroup::social(), false);
+        (new NotificationSettingsService($this->user()))->setCategory(new MailTarget(), NotificationCategory::social(), false);
         $this->assertFalse((new MailTarget())->isEnabled(TestNotification::class, $this->user()));
         $this->assertTrue((new MailTarget())->isEnabled(TestDirectNotification::class, $this->user()));
         $this->assertTrue((new MailTarget())->isEnabled(TestNotification::class, User::findOne(['id' => 2])));
     }
 
-    public function testDirectGroupIgnoresItsSwitch()
+    public function testDirectCategoryIgnoresItsSwitch()
     {
-        Yii::$app->getModule('notification')->settings->user($this->user())->set('email.group.direct', 0);
+        Yii::$app->getModule('notification')->settings->user($this->user())->set('email.category.direct', 0);
         $this->assertTrue((new MailTarget())->isEnabled(TestDirectNotification::class, $this->user()));
     }
 
-    public function testWebTargetFollowsListed()
+    public function testWebTargetFollowsListedAndTheCategorySwitch()
     {
         $this->assertTrue((new WebTarget())->isEnabled(TestNotification::class, $this->user()));
         $this->assertFalse((new WebTarget())->isEnabled(TestHighPriorityNotification::class, $this->user()));
+
+        (new NotificationSettingsService($this->user()))->setCategory(new WebTarget(), NotificationCategory::social(), false);
+        $this->assertFalse((new WebTarget())->isEnabled(TestNotification::class, $this->user()));
+        $this->assertTrue((new WebTarget())->isEnabled(TestNotification::class, User::findOne(['id' => 2])));
+        // the direct category cannot be switched off
+        Yii::$app->getModule('notification')->settings->user($this->user())->set('web.category.direct', 0);
+        $this->assertTrue((new WebTarget())->isEnabled(TestDirectNotification::class, $this->user()));
+    }
+
+    public function testWebTargetAppliesToCategoriesWithListedNotifications()
+    {
+        $this->assertTrue((new WebTarget())->appliesTo(NotificationCategory::social()));
+        $this->assertTrue((new WebTarget())->appliesTo(NotificationCategory::followers()));
+        $this->assertFalse((new WebTarget())->appliesTo(new NotificationCategory('example-none', 'None')));
+        $this->assertTrue((new MailTarget())->appliesTo(new NotificationCategory('example-none', 'None')));
     }
 
     public function testMobileTargetWithoutProvider()
@@ -115,7 +115,7 @@ class BaseTargetTest extends HumHubDbTestCase
             Yii::$app->set('notification', ['class' => NotificationManager::class, 'targets' => Yii::$app->notification->targets]);
             $this->assertSame(['web', 'email', 'mobile'], array_map(fn($t) => $t->id, Yii::$app->notification->getTargets()));
 
-            NotificationManager::dispatch(TestDirectNotification::class, [1], Post::findOne(['id' => 2]), User::findOne(['id' => 2]));
+            TestDirectNotification::send([1], Post::findOne(['id' => 2]), User::findOne(['id' => 2]));
 
             $this->assertCount(1, $provider->batches);
             $batch = $provider->batches[0];
@@ -155,7 +155,7 @@ class BaseTargetTest extends HumHubDbTestCase
         $this->assertInstanceOf(MailTarget::class, $target);
         $this->assertTrue($target->isEnabled(TestNotification::class, $this->user()));
 
-        (new NotificationSettingsService($this->user()))->setMode($target, NotificationSettingsService::MODE_OFF);
+        (new NotificationSettingsService($this->user()))->setCategory($target, TestNotification::category(), false);
         $this->assertFalse($target->isEnabled(TestNotification::class, $this->user()));
         $this->assertTrue($target->isEnabled(TestNotification::class, User::findOne(['id' => 2])));
     }

@@ -14,7 +14,6 @@ use humhub\helpers\Html;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\forms\EditGroupForm;
@@ -446,7 +445,7 @@ class Group extends ActiveRecord
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
-                NotificationManager::dispatch(IncludeGroupNotification::class, $user, $this, Yii::$app->user->identity, ['dedupe' => false]);
+                IncludeGroupNotification::send($user, $this, Yii::$app->user->identity, dedupe: false);
             }
             return true;
         }
@@ -473,7 +472,7 @@ class Group extends ActiveRecord
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
-                NotificationManager::dispatch(ExcludeGroupNotification::class, $user, $this, Yii::$app->user->identity, ['dedupe' => false]);
+                ExcludeGroupNotification::send($user, $this, Yii::$app->user->identity, dedupe: false);
             }
             return true;
         }

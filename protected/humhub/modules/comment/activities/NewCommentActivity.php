@@ -2,6 +2,7 @@
 
 namespace humhub\modules\comment\activities;
 
+use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
@@ -50,26 +51,20 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return Yii::t('CommentModule.base', '{displayName} wrote a new comment {comment}.', $params);
     }
 
-    protected function getMessageParamsWeb(): array
+    /**
+     * @inheritdoc
+     */
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'comment' => '"' . RichText::preview($this->comment->message, $this->webContentLength) . '"',
-        ]);
-    }
+        $length = $this->getPreviewLength();
 
-    protected function getMessageParamsMailText(): array
-    {
-        return array_merge(parent::getMessageParamsMailText(), [
-            'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
-                RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $this->mailContentLength,
-            ]) . '"',
-        ]);
-    }
-
-    protected function getMessageParamsMailHtml(): array
-    {
-        return array_merge(parent::getMessageParamsMailHtml(), [
-            'comment' => '"' . RichText::preview($this->comment->message, $this->mailContentLength) . '"',
-        ]);
+        return [
+            'comment' => MessageParam::html(
+                '"' . RichText::preview($this->comment->message, $length) . '"',
+                "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
+                    RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $length,
+                ]) . '"',
+            ),
+        ];
     }
 }

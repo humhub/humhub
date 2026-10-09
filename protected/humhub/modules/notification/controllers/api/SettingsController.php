@@ -82,7 +82,7 @@ class SettingsController extends BaseController
     }
 
     /**
-     * Resets the caller's settings to the defaults - the modes, the group switches and the
+     * Resets the caller's settings to the defaults - the category switches and the
      * space selection - and answers the settings as {@see actionIndex()}.
      */
     public function actionReset()

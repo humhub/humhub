@@ -9,7 +9,7 @@
 namespace tests\codeception\unit\modules\admin;
 
 use humhub\modules\admin\notifications\NewVersionAvailableNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
@@ -22,21 +22,22 @@ class NewVersionAvailableNotificationTest extends HumHubDbTestCase
 {
     public function testDispatchToTheAdministrators()
     {
-        NotificationManager::dispatch(NewVersionAvailableNotification::class, Group::getAdminGroup()->getUsers(), options: [
-            'payload' => ['version' => '9.9.9'],
-        ]);
+        NewVersionAvailableNotification::send(
+            Group::getAdminGroup()->getUsers(),
+            payload: ['version' => '9.9.9'],
+        );
 
         $record = Notification::findOne(['class' => NewVersionAvailableNotification::class, 'user_id' => 1]);
         $this->assertNotNull($record);
         $this->assertNull($record->originator_id);
         $this->assertNull($record->source_record_id);
         $this->assertSame(NotificationPriority::Normal->value, (int)$record->priority);
-        $this->assertSame(NotificationGroup::ID_ADMIN, NewVersionAvailableNotification::group()->id);
+        $this->assertSame(NotificationCategory::ID_ADMIN, NewVersionAvailableNotification::category()->id);
 
         $notification = NotificationManager::load($record);
-        $this->assertSame('There is a new HumHub Version (<strong>9.9.9</strong>) available.', $notification->asWeb());
+        $this->assertSame('There is a new HumHub Version (9.9.9) available.', $notification->asWeb());
         $this->assertSame('There is a new HumHub Version (9.9.9) available.', $notification->asMailText());
-        $this->assertSame('There is a new HumHub Version (9.9.9) available.', $notification->getMailSubject());
+        $this->assertSame('There is a new HumHub Version (9.9.9) available.', $notification->asMailSubject());
         $this->assertSame(Url::to(['/admin/information/about']), $notification->getUrl());
         $this->assertSame(Url::to(['/admin/information/about'], true), $notification->getUrl(true));
 
@@ -47,12 +48,13 @@ class NewVersionAvailableNotificationTest extends HumHubDbTestCase
 
     public function testDeleteWithoutUserRemovesAllRows()
     {
-        NotificationManager::dispatch(NewVersionAvailableNotification::class, [User::findOne(['id' => 1]), User::findOne(['id' => 2])], options: [
-            'payload' => ['version' => '9.9.9'],
-        ]);
+        NewVersionAvailableNotification::send(
+            [User::findOne(['id' => 1]), User::findOne(['id' => 2])],
+            payload: ['version' => '9.9.9'],
+        );
         $this->assertSame(2, (int)Notification::find()->where(['class' => NewVersionAvailableNotification::class])->count());
 
-        $this->assertSame(2, NotificationManager::delete(NewVersionAvailableNotification::class));
+        $this->assertSame(2, NewVersionAvailableNotification::revoke());
         $this->assertSame(0, (int)Notification::find()->where(['class' => NewVersionAvailableNotification::class])->count());
     }
 }

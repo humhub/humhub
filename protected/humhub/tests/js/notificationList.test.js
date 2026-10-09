@@ -131,7 +131,7 @@ describe('NotificationList', () => {
     it('fetches the first page on reload, with the page size and filters', async () => {
         wrapper = mount(NotificationList, {
             ...mountOptions(),
-            props: { pageSize: 20, groups: ['social'], seen: 'unseen' },
+            props: { pageSize: 20, categories: ['social'], seen: 'unseen' },
         });
 
         await wrapper.vm.reload();
@@ -141,7 +141,7 @@ describe('NotificationList', () => {
         expect(getCalls[0]).toContain('/api/v2/notification');
         expect(getCalls[0]).toContain('limit=20');
         expect(getCalls[0]).toContain('seen=unseen');
-        expect(decodeURIComponent(getCalls[0])).toContain('groups[]=social');
+        expect(decodeURIComponent(getCalls[0])).toContain('categories[]=social');
         expect(wrapper.findAll('.hh-list > a')).toHaveLength(1);
     });
 

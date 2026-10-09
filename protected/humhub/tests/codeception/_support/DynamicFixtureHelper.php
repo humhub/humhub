@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Module;
 use Codeception\TestInterface;
+use humhub\components\db\AfterCommit;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
@@ -70,6 +71,10 @@ class DynamicFixtureHelper extends Module
      */
     public function _before(TestInterface $test)
     {
+        // With `transaction: true` the Yii2 module wraps the test into a transaction it never
+        // commits, so work deferred until the commit has to run at once.
+        AfterCommit::$immediate = $this->hasModule('Yii2') && $this->getModule('Yii2')->_getConfig('transaction');
+
         $this->unloadFixtures();
 
         if ($this->beforeTest) {

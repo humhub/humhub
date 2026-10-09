@@ -60,10 +60,10 @@ class NotificationController extends BaseController
     /**
      * The caller's notifications, newest entry first, one entry per group.
      *
-     * Parameters: `cursor` (the previous page's `nextCursor`), `limit`, `groups[]` (notification
-     * group ids, e.g. `direct`, `social`) and `seen` (`seen`/`unseen`). Without `groups` nothing
-     * is filtered by group; with ids matching no group the list is empty, which is what "no group
-     * selected" means.
+     * Parameters: `cursor` (the previous page's `nextCursor`), `limit`, `categories[]` (notification
+     * category ids, e.g. `direct`, `social`) and `seen` (`seen`/`unseen`). Without `categories`
+     * nothing is filtered by category; with ids matching no category the list is empty, which is
+     * what "no category selected" means.
      */
     public function actionIndex()
     {
@@ -74,7 +74,7 @@ class NotificationController extends BaseController
             self::MAX_LIMIT,
         ));
 
-        $groups = $request->get('groups');
+        $categories = $request->get('categories');
         $cursor = $request->get('cursor');
 
         $seen = $request->get('seen', '');
@@ -87,7 +87,7 @@ class NotificationController extends BaseController
         return (new NotificationListService())->page(
             $limit,
             is_string($cursor) && $cursor !== '' ? $cursor : null,
-            $groups === null ? null : self::listValues($groups),
+            $categories === null ? null : self::listValues($categories),
             $seen ?: null,
         );
     }

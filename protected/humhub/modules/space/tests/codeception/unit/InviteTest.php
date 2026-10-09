@@ -38,7 +38,7 @@ class InviteTest extends HumHubDbTestCase
             '<strong>' . Yii::$app->user->identity->displayName . '</strong> invited you to the space <strong>Space 1</strong>',
             $notification->asWeb(),
         );
-        $this->assertSame([$notification->getEntryUrl()], array_column($notification->getMailActions(), 'url'));
+        $this->assertSame([$notification->getEntryUrl()], array_column($notification->getActions(), 'url'));
 
         // check cached version
         $membership = Membership::findMembership(1, 2);

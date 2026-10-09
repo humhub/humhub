@@ -8,10 +8,9 @@
 
 namespace humhub\modules\user\notifications;
 
-use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
-use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\user\models\Follow;
 use Yii;
 
@@ -28,17 +27,19 @@ final class FollowedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::social();
+        return NotificationCategory::followers();
     }
 
     /**
+     * All new followers of the recipient.
+     *
      * @inheritdoc
      */
-    public function getGroupingQuery(): ?ActiveQueryNotification
+    public static function grouping(): ?Grouping
     {
-        return Notification::find()->andWhere(['notification.class' => self::class]);
+        return Grouping::byClass();
     }
 
     /**
@@ -56,14 +57,6 @@ final class FollowedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        if ($params['namedCount'] > 1) {
-            return Yii::t('UserModule.notification', '{displayNames} are now following you.', [
-                'displayNames' => $params['displayNames'],
-            ]);
-        }
-
-        return Yii::t('UserModule.notification', '{displayName} is now following you.', [
-            'displayName' => $params['namedCount'] === 1 ? $params['displayNames'] : $params['displayName'],
-        ]);
+        return Yii::t('UserModule.notification', '{namedCount, plural, =2{{displayNames} are} other{{displayName} is}} now following you.', $params);
     }
 }

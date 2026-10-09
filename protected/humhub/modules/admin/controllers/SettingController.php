@@ -28,7 +28,6 @@ use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\models\Log;
 use humhub\modules\admin\notifications\NewVersionAvailableNotification;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
@@ -209,9 +208,10 @@ class SettingController extends Controller
         }
 
         if (Yii::$app->request->get('triggerNotification') == 1) {
-            NotificationManager::dispatch(NewVersionAvailableNotification::class, Yii::$app->user->identity, options: [
-                'payload' => ['version' => HumHubAPI::getLatestHumHubVersion() ?: Yii::$app->version],
-            ]);
+            NewVersionAvailableNotification::send(
+                Yii::$app->user->identity,
+                payload: ['version' => HumHubAPI::getLatestHumHubVersion() ?: Yii::$app->version],
+            );
             $this->view->success('Notification queued!');
             return $this->redirect('mobile-app');
         }

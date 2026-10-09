@@ -9,13 +9,13 @@
 namespace humhub\modules\notification\tests\codeception\unit\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 
 final class TestContentNotification extends BaseNotification
 {
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::content();
+        return NotificationCategory::content();
     }
 
     protected function getMessage(array $params): string

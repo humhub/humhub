@@ -16,6 +16,7 @@ namespace humhub\modules\activity\interfaces;
  *
  * @version 1.2
  * @author Luke
+ * @api
  */
 interface ConfigurableActivityInterface
 {

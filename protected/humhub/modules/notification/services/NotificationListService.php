@@ -69,13 +69,13 @@ class NotificationListService
 
     /**
      * @param string|null $cursor `nextCursor` of the previous page
-     * @param string[]|null $groups ids of {@see \humhub\modules\notification\components\NotificationGroup}s
-     * to include, `null` for no group filter; ids matching no group give an empty list
+     * @param string[]|null $categories ids of {@see \humhub\modules\notification\components\NotificationCategory}s
+     * to include, `null` for no category filter; ids matching no category give an empty list
      * @param string|null $seen `seen`, `unseen` or `null` for both
      *
      * @return array{results: array[], unseenCount: int, nextCursor: string|null}
      */
-    public function page(int $limit, ?string $cursor = null, ?array $groups = null, ?string $seen = null): array
+    public function page(int $limit, ?string $cursor = null, ?array $categories = null, ?string $seen = null): array
     {
         $user = Yii::$app->user->getIdentity();
 
@@ -86,8 +86,8 @@ class NotificationListService
             $query->andWhere(['<', 'notification.grouping_key', $groupingKey]);
         }
 
-        if ($groups !== null) {
-            $classes = $this->classesOfGroups($groups);
+        if ($categories !== null) {
+            $classes = $this->classesOfCategories($categories);
             $query->andWhere($classes === [] ? '0=1' : ['notification.class' => $classes]);
         }
 
@@ -137,22 +137,22 @@ class NotificationListService
     }
 
     /**
-     * The notification classes of the enabled modules belonging to one of the given groups.
+     * The notification classes of the enabled modules belonging to one of the given categories.
      *
-     * @param string[] $groups
+     * @param string[] $categories
      * @return string[]
      */
-    private function classesOfGroups(array $groups): array
+    private function classesOfCategories(array $categories): array
     {
         $classes = [];
 
         foreach (Yii::$app->notification->getNotifications() as $class) {
             try {
-                if (in_array($class::group()->id, $groups, true)) {
+                if (in_array($class::category()->id, $categories, true)) {
                     $classes[] = $class;
                 }
             } catch (Throwable $e) {
-                Yii::warning('Could not determine the notification group of ' . $class . ': ' . $e->getMessage(), 'notification');
+                Yii::warning('Could not determine the notification category of ' . $class . ': ' . $e->getMessage(), 'notification');
             }
         }
 

@@ -9,7 +9,7 @@
 namespace humhub\modules\space\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 
 /**
@@ -26,9 +26,9 @@ final class SpaceInviteNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**

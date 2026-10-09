@@ -9,19 +9,19 @@
 namespace humhub\modules\notification\tests\codeception\unit\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 
 /**
  * A notification whose mail body is the payload's `body`.
  */
-final class TestMailBodyNotification extends BaseNotification
+final class TestExcerptNotification extends BaseNotification
 {
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
-    public function getMailBody(): ?string
+    public function getExcerpt(): ?string
     {
         return $this->payload['body'] ?? null;
     }

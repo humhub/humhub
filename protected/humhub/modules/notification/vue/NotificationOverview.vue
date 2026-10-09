@@ -29,7 +29,7 @@
                         id="notification_overview_list"
                         :initial="initial"
                         :page-size="pageSize"
-                        :groups="requestGroups"
+                        :categories="requestCategories"
                         :seen="seen || null"
                         :show-more-button="true"
                         :empty-text="emptyLabel"
@@ -47,7 +47,7 @@
                 <div class="panel-body">
                     <NotificationFilter
                         :filters="filters"
-                        :selected="selectedGroups"
+                        :selected="selectedCategories"
                         :seen="seen"
                         :icons="icons"
                         @change="onFilterChange"
@@ -92,7 +92,7 @@ export default {
     props: {
         // First page, inlined by the controller: {results, unseenCount, nextCursor}.
         initial: { type: Object, default: null },
-        // [{id, title}] of every notification group the caller can filter by (localized).
+        // [{id, title}] of every notification category the caller can filter by (localized).
         filters: { type: Array, default: () => [] },
         // Server-rendered icon markup: {check, cog, all, unseen, seen}.
         icons: { type: Object, default: () => ({}) },
@@ -102,16 +102,16 @@ export default {
     data() {
         return {
             // Everything selected initially, like the server-rendered filter's own default.
-            selectedGroups: this.filters.map((filter) => filter.id),
+            selectedCategories: this.filters.map((filter) => filter.id),
             seen: '',
             unseenCount: this.initial ? Number(this.initial.unseenCount || 0) : 0,
         };
     },
     computed: {
-        // No filter at all while every group is selected: it would only narrow the list to
+        // No filter at all while every category is selected: it would only narrow the list to
         // classes the modules currently register (see the endpoint's own docblock).
-        requestGroups() {
-            return this.selectedGroups.length === this.filters.length ? null : this.selectedGroups;
+        requestCategories() {
+            return this.selectedCategories.length === this.filters.length ? null : this.selectedCategories;
         },
         headingLabel() {
             return i18n.t('NotificationModule.base', '<strong>Notification</strong> Overview');
@@ -146,8 +146,8 @@ export default {
                 this.$refs.list.reload();
             }
         },
-        onFilterChange({ groups, seen }) {
-            this.selectedGroups = groups;
+        onFilterChange({ categories, seen }) {
+            this.selectedCategories = categories;
             this.seen = seen;
             // The props reach the list through the same reactive update, so the refetch has to
             // wait for it - otherwise it would send the previous filter.

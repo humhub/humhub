@@ -13,7 +13,6 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\activities\FollowActivity;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -99,7 +98,7 @@ class Follow extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert && $this->send_notifications && $this->object_model == User::class) {
-            NotificationManager::dispatch(FollowedNotification::class, $this->getTarget(), $this, $this->user);
+            FollowedNotification::send($this->getTarget(), $this, $this->user);
 
             ActivityManager::dispatch(FollowActivity::class, $this->getTarget(), $this->user);
         }
@@ -121,7 +120,7 @@ class Follow extends ActiveRecord
             if ($this->object_model === User::class) {
                 $target = $this->getTarget();
 
-                NotificationManager::delete(FollowedNotification::class, $this, $target, $this->user);
+                FollowedNotification::revoke($this, $target, $this->user);
 
                 // The FollowActivity is stored against the followed user's content
                 // container (see ActivityManager::dispatch); the activity table no

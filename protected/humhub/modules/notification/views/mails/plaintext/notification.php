@@ -6,13 +6,14 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\message\MessageFormat;
 use humhub\components\View;
 use humhub\modules\notification\targets\DeliveryBatch;
 use yii\helpers\Url;
 
 /**
  * The plaintext notification mail of a {@see DeliveryBatch}, inside the global text mail layout:
- * per notification its sentence, its mail body if any and, on the next line, its entry URL.
+ * per notification its sentence, its excerpt if any and, on the next line, its entry URL.
  * Several notifications get the subject as headline and the overview URL at the end.
  */
 
@@ -26,8 +27,8 @@ if (!$batch->isSingle()) {
 }
 foreach ($batch->notifications as $notification) {
     $lines[] = $notification->asMailText();
-    if (($body = $notification->getMailBody()) !== null) {
-        $lines[] = $body;
+    if (($excerpt = $notification->renderExcerpt(MessageFormat::Text)) !== null) {
+        $lines[] = $excerpt;
     }
     $lines[] = $notification->getEntryUrl();
     $lines[] = '';

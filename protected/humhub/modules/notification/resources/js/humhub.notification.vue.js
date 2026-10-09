@@ -90,7 +90,7 @@
     ], 10, _hoisted_1$5);
   }
   const NotificationEntry = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
-  const fetchNotifications = ({ cursor = null, limit = null, groups = null, seen = null } = {}) => {
+  const fetchNotifications = ({ cursor = null, limit = null, categories = null, seen = null } = {}) => {
     const params = {};
     if (cursor) {
       params.cursor = cursor;
@@ -98,8 +98,8 @@
     if (limit) {
       params.limit = limit;
     }
-    if (Array.isArray(groups)) {
-      params.groups = groups.length ? groups : [""];
+    if (Array.isArray(categories)) {
+      params.categories = categories.length ? categories : [""];
     }
     if (seen) {
       params.seen = seen;
@@ -129,7 +129,7 @@
       // the overview page costs no request.
       initial: { type: Object, default: null },
       // Filters, forwarded to the endpoint (see notificationApi.js).
-      groups: { type: Array, default: null },
+      categories: { type: Array, default: null },
       seen: { type: String, default: null },
       pageSize: { type: Number, default: 6 },
       showMoreButton: { type: Boolean, default: false },
@@ -180,7 +180,7 @@
         return fetchNotifications({
           cursor,
           limit: this.pageSize,
-          groups: this.groups,
+          categories: this.categories,
           seen: this.seen
         }).then((response) => {
           this.items = replace ? response.results : [...this.items, ...response.results];
@@ -472,8 +472,8 @@
   const _hoisted_8$3 = ["innerHTML"];
   const _hoisted_9$3 = ["href", "aria-label", "title"];
   const _hoisted_10$3 = ["innerHTML"];
-  const _hoisted_11$1 = { class: "dropdown-footer" };
-  const _hoisted_12$1 = ["href"];
+  const _hoisted_11$2 = { class: "dropdown-footer" };
+  const _hoisted_12$2 = ["href"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_NotificationList = vue.resolveComponent("NotificationList");
     return vue.openBlock(), vue.createElementBlock(
@@ -549,11 +549,11 @@
             }, null, 8, ["initial", "page-size", "onLoaded"])
           ]),
           vue.createElementVNode("li", null, [
-            vue.createElementVNode("div", _hoisted_11$1, [
+            vue.createElementVNode("div", _hoisted_11$2, [
               vue.createElementVNode("a", {
                 class: "btn btn-light col-lg-12",
                 href: $props.overviewUrl
-              }, vue.toDisplayString($options.showAllLabel), 9, _hoisted_12$1)
+              }, vue.toDisplayString($options.showAllLabel), 9, _hoisted_12$2)
             ])
           ])
         ])
@@ -565,9 +565,9 @@
   const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const _sfc_main$2 = {
     props: {
-      // [{id, title}] - the notification groups the server offers (localized).
+      // [{id, title}] - the notification categories the server offers (localized).
       filters: { type: Array, default: () => [] },
-      // Currently selected group ids.
+      // Currently selected category ids.
       selected: { type: Array, default: () => [] },
       // '' (all), 'unseen' or 'seen'.
       seen: { type: String, default: "" },
@@ -598,15 +598,15 @@
         this.emitChange({ seen: value });
       },
       toggleAll(checked) {
-        this.emitChange({ groups: checked ? this.filters.map((filter) => filter.id) : [] });
+        this.emitChange({ categories: checked ? this.filters.map((filter) => filter.id) : [] });
       },
-      toggleGroup(id, checked) {
-        const groups = checked ? [...this.selected, id] : this.selected.filter((candidate) => candidate !== id);
-        this.emitChange({ groups });
+      toggleCategory(id, checked) {
+        const categories = checked ? [...this.selected, id] : this.selected.filter((candidate) => candidate !== id);
+        this.emitChange({ categories });
       },
       emitChange(changed) {
         this.$emit("change", {
-          groups: changed.groups !== void 0 ? changed.groups : [...this.selected],
+          categories: changed.categories !== void 0 ? changed.categories : [...this.selected],
           seen: changed.seen !== void 0 ? changed.seen : this.seen
         });
       }
@@ -688,7 +688,7 @@
                 class: "form-check-input",
                 type: "checkbox",
                 checked: $props.selected.includes(filter.id),
-                onChange: ($event) => $options.toggleGroup(filter.id, $event.target.checked)
+                onChange: ($event) => $options.toggleCategory(filter.id, $event.target.checked)
               }, null, 40, _hoisted_9$2),
               vue.createElementVNode("label", {
                 class: "form-check-label",
@@ -710,7 +710,7 @@
     props: {
       // First page, inlined by the controller: {results, unseenCount, nextCursor}.
       initial: { type: Object, default: null },
-      // [{id, title}] of every notification group the caller can filter by (localized).
+      // [{id, title}] of every notification category the caller can filter by (localized).
       filters: { type: Array, default: () => [] },
       // Server-rendered icon markup: {check, cog, all, unseen, seen}.
       icons: { type: Object, default: () => ({}) },
@@ -720,16 +720,16 @@
     data() {
       return {
         // Everything selected initially, like the server-rendered filter's own default.
-        selectedGroups: this.filters.map((filter) => filter.id),
+        selectedCategories: this.filters.map((filter) => filter.id),
         seen: "",
         unseenCount: this.initial ? Number(this.initial.unseenCount || 0) : 0
       };
     },
     computed: {
-      // No filter at all while every group is selected: it would only narrow the list to
+      // No filter at all while every category is selected: it would only narrow the list to
       // classes the modules currently register (see the endpoint's own docblock).
-      requestGroups() {
-        return this.selectedGroups.length === this.filters.length ? null : this.selectedGroups;
+      requestCategories() {
+        return this.selectedCategories.length === this.filters.length ? null : this.selectedCategories;
       },
       headingLabel() {
         return vue$1.i18n.t("NotificationModule.base", "<strong>Notification</strong> Overview");
@@ -764,8 +764,8 @@
           this.$refs.list.reload();
         }
       },
-      onFilterChange({ groups, seen }) {
-        this.selectedGroups = groups;
+      onFilterChange({ categories, seen }) {
+        this.selectedCategories = categories;
         this.seen = seen;
         this.$nextTick(() => this.$refs.list.reload());
       },
@@ -793,11 +793,11 @@
   const _hoisted_8$1 = ["innerHTML"];
   const _hoisted_9$1 = ["href", "aria-label", "title"];
   const _hoisted_10$1 = ["innerHTML"];
-  const _hoisted_11 = { class: "panel-body" };
-  const _hoisted_12 = ["aria-label"];
-  const _hoisted_13 = { class: "panel panel-default" };
-  const _hoisted_14 = { class: "panel-heading" };
-  const _hoisted_15 = { class: "panel-body" };
+  const _hoisted_11$1 = { class: "panel-body" };
+  const _hoisted_12$1 = ["aria-label"];
+  const _hoisted_13$1 = { class: "panel panel-default" };
+  const _hoisted_14$1 = { class: "panel-heading" };
+  const _hoisted_15$1 = { class: "panel-body" };
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_NotificationList = vue.resolveComponent("NotificationList");
     const _component_NotificationFilter = vue.resolveComponent("NotificationFilter");
@@ -833,18 +833,18 @@
               ], 8, _hoisted_9$1)
             ])
           ]),
-          vue.createElementVNode("div", _hoisted_11, [
+          vue.createElementVNode("div", _hoisted_11$1, [
             vue.createVNode(_component_NotificationList, {
               ref: "list",
               id: "notification_overview_list",
               initial: $props.initial,
               "page-size": $props.pageSize,
-              groups: $options.requestGroups,
+              categories: $options.requestCategories,
               seen: $data.seen || null,
               "show-more-button": true,
               "empty-text": $options.emptyLabel,
               onLoaded: $options.onLoaded
-            }, null, 8, ["initial", "page-size", "groups", "seen", "empty-text", "onLoaded"])
+            }, null, 8, ["initial", "page-size", "categories", "seen", "empty-text", "onLoaded"])
           ])
         ])
       ]),
@@ -852,8 +852,8 @@
         class: "col-lg-3 layout-sidebar-container",
         "aria-label": $options.sidebarLabel
       }, [
-        vue.createElementVNode("div", _hoisted_13, [
-          vue.createElementVNode("div", _hoisted_14, [
+        vue.createElementVNode("div", _hoisted_13$1, [
+          vue.createElementVNode("div", _hoisted_14$1, [
             vue.createElementVNode(
               "strong",
               null,
@@ -869,24 +869,35 @@
               /* CACHED */
             ))
           ]),
-          vue.createElementVNode("div", _hoisted_15, [
+          vue.createElementVNode("div", _hoisted_15$1, [
             vue.createVNode(_component_NotificationFilter, {
               filters: $props.filters,
-              selected: $data.selectedGroups,
+              selected: $data.selectedCategories,
               seen: $data.seen,
               icons: $props.icons,
               onChange: $options.onFilterChange
             }, null, 8, ["filters", "selected", "seen", "icons", "onChange"])
           ])
         ])
-      ], 8, _hoisted_12)
+      ], 8, _hoisted_12$1)
     ]);
   }
   const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
   const clone = (value) => JSON.parse(JSON.stringify(value));
+  const SPACES_DEBOUNCE_MS = 600;
+  const mergePatch = (target, patch) => {
+    Object.entries(patch.categories || {}).forEach(([categoryId, switches]) => {
+      target.categories = target.categories || {};
+      target.categories[categoryId] = { ...target.categories[categoryId] || {}, ...switches };
+    });
+    if (patch.spaces !== void 0) {
+      target.spaces = patch.spaces;
+    }
+    return target;
+  };
   const _sfc_main = {
     name: "NotificationSettings",
-    i18nCategories: ["NotificationModule.base", "ActivityModule.base", "base"],
+    i18nCategories: ["NotificationModule.base", "base"],
     props: {
       initial: { type: Object, required: true },
       settingsUrl: { type: String, required: true },
@@ -897,32 +908,70 @@
     data() {
       return {
         ...this.stateOf(this.initial),
-        busy: false,
+        expanded: {},
+        saveState: "idle",
+        resetting: false,
         spacesInputId: "notificationsettings-spaces"
       };
     },
     created() {
       this.knownSpaces = this.spacesOf(this.initial);
+      this.saved = this.snapshot();
+      this.inFlight = null;
+      this.pending = null;
+      this.spacesTimer = null;
+    },
+    beforeUnmount() {
+      clearTimeout(this.spacesTimer);
     },
     computed: {
       labels() {
         return {
+          title: vue$1.i18n.t("NotificationModule.base", "Notifications"),
+          intro: vue$1.i18n.t("NotificationModule.base", "Pick a profile for where your notifications reach you. Any change below turns it into “Custom”."),
+          profile: vue$1.i18n.t("NotificationModule.base", "Profile"),
+          categories: vue$1.i18n.t("NotificationModule.base", "Categories"),
+          fromModules: vue$1.i18n.t("NotificationModule.base", "From modules"),
           alwaysOn: vue$1.i18n.t("NotificationModule.base", "Always on"),
-          mode: vue$1.i18n.t("NotificationModule.base", "Mode"),
-          spaces: vue$1.i18n.t("NotificationModule.base", "Receive 'New Content' Notifications for the following spaces"),
-          summary: vue$1.i18n.t("ActivityModule.base", "E-Mail Summaries"),
-          interval: vue$1.i18n.t("ActivityModule.base", "Interval"),
-          intervalHint: vue$1.i18n.t("ActivityModule.base", "You will only receive an e-mail if there is something new."),
-          save: vue$1.i18n.t("base", "Save"),
+          on: vue$1.i18n.t("NotificationModule.base", "on"),
+          off: vue$1.i18n.t("NotificationModule.base", "off"),
+          spaces: vue$1.i18n.t("NotificationModule.base", "From these Spaces"),
+          spacesPlaceholder: vue$1.i18n.t("NotificationModule.base", "Add a Space…"),
+          saving: vue$1.i18n.t("NotificationModule.base", "Saving…"),
           saved: vue$1.i18n.t("base", "Saved"),
+          notSaved: vue$1.i18n.t("NotificationModule.base", "Not saved"),
+          autosave: vue$1.i18n.t("NotificationModule.base", "Changes are saved right away."),
           reset: vue$1.i18n.t("NotificationModule.base", "Reset to defaults"),
           resetConfirm: vue$1.i18n.t("NotificationModule.base", "Do you want to reset your notification settings to the defaults?"),
-          resetAll: vue$1.i18n.t("NotificationModule.base", "Reset for all users"),
+          resetAll: vue$1.i18n.t("NotificationModule.base", "Reset all users"),
           resetAllConfirm: vue$1.i18n.t("NotificationModule.base", "Do you want to reset the settings concerning notifications for all users?")
         };
       },
+      profiles() {
+        return [
+          { id: "everything", title: vue$1.i18n.t("NotificationModule.base", "Everything"), description: vue$1.i18n.t("NotificationModule.base", "Every category on all channels.") },
+          { id: "recommended", title: vue$1.i18n.t("NotificationModule.base", "Recommended"), description: vue$1.i18n.t("NotificationModule.base", "The defaults of this network.") },
+          { id: "important", title: vue$1.i18n.t("NotificationModule.base", "Important only"), description: vue$1.i18n.t("NotificationModule.base", "Only what is addressed to you by e-mail and push.") },
+          { id: "custom", title: vue$1.i18n.t("NotificationModule.base", "Custom"), description: vue$1.i18n.t("NotificationModule.base", "Your own choice below.") }
+        ];
+      },
+      showProfiles() {
+        return this.scope === "user" && this.defaults !== null;
+      },
+      // The profile the current switches equal, else `custom`.
+      profile() {
+        const current = this.switches();
+        const match = ["recommended", "everything", "important"].find((id) => this.categories.every((category) => Object.keys(category.channels).every((channelId) => current[category.id][channelId] === this.profileValue(id, category, channelId))));
+        return match || "custom";
+      },
+      statusLabel() {
+        return { saving: this.labels.saving, saved: this.labels.saved, error: this.labels.notSaved }[this.saveState] || "";
+      },
+      statusIcon() {
+        return { saving: "ti-loader-2 c-notification-settings__spin", saved: "ti-check", error: "ti-alert-circle" }[this.saveState] || "";
+      },
       spacesFilter() {
-        return { key: "spaces", label: this.labels.spaces, multiple: true };
+        return { key: "spaces", label: this.labels.spaces, placeholder: this.labels.spacesPlaceholder, multiple: true };
       }
     },
     methods: {
@@ -932,58 +981,181 @@
         const selected = ((_a = payload.spaces) == null ? void 0 : _a.selected) || [];
         return {
           channels: clone(payload.channels || []),
+          categories: clone(payload.categories || []).map((category) => ({ ...category, channels: category.channels || {} })),
+          defaults: payload.defaults ? clone(payload.defaults) : null,
           spaces: { enabled: ((_b = payload.spaces) == null ? void 0 : _b.enabled) !== false },
-          spaceIds: selected.map((space) => String(space.id)),
-          summary: payload.summary ? clone(payload.summary) : null
+          spaceIds: selected.map((space) => String(space.id))
         };
       },
       applyState(payload) {
         this.knownSpaces = this.spacesOf(payload);
         Object.assign(this, this.stateOf(payload));
+        this.saved = this.snapshot();
       },
       spacesOf(payload) {
         var _a;
         return Object.fromEntries((((_a = payload.spaces) == null ? void 0 : _a.selected) || []).map((space) => [String(space.id), space]));
       },
-      payload() {
-        const data = {
-          channels: this.channels.filter((channel) => !channel.fixed).map((channel) => ({
-            id: channel.id,
-            mode: channel.mode,
-            groups: channel.groups.filter((group) => !group.fixed).map((group) => ({ id: group.id, enabled: !!group.enabled }))
-          }))
-        };
-        if (this.spaces.enabled) {
-          data.spaces = this.spaceIds.map(Number);
+      // `{<category>: {<channel>: bool}}` of the current switches.
+      switches() {
+        return Object.fromEntries(this.categories.map((category) => [category.id, { ...category.channels }]));
+      },
+      snapshot() {
+        return { categories: this.switches(), spaceIds: [...this.spaceIds] };
+      },
+      channelsOf(category) {
+        return this.channels.filter((channel) => Object.prototype.hasOwnProperty.call(category.channels, channel.id));
+      },
+      // What the profile sets the channel of the category to.
+      profileValue(profileId, category, channelId) {
+        var _a, _b;
+        if (category.fixed) {
+          return true;
         }
-        if (this.summary) {
-          data.summary = { interval: Number(this.summary.interval) };
+        switch (profileId) {
+          case "everything":
+            return true;
+          case "recommended":
+            return ((_b = (_a = this.defaults) == null ? void 0 : _a[category.id]) == null ? void 0 : _b[channelId]) !== false;
+          case "important":
+            return channelId === "web";
+          default:
+            return category.channels[channelId];
         }
-        return data;
+      },
+      isExpanded(category) {
+        return !category.fixed && !!this.expanded[category.id];
+      },
+      toggle(category) {
+        if (!category.fixed) {
+          this.expanded[category.id] = !this.expanded[category.id];
+        }
+      },
+      panelId(category) {
+        return `notification-settings-category-${category.id}`;
+      },
+      category(id) {
+        return this.categories.find((category) => category.id === id);
+      },
+      setSwitch(category, channelId, value) {
+        category.channels[channelId] = !!value;
+        this.enqueue({ categories: { [category.id]: { [channelId]: !!value } } });
+      },
+      setSpaces(ids) {
+        this.spaceIds = ids.map(String);
+        clearTimeout(this.spacesTimer);
+        this.spacesTimer = setTimeout(() => {
+          this.spacesTimer = null;
+          this.enqueue({ spaces: this.spaceIds.map(Number) });
+        }, SPACES_DEBOUNCE_MS);
+      },
+      selectProfile(profileId) {
+        if (profileId === "custom" || profileId === this.profile) {
+          return;
+        }
+        const patch = { categories: {} };
+        this.categories.filter((category) => !category.fixed).forEach((category) => {
+          Object.keys(category.channels).forEach((channelId) => {
+            const value = this.profileValue(profileId, category, channelId);
+            category.channels[channelId] = value;
+            patch.categories[category.id] = patch.categories[category.id] || {};
+            patch.categories[category.id][channelId] = profileId === "recommended" ? null : value;
+          });
+        });
+        if (Object.keys(patch.categories).length) {
+          this.enqueue(patch);
+        }
+      },
+      // Arrow keys move the choice within the radio group, as with native radio buttons.
+      onProfileKeydown(event, profileId) {
+        const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+        if (!steps[event.key]) {
+          return;
+        }
+        event.preventDefault();
+        const ids = this.profiles.map((option) => option.id);
+        const next = ids[(ids.indexOf(profileId) + steps[event.key] + ids.length) % ids.length];
+        this.selectProfile(next);
+        this.$nextTick(() => {
+          var _a;
+          return (_a = this.$el.querySelector(`[data-profile="${next}"]`)) == null ? void 0 : _a.focus();
+        });
+      },
+      enqueue(patch) {
+        this.pending = mergePatch(this.pending || {}, patch);
+        this.saveState = "saving";
+        this.flush();
+      },
+      flush() {
+        var _a;
+        if (this.inFlight || !this.pending) {
+          return Promise.resolve();
+        }
+        const patch = this.pending;
+        this.pending = null;
+        (_a = this.$refs.form) == null ? void 0 : _a.clearErrors();
+        this.inFlight = this.request("patch", this.settingsUrl, patch).then((response) => {
+          this.inFlight = null;
+          this.remember(patch, response);
+          if (this.pending) {
+            return this.flush();
+          }
+          this.saveState = "saved";
+          return null;
+        }).catch((response) => {
+          var _a2;
+          this.inFlight = null;
+          this.revert(patch);
+          this.saveState = "error";
+          if (response && response.status === 422) {
+            (_a2 = this.$refs.form) == null ? void 0 : _a2.setErrors(response);
+          } else {
+            vue$1.log.error(response);
+          }
+          return this.pending ? this.flush() : null;
+        });
+        return this.inFlight;
+      },
+      // A saved patch becomes the state failed requests return to; without further changes
+      // waiting, the answer is the state.
+      remember(patch, response) {
+        Object.entries(patch.categories || {}).forEach(([categoryId, switches]) => {
+          Object.keys(switches).forEach((channelId) => {
+            var _a, _b, _c;
+            const answered = (_b = (_a = ((response == null ? void 0 : response.categories) || []).find((category) => category.id === categoryId)) == null ? void 0 : _a.channels) == null ? void 0 : _b[channelId];
+            const value = answered !== void 0 ? answered : (_c = this.category(categoryId)) == null ? void 0 : _c.channels[channelId];
+            this.saved.categories[categoryId] = { ...this.saved.categories[categoryId] || {}, [channelId]: value };
+          });
+        });
+        if (patch.spaces !== void 0) {
+          this.saved.spaceIds = patch.spaces.map(String);
+        }
+        if (!this.pending && !this.spacesTimer && response && Array.isArray(response.categories)) {
+          const expanded = this.expanded;
+          this.applyState(response);
+          this.expanded = expanded;
+        }
+      },
+      // Puts what a failed patch carried back to the last saved state — unless a later change
+      // of the same switch waits to be sent.
+      revert(patch) {
+        var _a;
+        Object.entries(patch.categories || {}).forEach(([categoryId, switches]) => {
+          const category = this.category(categoryId);
+          Object.keys(switches).forEach((channelId) => {
+            var _a2, _b, _c, _d;
+            if (category && ((_c = (_b = (_a2 = this.pending) == null ? void 0 : _a2.categories) == null ? void 0 : _b[categoryId]) == null ? void 0 : _c[channelId]) === void 0) {
+              category.channels[channelId] = ((_d = this.saved.categories[categoryId]) == null ? void 0 : _d[channelId]) ?? category.channels[channelId];
+            }
+          });
+        });
+        if (patch.spaces !== void 0 && ((_a = this.pending) == null ? void 0 : _a.spaces) === void 0 && !this.spacesTimer) {
+          this.spaceIds = [...this.saved.spaceIds];
+        }
       },
       request(method, url, data) {
         const cfg = data === void 0 ? {} : { data: JSON.stringify(data), contentType: "application/json" };
         return vue$1.client[method](url, cfg);
-      },
-      save() {
-        if (this.busy) {
-          return Promise.resolve();
-        }
-        this.busy = true;
-        this.$refs.form.clearErrors();
-        return this.request("patch", this.settingsUrl, this.payload()).then((response) => {
-          this.busy = false;
-          this.applyState(response);
-          vue$1.status("success", this.labels.saved);
-        }).catch((response) => {
-          this.busy = false;
-          if (response && response.status === 422) {
-            this.$refs.form.setErrors(response);
-            this.$refs.form.focusFirstError();
-          } else {
-            vue$1.log.error(response);
-          }
-        });
       },
       reset() {
         return this.confirmAndPost(this.resetUrl, { body: this.labels.resetConfirm }, true);
@@ -992,23 +1164,25 @@
         return this.confirmAndPost(this.resetAllUrl, { body: this.labels.resetAllConfirm }, false);
       },
       confirmAndPost(url, options, replace) {
-        if (this.busy || !url) {
+        if (this.resetting || !url) {
           return Promise.resolve();
         }
         return vue$1.modal.confirm(options).then((confirmed) => {
           if (!confirmed) {
             return null;
           }
-          this.busy = true;
+          this.resetting = true;
+          this.saveState = "saving";
           this.$refs.form.clearErrors();
           return vue$1.client.post(url).then((response) => {
-            this.busy = false;
+            this.resetting = false;
             if (replace) {
               this.applyState(response);
             }
-            vue$1.status("success", this.labels.saved);
+            this.saveState = "saved";
           }).catch((response) => {
-            this.busy = false;
+            this.resetting = false;
+            this.saveState = "error";
             vue$1.log.error(response);
           });
         });
@@ -1041,192 +1215,457 @@
       }
     }
   };
-  const _hoisted_1 = ["data-channel"];
-  const _hoisted_2 = { class: "c-notification-settings__title" };
-  const _hoisted_3 = {
+  const _hoisted_1 = {
     key: 0,
-    class: "c-notification-settings__fixed text-body-secondary"
+    class: "panel panel-default c-notification-settings__card c-notification-settings__intro"
   };
-  const _hoisted_4 = {
+  const _hoisted_2 = { class: "c-notification-settings__head" };
+  const _hoisted_3 = { class: "c-notification-settings__title" };
+  const _hoisted_4 = { class: "c-notification-settings__lead" };
+  const _hoisted_5 = ["aria-label"];
+  const _hoisted_6 = ["aria-checked", "tabindex", "data-profile", "onClick", "onKeydown"];
+  const _hoisted_7 = { class: "c-notification-settings__profile-text" };
+  const _hoisted_8 = { class: "c-notification-settings__profile-title" };
+  const _hoisted_9 = { class: "c-notification-settings__profile-description" };
+  const _hoisted_10 = { class: "c-notification-settings__head c-notification-settings__categories-head" };
+  const _hoisted_11 = { class: "c-notification-settings__subtitle" };
+  const _hoisted_12 = {
     key: 0,
-    class: "c-notification-settings__spaces mb-4"
+    class: "c-notification-settings__divider"
   };
-  const _hoisted_5 = ["for"];
-  const _hoisted_6 = {
+  const _hoisted_13 = ["data-category"];
+  const _hoisted_14 = {
+    class: "c-notification-settings__category-icon",
+    "aria-hidden": "true"
+  };
+  const _hoisted_15 = { class: "c-notification-settings__category-text" };
+  const _hoisted_16 = { class: "c-notification-settings__category-title" };
+  const _hoisted_17 = {
+    key: 0,
+    class: "c-notification-settings__category-description"
+  };
+  const _hoisted_18 = { class: "c-notification-settings__badges" };
+  const _hoisted_19 = ["data-channel"];
+  const _hoisted_20 = { class: "visually-hidden" };
+  const _hoisted_21 = ["title"];
+  const _hoisted_22 = { class: "visually-hidden" };
+  const _hoisted_23 = {
     key: 1,
-    class: "c-notification-settings__summary mb-4"
+    class: "c-notification-settings__category-state",
+    "aria-hidden": "true"
   };
-  const _hoisted_7 = { class: "c-notification-settings__title" };
-  const _hoisted_8 = { class: "c-notification-settings__actions d-flex flex-wrap gap-2" };
-  const _hoisted_9 = ["disabled"];
-  const _hoisted_10 = ["disabled"];
+  const _hoisted_24 = ["id"];
+  const _hoisted_25 = ["aria-label"];
+  const _hoisted_26 = {
+    key: 0,
+    class: "c-notification-settings__spaces"
+  };
+  const _hoisted_27 = ["for"];
+  const _hoisted_28 = { class: "c-notification-settings__footer" };
+  const _hoisted_29 = { class: "c-notification-settings__autosave" };
+  const _hoisted_30 = ["disabled"];
+  const _hoisted_31 = ["disabled"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_SelectField = vue.resolveComponent("SelectField");
     const _component_CheckboxField = vue.resolveComponent("CheckboxField");
     const _component_SpaceImage = vue.resolveComponent("SpaceImage");
     const _component_PickerFilterControl = vue.resolveComponent("PickerFilterControl");
-    const _component_SubmitButton = vue.resolveComponent("SubmitButton");
     const _component_HumHubForm = vue.resolveComponent("HumHubForm");
     return vue.openBlock(), vue.createBlock(_component_HumHubForm, {
       ref: "form",
-      class: "c-notification-settings",
-      "model-name": "NotificationSettings",
-      busy: $data.busy,
-      onSubmit: $options.save
+      class: vue.normalizeClass(["c-notification-settings", `c-notification-settings--${$props.scope}`]),
+      "model-name": "NotificationSettings"
     }, {
       default: vue.withCtx(() => [
-        (vue.openBlock(true), vue.createElementBlock(
-          vue.Fragment,
-          null,
-          vue.renderList(_ctx.channels, (channel) => {
-            return vue.openBlock(), vue.createElementBlock("section", {
-              key: channel.id,
-              class: "c-notification-settings__channel mb-4",
-              "data-channel": channel.id
-            }, [
-              vue.createElementVNode(
-                "h5",
-                _hoisted_2,
-                vue.toDisplayString(channel.title),
-                1
-                /* TEXT */
-              ),
-              channel.fixed ? (vue.openBlock(), vue.createElementBlock(
-                "p",
-                _hoisted_3,
-                vue.toDisplayString($options.labels.alwaysOn),
-                1
-                /* TEXT */
-              )) : (vue.openBlock(), vue.createElementBlock(
-                vue.Fragment,
-                { key: 1 },
-                [
-                  vue.createVNode(_component_SelectField, {
-                    modelValue: channel.mode,
-                    "onUpdate:modelValue": ($event) => channel.mode = $event,
-                    attribute: `${channel.id}.mode`,
-                    label: $options.labels.mode,
-                    options: channel.modes
-                  }, null, 8, ["modelValue", "onUpdate:modelValue", "attribute", "label", "options"]),
-                  (vue.openBlock(true), vue.createElementBlock(
-                    vue.Fragment,
-                    null,
-                    vue.renderList(channel.groups, (group) => {
-                      return vue.openBlock(), vue.createBlock(_component_CheckboxField, {
-                        key: group.id,
-                        modelValue: group.enabled,
-                        "onUpdate:modelValue": ($event) => group.enabled = $event,
-                        attribute: `${channel.id}.group.${group.id}`,
-                        label: group.title,
-                        hint: group.description,
-                        disabled: group.fixed || channel.mode === "off"
-                      }, null, 8, ["modelValue", "onUpdate:modelValue", "attribute", "label", "hint", "disabled"]);
-                    }),
-                    128
-                    /* KEYED_FRAGMENT */
-                  ))
-                ],
-                64
-                /* STABLE_FRAGMENT */
-              ))
-            ], 8, _hoisted_1);
-          }),
-          128
-          /* KEYED_FRAGMENT */
-        )),
-        _ctx.spaces.enabled ? (vue.openBlock(), vue.createElementBlock("section", _hoisted_4, [
-          vue.createElementVNode("label", {
-            for: $data.spacesInputId,
-            class: "form-label"
-          }, vue.toDisplayString($options.labels.spaces), 9, _hoisted_5),
-          vue.createVNode(_component_PickerFilterControl, {
-            modelValue: _ctx.spaceIds,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.spaceIds = $event),
-            filter: $options.spacesFilter,
-            "input-id": $data.spacesInputId,
-            multiple: true,
-            search: $options.searchSpaces,
-            resolve: $options.resolveSpaces,
-            "item-label": $options.spaceLabel,
-            icon: "ti-users-group",
-            block: "c-space-filter"
-          }, {
-            option: vue.withCtx(({ item }) => [
-              vue.createVNode(
-                _component_SpaceImage,
-                vue.mergeProps($options.spaceImageProps(item), {
-                  width: 24,
-                  link: false
-                }),
-                null,
-                16
-                /* FULL_PROPS */
-              )
-            ]),
-            chip: vue.withCtx(({ item }) => [
-              vue.createVNode(
-                _component_SpaceImage,
-                vue.mergeProps($options.spaceImageProps(item), {
-                  width: 18,
-                  link: false
-                }),
-                null,
-                16
-                /* FULL_PROPS */
-              )
-            ]),
-            _: 1
-            /* STABLE */
-          }, 8, ["modelValue", "filter", "input-id", "search", "resolve", "item-label"])
-        ])) : vue.createCommentVNode("v-if", true),
-        _ctx.summary ? (vue.openBlock(), vue.createElementBlock("section", _hoisted_6, [
+        $options.showProfiles ? (vue.openBlock(), vue.createElementBlock("section", _hoisted_1, [
+          vue.createElementVNode("div", _hoisted_2, [
+            vue.createElementVNode(
+              "h2",
+              _hoisted_3,
+              vue.toDisplayString($options.labels.title),
+              1
+              /* TEXT */
+            ),
+            vue.createElementVNode(
+              "span",
+              {
+                class: vue.normalizeClass(["c-notification-settings__status", `is-${$data.saveState}`]),
+                role: "status",
+                "aria-live": "polite"
+              },
+              [
+                $options.statusLabel ? (vue.openBlock(), vue.createElementBlock(
+                  vue.Fragment,
+                  { key: 0 },
+                  [
+                    vue.createElementVNode(
+                      "i",
+                      {
+                        class: vue.normalizeClass(["ti", $options.statusIcon]),
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      2
+                      /* CLASS */
+                    ),
+                    vue.createTextVNode(
+                      vue.toDisplayString($options.statusLabel),
+                      1
+                      /* TEXT */
+                    )
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                )) : vue.createCommentVNode("v-if", true)
+              ],
+              2
+              /* CLASS */
+            )
+          ]),
           vue.createElementVNode(
-            "h5",
-            _hoisted_7,
-            vue.toDisplayString($options.labels.summary),
+            "p",
+            _hoisted_4,
+            vue.toDisplayString($options.labels.intro),
             1
             /* TEXT */
           ),
-          vue.createVNode(_component_SelectField, {
-            modelValue: _ctx.summary.interval,
-            "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => _ctx.summary.interval = $event),
-            attribute: "summary.interval",
-            label: $options.labels.interval,
-            hint: $options.labels.intervalHint,
-            options: _ctx.summary.intervals
-          }, null, 8, ["modelValue", "label", "hint", "options"])
+          vue.createElementVNode("div", {
+            class: "c-notification-settings__profiles",
+            role: "radiogroup",
+            "aria-label": $options.labels.profile
+          }, [
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($options.profiles, (option) => {
+                return vue.openBlock(), vue.createElementBlock("button", {
+                  key: option.id,
+                  type: "button",
+                  role: "radio",
+                  class: vue.normalizeClass(["c-notification-settings__profile", { "is-selected": $options.profile === option.id }]),
+                  "aria-checked": $options.profile === option.id ? "true" : "false",
+                  tabindex: $options.profile === option.id ? 0 : -1,
+                  "data-profile": option.id,
+                  onClick: ($event) => $options.selectProfile(option.id),
+                  onKeydown: ($event) => $options.onProfileKeydown($event, option.id)
+                }, [
+                  _cache[2] || (_cache[2] = vue.createElementVNode(
+                    "span",
+                    {
+                      class: "c-notification-settings__radio",
+                      "aria-hidden": "true"
+                    },
+                    null,
+                    -1
+                    /* CACHED */
+                  )),
+                  vue.createElementVNode("span", _hoisted_7, [
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_8,
+                      vue.toDisplayString(option.title),
+                      1
+                      /* TEXT */
+                    ),
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_9,
+                      vue.toDisplayString(option.description),
+                      1
+                      /* TEXT */
+                    )
+                  ])
+                ], 42, _hoisted_6);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ], 8, _hoisted_5)
         ])) : vue.createCommentVNode("v-if", true),
-        vue.createElementVNode("div", _hoisted_8, [
-          vue.createVNode(_component_SubmitButton, { class: "btn btn-primary" }, {
-            default: vue.withCtx(() => [
-              vue.createTextVNode(
-                vue.toDisplayString($options.labels.save),
+        vue.createElementVNode(
+          "section",
+          {
+            class: vue.normalizeClass(["c-notification-settings__card c-notification-settings__categories", { "panel panel-default": $options.showProfiles }])
+          },
+          [
+            vue.createElementVNode("div", _hoisted_10, [
+              vue.createElementVNode(
+                "h3",
+                _hoisted_11,
+                vue.toDisplayString($options.labels.categories),
                 1
                 /* TEXT */
-              )
+              ),
+              !$options.showProfiles ? (vue.openBlock(), vue.createElementBlock(
+                "span",
+                {
+                  key: 0,
+                  class: vue.normalizeClass(["c-notification-settings__status", `is-${$data.saveState}`]),
+                  role: "status",
+                  "aria-live": "polite"
+                },
+                [
+                  $options.statusLabel ? (vue.openBlock(), vue.createElementBlock(
+                    vue.Fragment,
+                    { key: 0 },
+                    [
+                      vue.createElementVNode(
+                        "i",
+                        {
+                          class: vue.normalizeClass(["ti", $options.statusIcon]),
+                          "aria-hidden": "true"
+                        },
+                        null,
+                        2
+                        /* CLASS */
+                      ),
+                      vue.createTextVNode(
+                        vue.toDisplayString($options.statusLabel),
+                        1
+                        /* TEXT */
+                      )
+                    ],
+                    64
+                    /* STABLE_FRAGMENT */
+                  )) : vue.createCommentVNode("v-if", true)
+                ],
+                2
+                /* CLASS */
+              )) : vue.createCommentVNode("v-if", true)
             ]),
-            _: 1
-            /* STABLE */
-          }),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList(_ctx.categories, (category, index) => {
+                return vue.openBlock(), vue.createElementBlock(
+                  vue.Fragment,
+                  {
+                    key: category.id
+                  },
+                  [
+                    category.module && (index === 0 || !_ctx.categories[index - 1].module) ? (vue.openBlock(), vue.createElementBlock(
+                      "h4",
+                      _hoisted_12,
+                      vue.toDisplayString($options.labels.fromModules),
+                      1
+                      /* TEXT */
+                    )) : vue.createCommentVNode("v-if", true),
+                    vue.createElementVNode("div", {
+                      class: vue.normalizeClass(["c-notification-settings__category", { "is-expanded": $options.isExpanded(category), "is-fixed": category.fixed }]),
+                      "data-category": category.id
+                    }, [
+                      (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(category.fixed ? "div" : "button"), {
+                        type: category.fixed ? null : "button",
+                        class: "c-notification-settings__category-head",
+                        "aria-expanded": category.fixed ? null : $options.isExpanded(category) ? "true" : "false",
+                        "aria-controls": category.fixed ? null : $options.panelId(category),
+                        onClick: ($event) => $options.toggle(category)
+                      }, {
+                        default: vue.withCtx(() => [
+                          vue.createElementVNode("span", _hoisted_14, [
+                            vue.createElementVNode(
+                              "i",
+                              {
+                                class: vue.normalizeClass(["ti", category.icon])
+                              },
+                              null,
+                              2
+                              /* CLASS */
+                            )
+                          ]),
+                          vue.createElementVNode("span", _hoisted_15, [
+                            vue.createElementVNode(
+                              "span",
+                              _hoisted_16,
+                              vue.toDisplayString(category.title),
+                              1
+                              /* TEXT */
+                            ),
+                            category.description ? (vue.openBlock(), vue.createElementBlock(
+                              "span",
+                              _hoisted_17,
+                              vue.toDisplayString(category.description),
+                              1
+                              /* TEXT */
+                            )) : vue.createCommentVNode("v-if", true)
+                          ]),
+                          vue.createElementVNode("span", _hoisted_18, [
+                            (vue.openBlock(true), vue.createElementBlock(
+                              vue.Fragment,
+                              null,
+                              vue.renderList($options.channelsOf(category), (channel) => {
+                                return vue.openBlock(), vue.createElementBlock("span", {
+                                  key: channel.id,
+                                  class: vue.normalizeClass(["c-notification-settings__badge", { "is-on": category.channels[channel.id] }]),
+                                  "data-channel": channel.id
+                                }, [
+                                  vue.createTextVNode(
+                                    vue.toDisplayString(channel.title),
+                                    1
+                                    /* TEXT */
+                                  ),
+                                  vue.createElementVNode(
+                                    "span",
+                                    _hoisted_20,
+                                    ": " + vue.toDisplayString(category.channels[channel.id] ? $options.labels.on : $options.labels.off),
+                                    1
+                                    /* TEXT */
+                                  )
+                                ], 10, _hoisted_19);
+                              }),
+                              128
+                              /* KEYED_FRAGMENT */
+                            ))
+                          ]),
+                          category.fixed ? (vue.openBlock(), vue.createElementBlock("span", {
+                            key: 0,
+                            class: "c-notification-settings__category-state",
+                            title: $options.labels.alwaysOn
+                          }, [
+                            _cache[3] || (_cache[3] = vue.createElementVNode(
+                              "i",
+                              {
+                                class: "ti ti-lock",
+                                "aria-hidden": "true"
+                              },
+                              null,
+                              -1
+                              /* CACHED */
+                            )),
+                            vue.createElementVNode(
+                              "span",
+                              _hoisted_22,
+                              vue.toDisplayString($options.labels.alwaysOn),
+                              1
+                              /* TEXT */
+                            )
+                          ], 8, _hoisted_21)) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_23, [
+                            vue.createElementVNode(
+                              "i",
+                              {
+                                class: vue.normalizeClass(["ti", $options.isExpanded(category) ? "ti-chevron-up" : "ti-chevron-down"])
+                              },
+                              null,
+                              2
+                              /* CLASS */
+                            )
+                          ]))
+                        ]),
+                        _: 2
+                        /* DYNAMIC */
+                      }, 1032, ["type", "aria-expanded", "aria-controls", "onClick"])),
+                      !category.fixed && $options.isExpanded(category) ? (vue.openBlock(), vue.createElementBlock("div", {
+                        key: 0,
+                        id: $options.panelId(category),
+                        class: "c-notification-settings__category-body"
+                      }, [
+                        vue.createElementVNode("div", {
+                          class: "c-notification-settings__channels",
+                          role: "group",
+                          "aria-label": category.title
+                        }, [
+                          (vue.openBlock(true), vue.createElementBlock(
+                            vue.Fragment,
+                            null,
+                            vue.renderList($options.channelsOf(category), (channel) => {
+                              return vue.openBlock(), vue.createBlock(_component_CheckboxField, {
+                                key: channel.id,
+                                "model-value": category.channels[channel.id],
+                                attribute: `categories.${category.id}.${channel.id}`,
+                                label: channel.title,
+                                "onUpdate:modelValue": ($event) => $options.setSwitch(category, channel.id, $event)
+                              }, null, 8, ["model-value", "attribute", "label", "onUpdate:modelValue"]);
+                            }),
+                            128
+                            /* KEYED_FRAGMENT */
+                          ))
+                        ], 8, _hoisted_25),
+                        category.id === "content" && _ctx.spaces.enabled ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_26, [
+                          vue.createElementVNode("label", {
+                            for: $data.spacesInputId,
+                            class: "form-label c-notification-settings__spaces-label"
+                          }, vue.toDisplayString($options.labels.spaces), 9, _hoisted_27),
+                          vue.createVNode(_component_PickerFilterControl, {
+                            "model-value": _ctx.spaceIds,
+                            filter: $options.spacesFilter,
+                            "input-id": $data.spacesInputId,
+                            multiple: true,
+                            "keep-placeholder": "",
+                            search: $options.searchSpaces,
+                            resolve: $options.resolveSpaces,
+                            "item-label": $options.spaceLabel,
+                            icon: "ti-users-group",
+                            block: "c-space-filter",
+                            "onUpdate:modelValue": $options.setSpaces
+                          }, {
+                            option: vue.withCtx(({ item }) => [
+                              vue.createVNode(
+                                _component_SpaceImage,
+                                vue.mergeProps({ ref_for: true }, $options.spaceImageProps(item), {
+                                  width: 24,
+                                  link: false
+                                }),
+                                null,
+                                16
+                                /* FULL_PROPS */
+                              )
+                            ]),
+                            chip: vue.withCtx(({ item }) => [
+                              vue.createVNode(
+                                _component_SpaceImage,
+                                vue.mergeProps({ ref_for: true }, $options.spaceImageProps(item), {
+                                  width: 18,
+                                  link: false
+                                }),
+                                null,
+                                16
+                                /* FULL_PROPS */
+                              )
+                            ]),
+                            _: 1
+                            /* STABLE */
+                          }, 8, ["model-value", "filter", "input-id", "search", "resolve", "item-label", "onUpdate:modelValue"])
+                        ])) : vue.createCommentVNode("v-if", true)
+                      ], 8, _hoisted_24)) : vue.createCommentVNode("v-if", true)
+                    ], 10, _hoisted_13)
+                  ],
+                  64
+                  /* STABLE_FRAGMENT */
+                );
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ],
+          2
+          /* CLASS */
+        ),
+        vue.createElementVNode("div", _hoisted_28, [
+          vue.createElementVNode(
+            "span",
+            _hoisted_29,
+            vue.toDisplayString($options.labels.autosave),
+            1
+            /* TEXT */
+          ),
           $props.scope === "user" && $props.resetUrl ? (vue.openBlock(), vue.createElementBlock("button", {
             key: 0,
             type: "button",
-            class: "btn btn-light ms-auto c-notification-settings__reset",
-            disabled: $data.busy,
-            onClick: _cache[2] || (_cache[2] = (...args) => $options.reset && $options.reset(...args))
-          }, vue.toDisplayString($options.labels.reset), 9, _hoisted_9)) : vue.createCommentVNode("v-if", true),
+            class: "btn btn-light c-notification-settings__reset",
+            disabled: $data.resetting,
+            onClick: _cache[0] || (_cache[0] = (...args) => $options.reset && $options.reset(...args))
+          }, vue.toDisplayString($options.labels.reset), 9, _hoisted_30)) : vue.createCommentVNode("v-if", true),
           $props.scope === "global" && $props.resetAllUrl ? (vue.openBlock(), vue.createElementBlock("button", {
             key: 1,
             type: "button",
-            class: "btn btn-danger ms-auto c-notification-settings__reset-all",
-            disabled: $data.busy,
-            onClick: _cache[3] || (_cache[3] = (...args) => $options.resetAll && $options.resetAll(...args))
-          }, vue.toDisplayString($options.labels.resetAll), 9, _hoisted_10)) : vue.createCommentVNode("v-if", true)
+            class: "btn btn-danger c-notification-settings__reset-all",
+            disabled: $data.resetting,
+            onClick: _cache[1] || (_cache[1] = (...args) => $options.resetAll && $options.resetAll(...args))
+          }, vue.toDisplayString($options.labels.resetAll), 9, _hoisted_31)) : vue.createCommentVNode("v-if", true)
         ])
       ]),
       _: 1
       /* STABLE */
-    }, 8, ["busy", "onSubmit"]);
+    }, 8, ["class"]);
   }
   const C2 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("NotificationMenu", C0);

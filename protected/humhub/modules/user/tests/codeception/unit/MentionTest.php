@@ -35,7 +35,7 @@ class MentionTest extends HumHubDbTestCase
 
         $notification = NotificationManager::load(Notification::findOne(['class' => MentionedNotification::class, 'user_id' => 1]));
         $this->assertStringContainsString('mentioned you in post', $notification->asWeb());
-        $this->assertStringContainsString('just mentioned you in post "', $notification->getMailSubject());
+        $this->assertStringContainsString('just mentioned you in post "', $notification->asMailSubject());
         $this->assertSame($post->content->getUrl(), $notification->getUrl());
     }
 
@@ -94,11 +94,11 @@ class MentionTest extends HumHubDbTestCase
         $this->assertSame(1, (int)$record->listed);
 
         $notification = NotificationManager::load($record);
-        $mailRecord = $notification->getMailContentRecord();
+        $mailRecord = $notification->getPreviewRecord();
         $this->assertInstanceOf(Comment::class, $mailRecord);
         $this->assertSame((int)$comment->id, (int)$mailRecord->id);
         $this->assertSame($comment->getUrl(), $notification->getUrl());
         $this->assertStringContainsString('mentioned you in comment', $notification->asWeb());
-        $this->assertStringContainsString('just mentioned you in comment "Hi', $notification->getMailSubject());
+        $this->assertStringContainsString('just mentioned you in comment "Hi', $notification->asMailSubject());
     }
 }

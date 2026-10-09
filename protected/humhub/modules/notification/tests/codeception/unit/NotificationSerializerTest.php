@@ -34,7 +34,7 @@ class NotificationSerializerTest extends HumHubDbTestCase
     public function testSerializesTheEntryDataAroundTheServerRenderedSentence()
     {
         // post 1: on the admin's profile, not in a space
-        NotificationManager::dispatch(TestNotification::class, [1], Post::findOne(['id' => 1]), User::findOne(['id' => 2]));
+        TestNotification::send([1], Post::findOne(['id' => 1]), User::findOne(['id' => 2]));
         $record = $this->latest(TestNotification::class);
         $notification = NotificationManager::load($record);
 
@@ -68,7 +68,7 @@ class NotificationSerializerTest extends HumHubDbTestCase
     public function testSerializesTheSpaceOfASpaceBoundNotification()
     {
         // post 10: in Space 2
-        NotificationManager::dispatch(TestContentNotification::class, [1], Post::findOne(['id' => 10]));
+        TestContentNotification::send([1], Post::findOne(['id' => 10]));
         $result = NotificationSerializer::notification(NotificationManager::load($this->latest(TestContentNotification::class)));
 
         $this->assertSame('Space 2', $result['space']['name']);
@@ -82,7 +82,7 @@ class NotificationSerializerTest extends HumHubDbTestCase
 
     public function testHighPriority()
     {
-        NotificationManager::dispatch(TestHighPriorityNotification::class, [1]);
+        TestHighPriorityNotification::send([1]);
 
         $result = NotificationSerializer::notification(NotificationManager::load($this->latest(TestHighPriorityNotification::class)));
 
@@ -93,8 +93,8 @@ class NotificationSerializerTest extends HumHubDbTestCase
     {
         // post 2: public post on the admin's profile
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 2]));
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 3]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 2]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 3]));
 
         $newest = $this->latest(TestGroupedNotification::class);
         $result = $this->serializeGroup((int)$newest->grouping_key);
@@ -116,7 +116,7 @@ class NotificationSerializerTest extends HumHubDbTestCase
 
     public function testSeenNotificationIsNotNew()
     {
-        NotificationManager::dispatch(TestNotification::class, [1]);
+        TestNotification::send([1]);
         $record = $this->latest(TestNotification::class);
         $record->updateAttributes(['seen_at' => date('Y-m-d H:i:s')]);
 

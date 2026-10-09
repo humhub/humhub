@@ -10,6 +10,7 @@ namespace humhub\tests\codeception\api;
 
 use ApiTester;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\services\NotificationSettingsService;
 use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
@@ -40,19 +41,21 @@ class NotificationSettingsApiCest
         $I->sendPatch($url, json_encode($data));
     }
 
-    private function channel(ApiTester $I, string $id): array
+    private function category(ApiTester $I, string $id): array
     {
-        return $I->grabDataFromResponseByJsonPath('$.channels[?(@.id == "' . $id . '")]')[0];
+        $categories = $I->grabDataFromResponseByJsonPath('$.categories[?(@.id == "' . $id . '")]');
+        Assert::assertNotEmpty($categories, 'No category ' . $id);
+
+        return $categories[0];
     }
 
-    private function group(array $channel, string $id): array
+    /**
+     * Whether the user's comments and likes reach them by e-mail - the switch the tests change.
+     */
+    private function socialByMail(int $userId): bool
     {
-        foreach ($channel['groups'] as $group) {
-            if ($group['id'] === $id) {
-                return $group;
-            }
-        }
-        Assert::fail('No group ' . $id);
+        return (new NotificationSettingsService(User::findOne(['id' => $userId])))
+            ->isCategoryEnabled(Yii::$app->notification->getTarget('email'), NotificationCategory::social());
     }
 
     public function testReadsTheCallersSettings(ApiTester $I)
@@ -64,20 +67,19 @@ class NotificationSettingsApiCest
 
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        Assert::assertSame(['channels', 'spaces', 'summary'], array_keys(json_decode($I->grabResponse(), true)));
-        Assert::assertSame('web', $I->grabDataFromResponseByJsonPath('$.channels[0].id')[0]);
-        Assert::assertTrue($I->grabDataFromResponseByJsonPath('$.channels[0].fixed')[0]);
+        Assert::assertSame(['scope', 'channels', 'categories', 'defaults', 'spaces'], array_keys(json_decode($I->grabResponse(), true)));
+        Assert::assertSame('user', $I->grabDataFromResponseByJsonPath('$.scope')[0]);
+        Assert::assertSame(['web', 'email'], $I->grabDataFromResponseByJsonPath('$.channels[*].id'));
 
-        $email = $this->channel($I, 'email');
-        Assert::assertSame(['id', 'title', 'fixed', 'mode', 'modes', 'groups'], array_keys($email));
-        Assert::assertSame('adaptive', $email['mode']);
-        Assert::assertSame(['adaptive', 'off'], array_column($email['modes'], 'value'));
-        Assert::assertSame(['id', 'title', 'description', 'enabled', 'fixed'], array_keys($email['groups'][0]));
-        Assert::assertTrue($this->group($email, 'direct')['fixed']);
-        Assert::assertNotContains('admin', array_column($email['groups'], 'id'), 'a user without administrative permissions has no admin group');
+        $direct = $this->category($I, 'direct');
+        Assert::assertSame(['id', 'title', 'description', 'icon', 'module', 'fixed', 'channels'], array_keys($direct));
+        Assert::assertTrue($direct['fixed']);
+        Assert::assertSame(['web' => true, 'email' => true], $direct['channels']);
+        Assert::assertSame(['web' => true, 'email' => false], $this->category($I, 'followers')['channels']);
+        Assert::assertNotContains('admin', $I->grabDataFromResponseByJsonPath('$.categories[*].id'), 'a user without administrative permissions has no admin category');
+        Assert::assertSame(['web' => true, 'email' => true], $I->grabDataFromResponseByJsonPath('$.defaults.social')[0]);
 
         Assert::assertSame(['selected', 'enabled'], array_keys($I->grabDataFromResponseByJsonPath('$.spaces')[0]));
-        Assert::assertSame(['interval', 'intervals'], array_keys($I->grabDataFromResponseByJsonPath('$.summary')[0]));
     }
 
     public function testUpdatesTheCallersSettings(ApiTester $I)
@@ -88,54 +90,51 @@ class NotificationSettingsApiCest
         $this->withCsrf($I);
 
         $this->sendJsonPatch($I, 'notification/settings', [
-            'channels' => [['id' => 'email', 'mode' => 'off', 'groups' => [['id' => 'social', 'enabled' => false]]]],
+            'categories' => ['social' => ['email' => false, 'web' => false]],
             'spaces' => [$space->id],
-            'summary' => ['interval' => 1],
         ]);
 
         $I->seeResponseCodeIs(200);
-        $email = $this->channel($I, 'email');
-        Assert::assertSame('off', $email['mode']);
-        Assert::assertFalse($this->group($email, 'social')['enabled']);
-        Assert::assertTrue($this->group($email, 'content')['enabled']);
+        Assert::assertSame(['web' => false, 'email' => false], $this->category($I, 'social')['channels']);
+        Assert::assertSame(['web' => true, 'email' => true], $this->category($I, 'content')['channels']);
         Assert::assertSame([$space->id], $I->grabDataFromResponseByJsonPath('$.spaces.selected[*].id'));
-        Assert::assertSame(1, $I->grabDataFromResponseByJsonPath('$.summary.interval')[0]);
 
         $I->sendGet('notification/settings');
-        Assert::assertSame('off', $this->channel($I, 'email')['mode'], 'the change is stored');
+        Assert::assertSame(['web' => false, 'email' => false], $this->category($I, 'social')['channels'], 'the change is stored');
 
         // PATCH is the update verb
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPut('notification/settings', json_encode(['channels' => [['id' => 'email', 'mode' => 'adaptive']]]));
+        $I->sendPut('notification/settings', json_encode(['categories' => ['social' => ['email' => true]]]));
         // no URL rule for PUT: not found, like any other verb a path does not take
         $I->seeResponseCodeIs(404);
-        Assert::assertSame('off', (new NotificationSettingsService(User::findOne(['id' => 2])))->getMode(Yii::$app->notification->getTarget('email')));
+        Assert::assertFalse($this->socialByMail(2));
         Assert::assertTrue(NotificationSpaceService::isTouchedSettings(User::findOne(['id' => 2])));
     }
 
     public function testRejectsInvalidValues(ApiTester $I)
     {
-        $I->wantTo('be refused an unknown mode, switching off the direct group and an unknown group');
+        $I->wantTo('be refused switching off the direct category, an unknown category and a channel the category has not');
         $I->amLoggedInAs(2);
         $this->withCsrf($I);
 
-        $this->sendJsonPatch($I, 'notification/settings', ['channels' => [['id' => 'email', 'mode' => 'sometimes']]]);
+        $this->sendJsonPatch($I, 'notification/settings', ['categories' => ['direct' => ['email' => false]]]);
         $I->seeResponseCodeIs(422);
-        Assert::assertArrayHasKey('email.mode', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
+        Assert::assertArrayHasKey('categories.direct.email', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
 
-        $this->sendJsonPatch($I, 'notification/settings', ['channels' => [['id' => 'email', 'groups' => [['id' => 'direct', 'enabled' => false]]]]]);
+        $this->sendJsonPatch($I, 'notification/settings', ['categories' => ['unknown' => ['email' => false]]]);
         $I->seeResponseCodeIs(422);
-        Assert::assertArrayHasKey('email.group.direct', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
+        Assert::assertArrayHasKey('categories.unknown', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
 
-        $this->sendJsonPatch($I, 'notification/settings', ['channels' => [['id' => 'email', 'groups' => [['id' => 'unknown', 'enabled' => false]]]]]);
+        // not active without a push provider
+        $this->sendJsonPatch($I, 'notification/settings', ['categories' => ['social' => ['email' => false, 'mobile' => false]]]);
         $I->seeResponseCodeIs(422);
-        Assert::assertArrayHasKey('email.group.unknown', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
+        Assert::assertArrayHasKey('categories.social.mobile', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
 
-        // the admin group is not offered to this user
-        $this->sendJsonPatch($I, 'notification/settings', ['channels' => [['id' => 'email', 'groups' => [['id' => 'admin', 'enabled' => false]]]]]);
+        // the admin category is not offered to this user
+        $this->sendJsonPatch($I, 'notification/settings', ['categories' => ['admin' => ['email' => false]]]);
         $I->seeResponseCodeIs(422);
 
-        Assert::assertSame('adaptive', (new NotificationSettingsService(User::findOne(['id' => 2])))->getMode(Yii::$app->notification->getTarget('email')));
+        Assert::assertTrue($this->socialByMail(2), 'nothing is written');
     }
 
     public function testGlobalScopeNeedsManageSettings(ApiTester $I)
@@ -147,9 +146,9 @@ class NotificationSettingsApiCest
         $I->sendGet('notification/settings?scope=global');
         $I->seeResponseCodeIs(403);
 
-        $this->sendJsonPatch($I, 'notification/settings?scope=global', ['channels' => [['id' => 'email', 'mode' => 'off']]]);
+        $this->sendJsonPatch($I, 'notification/settings?scope=global', ['categories' => ['social' => ['email' => false]]]);
         $I->seeResponseCodeIs(403);
-        Assert::assertNull(Yii::$app->getModule('notification')->settings->get('email.mode'));
+        Assert::assertNull(Yii::$app->getModule('notification')->settings->get('email.category.social'));
     }
 
     public function testReadsAndUpdatesTheGlobalDefaultsAsAdmin(ApiTester $I)
@@ -161,20 +160,22 @@ class NotificationSettingsApiCest
 
         $I->sendGet('notification/settings?scope=global');
         $I->seeResponseCodeIs(200);
-        Assert::assertContains('admin', array_column($this->channel($I, 'email')['groups'], 'id'));
+        Assert::assertSame('global', $I->grabDataFromResponseByJsonPath('$.scope')[0]);
+        Assert::assertContains('admin', $I->grabDataFromResponseByJsonPath('$.categories[*].id'));
+        Assert::assertNull(json_decode($I->grabResponse(), true)['defaults']);
 
         $this->sendJsonPatch($I, 'notification/settings?scope=global', [
-            'channels' => [['id' => 'email', 'mode' => 'off', 'groups' => [['id' => 'admin', 'enabled' => false]]]],
+            'categories' => ['admin' => ['email' => false]],
             'spaces' => [$space->id],
         ]);
 
         $I->seeResponseCodeIs(200);
-        Assert::assertSame('off', $this->channel($I, 'email')['mode']);
+        Assert::assertFalse($this->category($I, 'admin')['channels']['email']);
         Assert::assertSame([$space->id], $I->grabDataFromResponseByJsonPath('$.spaces.selected[*].id'));
-        Assert::assertSame('off', Yii::$app->getModule('notification')->settings->get('email.mode'));
+        Assert::assertEquals('0', Yii::$app->getModule('notification')->settings->get('email.category.admin'));
         Assert::assertSame([$space->guid], Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces'));
         // the administrator's own settings are untouched
-        Assert::assertNull(Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 1]))->get('email.mode'));
+        Assert::assertNull(Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 1]))->get('email.category.admin'));
     }
 
     public function testResetsTheCallersSettings(ApiTester $I)
@@ -182,7 +183,7 @@ class NotificationSettingsApiCest
         $I->wantTo('reset my notification settings');
         $user = User::findOne(['id' => 2]);
         $service = new NotificationSettingsService($user);
-        Assert::assertSame([], $service->fromArray(['channels' => [['id' => 'email', 'mode' => 'off']], 'spaces' => []]));
+        Assert::assertSame([], $service->fromArray(['categories' => ['social' => ['email' => false]], 'spaces' => []]));
         Assert::assertTrue(NotificationSpaceService::isTouchedSettings($user));
 
         $I->amLoggedInAs(2);
@@ -190,7 +191,7 @@ class NotificationSettingsApiCest
         $I->sendPost('notification/settings/reset');
 
         $I->seeResponseCodeIs(200);
-        Assert::assertSame('adaptive', $this->channel($I, 'email')['mode']);
+        Assert::assertTrue($this->category($I, 'social')['channels']['email']);
         Yii::$app->getModule('notification')->settings->flushContentContainer();
         Assert::assertFalse(NotificationSpaceService::isTouchedSettings($user));
     }
@@ -198,20 +199,20 @@ class NotificationSettingsApiCest
     public function testResetAllNeedsManageUsers(ApiTester $I)
     {
         $I->wantTo('be refused resetting every user as a normal user');
-        Assert::assertSame([], (new NotificationSettingsService(User::findOne(['id' => 3])))->fromArray(['channels' => [['id' => 'email', 'mode' => 'off']]]));
+        Assert::assertSame([], (new NotificationSettingsService(User::findOne(['id' => 3])))->fromArray(['categories' => ['social' => ['email' => false]]]));
 
         $I->amLoggedInAs(2);
         $this->withCsrf($I);
         $I->sendPost('notification/settings/reset-all');
 
         $I->seeResponseCodeIs(403);
-        Assert::assertSame('off', (new NotificationSettingsService(User::findOne(['id' => 3])))->getMode(Yii::$app->notification->getTarget('email')));
+        Assert::assertFalse($this->socialByMail(3));
     }
 
     public function testResetAllNeedsManageSettingsToo(ApiTester $I)
     {
         $I->wantTo('be refused resetting every user with ManageUsers alone');
-        Assert::assertSame([], (new NotificationSettingsService(User::findOne(['id' => 3])))->fromArray(['channels' => [['id' => 'email', 'mode' => 'off']]]));
+        Assert::assertSame([], (new NotificationSettingsService(User::findOne(['id' => 3])))->fromArray(['categories' => ['social' => ['email' => false]]]));
         $groupId = (int)GroupUser::find()->select('group_id')->where(['user_id' => 2])->scalar();
         $permission = new GroupPermission([
             'permission_id' => (new ManageUsers())->id,
@@ -228,7 +229,7 @@ class NotificationSettingsApiCest
             $I->sendPost('notification/settings/reset-all');
 
             $I->seeResponseCodeIs(403);
-            Assert::assertSame('off', (new NotificationSettingsService(User::findOne(['id' => 3])))->getMode(Yii::$app->notification->getTarget('email')));
+            Assert::assertFalse($this->socialByMail(3));
         } finally {
             $permission->delete();
         }
@@ -237,7 +238,7 @@ class NotificationSettingsApiCest
     public function testResetsEveryUserAsAdmin(ApiTester $I)
     {
         $I->wantTo('reset every user\'s notification settings as an administrator');
-        Assert::assertSame([], (new NotificationSettingsService(User::findOne(['id' => 3])))->fromArray(['channels' => [['id' => 'email', 'mode' => 'off']]]));
+        Assert::assertSame([], (new NotificationSettingsService(User::findOne(['id' => 3])))->fromArray(['categories' => ['social' => ['email' => false]]]));
 
         $I->amLoggedInAs(1);
         $this->withCsrf($I);
@@ -246,7 +247,7 @@ class NotificationSettingsApiCest
         $I->seeResponseCodeIs(200);
         Yii::$app->getModule('notification')->settings->flushContentContainer();
         $user = User::findOne(['id' => 3]);
-        Assert::assertSame('adaptive', (new NotificationSettingsService($user))->getMode(Yii::$app->notification->getTarget('email')));
+        Assert::assertTrue($this->socialByMail(3));
         Assert::assertFalse(NotificationSpaceService::isTouchedSettings($user));
     }
 
@@ -255,13 +256,13 @@ class NotificationSettingsApiCest
         $I->wantTo('be refused a write without a CSRF token');
         $I->amLoggedInAs(2);
 
-        $this->sendJsonPatch($I, 'notification/settings', ['channels' => [['id' => 'email', 'mode' => 'off']]]);
+        $this->sendJsonPatch($I, 'notification/settings', ['categories' => ['social' => ['email' => false]]]);
         $I->seeResponseCodeIs(403);
 
         $I->sendPost('notification/settings/reset');
         $I->seeResponseCodeIs(403);
 
-        Assert::assertNull(Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 2]))->get('email.mode'));
+        Assert::assertNull(Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 2]))->get('email.category.social'));
     }
 
     public function testGuestsAreRejected(ApiTester $I)

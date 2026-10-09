@@ -11,6 +11,7 @@ namespace humhub\modules\notification;
 use humhub\components\Event;
 use humhub\models\RecordMap;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\DeliveryService;
 use Yii;
 use yii\base\BaseObject;
 use yii\db\ActiveRecord;
@@ -80,6 +81,21 @@ class Events extends BaseObject
         self::deleteNotifications(false, $module->deleteUnseenNotificationsMonths);
 
         $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+    }
+
+    /**
+     * Hourly: the safety net of the delivery layer, see {@see DeliveryService::sweep()}.
+     *
+     * @param Event $event
+     * @since 1.20
+     */
+    public static function onCronHourlyRun($event)
+    {
+        $controller = $event->sender;
+
+        $controller->stdout('Re-queueing overdue notification deliveries... ');
+        $pushed = (new DeliveryService())->sweep();
+        $controller->stdout('done (' . $pushed . ').' . PHP_EOL, Console::FG_GREEN);
     }
 
     /**

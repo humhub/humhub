@@ -15,7 +15,6 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\activities\SpaceCreatedActivity;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\behaviors\SpaceModelMembership;
@@ -269,8 +268,7 @@ class Space extends ContentContainerActiveRecord
 
             // If the space creator is not allowed to manage spaces, notify space managers
             if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {
-                NotificationManager::dispatch(
-                    SpaceCreatedNotification::class,
+                SpaceCreatedNotification::send(
                     PermissionManager::findUsersByPermission(new ManageSpaces()),
                     $this,
                     $user,

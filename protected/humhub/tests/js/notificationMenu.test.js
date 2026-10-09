@@ -251,7 +251,7 @@ const overviewProps = (overrides = {}) => ({
     initial: windowPayload(),
     filters: [
         { id: 'social', title: 'Reactions on my content' },
-        { id: 'content', title: 'New content in my spaces' },
+        { id: 'content', title: 'New content in my Spaces' },
     ],
     icons: { check: '<i class="ti ti-check"></i>', cog: '<i class="ti ti-settings"></i>' },
     settingsUrl: '/notification/user',
@@ -264,11 +264,11 @@ describe('NotificationOverview', () => {
 
         expect(wrapper.find('#notification_overview_list').exists()).toBe(true);
         expect(wrapper.find('#notification_overview_markseen').exists()).toBe(true);
-        expect(wrapper.findAll('.form-check')).toHaveLength(3); // "all" + two groups
+        expect(wrapper.findAll('.form-check')).toHaveLength(3); // "all" + two categories
         expect(getCalls).toHaveLength(0);
     });
 
-    it('sends no group filter while every group is selected', async () => {
+    it('sends no category filter while every category is selected', async () => {
         wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
 
         await wrapper.findAll('.btn-group button')[1].trigger('click'); // "unseen"
@@ -276,19 +276,19 @@ describe('NotificationOverview', () => {
 
         expect(getCalls).toHaveLength(1);
         expect(getCalls[0]).toContain('seen=unseen');
-        expect(getCalls[0]).not.toContain('groups');
+        expect(getCalls[0]).not.toContain('categories');
     });
 
-    it('sends the selected groups once the selection is narrowed', async () => {
+    it('sends the selected categories once the selection is narrowed', async () => {
         wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
 
-        // Uncheck the second group.
+        // Uncheck the second category.
         const checkboxes = wrapper.findAll('.form-check input');
         await checkboxes[2].setValue(false);
         await flushPromises();
 
-        expect(decodeURIComponent(getCalls[0])).toContain('groups[]=social');
-        expect(decodeURIComponent(getCalls[0])).not.toContain('groups[]=content');
+        expect(decodeURIComponent(getCalls[0])).toContain('categories[]=social');
+        expect(decodeURIComponent(getCalls[0])).not.toContain('categories[]=content');
     });
 
     it('clears and restores the whole selection through the all checkbox', async () => {
@@ -300,7 +300,7 @@ describe('NotificationOverview', () => {
         await all.setValue(false);
         await flushPromises();
         // Nothing selected is a filter of its own (an empty list), not "no filter".
-        expect(getCalls[0]).toContain('groups');
+        expect(getCalls[0]).toContain('categories');
         expect(wrapper.findAll('.form-check input')[1].element.checked).toBe(false);
 
         await wrapper.findAll('.form-check input')[0].setValue(true);

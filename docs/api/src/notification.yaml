@@ -71,19 +71,19 @@ paths:
           description: Entries per page (default 6, maximum 50)
           schema:
             type: integer
-        - name: "groups[]"
+        - name: "categories[]"
           in: query
           required: false
           description: |
-            Notification group ids to include: `direct` (mentions, invitations, requests),
-            `social` (comments, likes, new followers), `content` (new content in the caller's
-            spaces), `admin` (administrative events), plus the groups modules add, named by
-            their module id. The notification settings endpoint lists the groups an
+            Notification category ids to include: `direct` (mentions, invitations, requests),
+            `social` (comments, likes), `followers` (new followers), `content` (new content in
+            the caller's spaces), `admin` (administrative events), plus the categories modules add,
+            named by their module id. The notification settings endpoint lists the categories an
             installation offers.
 
-            Omit the parameter for no group filter at all. Passing a value that matches no
-            group — including a single empty entry — is a filter of its own and answers an
-            empty list, which is what "no group selected" means in the UI.
+            Omit the parameter for no category filter at all. Passing a value that matches no
+            category — including a single empty entry — is a filter of its own and answers an
+            empty list, which is what "no category selected" means in the UI.
           schema:
             type: array
             items:
@@ -207,8 +207,9 @@ paths:
       summary: The caller's notification settings
       operationId: getNotificationSettings
       description: |
-        Per channel the mode and the group switches, the spaces whose new content notifies, and
-        the interval of the activity summary mail — what the notification settings page shows.
+        Per notification category the channels it reaches the caller through, what the switches
+        would be without own settings, and the spaces whose new content notifies — what the
+        notification settings page shows.
         With `scope=global`, the defaults for everyone (requires the *Manage Settings*
         permission, `403` otherwise).
       parameters:
@@ -233,15 +234,15 @@ paths:
       summary: Change the caller's notification settings
       operationId: updateNotificationSettings
       description: |
-        A partial update — every part is optional: a channel or group left out keeps its
-        setting, `spaces` replaces the selection (and from then on the default spaces no longer
-        apply to the caller), `summary` sets the summary mail interval. Spaces the caller may
-        not see are ignored. Nothing is changed when anything is invalid — an unknown channel
-        (`channels`), a mode the channel does not offer (`<channel>.mode`), an unknown group or
-        switching off the `direct` group (`<channel>.group.<group>`), an invalid `spaces` list or
-        interval (`summary.interval`) answer `422` with the errors under those keys. Answers the
-        settings as `GET` does. With `scope=global`, the defaults for everyone (requires the
-        *Manage Settings* permission).
+        A partial update — every part is optional: a category or channel left out keeps its
+        setting, `null` removes the caller's own switch so the default applies again, `spaces` replaces the selection (and from then on the default spaces no longer
+        apply to the caller). Spaces the caller may not see are ignored. Nothing is changed when
+        anything is invalid — a body `categories` that is no object (`categories`), an unknown category or
+        a category value that is no object (`categories.<category>`), a channel that is not available for
+        the category, an invalid value or switching off the `direct` category
+        (`categories.<category>.<channel>`), or an invalid `spaces` list answer `422` with the errors
+        under those keys. Answers the settings as `GET` does. With `scope=global`, the defaults
+        for everyone (requires the *Manage Settings* permission).
       parameters:
         - $ref: "#/components/parameters/scopeParam"
       requestBody:
@@ -251,46 +252,27 @@ paths:
             schema:
               type: object
               properties:
-                channels:
-                  type: array
-                  items:
+                categories:
+                  type: object
+                  description: |
+                    `{<category id>: {<channel id>: boolean|null}}`, the switches to change — `null`
+                    for the default
+                  additionalProperties:
                     type: object
-                    required: [id]
-                    properties:
-                      id:
-                        type: string
-                      mode:
-                        type: string
-                      groups:
-                        type: array
-                        items:
-                          type: object
-                          required: [id, enabled]
-                          properties:
-                            id:
-                              type: string
-                            enabled:
-                              type: boolean
+                    additionalProperties:
+                      type: [boolean, 'null']
                 spaces:
                   type: array
                   description: Ids of the spaces whose new content notifies
                   items:
                     type: integer
-                summary:
-                  type: object
-                  properties:
-                    interval:
-                      type: integer
             example:
-              channels:
-                - id: email
-                  mode: "off"
-                  groups:
-                    - id: social
-                      enabled: false
+              categories:
+                social:
+                  email: false
+                followers:
+                  web: true
               spaces: [3]
-              summary:
-                interval: 2
       responses:
         "200":
           description: Successful operation
@@ -311,7 +293,7 @@ paths:
       summary: Reset the caller's notification settings
       operationId: resetNotificationSettings
       description: |
-        Removes the caller's own modes, group switches and space selection, so the defaults
+        Removes the caller's own category switches and space selection, so the defaults
         apply again — including the default spaces for new content. Answers the settings as
         `GET` does.
       responses:
@@ -332,7 +314,7 @@ paths:
       summary: Reset the notification settings of every user
       operationId: resetAllNotificationSettings
       description: |
-        Removes the modes, group switches and space selections of every user, so everyone
+        Removes the category switches and space selections of every user, so everyone
         follows the defaults again. Requires the *Manage Settings* and the *Manage Users*
         permission. Answers the
         defaults as `GET` with `scope=global` does.
@@ -416,59 +398,70 @@ components:
     NotificationSettings:
       type: object
       description: The notification settings of the caller, or the defaults for everyone
-      required: [channels, spaces]
+      required: [scope, channels, categories, defaults, spaces]
       properties:
+        scope:
+          type: string
+          enum: [user, global]
+          description: The caller's own settings, or the defaults for everyone
         channels:
           type: array
           description: |
-            The web list first (`fixed`: always on, nothing to set), then every other channel
-            available — e-mail, mobile push when a push provider is installed, channels of
-            modules.
+            The channels available — the web list first, then e-mail, mobile push when a push
+            provider is installed, and channels of modules.
           items:
             type: object
+            required: [id, title]
             properties:
               id:
                 type: string
                 description: "`web`, `email`, `mobile` or the id of a module's channel"
               title:
                 type: string
+        categories:
+          type: array
+          description: |
+            The notification categories — the core categories first, then those of modules; the `admin`
+            category only for users with an administrative permission, a category no available channel
+            carries not at all.
+          items:
+            type: object
+            required: [id, title, description, icon, module, fixed, channels]
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              icon:
+                type: string
+                description: Tabler icon name, e.g. `ti-heart`
+              module:
+                type: boolean
+                description: Whether the category is a module's own rather than a core category
               fixed:
                 type: boolean
-                description: Whether the channel is always on and has no settings
-              mode:
-                type: string
+                description: Not switchable (`direct`) — always on
+              channels:
+                type: object
                 description: |
-                  `adaptive` (sent, with the delays of the delivery layer) or `off`. The e-mail
-                  mode `summary` (only in the activity summary mail) comes with the delivery layer
-              modes:
-                type: array
-                description: The modes the channel offers, the default first
-                items:
-                  type: object
-                  properties:
-                    value:
-                      type: string
-                    label:
-                      type: string
-              groups:
-                type: array
-                description: |
-                  The notification groups and whether they reach the user through the channel;
-                  the `admin` group only for users with an administrative permission.
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    title:
-                      type: string
-                    description:
-                      type: string
-                    enabled:
-                      type: boolean
-                    fixed:
-                      type: boolean
-                      description: Not switchable (`direct`) — always on while the channel is on
+                  Whether the category reaches the user through the channel, by channel id — only the
+                  channels that apply to the category: the web list only for a category with
+                  notifications shown in it.
+                additionalProperties:
+                  type: boolean
+        defaults:
+          description: |
+            For the caller's settings, what the switches of `categories` would be without own
+            settings — `{<category id>: {<channel id>: boolean}}`; `null` for the global scope.
+          oneOf:
+            - type: object
+              additionalProperties:
+                type: object
+                additionalProperties:
+                  type: boolean
+            - type: 'null'
         spaces:
           type: object
           properties:
@@ -481,54 +474,52 @@ components:
                 $ref: "common.yaml#/components/schemas/SpaceShort"
             enabled:
               type: boolean
-              description: Whether the selection applies (the `content` group is offered)
-        summary:
-          type: object
-          description: The activity summary mail; absent while summary mails are switched off
-          properties:
-            interval:
-              type: integer
-            intervals:
-              type: array
-              items:
-                type: object
-                properties:
-                  value:
-                    type: integer
-                  label:
-                    type: string
+              description: Whether the selection applies (the `content` category is offered)
   examples:
     NotificationSettings:
       value:
+        scope: user
         channels:
           - id: web
             title: Web
-            fixed: true
-            mode: adaptive
-            modes:
-              - value: adaptive
-                label: Send
-            groups: []
           - id: email
             title: E-Mail
+        categories:
+          - id: direct
+            title: Directly addressed to you
+            description: Mentions, invitations and requests.
+            icon: ti-at
+            module: false
+            fixed: true
+            channels:
+              web: true
+              email: true
+          - id: followers
+            title: New followers
+            description: People who follow you.
+            icon: ti-user-plus
+            module: false
             fixed: false
-            mode: adaptive
-            modes:
-              - value: adaptive
-                label: Send
-              - value: "off"
-                label: "Off"
-            groups:
-              - id: direct
-                title: Directly addressed to you
-                description: Mentions, invitations, requests and messages. Always on while the channel is on.
-                enabled: true
-                fixed: true
-              - id: social
-                title: Reactions on my content
-                description: Comments, likes and new followers.
-                enabled: false
-                fixed: false
+            channels:
+              web: true
+              email: false
+          - id: mail
+            title: Messenger
+            description: Notifications of the Messenger module
+            icon: ti-message
+            module: true
+            fixed: false
+            channels:
+              email: true
+        defaults:
+          direct:
+            web: true
+            email: true
+          followers:
+            web: true
+            email: false
+          mail:
+            email: true
         spaces:
           selected:
             - id: 3
@@ -539,10 +530,3 @@ components:
               imageUrl: null
               contentContainerId: 21
           enabled: true
-        summary:
-          interval: 2
-          intervals:
-            - value: 0
-              label: Never
-            - value: 2
-              label: Daily

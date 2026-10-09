@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\components;
 
 use humhub\components\ActiveRecord;
+use humhub\components\db\AfterCommit;
 use humhub\components\Event;
 use humhub\components\Module;
 use humhub\models\RecordMap;
@@ -34,6 +35,10 @@ use yii\db\IntegrityException;
 /**
  * The notification manager, available as `Yii::$app->notification`.
  *
+ * Modules send, revoke and mark notifications seen through their notification class
+ * ({@see BaseNotification::send()}, {@see BaseNotification::revoke()},
+ * {@see BaseNotification::markSeen()}); the static methods behind them here are internal.
+ *
  * - {@see dispatch()} creates a notification for a set of recipients. The recipients, the source
  *   and the originator are reduced to ids and handed to a {@see DispatchJob}, which writes one
  *   {@see Notification} record per recipient, groups it and hands it to the channels.
@@ -42,10 +47,10 @@ use yii\db\IntegrityException;
  * - {@see getTargets()}/{@see getTarget()} are the registry of the delivery channels configured
  *   by id in `config/common.php`.
  * - {@see getNotifications()} lists the notification classes of the enabled modules and
- *   {@see getGroups()} the {@see NotificationGroup}s users switch them on or off with.
+ *   {@see getCategories()} the {@see NotificationCategory}s users switch them on or off with.
  *
- * Deleted users, contents, containers and other source records take their notifications along
- * through the foreign keys of the `notification` table and the {@see RecordMap}.
+ * Deleted users, contents, containers and content addons take their notifications along through
+ * the foreign keys of the `notification` table and the {@see RecordMap}.
  *
  * @since 0.5, rewritten in 1.20
  */
@@ -55,6 +60,7 @@ class NotificationManager extends Component
      * Fired once per dispatch with a {@see BeforeDispatchEvent} carrying the arguments of the
      * call. A handler may change them or veto the dispatch with `$event->isValid = false`.
      *
+     * @api
      * @since 1.20
      */
     public const EVENT_BEFORE_DISPATCH = 'beforeDispatch';
@@ -62,6 +68,8 @@ class NotificationManager extends Component
     /**
      * Lets modules add notification classes kept outside a `notifications/` directory to
      * `$event->result` (an array of class names).
+     *
+     * @api
      */
     public const EVENT_SEARCH_MODULE_NOTIFICATIONS = 'searchModuleNotifications';
 
@@ -83,6 +91,15 @@ class NotificationManager extends Component
     public array $targets = [];
 
     /**
+     * @var bool|null whether notifications go out at once, ignoring the delays of the targets:
+     * `null` detects it from the queue driver (instant unless it is known to honour a job's
+     * delay), `false` declares a custom driver that honours delays, `true` forces it.
+     * See {@see \humhub\modules\notification\services\DeliveryScheduler::isInstant()}.
+     * @since 1.20
+     */
+    public ?bool $instantDelivery = null;
+
+    /**
      * @var BaseTarget[]|null
      */
     private ?array $_targets = null;
@@ -94,21 +111,16 @@ class NotificationManager extends Component
 
     /**
      * Creates a notification of the given class for the given recipients - asynchronously, by
-     * a {@see DispatchJob}.
+     * a {@see DispatchJob}. Inside a transaction of `Yii::$app->db`, the job is queued after
+     * the commit and dropped on a rollback, see {@see AfterCommit}.
      *
-     * Options:
-     * - `payload`: data of the notification, stored as JSON, see {@see BaseNotification::$payload}
-     * - `notifyOriginator`: whether the originator receives the notification when among the recipients (default `false`)
-     * - `priority`: overrides {@see BaseNotification::priority()}
-     * - `dedupe`: skip a recipient who already has a notification of this class, source and originator (default `true`; no effect without a source)
+     * The arguments are those of {@see BaseNotification::send()}.
      *
      * @param class-string<BaseNotification> $class
-     * @param ActiveQueryUser|User|int|array<User|int> $recipients a query must be self-contained: it is
-     * serialized into the queue, so it cannot be a relation query bound to a `primaryModel`
-     * @param ActiveRecord|null $source a content, a content record (e.g. a post), a content addon (e.g. a comment), a container or any other record
-     * @param array{payload?: array, notifyOriginator?: bool, priority?: NotificationPriority, dedupe?: bool} $options
+     * @param ActiveQueryUser|User|int|array<User|int> $recipients
      * @throws InvalidArgumentException when the class (also after {@see EVENT_BEFORE_DISPATCH}) is no
      * notification class, or the source is not saved
+     * @internal use {@see BaseNotification::send()}
      * @since 1.20
      */
     public static function dispatch(
@@ -116,7 +128,9 @@ class NotificationManager extends Component
         ActiveQueryUser|User|int|array $recipients,
         ?ActiveRecord $source = null,
         ?User $originator = null,
-        array $options = [],
+        array $payload = [],
+        bool $notifyOriginator = false,
+        bool $dedupe = true,
     ): void {
         if (!is_subclass_of($class, BaseNotification::class)) {
             throw new InvalidArgumentException("Class {$class} is not a " . BaseNotification::class);
@@ -127,7 +141,9 @@ class NotificationManager extends Component
             'recipients' => $recipients,
             'source' => $source,
             'originator' => $originator,
-            'options' => $options,
+            'payload' => $payload,
+            'notifyOriginator' => $notifyOriginator,
+            'dedupe' => $dedupe,
         ]);
         Event::trigger(static::class, self::EVENT_BEFORE_DISPATCH, $event);
 
@@ -139,13 +155,18 @@ class NotificationManager extends Component
             throw new InvalidArgumentException("Class {$event->class} is not a " . BaseNotification::class);
         }
 
-        Yii::$app->queue->push(new DispatchJob([
+        $job = new DispatchJob([
             'class' => $event->class,
             'recipients' => self::serializeRecipients($event->recipients),
             'source' => self::serializeSource($event->source),
             'originatorId' => $event->originator !== null ? (int)$event->originator->id : null,
-            'options' => $event->options,
-        ]));
+            'payload' => $event->payload,
+            'notifyOriginator' => $event->notifyOriginator,
+            'dedupe' => $event->dedupe,
+        ]);
+
+        // A worker could run the job before the commit and miss the records it refers to.
+        AfterCommit::run(static fn() => Yii::$app->queue->push($job));
     }
 
     /**
@@ -205,6 +226,7 @@ class NotificationManager extends Component
      * the newest member is loaded with the group's size.
      *
      * @throws IntegrityException when the class is unknown or a referenced record is gone
+     * @internal
      * @since 1.20
      */
     public static function load(Notification $record): BaseNotification
@@ -228,6 +250,7 @@ class NotificationManager extends Component
      * is not swapped for the newest member of its group.
      *
      * @throws IntegrityException when the class is unknown or a referenced record is gone
+     * @internal
      * @since 1.20
      */
     public static function fromRecord(Notification $record): BaseNotification
@@ -249,6 +272,7 @@ class NotificationManager extends Component
      * ({@see \humhub\modules\notification\services\GroupingService::afterInsert()}).
      *
      * @return int the number of deleted rows
+     * @internal use {@see BaseNotification::revoke()}
      * @since 1.20
      */
     public static function delete(string $class, ?ActiveRecord $source = null, ?User $user = null, ?User $originator = null): int
@@ -273,6 +297,7 @@ class NotificationManager extends Component
      * Marks the user's notifications of the given class and source seen - with the whole groups
      * they belong to.
      *
+     * @internal use {@see BaseNotification::markSeen()}
      * @since 1.20
      */
     public static function markSeen(string $class, ?ActiveRecord $source, User $user): void
@@ -301,6 +326,7 @@ class NotificationManager extends Component
     /**
      * Marks the record's whole group seen.
      *
+     * @internal
      * @since 1.20
      */
     public static function markRecordSeen(Notification $record): void
@@ -316,6 +342,7 @@ class NotificationManager extends Component
     /**
      * Marks all notifications of the user seen.
      *
+     * @internal
      * @since 1.20
      */
     public static function markAllSeen(User $user): void
@@ -389,6 +416,7 @@ class NotificationManager extends Component
      * the mobile target is omitted when no push provider is installed.
      *
      * @return BaseTarget[]
+     * @internal
      */
     public function getTargets(?User $user = null): array
     {
@@ -447,6 +475,7 @@ class NotificationManager extends Component
      * The target of the given id, e.g. `email`.
      *
      * @param string $id the target id; a class name is still accepted, deprecated since 1.20
+     * @api
      */
     public function getTarget(string $id): ?BaseTarget
     {
@@ -473,6 +502,7 @@ class NotificationManager extends Component
      * Since 1.20 these are class names, no longer instances.
      *
      * @return class-string<BaseNotification>[]
+     * @internal
      */
     public function getNotifications(): array
     {
@@ -505,45 +535,47 @@ class NotificationManager extends Component
     }
 
     /**
-     * The notification groups: the four core groups and the distinct groups of
-     * {@see getNotifications()}, sorted by sort order and title. With a user, only the groups
-     * visible to that user.
+     * The notification categories: the core categories and the distinct categories of
+     * {@see getNotifications()}, sorted by sort order and title. With a user, only the categories
+     * visible to that user ({@see NotificationCategory::isVisible()}).
      *
-     * @return NotificationGroup[]
+     * @return NotificationCategory[]
      * @since 1.20
+     * @internal
      */
-    public function getGroups(?User $user = null): array
+    public function getCategories(?User $user = null): array
     {
-        $groups = [
-            NotificationGroup::direct(),
-            NotificationGroup::social(),
-            NotificationGroup::content(),
-            NotificationGroup::admin(),
+        $categories = [
+            NotificationCategory::direct(),
+            NotificationCategory::social(),
+            NotificationCategory::followers(),
+            NotificationCategory::content(),
+            NotificationCategory::admin(),
         ];
 
         foreach ($this->getNotifications() as $class) {
             try {
-                $group = $class::group();
+                $category = $class::category();
             } catch (Throwable $e) {
-                Yii::warning('Could not determine the notification group of ' . $class . ': ' . $e->getMessage(), 'notification');
+                Yii::warning('Could not determine the notification category of ' . $class . ': ' . $e->getMessage(), 'notification');
                 continue;
             }
 
-            foreach ($groups as $existing) {
-                if ($existing->equals($group)) {
+            foreach ($categories as $existing) {
+                if ($existing->equals($category)) {
                     continue 2;
                 }
             }
-            $groups[] = $group;
+            $categories[] = $category;
         }
 
         if ($user !== null) {
-            $groups = array_filter($groups, fn(NotificationGroup $group) => $group->isVisible($user));
+            $categories = array_filter($categories, fn(NotificationCategory $category) => $category->isVisible($user));
         }
 
-        usort($groups, fn(NotificationGroup $a, NotificationGroup $b) => [$a->sortOrder, $a->title] <=> [$b->sortOrder, $b->title]);
+        usort($categories, fn(NotificationCategory $a, NotificationCategory $b) => [$a->sortOrder, $a->title] <=> [$b->sortOrder, $b->title]);
 
-        return $groups;
+        return $categories;
     }
 
     /**

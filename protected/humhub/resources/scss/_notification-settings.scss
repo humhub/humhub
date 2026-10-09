@@ -1,0 +1,421 @@
+//
+// Notification settings island (protected/humhub/modules/notification/vue/NotificationSettings.vue):
+// the profile cards, the category rows with their channel badges and the autosave state. The space
+// picker comes from `_page-toolbar.scss`, the checkboxes are the form suite's.
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-notification-settings {
+    .c-notification-settings {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        > .panel {
+            margin-bottom: 0;
+        }
+    }
+
+    .c-notification-settings__intro {
+        padding: 24px;
+    }
+
+    .c-notification-settings__head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 12px;
+    }
+
+    .c-notification-settings__title {
+        margin: 0;
+        color: var(--hh-text-color-highlight);
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .c-notification-settings__subtitle {
+        margin: 0;
+        color: var(--hh-text-color-highlight);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    // The autosave state, right of the title
+    .c-notification-settings__status {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: auto;
+        color: var(--hh-text-color-secondary);
+        font-size: 12.5px;
+
+        &.is-saved {
+            color: var(--bs-success);
+        }
+
+        &.is-error {
+            color: var(--bs-danger);
+        }
+    }
+
+    .c-notification-settings__spin {
+        animation: c-notification-settings-spin 1s linear infinite;
+    }
+
+    @keyframes c-notification-settings-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .c-notification-settings__lead {
+        margin: 6px 0 18px;
+        color: var(--hh-text-color-secondary);
+    }
+
+    // Profiles: a wrapping row of selectable cards, stacked radio rows on a phone
+    .c-notification-settings__profiles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .c-notification-settings__profile {
+        display: flex;
+        flex: 1 1 180px;
+        align-items: flex-start;
+        gap: 12px;
+        min-height: 56px;
+        padding: 13px 15px;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 6px;
+        background: var(--hh-background-color-main);
+        color: inherit;
+        font: inherit;
+        text-align: left;
+
+        &:hover {
+            border-color: var(--bs-accent);
+        }
+
+        &:focus-visible {
+            outline: 2px solid rgba(var(--bs-accent-rgb), 0.32);
+            outline-offset: 2px;
+        }
+
+        &.is-selected {
+            border-color: var(--bs-accent);
+            box-shadow: inset 0 0 0 1px var(--bs-accent);
+            background: var(--hh-background-color-highlight-soft);
+        }
+    }
+
+    // The radio dot shows on a phone only; the desktop cards are selected by their border
+    .c-notification-settings__radio {
+        display: none;
+        flex: 0 0 auto;
+        width: 18px;
+        height: 18px;
+        margin-top: 1px;
+        border: 1.5px solid var(--hh-background4);
+        border-radius: 50%;
+        background: var(--hh-background-color-main);
+
+        .is-selected > & {
+            border: 5px solid var(--bs-accent);
+        }
+    }
+
+    .c-notification-settings__profile-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .c-notification-settings__profile-title,
+    .c-notification-settings__category-title {
+        color: var(--hh-text-color-highlight);
+        font-weight: 600;
+    }
+
+    .c-notification-settings__profile-description,
+    .c-notification-settings__category-description {
+        color: var(--hh-text-color-secondary);
+        font-size: 12.5px;
+    }
+
+    // Topics
+    .c-notification-settings__categories {
+        overflow: hidden;
+    }
+
+    .c-notification-settings--global .c-notification-settings__categories {
+        border: 1px solid var(--bs-border-color);
+        border-radius: 6px;
+    }
+
+    .c-notification-settings__categories-head {
+        padding: 14px 18px;
+    }
+
+    .c-notification-settings__divider {
+        margin: 0;
+        padding: 10px 18px;
+        border-top: 1px solid var(--bs-border-color-translucent);
+        background: var(--hh-background-color-secondary);
+        color: var(--hh-text-color-secondary);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+
+        + .c-notification-settings__category {
+            border-top: 0;
+        }
+    }
+
+    .c-notification-settings__category {
+        border-top: 1px solid var(--bs-border-color-translucent);
+
+        &.is-expanded {
+            background: var(--hh-background-color-secondary);
+        }
+    }
+
+    .c-notification-settings__category-head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        min-height: 60px;
+        padding: 14px 18px;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+    }
+
+    button.c-notification-settings__category-head {
+        cursor: pointer;
+
+        &:hover {
+            background: var(--hh-background-color-secondary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid rgba(var(--bs-accent-rgb), 0.32);
+            outline-offset: -2px;
+        }
+    }
+
+    .c-notification-settings__category-icon {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: var(--hh-background-color-secondary);
+        color: var(--hh-text-color-main);
+        font-size: 18px;
+
+        .is-expanded & {
+            background: var(--bs-accent-bg-subtle);
+            color: var(--bs-accent-text-emphasis);
+        }
+    }
+
+    .c-notification-settings__category-text {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .c-notification-settings__badges {
+        display: flex;
+        flex: 0 1 auto;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    // A channel of the category: highlighted while the category reaches the user through it
+    .c-notification-settings__badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 9px;
+        border-radius: 9999px;
+        background: var(--hh-background-color-secondary);
+        color: var(--hh-text-color-secondary);
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: nowrap;
+
+        &.is-on {
+            background: var(--bs-accent-bg-subtle);
+            color: var(--bs-accent-text-emphasis);
+            font-weight: 600;
+        }
+    }
+
+    .c-notification-settings__category-state {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        color: var(--hh-text-color-soft);
+        font-size: 16px;
+    }
+
+    .c-notification-settings__category-body {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 0 18px 18px 66px;
+    }
+
+    // The channel checkboxes as bordered tiles in a row
+    .c-notification-settings__channels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        > .mb-3 {
+            margin-bottom: 0 !important;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 38px;
+            margin: 0;
+            padding: 0 12px;
+            border: 1px solid var(--bs-border-color);
+            border-radius: 6px;
+            background: var(--hh-background-color-main);
+        }
+
+        .form-check-input {
+            float: none;
+            margin: 0;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+        }
+
+        .invalid-feedback {
+            flex-basis: 100%;
+        }
+    }
+
+    .c-notification-settings__spaces-label {
+        margin-bottom: 6px;
+        color: var(--hh-text-color-highlight);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .c-notification-settings__footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px 16px;
+        padding: 0 4px;
+    }
+
+    .c-notification-settings__autosave {
+        flex: 1 1 auto;
+        color: var(--hh-text-color-secondary);
+        font-size: 12.5px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        .c-notification-settings__intro {
+            padding: 16px 14px;
+        }
+
+        .c-notification-settings__title {
+            font-size: 18px;
+        }
+
+        .c-notification-settings__profiles {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .c-notification-settings__profile {
+            flex-basis: auto;
+            align-items: center;
+            padding: 9px 13px;
+        }
+
+        .c-notification-settings__radio {
+            display: block;
+            margin-top: 0;
+        }
+
+        // The badges move under the title, the description gives way
+        .c-notification-settings__category-head {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            column-gap: 12px;
+            row-gap: 4px;
+            padding: 10px 14px;
+        }
+
+        .c-notification-settings__category-icon {
+            grid-row: 1 / span 2;
+            width: 32px;
+            height: 32px;
+        }
+
+        .c-notification-settings__category-text {
+            grid-row: 1;
+            grid-column: 2;
+        }
+
+        .c-notification-settings__category-description {
+            display: none;
+        }
+
+        .c-notification-settings__badges {
+            grid-row: 2;
+            grid-column: 2;
+            justify-content: flex-start;
+            gap: 4px;
+        }
+
+        .c-notification-settings__badge {
+            padding: 2px 8px;
+            font-size: 11.5px;
+        }
+
+        .c-notification-settings__category-state {
+            grid-row: 1 / span 2;
+            grid-column: 3;
+        }
+
+        .c-notification-settings__category-body {
+            padding: 0 14px 16px;
+        }
+
+        .c-notification-settings__channels .form-check,
+        .c-notification-settings__spaces .c-picker__field,
+        .c-notification-settings__footer .btn {
+            min-height: 44px;
+        }
+
+        .c-notification-settings__categories-head {
+            padding: 12px 14px;
+        }
+    }
+}

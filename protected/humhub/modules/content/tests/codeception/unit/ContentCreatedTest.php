@@ -4,7 +4,7 @@ namespace tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreatedNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\services\NotificationSettingsService;
@@ -108,8 +108,8 @@ class ContentCreatedTest extends HumHubDbTestCase
         $record = Notification::findOne(['class' => ContentCreatedNotification::class, 'user_id' => 1]);
         $notification = NotificationManager::load($record);
         $this->assertTrue($notification->payload['explicit']);
-        $this->assertStringContainsString('notifies you about', $notification->getMailSubject());
-        $this->assertStringContainsString('Space 2', $notification->getMailSubject());
+        $this->assertStringContainsString('notifies you about', $notification->asMailSubject());
+        $this->assertStringContainsString('Space 2', $notification->asMailSubject());
         $this->assertMailSent(1);
     }
 
@@ -119,13 +119,13 @@ class ContentCreatedTest extends HumHubDbTestCase
         $notification = NotificationManager::fromRecord($this->createRecord(1, 2, Post::findOne(['id' => 2])));
 
         $this->assertStringContainsString('posted on your profile', $notification->asWeb());
-        $this->assertStringContainsString('just wrote', $notification->getMailSubject());
+        $this->assertStringContainsString('just wrote', $notification->asMailSubject());
     }
 
     public function testExplicitSubjectWithoutSpace()
     {
         $record = $this->createRecord(2, 1, Post::findOne(['id' => 2]), ['explicit' => true]);
-        $subject = NotificationManager::fromRecord($record)->getMailSubject();
+        $subject = NotificationManager::fromRecord($record)->asMailSubject();
 
         $this->assertStringContainsString('notifies you about', $subject);
         $this->assertStringNotContainsString(' in ', $subject);
@@ -143,7 +143,7 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $this->assertSame(2, $notification->groupCount);
         $this->assertStringContainsString('created 2 new entries.', $notification->asWeb());
-        $this->assertSame($name . ' created 2 new entries.', $notification->getMailSubject());
+        $this->assertSame($name . ' created 2 new entries.', $notification->asMailSubject());
     }
 
     /**
@@ -212,7 +212,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->assertTrue($post->save());
 
         $recipient = User::findOne(['id' => 4]);
-        NotificationManager::dispatch(ContentCreatedNotification::class, $recipient, $post, User::findOne(['id' => 1]));
+        ContentCreatedNotification::send($recipient, $post, User::findOne(['id' => 1]));
 
         $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, $recipient->id);
     }
@@ -410,9 +410,9 @@ class ContentCreatedTest extends HumHubDbTestCase
 
     private function disableContentMails(User $user): void
     {
-        (new NotificationSettingsService($user))->setGroup(
+        (new NotificationSettingsService($user))->setCategory(
             Yii::$app->notification->getTarget('email'),
-            NotificationGroup::content(),
+            NotificationCategory::content(),
             false,
         );
     }

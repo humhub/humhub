@@ -8,17 +8,23 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
+use humhub\components\message\MessageFormat;
 use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationAction;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestContentNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestDefaultCategoryNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestExcerptNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestGroupedNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestHighPriorityNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestParamsNotification;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -58,18 +64,18 @@ class BaseNotificationTest extends HumHubDbTestCase
         $this->assertStringNotContainsString('<', $n->asMailText());
         $this->assertStringNotContainsString('<', $n->asPush());
         $this->assertStringContainsString($n->originator->displayName, $n->asPush());
-        $this->assertStringContainsString($n->originator->displayName, $n->getMailSubject());
-        $this->assertStringNotContainsString('<', $n->getMailSubject());
+        $this->assertStringContainsString($n->originator->displayName, $n->asMailSubject());
+        $this->assertStringNotContainsString('<', $n->asMailSubject());
 
         $this->assertStringContainsString('notification/entry', urldecode($n->getEntryUrl()));
         $this->assertStringContainsString('id=' . $record->id, urldecode($n->getEntryUrl()));
         $this->assertStringStartsWith('http', $n->getEntryUrl());
         $this->assertSame($post->content->getUrl(), $n->getUrl());
         $this->assertSame($post->content->getUrl(true), $n->getUrl(true));
-        $this->assertSame([['label' => Yii::t('NotificationModule.base', 'View online'), 'url' => $n->getEntryUrl()]], $n->getMailActions());
-        $this->assertSame($post->id, $n->getMailContentRecord()->id);
+        $this->assertEquals([new NotificationAction(Yii::t('NotificationModule.base', 'View online'), $n->getEntryUrl())], $n->getActions());
+        $this->assertSame($post->id, $n->getPreviewRecord()->id);
         $this->assertTrue($n->canReceive(User::findOne(['id' => 1])));
-        $this->assertNull($n->getGroupingQuery());
+        $this->assertNull(TestContentNotification::grouping());
     }
 
     public function testGoneContentRecordRendersDeleted()
@@ -90,7 +96,7 @@ class BaseNotificationTest extends HumHubDbTestCase
         $n = NotificationManager::load(Notification::findOne(['id' => $record->id]));
         $this->assertStringEndsWith('created [Deleted]', $n->asWeb());
         $this->assertStringEndsWith('created [Deleted]', $n->asMailText());
-        $this->assertNull($n->getMailContentRecord());
+        $this->assertNull($n->getPreviewRecord());
     }
 
     public function testSourceRecordThroughRecordMap()
@@ -192,10 +198,10 @@ class BaseNotificationTest extends HumHubDbTestCase
         $n = NotificationManager::load($record);
 
         $this->assertStringContainsString('Let\'s go & say "hi" <now>', $n->asMailText());
-        $this->assertStringContainsString('Let\'s go & say "hi" <now>', $n->getMailSubject());
+        $this->assertStringContainsString('Let\'s go & say "hi" <now>', $n->asMailSubject());
         $this->assertStringContainsString(Html::encode('"hi"'), $n->asMailHtml());
         $this->assertStringContainsString('Let\'s go & say "hi" <now>', $n->asPush());
-        $this->assertStringNotContainsString('&quot;', $n->getMailSubject() . $n->asPush());
+        $this->assertStringNotContainsString('&quot;', $n->asMailSubject() . $n->asPush());
     }
 
     public function testPushAndSubjectCarryTheShortPreview()
@@ -207,14 +213,14 @@ class BaseNotificationTest extends HumHubDbTestCase
         $n = NotificationManager::load($record);
 
         $this->assertStringContainsString(trim($long), $n->asMailText());
-        $this->assertSame($n->asPush(), $n->getMailSubject());
-        $this->assertLessThan(mb_strlen($n->asMailText()), mb_strlen($n->getMailSubject()));
+        $this->assertSame($n->asPush(), $n->asMailSubject());
+        $this->assertLessThan(mb_strlen($n->asMailText()), mb_strlen($n->asMailSubject()));
     }
 
     public function testPriorityAndListingOverrides()
     {
         $this->assertSame(NotificationPriority::High, TestHighPriorityNotification::priority());
-        $this->assertSame(NotificationPriority::Low, TestHighPriorityNotification::group()->priority);
+        $this->assertSame(NotificationPriority::Low, TestHighPriorityNotification::category()->priority);
         $this->assertFalse(TestHighPriorityNotification::listed());
     }
 
@@ -224,7 +230,7 @@ class BaseNotificationTest extends HumHubDbTestCase
         $record = new Notification(['class' => TestNotification::class, 'user_id' => 1, 'originator_id' => 2, 'contentcontainer_id' => $space->contentcontainer_id]);
         $this->assertTrue($record->save());
         $n = NotificationManager::load($record);
-        $this->assertNull($n->getMailContentRecord());
+        $this->assertNull($n->getPreviewRecord());
         $this->assertSame($space->getUrl(), $n->getUrl());
     }
 
@@ -276,6 +282,54 @@ class BaseNotificationTest extends HumHubDbTestCase
         $this->assertTrue($record->save());
         $n = NotificationManager::load(Notification::findOne(['id' => $record->id]));
         $this->assertSame(['a' => 1], $n->payload);
+    }
+
+    public function testCategoryDefaultsToTheModule()
+    {
+        $category = TestDefaultCategoryNotification::category();
+        $this->assertEquals(NotificationCategory::ofModule(TestDefaultCategoryNotification::class), $category);
+        $this->assertSame('notification', $category->id);
+        $this->assertSame(NotificationPriority::Normal, TestDefaultCategoryNotification::priority());
+        $this->assertContains('notification', array_map(
+            fn(NotificationCategory $category) => $category->id,
+            (new class (['targets' => []]) extends NotificationManager {
+                protected function findNotificationClasses(): array
+                {
+                    return [TestDefaultCategoryNotification::class];
+                }
+            })->getCategories(),
+        ));
+    }
+
+    public function testExcerptIsEncodedAndShortenedPerFormat()
+    {
+        $record = new Notification(['class' => TestExcerptNotification::class, 'user_id' => 1, 'payload' => ['body' => "  <b>Hi</b>\nthere  "]]);
+        $this->assertTrue($record->save());
+        $n = NotificationManager::load($record);
+        $this->assertSame("&lt;b&gt;Hi&lt;/b&gt;<br />\nthere", $n->renderExcerpt(MessageFormat::Html));
+        $this->assertSame("<b>Hi</b>\nthere", $n->renderExcerpt(MessageFormat::Text));
+
+        $record = new Notification(['class' => TestExcerptNotification::class, 'user_id' => 1, 'payload' => ['body' => str_repeat('x', 1200)]]);
+        $this->assertTrue($record->save());
+        $this->assertSame(str_repeat('x', 999) . '…', NotificationManager::load($record)->renderExcerpt(MessageFormat::Text));
+
+        $record = new Notification(['class' => TestNotification::class, 'user_id' => 1]);
+        $this->assertTrue($record->save());
+        $this->assertNull(NotificationManager::load($record)->renderExcerpt(MessageFormat::Html));
+    }
+
+    public function testExtraParamsAreRenderedPerChannel()
+    {
+        $record = new Notification(['class' => TestParamsNotification::class, 'user_id' => 1, 'originator_id' => 2, 'payload' => ['title' => 'A & <B>', 'note' => 'x < y']]);
+        $this->assertTrue($record->save());
+        $n = NotificationManager::load($record);
+        $name = User::findOne(['id' => 2])->displayName;
+
+        $this->assertSame('<strong>' . Html::encode($name) . '</strong> shared <strong>A &amp; &lt;B&gt;</strong> (x &lt; y)', $n->asWeb());
+        $this->assertSame($n->asWeb(), $n->asMailHtml());
+        $this->assertSame($name . ' shared “A & <B>” (x < y)', $n->asMailText());
+        $this->assertSame($n->asMailText(), $n->asPush());
+        $this->assertSame($n->asMailText(), $n->asMailSubject());
     }
 
     /**

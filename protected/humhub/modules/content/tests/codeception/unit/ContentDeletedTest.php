@@ -48,7 +48,7 @@ class ContentDeletedTest extends HumHubDbTestCase
         $this->assertStringNotContainsString('<img src=x onerror=alert(1)>', $html);
         $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $html);
         // plain text channels carry it unencoded
-        $this->assertStringContainsString('post "<img src=x onerror=alert(1)>"', $notification->getMailSubject());
-        $this->assertSame([], $notification->getMailActions());
+        $this->assertStringContainsString('post "<img src=x onerror=alert(1)>"', $notification->asMailSubject());
+        $this->assertSame([], $notification->getActions());
     }
 }

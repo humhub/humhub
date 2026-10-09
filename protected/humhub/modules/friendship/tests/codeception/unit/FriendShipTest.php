@@ -9,6 +9,7 @@ use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\notifications\FriendshipApprovedNotification;
 use humhub\modules\friendship\notifications\FriendshipDeclinedNotification;
 use humhub\modules\friendship\notifications\FriendshipRequestNotification;
+use humhub\modules\notification\components\NotificationAction;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
@@ -90,9 +91,9 @@ class FriendshipTest extends HumHubDbTestCase
         $notification = NotificationManager::load($record);
         $this->assertStringEndsWith('sent you a friend request.', $notification->asWeb());
         $this->assertSame($requester->getUrl(), $notification->getUrl());
-        $this->assertSame([
-            ['label' => 'View online', 'url' => $notification->getEntryUrl()],
-        ], $notification->getMailActions());
+        $this->assertEquals([
+            new NotificationAction('View online', $notification->getEntryUrl()),
+        ], $notification->getActions());
 
         // approve: the request notification is gone, the requester is notified
         $this->becomeUser('User1');

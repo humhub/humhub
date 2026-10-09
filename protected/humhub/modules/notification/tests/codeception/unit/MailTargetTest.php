@@ -10,7 +10,7 @@ namespace humhub\modules\notification\tests\codeception\unit;
 
 use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\services\NotificationSettingsService;
@@ -18,7 +18,7 @@ use humhub\modules\notification\targets\DeliveryBatch;
 use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestContentNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestDirectNotification;
-use humhub\modules\notification\tests\codeception\unit\notifications\TestMailBodyNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestExcerptNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestMultilineNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use humhub\modules\post\models\Post;
@@ -29,8 +29,9 @@ use yii\helpers\Url;
 use yii\symfonymailer\Message;
 
 /**
- * The queue of the test application is synchronous and the delivery of phase 1 too: a dispatch
- * sends its mails at once.
+ * The queue of the test application is synchronous and its configuration makes the channels
+ * instant (`delays = [0]`, no low-priority delay): a dispatch sends its mails at once, one per
+ * notification. The timings of the delivery layer are tested in {@see DeliverySchedulerTest}.
  */
 class MailTargetTest extends HumHubDbTestCase
 {
@@ -46,7 +47,7 @@ class MailTargetTest extends HumHubDbTestCase
         $this->assertSame(['admin@example.com'], array_keys($mail->getTo()));
 
         $notification = $this->notification(TestContentNotification::class);
-        $this->assertSame($notification->getMailSubject(), $mail->getSubject());
+        $this->assertSame($notification->asMailSubject(), $mail->getSubject());
 
         $html = $mail->getSymfonyEmail()->getHtmlBody();
         $this->assertStringContainsString($notification->asMailHtml(), $html);
@@ -59,26 +60,17 @@ class MailTargetTest extends HumHubDbTestCase
         $this->assertStringContainsString($notification->getEntryUrl(), $text);
     }
 
-    public function testModeOffSendsNothing()
+    public function testCategorySwitchedOffSendsNothing()
     {
-        (new NotificationSettingsService($this->recipient()))->setMode(new MailTarget(), NotificationSettingsService::MODE_OFF);
-        $this->dispatch(TestContentNotification::class);
-
-        $this->assertCount(1, Notification::findAll(['class' => TestContentNotification::class]));
-        $this->assertCount(0, $this->mails());
-    }
-
-    public function testGroupSwitchedOffSendsNothing()
-    {
-        (new NotificationSettingsService($this->recipient()))->setGroup(new MailTarget(), NotificationGroup::content(), false);
+        (new NotificationSettingsService($this->recipient()))->setCategory(new MailTarget(), NotificationCategory::content(), false);
         $this->dispatch(TestContentNotification::class);
 
         $this->assertCount(0, $this->mails());
     }
 
-    public function testDirectGroupIgnoresItsSwitch()
+    public function testDirectCategoryIgnoresItsSwitch()
     {
-        Yii::$app->getModule('notification')->settings->user($this->recipient())->set('email.group.direct', 0);
+        Yii::$app->getModule('notification')->settings->user($this->recipient())->set('email.category.direct', 0);
         $this->dispatch(TestDirectNotification::class);
 
         $this->assertCount(1, $this->mails());
@@ -116,7 +108,7 @@ class MailTargetTest extends HumHubDbTestCase
         User::updateAll(['email' => 'not-an-address'], ['id' => 1]);
         static::logInitialize();
 
-        NotificationManager::dispatch(TestContentNotification::class, [1, 3], Post::findOne(['id' => 2]), User::findOne(['id' => 2]));
+        TestContentNotification::send([1, 3], Post::findOne(['id' => 2]), User::findOne(['id' => 2]));
 
         static::assertLogRegexCount(1, '/delivery through email failed/', null, ['notification']);
         $mails = $this->mails();
@@ -136,16 +128,16 @@ class MailTargetTest extends HumHubDbTestCase
     public function testBatchOfSeveralNotifications()
     {
         // stop the dispatch from mailing, then deliver both in one batch
-        (new NotificationSettingsService($this->recipient()))->setMode(new MailTarget(), NotificationSettingsService::MODE_OFF);
+        $this->stopMailing();
         $this->dispatch(TestContentNotification::class);
         $this->dispatch(TestNotification::class);
         // a post in space 1, of which the recipient is a member
         $spacePost = Post::find()->joinWith('content')->andWhere(['content.contentcontainer_id' => 4])->one();
-        NotificationManager::dispatch(TestContentNotification::class, [1], $spacePost, User::findOne(['id' => 2]));
+        TestContentNotification::send([1], $spacePost, User::findOne(['id' => 2]));
         $this->assertCount(0, $this->mails());
 
         $notifications = array_map(
-            fn(Notification $record) => NotificationManager::fromRecord($record),
+            NotificationManager::fromRecord(...),
             Notification::find()->andWhere(['user_id' => 1])->orderBy(['id' => SORT_ASC])->all(),
         );
         $this->assertCount(3, $notifications);
@@ -180,7 +172,7 @@ class MailTargetTest extends HumHubDbTestCase
 
     public function testSingleBatch()
     {
-        (new NotificationSettingsService($this->recipient()))->setMode(new MailTarget(), NotificationSettingsService::MODE_OFF);
+        $this->stopMailing();
         $this->dispatch(TestDirectNotification::class);
 
         $notification = $this->notification(TestDirectNotification::class);
@@ -192,11 +184,13 @@ class MailTargetTest extends HumHubDbTestCase
         $this->assertTrue($batch->isHighPriority());
     }
 
-    public function testSingleMailShowsTheEncodedMailBody()
+    public function testSingleMailShowsTheEncodedExcerpt()
     {
-        NotificationManager::dispatch(TestMailBodyNotification::class, [1], null, User::findOne(['id' => 2]), [
-            'payload' => ['body' => "Let <b>me</b> in!\nPlease"],
-        ]);
+        TestExcerptNotification::send(
+            [1],
+            originator: User::findOne(['id' => 2]),
+            payload: ['body' => "Let <b>me</b> in!\nPlease"],
+        );
 
         $mails = $this->mails();
         $this->assertCount(1, $mails);
@@ -206,16 +200,18 @@ class MailTargetTest extends HumHubDbTestCase
         $this->assertStringContainsString("Let <b>me</b> in!\nPlease", $mails[0]->getSymfonyEmail()->getTextBody());
     }
 
-    public function testBatchMailShowsTheEncodedMailBody()
+    public function testBatchMailShowsTheEncodedExcerpt()
     {
-        (new NotificationSettingsService($this->recipient()))->setMode(new MailTarget(), NotificationSettingsService::MODE_OFF);
+        $this->stopMailing();
         $this->dispatch(TestNotification::class);
-        NotificationManager::dispatch(TestMailBodyNotification::class, [1], null, User::findOne(['id' => 2]), [
-            'payload' => ['body' => 'Let <b>me</b> in!'],
-        ]);
+        TestExcerptNotification::send(
+            [1],
+            originator: User::findOne(['id' => 2]),
+            payload: ['body' => 'Let <b>me</b> in!'],
+        );
 
         $notifications = array_map(
-            fn(Notification $record) => NotificationManager::fromRecord($record),
+            NotificationManager::fromRecord(...),
             Notification::find()->andWhere(['user_id' => 1])->orderBy(['id' => SORT_ASC])->all(),
         );
         $this->assertCount(2, $notifications);
@@ -233,12 +229,25 @@ class MailTargetTest extends HumHubDbTestCase
     private function dispatch(string $class): void
     {
         // post 2: public post on the admin's profile
-        NotificationManager::dispatch($class, [1], Post::findOne(['id' => 2]), User::findOne(['id' => 2]));
+        $class::send([1], Post::findOne(['id' => 2]), User::findOne(['id' => 2]));
     }
 
     private function notification(string $class): BaseNotification
     {
         return NotificationManager::fromRecord(Notification::findOne(['class' => $class, 'user_id' => 1]));
+    }
+
+    /**
+     * Keeps the dispatch from mailing (the records are still written for the web list), so a test
+     * can deliver the batch itself.
+     */
+    private function stopMailing(): void
+    {
+        foreach (Yii::$app->notification->getTargets() as $target) {
+            if ($target instanceof MailTarget) {
+                $target->active = false;
+            }
+        }
     }
 
     private function recipient(): User

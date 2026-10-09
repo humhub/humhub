@@ -10,7 +10,7 @@ namespace humhub\modules\friendship\notifications;
 
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationPriority;
 use Yii;
 
@@ -27,9 +27,9 @@ final class FriendshipApprovedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**

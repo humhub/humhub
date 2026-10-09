@@ -23,8 +23,9 @@ class SettingsPageCest
         $I->amOnRoute('/notification/user');
 
         $I->seeResponseCodeIs(200);
-        $I->see('Notification Settings');
         $I->seeElement('notification-settings#notification-settings');
+        // the island brings its own cards: no account panel around it
+        $I->dontSeeElement('.panel notification-settings');
         $I->seeElement('notification-settings[scope="user"]');
         $I->seeElement('notification-settings[settings-url$="/api/v2/notification/settings"]');
         $I->seeElement('notification-settings[reset-url$="/api/v2/notification/settings/reset"]');
@@ -32,7 +33,10 @@ class SettingsPageCest
 
         $props = json_decode($I->grabAttributeFrom('notification-settings', 'props'), true);
         Assert::assertSame(['initial'], array_keys($props));
+        Assert::assertSame('user', $props['initial']['scope']);
         Assert::assertSame('web', $props['initial']['channels'][0]['id']);
+        Assert::assertContains('followers', array_column($props['initial']['categories'], 'id'));
+        Assert::assertIsArray($props['initial']['defaults']);
         Assert::assertArrayHasKey('spaces', $props['initial']);
     }
 
@@ -49,7 +53,9 @@ class SettingsPageCest
         $I->dontSeeElement('notification-settings[reset-url]');
 
         $props = json_decode($I->grabAttributeFrom('notification-settings', 'props'), true);
-        Assert::assertContains('admin', array_column($props['initial']['channels'][1]['groups'], 'id'));
+        Assert::assertSame('global', $props['initial']['scope']);
+        Assert::assertNull($props['initial']['defaults']);
+        Assert::assertContains('admin', array_column($props['initial']['categories'], 'id'));
     }
 
     public function testAdminPageIsForbiddenForUsers(FunctionalTester $I)

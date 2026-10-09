@@ -5,7 +5,7 @@ namespace tests\codeception\unit\models;
 use humhub\models\RecordMap;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
@@ -168,7 +168,7 @@ class GroupTest extends HumHubDbTestCase
         $group->addUser($user);
 
         $this->assertSentEmail(1);
-        $this->assertEqualsLastEmailSubject(User::findOne(['username' => 'Admin'])->displayName . ' added you to group Moderators');
+        $this->assertEqualsLastEmailSubject(User::findOne(['username' => 'Admin'])->displayName . ' added you to group “Moderators”');
     }
 
     public function testRemoveUserFromGroup()
@@ -192,7 +192,7 @@ class GroupTest extends HumHubDbTestCase
         $record = Notification::findOne(['class' => IncludeGroupNotification::class, 'user_id' => $user->id]);
         $this->assertSame(RecordMap::getId($group), (int)$record->source_record_id);
         $this->assertSame(NotificationPriority::Normal->value, (int)$record->priority);
-        $this->assertSame(NotificationGroup::ID_DIRECT, IncludeGroupNotification::group()->id);
+        $this->assertSame(NotificationCategory::ID_DIRECT, IncludeGroupNotification::category()->id);
 
         $notification = NotificationManager::load($record);
         $admin = User::findOne(['username' => 'Admin']);
@@ -200,8 +200,8 @@ class GroupTest extends HumHubDbTestCase
             '<strong>' . $admin->displayName . '</strong> added you to group <strong>Group &lt;b&gt;One&lt;/b&gt;</strong>',
             $notification->asWeb(),
         );
-        $this->assertSame($admin->displayName . ' added you to group Group <b>One</b>', $notification->asMailText());
-        $this->assertSame($admin->displayName . ' added you to group Group <b>One</b>', $notification->getMailSubject());
+        $this->assertSame($admin->displayName . ' added you to group “Group <b>One</b>”', $notification->asMailText());
+        $this->assertSame($admin->displayName . ' added you to group “Group <b>One</b>”', $notification->asMailSubject());
         $this->assertSame(Url::to(['/user/people']), $notification->getUrl());
     }
 
@@ -217,7 +217,7 @@ class GroupTest extends HumHubDbTestCase
         $this->assertHasNotification(ExcludeGroupNotification::class, $group, 1, $user->id);
         $record = Notification::findOne(['class' => ExcludeGroupNotification::class, 'user_id' => $user->id]);
         $this->assertSame(NotificationPriority::Normal->value, (int)$record->priority);
-        $this->assertSame(NotificationGroup::ID_DIRECT, ExcludeGroupNotification::group()->id);
+        $this->assertSame(NotificationCategory::ID_DIRECT, ExcludeGroupNotification::category()->id);
 
         $notification = NotificationManager::load($record);
         $this->assertSame(

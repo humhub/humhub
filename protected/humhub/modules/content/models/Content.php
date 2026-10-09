@@ -34,7 +34,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
@@ -396,18 +395,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         // The explicitly notified users first: a follower among them keeps the explicit wording,
         // the followers' dispatch skips them as duplicates.
         if (!empty($this->notifyUsersOfNewContent)) {
-            NotificationManager::dispatch(
-                ContentCreatedNotification::class,
+            ContentCreatedNotification::send(
                 User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)]),
                 $contentSource,
                 $this->createdBy,
-                ['payload' => ['explicit' => true]],
+                payload: ['explicit' => true],
             );
         }
 
         $followers = (new NotificationSpaceService())->getFollowers($this);
         if ($followers !== null) {
-            NotificationManager::dispatch(ContentCreatedNotification::class, $followers, $contentSource, $this->createdBy);
+            ContentCreatedNotification::send($followers, $contentSource, $this->createdBy);
         }
 
         ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);

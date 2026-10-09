@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\jobs;
 
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\notifications\UserAddedNotification;
@@ -79,7 +78,7 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
 
         // one notification dispatch for all users added directly
         if ($addedUserIds !== []) {
-            NotificationManager::dispatch(UserAddedNotification::class, $addedUserIds, $this->space, $this->originator, ['dedupe' => false]);
+            UserAddedNotification::send($addedUserIds, $this->space, $this->originator, dedupe: false);
         }
     }
 

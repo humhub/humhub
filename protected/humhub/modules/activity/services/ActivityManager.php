@@ -18,10 +18,26 @@ use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\base\ModelEvent;
 
+/**
+ * Writes, loads and maintains activities, see `docs/develop/concept-activities.md`.
+ *
+ * @api
+ */
 class ActivityManager extends Component
 {
+    /**
+     * @event ModelEvent before an activity is written; set `isValid` to `false` to skip it
+     * @api
+     */
     public const EVENT_BEFORE_DISPATCH = 'beforeDispatch';
 
+    /**
+     * Writes an activity of `$class` about `$target` (a content, a content addon or a container) caused by
+     * `$user` (the logged-in user by default); `null` when a handler of {@see EVENT_BEFORE_DISPATCH} skipped it.
+     *
+     * @param class-string<BaseActivity> $class
+     * @api
+     */
     public static function dispatch(
         string $class,
         ContentProvider|ContentContainerActiveRecord $target,
@@ -91,6 +107,11 @@ class ActivityManager extends Component
         ]));
     }
 
+    /**
+     * The activity of a record (for a group, of its newest member).
+     *
+     * @internal
+     */
     public static function load(Activity $record): BaseActivity
     {
         if (!empty($record->group_max_id) && $record->group_max_id !== $record->id) {
@@ -105,6 +126,8 @@ class ActivityManager extends Component
     /**
      * Should be triggered on all possible Activity related Content changes.
      * e.g. Visibility, Move Content
+     *
+     * @internal
      */
     public static function afterContentChange(Content $content): void
     {

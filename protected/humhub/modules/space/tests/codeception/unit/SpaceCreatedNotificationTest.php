@@ -24,7 +24,7 @@ class SpaceCreatedNotificationTest extends HumHubDbTestCase
 
         $notification = NotificationManager::load(Notification::findOne(['class' => SpaceCreatedNotification::class, 'user_id' => 1]));
         $this->assertSame($space->getUrl(), $notification->getUrl());
-        $this->assertSame(Yii::$app->user->identity->displayName . ' created the new Space New Space', $notification->getMailSubject());
+        $this->assertSame(Yii::$app->user->identity->displayName . ' created the new Space “New Space”', $notification->asMailSubject());
     }
 
     public function testPrivateSpaceCreatedByAUserWithoutManageSpacesNotifiesTheSpaceManagers()

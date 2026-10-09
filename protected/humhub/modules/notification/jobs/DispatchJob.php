@@ -15,12 +15,11 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\NotificationManager;
-use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\events\UnreadCountChangedEvent;
 use humhub\modules\notification\live\NewNotification;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\DeliveryScheduler;
 use humhub\modules\notification\services\NotificationListService;
-use humhub\modules\notification\targets\DeliveryBatch;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -29,8 +28,14 @@ use Throwable;
 use Yii;
 
 /**
- * Writes the notification records of one {@see NotificationManager::dispatch()} call - one per
- * recipient - groups them and hands them to the channels.
+ * Writes the notification records of one {@see BaseNotification::send()} call - one per
+ * recipient - groups them and hands them to the delivery layer ({@see DeliveryScheduler}), which
+ * decides when the mail, push and other channels deliver them.
+ *
+ * A record is `listed` (shown in the web list, counted in the badge, sent as a live event) when
+ * the web channel is enabled for the recipient and the class ({@see WebTarget::isEnabled()}); a
+ * notification only other channels deliver is stored unlisted, and one no channel takes is not
+ * stored at all.
  *
  * Only ids travel through the queue: the recipients (or the {@see ActiveQueryUser} selecting
  * them, which the queue serializes as is), the source as a content, container or
@@ -39,9 +44,9 @@ use Yii;
  * stale or unserializable object graph.
  *
  * A recipient is skipped when they are not enabled, are the originator (unless the
- * `notifyOriginator` option is set), block or are blocked by the originator, cannot view the
+ * {@see $notifyOriginator} is set), block or are blocked by the originator, cannot view the
  * content (which covers the content of private spaces), already have a notification of the class
- * about the source by the same originator (unless the `dedupe` option is `false`), or are
+ * about the source by the same originator (unless {@see $dedupe} is `false`), or are
  * rejected by {@see BaseNotification::canReceive()}. A container source alone filters nobody: a
  * user invited to a private space is no member yet. An error for one recipient is logged and does
  * not stop the others.
@@ -50,9 +55,10 @@ use Yii;
  * ttr, and a dispatch without a source or with `dedupe` off then writes the rows written so far
  * a second time.
  *
+ * @internal
  * @since 1.20
  */
-class DispatchJob extends LongRunningActiveJob
+final class DispatchJob extends LongRunningActiveJob
 {
     /**
      * @var class-string<BaseNotification>
@@ -74,9 +80,19 @@ class DispatchJob extends LongRunningActiveJob
     public ?int $originatorId = null;
 
     /**
-     * @var array the options of {@see NotificationManager::dispatch()}
+     * @var array see {@see BaseNotification::send()}
      */
-    public array $options = [];
+    public array $payload = [];
+
+    /**
+     * @var bool see {@see BaseNotification::send()}
+     */
+    public bool $notifyOriginator = false;
+
+    /**
+     * @var bool see {@see BaseNotification::send()}
+     */
+    public bool $dedupe = true;
 
     /**
      * @inheritdoc
@@ -100,12 +116,10 @@ class DispatchJob extends LongRunningActiveJob
 
         /** @var class-string<BaseNotification> $class */
         $class = $this->class;
-        $priority = ($this->options['priority'] ?? null) instanceof NotificationPriority
-            ? $this->options['priority']
-            : $class::priority();
-        $payload = $this->options['payload'] ?? [];
-        $notifyOriginator = (bool)($this->options['notifyOriginator'] ?? false);
-        $dedupe = (bool)($this->options['dedupe'] ?? true);
+        $priority = $class::priority();
+        $payload = $this->payload;
+        $notifyOriginator = $this->notifyOriginator;
+        $dedupe = $this->dedupe;
         $contentContainerId = $content !== null ? $content->contentcontainer_id : $container?->contentcontainer_id;
 
         foreach ($this->recipients() as $user) {
@@ -128,6 +142,11 @@ class DispatchJob extends LongRunningActiveJob
                 if ($dedupe && $this->source !== null && $this->exists($user, $class, $originator, $content, $contentContainerId, $sourceRecordId)) {
                     continue;
                 }
+                $listed = $this->isListed($class, $user);
+                if (!$listed && DeliveryScheduler::getTargets($class, $user) === []) {
+                    // no channel takes it: neither the web list nor any other
+                    continue;
+                }
 
                 $record = new Notification([
                     'class' => $class,
@@ -137,7 +156,7 @@ class DispatchJob extends LongRunningActiveJob
                     'contentcontainer_id' => $contentContainerId,
                     'source_record_id' => $sourceRecordId,
                     'priority' => $priority->value,
-                    'listed' => $class::listed() ? 1 : 0,
+                    'listed' => $listed ? 1 : 0,
                     'payload' => $payload,
                     'created_at' => date('Y-m-d H:i:s'),
                 ]);
@@ -154,7 +173,9 @@ class DispatchJob extends LongRunningActiveJob
                 $accepted = true;
 
                 $notification->getGroupingService()->afterInsert();
-                if ($notification->getGroupingQuery() !== null) {
+                // the delivery is of this record (its id and priority), not of the group head
+                $delivered = $notification;
+                if ($class::grouping() !== null) {
                     // The record heads its group if it formed or joined one: reload it as the group
                     // row, so the sentence is the grouped one (groupCount is readonly on the object)
                     $head = Notification::find()
@@ -165,7 +186,7 @@ class DispatchJob extends LongRunningActiveJob
                     $notification = $head ? NotificationManager::load($head) : $notification;
                 }
 
-                if ($class::listed()) {
+                if ($listed) {
                     // A failing live driver (or rendering) must not skip the delivery
                     try {
                         Yii::$app->live->send(new NewNotification([
@@ -185,7 +206,7 @@ class DispatchJob extends LongRunningActiveJob
                     }
                 }
 
-                $this->deliver($notification, $user);
+                $this->deliver($delivered, $user);
             } catch (Throwable $e) {
                 Yii::error(
                     'Notification ' . $class . ($record?->id ? ' #' . $record->id : '') . ' for user ' . $user->id . ': ' . $e,
@@ -204,29 +225,28 @@ class DispatchJob extends LongRunningActiveJob
     }
 
     /**
-     * Hands the notification to every channel enabled for the user, except the web list, which the
-     * record itself is.
-     *
-     * Phase 1: synchronous, one notification per {@see DeliveryBatch}. The delivery layer, which
-     * batches and delays the messages per {@see \humhub\modules\notification\targets\BaseTarget::$delays},
-     * replaces this. A failing channel is logged and does not stop the others.
+     * Whether the record appears in the user's web list: the web channel is enabled for the
+     * class ({@see WebTarget::isEnabled()}) - else it is stored unlisted, for the other channels.
      */
-    private function deliver(BaseNotification $notification, User $user): void
+    private function isListed(string $class, User $user): bool
     {
         foreach (Yii::$app->notification->getTargets($user) as $target) {
             if ($target instanceof WebTarget) {
-                continue;
-            }
-
-            try {
-                if (!$target->isEnabled($notification::class, $user)) {
-                    continue;
-                }
-                $target->deliver(new DeliveryBatch($user, [$notification], $target->id));
-            } catch (Throwable $e) {
-                Yii::error('Notification #' . $notification->record->id . ' delivery through ' . $target->id . ' failed: ' . $e, 'notification');
+                return $target->isEnabled($class, $user);
             }
         }
+
+        return false;
+    }
+
+    /**
+     * Hands the notification to the delivery layer, which schedules its delivery through every
+     * channel enabled for the user except the web list (the record itself is that), see
+     * {@see DeliveryScheduler}.
+     */
+    private function deliver(BaseNotification $notification, User $user): void
+    {
+        (new DeliveryScheduler())->schedule($notification, $user);
     }
 
     /**

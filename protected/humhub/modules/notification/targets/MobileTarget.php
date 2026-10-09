@@ -18,17 +18,14 @@ use yii\di\NotInstantiableException;
  *
  * @since 1.2, rewritten in 1.20
  */
-class MobileTarget extends BaseTarget
+final class MobileTarget extends BaseTarget
 {
-    /**
-     * @inheritdoc
-     */
-    public string $id = 'mobile';
+    public const ID = 'mobile';
 
     /**
      * @inheritdoc
      */
-    public array $modes = [self::MODE_ADAPTIVE, self::MODE_OFF];
+    public string $id = self::ID;
 
     /**
      * @var MobileTargetProvider|null the push provider; from the DI container unless configured

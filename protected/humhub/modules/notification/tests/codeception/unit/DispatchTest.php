@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
+use humhub\components\db\AfterCommit;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\notifications\NewVersionAvailableNotification;
@@ -17,19 +18,20 @@ use humhub\modules\content\notifications\ContentCreatedNotification;
 use humhub\modules\friendship\notifications\FriendshipRequestNotification;
 use humhub\modules\like\notifications\NewLikeNotification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\events\BeforeDispatchEvent;
 use humhub\modules\notification\events\UnreadCountChangedEvent;
 use humhub\modules\notification\jobs\DispatchJob;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\NotificationSettingsService;
 use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestContentNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestGroupedNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestHighPriorityNotification;
-use humhub\modules\notification\tests\codeception\unit\notifications\TestModuleGroupNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestModuleCategoryNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestRejectingNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestThrowingNotification;
@@ -46,9 +48,11 @@ use Yii;
 use yii\base\Event;
 use yii\base\InvalidArgumentException;
 use yii\log\Logger;
+use yii\queue\PushEvent;
+use yii\queue\Queue;
 
 /**
- * The queue of the test application is synchronous, so {@see NotificationManager::dispatch()}
+ * The queue of the test application is synchronous, so {@see BaseNotification::send()}
  * runs the {@see DispatchJob} inline.
  */
 class DispatchTest extends HumHubDbTestCase
@@ -65,7 +69,7 @@ class DispatchTest extends HumHubDbTestCase
     {
         // post 2: public post on the admin's profile, visible to all recipients
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestContentNotification::class, [1, 2, 3], $post, User::findOne(['id' => 2]));
+        TestContentNotification::send([1, 2, 3], $post, User::findOne(['id' => 2]));
 
         $rows = $this->rows(TestContentNotification::class);
         $this->assertSame([1, 3], array_map(fn(Notification $n) => (int)$n->user_id, $rows));
@@ -83,63 +87,63 @@ class DispatchTest extends HumHubDbTestCase
 
     public function testNotifyOriginatorOption()
     {
-        NotificationManager::dispatch(TestContentNotification::class, [1, 2], Post::findOne(['id' => 2]), User::findOne(['id' => 2]), ['notifyOriginator' => true]);
+        TestContentNotification::send([1, 2], Post::findOne(['id' => 2]), User::findOne(['id' => 2]), notifyOriginator: true);
         $this->assertSame([1, 2], $this->recipientIds(TestContentNotification::class));
     }
 
-    public function testPriorityOption()
+    public function testPriorityIsThatOfTheClass()
     {
-        NotificationManager::dispatch(TestNotification::class, 1, options: ['priority' => NotificationPriority::High]);
-        $this->assertSame(NotificationPriority::High->value, (int)$this->rows(TestNotification::class)[0]->priority);
+        TestNotification::send(1);
+        $this->assertSame(NotificationPriority::Low->value, (int)$this->rows(TestNotification::class)[0]->priority);
 
-        NotificationManager::dispatch(TestHighPriorityNotification::class, 1);
+        TestHighPriorityNotification::send(1);
         $this->assertSame(NotificationPriority::High->value, (int)$this->rows(TestHighPriorityNotification::class)[0]->priority);
     }
 
     public function testDedupeSkipsASecondDispatchOfTheSameClassAndSource()
     {
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestContentNotification::class, [1], $post);
-        NotificationManager::dispatch(TestContentNotification::class, [1, 3], $post);
+        TestContentNotification::send([1], $post);
+        TestContentNotification::send([1, 3], $post);
         $this->assertSame([1, 3], $this->recipientIds(TestContentNotification::class));
 
         // another source is no duplicate
-        NotificationManager::dispatch(TestContentNotification::class, [1], Post::findOne(['id' => 7]));
+        TestContentNotification::send([1], Post::findOne(['id' => 7]));
         $this->assertCount(3, $this->rows(TestContentNotification::class));
     }
 
     public function testDedupeOff()
     {
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestContentNotification::class, [1], $post);
-        NotificationManager::dispatch(TestContentNotification::class, [1], $post, options: ['dedupe' => false]);
+        TestContentNotification::send([1], $post);
+        TestContentNotification::send([1], $post, dedupe: false);
         $this->assertSame([1, 1], $this->recipientIds(TestContentNotification::class));
     }
 
     public function testNoDedupeWithoutSource()
     {
-        NotificationManager::dispatch(TestNotification::class, [1]);
-        NotificationManager::dispatch(TestNotification::class, [1]);
+        TestNotification::send([1]);
+        TestNotification::send([1]);
         $this->assertSame([1, 1], $this->recipientIds(TestNotification::class));
     }
 
     public function testRecipientsAsQueryAndAsUser()
     {
-        NotificationManager::dispatch(TestNotification::class, User::find()->where(['user.id' => [1, 3]]));
+        TestNotification::send(User::find()->where(['user.id' => [1, 3]]));
         $this->assertSame([1, 3], $this->recipientIds(TestNotification::class));
 
-        NotificationManager::dispatch(TestHighPriorityNotification::class, User::findOne(['id' => 2]));
+        TestHighPriorityNotification::send(User::findOne(['id' => 2]));
         $this->assertSame([2], $this->recipientIds(TestHighPriorityNotification::class));
 
         Notification::deleteAll();
-        NotificationManager::dispatch(TestNotification::class, [User::findOne(['id' => 4]), 3, 3]);
+        TestNotification::send([User::findOne(['id' => 4]), 3, 3]);
         $this->assertSame([3, 4], $this->recipientIds(TestNotification::class));
     }
 
     public function testDisabledUsersAreSkipped()
     {
         // user 5 is disabled
-        NotificationManager::dispatch(TestNotification::class, [1, 4, 5]);
+        TestNotification::send([1, 4, 5]);
         $this->assertSame([1, 4], $this->recipientIds(TestNotification::class));
     }
 
@@ -151,7 +155,7 @@ class DispatchTest extends HumHubDbTestCase
         $this->assertTrue($originator->isBlockedForUser(User::findOne(['id' => 3])));
         $this->assertFalse(User::findOne(['id' => 3])->isBlockedForUser($originator));
 
-        NotificationManager::dispatch(TestNotification::class, [1, 3, 4], null, $originator);
+        TestNotification::send([1, 3, 4], originator: $originator);
         $this->assertSame([1, 4], $this->recipientIds(TestNotification::class));
     }
 
@@ -163,20 +167,20 @@ class DispatchTest extends HumHubDbTestCase
         $this->assertTrue(User::findOne(['id' => 3])->isBlockedForUser($originator));
         $this->assertFalse($originator->isBlockedForUser(User::findOne(['id' => 3])));
 
-        NotificationManager::dispatch(TestNotification::class, [1, 3, 4], null, $originator);
+        TestNotification::send([1, 3, 4], originator: $originator);
         $this->assertSame([1, 4], $this->recipientIds(TestNotification::class));
     }
 
     public function testContentVisibilityIsChecked()
     {
         // post 11: private post in space 2, of which only user 2 is a member
-        NotificationManager::dispatch(TestContentNotification::class, [2, 3, 4], Post::findOne(['id' => 11]));
+        TestContentNotification::send([2, 3, 4], Post::findOne(['id' => 11]));
         $this->assertSame([2], $this->recipientIds(TestContentNotification::class));
     }
 
     public function testCanReceiveFilters()
     {
-        NotificationManager::dispatch(TestRejectingNotification::class, [1, 3]);
+        TestRejectingNotification::send([1, 3]);
         $this->assertSame([1], $this->recipientIds(TestRejectingNotification::class));
     }
 
@@ -184,7 +188,7 @@ class DispatchTest extends HumHubDbTestCase
     {
         static::logInitialize();
 
-        NotificationManager::dispatch(TestThrowingNotification::class, [1, 3, 2]);
+        TestThrowingNotification::send([1, 3, 2]);
 
         // user 3's row is written; only the rendering of its live event fails
         $this->assertSame([1, 2, 3], $this->recipientIds(TestThrowingNotification::class));
@@ -195,7 +199,7 @@ class DispatchTest extends HumHubDbTestCase
     {
         static::logInitialize();
 
-        NotificationManager::dispatch(TestRejectingNotification::class, [1, 2], options: ['payload' => ['throwFor' => 1]]);
+        TestRejectingNotification::send([1, 2], payload: ['throwFor' => 1]);
 
         $this->assertSame([2], $this->recipientIds(TestRejectingNotification::class));
         static::assertLogRegexCount(1, '/^Notification .*TestRejectingNotification #\\d+ for user 1: .*canReceive failed/s', Logger::LEVEL_ERROR, ['notification']);
@@ -208,12 +212,14 @@ class DispatchTest extends HumHubDbTestCase
             $this->assertSame([1, 3], $event->recipients);
             $this->assertNull($event->source);
             $this->assertSame(2, $event->originator->id);
-            $this->assertSame(['payload' => ['a' => 1]], $event->options);
+            $this->assertSame(['a' => 1], $event->payload);
+            $this->assertFalse($event->notifyOriginator);
+            $this->assertTrue($event->dedupe);
             $event->isValid = false;
         };
         Event::on(NotificationManager::class, NotificationManager::EVENT_BEFORE_DISPATCH, $handler);
         try {
-            NotificationManager::dispatch(TestNotification::class, [1, 3], null, User::findOne(['id' => 2]), ['payload' => ['a' => 1]]);
+            TestNotification::send([1, 3], originator: User::findOne(['id' => 2]), payload: ['a' => 1]);
         } finally {
             Event::off(NotificationManager::class, NotificationManager::EVENT_BEFORE_DISPATCH, $handler);
         }
@@ -228,7 +234,7 @@ class DispatchTest extends HumHubDbTestCase
         };
         Event::on(NotificationManager::class, NotificationManager::EVENT_BEFORE_DISPATCH, $handler);
         try {
-            NotificationManager::dispatch(TestNotification::class, [1, 3]);
+            TestNotification::send([1, 3]);
         } finally {
             Event::off(NotificationManager::class, NotificationManager::EVENT_BEFORE_DISPATCH, $handler);
         }
@@ -236,10 +242,35 @@ class DispatchTest extends HumHubDbTestCase
         $this->assertSame([4], $this->recipientIds(TestNotification::class));
     }
 
+    public function testDispatchInsideATransactionIsQueuedAfterTheCommit()
+    {
+        $jobs = $this->capturePushedJobs(function (): void {
+            $transaction = Yii::$app->db->beginTransaction();
+            TestNotification::send([1]);
+            $this->assertSame([], $this->pushedJobs);
+            $transaction->commit();
+        });
+
+        $this->assertCount(1, $jobs);
+        $this->assertInstanceOf(DispatchJob::class, $jobs[0]);
+        $this->assertSame([1], $jobs[0]->recipients);
+    }
+
+    public function testDispatchInsideARolledBackTransactionIsDropped()
+    {
+        $jobs = $this->capturePushedJobs(function (): void {
+            $transaction = Yii::$app->db->beginTransaction();
+            TestNotification::send([1]);
+            $transaction->rollBack();
+        });
+
+        $this->assertSame([], $jobs);
+    }
+
     public function testPayloadAndSourceRecord()
     {
         $comment = $this->createComment();
-        NotificationManager::dispatch(TestNotification::class, [1], $comment, User::findOne(['id' => 2]), ['payload' => ['reason' => 'reply']]);
+        TestNotification::send([1], $comment, User::findOne(['id' => 2]), payload: ['reason' => 'reply']);
 
         $row = $this->rows(TestNotification::class)[0];
         $this->assertSame($comment->content->id, (int)$row->content_id);
@@ -256,7 +287,7 @@ class DispatchTest extends HumHubDbTestCase
     {
         // a record that is neither a content nor a container: by its record map id only
         $source = Group::findOne(['id' => 1]);
-        NotificationManager::dispatch(TestNotification::class, [1], $source);
+        TestNotification::send([1], $source);
 
         $row = $this->rows(TestNotification::class)[0];
         $this->assertNull($row->content_id);
@@ -266,7 +297,7 @@ class DispatchTest extends HumHubDbTestCase
 
     public function testContainerSource()
     {
-        NotificationManager::dispatch(TestNotification::class, [1, 3], Space::findOne(['id' => 1]));
+        TestNotification::send([1, 3], Space::findOne(['id' => 1]));
         $this->assertSame([1, 3], $this->recipientIds(TestNotification::class));
         $row = $this->rows(TestNotification::class)[0];
         $this->assertSame(Space::findOne(['id' => 1])->contentcontainer_id, (int)$row->contentcontainer_id);
@@ -275,7 +306,7 @@ class DispatchTest extends HumHubDbTestCase
 
         // space 5 is private (invisible), of which user 3 is no member: a container-sourced
         // notification (e.g. an invite) reaches them all the same
-        NotificationManager::dispatch(TestHighPriorityNotification::class, [1, 3], Space::findOne(['id' => 5]));
+        TestHighPriorityNotification::send([1, 3], Space::findOne(['id' => 5]));
         $this->assertSame([1, 3], $this->recipientIds(TestHighPriorityNotification::class));
     }
 
@@ -302,8 +333,8 @@ class DispatchTest extends HumHubDbTestCase
         };
         Yii::$app->set('live', $stub);
         try {
-            NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 2]));
-            NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 3]));
+            TestGroupedNotification::send([1], $post, User::findOne(['id' => 2]));
+            TestGroupedNotification::send([1], $post, User::findOne(['id' => 3]));
         } finally {
             Yii::$app->set('live', $live);
         }
@@ -331,9 +362,9 @@ class DispatchTest extends HumHubDbTestCase
         };
         Event::on(UnreadCountChangedEvent::class, UnreadCountChangedEvent::EVENT_UNREAD_COUNT_CHANGED, $handler);
         try {
-            NotificationManager::dispatch(TestNotification::class, [1, 3]);
+            TestNotification::send([1, 3]);
             $this->assertSame(2, $count);
-            NotificationManager::dispatch(TestHighPriorityNotification::class, [1, 3]);
+            TestHighPriorityNotification::send([1, 3]);
             $this->assertSame(2, $count);
         } finally {
             Event::off(UnreadCountChangedEvent::class, UnreadCountChangedEvent::EVENT_UNREAD_COUNT_CHANGED, $handler);
@@ -342,63 +373,112 @@ class DispatchTest extends HumHubDbTestCase
 
     public function testListedFalseDoesNotCount()
     {
-        NotificationManager::dispatch(TestHighPriorityNotification::class, [1]);
+        TestHighPriorityNotification::send([1]);
         $this->assertSame(0, (int)$this->rows(TestHighPriorityNotification::class)[0]->listed);
         $this->assertSame(0, (int)Notification::find()->forUser(1)->listed()->count());
+    }
+
+    public function testWebSwitchedOffStoresTheRecordUnlisted()
+    {
+        (new NotificationSettingsService(User::findOne(['id' => 1])))->setCategory(new WebTarget(), NotificationCategory::social(), false);
+
+        TestNotification::send([1, 3]);
+
+        $rows = $this->rows(TestNotification::class);
+        $this->assertCount(2, $rows);
+        $listed = array_column(array_map(fn(Notification $row) => ['user' => $row->user_id, 'listed' => (int)$row->listed], $rows), 'listed', 'user');
+        $this->assertSame([1 => 0, 3 => 1], $listed, 'still stored for the e-mail, but not listed');
+        $this->assertSame(0, (int)Notification::find()->forUser(1)->listed()->count());
+    }
+
+    public function testNoChannelStoresNothing()
+    {
+        $settings = new NotificationSettingsService(User::findOne(['id' => 1]));
+        $settings->setCategory(new WebTarget(), NotificationCategory::social(), false);
+        $settings->setCategory(new MailTarget(), NotificationCategory::social(), false);
+
+        TestNotification::send([1]);
+        // not listed at all, and e-mail is off
+        TestHighPriorityNotification::send([1]);
+
+        $this->assertCount(0, $this->rows(TestNotification::class));
+        $this->assertCount(0, $this->rows(TestHighPriorityNotification::class));
     }
 
     public function testDeleteByClassSourceAndUser()
     {
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestContentNotification::class, [1, 3, 4], $post);
-        NotificationManager::dispatch(TestContentNotification::class, [1], Post::findOne(['id' => 7]));
-        NotificationManager::dispatch(TestNotification::class, [1], $post);
+        TestContentNotification::send([1, 3, 4], $post);
+        TestContentNotification::send([1], Post::findOne(['id' => 7]));
+        TestNotification::send([1], $post);
         // about a comment under the post: not touched by a deletion by the post
-        NotificationManager::dispatch(TestContentNotification::class, [1], $this->createComment());
+        TestContentNotification::send([1], $this->createComment());
 
-        $this->assertSame(1, NotificationManager::delete(TestContentNotification::class, $post, User::findOne(['id' => 3])));
+        $this->assertSame(1, TestContentNotification::revoke($post, User::findOne(['id' => 3])));
         $this->assertSame([1, 1, 1, 4], $this->recipientIds(TestContentNotification::class));
 
         // by the content record or the content itself; the comment's notification stays
-        $this->assertSame(2, NotificationManager::delete(TestContentNotification::class, $post->content));
+        $this->assertSame(2, TestContentNotification::revoke($post->content));
         $this->assertSame([1, 1], $this->recipientIds(TestContentNotification::class));
         $this->assertSame(1, (int)Notification::find()->andWhere(['class' => TestContentNotification::class])->andWhere(['IS NOT', 'source_record_id', null])->count());
         $this->assertCount(1, $this->rows(TestNotification::class));
 
         // by class only
-        $this->assertSame(2, NotificationManager::delete(TestContentNotification::class));
+        $this->assertSame(2, TestContentNotification::revoke());
         $this->assertSame([], $this->rows(TestContentNotification::class));
     }
 
     public function testDeleteBySourceRecordAndContainer()
     {
         $comment = $this->createComment();
-        $this->assertSame(0, NotificationManager::delete(TestNotification::class, Group::findOne(['id' => 1])), 'no record map row - nothing to match');
+        $this->assertSame(0, TestNotification::revoke(Group::findOne(['id' => 1])), 'no record map row - nothing to match');
 
-        NotificationManager::dispatch(TestNotification::class, [1, 3], $comment);
-        NotificationManager::dispatch(TestNotification::class, [1], Space::findOne(['id' => 1]));
-        $this->assertSame(2, NotificationManager::delete(TestNotification::class, $comment));
-        $this->assertSame(1, NotificationManager::delete(TestNotification::class, Space::findOne(['id' => 1])));
+        TestNotification::send([1, 3], $comment);
+        TestNotification::send([1], Space::findOne(['id' => 1]));
+        $this->assertSame(2, TestNotification::revoke($comment));
+        $this->assertSame(1, TestNotification::revoke(Space::findOne(['id' => 1])));
+    }
+
+    public function testSendWithNamedArguments()
+    {
+        $post = Post::findOne(['id' => 2]);
+        TestContentNotification::send(
+            recipients: [1, 2],
+            source: $post,
+            originator: User::findOne(['id' => 2]),
+            payload: ['a' => 1],
+            notifyOriginator: true,
+        );
+        TestContentNotification::send([1], source: $post, originator: User::findOne(['id' => 2]), dedupe: false);
+
+        $rows = $this->rows(TestContentNotification::class);
+        $this->assertSame([1, 2, 1], array_map(fn(Notification $row) => (int)$row->user_id, $rows));
+        $this->assertSame(NotificationPriority::Normal->value, (int)$rows[0]->priority);
+        $this->assertSame(['a' => 1], NotificationManager::fromRecord($rows[0])->payload);
+
+        $this->assertSame(1, TestContentNotification::revoke(source: $post, user: User::findOne(['id' => 2])));
+        TestContentNotification::markSeen(source: $post, user: User::findOne(['id' => 1]));
+        $this->assertSame(0, (int)Notification::find()->forUser(1)->unseen()->count());
     }
 
     public function testDeleteByOriginator()
     {
-        NotificationManager::dispatch(TestNotification::class, [1, 3], null, User::findOne(['id' => 2]));
-        NotificationManager::dispatch(TestNotification::class, [1], null, User::findOne(['id' => 4]));
+        TestNotification::send([1, 3], originator: User::findOne(['id' => 2]));
+        TestNotification::send([1], originator: User::findOne(['id' => 4]));
 
-        $this->assertSame(2, NotificationManager::delete(TestNotification::class, originator: User::findOne(['id' => 2])));
+        $this->assertSame(2, TestNotification::revoke(originator: User::findOne(['id' => 2])));
         $this->assertSame([4], array_map(fn(Notification $n) => (int)$n->originator_id, $this->rows(TestNotification::class)));
     }
 
     public function testMarkSeenMarksTheWholeGroupAndTriggersTheEvent()
     {
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 2]));
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 3]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 2]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 3]));
         // another recipient of the same class and source
-        NotificationManager::dispatch(TestGroupedNotification::class, [3], $post, User::findOne(['id' => 2]));
+        TestGroupedNotification::send([3], $post, User::findOne(['id' => 2]));
 
-        $count = $this->countUnreadEvents(fn() => NotificationManager::markSeen(TestGroupedNotification::class, $post, User::findOne(['id' => 1])));
+        $count = $this->countUnreadEvents(fn() => TestGroupedNotification::markSeen($post, User::findOne(['id' => 1])));
         $this->assertSame(1, $count);
 
         $rows = $this->rows(TestGroupedNotification::class);
@@ -410,22 +490,22 @@ class DispatchTest extends HumHubDbTestCase
     public function testMarkSeenMarksTheGroupOfAMatchingMember()
     {
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 2]));
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 3]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 2]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 3]));
         $rows = $this->rows(TestGroupedNotification::class);
         // the older member is seen already: the group is still marked through it
         Notification::updateAll(['seen_at' => date('Y-m-d H:i:s')], ['id' => $rows[0]->id]);
 
-        NotificationManager::markSeen(TestGroupedNotification::class, $post, User::findOne(['id' => 1]));
+        TestGroupedNotification::markSeen($post, User::findOne(['id' => 1]));
         $this->assertSame(0, (int)Notification::find()->forUser(1)->unseen()->count());
     }
 
     public function testMarkRecordSeen()
     {
         $post = Post::findOne(['id' => 2]);
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 2]));
-        NotificationManager::dispatch(TestGroupedNotification::class, [1], $post, User::findOne(['id' => 3]));
-        NotificationManager::dispatch(TestNotification::class, [1]);
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 2]));
+        TestGroupedNotification::send([1], $post, User::findOne(['id' => 3]));
+        TestNotification::send([1]);
 
         $rows = $this->rows(TestGroupedNotification::class);
         $count = $this->countUnreadEvents(fn() => NotificationManager::markRecordSeen($rows[0]));
@@ -439,8 +519,8 @@ class DispatchTest extends HumHubDbTestCase
 
     public function testMarkAllSeen()
     {
-        NotificationManager::dispatch(TestNotification::class, [1, 3]);
-        NotificationManager::dispatch(TestHighPriorityNotification::class, [1]);
+        TestNotification::send([1, 3]);
+        TestHighPriorityNotification::send([1]);
 
         $this->assertSame(1, $this->countUnreadEvents(fn() => NotificationManager::markAllSeen(User::findOne(['id' => 1]))));
         $this->assertSame(0, (int)Notification::find()->forUser(1)->unseen()->count());
@@ -451,31 +531,32 @@ class DispatchTest extends HumHubDbTestCase
     {
         $user = User::findOne(['id' => 1]);
         $this->assertSame(0, $this->countUnreadEvents(fn() => NotificationManager::markAllSeen($user)));
-        $this->assertSame(0, $this->countUnreadEvents(fn() => NotificationManager::markSeen(TestNotification::class, null, $user)));
-        $this->assertSame(0, $this->countUnreadEvents(fn() => NotificationManager::markSeen(TestNotification::class, Group::findOne(['id' => 1]), $user)));
+        $this->assertSame(0, $this->countUnreadEvents(fn() => TestNotification::markSeen(null, $user)));
+        $this->assertSame(0, $this->countUnreadEvents(fn() => TestNotification::markSeen(Group::findOne(['id' => 1]), $user)));
     }
 
-    public function testGetGroupsListsCoreGroupsThenModuleGroups()
+    public function testGetCategoriesListsCoreCategoriesThenModuleCategories()
     {
         $manager = $this->managerWithClasses([
-            TestModuleGroupNotification::class,
+            TestModuleCategoryNotification::class,
             TestNotification::class,
             TestContentNotification::class,
             // an unloadable class is skipped
             'humhub\\modules\\notification\\NoSuchNotification',
         ]);
-        $ids = fn(array $groups) => array_map(fn(NotificationGroup $g) => $g->id, $groups);
+        $ids = fn(array $categories) => array_map(fn(NotificationCategory $category) => $category->id, $categories);
 
         $this->assertSame([
-            NotificationGroup::ID_DIRECT,
-            NotificationGroup::ID_SOCIAL,
-            NotificationGroup::ID_CONTENT,
+            NotificationCategory::ID_DIRECT,
+            NotificationCategory::ID_SOCIAL,
+            NotificationCategory::ID_FOLLOWERS,
+            NotificationCategory::ID_CONTENT,
             'example-reports',
-            NotificationGroup::ID_ADMIN,
-        ], $ids($manager->getGroups()));
+            NotificationCategory::ID_ADMIN,
+        ], $ids($manager->getCategories()));
 
-        $this->assertContains(NotificationGroup::ID_ADMIN, $ids($manager->getGroups(User::findOne(['id' => 1]))));
-        $this->assertNotContains(NotificationGroup::ID_ADMIN, $ids($manager->getGroups(User::findOne(['id' => 2]))));
+        $this->assertContains(NotificationCategory::ID_ADMIN, $ids($manager->getCategories(User::findOne(['id' => 1]))));
+        $this->assertNotContains(NotificationCategory::ID_ADMIN, $ids($manager->getCategories(User::findOne(['id' => 2]))));
     }
 
     public function testGetNotificationsScansTheCoreModules()
@@ -506,22 +587,23 @@ class DispatchTest extends HumHubDbTestCase
 
         // no core notification brings a group of its own
         $this->assertSame([
-            NotificationGroup::ID_DIRECT,
-            NotificationGroup::ID_SOCIAL,
-            NotificationGroup::ID_CONTENT,
-            NotificationGroup::ID_ADMIN,
-        ], array_map(fn(NotificationGroup $g) => $g->id, $manager->getGroups()));
+            NotificationCategory::ID_DIRECT,
+            NotificationCategory::ID_SOCIAL,
+            NotificationCategory::ID_FOLLOWERS,
+            NotificationCategory::ID_CONTENT,
+            NotificationCategory::ID_ADMIN,
+        ], array_map(fn(NotificationCategory $g) => $g->id, $manager->getCategories()));
     }
 
     public function testSearchEventCanAddNotificationClasses()
     {
         $manager = $this->managerWithClasses([]);
         $manager->on(NotificationManager::EVENT_SEARCH_MODULE_NOTIFICATIONS, function ($event): void {
-            $event->result[] = TestModuleGroupNotification::class;
+            $event->result[] = TestModuleCategoryNotification::class;
         });
 
-        $this->assertSame([TestModuleGroupNotification::class], $manager->getNotifications());
-        $this->assertContains('example-reports', array_map(fn(NotificationGroup $g) => $g->id, $manager->getGroups()));
+        $this->assertSame([TestModuleCategoryNotification::class], $manager->getNotifications());
+        $this->assertContains('example-reports', array_map(fn(NotificationCategory $g) => $g->id, $manager->getCategories()));
     }
 
     public function testTargetsAreDedupedById()
@@ -605,6 +687,35 @@ class DispatchTest extends HumHubDbTestCase
                 return $this->classes;
             }
         };
+    }
+
+    private array $pushedJobs = [];
+
+    /**
+     * Runs the callback outside the transaction the test harness wraps around the test (no data
+     * is written: the pushed jobs are recorded, not queued) and returns the pushed jobs.
+     */
+    private function capturePushedJobs(callable $callback): array
+    {
+        $db = Yii::$app->db;
+        while ($db->getTransaction()?->getIsActive()) {
+            $db->getTransaction()->rollBack();
+        }
+        AfterCommit::$immediate = false;
+
+        $this->pushedJobs = [];
+        $handler = function (PushEvent $event): void {
+            $this->pushedJobs[] = $event->job;
+            $event->handled = true;
+        };
+        Yii::$app->queue->on(Queue::EVENT_BEFORE_PUSH, $handler);
+        try {
+            $callback();
+        } finally {
+            Yii::$app->queue->off(Queue::EVENT_BEFORE_PUSH, $handler);
+        }
+
+        return $this->pushedJobs;
     }
 
     private function countUnreadEvents(callable $callback): int

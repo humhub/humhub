@@ -8,6 +8,9 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\ActiveRecord as HumHubActiveRecord;
+use humhub\components\message\MessageFormat;
+use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -18,6 +21,7 @@ use humhub\modules\content\models\ContentContainer;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\services\GroupingService;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
@@ -30,13 +34,21 @@ use yii\helpers\Url;
 /**
  * A notification bound to its {@see Notification} record.
  *
+ * A module's notification class extends this class, implements {@see getMessage()} and is sent
+ * with {@see send()}. Everything else has a default: the {@see category()} users switch it with
+ * (the module's own one), its {@see priority()}, whether it is {@see listed()} in the web list,
+ * its {@see grouping()}, the {@see getMessageParams()} its sentence needs beyond the built-in ones,
+ * the {@see getUrl()} it links to, an {@see getExcerpt()}, the {@see getActions()} of a mail, the
+ * {@see getSubjectRecord()} the sentence names and the {@see getPreviewRecord()} a mail previews.
+ * See `docs/develop/concept-notifications.md`.
+ *
  * Instances are not created directly but by {@see NotificationManager::load()}, which reads the
  * record (or, for a group, its newest member) and resolves its references: the recipient, the
  * originator, the content, the content container and any other source record through the
  * {@see RecordMap}. All of them are exposed as readonly properties.
  *
- * A notification renders one sentence through {@see getMessage()}, which receives the message
- * parameters of the channel it is rendered for:
+ * The built-in message parameters, rendered for the channel together with those of
+ * {@see getMessageParams()}:
  *
  * - `displayName` - the originator, or `''` without one
  * - `displayNames` - the originator and the other members of a group (`''` below two members)
@@ -44,52 +56,77 @@ use yii\helpers\Url;
  * - `namedCount` - how many people `displayNames` names: `0` when it is empty, `1` when a group
  *   collapses to one person (e.g. one originator's notifications), `2` for "A and B" as well as
  *   "A, B and 2 more"
- * - `content`, `contentTitle` - only when the notification is about a content; `[Deleted]` when
- *   the content's record is gone
- *
- * {@see asWeb()} and {@see asMailHtml()} pass HTML-encoded names wrapped in `<strong>`,
- * {@see asMailText()} the plain names and {@see asPush()} the plain text without any markup.
- *
- * Subclasses declare their {@see group()}, which settles the default {@see priority()}, and
- * whether they are {@see listed()} in the web list.
+ * - `content`, `contentTitle` - only when the notification is about a content: the
+ *   {@see getSubjectRecord()} with and without its type name; `[Deleted]` when the content's
+ *   record is gone
  *
  * @since 1.20
  */
 abstract class BaseNotification extends BaseObject
 {
+    /**
+     * Max length of the content preview in the web list, a push message and a mail subject.
+     */
+    private const PREVIEW_LENGTH_SHORT = 60;
+
+    /**
+     * Max length of the content preview in a mail.
+     */
+    private const PREVIEW_LENGTH_LONG = 300;
+
+    /**
+     * Max length of the {@see getExcerpt()} in a mail.
+     */
+    private const EXCERPT_LENGTH = 1000;
+
+    /**
+     * @api
+     */
     public readonly Notification $record;
+
+    /**
+     * @api
+     */
     public readonly User $recipient;
+
+    /**
+     * @api
+     */
     public readonly ?User $originator;
+
+    /**
+     * @api
+     */
     public readonly ?Content $content;
+
+    /**
+     * @api
+     */
     public readonly ?ContentContainer $contentContainer;
+
+    /**
+     * @var ActiveRecord|null the source record other than a content or a container, e.g. a comment
+     * @api
+     */
     public readonly ?ActiveRecord $sourceRecord;
+
+    /**
+     * @var array the `payload` of {@see send()}
+     * @api
+     */
     public readonly array $payload;
+
+    /**
+     * @var int the size of the group this notification represents, 1 when not grouped
+     * @api
+     */
     public readonly int $groupCount;
-
-    /**
-     * @var int minimum members of a group
-     */
-    public int $groupingThreshold = 2;
-
-    /**
-     * @var int length of the time bucket the members of a group are created in
-     */
-    public int $groupingTimeBucketSeconds = 900;
-
-    /**
-     * @var int max length of the content preview in the web list
-     */
-    public int $webContentLength = 60;
-
-    /**
-     * @var int max length of the content preview in mails
-     */
-    public int $mailContentLength = 300;
 
     private ?GroupingService $_groupingService = null;
 
     /**
      * @throws IntegrityException when the source record is gone
+     * @internal use {@see NotificationManager::load()}
      */
     public function __construct(Notification $record, $config = [])
     {
@@ -146,61 +183,223 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * The group the user switches this notification on or off with.
+     * Sends the notification to the recipients - asynchronously, after the current transaction
+     * of `Yii::$app->db` is committed.
+     *
+     * ```php
+     * TaskAssignedNotification::send($assignees, source: $task, originator: $user);
+     * ```
+     *
+     * A recipient is skipped when they are not enabled, are the originator (unless `$notifyOriginator`),
+     * block or are blocked by the originator, cannot view the content, already have this
+     * notification about the source by the originator (unless `$dedupe` is off), or are rejected
+     * by {@see canReceive()}.
+     *
+     * @param ActiveQueryUser|User|int|array<User|int> $recipients a query must be self-contained: it is
+     * serialized into the queue, so it cannot be a relation query bound to a `primaryModel`
+     * @param HumHubActiveRecord|null $source what the notification is about: a content, a content record (e.g. a
+     * post), a content addon (e.g. a comment), a container or any other saved record
+     * @param User|null $originator the user who caused the notification
+     * @param array $payload data stored with the notification as JSON, see {@see $payload}
+     * @param bool $notifyOriginator whether the originator receives it when among the recipients
+     * @param bool $dedupe whether a recipient who already has this notification about the source by
+     * the originator is skipped; no effect without a source
+     * @api
      */
-    abstract public static function group(): NotificationGroup;
-
-    /**
-     * The sentence of the notification, built from the message parameters of a channel.
-     */
-    abstract protected function getMessage(array $params): string;
-
-    public static function priority(): NotificationPriority
-    {
-        return static::group()->priority;
+    final public static function send(
+        ActiveQueryUser|User|int|array $recipients,
+        ?HumHubActiveRecord $source = null,
+        ?User $originator = null,
+        array $payload = [],
+        bool $notifyOriginator = false,
+        bool $dedupe = true,
+    ): void {
+        NotificationManager::dispatch(
+            static::class,
+            $recipients,
+            $source,
+            $originator,
+            $payload,
+            $notifyOriginator,
+            $dedupe,
+        );
     }
 
     /**
-     * Whether the notification appears in the web list.
+     * Deletes the notifications of this class - about the source, of the recipient and by the
+     * originator, each when given. A notification about a content or a content addon is deleted
+     * with it; one about any other record is revoked by the module when it deletes the record.
+     *
+     * @return int the number of deleted notifications
+     * @api
+     */
+    final public static function revoke(?HumHubActiveRecord $source = null, ?User $user = null, ?User $originator = null): int
+    {
+        return NotificationManager::delete(static::class, $source, $user, $originator);
+    }
+
+    /**
+     * Marks the user's notifications of this class about the source seen - with the whole groups
+     * they belong to, e.g. when the user opened the record the notification is about.
+     *
+     * @api
+     */
+    final public static function markSeen(?HumHubActiveRecord $source, User $user): void
+    {
+        NotificationManager::markSeen(static::class, $source, $user);
+    }
+
+    /**
+     * The category the user switches this notification on or off with: by default the module's
+     * own one ({@see NotificationCategory::ofModule()}).
+     *
+     * @api
+     */
+    public static function category(): NotificationCategory
+    {
+        return NotificationCategory::ofModule(static::class);
+    }
+
+    /**
+     * How urgently the notification is delivered: by default the priority of its {@see category()}.
+     *
+     * @api
+     */
+    public static function priority(): NotificationPriority
+    {
+        return static::category()->priority;
+    }
+
+    /**
+     * Whether the notification appears in the web list - else it is delivered by the other
+     * channels (mail, push) only.
+     *
+     * @api
      */
     public static function listed(): bool
     {
         return true;
     }
 
+    /**
+     * Which notifications of this class are shown as one entry, e.g. `Grouping::byContent()`;
+     * `null` (the default) for none.
+     *
+     * @api
+     */
+    public static function grouping(): ?Grouping
+    {
+        return null;
+    }
+
+    /**
+     * The sentence of the notification, e.g.
+     * `Yii::t('TasksModule.base', '{displayName} assigned you to {task}.', $params)`.
+     *
+     * @param array<string, string|int> $params the built-in parameters and those of
+     * {@see getMessageParams()}, rendered for the channel: HTML-encoded for the web list and HTML
+     * mails, plain text for text mails, mail subjects and push messages
+     * @api
+     */
+    abstract protected function getMessage(array $params): string;
+
+    /**
+     * The message parameters this class adds to the built-in ones (and may override them with):
+     * a plain string or a {@see MessageParam}, e.g. `['task' => MessageParam::emphasis($task->title)]`.
+     * Values are rendered per channel, see {@see getMessage()}.
+     *
+     * @return array<string, MessageParam|string|int>
+     * @api
+     */
+    protected function getMessageParams(): array
+    {
+        return [];
+    }
+
+    /**
+     * The subject of a mail about this notification alone, from the plain text parameters of
+     * {@see getMessage()}: the sentence by default.
+     *
+     * @param array<string, string|int> $params
+     * @api
+     */
+    protected function getMailSubject(array $params): string
+    {
+        return $this->getMessage($params);
+    }
+
+    /**
+     * The HTML sentence of the web list.
+     *
+     * @api for channel providers
+     */
     final public function asWeb(): string
     {
-        return $this->getMessage($this->getMessageParamsWeb());
+        return $this->getMessage($this->renderParams(MessageFormat::Html, self::PREVIEW_LENGTH_SHORT));
     }
 
+    /**
+     * The HTML sentence of a mail, with the long content preview.
+     *
+     * @api for channel providers
+     */
     final public function asMailHtml(): string
     {
-        return $this->getMessage($this->getMessageParamsMailHtml());
+        return $this->getMessage($this->renderParams(MessageFormat::Html, self::PREVIEW_LENGTH_LONG, true));
     }
 
+    /**
+     * The plain text sentence of a mail, with the long content preview.
+     *
+     * @api for channel providers
+     */
     final public function asMailText(): string
     {
-        return $this->getMessage($this->getMessageParamsMailText());
+        return $this->getMessage($this->renderParams(MessageFormat::Text, self::PREVIEW_LENGTH_LONG));
     }
 
     /**
      * The plain text sentence with the short content preview of the web list.
+     *
+     * @api for channel providers
      */
     final public function asPush(): string
     {
-        return $this->getMessage($this->getMessageParamsPlain($this->webContentLength));
+        return $this->getMessage($this->renderParams(MessageFormat::Text, self::PREVIEW_LENGTH_SHORT));
     }
 
     /**
-     * The plain text sentence with the short content preview of the web list.
+     * The plain text {@see getMailSubject()}, with the short content preview of the web list.
+     *
+     * @api for channel providers
      */
-    public function getMailSubject(): string
+    final public function asMailSubject(): string
     {
-        return $this->getMessage($this->getMessageParamsPlain($this->webContentLength));
+        return $this->getMailSubject($this->renderParams(MessageFormat::Text, self::PREVIEW_LENGTH_SHORT));
+    }
+
+    /**
+     * The {@see getExcerpt()} for a mail: HTML-encoded with line breaks, or plain text; shortened
+     * when long, `null` without an excerpt.
+     *
+     * @internal
+     */
+    final public function renderExcerpt(MessageFormat $format): ?string
+    {
+        $excerpt = $this->getExcerpt();
+        if ($excerpt === null || trim($excerpt) === '') {
+            return null;
+        }
+
+        $rendered = MessageParam::text(trim($excerpt), self::EXCERPT_LENGTH)->render($format);
+
+        return $format === MessageFormat::Html ? nl2br($rendered) : $rendered;
     }
 
     /**
      * The target of the notification: a content addon (e.g. a comment), the content, or the container.
+     *
+     * @api
      */
     public function getUrl(bool $scheme = false): ?string
     {
@@ -217,6 +416,8 @@ abstract class BaseNotification extends BaseObject
 
     /**
      * The absolute `notification/entry` URL, which marks the group seen and redirects to {@see getUrl()}.
+     *
+     * @api for channel providers
      */
     final public function getEntryUrl(): string
     {
@@ -224,40 +425,36 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * @return array<array{label: string, url: string}>
+     * The actions offered outside the web list, e.g. as buttons of a mail: by default "View online",
+     * which opens {@see getUrl()} through the {@see getEntryUrl()}. `[]` for none.
+     *
+     * @return NotificationAction[]
+     * @api
      */
-    public function getMailActions(): array
+    public function getActions(): array
     {
-        return [
-            ['label' => Yii::t('NotificationModule.base', 'View online'), 'url' => $this->getEntryUrl()],
-        ];
+        return [new NotificationAction(Yii::t('NotificationModule.base', 'View online'), $this->getEntryUrl())];
     }
 
     /**
-     * Additional plain text shown under the sentence in the mail, e.g. a message the originator
-     * wrote; encoded by the view. `null` for none.
+     * Plain text shown under the sentence, e.g. a message the originator wrote; the channel
+     * encodes, breaks and shortens it. `null` (the default) for none.
      *
-     * @since 1.20
+     * @api
      */
-    public function getMailBody(): ?string
+    public function getExcerpt(): ?string
     {
         return null;
     }
 
     /**
-     * The content record whose preview a mail shows, if any.
+     * The record the sentence names as `content`/`contentTitle`: by default the content's record.
+     * A class whose sentence is about another record (a mention in a comment, a liked comment)
+     * returns e.g. {@see $sourceRecord} when that is a {@see ContentOwner}.
+     *
+     * @api
      */
-    public function getMailContentRecord(): ?ContentOwner
-    {
-        return $this->getContentOwner();
-    }
-
-    /**
-     * The record the sentence is about: the content's record by default. A subclass whose sentence
-     * is about another record (a mention in a comment, a liked comment) overrides it to return
-     * e.g. {@see $sourceRecord} when that is a {@see ContentOwner}.
-     */
-    protected function getContentOwner(): ?ContentOwner
+    public function getSubjectRecord(): ?ContentOwner
     {
         $record = $this->content?->getPolymorphicRelation();
 
@@ -265,11 +462,21 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
+     * The record a mail previews: by default the {@see getSubjectRecord()}; `null` for no preview.
+     *
+     * @api
+     */
+    public function getPreviewRecord(): ?ContentOwner
+    {
+        return $this->getSubjectRecord();
+    }
+
+    /**
      * The space the notification is about: by default its container, if that is a space. A
      * notification without a container (e.g. about a space membership) overrides it to name the
      * space, which also files it under that space in a mail of several notifications.
      *
-     * @since 1.20
+     * @api
      */
     public function getSpace(): ?Space
     {
@@ -279,7 +486,10 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * Whether the given user may receive this notification.
+     * Whether the given user may receive this notification - checked for every recipient right
+     * after the notification was written for them.
+     *
+     * @api
      */
     public function canReceive(User $user): bool
     {
@@ -287,72 +497,58 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * The query of the notifications this one is grouped with; `null` for an ungrouped notification.
+     * @internal
      */
-    public function getGroupingQuery(): ?ActiveQueryNotification
-    {
-        return null;
-    }
-
-    public function getGroupingService(): GroupingService
+    final public function getGroupingService(): GroupingService
     {
         return $this->_groupingService ??= new GroupingService($this);
     }
 
     /**
-     * The message parameters of the plain-text channels (mail text, mail subject, push): all
-     * values are plain text, nothing is HTML-encoded. The base of every channel's parameters -
-     * a subclass adds its own parameters here.
+     * The built-in parameters and those of {@see getMessageParams()}, rendered for a channel.
      *
-     * @param int $maxLength max length of the content preview
+     * @param int $previewLength max length of the content preview
+     * @param bool $strongContent whether the `content` parameter is wrapped in `<strong>` (HTML mails)
      */
-    protected function getMessageParamsPlain(int $maxLength): array
+    private function renderParams(MessageFormat $format, int $previewLength, bool $strongContent = false): array
     {
-        [$displayNames, $namedCount] = $this->resolveDisplayNames(fn(string $name): string => $name);
+        $params = array_merge(
+            $this->getBuiltInParams($previewLength, $strongContent),
+            $this->getMessageParams(),
+        );
+
+        return MessageParam::renderAll($params, $format);
+    }
+
+    /**
+     * @return array<string, MessageParam|string|int>
+     */
+    private function getBuiltInParams(int $previewLength, bool $strongContent): array
+    {
+        [$namesHtml, $namedCount] = $this->resolveDisplayNames(
+            static fn(User $user): string => MessageParam::user($user)->render(MessageFormat::Html),
+        );
+        [$namesText] = $this->resolveDisplayNames(
+            static fn(User $user): string => MessageParam::user($user)->render(MessageFormat::Text),
+        );
 
         return array_merge([
-            'displayName' => $this->originator?->displayName ?? '',
-            'displayNames' => $displayNames,
+            'displayName' => $this->originator !== null ? MessageParam::user($this->originator) : '',
+            'displayNames' => MessageParam::html($namesHtml, $namesText),
             'namedCount' => $namedCount,
             'groupCount' => $this->groupCount,
-        ], $this->getContentParams($maxLength, fn(string $info): string => $info, true));
+        ], $this->getContentParams($previewLength, $strongContent));
     }
 
     /**
-     * The plain-text parameters with the long content preview of mails.
-     */
-    protected function getMessageParamsMailText(): array
-    {
-        return $this->getMessageParamsPlain($this->mailContentLength);
-    }
-
-    protected function getMessageParamsWeb(): array
-    {
-        $encodeStrong = fn(string $name): string => Html::strong(Html::encode($name));
-
-        return array_merge($this->getMessageParamsPlain($this->webContentLength), [
-            'displayName' => $this->originator ? $encodeStrong($this->originator->displayName) : '',
-            'displayNames' => $this->formatDisplayNames($encodeStrong),
-        ], $this->getContentParams($this->webContentLength, fn(string $info): string => $info));
-    }
-
-    protected function getMessageParamsMailHtml(): array
-    {
-        return array_merge(
-            $this->getMessageParamsWeb(),
-            $this->getContentParams($this->mailContentLength, fn(string $info): string => Html::strong($info)),
-        );
-    }
-
-    /**
-     * `content` and `contentTitle` of {@see getContentOwner()}; `[Deleted]` for both when the
+     * `content` and `contentTitle` of {@see getSubjectRecord()}; `[Deleted]` for both when the
      * notification is about a content whose record is gone; `[]` when it is about no content.
      *
-     * @param bool $plain whether to decode the HTML entities of the (encoded) content info
+     * @return array<string, MessageParam|string>
      */
-    protected function getContentParams(int $maxLength, callable $contentFormatter, bool $plain = false): array
+    private function getContentParams(int $maxLength, bool $strongContent): array
     {
-        $owner = $this->getContentOwner();
+        $owner = $this->getSubjectRecord();
         if ($owner === null) {
             if ($this->record->content_id === null) {
                 return [];
@@ -363,28 +559,22 @@ abstract class BaseNotification extends BaseObject
             return ['content' => $deleted, 'contentTitle' => $deleted];
         }
 
-        $params = [
-            'content' => $contentFormatter(ContentHelper::getContentInfo($owner, true, $maxLength)),
-            'contentTitle' => ContentHelper::getContentInfo($owner, false, $maxLength),
-        ];
+        // getContentInfo() returns HTML; its plain text twin is the decoded HTML
+        $content = ContentHelper::getContentInfo($owner, true, $maxLength);
+        $contentTitle = ContentHelper::getContentInfo($owner, false, $maxLength);
+        $decode = static fn(string $html): string => html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
 
-        return $plain
-            ? array_map(fn(string $info): string => html_entity_decode($info, ENT_QUOTES | ENT_HTML5), $params)
-            : $params;
+        return [
+            'content' => MessageParam::html($strongContent ? Html::strong($content) : $content, $decode($content)),
+            'contentTitle' => MessageParam::html($contentTitle, $decode($contentTitle)),
+        ];
     }
 
     /**
      * The originator and the other members of a group, e.g. "Anna, Ben and 2 more"; `''` below two
-     * members. Without an originator, the others only.
-     */
-    protected function formatDisplayNames(callable $formatter): string
-    {
-        return $this->resolveDisplayNames($formatter)[0];
-    }
-
-    /**
-     * {@see formatDisplayNames()} and the number of people it names (0, 1 or 2).
+     * members. Without an originator, the others only. With the number of people it names (0, 1 or 2).
      *
+     * @param callable(User): string $formatter
      * @return array{0: string, 1: int}
      */
     private function resolveDisplayNames(callable $formatter): array
@@ -397,11 +587,11 @@ abstract class BaseNotification extends BaseObject
         $names = [];
         $total = $grouping->countOtherGroupedUsers();
         if ($this->originator !== null) {
-            $names[] = $formatter($this->originator->displayName);
+            $names[] = $formatter($this->originator);
             $total++;
         }
         foreach ($grouping->getOtherGroupedUsers() as $user) {
-            $names[] = $formatter($user->displayName);
+            $names[] = $formatter($user);
         }
 
         if ($names === []) {

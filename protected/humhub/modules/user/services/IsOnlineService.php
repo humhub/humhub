@@ -26,18 +26,37 @@ class IsOnlineService
     {
     }
 
+    /**
+     * Records the user's activity for 60 seconds - always, also when the online status is not
+     * displayed ({@see isEnabled()}): {@see isRecentlyActive()} does not depend on the display.
+     */
     public function updateStatus(): void
     {
-        if ($this->isEnabled() && !Yii::$app->cache->exists($this->getCacheKey())) {
+        if ($this->user && !Yii::$app->cache->exists($this->getCacheKey())) {
             Yii::$app->cache->set($this->getCacheKey(), true, 60); // Expires in 60 seconds
         }
     }
 
+    /**
+     * The online status as displayed: `false` when the administrator or the user hides it.
+     */
     public function getStatus(): bool
     {
         return
             $this->isEnabled()
             && Yii::$app->cache->exists($this->getCacheKey());
+    }
+
+    /**
+     * Whether the user was active within the last minute, regardless of whether the online
+     * status is displayed - e.g. to hold back a notification mail while the user is on the site.
+     * Only meaningful where the cache is shared with the web requests (e.g. in queue workers).
+     *
+     * @since 1.20
+     */
+    public function isRecentlyActive(): bool
+    {
+        return $this->user !== null && Yii::$app->cache->exists($this->getCacheKey());
     }
 
     public function isEnabled(): bool

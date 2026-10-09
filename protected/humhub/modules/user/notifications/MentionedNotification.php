@@ -10,7 +10,7 @@ namespace humhub\modules\user\notifications;
 
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 
 /**
@@ -29,9 +29,9 @@ final class MentionedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**
@@ -39,9 +39,9 @@ final class MentionedNotification extends BaseNotification
      *
      * @inheritdoc
      */
-    protected function getContentOwner(): ?ContentOwner
+    public function getSubjectRecord(): ?ContentOwner
     {
-        return $this->sourceRecord instanceof ContentOwner ? $this->sourceRecord : parent::getContentOwner();
+        return $this->sourceRecord instanceof ContentOwner ? $this->sourceRecord : parent::getSubjectRecord();
     }
 
     /**
@@ -49,27 +49,22 @@ final class MentionedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('UserModule.notification', '{displayName} mentioned you in {contentTitle}.', [
-            'displayName' => $params['displayName'],
-            'contentTitle' => $params['content'],
-        ]);
+        return Yii::t('UserModule.notification', '{displayName} mentioned you in {content}.', $params);
     }
 
     /**
      * @inheritdoc
      */
-    public function getMailSubject(): string
+    protected function getMailSubject(array $params): string
     {
-        $owner = $this->getContentOwner();
-        if ($owner === null) {
-            return parent::getMailSubject();
+        $record = $this->getSubjectRecord();
+        if ($record === null) {
+            return parent::getMailSubject($params);
         }
-
-        $params = $this->getMessageParamsPlain($this->webContentLength);
 
         return Yii::t('UserModule.notification', '{displayName} just mentioned you in {contentTitle} "{preview}"', [
             'displayName' => $params['displayName'],
-            'contentTitle' => $owner->getContentName(),
+            'contentTitle' => $record->getContentName(),
             'preview' => $params['contentTitle'],
         ]);
     }

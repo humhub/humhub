@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\targets;
 
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\services\NotificationSettingsService;
 use humhub\modules\user\models\User;
 use yii\base\BaseObject;
@@ -19,24 +20,25 @@ use yii\base\InvalidConfigException;
  * a channel a module adds (e.g. a chat integration).
  *
  * A target is configured by its {@see $id} in the `targets` of the `notification` component
- * (`config/common.php`). Each user chooses one of its {@see $modes} and switches the
- * {@see \humhub\modules\notification\components\NotificationGroup}s on or off per channel, see
- * {@see NotificationSettingsService}. {@see deliver()} hands a {@see DeliveryBatch} - one or
- * several notifications of one recipient - to the channel.
+ * (`config/common.php`). Each user switches the {@see NotificationCategory}s on or off per channel,
+ * see {@see NotificationSettingsService}; a notification reaches the user through the channel
+ * when the target is active for them and its category is on ({@see isEnabled()}).
+ * {@see deliver()} hands a {@see DeliveryBatch} - one or several notifications of one recipient -
+ * to the channel.
  *
  * {@see $delays}, {@see $delayWindow}, {@see $lowPriorityDelay} and {@see $skipWhenOnline} are
- * read by the delivery layer, which batches the notifications of a recipient. Until it exists
- * (phase 2), the dispatch job delivers every notification at once, one per batch, and these
- * properties have no effect.
+ * read by the delivery layer: the {@see \humhub\modules\notification\services\DeliveryScheduler}
+ * decides when a notification goes out, and the {@see \humhub\modules\notification\jobs\DeliverJob}
+ * collects the recipient's pending notifications into one batch when one of them is due.
+ * `delays = [0]` makes a channel instant. With a queue that does not honour the delay of a job
+ * (e.g. the `Instant` and `Sync` drivers) every delay is 0, see
+ * {@see \humhub\modules\notification\services\DeliveryScheduler::isInstant()}.
  *
+ * @api for channel providers
  * @since 1.2, rewritten in 1.20
  */
 abstract class BaseTarget extends BaseObject
 {
-    public const MODE_ADAPTIVE = NotificationSettingsService::MODE_ADAPTIVE;
-    public const MODE_SUMMARY = NotificationSettingsService::MODE_SUMMARY;
-    public const MODE_OFF = NotificationSettingsService::MODE_OFF;
-
     /**
      * @var string unique id, also the key of the target in the `notification` component config and in the settings
      */
@@ -49,34 +51,31 @@ abstract class BaseTarget extends BaseObject
     public bool $active = true;
 
     /**
-     * @var string[] the modes a user may choose; the first is the default
-     * @since 1.20
-     */
-    public array $modes = [self::MODE_ADAPTIVE, self::MODE_OFF];
-
-    /**
-     * @var int[] read by the delivery layer: seconds to wait for the 1st, 2nd, … message within the
-     * {@see $delayWindow}; the last value applies to every further message
+     * @var int[] seconds the delivery layer waits with the 1st, 2nd, … message within the
+     * {@see $delayWindow}; the last value applies to every further message. A high-priority
+     * notification never waits.
      * @since 1.20
      */
     public array $delays = [0, 300, 900, 1800];
 
     /**
-     * @var int read by the delivery layer: seconds the messages counted for {@see $delays} reach back
+     * @var int seconds the messages counted for {@see $delays} reach back
      * @since 1.20
      */
     public int $delayWindow = 3600;
 
     /**
-     * @var int read by the delivery layer: seconds a low-priority notification waits for a message
-     * that goes out anyway
+     * @var int seconds a low-priority notification waits at least - it usually goes along with an
+     * earlier message, which takes all pending notifications of the channel
      * @since 1.20
      */
     public int $lowPriorityDelay = 1800;
 
     /**
-     * @var bool read by the delivery layer: whether nothing is sent while the recipient is online
-     * (and sees the notification in the web list)
+     * @var bool whether the delivery layer sends nothing while the recipient was active on the site
+     * within the last minute (and sees the notification in the web list), whether or not their
+     * online status is displayed: notifications already due are skipped, not postponed; those not
+     * yet due stay pending
      * @since 1.20
      */
     public bool $skipWhenOnline = false;
@@ -116,19 +115,19 @@ abstract class BaseTarget extends BaseObject
     }
 
     /**
-     * The user's mode of this channel, or the global default without a user.
+     * Whether the channel can carry notifications of the category at all - every category by default.
+     * The settings page offers a switch only for the categories a channel applies to.
      *
      * @since 1.20
      */
-    public function getMode(?User $user = null): string
+    public function appliesTo(NotificationCategory $category): bool
     {
-        return (new NotificationSettingsService($user))->getMode($this);
+        return true;
     }
 
     /**
      * Whether notifications of this class reach the user through this channel: the target is
-     * active, the mode is neither `off` nor `summary` (the summary mail carries those), and the
-     * class's group is switched on - or is not switchable.
+     * active and the class's category is switched on for it - or is not switchable.
      *
      * Without a user, the global defaults decide.
      *
@@ -141,11 +140,6 @@ abstract class BaseTarget extends BaseObject
             return false;
         }
 
-        $settings = new NotificationSettingsService($user);
-        if (in_array($settings->getMode($this), [self::MODE_OFF, self::MODE_SUMMARY], true)) {
-            return false;
-        }
-
-        return $settings->isGroupEnabled($this, $notificationClass::group());
+        return (new NotificationSettingsService($user))->isCategoryEnabled($this, $notificationClass::category());
     }
 }

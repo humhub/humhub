@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\notifications;
 
-use humhub\helpers\Html;
+use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -29,16 +29,15 @@ use Yii;
 final class SpaceRolesChangedNotification extends BaseNotification
 {
     use SpaceNotificationTrait {
-        getMessageParamsPlain as private traitGetMessageParamsPlain;
-        getMessageParamsWeb as private traitGetMessageParamsWeb;
+        getMessageParams as private getSpaceMessageParams;
     }
 
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**
@@ -74,30 +73,16 @@ final class SpaceRolesChangedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('SpaceModule.notification', '{displayName} changed your role to {roleName} in the space {spaceName}.', [
-            'displayName' => $params['displayName'],
-            'roleName' => $params['roleName'],
-            'spaceName' => $params['spaceName'],
-        ]);
+        return Yii::t('SpaceModule.notification', '{displayName} changed your role to {roleName} in the space {spaceName}.', $params);
     }
 
     /**
      * @inheritdoc
      */
-    protected function getMessageParamsPlain(int $maxLength): array
+    protected function getMessageParams(): array
     {
-        return array_merge($this->traitGetMessageParamsPlain($maxLength), [
-            'roleName' => $this->getRoleName(),
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getMessageParamsWeb(): array
-    {
-        return array_merge($this->traitGetMessageParamsWeb(), [
-            'roleName' => Html::strong(Html::encode($this->getRoleName())),
+        return array_merge($this->getSpaceMessageParams(), [
+            'roleName' => MessageParam::emphasis($this->getRoleName()),
         ]);
     }
 

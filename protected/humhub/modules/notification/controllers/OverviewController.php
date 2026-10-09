@@ -18,7 +18,7 @@ use Yii;
  *
  * A Vue island (`NotificationOverview`): this controller only renders its mount point and hands
  * over what the server owns — the first page of notifications, the (module-defined, localized)
- * notification groups that can be filtered by, and the rendered icon markup. Filtering and paging
+ * notification categories that can be filtered by, and the rendered icon markup. Filtering and paging
  * happen against the notification API from there
  * ({@see \humhub\modules\notification\controllers\api\NotificationController}).
  *
@@ -45,7 +45,7 @@ class OverviewController extends Controller
     }
 
     /**
-     * The notification groups the filter offers, in their sort order.
+     * The notification categories the filter offers, in their sort order.
      *
      * @return array{id: string, title: string}[]
      */
@@ -53,8 +53,8 @@ class OverviewController extends Controller
     {
         $result = [];
 
-        foreach (Yii::$app->notification->getGroups(Yii::$app->user->getIdentity()) as $group) {
-            $result[] = ['id' => $group->id, 'title' => $group->title];
+        foreach (Yii::$app->notification->getCategories(Yii::$app->user->getIdentity()) as $category) {
+            $result[] = ['id' => $category->id, 'title' => $category->title];
         }
 
         return $result;

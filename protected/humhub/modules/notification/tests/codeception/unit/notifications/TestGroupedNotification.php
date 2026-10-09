@@ -8,23 +8,22 @@
 
 namespace humhub\modules\notification\tests\codeception\unit\notifications;
 
-use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
-use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationCategory;
 
 final class TestGroupedNotification extends BaseNotification
 {
-    public static function group(): NotificationGroup
+    use TestPriorityTrait;
+
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::social();
+        return NotificationCategory::social();
     }
 
-    public function getGroupingQuery(): ?ActiveQueryNotification
+    public static function grouping(): ?Grouping
     {
-        return Notification::find()
-            ->andWhere(['notification.class' => self::class])
-            ->andWhere(['notification.content_id' => $this->content?->id]);
+        return Grouping::byClass()->andContent();
     }
 
     protected function getMessage(array $params): string

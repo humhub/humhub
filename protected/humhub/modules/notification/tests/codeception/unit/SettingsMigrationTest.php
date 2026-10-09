@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../../migrations/m261006_100100_settings.php';
 
 /**
  * The migration of the 1.19 category switches (`notification.<category>_<target>`) to the
- * channel modes and group switches.
+ * category switches.
  */
 class SettingsMigrationTest extends HumHubDbTestCase
 {
@@ -31,15 +31,16 @@ class SettingsMigrationTest extends HumHubDbTestCase
         $user4 = User::findOne(['id' => 4])->contentcontainer_id;
 
         $mobileOff = [];
-        foreach (array_keys(m261006_100100_settings::CATEGORY_GROUPS) as $category) {
+        foreach (array_keys(m261006_100100_settings::CATEGORY_MAP) as $category) {
             $mobileOff['notification.' . $category . '_mobile'] = '0';
         }
         $this->seedGlobal([
             // social by e-mail is off: comments and followed explicitly, likes by default
             'notification.comments_email' => '0',
             'notification.followed_email' => '0',
-            // dropped: the web list, and a category of a module
+            // likes in the web list are still on by default: social stays on in the web list
             'notification.comments_web' => '0',
+            // dropped: a category of a module
             'notification.tasks_email' => '0',
         ] + $mobileOff);
         // explicitly on under a global "off": the user gets the positive keys
@@ -47,38 +48,35 @@ class SettingsMigrationTest extends HumHubDbTestCase
             'notification.comments_email' => '1',
             'notification.mentioned_mobile' => '1',
         ]);
-        // only a web key: the user follows the global result, no key of its own
+        // a web key: comments in the web list are off globally, so social is off in the web list
         $this->seedUser($user3, [
             'notification.like_web' => '0',
         ]);
         $userOff = [];
-        foreach (array_keys(m261006_100100_settings::CATEGORY_GROUPS) as $category) {
+        foreach (array_keys(m261006_100100_settings::CATEGORY_MAP) as $category) {
             $userOff['notification.' . $category . '_email'] = '0';
         }
-        // every mapped category off - a module category on does not keep the channel on
+        // every mapped category off - the direct category stays on, a module category is dropped
         $this->seedUser($user4, $userOff + ['notification.tasks_email' => '1']);
 
         (new m261006_100100_settings(['compact' => true]))->safeUp();
 
         $this->assertEquals([
-            'email.group.social' => '0',
-            'mobile.group.admin' => '0',
-            'mobile.group.content' => '0',
-            'mobile.group.social' => '0',
-            'mobile.mode' => 'off',
+            'email.category.social' => '0',
+            'mobile.category.admin' => '0',
+            'mobile.category.content' => '0',
+            'mobile.category.social' => '0',
         ], $this->globalSettings());
 
         $this->assertEquals([
-            'email.group.social' => '1',
-            'mobile.mode' => 'adaptive',
+            'email.category.social' => '1',
         ], $this->userSettings($user2));
 
-        $this->assertEquals([], $this->userSettings($user3));
+        $this->assertEquals(['web.category.social' => '0'], $this->userSettings($user3));
 
         $this->assertEquals([
-            'email.group.admin' => '0',
-            'email.group.content' => '0',
-            'email.mode' => 'off',
+            'email.category.admin' => '0',
+            'email.category.content' => '0',
         ], $this->userSettings($user4));
 
         $this->assertSame(0, (int)(new Query())->from('setting')->where(['module_id' => 'notification'])->andWhere(['LIKE', 'name', 'notification.%', false])->count());
@@ -94,7 +92,7 @@ class SettingsMigrationTest extends HumHubDbTestCase
             'notification.comments_email' => '0',
             'notification.followed_email' => '0',
         ]);
-        // one key only: the other categories of the group were on by default
+        // one key only: the other old categories of the category were on by default
         $this->seedUser($user3, [
             'notification.comments_mobile' => '0',
         ]);
@@ -102,7 +100,7 @@ class SettingsMigrationTest extends HumHubDbTestCase
         (new m261006_100100_settings(['compact' => true]))->safeUp();
 
         $this->assertEquals([], $this->globalSettings());
-        $this->assertEquals(['email.group.social' => '0'], $this->userSettings($user2));
+        $this->assertEquals(['email.category.social' => '0'], $this->userSettings($user2));
         $this->assertEquals([], $this->userSettings($user3));
     }
 
@@ -116,10 +114,12 @@ class SettingsMigrationTest extends HumHubDbTestCase
 
         (new m261006_100100_settings(['compact' => true]))->safeUp();
 
-        $this->assertSame('off', $this->globalSettings()['mobile.mode'] ?? null);
-        $this->assertSame('0', $this->globalSettings()['mobile.group.admin'] ?? null, 'the admin group is decided by admin_mobile alone');
-        $this->assertSame('off', $this->userSettings($user2)['email.mode'] ?? null);
-        $this->assertSame('0', $this->userSettings($user2)['email.group.admin'] ?? null);
+        $this->assertEquals([
+            'mobile.category.admin' => '0',
+            'mobile.category.content' => '0',
+            'mobile.category.social' => '0',
+        ], $this->globalSettings(), 'the admin category is decided by admin_mobile alone; new followers by push are off by default');
+        $this->assertSame('0', $this->userSettings($user2)['email.category.admin'] ?? null);
     }
 
     public function testStoredSpaceCreatedKeyCounts()
@@ -129,13 +129,13 @@ class SettingsMigrationTest extends HumHubDbTestCase
 
         (new m261006_100100_settings(['compact' => true]))->safeUp();
 
-        $this->assertEquals(['email.group.content' => '0', 'email.group.social' => '0'], $this->userSettings($user2));
+        $this->assertEquals(['email.category.content' => '0', 'email.category.social' => '0'], $this->userSettings($user2));
     }
 
     private function allOffExceptSpaceCreated(string $target): array
     {
         $settings = [];
-        foreach (array_keys(m261006_100100_settings::CATEGORY_GROUPS) as $category) {
+        foreach (array_keys(m261006_100100_settings::CATEGORY_MAP) as $category) {
             if ($category !== 'space_created') {
                 $settings['notification.' . $category . '_' . $target] = '0';
             }
@@ -149,16 +149,33 @@ class SettingsMigrationTest extends HumHubDbTestCase
         $user2 = User::findOne(['id' => 2])->contentcontainer_id;
         $this->seedUser($user2, [
             'notification.comments_email' => '0',
-            'notification.followed_email' => '0',
-            'email.mode' => 'summary',
+            'notification.content_created_email' => '0',
+            'email.category.social' => '1',
         ]);
 
         (new m261006_100100_settings(['compact' => true]))->safeUp();
 
         $this->assertEquals([
-            'email.group.social' => '0',
-            'email.mode' => 'summary',
+            'email.category.content' => '0',
+            'email.category.social' => '1',
         ], $this->userSettings($user2));
+    }
+
+    public function testNewFollowersFollowTheNewDefaultsUnlessStored()
+    {
+        $user2 = User::findOne(['id' => 2])->contentcontainer_id;
+        $user3 = User::findOne(['id' => 3])->contentcontainer_id;
+        $this->seedGlobal(['notification.followed_web' => '0']);
+        // explicitly on: kept, although new followers by e-mail are off by default now
+        $this->seedUser($user2, ['notification.followed_email' => '1']);
+        // nothing stored for followed: the 1.20 default applies
+        $this->seedUser($user3, ['notification.comments_email' => '0']);
+
+        (new m261006_100100_settings(['compact' => true]))->safeUp();
+
+        $this->assertEquals(['web.category.followers' => '0'], $this->globalSettings());
+        $this->assertEquals(['email.category.followers' => '1'], $this->userSettings($user2));
+        $this->assertEquals(['email.category.social' => '0'], $this->userSettings($user3), 'likes by e-mail were off by default');
     }
 
     private function seedGlobal(array $settings): void
@@ -186,7 +203,7 @@ class SettingsMigrationTest extends HumHubDbTestCase
             ->select(['value', 'name'])
             ->from('setting')
             ->where(['module_id' => 'notification'])
-            ->andWhere(['OR', ['LIKE', 'name', '%.mode', false], ['LIKE', 'name', '%.group.%', false]])
+            ->andWhere(['LIKE', 'name', '%.category.%', false])
             ->orderBy('name')
             ->indexBy('name')
             ->column();
@@ -198,7 +215,7 @@ class SettingsMigrationTest extends HumHubDbTestCase
             ->select(['value', 'name'])
             ->from('contentcontainer_setting')
             ->where(['module_id' => 'notification', 'contentcontainer_id' => $containerId])
-            ->andWhere(['OR', ['LIKE', 'name', '%.mode', false], ['LIKE', 'name', '%.group.%', false]])
+            ->andWhere(['LIKE', 'name', '%.category.%', false])
             ->orderBy('name')
             ->indexBy('name')
             ->column();

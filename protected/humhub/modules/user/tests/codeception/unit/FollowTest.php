@@ -25,7 +25,8 @@ class FollowTest extends HumHubDbTestCase
         $follow = Follow::findOne(['object_model' => User::class, 'object_id' => 1, 'user_id' => 2]);
 
         $this->assertNotNull($follow);
-        $this->assertMailSent(1);
+        // new followers reach the user in the web list only, unless switched on for e-mail
+        $this->assertMailSent(0);
         $this->assertHasNotification(FollowedNotification::class, $follow, Yii::$app->user->id, 1);
 
         $record = Notification::findOne(['class' => FollowedNotification::class, 'user_id' => 1]);
@@ -36,7 +37,7 @@ class FollowTest extends HumHubDbTestCase
         $notification = NotificationManager::load($record);
         $this->assertStringEndsWith('is now following you.', $notification->asWeb());
         $this->assertSame(User::findOne(['id' => 2])->getUrl(), $notification->getUrl());
-        $this->assertNull($notification->getMailContentRecord());
+        $this->assertNull($notification->getPreviewRecord());
     }
 
     public function testFollowOfASpaceCreatesNoNotification()

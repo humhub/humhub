@@ -6,11 +6,10 @@ are bound to a container and not addressed to anybody in particular.
 
 A notification is written once per recipient and reaches the user through **channels**: the web
 list (the bell in the top bar and `/notification/overview`), e-mail, mobile push, and whatever a
-module adds. Today every channel receives a notification as soon as it is written: one mail or
-push per notification. A **delivery layer** that decides *when* a mail or push goes out — at once
-when the user is quiet, collected into one message when many arrive, never when the user has
-already seen the notification — follows in the next update; see [Delivery](#delivery) below and
-the [administrator's guide](../admin/notifications.md).
+module adds. The web list receives a notification as soon as it is written. For mail and push a
+**delivery layer** decides *when* a message goes out — at once when the user is quiet, collected
+into one message when many arrive, never when the user has already seen the notification; see
+[Delivery](#delivery) below and the [administrator's guide](../admin/notifications.md).
 
 Core examples:
 
@@ -21,227 +20,394 @@ Core examples:
 
 ## Implementing a notification
 
-### 1. The notification class
+A notification is one class in the module's `notifications/` directory. It extends
+`BaseNotification`, writes its sentence in `getMessage()` and is sent with `send()`. Everything
+else has a default and is overridden only when needed.
 
-Place it under your module's `notifications/` directory and extend `BaseNotification`. A class
-must provide two things: the sentence, and the group it belongs to:
+### A complete example
+
+A task module notifies the assignees of a task. The task is no content, so it is the source
+record of the notification; the module wants the assignments of one task grouped, the task
+title highlighted and the assigner's note shown under the sentence:
 
 ```php
-namespace johndoe\example\notifications;
+namespace johndoe\tasks\notifications;
 
+use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\Grouping;
+use johndoe\tasks\models\Task;
 use Yii;
 
-final class SomethingHappenedNotification extends BaseNotification
+final class TaskAssignedNotification extends BaseNotification
 {
-    public static function group(): NotificationGroup
+    public static function grouping(): ?Grouping
     {
-        return NotificationGroup::social();
+        // "Anna and Ben assigned you to “Release 2.0”"
+        return Grouping::bySource();
     }
 
     protected function getMessage(array $params): string
     {
-        return Yii::t('ExampleModule.notifications', '{displayName} did something cool.', $params);
+        return Yii::t(
+            'TasksModule.notifications',
+            '{groupCount, plural, =1{{displayName}} other{{displayNames}}} assigned you to {task}.',
+            $params,
+        );
+    }
+
+    protected function getMessageParams(): array
+    {
+        return ['task' => MessageParam::emphasis($this->getTask()?->title ?? '', 100)];
+    }
+
+    public function getUrl(bool $scheme = false): ?string
+    {
+        return $this->getTask()?->getUrl($scheme);
+    }
+
+    public function getExcerpt(): ?string
+    {
+        return $this->payload['note'] ?? null;
+    }
+
+    private function getTask(): ?Task
+    {
+        return $this->sourceRecord instanceof Task ? $this->sourceRecord : null;
     }
 }
 ```
 
-There are no view files. The same `getMessage()` renders the entry in the web list, the mail,
-its plain-text version and the push body; only `$params` differs per channel — in the web list
-and the HTML mail the names are bold, in plain text and push they are not. The parameters:
+Sending and revoking it:
+
+```php
+// Task::afterSave(), when assignees were added
+TaskAssignedNotification::send($newAssignees, source: $this, originator: Yii::$app->user->identity, payload: ['note' => $note]);
+
+// when an assignee is removed again
+TaskAssignedNotification::revoke(source: $this, user: $assignee);
+```
+
+There is no category to declare: the notification gets the module's own category — one switch
+"Tasks" per channel on the settings page — unless the class names another one, see
+[Category, priority, listing](#category-priority-listing). There are no view files either: the
+same `getMessage()` renders the web list, the HTML mail, the text mail, the mail subject and the
+push message.
+
+### The sentence and its parameters
+
+`getMessage(array $params)` returns the sentence, usually `Yii::t(…, $params)`. The parameters
+are rendered for the channel: HTML-encoded (with names in `<strong>`) for the web list and the
+HTML mail, plain text for the text mail, the mail subject and push. The built-in ones:
 
 | Parameter | Meaning |
 |---|---|
-| `displayName` | the originator |
+| `displayName` | the originator (`''` without one) |
 | `displayNames` | the originators of a grouped notification: "Anna, Bob and 2 more" (empty for a single one) |
 | `groupCount` | how many notifications the entry stands for (1 when ungrouped) |
-| `namedCount` | how many people `displayNames` names: 0 when empty, 1 when the group collapses to one person (e.g. one originator's notifications), 2 for "Anna and Bob" as well as "Anna, Bob and 2 more" — use the plural sentence only when it is 2 |
-| `content` | type and preview of the content: *post "Release notes"* (only when the source is a content; "[Deleted]" when the content's record is gone) |
+| `namedCount` | how many people `displayNames` names: 0 when empty, 1 when the group collapses to one person (e.g. one originator's notifications), 2 for "Anna and Bob" as well as "Anna, Bob and 2 more" |
+| `content` | type and preview of the `getSubjectRecord()`: *post "Release notes"* (only for a notification about a content; "[Deleted]" when the content's record is gone) |
 | `contentTitle` | the preview alone ("[Deleted]" as well when the record is gone) |
 
-The object is bound to its database record and exposes what the sentence usually needs:
+`getMessageParams()` adds the class's own parameters (and may override built-in ones). A value
+is a plain string — plain text, encoded for HTML — or a `humhub\components\message\MessageParam`:
+
+| Factory | HTML | Plain text |
+|---|---|---|
+| `MessageParam::text($text, ?$maxLength)` | encoded | as is |
+| `MessageParam::emphasis($text, ?$maxLength)` | encoded in `<strong>` | in “quotes” |
+| `MessageParam::user($user)` | the display name, encoded in `<strong>` | the display name |
+
+`$maxLength` cuts the text (with an ellipsis) before it is encoded. Numbers stay numbers, for
+ICU `plural` and `select`.
+
+When the sentence differs only by grouping, prefer one ICU message to branching in PHP — it
+keeps the translations together:
+
+```php
+// the same verb: pick the subject
+'{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.'
+// a verb that agrees with the number of people
+'{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} {content}.'
+```
+
+Branching on `$this->groupCount` in `getMessage()` and returning two messages is valid as well.
+
+`getMailSubject(array $params)` is the subject of a mail about this notification alone, from the
+plain-text parameters; the sentence by default.
+
+### What the object knows
+
+The object is bound to its database record and exposes what the sentence usually needs as
+readonly properties:
 
 | Property | |
 |---|---|
 | `$record` | the `Notification` row |
 | `$recipient` | the user this notification is for |
 | `$originator` | the user who caused it, `null` for system notifications |
-| `$content` | the related `Content`, when the source is a content or a comment |
+| `$content` | the related `Content`, when the source is a content or a content addon |
 | `$contentContainer` | the content's container, or the container itself when it is the source |
-| `$sourceRecord` | any other source record: a comment, a group, a membership request |
-| `$payload` | the array given at dispatch |
+| `$sourceRecord` | any other source record: a comment, a group, a task |
+| `$payload` | the `payload` given to `send()` |
 | `$groupCount` | see above |
 
-What you may override:
+### Hooks
 
 | Method | Default |
 |---|---|
-| `getMailSubject(): string` | the plain-text sentence |
+| `static category(): NotificationCategory` | the module's own category, `NotificationCategory::ofModule(static::class)` |
+| `static priority(): NotificationPriority` | the category's priority |
+| `static listed(): bool` | `true`: shown in the web list |
+| `static grouping(): ?Grouping` | `null`, no grouping — see [Grouping](#grouping) |
+| `getMessageParams(): array` | `[]` |
+| `getMailSubject(array $params): string` | the sentence |
 | `getUrl(bool $scheme = false): ?string` | the content addon's URL (e.g. the comment's), else the content's, else the container's, else none |
-| `getMailActions(): array` | one "View online" button; return `[['label' => …, 'url' => …], …]` |
-| `getMailBody(): ?string` | `null`; a plain-text block shown under the sentence in mails, e.g. a message the originator wrote; encoded by the view |
-| `getMailContentRecord(): ?ContentOwner` | the content record, rendered as a preview under the sentence in the mail |
+| `getExcerpt(): ?string` | `null`; plain text shown under the sentence outside the web list, e.g. a message the originator wrote — the channel encodes, breaks and shortens it |
+| `getActions(): NotificationAction[]` | one "View online" action (`new NotificationAction($label, $url)`), the buttons of a mail; `[]` for none |
+| `getSubjectRecord(): ?ContentOwner` | the content's record — what `content`/`contentTitle` name; e.g. the liked comment instead |
+| `getPreviewRecord(): ?ContentOwner` | the subject record — what a mail previews under the sentence |
 | `getSpace(): ?Space` | the container when it is a space; override when the notification is about a space without being bound to it, e.g. a membership |
 | `canReceive(User $user): bool` | `true`; a last filter at dispatch time beyond the generic checks |
-| `getGroupingQuery(): ?ActiveQueryNotification` | `null`, no grouping — see [Grouping](#4-grouping) |
 
-A notification without an originator (a system message) simply never gets one.
+### Category, priority, listing
 
-### 2. Group, priority, listing
+Every notification belongs to a **category**, which is what the user and the administrator
+switch on or off per channel. By default that is the module's own category
+(`NotificationCategory::ofModule()`): id = module id, title = module name, icon `ti-puzzle`. It
+appears on the settings page under *From modules* as soon as a class uses it.
 
-Every notification belongs to a **group**, which is what the user and the administrator switch
-on or off per channel. `group()` is where a class says in one line where it belongs. There is
-no class to write for it.
+The core has five categories; a notification that fits one of them names it in `category()`:
 
-The core has four fixed groups; most notifications of a small module fit one of them:
-
-| Group | Contains | Priority | Switchable |
-|---|---|---|---|
-| `direct` | mentions, invitations, requests, messages | high | no |
-| `social` | reactions to my content: comments, likes, follows | low (comments: normal) | yes |
-| `content` | new content in the spaces the user selected | normal | yes |
-| `admin` | administration | normal | yes, shown to administrators only |
-
-A task assigned to the user is a direct notification, a reaction to the user's content is
-social, and so on. A module whose notifications deserve a switch of their own — the messenger,
-a task manager — returns its module group instead:
+| Category | Contains | Priority | Switchable | Icon | Off by default |
+|---|---|---|---|---|---|
+| `direct` | mentions, invitations, requests, membership and role changes, deleted content | high | no | `ti-at` | — |
+| `social` | reactions to my content: comments, likes | low (comments: normal) | yes | `ti-heart` | — |
+| `followers` | new followers | low | yes | `ti-user-plus` | `email`, `mobile` |
+| `content` | new content in the spaces the user selected | normal | yes | `ti-news` | — |
+| `admin` | administration | normal | yes, shown to users who may manage settings, users or spaces | `ti-shield` | — |
 
 ```php
-public static function group(): NotificationGroup
+public static function category(): NotificationCategory
 {
-    return NotificationGroup::ofModule(self::class);
+    return NotificationCategory::direct();
 }
 ```
 
-That is one switch "Example" under e-mail and under push, named after the module, with nothing
-else to declare; it appears on the settings page as soon as a class uses it. A module that
-wants several switches returns its own `new NotificationGroup('example-reports', $title,
-$description)` from the classes concerned. Groups are compared by id.
+To give the module's category an icon, return `NotificationCategory::ofModule(self::class,
+'ti-checklist')`. A module that needs several switches constructs its categories, with ids
+prefixed by its module id:
 
-The **priority** says how urgently a notification should go out: `high` at once, `normal` after
-the adaptive delay, `low` with the next mail that goes out anyway. It defaults to the group's;
-override `priority()` to return a `NotificationPriority` when a single class differs. It is
-stored with every notification and handed to push providers (`DeliveryBatch::isHighPriority()`);
-the delays themselves come with the delivery layer — until then every priority goes out at once.
+```php
+public static function category(): NotificationCategory
+{
+    return new NotificationCategory(
+        'tasks-reminders',
+        Yii::t('TasksModule.base', 'Task reminders'),
+        Yii::t('TasksModule.base', 'Reminders of tasks that are due.'),
+        icon: 'ti-alarm',
+        offByDefault: [MobileTarget::ID],
+        permissions: [ManageUsers::class],
+    );
+}
+```
+
+Categories are compared by id. A switchable category is on for every channel except those in its
+`offByDefault` (`isEnabledByDefault($channelId)`); the administrator's defaults and the user's
+own switches override that, see [Settings](#settings). `permissions` lists global permission
+classes of which a user needs any to see the category on the settings page (none: everyone);
+space permissions are not supported. The channel ids are the constants `WebTarget::ID` (`web`),
+`MailTarget::ID` (`email`) and `MobileTarget::ID` (`mobile`).
+
+The **priority** says how urgently a notification should go out: `High` at once, `Normal` after
+the adaptive delay, `Low` with the next mail that goes out anyway. It defaults to the category's;
+override `priority()` when a single class differs. It is a property of the notification type, not
+of a single `send()`: a notification that is sometimes urgent and sometimes not is two classes.
+It is stored with every notification, used
+by the delivery layer and handed to push providers (`DeliveryBatch::isHighPriority()`).
 
 `listed()` says whether the notification appears in the web list. It is `true` unless a module
 has its own list for these entries — the messenger shows messages in its inbox, so its
-notifications return `false` and only exist for mail and push.
+notifications return `false` and only exist for mail and push. A category has a web switch only
+when at least one of its classes is listed (`WebTarget::appliesTo()`).
 
-### 3. Dispatching
+The web list is a channel like the others: a listed notification whose category the user
+switched off for the web is still written when another channel delivers it, but stored with
+`listed = 0` — it never shows in the list or the badge and sends no live event. When no channel
+at all takes a notification for a recipient, no record is written.
+
+### Sending
 
 ```php
-use humhub\modules\notification\components\NotificationManager;
-
-NotificationManager::dispatch(
-    SomethingHappenedNotification::class,
-    $recipients,            // a User, an array of users or ids, or an ActiveQueryUser
-    $source,                // a content record, a container or any ActiveRecord; optional
-    $originator,            // optional
-    ['payload' => ['count' => 3]],
+SomethingHappenedNotification::send(
+    $recipients,              // a User, an id, an array of users or ids, or an ActiveQueryUser
+    source: $record,          // a content, a content record, a content addon, a container or any saved record; optional
+    originator: $user,        // optional
+    payload: ['count' => 3],  // optional, see $payload
 );
 ```
 
-`dispatch()` returns immediately; a queued job fans out to the recipients. Per recipient the job
-skips users who are not enabled, the originator (unless `notifyOriginator` is set), users who
-block or are blocked by the originator, users who may not see the content (`Content::canView()`,
-for a content source), and whoever `canReceive()` rejects. A container source alone filters
-nobody: an invited user is not a member of the space yet. A recipient who already has a
-notification of the same class, source and originator is skipped too, so dispatching twice never
-doubles an entry. What remains is written, grouped, listed, announced through the live system and
-handed to every other channel enabled for the recipient.
+The other named arguments: `notifyOriginator` (default `false`) and `dedupe` (default `true`).
 
-Options: `payload` (array), `notifyOriginator` (default `false`), `priority`
-(`NotificationPriority`), `dedupe` (default `true`). Switch `dedupe` off for notifications that
-report an event that can legitimately repeat (an invitation accepted twice after leaving); keep it
-for ones that represent a pending state (an open invitation).
+`send()` returns immediately; a queued job fans out to the recipients. Inside a transaction of
+`Yii::$app->db` the job is queued after the outermost commit, and dropped on a rollback
+(`humhub\components\db\AfterCommit`), so a worker never runs it before the records it refers to
+are committed. Per recipient the job skips users who are not enabled, the originator (unless
+`notifyOriginator`), users who block or are blocked by the originator, users who may not see the
+content (`Content::canView()`, for a content source), and whoever `canReceive()` rejects. A
+container source alone filters nobody: an invited user is not a member of the space yet. A
+recipient who already has a notification of the same class, source and originator is skipped
+too (`dedupe`), so sending twice never doubles an entry. Switch `dedupe` off for notifications
+that report an event that can legitimately repeat (an invitation accepted twice after leaving);
+keep it for ones that represent a pending state (an open invitation). What remains is written,
+grouped, listed, announced through the live system and scheduled for every other channel
+enabled for the recipient.
 
-`NotificationManager::EVENT_BEFORE_DISPATCH` fires once per dispatch with a
-`BeforeDispatchEvent` carrying the class, recipients, source, originator and options; a handler
-may change them or set `$event->isValid = false`.
+`NotificationManager::EVENT_BEFORE_DISPATCH` fires once per `send()` with a
+`BeforeDispatchEvent` carrying `class`, `recipients`, `source`, `originator`, `payload`,
+`notifyOriginator` and `dedupe`; a handler may change them or set
+`$event->isValid = false`.
 
-The conventional place to dispatch is `afterSave()` of the source record, once per state
+The conventional place to send is `afterSave()` of the source record, once per state
 transition: the record exists when the job runs, and it fires exactly once.
 
-To take a notification back when its cause is undone (a like removed, a mention edited away):
+### Revoking and marking seen
+
+To take notifications back when their cause is undone (a like removed, an assignee removed):
 
 ```php
-NotificationManager::delete(SomethingHappenedNotification::class, $source, $user);
+SomethingHappenedNotification::revoke(source: $record, user: $user, originator: $originator); // each optional
 ```
 
-Deleting the source record deletes its notifications through the foreign keys. A module that
-shows notifications in its own list marks them as seen when the user looks:
+When the source record itself is deleted, its notifications go with it:
+
+- a **content** — with the notifications about its comments and other addons — when it is
+  soft-deleted (`Content::softDeleteInternal()`), and a **container** through the foreign keys
+  of the `notification` table;
+- a **content addon** (e.g. a comment) and **any other record** that extends
+  `humhub\components\ActiveRecord` through its `record_map` row, which the core deletes when the
+  record is deleted with `delete()`.
+
+A record removed without its delete events — `deleteAll()`, plain SQL — leaves its
+notifications behind: revoke them first (`MyNotification::revoke(source: $record)`). Otherwise
+they linger until the list or the delivery finds them unloadable and drops them.
+
+A module that shows notifications in its own list marks them as seen when the user looks:
 
 ```php
-NotificationManager::markSeen(NewMessageNotification::class, $conversation, $user);
+// the messenger, when the user opens, answers or leaves a conversation
+MailNotification::markSeen($conversation, $user);
 ```
 
-With the delivery layer, this will also cancel a mail or push that has not gone out yet.
+This marks the whole groups and also cancels a mail or push that has not gone out yet.
 
-### 4. Grouping
+### Grouping
 
-Twelve uploaded files, five likes on the same post, three comments under one article: a
-notification class declares which of its notifications belong together, and the recipient sees
-one entry ("Anna created 12 new files", "Anna, Bob and 3 more like your post") and receives one
-mail. Return the query that finds the siblings of a new notification:
+Twelve uploaded files, five likes on the same post, three comments under one article: a class
+declares which of its notifications belong together, and the recipient sees one entry ("Anna
+created 12 new files", "Anna, Bob and 3 more like your post") and receives one mail.
+`grouping()` returns a `Grouping`:
 
-```php
-public function getGroupingQuery(): ?ActiveQueryNotification
-{
-    return Notification::find()
-        ->andWhere(['notification.class' => self::class])
-        ->andWhere(['notification.content_id' => $this->content->id]);
-}
-```
+| Factory | Groups the notifications … |
+|---|---|
+| `Grouping::byContent()` | about the same content (also about its comments) |
+| `Grouping::bySource()` | about the same source record other than a content or a container |
+| `Grouping::byContainer()` | about the same space or profile |
+| `Grouping::byClass()` | of the class, whatever they are about |
 
-The core narrows it to the recipient and to a time bucket and groups when enough notifications
-match — both are properties of your class: `$groupingTimeBucketSeconds` (900, 15 minutes) and
-`$groupingThreshold` (2). Grouping happens when a notification is written, so the list reads the
-groups as they are stored. The grouped sentence is yours: branch on `$groupCount` in
-`getMessage()` and use `displayNames`. A group is one entry in the list, a mail or push sent
-for a grouped notification carries the grouped sentence, and marking it as seen marks every
-member.
+The factory names what must be present and the same; a notification without it (no content for
+`byContent()`) is not grouped. The modifiers narrow it further, each returning a new instance:
+`andContent()`, `andSource()` and `andOriginator()` (the same value, none matching none),
+`andContentType()` (a content of the same type), `unseenOnly()` (a new notification after the
+user saw the group starts a new one), `withThreshold(int)` (the minimum size of a group, 2) and
+`withTimeBucket(int $seconds)` (only notifications created in the same bucket, 900 = 15
+minutes). The core always adds the class and the recipient.
 
-### 5. Mail
+The core notifications:
 
-A mail is rendered from the sentence, the optional body (`getMailBody()`), the optional content
-preview (`getMailContentRecord()`) and the buttons (`getMailActions()`) inside the standard
-layout (`@notification/views/mails/notification` and its plain-text twin). The view already
-renders a batch of several notifications as one mail; with the delivery layer, notifications due
-at the same time will share one. Nothing in your module renders mail.
+| Class | Grouping |
+|---|---|
+| `NewCommentNotification` | `Grouping::byContent()` |
+| `NewLikeNotification` | `Grouping::byContent()->andSource()` — the likes of one content or one comment |
+| `ContentCreatedNotification` | `Grouping::byContainer()->andOriginator()->andContentType()` |
+| `FollowedNotification` | `Grouping::byClass()` |
 
-The mail mode `summary` (*Summary only*) — notifications only in a block at the top of the
-activity summary mail instead of separate mails — comes with the delivery layer, together with
-that block. Until then the mail channel offers `adaptive` and `off` only; `BaseTarget::isEnabled()`
-already treats `summary` like `off`, and a stored `summary` value is ignored (the global default,
-or else `adaptive`, applies).
+Grouping happens when a notification is written, so the list reads the groups as they are
+stored. A group is one entry in the list, a mail or push sent for a grouped notification carries
+the grouped sentence, and marking it as seen marks every member.
+
+### Mail
+
+A mail is rendered from the sentence, the excerpt (`getExcerpt()`), the preview of
+`getPreviewRecord()` and the buttons (`getActions()`) inside the standard layout
+(`@notification/views/mails/notification` and its plain-text twin). Notifications that go out
+together share one mail ("3 new notifications"), each with its sentence and excerpt; a group
+appears once with the grouped sentence. Nothing in your module renders mail.
+
+The activity summary mail mentions the number of unread notifications (the badge count,
+`NotificationListService::unseenCount()`) with a link to the notification overview, when there
+are any. It lists no notifications and is not sent because of them alone.
+
+### Reference
+
+The module-facing API, marked `@api` in the code — stable across minor versions:
+
+- `BaseNotification`: `send()`, `revoke()`, `markSeen()`; the hooks `category()`, `priority()`,
+  `listed()`, `grouping()`, `getMessage()`, `getMessageParams()`, `getMailSubject()`,
+  `getUrl()`, `getExcerpt()`, `getActions()`, `getSubjectRecord()`, `getPreviewRecord()`,
+  `getSpace()`, `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
+  `$content`, `$contentContainer`, `$sourceRecord`, `$payload`, `$groupCount`
+- `NotificationCategory`, `NotificationPriority`, `Grouping`, `NotificationAction`
+- `humhub\components\message\MessageParam`
+- `BeforeDispatchEvent` and `NotificationManager::EVENT_BEFORE_DISPATCH`
+- for channel providers: `BaseTarget`, `DeliveryBatch`, `MobileTargetProvider`
+
+Everything else in the module — the manager's static methods, the services, the jobs — is
+internal.
 
 ## Delivery
 
-**Today.** The dispatch job writes the notification, sends the live event and then hands it to
-every channel enabled for the recipient (`BaseTarget::isEnabled()`), at once and synchronously,
-as a `DeliveryBatch` holding this one notification. A failing channel is logged (category
-`notification`) and does not stop the others.
+The web list and the live event are immediate (when the web channel is enabled for the
+recipient, see [listing](#category-priority-listing)). For every other channel enabled for the recipient
+(`BaseTarget::isEnabled()`), the dispatch job does not send but schedules: the
+`DeliveryScheduler` writes a row per notification and channel into `notification_delivery`, with
+a due time, and pushes a `DeliverJob` for the recipient and channel, delayed to that time.
 
-**With the delivery layer (next update).** The web list and the live event stay immediate. For
-every other channel the dispatch job will record a *delivery* with a due time in a
-`notification_delivery` table, and a queued job will send what is due:
+- **Adaptive delay.** `n` is the number of *messages* (not notifications) the channel sent the
+  recipient within `delayWindow`; the delay is `delays[min(n, count(delays) - 1)]`. With the
+  defaults the first mail in a quiet hour goes out at once, the next one after five minutes, the
+  one after that after fifteen, every further one after thirty. A `high` notification always goes
+  at once, a `low` one waits at least `lowPriorityDelay`.
+- **Riding along.** A new notification whose recipient already has a pending message on that
+  channel, due at least 5 seconds from now and no later than the new one would be, takes over its
+  due time; no job is pushed.
+- **Collecting.** When a message goes out, the job takes every pending notification of the
+  recipient and channel along — also those not due yet. A low-priority notification therefore
+  usually leaves with the next message. Members of one group appear once, with the grouped
+  sentence. The channel receives them as one `DeliveryBatch`.
+- **Skipping.** Right before sending, a row is skipped when the notification was seen in the
+  meantime, when the channel is no longer active or enabled for it (category switch), when the
+  recipient is no longer enabled, or when the notification no longer loads (e.g. its source is
+  gone). A channel
+  with `skipWhenOnline` (mail by default) skips the rows that are due while the user was active on
+  the site within the last minute (`IsOnlineService::isRecentlyActive()`); rows not due yet stay
+  pending.
+- **Follow-ups and the sweep.** One job per recipient and channel runs at a time (a mutex). After
+  each run, a job is pushed for the earliest pending row left. The hourly cron re-queues pending
+  rows overdue by more than five minutes (a lost job) and deletes finished rows after 30 days
+  (`DeliveryService::sweep()`).
 
-- **Adaptive delay.** The first mail in a quiet hour goes out at once, the next one after five
-  minutes, the one after that after fifteen, every further one after thirty — the numbers are
-  the channel's `delays`, counted over `delayWindow`. A `high` notification always goes at once,
-  a `low` one waits at least `lowPriorityDelay`.
-- **Collecting.** A notification whose recipient already has a delivery waiting on that channel
-  rides along with it: the user gets one mail listing both.
-- **Skipping.** Right before sending, a delivery is dropped when the notification was seen in
-  the meantime, when the channel is no longer enabled for it, or (`skipWhenOnline`, on for mail)
-  when the user is online.
+A row ends as `sent`, `skipped` or `failed` (the channel threw; logged in the category
+`notification`, no retry). A failing channel does not stop the others.
 
-`delays`, `delayWindow`, `lowPriorityDelay` and `skipWhenOnline` are already properties of every
-channel, reserved for the delivery layer; they have no effect yet. A module never deals with
-any of this; it dispatches, the rest follows from the group, the priority and the user's
-settings — so nothing changes for a module when the delivery layer arrives.
+The delays need a queue that runs a job no earlier than its delay. With the `Instant` and `Sync`
+drivers, or a driver the core does not know, every delay counts as 0: each notification goes out
+at once, one message each. `components.notification.instantDelivery` (`true`/`false`, default
+`null` = detect) overrides the detection. Due times are local wall-clock datetimes; across a DST
+change a delay may be an hour shorter or longer.
+
+A module never deals with any of this; it sends, the rest follows from the category, the
+priority and the user's settings.
 
 ## Channels (targets)
 
@@ -262,8 +428,9 @@ core ships `web`, `email` and `mobile`; a module adds one by registering its cla
 ```php
 final class ChatTarget extends BaseTarget
 {
-    public string $id = 'chat';
-    public array $modes = [self::MODE_ADAPTIVE, self::MODE_OFF];
+    public const ID = 'chat';
+
+    public string $id = self::ID;
 
     public function getTitle(): string
     {
@@ -279,58 +446,73 @@ final class ChatTarget extends BaseTarget
 }
 ```
 
-The target inherits the delay properties (reserved for the delivery layer) and the per-user
-mode and group switches; it appears on the settings page as a section of its own. The first of
-`$modes` is the default. Override `isActive(?User $user)` (calling the parent) when the channel
-is not available to everyone. Push providers implement `MobileTargetProvider` — `isActive()` and
-the same `deliver(DeliveryBatch)` — and register it in the DI container under that interface.
+The target inherits the delay properties (`delays`, `delayWindow`, `lowPriorityDelay`,
+`skipWhenOnline`, see [Delivery](#delivery)) and the per-user category switches; it appears on
+the settings page as one more checkbox per category. Override `isActive(?User $user)` (calling the
+parent) when the channel is not available to everyone, and `appliesTo(NotificationCategory $category)`
+when it cannot carry some categories (every category by default; the web list only those with a
+listed class) — those categories get no switch for the channel. `isEnabled($notificationClass,
+$user)` is true when the target is active and the class's category is on for it. Push providers implement
+`MobileTargetProvider` — `isActive()` and the same `deliver(DeliveryBatch)` — and register it in
+the DI container under that interface.
 
-The properties `$id` (`string`), `$active` (`bool`) and `$modes` (`array`) are typed; a subclass
-redeclares them with the same types.
+The properties `$id` (`string`) and `$active` (`bool`) are typed; a subclass redeclares them
+with the same types.
 
 ## Settings
 
-Users set, per channel, a **mode** — `adaptive` (the default, labelled *Send*) or `off`
-(*Off*); the mail mode `summary` (*Summary only*) comes with the delivery layer — and switch the groups other than `direct` on or off, under
-*Account settings → Notifications*. Administrators set the defaults under *Administration →
-Settings → Notifications* and can reset every user to them (*Reset for all users*, shown to
-administrators who may also manage users). Which spaces send *new content* notifications is a
-separate choice on the same page, and so is the interval of the activity summary mail while
-summary mails are enabled.
+Users switch every category other than `direct` on or off per channel — the web list included —
+under *Account settings → Notifications*. The page lists the categories with a badge per
+channel; a category expands to a checkbox per channel that applies to it, and the *new content*
+category also holds the choice of spaces that send it. Profiles set all switches at once:
+*Everything* (every category on every channel), *Recommended* (the administrator's defaults:
+the user's own switches are removed, the spaces kept), *Important only* (the web list complete,
+other channels only the categories that cannot be switched off) and *Custom*, selected whenever
+the switches match none of the others. Every change is saved at once. Administrators set the
+defaults under *Administration → Settings → Notifications* (the same page without profiles) and
+can reset every user to them (*Reset all users*, shown to administrators who may also manage
+users).
 
 The keys, in the notification module's settings (global defaults) and user settings:
-`<channel>.mode` and `<channel>.group.<group id>` (`email.mode`, `mobile.group.social`,
-`email.group.example`). A user without an own value inherits the global default; without one the
-mode is the channel's first mode and a group is on. `NotificationSettingsService` reads and
-writes them.
+`<channel>.category.<category id>` (`mobile.category.social`, `web.category.followers`,
+`email.category.example`). A user without an own value inherits the global default; without one
+the category's default decides (`NotificationCategory::isEnabledByDefault()`). A category that
+is not switchable is always on. `NotificationSettingsService` reads and writes them.
 
 A module that needs to know whether a user wants a kind of notification on a channel asks the
 target:
 
 ```php
-Yii::$app->notification->getTarget('email')->isEnabled(NewMessageNotification::class, $user);
+Yii::$app->notification->getTarget(MailTarget::ID)->isEnabled(MailNotification::class, $user);
 ```
 
 ## API and live updates
 
 - `GET /api/v2/notification` — the caller's own list, one entry per group, newest group first,
-  cursor-paged (`cursor`, `limit`, `groups[]`, `seen`); `POST
+  cursor-paged (`cursor`, `limit`, `categories[]`, `seen`); `POST
   /api/v2/notification/mark-as-seen` — by `ids[]` (their whole groups) or all. Shapes in
   `notification\serializers\NotificationSerializer`.
 - `GET`/`PATCH /api/v2/notification/settings` — the settings page's data
-  (`NotificationSettingsService::toArray()`/`fromArray()`); `?scope=global` for the
-  administrator's defaults. `POST /api/v2/notification/settings/reset` resets the caller,
-  `POST /api/v2/notification/settings/reset-all` every user (`ManageSettings` and `ManageUsers`). The pages `/notification/user` and
+  (`NotificationSettingsService::toArray()`/`fromArray()`): `scope`, `channels` (`[{id, title}]`),
+  `categories` (`[{id, title, description, icon, module, fixed, channels: {<channel>: bool}}]`,
+  only the channels that apply to the category), `defaults` (the user's switches without own
+  settings, `{<category>: {<channel>: bool}}`; `null` for the global scope) and `spaces`. `PATCH`
+  is partial: `{categories: {<category>: {<channel>: bool|null}}, spaces: [ids]}` (`null`
+  removes the switch, so the default applies again), `422` with errors under `categories`,
+  `categories.<category>`, `categories.<category>.<channel>` or `spaces`. `?scope=global` for
+  the administrator's defaults. `POST /api/v2/notification/settings/reset` resets the caller,
+  `POST /api/v2/notification/settings/reset-all` every user (`ManageSettings` and
+  `ManageUsers`). The pages `/notification/user` and
   `/notification/admin/defaults` are the `NotificationSettings` island
   (`notification\widgets\SettingsPage`).
-- The live event `humhub\modules\notification\live\NewNotification` is sent for every listed
-  notification; the `NotificationMenu` island refreshes its count and list from it.
+- The live event `humhub\modules\notification\live\NewNotification` is sent for every
+  notification stored as listed; the `NotificationMenu` island refreshes its count and list from it.
 
 ## Migrating from 1.19
 
 The 1.19 API — `SocialActivity`, the builder `instance()->from()->about()->send()`, `html()`,
-`viewName`, view files, notification categories — is gone. The
+`viewName`, view files, notification category classes — is gone. The
 [module migration guide](module-migrate-1.20.md) lists every replacement; the short version: a
 notification class is constructed from its record, writes its sentence in `getMessage()`, is
-dispatched through `NotificationManager::dispatch()`, and names its group in one line instead
-of a category class.
+sent with its static `send()`, and belongs to its module's category unless `category()` names
+another one.

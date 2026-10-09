@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
  * Sends the push messages of the {@see MobileTarget} - implemented by a push module (e.g.
  * fcm-push) and registered in the DI container under this interface.
  *
+ * @api for push providers
  * @since 1.2, rewritten in 1.20
  */
 interface MobileTargetProvider

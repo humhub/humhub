@@ -8,7 +8,7 @@ HumHub is built on the [Yii 2.0 PHP Framework](https://www.yiiframework.com/doc/
 
 - [Overview](intro-overview.md) — architecture, core modules, application structure
 - [Development environment](intro-environment.md) — local setup, debug mode, queues
-- [Coding standards](intro-coding-standards.md)
+- [Coding standards](intro-coding-standards.md) — code style, `final`, `@api` and `@internal`
 - [Build system](intro-build.md) — assets, grunt, releases
 - [Pull requests](intro-pull-requests.md) — contribution workflow
 - [Testing](intro-testing.md) — Codeception, unit/functional/acceptance

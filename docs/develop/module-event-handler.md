@@ -441,7 +441,7 @@ public static function onUserFollow(FollowEvent $event)
     if($event->target instanceof User) {
         if($event->target->getFollowerCount() === 5) {
             // recipient and source: the followed user
-            NotificationManager::dispatch(FollowAchievementNotification::class, $event->target, $event->target);
+            FollowAchievementNotification::send($event->target, source: $event->target);
         }
     }
 }
@@ -450,7 +450,7 @@ public static function onUserUnfollow(FollowEvent $event)
 {
    if($event->target instanceof User) {
        if($event->target->getFollowerCount() < 5) {
-           NotificationManager::delete(FollowAchievementNotification::class, $event->target, $event->target);
+           FollowAchievementNotification::revoke(source: $event->target, user: $event->target);
        }
     }
 }

@@ -11,7 +11,6 @@ use humhub\modules\like\activities\LikeActivity as LikedActivity;
 use humhub\modules\like\models\Like;
 use humhub\modules\like\notifications\NewLikeNotification;
 use humhub\modules\like\permissions\CanLike;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
@@ -251,7 +250,7 @@ class LikeService
 
         $author = $this->getAuthor();
         if ($author !== null) {
-            NotificationManager::dispatch(NewLikeNotification::class, $author, $this->getLikedRecord(), $this->user);
+            NewLikeNotification::send($author, $this->getLikedRecord(), $this->user);
         }
 
         ActivityManager::dispatch(LikedActivity::class, $record, $record->createdBy);
@@ -324,7 +323,7 @@ class LikeService
 
             $author = $this->getAuthor();
             if ($author !== null) {
-                NotificationManager::delete(NewLikeNotification::class, $this->getLikedRecord(), $author, $this->user);
+                NewLikeNotification::revoke($this->getLikedRecord(), $author, $this->user);
             }
 
             return true;

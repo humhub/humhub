@@ -40,9 +40,9 @@ class MembershipTest extends HumHubDbTestCase
 
         $notification = NotificationManager::load(Notification::findOne(['class' => SpaceApprovalRequestNotification::class, 'user_id' => 1]));
         $this->assertSame(['message' => 'Let me in!'], $notification->payload);
-        $this->assertSame('Let me in!', $notification->getMailBody());
+        $this->assertSame('Let me in!', $notification->getExcerpt());
         $this->assertSame($space->createUrl('/space/manage/member/pending-approvals'), $notification->getUrl());
-        $this->assertSame($user1->displayName . ' requests membership for the space Space 1', $notification->getMailSubject());
+        $this->assertSame($user1->displayName . ' requests membership for the space “Space 1”', $notification->asMailSubject());
 
         // check cached version
         $membership = Membership::findMembership(1, Yii::$app->user->id);
@@ -126,8 +126,7 @@ class MembershipTest extends HumHubDbTestCase
         $membership->group_id = Space::USERGROUP_MODERATOR;
         $this->assertTrue($membership->save());
 
-        NotificationManager::dispatch(
-            SpaceRolesChangedNotification::class,
+        SpaceRolesChangedNotification::send(
             $membership->user,
             $membership,
             User::findOne(['id' => 1]),
@@ -147,8 +146,8 @@ class MembershipTest extends HumHubDbTestCase
             $notification->asWeb(),
         );
         $this->assertSame(
-            User::findOne(['id' => 1])->displayName . ' changed your role to Moderators in the space Space 3.',
-            $notification->getMailSubject(),
+            User::findOne(['id' => 1])->displayName . ' changed your role to “Moderators” in the space “Space 3”.',
+            $notification->asMailSubject(),
         );
     }
 
@@ -176,7 +175,7 @@ class MembershipTest extends HumHubDbTestCase
         $record = Notification::findOne(['class' => SpaceApprovalRequestNotification::class, 'user_id' => 1]);
         $notification = NotificationManager::load($record);
         $this->assertSame([], $notification->payload);
-        $this->assertNull($notification->getMailBody());
+        $this->assertNull($notification->getExcerpt());
     }
 
     public function testTheRoleOfThePayloadWinsOverTheCurrentMembershipRole()
@@ -186,25 +185,31 @@ class MembershipTest extends HumHubDbTestCase
         $this->assertTrue($membership->save());
 
         // as the member management dispatches it, then the role changes again
-        NotificationManager::dispatch(SpaceRolesChangedNotification::class, $membership->user, $membership, User::findOne(['id' => 1]), [
-            'dedupe' => false,
-            'payload' => ['groupId' => Space::USERGROUP_ADMIN],
-        ]);
+        SpaceRolesChangedNotification::send(
+            $membership->user,
+            $membership,
+            User::findOne(['id' => 1]),
+            dedupe: false,
+            payload: ['groupId' => Space::USERGROUP_ADMIN],
+        );
 
         $notification = NotificationManager::load(Notification::findOne(['class' => SpaceRolesChangedNotification::class, 'user_id' => 2]));
-        $this->assertStringContainsString('changed your role to Administrators in', $notification->getMailSubject());
+        $this->assertStringContainsString('changed your role to “Administrators” in', $notification->asMailSubject());
     }
 
     public function testAnUnknownRoleRendersItsId()
     {
         $membership = Membership::findMembership(3, 2);
 
-        NotificationManager::dispatch(SpaceRolesChangedNotification::class, $membership->user, $membership, User::findOne(['id' => 1]), [
-            'payload' => ['groupId' => 'gone-role'],
-        ]);
+        SpaceRolesChangedNotification::send(
+            $membership->user,
+            $membership,
+            User::findOne(['id' => 1]),
+            payload: ['groupId' => 'gone-role'],
+        );
 
         $notification = NotificationManager::load(Notification::findOne(['class' => SpaceRolesChangedNotification::class, 'user_id' => 2]));
-        $this->assertStringContainsString('changed your role to gone-role in', $notification->getMailSubject());
+        $this->assertStringContainsString('changed your role to “gone-role” in', $notification->asMailSubject());
         $this->assertStringContainsString('<strong>gone-role</strong>', $notification->asWeb());
     }
 
@@ -216,7 +221,7 @@ class MembershipTest extends HumHubDbTestCase
         $membership = Membership::findMembership(3, 2);
         $membership->group_id = Space::USERGROUP_MODERATOR;
         $this->assertTrue($membership->save());
-        NotificationManager::dispatch(SpaceRolesChangedNotification::class, $membership->user, $membership, User::findOne(['id' => 1]), ['dedupe' => false]);
+        SpaceRolesChangedNotification::send($membership->user, $membership, User::findOne(['id' => 1]), dedupe: false);
         $this->assertHasNotification(SpaceRolesChangedNotification::class, $membership, 1, 2);
 
         $this->assertTrue($space->removeMember(2));
@@ -233,7 +238,7 @@ class MembershipTest extends HumHubDbTestCase
             $membership->group_id = $groupId;
             $this->assertTrue($membership->save());
             // as the member management dispatches it
-            NotificationManager::dispatch(SpaceRolesChangedNotification::class, $membership->user, $membership, $admin, ['dedupe' => false]);
+            SpaceRolesChangedNotification::send($membership->user, $membership, $admin, dedupe: false);
         }
 
         $this->assertEqualsNotificationCount(2, SpaceRolesChangedNotification::class, $membership, 1, 2);

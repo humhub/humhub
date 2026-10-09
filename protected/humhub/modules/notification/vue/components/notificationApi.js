@@ -12,11 +12,11 @@ import { apiUrl, client } from '@humhub/vue';
 /**
  * One page of the caller's notifications.
  *
- * @param {{cursor?: ?string, limit?: number, groups?: ?string[], seen?: ?string}} options
- *   `cursor` is the previous page's opaque `nextCursor`, `groups` notification group ids
+ * @param {{cursor?: ?string, limit?: number, categories?: ?string[], seen?: ?string}} options
+ *   `cursor` is the previous page's opaque `nextCursor`, `categories` notification category ids
  * @returns {Promise<{results: Array, unseenCount: number, nextCursor: ?string}>}
  */
-export const fetchNotifications = ({ cursor = null, limit = null, groups = null, seen = null } = {}) => {
+export const fetchNotifications = ({ cursor = null, limit = null, categories = null, seen = null } = {}) => {
     const params = {};
 
     if (cursor) {
@@ -25,12 +25,12 @@ export const fetchNotifications = ({ cursor = null, limit = null, groups = null,
     if (limit) {
         params.limit = limit;
     }
-    if (Array.isArray(groups)) {
-        // `groups[]=a&groups[]=b`. An empty selection is a filter of its own - "no group" means
-        // an empty list, not "unfiltered" - but an empty array serializes to nothing at all,
-        // which the server could not tell apart from an omitted parameter. One empty entry
-        // keeps it distinguishable and matches no group.
-        params.groups = groups.length ? groups : [''];
+    if (Array.isArray(categories)) {
+        // `categories[]=a&categories[]=b`. An empty selection is a filter of its own - "no
+        // category" means an empty list, not "unfiltered" - but an empty array serializes to
+        // nothing at all, which the server could not tell apart from an omitted parameter. One
+        // empty entry keeps it distinguishable and matches no category.
+        params.categories = categories.length ? categories : [''];
     }
     if (seen) {
         params.seen = seen;

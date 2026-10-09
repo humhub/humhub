@@ -5,7 +5,6 @@ namespace humhub\modules\content\models\forms;
 use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentDeletedNotification;
-use humhub\modules\notification\components\NotificationManager;
 use Yii;
 use yii\base\Model;
 
@@ -68,15 +67,13 @@ class AdminDeleteContentForm extends Model
             return true;
         }
 
-        NotificationManager::dispatch(
-            ContentDeletedNotification::class,
+        ContentDeletedNotification::send(
             $this->content->createdBy,
-            null,
-            Yii::$app->user->getIdentity(),
-            ['payload' => [
+            originator: Yii::$app->user->getIdentity(),
+            payload: [
                 'contentTitle' => ContentHelper::getContentPlainTextInfo($this->content),
                 'reason' => $this->message,
-            ]],
+            ],
         );
 
         return true;

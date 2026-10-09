@@ -9,43 +9,31 @@
 namespace humhub\modules\notification\services;
 
 use humhub\components\SettingsManager;
-use humhub\modules\activity\components\MailSummary;
-use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\ContentContainerSetting;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\serializers\SpaceSerializer;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 /**
  * The per-channel notification settings of a user, or - without a user - the administrator's
  * defaults for everyone.
  *
- * Two kinds of keys in the settings of the notification module, per channel (target id):
+ * One key per switchable {@see NotificationCategory} and channel (target id) in the settings of the
+ * notification module: `<target id>.category.<category id>`, whether the category reaches the user through
+ * the channel, e.g. `mobile.category.social = 0`. A user without an own value inherits the global
+ * default; without a global default the category's {@see NotificationCategory::isEnabledByDefault()}
+ * decides. A category that is not switchable is always on.
  *
- * - `<target id>.mode`: one of the target's {@see BaseTarget::$modes}, e.g. `email.mode = summary`
- * - `<target id>.group.<group id>`: whether a switchable {@see NotificationGroup} reaches the user
- *   through the channel, e.g. `mobile.group.social = 0`
- *
- * A user without an own value inherits the global default; without a global default the mode is
- * the target's first mode and a group is on.
- *
+ * @internal
  * @since 1.20
  */
 final readonly class NotificationSettingsService
 {
-    public const MODE_ADAPTIVE = 'adaptive';
-    /**
-     * Mail only: the activity summary mail carries the notifications.
-     */
-    public const MODE_SUMMARY = 'summary';
-    public const MODE_OFF = 'off';
-
     /**
      * @param User|null $user null = the administrator's defaults for everyone
      */
@@ -54,72 +42,45 @@ final readonly class NotificationSettingsService
     }
 
     /**
-     * The channel's mode: the user's setting, else the global default, else the target's first mode.
-     * A stored value the target does not (or no longer) support is skipped.
+     * True for a category that is not switchable; else the user's switch, inherited from the global
+     * default, else the category's default for the channel.
      */
-    public function getMode(BaseTarget $target): string
+    public function isCategoryEnabled(BaseTarget $target, NotificationCategory $category): bool
     {
-        $key = self::modeKey($target);
-        $candidates = [];
-        if ($this->user !== null) {
-            $candidates[] = self::moduleSettings()->user($this->user)->get($key);
-        }
-        $candidates[] = self::moduleSettings()->get($key);
-
-        foreach ($candidates as $mode) {
-            if (in_array($mode, $target->modes, true)) {
-                return $mode;
-            }
-        }
-
-        return (string)reset($target->modes);
-    }
-
-    /**
-     * @throws InvalidArgumentException when the mode is not one of the target's modes
-     */
-    public function setMode(BaseTarget $target, string $mode): void
-    {
-        if (!in_array($mode, $target->modes, true)) {
-            throw new InvalidArgumentException('Mode "' . $mode . '" is not supported by the notification target "' . $target->id . '".');
-        }
-
-        $this->settings()->set(self::modeKey($target), $mode);
-    }
-
-    /**
-     * True for a group that is not switchable; else the user's switch, inherited from the global
-     * default, default true.
-     */
-    public function isGroupEnabled(BaseTarget $target, NotificationGroup $group): bool
-    {
-        if (!$group->switchable) {
+        if (!$category->switchable) {
             return true;
         }
 
-        $enabled = $this->get(self::groupKey($target, $group));
+        $enabled = $this->get(self::categoryKey($target, $category));
 
-        return $enabled === null || (bool)$enabled;
-    }
-
-    public function setGroup(BaseTarget $target, NotificationGroup $group, bool $enabled): void
-    {
-        $this->settings()->set(self::groupKey($target, $group), $enabled ? 1 : 0);
+        return $enabled === null ? $category->isEnabledByDefault($target->id) : (bool)$enabled;
     }
 
     /**
-     * Removes the user's mode and group settings (every `<id>.mode` and `<id>.group.*`) - or, without
-     * a user, the global defaults.
+     * Switches the category on or off for the channel; `null` removes the switch of this scope, so
+     * the user follows the global default again (the global scope: the category's default).
+     */
+    public function setCategory(BaseTarget $target, NotificationCategory $category, ?bool $enabled): void
+    {
+        if ($enabled === null) {
+            $this->settings()->delete(self::categoryKey($target, $category));
+            return;
+        }
+
+        $this->settings()->set(self::categoryKey($target, $category), $enabled ? 1 : 0);
+    }
+
+    /**
+     * Removes the user's category switches (every `<id>.category.*`) - or, without a user, the global
+     * defaults.
      */
     public function reset(): void
     {
-        $settings = $this->settings();
-        $settings->deleteAll('%.mode');
-        $settings->deleteAll('%.group.%');
+        $this->settings()->deleteAll('%.category.%');
     }
 
     /**
-     * Removes every user's mode and group settings and the space selection
+     * Removes every user's category switches and the space selection
      * ({@see NotificationSpaceService::resetSpaces()}, including the "touched settings" flag, so
      * everyone follows the default notification spaces again).
      */
@@ -129,8 +90,7 @@ final readonly class NotificationSettingsService
             ContentContainerSetting::deleteAll(['AND',
                 ['module_id' => 'notification'],
                 ['OR',
-                    ['LIKE', 'name', '%.mode', false],
-                    ['LIKE', 'name', '%.group.%', false],
+                    ['LIKE', 'name', '%.category.%', false],
                     ['name' => NotificationSpaceService::IS_TOUCHED_SETTINGS],
                 ],
             ]);
@@ -146,138 +106,136 @@ final readonly class NotificationSettingsService
      * The settings of this scope as the settings page and `GET /api/v2/notification/settings`
      * show them:
      *
-     * - `channels`: the web list first (`fixed`, no groups), then every other target active in
-     *   this scope with its `mode`, its `modes` (`[{value, label}]`) and its `groups`
-     *   (`[{id, title, description, enabled, fixed}]`, the groups visible to the user - all of
-     *   them for the global defaults; `direct` is `fixed` and always enabled);
+     * - `scope`: `user` or `global`;
+     * - `channels`: `[{id, title}]`, the targets active in this scope, the web list first;
+     * - `categories`: `[{id, title, description, icon, module, fixed, channels}]`, the categories visible
+     *   to the user (all of them for the global defaults) that at least one channel of the scope
+     *   applies to, the core categories first; `module` for a
+     *   module's own category, `fixed` for a category that is not switchable (`direct`, always on), and
+     *   `channels` maps the id of every channel that applies to the category
+     *   ({@see BaseTarget::appliesTo()}) to whether the category is on for it;
+     * - `defaults`: for a user, what the category switches would be without their own settings -
+     *   `{<category id>: {<channel id>: bool}}`, shaped like the `channels` of the categories; `null` for
+     *   the global defaults;
      * - `spaces`: `selected` - the spaces whose new content the user is notified about
      *   ({@see NotificationSpaceService::getSpaces()}), for the global defaults the default
      *   notification spaces - as short space shapes, and `enabled` - whether the selection has
-     *   a purpose, i.e. the `content` group is among the groups of this scope;
-     * - `summary` (only while the activity module sends summary mails): the `interval` of the
-     *   activity summary mail of this scope and the `intervals` (`[{value, label}]`).
+     *   a purpose, i.e. the `content` category is among the categories of this scope.
      *
-     * @return array{channels: array, spaces: array{selected: array, enabled: bool}, summary?: array{interval: int, intervals: array}}
+     * @return array{scope: string, channels: array, categories: array, defaults: array|null, spaces: array{selected: array, enabled: bool}}
      */
     public function toArray(): array
     {
-        $groups = Yii::$app->notification->getGroups($this->user);
+        $categories = $this->getCategories();
+        $targets = $this->getTargets();
+        $defaults = $this->user === null ? null : new self();
 
-        $channels = [];
-        foreach ($this->getTargets() as $target) {
-            $fixed = $target instanceof WebTarget;
-            $channels[] = [
-                'id' => $target->id,
-                'title' => $target->getTitle(),
-                'fixed' => $fixed,
-                'mode' => $this->getMode($target),
-                'modes' => array_map(fn(string $mode) => ['value' => $mode, 'label' => self::modeLabel($mode)], array_values($target->modes)),
-                'groups' => $fixed ? [] : array_map(fn(NotificationGroup $group) => [
-                    'id' => $group->id,
-                    'title' => $group->title,
-                    'description' => $group->description,
-                    'enabled' => $this->isGroupEnabled($target, $group),
-                    'fixed' => !$group->switchable,
-                ], array_values($groups)),
+        $categoryData = [];
+        $defaultData = [];
+        foreach ($categories as $category) {
+            $switches = [];
+            foreach ($targets as $target) {
+                if ($target->appliesTo($category)) {
+                    $switches[$target->id] = $this->isCategoryEnabled($target, $category);
+                    if ($defaults !== null) {
+                        $defaultData[$category->id][$target->id] = $defaults->isCategoryEnabled($target, $category);
+                    }
+                }
+            }
+            if ($switches === []) {
+                // no channel of this scope carries the category
+                continue;
+            }
+            $categoryData[] = [
+                'id' => $category->id,
+                'title' => $category->title,
+                'description' => $category->description,
+                'icon' => $category->icon,
+                'module' => !$category->isCore(),
+                'fixed' => !$category->switchable,
+                'channels' => (object)$switches,
             ];
         }
 
-        $result = [
-            'channels' => $channels,
+        return [
+            'scope' => $this->user === null ? 'global' : 'user',
+            'channels' => array_map(fn(BaseTarget $target) => ['id' => $target->id, 'title' => $target->getTitle()], $targets),
+            'categories' => $categoryData,
+            'defaults' => $defaults === null ? null : (object)array_map(fn(array $switches) => (object)$switches, $defaultData),
             'spaces' => [
                 'selected' => array_map(SpaceSerializer::short(...), $this->getSpaces()),
-                'enabled' => array_filter($groups, fn(NotificationGroup $group) => $group->id === NotificationGroup::ID_CONTENT) !== [],
+                'enabled' => array_filter($categories, fn(NotificationCategory $category) => $category->id === NotificationCategory::ID_CONTENT) !== [],
             ],
         ];
-
-        if (self::isSummaryEnabled()) {
-            $result['summary'] = [
-                'interval' => $this->getSummaryInterval(),
-                'intervals' => array_map(
-                    fn($value, $label) => ['value' => (int)$value, 'label' => $label],
-                    array_keys(self::summaryIntervals()),
-                    array_values(self::summaryIntervals()),
-                ),
-            ];
-        }
-
-        return $result;
     }
 
     /**
      * Applies the settings of the settings page (`PATCH /api/v2/notification/settings`) to this
      * scope. Every part is optional:
      *
-     * - `channels`: `[{id, mode, groups: [{id, enabled}]}]` - a channel or group left out is
-     *   not changed; the web list (`fixed`) has nothing to change;
+     * - `categories`: `{<category id>: {<channel id>: bool|null}}` - a category or channel left out is not
+     *   changed, `null` removes the switch of this scope (it follows the default again,
+     *   {@see setCategory()}); a category that is not switchable only accepts `true` (and `null`);
      * - `spaces`: the ids of the spaces whose new content notifies the user (of those the user
-     *   may see; others are ignored) - the default notification spaces for the global scope;
-     * - `summary`: `{interval}`, the activity summary mail interval (ignored while the activity
-     *   module sends no summary mails).
+     *   may see; others are ignored) - the default notification spaces for the global scope.
      *
      * Nothing is written when anything is invalid; the writes run in one transaction. A user
      * whose `spaces` are stored no longer follows the default notification spaces implicitly
      * ({@see NotificationSpaceService::IS_TOUCHED_SETTINGS}); a partial update without `spaces`
      * leaves that untouched.
      *
-     * @return array<string, string[]> the errors by field - `channels`, `<channel>.mode`,
-     * `<channel>.group.<group>`, `spaces`, `summary.interval` -, empty on success
+     * @return array<string, string[]> the errors by field - `categories`, `categories.<category>`,
+     * `categories.<category>.<channel>`, `spaces` -, empty on success
      */
     public function fromArray(array $data): array
     {
         $errors = [];
-        $modes = [];
         $switches = [];
 
         $targets = [];
         foreach ($this->getTargets() as $target) {
             $targets[$target->id] = $target;
         }
-        $groups = [];
-        foreach (Yii::$app->notification->getGroups($this->user) as $group) {
-            $groups[$group->id] = $group;
+        $categories = [];
+        foreach ($this->getCategories() as $category) {
+            $categories[$category->id] = $category;
         }
 
-        $channels = $data['channels'] ?? [];
-        if (!is_array($channels)) {
-            $errors['channels'][] = Yii::t('NotificationModule.base', 'Invalid channels.');
-            $channels = [];
+        $categorySwitches = $data['categories'] ?? [];
+        if (!is_array($categorySwitches) || ($categorySwitches !== [] && array_is_list($categorySwitches))) {
+            $errors['categories'][] = Yii::t('NotificationModule.base', 'Invalid categories.');
+            $categorySwitches = [];
         }
-        foreach ($channels as $channel) {
-            $id = is_array($channel) && is_string($channel['id'] ?? null) ? $channel['id'] : null;
-            $target = $id !== null ? ($targets[$id] ?? null) : null;
-            if ($target === null) {
-                $errors['channels'][] = Yii::t('NotificationModule.base', 'Unknown channel "{id}".', ['id' => is_scalar($id) ? $id : '']);
+        foreach ($categorySwitches as $categoryId => $channels) {
+            $category = $categories[$categoryId] ?? null;
+            if ($category === null) {
+                $errors['categories.' . $categoryId][] = Yii::t('NotificationModule.base', 'Unknown category.');
+                continue;
+            }
+            if (!is_array($channels) || ($channels !== [] && array_is_list($channels))) {
+                $errors['categories.' . $categoryId][] = Yii::t('NotificationModule.base', 'Invalid value.');
                 continue;
             }
 
-            if (array_key_exists('mode', $channel)) {
-                if (!is_string($channel['mode']) || !in_array($channel['mode'], $target->modes, true)) {
-                    $errors[$id . '.mode'][] = Yii::t('NotificationModule.base', 'This mode is not available for the channel.');
-                } elseif (!$target instanceof WebTarget) {
-                    $modes[] = [$target, $channel['mode']];
-                }
-            }
-
-            foreach (is_array($channel['groups'] ?? null) ? $channel['groups'] : [] as $switch) {
-                $groupId = is_array($switch) && is_string($switch['id'] ?? null) ? $switch['id'] : '';
-                $group = $groups[$groupId] ?? null;
-                if ($group === null || $target instanceof WebTarget) {
-                    $errors[$id . '.group.' . $groupId][] = Yii::t('NotificationModule.base', 'Unknown group.');
+            foreach ($channels as $targetId => $value) {
+                $field = 'categories.' . $categoryId . '.' . $targetId;
+                $target = $targets[$targetId] ?? null;
+                if ($target === null || !$target->appliesTo($category)) {
+                    $errors[$field][] = Yii::t('NotificationModule.base', 'This channel is not available for the category.');
                     continue;
                 }
-                $enabled = filter_var($switch['enabled'] ?? null, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-                if ($enabled === null) {
-                    $errors[$id . '.group.' . $groupId][] = Yii::t('NotificationModule.base', 'Invalid value.');
+                $enabled = $value === null || is_bool($value) ? $value : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($value !== null && $enabled === null) {
+                    $errors[$field][] = Yii::t('NotificationModule.base', 'Invalid value.');
                     continue;
                 }
-                if (!$group->switchable) {
-                    if (!$enabled) {
-                        $errors[$id . '.group.' . $groupId][] = Yii::t('NotificationModule.base', 'This group cannot be switched off.');
+                if (!$category->switchable) {
+                    if ($enabled === false) {
+                        $errors[$field][] = Yii::t('NotificationModule.base', 'This category cannot be switched off.');
                     }
                     continue;
                 }
-                $switches[] = [$target, $group, $enabled];
+                $switches[] = [$target, $category, $enabled];
             }
         }
 
@@ -295,27 +253,14 @@ final readonly class NotificationSettingsService
             }
         }
 
-        $interval = null;
-        if (self::isSummaryEnabled() && is_array($data['summary'] ?? null) && array_key_exists('interval', $data['summary'])) {
-            $value = $data['summary']['interval'];
-            if ((!is_int($value) && !(is_string($value) && ctype_digit($value))) || !array_key_exists((int)$value, self::summaryIntervals())) {
-                $errors['summary.interval'][] = Yii::t('NotificationModule.base', 'Invalid interval.');
-            } else {
-                $interval = (int)$value;
-            }
-        }
-
         if ($errors !== []) {
             return $errors;
         }
 
         try {
-            Yii::$app->db->transaction(function () use ($modes, $switches, $spaceGuids, $interval): void {
-                foreach ($modes as [$target, $mode]) {
-                    $this->setMode($target, $mode);
-                }
-                foreach ($switches as [$target, $group, $enabled]) {
-                    $this->setGroup($target, $group, $enabled);
+            Yii::$app->db->transaction(function () use ($switches, $spaceGuids): void {
+                foreach ($switches as [$target, $category, $enabled]) {
+                    $this->setCategory($target, $category, $enabled);
                 }
 
                 if ($spaceGuids !== null) {
@@ -325,13 +270,6 @@ final readonly class NotificationSettingsService
                         self::moduleSettings()->user($this->user)->set(NotificationSpaceService::IS_TOUCHED_SETTINGS, true);
                     }
                     (new NotificationSpaceService())->setSpaces($spaceGuids, $this->user);
-                }
-
-                if ($interval !== null && ($this->user === null || $interval !== $this->getSummaryInterval())) {
-                    // A user's own value only when it differs from the inherited one, so a user keeps
-                    // following the default until choosing otherwise.
-                    $settings = Yii::$app->getModule('activity')->settings;
-                    ($this->user === null ? $settings : $settings->user($this->user))->set('mailSummaryInterval', $interval);
                 }
             });
         } catch (\Throwable $e) {
@@ -345,6 +283,19 @@ final readonly class NotificationSettingsService
         }
 
         return [];
+    }
+
+    /**
+     * The categories of this scope: the core categories first, then those of modules, each in their order.
+     *
+     * @return NotificationCategory[]
+     */
+    private function getCategories(): array
+    {
+        $categories = Yii::$app->notification->getCategories($this->user);
+        usort($categories, fn(NotificationCategory $a, NotificationCategory $b) => $b->isCore() <=> $a->isCore());
+
+        return $categories;
     }
 
     /**
@@ -379,40 +330,6 @@ final readonly class NotificationSettingsService
         return array_values($spaces);
     }
 
-    private function getSummaryInterval(): int
-    {
-        $settings = Yii::$app->getModule('activity')->settings;
-        $interval = $settings->get('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
-        if ($this->user !== null) {
-            $interval = $settings->user($this->user)->get('mailSummaryInterval', $interval);
-        }
-
-        return (int)$interval;
-    }
-
-    private static function isSummaryEnabled(): bool
-    {
-        return (bool)Yii::$app->getModule('activity')->enableMailSummaries;
-    }
-
-    /**
-     * @return array<int, string> the labels by interval
-     */
-    private static function summaryIntervals(): array
-    {
-        return (new MailSummaryForm())->getIntervals();
-    }
-
-    private static function modeLabel(string $mode): string
-    {
-        return match ($mode) {
-            self::MODE_ADAPTIVE => Yii::t('NotificationModule.base', 'Send'),
-            self::MODE_SUMMARY => Yii::t('NotificationModule.base', 'Summary only'),
-            self::MODE_OFF => Yii::t('NotificationModule.base', 'Off'),
-            default => $mode,
-        };
-    }
-
     private function get(string $key): mixed
     {
         if ($this->user === null) {
@@ -432,13 +349,8 @@ final readonly class NotificationSettingsService
         return Yii::$app->getModule('notification')->settings;
     }
 
-    private static function modeKey(BaseTarget $target): string
+    private static function categoryKey(BaseTarget $target, NotificationCategory $category): string
     {
-        return $target->id . '.mode';
-    }
-
-    private static function groupKey(BaseTarget $target, NotificationGroup $group): string
-    {
-        return $target->id . '.group.' . $group->id;
+        return $target->id . '.category.' . $category->id;
     }
 }

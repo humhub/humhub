@@ -9,16 +9,16 @@
 namespace humhub\modules\notification\tests\codeception\unit\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 
 /**
  * A notification of a module's own group.
  */
-final class TestModuleGroupNotification extends BaseNotification
+final class TestModuleCategoryNotification extends BaseNotification
 {
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return new NotificationGroup('example-reports', 'Reports', sortOrder: 350);
+        return new NotificationCategory('example-reports', 'Reports', sortOrder: 350);
     }
 
     protected function getMessage(array $params): string

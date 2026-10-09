@@ -8,9 +8,8 @@
 
 namespace humhub\modules\content\notifications;
 
-use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationPriority;
 use Yii;
 
@@ -29,9 +28,9 @@ final class ContentDeletedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**
@@ -47,7 +46,7 @@ final class ContentDeletedNotification extends BaseNotification
      *
      * @inheritdoc
      */
-    public function getMailActions(): array
+    public function getActions(): array
     {
         return [];
     }
@@ -57,32 +56,17 @@ final class ContentDeletedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('ContentModule.notifications', 'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'', [
-            'displayName' => $params['displayName'],
-            'contentTitle' => $params['contentTitle'],
-            'reason' => $params['reason'],
-        ]);
+        return Yii::t('ContentModule.notifications', 'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'', $params);
     }
 
     /**
      * @inheritdoc
      */
-    protected function getMessageParamsPlain(int $maxLength): array
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsPlain($maxLength), [
+        return [
             'contentTitle' => (string)($this->payload['contentTitle'] ?? ''),
             'reason' => (string)($this->payload['reason'] ?? ''),
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getMessageParamsWeb(): array
-    {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'contentTitle' => Html::encode((string)($this->payload['contentTitle'] ?? '')),
-            'reason' => Html::encode((string)($this->payload['reason'] ?? '')),
-        ]);
+        ];
     }
 }

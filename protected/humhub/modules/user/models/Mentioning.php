@@ -12,7 +12,6 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\user\notifications\MentionedNotification;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
@@ -76,7 +75,7 @@ class Mentioning extends ActiveRecord
         }
 
         // Send Notification
-        NotificationManager::dispatch(MentionedNotification::class, $this->user, $mentionedSource, $originator);
+        MentionedNotification::send($this->user, $mentionedSource, $originator);
 
         return parent::afterSave($insert, $changedAttributes);
     }

@@ -11,7 +11,6 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -118,7 +117,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 ]);
             }
 
-            NotificationManager::dispatch(NewCommentNotification::class, $followerQuery, $this, $this->createdBy);
+            NewCommentNotification::send($followerQuery, $this, $this->createdBy);
             ActivityManager::dispatch(NewCommentActivity::class, $this, $this->createdBy);
 
             if ($this->content->container) {

@@ -9,7 +9,7 @@
 namespace humhub\modules\space\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationGroup;
+use humhub\modules\notification\components\NotificationCategory;
 use Yii;
 
 /**
@@ -28,9 +28,9 @@ final class SpaceApprovalRequestNotification extends BaseNotification
     /**
      * @inheritdoc
      */
-    public static function group(): NotificationGroup
+    public static function category(): NotificationCategory
     {
-        return NotificationGroup::direct();
+        return NotificationCategory::direct();
     }
 
     /**
@@ -48,7 +48,7 @@ final class SpaceApprovalRequestNotification extends BaseNotification
      *
      * @inheritdoc
      */
-    public function getMailBody(): ?string
+    public function getExcerpt(): ?string
     {
         $message = (string)($this->payload['message'] ?? '');
 

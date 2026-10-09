@@ -10,24 +10,24 @@ use humhub\components\Migration;
 use yii\db\Query;
 
 /**
- * Migrates the notification settings of 1.19 - one switch per category and channel,
- * `notification.<category>_<target>` - to the channel modes and group switches of 1.20
- * (`<target>.mode`, `<target>.group.<group>`), for the global defaults (`setting`) and for every
- * user (`contentcontainer_setting`).
+ * Migrates the notification settings of 1.19 - one switch per (old) category and channel,
+ * `notification.<old category>_<target>` - to the category switches of 1.20
+ * (`<target>.category.<category>`), for the global defaults (`setting`) and for every user
+ * (`contentcontainer_setting`). The nine core categories of 1.19 are merged into the five
+ * core categories of 1.20.
  *
- * In 1.19 a switch was the user's key, else the global key, else the category's default (on,
- * except likes by e-mail). The migration evaluates that effective value of every mapped
- * category:
+ * In 1.19 a switch was the user's key, else the global key, else the old category's default (on,
+ * except likes by e-mail). For every channel, a category (other than `direct`, which cannot be
+ * switched off) with at least one stored key among its mapped old categories is switched off when
+ * the effective value of every mapped old category is off, else on. A category none of whose
+ * old categories has a stored key gets no key: it follows the 1.20 default
+ * ({@see \humhub\modules\notification\components\NotificationCategory::isEnabledByDefault()}),
+ * e.g. new followers by e-mail are off.
  *
- * - a channel whose every mapped category is off is `off`, else `adaptive`;
- * - a group (other than `direct`, which cannot be switched off) whose every mapped category is
- *   off is switched off, else on.
- *
- * The global result is stored where it differs from the 1.20 defaults (`adaptive`, on); a user's
- * result only where it differs from the new global result - in both directions, so a user who
- * had a channel on under a global "off" keeps it on. Categories of modules are not mapped and
- * fall back to the defaults, `web` switches are dropped (the web list is always on); all old
- * keys are deleted.
+ * The global result is stored where it differs from the 1.20 defaults; a user's result only
+ * where it differs from the new effective global setting - in both directions, so a user who
+ * had a category on under a global "off" keeps it on. Old categories of modules are not mapped and
+ * fall back to the defaults; all old keys are deleted.
  *
  * Plain queries only: the models and settings managers of the time this runs may differ.
  *
@@ -36,15 +36,15 @@ use yii\db\Query;
 class m261006_100100_settings extends Migration
 {
     /**
-     * The core categories of 1.19 and the group each one became.
+     * The core categories of 1.19 and the 1.20 category each one became.
      */
-    public const CATEGORY_GROUPS = [
+    public const CATEGORY_MAP = [
         'mentioned' => 'direct',
         'friendship' => 'direct',
         'space_member' => 'direct',
         'comments' => 'social',
         'like' => 'social',
-        'followed' => 'social',
+        'followed' => 'followers',
         'content_created' => 'content',
         'space_created' => 'admin',
         'admin' => 'admin',
@@ -53,7 +53,12 @@ class m261006_100100_settings extends Migration
     /**
      * The channels whose settings are migrated.
      */
-    public const TARGETS = ['email', 'mobile'];
+    public const TARGETS = ['web', 'email', 'mobile'];
+
+    /**
+     * The 1.20 category switches that are off by default (`NotificationCategory::$offByDefault`).
+     */
+    public const NEW_OFF_BY_DEFAULT = ['email.category.followers', 'mobile.category.followers'];
 
     /**
      * The 1.19 defaults that were not "on" (`LikeNotificationCategory::getDefaultSetting()`), by key.
@@ -63,7 +68,7 @@ class m261006_100100_settings extends Migration
     /**
      * Categories 1.19 stored only for users who saw them (`space_created`: `ManageSpaces`) - not
      * in the administrator's defaults, not for other users. Without a key in the chain (user,
-     * global) such a category is left out of the evaluation, so the `admin` group is decided by
+     * global) such a category is left out of the evaluation, so the `admin` category is decided by
      * `admin_<target>` alone.
      */
     public const STORED_ONLY_WHEN_VISIBLE = ['space_created'];
@@ -113,7 +118,7 @@ class m261006_100100_settings extends Migration
             ->select('name')
             ->from('setting')
             ->where(['module_id' => self::MODULE_ID])
-            ->andWhere(['OR', ['LIKE', 'name', '%.mode', false], ['LIKE', 'name', '%.group.%', false]])
+            ->andWhere(['LIKE', 'name', '%.category.%', false])
             ->column($this->db);
 
         foreach (self::diff(self::resolve($global, []), self::defaults()) as $name => $value) {
@@ -128,7 +133,7 @@ class m261006_100100_settings extends Migration
      */
     private function migrateUsers(array $global): void
     {
-        $globalResult = self::resolve($global, []);
+        $globalResult = array_merge(self::defaults(), self::resolve($global, []));
 
         $containerIds = (new Query())
             ->select('contentcontainer_id')
@@ -174,31 +179,36 @@ class m261006_100100_settings extends Migration
 
     /**
      * The 1.20 settings resulting from the effective 1.19 switches of a scope: its own keys, else
-     * those of `$base` (the global keys for a user), else the category's default.
+     * those of `$base` (the global keys for a user), else the old category's default. A 1.20
+     * category with no stored key in the chain is left out.
      *
      * @param array<string, string|null> $keys the old settings of the scope by name
      * @param array<string, string|null> $base the old settings it inherits from by name
-     * @return array<string, string> every new key (`<target>.mode`, `<target>.group.<group>`) with its value
+     * @return array<string, string> the new keys (`<target>.category.<category>`) with their value
      */
     public static function resolve(array $keys, array $base): array
     {
         $result = [];
         foreach (self::TARGETS as $target) {
-            $groups = [];
-            foreach (self::CATEGORY_GROUPS as $category => $group) {
-                $name = self::OLD_PREFIX . $category . '_' . $target;
+            $categories = [];
+            $stored = [];
+            foreach (self::CATEGORY_MAP as $oldCategory => $category) {
+                if ($category === 'direct') {
+                    continue;
+                }
+                $name = self::OLD_PREFIX . $oldCategory . '_' . $target;
                 $value = $keys[$name] ?? $base[$name] ?? null;
-                if ($value === null && in_array($category, self::STORED_ONLY_WHEN_VISIBLE, true)) {
+                if ($value === null && in_array($oldCategory, self::STORED_ONLY_WHEN_VISIBLE, true)) {
                     // Never shown, never stored: it does not count either way.
                     continue;
                 }
-                $groups[$group][] = $value === null ? !in_array($name, self::OFF_BY_DEFAULT, true) : (bool)$value;
+                $stored[$category] = ($stored[$category] ?? false) || $value !== null;
+                $categories[$category][] = $value === null ? !in_array($name, self::OFF_BY_DEFAULT, true) : (bool)$value;
             }
 
-            $result[$target . '.mode'] = in_array(true, array_merge(...array_values($groups)), true) ? 'adaptive' : 'off';
-            foreach ($groups as $group => $enabled) {
-                if ($group !== 'direct') {
-                    $result[$target . '.group.' . $group] = in_array(true, $enabled, true) ? '1' : '0';
+            foreach ($categories as $category => $enabled) {
+                if ($stored[$category]) {
+                    $result[$target . '.category.' . $category] = in_array(true, $enabled, true) ? '1' : '0';
                 }
             }
         }
@@ -207,7 +217,7 @@ class m261006_100100_settings extends Migration
     }
 
     /**
-     * The 1.20 defaults: every channel `adaptive`, every group on.
+     * The 1.20 defaults of the mapped categories: on, except {@see NEW_OFF_BY_DEFAULT}.
      *
      * @return array<string, string>
      */
@@ -215,10 +225,10 @@ class m261006_100100_settings extends Migration
     {
         $defaults = [];
         foreach (self::TARGETS as $target) {
-            $defaults[$target . '.mode'] = 'adaptive';
-            foreach (array_unique(self::CATEGORY_GROUPS) as $group) {
-                if ($group !== 'direct') {
-                    $defaults[$target . '.group.' . $group] = '1';
+            foreach (array_unique(self::CATEGORY_MAP) as $category) {
+                if ($category !== 'direct') {
+                    $name = $target . '.category.' . $category;
+                    $defaults[$name] = in_array($name, self::NEW_OFF_BY_DEFAULT, true) ? '0' : '1';
                 }
             }
         }
