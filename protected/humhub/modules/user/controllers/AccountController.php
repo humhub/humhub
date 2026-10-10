@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use Collator;
 use Exception;
 use humhub\compat\HForm;
+use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\authclient\BaseFormClient;
@@ -127,6 +128,8 @@ class AccountController extends BaseAccountController
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
+        $allowedExternalSources = UrlOembed::getAllowedDomains();
+        $model->allowedExternalSources = $allowedExternalSources;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
@@ -142,6 +145,10 @@ class AccountController extends BaseAccountController
                 $user->blockedUsersField = $model->blockedUsers;
             }
             $user->save();
+
+            if ($allowedExternalSources !== []) {
+                UrlOembed::restrictAllowedDomains($model->getAllowedExternalSources());
+            }
 
             $this->view->saved();
             return $this->redirect(['edit-settings']);
@@ -160,6 +167,7 @@ class AccountController extends BaseAccountController
             'model' => $model,
             'languages' => $languages,
             'isEnabledOnlineStatus' => !$settingsManager->get('auth.hideOnlineStatus'),
+            'allowedExternalSources' => $allowedExternalSources,
         ]);
     }
 
