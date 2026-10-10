@@ -30,9 +30,9 @@ use yii\helpers\Url;
 use yii\symfonymailer\Message;
 
 /**
- * The queue of the test application is synchronous and its configuration makes the channels
- * instant (`delays = [0]`, no low-priority delay): a dispatch sends its mails at once, one per
- * notification. The timings of the delivery layer are tested in {@see DeliverySchedulerTest}.
+ * The queue of the test application runs every job at once, so the delivery layer treats every
+ * delay as 0 ({@see \humhub\modules\notification\services\DeliveryScheduler::isInstant()}): a
+ * dispatch sends its mails at once, one per notification. The timings of the delivery layer are tested in {@see DeliverySchedulerTest}.
  */
 class MailTargetTest extends HumHubDbTestCase
 {

@@ -7,7 +7,7 @@ are bound to a container and not addressed to anybody in particular.
 A notification is written once per recipient and reaches the user through **channels**: the web
 list (the bell in the top bar and `/notification/overview`), e-mail, mobile push, and whatever a
 module adds. The web list receives a notification as soon as it is written. For mail and push a
-**delivery layer** decides *when* a message goes out — at once when the user is quiet, collected
+**delivery layer** decides *when* a message goes out — soon when the user is quiet, collected
 into one message when many arrive, never when the user has already seen the notification; see
 [Delivery](#delivery) below and the [administrator's guide](../admin/notifications.md).
 
@@ -224,8 +224,8 @@ classes of which a user needs any to see the category on the settings page (none
 space permissions are not supported. The channel ids are the constants `WebTarget::ID` (`web`),
 `MailTarget::ID` (`email`) and `MobileTarget::ID` (`mobile`).
 
-The **priority** says how urgently a notification should go out: `High` at once, `Normal` after
-the adaptive delay, `Low` with the next mail that goes out anyway. It defaults to the category's;
+The **priority** says how urgently a notification should go out: `High` without the adaptive
+delay (at once on push, after a minute on mail), `Normal` after the adaptive delay, `Low` with the next mail that goes out anyway. It defaults to the category's;
 override `priority()` when a single class differs. It is a property of the notification type, not
 of a single `send()`: a notification that is sometimes urgent and sometimes not is two classes.
 It is stored with every notification, used
@@ -446,9 +446,11 @@ a due time, and pushes a `DeliverJob` for the recipient and channel, delayed to 
 
 - **Adaptive delay.** `n` is the number of *messages* (not notifications) the channel sent the
   recipient within `delayWindow`; the delay is `delays[min(n, count(delays) - 1)]`. With the
-  defaults the first mail in a quiet hour goes out at once, the next one after five minutes, the
-  one after that after fifteen, every further one after thirty. A `high` notification always goes
-  at once, a `low` one waits at least `lowPriorityDelay`.
+  mail defaults (`[60, 300, 900, 1800]`) the first mail in a quiet hour goes out after a minute,
+  the next one after five minutes, the one after that after fifteen, every further one after
+  thirty; push starts at once (`[0, 300, 900, 1800]`). A `high` notification ignores `delays` and
+  waits `highPriorityDelay` — a minute on mail, nothing on push; a `low` one waits at least
+  `lowPriorityDelay`.
 - **Riding along.** A new notification whose recipient already has a pending message on that
   channel, due at least 5 seconds from now and no later than the new one would be, takes over its
   due time; no job is pushed.
@@ -461,10 +463,13 @@ a due time, and pushes a `DeliverJob` for the recipient and channel, delayed to 
 - **Skipping.** Right before sending, a row is skipped when the notification was seen in the
   meantime, when the channel is no longer active or enabled for it (category switch), when the
   recipient is no longer enabled, or when the notification no longer loads (e.g. its source is
-  gone). A channel
-  with `skipWhenOnline` (mail by default) skips the rows that are due while the user was active on
-  the site within the last minute (`IsOnlineService::isRecentlyActive()`); rows not due yet stay
-  pending.
+  gone). The minute the first mail waits is what makes the seen rule work for a user on the site:
+  what they read right away is not mailed, while a user whose tab is open but who is away still
+  gets the mail. A channel with `skipWhenOnline` (off by default, also for mail) skips the rows
+  that are due while the user was active on the site within the last minute
+  (`IsOnlineService::isRecentlyActive()`); rows not due yet stay pending. It is off because
+  "active within the last minute" includes an open tab polling the server, so it would also drop
+  mails to users who are not at their screen.
 - **Follow-ups and the sweep.** One job per recipient and channel runs at a time (a mutex). After
   each run, a job is pushed for the earliest pending row left. The hourly cron re-queues pending
   rows overdue by more than five minutes (a lost job) and deletes finished rows after 30 days
@@ -519,8 +524,8 @@ final class ChatTarget extends BaseTarget
 }
 ```
 
-The target inherits the delay properties (`delays`, `delayWindow`, `lowPriorityDelay`,
-`skipWhenOnline`, see [Delivery](#delivery)) and the per-user category switches; it appears on
+The target inherits the delay properties (`delays`, `delayWindow`, `highPriorityDelay`,
+`lowPriorityDelay`, `skipWhenOnline`, see [Delivery](#delivery)) and the per-user category switches; it appears on
 the settings page as one more checkbox per category. Override `isActive(?User $user)` (calling the
 parent) when the channel is not available to everyone, and `appliesTo(NotificationCategory $category)`
 when it cannot carry some categories (every category by default; the web list only those with a

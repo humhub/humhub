@@ -29,8 +29,10 @@ use Yii;
 use yii\log\Logger;
 
 /**
- * {@see DeliverJob} with the default timings of the mail target. Every scenario starts with a
- * first notification that goes out at once, so the following ones wait 300 s and ride along.
+ * {@see DeliverJob} with the base timings of a target on the mail channel (delays 0/300/900/1800 s,
+ * high priority at once) instead of the mail defaults, which wait a minute even with the first
+ * message. Every scenario starts with a first notification that goes out at once, so the following
+ * ones wait 300 s and ride along. The mail timings are tested in {@see DeliverySchedulerTest}.
  */
 class DeliverJobTest extends HumHubDbTestCase
 {
@@ -42,6 +44,11 @@ class DeliverJobTest extends HumHubDbTestCase
     {
         parent::setUp();
         $this->setUpDelivery();
+    }
+
+    protected function mailTargetConfig(): array
+    {
+        return ['delays' => [0, 300, 900, 1800], 'highPriorityDelay' => 0];
     }
 
     public function testCollectsTheDueNotificationsInOneMail()
@@ -198,10 +205,20 @@ class DeliverJobTest extends HumHubDbTestCase
         $this->assertNull($this->lastDelivery()->sent_at);
     }
 
+    public function testOnlineRecipientIsMailedByDefault()
+    {
+        (new IsOnlineService(User::findOne(['id' => 1])))->updateStatus();
+
+        $this->dispatchToAdmin();
+
+        $this->assertCount(1, $this->mails());
+        $this->assertSame(NotificationDelivery::STATE_SENT, (int)$this->lastDelivery()->state);
+    }
+
     public function testOnlineRecipientIsSkippedForMailButNotForPush()
     {
         $provider = $this->provider();
-        $this->setUpDelivery([], $provider);
+        $this->setUpDelivery(['skipWhenOnline' => true], $provider);
         (new IsOnlineService(User::findOne(['id' => 1])))->updateStatus();
 
         $this->dispatchToAdmin();
@@ -215,7 +232,7 @@ class DeliverJobTest extends HumHubDbTestCase
     public function testOnlineRecipientKeepsTheRowsNotDueYet()
     {
         Yii::$app->set('queue', new DelayingTestQueue());
-        $this->setUpDelivery();
+        $this->setUpDelivery(['skipWhenOnline' => true]);
         (new IsOnlineService(User::findOne(['id' => 1])))->updateStatus();
 
         $this->dispatchToAdmin(NotificationPriority::Low);

@@ -33,8 +33,16 @@ final class MailTarget extends BaseTarget
 
     /**
      * @inheritdoc
+     *
+     * The first mail waits a minute: right before sending, notifications the user has seen in the
+     * meantime are dropped, so a user on the site usually gets no mail for what they already saw.
      */
-    public bool $skipWhenOnline = true;
+    public array $delays = [60, 300, 900, 1800];
+
+    /**
+     * @inheritdoc
+     */
+    public int $highPriorityDelay = 60;
 
     /**
      * @inheritdoc

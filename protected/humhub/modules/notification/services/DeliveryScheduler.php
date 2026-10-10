@@ -29,11 +29,12 @@ use yii\db\Expression;
  * ({@see BaseTarget::isEnabled()}), except the web list, one {@see NotificationDelivery} row is
  * written with its `due_at`:
  *
- * - `high` priority: now;
+ * - `high` priority: the target's `highPriorityDelay` (0 by default: now);
  * - otherwise the delay is `delays[min(n, count(delays) - 1)]` of the target, where `n` is the
  *   number of messages the channel sent the recipient within the target's `delayWindow`
  *   (counted as distinct `sent_at` of the sent rows, since the rows of one batch share it): the
- *   first message in a quiet hour goes at once, every further one waits longer;
+ *   first message in a quiet hour waits the first delay (none for push, a minute for mail), every
+ *   further one longer;
  * - `low` priority waits at least the target's `lowPriorityDelay`.
  *
  * Whenever a message goes out, the {@see DeliverJob} takes all pending rows of the recipient and
@@ -45,7 +46,8 @@ use yii\db\Expression;
  * over its `due_at` and no job is pushed: it rides along in that message. A pending row due
  * sooner (or overdue) is no carrier - its job may be running or lost - so the new row then gets a
  * job of its own. Otherwise a {@see DeliverJob} for the recipient and channel is pushed, delayed
- * to `due_at`. A target with `delays = [0]` and a `high` notification are effectively instant.
+ * to `due_at`. A target with `delays = [0]`, and a `high` notification on a target with
+ * `highPriorityDelay = 0`, are effectively instant.
  *
  * A failing channel is logged and does not stop the others.
  *
@@ -205,7 +207,7 @@ class DeliveryScheduler
     private function delay(BaseTarget $target, NotificationPriority $priority, User $user, int $now): int
     {
         if ($priority === NotificationPriority::High) {
-            return 0;
+            return max(0, $target->highPriorityDelay);
         }
 
         $delays = array_values($target->delays) ?: [0];

@@ -26,11 +26,11 @@ use yii\base\InvalidConfigException;
  * {@see deliver()} hands a {@see DeliveryBatch} - one or several notifications of one recipient -
  * to the channel.
  *
- * {@see $delays}, {@see $delayWindow}, {@see $lowPriorityDelay} and {@see $skipWhenOnline} are
- * read by the delivery layer: the {@see \humhub\modules\notification\services\DeliveryScheduler}
+ * {@see $delays}, {@see $delayWindow}, {@see $highPriorityDelay}, {@see $lowPriorityDelay} and
+ * {@see $skipWhenOnline} are read by the delivery layer: the {@see \humhub\modules\notification\services\DeliveryScheduler}
  * decides when a notification goes out, and the {@see \humhub\modules\notification\jobs\DeliverJob}
  * collects the recipient's pending notifications into one batch when one of them is due.
- * `delays = [0]` makes a channel instant. With a queue that does not honour the delay of a job
+ * `delays = [0]` (and the default `highPriorityDelay = 0`) makes a channel instant. With a queue that does not honour the delay of a job
  * (e.g. the `Instant` and `Sync` drivers) every delay is 0, see
  * {@see \humhub\modules\notification\services\DeliveryScheduler::isInstant()}.
  *
@@ -53,7 +53,7 @@ abstract class BaseTarget extends BaseObject
     /**
      * @var int[] seconds the delivery layer waits with the 1st, 2nd, … message within the
      * {@see $delayWindow}; the last value applies to every further message. A high-priority
-     * notification never waits.
+     * notification waits {@see $highPriorityDelay} instead.
      * @since 1.20
      */
     public array $delays = [0, 300, 900, 1800];
@@ -63,6 +63,13 @@ abstract class BaseTarget extends BaseObject
      * @since 1.20
      */
     public int $delayWindow = 3600;
+
+    /**
+     * @var int seconds a high-priority notification waits, regardless of {@see $delays}; 0 sends it
+     * at once
+     * @since 1.20
+     */
+    public int $highPriorityDelay = 0;
 
     /**
      * @var int seconds a low-priority notification waits at least - it usually goes along with an

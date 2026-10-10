@@ -36,6 +36,22 @@ class BaseTargetTest extends HumHubDbTestCase
         $this->assertTrue((new MailTarget())->isEnabled(TestNotification::class));
     }
 
+    public function testTimingDefaults()
+    {
+        // mail waits a minute, also with high priority, so what is seen right away is not mailed
+        $mail = new MailTarget();
+        $this->assertSame([60, 300, 900, 1800], $mail->delays);
+        $this->assertSame(60, $mail->highPriorityDelay);
+        $this->assertSame(1800, $mail->lowPriorityDelay);
+        $this->assertFalse($mail->skipWhenOnline);
+
+        // push starts at once
+        $mobile = new MobileTarget();
+        $this->assertSame([0, 300, 900, 1800], $mobile->delays);
+        $this->assertSame(0, $mobile->highPriorityDelay);
+        $this->assertFalse($mobile->skipWhenOnline);
+    }
+
     public function testInactiveTargetIsDisabled()
     {
         $this->assertFalse((new MailTarget(['active' => false]))->isEnabled(TestNotification::class, $this->user()));

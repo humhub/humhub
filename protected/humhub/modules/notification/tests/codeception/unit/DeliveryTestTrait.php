@@ -67,7 +67,7 @@ trait DeliveryTestTrait
             'instantDelivery' => false,
             'targets' => [
                 'web' => ['class' => WebTarget::class],
-                'email' => array_merge(['class' => MailTarget::class], $email),
+                'email' => array_merge(['class' => MailTarget::class], $this->mailTargetConfig(), $email),
                 'mobile' => ['class' => MobileTarget::class, 'provider' => $provider],
             ],
         ]);
@@ -75,6 +75,15 @@ trait DeliveryTestTrait
         $this->pushes = [];
         Yii::$app->queue->off(Queue::EVENT_AFTER_PUSH, [$this, 'recordPush']);
         Yii::$app->queue->on(Queue::EVENT_AFTER_PUSH, [$this, 'recordPush']);
+    }
+
+    /**
+     * @return array properties of the mail target over its defaults for every {@see setUpDelivery()}
+     * of the test class
+     */
+    protected function mailTargetConfig(): array
+    {
+        return [];
     }
 
     public function recordPush(PushEvent $event): void
