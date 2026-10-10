@@ -14,6 +14,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Configuration;
 use Codeception\Test\Unit;
+use humhub\components\db\AfterCommit;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\components\ContentContainerPermissionManager;
@@ -58,6 +59,9 @@ class HumHubDbTestCase extends Unit
     {
         if (\Yii::$app !== null) {
             \Yii::$app->db->trigger('afterOpen');
+            // With `transaction: true` the Yii2 module wraps the test into a transaction it never
+            // commits, so work deferred until the commit has to run at once.
+            AfterCommit::$immediate = (bool)Yii::$app->db->getTransaction()?->getIsActive();
         }
 
         if (Yii::$app === null) {

@@ -243,17 +243,6 @@ class Module extends \humhub\components\Module
     /**
      * @inheritdoc
      */
-    public function getNotifications()
-    {
-        return [
-            'humhub\modules\user\notifications\Followed',
-            'humhub\modules\user\notifications\Mentioned',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getPasswordStrength()
     {
         if (empty($this->passwordStrength)) {

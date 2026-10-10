@@ -2,7 +2,8 @@
     <div
         ref="root"
         class="c-select c-picker c-picker-filter"
-        :class="[block, { 'is-open': open, 'has-selection': hasValue, 'is-disabled': resolving, 'is-loading': resolving, 'is-multiple': multiple }]"
+        :class="[block, { 'is-open': open, 'has-selection': hasValue, 'is-disabled': resolving, 'is-loading': resolving, 'is-multiple': multiple, 'keeps-placeholder': keepsPlaceholder }]"
+        :style="keepsPlaceholder ? { '--c-picker-placeholder-chars': placeholder.length } : null"
     >
         <div class="c-picker__field" @click="onFieldClick">
             <template v-if="multiple">
@@ -64,7 +65,7 @@
                 :aria-activedescendant="activeDescendant"
                 :aria-label="accessibleName"
                 :aria-busy="resolving || searching ? 'true' : null"
-                :placeholder="multiple && hasValue ? '' : placeholder"
+                :placeholder="multiple && hasValue && !keepPlaceholder ? '' : placeholder"
                 :value="query"
                 :disabled="resolving"
                 @input="onInput"
@@ -159,7 +160,10 @@ const ID_PATTERN = /^[1-9]\d*$/;
  *   `Promise` of the items, `{ id, … }`; `resolve()` must answer every id it knows — page size
  *   `ids.length`), `itemLabel(item)`, `itemTitle(item)` (optional: a chip's tooltip, none when
  *   it answers nothing), `icon` (a Tabler class leading the field),
- *   `block`. Emits `update:modelValue` with the new value (ids as strings).
+ *   `block`, `keepPlaceholder` (with `multiple`: the placeholder stays next to the chips — an
+ *   invitation to add one more, "Add a space…" —, the field at least as wide as it; off by
+ *   default, as in a filter bar the placeholder is the "all" state — "Any space" — that a
+ *   chosen item ends). Emits `update:modelValue` with the new value (ids as strings).
  * - Search: a typed text (trimmed, not empty) is searched after `SEARCH_DEBOUNCE_MS`; only the
  *   answer to the latest text is shown, its first suggestion active; with `multiple` the chosen
  *   items are not suggested again. A suggestion is the `option` slot (an image), the label and
@@ -200,6 +204,7 @@ export default {
         itemTitle: { type: Function, default: null },
         icon: { type: String, default: null },
         block: { type: String, required: true },
+        keepPlaceholder: { type: Boolean, default: false },
     },
     emits: ['update:modelValue'],
     data() {
@@ -246,6 +251,10 @@ export default {
         },
         placeholder() {
             return this.filter.placeholder || this.filter.label || '';
+        },
+        // With chips the placeholder stays: the field keeps room for it (`.keeps-placeholder`).
+        keepsPlaceholder() {
+            return this.keepPlaceholder && this.multiple && this.hasValue && this.placeholder !== '';
         },
         accessibleName() {
             return this.filter.label || this.filter.placeholder || null;

@@ -6,9 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 
-/* @var $model NotificationSettings */
+/* @var $model MailSummaryForm */
 
-use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\activity\models\MailSummaryForm;
 
 ?>
 

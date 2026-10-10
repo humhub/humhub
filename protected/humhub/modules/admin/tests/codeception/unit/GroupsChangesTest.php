@@ -111,32 +111,22 @@ class GroupsChangesTest extends HumHubDbTestCase
 
     public function testAddUserToGroupNotify()
     {
-        /** @var Group $group */
         $group = Group::findOne(['id' => 1]);
 
-        $notify = IncludeGroupNotification::instance();
-
-        $notify
-            ->about($group)
-            ->from(User::findOne(['id' => 1]))
-            ->send(User::findOne(['id' => 2]));
+        IncludeGroupNotification::send(User::findOne(['id' => 2]), $group, User::findOne(['id' => 1]));
 
         $this->assertSentEmail(1);
-        $this->assertEqualsLastEmailSubject($notify->getMailSubject());
+        $this->assertEqualsLastEmailSubject(User::findOne(['id' => 1])->displayName . ' added you to group “' . $group->name . '”');
     }
 
     public function testRemoveUserToGroupNotify()
     {
         $group = Group::findOne(['id' => 1]);
-        $notify = ExcludeGroupNotification::instance();
 
-        $notify
-            ->about($group)
-            ->from(User::findOne(['id' => 1]))
-            ->send(User::findOne(['id' => 2]));
+        ExcludeGroupNotification::send(User::findOne(['id' => 2]), $group, User::findOne(['id' => 1]));
 
         $this->assertSentEmail(1);
-        $this->assertEqualsLastEmailSubject($notify->getMailSubject());
+        $this->assertEqualsLastEmailSubject(User::findOne(['id' => 1])->displayName . ' removed you from group “' . $group->name . '”');
     }
 
     /**

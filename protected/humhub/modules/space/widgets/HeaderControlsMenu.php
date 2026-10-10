@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\components\api\ApiRules;
 use humhub\helpers\Html;
+use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
 use humhub\widgets\menu\DropdownDivider;
 use humhub\widgets\menu\MenuLink;
@@ -87,7 +88,7 @@ class HeaderControlsMenu extends DropdownMenu
         if ($this->space->isMember()) {
             $membership = $this->space->getMembership();
 
-            if (!$membership->send_notifications && !Yii::$app->notification->hasSpace($this->space)) {
+            if (!$membership->send_notifications && !(new NotificationSpaceService())->hasSpace($this->space)) {
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Receive Notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),

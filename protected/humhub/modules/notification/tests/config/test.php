@@ -1,8 +1,8 @@
 <?php
 
-use humhub\modules\notification\tests\codeception\fixtures\TestNotificationFixture;
+use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
 
 return [
     'fixtures' => ['default',
-        'notification' => TestNotificationFixture::class],
+        'notification' => NotificationFixture::class],
 ];

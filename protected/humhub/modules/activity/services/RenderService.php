@@ -6,6 +6,11 @@ use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use Yii;
 
+/**
+ * Renders an activity record for the summary mail.
+ *
+ * @internal
+ */
 class RenderService
 {
     private readonly BaseActivity $activity;

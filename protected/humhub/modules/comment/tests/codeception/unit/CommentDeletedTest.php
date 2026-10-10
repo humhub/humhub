@@ -2,28 +2,28 @@
 
 namespace tests\codeception\unit\modules\comment\notifications;
 
-use humhub\modules\comment\notifications\CommentDeleted;
-use humhub\modules\user\models\User;
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\comment\notifications\CommentDeletedNotification;
+use humhub\modules\notification\components\NotificationManager;
+use humhub\modules\notification\models\Notification;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class CommentDeletedTest extends HumHubDbTestCase
 {
-    /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
-    public function _fixtures(): array
+    private function buildNotification(string $reason, string $commentText): CommentDeletedNotification
     {
-        return [];
-    }
+        $record = new Notification([
+            'class' => CommentDeletedNotification::class,
+            'user_id' => 2,
+            'originator_id' => 1,
+            'payload' => [
+                'commentText' => $commentText,
+                'reason' => $reason,
+            ],
+        ]);
 
-    private function buildNotification(string $reason, string $commentText): CommentDeleted
-    {
-        $notification = new CommentDeleted();
-        $notification->from(new User(['id' => 1, 'username' => 'admin']));
-        $notification->payload = [
-            'commentText' => $commentText,
-            'reason' => $reason,
-        ];
-
-        return $notification;
+        return NotificationManager::fromRecord($record);
     }
 
     /**
@@ -32,21 +32,25 @@ class CommentDeletedTest extends HumHubDbTestCase
      */
     public function testDeletionReasonIsEncoded()
     {
-        $html = $this->buildNotification('<script>alert(1)</script>', 'a comment')->html();
+        $html = $this->buildNotification('<script>alert(1)</script>', 'a comment')->asWeb();
 
         $this->assertStringNotContainsString('<script>alert(1)</script>', $html);
         $this->assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $html);
     }
 
     /**
-     * The comment preview is already HTML encoded by RichTextToShortTextConverter,
-     * so html() must not encode it a second time (no double encoding).
+     * The comment preview is stored as plain text: the web sentence encodes it once, the
+     * plain text channels carry it as is.
      */
-    public function testCommentTextIsNotDoubleEncoded()
+    public function testCommentTextIsEncodedOnce()
     {
-        $html = $this->buildNotification('a reason', '&lt;b&gt;hi&lt;/b&gt;')->html();
+        $notification = $this->buildNotification('a reason', '<b>hi</b>');
+        $html = $notification->asWeb();
 
         $this->assertStringContainsString('&lt;b&gt;hi&lt;/b&gt;', $html);
         $this->assertStringNotContainsString('&amp;lt;b&amp;gt;', $html);
+        $this->assertStringContainsString('<b>hi</b>', $notification->asMailSubject());
+        // nothing to link to: no "View online" button
+        $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
     }
 }

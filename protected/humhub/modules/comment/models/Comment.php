@@ -5,7 +5,7 @@ namespace humhub\modules\comment\models;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
-use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\notifications\NewCommentNotification;
 use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -117,7 +117,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                 ]);
             }
 
-            NewCommentNotification::instance()->from($this->createdBy)->about($this)->sendBulk($followerQuery);
+            NewCommentNotification::send($followerQuery, $this, $this->createdBy);
             ActivityManager::dispatch(NewCommentActivity::class, $this, $this->createdBy);
 
             if ($this->content->container) {

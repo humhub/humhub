@@ -445,10 +445,7 @@ class Group extends ActiveRecord
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
-                IncludeGroupNotification::instance()
-                    ->about($this)
-                    ->from(Yii::$app->user->identity)
-                    ->send($user);
+                IncludeGroupNotification::send($user, $this, Yii::$app->user->identity, dedupe: false);
             }
             return true;
         }
@@ -471,14 +468,11 @@ class Group extends ActiveRecord
         }
 
         if ($groupUser->delete()) {
-            if ($this->notify_users) {
+            if ($this->notify_users && !Yii::$app->user->isGuest) {
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
-                ExcludeGroupNotification::instance()
-                    ->about($this)
-                    ->from(Yii::$app->user->identity)
-                    ->send($user);
+                ExcludeGroupNotification::send($user, $this, Yii::$app->user->identity, dedupe: false);
             }
             return true;
         }

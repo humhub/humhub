@@ -2,28 +2,28 @@
 
 namespace tests\codeception\unit\modules\content\notifications;
 
-use humhub\modules\content\notifications\ContentDeleted;
-use humhub\modules\user\models\User;
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\content\notifications\ContentDeletedNotification;
+use humhub\modules\notification\components\NotificationManager;
+use humhub\modules\notification\models\Notification;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class ContentDeletedTest extends HumHubDbTestCase
 {
-    /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
-    public function _fixtures(): array
+    private function buildNotification(string $reason, string $contentTitle): ContentDeletedNotification
     {
-        return [];
-    }
+        $record = new Notification([
+            'class' => ContentDeletedNotification::class,
+            'user_id' => 2,
+            'originator_id' => 1,
+            'payload' => [
+                'contentTitle' => $contentTitle,
+                'reason' => $reason,
+            ],
+        ]);
 
-    private function buildNotification(string $reason, string $contentTitle): ContentDeleted
-    {
-        $notification = new ContentDeleted();
-        $notification->from(new User(['id' => 1, 'username' => 'admin']));
-        $notification->payload = [
-            'contentTitle' => $contentTitle,
-            'reason' => $reason,
-        ];
-
-        return $notification;
+        return NotificationManager::fromRecord($record);
     }
 
     /**
@@ -32,21 +32,26 @@ class ContentDeletedTest extends HumHubDbTestCase
      */
     public function testDeletionReasonIsEncoded()
     {
-        $html = $this->buildNotification('<script>alert(1)</script>', 'post "hello"')->html();
+        $html = $this->buildNotification('<script>alert(1)</script>', 'post "hello"')->asWeb();
 
         $this->assertStringNotContainsString('<script>alert(1)</script>', $html);
         $this->assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $html);
     }
 
     /**
-     * contentTitle is built by RichTextToPlainTextConverter which does NOT encode,
-     * so html() must encode it to neutralize markup from the content body.
+     * contentTitle is plain text (RichTextToPlainTextConverter does NOT encode),
+     * so the web sentence must encode it to neutralize markup from the content body.
      */
     public function testContentTitleIsEncoded()
     {
-        $html = $this->buildNotification('a reason', 'post "<img src=x onerror=alert(1)>"')->html();
+        $notification = $this->buildNotification('a reason', 'post "<img src=x onerror=alert(1)>"');
+        $html = $notification->asWeb();
 
         $this->assertStringNotContainsString('<img src=x onerror=alert(1)>', $html);
         $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $html);
+        // plain text channels carry it unencoded
+        $this->assertStringContainsString('post "<img src=x onerror=alert(1)>"', $notification->asMailSubject());
+        // nothing to link to: no "View online" button
+        $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
     }
 }

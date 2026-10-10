@@ -1,9 +1,13 @@
 <?php
 
-/* @var $activities string */
-
+use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
+use yii\helpers\Url;
 
+/* @var $activities string */
+/* @var $unseenNotificationCount int */
+
+$unseenNotificationCount ??= 0;
 ?>
 
 <tr>
@@ -71,5 +75,38 @@ use humhub\helpers\MailStyleHelper;
         <!-- end  container width 600px -->
     </td>
 </tr>
+
+<?php if ($unseenNotificationCount > 0): ?>
+<!-- START NOTIFICATIONS -->
+<tr>
+    <td align="center" valign="top" class="fix-box">
+        <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
+            <tr>
+                <td valign="top">
+                    <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width">
+                        <tr>
+                            <td valign="top" align="left"
+                                style="font-size: 14px; line-height: 22px; font-family: <?= MailStyleHelper::getFontFamily() ?>; color: <?= MailStyleHelper::getTextColorMain() ?>; font-weight: 300;">
+                                <?= Html::encode(Yii::t(
+                                    'NotificationModule.base',
+                                    '{count,plural,=1{You have # unread notification} other{You have # unread notifications}}',
+                                    ['count' => $unseenNotificationCount],
+                                )) ?>
+                                - <a href="<?= Html::encode(Url::to(['/notification/overview'], true)) ?>"
+                                     style="text-decoration: none; color: <?= MailStyleHelper::getColorPrimary() ?>; font-weight: bold;"><?= Yii::t('NotificationModule.base', 'Open notifications') ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="20"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!-- END NOTIFICATIONS -->
+<?php endif ?>
 
 <?= $activities ?>

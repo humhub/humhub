@@ -9,7 +9,7 @@ use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\like\activities\LikeActivity as LikedActivity;
 use humhub\modules\like\models\Like;
-use humhub\modules\like\notifications\NewLike as NewLikeNotification;
+use humhub\modules\like\notifications\NewLikeNotification;
 use humhub\modules\like\permissions\CanLike;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
@@ -248,8 +248,10 @@ class LikeService
 
         $this->reset();
 
-        $author = $this->contentAddon->createdBy ?? $this->content->createdBy;
-        NewLikeNotification::instance()->from($this->user)->about($record)->send($author);
+        $author = $this->getAuthor();
+        if ($author !== null) {
+            NewLikeNotification::send($author, $this->getLikedRecord(), $this->user);
+        }
 
         ActivityManager::dispatch(LikedActivity::class, $record, $record->createdBy);
 
@@ -318,10 +320,32 @@ class LikeService
         if ($like) {
             $like->delete();
             $this->reset();
+
+            $author = $this->getAuthor();
+            if ($author !== null) {
+                NewLikeNotification::revoke($this->getLikedRecord(), $author, $this->user);
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * The liked record: the content addon (e.g. a comment) or the content.
+     */
+    private function getLikedRecord(): ContentAddonActiveRecord|Content
+    {
+        return $this->contentAddon ?? $this->content;
+    }
+
+    /**
+     * The author of the liked record, who is notified about the like.
+     */
+    private function getAuthor(): ?User
+    {
+        return $this->contentAddon->createdBy ?? $this->content->createdBy;
     }
 
     private function getCurrentLikeRecord(): ?Like

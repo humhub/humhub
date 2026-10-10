@@ -25,10 +25,10 @@
  *
  * ## Paging
  *
- * Cursor-based, see `notification\controllers\api\NotificationController`. Two ways to ask for
- * the next page, because the two consumers differ: the dropdown pages on scroll (its own list
- * element scrolls, like the legacy one did), the overview page shows a button
- * (`showMoreButton`). The legacy overview used numbered pages; a cursor cannot express those,
+ * Cursor-based, the cursor an opaque string (see
+ * `notification\controllers\api\NotificationController`). Two ways to ask for the next page,
+ * because the two consumers differ: the dropdown pages on scroll (its own list element
+ * scrolls, like the legacy one did), the overview page shows a button (`showMoreButton`). The legacy overview used numbered pages; a cursor cannot express those,
  * and mixing page numbers with a live-updating list reintroduces exactly the skipping the
  * cursor exists to avoid — a documented, deliberate change.
  *
@@ -37,8 +37,8 @@
  * - `reload()` — fetches the first page again (a filter changed, the dropdown was opened).
  * - `loadMore()` — appends the next page; a no-op while loading or exhausted.
  * - `prepend(entry)` — puts a live-arrived notification on top, deduping by id and by
- *   `groupKey` (a grouped notification's later members must replace the entry, not stack under
- *   it — the same rule `humhub.notification.js` applied to its live events).
+ *   `groupKey` (the opaque group key, which the live event carries as `notificationGroup`: a
+ *   grouped notification's later members must replace the entry, not stack under it).
  * - `has(entry)` — whether an id/groupKey is already listed, so an island can decide whether a
  *   live event is new before it fetches anything.
  *

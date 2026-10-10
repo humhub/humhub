@@ -14,11 +14,14 @@ namespace tests\codeception\_support;
 
 use Codeception\Exception\ModuleException;
 use Codeception\Module\Yii2;
-use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\db\AfterCommit;
 use humhub\libs\UUID;
 use humhub\models\RecordMap;
 use humhub\models\UrlOembed;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
@@ -32,6 +35,7 @@ use Yii;
 use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\ExpressionInterface;
 use yii\db\Query;
@@ -53,6 +57,7 @@ trait HumHubHelperTrait
     protected function tearDown(): void
     {
         static::logReset();
+        AfterCommit::$immediate = false;
 
         parent::tearDown();
     }
@@ -400,64 +405,58 @@ trait HumHubHelperTrait
 
     public static function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where([
-            'class' => $class,
-            'source_class' => PolymorphicRelation::getObjectModel($source),
-            'source_pk' => $source->getPrimaryKey(),
-        ]);
-
         if (is_string($target_id)) {
             $msg = $target_id;
             $target_id = null;
         }
 
-        if ($originator_id != null) {
-            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
-        }
-
-        if ($target_id != null) {
-            $notificationQuery->andWhere(['user_id' => $target_id]);
-        }
-
-        static::assertNotEmpty($notificationQuery->all(), $msg);
+        static::assertNotEmpty(static::findNotifications($class, $source, $originator_id, $target_id)->all(), $msg);
     }
 
     public static function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where([
-            'class' => $class,
-            'source_class' => PolymorphicRelation::getObjectModel($source),
-            'source_pk' => $source->getPrimaryKey(),
-        ]);
-
-        if ($originator_id != null) {
-            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
-        }
-
-        if ($target_id != null) {
-            $notificationQuery->andWhere(['user_id' => $target_id]);
-        }
-
-        static::assertEmpty($notificationQuery->all(), $msg);
+        static::assertEmpty(static::findNotifications($class, $source, $originator_id, $target_id)->all(), $msg);
     }
 
     public static function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where([
-            'class' => $class,
-            'source_class' => PolymorphicRelation::getObjectModel($source),
-            'source_pk' => $source->getPrimaryKey(),
-        ]);
+        static::assertEquals($count, static::findNotifications($class, $source, $originator_id, $target_id)->count(), $msg);
+    }
+
+    /**
+     * The notifications of the given class about the given source - matched like
+     * {@see \humhub\modules\notification\components\BaseNotification::revoke()} matches them:
+     * a content or content record by its content (not an addon under it), a container by its
+     * container, a content addon or any other record by its record map id.
+     *
+     * @since 1.20
+     */
+    protected static function findNotifications($class, ActiveRecord $source, $originator_id = null, $target_id = null): ActiveQuery
+    {
+        $query = Notification::find()->where(['notification.class' => $class]);
+
+        if ($source instanceof Content) {
+            $query->andWhere(['notification.content_id' => $source->id, 'notification.source_record_id' => null]);
+        } elseif ($source instanceof ContentActiveRecord) {
+            $query->andWhere(['notification.content_id' => $source->content->id, 'notification.source_record_id' => null]);
+        } elseif ($source instanceof ContentContainerActiveRecord) {
+            $query->andWhere(['notification.contentcontainer_id' => $source->contentcontainer_id]);
+        } elseif (RecordMap::hasId($source)) {
+            $query->andWhere(['notification.source_record_id' => RecordMap::getId($source)]);
+        } else {
+            // without a record map row there is no notification about the record
+            $query->andWhere('0=1');
+        }
 
         if ($originator_id != null) {
-            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+            $query->andWhere(['notification.originator_id' => $originator_id]);
         }
 
         if ($target_id != null) {
-            $notificationQuery->andWhere(['user_id' => $target_id]);
+            $query->andWhere(['notification.user_id' => $target_id]);
         }
 
-        static::assertEquals($count, $notificationQuery->count(), $msg);
+        return $query;
     }
 
     /**

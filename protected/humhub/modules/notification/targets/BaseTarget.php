@@ -8,267 +8,145 @@
 
 namespace humhub\modules\notification\targets;
 
-use Exception;
-use Yii;
-use yii\base\BaseObject;
-use yii\base\InvalidConfigException;
-use yii\di\Instance;
-use humhub\modules\user\models\User;
-use humhub\components\rendering\Renderer;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\services\NotificationSettingsService;
+use humhub\modules\user\models\User;
+use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 
 /**
- * A BaseTarget is used to handle new Basenotifications. A BaseTarget
- * may send nofication information to external services in specific formats or use
- * specific protocols.
+ * A channel notifications reach their recipients through - the web list, e-mail, mobile push or
+ * a channel a module adds (e.g. a chat integration).
  *
- * @author buddha
+ * A target is configured by its {@see $id} in the `targets` of the `notification` component
+ * (`config/common.php`). Each user switches the {@see NotificationCategory}s on or off per channel,
+ * see {@see NotificationSettingsService}; a notification reaches the user through the channel
+ * when the target is active for them and its category is on ({@see isEnabled()}).
+ * {@see deliver()} hands a {@see DeliveryBatch} - one or several notifications of one recipient -
+ * to the channel.
+ *
+ * {@see $delays}, {@see $delayWindow}, {@see $highPriorityDelay}, {@see $lowPriorityDelay} and
+ * {@see $skipWhenOnline} are read by the delivery layer: the {@see \humhub\modules\notification\services\DeliveryScheduler}
+ * decides when a notification goes out, and the {@see \humhub\modules\notification\jobs\DeliverJob}
+ * collects the recipient's pending notifications into one batch when one of them is due.
+ * `delays = [0]` (and the default `highPriorityDelay = 0`) makes a channel instant. With a queue that does not honour the delay of a job
+ * (e.g. the `Instant` and `Sync` drivers) every delay is 0, see
+ * {@see \humhub\modules\notification\services\DeliveryScheduler::isInstant()}.
+ *
+ * @api for channel providers
+ * @since 1.2, rewritten in 1.20
  */
 abstract class BaseTarget extends BaseObject
 {
     /**
-     * Unique target id has to be defined by subclasses.
-     * @var string
+     * @var string unique id, also the key of the target in the `notification` component config and in the settings
      */
-    public $id;
+    public string $id = '';
 
     /**
-     * Holds the title of this instance.
-     * @var string
-     */
-    public $title;
-
-    /**
-     * Default Renderer for this BaseTarget
-     * @var Renderer
-     */
-    public $renderer;
-
-    /**
-     * Defines the acknowledge flag in the notification record.
-     * If not set, the notification target does not support the acknowledgement of a notification,
-     * or provides an custom implemention.
-     *
-     * @var string
-     * @see BaseTarget::acknowledge()
-     */
-    public $acknowledgeFlag;
-
-    /**
-     * Will be used as default enable setting, if there is no user specific setting and no
-     * global setting and also no default setting for this target for a given NotificationCategory.
-     * @var bool
-     */
-    public $defaultSetting = false;
-
-    /**
-     * This flag can be used to deactivate a target within the configuration.
-     *
-     * @var bool
+     * @var bool whether the target is used at all; e.g. switched off in the configuration
      * @since 1.4
      */
-    public $active = true;
+    public bool $active = true;
+
+    /**
+     * @var int[] seconds the delivery layer waits with the 1st, 2nd, … message within the
+     * {@see $delayWindow}; the last value applies to every further message. A high-priority
+     * notification waits {@see $highPriorityDelay} instead.
+     * @since 1.20
+     */
+    public array $delays = [0, 300, 900, 1800];
+
+    /**
+     * @var int seconds the messages counted for {@see $delays} reach back
+     * @since 1.20
+     */
+    public int $delayWindow = 3600;
+
+    /**
+     * @var int seconds a high-priority notification waits, regardless of {@see $delays}; 0 sends it
+     * at once
+     * @since 1.20
+     */
+    public int $highPriorityDelay = 0;
+
+    /**
+     * @var int seconds a low-priority notification waits at least - it usually goes along with an
+     * earlier message, which takes all pending notifications of the channel
+     * @since 1.20
+     */
+    public int $lowPriorityDelay = 1800;
+
+    /**
+     * @var bool whether the delivery layer sends nothing while the recipient was active on the site
+     * within the last minute (and sees the notification in the web list), whether or not their
+     * online status is displayed: notifications already due are skipped, not postponed; those not
+     * yet due stay pending
+     * @since 1.20
+     */
+    public bool $skipWhenOnline = false;
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException without an id - the settings keys and the collapse key need one
      */
     public function init()
     {
         parent::init();
-        $this->title = $this->getTitle();
-    }
 
-    /**
-     * @return string Human readable title for views.
-     */
-    abstract public function getTitle();
-
-    /**
-     * @return Renderer default renderer for this target.
-     * @throws InvalidConfigException
-     */
-    public function getRenderer()
-    {
-        return Instance::ensure($this->renderer, Renderer::class);
-    }
-
-    /**
-     * Used to handle a BaseNotification for a given $user.
-     *
-     * The BaseTarget can handle the notification for example by pushing a Job to
-     * a Queue or directly handling the notification.
-     *
-     * @param BaseNotification $notification
-     */
-    abstract public function handle(BaseNotification $notification, User $user);
-
-    /**
-     * Used to acknowledge the seding/processing of the given $notification.
-     *
-     * @param BaseNotification $notification notification to be acknowledged
-     * @param bool $state true if successful otherwise false
-     */
-    public function acknowledge(BaseNotification $notification, $state = true)
-    {
-        if ($this->acknowledgeFlag && $notification->record->hasAttribute($this->acknowledgeFlag)) {
-            $notification->record->setAttribute($this->acknowledgeFlag, $state);
-            $notification->record->save();
+        if ($this->id === '') {
+            throw new InvalidConfigException('The notification target ' . static::class . ' has no id.');
         }
     }
 
     /**
-     * @return bool Check if the given $notification has already been processed.
+     * @return string the human-readable name of the channel
      */
-    public function isAcknowledged(BaseNotification $notification)
-    {
-        if ($this->acknowledgeFlag && $notification->record->hasAttribute($this->acknowledgeFlag)) {
-            return $notification->record->getAttribute($this->acknowledgeFlag);
-        }
-
-        return false;
-    }
+    abstract public function getTitle(): string;
 
     /**
-     * Static access to the target id.
+     * Sends the batch through the channel.
      *
-     * @return string
+     * @since 1.20
      */
-    public static function getId()
-    {
-        $instance = new static();
-        return $instance->id;
-    }
+    abstract public function deliver(DeliveryBatch $batch): void;
 
     /**
-     * Used to process a $notification for the given $user.
-     *
-     * By default the $noification will be marked as acknowledged before processing.
-     * The processing is triggerd by calling $this->handle.
-     * If the processing fails the acknowledged mark will be set to false.
-     *
-     * @param BaseNotification $notification
+     * Whether the target is available - for the given user, or globally without a user. A subclass
+     * may require e.g. an installed provider; it always checks `parent::isActive()`.
      */
-    public function send(BaseNotification $notification, User $user)
-    {
-        // Do not send if this target is not enabled or this notification is already acknowledged.
-        if (!$this->isEnabled($notification, $user) || $this->isAcknowledged($notification)) {
-            return;
-        }
-
-        try {
-            $this->acknowledge($notification, true);
-
-            if ($this->isEnabled($notification, $user)) {
-                $this->handle($notification, $user);
-            } else {
-                $this->acknowledge($notification, false);
-            }
-        } catch (Exception $e) {
-            Yii::error($e);
-            $this->acknowledge($notification, false);
-        }
-    }
-
-    /**
-     * Used for handling the given $notification for multiple $users.
-     *
-     * @param BaseNotification $notification
-     * @param User[] $users
-     */
-    public function sendBulk(BaseNotification $notification, $users)
-    {
-        foreach ($users as $user) {
-            $this->send($notification, $user);
-        }
-    }
-
-    /**
-     * Returns the setting key for this target of the given $category.
-     * @param NotificationCategory $category
-     * @return string
-     */
-    public function getSettingKey($category)
-    {
-        return 'notification.' . $category->id . '_' . $this->id;
-    }
-
-    /**
-     * Some BaseTargets may need to be activated first or require a certain permission in order to be used.
-     *
-     * This function checks if this target is active for the given user.
-     * If no user is given this function will determine if the target is globaly active or deactivated.
-     *
-     * If a subclass does not overwrite this function it will be activated for all users by default.
-     *
-     * Subclasses should always check `parent::isActive()`
-     *
-     * @param User $user
-     * @return bool
-     */
-    public function isActive(?User $user = null)
+    public function isActive(?User $user = null): bool
     {
         return $this->active;
     }
 
     /**
-     * Checks if the given $notification is enabled for this target.
-     * If the $notification is not part of a NotificationCategory the $defaultSetting
-     * of this BaseTarget is returned.
+     * Whether the channel can carry notifications of the category at all - every category by default.
+     * The settings page offers a switch only for the categories a channel applies to.
      *
-     * If this BaseTarget is not active for the given $user, this function will return false.
-     *
-     * @param BaseNotification $notification
-     * @param User $user
-     * @return bool
-     * @see BaseTarget::isCategoryEnabled()
-     * @see BaseTarget::isActive()
+     * @since 1.20
      */
-    public function isEnabled(BaseNotification $notification, ?User $user = null)
-    {
-        if (!$this->isActive($user)) {
-            return false;
-        }
-
-        $category = $notification->getCategory();
-
-        return ($category) ? $this->isCategoryEnabled($category, $user) : $this->defaultSetting;
-    }
-
-    /**
-     * Checks if the settings for this target are editable.
-     * @return bool
-     */
-    public function isEditable(?User $user = null)
+    public function appliesTo(NotificationCategory $category): bool
     {
         return true;
     }
 
     /**
-     * Returns the enabled setting of this target for the given $category.
+     * Whether notifications of this class reach the user through this channel: the target is
+     * active and the class's category is switched on for it - or is not switchable.
      *
-     * @param NotificationCategory $category
-     * @param User $user
-     * @return bool
+     * Without a user, the global defaults decide.
+     *
+     * @param class-string<BaseNotification> $notificationClass
+     * @since 1.20
      */
-    public function isCategoryEnabled(NotificationCategory $category, ?User $user = null)
+    public function isEnabled(string $notificationClass, ?User $user = null): bool
     {
-        if (!$category->isVisible($user)) {
+        if (!$this->isActive($user)) {
             return false;
         }
 
-        if ($category->isFixedSetting($this)) {
-            return $category->getDefaultSetting($this);
-        }
-
-        $settingKey = $this->getSettingKey($category);
-
-        if ($user) {
-            $enabled = Yii::$app->getModule('notification')->settings->user($user)->getInherit($settingKey, $category->getDefaultSetting($this));
-        } else {
-            $enabled = Yii::$app->getModule('notification')->settings->get($settingKey, $category->getDefaultSetting($this));
-        }
-
-        return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
+        return (new NotificationSettingsService($user))->isCategoryEnabled($this, $notificationClass::category());
     }
 }

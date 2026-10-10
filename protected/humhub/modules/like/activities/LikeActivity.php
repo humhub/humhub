@@ -2,6 +2,7 @@
 
 namespace humhub\modules\like\activities;
 
+use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
@@ -49,25 +50,19 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         }
     }
 
-    protected function getMessageParamsWeb(): array
+    /**
+     * `content` is the liked content or comment.
+     *
+     * @inheritdoc
+     */
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->webContentLength),
-        ]);
-    }
+        $content = ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->getPreviewLength());
 
-    protected function getMessageParamsMailText(): array
-    {
-        return array_merge(parent::getMessageParamsMailText(), [
-            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
-        ]);
-    }
-
-    protected function getMessageParamsMailHtml(): array
-    {
-        return array_merge(parent::getMessageParamsMailHtml(), [
-            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
-        ]);
+        return [
+            // HTML, also in plain text mails, as up to 1.19
+            'content' => MessageParam::html($content, $content),
+        ];
     }
 
     public function getGroupingQuery(): ?ActiveQueryActivity
