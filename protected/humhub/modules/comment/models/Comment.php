@@ -2,7 +2,6 @@
 
 namespace humhub\modules\comment\models;
 
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\notifications\NewCommentNotification;
@@ -118,7 +117,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             }
 
             NewCommentNotification::send($followerQuery, $this, $this->createdBy);
-            ActivityManager::dispatch(NewCommentActivity::class, $this, $this->createdBy);
+            NewCommentActivity::send($this, $this->createdBy);
 
             if ($this->content->container) {
                 Yii::$app->live->send(new NewCommentLive([

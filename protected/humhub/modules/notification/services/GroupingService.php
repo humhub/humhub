@@ -8,12 +8,13 @@
 
 namespace humhub\modules\notification\services;
 
+use humhub\components\grouping\Grouping;
 use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
+use yii\base\InvalidConfigException;
 use yii\db\Expression;
 
 /**
@@ -31,20 +32,14 @@ use yii\db\Expression;
 final class GroupingService
 {
     /**
-     * The columns a {@see Grouping} matches - `notification.content_id`, `notification.source_record_id`,
-     * `notification.contentcontainer_id`, `notification.originator_id` and the `object_model` of the content.
+     * The `notification` columns of the things a {@see Grouping} compares; the content type and
+     * visibility are compared on the joined `content`.
      */
-    public const CONTENT = 'content';
-    public const SOURCE = 'source';
-    public const CONTAINER = 'container';
-    public const ORIGINATOR = 'originator';
-    public const CONTENT_TYPE = 'contentType';
-
     private const COLUMNS = [
-        self::CONTENT => 'content_id',
-        self::SOURCE => 'source_record_id',
-        self::CONTAINER => 'contentcontainer_id',
-        self::ORIGINATOR => 'originator_id',
+        Grouping::CONTENT => 'content_id',
+        Grouping::SOURCE => 'source_record_id',
+        Grouping::CONTAINER => 'contentcontainer_id',
+        Grouping::ORIGINATOR => 'originator_id',
     ];
 
     private readonly ?Grouping $grouping;
@@ -77,6 +72,14 @@ final class GroupingService
             return null;
         }
 
+        foreach ([...$this->grouping->getRequired(), ...$this->grouping->getMatched()] as $name) {
+            if ($name === Grouping::SOURCE_PARENT) {
+                throw new InvalidConfigException(
+                    'The grouping of ' . $this->notification::class . ' uses andSourceParent(), which notifications do not support.',
+                );
+            }
+        }
+
         $record = $this->notification->record;
         $query = Notification::find()
             ->andWhere(['notification.class' => $record->class])
@@ -91,15 +94,19 @@ final class GroupingService
             $query->andWhere(['notification.' . self::COLUMNS[$name] => $value]);
         }
 
+        $contentJoined = false;
         foreach ($this->grouping->getMatched() as $name) {
-            if ($name === self::CONTENT_TYPE) {
-                $objectModel = $this->notification->content?->object_model;
-                if ($objectModel === null) {
+            if ($name === Grouping::CONTENT_TYPE || $name === Grouping::CONTENT_VISIBILITY) {
+                $column = $name === Grouping::CONTENT_TYPE ? 'object_model' : 'visibility';
+                $value = $this->notification->content?->getAttribute($column);
+                if ($value === null) {
                     return null;
                 }
-                $query->select('notification.*')
-                    ->innerJoin('content', 'content.id = notification.content_id')
-                    ->andWhere(['content.object_model' => $objectModel]);
+                if (!$contentJoined) {
+                    $query->select('notification.*')->innerJoin('content', 'content.id = notification.content_id');
+                    $contentJoined = true;
+                }
+                $query->andWhere(['content.' . $column => $value]);
                 continue;
             }
             $query->andWhere(['notification.' . self::COLUMNS[$name] => $record->getAttribute(self::COLUMNS[$name])]);

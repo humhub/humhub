@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\activities;
 
-use humhub\modules\activity\components\ActiveQueryActivity;
+use humhub\components\grouping\Grouping;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
@@ -10,12 +10,42 @@ use Yii;
 
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface
 {
+    /**
+     * @inheritdoc
+     * @deprecated since 1.20, the threshold of {@see grouping()} (4) applies
+     */
     public int $groupingThreshold = 4;
 
     /**
      * @var array Content type classes which should be not grouped
      */
     public array $contentTypeNoGrouping = [];
+
+    /**
+     * The contents of one type and visibility created by one user in one container.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
+    {
+        return Grouping::byClass()
+            ->andContainer()
+            ->andOriginator()
+            ->andContentType()
+            ->andContentVisibility()
+            ->withThreshold(4);
+    }
+
+    /**
+     * Not for the content types of {@see $contentTypeNoGrouping}.
+     *
+     * @inheritdoc
+     * @internal
+     */
+    public function isGroupable(): bool
+    {
+        return !in_array($this->content->object_model, $this->contentTypeNoGrouping, true);
+    }
 
     public static function getTitle(): string
     {
@@ -62,16 +92,5 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         }
 
         return parent::getUrl($scheme);
-    }
-
-    public function getGroupingQuery(): ?ActiveQueryActivity
-    {
-        return Activity::find()
-            ->andWhere(['activity.class' => self::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer?->id])
-            ->andWhere(['activity.created_by' => $this->user->id])
-            ->andWhere(['content.object_model' => $this->record->content->object_model])
-            ->andWhere(['content.visibility' => $this->record->content->visibility])
-            ->andWhere(['NOT IN', 'content.object_model', $this->contentTypeNoGrouping]);
     }
 }

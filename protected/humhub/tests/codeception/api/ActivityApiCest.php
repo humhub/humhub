@@ -9,7 +9,6 @@
 namespace humhub\tests\codeception\api;
 
 use ApiTester;
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\activity\tests\codeception\activities\TestContentGroupActivity;
 use humhub\modules\post\models\Post;
@@ -40,8 +39,7 @@ class ActivityApiCest
      */
     private function seedActivity(int $postId, int $userId): int
     {
-        $activity = ActivityManager::dispatch(
-            TestActivity::class,
+        $activity = TestActivity::send(
             Post::findOne(['id' => $postId]),
             User::findOne(['id' => $userId]),
         );
@@ -175,7 +173,7 @@ class ActivityApiCest
 
         // TestContentGroupActivity groups from its fourth activity on (groupingThreshold).
         for ($i = 0; $i < 4; $i++) {
-            ActivityManager::dispatch(TestContentGroupActivity::class, $post, $user);
+            TestContentGroupActivity::send($post, $user);
         }
 
         $I->amLoggedInAs(1);

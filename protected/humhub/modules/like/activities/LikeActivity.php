@@ -2,8 +2,8 @@
 
 namespace humhub\modules\like\activities;
 
+use humhub\components\grouping\Grouping;
 use humhub\components\message\MessageParam;
-use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
@@ -60,22 +60,17 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         $content = ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->getPreviewLength());
 
         return [
-            // HTML, also in plain text mails, as up to 1.19
-            'content' => MessageParam::html($content, $content),
+            'content' => MessageParam::html($content, html_entity_decode($content, ENT_QUOTES | ENT_HTML5)),
         ];
     }
 
-    public function getGroupingQuery(): ?ActiveQueryActivity
+    /**
+     * The likes of one content, or of one comment (or other content addon) of it.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
     {
-        return Activity::find()
-            ->andWhere(['activity.class' => static::class])
-            ->leftJoin('record_map', 'activity.content_addon_record_id=record_map.id')
-            ->leftJoin('like', 'record_map.pk=like.id')
-            ->andWhere(['activity.content_id' => $this->record->content->id])
-            ->andWhere([
-                'like.content_addon_record_id' => $this->contentAddon->content_addon_record_id,
-                'like.content_id' => $this->contentAddon->content_id,
-            ]);
+        return Grouping::byContent()->andSourceParent();
     }
-
 }

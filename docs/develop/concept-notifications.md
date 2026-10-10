@@ -35,7 +35,7 @@ namespace johndoe\tasks\notifications;
 
 use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\Grouping;
+use humhub\components\grouping\Grouping;
 use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationContext;
 use johndoe\tasks\models\Task;
@@ -311,7 +311,8 @@ This marks the whole groups and also cancels a mail or push that has not gone ou
 Twelve uploaded files, five likes on the same post, three comments under one article: a class
 declares which of its notifications belong together, and the recipient sees one entry ("Anna
 created 12 new files", "Anna, Bob and 3 more like your post") and receives one mail.
-`grouping()` returns a `Grouping`:
+`grouping()` returns a `humhub\components\grouping\Grouping` — the same value object
+[activities](concept-activities.md#grouping) are grouped with:
 
 | Factory | Groups the notifications … |
 |---|---|
@@ -322,11 +323,13 @@ created 12 new files", "Anna, Bob and 3 more like your post") and receives one m
 
 The factory names what must be present and the same; a notification without it (no content for
 `byContent()`) is not grouped. The modifiers narrow it further, each returning a new instance:
-`andContent()`, `andSource()` and `andOriginator()` (the same value, none matching none),
-`andContentType()` (a content of the same type), `unseenOnly()` (a new notification after the
+`andContent()`, `andSource()`, `andContainer()` and `andOriginator()` (the same value, none
+matching none), `andContentType()` and `andContentVisibility()` (a content of the same type or
+visibility), `unseenOnly()` (a new notification after the
 user saw the group starts a new one), `withThreshold(int)` (the minimum size of a group, 2) and
 `withTimeBucket(int $seconds)` (only notifications created in the same bucket, 900 = 15
-minutes). The core always adds the class and the recipient.
+minutes). The core always adds the class and the recipient. `andSourceParent()` is for
+activities only; a notification class using it fails with an `InvalidConfigException`.
 
 The core notifications:
 
@@ -427,7 +430,7 @@ The module-facing API, marked `@api` in the code — stable across minor version
   `getMailSubject()`, `getUrl()`, `getSubjectRecord()`, `getBlocks()`, `getSpace()`,
   `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
   `$content`, `$contentContainer`, `$sourceRecord`, `$payload`, `$groupCount`
-- `NotificationCategory`, `NotificationPriority`, `Grouping`, `NotificationBlock` (its
+- `NotificationCategory`, `NotificationPriority`, `humhub\components\grouping\Grouping`, `NotificationBlock` (its
   factories), `NotificationContext` (its properties)
 - `humhub\components\message\MessageParam`
 - `BeforeDispatchEvent` and `NotificationManager::EVENT_BEFORE_DISPATCH`

@@ -2,9 +2,8 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\modules\activity\components\ActiveQueryActivity;
+use humhub\components\grouping\Grouping;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\space\components\BaseSpaceActivity;
 use Yii;
 
@@ -49,7 +48,7 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         };
     }
 
-    public function getUrl(bool $scheme = true): ?string
+    public function getUrl(bool $scheme = false): ?string
     {
         // Inside the space the space link is redundant, so a single membership
         // change links to the member's profile. Grouped entries reference
@@ -62,10 +61,13 @@ class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableAct
         return $this->user->getUrl($scheme);
     }
 
-    public function getGroupingQuery(): ActiveQueryActivity
+    /**
+     * The memberships of one space.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
     {
-        return Activity::find()
-            ->andWhere(['activity.class' => static::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
+        return Grouping::byContainer();
     }
 }

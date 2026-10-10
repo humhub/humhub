@@ -104,28 +104,38 @@ new code uses `getMessageParams()` alone.
 The object is constructed from its `Activity` record and exposes `$record`, `$user`,
 `$contentContainer`, `$createdAt` and `$groupCount`; `BaseContentActivity` adds `$content`,
 `$contentActiveRecord` (checked against `$contentActiveRecordClass`) and `$contentAddon` (e.g. the
-comment), `BaseSpaceActivity` adds `$space` and `inSpaceContext()`. `getUrl()` links the entry:
-the content addon, else the content, else the container.
+comment), `BaseSpaceActivity` adds `$space` and `inSpaceContext()`. `getUrl(bool $scheme = false)`
+links the entry: the content addon, else the content, else the container — relative by default,
+the summary mail asks for `getUrl(true)`.
 
-What a module may use or override is marked `@api` — `getMessage()`, `getMessageParams()`,
-`getUrl()`, `getGroupingQuery()`, the properties above, `ConfigurableActivityInterface` and
-`ActivityManager::dispatch()`; everything marked `@internal` (the grouping and rendering services,
-the deprecated parameter methods) may change without notice.
+What a module may use or override is marked `@api` — `send()`, `grouping()`, `getMessage()`,
+`getMessageParams()`, `getUrl()`, the properties above, `ConfigurableActivityInterface`,
+`BeforeDispatchEvent` and `ActivityManager::EVENT_BEFORE_DISPATCH`; everything marked `@internal`
+(the grouping and rendering services, the deprecated parameter methods) may change without notice.
 
-## Dispatching
+## Sending
 
 ```php
-use humhub\modules\activity\services\ActivityManager;
-
-ActivityManager::dispatch(TaskCreatedActivity::class, $task, $user);
+TaskCreatedActivity::send($task, $user);
 ```
 
 The target is a content record, a content addon (a comment, a like — stored with its content)
-or a container (`Space`, `User`). The user defaults to the logged-in one. `dispatch()` writes
+or a container (`Space`, `User`). The user defaults to the logged-in one. `send()` writes
 the record, groups it and sends the live event `activity\live\NewActivity`, from which the
-`ActivityBox` island refreshes; it returns the activity, or `null` when a handler of
-`ActivityManager::EVENT_BEFORE_DISPATCH` set `$event->isValid = false`. The usual place is
-`afterSave()` of the record, once per state transition.
+`ActivityBox` island refreshes; it returns the activity, or `null` when a handler vetoed it. The
+usual place is `afterSave()` of the record, once per state transition.
+
+Before the record is written, `ActivityManager::EVENT_BEFORE_DISPATCH` is triggered with a
+`humhub\modules\activity\events\BeforeDispatchEvent` (`class`, `target`, `user`); a handler
+skips the activity with `$event->isValid = false`:
+
+```php
+Event::on(ActivityManager::class, ActivityManager::EVENT_BEFORE_DISPATCH, function (BeforeDispatchEvent $event) {
+    if ($event->class === LikeActivity::class) {
+        $event->isValid = false;
+    }
+});
+```
 
 Visibility and lifetime follow the content: an activity is shown only to who may see its
 content, moves with it (`ActivityManager::afterContentChange()`), and is deleted with the
@@ -133,22 +143,49 @@ content, the container or the user.
 
 ## Grouping
 
-Five people liking the same comment, ten files uploaded at once: return the query that finds
-the siblings of a new activity, and the box shows one entry.
+Five people liking the same comment, ten files uploaded at once: a class declares which of its
+activities belong together, and the box shows one entry. `grouping()` returns a
+`humhub\components\grouping\Grouping`, the value object [notifications](concept-notifications.md#grouping)
+are grouped with:
 
 ```php
-public function getGroupingQuery(): ?ActiveQueryActivity
+use humhub\components\grouping\Grouping;
+
+public static function grouping(): ?Grouping
 {
-    return Activity::find()
-        ->andWhere(['activity.class' => self::class])
-        ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
+    return Grouping::byContainer();
 }
 ```
 
-The core narrows it to a time bucket of `$groupingTimeBucketSeconds` (900) and groups when at
-least `$groupingThreshold` (2) activities match — both properties of the class. Grouping happens
-when the activity is written. Branch on `$groupCount` in `getMessage()` for the grouped sentence
-and use `displayNames`.
+The core always adds the class and a time bucket (`withTimeBucket()`, 900 seconds by default);
+a group forms from `withThreshold()` (2) matching activities. The factories `byContent()`
+(`content_id`), `bySource()` (the content addon), `byContainer()` and `byClass()` name what must
+be present and the same; the modifiers `andContent()`, `andSource()`, `andContainer()`,
+`andOriginator()` (the user who caused it), `andContentType()`, `andContentVisibility()` and the
+activity-only `andSourceParent()` (the content addon the source belongs to, e.g. the comment a
+like is about) narrow it. `unseenOnly()` makes no sense for activities and fails with an
+`InvalidConfigException`. Grouping happens when the activity is written. Branch on `$groupCount`
+in `getMessage()` for the grouped sentence and use `displayNames`.
+
+| Class | Grouping |
+|---|---|
+| `ContentCreatedActivity` | `Grouping::byClass()->andContainer()->andOriginator()->andContentType()->andContentVisibility()->withThreshold(4)` |
+| `LikeActivity` | `Grouping::byContent()->andSourceParent()` — the likes of one content or one comment |
+| `FollowActivity`, `MemberAddedActivity`, `MemberRemovedActivity` | `Grouping::byContainer()` |
+
+### Deprecated
+
+Kept working, no runtime warnings, but new code uses the API above:
+
+- `ActivityManager::dispatch($class, $target, $user)` — use `MyActivity::send($target, $user)`.
+- `getGroupingQuery()` — the query finding the siblings of an activity. An override is still
+  used (and wins over `grouping()`), narrowed to a time bucket of `$groupingTimeBucketSeconds`
+  and grouped from `$groupingThreshold` matches on; both properties are deprecated as well and
+  only apply to such an override.
+- `getMessageParamsWeb()`, `getMessageParamsMailHtml()`, `getMessageParamsMailText()` and
+  `formatDisplayNames()` — use `getMessageParams()`, see above.
+- The event data in `$event->data` (`class`, `target`, `user`) — read the properties of
+  `BeforeDispatchEvent`.
 
 ## Summary mail settings
 

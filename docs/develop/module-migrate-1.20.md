@@ -1746,7 +1746,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     | `category()`, `getCategory()`, `NotificationCategory` subclasses | static `category(): NotificationCategory` — the module's own category by default (`NotificationCategory::ofModule(static::class)`); `direct()`, `social()`, `followers()`, `content()`, `admin()`, `ofModule(self::class, $icon)` or `new NotificationCategory(...)` |
     | `NotificationCategory::isVisible()` override | the `permissions` of `new NotificationCategory(...)`: global permission classes, any of which makes the category visible |
     | `$priority` | static `priority(): NotificationPriority` (defaults to the category's) |
-    | `getGroupKey()` | static `grouping(): ?Grouping` — `Grouping::byContent()`, `bySource()`, `byContainer()`, `byClass()` with `andContent()`, `andSource()`, `andOriginator()`, `andContentType()`, `unseenOnly()`, `withThreshold()`, `withTimeBucket()` |
+    | `getGroupKey()` | static `grouping(): ?Grouping` (`humhub\components\grouping\Grouping`, shared with activities) — `Grouping::byContent()`, `bySource()`, `byContainer()`, `byClass()` with `andContent()`, `andSource()`, `andContainer()`, `andOriginator()`, `andContentType()`, `andContentVisibility()`, `unseenOnly()`, `withThreshold()`, `withTimeBucket()` |
     | `isBlockedForUser()` override, `send()` override as a filter | `canReceive(User $user): bool` |
     | `$suppressSendToOriginator = false` | `send(notifyOriginator: true)` |
     | `payload($data)`, `$payload` | `send(payload: $data)`; read `$this->payload` (readonly array) |
@@ -1918,3 +1918,44 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `GroupingService`, `RenderService`, `ActivityManager::load()`/`afterContentChange()` and
     `BaseActivity::getGroupingService()` are `@internal`. Docblocks only — no visibility or
     `final` changed.
+
+- **Activities are grouped declaratively and sent by their class**, like notifications. An
+  activity class declares its grouping with `BaseActivity::grouping(): ?Grouping` — the
+  `humhub\components\grouping\Grouping` value object of notifications (`byContent()`,
+  `bySource()`, `byContainer()`, `byClass()`, `andContent()`, `andSource()`, `andContainer()`,
+  `andOriginator()`, `andContentType()`, `andContentVisibility()`, the activity-only
+  `andSourceParent()`, `withThreshold()`, `withTimeBucket()`; `unseenOnly()` fails with an
+  `InvalidConfigException`) — and is written with the static `BaseActivity::send($target, $user)`.
+  `ActivityManager::EVENT_BEFORE_DISPATCH` now carries a
+  `humhub\modules\activity\events\BeforeDispatchEvent` with the typed properties `class`,
+  `target` and `user`. The core activities declare `grouping()` with unchanged groups. See
+  [Activities](concept-activities.md).
+
+  ```php
+  public static function grouping(): ?Grouping
+  {
+      return Grouping::byContainer();
+  }
+
+  TaskCreatedActivity::send($task, $user);
+  ```
+
+  - **Deprecated** (no runtime warnings, everything keeps working):
+    - `BaseActivity::getGroupingQuery()` — declare `grouping()`. An override is still used and
+      wins over `grouping()`, also in a subclass of a core activity.
+    - `BaseActivity::$groupingThreshold` and `$groupingTimeBucketSeconds` — use
+      `Grouping::withThreshold()` and `withTimeBucket()`. They only apply together with an
+      override of `getGroupingQuery()`; setting them for a class declaring `grouping()` (e.g.
+      `ContentCreatedActivity`) has no effect any more.
+    - `ActivityManager::dispatch($class, $target, $user)` — use `MyActivity::send($target, $user)`.
+  - `BeforeDispatchEvent` extends `ModelEvent`, and `$event->data` is filled with the same array
+    as before. As before, only `isValid` is taken back from the handlers. Note that
+    `Event::trigger()` replaces `$data` with the data a handler was attached with, so read the
+    new properties.
+  - `BaseActivity::getUrl()` returns a relative URL by default (`$scheme = false`), like
+    `BaseContentActivity::getUrl()` and notifications; the core activities overriding it
+    (`MemberAddedActivity`, `MemberRemovedActivity`) follow. The summary mail already asks for
+    `getUrl(true)`. An override keeping `$scheme = true` still works.
+  - The plain text summary mail shows the `content` and `contentTitle` parameters (and the liked
+    content of `LikeActivity`) decoded instead of HTML-encoded (`&quot;`, `&lt;b&gt;`), as
+    notifications do.

@@ -12,7 +12,6 @@ use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\activities\FollowActivity;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -100,7 +99,7 @@ class Follow extends ActiveRecord
         if ($insert && $this->send_notifications && $this->object_model == User::class) {
             FollowedNotification::send($this->getTarget(), $this, $this->user);
 
-            ActivityManager::dispatch(FollowActivity::class, $this->getTarget(), $this->user);
+            FollowActivity::send($this->getTarget(), $this->user);
         }
 
         $this->trigger(Follow::EVENT_FOLLOWING_CREATED, new FollowEvent(['user' => $this->user, 'target' => $this->getTarget()]));
@@ -123,7 +122,7 @@ class Follow extends ActiveRecord
                 FollowedNotification::revoke($this, $target, $this->user);
 
                 // The FollowActivity is stored against the followed user's content
-                // container (see ActivityManager::dispatch); the activity table no
+                // container (see BaseActivity::send()); the activity table no
                 // longer has the polymorphic object_model/object_id columns.
                 // Columns are qualified because ActiveQueryActivity left-joins the
                 // content and user tables, which share these column names.

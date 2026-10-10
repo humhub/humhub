@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\behaviors;
 
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\activities\MemberAddedActivity;
 use humhub\modules\space\activities\MemberRemovedActivity;
@@ -481,7 +480,7 @@ class SpaceModelMembership extends Behavior
 
         if (!$this->owner->settings->get('hideMembers')) {
             // Create Activity
-            ActivityManager::dispatch(MemberAddedActivity::class, $this->owner, $user);
+            MemberAddedActivity::send($this->owner, $user);
         }
 
         // Members can't also follow the space
@@ -568,7 +567,7 @@ class SpaceModelMembership extends Behavior
     private function handleCancelMemberEvent(User $user)
     {
         if (!$this->owner->settings->get('hideMembers')) {
-            ActivityManager::dispatch(MemberRemovedActivity::class, $this->owner, $user);
+            MemberRemovedActivity::send($this->owner, $user);
         }
 
         MemberEvent::trigger(

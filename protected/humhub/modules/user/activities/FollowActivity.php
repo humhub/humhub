@@ -2,8 +2,8 @@
 
 namespace humhub\modules\user\activities;
 
+use humhub\components\grouping\Grouping;
 use humhub\components\message\MessageParam;
-use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
@@ -55,10 +55,13 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
         ];
     }
 
-    public function getGroupingQuery(): ?ActiveQueryActivity
+    /**
+     * The follows of one user.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
     {
-        return Activity::find()
-            ->andWhere(['activity.class' => self::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->record->contentcontainer_id]);
+        return Grouping::byContainer();
     }
 }

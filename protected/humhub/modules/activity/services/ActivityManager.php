@@ -6,6 +6,7 @@ use humhub\components\Event;
 use humhub\helpers\DataTypeHelper;
 use humhub\models\RecordMap;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\events\BeforeDispatchEvent;
 use humhub\modules\activity\live\NewActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -16,7 +17,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
-use yii\base\ModelEvent;
 
 /**
  * Writes, loads and maintains activities, see `docs/develop/concept-activities.md`.
@@ -26,7 +26,7 @@ use yii\base\ModelEvent;
 class ActivityManager extends Component
 {
     /**
-     * @event ModelEvent before an activity is written; set `isValid` to `false` to skip it
+     * @event BeforeDispatchEvent before an activity is written; set `isValid` to `false` to skip it
      * @api
      */
     public const EVENT_BEFORE_DISPATCH = 'beforeDispatch';
@@ -37,6 +37,7 @@ class ActivityManager extends Component
      *
      * @param class-string<BaseActivity> $class
      * @api
+     * @deprecated since 1.20, use `MyActivity::send($target, $user)` ({@see BaseActivity::send()})
      */
     public static function dispatch(
         string $class,
@@ -47,7 +48,13 @@ class ActivityManager extends Component
             throw new InvalidArgumentException("Class {$class} does not implement " . BaseActivity::class);
         }
 
-        $event = new ModelEvent(['data' => ['class' => $class, 'target' => $target, 'user' => $user]]);
+        $event = new BeforeDispatchEvent([
+            'class' => $class,
+            'target' => $target,
+            'user' => $user,
+            // as up to 1.19
+            'data' => ['class' => $class, 'target' => $target, 'user' => $user],
+        ]);
         Event::trigger(static::class, self::EVENT_BEFORE_DISPATCH, $event);
 
         if (!$event->isValid) {

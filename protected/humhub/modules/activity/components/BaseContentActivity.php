@@ -117,13 +117,24 @@ abstract class BaseContentActivity extends BaseActivity
     protected function getBuiltInMessageParams(): array
     {
         $length = $this->getPreviewLength();
-        // getContentInfo() returns HTML; plain text mails get it as it is, as up to 1.19
+        // getContentInfo() returns HTML; its plain text twin is the decoded HTML
         $content = ContentHelper::getContentInfo($this->content, true, $length);
         $contentTitle = ContentHelper::getContentInfo($this->content, false, $length);
 
         return array_merge(parent::getBuiltInMessageParams(), [
-            'content' => MessageParam::html($this->isRenderingMail() ? Html::strong($content) : $content, $content),
-            'contentTitle' => MessageParam::html($contentTitle, $contentTitle),
+            'content' => MessageParam::html(
+                $this->isRenderingMail() ? Html::strong($content) : $content,
+                self::decodeHtml($content),
+            ),
+            'contentTitle' => MessageParam::html($contentTitle, self::decodeHtml($contentTitle)),
         ]);
+    }
+
+    /**
+     * The plain text of HTML-encoded text, e.g. of {@see ContentHelper::getContentInfo()}.
+     */
+    private static function decodeHtml(string $html): string
+    {
+        return html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
     }
 }

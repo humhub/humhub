@@ -2,20 +2,26 @@
 
 namespace humhub\modules\activity\components;
 
+use humhub\components\grouping\Grouping;
 use humhub\components\message\MessageFormat;
 use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
 use humhub\modules\activity\models\Activity as ActivityRecord;
+use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\services\GroupingService;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\InvalidCallException;
 
 /**
  * Base class of an activity: its sentence ({@see getMessage()}), the {@see getMessageParams()} the
  * sentence needs beyond the built-in ones, the {@see getUrl()} it links to and the
- * {@see getGroupingQuery()} that finds its siblings. See `docs/develop/concept-activities.md`.
+ * {@see grouping()} that decides which activities are shown as one entry. It is written with
+ * {@see send()}. See `docs/develop/concept-activities.md`.
  *
  * The built-in message parameters, rendered per output together with those of {@see getMessageParams()}:
  *
@@ -56,14 +62,18 @@ abstract class BaseActivity extends BaseObject
     public readonly int $groupCount;
 
     /**
-     * @var int minimum members in a group
+     * @var int minimum members in a group of the deprecated {@see getGroupingQuery()}
      * @api
+     * @deprecated since 1.20, use {@see Grouping::withThreshold()} in {@see grouping()}; only used
+     * with an override of {@see getGroupingQuery()}
      */
     public int $groupingThreshold = 2;
 
     /**
-     * @var int the time bucket the siblings of {@see getGroupingQuery()} must fall into
+     * @var int the time bucket the siblings of the deprecated {@see getGroupingQuery()} must fall into
      * @api
+     * @deprecated since 1.20, use {@see Grouping::withTimeBucket()} in {@see grouping()}; only used
+     * with an override of {@see getGroupingQuery()}
      */
     public int $groupingTimeBucketSeconds = 900;
 
@@ -88,6 +98,48 @@ abstract class BaseActivity extends BaseObject
         $this->createdAt = $record->created_at;
         $this->record = $record;
         $this->groupCount = $this->record->group_count ?? 1;
+    }
+
+    /**
+     * Writes an activity of this class about `$target` caused by `$user` (the logged-in user by
+     * default), groups it and tells the container's audience; `null` when a handler of
+     * {@see ActivityManager::EVENT_BEFORE_DISPATCH} vetoed it.
+     *
+     * ```php
+     * TaskCreatedActivity::send($task, $user);
+     * ```
+     *
+     * @param ContentProvider|ContentContainerActiveRecord $target what the activity is about: a
+     * content record (e.g. a post), a content addon (e.g. a comment, stored with its content) or a
+     * container (a space or a user)
+     * @param User|null $user the user who caused the activity, the logged-in user by default
+     * @api
+     * @since 1.20
+     */
+    final public static function send(ContentProvider|ContentContainerActiveRecord $target, ?User $user = null): ?static
+    {
+        if ((new \ReflectionClass(static::class))->isAbstract()) {
+            throw new InvalidCallException('An activity is sent by its concrete class, not by ' . static::class . '.');
+        }
+
+        /** @var static|null $activity */
+        $activity = ActivityManager::dispatch(static::class, $target, $user);
+
+        return $activity;
+    }
+
+    /**
+     * Which activities of this class are shown as one entry, e.g. `Grouping::byContainer()`;
+     * `null` (the default) for none. Ignored when the class (or a subclass) overrides the deprecated
+     * {@see getGroupingQuery()}: that query wins, as up to 1.19. Activities do not support
+     * {@see Grouping::unseenOnly()}.
+     *
+     * @api
+     * @since 1.20
+     */
+    public static function grouping(): ?Grouping
+    {
+        return null;
     }
 
     /**
@@ -146,11 +198,12 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
-     * The URL the entry links to: the content container by default.
+     * The URL the entry links to: the content container by default. Relative unless `$scheme`
+     * (the summary mail asks for an absolute one).
      *
      * @api
      */
-    public function getUrl(bool $scheme = true): ?string
+    public function getUrl(bool $scheme = false): ?string
     {
         return $this->contentContainer?->polymorphicRelation?->getUrl($scheme);
     }
@@ -277,13 +330,28 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
-     * Finds the activities this one is grouped with; `null` (the default) for no grouping.
+     * Finds the activities this one is grouped with; `null` (the default) for no grouping. An
+     * override wins over {@see grouping()}; the core narrows it to the time bucket of
+     * {@see $groupingTimeBucketSeconds} and groups from {@see $groupingThreshold} matches on.
      *
      * @api
+     * @deprecated since 1.20, declare {@see grouping()} instead; an override keeps working
      */
     public function getGroupingQuery(): ?ActiveQueryActivity
     {
         return null;
+    }
+
+    /**
+     * Whether this activity takes part in the {@see grouping()} of its class - `false` leaves it
+     * ungrouped, e.g. for a configuration of the instance.
+     *
+     * @internal for the core's activities, see `ContentCreatedActivity::$contentTypeNoGrouping`
+     * @since 1.20
+     */
+    public function isGroupable(): bool
+    {
+        return true;
     }
 
     /**

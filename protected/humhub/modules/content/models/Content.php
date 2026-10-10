@@ -408,7 +408,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             ContentCreatedNotification::send($followers, $contentSource, $this->createdBy);
         }
 
-        ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);
+        ContentCreatedActivity::send($contentSource, $this->createdBy);
     }
 
     /**

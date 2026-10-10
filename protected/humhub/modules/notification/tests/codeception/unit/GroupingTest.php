@@ -8,20 +8,23 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
+use humhub\components\grouping\Grouping;
 use humhub\models\RecordMap;
 use humhub\modules\comment\notifications\NewCommentNotification;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreatedNotification;
 use humhub\modules\like\notifications\NewLikeNotification;
-use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestConfigurableGroupingNotification;
 use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\notifications\FollowedNotification;
 use humhub\modules\user\notifications\MentionedNotification;
 use InvalidArgumentException;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\base\InvalidConfigException;
 
 /**
  * {@see Grouping} and the group queries {@see \humhub\modules\notification\services\GroupingService}
@@ -170,6 +173,36 @@ class GroupingTest extends HumHubDbTestCase
 
         $this->insert(4, contentId: $post->content->id, containerId: $post->content->contentcontainer_id);
         $this->assertSame([2, 1], $this->groupSizes());
+    }
+
+    public function testAndContainerAndContentVisibility()
+    {
+        TestConfigurableGroupingNotification::$grouping = Grouping::byClass()->andContainer()->andContentVisibility();
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 1]);
+        $public = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'public']);
+        $this->assertTrue($public->save());
+        $private = new Post($space, Content::VISIBILITY_PRIVATE, ['message' => 'private']);
+        $this->assertTrue($private->save());
+        $containerId = $space->contentcontainer_id;
+
+        $this->insert(2, contentId: $public->content->id, containerId: $containerId);
+        $this->insert(3, contentId: $private->content->id, containerId: $containerId);
+        $this->assertSame([1, 1], $this->groupSizes(), 'another visibility');
+
+        $this->insert(4, contentId: $public->content->id);
+        $this->assertSame([1, 1, 1], $this->groupSizes(), 'no container does not match a container');
+
+        $this->insert(5, contentId: $public->content->id, containerId: $containerId);
+        $this->assertSame([2, 1, 1], $this->groupSizes());
+    }
+
+    public function testRejectsTheActivityOnlySourceParent()
+    {
+        TestConfigurableGroupingNotification::$grouping = Grouping::byContent()->andSourceParent();
+
+        $this->expectException(InvalidConfigException::class);
+        $this->insert(2, contentId: Post::findOne(['id' => 1])->content->id);
     }
 
     private function insert(int $originatorId, ?int $contentId = null, ?int $sourceRecordId = null, ?int $containerId = null, ?string $createdAt = null): \humhub\modules\notification\components\BaseNotification
