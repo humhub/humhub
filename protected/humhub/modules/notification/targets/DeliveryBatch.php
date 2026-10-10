@@ -20,6 +20,8 @@ use yii\helpers\Url;
  * One message of a channel: one or several notifications of one recipient, handed to
  * {@see BaseTarget::deliver()}.
  *
+ * A {@see BaseNotification::standalone()} notification is always alone in its batch.
+ *
  * @api for channel providers
  * @since 1.20
  */

@@ -2,6 +2,9 @@
 
 namespace tests\codeception\unit\modules\space;
 
+use humhub\modules\notification\components\NotificationBlock;
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Membership;
@@ -38,7 +41,7 @@ class InviteTest extends HumHubDbTestCase
             '<strong>' . Yii::$app->user->identity->displayName . '</strong> invited you to the space <strong>Space 1</strong>',
             $notification->asWeb(),
         );
-        $this->assertSame([$notification->getEntryUrl()], array_column($notification->getActions(), 'url'));
+        $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
 
         // check cached version
         $membership = Membership::findMembership(1, 2);

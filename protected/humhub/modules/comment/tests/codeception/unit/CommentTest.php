@@ -2,6 +2,9 @@
 
 namespace tests\codeception\unit\modules\comment\components;
 
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\notifications\NewCommentNotification;
@@ -154,7 +157,15 @@ class CommentTest extends HumHubDbTestCase
         $notification = NotificationManager::load($row);
         $this->assertSame(2, $notification->groupCount);
         // the mail previews the comment, the sentence names the commented post
-        $this->assertSame($second->id, $notification->getPreviewRecord()->id);
+        $blocks = $notification->getBlocks(new NotificationContext(MailTarget::ID));
+        $this->assertCount(1, $blocks);
+        $this->assertSame(NotificationBlock::TYPE_CONTENT_PREVIEW, $blocks[0]->getType());
+        $this->assertInstanceOf(Comment::class, $blocks[0]->getRecord());
+        $this->assertSame($second->id, $blocks[0]->getRecord()->id);
+        // the View online button is appended when rendered
+        $rendered = $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID));
+        $this->assertCount(2, $rendered);
+        $this->assertEquals(NotificationBlock::button('View online', $notification->getEntryUrl()), $rendered[1]);
         $this->assertStringContainsString(Post::findOne(['id' => 2])->message, $notification->asWeb());
         $this->assertStringContainsString('just commented your', $notification->asMailSubject());
         $this->assertSame($second->getUrl(), $notification->getUrl());

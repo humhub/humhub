@@ -2,6 +2,9 @@
 
 namespace tests\codeception\unit\modules\friendship;
 
+use humhub\modules\notification\components\NotificationBlock;
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
@@ -9,7 +12,6 @@ use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\notifications\FriendshipApprovedNotification;
 use humhub\modules\friendship\notifications\FriendshipDeclinedNotification;
 use humhub\modules\friendship\notifications\FriendshipRequestNotification;
-use humhub\modules\notification\components\NotificationAction;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
@@ -91,9 +93,7 @@ class FriendshipTest extends HumHubDbTestCase
         $notification = NotificationManager::load($record);
         $this->assertStringEndsWith('sent you a friend request.', $notification->asWeb());
         $this->assertSame($requester->getUrl(), $notification->getUrl());
-        $this->assertEquals([
-            new NotificationAction('View online', $notification->getEntryUrl()),
-        ], $notification->getActions());
+        $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
 
         // approve: the request notification is gone, the requester is notified
         $this->becomeUser('User1');

@@ -25,7 +25,7 @@ use Yii;
  *
  * @since 1.20
  */
-class ContentCreatedNotification extends BaseNotification
+final class ContentCreatedNotification extends BaseNotification
 {
     /**
      * @inheritdoc

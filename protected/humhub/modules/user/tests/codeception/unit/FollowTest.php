@@ -2,6 +2,9 @@
 
 namespace tests\codeception\unit;
 
+use humhub\modules\notification\components\NotificationBlock;
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
@@ -37,7 +40,7 @@ class FollowTest extends HumHubDbTestCase
         $notification = NotificationManager::load($record);
         $this->assertStringEndsWith('is now following you.', $notification->asWeb());
         $this->assertSame(User::findOne(['id' => 2])->getUrl(), $notification->getUrl());
-        $this->assertNull($notification->getPreviewRecord());
+        $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
     }
 
     public function testFollowOfASpaceCreatesNoNotification()

@@ -38,8 +38,8 @@ use yii\helpers\Url;
  * with {@see send()}. Everything else has a default: the {@see category()} users switch it with
  * (the module's own one), its {@see priority()}, whether it is {@see listed()} in the web list,
  * its {@see grouping()}, the {@see getMessageParams()} its sentence needs beyond the built-in ones,
- * the {@see getUrl()} it links to, an {@see getExcerpt()}, the {@see getActions()} of a mail, the
- * {@see getSubjectRecord()} the sentence names and the {@see getPreviewRecord()} a mail previews.
+ * the {@see getUrl()} it links to, the {@see getSubjectRecord()} the sentence names, the
+ * {@see getBlocks()} shown under the sentence and whether it is {@see standalone()}.
  * See `docs/develop/concept-notifications.md`.
  *
  * Instances are not created directly but by {@see NotificationManager::load()}, which reads the
@@ -73,11 +73,6 @@ abstract class BaseNotification extends BaseObject
      * Max length of the content preview in a mail.
      */
     private const PREVIEW_LENGTH_LONG = 300;
-
-    /**
-     * Max length of the {@see getExcerpt()} in a mail.
-     */
-    private const EXCERPT_LENGTH = 1000;
 
     /**
      * @api
@@ -282,6 +277,19 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
+     * Whether the notification always goes out as a message of its own - a mail or push about it
+     * alone, never collected with other notifications into one message - e.g. a news article
+     * whose full text is the point of the mail. The delay, the priority and the skipping rules
+     * of the delivery layer still apply. `false` by default.
+     *
+     * @api
+     */
+    public static function standalone(): bool
+    {
+        return false;
+    }
+
+    /**
      * Which notifications of this class are shown as one entry, e.g. `Grouping::byContent()`;
      * `null` (the default) for none.
      *
@@ -379,24 +387,6 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * The {@see getExcerpt()} for a mail: HTML-encoded with line breaks, or plain text; shortened
-     * when long, `null` without an excerpt.
-     *
-     * @internal
-     */
-    final public function renderExcerpt(MessageFormat $format): ?string
-    {
-        $excerpt = $this->getExcerpt();
-        if ($excerpt === null || trim($excerpt) === '') {
-            return null;
-        }
-
-        $rendered = MessageParam::text(trim($excerpt), self::EXCERPT_LENGTH)->render($format);
-
-        return $format === MessageFormat::Html ? nl2br($rendered) : $rendered;
-    }
-
-    /**
      * The target of the notification: a content addon (e.g. a comment), the content, or the container.
      *
      * @api
@@ -407,7 +397,8 @@ abstract class BaseNotification extends BaseObject
             return $this->sourceRecord->getUrl($scheme);
         }
 
-        if ($this->content !== null) {
+        // a content whose record is gone has no URL of its own: fall back to its container
+        if ($this->content?->getPolymorphicRelation() !== null) {
             return $this->content->getUrl($scheme);
         }
 
@@ -425,26 +416,61 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * The actions offered outside the web list, e.g. as buttons of a mail: by default "View online",
-     * which opens {@see getUrl()} through the {@see getEntryUrl()}. `[]` for none.
+     * The content blocks shown under the sentence where the channel has room for them - today in a
+     * mail about this notification alone; the web list, push messages and a mail of several
+     * notifications show the sentence only. Everything below the sentence is a block, link buttons
+     * included ({@see NotificationBlock::button()}).
      *
-     * @return NotificationAction[]
+     * By default the preview of the {@see getSubjectRecord()} (when there is one) and a "View
+     * online" button, which opens {@see getUrl()} through the {@see getEntryUrl()}. When the
+     * blocks contain no button at all, the core appends that "View online" button anyway, so a
+     * mail always links to the notification - unless it has no {@see getUrl()} (e.g. about
+     * deleted content), then there is no button.
+     *
+     * ```php
+     * return [NotificationBlock::quote($this->payload['note'], $this->originator, $this->record->created_at)];
+     * ```
+     *
+     * @return NotificationBlock[]
      * @api
      */
-    public function getActions(): array
+    public function getBlocks(NotificationContext $context): array
     {
-        return [new NotificationAction(Yii::t('NotificationModule.base', 'View online'), $this->getEntryUrl())];
+        $record = $this->getSubjectRecord();
+        $blocks = $record !== null ? [NotificationBlock::contentPreview($record)] : [];
+        if ($this->getUrl() !== null) {
+            $blocks[] = $this->getViewOnlineButton();
+        }
+
+        return $blocks;
     }
 
     /**
-     * Plain text shown under the sentence, e.g. a message the originator wrote; the channel
-     * encodes, breaks and shortens it. `null` (the default) for none.
+     * The {@see getBlocks()} as rendered: with the "View online" button appended when they hold
+     * no button and the notification has a {@see getUrl()}.
      *
-     * @api
+     * @return NotificationBlock[]
+     * @internal for the channels
      */
-    public function getExcerpt(): ?string
+    final public function getRenderedBlocks(NotificationContext $context): array
     {
-        return null;
+        $blocks = array_values($this->getBlocks($context));
+        foreach ($blocks as $block) {
+            if ($block->getType() === NotificationBlock::TYPE_BUTTON) {
+                return $blocks;
+            }
+        }
+        // nothing to link to, e.g. a notification about deleted content
+        if ($this->getUrl() !== null) {
+            $blocks[] = $this->getViewOnlineButton();
+        }
+
+        return $blocks;
+    }
+
+    private function getViewOnlineButton(): NotificationBlock
+    {
+        return NotificationBlock::button(Yii::t('NotificationModule.base', 'View online'), $this->getEntryUrl());
     }
 
     /**
@@ -459,16 +485,6 @@ abstract class BaseNotification extends BaseObject
         $record = $this->content?->getPolymorphicRelation();
 
         return $record instanceof ContentOwner ? $record : null;
-    }
-
-    /**
-     * The record a mail previews: by default the {@see getSubjectRecord()}; `null` for no preview.
-     *
-     * @api
-     */
-    public function getPreviewRecord(): ?ContentOwner
-    {
-        return $this->getSubjectRecord();
     }
 
     /**

@@ -2,6 +2,9 @@
 
 namespace humhub\modules\user\tests\codeception\unit;
 
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -94,7 +97,11 @@ class MentionTest extends HumHubDbTestCase
         $this->assertSame(1, (int)$record->listed);
 
         $notification = NotificationManager::load($record);
-        $mailRecord = $notification->getPreviewRecord();
+        $blocks = $notification->getBlocks(new NotificationContext(MailTarget::ID));
+        $this->assertCount(2, $blocks);
+        $this->assertSame(NotificationBlock::TYPE_CONTENT_PREVIEW, $blocks[0]->getType());
+        $this->assertEquals(NotificationBlock::button('View online', $notification->getEntryUrl()), $blocks[1]);
+        $mailRecord = $blocks[0]->getRecord();
         $this->assertInstanceOf(Comment::class, $mailRecord);
         $this->assertSame((int)$comment->id, (int)$mailRecord->id);
         $this->assertSame($comment->getUrl(), $notification->getUrl());

@@ -9,7 +9,9 @@
 namespace humhub\modules\space\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationContext;
 use Yii;
 
 /**
@@ -44,15 +46,15 @@ final class SpaceApprovalRequestNotification extends BaseNotification
     }
 
     /**
-     * The message of the applicant.
+     * The message of the applicant, quoted.
      *
      * @inheritdoc
      */
-    public function getExcerpt(): ?string
+    public function getBlocks(NotificationContext $context): array
     {
-        $message = (string)($this->payload['message'] ?? '');
+        $message = trim((string)($this->payload['message'] ?? ''));
 
-        return $message !== '' ? $message : null;
+        return $message !== '' ? [NotificationBlock::quote($message, $this->originator, $this->record->created_at)] : [];
     }
 
     /**

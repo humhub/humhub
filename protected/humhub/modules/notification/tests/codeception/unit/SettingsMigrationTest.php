@@ -178,6 +178,46 @@ class SettingsMigrationTest extends HumHubDbTestCase
         $this->assertEquals(['email.category.social' => '0'], $this->userSettings($user3), 'likes by e-mail were off by default');
     }
 
+    public function testMigratesModuleCategoriesWhoseIdIsAModuleId()
+    {
+        $user2 = User::findOne(['id' => 2])->contentcontainer_id;
+        $user3 = User::findOne(['id' => 3])->contentcontainer_id;
+        // a module only marked as enabled (its files gone), with a dash in its id
+        Yii::$app->db->createCommand()->insert('module_enabled', ['module_id' => 'example-module'])->execute();
+
+        $this->seedGlobal([
+            'notification.post_email' => '0',
+            // kept although "on": the 1.20 defaults of a module category are unknown to the migration
+            'notification.post_web' => '1',
+            'notification.example-module_mobile' => '0',
+            // dropped: no module of that id
+            'notification.unknown_email' => '0',
+        ]);
+        $this->seedUser($user2, [
+            // on under a global "off": kept
+            'notification.post_email' => '1',
+            // the same as the global key: not stored
+            'notification.post_web' => '1',
+            'notification.unknown-module_email' => '0',
+        ]);
+        $this->seedUser($user3, [
+            // no global key: kept
+            'notification.post_mobile' => '0',
+            'notification.example-module_mobile' => '0',
+        ]);
+
+        (new m261006_100100_settings(['compact' => true]))->safeUp();
+
+        $this->assertEquals([
+            'email.category.post' => '0',
+            'mobile.category.example-module' => '0',
+            'web.category.post' => '1',
+        ], $this->globalSettings());
+        $this->assertEquals(['email.category.post' => '1'], $this->userSettings($user2));
+        $this->assertEquals(['mobile.category.post' => '0'], $this->userSettings($user3));
+        $this->assertSame(0, (int)(new Query())->from('contentcontainer_setting')->where(['module_id' => 'notification'])->andWhere(['LIKE', 'name', 'notification.%', false])->count());
+    }
+
     private function seedGlobal(array $settings): void
     {
         foreach ($settings as $name => $value) {

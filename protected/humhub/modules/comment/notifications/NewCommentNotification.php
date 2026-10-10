@@ -9,10 +9,11 @@
 namespace humhub\modules\comment\notifications;
 
 use humhub\modules\comment\models\Comment;
-use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationContext;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
@@ -78,13 +79,15 @@ final class NewCommentNotification extends BaseNotification
     }
 
     /**
-     * The comment itself.
+     * The preview of the comment itself.
      *
      * @inheritdoc
      */
-    public function getPreviewRecord(): ?ContentOwner
+    public function getBlocks(NotificationContext $context): array
     {
-        return $this->sourceRecord instanceof Comment ? $this->sourceRecord : parent::getPreviewRecord();
+        return $this->sourceRecord instanceof Comment
+            ? [NotificationBlock::contentPreview($this->sourceRecord)]
+            : parent::getBlocks($context);
     }
 
     /**

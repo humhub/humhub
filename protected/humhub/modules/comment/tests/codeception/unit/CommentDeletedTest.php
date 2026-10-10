@@ -2,6 +2,8 @@
 
 namespace tests\codeception\unit\modules\comment\notifications;
 
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\comment\notifications\CommentDeletedNotification;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
@@ -48,6 +50,7 @@ class CommentDeletedTest extends HumHubDbTestCase
         $this->assertStringContainsString('&lt;b&gt;hi&lt;/b&gt;', $html);
         $this->assertStringNotContainsString('&amp;lt;b&amp;gt;', $html);
         $this->assertStringContainsString('<b>hi</b>', $notification->asMailSubject());
-        $this->assertSame([], $notification->getActions());
+        // nothing to link to: no "View online" button
+        $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
     }
 }

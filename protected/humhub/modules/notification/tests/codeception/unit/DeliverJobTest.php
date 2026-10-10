@@ -18,6 +18,7 @@ use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestFlakyNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestGroupedNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestStandaloneNotification;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\IsOnlineService;
@@ -60,6 +61,76 @@ class DeliverJobTest extends HumHubDbTestCase
         $this->assertSame('3 new notifications', $mails[1]->getSubject());
         $sentAt = array_unique(array_map(fn(NotificationDelivery $delivery) => $delivery->sent_at, array_slice($this->deliveries(), 1)));
         $this->assertSame([date('Y-m-d H:i:s', $this->now)], array_values($sentAt));
+    }
+
+    public function testStandaloneNotificationsGoOutAlone()
+    {
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin(NotificationPriority::Normal, TestStandaloneNotification::class);
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin(NotificationPriority::Normal, TestStandaloneNotification::class, null, 3);
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        $this->assertCount(1, $this->mails());
+
+        $this->now += 300;
+        $this->runDeliverJob();
+
+        // each standalone one in a mail of its own, the two others together
+        $mails = $this->mails();
+        $this->assertCount(4, $mails);
+        $this->assertSame('Peter Tester published an article', $mails[1]->getSubject());
+        $this->assertSame(User::findOne(['id' => 3])->displayName . ' published an article', $mails[2]->getSubject());
+        $this->assertSame('2 new notifications', $mails[3]->getSubject());
+        $this->assertStringNotContainsString('published an article', $mails[3]->getSymfonyEmail()->getTextBody());
+        foreach ($this->deliveries() as $delivery) {
+            $this->assertSame(NotificationDelivery::STATE_SENT, (int)$delivery->state);
+        }
+    }
+
+    public function testStandaloneNotificationAloneIsOneMail()
+    {
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin(NotificationPriority::Normal, TestStandaloneNotification::class);
+
+        $this->now += 300;
+        $this->runDeliverJob();
+
+        $mails = $this->mails();
+        $this->assertCount(2, $mails);
+        $this->assertSame('Peter Tester published an article', $mails[1]->getSubject());
+        $this->assertSame(NotificationDelivery::STATE_SENT, (int)$this->lastDelivery()->state);
+    }
+
+    public function testFailingStandaloneMessageFailsOnlyItsRows()
+    {
+        $provider = $this->provider(false, function ($batch): void {
+            if ($batch->first() instanceof TestStandaloneNotification) {
+                throw new \RuntimeException('Rejected');
+            }
+        });
+        $this->setUpDelivery([], $provider);
+        static::logInitialize();
+
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin(NotificationPriority::Normal, TestStandaloneNotification::class);
+        $this->now += 10;
+        $this->dispatchToAdmin();
+
+        $this->now += 300;
+        $this->runDeliverJob('mobile');
+
+        $this->assertCount(2, $provider->batches);
+        $this->assertTrue($provider->batches[1]->isSingle());
+        $deliveries = $this->deliveries('mobile');
+        $this->assertSame(NotificationDelivery::STATE_FAILED, (int)$deliveries[1]->state);
+        $this->assertSame(NotificationDelivery::STATE_SENT, (int)$deliveries[2]->state);
+        static::assertLogRegexCount(1, '/^Notification #' . $deliveries[1]->notification_id . ' for user 1: delivery through mobile failed/', Logger::LEVEL_ERROR, ['notification']);
     }
 
     public function testGroupedNotificationsCollapseToOneEntry()

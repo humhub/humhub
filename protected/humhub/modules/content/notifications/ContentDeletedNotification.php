@@ -42,16 +42,6 @@ final class ContentDeletedNotification extends BaseNotification
     }
 
     /**
-     * Nothing to open: the content is deleted.
-     *
-     * @inheritdoc
-     */
-    public function getActions(): array
-    {
-        return [];
-    }
-
-    /**
      * @inheritdoc
      */
     protected function getMessage(array $params): string

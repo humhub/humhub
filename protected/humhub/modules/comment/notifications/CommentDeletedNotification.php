@@ -42,16 +42,6 @@ final class CommentDeletedNotification extends BaseNotification
     }
 
     /**
-     * Nothing to open: the comment is deleted.
-     *
-     * @inheritdoc
-     */
-    public function getActions(): array
-    {
-        return [];
-    }
-
-    /**
      * @inheritdoc
      */
     protected function getMessage(array $params): string

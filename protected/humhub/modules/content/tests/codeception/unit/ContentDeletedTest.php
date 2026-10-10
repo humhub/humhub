@@ -2,6 +2,8 @@
 
 namespace tests\codeception\unit\modules\content\notifications;
 
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\content\notifications\ContentDeletedNotification;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
@@ -49,6 +51,7 @@ class ContentDeletedTest extends HumHubDbTestCase
         $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $html);
         // plain text channels carry it unencoded
         $this->assertStringContainsString('post "<img src=x onerror=alert(1)>"', $notification->asMailSubject());
-        $this->assertSame([], $notification->getActions());
+        // nothing to link to: no "View online" button
+        $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
     }
 }

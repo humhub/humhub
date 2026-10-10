@@ -12,22 +12,24 @@ use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\NotificationCategory;
 
 /**
- * A notification whose mail body is the payload's `body`.
+ * A notification that always goes out as a message of its own, like a news article.
  */
-final class TestExcerptNotification extends BaseNotification
+final class TestStandaloneNotification extends BaseNotification
 {
+    use TestPriorityTrait;
+
     public static function category(): NotificationCategory
     {
-        return NotificationCategory::direct();
+        return NotificationCategory::social();
     }
 
-    public function getExcerpt(): ?string
+    public static function standalone(): bool
     {
-        return $this->payload['body'] ?? null;
+        return true;
     }
 
     protected function getMessage(array $params): string
     {
-        return "{$params['displayName']} wrote you";
+        return "{$params['displayName']} published an article";
     }
 }

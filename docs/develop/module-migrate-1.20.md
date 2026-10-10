@@ -1712,7 +1712,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     ```
 
     Delete the view files under `notifications/views/` (also `mails/` and `mails/plaintext/`) and
-    the category class. The `Notification` suffix is the convention, not a requirement; a
+    the category class; what a mail view showed below the sentence becomes `getBlocks()`. The `Notification` suffix is the convention, not a requirement; a
     module that renames a class adds a migration calling `$this->renameClass($old, $new)` for
     the stored rows.
 
@@ -1757,7 +1757,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     | `$record`, `$originator`, `$groupCount` | the same names, readonly and typed; `$recipient` is new |
     | `getContentInfo()`, `getContentPreview()`, `getContentName()` | the parameters `content`/`contentTitle` (of `getSubjectRecord()`), or `ContentHelper::getContentInfo()` |
     | `getGroupUserDisplayNames()`, `getGroupLastUsers()` | the parameter `displayNames` |
-    | `beforeMailSend()`, `getMailSubject()` | `getMailSubject(array $params): string` (the plain-text parameters), `getExcerpt(): ?string`, `getActions(): NotificationAction[]`, `getPreviewRecord(): ?ContentOwner` |
+    | `beforeMailSend()`, `getMailSubject()` | `getMailSubject(array $params): string` (the plain-text parameters) |
+    | per-notification mail views (`notifications/views/mails/*.php` and `mails/plaintext/*.php`): the text, the content preview, quoted messages, the buttons | `getBlocks(NotificationContext $context): NotificationBlock[]` — `NotificationBlock::heading()`, `text()`, `richText()`, `quote($text, $author, $date)`, `contentPreview($record)`, `button($label, $url)`, `html($html, $text)`; the default is the preview of the subject record and a "View online" button, which the core also appends when the blocks hold no button. Blocks appear in a mail about the notification alone; a notification whose content is the point of the mail (e.g. a news article) returns `true` from the new static `standalone(): bool` so it is never collected with others. See [Content blocks](concept-notifications.md#content-blocks) |
     | `getUrl()` | `getUrl(bool $scheme = false): ?string` |
     | `$markAsSeenOnClick = false` | none: opening a notification always marks its group seen; take it back with `revoke()` when the request is answered |
     | `$requireSource`, `$requireOriginator`, `validate()` | none: a notification without source or originator is simply sent without one |
@@ -1768,6 +1769,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (`getUrl()`, `getMailSubject()`, `getSpace()`) is a fatal error. The module-facing methods and
     classes are marked `@api`; the manager's static methods (`dispatch()`, `delete()`,
     `markSeen()`, `load()`, …), the services and the jobs are internal.
+
+  - **Users' switches of 1.19** (`notification.<category id>_<target>`) are carried over to the
+    module's own category (`<target>.category.<module id>`) only when the old category id equals
+    the module id. With another old id they are dropped and the 1.20 defaults apply; defining a
+    category with the old id does not bring them back. Keep the default `ofModule()` category
+    unless the module needs several categories (then prefixed with the module id, e.g.
+    `tasks-reminders`), and mention the reset in the module's changelog.
 
   - **Removed:**
 

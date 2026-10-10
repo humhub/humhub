@@ -6,27 +6,27 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\components\message\MessageFormat;
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationAction;
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\services\NotificationBlockRenderer;
 use humhub\modules\notification\targets\DeliveryBatch;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\space\models\Space;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
-use humhub\widgets\mails\MailContentEntry;
 use humhub\widgets\mails\MailHeadline;
 use yii\helpers\Url;
 
 /**
  * The notification mail of a {@see DeliveryBatch}, inside the global mail layout.
  *
- * One notification: its sentence, its excerpt, the preview of its preview record and its actions
- * as buttons. Several: a headline, the sentences (with their excerpt) and a "View" link each -
- * those without a space first, the others under the heading of their space - and a button to the
- * overview.
+ * One notification: its sentence and its blocks ({@see BaseNotification::getRenderedBlocks()},
+ * rendered by the {@see NotificationBlockRenderer}), buttons included. Several: a headline, the
+ * sentences and a "View" link each - those without a space first, the others under the heading
+ * of their space - and a button to the overview.
  */
 
 /* @var View $this */
@@ -53,7 +53,11 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                            style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
 
                         <?php if ($batch->isSingle()): ?>
-                            <?php $notification = $batch->first() ?>
+                            <?php
+                            $notification = $batch->first();
+                            $context = new NotificationContext(MailTarget::ID);
+                            $renderer = new NotificationBlockRenderer($notification);
+                            ?>
                             <tr>
                                 <td valign="top" align="left" style="<?= $textStyle ?>">
                                     <?= $notification->asMailHtml() ?>
@@ -63,50 +67,16 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                 <td height="15"></td>
                             </tr>
 
-                            <?php if (($excerpt = $notification->renderExcerpt(MessageFormat::Html)) !== null): ?>
+                            <?php foreach ($renderer->renderMailHtml($notification->getRenderedBlocks($context)) as $part): ?>
                                 <tr>
                                     <td valign="top" align="left" style="<?= $textStyle ?>">
-                                        <p style="margin: 0"><?= $excerpt ?></p>
+                                        <?= $part ?>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td height="15"></td>
                                 </tr>
-                            <?php endif ?>
-
-                            <?php if ($record = $notification->getPreviewRecord()): ?>
-                                <tr>
-                                    <td valign="top" align="left">
-                                        <?= MailContentEntry::widget([
-                                            'content' => $record,
-                                            'originator' => $notification->originator,
-                                            'receiver' => $batch->recipient,
-                                            'space' => $spaceOf($notification),
-                                            'date' => $notification->record->created_at,
-                                        ]) ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td height="15"></td>
-                                </tr>
-                            <?php endif ?>
-
-                            <?php if ($actions = $notification->getActions()): ?>
-                                <tr>
-                                    <td valign="top">
-                                        <?= MailButtonList::widget(['buttons' => array_map(
-                                            static fn(NotificationAction $action): string => MailButton::widget([
-                                                'url' => Html::encode($action->url),
-                                                'text' => Html::encode($action->label),
-                                            ]),
-                                            $actions,
-                                        )]) ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td height="15"></td>
-                                </tr>
-                            <?php endif ?>
+                            <?php endforeach ?>
                         <?php else: ?>
                             <?php
                             // Those without a space first, then per space in the order of their first notification
@@ -142,9 +112,6 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                             <?= $notification->asMailHtml() ?>
                                             - <a href="<?= Html::encode($notification->getEntryUrl()) ?>"
                                                  style="<?= $linkStyle ?>"><?= Yii::t('NotificationModule.base', 'View') ?></a>
-                                            <?php if (($excerpt = $notification->renderExcerpt(MessageFormat::Html)) !== null): ?>
-                                                <p style="margin: 5px 0 0"><?= $excerpt ?></p>
-                                            <?php endif ?>
                                         </td>
                                     </tr>
                                     <tr>

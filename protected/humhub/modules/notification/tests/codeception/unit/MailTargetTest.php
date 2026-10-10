@@ -10,6 +10,7 @@ namespace humhub\modules\notification\tests\codeception\unit;
 
 use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
@@ -18,7 +19,7 @@ use humhub\modules\notification\targets\DeliveryBatch;
 use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestContentNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestDirectNotification;
-use humhub\modules\notification\tests\codeception\unit\notifications\TestExcerptNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestBlocksNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestMultilineNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use humhub\modules\post\models\Post;
@@ -37,6 +38,12 @@ class MailTargetTest extends HumHubDbTestCase
 {
     public $fixtureConfig = ['default'];
 
+    protected function tearDown(): void
+    {
+        TestBlocksNotification::reset();
+        parent::tearDown();
+    }
+
     public function testDispatchSendsOneMail()
     {
         $this->dispatch(TestContentNotification::class);
@@ -52,12 +59,14 @@ class MailTargetTest extends HumHubDbTestCase
         $html = $mail->getSymfonyEmail()->getHtmlBody();
         $this->assertStringContainsString($notification->asMailHtml(), $html);
         $this->assertStringContainsString(Html::encode($notification->getEntryUrl()), $html);
-        // the content preview and the action button
+        // the default block, the preview of the post, and the action button
+        $this->assertStringContainsString(Html::encode(Post::findOne(['id' => 2])->message), $html);
         $this->assertStringContainsString('View online', $html);
 
         $text = $mail->getSymfonyEmail()->getTextBody();
         $this->assertStringContainsString($notification->asMailText(), $text);
-        $this->assertStringContainsString($notification->getEntryUrl(), $text);
+        $this->assertStringContainsString(Post::findOne(['id' => 2])->message, $text);
+        $this->assertStringContainsString('View online: ' . $notification->getEntryUrl(), $text);
     }
 
     public function testCategorySwitchedOffSendsNothing()
@@ -184,31 +193,85 @@ class MailTargetTest extends HumHubDbTestCase
         $this->assertTrue($batch->isHighPriority());
     }
 
-    public function testSingleMailShowsTheEncodedExcerpt()
+    public function testSingleMailShowsTheBlocks()
     {
-        TestExcerptNotification::send(
-            [1],
-            originator: User::findOne(['id' => 2]),
-            payload: ['body' => "Let <b>me</b> in!\nPlease"],
-        );
+        TestBlocksNotification::$testBlocks = static fn(): array => [
+            NotificationBlock::heading('Release <2.0>'),
+            NotificationBlock::text("Let <b>me</b> in!\nPlease"),
+            NotificationBlock::html('<span class="custom">Custom</span>', 'Custom alternative'),
+            NotificationBlock::button('Confirm <reading>', 'https://example.com/confirm?a=1&b=2'),
+            NotificationBlock::button('Later', 'https://example.com/later'),
+        ];
+        TestBlocksNotification::send([1], originator: User::findOne(['id' => 2]));
 
         $mails = $this->mails();
         $this->assertCount(1, $mails);
         $html = $mails[0]->getSymfonyEmail()->getHtmlBody();
+        $text = $mails[0]->getSymfonyEmail()->getTextBody();
+
+        $this->assertStringContainsString('Release &lt;2.0&gt;', $html);
         $this->assertStringContainsString('Let &lt;b&gt;me&lt;/b&gt; in!<br />', $html);
         $this->assertStringNotContainsString('<b>me</b>', $html);
-        $this->assertStringContainsString("Let <b>me</b> in!\nPlease", $mails[0]->getSymfonyEmail()->getTextBody());
+        $this->assertStringContainsString('<span class="custom">Custom</span>', $html);
+        $this->assertStringNotContainsString('Custom alternative', $html);
+        $this->assertStringContainsString('Confirm &lt;reading&gt;', $html);
+        $this->assertStringContainsString('href="https://example.com/confirm?a=1&amp;b=2"', $html);
+        // the consecutive buttons in one row, no View online button appended
+        $this->assertSame(1, substr_count($html, 'Confirm &lt;reading&gt;'));
+        $this->assertDoesNotMatchRegularExpression('/Confirm &lt;reading&gt;.*<td height="15"><\/td>.*Later/s', $html);
+        $this->assertStringNotContainsString('View online', $html);
+        // sentence, then the blocks in their order
+        $this->assertLessThan(strpos($html, 'Release &lt;2.0&gt;'), strpos($html, 'Peter Tester'));
+        $this->assertLessThan(strpos($html, 'Confirm &lt;reading&gt;'), strpos($html, 'Custom</span>'));
+
+        $this->assertStringContainsString(
+            "Peter Tester wrote you\n\nRelease <2.0>\n\nLet <b>me</b> in!\nPlease\n\nCustom alternative\n\n"
+            . "Confirm <reading>: https://example.com/confirm?a=1&b=2\nLater: https://example.com/later\n",
+            $text,
+        );
+        $this->assertStringNotContainsString('<span', $text);
+        $this->assertStringNotContainsString('View online', $text);
+
+        // the HTML and the text part each asked once, with the mail context
+        $this->assertCount(2, TestBlocksNotification::$contexts);
+        foreach (TestBlocksNotification::$contexts as $context) {
+            $this->assertSame(MailTarget::ID, $context->channel);
+        }
     }
 
-    public function testBatchMailShowsTheEncodedExcerpt()
+    public function testViewOnlineButtonIsAppendedWithoutButtons()
+    {
+        TestBlocksNotification::$testBlocks = static fn(): array => [NotificationBlock::text('Only text')];
+        // post 2: public post on the admin's profile, so the notification has a URL
+        TestBlocksNotification::send([1], source: Post::findOne(['id' => 2]), originator: User::findOne(['id' => 2]));
+
+        $mails = $this->mails();
+        $this->assertCount(1, $mails);
+        $notification = $this->notification(TestBlocksNotification::class);
+        $html = $mails[0]->getSymfonyEmail()->getHtmlBody();
+        $this->assertStringContainsString('View online', $html);
+        $this->assertLessThan(strpos($html, 'View online'), strpos($html, 'Only text'));
+        $this->assertStringContainsString("Only text\n\nView online: " . $notification->getEntryUrl(), $mails[0]->getSymfonyEmail()->getTextBody());
+    }
+
+    public function testNoButtonWithoutUrl()
+    {
+        TestBlocksNotification::$testBlocks = static fn(): array => [NotificationBlock::text('Only text')];
+        TestBlocksNotification::send([1], originator: User::findOne(['id' => 2]));
+
+        $mails = $this->mails();
+        $this->assertCount(1, $mails);
+        $this->assertStringContainsString('Only text', $mails[0]->getSymfonyEmail()->getHtmlBody());
+        $this->assertStringNotContainsString('View online', $mails[0]->getSymfonyEmail()->getHtmlBody());
+        $this->assertStringNotContainsString('View online', $mails[0]->getSymfonyEmail()->getTextBody());
+    }
+
+    public function testBatchMailShowsNoBlocks()
     {
         $this->stopMailing();
         $this->dispatch(TestNotification::class);
-        TestExcerptNotification::send(
-            [1],
-            originator: User::findOne(['id' => 2]),
-            payload: ['body' => 'Let <b>me</b> in!'],
-        );
+        TestBlocksNotification::$testBlocks = static fn(): array => [NotificationBlock::text('Hidden block')];
+        TestBlocksNotification::send([1], originator: User::findOne(['id' => 2]));
 
         $notifications = array_map(
             NotificationManager::fromRecord(...),
@@ -219,8 +282,11 @@ class MailTargetTest extends HumHubDbTestCase
 
         $mails = $this->mails();
         $this->assertCount(1, $mails);
-        $this->assertStringContainsString('Let &lt;b&gt;me&lt;/b&gt; in!', $mails[0]->getSymfonyEmail()->getHtmlBody());
-        $this->assertStringContainsString('Let <b>me</b> in!', $mails[0]->getSymfonyEmail()->getTextBody());
+        $this->assertStringContainsString('Peter Tester wrote you', $mails[0]->getSymfonyEmail()->getTextBody());
+        $this->assertStringNotContainsString('Hidden block', $mails[0]->getSymfonyEmail()->getHtmlBody());
+        $this->assertStringNotContainsString('Hidden block', $mails[0]->getSymfonyEmail()->getTextBody());
+        $this->assertStringNotContainsString('View online', $mails[0]->getSymfonyEmail()->getHtmlBody());
+        $this->assertSame([], TestBlocksNotification::$contexts);
     }
 
     /**

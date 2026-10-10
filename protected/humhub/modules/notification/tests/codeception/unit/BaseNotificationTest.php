@@ -8,19 +8,19 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
-use humhub\components\message\MessageFormat;
 use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationAction;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationContext;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestContentNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestDefaultCategoryNotification;
-use humhub\modules\notification\tests\codeception\unit\notifications\TestExcerptNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestGroupedNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestHighPriorityNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
@@ -72,8 +72,14 @@ class BaseNotificationTest extends HumHubDbTestCase
         $this->assertStringStartsWith('http', $n->getEntryUrl());
         $this->assertSame($post->content->getUrl(), $n->getUrl());
         $this->assertSame($post->content->getUrl(true), $n->getUrl(true));
-        $this->assertEquals([new NotificationAction(Yii::t('NotificationModule.base', 'View online'), $n->getEntryUrl())], $n->getActions());
-        $this->assertSame($post->id, $n->getPreviewRecord()->id);
+        // the default blocks: the preview of the content and the View online button
+        $blocks = $n->getBlocks(new NotificationContext(MailTarget::ID));
+        $this->assertCount(2, $blocks);
+        $this->assertSame(NotificationBlock::TYPE_CONTENT_PREVIEW, $blocks[0]->getType());
+        $this->assertSame($post->id, $blocks[0]->getRecord()->id);
+        $this->assertEquals(NotificationBlock::button(Yii::t('NotificationModule.base', 'View online'), $n->getEntryUrl()), $blocks[1]);
+        $this->assertEquals($blocks, $n->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
+        $this->assertFalse(TestContentNotification::standalone());
         $this->assertTrue($n->canReceive(User::findOne(['id' => 1])));
         $this->assertNull(TestContentNotification::grouping());
     }
@@ -96,7 +102,7 @@ class BaseNotificationTest extends HumHubDbTestCase
         $n = NotificationManager::load(Notification::findOne(['id' => $record->id]));
         $this->assertStringEndsWith('created [Deleted]', $n->asWeb());
         $this->assertStringEndsWith('created [Deleted]', $n->asMailText());
-        $this->assertNull($n->getPreviewRecord());
+        $this->assertEquals([NotificationBlock::button('View online', $n->getEntryUrl())], $n->getBlocks(new NotificationContext(MailTarget::ID)));
     }
 
     public function testSourceRecordThroughRecordMap()
@@ -230,7 +236,7 @@ class BaseNotificationTest extends HumHubDbTestCase
         $record = new Notification(['class' => TestNotification::class, 'user_id' => 1, 'originator_id' => 2, 'contentcontainer_id' => $space->contentcontainer_id]);
         $this->assertTrue($record->save());
         $n = NotificationManager::load($record);
-        $this->assertNull($n->getPreviewRecord());
+        $this->assertEquals([NotificationBlock::button('View online', $n->getEntryUrl())], $n->getBlocks(new NotificationContext(MailTarget::ID)));
         $this->assertSame($space->getUrl(), $n->getUrl());
     }
 
@@ -299,23 +305,6 @@ class BaseNotificationTest extends HumHubDbTestCase
                 }
             })->getCategories(),
         ));
-    }
-
-    public function testExcerptIsEncodedAndShortenedPerFormat()
-    {
-        $record = new Notification(['class' => TestExcerptNotification::class, 'user_id' => 1, 'payload' => ['body' => "  <b>Hi</b>\nthere  "]]);
-        $this->assertTrue($record->save());
-        $n = NotificationManager::load($record);
-        $this->assertSame("&lt;b&gt;Hi&lt;/b&gt;<br />\nthere", $n->renderExcerpt(MessageFormat::Html));
-        $this->assertSame("<b>Hi</b>\nthere", $n->renderExcerpt(MessageFormat::Text));
-
-        $record = new Notification(['class' => TestExcerptNotification::class, 'user_id' => 1, 'payload' => ['body' => str_repeat('x', 1200)]]);
-        $this->assertTrue($record->save());
-        $this->assertSame(str_repeat('x', 999) . '…', NotificationManager::load($record)->renderExcerpt(MessageFormat::Text));
-
-        $record = new Notification(['class' => TestNotification::class, 'user_id' => 1]);
-        $this->assertTrue($record->save());
-        $this->assertNull(NotificationManager::load($record)->renderExcerpt(MessageFormat::Html));
     }
 
     public function testExtraParamsAreRenderedPerChannel()

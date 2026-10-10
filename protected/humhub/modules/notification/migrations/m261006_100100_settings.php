@@ -26,8 +26,17 @@ use yii\db\Query;
  *
  * The global result is stored where it differs from the 1.20 defaults; a user's result only
  * where it differs from the new effective global setting - in both directions, so a user who
- * had a category on under a global "off" keeps it on. Old categories of modules are not mapped and
- * fall back to the defaults; all old keys are deleted.
+ * had a category on under a global "off" keeps it on.
+ *
+ * An old category of a module is carried over when its id equals the id of a module of the
+ * installation (enabled or not) - the module's own category of 1.20
+ * ({@see \humhub\modules\notification\components\NotificationCategory::ofModule()}) has that id.
+ * Its switch maps one to one (`notification.<module id>_<target>` → `<target>.category.<module id>`):
+ * the effective stored value (user, else global) is taken over; with no key in the chain the
+ * category follows the 1.20 default. The 1.20 defaults of a module category are not known here,
+ * so a global key is always stored and a user key wherever it differs from the global key. Old
+ * categories with any other id are dropped - a module that defines its category with another id
+ * in 1.20 starts from the defaults. All old keys are deleted.
  *
  * Plain queries only: the models and settings managers of the time this runs may differ.
  *
@@ -90,8 +99,9 @@ class m261006_100100_settings extends Migration
             ->indexBy('name')
             ->column($this->db);
 
-        $this->migrateGlobal($global);
-        $this->migrateUsers($global);
+        $moduleIds = $this->moduleIds();
+        $this->migrateGlobal($global, $moduleIds);
+        $this->migrateUsers($global, $moduleIds);
 
         $this->delete('setting', ['AND', ['module_id' => self::MODULE_ID], ['LIKE', 'name', self::OLD_PREFIX . '%', false]]);
         $this->delete('contentcontainer_setting', ['AND', ['module_id' => self::MODULE_ID], ['LIKE', 'name', self::OLD_PREFIX . '%', false]]);
@@ -110,9 +120,31 @@ class m261006_100100_settings extends Migration
     }
 
     /**
-     * @param array<string, string|null> $global the old global settings by name
+     * The ids of the modules of the installation, enabled or not, whose old category keys are
+     * carried over - all registered modules and those marked as enabled (in case their files are
+     * gone), without the core category ids of 1.19 and 1.20 (`admin`, `content`, `friendship`,
+     * `like` are core module ids too).
+     *
+     * @return string[]
      */
-    private function migrateGlobal(array $global): void
+    private function moduleIds(): array
+    {
+        $ids = (new Query())->select('module_id')->from('module_enabled')->column($this->db);
+        if (Yii::$app->has('moduleManager')) {
+            $ids = array_merge($ids, array_keys(Yii::$app->moduleManager->getModules([
+                'includeCoreModules' => true,
+                'returnClass' => true,
+            ])));
+        }
+
+        return array_values(array_diff(array_unique(array_map('strval', $ids)), array_keys(self::CATEGORY_MAP), self::CATEGORY_MAP));
+    }
+
+    /**
+     * @param array<string, string|null> $global the old global settings by name
+     * @param string[] $moduleIds {@see moduleIds()}
+     */
+    private function migrateGlobal(array $global, array $moduleIds): void
     {
         $existing = (new Query())
             ->select('name')
@@ -121,7 +153,7 @@ class m261006_100100_settings extends Migration
             ->andWhere(['LIKE', 'name', '%.category.%', false])
             ->column($this->db);
 
-        foreach (self::diff(self::resolve($global, []), self::defaults()) as $name => $value) {
+        foreach (self::diff(self::resolve($global, [], $moduleIds), self::defaults()) as $name => $value) {
             if (!in_array($name, $existing, true)) {
                 $this->insert('setting', ['module_id' => self::MODULE_ID, 'name' => $name, 'value' => $value]);
             }
@@ -130,10 +162,11 @@ class m261006_100100_settings extends Migration
 
     /**
      * @param array<string, string|null> $global the old global settings by name
+     * @param string[] $moduleIds {@see moduleIds()}
      */
-    private function migrateUsers(array $global): void
+    private function migrateUsers(array $global, array $moduleIds): void
     {
-        $globalResult = array_merge(self::defaults(), self::resolve($global, []));
+        $globalResult = array_merge(self::defaults(), self::resolve($global, [], $moduleIds));
 
         $containerIds = (new Query())
             ->select('contentcontainer_id')
@@ -164,7 +197,7 @@ class m261006_100100_settings extends Migration
 
             $insert = [];
             foreach ($old as $id => $settings) {
-                foreach (self::diff(self::resolve($settings, $global), $globalResult) as $name => $value) {
+                foreach (self::diff(self::resolve($settings, $global, $moduleIds), $globalResult) as $name => $value) {
                     if (!isset($existing[$id][$name])) {
                         $insert[] = [self::MODULE_ID, $id, $name, $value];
                     }
@@ -180,13 +213,15 @@ class m261006_100100_settings extends Migration
     /**
      * The 1.20 settings resulting from the effective 1.19 switches of a scope: its own keys, else
      * those of `$base` (the global keys for a user), else the old category's default. A 1.20
-     * category with no stored key in the chain is left out.
+     * category with no stored key in the chain is left out. The old categories of the given
+     * modules map one to one to the module's own category.
      *
      * @param array<string, string|null> $keys the old settings of the scope by name
      * @param array<string, string|null> $base the old settings it inherits from by name
+     * @param string[] $moduleIds the ids of the modules whose old category is carried over
      * @return array<string, string> the new keys (`<target>.category.<category>`) with their value
      */
-    public static function resolve(array $keys, array $base): array
+    public static function resolve(array $keys, array $base, array $moduleIds = []): array
     {
         $result = [];
         foreach (self::TARGETS as $target) {
@@ -209,6 +244,14 @@ class m261006_100100_settings extends Migration
             foreach ($categories as $category => $enabled) {
                 if ($stored[$category]) {
                     $result[$target . '.category.' . $category] = in_array(true, $enabled, true) ? '1' : '0';
+                }
+            }
+
+            foreach ($moduleIds as $moduleId) {
+                $name = self::OLD_PREFIX . $moduleId . '_' . $target;
+                $value = $keys[$name] ?? $base[$name] ?? null;
+                if ($value !== null) {
+                    $result[$target . '.category.' . $moduleId] = $value ? '1' : '0';
                 }
             }
         }

@@ -42,8 +42,11 @@ use Yii;
  * The rest is collapsed by group: rows whose notifications share a `grouping_key` become one
  * entry, loaded as the group's head through {@see ActiveQueryNotification::grouped()} and
  * {@see NotificationManager::load()}, so the message names the group once ("Anna and 3 more
- * liked …"). The entries go to {@see BaseTarget::deliver()} in one {@see DeliveryBatch}; success
- * marks the rows `sent`, an exception marks them `failed` and is logged - no retry.
+ * liked …"). The entries go to {@see BaseTarget::deliver()} in one {@see DeliveryBatch} - except
+ * those of a {@see BaseNotification::standalone()} class, which go out one per batch, before the
+ * batch of the others. Per batch, success marks its rows `sent`, an exception marks them `failed`
+ * and is logged - no retry. The batches of one run share their `sent_at`, so the adaptive delay
+ * counts them as one message ({@see DeliveryScheduler}).
  *
  * One job per recipient and channel runs at a time (a mutex); a job finding it locked ends. After
  * releasing the lock, every job pushes a follow-up for the earliest pending row left - one written
@@ -154,36 +157,53 @@ class DeliverJob extends ActiveJob
             $byGroup[(int)($record->grouping_key ?? $record->id)][] = $row;
         }
 
-        $notifications = [];
-        $deliverable = [];
+        // the standalone notifications one per message, the others together in one message
+        $messages = [];
+        $collected = ['notifications' => [], 'rows' => []];
         foreach ($this->loadGroups($user, $byGroup) as $groupingKey => $notification) {
             if ($notification === null) {
                 array_push($skipped, ...$byGroup[$groupingKey]);
                 continue;
             }
-            $notifications[] = $notification;
-            array_push($deliverable, ...$byGroup[$groupingKey]);
+            if ($notification::standalone()) {
+                $messages[] = ['notifications' => [$notification], 'rows' => $byGroup[$groupingKey]];
+                continue;
+            }
+            $collected['notifications'][] = $notification;
+            array_push($collected['rows'], ...$byGroup[$groupingKey]);
+        }
+        if ($collected['notifications'] !== []) {
+            $messages[] = $collected;
         }
 
         $this->mark($skipped, NotificationDelivery::STATE_SKIPPED);
 
-        if ($notifications === []) {
-            return;
+        foreach ($messages as $message) {
+            $this->deliverMessage($target, $user, $message['notifications'], $message['rows'], $now);
         }
+    }
 
+    /**
+     * Delivers one batch and marks its rows `sent`, or `failed` when the target throws (logged).
+     *
+     * @param BaseNotification[] $notifications
+     * @param NotificationDelivery[] $rows the rows of the notifications
+     */
+    private function deliverMessage(BaseTarget $target, User $user, array $notifications, array $rows, int $now): void
+    {
         try {
             $target->deliver(new DeliveryBatch($user, $notifications, $this->channel));
         } catch (Throwable $e) {
             Yii::error(
-                'Notification #' . implode(', #', array_map(fn(NotificationDelivery $row) => $row->notification_id, $deliverable))
+                'Notification #' . implode(', #', array_map(fn(NotificationDelivery $row) => $row->notification_id, $rows))
                 . ' for user ' . $user->id . ': delivery through ' . $this->channel . ' failed: ' . $e,
                 'notification',
             );
-            $this->mark($deliverable, NotificationDelivery::STATE_FAILED);
+            $this->mark($rows, NotificationDelivery::STATE_FAILED);
             return;
         }
 
-        $this->mark($deliverable, NotificationDelivery::STATE_SENT, $now);
+        $this->mark($rows, NotificationDelivery::STATE_SENT, $now);
     }
 
     /**

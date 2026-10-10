@@ -36,6 +36,8 @@ namespace johndoe\tasks\notifications;
 use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationBlock;
+use humhub\modules\notification\components\NotificationContext;
 use johndoe\tasks\models\Task;
 use Yii;
 
@@ -66,9 +68,12 @@ final class TaskAssignedNotification extends BaseNotification
         return $this->getTask()?->getUrl($scheme);
     }
 
-    public function getExcerpt(): ?string
+    public function getBlocks(NotificationContext $context): array
     {
-        return $this->payload['note'] ?? null;
+        // shown under the sentence in a mail about this notification; a "View online" button follows
+        $note = trim($this->payload['note'] ?? '');
+
+        return $note !== '' ? [NotificationBlock::quote($note, $this->originator, $this->record->created_at)] : [];
     }
 
     private function getTask(): ?Task
@@ -92,7 +97,8 @@ There is no category to declare: the notification gets the module's own category
 "Tasks" per channel on the settings page — unless the class names another one, see
 [Category, priority, listing](#category-priority-listing). There are no view files either: the
 same `getMessage()` renders the web list, the HTML mail, the text mail, the mail subject and the
-push message.
+push message, and what a mail shows below the sentence is declared as
+[content blocks](#content-blocks).
 
 ### The sentence and its parameters
 
@@ -163,10 +169,9 @@ readonly properties:
 | `getMessageParams(): array` | `[]` |
 | `getMailSubject(array $params): string` | the sentence |
 | `getUrl(bool $scheme = false): ?string` | the content addon's URL (e.g. the comment's), else the content's, else the container's, else none |
-| `getExcerpt(): ?string` | `null`; plain text shown under the sentence outside the web list, e.g. a message the originator wrote — the channel encodes, breaks and shortens it |
-| `getActions(): NotificationAction[]` | one "View online" action (`new NotificationAction($label, $url)`), the buttons of a mail; `[]` for none |
 | `getSubjectRecord(): ?ContentOwner` | the content's record — what `content`/`contentTitle` name; e.g. the liked comment instead |
-| `getPreviewRecord(): ?ContentOwner` | the subject record — what a mail previews under the sentence |
+| `getBlocks(NotificationContext $context): NotificationBlock[]` | the preview of the subject record (when there is one) and a "View online" button — everything shown below the sentence, see [Content blocks](#content-blocks) |
+| `static standalone(): bool` | `false`; `true`: always delivered as a message of its own, see [Content blocks](#content-blocks) |
 | `getSpace(): ?Space` | the container when it is a space; override when the notification is about a space without being bound to it, e.g. a membership |
 | `canReceive(User $user): bool` | `true`; a last filter at dispatch time beyond the generic checks |
 
@@ -336,13 +341,78 @@ Grouping happens when a notification is written, so the list reads the groups as
 stored. A group is one entry in the list, a mail or push sent for a grouped notification carries
 the grouped sentence, and marking it as seen marks every member.
 
+### Content blocks
+
+Everything shown below the sentence is a list of **content blocks**, returned by
+`getBlocks(NotificationContext $context)` — link buttons included. A block is a
+`humhub\modules\notification\components\NotificationBlock`; it says *what* it holds, the
+channel decides how it looks and how much of it fits. There are no styling options.
+
+| Factory | HTML mail | Text mail |
+|---|---|---|
+| `heading($text)` | a heading, encoded | the text |
+| `text($text)` | a paragraph, encoded, line breaks kept | the text |
+| `richText($richText)` | HumHub RichText (Markdown) converted for mails (`RichTextToEmailHtmlConverter` with the recipient, so images open from the inbox; images limited to the mail's width) | converted to plain text (`RichTextToPlainTextConverter`) |
+| `quote($text, ?$author, ?$date)` | a card with the author's image, name and date and the encoded text; without an author a plain card | `Author:` and the lines prefixed with `> ` |
+| `contentPreview($record)` | the preview card of a content or a content addon, like on the stream (`MailContentEntry`) | its text as plain text |
+| `button($label, $url)` | a button; consecutive buttons form one row | `label: URL`, one line each |
+| `html($html, $text)` | `$html` as is — the escape hatch for what the other blocks cannot express; encode its contents and keep it mail-safe (tables, inline styles) | `$text` |
+
+The default is the preview of `getSubjectRecord()` (when there is one) and a "View online"
+button, which opens `getUrl()` through the entry URL (marking the notification seen). When a
+class returns blocks without any button, the core appends that "View online" button anyway, so
+a mail always links to its notification; a class adds its own buttons to replace it. A
+notification without a URL (`getUrl()` returns `null`, e.g. about deleted content) gets no
+button at all.
+
+```php
+// a news article: the full text, and a button that belongs to it
+public function getBlocks(NotificationContext $context): array
+{
+    $news = $this->getNews();
+
+    return [
+        NotificationBlock::heading($news->title),
+        NotificationBlock::richText($news->article),
+        NotificationBlock::button(Yii::t('NewsModule.base', 'Confirm reading'), $news->getConfirmReadingUrl(true)),
+    ];
+}
+```
+
+Where blocks appear: today only a mail about this notification alone renders them. The web list,
+push messages and a mail of several notifications show the sentence (and in a mail a link to the
+notification) only — so a button like "Confirm reading", which makes sense only next to the full
+article, never shows without it. The renderer owns the length: a mail shows the blocks in full,
+an output with less room (e.g. a future detail view in the web list) would show an excerpt of a
+RichText block. `NotificationContext` tells `getBlocks()` where it is rendered: `channel` (the
+target id, e.g. `MailTarget::ID`). It is constructed by the core only and may get more fields
+later.
+
+Buttons are links. Interactive quick actions with a server-side handler — *Accept*/*Decline* in
+the web list or as push action buttons — are not link buttons and would be a separate API.
+
+A notification whose content is the point of the message — a news article, a newsletter —
+declares itself **standalone**:
+
+```php
+public static function standalone(): bool
+{
+    return true;
+}
+```
+
+A standalone notification is never collected into one mail or push with others (where its
+blocks would not appear): the delivery sends it as a message of its own, with its blocks. The
+delay, the priority and the skipping rules (seen meanwhile, recipient online, channel switched
+off) apply as for every other notification; see [Delivery](#delivery).
+
 ### Mail
 
-A mail is rendered from the sentence, the excerpt (`getExcerpt()`), the preview of
-`getPreviewRecord()` and the buttons (`getActions()`) inside the standard layout
-(`@notification/views/mails/notification` and its plain-text twin). Notifications that go out
-together share one mail ("3 new notifications"), each with its sentence and excerpt; a group
-appears once with the grouped sentence. Nothing in your module renders mail.
+A mail about one notification shows the sentence and the blocks inside the standard layout
+(`@notification/views/mails/notification` and its plain-text twin), in the recipient's language.
+Notifications that go out together share one mail ("3 new notifications"), each with its
+sentence and a link, under the heading of its space where there is one; a group appears once
+with the grouped sentence. Nothing in your module renders mail.
 
 The activity summary mail mentions the number of unread notifications (the badge count,
 `NotificationListService::unseenCount()`) with a link to the notification overview, when there
@@ -353,11 +423,12 @@ are any. It lists no notifications and is not sent because of them alone.
 The module-facing API, marked `@api` in the code — stable across minor versions:
 
 - `BaseNotification`: `send()`, `revoke()`, `markSeen()`; the hooks `category()`, `priority()`,
-  `listed()`, `grouping()`, `getMessage()`, `getMessageParams()`, `getMailSubject()`,
-  `getUrl()`, `getExcerpt()`, `getActions()`, `getSubjectRecord()`, `getPreviewRecord()`,
-  `getSpace()`, `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
+  `listed()`, `standalone()`, `grouping()`, `getMessage()`, `getMessageParams()`,
+  `getMailSubject()`, `getUrl()`, `getSubjectRecord()`, `getBlocks()`, `getSpace()`,
+  `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
   `$content`, `$contentContainer`, `$sourceRecord`, `$payload`, `$groupCount`
-- `NotificationCategory`, `NotificationPriority`, `Grouping`, `NotificationAction`
+- `NotificationCategory`, `NotificationPriority`, `Grouping`, `NotificationBlock` (its
+  factories), `NotificationContext` (its properties)
 - `humhub\components\message\MessageParam`
 - `BeforeDispatchEvent` and `NotificationManager::EVENT_BEFORE_DISPATCH`
 - for channel providers: `BaseTarget`, `DeliveryBatch`, `MobileTargetProvider`
@@ -384,7 +455,9 @@ a due time, and pushes a `DeliverJob` for the recipient and channel, delayed to 
 - **Collecting.** When a message goes out, the job takes every pending notification of the
   recipient and channel along — also those not due yet. A low-priority notification therefore
   usually leaves with the next message. Members of one group appear once, with the grouped
-  sentence. The channel receives them as one `DeliveryBatch`.
+  sentence. The channel receives them as one `DeliveryBatch` — except the
+  [standalone](#content-blocks) notifications, which go out one per batch, each with its own
+  result (`sent`/`failed`). The messages of one run count once for the adaptive delay.
 - **Skipping.** Right before sending, a row is skipped when the notification was seen in the
   meantime, when the channel is no longer active or enabled for it (category switch), when the
   recipient is no longer enabled, or when the notification no longer loads (e.g. its source is

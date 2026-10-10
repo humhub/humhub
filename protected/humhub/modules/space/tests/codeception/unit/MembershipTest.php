@@ -2,6 +2,9 @@
 
 namespace tests\codeception\unit\modules\space;
 
+use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\targets\MailTarget;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Membership;
@@ -40,7 +43,16 @@ class MembershipTest extends HumHubDbTestCase
 
         $notification = NotificationManager::load(Notification::findOne(['class' => SpaceApprovalRequestNotification::class, 'user_id' => 1]));
         $this->assertSame(['message' => 'Let me in!'], $notification->payload);
-        $this->assertSame('Let me in!', $notification->getExcerpt());
+        $blocks = $notification->getBlocks(new NotificationContext(MailTarget::ID));
+        $this->assertCount(1, $blocks);
+        $this->assertSame(NotificationBlock::TYPE_QUOTE, $blocks[0]->getType());
+        $this->assertSame('Let me in!', $blocks[0]->getText());
+        $this->assertSame($user1->id, $blocks[0]->getAuthor()->id);
+        $this->assertSame($notification->record->created_at, $blocks[0]->getDate());
+        $this->assertSame([NotificationBlock::TYPE_QUOTE, NotificationBlock::TYPE_BUTTON], array_map(
+            static fn(NotificationBlock $block): string => $block->getType(),
+            $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)),
+        ));
         $this->assertSame($space->createUrl('/space/manage/member/pending-approvals'), $notification->getUrl());
         $this->assertSame($user1->displayName . ' requests membership for the space “Space 1”', $notification->asMailSubject());
 
@@ -175,7 +187,7 @@ class MembershipTest extends HumHubDbTestCase
         $record = Notification::findOne(['class' => SpaceApprovalRequestNotification::class, 'user_id' => 1]);
         $notification = NotificationManager::load($record);
         $this->assertSame([], $notification->payload);
-        $this->assertNull($notification->getExcerpt());
+        $this->assertSame([], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
     }
 
     public function testTheRoleOfThePayloadWinsOverTheCurrentMembershipRole()

@@ -64,17 +64,18 @@ class AccountCest
         $I->waitForText('Basic Settings');
 
         $I->click('Notifications'); //Notification tab
-        $I->waitForText('Notification Settings');
+        $I->waitForText('Categories');
 
-        $I->expectTo('see the notification settings form');
+        $I->expectTo('see the notification settings');
         $I->waitForText('Directly addressed to you');
         $I->see('Reactions on my content');
-        $I->jsClick('[name="NotificationSettings[email.group.social]"]');
-        $I->jsClick('[name="NotificationSettings[email.group.content]"]');
 
-        $I->scrollToBottom();
-        $I->click('Save', '#notification-settings');
+        $I->amGoingTo('switch off the e-mails about reactions; the change is saved right away');
+        $I->click('[data-category="social"] .c-notification-settings__category-head');
+        $I->waitForElementVisible('[name="NotificationSettings[categories.social.email]"]');
+        $I->jsClick('[name="NotificationSettings[categories.social.email]"]');
 
-        $I->seeSuccess('Saved');
+        $I->waitForText('Saved', 10, '.c-notification-settings__status');
+        $I->see('Custom', '[role="radiogroup"] [aria-checked="true"]');
     }
 }

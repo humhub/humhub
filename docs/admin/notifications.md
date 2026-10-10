@@ -54,12 +54,18 @@ them; unlike *Reset to defaults* it keeps their choice of spaces), *Important on
 e-mail and push only for what is addressed to the user directly) and *Custom*, selected by
 itself as soon as the switches match none of the others.
 
+### Updating from 1.19
+
 Settings from earlier versions are converted on update, for the web list, e-mail and push alike:
 the nine core categories of 1.19 are merged into the five above. A category whose every former
 category was off is switched off, a category with any former category on stays on, and a
 category none of whose former categories was ever stored follows the new defaults (so *New
-followers* by e-mail and push is off unless a user had switched it on). Former categories of
-other modules are not converted.
+followers* by e-mail and push is off unless a user had switched it on).
+
+A module's settings are carried over when its former category had the module's id, which is
+true for many modules (e.g. Calendar, News, Messenger). The settings of other module categories are
+dropped and their default applies again. If users had switched module notifications off, you may
+want to ask them to check their notification settings after the update.
 
 ## Timings
 
