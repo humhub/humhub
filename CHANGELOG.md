@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #8570: correct link from the Marketplace PE Modules to the HumHub Website -> Professional Edition page
 - Enh #8571: Show the username on the password step of the two-step login
 - Fix #8572: Fix height of the status area on marketplace module cards
+- Enh #8575: Account settings: picker to review and remove allowed external content sources
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------

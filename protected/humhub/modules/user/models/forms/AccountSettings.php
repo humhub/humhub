@@ -30,6 +30,12 @@ class AccountSettings extends Model
     public $timeZone;
     public $blockedUsers;
 
+    /**
+     * @var array|string|null Domains always allowed to display external content (oEmbed)
+     * @since 1.19
+     */
+    public $allowedExternalSources;
+
     public ?User $user = null;
 
     /**
@@ -38,7 +44,7 @@ class AccountSettings extends Model
     public function rules()
     {
         return [
-            [['tags', 'blockedUsers'], 'safe'],
+            [['tags', 'blockedUsers', 'allowedExternalSources'], 'safe'],
             [['hideOnlineStatus', 'show_introduction_tour'], 'boolean'],
             [['markdownEditorMode'], 'in', 'range' => [0, 1]],
             [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
@@ -62,6 +68,7 @@ class AccountSettings extends Model
             'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
             'visibility' => Yii::t('UserModule.account', 'Profile visibility'),
             'blockedUsers' => Yii::t('UserModule.account', 'Blocked users'),
+            'allowedExternalSources' => Yii::t('UserModule.account', 'Allowed external content sources'),
         ];
     }
 
@@ -69,7 +76,19 @@ class AccountSettings extends Model
     {
         return [
             'tags' => Yii::t('UserModule.account', 'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.'),
+            'allowedExternalSources' => Yii::t('UserModule.account', 'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.'),
         ];
+    }
+
+    /**
+     * @return string[]
+     * @since 1.19
+     */
+    public function getAllowedExternalSources(): array
+    {
+        return is_array($this->allowedExternalSources)
+            ? array_values(array_filter($this->allowedExternalSources, 'is_string'))
+            : [];
     }
 
     public function getTags(): array

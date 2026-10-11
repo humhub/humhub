@@ -139,5 +139,19 @@ class UrlOembedTest extends HumHubDbTestCase
         return UrlOembedMock::find()->count();
     }
 
+    public function testRestrictAllowedDomains()
+    {
+        $this->becomeUser('User1');
 
+        UrlOembed::saveAllowedDomain('a.com');
+        UrlOembed::saveAllowedDomain('b.com');
+        UrlOembed::saveAllowedDomain('c.com');
+
+        // Unknown domains must not be added
+        UrlOembed::restrictAllowedDomains(['a.com', 'c.com', 'new.com']);
+        $this->assertEquals(['a.com', 'c.com'], UrlOembed::getAllowedDomains());
+
+        UrlOembed::restrictAllowedDomains([]);
+        $this->assertEquals([], UrlOembed::getAllowedDomains());
+    }
 }
