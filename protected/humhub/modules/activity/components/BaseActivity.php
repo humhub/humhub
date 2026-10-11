@@ -358,10 +358,22 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
+     * The max length of a content preview in the output being rendered, e.g. of a
+     * {@see MessageParam::content()}: 300 characters for mails, 60 for the activity box.
+     *
+     * @api
+     * @since 1.20
+     */
+    protected function getPreviewLength(): int
+    {
+        return $this->isRenderingMail() ? 300 : MessageParam::CONTENT_LENGTH;
+    }
+
+    /**
      * Whether the message parameters are being rendered for a mail (rather than the activity box),
      * e.g. to pick the length of a preview.
      *
-     * @internal read by the core's base activities, see {@see BaseContentActivity::getPreviewLength()}
+     * @internal read by {@see getPreviewLength()} and the core's activities
      * @since 1.20
      */
     protected function isRenderingMail(): bool
@@ -407,7 +419,8 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
-     * {@see getRedactedMessage()}, else "{displayName}: {title}".
+     * {@see getRedactedMessage()}, else {@see getMessage()} when it names no content (see
+     * {@see MessageParam::renderRedacted()}), else "{displayName}: {title}".
      */
     private function renderRedacted(MessageFormat $format): string
     {
@@ -423,7 +436,7 @@ abstract class BaseActivity extends BaseObject
         }
         $params = MessageParam::renderAll($params, $format);
 
-        $message = $this->getRedactedMessage($params);
+        $message = $this->getRedactedMessage($params) ?? $this->renderRedactedMessage($format);
         if ($message !== null) {
             return $message;
         }
@@ -439,6 +452,26 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
+     * {@see getMessage()} when it names no content - not for a class that still builds its
+     * parameters through the deprecated `getMessageParams*()` methods, which may hold content of
+     * their own.
+     */
+    private function renderRedactedMessage(MessageFormat $format): ?string
+    {
+        foreach (['getMessageParamsMailText', 'getMessageParamsWeb', 'getMessageParamsMailHtml'] as $method) {
+            if ((new \ReflectionMethod($this, $method))->getDeclaringClass()->getName() !== self::class) {
+                return null;
+            }
+        }
+
+        return MessageParam::renderRedacted(
+            fn(array $params): string => $this->getMessage($params),
+            array_merge($this->getBuiltInMessageParams(), $this->getMessageParams()),
+            $format,
+        );
+    }
+
+    /**
      * `displayName`, `displayNames` and `groupCount` - the built-in parameters of this class
      * without those a subclass adds (e.g. the content).
      *
@@ -451,6 +484,7 @@ abstract class BaseActivity extends BaseObject
             'displayNames' => MessageParam::html(
                 $this->formatDisplayNames(static fn($dn) => Html::strong(Html::encode($dn))),
                 $this->formatDisplayNames(static fn($dn) => $dn),
+                redactable: true,
             ),
             'groupCount' => $this->groupCount,
         ];
@@ -467,11 +501,14 @@ abstract class BaseActivity extends BaseObject
         $this->_renderingMail = $mail;
 
         try {
-            $params = array_merge($this->getBuiltInMessageParams(), $this->getMessageParams());
+            return MessageParam::renderAll(
+                array_merge($this->getBuiltInMessageParams(), $this->getMessageParams()),
+                $format,
+                $this->getPreviewLength(),
+                $mail && $format === MessageFormat::Html,
+            );
         } finally {
             $this->_renderingMail = $previous;
         }
-
-        return MessageParam::renderAll($params, $format);
     }
 }

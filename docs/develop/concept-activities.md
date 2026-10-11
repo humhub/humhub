@@ -73,6 +73,7 @@ protected function getMessageParams(): array
     return [
         'task' => MessageParam::emphasis($this->contentActiveRecord->title), // <strong>…</strong> / “…”
         'assignee' => MessageParam::user($this->contentActiveRecord->assignee), // <strong>…</strong> / as it is
+        'parent' => MessageParam::content($this->contentActiveRecord->parent),  // task "Release…" / the same as plain text
         'reason' => MessageParam::text($this->reason, maxLength: 100),       // encoded / as it is
         'list' => $this->contentActiveRecord->list->name,                      // a plain string: like text()
     ];
@@ -84,13 +85,14 @@ protected function getMessageParams(): array
 | plain string, `MessageParam::text()` | HTML-encoded | as it is |
 | `MessageParam::emphasis()` | HTML-encoded in `<strong>` | in “quotes” |
 | `MessageParam::user()` | the display name, HTML-encoded in `<strong>` | the display name |
+| `MessageParam::content()` | type and preview of a content or comment, the preview as short HTML (in `<strong>` in the mail) | the same as plain text |
 | a number | as it is (e.g. for an ICU `plural`) | as it is |
 
 Your parameters are merged over the built-in ones, so a key like `content` replaces the built-in
-value — `LikeActivity` names the liked comment that way. For a preview of the length of the
-output being rendered, `BaseContentActivity::getPreviewLength()` returns `$webContentLength` (60)
-for the activity box and `$mailContentLength` (300) for mails, as `NewCommentActivity` does for
-the comment text. When you extend a class that has parameters of its own, merge
+value — `LikeActivity` names the liked comment that way, with `MessageParam::content()`. Its
+preview, and one of your own, has the length of the output being rendered: `getPreviewLength()`
+returns 60 for the activity box and 300 for mails (`$webContentLength` and `$mailContentLength`
+of `BaseContentActivity`), as `NewCommentActivity` uses for the comment text. When you extend a class that has parameters of its own, merge
 `parent::getMessageParams()`.
 
 Up to 1.19, parameters were added by overriding `getMessageParamsWeb()`,
@@ -107,6 +109,12 @@ content* the summary mail shows each activity by `getRedactedMessage(array $para
 instead of `getMessage()`, without the Space name; with *Minimal* it only tells how many
 activities there are. The activity box is unaffected.
 
+Without the method, the core shows `getMessage()` itself when it names no content — rendered with
+user names, numbers and each `MessageParam::content()` as its type alone, as for
+[notifications](concept-notifications.md#privacy-mode) — and else "{displayName}: {title}" (see
+below). Implement it when your sentence names a title, a Space or other text, or to fit the
+grammar better:
+
 ```php
 protected function getRedactedMessage(array $params): ?string
 {
@@ -119,13 +127,14 @@ protected function getRedactedMessage(array $params): ?string
 content) and those of your `getMessageParams()` that are a `MessageParam::user()` — names are
 fine, everything else (`content`, `contentTitle`, titles, previews) never reaches the method.
 Write a whole sentence, as for `getMessage()`, so translators can build it in their language;
-pieces glued together do not translate. A class whose `getMessage()` names people only may
-return `$this->getMessage($params)`, as `FollowActivity` does.
+pieces glued together do not translate. Only values passed through `$params` are recognized:
+text written into `getMessage()` directly shows under *Hide content* as well. An activity that
+still overrides the deprecated `getMessageParams*()` methods gets no automatic sentence.
 
-The method is optional (since 1.20): without it — returning `null`, the default — the line is
+The method is optional (since 1.20): when neither it nor `getMessage()` fits, the line is
 "{displayName}: {title}", the title of a `ConfigurableActivityInterface` (e.g. "Anna Smith:
-Tasks"), else "New activity". The core activities implement it ("Anna Smith created a new post.",
-"Anna Smith commented on a post.", "Anna Smith joined a Space.").
+Tasks"), else "New activity". The core activities implement it where their sentence names more
+than people and content types ("Anna Smith created a new post.", "Anna Smith joined a Space.").
 
 ### The rest of the class
 

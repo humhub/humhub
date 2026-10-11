@@ -3,12 +3,10 @@
 namespace humhub\modules\activity\components;
 
 use humhub\components\message\MessageParam;
-use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use yii\base\InvalidValueException;
@@ -95,12 +93,9 @@ abstract class BaseContentActivity extends BaseActivity
     }
 
     /**
-     * The max length of a content preview in the output being rendered: {@see $webContentLength} for
-     * the activity box, {@see $mailContentLength} for mails. For a preview of your own in
-     * {@see getMessageParams()}.
+     * {@see $webContentLength} for the activity box, {@see $mailContentLength} for mails.
      *
-     * @api
-     * @since 1.20
+     * @inheritdoc
      */
     protected function getPreviewLength(): int
     {
@@ -116,25 +111,9 @@ abstract class BaseContentActivity extends BaseActivity
      */
     protected function getBuiltInMessageParams(): array
     {
-        $length = $this->getPreviewLength();
-        // getContentInfo() returns HTML; its plain text twin is the decoded HTML
-        $content = ContentHelper::getContentInfo($this->content, true, $length);
-        $contentTitle = ContentHelper::getContentInfo($this->content, false, $length);
-
         return array_merge(parent::getBuiltInMessageParams(), [
-            'content' => MessageParam::html(
-                $this->isRenderingMail() ? Html::strong($content) : $content,
-                self::decodeHtml($content),
-            ),
-            'contentTitle' => MessageParam::html($contentTitle, self::decodeHtml($contentTitle)),
+            'content' => MessageParam::content($this->content),
+            'contentTitle' => MessageParam::content($this->content, withType: false),
         ]);
-    }
-
-    /**
-     * The plain text of HTML-encoded text, e.g. of {@see ContentHelper::getContentInfo()}.
-     */
-    private static function decodeHtml(string $html): string
-    {
-        return html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
     }
 }

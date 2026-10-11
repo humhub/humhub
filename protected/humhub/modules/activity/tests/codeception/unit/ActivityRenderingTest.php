@@ -15,6 +15,8 @@ use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\services\LikeService;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\activities\FollowActivity;
+use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class ActivityRenderingTest extends HumHubDbTestCase
@@ -94,6 +96,23 @@ class ActivityRenderingTest extends HumHubDbTestCase
         $activity = TestMessageParamsActivity::send(Space::findOne(['id' => 1]));
 
         $this->assertSame('<strong>Sara Tester</strong>: New activity', $activity->asRedactedHtml());
+        $this->assertSame('Sara Tester: New activity', $activity->asRedactedText());
+    }
+
+    public function testRedactedMessageIsTheSentenceWhenItNamesNoContent()
+    {
+        $this->becomeUser('User2');
+        $follow = FollowActivity::send(User::findOne(['id' => 3]), User::findOne(['id' => 2]));
+
+        $this->assertSame($follow->asMailText(), $follow->asRedactedText());
+        $this->assertSame('Peter Tester now follows Sara Tester.', $follow->asRedactedText());
+    }
+
+    public function testLegacyParamsGetNoAutomaticRedactedMessage()
+    {
+        $this->becomeUser('User2');
+        $activity = TestLegacyParamsActivity::send(Space::findOne(['id' => 1]));
+
         $this->assertSame('Sara Tester: New activity', $activity->asRedactedText());
     }
 

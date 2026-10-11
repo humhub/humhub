@@ -20,6 +20,7 @@ use humhub\modules\notification\targets\DeliveryBatch;
 use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestBlocksNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestContentNotification;
+use humhub\modules\notification\tests\codeception\unit\notifications\TestContentTitleNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestRedactedNotification;
 use humhub\modules\post\models\Post;
@@ -113,13 +114,29 @@ class NotificationPrivacyTest extends HumHubDbTestCase
         $this->assertSame(NotificationPrivacy::Minimal, $explicit->getContext()->privacy);
     }
 
-    public function testRedactedSingleMailFallsBackToTheCategory()
+    public function testRedactedSingleMailShowsTheSentenceWithTheContentType()
     {
         $this->module()->setPrivacy(NotificationPrivacy::Redacted);
         $this->dispatch(TestContentNotification::class);
 
         [$mail] = $this->mails(1);
         $notification = $this->notification(TestContentNotification::class);
+        $this->assertSame('Peter Tester created post', $mail->getSubject());
+
+        $html = $mail->getSymfonyEmail()->getHtmlBody();
+        $text = $mail->getSymfonyEmail()->getTextBody();
+        $this->assertStringContainsString('<strong>Peter Tester</strong> created post', $html);
+        $this->assertStringContainsString("Peter Tester created post\n\nView online: " . $notification->getEntryUrl(), $text);
+        $this->assertNoContent($html, $text);
+    }
+
+    public function testRedactedSingleMailFallsBackToTheCategory()
+    {
+        $this->module()->setPrivacy(NotificationPrivacy::Redacted);
+        $this->dispatch(TestContentTitleNotification::class);
+
+        [$mail] = $this->mails(1);
+        $notification = $this->notification(TestContentTitleNotification::class);
         $this->assertSame('Peter Tester: New content in my Spaces', $mail->getSubject());
 
         $html = $mail->getSymfonyEmail()->getHtmlBody();
@@ -202,7 +219,8 @@ class NotificationPrivacyTest extends HumHubDbTestCase
             $this->assertStringContainsString(Html::encode($notification->getEntryUrl()), $html);
             $this->assertStringContainsString($notification->asRedactedText() . "\n" . $notification->getEntryUrl(), $text);
         }
-        $this->assertStringContainsString('Peter Tester: Reactions on my content', $text);
+        $this->assertStringContainsString("Peter Tester created post\n", $text);
+        $this->assertStringContainsString("Peter Tester did a thing\n", $text);
         $this->assertNoContent($html, $text);
         $this->assertStringNotContainsString('Space 1', $html);
         $this->assertStringNotContainsString('Space 1', $text);

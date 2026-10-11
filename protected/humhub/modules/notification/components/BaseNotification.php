@@ -15,7 +15,6 @@ use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
@@ -581,22 +580,29 @@ abstract class BaseNotification extends BaseObject
      */
     private function renderParams(MessageFormat $format, int $previewLength, bool $strongContent = false): array
     {
-        $params = array_merge(
-            $this->getBuiltInParams($previewLength, $strongContent),
-            $this->getMessageParams(),
-        );
-
-        return MessageParam::renderAll($params, $format);
+        return MessageParam::renderAll($this->getAllParams(), $format, $previewLength, $strongContent);
     }
 
     /**
-     * {@see getRedactedMessage()}, else the category form.
+     * The built-in parameters and those of {@see getMessageParams()}.
+     *
+     * @return array<string, MessageParam|string|int>
+     */
+    private function getAllParams(): array
+    {
+        return array_merge($this->getNameParams(), $this->getContentParams(), $this->getMessageParams());
+    }
+
+    /**
+     * {@see getRedactedMessage()}, else {@see getMessage()} when it names no content (see
+     * {@see MessageParam::renderRedacted()}), else the category form.
      */
     private function renderRedacted(MessageFormat $format): string
     {
         $params = MessageParam::renderAll($this->getRedactedParams(), $format);
 
-        $message = $this->getRedactedMessage($params);
+        $message = $this->getRedactedMessage($params)
+            ?? MessageParam::renderRedacted(fn(array $params): string => $this->getMessage($params), $this->getAllParams(), $format);
         if ($message !== null) {
             return $message;
         }
@@ -641,14 +647,6 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
-     * @return array<string, MessageParam|string|int>
-     */
-    private function getBuiltInParams(int $previewLength, bool $strongContent): array
-    {
-        return array_merge($this->getNameParams(), $this->getContentParams($previewLength, $strongContent));
-    }
-
-    /**
      * `displayName`, `displayNames`, `namedCount` and `groupCount`.
      *
      * @return array<string, MessageParam|string|int>
@@ -664,7 +662,7 @@ abstract class BaseNotification extends BaseObject
 
         return [
             'displayName' => $this->originator !== null ? MessageParam::user($this->originator) : '',
-            'displayNames' => MessageParam::html($namesHtml, $namesText),
+            'displayNames' => MessageParam::html($namesHtml, $namesText, redactable: true),
             'namedCount' => $namedCount,
             'groupCount' => $this->groupCount,
         ];
@@ -676,7 +674,7 @@ abstract class BaseNotification extends BaseObject
      *
      * @return array<string, MessageParam|string>
      */
-    private function getContentParams(int $maxLength, bool $strongContent): array
+    private function getContentParams(): array
     {
         $owner = $this->getSubjectRecord();
         if ($owner === null) {
@@ -685,18 +683,15 @@ abstract class BaseNotification extends BaseObject
             }
 
             $deleted = Yii::t('NotificationModule.base', '[Deleted]');
+            // names no content, so a privacy mode that hides content may show it
+            $deleted = MessageParam::html(Html::encode($deleted), $deleted, redactable: true);
 
             return ['content' => $deleted, 'contentTitle' => $deleted];
         }
 
-        // getContentInfo() returns HTML; its plain text twin is the decoded HTML
-        $content = ContentHelper::getContentInfo($owner, true, $maxLength);
-        $contentTitle = ContentHelper::getContentInfo($owner, false, $maxLength);
-        $decode = static fn(string $html): string => html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
-
         return [
-            'content' => MessageParam::html($strongContent ? Html::strong($content) : $content, $decode($content)),
-            'contentTitle' => MessageParam::html($contentTitle, $decode($contentTitle)),
+            'content' => MessageParam::content($owner),
+            'contentTitle' => MessageParam::content($owner, withType: false),
         ];
     }
 

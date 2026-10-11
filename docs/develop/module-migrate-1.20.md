@@ -1750,7 +1750,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
     | 1.19 | 1.20 |
     |---|---|
-    | `html()`, `text()`, `$viewName` + view files, `getViewParams()` | `getMessage(array $params)` with the parameters `displayName`, `displayNames`, `namedCount`, `groupCount`, `content`, `contentTitle`; own parameters from `getMessageParams(): array` (plain strings or `MessageParam::text()`/`emphasis()`/`user()`) |
+    | `html()`, `text()`, `$viewName` + view files, `getViewParams()` | `getMessage(array $params)` with the parameters `displayName`, `displayNames`, `namedCount`, `groupCount`, `content`, `contentTitle`; own parameters from `getMessageParams(): array` (plain strings or `MessageParam::text()`/`emphasis()`/`user()`/`content()`) |
     | `category()`, `getCategory()`, `NotificationCategory` subclasses | static `category(): NotificationCategory` — the module's own category by default (`NotificationCategory::ofModule(static::class)`); `direct()`, `social()`, `followers()`, `content()`, `admin()`, `ofModule(self::class, $icon)` or `new NotificationCategory(...)` |
     | `NotificationCategory::isVisible()` override | the `permissions` of `new NotificationCategory(...)`: global permission classes, any of which makes the category visible |
     | `$priority` | static `priority(): NotificationPriority` (defaults to the category's) |
@@ -1886,9 +1886,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
        does not fit, `getMessage()` (and `getMessageParams()`) instead of `html()` and the views,
        `grouping()` instead of `getGroupKey()`, `canReceive()` instead of a
        `send()`/`isBlockedForUser()` override; add the `Notification` suffix if it is missing.
-       Add `getRedactedMessage()` — a whole sentence without content for the privacy mode *Hide
-       content* (e.g. "{displayName} assigned you to a task."); without it mails and push show
-       "{displayName}: {category}". Delete the views and the category classes.
+       Pass every value through `getMessageParams()` (records the sentence names as
+       `MessageParam::content()`), so the privacy mode *Hide content* can show the sentence with
+       their types alone. Add `getRedactedMessage()` — a whole sentence without content (e.g.
+       "{displayName} assigned you to a task.") — when the sentence names a title, a Space or
+       other text; without it mails and push show "{displayName}: {category}". Delete the views
+       and the category classes.
     3. Replace every `instance()…send()`/`sendBulk()` with `X::send()`, every `delete()` with
        `X::revoke()` and every `markAsSeen()` with `X::markSeen()`.
     4. Add a migration renaming stored rows of renamed classes (`$this->renameClass()`).
@@ -1900,11 +1903,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
 - **Activities declare their message parameters once.** Like a notification, an activity class
   now adds its own parameters through `BaseActivity::getMessageParams(): array` — plain strings
-  or `humhub\components\message\MessageParam` (`text()`, `emphasis()`, `user()`) —, which the
+  or `humhub\components\message\MessageParam` (`text()`, `emphasis()`, `user()`, `content()`) —, which the
   core renders per output: HTML-encoded for the activity box and the HTML summary mail
   (`emphasis()` and `user()` in `<strong>`), as they are for the plain text mail (`emphasis()` in
-  “quotes”). `BaseContentActivity::getPreviewLength()` gives the preview length of the output
-  being rendered (`$webContentLength` or `$mailContentLength`) for a preview of your own. The
+  “quotes”, `content()` as type and preview of a record). `BaseActivity::getPreviewLength()`
+  gives the preview length of the output being rendered (`$webContentLength` or
+  `$mailContentLength` of a `BaseContentActivity`) for a preview of your own. The
   built-in parameters (`displayName`, `displayNames`, `groupCount`, `content`, `contentTitle`,
   `spaceName`) and the rendered output of the core activities are unchanged. See
   [Activities](concept-activities.md).
@@ -1929,7 +1933,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the summary mail shows when the administrator hides content (the notification privacy mode
     *Hide content*); its parameters carry no content (`displayName`, `displayNames`,
     `groupCount`, `contentType` and the `MessageParam::user()` values of `getMessageParams()`).
-    Without it the line is "{displayName}: {title}" (the `ConfigurableActivityInterface` title,
+    Without it the line is `getMessage()` itself when it names nothing but people and the types
+    of `MessageParam::content()` values, else "{displayName}: {title}" (the `ConfigurableActivityInterface` title,
     else "New activity"). The core activities implement it. Under *Minimal* the summary mail
     lists no activities but their number: a theme overriding
     `@activity/views/mails/mailSummary` (or its plaintext twin) gets the new view parameters

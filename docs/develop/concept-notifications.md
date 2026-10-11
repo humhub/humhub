@@ -124,9 +124,13 @@ is a plain string — plain text, encoded for HTML — or a `humhub\components\m
 | `MessageParam::text($text, ?$maxLength)` | encoded | as is |
 | `MessageParam::emphasis($text, ?$maxLength)` | encoded in `<strong>` | in “quotes” |
 | `MessageParam::user($user)` | the display name, encoded in `<strong>` | the display name |
+| `MessageParam::content($record, ?$withType)` | type and preview of a content or comment: *post "Release notes…"*, the preview as short HTML (in `<strong>` in a mail) | the same as plain text |
 
 `$maxLength` cuts the text (with an ellipsis) before it is encoded. Numbers stay numbers, for
-ICU `plural` and `select`.
+ICU `plural` and `select`. `MessageParam::content()` takes the preview length of the channel
+(short in the web list, a push message and a mail subject, longer in a mail); `withType: false`
+gives the preview alone. The built-in `content` and `contentTitle` are such values — use it for
+any other record your sentence names, e.g. the task of a comment.
 
 When the sentence differs only by grouping, prefer one ICU message to branching in PHP — it
 keeps the translations together:
@@ -485,7 +489,23 @@ The web list always shows everything. Space and group names count as content: th
 much as a title (a Space "Restructuring 2027"), so *Hide content* leaves them out as well.
 
 The core renders the levels centrally — `DeliveryBatch` and the mail views —, so a module has
-nothing to do for the privacy to hold. What it can do is offer a good sentence without content:
+nothing to do for the privacy to hold. Under *Hide content* the sentence of a notification is,
+the first that applies:
+
+1. `getRedactedMessage()`, when the class implements it;
+2. `getMessage()` itself, when it names no content. The core renders it with user names, numbers
+   and each `MessageParam::content()` as its type alone: "{displayName} replied to your
+   {content}." becomes "Anna Smith replied to your comment." A plain string, `text()`,
+   `emphasis()` or `content(withType: false)` in the sentence counts as content, and the core
+   moves on;
+3. the category form "{displayName}: {category}" ("Anna Smith: Tasks"; the category title alone
+   without an originator) — safe, but less telling.
+
+So a sentence built from `user()`, `content()` and the built-in parameters needs nothing more.
+This holds as long as every value reaches the sentence through `$params`: text written into
+`getMessage()` directly (e.g. `Html::encode($task->title)`) cannot be told from the sentence and
+shows under *Hide content* as well. For a sentence that names other values — a title, a Space —,
+or to fit the grammar better, offer one without content:
 
 ```php
 protected function getRedactedMessage(array $params): ?string
@@ -503,12 +523,10 @@ method, so a mistake cannot leak them.
 
 Write a **whole sentence**, the same way as `getMessage()`, with ICU `plural` for groups:
 translators need the complete sentence to build it in their language — "{displayName}: " glued
-to a phrase does not translate. A class whose `getMessage()` names people only ("{displayName}
-is now following you.") returns `$this->getMessage($params)`. Without the method (`null`, the
-default) the core uses the category form "{displayName}: {category}" ("Anna Smith: Tasks"; the
-category title alone without an originator) — safe, but less telling. Every core notification
-implements it: "{displayName} commented on your {contentType}.", "{displayName} mentioned you in
-a {contentType}.", "{displayName} invited you to a Space.", "You were added to a group.", …
+to a phrase does not translate. The core notifications implement it where their sentence names
+more than people and content types: "{displayName} commented on a {contentType}.",
+"{displayName} mentioned you in a {contentType}.", "{displayName} invited you to a Space.", "You
+were added to a group.", …
 
 A channel of a module gets everything through its `DeliveryBatch`, which follows the level:
 `getSubject()`, `getPushBody()`, `getSentence($notification, $format)` (the sentence of one

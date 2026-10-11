@@ -8,7 +8,6 @@ use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\like\models\Like;
 use Yii;
 use yii\base\InvalidValueException;
@@ -69,10 +68,8 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
      */
     protected function getMessageParams(): array
     {
-        $content = ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->getPreviewLength());
-
         return [
-            'content' => MessageParam::html($content, html_entity_decode($content, ENT_QUOTES | ENT_HTML5)),
+            'content' => MessageParam::content($this->like->getContentOwnerObject()),
         ];
     }
 

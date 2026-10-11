@@ -10,6 +10,8 @@ namespace humhub\tests\codeception\unit\components\message;
 
 use humhub\components\message\MessageFormat;
 use humhub\components\message\MessageParam;
+use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 
@@ -65,5 +67,64 @@ class MessageParamTest extends HumHubDbTestCase
 
         $this->assertSame(['name' => 'A &amp; B', 'title' => '<strong>T</strong>', 'count' => 3], MessageParam::renderAll($params, MessageFormat::Html));
         $this->assertSame(['name' => 'A & B', 'title' => '“T”', 'count' => 3], MessageParam::renderAll($params, MessageFormat::Text));
+    }
+
+    public function testContentIsTypeAndPreview()
+    {
+        $post = $this->createPost('Tom & <Jerry> are friends');
+
+        $param = MessageParam::content($post);
+        $this->assertSame('post "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html));
+        $this->assertSame('post "Tom & <Jerry> are friends"', $param->render(MessageFormat::Text));
+        $this->assertSame('<strong>post "Tom &amp; &lt;Jerry&gt; are friends"</strong>', $param->render(MessageFormat::Html, emphasizeContent: true));
+        $this->assertSame('post "Tom & <Jerry>..."', $param->render(MessageFormat::Text, 13));
+        $this->assertSame('Tom & <Jerry> are friends', MessageParam::content($post, withType: false)->render(MessageFormat::Text));
+    }
+
+    public function testRedactedContentIsTheType()
+    {
+        $param = MessageParam::content($this->createPost('Secret plans'));
+        $this->assertSame('post', $param->render(MessageFormat::Text, redacted: true));
+        $this->assertSame('<strong>post</strong>', $param->render(MessageFormat::Html, emphasizeContent: true, redacted: true));
+    }
+
+    public function testRenderRedactedKeepsNamesNumbersAndContentTypes()
+    {
+        $params = [
+            'user' => MessageParam::user(User::findOne(['id' => 1])),
+            'content' => MessageParam::content($this->createPost('Secret plans')),
+            'title' => MessageParam::emphasis('Secret title'),
+            'count' => 2,
+            'empty' => '',
+        ];
+        $message = static fn(string $sentence): callable => static fn(array $p): string => strtr($sentence, [
+            '{user}' => $p['user'], '{content}' => $p['content'], '{title}' => $p['title'], '{count}' => $p['count'], '{empty}' => $p['empty'],
+        ]);
+
+        $this->assertSame(
+            'Admin Tester commented your post (2)',
+            MessageParam::renderRedacted($message('{user} commented your {content} ({count}){empty}'), $params, MessageFormat::Text),
+            'a value the sentence does not use does not matter',
+        );
+        $this->assertNull(MessageParam::renderRedacted($message('{user} commented {title}'), $params, MessageFormat::Text));
+        $this->assertNull(MessageParam::renderRedacted(
+            static fn(array $p): string => $p['user'] . ' wrote ' . $p['plain'],
+            $params + ['plain' => 'a plain string'],
+            MessageFormat::Text,
+        ));
+        $this->assertNull(MessageParam::renderRedacted(
+            static fn(array $p): string => 'Created ' . $p['title'],
+            ['title' => MessageParam::content($this->createPost('Secret plans'), withType: false)],
+            MessageFormat::Text,
+        ), 'the preview alone is content');
+    }
+
+    private function createPost(string $message): Post
+    {
+        $this->becomeUser('User2');
+        $post = new Post(Space::findOne(['id' => 1]), ['message' => $message]);
+        $this->assertTrue($post->save());
+
+        return $post;
     }
 }
