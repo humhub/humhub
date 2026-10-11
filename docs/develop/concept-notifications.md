@@ -34,9 +34,9 @@ title highlighted and the assigner's note shown under the sentence:
 ```php
 namespace johndoe\tasks\notifications;
 
-use humhub\components\message\MessageParam;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\components\grouping\Grouping;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationContext;
 use johndoe\tasks\models\Task;
@@ -117,7 +117,7 @@ HTML mail, plain text for the text mail, the mail subject and push. The built-in
 | `contentTitle` | the preview alone ("[Deleted]" as well when the record is gone) |
 
 `getMessageParams()` adds the class's own parameters (and may override built-in ones). A value
-is a plain string — plain text, encoded for HTML — or a `humhub\components\message\MessageParam`:
+is a plain string — plain text, encoded for HTML — or a `humhub\modules\notification\components\MessageParam`:
 
 | Factory | HTML | Plain text |
 |---|---|---|
@@ -356,7 +356,7 @@ This marks the whole groups and also cancels a mail or push that has not gone ou
 Twelve uploaded files, five likes on the same post, three comments under one article: a class
 declares which of its notifications belong together, and the recipient sees one entry ("Anna
 created 12 new files", "Anna, Bob and 3 more like your post") and receives one mail.
-`grouping()` returns a `humhub\components\grouping\Grouping` — the same value object
+`grouping()` returns a `humhub\modules\notification\components\Grouping` — the same value object
 [activities](concept-activities.md#grouping) are grouped with:
 
 | Factory | Groups the notifications … |
@@ -544,9 +544,9 @@ The module-facing API, marked `@api` in the code — stable across minor version
   `getMailSubject()`, `getRedactedMessage()`, `getUrl()`, `getSubjectRecord()`, `getBlocks()`,
   `getSpace()`, `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
   `$content`, `$contentContainer`, `$sourceRecord`, `$payload`, `$groupCount`
-- `NotificationCategory`, `NotificationPriority`, `humhub\components\grouping\Grouping`, `NotificationBlock` (its
+- `NotificationCategory`, `NotificationPriority`, `humhub\modules\notification\components\Grouping`, `NotificationBlock` (its
   factories), `NotificationContext` (its properties), `NotificationPrivacy` (for reading)
-- `humhub\components\message\MessageParam`
+- `humhub\modules\notification\components\MessageParam`
 - `NotificationSet`
 - `BeforeDispatchEvent` and `NotificationManager::EVENT_BEFORE_DISPATCH`
 - for channel providers: `BaseTarget`, `DeliveryBatch`, `MobileTargetProvider`

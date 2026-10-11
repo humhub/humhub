@@ -9,9 +9,6 @@
 namespace humhub\modules\notification\components;
 
 use humhub\components\ActiveRecord as HumHubActiveRecord;
-use humhub\components\grouping\Grouping;
-use humhub\components\message\MessageFormat;
-use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
 use humhub\models\RecordMap;
 use humhub\modules\content\components\ContentAddonActiveRecord;

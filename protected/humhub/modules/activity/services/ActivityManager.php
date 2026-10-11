@@ -2,6 +2,7 @@
 
 namespace humhub\modules\activity\services;
 
+use humhub\components\db\AfterCommit;
 use humhub\components\Event;
 use humhub\helpers\DataTypeHelper;
 use humhub\models\RecordMap;
@@ -93,7 +94,7 @@ class ActivityManager extends Component
      * Tells the containers's audience that there is a new activity, so a listening
      * {@see \humhub\modules\activity\live\NewActivity} consumer (the ActivityBox island) can
      * refresh. Sent AFTER the grouping ran, because until then it is not decided whether this
-     * activity starts an entry or joins one.
+     * activity starts an entry or joins one, and after the commit, so the refresh finds it.
      *
      * Only for activities that belong to a container: the live system routes by container and
      * visibility, and an activity without one has no audience to route to. Its visibility is
@@ -106,12 +107,13 @@ class ActivityManager extends Component
             return;
         }
 
-        Yii::$app->live->send(new NewActivity([
+        $event = new NewActivity([
             'activityId' => (int)$record->id,
             'contentContainerId' => (int)$record->contentcontainer_id,
             'containerGuid' => $record->contentContainer?->guid,
             'visibility' => $record->content->visibility ?? Content::VISIBILITY_PRIVATE,
-        ]));
+        ]);
+        AfterCommit::run(static fn() => Yii::$app->live->send($event));
     }
 
     /**

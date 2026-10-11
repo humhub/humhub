@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\components\message;
+namespace humhub\modules\notification\components;
 
 /**
  * The markup a message is rendered in, see {@see MessageParam::render()}.

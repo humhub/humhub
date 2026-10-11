@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\components\grouping;
+namespace humhub\modules\notification\components;
 
 /**
  * Which records of a class are shown as one entry ("Anna, Ben and 3 more like …"), declared by

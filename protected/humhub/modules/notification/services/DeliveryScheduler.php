@@ -9,13 +9,14 @@
 namespace humhub\modules\notification\services;
 
 use Closure;
+use humhub\components\db\AfterCommit;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\notification\jobs\DeliverJob;
 use humhub\modules\notification\models\NotificationDelivery;
-use humhub\modules\queue\driver\Instant;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\queue\driver\Instant;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
@@ -195,9 +196,9 @@ class DeliveryScheduler
         }
 
         if ($carrier === null) {
-            Yii::$app->queue
-                ->delay(max(0, $due - $now))
-                ->push(new DeliverJob(['userId' => (int)$user->id, 'channel' => $target->id]));
+            // after the commit, so the worker finds the delivery row (the dispatch may run inline in a transaction)
+            $job = new DeliverJob(['userId' => (int)$user->id, 'channel' => $target->id]);
+            AfterCommit::run(static fn() => Yii::$app->queue->delay(max(0, $due - $now))->push($job));
         }
     }
 

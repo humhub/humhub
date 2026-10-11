@@ -1754,7 +1754,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     | `category()`, `getCategory()`, `NotificationCategory` subclasses | static `category(): NotificationCategory` — the module's own category by default (`NotificationCategory::ofModule(static::class)`); `direct()`, `social()`, `followers()`, `content()`, `admin()`, `ofModule(self::class, $icon)` or `new NotificationCategory(...)` |
     | `NotificationCategory::isVisible()` override | the `permissions` of `new NotificationCategory(...)`: global permission classes, any of which makes the category visible |
     | `$priority` | static `priority(): NotificationPriority` (defaults to the category's) |
-    | `getGroupKey()` | static `grouping(): ?Grouping` (`humhub\components\grouping\Grouping`, shared with activities) — `Grouping::byContent()`, `bySource()`, `byContainer()`, `byClass()` with `andContent()`, `andSource()`, `andContainer()`, `andOriginator()`, `andContentType()`, `andContentVisibility()`, `unseenOnly()`, `withThreshold()`, `withTimeBucket()` |
+    | `getGroupKey()` | static `grouping(): ?Grouping` (`humhub\modules\notification\components\Grouping`, shared with activities) — `Grouping::byContent()`, `bySource()`, `byContainer()`, `byClass()` with `andContent()`, `andSource()`, `andContainer()`, `andOriginator()`, `andContentType()`, `andContentVisibility()`, `unseenOnly()`, `withThreshold()`, `withTimeBucket()` |
     | `isBlockedForUser()` override, `send()` override as a filter | `canReceive(User $user): bool` |
     | `$suppressSendToOriginator = false` | `send(notifyOriginator: true)` |
     | `payload($data)`, `$payload` | `send(payload: $data)`; read `$this->payload` (readonly array) |
@@ -1904,7 +1904,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
 - **Activities declare their message parameters once.** Like a notification, an activity class
   now adds its own parameters through `BaseActivity::getMessageParams(): array` — plain strings
-  or `humhub\components\message\MessageParam` (`text()`, `emphasis()`, `user()`, `content()`) —, which the
+  or `humhub\modules\notification\components\MessageParam` (`text()`, `emphasis()`, `user()`, `content()`) —, which the
   core renders per output: HTML-encoded for the activity box and the HTML summary mail
   (`emphasis()` and `user()` in `<strong>`), as they are for the plain text mail (`emphasis()` in
   “quotes”, `content()` as type and preview of a record). `BaseActivity::getPreviewLength()`
@@ -1952,7 +1952,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
 - **Activities are grouped declaratively and sent by their class**, like notifications. An
   activity class declares its grouping with `BaseActivity::grouping(): ?Grouping` — the
-  `humhub\components\grouping\Grouping` value object of notifications (`byContent()`,
+  `humhub\modules\notification\components\Grouping` value object of notifications (`byContent()`,
   `bySource()`, `byContainer()`, `byClass()`, `andContent()`, `andSource()`, `andContainer()`,
   `andOriginator()`, `andContentType()`, `andContentVisibility()`, the activity-only
   `andSourceParent()`, `withThreshold()`, `withTimeBucket()`; `unseenOnly()` fails with an

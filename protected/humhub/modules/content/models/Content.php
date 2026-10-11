@@ -11,6 +11,7 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\db\AfterCommit;
 use humhub\components\Module;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
@@ -358,7 +359,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         if ($this->container) {
-            Yii::$app->live->send(new NewContent([
+            $event = new NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
                 'originator' => $this->createdBy->guid,
@@ -370,7 +371,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
                 'insert' => true,
-            ]));
+            ]);
+            AfterCommit::run(static fn() => Yii::$app->live->send($event));
         }
     }
 

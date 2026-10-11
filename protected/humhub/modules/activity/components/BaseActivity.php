@@ -2,9 +2,6 @@
 
 namespace humhub\modules\activity\components;
 
-use humhub\components\grouping\Grouping;
-use humhub\components\message\MessageFormat;
-use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity as ActivityRecord;
@@ -13,6 +10,9 @@ use humhub\modules\activity\services\GroupingService;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\MessageFormat;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;

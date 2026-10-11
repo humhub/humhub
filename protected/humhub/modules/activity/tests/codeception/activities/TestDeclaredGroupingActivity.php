@@ -2,8 +2,8 @@
 
 namespace humhub\modules\activity\tests\codeception\activities;
 
-use humhub\components\grouping\Grouping;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\notification\components\Grouping;
 
 /**
  * Groups by the {@see $grouping} a test sets.

@@ -8,12 +8,12 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
-use humhub\components\grouping\Grouping;
 use humhub\models\RecordMap;
 use humhub\modules\comment\notifications\NewCommentNotification;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreatedNotification;
 use humhub\modules\like\notifications\NewLikeNotification;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestConfigurableGroupingNotification;

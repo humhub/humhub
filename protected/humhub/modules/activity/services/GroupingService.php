@@ -2,11 +2,11 @@
 
 namespace humhub\modules\activity\services;
 
-use humhub\components\grouping\Grouping;
 use humhub\models\RecordMap;
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\user\models\User;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;

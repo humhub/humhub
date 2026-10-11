@@ -2,8 +2,8 @@
 
 namespace humhub\modules\activity\tests\codeception\activities;
 
-use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\user\models\User;
 
 /**

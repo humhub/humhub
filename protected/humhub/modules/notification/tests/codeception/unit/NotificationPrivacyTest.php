@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification\tests\codeception\unit;
 
-use humhub\components\message\MessageFormat;
 use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\MessageFormat;
 use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\components\NotificationPrivacy;

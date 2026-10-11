@@ -8,8 +8,8 @@
 
 namespace humhub\modules\notification\tests\codeception\unit\notifications;
 
-use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\notification\components\NotificationCategory;
 
 final class TestParamsNotification extends BaseNotification

@@ -3,10 +3,9 @@
 namespace activity\unit;
 
 use Codeception\Specify;
-use humhub\components\grouping\Grouping;
 use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\activity\tests\codeception\activities\TestContentGroupActivity;
@@ -19,6 +18,7 @@ use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\services\LikeService;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\activities\MemberAddedActivity;
 use humhub\modules\space\activities\MemberRemovedActivity;

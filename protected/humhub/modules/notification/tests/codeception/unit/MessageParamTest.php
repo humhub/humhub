@@ -6,10 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\tests\codeception\unit\components\message;
+namespace humhub\modules\notification\tests\codeception\unit;
 
-use humhub\components\message\MessageFormat;
-use humhub\components\message\MessageParam;
+use humhub\modules\notification\components\MessageFormat;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;

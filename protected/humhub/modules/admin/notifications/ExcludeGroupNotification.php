@@ -8,8 +8,8 @@
 
 namespace humhub\modules\admin\notifications;
 
-use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationPriority;
 use humhub\modules\user\models\Group;

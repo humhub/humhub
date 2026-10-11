@@ -2,14 +2,14 @@
 
 namespace humhub\modules\comment\activities;
 
-use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\BaseContentActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\notification\components\MessageParam;
 use Yii;
-use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use yii\base\InvalidValueException;
 
 final class NewCommentActivity extends BaseContentActivity implements ConfigurableActivityInterface

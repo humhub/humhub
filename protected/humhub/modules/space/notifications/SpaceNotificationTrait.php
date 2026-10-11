@@ -8,8 +8,8 @@
 
 namespace humhub\modules\space\notifications;
 
-use humhub\components\message\MessageParam;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\MessageParam;
 
 /**
  * Adds the `spaceName` message parameter - the name of {@see BaseNotification::getSpace()} - to

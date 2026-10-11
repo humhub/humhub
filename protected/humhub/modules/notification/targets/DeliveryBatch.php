@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification\targets;
 
-use humhub\components\message\MessageFormat;
 use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\MessageFormat;
 use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationContext;
 use humhub\modules\notification\components\NotificationPriority;

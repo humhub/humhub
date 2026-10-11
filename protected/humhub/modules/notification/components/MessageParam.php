@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\components\message;
+namespace humhub\modules\notification\components;
 
 use humhub\helpers\Html;
 use humhub\modules\content\helpers\ContentHelper;

@@ -63,10 +63,10 @@ bold, in plain text they are not. The built-in parameters:
 
 Declare them once in `getMessageParams()`; the core renders them for each output, exactly as for
 [notifications](concept-notifications.md). A value is a plain string or a
-`humhub\components\message\MessageParam`:
+`humhub\modules\notification\components\MessageParam`:
 
 ```php
-use humhub\components\message\MessageParam;
+use humhub\modules\notification\components\MessageParam;
 
 protected function getMessageParams(): array
 {
@@ -182,11 +182,11 @@ content, the container or the user.
 
 Five people liking the same comment, ten files uploaded at once: a class declares which of its
 activities belong together, and the box shows one entry. `grouping()` returns a
-`humhub\components\grouping\Grouping`, the value object [notifications](concept-notifications.md#grouping)
+`humhub\modules\notification\components\Grouping`, the value object [notifications](concept-notifications.md#grouping)
 are grouped with:
 
 ```php
-use humhub\components\grouping\Grouping;
+use humhub\modules\notification\components\Grouping;
 
 public static function grouping(): ?Grouping
 {

@@ -6,11 +6,11 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\components\message\MessageFormat;
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\MessageFormat;
 use humhub\modules\notification\components\NotificationPrivacy;
 use humhub\modules\notification\services\NotificationBlockRenderer;
 use humhub\modules\notification\targets\DeliveryBatch;

@@ -2,11 +2,11 @@
 
 namespace humhub\modules\space\components;
 
-use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\InvalidValueException;

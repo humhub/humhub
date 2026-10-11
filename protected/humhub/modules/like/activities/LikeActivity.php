@@ -2,13 +2,13 @@
 
 namespace humhub\modules\like\activities;
 
-use humhub\components\grouping\Grouping;
-use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\like\models\Like;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\MessageParam;
 use Yii;
 use yii\base\InvalidValueException;
 

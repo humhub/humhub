@@ -14,6 +14,7 @@ use humhub\modules\user\components\CheckPasswordValidator;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\jobs\SoftDeleteUser;
+use humhub\components\db\AfterCommit;
 
 /**
  * AccountDelete is the model for account deletion.
@@ -71,7 +72,8 @@ class AccountDelete extends Model
         $this->user->status = User::STATUS_SOFT_DELETED;
         $this->user->save();
 
-        Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $this->user->id]));
+        $userId = $this->user->id;
+        AfterCommit::run(static fn() => Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $userId])));
 
         return true;
     }

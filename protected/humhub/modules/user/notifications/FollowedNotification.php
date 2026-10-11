@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\notifications;
 
-use humhub\components\grouping\Grouping;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\user\models\Follow;
 use Yii;

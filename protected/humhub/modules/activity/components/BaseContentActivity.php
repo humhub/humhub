@@ -2,13 +2,13 @@
 
 namespace humhub\modules\activity\components;
 
-use humhub\components\message\MessageParam;
 use humhub\models\RecordMap;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
+use humhub\modules\notification\components\MessageParam;
 use yii\base\InvalidValueException;
 
 /**

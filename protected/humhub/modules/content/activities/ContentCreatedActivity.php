@@ -2,10 +2,10 @@
 
 namespace humhub\modules\content\activities;
 
-use humhub\components\grouping\Grouping;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\notification\components\Grouping;
 use Yii;
 
 final class ContentCreatedActivity extends BaseContentActivity implements ConfigurableActivityInterface

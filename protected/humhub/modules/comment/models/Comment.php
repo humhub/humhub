@@ -2,6 +2,7 @@
 
 namespace humhub\modules\comment\models;
 
+use humhub\components\db\AfterCommit;
 use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\notifications\CommentReplyNotification;
@@ -113,12 +114,13 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             NewCommentActivity::send($this, $this->createdBy);
 
             if ($this->content->container) {
-                Yii::$app->live->send(new NewCommentLive([
+                $event = new NewCommentLive([
                     'contentContainerId' => $this->content->container->id,
                     'visibility' => $this->content->visibility,
                     'contentId' => $this->content->id,
                     'commentId' => $this->id,
-                ]));
+                ]);
+                AfterCommit::run(static fn() => Yii::$app->live->send($event));
             }
         } else {
             // a mention added by an edit is notified as such

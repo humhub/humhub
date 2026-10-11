@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification\services;
 
-use humhub\components\grouping\Grouping;
 use humhub\modules\notification\components\ActiveQueryNotification;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;

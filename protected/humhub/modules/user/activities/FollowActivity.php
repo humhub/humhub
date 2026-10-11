@@ -2,11 +2,11 @@
 
 namespace humhub\modules\user\activities;
 
-use humhub\components\grouping\Grouping;
-use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidValueException;
