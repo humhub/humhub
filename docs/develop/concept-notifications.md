@@ -115,6 +115,7 @@ HTML mail, plain text for the text mail, the mail subject and push. The built-in
 | `namedCount` | how many people `displayNames` names: 0 when empty, 1 when the group collapses to one person (e.g. one originator's notifications), 2 for "Anna and Bob" as well as "Anna, Bob and 2 more" |
 | `content` | type and preview of the `getSubjectRecord()`: *post "Release notes"* (only for a notification about a content; "[Deleted]" when the content's record is gone) |
 | `contentTitle` | the preview alone ("[Deleted]" as well when the record is gone) |
+| `spaceName` | the name of the `getSpace()`, emphasized (only for a notification that belongs to a space) |
 
 `getMessageParams()` adds the class's own parameters (and may override built-in ones). A value
 is a plain string — plain text, encoded for HTML — or a `humhub\modules\notification\components\MessageParam`:
@@ -181,7 +182,7 @@ readonly properties:
 | `getSubjectRecord(): ?ContentOwner` | the content's record — what `content`/`contentTitle` name; e.g. the liked comment instead |
 | `getBlocks(NotificationContext $context): NotificationBlock[]` | the preview of the subject record (when there is one) and a "View online" button — everything shown below the sentence, see [Content blocks](#content-blocks) |
 | `static standalone(): bool` | `false`; `true`: always delivered as a message of its own, see [Content blocks](#content-blocks) |
-| `getSpace(): ?Space` | the container when it is a space; override when the notification is about a space without being bound to it, e.g. a membership |
+| `getSpace(): ?Space` | the container when it is a space — the `spaceName` parameter; override when the notification is about a space without being bound to it, e.g. a membership |
 | `canReceive(User $user): bool` | `true`; a last filter at dispatch time beyond the generic checks |
 
 ### Category, priority, listing
@@ -518,7 +519,7 @@ protected function getRedactedMessage(array $params): ?string
 `getMessage()`: `displayName`, `displayNames`, `namedCount`, `groupCount`, `contentType` (the type
 of the `getSubjectRecord()`, e.g. "post" or "comment"; only for a notification about a content)
 and the parameters of `getMessageParams()` that are a `MessageParam::user()` — people's names are
-not content. `content`, `contentTitle` and every other parameter of your own never reach the
+not content. `content`, `contentTitle`, `spaceName` and every other parameter of your own never reach the
 method, so a mistake cannot leak them.
 
 Write a **whole sentence**, the same way as `getMessage()`, with ICU `plural` for groups:

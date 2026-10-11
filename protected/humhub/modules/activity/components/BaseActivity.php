@@ -7,12 +7,14 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity as ActivityRecord;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\services\GroupingService;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\notification\components\Grouping;
 use humhub\modules\notification\components\MessageFormat;
 use humhub\modules\notification\components\MessageParam;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
@@ -30,6 +32,7 @@ use yii\base\InvalidCallException;
  * - `displayName` - the user who caused the activity
  * - `displayNames` - the users of a grouped activity, e.g. "Anna, Bob and 2 more" (`''` when ungrouped)
  * - `groupCount` - how many activities the entry stands for (1 when ungrouped)
+ * - `spaceName` - the name of the space, when the activity belongs to one
  *
  * @property-read User[] $groupedUsers
  * @api
@@ -256,6 +259,32 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
+     * The space the activity belongs to: its container, if that is a space.
+     *
+     * @api
+     * @since 1.20
+     */
+    public function getSpace(): ?Space
+    {
+        $container = $this->contentContainer?->polymorphicRelation;
+
+        return $container instanceof Space ? $container : null;
+    }
+
+    /**
+     * Whether the activity is rendered inside a content container, e.g. "joined this Space" rather
+     * than "joined the Space {spaceName}".
+     *
+     * @api
+     * @since 1.20 on every activity, before on `BaseSpaceActivity` only
+     */
+    protected function inSpaceContext(): bool
+    {
+        return Yii::$app->controller instanceof ContentContainerController
+            && Yii::$app->controller->contentContainer !== null;
+    }
+
+    /**
      * The message parameters of the plain text mail.
      *
      * @deprecated since 1.20, use {@see getMessageParams()}
@@ -354,7 +383,14 @@ abstract class BaseActivity extends BaseObject
      */
     protected function getBuiltInMessageParams(): array
     {
-        return $this->getNameParams();
+        $params = $this->getNameParams();
+
+        $space = $this->getSpace();
+        if ($space !== null) {
+            $params['spaceName'] = MessageParam::html(Html::strong(Html::encode($space->name)), $space->name);
+        }
+
+        return $params;
     }
 
     /**

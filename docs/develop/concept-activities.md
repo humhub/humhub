@@ -57,7 +57,7 @@ bold, in plain text they are not. The built-in parameters:
 | `groupCount` | how many activities the entry stands for (1 when ungrouped) |
 | `content` | type and preview of the content: *post "Release notes"* (`BaseContentActivity` only) |
 | `contentTitle` | the preview alone (`BaseContentActivity` only) |
-| `spaceName` | the name of the space (`BaseSpaceActivity` only) |
+| `spaceName` | the name of the space (only for an activity that belongs to a space) |
 
 ### Message parameters of your own
 
@@ -141,7 +141,7 @@ than people and content types ("Anna Smith created a new post.", "Anna Smith joi
 The object is constructed from its `Activity` record and exposes `$record`, `$user`,
 `$contentContainer`, `$createdAt` and `$groupCount`; `BaseContentActivity` adds `$content`,
 `$contentActiveRecord` (checked against `$contentActiveRecordClass`) and `$contentAddon` (e.g. the
-comment), `BaseSpaceActivity` adds `$space` and `inSpaceContext()`. `getUrl(bool $scheme = false)`
+comment). Every activity has `getSpace(): ?Space` (its container, if that is a space) and `inSpaceContext()` (whether it is rendered inside a container, e.g. "joined this Space" rather than "joined the Space {spaceName}"). `getUrl(bool $scheme = false)`
 links the entry: the content addon, else the content, else the container — relative by default,
 the summary mail asks for `getUrl(true)`.
 
@@ -215,6 +215,8 @@ in `getMessage()` for the grouped sentence and use `displayNames`.
 Kept working, no runtime warnings, but new code uses the API above:
 
 - `ActivityManager::dispatch($class, $target, $user)` — use `MyActivity::send($target, $user)`.
+- `humhub\modules\space\components\BaseSpaceActivity` and its `$space` — extend `BaseActivity`;
+  `getSpace()`, `inSpaceContext()` and `spaceName` are there for every activity of a space.
 - `getGroupingQuery()` — the query finding the siblings of an activity. An override is still
   used (and wins over `grouping()`), narrowed to a time bucket of `$groupingTimeBucketSeconds`
   and grouped from `$groupingThreshold` matches on; both properties are deprecated as well and

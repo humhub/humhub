@@ -25,8 +25,6 @@ use Yii;
  */
 final class SpaceApprovalRequestNotification extends BaseNotification
 {
-    use SpaceNotificationTrait;
-
     /**
      * @inheritdoc
      */

@@ -1941,14 +1941,20 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `@activity/views/mails/mailSummary` (or its plaintext twin) gets the new view parameters
     `activityCount` and `privacy` (a `NotificationPrivacy`; `$activities` is empty under
     *Minimal*) and should show the count, as the core view does.
-  - The activity API is marked: `@api` are `BaseActivity`, `BaseContentActivity`,
-    `BaseSpaceActivity` and their extension points (`getMessage()`, `getMessageParams()`,
-    `getUrl()`, `getGroupingQuery()`, the record properties, `$groupingThreshold`,
+  - The activity API is marked: `@api` are `BaseActivity`, `BaseContentActivity` and their
+    extension points (`getMessage()`, `getMessageParams()`, `getUrl()`, `getSpace()`,
+    `getGroupingQuery()`, the record properties, `$groupingThreshold`,
     `$groupingTimeBucketSeconds`, `$webContentLength`, `$mailContentLength`, `inSpaceContext()`),
     `ConfigurableActivityInterface` and `ActivityManager::dispatch()`/`EVENT_BEFORE_DISPATCH`;
     `GroupingService`, `RenderService`, `ActivityManager::load()`/`afterContentChange()` and
     `BaseActivity::getGroupingService()` are `@internal`. Docblocks only — no visibility or
     `final` changed.
+  - **Deprecated**: `humhub\modules\space\components\BaseSpaceActivity` and its `$space`.
+    Every activity of a space now has the parameter `spaceName`, `BaseActivity::getSpace(): ?Space`
+    and `inSpaceContext()`, so an activity about a space extends `BaseActivity`, as the core
+    activities do; a content activity in a space (`BaseContentActivity`) gets `spaceName` as
+    well. `BaseSpaceActivity` keeps working. A subclass of `BaseActivity` declaring a
+    `getSpace()` of its own must match the new signature.
 
 - **Activities are grouped declaratively and sent by their class**, like notifications. An
   activity class declares its grouping with `BaseActivity::grouping(): ?Grouping` — the

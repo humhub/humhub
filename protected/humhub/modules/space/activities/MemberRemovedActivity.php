@@ -2,12 +2,12 @@
 
 namespace humhub\modules\space\activities;
 
+use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\notification\components\Grouping;
-use humhub\modules\space\components\BaseSpaceActivity;
 use Yii;
 
-class MemberRemovedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
+class MemberRemovedActivity extends BaseActivity implements ConfigurableActivityInterface
 {
     public static function getTitle(): string
     {

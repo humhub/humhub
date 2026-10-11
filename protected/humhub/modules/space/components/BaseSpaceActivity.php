@@ -2,25 +2,22 @@
 
 namespace humhub\modules\space\components;
 
-use humhub\helpers\Html;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\notification\components\MessageParam;
 use humhub\modules\space\models\Space;
-use Yii;
 use yii\base\InvalidValueException;
 
 /**
- * Base class of an activity about a space, see {@see BaseActivity}. Adds the built-in message
- * parameter `spaceName`.
+ * Base class of an activity about a space, see {@see BaseActivity}.
  *
- * @api
+ * @deprecated since 1.20, extend {@see BaseActivity}: every activity of a space has
+ * {@see BaseActivity::getSpace()}, {@see BaseActivity::inSpaceContext()} and the message parameter
+ * `spaceName`
  */
 abstract class BaseSpaceActivity extends BaseActivity
 {
     /**
-     * @api
+     * @deprecated since 1.20, use {@see BaseActivity::getSpace()}
      */
     protected Space $space;
 
@@ -28,35 +25,11 @@ abstract class BaseSpaceActivity extends BaseActivity
     {
         parent::__construct($record, $config);
 
-        if (!$record->contentContainer?->polymorphicRelation instanceof Space) {
+        $space = $this->getSpace();
+        if ($space === null) {
             throw new InvalidValueException('Space activity content container must implement space');
         }
 
-        $this->space = $record->contentContainer->polymorphicRelation;
-    }
-
-    /**
-     * Whether the activity is rendered inside a content container, e.g. "joined this Space" rather
-     * than "joined the Space {spaceName}".
-     *
-     * @api
-     */
-    protected function inSpaceContext(): bool
-    {
-        return Yii::$app->controller instanceof ContentContainerController
-            && Yii::$app->controller->contentContainer !== null;
-    }
-
-    /**
-     * Adds `spaceName`, the name of the space (in `<strong>` for HTML).
-     *
-     * @inheritdoc
-     * @internal
-     */
-    protected function getBuiltInMessageParams(): array
-    {
-        return array_merge(parent::getBuiltInMessageParams(), [
-            'spaceName' => MessageParam::html(Html::strong(Html::encode($this->space->name)), $this->space->name),
-        ]);
+        $this->space = $space;
     }
 }

@@ -38,7 +38,6 @@ use humhub\modules\notification\tests\codeception\unit\notifications\TestThrowin
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\notifications\SpaceInviteNotification;
-use humhub\modules\space\notifications\SpaceNotificationTrait;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\user\notifications\FollowedNotification;
@@ -580,7 +579,6 @@ class DispatchTest extends HumHubDbTestCase
         }
 
         // only notification classes, no trait or other file of a notifications/ directory
-        $this->assertNotContains(SpaceNotificationTrait::class, $classes);
         foreach ($classes as $class) {
             $this->assertTrue(is_subclass_of($class, BaseNotification::class), $class);
         }

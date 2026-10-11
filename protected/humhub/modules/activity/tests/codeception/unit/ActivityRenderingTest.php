@@ -8,6 +8,7 @@ use humhub\modules\activity\tests\codeception\activities\TestLegacyContentActivi
 use humhub\modules\activity\tests\codeception\activities\TestLegacyParamsActivity;
 use humhub\modules\activity\tests\codeception\activities\TestMessageParamsActivity;
 use humhub\modules\activity\tests\codeception\activities\TestRedactedActivity;
+use humhub\modules\activity\tests\codeception\activities\TestSpaceNameActivity;
 use humhub\modules\comment\activities\NewCommentActivity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\activities\ContentCreatedActivity;
@@ -32,6 +33,28 @@ class ActivityRenderingTest extends HumHubDbTestCase
         $this->assertSame($html, $activity->asWeb());
         $this->assertSame($html, $activity->asMailHtml());
         $this->assertSame('Sara Tester saw “A <b>&</b> "title"” by Admin Tester (x <…, a & b, 3)', $activity->asMailText());
+    }
+
+    public function testSpaceNameIsBuiltInForEveryActivityOfASpace()
+    {
+        $this->becomeUser('User2');
+        $space = Space::findOne(['id' => 1]);
+        $post = new Post($space, ['message' => 'In a space']);
+        $post->save();
+
+        $activity = TestSpaceNameActivity::send($post);
+
+        $this->assertSame($space->id, $activity->getSpace()?->id);
+        $this->assertSame('<strong>Sara Tester</strong> wrote in <strong>' . $space->name . '</strong>', $activity->asWeb());
+        $this->assertSame('Sara Tester wrote in ' . $space->name, $activity->asMailText());
+
+        $post = new Post(User::findOne(['id' => 3]), ['message' => 'On a profile']);
+        $post->save();
+
+        $activity = TestSpaceNameActivity::send($post);
+
+        $this->assertNull($activity->getSpace());
+        $this->assertSame('Sara Tester wrote in (no space)', $activity->asMailText());
     }
 
     public function testDeprecatedParamMethodsStillWork()

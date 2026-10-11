@@ -57,6 +57,7 @@ use yii\helpers\Url;
  * - `content`, `contentTitle` - only when the notification is about a content: the
  *   {@see getSubjectRecord()} with and without its type name; `[Deleted]` when the content's
  *   record is gone
+ * - `spaceName` - only when the notification belongs to a space: the name of {@see getSpace()}
  *
  * @since 1.20
  */
@@ -587,7 +588,7 @@ abstract class BaseNotification extends BaseObject
      */
     private function getAllParams(): array
     {
-        return array_merge($this->getNameParams(), $this->getContentParams(), $this->getMessageParams());
+        return array_merge($this->getNameParams(), $this->getContentParams(), $this->getSpaceParams(), $this->getMessageParams());
     }
 
     /**
@@ -690,6 +691,18 @@ abstract class BaseNotification extends BaseObject
             'content' => MessageParam::content($owner),
             'contentTitle' => MessageParam::content($owner, withType: false),
         ];
+    }
+
+    /**
+     * `spaceName` of {@see getSpace()}; `[]` when the notification belongs to no space.
+     *
+     * @return array<string, MessageParam>
+     */
+    private function getSpaceParams(): array
+    {
+        $space = $this->getSpace();
+
+        return $space !== null ? ['spaceName' => MessageParam::emphasis($space->displayName)] : [];
     }
 
     /**

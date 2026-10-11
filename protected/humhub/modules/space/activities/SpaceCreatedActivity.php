@@ -2,10 +2,10 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\modules\space\components\BaseSpaceActivity;
+use humhub\modules\activity\components\BaseActivity;
 use Yii;
 
-class SpaceCreatedActivity extends BaseSpaceActivity
+class SpaceCreatedActivity extends BaseActivity
 {
     protected function getMessage(array $params): string
     {

@@ -28,10 +28,6 @@ use Yii;
  */
 final class SpaceRolesChangedNotification extends BaseNotification
 {
-    use SpaceNotificationTrait {
-        getMessageParams as private getSpaceMessageParams;
-    }
-
     /**
      * @inheritdoc
      */
@@ -89,9 +85,7 @@ final class SpaceRolesChangedNotification extends BaseNotification
      */
     protected function getMessageParams(): array
     {
-        return array_merge($this->getSpaceMessageParams(), [
-            'roleName' => MessageParam::emphasis($this->getRoleName()),
-        ]);
+        return ['roleName' => MessageParam::emphasis($this->getRoleName())];
     }
 
     /**
