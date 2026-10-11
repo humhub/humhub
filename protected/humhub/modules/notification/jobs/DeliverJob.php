@@ -37,7 +37,9 @@ use Yii;
  * - due rows when the target has {@see BaseTarget::$skipWhenOnline} and the recipient was active
  *   on the site within the last minute ({@see IsOnlineService::isRecentlyActive()}) - they see the
  *   web list; rows not yet due stay pending;
- * - rows whose notification no longer loads (e.g. its source is gone).
+ * - rows whose notification no longer loads (e.g. its source is gone);
+ * - the rows of the messages beyond the {@see BaseTarget::$rateLimit} of the channel - with a
+ *   warning in the log.
  *
  * The rest is collapsed by group: rows whose notifications share a `grouping_key` become one
  * entry, loaded as the group's head through {@see ActiveQueryNotification::grouped()} and
@@ -178,9 +180,46 @@ class DeliverJob extends ActiveJob
 
         $this->mark($skipped, NotificationDelivery::STATE_SKIPPED);
 
+        $budget = $this->getRateBudget($target, $user, $now);
+        $overLimit = [];
         foreach ($messages as $message) {
-            $this->deliverMessage($target, $user, $message['notifications'], $message['rows'], $now);
+            if ($budget !== null && $budget <= 0) {
+                array_push($overLimit, ...$message['rows']);
+                continue;
+            }
+            if ($this->deliverMessage($target, $user, $message['notifications'], $message['rows'], $now) && $budget !== null) {
+                $budget -= count($message['rows']);
+            }
         }
+
+        if ($overLimit !== []) {
+            Yii::warning(
+                'Notification #' . implode(', #', array_map(fn(NotificationDelivery $row) => $row->notification_id, $overLimit))
+                . ' for user ' . $user->id . ' is not delivered through ' . $this->channel . ': the rate limit of '
+                . $target->rateLimit . ' notifications in ' . $target->rateLimitWindow . ' seconds is reached',
+                'notification',
+            );
+            $this->mark($overLimit, NotificationDelivery::STATE_SKIPPED);
+        }
+    }
+
+    /**
+     * How many more notifications may go out to the user through the channel within its
+     * {@see BaseTarget::$rateLimitWindow}; `null` without a {@see BaseTarget::$rateLimit}.
+     */
+    private function getRateBudget(BaseTarget $target, User $user, int $now): ?int
+    {
+        if ($target->rateLimit === null) {
+            return null;
+        }
+
+        $sent = (int)NotificationDelivery::find()
+            ->forUserAndChannel($user, $this->channel)
+            ->andWhere(['notification_delivery.state' => NotificationDelivery::STATE_SENT])
+            ->andWhere(['>=', 'notification_delivery.sent_at', date('Y-m-d H:i:s', $now - $target->rateLimitWindow)])
+            ->count();
+
+        return $target->rateLimit - $sent;
     }
 
     /**
@@ -188,8 +227,9 @@ class DeliverJob extends ActiveJob
      *
      * @param BaseNotification[] $notifications
      * @param NotificationDelivery[] $rows the rows of the notifications
+     * @return bool whether the batch was sent
      */
-    private function deliverMessage(BaseTarget $target, User $user, array $notifications, array $rows, int $now): void
+    private function deliverMessage(BaseTarget $target, User $user, array $notifications, array $rows, int $now): bool
     {
         try {
             $target->deliver(new DeliveryBatch($user, $notifications, $this->channel));
@@ -200,10 +240,12 @@ class DeliverJob extends ActiveJob
                 'notification',
             );
             $this->mark($rows, NotificationDelivery::STATE_FAILED);
-            return;
+            return false;
         }
 
         $this->mark($rows, NotificationDelivery::STATE_SENT, $now);
+
+        return true;
     }
 
     /**

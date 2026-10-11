@@ -27,7 +27,7 @@ use yii\base\InvalidConfigException;
  * to the channel.
  *
  * {@see $delays}, {@see $delayWindow}, {@see $highPriorityDelay}, {@see $lowPriorityDelay} and
- * {@see $skipWhenOnline} are read by the delivery layer: the {@see \humhub\modules\notification\services\DeliveryScheduler}
+ * {@see $skipWhenOnline}, {@see $rateLimit} and {@see $rateLimitWindow} are read by the delivery layer: the {@see \humhub\modules\notification\services\DeliveryScheduler}
  * decides when a notification goes out, and the {@see \humhub\modules\notification\jobs\DeliverJob}
  * collects the recipient's pending notifications into one batch when one of them is due.
  * `delays = [0]` (and the default `highPriorityDelay = 0`) makes a channel instant. With a queue that does not honour the delay of a job
@@ -86,6 +86,22 @@ abstract class BaseTarget extends BaseObject
      * @since 1.20
      */
     public bool $skipWhenOnline = false;
+
+    /**
+     * @var int|null the most notifications the delivery layer sends to one recipient through the
+     * channel within the {@see $rateLimitWindow} - a protection against floods, e.g. from a very
+     * busy thread or a misbehaving module. Once it is reached, further messages are not sent: their
+     * notifications are skipped (they stay in the web list) and a warning is logged. A message
+     * started below the limit goes out whole. `null` for no limit
+     * @since 1.20
+     */
+    public ?int $rateLimit = 200;
+
+    /**
+     * @var int seconds the notifications counted for {@see $rateLimit} reach back
+     * @since 1.20
+     */
+    public int $rateLimitWindow = 3600;
 
     /**
      * @inheritdoc

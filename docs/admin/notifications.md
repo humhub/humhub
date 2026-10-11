@@ -143,6 +143,10 @@ return [
                     // Do not mail a user who was active on the site within the last minute.
                     // Default: false
                     'skipWhenOnline' => true,
+                    // At most this many notifications per user within the window, null for
+                    // no limit. Default: 200 in 3600 seconds
+                    'rateLimit' => 100,
+                    'rateLimitWindow' => 3600,
                 ],
                 'mobile' => [
                     // Push at once, always. Default: [0, 300, 900, 1800],
@@ -167,6 +171,7 @@ How the numbers act, per user and channel:
 | `highPriorityDelay` | A **high**-priority notification (direct ones: mentions, invitations, requests) ignores `delays` and waits this long: a minute on `email`, not at all on `mobile`. |
 | `lowPriorityDelay` | A **low**-priority notification (likes, follows) waits at least this long — and usually leaves earlier, with the next message. |
 | `skipWhenOnline` | A mail that is due while the user was active on the site within the last minute is not sent: the user sees the notifications on the web. Notifications not yet due stay waiting. Off by default, see below. |
+| `rateLimit`, `rateLimitWindow` | A protection against floods (a very busy thread, a misbehaving module): once a user received `rateLimit` notifications on the channel within `rateLimitWindow` seconds, further mails or pushes are not sent. Their notifications stay in the web list, and a warning naming them is logged (category `notification`). A message that starts below the limit goes out whole. The default, 200 per hour, is generous: normal use never reaches it. `null` switches it off. |
 
 The first mail waits a minute so that a user who is on the site gets no mail for what they read
 right away: a notification seen before its mail is due is dropped (see below). `skipWhenOnline`

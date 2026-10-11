@@ -444,6 +444,68 @@ class DeliverJobTest extends HumHubDbTestCase
         }
     }
 
+    public function testRateLimitSkipsTheMessagesBeyondIt()
+    {
+        $this->setUpDelivery(['rateLimit' => 2, 'rateLimitWindow' => 3600]);
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin();
+
+        // one notification sent: the message of the next two starts below the limit and goes out whole
+        $this->now += 300;
+        $this->runDeliverJob();
+        $this->assertCount(2, $this->mails());
+
+        $this->dispatchToAdmin();
+        static::logInitialize();
+        $this->now += 900;
+        $this->runDeliverJob();
+
+        $this->assertCount(2, $this->mails());
+        $this->assertSame(NotificationDelivery::STATE_SKIPPED, (int)$this->lastDelivery()->state);
+        static::assertLogRegexCount(
+            1,
+            '/^Notification #' . $this->lastDelivery()->notification_id . ' for user 1 is not delivered through email: the rate limit of 2 notifications in 3600 seconds is reached$/',
+            Logger::LEVEL_WARNING,
+            ['notification'],
+        );
+        $this->assertNotNull(Notification::findOne(['id' => $this->lastDelivery()->notification_id]), 'still in the web list');
+    }
+
+    public function testRateLimitCountsWithinItsWindow()
+    {
+        $this->setUpDelivery(['rateLimit' => 1, 'rateLimitWindow' => 600]);
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        $this->now += 300;
+        $this->runDeliverJob();
+        $this->assertCount(1, $this->mails());
+        $this->assertSame(NotificationDelivery::STATE_SKIPPED, (int)$this->lastDelivery()->state);
+
+        // the first mail is out of the window
+        $this->now += 600;
+        $this->dispatchToAdmin();
+        $this->now += 1800;
+        $this->runDeliverJob();
+        $this->assertCount(2, $this->mails());
+        $this->assertSame(NotificationDelivery::STATE_SENT, (int)$this->lastDelivery()->state);
+    }
+
+    public function testNoRateLimit()
+    {
+        $this->setUpDelivery(['rateLimit' => null]);
+        for ($i = 0; $i < 3; $i++) {
+            $this->dispatchToAdmin();
+            $this->now += 1800;
+            $this->runDeliverJob();
+        }
+
+        $this->assertCount(3, $this->mails());
+    }
+
     public function testNothingDueSendsNothing()
     {
         $this->runDeliverJob();

@@ -588,6 +588,10 @@ a due time, and pushes a `DeliverJob` for the recipient and channel, delayed to 
   (`IsOnlineService::isRecentlyActive()`); rows not due yet stay pending. It is off because
   "active within the last minute" includes an open tab polling the server, so it would also drop
   mails to users who are not at their screen.
+- **Rate limit.** Once the channel sent the recipient `rateLimit` notifications (200 by default)
+  within `rateLimitWindow` (an hour), the job sends no further message: its rows are skipped and
+  a warning is logged. A message that starts below the limit goes out whole. A safety net against
+  floods, not a pacing mechanism — that is the adaptive delay. `null` switches it off.
 - **Follow-ups and the sweep.** One job per recipient and channel runs at a time (a mutex). After
   each run, a job is pushed for the earliest pending row left. The hourly cron re-queues pending
   rows overdue by more than five minutes (a lost job) and deletes finished rows after 30 days
@@ -645,7 +649,7 @@ final class ChatTarget extends BaseTarget
 ```
 
 The target inherits the delay properties (`delays`, `delayWindow`, `highPriorityDelay`,
-`lowPriorityDelay`, `skipWhenOnline`, see [Delivery](#delivery)) and the per-user category switches; it appears on
+`lowPriorityDelay`, `skipWhenOnline`, `rateLimit`, `rateLimitWindow`, see [Delivery](#delivery)) and the per-user category switches; it appears on
 the settings page as one more checkbox per category. Override `isActive(?User $user)` (calling the
 parent) when the channel is not available to everyone, and `appliesTo(NotificationCategory $category)`
 when it cannot carry some categories (every category by default; the web list only those with a

@@ -1824,8 +1824,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     one `notification_delivery` row per notification and channel and a queued `DeliverJob` sends
     the pending notifications of a recipient as one `DeliveryBatch` — one or several
     notifications, a group once — or skips them (seen meanwhile, category switched off for the
-    channel, recipient online for `skipWhenOnline`). The new properties `$delays`, `$delayWindow`,
-    `$highPriorityDelay`, `$lowPriorityDelay` and `$skipWhenOnline` control when; see
+    channel, recipient online for `skipWhenOnline`, beyond the `rateLimit`). The new properties
+    `$delays`, `$delayWindow`, `$highPriorityDelay`, `$lowPriorityDelay`, `$skipWhenOnline`,
+    `$rateLimit` and `$rateLimitWindow` control when; see
     [Delivery](concept-notifications.md#delivery). A target's `deliver()` has to handle batches
     of more than one notification. A target that cannot carry some categories overrides
     `appliesTo(NotificationCategory $category)`; those categories get no switch for it. The web
