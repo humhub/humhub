@@ -813,7 +813,8 @@ class UserApiCest
     {
         $I->wantTo('load what users entered into a text field');
         ProfileField::updateAll(['directory_filter' => 1, 'field_type_class' => Text::class], ['internal_name' => 'mobile']);
-        Profile::updateAll(['mobile' => '555'], ['user_id' => [2, 3]]);
+        // values of other users: the directory, and so its suggestions, leave out the caller
+        Profile::updateAll(['mobile' => '555'], ['user_id' => [1, 3]]);
         Profile::updateAll(['mobile' => '123'], ['user_id' => 4]);
 
         $I->amLoggedInAs(2);
@@ -831,7 +832,7 @@ class UserApiCest
         $I->wantTo('search the values of a profile field filter as a picker user types');
         $this->genderField();
         ProfileField::updateAll(['directory_filter' => 1, 'field_type_class' => Text::class], ['internal_name' => 'mobile']);
-        Profile::updateAll(['mobile' => '555-1'], ['user_id' => [2, 3]]);
+        Profile::updateAll(['mobile' => '555-1'], ['user_id' => [1, 3]]);
         Profile::updateAll(['mobile' => '123'], ['user_id' => 4]);
 
         $I->amLoggedInAs(2);
@@ -852,7 +853,7 @@ class UserApiCest
     public function testTagsAreTheTopTagsOfTheUsersICanSee(ApiTester $I)
     {
         $I->wantTo('load the user tags for the tag picker, searched as I type');
-        $this->tag(2, ['PHP', 'Go']);
+        $this->tag(1, ['PHP', 'Go']);
         $this->tag(3, ['PHP']);
         $this->tag(5, ['Secret']);
 
@@ -917,9 +918,9 @@ class UserApiCest
     {
         $I->wantTo('get no tags and field values of a user a module hides from the directory');
         ProfileField::updateAll(['directory_filter' => 1, 'field_type_class' => Text::class], ['internal_name' => 'mobile']);
-        Profile::updateAll(['mobile' => '555'], ['user_id' => 2]);
+        Profile::updateAll(['mobile' => '555'], ['user_id' => 1]);
         Profile::updateAll(['mobile' => '777'], ['user_id' => 3]);
-        $this->tag(2, ['PHP']);
+        $this->tag(1, ['PHP']);
         $this->tag(3, ['Secret']);
         $build = static function (ListEvent $event) {
             if ($event->context->purpose === UserList::PURPOSE_DIRECTORY) {

@@ -42,7 +42,8 @@ class AccountCest
 
         $I->seeSuccess('Saved');
 
-        //$I->amOnProfile();
+        // the directory leaves out the current user: look as another one
+        $I->amUser2(true);
         $directory = DirectoryPage::openBy($I);
         $directory->clickMembers();
         $I->expectTo('see my user tags');

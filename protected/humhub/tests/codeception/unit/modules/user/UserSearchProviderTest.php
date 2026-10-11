@@ -13,6 +13,7 @@ use humhub\modules\user\components\UserList;
 use humhub\modules\user\models\User;
 use humhub\modules\user\search\UserSearchProvider;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 use yii\base\Event;
 
 /**
@@ -48,7 +49,8 @@ class UserSearchProviderTest extends HumHubDbTestCase
         $result = $provider->getResults(1);
 
         $this->assertCount(1, $result['results']);
-        $this->assertSame((int)User::find()->available()->andWhere(['!=', 'visibility', User::VISIBILITY_HIDDEN])->count(), $result['totalCount']);
+        // the directory leaves out the current user
+        $this->assertSame((int)User::find()->available()->andWhere(['!=', 'visibility', User::VISIBILITY_HIDDEN])->andWhere(['!=', 'user.id', Yii::$app->user->id])->count(), $result['totalCount']);
     }
 
     public function testAppliesTheDirectoryRestrictionsOfModules(): void

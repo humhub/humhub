@@ -123,13 +123,14 @@ class PermissionManagerTest extends HumHubDbTestCase
         $unapprovedSubGroupUser->status = User::STATUS_ENABLED;
         $unapprovedSubGroupUser->save();
 
-        // Make sure on "People" if the parent group is selected the users from the subgroup will be shown as well:
+        // Make sure on "People" if the parent group is selected the users from the subgroup will be shown as well
+        // (but not the current user, whom the directory leaves out):
         $people = (new UserList())
             ->build(['groupId' => (string)$parentGroup->id], ListContext::forCurrentUser(UserList::PURPOSE_DIRECTORY))
             ->query()
             ->select('user.username')
             ->column();
-        $this->assertEqualsCanonicalizing([$user->username, $unapprovedSubGroupUser->username], $people);
+        $this->assertEqualsCanonicalizing([$unapprovedSubGroupUser->username], $people);
     }
 
     private function assertUserGroups($hasGroups = [], $hasNotGroups = []): void
