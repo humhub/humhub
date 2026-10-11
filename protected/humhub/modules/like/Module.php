@@ -8,7 +8,6 @@
 
 namespace humhub\modules\like;
 
-use humhub\modules\like\notifications\NewLikeNotification;
 use Yii;
 
 /**
@@ -56,19 +55,5 @@ class Module extends \humhub\components\Module
     public function getName()
     {
         return Yii::t('LikeModule.base', 'Like');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        if (!$this->isEnabled) {
-            return [];
-        }
-
-        return [
-            NewLikeNotification::class,
-        ];
     }
 }
