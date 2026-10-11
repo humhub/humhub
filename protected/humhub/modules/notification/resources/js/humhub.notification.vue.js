@@ -893,6 +893,9 @@
     if (patch.spaces !== void 0) {
       target.spaces = patch.spaces;
     }
+    if (patch.privacy !== void 0) {
+      target.privacy = patch.privacy;
+    }
     return target;
   };
   const _sfc_main = {
@@ -944,8 +947,33 @@
           reset: vue$1.i18n.t("NotificationModule.base", "Reset to defaults"),
           resetConfirm: vue$1.i18n.t("NotificationModule.base", "Do you want to reset your notification settings to the defaults?"),
           resetAll: vue$1.i18n.t("NotificationModule.base", "Reset all users"),
-          resetAllConfirm: vue$1.i18n.t("NotificationModule.base", "Do you want to reset the settings concerning notifications for all users?")
+          resetAllConfirm: vue$1.i18n.t("NotificationModule.base", "Do you want to reset the settings concerning notifications for all users?"),
+          privacy: vue$1.i18n.t("NotificationModule.base", "Privacy of e-mails and push messages"),
+          privacyIntro: vue$1.i18n.t("NotificationModule.base", "How much notification e-mails, push messages and the activity summary e-mail (E-Mail Summaries) show. They leave the network and may be read on a lock screen or in a shared mailbox. The notifications in the network always show everything."),
+          privacyFixed: vue$1.i18n.t("NotificationModule.base", "This setting is set in the configuration file and cannot be changed here.")
         };
+      },
+      privacyModes() {
+        return [
+          {
+            id: "full",
+            title: vue$1.i18n.t("NotificationModule.base", "Full details"),
+            description: vue$1.i18n.t("NotificationModule.base", "Names, content previews and the content itself."),
+            example: vue$1.i18n.t("NotificationModule.base", "Jane Doe commented on your post “Budget 2027”.")
+          },
+          {
+            id: "redacted",
+            title: vue$1.i18n.t("NotificationModule.base", "Hide content"),
+            description: vue$1.i18n.t("NotificationModule.base", "Who did what, without the content, titles or Space names."),
+            example: vue$1.i18n.t("NotificationModule.base", "Jane Doe commented on your post.")
+          },
+          {
+            id: "minimal",
+            title: vue$1.i18n.t("NotificationModule.base", "Minimal"),
+            description: vue$1.i18n.t("NotificationModule.base", "Only the kind of notification and how many, without names."),
+            example: vue$1.i18n.t("NotificationModule.base", "New notification: Reactions on my content")
+          }
+        ];
       },
       profiles() {
         return [
@@ -984,7 +1012,8 @@
           categories: clone(payload.categories || []).map((category) => ({ ...category, channels: category.channels || {} })),
           defaults: payload.defaults ? clone(payload.defaults) : null,
           spaces: { enabled: ((_b = payload.spaces) == null ? void 0 : _b.enabled) !== false },
-          spaceIds: selected.map((space) => String(space.id))
+          spaceIds: selected.map((space) => String(space.id)),
+          privacy: payload.privacy ? clone(payload.privacy) : null
         };
       },
       applyState(payload) {
@@ -1001,7 +1030,8 @@
         return Object.fromEntries(this.categories.map((category) => [category.id, { ...category.channels }]));
       },
       snapshot() {
-        return { categories: this.switches(), spaceIds: [...this.spaceIds] };
+        var _a;
+        return { categories: this.switches(), spaceIds: [...this.spaceIds], privacy: ((_a = this.privacy) == null ? void 0 : _a.mode) ?? null };
       },
       channelsOf(category) {
         return this.channels.filter((channel) => Object.prototype.hasOwnProperty.call(category.channels, channel.id));
@@ -1066,19 +1096,32 @@
           this.enqueue(patch);
         }
       },
+      selectPrivacy(mode) {
+        if (!this.privacy || this.privacy.fixed || this.privacy.mode === mode) {
+          return;
+        }
+        this.privacy.mode = mode;
+        this.enqueue({ privacy: mode });
+      },
       // Arrow keys move the choice within the radio group, as with native radio buttons.
       onProfileKeydown(event, profileId) {
+        this.moveChoice(event, this.profiles, profileId, this.selectProfile, "data-profile");
+      },
+      onPrivacyKeydown(event, mode) {
+        this.moveChoice(event, this.privacyModes, mode, this.selectPrivacy, "data-privacy");
+      },
+      moveChoice(event, options, current, select, attribute) {
         const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
         if (!steps[event.key]) {
           return;
         }
         event.preventDefault();
-        const ids = this.profiles.map((option) => option.id);
-        const next = ids[(ids.indexOf(profileId) + steps[event.key] + ids.length) % ids.length];
-        this.selectProfile(next);
+        const ids = options.map((option) => option.id);
+        const next = ids[(ids.indexOf(current) + steps[event.key] + ids.length) % ids.length];
+        select(next);
         this.$nextTick(() => {
           var _a;
-          return (_a = this.$el.querySelector(`[data-profile="${next}"]`)) == null ? void 0 : _a.focus();
+          return (_a = this.$el.querySelector(`[${attribute}="${next}"]`)) == null ? void 0 : _a.focus();
         });
       },
       enqueue(patch) {
@@ -1119,16 +1162,20 @@
       // A saved patch becomes the state failed requests return to; without further changes
       // waiting, the answer is the state.
       remember(patch, response) {
+        var _a;
         Object.entries(patch.categories || {}).forEach(([categoryId, switches]) => {
           Object.keys(switches).forEach((channelId) => {
-            var _a, _b, _c;
-            const answered = (_b = (_a = ((response == null ? void 0 : response.categories) || []).find((category) => category.id === categoryId)) == null ? void 0 : _a.channels) == null ? void 0 : _b[channelId];
+            var _a2, _b, _c;
+            const answered = (_b = (_a2 = ((response == null ? void 0 : response.categories) || []).find((category) => category.id === categoryId)) == null ? void 0 : _a2.channels) == null ? void 0 : _b[channelId];
             const value = answered !== void 0 ? answered : (_c = this.category(categoryId)) == null ? void 0 : _c.channels[channelId];
             this.saved.categories[categoryId] = { ...this.saved.categories[categoryId] || {}, [channelId]: value };
           });
         });
         if (patch.spaces !== void 0) {
           this.saved.spaceIds = patch.spaces.map(String);
+        }
+        if (patch.privacy !== void 0) {
+          this.saved.privacy = ((_a = response == null ? void 0 : response.privacy) == null ? void 0 : _a.mode) ?? patch.privacy;
         }
         if (!this.pending && !this.spacesTimer && response && Array.isArray(response.categories)) {
           const expanded = this.expanded;
@@ -1139,18 +1186,21 @@
       // Puts what a failed patch carried back to the last saved state — unless a later change
       // of the same switch waits to be sent.
       revert(patch) {
-        var _a;
+        var _a, _b;
         Object.entries(patch.categories || {}).forEach(([categoryId, switches]) => {
           const category = this.category(categoryId);
           Object.keys(switches).forEach((channelId) => {
-            var _a2, _b, _c, _d;
-            if (category && ((_c = (_b = (_a2 = this.pending) == null ? void 0 : _a2.categories) == null ? void 0 : _b[categoryId]) == null ? void 0 : _c[channelId]) === void 0) {
+            var _a2, _b2, _c, _d;
+            if (category && ((_c = (_b2 = (_a2 = this.pending) == null ? void 0 : _a2.categories) == null ? void 0 : _b2[categoryId]) == null ? void 0 : _c[channelId]) === void 0) {
               category.channels[channelId] = ((_d = this.saved.categories[categoryId]) == null ? void 0 : _d[channelId]) ?? category.channels[channelId];
             }
           });
         });
         if (patch.spaces !== void 0 && ((_a = this.pending) == null ? void 0 : _a.spaces) === void 0 && !this.spacesTimer) {
           this.spaceIds = [...this.saved.spaceIds];
+        }
+        if (patch.privacy !== void 0 && ((_b = this.pending) == null ? void 0 : _b.privacy) === void 0 && this.privacy) {
+          this.privacy.mode = this.saved.privacy;
         }
       },
       request(method, url, data) {
@@ -1261,10 +1311,26 @@
     class: "c-notification-settings__spaces"
   };
   const _hoisted_27 = ["for"];
-  const _hoisted_28 = { class: "c-notification-settings__footer" };
-  const _hoisted_29 = { class: "c-notification-settings__autosave" };
-  const _hoisted_30 = ["disabled"];
-  const _hoisted_31 = ["disabled"];
+  const _hoisted_28 = {
+    key: 1,
+    class: "c-notification-settings__card c-notification-settings__privacy"
+  };
+  const _hoisted_29 = { class: "c-notification-settings__subtitle" };
+  const _hoisted_30 = { class: "c-notification-settings__lead" };
+  const _hoisted_31 = {
+    key: 0,
+    class: "c-notification-settings__privacy-fixed"
+  };
+  const _hoisted_32 = ["aria-label", "aria-disabled"];
+  const _hoisted_33 = ["aria-checked", "tabindex", "disabled", "data-privacy", "onClick", "onKeydown"];
+  const _hoisted_34 = { class: "c-notification-settings__profile-text" };
+  const _hoisted_35 = { class: "c-notification-settings__profile-title" };
+  const _hoisted_36 = { class: "c-notification-settings__profile-description" };
+  const _hoisted_37 = { class: "c-notification-settings__privacy-example" };
+  const _hoisted_38 = { class: "c-notification-settings__footer" };
+  const _hoisted_39 = { class: "c-notification-settings__autosave" };
+  const _hoisted_40 = ["disabled"];
+  const _hoisted_41 = ["disabled"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CheckboxField = vue.resolveComponent("CheckboxField");
     const _component_SpaceImage = vue.resolveComponent("SpaceImage");
@@ -1639,10 +1705,105 @@
           2
           /* CLASS */
         ),
-        vue.createElementVNode("div", _hoisted_28, [
+        _ctx.privacy ? (vue.openBlock(), vue.createElementBlock("section", _hoisted_28, [
+          vue.createElementVNode(
+            "h3",
+            _hoisted_29,
+            vue.toDisplayString($options.labels.privacy),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode(
+            "p",
+            _hoisted_30,
+            vue.toDisplayString($options.labels.privacyIntro),
+            1
+            /* TEXT */
+          ),
+          _ctx.privacy.fixed ? (vue.openBlock(), vue.createElementBlock("p", _hoisted_31, [
+            _cache[4] || (_cache[4] = vue.createElementVNode(
+              "i",
+              {
+                class: "ti ti-lock",
+                "aria-hidden": "true"
+              },
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue.createTextVNode(
+              vue.toDisplayString($options.labels.privacyFixed),
+              1
+              /* TEXT */
+            )
+          ])) : vue.createCommentVNode("v-if", true),
+          vue.createElementVNode("div", {
+            class: "c-notification-settings__profiles",
+            role: "radiogroup",
+            "aria-label": $options.labels.privacy,
+            "aria-disabled": _ctx.privacy.fixed ? "true" : null,
+            "data-field": "privacy"
+          }, [
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($options.privacyModes, (option) => {
+                return vue.openBlock(), vue.createElementBlock("button", {
+                  key: option.id,
+                  type: "button",
+                  role: "radio",
+                  class: vue.normalizeClass(["c-notification-settings__profile", { "is-selected": _ctx.privacy.mode === option.id }]),
+                  "aria-checked": _ctx.privacy.mode === option.id ? "true" : "false",
+                  tabindex: _ctx.privacy.mode === option.id ? 0 : -1,
+                  disabled: _ctx.privacy.fixed,
+                  "data-privacy": option.id,
+                  onClick: ($event) => $options.selectPrivacy(option.id),
+                  onKeydown: ($event) => $options.onPrivacyKeydown($event, option.id)
+                }, [
+                  _cache[5] || (_cache[5] = vue.createElementVNode(
+                    "span",
+                    {
+                      class: "c-notification-settings__radio",
+                      "aria-hidden": "true"
+                    },
+                    null,
+                    -1
+                    /* CACHED */
+                  )),
+                  vue.createElementVNode("span", _hoisted_34, [
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_35,
+                      vue.toDisplayString(option.title),
+                      1
+                      /* TEXT */
+                    ),
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_36,
+                      vue.toDisplayString(option.description),
+                      1
+                      /* TEXT */
+                    ),
+                    vue.createElementVNode(
+                      "span",
+                      _hoisted_37,
+                      vue.toDisplayString(option.example),
+                      1
+                      /* TEXT */
+                    )
+                  ])
+                ], 42, _hoisted_33);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ], 8, _hoisted_32)
+        ])) : vue.createCommentVNode("v-if", true),
+        vue.createElementVNode("div", _hoisted_38, [
           vue.createElementVNode(
             "span",
-            _hoisted_29,
+            _hoisted_39,
             vue.toDisplayString($options.labels.autosave),
             1
             /* TEXT */
@@ -1653,14 +1814,14 @@
             class: "btn btn-light c-notification-settings__reset",
             disabled: $data.resetting,
             onClick: _cache[0] || (_cache[0] = (...args) => $options.reset && $options.reset(...args))
-          }, vue.toDisplayString($options.labels.reset), 9, _hoisted_30)) : vue.createCommentVNode("v-if", true),
+          }, vue.toDisplayString($options.labels.reset), 9, _hoisted_40)) : vue.createCommentVNode("v-if", true),
           $props.scope === "global" && $props.resetAllUrl ? (vue.openBlock(), vue.createElementBlock("button", {
             key: 1,
             type: "button",
             class: "btn btn-danger c-notification-settings__reset-all",
             disabled: $data.resetting,
             onClick: _cache[1] || (_cache[1] = (...args) => $options.resetAll && $options.resetAll(...args))
-          }, vue.toDisplayString($options.labels.resetAll), 9, _hoisted_31)) : vue.createCommentVNode("v-if", true)
+          }, vue.toDisplayString($options.labels.resetAll), 9, _hoisted_41)) : vue.createCommentVNode("v-if", true)
         ])
       ]),
       _: 1

@@ -33,6 +33,10 @@ class CoreMessagesTest extends HumHubDbTestCase
         $this->assertStringStartsWith($this->name(2) . ' and ' . $this->name(3) . ' like ', $grouped->asMailText());
         $this->assertStringStartsWith($this->name(2) . ' and ' . $this->name(3) . ' like your ', $grouped->asMailSubject());
         $this->assertStringStartsWith('<strong>', $grouped->asWeb());
+
+        // the sentences without content
+        $this->assertSame($this->name(2) . ' likes your post.', $this->load(NewLikeNotification::class, [2])->asRedactedText());
+        $this->assertSame($this->name(2) . ' and ' . $this->name(3) . ' like your post.', $grouped->asRedactedText());
     }
 
     public function testNewComment()
@@ -41,6 +45,13 @@ class CoreMessagesTest extends HumHubDbTestCase
         $this->assertStringStartsWith(
             $this->name(2) . ' and ' . $this->name(3) . ' commented ',
             $this->load(NewCommentNotification::class, [3, 2])->asMailText(),
+        );
+
+        // the sentences without content; user 1 is the author of post 1
+        $this->assertSame($this->name(2) . ' commented on your post.', $this->load(NewCommentNotification::class, [2])->asRedactedText());
+        $this->assertSame(
+            '<strong>' . $this->name(2) . '</strong> and <strong>' . $this->name(3) . '</strong> commented on your post.',
+            $this->load(NewCommentNotification::class, [3, 2])->asRedactedHtml(),
         );
     }
 
@@ -51,12 +62,47 @@ class CoreMessagesTest extends HumHubDbTestCase
             $this->name(2) . ' and ' . $this->name(3) . ' are now following you.',
             $this->load(FollowedNotification::class, [3, 2], false)->asMailText(),
         );
+        $this->assertSame(
+            $this->name(2) . ' and ' . $this->name(3) . ' are now following you.',
+            $this->load(FollowedNotification::class, [3, 2], false)->asRedactedText(),
+        );
     }
 
     public function testContentCreated()
     {
         $this->assertStringStartsWith($this->name(2) . ' created ', $this->load(ContentCreatedNotification::class, [2])->asMailText());
         $this->assertSame($this->name(2) . ' created 2 new entries.', $this->load(ContentCreatedNotification::class, [2, 2])->asMailText());
+
+        $this->assertSame($this->name(2) . ' created a new post.', $this->load(ContentCreatedNotification::class, [2])->asRedactedText());
+        $this->assertSame($this->name(2) . ' created 2 new entries.', $this->load(ContentCreatedNotification::class, [2, 2])->asRedactedText());
+    }
+
+    public function testContentCreatedOnAProfileOrInASpace()
+    {
+        // post 1 is on the recipient's profile
+        $this->assertSame($this->name(2) . ' posted on your profile.', $this->loadInContainer(Post::findOne(['id' => 1]))->asRedactedText());
+
+        $spacePost = Post::find()->joinWith('content')->andWhere(['content.contentcontainer_id' => 4])->one();
+        $notification = $this->loadInContainer($spacePost);
+        $this->assertSame($this->name(2) . ' created a new post.', $notification->asRedactedText());
+        $this->assertStringContainsString('Space 1', $notification->asMailSubject());
+    }
+
+    /**
+     * A notification about the post by user 2 to user 1, bound to the post's container.
+     */
+    private function loadInContainer(Post $post): BaseNotification
+    {
+        $record = new Notification([
+            'class' => ContentCreatedNotification::class,
+            'user_id' => 1,
+            'originator_id' => 2,
+            'content_id' => $post->content->id,
+            'contentcontainer_id' => $post->content->contentcontainer_id,
+        ]);
+        $this->assertTrue($record->save());
+
+        return NotificationManager::load($record);
     }
 
     private function name(int $userId): string

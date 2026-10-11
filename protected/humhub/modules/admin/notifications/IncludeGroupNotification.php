@@ -67,6 +67,18 @@ final class IncludeGroupNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        if ($this->originator === null) {
+            return Yii::t('AdminModule.notification', 'You were added to a group.', $params);
+        }
+
+        return Yii::t('AdminModule.notification', '{displayName} added you to a group.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return ['groupName' => MessageParam::emphasis($this->getGroupName())];

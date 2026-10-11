@@ -48,6 +48,14 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         };
     }
 
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.base', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} joined a Space.', $params);
+    }
+
     public function getUrl(bool $scheme = false): ?string
     {
         // Inside the space the space link is redundant, so a single membership

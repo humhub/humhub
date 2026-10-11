@@ -79,6 +79,14 @@ final class SpaceRolesChangedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} changed your role in a Space.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return array_merge($this->getSpaceMessageParams(), [

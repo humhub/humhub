@@ -51,6 +51,7 @@ class ContentDeletedTest extends HumHubDbTestCase
         $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $html);
         // plain text channels carry it unencoded
         $this->assertStringContainsString('post "<img src=x onerror=alert(1)>"', $notification->asMailSubject());
+        $this->assertSame('Your content has been deleted by ' . $notification->originator->displayName . '.', $notification->asRedactedText());
         // nothing to link to: no "View online" button
         $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
     }

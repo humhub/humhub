@@ -52,6 +52,14 @@ final class ContentDeletedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('ContentModule.notifications', 'Your content has been deleted by {displayName}.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return [

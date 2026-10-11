@@ -42,4 +42,12 @@ final class SpaceCreatedNotification extends BaseNotification
             'spaceName' => $params['spaceName'],
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} created a new Space.', $params);
+    }
 }

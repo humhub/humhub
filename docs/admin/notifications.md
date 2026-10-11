@@ -68,6 +68,58 @@ true for many modules (e.g. Calendar, News, Messenger). The settings of other mo
 dropped and their default applies again. If users had switched module notifications off, you may
 want to ask them to check their notification settings after the update.
 
+## Privacy of e-mails and push
+
+Notification mails, push messages and the activity summary mail leave the network: they show up
+on lock screens, in shared or forwarded mailboxes and in the logs of mail and push providers.
+*Administration → Settings → Notifications* sets for the whole network how much they show,
+under *Privacy of e-mails and push messages*. The notifications on the web always show
+everything.
+
+The setting is only on the notification settings page, but it also applies to the activity
+summary mail. While a level other than *Full details* is active, the summary pages point to it:
+*Administration → Settings → E-Mail Summaries* shows the level with a link to the notification
+settings (or a note that the configuration file sets it), and the users' *E-Mail Summaries*
+page in their account settings says that the summaries are sent without content (*Hide content*)
+or only with the number of new activities (*Minimal*). With *Full details* neither page shows a
+hint.
+
+| Level | Mails and push show | Example |
+|---|---|---|
+| *Full details* (default) | who did what, the content (previews, the full text of a news article), the Space | Jane Doe commented on your post "Budget 2027". |
+| *Hide content* | who did what, but no content, no titles, no Space or group names | Jane Doe commented on your post. |
+| *Minimal* | only the kind of notification and how many — no names, no content | New notification: Reactions on my content |
+
+In detail:
+
+| | *Full details* | *Hide content* | *Minimal* |
+|---|---|---|---|
+| Mail about one notification | the sentence, the content below it and its buttons | the sentence without content, a *View online* button | "New notification: {category}", a *View online* button |
+| Mail of several notifications | "3 new notifications", the sentences under the heading of their Space | "3 new notifications", the sentences without content, no Space headings | "3 new notifications", a line per category ("Reactions on my content: 2 new notifications") and a button to the notification overview |
+| Push | the sentence | the sentence without content | "1 new notification", "3 new notifications" |
+| Activity summary mail | the activities with their content and Space | the activities without content and Space | the number of new activities, with a link to the dashboard |
+
+Space and group names are treated as content: a Space called "Restructuring 2027" tells as much
+as a post. The links in the mails still lead to the notification; what it is about is shown
+after logging in. The sentences without content come from the notification classes; a module
+that does not offer one shows the name and the category instead ("Jane Doe: Tasks").
+
+The level can also be set in the configuration file (`config/common.php`), which wins over the
+administration page — the page then shows it read-only:
+
+```php
+return [
+    'modules' => [
+        'notification' => [
+            // 'full' (default), 'redacted' (Hide content) or 'minimal'
+            'privacyMode' => 'redacted',
+        ],
+    ],
+];
+```
+
+or as an environment variable: `HUMHUB_CONFIG__MODULES__NOTIFICATION__PRIVACY_MODE=minimal`.
+
 ## Timings
 
 The delays are not in the user interface but properties of each channel, set in
@@ -178,6 +230,7 @@ shorter or longer.
 
 The activity summary mail mentions how many unread notifications a user has, with a link to the
 notification overview. It does not list them, and no summary is sent for notifications alone.
+It follows the [privacy level](#privacy-of-e-mails-and-push) of notification mails.
 
 ## Retention
 

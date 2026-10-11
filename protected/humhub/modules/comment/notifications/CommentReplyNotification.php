@@ -141,4 +141,12 @@ final class CommentReplyNotification extends BaseNotification
     {
         return Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} replied to your {content}.', $params);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} replied to your comment.', $params);
+    }
 }

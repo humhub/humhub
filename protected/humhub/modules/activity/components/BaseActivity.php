@@ -6,6 +6,7 @@ use humhub\components\grouping\Grouping;
 use humhub\components\message\MessageFormat;
 use humhub\components\message\MessageParam;
 use humhub\helpers\Html;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity as ActivityRecord;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\services\GroupingService;
@@ -20,8 +21,9 @@ use yii\base\InvalidCallException;
 /**
  * Base class of an activity: its sentence ({@see getMessage()}), the {@see getMessageParams()} the
  * sentence needs beyond the built-in ones, the {@see getUrl()} it links to and the
- * {@see grouping()} that decides which activities are shown as one entry. It is written with
- * {@see send()}. See `docs/develop/concept-activities.md`.
+ * {@see grouping()} that decides which activities are shown as one entry, and the
+ * {@see getRedactedMessage()} the summary mail shows when the network hides content. It is
+ * written with {@see send()}. See `docs/develop/concept-activities.md`.
  *
  * The built-in message parameters, rendered per output together with those of {@see getMessageParams()}:
  *
@@ -168,6 +170,29 @@ abstract class BaseActivity extends BaseObject
     }
 
     /**
+     * The sentence without content that the summary mail shows under the notification privacy
+     * mode "Hide content" ({@see \humhub\modules\notification\components\NotificationPrivacy::Redacted});
+     * `null` (the default) for the core's form "{displayName}: {title}" - the title of a
+     * {@see ConfigurableActivityInterface}, else "New activity".
+     *
+     * A whole sentence, so translators can build it in their language, e.g.
+     * `Yii::t('TasksModule.base', '{displayName} created a task.', $params)`. A class whose
+     * {@see getMessage()} holds no content may return `$this->getMessage($params)`.
+     *
+     * @param array<string, string|int> $params only values that carry no content, rendered for
+     * the output: `displayName`, `displayNames`, `groupCount`, `contentType` (the type of the
+     * activity's content, e.g. "post"; only for an activity about a content) and the parameters of
+     * {@see getMessageParams()} that are a {@see MessageParam::user()} - never `content`,
+     * `contentTitle` or other parameters
+     * @api
+     * @since 1.20
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return null;
+    }
+
+    /**
      * The plain text sentence of the summary mail.
      *
      * @api
@@ -195,6 +220,28 @@ abstract class BaseActivity extends BaseObject
     final public function asMailHtml(): string
     {
         return $this->getMessage($this->getMessageParamsMailHtml());
+    }
+
+    /**
+     * The HTML sentence without content of the summary mail, see {@see getRedactedMessage()}.
+     *
+     * @internal for the summary mail
+     * @since 1.20
+     */
+    final public function asRedactedHtml(): string
+    {
+        return $this->renderRedacted(MessageFormat::Html);
+    }
+
+    /**
+     * The plain text sentence without content of the summary mail, see {@see getRedactedMessage()}.
+     *
+     * @internal for the summary mail
+     * @since 1.20
+     */
+    final public function asRedactedText(): string
+    {
+        return $this->renderRedacted(MessageFormat::Text);
     }
 
     /**
@@ -307,14 +354,7 @@ abstract class BaseActivity extends BaseObject
      */
     protected function getBuiltInMessageParams(): array
     {
-        return [
-            'displayName' => MessageParam::user($this->user),
-            'displayNames' => MessageParam::html(
-                $this->formatDisplayNames(static fn($dn) => Html::strong(Html::encode($dn))),
-                $this->formatDisplayNames(static fn($dn) => $dn),
-            ),
-            'groupCount' => $this->groupCount,
-        ];
+        return $this->getNameParams();
     }
 
     /**
@@ -364,6 +404,56 @@ abstract class BaseActivity extends BaseObject
         }
 
         return $this->_groupingService;
+    }
+
+    /**
+     * {@see getRedactedMessage()}, else "{displayName}: {title}".
+     */
+    private function renderRedacted(MessageFormat $format): string
+    {
+        $params = $this->getNameParams();
+        $contentType = $this->record->content?->getPolymorphicRelation()?->getContentName();
+        if ($contentType !== null) {
+            $params['contentType'] = MessageParam::text((string)$contentType);
+        }
+        foreach ($this->getMessageParams() as $name => $value) {
+            if ($value instanceof MessageParam && $value->isUser()) {
+                $params[$name] = $value;
+            }
+        }
+        $params = MessageParam::renderAll($params, $format);
+
+        $message = $this->getRedactedMessage($params);
+        if ($message !== null) {
+            return $message;
+        }
+
+        $title = $this instanceof ConfigurableActivityInterface
+            ? static::getTitle()
+            : Yii::t('ActivityModule.base', 'New activity');
+
+        return Yii::t('ActivityModule.base', '{displayName}: {title}', [
+            'displayName' => $params['displayNames'] !== '' ? $params['displayNames'] : $params['displayName'],
+            'title' => MessageParam::text($title)->render($format),
+        ]);
+    }
+
+    /**
+     * `displayName`, `displayNames` and `groupCount` - the built-in parameters of this class
+     * without those a subclass adds (e.g. the content).
+     *
+     * @return array<string, MessageParam|string|int>
+     */
+    private function getNameParams(): array
+    {
+        return [
+            'displayName' => MessageParam::user($this->user),
+            'displayNames' => MessageParam::html(
+                $this->formatDisplayNames(static fn($dn) => Html::strong(Html::encode($dn))),
+                $this->formatDisplayNames(static fn($dn) => $dn),
+            ),
+            'groupCount' => $this->groupCount,
+        ];
     }
 
     /**

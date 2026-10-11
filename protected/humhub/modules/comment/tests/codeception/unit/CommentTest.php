@@ -243,6 +243,7 @@ class CommentTest extends HumHubDbTestCase
         $notification = $this->load(CommentReplyNotification::class, 2);
         $this->assertTrue($notification::category()->equals(NotificationCategory::direct()));
         $this->assertSame(User::findOne(['id' => 3])->displayName . ' replied to your comment "Root comment".', $notification->asMailText());
+        $this->assertSame(User::findOne(['id' => 3])->displayName . ' replied to your comment.', $notification->asRedactedText());
         // links to the reply, highlighted by the comment permalink
         $this->assertSame($first->getUrl(), $notification->getUrl());
         $this->assertSame($first->id, $notification->getReply()->id);

@@ -371,4 +371,82 @@ describe('NotificationSettings', () => {
 
         expect(postCalls).toEqual(['/api/v2/notification/settings/reset-all']);
     });
+
+    describe('privacy mode', () => {
+        const globalProps = (privacy) => props({
+            initial: payload({ scope: 'global', defaults: null, privacy }),
+            scope: 'global',
+            resetUrl: null,
+        });
+        const selectedPrivacy = () => wrapper.find('[data-privacy][aria-checked="true"]').attributes('data-privacy');
+
+        it('is not shown on the account page', () => {
+            wrapper = mount(NotificationSettings, { ...mountOptions(), props: props({ initial: payload({ privacy: null }) }) });
+
+            expect(wrapper.find('.c-notification-settings__privacy').exists()).toBe(false);
+        });
+
+        it('offers the three levels with an example each in the global scope', () => {
+            wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'redacted', fixed: false }) });
+
+            const section = wrapper.find('.c-notification-settings__privacy');
+            expect(section.find('.c-notification-settings__subtitle').text()).toBe('Privacy of e-mails and push messages');
+            const intro = section.find('.c-notification-settings__lead').text();
+            expect(intro).toContain('notification e-mails');
+            expect(intro).toContain('push messages');
+            expect(intro).toContain('E-Mail Summaries');
+
+            const options = wrapper.findAll('[data-privacy]');
+            expect(options.map((option) => option.attributes('data-privacy'))).toEqual(['full', 'redacted', 'minimal']);
+            expect(options.map((option) => option.find('.c-notification-settings__profile-title').text())).toEqual(['Full details', 'Hide content', 'Minimal']);
+            expect(options.every((option) => option.find('.c-notification-settings__privacy-example').text() !== '')).toBe(true);
+            expect(selectedPrivacy()).toBe('redacted');
+            expect(wrapper.find('.c-notification-settings__privacy-fixed').exists()).toBe(false);
+        });
+
+        it('saves a level right away', async () => {
+            answer = () => Promise.resolve(payload({ scope: 'global', defaults: null, privacy: { mode: 'minimal', fixed: false } }));
+            wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'full', fixed: false }) });
+
+            await wrapper.find('[data-privacy="minimal"]').trigger('click');
+            await flushPromises();
+
+            expect(sent()).toEqual([{ privacy: 'minimal' }]);
+            expect(ajaxCalls[0].url).toBe('/api/v2/notification/settings');
+            expect(selectedPrivacy()).toBe('minimal');
+            expect(wrapper.find('.c-notification-settings__status').text()).toBe('Saved');
+        });
+
+        it('moves the choice with the arrow keys', async () => {
+            wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'full', fixed: false }) });
+
+            await wrapper.find('[data-privacy="full"]').trigger('keydown', { key: 'ArrowRight' });
+            await flushPromises();
+
+            expect(sent()).toEqual([{ privacy: 'redacted' }]);
+        });
+
+        it('puts the level back when saving fails', async () => {
+            answer = () => Promise.reject({ status: 500 });
+            wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'full', fixed: false }) });
+
+            await wrapper.find('[data-privacy="minimal"]').trigger('click');
+            await flushPromises();
+
+            expect(selectedPrivacy()).toBe('full');
+            expect(wrapper.find('.c-notification-settings__status').text()).toBe('Not saved');
+        });
+
+        it('is read-only when the configuration file sets it', async () => {
+            wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'minimal', fixed: true }) });
+
+            expect(wrapper.find('.c-notification-settings__privacy-fixed').exists()).toBe(true);
+            expect(wrapper.findAll('[data-privacy]').every((option) => option.attributes('disabled') !== undefined)).toBe(true);
+            wrapper.vm.selectPrivacy('full');
+            await flushPromises();
+
+            expect(ajaxCalls).toHaveLength(0);
+            expect(selectedPrivacy()).toBe('minimal');
+        });
+    });
 });

@@ -48,6 +48,15 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        // the sentence names people only
+        return $this->getMessage($params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return [

@@ -21,10 +21,13 @@ final readonly class NotificationContext
 {
     /**
      * @param string $channel the id of the target, e.g. `MailTarget::ID`
+     * @param NotificationPrivacy $privacy how much the channel may show; the core renders the
+     * levels itself - with any level but {@see NotificationPrivacy::Full} it shows no blocks
      * @internal
      */
     public function __construct(
         public string $channel,
+        public NotificationPrivacy $privacy = NotificationPrivacy::Full,
     ) {
     }
 }

@@ -3,6 +3,7 @@
 namespace humhub\modules\activity\controllers;
 
 use humhub\modules\activity\models\MailSummaryForm;
+use humhub\modules\notification\components\NotificationPrivacy;
 use humhub\modules\activity\Module;
 use humhub\modules\user\components\BaseAccountController;
 use Yii;
@@ -31,6 +32,7 @@ class UserController extends BaseAccountController
 
         return $this->render('defaults', [
             'model' => $model,
+            'privacy' => NotificationPrivacy::current(),
         ]);
     }
 

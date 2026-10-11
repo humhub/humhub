@@ -240,9 +240,11 @@ paths:
         anything is invalid — a body `categories` that is no object (`categories`), an unknown category or
         a category value that is no object (`categories.<category>`), a channel that is not available for
         the category, an invalid value or switching off the `direct` category
-        (`categories.<category>.<channel>`), or an invalid `spaces` list answer `422` with the errors
-        under those keys. Answers the settings as `GET` does. With `scope=global`, the defaults
-        for everyone (requires the *Manage Settings* permission).
+        (`categories.<category>.<channel>`), an invalid `spaces` list, or a `privacy` that is
+        invalid, sent for the caller's own settings or set in the configuration file answer `422`
+        with the errors under those keys. Answers the settings as `GET` does. With
+        `scope=global`, the defaults for everyone (requires the *Manage Settings* permission),
+        which also take the network's `privacy` mode.
       parameters:
         - $ref: "#/components/parameters/scopeParam"
       requestBody:
@@ -266,6 +268,12 @@ paths:
                   description: Ids of the spaces whose new content notifies
                   items:
                     type: integer
+                privacy:
+                  type: string
+                  enum: [full, redacted, minimal]
+                  description: |
+                    `scope=global` only: how much notification mails, push messages and the activity
+                    summary mail show — everything, names without content, or neither names nor content
             example:
               categories:
                 social:
@@ -398,7 +406,7 @@ components:
     NotificationSettings:
       type: object
       description: The notification settings of the caller, or the defaults for everyone
-      required: [scope, channels, categories, defaults, spaces]
+      required: [scope, channels, categories, defaults, spaces, privacy]
       properties:
         scope:
           type: string
@@ -475,6 +483,24 @@ components:
             enabled:
               type: boolean
               description: Whether the selection applies (the `content` category is offered)
+        privacy:
+          description: |
+            For the global scope, the network's privacy mode of notification mails, push messages
+            and the activity summary mail; `null` for the caller's settings.
+          oneOf:
+            - type: object
+              required: [mode, fixed]
+              properties:
+                mode:
+                  type: string
+                  enum: [full, redacted, minimal]
+                  description: |
+                    `full` — everything; `redacted` — names, but no content and no Space names;
+                    `minimal` — neither names nor content, only the categories and counts
+                fixed:
+                  type: boolean
+                  description: Set in the configuration file, so it cannot be changed through the API
+            - type: 'null'
   examples:
     NotificationSettings:
       value:
@@ -530,3 +556,4 @@ components:
               imageUrl: null
               contentContainerId: 21
           enabled: true
+        privacy: null

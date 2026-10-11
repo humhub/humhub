@@ -6,6 +6,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\activity\models\MailSummaryForm;
+use humhub\modules\notification\components\NotificationPrivacy;
 use Yii;
 
 /**
@@ -35,6 +36,8 @@ class AdminController extends Controller
 
         return $this->render('defaults', [
             'model' => $model,
+            'privacy' => NotificationPrivacy::current(),
+            'privacyFixed' => Yii::$app->getModule('notification')->isPrivacyFixed(),
         ]);
     }
 

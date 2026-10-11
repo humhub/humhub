@@ -67,6 +67,18 @@ final class ExcludeGroupNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        if ($this->originator === null) {
+            return Yii::t('AdminModule.notification', 'You were removed from a group.', $params);
+        }
+
+        return Yii::t('AdminModule.notification', '{displayName} removed you from a group.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return ['groupName' => MessageParam::emphasis($this->getGroupName())];

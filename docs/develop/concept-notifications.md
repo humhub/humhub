@@ -143,6 +143,9 @@ Branching on `$this->groupCount` in `getMessage()` and returning two messages is
 `getMailSubject(array $params)` is the subject of a mail about this notification alone, from the
 plain-text parameters; the sentence by default.
 
+`getRedactedMessage(array $params)` is the sentence without content that mails and push show
+when the administrator hides content — see [Privacy mode](#privacy-mode).
+
 ### What the object knows
 
 The object is bound to its database record and exposes what the sentence usually needs as
@@ -169,6 +172,7 @@ readonly properties:
 | `static grouping(): ?Grouping` | `null`, no grouping — see [Grouping](#grouping) |
 | `getMessageParams(): array` | `[]` |
 | `getMailSubject(array $params): string` | the sentence |
+| `getRedactedMessage(array $params): ?string` | `null`: "{displayName}: {category}" — the sentence without content, see [Privacy mode](#privacy-mode) |
 | `getUrl(bool $scheme = false): ?string` | the content addon's URL (e.g. the comment's), else the content's, else the container's, else none |
 | `getSubjectRecord(): ?ContentOwner` | the content's record — what `content`/`contentTitle` name; e.g. the liked comment instead |
 | `getBlocks(NotificationContext $context): NotificationBlock[]` | the preview of the subject record (when there is one) and a "View online" button — everything shown below the sentence, see [Content blocks](#content-blocks) |
@@ -426,7 +430,8 @@ notification) only — so a button like "Confirm reading", which makes sense onl
 article, never shows without it. The renderer owns the length: a mail shows the blocks in full,
 an output with less room (e.g. a future detail view in the web list) would show an excerpt of a
 RichText block. `NotificationContext` tells `getBlocks()` where it is rendered: `channel` (the
-target id, e.g. `MailTarget::ID`). It is constructed by the core only and may get more fields
+target id, e.g. `MailTarget::ID`) and `privacy` (the [privacy mode](#privacy-mode); blocks are
+only asked for with *Full details*). It is constructed by the core only and may get more fields
 later.
 
 Buttons are links. Interactive quick actions with a server-side handler — *Accept*/*Decline* in
@@ -453,11 +458,64 @@ A mail about one notification shows the sentence and the blocks inside the stand
 (`@notification/views/mails/notification` and its plain-text twin), in the recipient's language.
 Notifications that go out together share one mail ("3 new notifications"), each with its
 sentence and a link, under the heading of its space where there is one; a group appears once
-with the grouped sentence. Nothing in your module renders mail.
+with the grouped sentence. How much a mail shows depends on the [privacy mode](#privacy-mode).
+Nothing in your module renders mail.
 
 The activity summary mail mentions the number of unread notifications (the badge count,
 `NotificationListService::unseenCount()`) with a link to the notification overview, when there
 are any. It lists no notifications and is not sent because of them alone.
+
+### Privacy mode
+
+Mails and push messages leave the network: they are read on lock screens, in shared or
+forwarded mailboxes, and pass through third parties (mail and push providers). The administrator
+therefore chooses for the whole network how much they show — *Administration → Settings →
+Notifications*, or `privacyMode` of the `notification` module in the configuration file (see the
+[administrator's guide](../admin/notifications.md#privacy-of-e-mails-and-push)). The level is a
+`humhub\modules\notification\components\NotificationPrivacy` (`NotificationPrivacy::current()`):
+
+| | *Full details* (`Full`, default) | *Hide content* (`Redacted`) | *Minimal* (`Minimal`) |
+|---|---|---|---|
+| mail about one notification | `getMailSubject()`, the sentence, the blocks | `getRedactedMessage()` as subject and sentence, a "View online" button | "New notification: {category}", a "View online" button |
+| mail of several | "3 new notifications", the sentences under their Space | the sentences without content and without Space headings, a link each | a line per category ("Reactions on my content: 2 new notifications"), a button to the overview |
+| push | the sentence (short preview) | `getRedactedMessage()` | "1 new notification" / "3 new notifications" |
+| activity summary mail | the activities | the activities without content and Space ([activities](concept-activities.md#the-sentence-without-content)) | the number of new activities |
+
+The web list always shows everything. Space and group names count as content: they can tell as
+much as a title (a Space "Restructuring 2027"), so *Hide content* leaves them out as well.
+
+The core renders the levels centrally — `DeliveryBatch` and the mail views —, so a module has
+nothing to do for the privacy to hold. What it can do is offer a good sentence without content:
+
+```php
+protected function getRedactedMessage(array $params): ?string
+{
+    return Yii::t('TasksModule.notifications', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} assigned you to a task.', $params);
+}
+```
+
+`$params` holds only values that carry no content, rendered for the channel like those of
+`getMessage()`: `displayName`, `displayNames`, `namedCount`, `groupCount`, `contentType` (the type
+of the `getSubjectRecord()`, e.g. "post" or "comment"; only for a notification about a content)
+and the parameters of `getMessageParams()` that are a `MessageParam::user()` — people's names are
+not content. `content`, `contentTitle` and every other parameter of your own never reach the
+method, so a mistake cannot leak them.
+
+Write a **whole sentence**, the same way as `getMessage()`, with ICU `plural` for groups:
+translators need the complete sentence to build it in their language — "{displayName}: " glued
+to a phrase does not translate. A class whose `getMessage()` names people only ("{displayName}
+is now following you.") returns `$this->getMessage($params)`. Without the method (`null`, the
+default) the core uses the category form "{displayName}: {category}" ("Anna Smith: Tasks"; the
+category title alone without an originator) — safe, but less telling. Every core notification
+implements it: "{displayName} commented on your {contentType}.", "{displayName} mentioned you in
+a {contentType}.", "{displayName} invited you to a Space.", "You were added to a group.", …
+
+A channel of a module gets everything through its `DeliveryBatch`, which follows the level:
+`getSubject()`, `getPushBody()`, `getSentence($notification, $format)` (the sentence of one
+notification), `getBlocks($notification)` (the blocks of a single notification: none but "View
+online" when content is hidden) and `getCategorySummary()` (the lines of a minimal message of
+several). A channel that shows anything else — the Space of a notification, the originator's
+image — checks `$batch->privacy` (or `$batch->getContext()->privacy`) first.
 
 ### Reference
 
@@ -465,11 +523,11 @@ The module-facing API, marked `@api` in the code — stable across minor version
 
 - `BaseNotification`: `send()`, `revoke()`, `markSeen()`; the hooks `category()`, `priority()`,
   `listed()`, `standalone()`, `grouping()`, `getMessage()`, `getMessageParams()`,
-  `getMailSubject()`, `getUrl()`, `getSubjectRecord()`, `getBlocks()`, `getSpace()`,
-  `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
+  `getMailSubject()`, `getRedactedMessage()`, `getUrl()`, `getSubjectRecord()`, `getBlocks()`,
+  `getSpace()`, `canReceive()`; the properties `$record`, `$recipient`, `$originator`,
   `$content`, `$contentContainer`, `$sourceRecord`, `$payload`, `$groupCount`
 - `NotificationCategory`, `NotificationPriority`, `humhub\components\grouping\Grouping`, `NotificationBlock` (its
-  factories), `NotificationContext` (its properties)
+  factories), `NotificationContext` (its properties), `NotificationPrivacy` (for reading)
 - `humhub\components\message\MessageParam`
 - `NotificationSet`
 - `BeforeDispatchEvent` and `NotificationManager::EVENT_BEFORE_DISPATCH`
@@ -559,9 +617,11 @@ final class ChatTarget extends BaseTarget
 
     public function deliver(DeliveryBatch $batch): void
     {
-        // $batch->recipient, $batch->notifications (readonly properties), $batch->first(),
-        // $batch->isSingle(), $batch->getSubject(), $batch->getPushBody(), $batch->getUrl(),
-        // $batch->getCollapseKey(), $batch->isHighPriority(), $batch->getUnreadCount()
+        // $batch->recipient, $batch->notifications, $batch->privacy (readonly properties),
+        // $batch->first(), $batch->isSingle(), $batch->getSubject(), $batch->getPushBody(),
+        // $batch->getSentence($n), $batch->getBlocks($n), $batch->getCategorySummary(),
+        // $batch->getUrl(), $batch->getCollapseKey(), $batch->isHighPriority(),
+        // $batch->getUnreadCount(), $batch->getContext()
     }
 }
 ```
@@ -597,7 +657,10 @@ The keys, in the notification module's settings (global defaults) and user setti
 `<channel>.category.<category id>` (`mobile.category.social`, `web.category.followers`,
 `email.category.example`). A user without an own value inherits the global default; without one
 the category's default decides (`NotificationCategory::isEnabledByDefault()`). A category that
-is not switchable is always on. `NotificationSettingsService` reads and writes them.
+is not switchable is always on. `NotificationSettingsService` reads and writes them. The
+administration page also holds the network's [privacy mode](#privacy-mode) (module setting
+`privacyMode`: `full`, `redacted` or `minimal`), read-only when the configuration file sets
+it.
 
 A module that needs to know whether a user wants a kind of notification on a channel asks the
 target:
@@ -616,11 +679,13 @@ Yii::$app->notification->getTarget(MailTarget::ID)->isEnabled(MailNotification::
   (`NotificationSettingsService::toArray()`/`fromArray()`): `scope`, `channels` (`[{id, title}]`),
   `categories` (`[{id, title, description, icon, module, fixed, channels: {<channel>: bool}}]`,
   only the channels that apply to the category), `defaults` (the user's switches without own
-  settings, `{<category>: {<channel>: bool}}`; `null` for the global scope) and `spaces`. `PATCH`
-  is partial: `{categories: {<category>: {<channel>: bool|null}}, spaces: [ids]}` (`null`
-  removes the switch, so the default applies again), `422` with errors under `categories`,
-  `categories.<category>`, `categories.<category>.<channel>` or `spaces`. `?scope=global` for
-  the administrator's defaults. `POST /api/v2/notification/settings/reset` resets the caller,
+  settings, `{<category>: {<channel>: bool}}`; `null` for the global scope), `spaces` and
+  `privacy` (global scope: `{mode, fixed}`; `null` for a user). `PATCH` is partial:
+  `{categories: {<category>: {<channel>: bool|null}}, spaces: [ids], privacy: mode}` (`null`
+  removes the switch, so the default applies again; `privacy` for the global scope only and not
+  while the configuration sets it), `422` with errors under `categories`,
+  `categories.<category>`, `categories.<category>.<channel>`, `spaces` or `privacy`.
+  `?scope=global` for the administrator's defaults. `POST /api/v2/notification/settings/reset` resets the caller,
   `POST /api/v2/notification/settings/reset-all` every user (`ManageSettings` and
   `ManageUsers`). The pages `/notification/user` and
   `/notification/admin/defaults` are the `NotificationSettings` island

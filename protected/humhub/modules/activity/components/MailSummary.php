@@ -5,6 +5,7 @@ namespace humhub\modules\activity\components;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\Module;
 use humhub\modules\activity\services\RenderService;
+use humhub\modules\notification\components\NotificationPrivacy;
 use humhub\modules\notification\services\NotificationListService;
 use humhub\modules\user\models\User;
 use Throwable;
@@ -56,6 +57,10 @@ class MailSummary extends Component
      * summary, plus a line with the number of unread notifications. Nothing is sent without
      * activities.
      *
+     * Under the notification privacy mode ({@see NotificationPrivacy::current()}) "Hide content"
+     * each activity shows its sentence without content and without its Space; under "Minimal"
+     * the mail only tells the number of new activities.
+     *
      * @return bool whether a mail was sent
      */
     public function send()
@@ -66,17 +71,21 @@ class MailSummary extends Component
 
         Yii::$app->i18n->setUserLocale($this->user);
 
+        $privacy = NotificationPrivacy::current();
+        $activities = $this->getActivities();
         $outputHtml = '';
         $outputPlaintext = '';
 
-        foreach ($this->getActivities() as $record) {
-            $renderService = new RenderService($record);
+        if ($privacy !== NotificationPrivacy::Minimal) {
+            foreach ($activities as $record) {
+                $renderService = new RenderService($record, $privacy);
 
-            $outputHtml .= $renderService->getMailHtml();
-            $outputPlaintext .= $renderService->getMailText();
+                $outputHtml .= $renderService->getMailHtml();
+                $outputPlaintext .= $renderService->getMailText();
+            }
         }
 
-        if (empty($outputHtml)) {
+        if ($privacy === NotificationPrivacy::Minimal ? $activities === [] : empty($outputHtml)) {
             Yii::$app->i18n->autosetLocale();
             return false;
         }
@@ -92,6 +101,8 @@ class MailSummary extends Component
                 'activities' => $outputHtml,
                 'activitiesPlaintext' => $outputPlaintext,
                 'unseenNotificationCount' => NotificationListService::unseenCount($this->user),
+                'activityCount' => count($activities),
+                'privacy' => $privacy,
             ]);
 
             $mail->setTo($this->user->email);

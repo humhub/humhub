@@ -67,4 +67,12 @@ final class SpaceApprovalRequestNotification extends BaseNotification
             'spaceName' => $params['spaceName'],
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} requests membership for a Space.', $params);
+    }
 }

@@ -84,6 +84,16 @@ final class NewCommentNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return $this->isContentAuthor()
+            ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on your {contentType}.', $params)
+            : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on a {contentType}.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMailSubject(array $params): string
     {
         if (!isset($params['content'])) {

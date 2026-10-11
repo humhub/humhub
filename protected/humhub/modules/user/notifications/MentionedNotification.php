@@ -55,6 +55,16 @@ final class MentionedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return isset($params['contentType'])
+            ? Yii::t('UserModule.notification', '{displayName} mentioned you in a {contentType}.', $params)
+            : Yii::t('UserModule.notification', '{displayName} mentioned you.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMailSubject(array $params): string
     {
         $record = $this->getSubjectRecord();

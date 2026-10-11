@@ -11,6 +11,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Mentioning;
+use humhub\modules\user\models\User;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\notifications\MentionedNotification;
@@ -97,6 +98,7 @@ class MentionTest extends HumHubDbTestCase
         $this->assertSame(1, (int)$record->listed);
 
         $notification = NotificationManager::load($record);
+        $this->assertSame(User::findOne(['id' => 3])->displayName . ' mentioned you in a comment.', $notification->asRedactedText());
         $blocks = $notification->getBlocks(new NotificationContext(MailTarget::ID));
         $this->assertCount(2, $blocks);
         $this->assertSame(NotificationBlock::TYPE_CONTENT_PREVIEW, $blocks[0]->getType());

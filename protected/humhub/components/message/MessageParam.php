@@ -39,6 +39,7 @@ final readonly class MessageParam
         private bool $strong = false,
         private bool $quoted = false,
         private ?string $html = null,
+        private bool $user = false,
     ) {
     }
 
@@ -67,7 +68,18 @@ final readonly class MessageParam
      */
     public static function user(User $user): self
     {
-        return new self((string)$user->displayName, strong: true);
+        return new self((string)$user->displayName, strong: true, user: true);
+    }
+
+    /**
+     * Whether the value is the display name of a user ({@see user()}) - a name, no content, so
+     * a privacy mode that hides content may still show it.
+     *
+     * @internal for the redacted messages of notifications and activities
+     */
+    public function isUser(): bool
+    {
+        return $this->user;
     }
 
     /**

@@ -50,4 +50,12 @@ final class UserAddedNotification extends BaseNotification
             'spaceName' => $params['spaceName'],
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.notification', 'You were added to a Space.', $params);
+    }
 }

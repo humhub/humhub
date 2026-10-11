@@ -54,6 +54,14 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('CommentModule.base', '{displayName} commented on a {contentType}.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         $length = $this->getPreviewLength();

@@ -55,6 +55,8 @@ class MembershipTest extends HumHubDbTestCase
         ));
         $this->assertSame($space->createUrl('/space/manage/member/pending-approvals'), $notification->getUrl());
         $this->assertSame($user1->displayName . ' requests membership for the space “Space 1”', $notification->asMailSubject());
+        // without content: no Space name
+        $this->assertSame($user1->displayName . ' requests membership for a Space.', $notification->asRedactedText());
 
         // check cached version
         $membership = Membership::findMembership(1, Yii::$app->user->id);

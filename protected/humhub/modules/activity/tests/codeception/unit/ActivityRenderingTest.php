@@ -7,6 +7,9 @@ use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestLegacyContentActivity;
 use humhub\modules\activity\tests\codeception\activities\TestLegacyParamsActivity;
 use humhub\modules\activity\tests\codeception\activities\TestMessageParamsActivity;
+use humhub\modules\activity\tests\codeception\activities\TestRedactedActivity;
+use humhub\modules\comment\activities\NewCommentActivity;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\services\LikeService;
@@ -72,5 +75,50 @@ class ActivityRenderingTest extends HumHubDbTestCase
         $like = ActivityManager::load(Activity::findOne(['class' => LikeActivity::class, 'content_id' => $post->content->id]));
         $this->assertSame('Andreas Tester likes post "Tom <b>& "Jerry"</b>".', $like->asMailText());
         $this->assertStringContainsString('Tom &lt;b&gt;&amp; &quot;Jerry&quot;&lt;/b&gt;', $like->asWeb());
+    }
+
+    public function testRedactedMessageGetsNoContentParams()
+    {
+        $this->becomeUser('User2');
+        $activity = TestRedactedActivity::send(Space::findOne(['id' => 1]));
+
+        $this->assertSame('<strong>Sara Tester</strong> saw something by <strong>Admin Tester</strong>', $activity->asRedactedHtml());
+        $this->assertSame('Sara Tester saw something by Admin Tester', $activity->asRedactedText());
+        // the names and the count, and the user parameter - no title, note or other values
+        $this->assertSame(['displayName', 'displayNames', 'groupCount', 'other'], array_keys(TestRedactedActivity::$redactedParams));
+    }
+
+    public function testRedactedMessageFallsBackToTheTitle()
+    {
+        $this->becomeUser('User2');
+        $activity = TestMessageParamsActivity::send(Space::findOne(['id' => 1]));
+
+        $this->assertSame('<strong>Sara Tester</strong>: New activity', $activity->asRedactedHtml());
+        $this->assertSame('Sara Tester: New activity', $activity->asRedactedText());
+    }
+
+    public function testRedactedMessagesOfCoreActivities()
+    {
+        $this->becomeUser('User2');
+        $post = new Post(Space::findOne(['id' => 1]), ['message' => 'Secret <b>plans</b>']);
+        $this->assertTrue($post->save());
+
+        $created = ActivityManager::load(Activity::findOne(['class' => ContentCreatedActivity::class, 'content_id' => $post->content->id]));
+        $this->assertSame('Sara Tester created a new post.', $created->asRedactedText());
+        $this->assertSame('<strong>Sara Tester</strong> created a new post.', $created->asRedactedHtml());
+
+        $this->becomeUser('User3');
+        (new LikeService($post))->like();
+        $like = ActivityManager::load(Activity::findOne(['class' => LikeActivity::class, 'content_id' => $post->content->id]));
+        $this->assertSame('Andreas Tester likes a post.', $like->asRedactedText());
+
+        $comment = new Comment(['message' => 'Secret comment', 'content_id' => $post->content->id]);
+        $this->assertTrue($comment->save());
+        $commented = ActivityManager::load(Activity::findOne(['class' => NewCommentActivity::class, 'content_id' => $post->content->id]));
+        $this->assertSame('Andreas Tester commented on a post.', $commented->asRedactedText());
+
+        (new LikeService($comment))->like();
+        $commentLike = ActivityManager::load(Activity::find()->andWhere(['class' => LikeActivity::class, 'content_id' => $post->content->id])->orderBy(['id' => SORT_DESC])->one());
+        $this->assertSame('Andreas Tester likes a comment.', $commentLike->asRedactedText());
     }
 }

@@ -40,7 +40,8 @@ use yii\helpers\Url;
  * (the module's own one), its {@see priority()}, whether it is {@see listed()} in the web list,
  * its {@see grouping()}, the {@see getMessageParams()} its sentence needs beyond the built-in ones,
  * the {@see getUrl()} it links to, the {@see getSubjectRecord()} the sentence names, the
- * {@see getBlocks()} shown under the sentence and whether it is {@see standalone()}.
+ * {@see getBlocks()} shown under the sentence, whether it is {@see standalone()} and the
+ * {@see getRedactedMessage()} mails and push show under a {@see NotificationPrivacy} that hides content.
  * See `docs/develop/concept-notifications.md`.
  *
  * Instances are not created directly but by {@see NotificationManager::load()}, which reads the
@@ -338,6 +339,28 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
+     * The sentence without content that mails and push show under
+     * {@see NotificationPrivacy::Redacted}; `null` (the default) for the core's form
+     * "{displayName}: {category}" (the category title alone without an originator).
+     *
+     * A whole sentence, so translators can build it in their language, e.g.
+     * `Yii::t('TasksModule.base', '{displayName} assigned you to a task.', $params)`. A class whose
+     * {@see getMessage()} holds no content (e.g. "{displayName} is now following you.") may return
+     * `$this->getMessage($params)`.
+     *
+     * @param array<string, string|int> $params only values that carry no content, rendered for
+     * the channel: `displayName`, `displayNames`, `namedCount`, `groupCount`, `contentType` (the
+     * type of the {@see getSubjectRecord()}, e.g. "post"; only for a notification about a
+     * content, "content" when its record is gone) and the parameters of {@see getMessageParams()} that are a
+     * {@see MessageParam::user()} - never `content`, `contentTitle` or other parameters
+     * @api
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return null;
+    }
+
+    /**
      * The HTML sentence of the web list.
      *
      * @api for channel providers
@@ -385,6 +408,26 @@ abstract class BaseNotification extends BaseObject
     final public function asMailSubject(): string
     {
         return $this->getMailSubject($this->renderParams(MessageFormat::Text, self::PREVIEW_LENGTH_SHORT));
+    }
+
+    /**
+     * The HTML sentence without content, see {@see getRedactedMessage()}.
+     *
+     * @internal for the channels, which render the {@see NotificationPrivacy} through {@see \humhub\modules\notification\targets\DeliveryBatch}
+     */
+    final public function asRedactedHtml(): string
+    {
+        return $this->renderRedacted(MessageFormat::Html);
+    }
+
+    /**
+     * The plain text sentence without content, see {@see getRedactedMessage()}.
+     *
+     * @internal for the channels, which render the {@see NotificationPrivacy} through {@see \humhub\modules\notification\targets\DeliveryBatch}
+     */
+    final public function asRedactedText(): string
+    {
+        return $this->renderRedacted(MessageFormat::Text);
     }
 
     /**
@@ -461,12 +504,21 @@ abstract class BaseNotification extends BaseObject
                 return $blocks;
             }
         }
-        // nothing to link to, e.g. a notification about deleted content
-        if ($this->getUrl() !== null) {
-            $blocks[] = $this->getViewOnlineButton();
-        }
 
-        return $blocks;
+        return array_merge($blocks, $this->getViewOnlineBlocks());
+    }
+
+    /**
+     * The "View online" button alone - none when there is nothing to link to (no
+     * {@see getUrl()}, e.g. a notification about deleted content). What a mail shows below the
+     * sentence under a {@see NotificationPrivacy} that hides content.
+     *
+     * @return NotificationBlock[]
+     * @internal for the channels
+     */
+    final public function getViewOnlineBlocks(): array
+    {
+        return $this->getUrl() !== null ? [$this->getViewOnlineButton()] : [];
     }
 
     private function getViewOnlineButton(): NotificationBlock
@@ -538,9 +590,70 @@ abstract class BaseNotification extends BaseObject
     }
 
     /**
+     * {@see getRedactedMessage()}, else the category form.
+     */
+    private function renderRedacted(MessageFormat $format): string
+    {
+        $params = MessageParam::renderAll($this->getRedactedParams(), $format);
+
+        $message = $this->getRedactedMessage($params);
+        if ($message !== null) {
+            return $message;
+        }
+
+        $category = MessageParam::text(static::category()->title)->render($format);
+        $name = $params['displayNames'] !== '' ? $params['displayNames'] : $params['displayName'];
+        if ($name === '') {
+            return $category;
+        }
+
+        return Yii::t('NotificationModule.base', '{displayName}: {category}', [
+            'displayName' => $name,
+            'category' => $category,
+        ]);
+    }
+
+    /**
+     * The parameters of {@see getRedactedMessage()}: the names and counts, the content type, and
+     * the user names among {@see getMessageParams()}.
+     *
+     * @return array<string, MessageParam|string|int>
+     */
+    private function getRedactedParams(): array
+    {
+        $params = $this->getNameParams();
+
+        $record = $this->getSubjectRecord();
+        if ($record !== null) {
+            $params['contentType'] = MessageParam::text((string)$record->getContentName());
+        } elseif ($this->record->content_id !== null) {
+            // the content's record is gone
+            $params['contentType'] = Yii::t('NotificationModule.base', 'content');
+        }
+
+        foreach ($this->getMessageParams() as $name => $value) {
+            if ($value instanceof MessageParam && $value->isUser()) {
+                $params[$name] = $value;
+            }
+        }
+
+        return $params;
+    }
+
+    /**
      * @return array<string, MessageParam|string|int>
      */
     private function getBuiltInParams(int $previewLength, bool $strongContent): array
+    {
+        return array_merge($this->getNameParams(), $this->getContentParams($previewLength, $strongContent));
+    }
+
+    /**
+     * `displayName`, `displayNames`, `namedCount` and `groupCount`.
+     *
+     * @return array<string, MessageParam|string|int>
+     */
+    private function getNameParams(): array
     {
         [$namesHtml, $namedCount] = $this->resolveDisplayNames(
             static fn(User $user): string => MessageParam::user($user)->render(MessageFormat::Html),
@@ -549,12 +662,12 @@ abstract class BaseNotification extends BaseObject
             static fn(User $user): string => MessageParam::user($user)->render(MessageFormat::Text),
         );
 
-        return array_merge([
+        return [
             'displayName' => $this->originator !== null ? MessageParam::user($this->originator) : '',
             'displayNames' => MessageParam::html($namesHtml, $namesText),
             'namedCount' => $namedCount,
             'groupCount' => $this->groupCount,
-        ], $this->getContentParams($previewLength, $strongContent));
+        ];
     }
 
     /**

@@ -15,4 +15,12 @@ class SpaceCreatedActivity extends BaseSpaceActivity
 
         return Yii::t('SpaceModule.base', '{displayName} created the new Space {spaceName}.', $params);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.base', '{displayName} created a new Space.', $params);
+    }
 }

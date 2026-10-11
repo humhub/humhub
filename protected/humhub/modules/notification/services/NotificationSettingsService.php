@@ -12,6 +12,8 @@ use humhub\components\SettingsManager;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationPrivacy;
+use humhub\modules\notification\Module;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\space\models\Space;
@@ -28,6 +30,9 @@ use Yii;
  * the channel, e.g. `mobile.category.social = 0`. A user without an own value inherits the global
  * default; without a global default the category's {@see NotificationCategory::isEnabledByDefault()}
  * decides. A category that is not switchable is always on.
+ *
+ * The global scope also holds the network's {@see NotificationPrivacy} (`privacyMode`, see
+ * {@see Module::getPrivacy()}).
  *
  * @internal
  * @since 1.20
@@ -120,9 +125,12 @@ final readonly class NotificationSettingsService
      * - `spaces`: `selected` - the spaces whose new content the user is notified about
      *   ({@see NotificationSpaceService::getSpaces()}), for the global defaults the default
      *   notification spaces - as short space shapes, and `enabled` - whether the selection has
-     *   a purpose, i.e. the `content` category is among the categories of this scope.
+     *   a purpose, i.e. the `content` category is among the categories of this scope;
+     * - `privacy`: for the global defaults the network's {@see NotificationPrivacy} - `mode`
+     *   (`full`, `redacted` or `minimal`) and `fixed` (set in the configuration file, so it
+     *   cannot be changed here); `null` for a user.
      *
-     * @return array{scope: string, channels: array, categories: array, defaults: array|null, spaces: array{selected: array, enabled: bool}}
+     * @return array{scope: string, channels: array, categories: array, defaults: array|null, spaces: array{selected: array, enabled: bool}, privacy: array{mode: string, fixed: bool}|null}
      */
     public function toArray(): array
     {
@@ -166,6 +174,10 @@ final readonly class NotificationSettingsService
                 'selected' => array_map(SpaceSerializer::short(...), $this->getSpaces()),
                 'enabled' => array_filter($categories, fn(NotificationCategory $category) => $category->id === NotificationCategory::ID_CONTENT) !== [],
             ],
+            'privacy' => $this->user === null ? [
+                'mode' => self::module()->getPrivacy()->value,
+                'fixed' => self::module()->isPrivacyFixed(),
+            ] : null,
         ];
     }
 
@@ -177,7 +189,9 @@ final readonly class NotificationSettingsService
      *   changed, `null` removes the switch of this scope (it follows the default again,
      *   {@see setCategory()}); a category that is not switchable only accepts `true` (and `null`);
      * - `spaces`: the ids of the spaces whose new content notifies the user (of those the user
-     *   may see; others are ignored) - the default notification spaces for the global scope.
+     *   may see; others are ignored) - the default notification spaces for the global scope;
+     * - `privacy`: the network's {@see NotificationPrivacy} (`full`, `redacted` or `minimal`),
+     *   global scope only, rejected while it is set in the configuration file.
      *
      * Nothing is written when anything is invalid; the writes run in one transaction. A user
      * whose `spaces` are stored no longer follows the default notification spaces implicitly
@@ -185,7 +199,7 @@ final readonly class NotificationSettingsService
      * leaves that untouched.
      *
      * @return array<string, string[]> the errors by field - `categories`, `categories.<category>`,
-     * `categories.<category>.<channel>`, `spaces` -, empty on success
+     * `categories.<category>.<channel>`, `spaces`, `privacy` -, empty on success
      */
     public function fromArray(array $data): array
     {
@@ -253,12 +267,24 @@ final readonly class NotificationSettingsService
             }
         }
 
+        $privacy = null;
+        if (array_key_exists('privacy', $data)) {
+            $privacy = is_string($data['privacy']) ? NotificationPrivacy::tryFrom($data['privacy']) : null;
+            if ($this->user !== null) {
+                $errors['privacy'][] = Yii::t('NotificationModule.base', 'The privacy mode is set for the whole network.');
+            } elseif ($privacy === null) {
+                $errors['privacy'][] = Yii::t('NotificationModule.base', 'Invalid value.');
+            } elseif (self::module()->isPrivacyFixed() && $privacy !== self::module()->getPrivacy()) {
+                $errors['privacy'][] = Yii::t('NotificationModule.base', 'The privacy mode is set in the configuration file.');
+            }
+        }
+
         if ($errors !== []) {
             return $errors;
         }
 
         try {
-            Yii::$app->db->transaction(function () use ($switches, $spaceGuids): void {
+            Yii::$app->db->transaction(function () use ($switches, $spaceGuids, $privacy): void {
                 foreach ($switches as [$target, $category, $enabled]) {
                     $this->setCategory($target, $category, $enabled);
                 }
@@ -270,6 +296,10 @@ final readonly class NotificationSettingsService
                         self::moduleSettings()->user($this->user)->set(NotificationSpaceService::IS_TOUCHED_SETTINGS, true);
                     }
                     (new NotificationSpaceService())->setSpaces($spaceGuids, $this->user);
+                }
+
+                if ($privacy !== null) {
+                    self::module()->setPrivacy($privacy);
                 }
             });
         } catch (\Throwable $e) {
@@ -346,7 +376,12 @@ final readonly class NotificationSettingsService
 
     private static function moduleSettings(): SettingsManager
     {
-        return Yii::$app->getModule('notification')->settings;
+        return self::module()->settings;
+    }
+
+    private static function module(): Module
+    {
+        return Yii::$app->getModule('notification');
     }
 
     private static function categoryKey(BaseTarget $target, NotificationCategory $category): string

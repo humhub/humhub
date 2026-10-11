@@ -123,6 +123,43 @@
             </template>
         </section>
 
+        <section v-if="privacy" class="c-notification-settings__card c-notification-settings__privacy">
+            <h3 class="c-notification-settings__subtitle">{{ labels.privacy }}</h3>
+            <p class="c-notification-settings__lead">{{ labels.privacyIntro }}</p>
+            <p v-if="privacy.fixed" class="c-notification-settings__privacy-fixed">
+                <i class="ti ti-lock" aria-hidden="true"></i>{{ labels.privacyFixed }}
+            </p>
+            <div
+                class="c-notification-settings__profiles"
+                role="radiogroup"
+                :aria-label="labels.privacy"
+                :aria-disabled="privacy.fixed ? 'true' : null"
+                data-field="privacy"
+            >
+                <button
+                    v-for="option in privacyModes"
+                    :key="option.id"
+                    type="button"
+                    role="radio"
+                    class="c-notification-settings__profile"
+                    :class="{ 'is-selected': privacy.mode === option.id }"
+                    :aria-checked="privacy.mode === option.id ? 'true' : 'false'"
+                    :tabindex="privacy.mode === option.id ? 0 : -1"
+                    :disabled="privacy.fixed"
+                    :data-privacy="option.id"
+                    @click="selectPrivacy(option.id)"
+                    @keydown="onPrivacyKeydown($event, option.id)"
+                >
+                    <span class="c-notification-settings__radio" aria-hidden="true"></span>
+                    <span class="c-notification-settings__profile-text">
+                        <span class="c-notification-settings__profile-title">{{ option.title }}</span>
+                        <span class="c-notification-settings__profile-description">{{ option.description }}</span>
+                        <span class="c-notification-settings__privacy-example">{{ option.example }}</span>
+                    </span>
+                </button>
+            </div>
+        </section>
+
         <div class="c-notification-settings__footer">
             <span class="c-notification-settings__autosave">{{ labels.autosave }}</span>
             <button
@@ -151,7 +188,7 @@ const clone = (value) => JSON.parse(JSON.stringify(value));
 // How long the space picker waits for further changes before it saves.
 export const SPACES_DEBOUNCE_MS = 600;
 
-// Deep-merges the `categories` and replaces the `spaces` of `patch` into `target` — later wins.
+// Deep-merges the `categories` and replaces the `spaces` and `privacy` of `patch` into `target` — later wins.
 const mergePatch = (target, patch) => {
     Object.entries(patch.categories || {}).forEach(([categoryId, switches]) => {
         target.categories = target.categories || {};
@@ -159,6 +196,9 @@ const mergePatch = (target, patch) => {
     });
     if (patch.spaces !== undefined) {
         target.spaces = patch.spaces;
+    }
+    if (patch.privacy !== undefined) {
+        target.privacy = patch.privacy;
     }
     return target;
 };
@@ -169,7 +209,7 @@ const mergePatch = (target, patch) => {
  * `notification\widgets\SettingsPage`.
  *
  * - Props: `initial` (the payload of `GET /api/v2/notification/settings`: `scope`, `channels`,
- *   `categories`, `defaults`, `spaces`), `settingsUrl` (that endpoint, with `?scope=global` for the
+ *   `categories`, `defaults`, `spaces`, `privacy`), `settingsUrl` (that endpoint, with `?scope=global` for the
  *   defaults), `resetUrl` (the caller's reset, user scope), `resetAllUrl` (reset every user,
  *   global scope, only for `ManageUsers` — else `null`), `scope` (`user`|`global`).
  * - User scope: a profile radio group — *Everything* (every channel of every category on),
@@ -184,8 +224,11 @@ const mergePatch = (target, patch) => {
  *   the `content` category, the spaces whose new content notifies (the core `PickerFilterControl`
  *   searching the spaces the caller may see, with the space module's images); a category that
  *   cannot be switched off shows a lock instead.
+ * - Global scope: the network's privacy mode of mails and push (`privacy`) — a radio group of
+ *   *Full details*, *Hide content* and *Minimal*, each with an example line; disabled with a
+ *   note when the configuration file sets it (`privacy.fixed`).
  * - Autosave: every change sends `PATCH settingsUrl` with only what changed
- *   (`{categories: {<category>: {<channel>: bool|null}}, spaces: [ids]}`), the spaces after
+ *   (`{categories: {<category>: {<channel>: bool|null}}, spaces: [ids], privacy: mode}`), the spaces after
  *   `SPACES_DEBOUNCE_MS`, a profile as one request. Requests run one after another; changes
  *   made meanwhile are merged into the next one (the latest value of a switch wins). A failed
  *   request puts the switches it carried back to the last saved state; a `422` lands on the
@@ -248,7 +291,32 @@ export default {
                 resetConfirm: i18n.t('NotificationModule.base', 'Do you want to reset your notification settings to the defaults?'),
                 resetAll: i18n.t('NotificationModule.base', 'Reset all users'),
                 resetAllConfirm: i18n.t('NotificationModule.base', 'Do you want to reset the settings concerning notifications for all users?'),
+                privacy: i18n.t('NotificationModule.base', 'Privacy of e-mails and push messages'),
+                privacyIntro: i18n.t('NotificationModule.base', 'How much notification e-mails, push messages and the activity summary e-mail (E-Mail Summaries) show. They leave the network and may be read on a lock screen or in a shared mailbox. The notifications in the network always show everything.'),
+                privacyFixed: i18n.t('NotificationModule.base', 'This setting is set in the configuration file and cannot be changed here.'),
             };
+        },
+        privacyModes() {
+            return [
+                {
+                    id: 'full',
+                    title: i18n.t('NotificationModule.base', 'Full details'),
+                    description: i18n.t('NotificationModule.base', 'Names, content previews and the content itself.'),
+                    example: i18n.t('NotificationModule.base', 'Jane Doe commented on your post “Budget 2027”.'),
+                },
+                {
+                    id: 'redacted',
+                    title: i18n.t('NotificationModule.base', 'Hide content'),
+                    description: i18n.t('NotificationModule.base', 'Who did what, without the content, titles or Space names.'),
+                    example: i18n.t('NotificationModule.base', 'Jane Doe commented on your post.'),
+                },
+                {
+                    id: 'minimal',
+                    title: i18n.t('NotificationModule.base', 'Minimal'),
+                    description: i18n.t('NotificationModule.base', 'Only the kind of notification and how many, without names.'),
+                    example: i18n.t('NotificationModule.base', 'New notification: Reactions on my content'),
+                },
+            ];
         },
         profiles() {
             return [
@@ -289,6 +357,7 @@ export default {
                 defaults: payload.defaults ? clone(payload.defaults) : null,
                 spaces: { enabled: payload.spaces?.enabled !== false },
                 spaceIds: selected.map((space) => String(space.id)),
+                privacy: payload.privacy ? clone(payload.privacy) : null,
             };
         },
         applyState(payload) {
@@ -304,7 +373,7 @@ export default {
             return Object.fromEntries(this.categories.map((category) => [category.id, { ...category.channels }]));
         },
         snapshot() {
-            return { categories: this.switches(), spaceIds: [...this.spaceIds] };
+            return { categories: this.switches(), spaceIds: [...this.spaceIds], privacy: this.privacy?.mode ?? null };
         },
         channelsOf(category) {
             return this.channels.filter((channel) => Object.prototype.hasOwnProperty.call(category.channels, channel.id));
@@ -369,17 +438,30 @@ export default {
                 this.enqueue(patch);
             }
         },
+        selectPrivacy(mode) {
+            if (!this.privacy || this.privacy.fixed || this.privacy.mode === mode) {
+                return;
+            }
+            this.privacy.mode = mode;
+            this.enqueue({ privacy: mode });
+        },
         // Arrow keys move the choice within the radio group, as with native radio buttons.
         onProfileKeydown(event, profileId) {
+            this.moveChoice(event, this.profiles, profileId, this.selectProfile, 'data-profile');
+        },
+        onPrivacyKeydown(event, mode) {
+            this.moveChoice(event, this.privacyModes, mode, this.selectPrivacy, 'data-privacy');
+        },
+        moveChoice(event, options, current, select, attribute) {
             const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
             if (!steps[event.key]) {
                 return;
             }
             event.preventDefault();
-            const ids = this.profiles.map((option) => option.id);
-            const next = ids[(ids.indexOf(profileId) + steps[event.key] + ids.length) % ids.length];
-            this.selectProfile(next);
-            this.$nextTick(() => this.$el.querySelector(`[data-profile="${next}"]`)?.focus());
+            const ids = options.map((option) => option.id);
+            const next = ids[(ids.indexOf(current) + steps[event.key] + ids.length) % ids.length];
+            select(next);
+            this.$nextTick(() => this.$el.querySelector(`[${attribute}="${next}"]`)?.focus());
         },
         enqueue(patch) {
             this.pending = mergePatch(this.pending || {}, patch);
@@ -427,6 +509,9 @@ export default {
             if (patch.spaces !== undefined) {
                 this.saved.spaceIds = patch.spaces.map(String);
             }
+            if (patch.privacy !== undefined) {
+                this.saved.privacy = response?.privacy?.mode ?? patch.privacy;
+            }
             if (!this.pending && !this.spacesTimer && response && Array.isArray(response.categories)) {
                 const expanded = this.expanded;
                 this.applyState(response);
@@ -446,6 +531,9 @@ export default {
             });
             if (patch.spaces !== undefined && this.pending?.spaces === undefined && !this.spacesTimer) {
                 this.spaceIds = [...this.saved.spaceIds];
+            }
+            if (patch.privacy !== undefined && this.pending?.privacy === undefined && this.privacy) {
+                this.privacy.mode = this.saved.privacy;
             }
         },
         request(method, url, data) {

@@ -75,6 +75,14 @@ final class ContentCreatedActivity extends BaseContentActivity implements Config
         }
     }
 
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('ContentModule.activities', '{groupCount, plural, =1{{displayName} created a new {contentType}.} other{{displayName} created # new entries.}}', $params);
+    }
+
     public function getUrl(bool $scheme = false): ?string
     {
         if ($this->groupCount > 1) {

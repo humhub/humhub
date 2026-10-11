@@ -26,4 +26,12 @@ class SpaceArchivedActivity extends BaseSpaceActivity implements ConfigurableAct
 
         return Yii::t('SpaceModule.base', '{displayName} has archived the Space {spaceName}.', $params);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.base', '{displayName} archived a Space.', $params);
+    }
 }

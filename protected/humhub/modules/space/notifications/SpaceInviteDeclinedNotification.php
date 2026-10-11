@@ -51,4 +51,12 @@ final class SpaceInviteDeclinedNotification extends BaseNotification
             'spaceName' => $params['spaceName'],
         ]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.notification', '{displayName} declined your invitation to a Space.', $params);
+    }
 }

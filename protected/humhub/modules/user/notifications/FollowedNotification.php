@@ -59,4 +59,13 @@ final class FollowedNotification extends BaseNotification
     {
         return Yii::t('UserModule.notification', '{namedCount, plural, =2{{displayNames} are} other{{displayName} is}} now following you.', $params);
     }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        // the sentence names people only
+        return $this->getMessage($params);
+    }
 }

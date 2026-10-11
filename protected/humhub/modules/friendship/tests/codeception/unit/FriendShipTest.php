@@ -92,6 +92,7 @@ class FriendshipTest extends HumHubDbTestCase
 
         $notification = NotificationManager::load($record);
         $this->assertStringEndsWith('sent you a friend request.', $notification->asWeb());
+        $this->assertSame($requester->displayName . ' sent you a friend request.', $notification->asRedactedText());
         $this->assertSame($requester->getUrl(), $notification->getUrl());
         $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
 

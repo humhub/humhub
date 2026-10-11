@@ -99,6 +99,34 @@ Up to 1.19, parameters were added by overriding `getMessageParamsWeb()`,
 working — an override is still called and its result wins, also over `getMessageParams()` — but
 new code uses `getMessageParams()` alone.
 
+### The sentence without content
+
+The administrator can hide content in the mails that leave the network — the *privacy mode* of
+the [notification settings](../admin/notifications.md#privacy-of-e-mails-and-push). With *Hide
+content* the summary mail shows each activity by `getRedactedMessage(array $params): ?string`
+instead of `getMessage()`, without the Space name; with *Minimal* it only tells how many
+activities there are. The activity box is unaffected.
+
+```php
+protected function getRedactedMessage(array $params): ?string
+{
+    return Yii::t('ExampleModule.base', '{displayName} created a task.', $params);
+}
+```
+
+`$params` holds only values that carry no content: `displayName`, `displayNames`, `groupCount`,
+`contentType` (the type of the activity's content, e.g. "post"; only for an activity about a
+content) and those of your `getMessageParams()` that are a `MessageParam::user()` — names are
+fine, everything else (`content`, `contentTitle`, titles, previews) never reaches the method.
+Write a whole sentence, as for `getMessage()`, so translators can build it in their language;
+pieces glued together do not translate. A class whose `getMessage()` names people only may
+return `$this->getMessage($params)`, as `FollowActivity` does.
+
+The method is optional (since 1.20): without it — returning `null`, the default — the line is
+"{displayName}: {title}", the title of a `ConfigurableActivityInterface` (e.g. "Anna Smith:
+Tasks"), else "New activity". The core activities implement it ("Anna Smith created a new post.",
+"Anna Smith commented on a post.", "Anna Smith joined a Space.").
+
 ### The rest of the class
 
 The object is constructed from its `Activity` record and exposes `$record`, `$user`,
@@ -109,7 +137,7 @@ links the entry: the content addon, else the content, else the container — rel
 the summary mail asks for `getUrl(true)`.
 
 What a module may use or override is marked `@api` — `send()`, `grouping()`, `getMessage()`,
-`getMessageParams()`, `getUrl()`, the properties above, `ConfigurableActivityInterface`,
+`getMessageParams()`, `getRedactedMessage()`, `getUrl()`, the properties above, `ConfigurableActivityInterface`,
 `BeforeDispatchEvent` and `ActivityManager::EVENT_BEFORE_DISPATCH`; everything marked `@internal`
 (the grouping and rendering services, the deprecated parameter methods) may change without notice.
 
@@ -195,7 +223,10 @@ in the administrator's defaults, so users can leave it out of their summary mail
 interface it is always included.
 
 The summary mail also mentions the number of unread notifications, with a link to the
-notification overview; it is not sent for notifications alone.
+notification overview; it is not sent for notifications alone. It follows the notification
+privacy mode: *Hide content* shows the sentences without content
+([above](#the-sentence-without-content)) and no Space names, *Minimal* only the number of new
+activities with a link to the dashboard.
 
 ## API
 

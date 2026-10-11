@@ -10,6 +10,7 @@ namespace notification\functional;
 
 use notification\FunctionalTester;
 use PHPUnit\Framework\Assert;
+use Yii;
 
 /**
  * The notification settings pages render the `NotificationSettings` island with its props.
@@ -38,6 +39,7 @@ class SettingsPageCest
         Assert::assertContains('followers', array_column($props['initial']['categories'], 'id'));
         Assert::assertIsArray($props['initial']['defaults']);
         Assert::assertArrayHasKey('spaces', $props['initial']);
+        Assert::assertNull($props['initial']['privacy'], 'the privacy mode is on the administration page only');
     }
 
     public function testAdminPageRendersTheIslandInTheGlobalScope(FunctionalTester $I)
@@ -56,6 +58,23 @@ class SettingsPageCest
         Assert::assertSame('global', $props['initial']['scope']);
         Assert::assertNull($props['initial']['defaults']);
         Assert::assertContains('admin', array_column($props['initial']['categories'], 'id'));
+        Assert::assertSame(['mode' => 'full', 'fixed' => false], $props['initial']['privacy']);
+    }
+
+    public function testAdminPageShowsAPrivacyModeOfTheConfigurationAsFixed(FunctionalTester $I)
+    {
+        $I->wantTo('see the privacy mode of the configuration file as read-only');
+        Yii::$app->getModule('notification')->privacyMode = 'redacted';
+        try {
+            $I->amAdmin();
+            $I->amOnRoute('/notification/admin/defaults');
+
+            $I->seeResponseCodeIs(200);
+            $props = json_decode($I->grabAttributeFrom('notification-settings', 'props'), true);
+            Assert::assertSame(['mode' => 'redacted', 'fixed' => true], $props['initial']['privacy']);
+        } finally {
+            Yii::$app->getModule('notification')->privacyMode = null;
+        }
     }
 
     public function testAdminPageIsForbiddenForUsers(FunctionalTester $I)

@@ -1874,6 +1874,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       nothing is mailed for what the user has already seen or while they are on the site.
     - The activity summary mail mentions the number of unread notifications, with a link to the
       notification overview.
+    - Administrators choose how much mails and push show (*Administration → Settings →
+      Notifications*, or `privacyMode` of the `notification` module in the configuration):
+      *Full details* (as before, the default), *Hide content* or *Minimal*. The core renders it
+      for every notification; a class only offers its sentence without content,
+      `getRedactedMessage()`, see below.
 
   - **Migrating a module** — what `/humhub:refactor-modules` does per repository:
     1. Base the work on `develop` (create it from `master` if missing) and open the PR against it.
@@ -1881,7 +1886,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
        does not fit, `getMessage()` (and `getMessageParams()`) instead of `html()` and the views,
        `grouping()` instead of `getGroupKey()`, `canReceive()` instead of a
        `send()`/`isBlockedForUser()` override; add the `Notification` suffix if it is missing.
-       Delete the views and the category classes.
+       Add `getRedactedMessage()` — a whole sentence without content for the privacy mode *Hide
+       content* (e.g. "{displayName} assigned you to a task."); without it mails and push show
+       "{displayName}: {category}". Delete the views and the category classes.
     3. Replace every `instance()…send()`/`sendBulk()` with `X::send()`, every `delete()` with
        `X::revoke()` and every `markAsSeen()` with `X::markSeen()`.
     4. Add a migration renaming stored rows of renamed classes (`$this->renameClass()`).
@@ -1918,6 +1925,16 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `getMessageParamsWeb()`). They are no longer overridden by `BaseContentActivity`,
     `BaseSpaceActivity` and the core activities — an override calling `parent::` gets the same
     parameters as before. No runtime warnings.
+  - **New, optional**: `BaseActivity::getRedactedMessage(array $params): ?string`, the sentence
+    the summary mail shows when the administrator hides content (the notification privacy mode
+    *Hide content*); its parameters carry no content (`displayName`, `displayNames`,
+    `groupCount`, `contentType` and the `MessageParam::user()` values of `getMessageParams()`).
+    Without it the line is "{displayName}: {title}" (the `ConfigurableActivityInterface` title,
+    else "New activity"). The core activities implement it. Under *Minimal* the summary mail
+    lists no activities but their number: a theme overriding
+    `@activity/views/mails/mailSummary` (or its plaintext twin) gets the new view parameters
+    `activityCount` and `privacy` (a `NotificationPrivacy`; `$activities` is empty under
+    *Minimal*) and should show the count, as the core view does.
   - The activity API is marked: `@api` are `BaseActivity`, `BaseContentActivity`,
     `BaseSpaceActivity` and their extension points (`getMessage()`, `getMessageParams()`,
     `getUrl()`, `getGroupingQuery()`, the record properties, `$groupingThreshold`,

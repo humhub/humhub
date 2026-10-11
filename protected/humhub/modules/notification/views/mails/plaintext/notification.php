@@ -7,10 +7,9 @@
  */
 
 use humhub\components\View;
-use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\components\NotificationPrivacy;
 use humhub\modules\notification\services\NotificationBlockRenderer;
 use humhub\modules\notification\targets\DeliveryBatch;
-use humhub\modules\notification\targets\MailTarget;
 use yii\helpers\Url;
 
 /**
@@ -19,6 +18,7 @@ use yii\helpers\Url;
  * One notification: its sentence and its blocks ({@see NotificationBlockRenderer}), buttons as
  * `label: URL` lines, separated by empty lines. Several: the subject as headline, per
  * notification its sentence and, on the next line, its entry URL, and the overview URL at the end.
+ * The sentences and blocks follow the {@see NotificationPrivacy}, see the HTML twin.
  */
 
 /* @var View $this */
@@ -27,22 +27,26 @@ use yii\helpers\Url;
 $lines = [];
 if ($batch->isSingle()) {
     $notification = $batch->first();
-    $context = new NotificationContext(MailTarget::ID);
     $renderer = new NotificationBlockRenderer($notification);
 
-    $lines[] = $notification->asMailText();
+    $lines[] = $batch->getSentence($notification);
     $lines[] = '';
-    foreach ($renderer->renderMailText($notification->getRenderedBlocks($context)) as $part) {
+    foreach ($renderer->renderMailText($batch->getBlocks($notification)) as $part) {
         $lines[] = $part;
         $lines[] = '';
     }
 } else {
     $lines[] = $batch->getSubject();
     $lines[] = '';
-    foreach ($batch->notifications as $notification) {
-        $lines[] = $notification->asMailText();
-        $lines[] = $notification->getEntryUrl();
+    if ($batch->privacy === NotificationPrivacy::Minimal) {
+        array_push($lines, ...$batch->getCategorySummary());
         $lines[] = '';
+    } else {
+        foreach ($batch->notifications as $notification) {
+            $lines[] = $batch->getSentence($notification);
+            $lines[] = $notification->getEntryUrl();
+            $lines[] = '';
+        }
     }
     $lines[] = Yii::t('NotificationModule.base', 'Open notifications') . ': ' . Url::to(['/notification/overview'], true);
 }

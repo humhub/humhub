@@ -6,14 +6,14 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\message\MessageFormat;
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\notification\components\NotificationContext;
+use humhub\modules\notification\components\NotificationPrivacy;
 use humhub\modules\notification\services\NotificationBlockRenderer;
 use humhub\modules\notification\targets\DeliveryBatch;
-use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\space\models\Space;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
@@ -23,16 +23,21 @@ use yii\helpers\Url;
 /**
  * The notification mail of a {@see DeliveryBatch}, inside the global mail layout.
  *
- * One notification: its sentence and its blocks ({@see BaseNotification::getRenderedBlocks()},
- * rendered by the {@see NotificationBlockRenderer}), buttons included. Several: a headline, the
- * sentences and a "View" link each - those without a space first, the others under the heading
- * of their space - and a button to the overview.
+ * One notification: its sentence and its blocks ({@see DeliveryBatch::getBlocks()}, rendered by
+ * the {@see NotificationBlockRenderer}), buttons included. Several: a headline, the sentences and
+ * a "View" link each - those without a space first, the others under the heading of their space -
+ * and a button to the overview.
+ *
+ * The sentences and blocks come from the batch, which follows the {@see NotificationPrivacy}.
+ * Without content there are no Space headings; minimal, several notifications are a line per
+ * category with their number instead of the sentences.
  */
 
 /* @var View $this */
 /* @var DeliveryBatch $batch */
 
-$spaceOf = static fn(BaseNotification $notification): ?Space => $notification->getSpace();
+// Space names are no content of the notification, but may tell too much: shown with full details only
+$spaceOf = static fn(BaseNotification $notification): ?Space => $batch->privacy === NotificationPrivacy::Full ? $notification->getSpace() : null;
 
 $textStyle = 'font-size: 14px; line-height: 22px; font-family: ' . MailStyleHelper::getFontFamily()
     . '; color: ' . MailStyleHelper::getTextColorMain() . '; font-weight: 300; text-align: left;';
@@ -55,19 +60,18 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                         <?php if ($batch->isSingle()): ?>
                             <?php
                             $notification = $batch->first();
-                            $context = new NotificationContext(MailTarget::ID);
                             $renderer = new NotificationBlockRenderer($notification);
                             ?>
                             <tr>
                                 <td valign="top" align="left" style="<?= $textStyle ?>">
-                                    <?= $notification->asMailHtml() ?>
+                                    <?= $batch->getSentence($notification, MessageFormat::Html) ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td height="15"></td>
                             </tr>
 
-                            <?php foreach ($renderer->renderMailHtml($notification->getRenderedBlocks($context)) as $part): ?>
+                            <?php foreach ($renderer->renderMailHtml($batch->getBlocks($notification)) as $part): ?>
                                 <tr>
                                     <td valign="top" align="left" style="<?= $textStyle ?>">
                                         <?= $part ?>
@@ -95,23 +99,11 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                 </td>
                             </tr>
 
-                            <?php foreach ($sections as $section): ?>
-                                <?php if ($section['space'] !== null): ?>
-                                    <tr>
-                                        <td valign="top">
-                                            <?= MailHeadline::widget([
-                                                'text' => Html::encode($section['space']->displayName),
-                                                'level' => 2,
-                                            ]) ?>
-                                        </td>
-                                    </tr>
-                                <?php endif ?>
-                                <?php foreach ($section['notifications'] as $notification): ?>
+                            <?php if ($batch->privacy === NotificationPrivacy::Minimal): ?>
+                                <?php foreach ($batch->getCategorySummary() as $line): ?>
                                     <tr>
                                         <td valign="top" align="left" style="<?= $textStyle ?>">
-                                            <?= $notification->asMailHtml() ?>
-                                            - <a href="<?= Html::encode($notification->getEntryUrl()) ?>"
-                                                 style="<?= $linkStyle ?>"><?= Yii::t('NotificationModule.base', 'View') ?></a>
+                                            <?= Html::encode($line) ?>
                                         </td>
                                     </tr>
                                     <tr>
@@ -121,7 +113,35 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary
                                 <tr>
                                     <td height="10"></td>
                                 </tr>
-                            <?php endforeach ?>
+                            <?php else: ?>
+                                <?php foreach ($sections as $section): ?>
+                                    <?php if ($section['space'] !== null): ?>
+                                        <tr>
+                                            <td valign="top">
+                                                <?= MailHeadline::widget([
+                                                    'text' => Html::encode($section['space']->displayName),
+                                                    'level' => 2,
+                                                ]) ?>
+                                            </td>
+                                        </tr>
+                                    <?php endif ?>
+                                    <?php foreach ($section['notifications'] as $notification): ?>
+                                        <tr>
+                                            <td valign="top" align="left" style="<?= $textStyle ?>">
+                                                <?= $batch->getSentence($notification, MessageFormat::Html) ?>
+                                                - <a href="<?= Html::encode($notification->getEntryUrl()) ?>"
+                                                     style="<?= $linkStyle ?>"><?= Yii::t('NotificationModule.base', 'View') ?></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="10"></td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                    <tr>
+                                        <td height="10"></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            <?php endif ?>
 
                             <tr>
                                 <td valign="top">

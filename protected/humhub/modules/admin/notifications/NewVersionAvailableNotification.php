@@ -54,6 +54,14 @@ final class NewVersionAvailableNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('AdminModule.notification', 'A new HumHub version is available.');
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return ['version' => (string)($this->payload['version'] ?? HumHubAPI::getLatestHumHubVersion())];

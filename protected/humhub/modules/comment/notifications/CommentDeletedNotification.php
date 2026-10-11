@@ -52,6 +52,14 @@ final class CommentDeletedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('CommentModule.notifications', 'Your comment has been deleted by {displayName}.', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMessageParams(): array
     {
         return [

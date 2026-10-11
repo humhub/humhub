@@ -1,6 +1,7 @@
 //
 // Notification settings island (protected/humhub/modules/notification/vue/NotificationSettings.vue):
-// the profile cards, the category rows with their channel badges and the autosave state. The space
+// the profile cards, the category rows with their channel badges, the privacy mode (global scope) and
+// the autosave state. The space
 // picker comes from `_page-toolbar.scss`, the checkboxes are the form suite's.
 // @since 1.20
 // --------------------------------------------------
@@ -143,6 +144,36 @@
     .c-notification-settings__profile-description,
     .c-notification-settings__category-description {
         color: var(--hh-text-color-secondary);
+        font-size: 12.5px;
+    }
+
+    // Privacy mode of mails and push (global scope): the profile cards with an example line each
+    .c-notification-settings__privacy {
+        padding: 14px 18px 18px;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 6px;
+
+        .c-notification-settings__profile:disabled {
+            opacity: 0.65;
+            pointer-events: none;
+        }
+    }
+
+    .c-notification-settings__privacy-fixed {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: -8px 0 14px;
+        color: var(--hh-text-color-secondary);
+        font-size: 12.5px;
+    }
+
+    .c-notification-settings__privacy-example {
+        margin-top: 6px;
+        padding: 6px 8px;
+        border-radius: 4px;
+        background: var(--hh-background-color-secondary);
+        color: var(--hh-text-color-main);
         font-size: 12.5px;
     }
 

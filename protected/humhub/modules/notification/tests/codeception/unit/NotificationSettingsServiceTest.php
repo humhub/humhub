@@ -11,6 +11,8 @@ namespace humhub\modules\notification\tests\codeception\unit;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
+use humhub\modules\notification\components\NotificationPrivacy;
+use humhub\modules\notification\Module;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestUnlistedNotification;
 use humhub\modules\notification\services\NotificationSettingsService;
 use humhub\modules\notification\services\NotificationSpaceService;
@@ -135,8 +137,9 @@ class NotificationSettingsServiceTest extends HumHubDbTestCase
 
         $data = (new NotificationSettingsService($this->user(2)))->toArray();
 
-        $this->assertSame(['scope', 'channels', 'categories', 'defaults', 'spaces'], array_keys($data));
+        $this->assertSame(['scope', 'channels', 'categories', 'defaults', 'spaces', 'privacy'], array_keys($data));
         $this->assertSame('user', $data['scope']);
+        $this->assertNull($data['privacy'], 'the privacy mode is set for the whole network');
         // the mobile target is not active without a push provider
         $this->assertSame([['id' => 'web', 'title' => 'Web'], ['id' => 'email', 'title' => 'E-Mail']], $data['channels']);
 
@@ -177,6 +180,51 @@ class NotificationSettingsServiceTest extends HumHubDbTestCase
         $this->assertContains('admin', array_column($data['categories'], 'id'));
         $this->assertSame([$space->id], array_column($data['spaces']['selected'], 'id'));
         $this->assertSame(['id', 'guid', 'name', 'url', 'color', 'imageUrl', 'contentContainerId'], array_keys($data['spaces']['selected'][0]));
+        $this->assertSame(['mode' => 'full', 'fixed' => false], $data['privacy']);
+    }
+
+    public function testFromArraySetsThePrivacyMode()
+    {
+        $service = new NotificationSettingsService();
+
+        $this->assertSame([], $service->fromArray(['privacy' => 'redacted']));
+
+        $this->assertSame('redacted', Yii::$app->getModule('notification')->settings->get(Module::SETTING_PRIVACY_MODE));
+        $this->assertSame(NotificationPrivacy::Redacted, NotificationPrivacy::current());
+        $this->assertSame(['mode' => 'redacted', 'fixed' => false], $service->toArray()['privacy']);
+    }
+
+    public function testFromArrayRejectsAnInvalidPrivacyMode()
+    {
+        $this->assertSame(['privacy' => ['Invalid value.']], (new NotificationSettingsService())->fromArray(['privacy' => 'none']));
+        $this->assertSame(['privacy' => ['Invalid value.']], (new NotificationSettingsService())->fromArray(['privacy' => ['minimal']]));
+        $this->assertSame(
+            ['privacy' => ['The privacy mode is set for the whole network.']],
+            (new NotificationSettingsService($this->user(2)))->fromArray(['privacy' => 'minimal']),
+        );
+        $this->assertSame(NotificationPrivacy::Full, NotificationPrivacy::current());
+    }
+
+    public function testThePrivacyModeOfTheConfigurationIsReadOnly()
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('notification');
+        $module->privacyMode = 'minimal';
+
+        try {
+            $service = new NotificationSettingsService();
+            $this->assertSame(['mode' => 'minimal', 'fixed' => true], $service->toArray()['privacy']);
+            $this->assertSame(
+                ['privacy' => ['The privacy mode is set in the configuration file.']],
+                $service->fromArray(['privacy' => 'full', 'categories' => ['admin' => ['email' => false]]]),
+            );
+            $this->assertNull($module->settings->get('email.category.admin'), 'nothing is written');
+            // the value it has anyway is accepted
+            $this->assertSame([], $service->fromArray(['privacy' => 'minimal']));
+            $this->assertNull($module->settings->get(Module::SETTING_PRIVACY_MODE));
+        } finally {
+            $module->privacyMode = null;
+        }
     }
 
     public function testToArrayLeavesOutTheWebChannelOfACategoryWithoutListedNotifications()

@@ -67,7 +67,8 @@ class NotificationSettingsApiCest
 
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        Assert::assertSame(['scope', 'channels', 'categories', 'defaults', 'spaces'], array_keys(json_decode($I->grabResponse(), true)));
+        Assert::assertSame(['scope', 'channels', 'categories', 'defaults', 'spaces', 'privacy'], array_keys(json_decode($I->grabResponse(), true)));
+        Assert::assertNull(json_decode($I->grabResponse(), true)['privacy']);
         Assert::assertSame('user', $I->grabDataFromResponseByJsonPath('$.scope')[0]);
         Assert::assertSame(['web', 'email'], $I->grabDataFromResponseByJsonPath('$.channels[*].id'));
 
@@ -134,6 +135,12 @@ class NotificationSettingsApiCest
         $this->sendJsonPatch($I, 'notification/settings', ['categories' => ['admin' => ['email' => false]]]);
         $I->seeResponseCodeIs(422);
 
+        // the privacy mode belongs to the global scope
+        $this->sendJsonPatch($I, 'notification/settings', ['privacy' => 'minimal']);
+        $I->seeResponseCodeIs(422);
+        Assert::assertArrayHasKey('privacy', $I->grabDataFromResponseByJsonPath('$.errors')[0]);
+        Assert::assertNull(Yii::$app->getModule('notification')->settings->get('privacyMode'));
+
         Assert::assertTrue($this->socialByMail(2), 'nothing is written');
     }
 
@@ -163,13 +170,17 @@ class NotificationSettingsApiCest
         Assert::assertSame('global', $I->grabDataFromResponseByJsonPath('$.scope')[0]);
         Assert::assertContains('admin', $I->grabDataFromResponseByJsonPath('$.categories[*].id'));
         Assert::assertNull(json_decode($I->grabResponse(), true)['defaults']);
+        Assert::assertSame(['mode' => 'full', 'fixed' => false], json_decode($I->grabResponse(), true)['privacy']);
 
         $this->sendJsonPatch($I, 'notification/settings?scope=global', [
             'categories' => ['admin' => ['email' => false]],
             'spaces' => [$space->id],
+            'privacy' => 'minimal',
         ]);
 
         $I->seeResponseCodeIs(200);
+        Assert::assertSame(['mode' => 'minimal', 'fixed' => false], json_decode($I->grabResponse(), true)['privacy']);
+        Assert::assertSame('minimal', Yii::$app->getModule('notification')->settings->get('privacyMode'));
         Assert::assertFalse($this->category($I, 'admin')['channels']['email']);
         Assert::assertSame([$space->id], $I->grabDataFromResponseByJsonPath('$.spaces.selected[*].id'));
         Assert::assertEquals('0', Yii::$app->getModule('notification')->settings->get('email.category.admin'));

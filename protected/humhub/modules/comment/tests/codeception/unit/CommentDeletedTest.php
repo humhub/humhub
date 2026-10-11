@@ -50,6 +50,9 @@ class CommentDeletedTest extends HumHubDbTestCase
         $this->assertStringContainsString('&lt;b&gt;hi&lt;/b&gt;', $html);
         $this->assertStringNotContainsString('&amp;lt;b&amp;gt;', $html);
         $this->assertStringContainsString('<b>hi</b>', $notification->asMailSubject());
+        $this->assertStringNotContainsString('hi', $notification->asRedactedText());
+        $this->assertStringNotContainsString('a reason', $notification->asRedactedText());
+        $this->assertStringEndsWith('Your comment has been deleted by ' . $notification->originator->displayName . '.', $notification->asRedactedText());
         // nothing to link to: no "View online" button
         $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));
     }

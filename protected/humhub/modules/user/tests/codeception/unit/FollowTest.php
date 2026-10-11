@@ -39,6 +39,7 @@ class FollowTest extends HumHubDbTestCase
 
         $notification = NotificationManager::load($record);
         $this->assertStringEndsWith('is now following you.', $notification->asWeb());
+        $this->assertSame(User::findOne(['id' => 2])->displayName . ' is now following you.', $notification->asRedactedText());
         $this->assertSame(User::findOne(['id' => 2])->getUrl(), $notification->getUrl());
         $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
     }

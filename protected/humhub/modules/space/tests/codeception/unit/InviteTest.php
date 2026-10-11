@@ -42,6 +42,10 @@ class InviteTest extends HumHubDbTestCase
             $notification->asWeb(),
         );
         $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));
+        $this->assertSame(
+            '<strong>' . Yii::$app->user->identity->displayName . '</strong> invited you to a Space.',
+            $notification->asRedactedHtml(),
+        );
 
         // check cached version
         $membership = Membership::findMembership(1, 2);

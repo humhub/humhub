@@ -7,6 +7,7 @@ use humhub\components\message\MessageParam;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\helpers\ContentHelper;
 use humhub\modules\like\models\Like;
 use Yii;
@@ -48,6 +49,17 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         } else {
             return Yii::t('LikeModule.base', '{displayName} likes {content}.', $params);
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        // `contentType` is the type of the content, also when a comment of it was liked
+        return $this->like->getContentOwnerObject() instanceof ContentAddonActiveRecord
+            ? Yii::t('LikeModule.base', '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a comment.', $params)
+            : Yii::t('LikeModule.base', '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a {contentType}.', $params);
     }
 
     /**

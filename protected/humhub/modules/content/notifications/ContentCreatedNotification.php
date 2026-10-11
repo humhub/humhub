@@ -60,6 +60,18 @@ final class ContentCreatedNotification extends BaseNotification
     /**
      * @inheritdoc
      */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        if ($this->groupCount === 1 && $this->isOnRecipientProfile()) {
+            return Yii::t('ContentModule.notifications', '{displayName} posted on your profile.', $params);
+        }
+
+        return Yii::t('ContentModule.notifications', '{groupCount, plural, =1{{displayName} created a new {contentType}.} other{{displayName} created # new entries.}}', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getMailSubject(array $params): string
     {
         if ($this->groupCount > 1) {
