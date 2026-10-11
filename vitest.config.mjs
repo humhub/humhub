@@ -23,7 +23,8 @@ export default defineConfig({
     },
     test: {
         environment: 'jsdom',
-        include: ['protected/humhub/tests/js/**/*.test.js'],
+        // The framework's tests, and those of the core modules next to their code.
+        include: ['protected/humhub/tests/js/**/*.test.js', 'protected/humhub/modules/*/tests/js/**/*.test.js'],
         setupFiles: ['./protected/humhub/tests/js/support/setup.mjs'],
     },
 });

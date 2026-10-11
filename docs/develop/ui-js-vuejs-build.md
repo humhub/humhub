@@ -28,7 +28,7 @@ Hot module replacement is out of scope initially — `watch` + browser reload ke
 
 ## Vitest test infrastructure
 
-Component and bridge logic is covered by a `vitest` suite under `protected/humhub/tests/js/`, run via:
+Component and bridge logic is covered by a `vitest` suite — the framework's tests under `protected/humhub/tests/js/`, those of a core module under its `tests/js/` (e.g. `protected/humhub/modules/notification/tests/js/`) — run via:
 
 ```bash
 npx vitest run
@@ -38,7 +38,7 @@ grunt test-js
 
 - **Harness** (`protected/humhub/tests/js/support/setup.mjs`, wired in as vitest's global setup): emulates the browser environment `humhub.vue.js` runs in — the `humhub.module()` registration API and the modules it `require()`s, plus the `jQuery`/`Vue` globals normally provided by asset bundles. `harness.test.js` exercises the harness itself (stub globals present, `humhub.module()` registration works) as a sanity check that the rest of the suite builds on.
 - **Shim** (`protected/humhub/tests/js/support/humhubVueShim.mjs`): the test-side stand-in for the `@humhub/vue` import used in Vue sources. The production build maps that import onto the `humhub.modules.vue` global (see [Components: bridge layer](ui-js-vuejs-components.md#bridge-layer-composables)); the shim does the same, lazily, so import order does not matter in tests. `vitest.config.mjs` aliases `@humhub/vue` to this file, and aliases the `vue` import itself to Vue's runtime-only ESM build — mirroring production, where the template compiler is unavailable (see [Constraints](ui-js-vuejs.md#constraints)) — so a template accidentally sneaking into a test component fails in the test run instead of only in the browser.
-- **Coverage**: one test file per component or concern, all in `protected/humhub/tests/js/` — the registry and mounter (`vue.test.js`), the bridge (`bridge.test.js`, `uiStatus.test.js`), the URL builder (`url.test.js`), the core components (`coreInterop.test.js`, `dropdownMenu.test.js`, `uiModal.test.js`, `statusBar.test.js`, `humhubForm.test.js`, `uploadField.test.js`), the extension APIs (`extensionSlot.test.js`, `slotRegistry.test.js`, `menuEntryRegistry.test.js`) and every island (`commentSection.test.js`, `likeButton.test.js`, `notificationMenu.test.js`, `activityBox.test.js`, `spaceChooser.test.js`, `contentControls.test.js`, …). A new component brings its own file.
+- **Coverage**: one test file per component or concern. `protected/humhub/tests/js/` holds the framework's: the registry and mounter (`vue.test.js`), the bridge (`bridge.test.js`, `uiStatus.test.js`), the URL builder (`url.test.js`), the core components (`coreInterop.test.js`, `dropdownMenu.test.js`, `uiModal.test.js`, `statusBar.test.js`, `humhubForm.test.js`, `uploadField.test.js`, `filterBar.test.js`, `cardDirectory.test.js`, …) and the extension APIs (`extensionSlot.test.js`, `slotRegistry.test.js`, `menuEntryRegistry.test.js`), plus the shared `support/`. Every island is tested next to its module, in `protected/humhub/modules/<id>/tests/js/` (`comment/tests/js/commentSection.test.js`, `like/tests/js/likeButton.test.js`, `notification/tests/js/notificationMenu.test.js`, …); `vitest.config.mjs` includes both. A new component brings its own file, in the directory of the code it tests.
 
 ## Open questions
 
