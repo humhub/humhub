@@ -64,25 +64,18 @@ class AccountCest
         $I->waitForText('Basic Settings');
 
         $I->click('Notifications'); //Notification tab
-        $I->waitForText('Notification Settings');
+        $I->waitForText('Categories');
 
-        $I->expectTo('see the notification settings form');
-        $I->see('Following');
-        $I->see('Mentionings');
-        $I->jsClick('[name="NotificationSettings[settings][notification.followed_web]"]');
-        $I->jsClick('[name="NotificationSettings[settings][notification.comments_web]"]');
+        $I->expectTo('see the notification settings');
+        $I->waitForText('Directly addressed to you');
+        $I->see('Reactions on my content');
 
-        //$I->wait(20);
+        $I->amGoingTo('switch off the e-mails about reactions; the change is saved right away');
+        $I->click('[data-category="social"] .c-notification-settings__category-head');
+        $I->waitForElementVisible('[name="NotificationSettings[categories.social.email]"]');
+        $I->jsClick('[name="NotificationSettings[categories.social.email]"]');
 
-        $I->scrollToBottom();
-        $I->click('Save', '.panel-body');
-
-        $I->seeSuccess('Saved');
-
-        // Todo proper checkbox tests...
-        /*$I->amOnPage('index-test.php?r=notification%2Fuser');
-        $I->waitForText('Notification Settings');
-        $I->seeInField('[name="NotificationSettings[settings][notification.followed_web]"]', 0);
-        $I->seeInField('[name="NotificationSettings[settings][notification.comments_web]"]', 0);*/
+        $I->waitForText('Saved', 10, '.c-notification-settings__status');
+        $I->see('Custom', '[role="radiogroup"] [aria-checked="true"]');
     }
 }

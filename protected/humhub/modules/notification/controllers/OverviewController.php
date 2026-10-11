@@ -10,18 +10,16 @@ namespace humhub\modules\notification\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\notification\components\NotificationCategory;
-use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\services\NotificationListService;
 use Yii;
 
 /**
  * The notification overview page.
  *
- * A Vue island (`NotificationOverview`) since 1.19: this controller only renders its mount point
- * and hands over what the server owns — the first page of notifications, the (module-defined,
- * localized) categories that can be filtered by, and the rendered icon markup. Filtering and
- * paging happen against the notification API from there
+ * A Vue island (`NotificationOverview`): this controller only renders its mount point and hands
+ * over what the server owns — the first page of notifications, the (module-defined, localized)
+ * notification categories that can be filtered by, and the rendered icon markup. Filtering and paging
+ * happen against the notification API from there
  * ({@see \humhub\modules\notification\controllers\api\NotificationController}).
  *
  * @since 0.5
@@ -42,28 +40,22 @@ class OverviewController extends Controller
     {
         return $this->render('index', [
             'initial' => (new NotificationListService())->page(NotificationListService::OVERVIEW_PAGE_SIZE),
-            'categories' => $this->getCategories(),
+            'filters' => $this->getFilters(),
         ]);
     }
 
     /**
-     * The categories the filter offers, in the order and with the titles the server-rendered
-     * checkbox list used — including the catch-all for notifications without a category of
-     * their own.
+     * The notification categories the filter offers, in their sort order.
+     *
+     * @return array{id: string, title: string}[]
      */
-    private function getCategories(): array
+    private function getFilters(): array
     {
         $result = [];
 
-        foreach (Yii::$app->notification->getNotificationCategories(Yii::$app->user->getIdentity()) as $category) {
-            /** @var NotificationCategory $category */
-            $result[] = ['id' => $category->id, 'title' => $category->getTitle()];
+        foreach (Yii::$app->notification->getCategories(Yii::$app->user->getIdentity()) as $category) {
+            $result[] = ['id' => $category->id, 'title' => $category->title];
         }
-
-        $result[] = [
-            'id' => FilterForm::NO_CATEGORY_ID,
-            'title' => Yii::t('NotificationModule.base', 'Others'),
-        ];
 
         return $result;
     }

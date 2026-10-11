@@ -374,6 +374,14 @@ stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome gly
 `content: '\f0xx'` with `font-family: FontAwesome` need the Tabler codepoint and
 `font-family: tabler-icons`, see https://tabler.io/icons.
 
+## Notification settings
+
+The notification settings of users and your defaults are converted on update. Those of the core
+categories and of most modules carry over; a module whose former category id differed from the
+module id loses its settings and starts from the default again. If users had switched module
+notifications off, you may want to ask them to check their notification settings. Details:
+[Notifications — Updating from 1.19](notifications.md#updating-from-119).
+
 ## Modules
 
 Module code that used the `@webroot` alias may need updating — it now resolves to `public/`, and the

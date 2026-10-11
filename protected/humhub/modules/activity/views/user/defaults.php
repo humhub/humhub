@@ -7,8 +7,11 @@
  */
 
 use humhub\modules\activity\models\MailSummaryForm;
+use humhub\modules\notification\components\NotificationPrivacy;
+use humhub\widgets\bootstrap\Alert;
 
 /* @var $model MailSummaryForm */
+/* @var $privacy NotificationPrivacy */
 
 ?>
 
@@ -22,6 +25,13 @@ use humhub\modules\activity\models\MailSummaryForm;
         <?= Yii::t('ActivityModule.base', 'On this page you can configure the contents and the interval of these e-mail updates.') ?>
         <br/>
     </div>
+
+    <?php if ($privacy->isProtected()) : ?>
+        <?= Alert::info($privacy === NotificationPrivacy::Minimal
+            ? Yii::t('ActivityModule.base', 'Your network sends e-mail summaries only with the number of new activities.')
+            : Yii::t('ActivityModule.base', 'Your network sends e-mail summaries without content.'))
+            ->closeButton(false)->options(['data-privacy-hint' => $privacy->value]) ?>
+    <?php endif ?>
 
     <?= $this->render('@activity/views/mailSummaryForm', ['model' => $model]) ?>
 </div>

@@ -2,13 +2,12 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\modules\activity\components\ActiveQueryActivity;
+use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
-use humhub\modules\activity\models\Activity;
-use humhub\modules\space\components\BaseSpaceActivity;
+use humhub\modules\notification\components\Grouping;
 use Yii;
 
-class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
+class MemberAddedActivity extends BaseActivity implements ConfigurableActivityInterface
 {
     public static function getTitle(): string
     {
@@ -49,7 +48,15 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         };
     }
 
-    public function getUrl(bool $scheme = true): ?string
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.base', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} joined a Space.', $params);
+    }
+
+    public function getUrl(bool $scheme = false): ?string
     {
         // Inside the space the space link is redundant, so a single membership
         // change links to the member's profile. Grouped entries reference
@@ -62,10 +69,13 @@ class MemberAddedActivity extends BaseSpaceActivity implements ConfigurableActiv
         return $this->user->getUrl($scheme);
     }
 
-    public function getGroupingQuery(): ActiveQueryActivity
+    /**
+     * The memberships of one space.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
     {
-        return Activity::find()
-            ->andWhere(['activity.class' => static::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->contentContainer->id]);
+        return Grouping::byContainer();
     }
 }

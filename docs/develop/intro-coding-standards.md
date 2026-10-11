@@ -16,6 +16,32 @@ vendor/bin/php-cs-fixer fix
 
 CI runs the same fixer in `--dry-run` mode and rejects PRs that diverge from the ruleset.
 
+## API surface
+
+Classes and methods are `final` wherever possible. What modules are meant to use or extend is
+marked `@api`; everything else is `private` or marked `@internal`. `@api` elements are stable
+across minor versions; changing them requires a deprecation period.
+
+```php
+/**
+ * @api
+ */
+final readonly class Grouping
+{
+    /**
+     * @api
+     */
+    public static function byContent(): self { /* ... */ }
+
+    /**
+     * @internal read by the core's GroupingService
+     */
+    public function getThreshold(): int { /* ... */ }
+
+    private function with(string $column): self { /* ... */ }
+}
+```
+
 ## JavaScript
 
 JavaScript code under `static/js/` follows the existing patterns — 4-space indent, no semicolons omitted, `humhub.module(...)` registration. There is no automated formatter for JS at the moment; match the surrounding file.

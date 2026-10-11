@@ -11,7 +11,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\content\models\stream\StreamQuery;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\User;
-use humhub\modules\user\notifications\Mentioned;
 use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
 use humhub\modules\user\stream\ProfileStreamQuery;
 use humhub\modules\user\tests\codeception\_support\ProfileStreamTest;

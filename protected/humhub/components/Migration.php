@@ -543,8 +543,18 @@ class Migration extends \yii\db\Migration
 
         $this->updateSilent('content', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('file', ['object_model' => $newClass], ['object_model' => $oldClass]);
-        $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
+
+        if ($this->db->getTableSchema('notification', true)->getColumn('source_class') !== null) {
+            $this->updateSilent('notification', ['source_class' => $newClass], ['source_class' => $oldClass]);
+        }
+
         $this->updateSilent('notification', ['class' => $newClass], ['class' => $oldClass]);
+
+        // A (model, pk) collision with an existing record of the new class aborts on purpose
+        if ($this->db->getTableSchema('record_map', true) !== null) {
+            $this->updateSilent('record_map', ['model' => $newClass], ['model' => $oldClass]);
+        }
+
         $this->updateSilent('user_mentioning', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('user_follow', ['object_model' => $newClass], ['object_model' => $oldClass]);
 

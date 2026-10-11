@@ -10,13 +10,18 @@ await import('../../resources/js/humhub/humhub.vue.js');
 
 const mountOptions = () => ({ global: { components: { UserImage, SpaceImage } } });
 
+// The opaque group key the server sends (`NotificationListService::encodeCursor()`).
+const groupKeyOf = (groupingKey) => btoa(`n1:${groupingKey}`).replace(/=+$/, '');
+
 const notification = (overrides = {}) => ({
     id: 5,
     html: '<strong>Jane</strong> commented on <em>Post</em>',
     url: '/notification/entry?id=5&cId=9',
     isNew: true,
     createdAt: '2026-08-20T10:00:00+00:00',
-    groupKey: null,
+    groupKey: groupKeyOf(overrides.id ?? 5),
+    count: 1,
+    priority: 'normal',
     originator: {
         id: 2,
         guid: 'user-guid-2',
@@ -61,7 +66,7 @@ describe('NotificationEntry', () => {
         expect(anchor.classes()).toContain('new');
         expect(anchor.attributes('href')).toBe('/notification/entry?id=5&cId=9');
         expect(anchor.attributes('data-notification-id')).toBe('5');
-        expect(anchor.attributes('data-notification-group')).toBe('');
+        expect(anchor.attributes('data-notification-group')).toBe('bjE6NQ');
         expect(wrapper.find('strong').text()).toBe('Jane');
         expect(wrapper.find('.badge.badge-new').exists()).toBe(true);
         expect(wrapper.find('time[data-ui-addition="timeago"]').attributes('datetime'))
@@ -69,13 +74,13 @@ describe('NotificationEntry', () => {
         expect(wrapper.find('img').attributes('src')).toBe('/uploads/jane.jpg');
     });
 
-    it('carries the group key so a live event can be deduped against it', () => {
+    it('carries the opaque group key so a live event can be deduped against it', () => {
         wrapper = mount(NotificationEntry, {
             ...mountOptions(),
-            props: { notification: notification({ groupKey: 'Some\\Notification:42' }) },
+            props: { notification: notification({ groupKey: 'bjE6NDI' }) },
         });
 
-        expect(wrapper.find('a').attributes('data-notification-group')).toBe('Some\\Notification:42');
+        expect(wrapper.find('a').attributes('data-notification-group')).toBe('bjE6NDI');
     });
 
     it('renders a seen notification without the unread markers', () => {
@@ -126,7 +131,7 @@ describe('NotificationList', () => {
     it('fetches the first page on reload, with the page size and filters', async () => {
         wrapper = mount(NotificationList, {
             ...mountOptions(),
-            props: { pageSize: 20, categories: ['followed'], seen: 'unseen' },
+            props: { pageSize: 20, categories: ['social'], seen: 'unseen' },
         });
 
         await wrapper.vm.reload();
@@ -136,7 +141,7 @@ describe('NotificationList', () => {
         expect(getCalls[0]).toContain('/api/v2/notification');
         expect(getCalls[0]).toContain('limit=20');
         expect(getCalls[0]).toContain('seen=unseen');
-        expect(decodeURIComponent(getCalls[0])).toContain('categories[]=followed');
+        expect(decodeURIComponent(getCalls[0])).toContain('categories[]=social');
         expect(wrapper.findAll('.hh-list > a')).toHaveLength(1);
     });
 
@@ -145,7 +150,7 @@ describe('NotificationList', () => {
             getCalls.push(url);
             return Promise.resolve(url.includes('cursor=')
                 ? windowPayload([notification({ id: 3 })])
-                : windowPayload([notification({ id: 5 })], { nextCursor: 5 }));
+                : windowPayload([notification({ id: 5 })], { nextCursor: 'bjE6NQ' }));
         };
 
         wrapper = mount(NotificationList, { ...mountOptions(), props: { pageSize: 1, showMoreButton: true } });
@@ -157,7 +162,7 @@ describe('NotificationList', () => {
         await wrapper.find('button').trigger('click');
         await flushPromises();
 
-        expect(getCalls[1]).toContain('cursor=5');
+        expect(getCalls[1]).toContain('cursor=bjE6NQ');
         expect(wrapper.findAll('.hh-list > a').map((entry) => entry.attributes('data-notification-id')))
             .toEqual(['5', '3']);
         // The second page had no cursor of its own, so there is nothing more to load.
@@ -174,7 +179,7 @@ describe('NotificationList', () => {
     });
 
     it('prepends a live notification and replaces an already listed one instead of duplicating it', () => {
-        const listed = notification({ id: 5, groupKey: 'Group:1' });
+        const listed = notification({ id: 5, groupKey: groupKeyOf(1) });
         wrapper = mount(NotificationList, {
             ...mountOptions(),
             props: { initial: windowPayload([listed, notification({ id: 4 })]) },
@@ -188,25 +193,25 @@ describe('NotificationList', () => {
         expect(wrapper.vm.items.map((entry) => entry.id)).toEqual([4, 9, 5]);
 
         // Same group: the grown group replaces its previous entry.
-        wrapper.vm.prepend(notification({ id: 11, groupKey: 'Group:1' }));
+        wrapper.vm.prepend(notification({ id: 11, groupKey: groupKeyOf(1) }));
         expect(wrapper.vm.items.map((entry) => entry.id)).toEqual([11, 4, 9]);
     });
 
     it('answers whether an id or group is already listed', () => {
         wrapper = mount(NotificationList, {
             ...mountOptions(),
-            props: { initial: windowPayload([notification({ id: 5, groupKey: 'Group:1' })]) },
+            props: { initial: windowPayload([notification({ id: 5, groupKey: groupKeyOf(1) })]) },
         });
 
         expect(wrapper.vm.has({ id: 5 })).toBe(true);
-        expect(wrapper.vm.has({ id: 99, groupKey: 'Group:1' })).toBe(true);
+        expect(wrapper.vm.has({ id: 99, groupKey: groupKeyOf(1) })).toBe(true);
         expect(wrapper.vm.has({ id: 99, groupKey: null })).toBe(false);
     });
 
     it('pages on scroll when the list is scrolled near its bottom', async () => {
         globalThis.humhubStubs.client.get = (url) => {
             getCalls.push(url);
-            return Promise.resolve(windowPayload([notification({ id: 5 })], { nextCursor: 5 }));
+            return Promise.resolve(windowPayload([notification({ id: 5 })], { nextCursor: 'bjE6NQ' }));
         };
 
         wrapper = mount(NotificationList, { ...mountOptions(), props: { pageSize: 1 } });
@@ -228,7 +233,7 @@ describe('NotificationList', () => {
         await flushPromises();
 
         expect(getCalls).toHaveLength(1);
-        expect(getCalls[0]).toContain('cursor=5');
+        expect(getCalls[0]).toContain('cursor=bjE6NQ');
     });
 
     it('surfaces a failed request through the platform error log instead of breaking the list', async () => {

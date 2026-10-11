@@ -10,7 +10,7 @@ namespace humhub\tests\codeception\api;
 
 use ApiTester;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\comment\notifications\CommentDeleted;
+use humhub\modules\comment\notifications\CommentDeletedNotification;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
@@ -347,7 +347,7 @@ class CommentApiCest
         $I->sendDelete('comment/' . $commentId . '?notify=1&message=' . urlencode('Against the rules'));
         $I->seeResponseCodeIs(204);
 
-        $I->seeRecord(Notification::class, ['class' => CommentDeleted::class, 'user_id' => 2]);
+        $I->seeRecord(Notification::class, ['class' => CommentDeletedNotification::class, 'user_id' => 2]);
         Assert::assertNull(Comment::findOne(['id' => $commentId]));
     }
 

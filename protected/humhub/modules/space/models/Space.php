@@ -10,7 +10,6 @@ namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -21,7 +20,7 @@ use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
-use humhub\modules\space\notifications\SpaceCreated;
+use humhub\modules\space\notifications\SpaceCreatedNotification;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\services\MemberListService;
@@ -264,11 +263,15 @@ class Space extends ContentContainerActiveRecord
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
-            ActivityManager::dispatch(SpaceCreatedActivity::class, $this, $user);
+            SpaceCreatedActivity::send($this, $user);
 
             // If the space creator is not allowed to manage spaces, notify space managers
             if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {
-                SpaceCreated::instance()->from($user)->about($this)->sendBulk(PermissionManager::findUsersByPermission(new ManageSpaces()));
+                SpaceCreatedNotification::send(
+                    PermissionManager::findUsersByPermission(new ManageSpaces()),
+                    $this,
+                    $user,
+                );
             }
         }
 

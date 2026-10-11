@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use DateTimeZone;
 use humhub\components\behaviors\GUID;
+use humhub\components\db\AfterCommit;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageAllContent;
@@ -627,7 +628,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         // Reindex user content when status is changed to/from Enabled
         if (!$insert && isset($changedAttributes['status'])
             && ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
-            Yii::$app->queue->push(new ReindexUserContent(['userId' => $this->id]));
+            // after the commit, so the worker sees the new status
+            $userId = $this->id;
+            AfterCommit::run(static fn() => Yii::$app->queue->push(new ReindexUserContent(['userId' => $userId])));
         }
 
         // Don't move this line under setUpApproved() because ContentContainer record should be created firstly

@@ -181,16 +181,6 @@ class Module extends \humhub\components\Module
         return [];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        return [
-            'humhub\modules\content\notifications\ContentCreated',
-        ];
-    }
-
     public function getSearchDriver(): AbstractDriver
     {
         return $this->search;

@@ -381,6 +381,13 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of notification classes this module provides.
      *
+     * Scans the module's `notifications/` directory for subclasses of {@see BaseNotification}.
+     * A class that cannot be loaded because its parent class or an interface is gone (e.g. a
+     * module not yet migrated to the 1.20 notification API) is skipped with a warning. A class
+     * whose body is incompatible with the current {@see BaseNotification} (missing abstract
+     * methods, mismatching signatures) causes a fatal error that cannot be caught — such
+     * modules must be migrated.
+     *
      * @return array list of notification classes
      * @since 1.1
      */
@@ -398,8 +405,12 @@ class Module extends \yii\base\Module
         if (is_dir($notificationDirectory)) {
             foreach (FileHelper::findFiles($notificationDirectory, ['recursive' => false,]) as $file) {
                 $notificationClass = $notificationNamespace . '\\' . basename((string) $file, '.php');
-                if (is_subclass_of($notificationClass, BaseNotification::class)) {
-                    $notifications[] = $notificationClass;
+                try {
+                    if (is_subclass_of($notificationClass, BaseNotification::class)) {
+                        $notifications[] = $notificationClass;
+                    }
+                } catch (Throwable $e) {
+                    Yii::warning('Notification class ' . $notificationClass . ' of module ' . $this->id . ' cannot be loaded: ' . $e->getMessage(), 'notification');
                 }
             }
         }

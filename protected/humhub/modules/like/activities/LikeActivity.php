@@ -2,12 +2,13 @@
 
 namespace humhub\modules\like\activities;
 
-use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseContentActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
-use humhub\modules\content\helpers\ContentHelper;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\like\models\Like;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\MessageParam;
 use Yii;
 use yii\base\InvalidValueException;
 
@@ -49,38 +50,36 @@ class LikeActivity extends BaseContentActivity implements ConfigurableActivityIn
         }
     }
 
-    protected function getMessageParamsWeb(): array
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
     {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->webContentLength),
-        ]);
+        // `contentType` is the type of the content, also when a comment of it was liked
+        return $this->like->getContentOwnerObject() instanceof ContentAddonActiveRecord
+            ? Yii::t('LikeModule.base', '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a comment.', $params)
+            : Yii::t('LikeModule.base', '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a {contentType}.', $params);
     }
 
-    protected function getMessageParamsMailText(): array
+    /**
+     * `content` is the liked content or comment.
+     *
+     * @inheritdoc
+     */
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsMailText(), [
-            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
-        ]);
+        return [
+            'content' => MessageParam::content($this->like->getContentOwnerObject()),
+        ];
     }
 
-    protected function getMessageParamsMailHtml(): array
+    /**
+     * The likes of one content, or of one comment (or other content addon) of it.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
     {
-        return array_merge(parent::getMessageParamsMailHtml(), [
-            'content' => ContentHelper::getContentInfo($this->like->getContentOwnerObject(), true, $this->mailContentLength),
-        ]);
+        return Grouping::byContent()->andSourceParent();
     }
-
-    public function getGroupingQuery(): ?ActiveQueryActivity
-    {
-        return Activity::find()
-            ->andWhere(['activity.class' => static::class])
-            ->leftJoin('record_map', 'activity.content_addon_record_id=record_map.id')
-            ->leftJoin('like', 'record_map.pk=like.id')
-            ->andWhere(['activity.content_id' => $this->record->content->id])
-            ->andWhere([
-                'like.content_addon_record_id' => $this->contentAddon->content_addon_record_id,
-                'like.content_id' => $this->contentAddon->content_id,
-            ]);
-    }
-
 }

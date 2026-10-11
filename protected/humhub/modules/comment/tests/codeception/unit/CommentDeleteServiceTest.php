@@ -3,7 +3,7 @@
 namespace tests\codeception\unit\modules\comment\components;
 
 use humhub\modules\comment\models\Comment;
-use humhub\modules\comment\notifications\CommentDeleted;
+use humhub\modules\comment\notifications\CommentDeletedNotification;
 use humhub\modules\comment\services\CommentDeleteService;
 use humhub\modules\notification\models\Notification;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -24,7 +24,7 @@ class CommentDeleteServiceTest extends HumHubDbTestCase
 
         $this->assertNull(Comment::findOne(['id' => $root->id]));
         $this->assertNull(Comment::findOne(['id' => $reply->id]));
-        $this->assertNull(Notification::findOne(['class' => CommentDeleted::class]));
+        $this->assertNull(Notification::findOne(['class' => CommentDeletedNotification::class]));
     }
 
     public function testDeleteWithNotificationInformsTheAuthor()
@@ -39,9 +39,10 @@ class CommentDeleteServiceTest extends HumHubDbTestCase
 
         $this->assertNull(Comment::findOne(['id' => $comment->id]));
 
-        $notification = Notification::findOne(['class' => CommentDeleted::class, 'user_id' => $authorId]);
+        $notification = Notification::findOne(['class' => CommentDeletedNotification::class, 'user_id' => $authorId]);
         $this->assertNotNull($notification);
-        $this->assertEquals(1, $notification->send_web_notifications);
+        $this->assertEquals(1, $notification->listed);
+        $this->assertNull($notification->content_id);
         $this->assertStringContainsString('Against the rules', (string)$notification->payload);
     }
 }

@@ -3555,7 +3555,8 @@
       itemLabel: { type: Function, required: true },
       itemTitle: { type: Function, default: null },
       icon: { type: String, default: null },
-      block: { type: String, required: true }
+      block: { type: String, required: true },
+      keepPlaceholder: { type: Boolean, default: false }
     },
     emits: ["update:modelValue"],
     data() {
@@ -3598,6 +3599,10 @@
       },
       placeholder() {
         return this.filter.placeholder || this.filter.label || "";
+      },
+      // With chips the placeholder stays: the field keeps room for it (`.keeps-placeholder`).
+      keepsPlaceholder() {
+        return this.keepPlaceholder && this.multiple && this.hasValue && this.placeholder !== "";
       },
       accessibleName() {
         return this.filter.label || this.filter.placeholder || null;
@@ -3879,7 +3884,8 @@
       "div",
       {
         ref: "root",
-        class: vue.normalizeClass(["c-select c-picker c-picker-filter", [$props.block, { "is-open": $data.open, "has-selection": $options.hasValue, "is-disabled": $data.resolving, "is-loading": $data.resolving, "is-multiple": $props.multiple }]])
+        class: vue.normalizeClass(["c-select c-picker c-picker-filter", [$props.block, { "is-open": $data.open, "has-selection": $options.hasValue, "is-disabled": $data.resolving, "is-loading": $data.resolving, "is-multiple": $props.multiple, "keeps-placeholder": $options.keepsPlaceholder }]]),
+        style: vue.normalizeStyle($options.keepsPlaceholder ? { "--c-picker-placeholder-chars": $options.placeholder.length } : null)
       },
       [
         vue.createElementVNode("div", {
@@ -4031,7 +4037,7 @@
             "aria-activedescendant": $options.activeDescendant,
             "aria-label": $options.accessibleName,
             "aria-busy": $data.resolving || $data.searching ? "true" : null,
-            placeholder: $props.multiple && $options.hasValue ? "" : $options.placeholder,
+            placeholder: $props.multiple && $options.hasValue && !$props.keepPlaceholder ? "" : $options.placeholder,
             value: $data.query,
             disabled: $data.resolving,
             onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
@@ -4123,8 +4129,8 @@
           /* TEXT */
         )
       ],
-      2
-      /* CLASS */
+      6
+      /* CLASS, STYLE */
     );
   }
   const C14 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);

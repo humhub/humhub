@@ -12,8 +12,9 @@ import { apiUrl, client } from '@humhub/vue';
 /**
  * One page of the caller's notifications.
  *
- * @param {{cursor?: ?number, limit?: number, categories?: ?string[], seen?: ?string}} options
- * @returns {Promise<{results: Array, unseenCount: number, nextCursor: ?number}>}
+ * @param {{cursor?: ?string, limit?: number, categories?: ?string[], seen?: ?string}} options
+ *   `cursor` is the previous page's opaque `nextCursor`, `categories` notification category ids
+ * @returns {Promise<{results: Array, unseenCount: number, nextCursor: ?string}>}
  */
 export const fetchNotifications = ({ cursor = null, limit = null, categories = null, seen = null } = {}) => {
     const params = {};
@@ -28,8 +29,7 @@ export const fetchNotifications = ({ cursor = null, limit = null, categories = n
         // `categories[]=a&categories[]=b`. An empty selection is a filter of its own - "no
         // category" means an empty list, not "unfiltered" - but an empty array serializes to
         // nothing at all, which the server could not tell apart from an omitted parameter. One
-        // empty entry keeps it distinguishable and matches no category, exactly like the
-        // server-rendered filter with every checkbox cleared.
+        // empty entry keeps it distinguishable and matches no category.
         params.categories = categories.length ? categories : [''];
     }
     if (seen) {
@@ -39,8 +39,24 @@ export const fetchNotifications = ({ cursor = null, limit = null, categories = n
     return client.get(apiUrl('notification', params)).then(normalizePage);
 };
 
-/** Marks every notification of the caller as seen. */
-export const markAllAsSeen = () => client.post(apiUrl('notification/mark-as-seen'));
+/**
+ * Marks notifications of the caller as seen: the entries of the given notification ids, or
+ * every notification without ids.
+ *
+ * @param {?number[]} ids
+ * @returns {Promise<?{unseenCount: number}>} `null` for an empty `ids` list, which sends nothing
+ */
+export const markAsSeen = (ids = null) => {
+    if (Array.isArray(ids) && !ids.length) {
+        // Nothing to mark - and an empty list must never reach the server as "everything".
+        return Promise.resolve(null);
+    }
+
+    const url = apiUrl('notification/mark-as-seen');
+    const request = Array.isArray(ids) ? client.post(url, { data: { ids } }) : client.post(url);
+
+    return request.then((response) => ({ unseenCount: Number((response && response.unseenCount) || 0) }));
+};
 
 /**
  * The response as the components consume it. The platform client resolves a response onto the

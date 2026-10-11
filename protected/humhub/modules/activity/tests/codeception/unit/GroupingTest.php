@@ -4,39 +4,55 @@ namespace activity\unit;
 
 use Codeception\Specify;
 use humhub\modules\activity\components\BaseActivity;
-use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\activity\tests\codeception\activities\TestContentGroupActivity;
+use humhub\modules\activity\tests\codeception\activities\TestDeclaredGroupingActivity;
 use humhub\modules\activity\tests\codeception\activities\TestGroupedNamesActivity;
+use humhub\modules\activity\tests\codeception\activities\TestLegacyMemberAddedActivity;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\activities\ContentCreatedActivity;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\services\LikeService;
+use humhub\modules\notification\components\Grouping;
 use humhub\modules\post\models\Post;
+use humhub\modules\space\activities\MemberAddedActivity;
+use humhub\modules\space\activities\MemberRemovedActivity;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\activities\FollowActivity;
+use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\Expression;
 
 class GroupingTest extends HumHubDbTestCase
 {
     use Specify;
 
+    protected function tearDown(): void
+    {
+        TestDeclaredGroupingActivity::$grouping = null;
+        Yii::$container->clear(ContentCreatedActivity::class);
+        parent::tearDown();
+    }
+
     public function testRemoveGroup()
     {
         $this->becomeUser('User2');
         $post = Post::findOne(['id' => 1]);
 
-        ActivityManager::dispatch(TestActivity::class, $post);
+        TestActivity::send($post);
 
-        $a1 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $a2 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $a3 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $a4 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $a5 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $a1 = TestContentGroupActivity::send($post);
+        $a2 = TestContentGroupActivity::send($post);
+        $a3 = TestContentGroupActivity::send($post);
+        $a4 = TestContentGroupActivity::send($post);
+        $a5 = TestContentGroupActivity::send($post);
 
         $a1->record->refresh();
         $this->assertEquals(
@@ -71,12 +87,12 @@ class GroupingTest extends HumHubDbTestCase
         // Two users, two activities each: the entry's own author therefore has a second
         // activity in the group besides the one representing it.
         $this->becomeUser('User2');
-        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        TestContentGroupActivity::send($post);
+        TestContentGroupActivity::send($post);
 
         $this->becomeUser('User3');
-        ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $latest = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        TestContentGroupActivity::send($post);
+        $latest = TestContentGroupActivity::send($post);
         $latest->record->refresh();
 
         $entry = ActivityManager::load($latest->record);
@@ -98,8 +114,8 @@ class GroupingTest extends HumHubDbTestCase
 
         // Two activities of the same user: a group without anyone else in it.
         $this->becomeUser('User2');
-        ActivityManager::dispatch(TestGroupedNamesActivity::class, $post);
-        ActivityManager::dispatch(TestGroupedNamesActivity::class, $post);
+        TestGroupedNamesActivity::send($post);
+        TestGroupedNamesActivity::send($post);
 
         // Read it the way the activity list does - `group_count` comes from the grouped
         // select, a plain record does not carry it.
@@ -121,11 +137,11 @@ class GroupingTest extends HumHubDbTestCase
         $post = Post::findOne(['id' => 1]);
 
         // Some other activity
-        ActivityManager::dispatch(TestActivity::class, $post);
+        TestActivity::send($post);
 
-        $a1 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $a2 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
-        $a3 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $a1 = TestContentGroupActivity::send($post);
+        $a2 = TestContentGroupActivity::send($post);
+        $a3 = TestContentGroupActivity::send($post);
 
         // Check is still ungrouped
         $a1->record->refresh();
@@ -133,14 +149,14 @@ class GroupingTest extends HumHubDbTestCase
         $this->assertNotEquals($a1->record->grouping_key, $a3->record->grouping_key);
 
         // Check now in group
-        $a4 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $a4 = TestContentGroupActivity::send($post);
         $a1->record->refresh();
         $a3->record->refresh();
 
         $this->assertEquals($a1->record->grouping_key, $a3->record->grouping_key);
         $this->assertEquals($a4->record->grouping_key, $a1->record->grouping_key);
 
-        $a5 = ActivityManager::dispatch(TestContentGroupActivity::class, $post);
+        $a5 = TestContentGroupActivity::send($post);
         $a1->record->refresh();
         $this->assertEquals($a1->record->grouping_key, $a5->record->grouping_key);
 
@@ -340,6 +356,152 @@ class GroupingTest extends HumHubDbTestCase
 
         // Now expect 2 groups
         $this->assertEquals(2, ActivityListService::query($space->contentContainerRecord)->count());
+    }
+
+    public function testCoreGroupings()
+    {
+        $this->assertEquals(
+            Grouping::byClass()->andContainer()->andOriginator()->andContentType()->andContentVisibility()->withThreshold(4),
+            ContentCreatedActivity::grouping(),
+        );
+        $this->assertEquals(Grouping::byContent()->andSourceParent(), LikeActivity::grouping());
+        $this->assertEquals(Grouping::byContainer(), FollowActivity::grouping());
+        $this->assertEquals(Grouping::byContainer(), MemberAddedActivity::grouping());
+        $this->assertEquals(Grouping::byContainer(), MemberRemovedActivity::grouping());
+    }
+
+    public function testFollowsOfOneUserAreGrouped()
+    {
+        $followed = User::findOne(['id' => 1]);
+        $other = User::findOne(['id' => 4]);
+
+        $a1 = FollowActivity::send($followed, User::findOne(['id' => 2]));
+        $b1 = FollowActivity::send($other, User::findOne(['id' => 2]));
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($b1), 'not grouped below the threshold');
+
+        $a2 = FollowActivity::send($followed, User::findOne(['id' => 3]));
+        $this->assertSame($this->groupingKey($a1), $this->groupingKey($a2), 'the follows of one user');
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($b1), 'the follow of another user');
+    }
+
+    public function testMembershipsOfOneSpaceAreGroupedPerClass()
+    {
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 1]);
+
+        $a1 = MemberAddedActivity::send($space, User::findOne(['id' => 2]));
+        $b1 = MemberAddedActivity::send(Space::findOne(['id' => 2]), User::findOne(['id' => 2]));
+        $r1 = MemberRemovedActivity::send($space, User::findOne(['id' => 4]));
+        $a2 = MemberAddedActivity::send($space, User::findOne(['id' => 3]));
+        $r2 = MemberRemovedActivity::send($space, User::findOne(['id' => 5]));
+
+        $this->assertSame($this->groupingKey($a1), $this->groupingKey($a2));
+        $this->assertSame($this->groupingKey($r1), $this->groupingKey($r2));
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($b1), 'another space');
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($r1), 'another class');
+    }
+
+    public function testLikesOfTheContentAndOfItsCommentsAreSeparateGroups()
+    {
+        $this->becomeUser('Admin');
+        $post = new Post(Space::findOne(['id' => 2]), Content::VISIBILITY_PUBLIC, ['message' => 'Hello World!']);
+        $this->assertTrue($post->save());
+        $comment1 = new Comment(['message' => 'One', 'content_id' => $post->content->id]);
+        $this->assertTrue($comment1->save());
+        $comment2 = new Comment(['message' => 'Two', 'content_id' => $post->content->id]);
+        $this->assertTrue($comment2->save());
+
+        foreach (['User1', 'User2', 'User3'] as $user) {
+            $this->becomeUser($user);
+            (new LikeService($post))->like();
+            (new LikeService($comment1))->like();
+        }
+        $this->becomeUser('User1');
+        (new LikeService($comment2))->like();
+
+        $sizes = array_map(
+            static fn(Activity $record) => (int)$record->group_count,
+            Activity::find()->enableGrouping()
+                ->andWhere(['activity.class' => LikeActivity::class, 'activity.content_id' => $post->content->id])
+                ->all(),
+        );
+        sort($sizes);
+
+        // the post, the first comment, the second comment
+        $this->assertSame([1, 3, 3], $sizes);
+    }
+
+    public function testContentTypesExcludedFromGroupingAreNotGrouped()
+    {
+        Yii::$container->set(ContentCreatedActivity::class, ['contentTypeNoGrouping' => [Post::class]]);
+
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 2]);
+        foreach (['A', 'B', 'C', 'D'] as $message) {
+            $this->assertTrue((new Post($space, Content::VISIBILITY_PUBLIC, ['message' => $message]))->save());
+        }
+
+        $this->becomeUser('User1');
+        $this->assertEquals(4, ActivityListService::query($space->contentContainerRecord)->count());
+    }
+
+    public function testDeclaredGroupingUsesItsThresholdAndTimeBucket()
+    {
+        TestDeclaredGroupingActivity::$grouping = Grouping::byContent()->withThreshold(3);
+        $this->becomeUser('User2');
+        $post = Post::findOne(['id' => 1]);
+
+        $old = TestDeclaredGroupingActivity::send($post);
+        Activity::updateAll(
+            ['created_at' => new Expression('created_at - INTERVAL 1 HOUR')],
+            ['id' => $old->record->id],
+        );
+
+        $a1 = TestDeclaredGroupingActivity::send($post);
+        $a2 = TestDeclaredGroupingActivity::send($post);
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($a2), 'below the threshold of the grouping');
+
+        // not the groupingThreshold (10) of the class
+        $a3 = TestDeclaredGroupingActivity::send($post);
+        $this->assertSame($this->groupingKey($a1), $this->groupingKey($a3));
+        $this->assertSame($this->groupingKey($a2), $this->groupingKey($a3));
+        $this->assertNotSame($this->groupingKey($old), $this->groupingKey($a3), 'another time bucket');
+    }
+
+    public function testByContentRequiresAContent()
+    {
+        TestDeclaredGroupingActivity::$grouping = Grouping::byContent();
+        $space = Space::findOne(['id' => 1]);
+
+        $a1 = TestDeclaredGroupingActivity::send($space, User::findOne(['id' => 2]));
+        $a2 = TestDeclaredGroupingActivity::send($space, User::findOne(['id' => 3]));
+
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($a2));
+    }
+
+    public function testRejectsUnseenOnly()
+    {
+        TestDeclaredGroupingActivity::$grouping = Grouping::byClass()->unseenOnly();
+
+        $this->expectException(InvalidConfigException::class);
+        TestDeclaredGroupingActivity::send(Space::findOne(['id' => 1]), User::findOne(['id' => 2]));
+    }
+
+    public function testAnOverrideOfTheDeprecatedGroupingQueryWins()
+    {
+        $space = Space::findOne(['id' => 1]);
+
+        $a1 = TestLegacyMemberAddedActivity::send($space, User::findOne(['id' => 2]));
+        $a2 = TestLegacyMemberAddedActivity::send($space, User::findOne(['id' => 3]));
+
+        $this->assertNotSame($this->groupingKey($a1), $this->groupingKey($a2));
+    }
+
+    private function groupingKey(BaseActivity $activity): string
+    {
+        $activity->record->refresh();
+
+        return (string)$activity->record->grouping_key;
     }
 
     private function getActivityForContent(ContentProvider $record, ?string $activityClass = null): ?BaseActivity

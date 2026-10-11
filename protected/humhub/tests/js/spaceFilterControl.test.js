@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import SpaceFilterControl from '../../modules/space/vue/SpaceFilterControl.vue';
-import { SEARCH_DEBOUNCE_MS } from '../../vue/PickerFilterControl.vue';
+import PickerFilterControl, { SEARCH_DEBOUNCE_MS } from '../../vue/PickerFilterControl.vue';
 import FilterBar from '../../vue/FilterBar.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
@@ -166,6 +166,54 @@ describe('SpaceFilterControl', () => {
         expect(emitted(wrapper).at(-1)).toEqual(['3', '8']);
         await wrapper.setProps({ modelValue: ['3', '8'] });
         expect(chipLabels(wrapper)).toEqual(['Team Beta', 'Sales']);
+    });
+
+    it('drops the placeholder (the "all" state) once a space is chosen', async () => {
+        const wrapper = mountControl({ modelValue: ['3'] });
+        await flushPromises();
+
+        expect(chipLabels(wrapper)).toEqual(['Team Beta']);
+        expect(input(wrapper).attributes('placeholder')).toBe('');
+        expect(wrapper.find('.c-picker').classes()).not.toContain('keeps-placeholder');
+    });
+
+    it('keeps the placeholder next to the chips with `keepPlaceholder`, the input as wide as it', async () => {
+        const picker = (props) => {
+            const wrapper = mount(PickerFilterControl, {
+                props: {
+                    filter: { key: 'spaces', label: 'Spaces', placeholder: 'Add a space…' },
+                    modelValue: [],
+                    multiple: true,
+                    keepPlaceholder: true,
+                    search: () => Promise.resolve([]),
+                    resolve: (ids) => Promise.resolve(spaces.filter((entry) => ids.includes(String(entry.id)))),
+                    itemLabel: (item) => item.name,
+                    block: 'c-space-filter',
+                    ...props,
+                },
+                attachTo: document.body,
+            });
+            mounted.push(wrapper);
+            return wrapper;
+        };
+        const root = (wrapper) => wrapper.find('.c-picker');
+
+        const empty = picker();
+        expect(input(empty).attributes('placeholder')).toBe('Add a space…');
+        expect(root(empty).classes()).not.toContain('keeps-placeholder');
+
+        const chosen = picker({ modelValue: ['2', '3'] });
+        await flushPromises();
+        expect(chipLabels(chosen)).toEqual(['Team Alpha', 'Team Beta']);
+        expect(input(chosen).attributes('placeholder')).toBe('Add a space…');
+        expect(root(chosen).classes()).toContain('keeps-placeholder');
+        expect(root(chosen).element.style.getPropertyValue('--c-picker-placeholder-chars')).toBe('12');
+
+        // Without `multiple` a chosen item replaces the input: nothing to keep.
+        const single = picker({ multiple: false, modelValue: '2' });
+        await flushPromises();
+        expect(input(single).exists()).toBe(false);
+        expect(root(single).classes()).not.toContain('keeps-placeholder');
     });
 
     it('removes one space with its chip\'s X and returns the focus to the input', async () => {

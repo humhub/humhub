@@ -37,9 +37,13 @@ class LikeServiceTest extends HumHubDbTestCase
 
         $this->assertTrue((new LikeService($post))->like());
 
-        $this->assertCount(1, $mutex->acquiredLocks);
-        $this->assertStringContainsString((string)$post->content->id, $mutex->acquiredLocks[0]);
-        $this->assertEquals($mutex->acquiredLocks, $mutex->releasedLocks);
+        // The like notification's delivery jobs take locks of their own
+        $likeLocks = $this->likeLocks($mutex->acquiredLocks);
+        $this->assertCount(1, $likeLocks);
+        $this->assertStringContainsString((string)$post->content->id, $likeLocks[0]);
+        $this->assertEquals($likeLocks, $this->likeLocks($mutex->releasedLocks));
+        // every lock taken, also by the delivery jobs, is released
+        $this->assertEqualsCanonicalizing($mutex->acquiredLocks, $mutex->releasedLocks);
     }
 
     /**
@@ -86,7 +90,16 @@ class LikeServiceTest extends HumHubDbTestCase
         // Even without the lock the like must be created, but a lock that was
         // never acquired must not be released
         $this->assertTrue((new LikeService($post))->like());
-        $this->assertCount(1, $mutex->acquiredLocks);
-        $this->assertCount(0, $mutex->releasedLocks);
+        $this->assertCount(1, $this->likeLocks($mutex->acquiredLocks));
+        $this->assertCount(0, $this->likeLocks($mutex->releasedLocks));
+    }
+
+    /**
+     * @param string[] $locks
+     * @return string[] the locks of the like service only
+     */
+    private function likeLocks(array $locks): array
+    {
+        return array_values(array_filter($locks, fn(string $lock) => str_starts_with($lock, 'like.')));
     }
 }

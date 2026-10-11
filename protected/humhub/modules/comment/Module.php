@@ -3,7 +3,6 @@
 namespace humhub\modules\comment;
 
 use humhub\modules\comment\permissions\CreateComment;
-use humhub\modules\comment\notifications\NewComment;
 use humhub\modules\content\models\Content;
 use Yii;
 
@@ -75,16 +74,6 @@ class Module extends \humhub\components\Module
     public function getName()
     {
         return Yii::t('CommentModule.base', 'Comments');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        return [
-            NewComment::class,
-        ];
     }
 
     /**

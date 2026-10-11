@@ -3,6 +3,9 @@
 namespace humhub\modules\activity\tests\codeception\unit;
 
 use Codeception\Specify;
+use humhub\components\Event;
+use humhub\modules\activity\components\BaseContentActivity;
+use humhub\modules\activity\events\BeforeDispatchEvent;
 use humhub\modules\activity\live\NewActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\services\ActivityManager;
@@ -13,8 +16,11 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\live\components\LiveEvent;
 use humhub\modules\live\models\Live;
 use humhub\modules\post\models\Post;
+use humhub\modules\user\activities\FollowActivity;
+use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
+use yii\base\InvalidCallException;
 
 class ActivityTest extends HumHubDbTestCase
 {
@@ -25,7 +31,7 @@ class ActivityTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $post = Post::findOne(['id' => 1]);
 
-        ActivityManager::dispatch(TestActivity::class, $post);
+        TestActivity::send($post);
 
         $record = Activity::findOne(['class' => TestActivity::class]);
         $this->assertNotNull($record, 'Activity record persisted');
@@ -74,7 +80,7 @@ class ActivityTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $post = Post::findOne(['id' => 1]);
 
-        $activity = ActivityManager::dispatch(TestActivity::class, $post);
+        $activity = TestActivity::send($post);
         $event = $this->latestLiveEvent();
 
         $this->assertInstanceOf(NewActivity::class, $event, 'A new activity announces itself');
@@ -94,10 +100,78 @@ class ActivityTest extends HumHubDbTestCase
         $this->assertNull($post->content->contentcontainer_id);
 
         Live::deleteAll();
-        ActivityManager::dispatch(TestActivity::class, $post);
+        TestActivity::send($post);
 
         // The live system routes by container - an activity without one has no audience.
         $this->assertNull($this->latestLiveEvent());
+    }
+
+    public function testSendReturnsTheActivityOfTheClass()
+    {
+        $post = Post::findOne(['id' => 1]);
+        $user = User::findOne(['id' => 3]);
+
+        $activity = TestActivity::send($post, $user);
+
+        $this->assertInstanceOf(TestActivity::class, $activity);
+        $this->assertSame($user->id, $activity->user->id);
+        $this->assertEquals($post->content->id, $activity->record->content_id);
+    }
+
+    public function testSendIsVetoedThroughTheEvent()
+    {
+        $post = Post::findOne(['id' => 1]);
+        $user = User::findOne(['id' => 3]);
+        $events = [];
+        $handler = static function ($event) use (&$events): void {
+            $events[] = $event;
+            $event->isValid = false;
+        };
+        Event::on(ActivityManager::class, ActivityManager::EVENT_BEFORE_DISPATCH, $handler);
+
+        try {
+            $this->assertNull(TestActivity::send($post, $user));
+            $this->assertNull(ActivityManager::dispatch(TestActivity::class, $post, $user), 'the deprecated dispatch() too');
+        } finally {
+            Event::off(ActivityManager::class, ActivityManager::EVENT_BEFORE_DISPATCH, $handler);
+        }
+
+        $this->assertNull(Activity::findOne(['class' => TestActivity::class]));
+        $this->assertCount(2, $events);
+        $this->assertInstanceOf(BeforeDispatchEvent::class, $events[0]);
+        $this->assertSame(TestActivity::class, $events[0]->class);
+        $this->assertSame($post, $events[0]->target);
+        $this->assertSame($user, $events[0]->user);
+    }
+
+    public function testDeprecatedDispatchStillWorks()
+    {
+        $this->becomeUser('User2');
+
+        $activity = ActivityManager::dispatch(TestActivity::class, Post::findOne(['id' => 1]));
+
+        $this->assertInstanceOf(TestActivity::class, $activity);
+        $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
+    }
+
+    public function testSendNeedsAConcreteClass()
+    {
+        $this->expectException(InvalidCallException::class);
+        BaseContentActivity::send(Post::findOne(['id' => 1]), User::findOne(['id' => 3]));
+    }
+
+    public function testUrlIsRelativeByDefault()
+    {
+        $followed = User::findOne(['id' => 1]);
+        $activity = FollowActivity::send($followed, User::findOne(['id' => 3]));
+
+        $this->assertSame($followed->getUrl(false), $activity->getUrl());
+        $this->assertSame($followed->getUrl(true), $activity->getUrl(true));
+        // the summary mail links absolute
+        $this->assertStringContainsString(
+            urldecode((string)$followed->getUrl(true)),
+            (new RenderService($activity->record))->getMailText(),
+        );
     }
 
     private function latestLiveEvent(): ?LiveEvent
@@ -112,7 +186,7 @@ class ActivityTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $post = Post::findOne(1);
 
-        ActivityManager::dispatch(TestActivity::class, $post);
+        TestActivity::send($post);
 
         // Record exists
         $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
@@ -133,7 +207,7 @@ class ActivityTest extends HumHubDbTestCase
 
         /*
         $post2 = Post::findOne(2);
-        ActivityManager::dispatch(TestActivity::class, $post2);
+        TestActivity::send($post2);
         $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
         $post2->content->delete();
         $this->assertNotNull(Activity::findOne(['class' => TestActivity::class]));
@@ -149,7 +223,7 @@ class ActivityTest extends HumHubDbTestCase
         // Post (User 2 Space 2 Post Public)
         $post = Post::findOne(10);
 
-        ActivityManager::dispatch(TestActivity::class, $post);
+        TestActivity::send($post);
         $activityRecord = Activity::findOne(['class' => TestActivity::class]);
 
 

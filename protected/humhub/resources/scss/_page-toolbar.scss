@@ -695,6 +695,13 @@
         padding-right: 12px;
     }
 
+    // `keepPlaceholder`: the placeholder stays next to the chips, the input never narrower than it
+    // (its length in characters, set inline by the control) unless the field itself is.
+    .c-picker-filter.keeps-placeholder .c-picker__input {
+        flex-basis: min(100%, calc(var(--c-picker-placeholder-chars) * 1ch + 4px));
+        min-width: min(100%, calc(var(--c-picker-placeholder-chars) * 1ch + 4px));
+    }
+
     .c-picker-filter.is-loading .c-picker__field {
         padding-right: 40px;
     }

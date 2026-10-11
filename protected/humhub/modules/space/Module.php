@@ -127,22 +127,6 @@ class Module extends \humhub\components\Module
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        return [
-            'humhub\modules\space\notifications\ApprovalRequest',
-            'humhub\modules\space\notifications\ApprovalRequestAccepted',
-            'humhub\modules\space\notifications\ApprovalRequestDeclined',
-            'humhub\modules\space\notifications\Invite',
-            'humhub\modules\space\notifications\InviteAccepted',
-            'humhub\modules\space\notifications\InviteDeclined',
-            'humhub\modules\space\notifications\SpaceCreated',
-        ];
-    }
-
-    /**
      * @return SpaceSettingsForm
      */
     public function getDefaultSettings(): SpaceSettingsForm

@@ -2,11 +2,11 @@
 
 namespace humhub\modules\user\activities;
 
-use humhub\helpers\Html;
-use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\MessageParam;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidValueException;
@@ -45,30 +45,23 @@ final class FollowActivity extends BaseActivity implements ConfigurableActivityI
         }
     }
 
-    protected function getMessageParamsMailText(): array
+    /**
+     * @inheritdoc
+     */
+    protected function getMessageParams(): array
     {
-        return array_merge(
-            parent::getMessageParamsMailText(),
-            [
-                'followedDisplayName' => $this->followedUser->displayName,
-            ],
-        );
+        return [
+            'followedDisplayName' => MessageParam::user($this->followedUser),
+        ];
     }
 
-    protected function getMessageParamsWeb(): array
+    /**
+     * The follows of one user.
+     *
+     * @inheritdoc
+     */
+    public static function grouping(): ?Grouping
     {
-        return array_merge(
-            parent::getMessageParamsWeb(),
-            [
-                'followedDisplayName' => Html::strong(Html::encode($this->followedUser->displayName)),
-            ],
-        );
-    }
-
-    public function getGroupingQuery(): ?ActiveQueryActivity
-    {
-        return Activity::find()
-            ->andWhere(['activity.class' => self::class])
-            ->andWhere(['activity.contentcontainer_id' => $this->record->contentcontainer_id]);
+        return Grouping::byContainer();
     }
 }

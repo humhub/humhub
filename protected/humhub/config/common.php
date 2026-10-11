@@ -91,13 +91,9 @@ $config = [
         'notification' => [
             'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [
-                \humhub\modules\notification\targets\WebTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class],
-                ],
-                \humhub\modules\notification\targets\MailTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class],
-                ],
-                \humhub\modules\notification\targets\MobileTarget::class => [],
+                'web' => ['class' => \humhub\modules\notification\targets\WebTarget::class],
+                'email' => ['class' => \humhub\modules\notification\targets\MailTarget::class],
+                'mobile' => ['class' => \humhub\modules\notification\targets\MobileTarget::class],
             ],
         ],
         'fs' => [

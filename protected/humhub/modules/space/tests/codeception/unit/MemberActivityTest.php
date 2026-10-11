@@ -22,7 +22,7 @@ class MemberActivityTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 2]);
         $user = User::findOne(['id' => 2]);
 
-        $activity = ActivityManager::dispatch(MemberAddedActivity::class, $space, $user);
+        $activity = MemberAddedActivity::send($space, $user);
 
         // Viewing the space's own activity stream: the space link is redundant.
         $this->enterSpaceContext($space);
@@ -38,7 +38,7 @@ class MemberActivityTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 2]);
         $user = User::findOne(['id' => 2]);
 
-        $activity = ActivityManager::dispatch(MemberRemovedActivity::class, $space, $user);
+        $activity = MemberRemovedActivity::send($space, $user);
 
         $this->enterSpaceContext($space);
 
@@ -53,7 +53,7 @@ class MemberActivityTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 2]);
         $user = User::findOne(['id' => 2]);
 
-        $activity = ActivityManager::dispatch(MemberAddedActivity::class, $space, $user);
+        $activity = MemberAddedActivity::send($space, $user);
 
         // Global/dashboard stream (no space context): the entry highlights the
         // space ("joined the Space {spaceName}"), so it keeps the space link.
@@ -71,8 +71,8 @@ class MemberActivityTest extends HumHubDbTestCase
         // Two members joining within the same time bucket are grouped, so the
         // entry references multiple users and must keep the space as link
         // target — even when viewed inside the space.
-        ActivityManager::dispatch(MemberAddedActivity::class, $space, User::findOne(['id' => 2]));
-        ActivityManager::dispatch(MemberAddedActivity::class, $space, User::findOne(['id' => 3]));
+        MemberAddedActivity::send($space, User::findOne(['id' => 2]));
+        MemberAddedActivity::send($space, User::findOne(['id' => 3]));
 
         $record = Activity::find()
             ->enableGrouping()

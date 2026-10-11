@@ -11,7 +11,7 @@ use humhub\widgets\VueComponent;
 use yii\helpers\Url;
 
 /* @var array $initial the first page of notifications, see NotificationListService */
-/* @var array $categories [{id, title}] the categories that can be filtered by */
+/* @var array $filters [{id, title}] the notification categories that can be filtered by */
 
 // The page content is one island (NotificationOverview): the filter in the sidebar and the list
 // in the main panel are one piece of state, so they share an owner. It renders the panel/column
@@ -23,7 +23,7 @@ use yii\helpers\Url;
         'assetBundle' => NotificationVueAsset::class,
         'props' => [
             'initial' => $initial,
-            'categories' => $categories,
+            'filters' => $filters,
             'pageSize' => humhub\modules\notification\services\NotificationListService::OVERVIEW_PAGE_SIZE,
             'settingsUrl' => Url::to(['/notification/user']),
             'icons' => [

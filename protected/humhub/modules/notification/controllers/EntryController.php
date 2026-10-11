@@ -17,6 +17,7 @@ use yii\db\IntegrityException;
 use yii\web\HttpException;
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
+use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\components\access\ControllerAccess;
 
@@ -38,31 +39,28 @@ class EntryController extends Controller
     }
 
     /**
-     * Redirects to the target URL of the given notification
+     * Redirects to the target URL of the given notification of the current user and marks its
+     * group seen; without such a notification to the content `cId`, if given
      * @param int $id
      * @param int|null $cId
      * @return EntryController|Response|\yii\web\Response
      * @throws Exception
      * @throws HttpException
-     * @throws IntegrityException
      * @throws Throwable
      */
     public function actionIndex($id, $cId = null)
     {
-        $notificationModel = Notification::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
+        $record = Notification::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
 
-        if ($notificationModel) {
-            $notification = $notificationModel->getBaseModel();
-
-            if (!$notification) {
+        if ($record) {
+            try {
+                $notification = NotificationManager::load($record);
+            } catch (IntegrityException) {
                 throw new HttpException(404, Yii::t('NotificationModule.base', 'The requested content is not valid or was removed!'));
             }
 
-            $url = $notification->getUrl();
-
-            if ($notification->markAsSeenOnClick) {
-                $notification->markAsSeen();
-            }
+            NotificationManager::markRecordSeen($record);
+            $url = $notification->getUrl(true);
         } else {
             $url = $this->getContentUrl($cId);
         }

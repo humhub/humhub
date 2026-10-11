@@ -2,17 +2,21 @@
 
 namespace humhub\modules\comment\models;
 
-use humhub\modules\activity\services\ActivityManager;
+use humhub\components\db\AfterCommit;
 use humhub\modules\comment\activities\NewCommentActivity as NewCommentActivity;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
-use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\notifications\CommentReplyNotification;
+use humhub\modules\comment\notifications\NewCommentNotification;
 use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\notification\components\NotificationSet;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\User;
+use humhub\modules\user\notifications\MentionedNotification;
 use Yii;
 use yii\helpers\Url;
 
@@ -85,6 +89,9 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
     public function afterDelete()
     {
+        if ($this->parent_comment_id !== null) {
+            CommentReplyNotification::revokeReply($this);
+        }
         $this->updateContentSearch();
         CommentPayloadCache::invalidateContent($this->content_id);
         parent::afterDelete();
@@ -100,34 +107,24 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         // See CommentPayloadCache for what this does and does not cover.
         CommentPayloadCache::invalidateContent($this->content_id);
 
-        // Handle mentioned users
-        // Execute before NewCommentNotification to avoid double notification when mentioned.
-        $processResult = RichText::postProcess($this->message, $this, 'message');
-        $mentionedUsers = $processResult['mentioning'] ?? [];
-
         if ($insert) {
-            $followerQuery = $this->content->getPolymorphicRelation()->getFollowersWithNotificationQuery();
-
-            // Remove mentioned users from followers query to avoid double notification
-            if (count($mentionedUsers) !== 0) {
-                $followerQuery->andWhere([
-                    'NOT IN',
-                    'user.id',
-                    array_map(fn(User $user) => $user->id, $mentionedUsers),
-                ]);
-            }
-
-            NewCommentNotification::instance()->from($this->createdBy)->about($this)->sendBulk($followerQuery);
-            ActivityManager::dispatch(NewCommentActivity::class, $this, $this->createdBy);
+            // The mentioned users are notified with the others, each user by one notification only
+            $processResult = Mentioning::withoutNotification(fn() => RichText::postProcess($this->message, $this, 'message'));
+            $this->sendNotifications($processResult['mentioning'] ?? []);
+            NewCommentActivity::send($this, $this->createdBy);
 
             if ($this->content->container) {
-                Yii::$app->live->send(new NewCommentLive([
+                $event = new NewCommentLive([
                     'contentContainerId' => $this->content->container->id,
                     'visibility' => $this->content->visibility,
                     'contentId' => $this->content->id,
                     'commentId' => $this->id,
-                ]));
+                ]);
+                AfterCommit::run(static fn() => Yii::$app->live->send($event));
             }
+        } else {
+            // a mention added by an edit is notified as such
+            RichText::postProcess($this->message, $this, 'message');
         }
 
         $this->updateContentSearch();
@@ -135,6 +132,28 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         $this->fileManager->attach($this->fileList);
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Notifies everyone concerned by this new comment once, by the best-matching notification:
+     * the mentioned users, then the author of the replied-to comment, then the content's followers
+     * (its author included).
+     *
+     * @param User[] $mentionedUsers
+     */
+    private function sendNotifications(array $mentionedUsers): void
+    {
+        $set = NotificationSet::create(source: $this, originator: $this->createdBy)
+            ->add(MentionedNotification::class, $mentionedUsers);
+
+        $parent = $this->parentComment;
+        if ($parent !== null) {
+            // About the replied-to comment, so the replies to it are grouped; each reply is a notification of its own
+            $set->add(CommentReplyNotification::class, (int)$parent->created_by, source: $parent, payload: ['replyId' => $this->id], dedupe: false);
+        }
+
+        $set->add(NewCommentNotification::class, $this->content->getPolymorphicRelation()->getFollowersWithNotificationQuery())
+            ->send();
     }
 
     /**

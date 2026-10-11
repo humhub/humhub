@@ -70,10 +70,13 @@
  * ## Live updates
  *
  * A notification arriving through the live poll carries only ids
- * (`{notificationId, notificationGroup}`, see `notification\targets\WebTarget`), so the island
- * dedupes against what its list already shows — by id and by group key, the same two keys the
- * legacy dropdown tracked — and then refreshes: the count from the response, the entries only
- * while the dropdown is actually open (a closed dropdown reloads on open anyway).
+ * (`{notificationId, notificationGroup}`, see `notification\jobs\DispatchJob`), so the island
+ * dedupes against what its list already shows — by id and by group key (`notificationGroup`
+ * is the opaque group key an entry carries as `groupKey`). Anything new refreshes the list:
+ * at once while the dropdown is open, otherwise debounced (`LIVE_RELOAD_DELAY`), so a burst of
+ * events costs one request. The badge then takes the server's `unseenCount` from that
+ * response rather than adding up events locally — a new member of an already unseen group
+ * does not raise the count.
  *
  * ## Staying current across pjax navigations
  *
@@ -99,7 +102,7 @@
  */
 import { events, i18n, log, pageTitle } from '@humhub/vue';
 import NotificationList from './components/NotificationList.vue';
-import { markAllAsSeen } from './components/notificationApi.js';
+import { markAsSeen as markNotificationsAsSeen } from './components/notificationApi.js';
 
 const LIVE_EVENT = 'humhub:modules:notification:live:NewNotification';
 const UPDATE_TITLE_EVENT = 'humhub:modules:notification:UpdateTitleNotificationCount';
@@ -108,6 +111,8 @@ const UPDATE_COUNT_EVENT = 'humhub:notification:updateCount';
 // does not re-render the top menu, so the island is told the fresh count instead of refetching
 // it on every navigation.
 const SET_COUNT_EVENT = 'humhub:notification:setCount';
+// Debounce of the refresh a live notification triggers while the dropdown is closed (ms).
+const LIVE_RELOAD_DELAY = 500;
 
 export default {
     components: { NotificationList },
@@ -131,6 +136,7 @@ export default {
             unseenCount: this.initial ? Number(this.initial.unseenCount || 0) : 0,
             open: false,
             animate: false,
+            liveReloadTimer: null,
         };
     },
     computed: {
@@ -164,6 +170,7 @@ export default {
         events.off(LIVE_EVENT, this.onLiveNotification);
         events.off(UPDATE_TITLE_EVENT, this.updateTitle);
         events.off(SET_COUNT_EVENT, this.onSetCount);
+        clearTimeout(this.liveReloadTimer);
     },
     methods: {
         onShow() {
@@ -182,8 +189,8 @@ export default {
             this.setCount(count);
         },
         /**
-         * Live events carry ids only. Anything already listed is not news; anything else bumps
-         * the count, and refreshes the list if the user is looking at it.
+         * Live events carry ids only. Anything already listed is not news; anything else
+         * refreshes the list - and with it the count, see "Live updates".
          */
         onLiveNotification(event, liveEvents) {
             const fresh = (liveEvents || []).filter((liveEvent) => {
@@ -198,15 +205,20 @@ export default {
                 return;
             }
 
+            clearTimeout(this.liveReloadTimer);
+
             if (this.open) {
                 this.$refs.list.reload();
                 return;
             }
 
-            this.setCount(this.unseenCount + fresh.length);
+            this.liveReloadTimer = setTimeout(() => {
+                this.liveReloadTimer = null;
+                this.$refs.list.reload();
+            }, LIVE_RELOAD_DELAY);
         },
         markAsSeen() {
-            return markAllAsSeen().then(() => {
+            return markNotificationsAsSeen().then(() => {
                 this.setCount(0);
                 // Reaches a notification overview island on the same page (its list still shows
                 // the unread markers) - setCount() itself only fires when the count changed, so

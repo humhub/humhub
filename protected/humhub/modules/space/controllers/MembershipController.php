@@ -10,6 +10,7 @@ namespace humhub\modules\space\controllers;
 
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\components\ContentContainerControllerAccess;
+use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -86,7 +87,7 @@ class MembershipController extends ContentContainerController
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
+        (new NotificationSpaceService())->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
 
         return $this->redirect($space->getUrl());
     }
@@ -96,7 +97,7 @@ class MembershipController extends ContentContainerController
         $this->forcePostRequest();
 
         $space = $this->getSpace();
-        Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
+        (new NotificationSpaceService())->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
 
         return $this->redirect($space->getUrl());
     }

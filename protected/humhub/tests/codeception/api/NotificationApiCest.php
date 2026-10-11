@@ -9,10 +9,10 @@
 namespace humhub\tests\codeception\api;
 
 use ApiTester;
+use humhub\modules\friendship\notifications\FriendshipRequestNotification;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
-use humhub\modules\user\notifications\Followed;
-use humhub\modules\user\models\User;
+use humhub\modules\notification\services\NotificationListService;
+use humhub\modules\user\notifications\FollowedNotification;
 use PHPUnit\Framework\Assert;
 use Yii;
 
@@ -35,46 +35,62 @@ class NotificationApiCest
     }
 
     /**
-     * Seeds a web notification for the given user, the same way the platform does (through the
-     * notification class, so the record carries a resolvable base model).
+     * Seeds a listed notification for the given user - a row of a real notification class
+     * without a source, each its own entry.
      *
      * @return int the notification record id
      */
-    private function seedNotification(int $userId, int $postId = 1, int $originatorId = 2, bool $seen = false): int
+    private function seedNotification(int $userId, string $class = FollowedNotification::class, int $originatorId = 2, bool $seen = false): int
     {
-        $notification = \humhub\modules\notification\tests\codeception\unit\rendering\notifications\TestNotification::instance()
-            ->from(User::findOne(['id' => $originatorId]))
-            ->about(Post::findOne(['id' => $postId]));
-        $notification->saveRecord(User::findOne(['id' => $userId]));
-
-        $record = $notification->record;
-        $record->updateAttributes([
-            'send_web_notifications' => 1,
-            'seen' => $seen ? 1 : 0,
+        $record = new Notification([
+            'class' => $class,
+            'user_id' => $userId,
+            'originator_id' => $originatorId,
+            'priority' => $class::priority()->value,
+            'listed' => 1,
+            'seen_at' => $seen ? date('Y-m-d H:i:s') : null,
+            'created_at' => date('Y-m-d H:i:s'),
         ]);
+        Assert::assertTrue($record->save());
 
         return (int)$record->id;
+    }
+
+    /**
+     * @return int[]
+     */
+    private function grabIds(ApiTester $I): array
+    {
+        return array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
     }
 
     public function testListsTheCallersNotifications(ApiTester $I)
     {
         $I->wantTo('read my own notifications');
         $mine = $this->seedNotification(1);
-        $foreign = $this->seedNotification(2);
+        $foreign = $this->seedNotification(2, originatorId: 3);
 
         $I->amLoggedInAs(1);
-        $I->sendGet('notification');
+        $I->sendGet('notification?limit=50');
 
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
-        $ids = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        $ids = $this->grabIds($I);
         Assert::assertContains($mine, $ids);
         Assert::assertNotContains($foreign, $ids, 'someone else\'s notification is not in my list');
 
-        $I->seeResponseJsonMatchesJsonPath('$.results[0].html');
-        $I->seeResponseJsonMatchesJsonPath('$.results[0].url');
-        $I->seeResponseJsonMatchesJsonPath('$.results[0].createdAt');
-        $I->seeResponseJsonMatchesJsonPath('$.unseenCount');
+        $entry = $I->grabDataFromResponseByJsonPath('$.results[?(@.id == ' . $mine . ')]')[0];
+        Assert::assertSame(
+            ['id', 'html', 'url', 'isNew', 'createdAt', 'groupKey', 'count', 'priority', 'originator', 'space'],
+            array_keys($entry),
+        );
+        Assert::assertStringContainsString('following you', $entry['html']);
+        Assert::assertTrue($entry['isNew']);
+        Assert::assertSame(NotificationListService::encodeCursor($mine), $entry['groupKey']);
+        Assert::assertSame(1, $entry['count']);
+        Assert::assertSame('low', $entry['priority']);
+        Assert::assertSame(2, $entry['originator']['id']);
+        Assert::assertGreaterThan(0, (int)$I->grabDataFromResponseByJsonPath('$.unseenCount')[0]);
     }
 
     public function testPagesWithACursorAndStopsWhenExhausted(ApiTester $I)
@@ -84,24 +100,29 @@ class NotificationApiCest
         for ($i = 0; $i < 3; $i++) {
             $ids[] = $this->seedNotification(1);
         }
-        rsort($ids);
 
         $I->amLoggedInAs(1);
 
         $I->sendGet('notification?limit=2');
         $I->seeResponseCodeIs(200);
-        $firstPage = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
-        Assert::assertCount(2, $firstPage);
-        $cursor = (int)$I->grabDataFromResponseByJsonPath('$.nextCursor')[0];
-        Assert::assertSame(end($firstPage), $cursor, 'the cursor is the last entry of the page');
+        $firstPage = $this->grabIds($I);
+        Assert::assertSame([$ids[2], $ids[1]], $firstPage, 'newest entry first');
+        $cursor = $I->grabDataFromResponseByJsonPath('$.nextCursor')[0];
+        Assert::assertIsString($cursor, 'the cursor is opaque');
+        Assert::assertSame(
+            $I->grabDataFromResponseByJsonPath('$.results[1].groupKey')[0],
+            $cursor,
+            'the cursor is the key of the last entry of the page',
+        );
 
-        $I->sendGet("notification?limit=2&cursor=$cursor");
+        $I->sendGet('notification?limit=2&cursor=' . urlencode($cursor));
         $I->seeResponseCodeIs(200);
-        $secondPage = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        $secondPage = $this->grabIds($I);
+        Assert::assertSame($ids[0], $secondPage[0], 'the next page continues behind the cursor');
         Assert::assertEmpty(array_intersect($firstPage, $secondPage), 'no entry appears on both pages');
 
         // The last page is short, so there is nothing behind it.
-        $I->sendGet('notification?limit=50');
+        $I->sendGet('notification?limit=50&cursor=' . urlencode($cursor));
         $I->seeResponseCodeIs(200);
         Assert::assertNull($I->grabDataFromResponseByJsonPath('$.nextCursor')[0]);
     }
@@ -117,56 +138,82 @@ class NotificationApiCest
 
         $I->sendGet('notification?limit=1000');
         $I->seeResponseCodeIs(200);
-        Assert::assertLessThanOrEqual(50, count($I->grabDataFromResponseByJsonPath('$.results[*].id')));
+        Assert::assertLessThanOrEqual(50, count($this->grabIds($I)));
 
         $I->sendGet('notification?limit=0');
         $I->seeResponseCodeIs(200);
-        Assert::assertCount(1, $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        Assert::assertCount(1, $this->grabIds($I));
     }
 
     public function testFiltersBySeenState(ApiTester $I)
     {
         $I->wantTo('filter my notifications by their seen state');
         $unseen = $this->seedNotification(1);
-        $seen = $this->seedNotification(1, 2, 2, true);
+        $seen = $this->seedNotification(1, seen: true);
 
         $I->amLoggedInAs(1);
 
         $I->sendGet('notification?seen=unseen&limit=50');
         $I->seeResponseCodeIs(200);
-        $ids = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        $ids = $this->grabIds($I);
         Assert::assertContains($unseen, $ids);
         Assert::assertNotContains($seen, $ids);
 
         $I->sendGet('notification?seen=seen&limit=50');
         $I->seeResponseCodeIs(200);
-        $ids = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        $ids = $this->grabIds($I);
         Assert::assertContains($seen, $ids);
         Assert::assertNotContains($unseen, $ids);
+
+        $I->sendGet('notification?seen=sometimes');
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.seen');
+
+        $I->sendGet('notification?seen[]=seen');
+        $I->seeResponseCodeIs(422);
+        $I->seeResponseJsonMatchesJsonPath('$.errors.seen');
+
+        // an array is no cursor
+        $I->sendGet('notification?cursor[]=x&limit=50');
+        $I->seeResponseCodeIs(200);
+        Assert::assertContains($unseen, $this->grabIds($I));
     }
 
     public function testFiltersByCategory(ApiTester $I)
     {
-        $I->wantTo('filter my notifications by category');
-        // A notification of a REAL category, since a category filter resolves to the
-        // notification classes the modules currently register.
-        $followed = Followed::instance()
-            ->from(User::findOne(['id' => 2]))
-            ->about(User::findOne(['id' => 1]));
-        $followed->saveRecord(User::findOne(['id' => 1]));
-        $followed->record->updateAttributes(['send_web_notifications' => 1]);
-        $followedId = (int)$followed->record->id;
+        $I->wantTo('filter my notifications by notification category');
+        // Real classes, since a category filter resolves to the notification classes the modules
+        // currently register.
+        $followers = $this->seedNotification(1, FollowedNotification::class);
+        $direct = $this->seedNotification(1, FriendshipRequestNotification::class);
 
         $I->amLoggedInAs(1);
 
-        $I->sendGet('notification?categories[]=followed&limit=50');
+        $I->sendGet('notification?categories[]=followers&limit=50');
         $I->seeResponseCodeIs(200);
-        Assert::assertContains($followedId, array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id')));
+        $ids = $this->grabIds($I);
+        Assert::assertContains($followers, $ids);
+        Assert::assertNotContains($direct, $ids);
+
+        $I->sendGet('notification?categories[]=social&limit=50');
+        $I->seeResponseCodeIs(200);
+        Assert::assertNotContains($followers, $this->grabIds($I));
+
+        $I->sendGet('notification?categories[]=followers&categories[]=direct&limit=50');
+        $I->seeResponseCodeIs(200);
+        $ids = $this->grabIds($I);
+        Assert::assertContains($followers, $ids);
+        Assert::assertContains($direct, $ids);
 
         // A category nothing belongs to leaves the list empty rather than unfiltered.
         $I->sendGet('notification?categories[]=there-is-no-such-category&limit=50');
         $I->seeResponseCodeIs(200);
-        Assert::assertEmpty($I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        Assert::assertEmpty($this->grabIds($I));
+
+        // So does an empty selection.
+        $I->sendGet('notification?categories[]=&limit=50');
+        $I->seeResponseCodeIs(200);
+        Assert::assertEmpty($this->grabIds($I));
     }
 
     public function testDropsAnInconsistentNotificationInsteadOfFailing(ApiTester $I)
@@ -175,22 +222,23 @@ class NotificationApiCest
         $good = $this->seedNotification(1);
         $broken = $this->seedNotification(1);
         // A class that no longer exists is what an uninstalled module leaves behind.
-        Notification::updateAll(['class' => 'humhub\\modules\\gone\\notifications\\Gone'], ['id' => $broken]);
+        Notification::updateAll(['class' => 'humhub\\modules\\gone\\notifications\\GoneNotification'], ['id' => $broken]);
 
         $I->amLoggedInAs(1);
         $I->sendGet('notification?limit=50');
 
         $I->seeResponseCodeIs(200);
-        $ids = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        $ids = $this->grabIds($I);
         Assert::assertContains($good, $ids);
         Assert::assertNotContains($broken, $ids);
+        Assert::assertNull(Notification::findOne(['id' => $broken]), 'the broken notification is deleted');
     }
 
     public function testMarkAsSeenClearsTheUnseenCount(ApiTester $I)
     {
         $I->wantTo('mark all my notifications as seen');
         $this->seedNotification(1);
-        $foreign = $this->seedNotification(2);
+        $foreign = $this->seedNotification(2, originatorId: 3);
 
         $I->amLoggedInAs(1);
         $this->withCsrf($I);
@@ -201,7 +249,29 @@ class NotificationApiCest
 
         $I->sendGet('notification?limit=50');
         Assert::assertSame(0, (int)$I->grabDataFromResponseByJsonPath('$.unseenCount')[0]);
-        Assert::assertSame(0, (int)Notification::findOne(['id' => $foreign])->seen, 'only my own were touched');
+        Assert::assertNull(Notification::findOne(['id' => $foreign])->seen_at, 'only my own were touched');
+    }
+
+    public function testMarkAsSeenByIds(ApiTester $I)
+    {
+        $I->wantTo('mark single entries as seen');
+        $first = $this->seedNotification(1);
+        $second = $this->seedNotification(1);
+        $foreign = $this->seedNotification(2, originatorId: 3);
+
+        $I->amLoggedInAs(1);
+        $this->withCsrf($I);
+
+        $I->sendGet('notification?limit=50');
+        $before = (int)$I->grabDataFromResponseByJsonPath('$.unseenCount')[0];
+
+        $I->sendPost('notification/mark-as-seen', ['ids' => [$first, $foreign]]);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['unseenCount' => $before - 1]);
+
+        Assert::assertNotNull(Notification::findOne(['id' => $first])->seen_at);
+        Assert::assertNull(Notification::findOne(['id' => $second])->seen_at, 'only the given entry');
+        Assert::assertNull(Notification::findOne(['id' => $foreign])->seen_at, 'a foreign id is ignored');
     }
 
     public function testMarkAsSeenNeedsACsrfTokenAndThePostVerb(ApiTester $I)

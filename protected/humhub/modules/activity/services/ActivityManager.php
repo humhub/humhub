@@ -2,10 +2,12 @@
 
 namespace humhub\modules\activity\services;
 
+use humhub\components\db\AfterCommit;
 use humhub\components\Event;
 use humhub\helpers\DataTypeHelper;
 use humhub\models\RecordMap;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\activity\events\BeforeDispatchEvent;
 use humhub\modules\activity\live\NewActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -16,12 +18,28 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
-use yii\base\ModelEvent;
 
+/**
+ * Writes, loads and maintains activities, see `docs/develop/concept-activities.md`.
+ *
+ * @api
+ */
 class ActivityManager extends Component
 {
+    /**
+     * @event BeforeDispatchEvent before an activity is written; set `isValid` to `false` to skip it
+     * @api
+     */
     public const EVENT_BEFORE_DISPATCH = 'beforeDispatch';
 
+    /**
+     * Writes an activity of `$class` about `$target` (a content, a content addon or a container) caused by
+     * `$user` (the logged-in user by default); `null` when a handler of {@see EVENT_BEFORE_DISPATCH} skipped it.
+     *
+     * @param class-string<BaseActivity> $class
+     * @api
+     * @deprecated since 1.20, use `MyActivity::send($target, $user)` ({@see BaseActivity::send()})
+     */
     public static function dispatch(
         string $class,
         ContentProvider|ContentContainerActiveRecord $target,
@@ -31,7 +49,13 @@ class ActivityManager extends Component
             throw new InvalidArgumentException("Class {$class} does not implement " . BaseActivity::class);
         }
 
-        $event = new ModelEvent(['data' => ['class' => $class, 'target' => $target, 'user' => $user]]);
+        $event = new BeforeDispatchEvent([
+            'class' => $class,
+            'target' => $target,
+            'user' => $user,
+            // as up to 1.19
+            'data' => ['class' => $class, 'target' => $target, 'user' => $user],
+        ]);
         Event::trigger(static::class, self::EVENT_BEFORE_DISPATCH, $event);
 
         if (!$event->isValid) {
@@ -70,7 +94,7 @@ class ActivityManager extends Component
      * Tells the containers's audience that there is a new activity, so a listening
      * {@see \humhub\modules\activity\live\NewActivity} consumer (the ActivityBox island) can
      * refresh. Sent AFTER the grouping ran, because until then it is not decided whether this
-     * activity starts an entry or joins one.
+     * activity starts an entry or joins one, and after the commit, so the refresh finds it.
      *
      * Only for activities that belong to a container: the live system routes by container and
      * visibility, and an activity without one has no audience to route to. Its visibility is
@@ -83,14 +107,20 @@ class ActivityManager extends Component
             return;
         }
 
-        Yii::$app->live->send(new NewActivity([
+        $event = new NewActivity([
             'activityId' => (int)$record->id,
             'contentContainerId' => (int)$record->contentcontainer_id,
             'containerGuid' => $record->contentContainer?->guid,
             'visibility' => $record->content->visibility ?? Content::VISIBILITY_PRIVATE,
-        ]));
+        ]);
+        AfterCommit::run(static fn() => Yii::$app->live->send($event));
     }
 
+    /**
+     * The activity of a record (for a group, of its newest member).
+     *
+     * @internal
+     */
     public static function load(Activity $record): BaseActivity
     {
         if (!empty($record->group_max_id) && $record->group_max_id !== $record->id) {
@@ -105,6 +135,8 @@ class ActivityManager extends Component
     /**
      * Should be triggered on all possible Activity related Content changes.
      * e.g. Visibility, Move Content
+     *
+     * @internal
      */
     public static function afterContentChange(Content $content): void
     {

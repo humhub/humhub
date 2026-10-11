@@ -10,7 +10,8 @@ namespace humhub\modules\notification\serializers;
 
 use humhub\components\api\Format;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\space\models\Space;
+use humhub\modules\notification\components\NotificationPriority;
+use humhub\modules\notification\services\NotificationListService;
 use humhub\modules\space\serializers\SpaceSerializer;
 use humhub\modules\user\serializers\UserSerializer;
 
@@ -20,16 +21,21 @@ use humhub\modules\user\serializers\UserSerializer;
  *
  * ## The sentence comes from the server, the entry does not
  *
- * `html` is the notification's own sentence — `BaseNotification::html()`, e.g.
+ * `html` is the notification's own sentence — {@see BaseNotification::asWeb()}, e.g.
  * *"Jane commented on Post 'Release notes'"* — the one part of a notification a client cannot
- * build: it is localized, module-defined, and composed from records the client does not have.
- * Everything AROUND it (the originator's avatar, the space badge, the relative time, the
- * unread marker) used to come from `@notification/views/layouts/web.php` and is now rendered
+ * build: it is localized, module-defined and composed from records the client does not have,
+ * and for a grouped entry it names the group ("Jane and 2 more"). Everything AROUND it (the
+ * originator's avatar, the space badge, the relative time, the unread marker) is rendered
  * client-side from the fields below.
  *
- * A notification class that implements no `html()` falls back to `text()` (the same
- * derivation `SocialActivity` itself uses: tags stripped, entities decoded), so an entry never
- * renders empty.
+ * ## Grouping stays server-side
+ *
+ * An entry is one group of notifications ({@see \humhub\modules\notification\components\ActiveQueryNotification::grouped()}),
+ * represented by its newest member ({@see \humhub\modules\notification\components\NotificationManager::load()}):
+ * `id` is that member, `count` the size of the group. `groupKey` identifies the entry - the
+ * opaque grouping key, identical to the live event's `notificationGroup` (see
+ * {@see \humhub\modules\notification\jobs\DispatchJob}), so a client can dedupe an arriving live
+ * event against an already listed entry.
  *
  * ## Caller context
  *
@@ -43,46 +49,47 @@ class NotificationSerializer
     /**
      * @return array{
      *     id: int,
-     *     html: string|null,
+     *     html: string,
      *     url: string,
      *     isNew: bool,
      *     createdAt: string|null,
-     *     groupKey: string|null,
+     *     groupKey: string,
+     *     count: int,
+     *     priority: string,
      *     originator: array|null,
      *     space: array|null,
      * }
      */
     public static function notification(BaseNotification $notification): array
     {
-        // One call, because it is the same preparation the legacy render path did: it decodes
-        // the record's payload (which `html()` implementations read), resolves the entry URL
-        // and the unread flag, and hands over the originator/space records.
-        $params = $notification->getViewParams();
         $record = $notification->record;
-        $space = $params['space'] ?? null;
+        $space = $notification->getSpace();
 
         return [
             'id' => (int)$record->id,
-            'html' => $params['html'] ?: ($params['text'] ?? null),
-            // The `/notification/entry` redirect - the same target the legacy entry linked to.
-            // Absolute like every other URL of the API, so a token client can follow it too.
-            'url' => $params['url'],
-            'isNew' => (bool)($params['isNew'] ?? false),
+            'html' => $notification->asWeb(),
+            // The `/notification/entry` redirect, which marks the group seen. Absolute like
+            // every other URL of the API, so a token client can follow it too.
+            'url' => $notification->getEntryUrl(),
+            // A group is new while any of its members is unseen.
+            'isNew' => $record->group_unseen !== null
+                ? (bool)$record->group_unseen
+                : $record->seen_at === null,
             'createdAt' => Format::dateTime($record->created_at),
-            // Composite `<class>:<groupKey>`, byte-identical to what the live event carries as
-            // `notificationGroup` (see `notification\targets\WebTarget::handle()`) and to the
-            // former `data-notification-group` attribute - which is what lets a client dedupe
-            // an arriving live event against an already listed entry.
-            'groupKey' => self::groupKey($notification),
-            'originator' => UserSerializer::short($params['originator'] ?? null),
-            'space' => $space instanceof Space ? SpaceSerializer::short($space) : null,
+            'groupKey' => NotificationListService::encodeCursor((int)$record->grouping_key),
+            'count' => $notification->groupCount,
+            'priority' => self::priority((int)$record->priority),
+            'originator' => UserSerializer::short($notification->originator),
+            'space' => $space !== null ? SpaceSerializer::short($space) : null,
         ];
     }
 
-    private static function groupKey(BaseNotification $notification): ?string
+    private static function priority(int $value): string
     {
-        $groupKey = $notification->getGroupKey();
-
-        return $groupKey ? $notification::class . ':' . $groupKey : null;
+        return match (NotificationPriority::tryFrom($value)) {
+            NotificationPriority::Low => 'low',
+            NotificationPriority::High => 'high',
+            default => 'normal',
+        };
     }
 }

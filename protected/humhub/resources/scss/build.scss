@@ -151,6 +151,9 @@ $prev-space-directory: false !default;
 $prev-people-directory: false !default;
 @import "people-directory";
 
+$prev-notification-settings: false !default;
+@import "notification-settings";
+
 $prev-modules: false !default;
 @import "modules";
 

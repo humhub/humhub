@@ -8,7 +8,6 @@
 
 namespace humhub\modules\space\modules\manage\controllers;
 
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\components\UrlRule;
@@ -92,7 +91,7 @@ class DefaultController extends Controller
         $space->archive();
 
         // Create Activity when the space in archived
-        ActivityManager::dispatch(SpaceArchivedActivity::class, $space);
+        SpaceArchivedActivity::send($space);
 
         return $this->asJson([
             'success' => true,
@@ -109,7 +108,7 @@ class DefaultController extends Controller
         $space->unarchive();
 
         // Create Activity when the space in unarchieved
-        ActivityManager::dispatch(SpaceUnArchivedActivity::class, $space);
+        SpaceUnArchivedActivity::send($space);
 
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = 'json';
