@@ -109,8 +109,11 @@ do; the space manage controller does it for the about text). Every extension's
 - `FileExtension` attaches every referenced `file-guid:` file to the record (via its
   `fileManager`) and converts pasted base64 images into files first. Files cannot be attached
   to an unpersisted record, which is why this runs after save.
-- `MentioningExtension` creates the `Mentioning` records — the source of the mention
-  notifications.
+- `MentioningExtension` creates the `Mentioning` records — each sends a `MentionedNotification`
+  — and lists the newly mentioned users in `$result['mentioning']`. A record that notifies them
+  itself, together with other notifications of the same event (`Comment` does, see
+  [Several notifications for one event](concept-notifications.md#several-notifications-for-one-event)),
+  runs `postProcess()` inside `Mentioning::withoutNotification()`.
 - `OembedExtension` preloads the previews of embedded links and lists them in
   `$result['oembed']`.
 

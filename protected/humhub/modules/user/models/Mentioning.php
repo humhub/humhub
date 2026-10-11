@@ -29,6 +29,41 @@ use yii\db\ActiveQuery;
 class Mentioning extends ActiveRecord
 {
     /**
+     * @var int how deep the current call is nested in {@see withoutNotification()}
+     */
+    private static int $silenced = 0;
+
+    /**
+     * Runs the callback without sending a {@see MentionedNotification} for the mentions it creates
+     * - for a caller that notifies the mentioned users itself, e.g. together with other
+     * notifications of the same event in a {@see \humhub\modules\notification\components\NotificationSet}.
+     * The mentioned users are what {@see mention()} returns, and what
+     * `RichText::postProcess()` reports as `mentioning`:
+     *
+     * ```php
+     * $result = Mentioning::withoutNotification(fn() => RichText::postProcess($this->message, $this, 'message'));
+     * $mentionedUsers = $result['mentioning'] ?? [];
+     * ```
+     *
+     * Everything else a mention does is unchanged: it is stored and the user follows the content.
+     *
+     * @template T
+     * @param callable(): T $callback
+     * @return T the result of the callback
+     * @api
+     * @since 1.20
+     */
+    public static function withoutNotification(callable $callback): mixed
+    {
+        self::$silenced++;
+        try {
+            return $callback();
+        } finally {
+            self::$silenced--;
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public static function tableName()
@@ -74,8 +109,9 @@ class Mentioning extends ActiveRecord
             throw new Exception("Invalid polymorphic relation for Mentioning!");
         }
 
-        // Send Notification
-        MentionedNotification::send($this->user, $mentionedSource, $originator);
+        if (self::$silenced === 0) {
+            MentionedNotification::send($this->user, $mentionedSource, $originator);
+        }
 
         return parent::afterSave($insert, $changedAttributes);
     }

@@ -39,8 +39,9 @@ use yii\db\IntegrityException;
  * ({@see BaseNotification::send()}, {@see BaseNotification::revoke()},
  * {@see BaseNotification::markSeen()}); the static methods behind them here are internal.
  *
- * - {@see dispatch()} creates a notification for a set of recipients. The recipients, the source
- *   and the originator are reduced to ids and handed to a {@see DispatchJob}, which writes one
+ * - {@see dispatch()} creates a notification for a set of recipients, {@see dispatchSet()} the
+ *   notifications of a ranked {@see NotificationSet}. The recipients, the source and the
+ *   originator are reduced to ids and handed to a {@see DispatchJob}, which writes one
  *   {@see Notification} record per recipient, groups it and hands it to the channels.
  * - {@see delete()}, {@see markSeen()}, {@see markRecordSeen()} and {@see markAllSeen()} change
  *   stored notifications.
@@ -57,8 +58,9 @@ use yii\db\IntegrityException;
 class NotificationManager extends Component
 {
     /**
-     * Fired once per dispatch with a {@see BeforeDispatchEvent} carrying the arguments of the
-     * call. A handler may change them or veto the dispatch with `$event->isValid = false`.
+     * Fired once per dispatch - once per entry of a {@see NotificationSet} - with a
+     * {@see BeforeDispatchEvent} carrying the arguments of the call. A handler may change them or
+     * veto the dispatch (the entry) with `$event->isValid = false`.
      *
      * @api
      * @since 1.20
@@ -132,11 +134,7 @@ class NotificationManager extends Component
         bool $notifyOriginator = false,
         bool $dedupe = true,
     ): void {
-        if (!is_subclass_of($class, BaseNotification::class)) {
-            throw new InvalidArgumentException("Class {$class} is not a " . BaseNotification::class);
-        }
-
-        $event = new BeforeDispatchEvent([
+        self::dispatchSet([new BeforeDispatchEvent([
             'class' => $class,
             'recipients' => $recipients,
             'source' => $source,
@@ -144,26 +142,57 @@ class NotificationManager extends Component
             'payload' => $payload,
             'notifyOriginator' => $notifyOriginator,
             'dedupe' => $dedupe,
-        ]);
-        Event::trigger(static::class, self::EVENT_BEFORE_DISPATCH, $event);
+        ])]);
+    }
 
-        if (!$event->isValid) {
+    /**
+     * Creates the notifications of a ranked set - one {@see DispatchJob} for all entries, which
+     * notifies each recipient by the first entry that reaches them, see {@see NotificationSet}.
+     *
+     * Every entry is passed through {@see EVENT_BEFORE_DISPATCH} on its own: a handler may change
+     * it or veto it, which drops that entry only. Nothing is queued when no entry is left.
+     *
+     * @param BeforeDispatchEvent[] $entries the entries in rank order, carrying the arguments of
+     * {@see BaseNotification::send()}
+     * @throws InvalidArgumentException when a class (also after {@see EVENT_BEFORE_DISPATCH}) is no
+     * notification class, or a source is not saved
+     * @internal use {@see NotificationSet::send()} or {@see BaseNotification::send()}
+     * @since 1.20
+     */
+    public static function dispatchSet(array $entries): void
+    {
+        $serialized = [];
+        foreach ($entries as $event) {
+            if (!is_subclass_of($event->class, BaseNotification::class)) {
+                throw new InvalidArgumentException("Class {$event->class} is not a " . BaseNotification::class);
+            }
+
+            Event::trigger(static::class, self::EVENT_BEFORE_DISPATCH, $event);
+
+            if (!$event->isValid) {
+                continue;
+            }
+
+            if (!is_subclass_of($event->class, BaseNotification::class)) {
+                throw new InvalidArgumentException("Class {$event->class} is not a " . BaseNotification::class);
+            }
+
+            $serialized[] = [
+                'class' => $event->class,
+                'recipients' => self::serializeRecipients($event->recipients),
+                'source' => self::serializeSource($event->source),
+                'originatorId' => $event->originator !== null ? (int)$event->originator->id : null,
+                'payload' => $event->payload,
+                'notifyOriginator' => $event->notifyOriginator,
+                'dedupe' => $event->dedupe,
+            ];
+        }
+
+        if ($serialized === []) {
             return;
         }
 
-        if (!is_subclass_of($event->class, BaseNotification::class)) {
-            throw new InvalidArgumentException("Class {$event->class} is not a " . BaseNotification::class);
-        }
-
-        $job = new DispatchJob([
-            'class' => $event->class,
-            'recipients' => self::serializeRecipients($event->recipients),
-            'source' => self::serializeSource($event->source),
-            'originatorId' => $event->originator !== null ? (int)$event->originator->id : null,
-            'payload' => $event->payload,
-            'notifyOriginator' => $event->notifyOriginator,
-            'dedupe' => $event->dedupe,
-        ]);
+        $job = new DispatchJob(['entries' => $serialized]);
 
         // A worker could run the job before the commit and miss the records it refers to.
         AfterCommit::run(static fn() => Yii::$app->queue->push($job));

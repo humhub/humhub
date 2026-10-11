@@ -15,6 +15,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\NotificationManager;
+use humhub\modules\notification\components\NotificationSet;
 use humhub\modules\notification\events\UnreadCountChangedEvent;
 use humhub\modules\notification\live\NewNotification;
 use humhub\modules\notification\models\Notification;
@@ -28,9 +29,15 @@ use Throwable;
 use Yii;
 
 /**
- * Writes the notification records of one {@see BaseNotification::send()} call - one per
- * recipient - groups them and hands them to the delivery layer ({@see DeliveryScheduler}), which
- * decides when the mail, push and other channels deliver them.
+ * Writes the notification records of one {@see BaseNotification::send()} call or one
+ * {@see NotificationSet} - one per recipient - groups them and hands them to the delivery layer
+ * ({@see DeliveryScheduler}), which decides when the mail, push and other channels deliver them.
+ *
+ * The job processes its {@see $entries} in rank order (a `send()` is a set of one entry). A
+ * recipient is notified by the first entry that writes a notification for them, or that they
+ * already have (see `dedupe`); every later entry skips them. A recipient an entry skips for any
+ * other reason - not enabled, rejected by {@see BaseNotification::canReceive()}, no channel takes
+ * the class - may still be notified by a later entry.
  *
  * A record is `listed` (shown in the web list, counted in the badge, sent as a live event) when
  * the web channel is enabled for the recipient and the class ({@see WebTarget::isEnabled()}); a
@@ -38,15 +45,15 @@ use Yii;
  * stored at all.
  *
  * Only ids travel through the queue: the recipients (or the {@see ActiveQueryUser} selecting
- * them, which the queue serializes as is), the source as a content, container or
- * {@see RecordMap} id and the originator. The records are loaded when the job runs, so a source
- * or originator deleted in the meantime dispatches nothing, and a queue entry never carries a
- * stale or unserializable object graph.
+ * them, which the queue serializes as is and which is only resolved when the job runs), the
+ * source as a content, container or {@see RecordMap} id and the originator. The records are
+ * loaded when the job runs, so a source or originator deleted in the meantime dispatches nothing
+ * for that entry, and a queue entry never carries a stale or unserializable object graph.
  *
- * A recipient is skipped when they are not enabled, are the originator (unless the
- * {@see $notifyOriginator} is set), block or are blocked by the originator, cannot view the
+ * Per entry, a recipient is skipped when they are not enabled, are the originator (unless
+ * `notifyOriginator` is set), block or are blocked by the originator, cannot view the
  * content (which covers the content of private spaces), already have a notification of the class
- * about the source by the same originator (unless {@see $dedupe} is `false`), or are
+ * about the source by the same originator (unless `dedupe` is `false`), or are
  * rejected by {@see BaseNotification::canReceive()}. A container source alone filters nobody: a
  * user invited to a private space is no member yet. An error for one recipient is logged and does
  * not stop the others.
@@ -61,72 +68,74 @@ use Yii;
 final class DispatchJob extends LongRunningActiveJob
 {
     /**
-     * @var class-string<BaseNotification>
+     * @var array<array{class: class-string<BaseNotification>, recipients: ActiveQueryUser|int[], source: array|null, originatorId: int|null, payload: array, notifyOriginator: bool, dedupe: bool}>
+     * the entries in rank order, see {@see NotificationManager::dispatchSet()}:
+     * - `recipients`: the recipients' query or ids. A query must be self-contained - it is
+     *   serialized into the queue, so it cannot be a relation query bound to a `primaryModel`.
+     * - `source`: `['content' => id, 'record' => recordMapId]` (`record` for a content addon only),
+     *   `['container' => contentcontainerId]`, `['record' => recordMapId]` or `null` without a source
+     * - `originatorId`, `payload`, `notifyOriginator`, `dedupe`: see {@see BaseNotification::send()}
      */
-    public string $class;
+    public array $entries = [];
 
     /**
-     * @var ActiveQueryUser|int[] the recipients' query or ids. A query must be self-contained - it
-     * is serialized into the queue, so it cannot be a relation query bound to a `primaryModel`.
+     * @var array<int, true> the ids of the users notified by an earlier entry
      */
-    public ActiveQueryUser|array $recipients = [];
-
-    /**
-     * @var array|null `['content' => id, 'record' => recordMapId]` (`record` for a content addon only),
-     * `['container' => contentcontainerId]`, `['record' => recordMapId]` or `null` without a source
-     */
-    public ?array $source = null;
-
-    public ?int $originatorId = null;
-
-    /**
-     * @var array see {@see BaseNotification::send()}
-     */
-    public array $payload = [];
-
-    /**
-     * @var bool see {@see BaseNotification::send()}
-     */
-    public bool $notifyOriginator = false;
-
-    /**
-     * @var bool see {@see BaseNotification::send()}
-     */
-    public bool $dedupe = true;
+    private array $notified = [];
 
     /**
      * @inheritdoc
      */
     public function run()
     {
+        $this->notified = [];
+        foreach ($this->entries as $entry) {
+            $this->runEntry(array_merge([
+                'recipients' => [],
+                'source' => null,
+                'originatorId' => null,
+                'payload' => [],
+                'notifyOriginator' => false,
+                'dedupe' => true,
+            ], $entry));
+        }
+    }
+
+    private function runEntry(array $entry): void
+    {
         $originator = null;
-        if ($this->originatorId !== null) {
-            $originator = User::findOne(['id' => $this->originatorId]);
+        if ($entry['originatorId'] !== null) {
+            $originator = User::findOne(['id' => $entry['originatorId']]);
             if ($originator === null) {
                 // the originator is gone
                 return;
             }
         }
 
-        [$content, $container, $sourceRecordId] = $this->resolveSource();
-        if ($this->source !== null && $content === null && $container === null && $sourceRecordId === null) {
+        $hasSource = $entry['source'] !== null;
+        [$content, $container, $sourceRecordId] = $this->resolveSource($entry['source']);
+        if ($hasSource && $content === null && $container === null && $sourceRecordId === null) {
             // the source is gone
             return;
         }
 
         /** @var class-string<BaseNotification> $class */
-        $class = $this->class;
+        $class = $entry['class'];
         $priority = $class::priority();
-        $payload = $this->payload;
-        $notifyOriginator = $this->notifyOriginator;
-        $dedupe = $this->dedupe;
+        $payload = $entry['payload'];
+        $notifyOriginator = $entry['notifyOriginator'];
+        $dedupe = $entry['dedupe'];
         $contentContainerId = $content !== null ? $content->contentcontainer_id : $container?->contentcontainer_id;
 
-        foreach ($this->recipients() as $user) {
+        foreach ($this->recipients($entry['recipients']) as $user) {
             // One failing recipient must not abort the fan-out for the others.
             $record = null;
             $accepted = false;
             try {
+                if (isset($this->notified[$user->id])) {
+                    // notified by an earlier entry of the set
+                    continue;
+                }
                 if ((int)$user->status !== User::STATUS_ENABLED) {
                     continue;
                 }
@@ -139,7 +148,9 @@ final class DispatchJob extends LongRunningActiveJob
                 if ($content !== null && !$content->canView($user)) {
                     continue;
                 }
-                if ($dedupe && $this->source !== null && $this->exists($user, $class, $originator, $content, $contentContainerId, $sourceRecordId)) {
+                if ($dedupe && $hasSource && $this->exists($user, $class, $originator, $content, $contentContainerId, $sourceRecordId)) {
+                    // they already have it: that counts as notified
+                    $this->notified[$user->id] = true;
                     continue;
                 }
                 $listed = $this->isListed($class, $user);
@@ -171,6 +182,7 @@ final class DispatchJob extends LongRunningActiveJob
                     continue;
                 }
                 $accepted = true;
+                $this->notified[$user->id] = true;
 
                 $notification->getGroupingService()->afterInsert();
                 // the delivery is of this record (its id and priority), not of the group head
@@ -254,15 +266,15 @@ final class DispatchJob extends LongRunningActiveJob
      *
      * @return iterable<User>
      */
-    private function recipients(): iterable
+    private function recipients(ActiveQueryUser|array $recipients): iterable
     {
-        if ($this->recipients === []) {
+        if ($recipients === []) {
             return;
         }
 
-        $query = $this->recipients instanceof ActiveQueryUser
-            ? $this->recipients
-            : User::find()->where(['user.id' => $this->recipients]);
+        $query = $recipients instanceof ActiveQueryUser
+            ? $recipients
+            : User::find()->where(['user.id' => $recipients]);
 
         $processed = [];
         foreach ($query->each() as $user) {
@@ -277,9 +289,9 @@ final class DispatchJob extends LongRunningActiveJob
     /**
      * @return array{0: Content|null, 1: ContentContainerActiveRecord|null, 2: int|null}
      */
-    private function resolveSource(): array
+    private function resolveSource(?array $source): array
     {
-        if ($this->source === null) {
+        if ($source === null) {
             return [null, null, null];
         }
 
@@ -287,25 +299,25 @@ final class DispatchJob extends LongRunningActiveJob
         $container = null;
         $sourceRecordId = null;
 
-        if (isset($this->source['content'])) {
-            $content = Content::findOne(['id' => $this->source['content']]);
+        if (isset($source['content'])) {
+            $content = Content::findOne(['id' => $source['content']]);
             if ($content === null) {
                 return [null, null, null];
             }
         }
 
-        if (isset($this->source['container'])) {
-            $container = ContentContainer::findOne(['id' => $this->source['container']])?->polymorphicRelation;
+        if (isset($source['container'])) {
+            $container = ContentContainer::findOne(['id' => $source['container']])?->polymorphicRelation;
             if (!$container instanceof ContentContainerActiveRecord) {
                 return [null, null, null];
             }
         }
 
-        if (isset($this->source['record'])) {
-            if (RecordMap::getById((int)$this->source['record'], ActiveRecord::class, false) === null) {
+        if (isset($source['record'])) {
+            if (RecordMap::getById((int)$source['record'], ActiveRecord::class, false) === null) {
                 return [null, null, null];
             }
-            $sourceRecordId = (int)$this->source['record'];
+            $sourceRecordId = (int)$source['record'];
         }
 
         return [$content, $container, $sourceRecordId];

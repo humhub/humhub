@@ -253,7 +253,7 @@ class DispatchTest extends HumHubDbTestCase
 
         $this->assertCount(1, $jobs);
         $this->assertInstanceOf(DispatchJob::class, $jobs[0]);
-        $this->assertSame([1], $jobs[0]->recipients);
+        $this->assertSame([1], $jobs[0]->entries[0]['recipients']);
     }
 
     public function testDispatchInsideARolledBackTransactionIsDropped()
@@ -313,7 +313,7 @@ class DispatchTest extends HumHubDbTestCase
     public function testGoneSourceDispatchesNothing()
     {
         foreach ([['content' => 999999], ['container' => 999999], ['record' => 999999]] as $source) {
-            (new DispatchJob(['class' => TestNotification::class, 'recipients' => [1], 'source' => $source]))->run();
+            (new DispatchJob(['entries' => [['class' => TestNotification::class, 'recipients' => [1], 'source' => $source]]]))->run();
         }
 
         $this->assertSame([], $this->rows(TestNotification::class));

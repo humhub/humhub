@@ -15,6 +15,7 @@ Core examples:
 
 - `humhub\modules\user\notifications\MentionedNotification` — a user was mentioned
 - `humhub\modules\comment\notifications\NewCommentNotification` — a new comment on followed content
+- `humhub\modules\comment\notifications\CommentReplyNotification` — a reply to the user's comment
 - `humhub\modules\like\notifications\NewLikeNotification` — somebody liked a post or comment
 - `humhub\modules\content\notifications\ContentCreatedNotification` — new content in a space the user receives notifications for
 
@@ -186,7 +187,7 @@ The core has five categories; a notification that fits one of them names it in `
 
 | Category | Contains | Priority | Switchable | Icon | Off by default |
 |---|---|---|---|---|---|
-| `direct` | mentions, invitations, requests, membership and role changes, deleted content | high | no | `ti-at` | — |
+| `direct` | mentions, replies to my comments, invitations, requests, membership and role changes, deleted content | high | no | `ti-at` | — |
 | `social` | reactions to my content: comments, likes | low (comments: normal) | yes | `ti-heart` | — |
 | `followers` | new followers | low | yes | `ti-user-plus` | `email`, `mobile` |
 | `content` | new content in the spaces the user selected | normal | yes | `ti-news` | — |
@@ -268,13 +269,49 @@ keep it for ones that represent a pending state (an open invitation). What remai
 grouped, listed, announced through the live system and scheduled for every other channel
 enabled for the recipient.
 
-`NotificationManager::EVENT_BEFORE_DISPATCH` fires once per `send()` with a
-`BeforeDispatchEvent` carrying `class`, `recipients`, `source`, `originator`, `payload`,
-`notifyOriginator` and `dedupe`; a handler may change them or set
+`NotificationManager::EVENT_BEFORE_DISPATCH` fires once per `send()` (once per entry of a
+`NotificationSet`) with a `BeforeDispatchEvent` carrying `class`, `recipients`, `source`,
+`originator`, `payload`, `notifyOriginator` and `dedupe`; a handler may change them or set
 `$event->isValid = false`.
 
 The conventional place to send is `afterSave()` of the source record, once per state
 transition: the record exists when the job runs, and it fires exactly once.
+
+### Several notifications for one event
+
+One event often concerns users in different roles: a new comment mentions one user, answers
+another one's comment and is news to the followers of the content. Each user should get one
+notification, the one that fits them best — not a mention, a reply and a comment notification
+at once. A `humhub\modules\notification\components\NotificationSet` sends the classes in rank
+order, the most specific first; this is how the comment sends its notifications:
+
+```php
+NotificationSet::create(source: $comment, originator: $comment->createdBy)
+    ->add(MentionedNotification::class, $mentionedUsers)
+    ->add(CommentReplyNotification::class, $rootComment->created_by, source: $rootComment, payload: ['replyId' => $comment->id], dedupe: false)
+    ->add(NewCommentNotification::class, $followerQuery)
+    ->send();
+```
+
+`create()` takes the `source` and `originator` of the set; `add()` takes the class and the
+recipients (the same forms as `send()`) and, per entry, a `source` other than the set's,
+`payload`, `notifyOriginator` and `dedupe`. `send()` queues one job for the whole set — after the
+commit, like `send()` — which processes the entries in order: a recipient is notified by the
+first entry that writes a notification for them, or that they already have (`dedupe`), and every
+later entry skips them. A recipient an entry skips for another reason — rejected by its
+`canReceive()`, no channel enabled for its category, not enabled — may still get a later entry.
+Recipient queries are resolved when the job runs, so the ranking holds whatever the queue does,
+and a class does not need to look up in `canReceive()` whether another class reached the user.
+`EVENT_BEFORE_DISPATCH` fires for every entry; a veto drops that entry only.
+
+To leave a mention to the set, run `RichText::postProcess()` inside
+`Mentioning::withoutNotification()`: the mentions are stored as usual (the users also follow the
+content), but no `MentionedNotification` is sent, and the result's `mentioning` lists the users:
+
+```php
+$result = Mentioning::withoutNotification(fn() => RichText::postProcess($this->message, $this, 'message'));
+$mentionedUsers = $result['mentioning'] ?? [];
+```
 
 ### Revoking and marking seen
 
@@ -336,6 +373,7 @@ The core notifications:
 | Class | Grouping |
 |---|---|
 | `NewCommentNotification` | `Grouping::byContent()` |
+| `CommentReplyNotification` | `Grouping::bySource()` — the replies to one comment (its source) |
 | `NewLikeNotification` | `Grouping::byContent()->andSource()` — the likes of one content or one comment |
 | `ContentCreatedNotification` | `Grouping::byContainer()->andOriginator()->andContentType()` |
 | `FollowedNotification` | `Grouping::byClass()` |
@@ -433,6 +471,7 @@ The module-facing API, marked `@api` in the code — stable across minor version
 - `NotificationCategory`, `NotificationPriority`, `humhub\components\grouping\Grouping`, `NotificationBlock` (its
   factories), `NotificationContext` (its properties)
 - `humhub\components\message\MessageParam`
+- `NotificationSet`
 - `BeforeDispatchEvent` and `NotificationManager::EVENT_BEFORE_DISPATCH`
 - for channel providers: `BaseTarget`, `DeliveryBatch`, `MobileTargetProvider`
 

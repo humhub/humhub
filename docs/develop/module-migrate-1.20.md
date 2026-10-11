@@ -1737,6 +1737,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     for the commit). Send from `afterSave()` of the source, once per state transition: a recipient
     who already has a notification of the class, source and originator is skipped (`dedupe: false`
     for events that legitimately repeat).
+    Several classes for one event, each recipient getting only the best-matching one (e.g. a
+    mention rather than a comment notification), go out together as a ranked
+    `humhub\modules\notification\components\NotificationSet` instead of excluding users from
+    each other's recipients or in `canReceive()`; `Mentioning::withoutNotification()` leaves the
+    mentions found by `RichText::postProcess()` to such a set. A new comment notifies the
+    mentioned users (`MentionedNotification`), then the author of the replied-to comment (new
+    `comment\notifications\CommentReplyNotification`), then the content's followers
+    (`NewCommentNotification`).
 
   - **The old hooks and their replacements:**
 

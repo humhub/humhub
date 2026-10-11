@@ -16,8 +16,10 @@ use humhub\modules\user\models\User;
 use yii\base\ModelEvent;
 
 /**
- * Triggered by {@see BaseNotification::send()} before the dispatch is queued, with the
- * arguments of the call. A handler may change them or veto the dispatch with `isValid = false`:
+ * Triggered by {@see BaseNotification::send()} - and for every entry of a
+ * {@see \humhub\modules\notification\components\NotificationSet} - before the dispatch is queued,
+ * with the arguments of the call. A handler may change them or veto the dispatch (the entry only,
+ * in a set) with `isValid = false`:
  *
  * ```php
  * Event::on(NotificationManager::class, NotificationManager::EVENT_BEFORE_DISPATCH, function (BeforeDispatchEvent $event) {
