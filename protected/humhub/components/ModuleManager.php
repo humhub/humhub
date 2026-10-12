@@ -567,6 +567,11 @@ class ModuleManager extends Component
     {
         Yii::$app->cache->delete(ModuleDiscoveryService::CACHE_ID);
         Yii::$app->runtimeCache->delete(Module::CACHE_KEY_IS_ENABLED);
+
+        // Parent themes may be provided by modules, so look them up again
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            Yii::$app->settings->delete('themeParents');
+        }
     }
 
     /**
