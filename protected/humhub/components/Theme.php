@@ -457,6 +457,11 @@ class Theme extends BaseTheme
      */
     private function hasBaseTheme(): bool
     {
+        // The core theme never has a parent, so skip reading its SCSS variables file
+        if ($this->name === self::CORE_THEME_NAME) {
+            return false;
+        }
+
         $baseTheme = ScssHelper::getVariable(ScssHelper::getVariableFile($this), 'baseTheme');
 
         return !empty($baseTheme) && $baseTheme !== $this->name;
