@@ -12,6 +12,7 @@ use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\notification\events\UnreadCountChangedEvent;
+use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
 use Throwable;
 use Yii;
@@ -73,14 +74,16 @@ class ListController extends Controller
     }
 
     /**
-     * Marks all notifications as seen
+     * Marks notifications as seen (only the filtered ones when filter params are posted)
      * @throws HttpException
      */
     public function actionMarkAsSeen()
     {
         $this->forcePostRequest();
 
-        $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
+        $filterForm = new FilterForm();
+        $filterForm->load(Yii::$app->request->post());
+        $count = $filterForm->markAsSeen();
 
         if ($count > 0) {
             UnreadCountChangedEvent::triggerChanged(Yii::$app->user->getIdentity());
@@ -89,6 +92,7 @@ class ListController extends Controller
         return $this->asJson([
             'success' => true,
             'count' => $count,
+            'unseenCount' => Notification::findUnseen()->count(),
         ]);
     }
 

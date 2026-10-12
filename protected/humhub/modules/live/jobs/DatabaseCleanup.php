@@ -27,7 +27,7 @@ class DatabaseCleanup extends LongRunningActiveJob
     public function run()
     {
         if (Yii::$app->live->driver instanceof Poll) {
-            Live::deleteAll('created_at +' . Yii::$app->live->driver->maxLiveEventAge . ' < ' . time());
+            Live::deleteAll(['<', 'created_at', time() - Yii::$app->live->driver->maxLiveEventAge]);
         }
     }
 

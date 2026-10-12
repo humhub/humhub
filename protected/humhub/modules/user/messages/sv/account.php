@@ -67,6 +67,8 @@ return [
     'Your password has been successfully changed!' => 'Ditt lösenord har ändrats!',
     'Your username has been changed' => 'Ditt användarnamn har ändrats',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ditt användarnamn har ändrats. <br> Vi har precis skickat ett e-postmeddelande till dig med ny information.',
+    'Allowed external content sources' => '',
+    'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your mail header image?' => '',
 ];

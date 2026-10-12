@@ -6,6 +6,7 @@
  */
 
 use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
@@ -43,7 +44,7 @@ use humhub\widgets\mails\MailContentEntry;
                 <?= MailContentEntry::widget([
                     'originator' => $originator,
                     'receiver' => $record->user,
-                    'content' => $message,
+                    'content' => nl2br(Html::encode((string) $message)),
                     'date' => $date,
                     'space' => $space,
                     'isComment' => true,

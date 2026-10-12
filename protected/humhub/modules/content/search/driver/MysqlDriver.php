@@ -44,6 +44,12 @@ class MysqlDriver extends AbstractDriver
     {
         $this->delete($content->id);
 
+        $model = $content->getModel();
+        if ($model === null) {
+            // The content class no longer exists (e.g. the module was removed), nothing to index
+            return;
+        }
+
         $record = new ContentFulltext();
         $record->content_id = $content->id;
         $record->contents = $content->id;
@@ -53,7 +59,7 @@ class MysqlDriver extends AbstractDriver
             array_map(fn(ContentTag $tag) => $tag->name, $content->tags),
         ) . " \n";
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
+        foreach ($model->getSearchAttributes() as $attributeValue) {
             $record->contents .= RichTextToPlainTextConverter::process($attributeValue) . " \n";
         }
 

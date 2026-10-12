@@ -13,6 +13,7 @@ return [
   'Default "Hide Followers"' => '"Masquer les Followers" par défaut',
   'Default "Hide Members"' => '"Masquer les membres" par défaut',
   'Default "Show topic widget in Stream sidebar"' => 'Valeur par défaut : « Afficher le widget de rubrique dans la barre latérale de Stream »',
+  'Default "Topic widget sort order"' => '« Ordre de tri des widgets de rubriques » par défaut',
   'Default Content Sort Order' => 'Ordre de tri des contenus',
   'Default Content Visiblity' => 'Visibilité des contenus par défaut',
   'Default Homepage' => 'Page d’accueil par défaut',

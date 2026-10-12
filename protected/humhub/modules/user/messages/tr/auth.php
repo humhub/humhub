@@ -57,6 +57,7 @@ return [
     'Please wait' => '',
     'Select' => '',
     'Sign In' => '',
+    'Sign In as {username}' => '',
     'Sign Up' => '',
     'User or Password incorrect.' => '',
     'Your session expired. Please try signing in again.' => '',

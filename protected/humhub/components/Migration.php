@@ -603,6 +603,142 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * @inheritdoc
+     *
+     * On MySQL/MariaDB, new tables are created with the same collation as the existing `user` table, instead of
+     * the (possibly different) default collation of the database. This avoids "Illegal mix of collations" errors
+     * when string columns of different tables are later compared or joined.
+     *
+     * On a fresh installation, where the `user` table does not exist yet, the database's own default collation
+     * is used, same as before.
+     *
+     * @since 1.19
+     */
+    public function createTable($table, $columns, $options = null)
+    {
+        if ($options === null && $this->db->getDriverName() === 'mysql') {
+            $referenceCollation = $this->getReferenceCollation();
+            if ($referenceCollation !== null) {
+                $options = 'COLLATE ' . $referenceCollation;
+            }
+        }
+
+        parent::createTable($table, $columns, $options);
+    }
+
+    /**
+     * Returns the collation of the `user` table (MySQL/MariaDB only), used as the reference collation by
+     * {@see static::createTable()} and {@see static::safeConvertTableCollation()}. Returns `null` on a fresh
+     * installation, where the `user` table does not exist yet.
+     *
+     * @return string|null
+     * @since 1.19
+     */
+    protected function getReferenceCollation(): ?string
+    {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__, function () {
+            return $this->getTableCollation('user');
+        });
+    }
+
+    /**
+     * Returns the collation of a table (MySQL/MariaDB only), or `null` if the table does not exist.
+     *
+     * @param string $table Table name without prefix braces
+     * @return string|null
+     * @since 1.19
+     */
+    protected function getTableCollation(string $table): ?string
+    {
+        $rawName = $this->db->schema->getRawTableName($table);
+        $collation = $this->db->createCommand(
+            'SELECT TABLE_COLLATION FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :name',
+            [':name' => $rawName],
+        )->queryScalar();
+
+        return $collation === false ? null : $collation;
+    }
+
+    /**
+     * Returns the collation and character set of a table (MySQL/MariaDB only), or `null` if the table does not
+     * exist.
+     *
+     * Unlike {@see static::getTableCollation()}, this also resolves the character set implied by the
+     * collation. This is needed for `ALTER TABLE ... CONVERT TO`, which (unlike `CREATE TABLE`) requires an
+     * explicit `CHARACTER SET` clause and does not infer it from `COLLATE` alone. Assuming `utf8mb4` here would
+     * be wrong for a reference table using a different charset family, e.g. a legacy `utf8mb3`/`utf8` collation.
+     *
+     * MariaDB 10.10+ lists its UCA 14.0 collations (e.g. `utf8mb4_uca1400_ai_ci`, the default since MariaDB 11.5)
+     * in `information_schema.COLLATIONS` only under a charset-independent name (`uca1400_ai_ci`) with a `NULL`
+     * character set. In that case, the character set is taken from the collation name, which always starts with
+     * the name of its character set.
+     *
+     * @param string $table Table name without prefix braces
+     * @return array{charset: string, collation: string}|null
+     * @since 1.19
+     */
+    protected function getTableCharsetAndCollation(string $table): ?array
+    {
+        $rawName = $this->db->schema->getRawTableName($table);
+        $result = $this->db->createCommand(
+            'SELECT c.CHARACTER_SET_NAME AS charset, t.TABLE_COLLATION AS collation'
+            . ' FROM information_schema.TABLES t'
+            . ' LEFT JOIN information_schema.COLLATIONS c ON c.COLLATION_NAME = t.TABLE_COLLATION'
+            . ' WHERE t.TABLE_SCHEMA = DATABASE() AND t.TABLE_NAME = :name',
+            [':name' => $rawName],
+        )->queryOne();
+
+        if ($result === false || empty($result['collation'])) {
+            return null;
+        }
+
+        $result['charset'] ??= strstr($result['collation'], '_', true) ?: null;
+
+        return $result['charset'] === null ? null : $result;
+    }
+
+    /**
+     * Converts an existing table to the collation of a reference table (MySQL/MariaDB only), so subsequent
+     * joins between the two tables don't fail with "Illegal mix of collations".
+     *
+     * Does nothing if either table cannot be found, or if $table already has the reference collation.
+     *
+     * Note: if this is called repeatedly for the same $table against different $referenceTable tables whose
+     * collations differ from each other (e.g. `record_map` is matched against `like`, and separately against
+     * `activity`), $table ends up matching only the last reference table it was converted to. This is
+     * acceptable here because `like`, `activity` and `record_map` are never joined directly on string columns
+     * outside of these migrations themselves.
+     *
+     * @param string $table Table to convert, without prefix braces
+     * @param string $referenceTable Table whose collation to match, without prefix braces
+     * @return bool Whether the table has been converted
+     * @since 1.19
+     */
+    protected function safeConvertTableCollation(string $table, string $referenceTable): bool
+    {
+        if ($this->db->getDriverName() !== 'mysql') {
+            return false;
+        }
+
+        $reference = $this->getTableCharsetAndCollation($referenceTable);
+        if ($reference === null) {
+            return false;
+        }
+
+        $currentCollation = $this->getTableCollation($table);
+        if ($currentCollation === null || $currentCollation === $reference['collation']) {
+            return false;
+        }
+
+        $this->execute(
+            'ALTER TABLE ' . $this->db->quoteTableName($table)
+            . ' CONVERT TO CHARACTER SET ' . $reference['charset'] . ' COLLATE ' . $reference['collation'],
+        );
+
+        return true;
+    }
+
+    /**
      * Returns whether this is a completely new installation with an empty database (installation process).
      *
      * @return bool

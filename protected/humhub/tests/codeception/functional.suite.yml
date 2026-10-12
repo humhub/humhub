@@ -8,6 +8,7 @@
 actor: FunctionalTester
 modules:
     enabled:
+      - Asserts
       - Filesystem
       - Yii2
       - tests\codeception\_support\FixtureHelper

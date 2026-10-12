@@ -143,7 +143,7 @@ $form = Modal::beginFormDialog([
                                 Yii::t('SpaceModule.base', 'Create new link'),
                                 Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?'),
                             )
-                            ->load($model->space->createUrl('/space/membership/reset-invite-link')) ?>
+                            ->post($model->space->createUrl('/space/membership/reset-invite-link')) ?>
                     <?php endif; ?>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   'Add user' => 'Ajouter un utilisateur',
   'An unexpected error occurred while loading the result.' => 'Une erreur innatendue s\'est produite lors du chargement du résultat.',
   'Load more' => 'Afficher plus',
@@ -11,6 +11,7 @@ return array (
   'Select...' => 'Sélectionner…',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Ce champ autorise un maximum de {n,plural,=1{# objet} other{# objets}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Ce champ autorise un maximum de {n,plural,=1{# utilisateur} other{# utilisateurs}}.',
+  'You are not allowed to remove this item.' => 'Vous n\'êtes pas autorisé à supprimer cet élément.',
   'You reached the maximum number of allowed characters ({n}).' => 'Vous avez atteint le nombre maximal de caractères ({n})',
   'Your search returned no matches.' => 'Votre recherche n\'a retourné aucun résultat.',
-);
+];

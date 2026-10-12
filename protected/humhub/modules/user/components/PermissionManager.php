@@ -25,6 +25,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\StaleObjectException;
 use yii\web\HttpException;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Description of PermissionManager
@@ -506,13 +507,29 @@ class PermissionManager extends Component
                     BasePermission::STATE_DENY => BasePermission::getLabelForState(BasePermission::STATE_DENY),
                     BasePermission::STATE_ALLOW => BasePermission::getLabelForState(BasePermission::STATE_ALLOW),
                 ],
-                'changeable' => $permission->canChangeState($groupId),
+                'changeable' => $permission->canChangeState($groupId) && $this->currentUserCanGrant($permission),
                 'state' => $this->getGroupState($groupId, $permission, false),
                 'contentContainer' => $permission->contentContainer,
             ];
         }
 
         return $permissions;
+    }
+
+    /**
+     * Whether the currently logged in user is allowed to grant/change the state of the
+     * given permission for a group (i.e. hand it out to somebody else). This requires
+     * either being a System Administrator or already holding that very permission -
+     * otherwise a delegated admin could grant themselves (or others) permissions they
+     * don't have, escalating their own privileges.
+     *
+     * @param BasePermission $permission
+     * @return bool
+     * @since 1.18.6
+     */
+    public function currentUserCanGrant(BasePermission $permission): bool
+    {
+        return Yii::$app->user->isAdmin() || Yii::$app->user->can($permission);
     }
 
     /**
@@ -536,6 +553,13 @@ class PermissionManager extends Component
 
             if ($permission === null) {
                 throw new HttpException(500, 'Could not find permission!');
+            }
+
+            // Never let a user hand out an (admin) permission they do not hold themselves -
+            // otherwise e.g. a ManageGroups holder could grant ManageUsers (or any other
+            // admin permission) to their own group and escalate their own privileges.
+            if (!$this->currentUserCanGrant($permission)) {
+                throw new ForbiddenHttpException('You cannot grant a permission you do not hold yourself.');
             }
 
             $groupId = DataTypeHelper::filterInt($groupId) ?? DataTypeHelper::filterString($groupId);

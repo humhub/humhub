@@ -22,7 +22,7 @@ use humhub\widgets\mails\MailButtonList;
                     'originator' => $originator,
                     'receiver' => $record->user,
                     'comment' => $comment,
-                    'date' => $date,
+                    'date' => $comment->created_at,
                     'space' => $space,
                 ]);
                 ?>
@@ -43,7 +43,7 @@ use humhub\widgets\mails\MailButtonList;
                     'originator' => $contentRecord->owner,
                     'receiver' => $record->user,
                     'content' => $contentRecord,
-                    'date' => $date,
+                    'date' => $contentRecord->content->created_at,
                     'space' => $space
                 ]);
                 ?>

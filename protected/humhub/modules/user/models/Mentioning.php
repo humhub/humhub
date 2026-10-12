@@ -88,10 +88,15 @@ class Mentioning extends ActiveRecord
     {
         if ($source instanceof ContentActiveRecord) {
             /** @var ContentActiveRecord $source */
-            return $source->content->createdBy;
+            // Attribute the mention to whoever last saved the content (e.g. an editor who
+            // added the mention), falling back to the original author when no updater is
+            // recorded (e.g. content created/updated outside a user session).
+            return $source->content->updatedBy ?? $source->content->createdBy;
         } elseif ($source instanceof ContentAddonActiveRecord) {
             /** @var ContentAddonActiveRecord $source */
-            return $source->createdBy;
+            // Same reasoning as above: prefer the last editor (e.g. a moderator who edited
+            // someone else's comment and added a mention) over the original author.
+            return $source->updatedBy ?? $source->createdBy;
         }
 
         return null;

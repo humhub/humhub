@@ -168,6 +168,31 @@ class FilterForm extends Model
         return $this->query;
     }
 
+    /**
+     * Marks the current user's unseen notifications as seen.
+     * Only the selected categories are affected, unless all categories are selected (default).
+     *
+     * @return int number of updated notifications
+     */
+    public function markAsSeen(): int
+    {
+        if ($this->seenFilter === 'seen') {
+            return 0;
+        }
+
+        $condition = ['AND', ['user_id' => Yii::$app->user->id, 'seen' => 0]];
+
+        if (!$this->allFilter) {
+            $notificationClasses = $this->getNotificationClasses();
+            if (empty($notificationClasses)) {
+                return 0;
+            }
+            $condition[] = ['IN', 'class', $notificationClasses];
+        }
+
+        return Notification::updateAll(['seen' => 1], $condition);
+    }
+
     public function getPagination($pageSize): Pagination
     {
         $countQuery = clone $this->createQuery();

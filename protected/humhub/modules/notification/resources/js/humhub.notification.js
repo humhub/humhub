@@ -39,8 +39,14 @@ humhub.module('notification', function (module, require, $) {
             evt.preventDefault();
             that.reload({data: $(form).serializeArray()});
         });
+        this.on('afterReload', function () {
+            updateOverviewMarkSeenButton();
+        });
     };
 
+    var updateOverviewMarkSeenButton = function () {
+        $('#notification_overview_markseen').toggle($('#notification_overview_list .new').length > 0);
+    };
 
     NotificationDropDown.prototype.init = function (update) {
         this.isOpen = false;
@@ -234,10 +240,20 @@ humhub.module('notification', function (module, require, $) {
      * @returns {undefined}
      */
     var markAsSeen = function (evt) {
-        var widget = NotificationDropDown.instance('#notification_widget');
-        widget.markAsSeen(evt).then(function () {
-            location.reload();
-        });
+        var $filterForm = $('#notification_overview_filter');
+        if (!$filterForm.length) {
+            var widget = NotificationDropDown.instance('#notification_widget');
+            widget.markAsSeen(evt).then(function () {
+                location.reload();
+            });
+            return;
+        }
+
+        // Overview page: mark only the currently filtered notifications as seen
+        client.post(evt, {data: $filterForm.serializeArray()}).then(function (response) {
+            NotificationDropDown.instance('#notification_widget').updateCount(parseInt(response.unseenCount));
+            event.trigger('humhub:notification:filterApplied', $filterForm);
+        }).catch(_errorHandler);
     };
 
     var updateTitle = function ($count) {
@@ -306,9 +322,7 @@ humhub.module('notification', function (module, require, $) {
         handleFilterChanges();
         if ($('#notification_overview_list').length) {
             OverviewWidget.instance('#notification_overview_list');
-            if ($('#notification_overview_list .new').length) {
-                $('#notification_overview_markseen').show();
-            }
+            updateOverviewMarkSeenButton();
         }
     };
 

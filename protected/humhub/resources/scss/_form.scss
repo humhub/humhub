@@ -363,6 +363,20 @@
         padding: 0;
     }
 
+    // The show/hide password icon (appended in humhub.ui.form.elements.js) is a
+    // plain <div>, so it needs its own focus style: :focus-visible outline is
+    // reset to none globally in _base.scss (see comment there). Negative
+    // outline-offset keeps the ring inside the icon's own box so it never
+    // pokes out past the input's border.
+    .humhub-pw-show {
+        border-radius: 4px;
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: -2px;
+        }
+    }
+
     .form-collapsible-fields {
         margin-bottom: 12px;
         border-left: 3px solid var(--bs-primary);

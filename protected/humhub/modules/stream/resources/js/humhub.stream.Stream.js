@@ -396,7 +396,10 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.handleInsertAfterResponse = function (request) {
-        this.addResponseEntries(request);
+        // Returning the promise allows callers (e.g. WallStream#loadSuppressed) to
+        // reliably wait until the entries are actually inserted into the DOM, which
+        // is needed to move keyboard focus into the freshly loaded entries.
+        return this.addResponseEntries(request);
     };
 
     Stream.prototype.appendResponseEntries = function (request, options) {

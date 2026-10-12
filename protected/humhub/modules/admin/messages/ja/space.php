@@ -35,5 +35,6 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'このスペース一覧でスペースの閲覧・編集・削除ができます。',
     'Update Space memberships also for existing members.' => '既存のメンバーのスペースメンバーシップを更新します。',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];

@@ -11,6 +11,9 @@ class m260106_175102_like_record_map extends Migration
      */
     public function safeUp()
     {
+        // record_map may have been created with a different collation than `like` (e.g. the database default)
+        $this->safeConvertTableCollation('record_map', 'like');
+
         $this->execute(
             'INSERT IGNORE INTO record_map (`model`, `pk`) SELECT DISTINCT l.object_model, l.object_id FROM `like` l WHERE l.object_model IS NOT NULL AND l.object_model != "";',
         );

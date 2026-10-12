@@ -13,5 +13,6 @@ return [
     'Select...' => '',
     'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => '',
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => '',
+    'You are not allowed to remove this item.' => '',
     'You reached the maximum number of allowed characters ({n}).' => '',
 ];

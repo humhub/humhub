@@ -156,13 +156,15 @@ class EditGroupForm extends Group
             : [];
 
         foreach (array_diff($existingSpaceIds, $newSpaceIds) as $spaceId) {
+            if (!$this->canManageDefaultSpace(Space::findOne($spaceId))) {
+                continue;
+            }
+
             GroupSpace::deleteAll(['space_id' => $spaceId, 'group_id' => $this->id]);
         }
 
         foreach (array_diff($newSpaceIds, $existingSpaceIds) as $spaceId) {
-            if ($this->getScenario() === self::SCENARIO_MANAGER
-                && !Space::findOne($spaceId)?->isAdmin(Yii::$app->user->id)) {
-                // Restrict adding new default space if current user is not admin/owner of the space
+            if (!$this->canManageDefaultSpace(Space::findOne($spaceId))) {
                 continue;
             }
 
@@ -171,6 +173,30 @@ class EditGroupForm extends Group
             $groupSpaces->space_id = $spaceId;
             $groupSpaces->save();
         }
+    }
+
+    /**
+     * Checks whether the current user may add or remove the given space as a default space of
+     * this group. Users with the global ManageGroups permission may manage any space, group
+     * managers (SCENARIO_MANAGER) only those they administer or own themselves.
+     *
+     * A space that no longer exists is treated as manageable so leftover group_space rows can
+     * still be cleaned up rather than becoming undeletable through the UI.
+     *
+     * This is the single source of truth for the default space authorization: GroupController
+     * uses it to decide which of the already selected spaces are rendered as locked in the
+     * picker, updateDefaultSpaces() enforces it on save.
+     *
+     * @param Space|null $space
+     * @return bool
+     */
+    public function canManageDefaultSpace(?Space $space): bool
+    {
+        if ($this->getScenario() !== self::SCENARIO_MANAGER) {
+            return true;
+        }
+
+        return $space === null || $space->isAdmin();
     }
 
     protected function updateTypeFields(): void

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   'Add user' => 'Gebruiker toevoegen',
   'An unexpected error occurred while loading the result.' => 'Er is een onverwachte fout opgetreden tijdens het laden.',
   'Load more' => 'Meer laden',
@@ -11,6 +11,7 @@ return array (
   'Select...' => 'Selecteer...',
   'This field only allows a maximum of {n,plural,=1{# item} other{# items}}.' => 'Het maximale aantal is {n,plural,=1{# item} other {# items}}.',
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Dit veld kan maximaal {n,plural,=1{# gebruiker} other{# gebruikers}}.',
+  'You are not allowed to remove this item.' => 'U mag dit item niet verwijderen.',
   'You reached the maximum number of allowed characters ({n}).' => 'Het maximale aantal tekens is ({n}).',
   'Your search returned no matches.' => 'Uw zoekopdracht heeft geen overeenkomsten opgeleverd.',
-);
+];

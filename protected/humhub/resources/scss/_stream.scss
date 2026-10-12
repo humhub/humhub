@@ -189,7 +189,6 @@
 
                 .time, i, span {
                     font-size: 11px;
-                    white-space: nowrap;
                 }
             }
         }
@@ -435,6 +434,15 @@
                     li {
                         font-size: 12px;
                         padding: 2px;
+
+                        // Scoped to the <a> based checkbox/radio inputs only: date/dropdown/picker
+                        // filter inputs reuse the "filterInput" class on their native <input>/<select>,
+                        // which already has its own focus style and would otherwise get a double ring.
+                        a.filterInput:focus-visible {
+                            outline: 0;
+                            box-shadow: 0 0 0 2px var(--accent);
+                            border-radius: 3px;
+                        }
                     }
                 }
             }
@@ -468,7 +476,13 @@
             padding: 5px;
             border-radius: 0 0 4px 4px;
             border: 1px solid var(--hh-background3);
-            font-size: 11px
+            font-size: 11px;
+
+            &:focus-visible {
+                outline: 0;
+                box-shadow: 0 0 0 2px var(--accent);
+                border-radius: 0 0 4px 4px;
+            }
         }
     }
 

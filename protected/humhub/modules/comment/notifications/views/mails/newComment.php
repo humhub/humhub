@@ -32,7 +32,7 @@ use humhub\helpers\MailStyleHelper;
                 'originator' => $originator,
                 'receiver' => $record->user,
                 'comment' => $comment,
-                'date' => $comment->updated_at,
+                'date' => $comment->created_at,
                 'space' => $space
             ]);
             ?>
@@ -59,7 +59,7 @@ use humhub\helpers\MailStyleHelper;
                 'originator' => $contentRecord->owner,
                 'receiver' => $record->user,
                 'content' => $contentRecord,
-                'date' => $contentRecord->content->updated_at,
+                'date' => $contentRecord->content->created_at,
                 'space' => $space
             ]);
             ?>

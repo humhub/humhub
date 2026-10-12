@@ -32,7 +32,10 @@ class MemberHeaderControlsMenu extends DropdownMenu
             'label' => Yii::t('SpaceModule.manage', 'Remove all members'),
             'url' => $this->space->createUrl('remove-all'),
             'sortOrder' => 100,
-            'htmlOptions' => ['data-action-confirm' => Yii::t('SpaceModule.manage', 'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.')],
+            'htmlOptions' => [
+                'data-method' => 'POST',
+                'data-action-confirm' => Yii::t('SpaceModule.manage', 'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.'),
+            ],
         ]));
 
         parent::init();

@@ -96,7 +96,7 @@ class ModuleFilters extends DirectoryFilters
     {
         $checked = (bool) $marketplaceModule->settings->get('includeCommunityModules', false);
 
-        $warning = Yii::t('MarketplaceModule.base', 'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.');
+        $warning = Yii::t('MarketplaceModule.base', 'These modules are provided by independent partners and developers and are <strong>not part of our curated selection</strong>.<br><br>HumHub does not review them for quality, security or compatibility. Support, updates and licensing are handled by the respective provider.<br><br>Make sure you trust the source of a module before installing it.');
 
         $ackCheckbox = Html::tag(
             'div',
@@ -106,7 +106,7 @@ class ModuleFilters extends DirectoryFilters
             ])
             . ' '
             . Html::label(
-                Yii::t('MarketplaceModule.base', 'I understand the risk and want to continue.'),
+                Yii::t('MarketplaceModule.base', 'I understand and want to continue.'),
                 'community-risk-accepted',
                 ['class' => 'form-check-label'],
             ),
@@ -120,14 +120,14 @@ class ModuleFilters extends DirectoryFilters
             'class' => 'form-check-input',
             'data-action-change' => 'marketplace.toggleCommunity',
             'data-action-change-url' => Url::to(['/marketplace/browse/toggle-community']),
-            'data-confirm-header' => Yii::t('MarketplaceModule.base', 'Include unverified community modules?'),
+            'data-confirm-header' => Yii::t('MarketplaceModule.base', 'Show non-curated modules?'),
             'data-confirm-body' => $confirmBody,
-            'data-confirm-text' => Yii::t('MarketplaceModule.base', 'Yes, show community modules'),
+            'data-confirm-text' => Yii::t('MarketplaceModule.base', 'Yes, show non-curated modules'),
             'data-cancel-text' => Yii::t('MarketplaceModule.base', 'Cancel'),
         ]);
 
         $label = Html::label(
-            Yii::t('MarketplaceModule.base', 'Include community modules'),
+            Yii::t('MarketplaceModule.base', 'Show non-curated modules'),
             'marketplace-include-community',
             ['class' => 'form-check-label'],
         );

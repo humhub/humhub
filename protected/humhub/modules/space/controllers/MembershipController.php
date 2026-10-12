@@ -46,13 +46,12 @@ class MembershipController extends ContentContainerController
     protected function getAccessRules()
     {
         return [
-            ['permission' => [InviteUsers::class], 'actions' => ['invite']],
+            ['permission' => [InviteUsers::class], 'actions' => ['invite', 'search-invite']],
             [ContentContainerControllerAccess::RULE_LOGGED_IN_ONLY => ['revoke-membership']],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_MEMBER],
                 'actions' => [
                     'revoke-notifications',
                     'receive-notifications',
-                    'search-invite',
                     'switch-dashboard-display',
                 ],
             ],
@@ -98,11 +97,8 @@ class MembershipController extends ContentContainerController
         $this->forcePostRequest();
         $space = $this->getSpace();
 
-        if (!$space->canJoin(Yii::$app->user->id)) {
-            throw new HttpException(
-                500,
-                Yii::t('SpaceModule.base', 'You are not allowed to join this space!'),
-            );
+        if (!$space->canJoinFree()) {
+            throw new ForbiddenHttpException(Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
         }
 
         $space->addMember(Yii::$app->user->id);
@@ -127,6 +123,10 @@ class MembershipController extends ContentContainerController
             );
         }
 
+        if ($space->join_policy != Space::JOIN_POLICY_APPLICATION || !$space->canJoin()) {
+            throw new ForbiddenHttpException(Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
+        }
+
         $model = new RequestMembershipForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -148,6 +148,8 @@ class MembershipController extends ContentContainerController
 
     public function actionRevokeNotifications()
     {
+        $this->forcePostRequest();
+
         $space = $this->getSpace();
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, false);
 
@@ -156,6 +158,8 @@ class MembershipController extends ContentContainerController
 
     public function actionReceiveNotifications()
     {
+        $this->forcePostRequest();
+
         $space = $this->getSpace();
         Yii::$app->notification->setSpaceSetting(Yii::$app->user->getIdentity(), $space, true);
 
@@ -246,6 +250,8 @@ class MembershipController extends ContentContainerController
      */
     public function actionResetInviteLink()
     {
+        $this->forcePostRequest();
+
         $model = new InviteForm(['space' => $this->getSpace()]);
 
         if (!$model->space || !$model->space->isAdmin()) {

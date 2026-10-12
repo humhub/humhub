@@ -195,4 +195,4 @@ After authentication succeeds, `AuthClientService::createUser()` (for new users)
 | `BaseClient::EVENT_UPDATE_USER` | `Event::on(UserSourceService::class, UserSourceService::EVENT_AFTER_UPDATE, …)` |
 | `humhub\modules\user\authclient\AuthAction` (subclass) | Still exists, brought back with the dispatch logic. `AuthController::actions()['external']` points at it. |
 
-See the `Unreleased` section of [module-migrate.md](module-migrate.md) for the complete list of removed/renamed symbols across 1.19.
+See [module-migrate-1.19.md](module-migrate-1.19.md) for the complete list of removed/renamed symbols across 1.19.

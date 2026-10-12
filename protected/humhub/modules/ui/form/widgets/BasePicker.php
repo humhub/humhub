@@ -52,6 +52,22 @@ abstract class BasePicker extends JsInputWidget
     public $disabledItems;
 
     /**
+     * Item keys (values of $itemKey, e.g. guids) which are currently selected but which the
+     * current user is not allowed to remove from the selection. The picker will still display
+     * these as selected, but hides their remove ("x") control and refuses client side removal.
+     * Locked items are always rendered first, followed by the removable ones and then, once the
+     * user starts adding more, any newly picked items - a predictable fixed > editable > add
+     * layout, without callers having to sort their selection themselves.
+     *
+     * Note: this is a UX convenience only - it does not replace server side authorization, the
+     * form/controller handling the submitted value still has to enforce this independently.
+     *
+     * @since 1.18.6
+     * @var array
+     */
+    public $lockedItems;
+
+    /**
      * Disables the picker field
      * @var bool
      */
@@ -276,15 +292,68 @@ abstract class BasePicker extends JsInputWidget
             $this->selection = [];
         }
 
-        $result = [];
-        foreach ($this->selection as $item) {
-            if (!$item) {
-                continue;
-            }
+        // Note: sorting works on a local copy, $this->selection is a public property owned
+        // by the caller and must not be reordered or re-keyed behind its back.
+        $selection = array_filter($this->selection);
 
+        if (!empty($this->lockedItems)) {
+            $selection = $this->sortLockedItemsFirst($selection);
+        }
+
+        $result = [];
+        foreach ($selection as $item) {
             $result[$this->getItemKey($item)] = $this->buildItemOption($item);
         }
         return $result;
+    }
+
+    /**
+     * Sorts the given (already selected) $items so that locked items (see $lockedItems) come
+     * first, followed by the removable ones - a predictable "fixed items > editable items >
+     * add new item" layout for every picker that uses $lockedItems, rather than each usage
+     * site having to sort its selection itself. The initial render order of a multi select
+     * picker is fully determined by the order of the underlying <option> elements, so sorting
+     * here is sufficient - no client side reordering is needed.
+     *
+     * usort() is stable since PHP 8, so the relative order within the locked/removable groups
+     * themselves is preserved. Newly added items (picked via search) are unaffected, they are
+     * simply appended after the initial selection by the picker widget on the client.
+     *
+     * @param array $items
+     * @return array
+     */
+    protected function sortLockedItemsFirst(array $items): array
+    {
+        usort($items, function ($a, $b) {
+            return (int)!$this->isLockedItem($a) <=> (int)!$this->isLockedItem($b);
+        });
+
+        return $items;
+    }
+
+    /**
+     * Checks whether the given item is locked, meaning the current user is not allowed to
+     * remove it from the selection again (see $lockedItems).
+     *
+     * Item keys are compared as strings: they end up as <option value> attributes on the
+     * client and are therefore strings there in any case, while $lockedItems is typically
+     * built from model attributes and may well contain integers (e.g. the default
+     * $itemKey = 'id').
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    protected function isLockedItem($item): bool
+    {
+        return in_array((string)$this->getItemKey($item), $this->getLockedItemKeys(), true);
+    }
+
+    /**
+     * @return string[] $lockedItems normalized to strings, see isLockedItem()
+     */
+    protected function getLockedItemKeys(): array
+    {
+        return array_map('strval', (array)$this->lockedItems);
     }
 
     /**
@@ -409,6 +478,11 @@ abstract class BasePicker extends JsInputWidget
 
         if (!empty($this->disabledItems)) {
             $result['disabled-items'] = $this->disabledItems;
+        }
+
+        if (!empty($this->lockedItems)) {
+            $result['locked-items'] = $this->getLockedItemKeys();
+            $result['locked-text'] = Yii::t('UserModule.chooser', 'You are not allowed to remove this item.');
         }
 
         if ($this->maxSelection) {
