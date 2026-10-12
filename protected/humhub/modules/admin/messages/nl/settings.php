@@ -122,7 +122,7 @@ return [
   'Replaced {mailService}' => '{mailService} vervangen',
   'Required' => 'Verplicht',
   'Save' => 'Bewaar',
-  'Save & Test' => 'Bewaar & Test',
+  'Save & Test' => 'Bewaar en Test',
   'Saved and sent test email to: {address}' => 'Opgeslagen en test-e-mail verzonden naar: {address}',
   'Secondary color' => 'Secundaire kleur',
   'Server' => 'Server',

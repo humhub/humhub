@@ -40,7 +40,7 @@ class MarketplaceBrowser extends VueWidget
             'settings' => (new MarketplaceService())->getPublicSettings(),
             'urls' => [
                 'moduleAdministration' => Url::to(['/admin/module/list']),
-                'professionalEdition' => 'https://www.humhub.com/en/professional-edition',
+                'professionalEdition' => 'https://www.humhub.com/professional-edition',
             ],
             'installationId' => (string)Yii::$app->getModule('admin')->settings->get('installationId'),
         ];

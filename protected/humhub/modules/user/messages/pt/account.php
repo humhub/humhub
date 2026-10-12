@@ -65,6 +65,8 @@ return [
     'Your password has been successfully changed!' => 'A sua palavra-passe foi alterada com êxito!',
     'Your username has been changed' => 'O seu nome de utilizador foi alterado',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'O seu nome de utilizador foi alterado com êxito. <br> Acabámos de enviar-lhe um email com a nova informação.',
+    'Allowed external content sources' => '',
+    'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your mail header image?' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',

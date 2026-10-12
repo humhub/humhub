@@ -20,6 +20,78 @@ use Yii;
 class TimezoneHelper
 {
     /**
+     * Time zone identifiers which have been renamed or merged in the tz database, mapped to their current name.
+     *
+     * The legacy names only exist as "backward" compatibility links in the tz database and are missing on systems
+     * which ship without those links (e.g. Debian 13 or Ubuntu 24.04 without the `tzdata-legacy` package).
+     *
+     * @since 1.18.7
+     */
+    public const LEGACY_IDENTIFIERS = [
+        'Africa/Asmera' => 'Africa/Asmara',
+        'America/Godthab' => 'America/Nuuk',
+        'America/Nipigon' => 'America/Toronto',
+        'America/Pangnirtung' => 'America/Iqaluit',
+        'America/Rainy_River' => 'America/Winnipeg',
+        'America/Thunder_Bay' => 'America/Toronto',
+        'Asia/Ashkhabad' => 'Asia/Ashgabat',
+        'Asia/Calcutta' => 'Asia/Kolkata',
+        'Asia/Choibalsan' => 'Asia/Ulaanbaatar',
+        'Asia/Dacca' => 'Asia/Dhaka',
+        'Asia/Katmandu' => 'Asia/Kathmandu',
+        'Asia/Macao' => 'Asia/Macau',
+        'Asia/Rangoon' => 'Asia/Yangon',
+        'Asia/Saigon' => 'Asia/Ho_Chi_Minh',
+        'Asia/Thimbu' => 'Asia/Thimphu',
+        'Asia/Ulan_Bator' => 'Asia/Ulaanbaatar',
+        'Atlantic/Faeroe' => 'Atlantic/Faroe',
+        'Europe/Kiev' => 'Europe/Kyiv',
+        'Europe/Uzhgorod' => 'Europe/Kyiv',
+        'Europe/Zaporozhye' => 'Europe/Kyiv',
+        'Pacific/Enderbury' => 'Pacific/Kanton',
+    ];
+
+    /**
+     * Checks whether the given identifier is known to the tz database of this PHP installation and can therefore
+     * be used with `date_default_timezone_set()`.
+     *
+     * @since 1.18.7
+     */
+    public static function isValid(?string $timeZone): bool
+    {
+        static $identifiers = null;
+        if ($identifiers === null) {
+            $identifiers = array_fill_keys(DateTimeZone::listIdentifiers(DateTimeZone::ALL_WITH_BC), true);
+        }
+
+        return $timeZone !== null && isset($identifiers[$timeZone]);
+    }
+
+    /**
+     * Returns a replacement for a time zone identifier which is unknown to this PHP installation: the current name
+     * of a renamed zone (e.g. `Europe/Kyiv` for `Europe/Kiev`) if available, otherwise the given fallback.
+     * The problem is logged as an error.
+     *
+     * @since 1.18.7
+     */
+    public static function replaceUnknown(string $timeZone, string $fallback): string
+    {
+        $replacement = self::LEGACY_IDENTIFIERS[$timeZone] ?? null;
+        if ($replacement === null || !self::isValid($replacement)) {
+            $replacement = $fallback;
+        }
+
+        Yii::error(sprintf(
+            'The time zone "%s" is not supported by this PHP installation, "%s" is used instead. '
+            . 'Install the legacy time zone data of your operating system (e.g. the package "tzdata-legacy") if the original time zone is required.',
+            $timeZone,
+            $replacement,
+        ));
+
+        return $replacement;
+    }
+
+    /**
      *
      * // Modified version of the timezone list function from http://stackoverflow.com/a/17355238/507629
      * // Includes current time for each timezone (would help users who don't know what their timezone is)

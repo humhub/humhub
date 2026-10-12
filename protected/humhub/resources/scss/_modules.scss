@@ -23,6 +23,10 @@
                 > div:not(.card-status) {
                     background-color: var(--hh-background-color-main);
                 }
+
+                > .card-status {
+                    min-height: 30px;
+                }
             }
 
             .card-header {

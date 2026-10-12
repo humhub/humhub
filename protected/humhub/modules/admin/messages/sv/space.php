@@ -35,5 +35,6 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Den här översikten innehåller en lista över varje forum med åtgärder för att visa, redigera och ta bort forum.',
     'Update Space memberships also for existing members.' => 'Uppdatera forum-medlemskap även för befintliga medlemmar.',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];

@@ -58,8 +58,37 @@ HumHub Changelog
 - Enh #8403: The control links of the content menu (`EditLink`, `DeleteLink`, `PermaLink`, … and `ContentTopicButton`) are `MenuLink`s instead of widgets and describe themselves to the `/api/v2/content/<id>/controls` endpoint; `WallEntryControlLink` is deprecated, `DescribableWidget` removed
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 
-1.19.0-beta.3 (Unreleased)
--------------------------------
+1.19.0 (Unreleased)
+----------------------------------
+- Fix #8508: Fixed mention notifications crediting the original author instead of the user who added the mention on edit
+- Enh #8509: Marketplace wording "Community modules" replaced by "Non-curated modules", without a status badge on the module card
+- Fix #8511: The like title's "and {count} more like this." text appeared even when every liking user was already listed by name, and inflated the total like count
+- Fix #8513: Migration "record_map" failed with "Illegal mix of collations" on MySQL 8; new tables now match the existing collation
+- Fix #8514: Files and directories created on local filesystem mounts (`uploads/`, `assets/`) were only accessible by their owner, e.g. flushing the cache failed on directories created from the CLI; they now use the Yii2 modes 0775/0664 (private: 0770/0660) (since 1.19.0-beta.1)
+- Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
+- Fix #8539: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models); include the object model in the follow record cache key
+- Enh #8565: Added `GateManager::hasOpenGate()` to let modules hold back optional UI (hints, banners) until the user has passed every user gate, which `findOpenGate()` cannot answer on a gate's own page
+- Fix #8566: Removed the leftover desktop notification scripts (`desktop-notify-min.js`, `desktop-notify-config.js`) from `AppAsset`; they still requested notification permission on every page load without a user gesture, which browsers block and security extensions flag as excessive notification requests
+- Fix #8544: Buttons with only an icon or a caret (e.g. an empty `.dropdown-toggle`) were shorter than buttons with a text (since 1.19.0-beta.2)
+- Fix #8549: `integrity/run` crashed on activities with a missing class (`Activity::hardDelete()` does not exist since 1.19)
+- Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
+- Fix #8552: PHP 8.5 deprecation on registration when guest access is enabled and no default profile visibility is set
+- Fix #8554: Allow password managers to save username and password pair on the two-step login
+- Fix #8560: Unified the license statement to `AGPL-3.0-only` (license file, `LICENSE`, `package.json`)
+- Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
+- Enh #8562: Add an index on `live.created_at` to speed up the live polling query
+- Enh #8564: Modules can declare controller routes that deliver no user content but that every page depends on to render (e.g. a generated stylesheet) as gate infrastructure routes via `GateManager::registerInfrastructureRoute()`, so that no user gate intercepts them (see `docs/develop/user-gates.md`)
+- Enh #8567: Remove nowrap on stream header elements (prevents from the document to become wider that the viewport)
+- Fix #8570: correct link from the Marketplace PE Modules to the HumHub Website -> Professional Edition page
+- Enh #8571: Show the username on the password step of the two-step login
+- Fix #8572: Fix height of the status area on marketplace module cards
+- Enh #8575: Account settings: picker to review and remove allowed external content sources
+
+1.19.0-beta.3 (September 22, 2026)
+----------------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Fix #8414: A grouped activity named the same user twice when they had several activities in the group, and named nobody at all when the group's only other participant was the reader
 - Fix #8417: Top menu keeps the previous entry highlighted after a pjax navigation (since 1.19.0-beta.1)
 - Fix #8412: Applying a UI addition by its id did nothing when it was registered without a selector, and `additions.extend()` with `applyOnInit` threw instead of applying
@@ -71,6 +100,7 @@ HumHub Changelog
 - Fix #8415: A user picker or space picker request without a `keyword` parameter crashes with a `TypeError`
 - Enh #8416: Auto-focus the newly loaded content after a pjax swap, so Tab no longer restarts at the top of the page
 - Enh #8419: Add a space between at the top of the card icons (in the card header)
+- Fix #8418: Replace the leftover Bootstrap 3 class `pull-right` with `float-end` in the admin basic settings and the space directory heading buttons
 - Enh #8421: Customize Bootstrap through its Sass variables in `variables.scss` instead of redeclaring the generated `--bs-*` CSS variables in the component SCSS files (buttons, badges, dropdowns, list groups, navs, popovers, progress bars, tables and tooltips)
 - Fix #8422: Replace removed `.sr-only` class with `.visually-hidden`
 - Fix #8434: `Badge::action()` and `Badge::withLink()` rendered the badge markup escaped inside the link, since the wrapping link encoded the label it is given in `Badge::run()` — which is the already rendered badge, not text
@@ -79,6 +109,7 @@ HumHub Changelog
 - Fix #8423: Fix tab order of the reset filters button in the search area
 - Fix #8438: Endless scrolling stalled whenever the loaded stream entries did not push the stream end indicator out of the observed area (compact streams, short entries, viewport not filled), because an `IntersectionObserver` only reports state *changes* — the stream now keeps loading until the observed area is filled
 - Fix #8438: The mobile "Load more" button of a stream was hardwired to the `#wallStream` id, so it failed with "Handler not found" in any stream rendered with a custom `id`
+- Fix #8349: Adding a user to (or removing from) a group left stale cached group relations and system-admin/group-manager flags on the passed user instance, so a following isSystemAdmin()/permission check in the same request used outdated data
 - Fix #8448: Destructive admin actions (remove all space members, delete profile category, reset invite link, remove licence) ran on GET via CSRF
 - Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
 - Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
@@ -88,6 +119,8 @@ HumHub Changelog
 - Fix #8495: The "Use SMTPS" and "Allow self-signed certificates" checkboxes of the mailing settings and of the installer's mail step ignored `isFixed()`, so on an instance that fixes `mailerUseSmtps` or `mailerAllowSelfSignedCerts` they stayed editable while every field around them was read-only, and a change silently did nothing because `SettingsManager::set()` discards writes to a fixed setting
 - Fix #8495: `ConfigTest::testFixedSettings()` asserted the nested `HUMHUB_FIXED_SETTINGS__BASE__MAILER__*` form, which still parses but yields `fixed-settings['base']['mailer'][…]` — not a setting name since the mailer settings were flattened in `m250226_125226_rename_mailer_vars`, so the test documented a form that configures nothing; it now asserts the working flat form, and the nested behaviour keeps its own test
 - Fix #8496: Retire the `themes/HumHub` directory the 1.19 move of the core theme (#8102) leaves behind in the webroot, and repair the theme setting when it still points at it
+- Fix #8505: Topic sidebar widget showed topics unused in the Space, and its position is now configurable
+- Fix #8536: LDAP `pageSize` set to `0` failed with "Failed to create paged result control value" instead of disabling pagination
 
 1.19.0-beta.2 (August 19, 2026)
 -------------------------------
@@ -204,15 +237,34 @@ HumHub Changelog
 - Enh #8287: Add `ContentContainerActiveRecord::EVENT_INIT_PROFILE_IMAGE` and `EVENT_INIT_BANNER_IMAGE`
 - Enh #8150: Topic sidebar widget
 - Fix #8312: Fix Integrity Checks on cleaning up orphaned content, like, comment, activity data
- 
-1.18.6 (Unreleased)
-------------------------
+
+1.18.7 (Unreleased)
+-------------------
+
+- Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
+- Fix #8529: Allow membership requests only for "Invite and request" spaces and non-blocked users; Restore and HTML-encode the request message in approval emails (lost since 1.11)
+- Fix #7954: Fix wrong date and author of comments in mention and like notification emails
+- Fix #7777: Fix images visibility in system email templates to users
+- Fix #8028: "Mark as seen" on the notification overview affects only the currently filtered notifications
+- Fix #8537: Fix `UserHelper::getUserByParam()` error in console (`Yii::$app->getUser()` is not available there)
+- Fix #8538: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models), and cached a stale record for the whole request
+- Fix #8550: `content-search/rebuild` crashed on content whose model class no longer exists (e.g. removed module)
+- Fix #8556: Refined content tag and content addon validation
+- Fix #8568: Prevent browser password managers from autofilling the username into "New E-Mail"/"New username" fields
+- Fix #8563: Cache `Module::getIsEnabled()` per request to avoid repeated `queue_exclusive` queries on each call (e.g. from theme view events); Invalidate it on module enable/disable/remove and when a disable/remove job is queued
+
+1.18.6 (September 22, 2026)
+---------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Fix #8409: Add :focus styles for Administration left navigation menu items
 - Fix #8420: Fix hover flicker and keyboard focus on profile image upload buttons
 - Fix #8407: Make Select2 picker choices keyboard-accessible: the "Remove all items" button and each item's own remove icon
 - Fix #8426: Add a visible keyboard focus indicator for the stream filter toggle and its checkbox/radio filter options
 - Fix #8430: Make the password show/hide icon focusable and operable via keyboard
 - Fix #8439: Fix editing file-only Posts and clear `fileList[]` after posting so it isn't reused on the next post
+- Enh #8440: Add the user ID as tie-breaker to the default user list sorting for stable ordering and pagination
 - Fix #8442: DatePicker date-format mismatches (month names, digits, whitespace) between jQuery UI and PHP intl/ICU across 35+ locales
 - Fix #8445: Restrict direct space joins to free-join spaces, so "Invite and request" spaces require admin approval instead of instant membership
 - Fix #8446: Restrict Topic management (create/rename/delete) on user profiles to the profile owner or users with full content management permissions

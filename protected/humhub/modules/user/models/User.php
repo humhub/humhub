@@ -289,6 +289,27 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     }
 
     /**
+     * Resets the cached group memberships and the derived system-admin / group-manager
+     * flags. Call this after this user's group membership changed within the same request
+     * (e.g. via [[Group::addUser()]] / [[Group::removeUser()]]), so a subsequent
+     * [[isSystemAdmin()]] / [[getGroups()]] reflects the change instead of a stale,
+     * already-populated `groupUsers` relation.
+     *
+     * @since 1.19
+     */
+    public function invalidateGroupCache(): void
+    {
+        $this->_isSystemAdmin = null;
+        $this->_isGroupManager = null;
+
+        foreach (['groupUsers', 'groups', 'managerGroups'] as $relation) {
+            if ($this->isRelationPopulated($relation)) {
+                unset($this->$relation);
+            }
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function __get($name)
@@ -589,7 +610,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             if (AuthHelper::isGuestAccessEnabled()) {
                 // Set user profile default visibility
                 $defaultUserProfileVisibility = Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility');
-                if (array_key_exists($defaultUserProfileVisibility, User::getVisibilityOptions())) {
+                if ($defaultUserProfileVisibility !== null && array_key_exists($defaultUserProfileVisibility, User::getVisibilityOptions())) {
                     $this->visibility = $defaultUserProfileVisibility;
                 }
             }

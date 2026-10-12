@@ -30,20 +30,13 @@ use yii\web\Response;
  *
  * At most one gate intercepts per request. When a gate intercepts, the event is marked
  * as handled so that legacy `EVENT_BEFORE_ACTION` interceptors do not overwrite the
- * response.
+ * response. Infrastructure routes (see [[GateManager::registerInfrastructureRoute()]])
+ * are never intercepted.
  *
  * @since 1.19
  */
 class GateFilter extends ActionFilter
 {
-    /**
-     * Routes every page depends on to render — including a gate's own page. They deliver
-     * no user content and are therefore never intercepted by any gate: a gate page
-     * requesting them would otherwise be answered with a redirect to itself and reload
-     * in an endless loop (yii.js navigates on the X-Redirect header).
-     */
-    private const INFRASTRUCTURE_ROUTES = ['i18n/translations'];
-
     /**
      * @inheritdoc
      */
@@ -54,10 +47,6 @@ class GateFilter extends ActionFilter
         }
 
         if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-            return true;
-        }
-
-        if (in_array($action->controller->route, self::INFRASTRUCTURE_ROUTES, true)) {
             return true;
         }
 

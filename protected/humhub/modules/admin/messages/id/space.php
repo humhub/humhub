@@ -16,6 +16,7 @@ return [
     'Default "Hide Followers"' => '',
     'Default "Hide Members"' => '',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
     'Default Content Visiblity' => '',
     'Default Homepage' => '',

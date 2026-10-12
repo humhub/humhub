@@ -209,6 +209,40 @@ class GateManagerTest extends HumHubDbTestCase
         $this->assertEquals(2, $gate->isOpenCalls, 'identity switch must discard the all-closed snapshot');
     }
 
+    public function testHasOpenGateIgnoresRoutesAndRequestClass()
+    {
+        $manager = $this->createManager(
+            new FakeGate(['id' => 'a', 'sortOrder' => 100, 'open' => false]),
+            new FakeGate([
+                'id' => 'b',
+                'sortOrder' => 200,
+                'open' => true,
+                'route' => ['/b/check'],
+                'applies' => [RequestClass::FullPage],
+            ]),
+        );
+
+        // The gate's own page and a non-matching request class pass findOpenGate(),
+        // but the user is still inside the flow
+        $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'b/check'));
+        $this->assertNull($manager->findOpenGate(RequestClass::Ajax, 'dashboard'));
+        $this->assertTrue($manager->hasOpenGate());
+
+        $manager = $this->createManager(new FakeGate(['id' => 'a', 'open' => false]));
+        $this->assertFalse($manager->hasOpenGate());
+    }
+
+    public function testHasOpenGateUsesAllClosedSnapshot()
+    {
+        $gate = new FakeGate(['id' => 'b', 'open' => false, 'cacheable' => true]);
+        $manager = $this->createManager($gate);
+
+        $manager->findOpenGate(RequestClass::FullPage, 'dashboard'); // writes the snapshot
+        $this->assertFalse($manager->hasOpenGate());
+
+        $this->assertEquals(1, $gate->isOpenCalls, 'closed cacheable gate must be covered by the snapshot');
+    }
+
     public function testBaseClassDefaults()
     {
         $gate = new class extends UserGate {
@@ -238,5 +272,30 @@ class GateManagerTest extends HumHubDbTestCase
         $this->assertTrue($gate->appliesTo(RequestClass::Ajax));
         $this->assertFalse($gate->appliesTo(RequestClass::Api));
         $this->assertTrue($gate->isCacheable());
+    }
+
+    public function testInfrastructureRoutesAreNeverIntercepted()
+    {
+        Event::on(GateManager::class, GateManager::EVENT_INIT_GATES, function (GateInitEvent $event): void {
+            $event->manager->registerInfrastructureRoute('mymodule/css');
+        });
+
+        $manager = $this->createManager(
+            new FakeGate(['id' => 'a', 'sortOrder' => 100, 'open' => true]),
+        );
+
+        // Core default, collected routes and their sub-routes are infrastructure...
+        $this->assertTrue($manager->isInfrastructureRoute('i18n/translations'));
+        $this->assertTrue($manager->isInfrastructureRoute('mymodule/css'));
+        $this->assertTrue($manager->isInfrastructureRoute('mymodule/css/index'));
+        $this->assertTrue($manager->isInfrastructureRoute('/mymodule/css/'));
+        // ...but a route merely sharing the prefix as substring is not
+        $this->assertFalse($manager->isInfrastructureRoute('mymodule/cssother'));
+        $this->assertFalse($manager->isInfrastructureRoute('dashboard'));
+
+        // An open gate does not intercept an infrastructure route, whatever the request class
+        $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'mymodule/css/index'));
+        $this->assertNull($manager->findOpenGate(RequestClass::Ajax, 'i18n/translations'));
+        $this->assertEquals('a', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
     }
 }

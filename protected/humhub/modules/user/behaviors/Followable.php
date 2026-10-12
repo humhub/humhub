@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -36,6 +37,19 @@ class Followable extends Behavior
     private $_followerCache = [];
 
     /**
+     * Returns the `object_model` value used in `user_follow` for the owner record.
+     *
+     * Must match what {@see PolymorphicRelation} stores on insert, i.e. `ActiveRecord::getObjectModel()`,
+     * which subclasses may override (e.g. a form model extending a content record).
+     *
+     * @return string
+     */
+    private function getOwnerObjectModel(): string
+    {
+        return PolymorphicRelation::getObjectModel($this->owner);
+    }
+
+    /**
      * Return the follow record based on the owner record and the given user id
      *
      * @param int $userId
@@ -46,7 +60,7 @@ class Followable extends Behavior
         $userId = ($userId instanceof User) ? $userId->id : $userId;
         return Yii::$app->runtimeCache->getOrSet($this->getFollowRecordCacheKey($userId), fn() => Follow::find()
             ->where([
-                'object_model' => $this->owner::class,
+                'object_model' => $this->getOwnerObjectModel(),
                 'object_id' => $this->owner->getPrimaryKey(),
                 'user_id' => $userId,
             ])->one());
@@ -61,7 +75,7 @@ class Followable extends Behavior
     private function getFollowRecordCacheKey($userId): string
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
-        return self::class . '::getFollowRecord' . $this->owner->getPrimaryKey() . '-' . $userId;
+        return self::class . '::getFollowRecord' . $this->getOwnerObjectModel() . '-' . $this->owner->getPrimaryKey() . '-' . $userId;
     }
 
     /**
@@ -73,6 +87,7 @@ class Followable extends Behavior
     private function invalidateFollowRecordCache($userId): void
     {
         Yii::$app->runtimeCache->delete($this->getFollowRecordCacheKey($userId));
+        unset($this->_followerCache[$userId]);
     }
 
     /**
@@ -113,7 +128,7 @@ class Followable extends Behavior
             // Concurrent request may have already created this follow (race on
             // the unique index) - verify before treating as success, don't swallow other errors.
             $record = Follow::find()->where([
-                'object_model' => $this->owner::class,
+                'object_model' => $this->getOwnerObjectModel(),
                 'object_id' => $this->owner->getPrimaryKey(),
                 'user_id' => $userId,
             ]);
@@ -202,7 +217,7 @@ class Followable extends Behavior
     {
         return User::find()
             ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
-                ':object_model' => $this->owner::class,
+                ':object_model' => $this->getOwnerObjectModel(),
                 ':object_id' => $this->owner->getPrimaryKey(),
             ])
             ->where('user_follow.user_id IS NOT null')
@@ -236,7 +251,7 @@ class Followable extends Behavior
             ->leftJoin(
                 'user_follow',
                 'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-                ['object_model' => $this->owner::class],
+                ['object_model' => $this->getOwnerObjectModel()],
             )
             ->andWhere(['user_follow.user_id' => $this->owner->id])
             ->active();

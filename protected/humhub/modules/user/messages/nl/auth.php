@@ -20,7 +20,7 @@ return [
     'Don\'t have an account?' => 'Nog geen account?',
     'Due to security reasons you are required to change your password in order to access the platform.' => 'Om de veiligheid van uw gegevens te garanderen, moet u uw wachtwoord wijzigen.',
     'Email or Username' => 'E-mailadres of gebruikersnaam',
-    'Enter your email address and click Send. We will email you a sign-up link to create your account.' => 'Voer uw e-mailadres in en klik op Verzenden. We sturen u een e-mail met een link om uw account aan te maken.',
+    'Enter your email address and click Send. We will email you a sign-up link to create your account.' => 'Vul uw e-mailadres in. We sturen u een link om uw registratie af te ronden.',
     'Forgot password?' => 'Wachtwoord vergeten?',
     'Go to login page' => 'Ga naar de aanmeld pagina',
     'Group' => 'Groep',
@@ -51,7 +51,7 @@ return [
     'Select' => 'Kies',
     'Send' => 'Versturen',
     'Sign In' => 'Inloggen',
-    'Sign Up' => 'Aanmelden',
+    'Sign Up' => 'Registreren',
     'To log in with your new account, click the button below.' => 'Om aan te melden met uw nieuwe account, klikt u op onderstaande knop.',
     'User or Password incorrect.' => 'Gebruiker of wachtwoord is onjuist.',
     'Your email' => 'uw e-mailadres',
@@ -60,4 +60,5 @@ return [
     'Your password is incorrect!' => 'Uw wachtwoord is onjuist!',
     'Your session expired. Please try signing in again.' => 'Uw sessie is verlopen. Probeer opnieuw in te loggen.',
     'a new user {displayName} needs approval.' => 'De nieuwe gebruiker {displayName} heeft goedkeuring nodig.',
+    'Sign In as {username}' => '',
 ];

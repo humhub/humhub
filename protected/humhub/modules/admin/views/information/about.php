@@ -3,6 +3,7 @@
 use humhub\helpers\Html;
 use humhub\modules\marketplace\widgets\AboutVersion;
 
+/* @var $dockerImage array */
 ?>
 
 <div class="alert alert-secondary pb-0">
@@ -29,6 +30,21 @@ use humhub\modules\marketplace\widgets\AboutVersion;
         <strong><?= Yii::t('AdminModule.information', 'HumHub is currently in debug mode. Disable it when running on production!'); ?></strong><br>
         <?= Yii::t('AdminModule.information', 'See installation manual for more details.'); ?>
     </p>
+
+    <br>
+
+<?php endif; ?>
+
+<?php if (!empty($dockerImage)) : ?>
+    <div class="alert alert-light">
+        <strong><?= Yii::t('AdminModule.information', 'Docker Image') ?></strong><br/>
+        <?php foreach ($dockerImage as $label => $value) : ?>
+            <div class="text-muted"><?= Html::encode($label) ?>: <code><?= Html::encode($value) ?></code></div>
+        <?php endforeach; ?>
+    </div>
+
+    <br>
+
 <?php endif; ?>
 
 <hr>

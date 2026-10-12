@@ -92,7 +92,7 @@ class Events extends BaseObject
         $sidebar->addWidget(
             TopicSidebar::class,
             ['contentContainer' => $sidebar->space],
-            ['sortOrder' => 100],
+            ['sortOrder' => $sidebar->space->getAdvancedSettings()->topicSidebarSortOrder],
         );
     }
 }

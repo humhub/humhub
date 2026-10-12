@@ -50,6 +50,7 @@ return [
   'Select' => 'Sélectionner',
   'Send' => 'Envoyer',
   'Sign In' => 'Se connecter',
+  'Sign In as {username}' => 'Se connecter en tant que {username}',
   'Sign Up' => 'S\'inscrire',
   'To log in with your new account, click the button below.' => 'Pour vous connecter avec votre compte, cliquez sur le bouton ci-dessous.',
   'User or Password incorrect.' => 'Identifiant ou mot de passe incorrect.',

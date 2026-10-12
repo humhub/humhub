@@ -35,5 +35,6 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Esta vista general contiene una lista de cada espacio con acciones para ver, editar y eliminar espacios.',
     'Update Space memberships also for existing members.' => 'Actualizar la pertenencia al espacio también en el caso de sus miembros actuales.',
     'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];

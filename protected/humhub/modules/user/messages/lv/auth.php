@@ -52,6 +52,7 @@ return [
     'Reset password' => '',
     'Select' => '',
     'Sign In' => '',
+    'Sign In as {username}' => '',
     'Sign Up' => '',
     'To log in with your new account, click the button below.' => '',
     'User or Password incorrect.' => '',

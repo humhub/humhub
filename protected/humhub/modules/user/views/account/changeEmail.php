@@ -1,11 +1,13 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var AccountChangeEmail $model */
+/* @var View $this */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
@@ -17,7 +19,7 @@ use humhub\widgets\form\ActiveForm;
 <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
 
 <?php if ($model->isAttributeRequired('currentPassword')): ?>
-    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'current-password']) ?>
+    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'new-password']) ?>
 <?php endif ?>
 
 <?= $form->field($model, 'newEmail')->input('email', ['maxlength' => 150, 'autocomplete' => 'email']) ?>

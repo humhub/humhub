@@ -102,7 +102,13 @@ return [
     '{imageExtension} Support' => 'Podpora {imageExtension}',
     '{phpExtension} Extension' => 'Rozšírenie {phpExtension}',
     '{phpExtension} Support' => 'Podpora {phpExtension}',
+    'Docker Image' => '',
+    'Docker repository commit' => '',
     'Enable <a href="{url}">Link Redirection Service</a>' => '',
+    'HumHub core commit' => '',
+    'Image build time' => '',
+    'Image platform' => '',
+    'Image tag' => '',
     'Install {phpExtension} Extension for Mercure push live driver' => '',
     'Uploads - File' => '',
 ];

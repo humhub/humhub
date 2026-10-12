@@ -8,6 +8,7 @@
 
 namespace humhub\modules\queue\helpers;
 
+use humhub\components\Module;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
@@ -57,6 +58,9 @@ class QueueHelper extends BaseObject
         }
         $queueExclusive->job_message_id = $jobQueueId;
         $queueExclusive->save();
+
+        // A queued module disable/remove job changes the result of Module::getIsEnabled()
+        Yii::$app->runtimeCache->delete(Module::CACHE_KEY_IS_ENABLED);
     }
 
 }
