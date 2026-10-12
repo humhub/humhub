@@ -96,7 +96,7 @@ class ThemeParentsTest extends HumHubDbTestCase
         $this->assertSame([$parent->getBasePath()], Yii::$app->settings->getSerialized('themeParents'));
     }
 
-    public function testStoredEmptyParentsAreIgnoredWhenBaseThemeIsDeclared()
+    public function testModuleCacheFlushResetsStoredParents()
     {
         $parent = $this->createTheme(static::PARENT_NAME);
         $child = $this->createTheme(static::CHILD_NAME, static::PARENT_NAME);
@@ -105,6 +105,9 @@ class ThemeParentsTest extends HumHubDbTestCase
 
         // Stored while the base theme could not be found, e.g. its module was not loaded
         Yii::$app->settings->setSerialized('themeParents', []);
+
+        Yii::$app->moduleManager->flushCache();
+        $this->assertNull(Yii::$app->settings->get('themeParents'));
 
         $this->assertSame([static::PARENT_NAME => $parent], $child->getParents());
         $this->assertSame([$parent->getBasePath()], Yii::$app->settings->getSerialized('themeParents'));
