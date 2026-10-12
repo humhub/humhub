@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #8550: `content-search/rebuild` crashed on content whose model class no longer exists (e.g. removed module)
 - Fix #8556: Refined content tag and content addon validation
 - Fix #8568: Prevent browser password managers from autofilling the username into "New E-Mail"/"New username" fields
+- Fix #8563: Cache `Module::getIsEnabled()` per request to avoid repeated `queue_exclusive` queries on each call (e.g. from theme view events); Invalidate it on module enable/disable/remove and when a disable/remove job is queued
 
 1.18.6 (September 22, 2026)
 ---------------------------
