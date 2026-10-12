@@ -52,6 +52,7 @@ HumHub Changelog
 - Fix #8423: Fix tab order of the reset filters button in the search area
 - Fix #8438: Endless scrolling stalled whenever the loaded stream entries did not push the stream end indicator out of the observed area (compact streams, short entries, viewport not filled), because an `IntersectionObserver` only reports state *changes* — the stream now keeps loading until the observed area is filled
 - Fix #8438: The mobile "Load more" button of a stream was hardwired to the `#wallStream` id, so it failed with "Handler not found" in any stream rendered with a custom `id`
+- Fix #8349: Adding a user to (or removing from) a group left stale cached group relations and system-admin/group-manager flags on the passed user instance, so a following isSystemAdmin()/permission check in the same request used outdated data
 - Fix #8448: Destructive admin actions (remove all space members, delete profile category, reset invite link, remove licence) ran on GET via CSRF
 - Enh #8452: `docs/develop/module-migrate.md` is now only an index — each release line keeps its breaking changes in its own `module-migrate-<version>.md`, so `develop` and `next` no longer collide in a shared `Unreleased` section
 - Enh #8454: The core functional test suite could not run a single test — `FixtureHelper::_afterSuite()` unloaded fixtures against the application the Yii2 module destroys after every test, aborting the whole run; the suite also lacked the `Asserts` module
