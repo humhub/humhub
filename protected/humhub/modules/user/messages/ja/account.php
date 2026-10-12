@@ -67,6 +67,8 @@ return [
     'Your password has been successfully changed!' => 'パスワードを変更しました。',
     'Your username has been changed' => 'ユーザー名を変更しました。',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'ユーザー名は正常に変更されました。 <br>新しい情報が記載されたメールをお送りしました。',
+    'Allowed external content sources' => '',
+    'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your mail header image?' => '',
 ];
