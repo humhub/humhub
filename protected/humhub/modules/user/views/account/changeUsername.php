@@ -1,11 +1,13 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var AccountChangeUsername $model */
+/* @var View $this */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
@@ -14,13 +16,13 @@ use humhub\widgets\form\ActiveForm;
         'username' => Html::encode(Yii::$app->user->getIdentity()->username),
     ]) ?>
 </div>
-<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
 
 <?php if ($model->isAttributeRequired('currentPassword')): ?>
-    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'current-password']) ?>
+    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'new-password']) ?>
 <?php endif ?>
 
-<?= $form->field($model, 'newUsername')->textInput(['maxlength' => 45]) ?>
+<?= $form->field($model, 'newUsername')->textInput(['maxlength' => 45, 'autocomplete' => 'off']) ?>
 
 <?= Button::save()->submit() ?>
 
