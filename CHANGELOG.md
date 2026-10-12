@@ -21,6 +21,7 @@ HumHub Changelog
 - Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
 - Enh #8562: Add an index on `live.created_at` to speed up the live polling query
 - Enh #8564: Modules can declare controller routes that deliver no user content but that every page depends on to render (e.g. a generated stylesheet) as gate infrastructure routes via `GateManager::registerInfrastructureRoute()`, so that no user gate intercepts them (see `docs/develop/user-gates.md`)
+- Enh #8567: Remove nowrap on stream header elements (prevents from the document to become wider that the viewport)
 - Fix #8570: correct link from the Marketplace PE Modules to the HumHub Website -> Professional Edition page
 - Enh #8571: Show the username on the password step of the two-step login
 - Fix #8572: Fix height of the status area on marketplace module cards
