@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.19.1 (Unreleased)
+-------------------
+- Fix #PR: Child themes (e.g. Enterprise White) lost their parent theme views when an empty parent theme list was cached, e.g. while the module providing the parent theme was not loaded during an update
+
 1.19.0 (October 12, 2026)
 -------------------------
 - Fix #8508: Fixed mention notifications crediting the original author instead of the user who added the mention on edit

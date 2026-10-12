@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\assets\CoreBundleAsset;
+use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -420,12 +421,19 @@ class Theme extends BaseTheme
 
         if ($this->isActive() && Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $this->parents = static::getActiveParents();
+
+            // An empty stored parent list is stale when the theme declares a base theme,
+            // e.g. it was stored while the module providing the base theme was not loaded
+            if ($this->parents === [] && $this->hasBaseTheme()) {
+                $this->parents = null;
+            }
         }
 
         if ($this->parents === null) {
             $this->parents = ThemeHelper::getThemeTree($this, false);
 
-            if ($this->isActive()) {
+            // Don't store an unresolved base theme, so it is looked up again on the next request
+            if ($this->isActive() && ($this->parents !== [] || !$this->hasBaseTheme())) {
                 // Store parent path of currently active theme as settings
                 // This avoids theme paths lookups
                 $parentPaths = [];
@@ -440,6 +448,18 @@ class Theme extends BaseTheme
         }
 
         return $this->parents;
+    }
+
+    /**
+     * Checks whether the theme declares a base theme in its SCSS variables file
+     *
+     * @since 1.19.1
+     */
+    private function hasBaseTheme(): bool
+    {
+        $baseTheme = ScssHelper::getVariable(ScssHelper::getVariableFile($this), 'baseTheme');
+
+        return !empty($baseTheme) && $baseTheme !== $this->name;
     }
 
     /**
