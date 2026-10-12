@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8514: Files and directories created on local filesystem mounts (`uploads/`, `assets/`) were only accessible by their owner, e.g. flushing the cache failed on directories created from the CLI; they now use the Yii2 modes 0775/0664 (private: 0770/0660) (since 1.19.0-beta.1)
 - Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
 - Fix #8539: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models); include the object model in the follow record cache key
+- Fix #8566: Removed the leftover desktop notification scripts (`desktop-notify-min.js`, `desktop-notify-config.js`) from `AppAsset`; they still requested notification permission on every page load without a user gesture, which browsers block and security extensions flag as excessive notification requests
 - Fix #8544: Buttons with only an icon or a caret (e.g. an empty `.dropdown-toggle`) were shorter than buttons with a text (since 1.19.0-beta.2)
 - Fix #8549: `integrity/run` crashed on activities with a missing class (`Activity::hardDelete()` does not exist since 1.19)
 - Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
