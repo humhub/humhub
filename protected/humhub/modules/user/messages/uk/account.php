@@ -61,6 +61,8 @@ return [
     'Your username has been changed' => 'Ваше ім\'я користувача було змінено',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Ваше ім\'я користувача успішно змінено. <br> Ми щойно надіслали вам електронний лист із новою інформацією.',
     '<strong>Your</strong> Account' => '',
+    'Allowed external content sources' => '',
+    'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your mail header image?' => '',
     'Hide my online status' => '',

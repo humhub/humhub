@@ -58,6 +58,7 @@ return [
     'Or continue with' => '',
     'Password changed!' => '',
     'Sign In' => '',
+    'Sign In as {username}' => '',
     'Sign Up' => '',
     'Your session expired. Please try signing in again.' => '',
 ];

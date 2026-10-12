@@ -57,6 +57,7 @@ return [
     'Please use the following link within the next day to reset your password.' => '',
     'Select' => '',
     'Sign In' => '',
+    'Sign In as {username}' => '',
     'Sign Up' => '',
     'To log in with your new account, click the button below.' => '',
     'Your session expired. Please try signing in again.' => '',

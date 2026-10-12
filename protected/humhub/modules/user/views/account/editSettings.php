@@ -3,12 +3,14 @@
 use humhub\libs\TimezoneHelper;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\form\ActiveForm;
 
 /* @var AccountSettings $model */
 /* @var array $languages */
 /* @var bool $isEnabledOnlineStatus */
+/* @var string[] $allowedExternalSources */
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
@@ -37,6 +39,14 @@ use humhub\widgets\form\ActiveForm;
 <?php endif; ?>
 
 <?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList(), ['data-ui-select2' => '']) ?>
+
+<?php if (!empty($allowedExternalSources)): ?>
+    <?= $form->field($model, 'allowedExternalSources')->widget(MultiSelect::class, [
+        'items' => array_combine($allowedExternalSources, $allowedExternalSources),
+        'placeholderMore' => '',
+        'options' => ['data-tags' => 'false'],
+    ]) ?>
+<?php endif; ?>
 
 <?php if (Yii::$app->getModule('user')->allowBlockUsers()): ?>
     <?= $form->field($model, 'blockedUsers')->widget(UserPickerField::class, ['minInput' => 2]); ?>

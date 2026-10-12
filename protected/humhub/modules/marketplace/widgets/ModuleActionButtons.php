@@ -51,7 +51,7 @@ class ModuleActionButtons extends Widget
         if ($this->module->isProFeature() && $licence->type === Licence::LICENCE_TYPE_CE) {
             $html .= Button::primary(Yii::t('MarketplaceModule.base', 'Learn more'))
                 ->icon('info-circle')
-                ->link('https://www.humhub.com/en/professional-edition')
+                ->link('https://www.humhub.com/professional-edition')
                 ->options(['target' => '_blank'])
                 ->sm()
                 ->loader(false);

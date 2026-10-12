@@ -26,6 +26,6 @@ return [
   'Whenever a new comment was written.' => 'Chaque fois qu\'un nouveau commentaire a été écrit.',
   'Write a new comment...' => 'Écrire un commentaire…',
   'Write a new reply...' => 'Écrire une réponse…',
-  'comment' => 'le commentaire',
+  'comment' => 'commentaire',
   '{displayName} wrote a new comment {comment}.' => '{displayName} a publié un nouveau commentaire "{comment}".',
 ];

@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.19.0-beta.4 (Unreleased)
+1.19.0 (Unreleased)
 ----------------------------------
 - Fix #8508: Fixed mention notifications crediting the original author instead of the user who added the mention on edit
 - Enh #8509: Marketplace wording "Community modules" replaced by "Non-curated modules", without a status badge on the module card
@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #8535: Email is carried over between Sign In, Sign Up and Password recovery forms
 - Fix #8539: `Followable` looked up follow records by the owner class instead of `getObjectModel()`, causing duplicate entry errors on subclasses (e.g. form models); include the object model in the follow record cache key
 - Enh #8565: Added `GateManager::hasOpenGate()` to let modules hold back optional UI (hints, banners) until the user has passed every user gate, which `findOpenGate()` cannot answer on a gate's own page
+- Fix #8566: Removed the leftover desktop notification scripts (`desktop-notify-min.js`, `desktop-notify-config.js`) from `AppAsset`; they still requested notification permission on every page load without a user gesture, which browsers block and security extensions flag as excessive notification requests
 - Fix #8544: Buttons with only an icon or a caret (e.g. an empty `.dropdown-toggle`) were shorter than buttons with a text (since 1.19.0-beta.2)
 - Fix #8549: `integrity/run` crashed on activities with a missing class (`Activity::hardDelete()` does not exist since 1.19)
 - Fix #8551: Remove dead `admin/setting/notification` action, which failed with a missing view
@@ -19,6 +20,11 @@ HumHub Changelog
 - Fix #8560: Unified the license statement to `AGPL-3.0-only` (license file, `LICENSE`, `package.json`)
 - Enh #8559: Show Docker image build information (tag, platform, build time, commits) on the About page
 - Enh #8562: Add an index on `live.created_at` to speed up the live polling query
+- Enh #8564: Modules can declare controller routes that deliver no user content but that every page depends on to render (e.g. a generated stylesheet) as gate infrastructure routes via `GateManager::registerInfrastructureRoute()`, so that no user gate intercepts them (see `docs/develop/user-gates.md`)
+- Fix #8570: correct link from the Marketplace PE Modules to the HumHub Website -> Professional Edition page
+- Enh #8571: Show the username on the password step of the two-step login
+- Fix #8572: Fix height of the status area on marketplace module cards
+- Enh #8575: Account settings: picker to review and remove allowed external content sources
 
 1.19.0-beta.3 (September 22, 2026)
 ----------------------------------

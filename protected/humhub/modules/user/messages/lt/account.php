@@ -65,6 +65,8 @@ return [
     'Your password has been successfully changed!' => 'Jūsų slaptažodis sėkmingai pakeistas!',
     'Your username has been changed' => 'Jūsų vartotojo vardas pakeistas',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Jūsų vartotojo vardas buvo sėkmingai pakeistas.<br> Ką tik išsiuntėme jums el. laišką su nauja informacija.',
+    'Allowed external content sources' => '',
+    'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Do you really want to delete your login background image?' => '',
     'Do you really want to delete your mail header image?' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',
