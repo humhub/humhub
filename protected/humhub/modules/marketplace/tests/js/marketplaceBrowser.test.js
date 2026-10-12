@@ -29,7 +29,7 @@ const mountBrowser = () => mount(MarketplaceBrowser, {
     props: {
         filters: [
             { key: 'q', type: 'text', label: 'Search' },
-            { key: 'tag', type: 'select', label: 'Type', options: [{ value: 'official', label: 'Official' }, { value: 'community', label: 'Community' }] },
+            { key: 'tag', type: 'select', label: 'Type', options: [{ value: 'official', label: 'Official' }, { value: 'partner', label: 'Partner' }] },
         ],
         settings: { includeBetaUpdates: false, includeCommunityModules: false },
         urls: { moduleAdministration: '/admin/module/list', professionalEdition: '/pe' },
@@ -76,7 +76,7 @@ describe('MarketplaceBrowser', () => {
         setReducedMotion(true);
         modules = [
             marketplaceModule(),
-            marketplaceModule({ id: 'community-x', name: 'Community X', isCommunity: true, isThirdParty: true, badge: 'community' }),
+            marketplaceModule({ id: 'community-x', name: 'Community X', isCommunity: true, isThirdParty: true, badge: 'none' }),
         ];
         globalThis.humhubStubs.client.get = vi.fn((url) => Promise.resolve(
             url.includes('marketplace/module') ? listEnvelope(modules, 1) : {},
@@ -163,11 +163,11 @@ describe('MarketplaceBrowser', () => {
         await mountIt();
         const setFilter = vi.spyOn(wrapper.vm.$refs.directory, 'setFilter');
 
-        await wrapper.find('[data-id="community-x"] button.c-module-card__badge--community').trigger('click');
+        await wrapper.find('[data-id="calendar-x"] button.c-module-card__badge--official').trigger('click');
         await flushPromises();
 
-        expect(setFilter).toHaveBeenCalledWith('tag', 'community');
-        expect(moduleListCalls().at(-1)[0]).toContain('tag=community');
+        expect(setFilter).toHaveBeenCalledWith('tag', 'official');
+        expect(moduleListCalls().at(-1)[0]).toContain('tag=official');
     });
 
     it('marks the search the list was loaded with in the cards', async () => {
@@ -219,13 +219,13 @@ describe('MarketplaceBrowser', () => {
             expect(document.activeElement).toBe(wrapper.find('[data-id="calendar-x"] a.c-module-card__title').element);
         });
 
-        it('shows the community warning before installing a community module', async () => {
+        it('shows the warning before installing a non-curated module', async () => {
             await mountIt();
 
             await cardAction(wrapper, 'community-x').trigger('click');
             await flushPromises();
 
-            expect(dialog().querySelector('.c-mp-notice--warning').textContent).toContain('Unverified Community');
+            expect(dialog().querySelector('.c-mp-notice--warning').textContent).toContain('Not curated');
             click(footerButton('Cancel'));
             await flushPromises();
             expect(dialog()).toBeNull();
@@ -237,7 +237,7 @@ describe('MarketplaceBrowser', () => {
         beforeEach(() => {
             modules.splice(0, modules.length,
                 marketplaceModule({ id: 'paid-x', name: 'Paid <X>', availability: 'buy', price: { amount: 45, currency: 'EUR', onRequest: false }, checkoutUrl: 'https://checkout/paid-x' }),
-                marketplaceModule({ id: 'paid-c', name: 'Paid C', availability: 'buy', isCommunity: true, isThirdParty: true, badge: 'community', price: { amount: 9, currency: 'EUR', onRequest: false }, checkoutUrl: 'https://checkout/paid-c' }));
+                marketplaceModule({ id: 'paid-c', name: 'Paid C', availability: 'buy', isCommunity: true, isThirdParty: true, badge: 'none', price: { amount: 9, currency: 'EUR', onRequest: false }, checkoutUrl: 'https://checkout/paid-c' }));
         });
 
         const addKey = async (key) => {

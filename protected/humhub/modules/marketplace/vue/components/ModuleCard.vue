@@ -77,7 +77,7 @@ import { highlightParts } from './highlight.js';
 import { badgeLabel, buyLabel } from './messages.js';
 
 // The badges a type pill can filter by — the values of the `tag` filter.
-const FILTER_TAGS = ['professional', 'official', 'community', 'partner'];
+const FILTER_TAGS = ['professional', 'official', 'partner'];
 
 /**
  * One card of the marketplace grid (`.c-module-card`, `resources/scss/_marketplace.scss`) —
@@ -88,7 +88,7 @@ const FILTER_TAGS = ['professional', 'official', 'community', 'partner'];
  *
  * - Badges: a round featured star (filters by `tag=featured`) when `module.featured`, next to
  *   either `↑ <latestCompatibleVersion>` while an update is available, or else the type pill of
- *   `badge` (a button filtering by that type; Community/Partner carry the third-party hint as
+ *   `badge` (a button filtering by that type; Partner carries the third-party hint as
  *   tooltip).
  * - Primary action: Update (accent), Install / Buy / Learn more (primary), or a disabled
  *   "Installed" / "Not compatible". The ghost icon button links the changelog (update
@@ -166,9 +166,6 @@ export default {
                 : badgeLabel(this.module.badge);
         },
         badgeTitle() {
-            if (this.module.badge === 'community') {
-                return `${this.labels.thirdParty} (${i18n.t('MarketplaceModule.base', 'Unverified Community')})`;
-            }
             if (this.module.badge === 'partner') {
                 return this.labels.thirdParty;
             }

@@ -183,8 +183,8 @@ let uidSeq = 0;
  *   the field with the API's message) and lists the purchased modules (`tag=purchased`) with
  *   their key — a newly licensed module enters at the top. A row's Install emits `install` (the
  *   browser closes this dialog and opens the install dialog); the Installation ID below.
- * - Settings: "Beta Modules" and "Unverified Modules" checkboxes, each saved at once
- *   (`PATCH marketplace/settings`) and reverted on an error. Checking unverified modules
+ * - Settings: "Beta Modules" and "Non-curated Modules" checkboxes, each saved at once
+ *   (`PATCH marketplace/settings`) and reverted on an error. Checking non-curated modules
  *   ON first asks for the risk acknowledgement inline; only its confirmation saves.
  *
  * Emits `registered` (a key was added), `settings-changed` (the stored settings), `install`
@@ -249,8 +249,8 @@ export default {
                 installationId: i18n.t('MarketplaceModule.base', 'Installation ID: {installationId}', { installationId: this.installationId }),
                 beta: i18n.t('MarketplaceModule.base', 'Beta Modules'),
                 betaHint: i18n.t('MarketplaceModule.base', 'Allow modules in Beta to be installed.'),
-                community: i18n.t('MarketplaceModule.base', 'Unverified Modules'),
-                communityHint: i18n.t('MarketplaceModule.base', 'Show modules contributed by the community that are not tested or maintained by the HumHub team.'),
+                community: i18n.t('MarketplaceModule.base', 'Non-curated Modules'),
+                communityHint: i18n.t('MarketplaceModule.base', 'Show modules by independent partners and developers that are not part of our curated selection.'),
                 warning: communityWarning(),
                 acknowledge: communityAcknowledge(),
                 confirm: i18n.t('base', 'Confirm'),

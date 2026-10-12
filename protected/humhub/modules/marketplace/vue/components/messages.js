@@ -6,16 +6,15 @@ import { i18n } from '@humhub/vue';
  * @since 1.20
  */
 
-export const communityWarning = () => i18n.t('MarketplaceModule.base', 'Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.');
+export const communityWarning = () => i18n.t('MarketplaceModule.base', 'These modules are provided by independent partners and developers and are <strong>not part of our curated selection</strong>.<br><br>HumHub does not review them for quality, security or compatibility. Support, updates and licensing are handled by the respective provider.<br><br>Make sure you trust the source of a module before installing it.');
 
-export const communityAcknowledge = () => i18n.t('MarketplaceModule.base', 'I understand the risk and want to continue.');
+export const communityAcknowledge = () => i18n.t('MarketplaceModule.base', 'I understand and want to continue.');
 
 export const badgeLabel = (badge) => ({
     professional: i18n.t('MarketplaceModule.base', 'Professional Edition'),
     official: i18n.t('MarketplaceModule.base', 'Official'),
     partner: i18n.t('MarketplaceModule.base', 'Partner'),
     deprecated: i18n.t('MarketplaceModule.base', 'Deprecated'),
-    community: i18n.t('MarketplaceModule.base', 'Community'),
 })[badge] || '';
 
 const priceText = (price) => (price && !price.onRequest && price.amount !== null ? `${price.amount}€` : '');
@@ -56,6 +55,6 @@ export const thirdPartyNotice = () => [
 ];
 
 /**
- * The note on an unverified community module (translator markup, no values).
+ * The note on a non-curated module (translator markup, no values).
  */
-export const communityNotice = () => i18n.t('MarketplaceModule.base', 'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.');
+export const communityNotice = () => i18n.t('MarketplaceModule.base', 'If this Module is additionally marked as <strong>"Not curated"</strong>, it is not part of our curated selection and has not been reviewed by the HumHub team for quality, security or compatibility.');

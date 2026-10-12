@@ -96,18 +96,6 @@ class MarketplaceApiCest
         Assert::assertSame(['calendar-x', 'polls-x'], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
     }
 
-    public function testFiltersByTheCommunityTag(ApiTester $I)
-    {
-        $I->wantTo('filter the module list by the community tag');
-        $I->amLoggedInAs(1);
-        // Set before the first request: OnlineModuleManager memoises the catalogue per
-        // instance, and this instance lives for the whole test once a request built it.
-        Yii::$app->getModule('marketplace')->settings->set('includeCommunityModules', true);
-
-        $I->sendGet('marketplace/module', ['tag' => 'community']);
-        Assert::assertSame(['community-x'], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
-    }
-
     public function testPagesTheList(ApiTester $I)
     {
         $I->wantTo('read the second page of the module list');

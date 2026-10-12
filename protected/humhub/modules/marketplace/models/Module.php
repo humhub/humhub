@@ -286,7 +286,7 @@ class Module extends Model
      * not part of this precedence — it is shown as a star alongside the badge (see
      * {@see self::$featured}).
      *
-     * @return string `professional`, `official`, `partner`, `deprecated`, `community` or `none`
+     * @return string `professional`, `official`, `partner`, `deprecated` or `none`
      * @since 1.20
      */
     public function getBadge(): string
@@ -296,7 +296,6 @@ class Module extends Model
             !$this->isThirdParty => 'official',
             (bool)$this->isPartner => 'partner',
             (bool)$this->isDeprecated => 'deprecated',
-            (bool)$this->isCommunity => 'community',
             default => 'none',
         };
     }

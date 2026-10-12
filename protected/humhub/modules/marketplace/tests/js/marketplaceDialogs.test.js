@@ -270,23 +270,23 @@ describe('InstallDialog', () => {
             expect(notice.classList.contains('c-mp-notice--warning')).toBe(false);
             expect(notice.textContent).toContain('This Module was developed by a third-party.');
             expect(notice.textContent).toContain('Third-party Modules are not covered by Professional Edition agreements.');
-            expect(notice.textContent).not.toContain('Unverified Community');
+            expect(notice.textContent).not.toContain('Not curated');
         });
 
-        it('adds the community warning for an unverified community module, on the buy step too', () => {
-            const community = { isThirdParty: true, isCommunity: true, badge: 'community' };
+        it('adds the warning for a non-curated module, on the buy step too', () => {
+            const community = { isThirdParty: true, isCommunity: true, badge: 'none' };
             wrapper = mountDialog(InstallDialog, { module: marketplaceModule(community) });
 
             let notice = dialog().querySelector('.c-mp-notice');
             expect(notice.classList.contains('c-mp-notice--warning')).toBe(true);
-            expect(notice.querySelector('strong').textContent).toBe('"Unverified Community"');
-            expect(notice.textContent).toContain('neither tested nor maintained by the HumHub project team');
+            expect(notice.querySelector('strong').textContent).toBe('"Not curated"');
+            expect(notice.textContent).toContain('not part of our curated selection');
             wrapper.unmount();
 
             wrapper = mountDialog(InstallDialog, { module: paid(community), initialStep: 'buy' });
             notice = dialog().querySelector('.c-mp-notice');
             expect(notice.textContent).toContain('This Module was developed by a third-party.');
-            expect(notice.textContent).toContain('Unverified Community');
+            expect(notice.textContent).toContain('Not curated');
         });
 
         it('shows the note only on the step it opened on', async () => {
@@ -831,10 +831,10 @@ describe('SettingsDialog', () => {
             const texts = [...dialog().querySelectorAll('.c-setting-row')].map((r) => r.querySelector('.form-check').textContent.trim());
             expect(texts).toEqual([
                 'Beta ModulesAllow modules in Beta to be installed.',
-                'Unverified ModulesShow modules contributed by the community that are not tested or maintained by the HumHub team.',
+                'Non-curated ModulesShow modules by independent partners and developers that are not part of our curated selection.',
             ]);
             expect(settingInput('Beta Modules').checked).toBe(false);
-            expect(settingInput('Unverified Modules').checked).toBe(true);
+            expect(settingInput('Non-curated Modules').checked).toBe(true);
             expect(dialog().querySelector(`label[for="${settingInput('Beta Modules').id}"]`)).not.toBeNull();
             expect(dialog().querySelector('.c-mp-settings__admin').getAttribute('href')).toBe('/admin/module');
         });
@@ -865,21 +865,21 @@ describe('SettingsDialog', () => {
             expect(wrapper.emitted('settings-changed')).toBeUndefined();
         });
 
-        it('saves unverified modules only after the risk acknowledgement', async () => {
+        it('saves non-curated modules only after the risk acknowledgement', async () => {
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ includeBetaUpdates: false, includeCommunityModules: true }));
             await open();
             const confirm = () => [...dialog().querySelectorAll('.c-setting-row button')].find((b) => b.textContent.trim() === 'Confirm');
 
-            toggle(settingInput('Unverified Modules'), true);
+            toggle(settingInput('Non-curated Modules'), true);
             await flushPromises();
 
             expect(saved()).toHaveLength(0);
-            const row = settingInput('Unverified Modules').closest('.c-setting-row');
+            const row = settingInput('Non-curated Modules').closest('.c-setting-row');
             expect(row.classList.contains('is-expanded')).toBe(true);
-            expect(settingInput('Unverified Modules').hasAttribute('aria-expanded')).toBe(false);
-            expect(settingInput('Unverified Modules').hasAttribute('aria-controls')).toBe(false);
-            expect(row.textContent).toContain('not tested or maintained by the HumHub team');
-            expect(row.textContent).toContain('I understand the risk and want to continue.');
+            expect(settingInput('Non-curated Modules').hasAttribute('aria-expanded')).toBe(false);
+            expect(settingInput('Non-curated Modules').hasAttribute('aria-controls')).toBe(false);
+            expect(row.textContent).toContain('not part of our curated selection');
+            expect(row.textContent).toContain('I understand and want to continue.');
             expect(confirm().disabled).toBe(true);
 
             const acknowledge = row.querySelector('input[type="checkbox"]:not([data-setting])');
@@ -895,7 +895,7 @@ describe('SettingsDialog', () => {
             expect(saved()).toHaveLength(1);
             expect(saved()[0][1]).toMatchObject({ data: { includeCommunityModules: 1 } });
             expect(row.classList.contains('is-expanded')).toBe(false);
-            expect(settingInput('Unverified Modules').checked).toBe(true);
+            expect(settingInput('Non-curated Modules').checked).toBe(true);
             expect(wrapper.emitted('settings-changed')).toEqual([[{ includeBetaUpdates: false, includeCommunityModules: true }]]);
         });
 
@@ -903,9 +903,9 @@ describe('SettingsDialog', () => {
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ includeBetaUpdates: true, includeCommunityModules: false }));
             await open();
 
-            toggle(settingInput('Unverified Modules'), true);
+            toggle(settingInput('Non-curated Modules'), true);
             await flushPromises();
-            const row = settingInput('Unverified Modules').closest('.c-setting-row');
+            const row = settingInput('Non-curated Modules').closest('.c-setting-row');
             const acknowledge = row.querySelector('input[type="checkbox"]:not([data-setting])');
             acknowledge.checked = true;
             acknowledge.dispatchEvent(new Event('change'));
@@ -917,28 +917,28 @@ describe('SettingsDialog', () => {
             expect(saved()).toHaveLength(1);
             expect(settingInput('Beta Modules').checked).toBe(true);
             expect(row.classList.contains('is-expanded')).toBe(true);
-            expect(settingInput('Unverified Modules').checked).toBe(true);
+            expect(settingInput('Non-curated Modules').checked).toBe(true);
             expect(row.querySelector('input[type="checkbox"]:not([data-setting])').checked).toBe(true);
         });
 
-        it('saves nothing when unverified modules are switched off before confirming', async () => {
+        it('saves nothing when non-curated modules are switched off before confirming', async () => {
             await open();
 
-            toggle(settingInput('Unverified Modules'), true);
+            toggle(settingInput('Non-curated Modules'), true);
             await flushPromises();
-            toggle(settingInput('Unverified Modules'), false);
+            toggle(settingInput('Non-curated Modules'), false);
             await flushPromises();
 
-            expect(settingInput('Unverified Modules').closest('.c-setting-row').classList.contains('is-expanded')).toBe(false);
-            expect(settingInput('Unverified Modules').checked).toBe(false);
+            expect(settingInput('Non-curated Modules').closest('.c-setting-row').classList.contains('is-expanded')).toBe(false);
+            expect(settingInput('Non-curated Modules').checked).toBe(false);
             expect(saved()).toHaveLength(0);
         });
 
-        it('switches unverified modules off without asking', async () => {
+        it('switches non-curated modules off without asking', async () => {
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ includeBetaUpdates: false, includeCommunityModules: false }));
             await open({ settings: settings({ includeCommunityModules: true }) });
 
-            toggle(settingInput('Unverified Modules'), false);
+            toggle(settingInput('Non-curated Modules'), false);
             await flushPromises();
 
             expect(saved()[0][1]).toMatchObject({ data: { includeCommunityModules: 0 } });

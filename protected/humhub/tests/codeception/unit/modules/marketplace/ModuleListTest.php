@@ -91,13 +91,6 @@ class ModuleListTest extends HumHubDbTestCase
         $this->assertSame(['polls-x', 'bought-x'], $this->ids(['tag' => 'partner,purchased']));
     }
 
-    public function testFiltersByTheCommunityTag(): void
-    {
-        Yii::$app->getModule('marketplace')->settings->set('includeCommunityModules', true);
-
-        $this->assertSame(['community-x'], $this->ids(['tag' => ['community']]));
-    }
-
     public function testFiltersByAnyOfTheUseCases(): void
     {
         $this->assertSame(['calendar-x', 'polls-x'], $this->ids(['useCase' => ['intranet']]));

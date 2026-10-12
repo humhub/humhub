@@ -154,8 +154,8 @@ let uid = 0;
  *   a rejected key stays in the field with the API's message), then the module installs.
  * - `confirm` (the card's Install, a licence row's Install): the module; nothing installs
  *   before its Install.
- * - The first step carries the third-party note for a third-party module, with the community
- *   warning for an unverified community module.
+ * - The first step carries the third-party note for a third-party module, with the additional
+ *   warning for a non-curated module.
  * - `installing`: a progress bar easing towards `PROGRESS_LIMIT` until the single install
  *   request answers. The server cannot abort an install: no Cancel, and the dialog cannot be
  *   closed meanwhile (nor while a key is checked or the module activated). A `4xx` returns to

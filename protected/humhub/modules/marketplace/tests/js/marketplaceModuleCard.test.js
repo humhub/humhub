@@ -40,7 +40,6 @@ describe('ModuleCard', () => {
         it.each([
             ['professional', 'PRO'],
             ['partner', 'Partner'],
-            ['community', 'Community'],
         ])('shows the %s type and filters by it', async (badge, text) => {
             const wrapper = mountCard(marketplaceModule({ badge }));
 
@@ -82,11 +81,9 @@ describe('ModuleCard', () => {
             expect(wrapper.find('.c-module-card__badge--update').exists()).toBe(true);
         });
 
-        it('carries the third-party hint on Community and Partner pills', () => {
+        it('carries the third-party hint on Partner pills', () => {
             expect(mountCard(marketplaceModule({ badge: 'partner', isThirdParty: true })).find('.c-module-card__badge').attributes('title'))
                 .toBe('This Module was developed by a third-party.');
-            expect(mountCard(marketplaceModule({ badge: 'community', isThirdParty: true, isCommunity: true })).find('.c-module-card__badge').attributes('title'))
-                .toBe('This Module was developed by a third-party. (Unverified Community)');
         });
 
         it('has no pill without a badge, and a plain one for a deprecated module', () => {

@@ -46,7 +46,7 @@ use Yii;
  */
 class ModuleList extends FilterableList
 {
-    public const TAGS = ['professional', 'official', 'community', 'partner', 'featured', 'purchased'];
+    public const TAGS = ['professional', 'official', 'partner', 'featured', 'purchased'];
 
     private const STATUS_ORDER = [
         MarketplaceListService::STATUS_UPDATE => 0,
@@ -93,7 +93,6 @@ class ModuleList extends FilterableList
                 values: [
                     'professional' => Yii::t('MarketplaceModule.base', 'Professional Edition'),
                     'official' => Yii::t('MarketplaceModule.base', 'Official'),
-                    'community' => Yii::t('MarketplaceModule.base', 'Community'),
                     'partner' => Yii::t('MarketplaceModule.base', 'Partner'),
                     'featured' => Yii::t('MarketplaceModule.base', 'Featured'),
                     'purchased' => Yii::t('MarketplaceModule.base', 'Purchased'),
@@ -211,7 +210,6 @@ class ModuleList extends FilterableList
                 'professional' => $module->isProFeature(),
                 'featured' => (bool)$module->featured,
                 'official' => !$module->isThirdParty,
-                'community' => (bool)$module->isCommunity,
                 'partner' => (bool)$module->isPartner,
                 'purchased' => (bool)$module->purchased,
                 default => false,

@@ -139,14 +139,13 @@
     }
     return fallback;
   };
-  const communityWarning = () => vue.i18n.t("MarketplaceModule.base", "Community modules are developed by third parties and are <strong>not tested or maintained by the HumHub team</strong>.<br><br>They may not be compatible with your HumHub version, can cause <strong>instability or unexpected behavior</strong>, and may stop working after future updates. Their long-term maintenance is not guaranteed.<br><br>Only enable this option if you understand the risks and trust the source of the module you intend to install.");
-  const communityAcknowledge = () => vue.i18n.t("MarketplaceModule.base", "I understand the risk and want to continue.");
+  const communityWarning = () => vue.i18n.t("MarketplaceModule.base", "These modules are provided by independent partners and developers and are <strong>not part of our curated selection</strong>.<br><br>HumHub does not review them for quality, security or compatibility. Support, updates and licensing are handled by the respective provider.<br><br>Make sure you trust the source of a module before installing it.");
+  const communityAcknowledge = () => vue.i18n.t("MarketplaceModule.base", "I understand and want to continue.");
   const badgeLabel = (badge) => ({
     professional: vue.i18n.t("MarketplaceModule.base", "Professional Edition"),
     official: vue.i18n.t("MarketplaceModule.base", "Official"),
     partner: vue.i18n.t("MarketplaceModule.base", "Partner"),
-    deprecated: vue.i18n.t("MarketplaceModule.base", "Deprecated"),
-    community: vue.i18n.t("MarketplaceModule.base", "Community")
+    deprecated: vue.i18n.t("MarketplaceModule.base", "Deprecated")
   })[badge] || "";
   const priceText = (price) => price && !price.onRequest && price.amount !== null ? `${price.amount}€` : "";
   const buyLabel = (price) => {
@@ -162,7 +161,7 @@
     vue.i18n.t("MarketplaceModule.base", "The HumHub project does not guarantee the functionality, quality or the continuous development of this Module."),
     vue.i18n.t("MarketplaceModule.base", "Third-party Modules are not covered by Professional Edition agreements.")
   ];
-  const communityNotice = () => vue.i18n.t("MarketplaceModule.base", 'If this Module is additionally marked as <strong>"Unverified Community"</strong> it is neither tested nor maintained by the HumHub project team. It may cause instability or stop working after future updates.');
+  const communityNotice = () => vue.i18n.t("MarketplaceModule.base", 'If this Module is additionally marked as <strong>"Not curated"</strong>, it is not part of our curated selection and has not been reviewed by the HumHub team for quality, security or compatibility.');
   const STEP_MS = 300;
   const PROGRESS_TICK_MS = 120;
   const PROGRESS_LIMIT = 0.9;
@@ -960,7 +959,7 @@
     }
     return parts;
   };
-  const FILTER_TAGS = ["professional", "official", "community", "partner"];
+  const FILTER_TAGS = ["professional", "official", "partner"];
   const _sfc_main$2 = {
     name: "ModuleCard",
     components: { RichText },
@@ -1024,9 +1023,6 @@
         return this.module.badge === "professional" ? vue.i18n.t("MarketplaceModule.base", "PRO") : badgeLabel(this.module.badge);
       },
       badgeTitle() {
-        if (this.module.badge === "community") {
-          return `${this.labels.thirdParty} (${vue.i18n.t("MarketplaceModule.base", "Unverified Community")})`;
-        }
         if (this.module.badge === "partner") {
           return this.labels.thirdParty;
         }
@@ -1393,8 +1389,8 @@
           installationId: vue.i18n.t("MarketplaceModule.base", "Installation ID: {installationId}", { installationId: this.installationId }),
           beta: vue.i18n.t("MarketplaceModule.base", "Beta Modules"),
           betaHint: vue.i18n.t("MarketplaceModule.base", "Allow modules in Beta to be installed."),
-          community: vue.i18n.t("MarketplaceModule.base", "Unverified Modules"),
-          communityHint: vue.i18n.t("MarketplaceModule.base", "Show modules contributed by the community that are not tested or maintained by the HumHub team."),
+          community: vue.i18n.t("MarketplaceModule.base", "Non-curated Modules"),
+          communityHint: vue.i18n.t("MarketplaceModule.base", "Show modules by independent partners and developers that are not part of our curated selection."),
           warning: communityWarning(),
           acknowledge: communityAcknowledge(),
           confirm: vue.i18n.t("base", "Confirm"),

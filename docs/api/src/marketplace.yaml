@@ -77,7 +77,7 @@ paths:
           required: false
           description: |
             Comma-separated (or repeated `tag[]=`) list of `professional`, `official`,
-            `community`, `partner`, `featured`, `purchased`. An unknown value answers `422`.
+            `partner`, `featured`, `purchased`. An unknown value answers `422`.
           schema:
             type: string
             examples:
@@ -546,11 +546,10 @@ components:
           description: The licence key of a purchased module
         badge:
           type: string
-          enum: [professional, official, partner, deprecated, community, none]
+          enum: [professional, official, partner, deprecated, none]
           description: |
             The one label a card shows, decided in this order: `professional` (a Professional
-            Edition feature) · `official` (by HumHub) · `partner` · `deprecated` · `community` ·
-            `none`. Featured is not part of this precedence, see `featured`. Clients must
+            Edition feature) · `official` (by HumHub) · `partner` · `deprecated` · `none`. Featured is not part of this precedence, see `featured`. Clients must
             tolerate values added later.
         isThirdParty:
           type: boolean
@@ -558,8 +557,8 @@ components:
         isCommunity:
           type: boolean
           description: |
-            A community module. One that is not installed is listed only while
-            `includeCommunityModules` is set.
+            A module that is not part of the curated selection. One that is not installed is
+            listed only while `includeCommunityModules` is set.
         availability:
           type: string
           enum: [install, buy, professionalEdition, incompatible]
@@ -634,7 +633,7 @@ components:
           description: Offer beta versions as updates
         includeCommunityModules:
           type: boolean
-          description: List community modules that are not installed, too
+          description: List non-curated modules that are not installed, too
   securitySchemes:
     Bearer:
       $ref: "common.yaml#/components/securitySchemes/Bearer"
