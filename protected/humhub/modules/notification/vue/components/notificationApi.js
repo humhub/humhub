@@ -41,19 +41,28 @@ export const fetchNotifications = ({ cursor = null, limit = null, categories = n
 
 /**
  * Marks notifications of the caller as seen: the entries of the given notification ids, or
- * every notification without ids.
+ * without ids every notification - only those of the given categories with `categories`.
  *
  * @param {?number[]} ids
+ * @param {?string[]} categories notification category ids, as in {@see fetchNotifications}
  * @returns {Promise<?{unseenCount: number}>} `null` for an empty `ids` list, which sends nothing
  */
-export const markAsSeen = (ids = null) => {
+export const markAsSeen = (ids = null, categories = null) => {
     if (Array.isArray(ids) && !ids.length) {
         // Nothing to mark - and an empty list must never reach the server as "everything".
         return Promise.resolve(null);
     }
 
     const url = apiUrl('notification/mark-as-seen');
-    const request = Array.isArray(ids) ? client.post(url, { data: { ids } }) : client.post(url);
+    let request;
+    if (Array.isArray(ids)) {
+        request = client.post(url, { data: { ids } });
+    } else if (Array.isArray(categories)) {
+        // An empty selection keeps one empty entry, see fetchNotifications().
+        request = client.post(url, { data: { categories: categories.length ? categories : [''] } });
+    } else {
+        request = client.post(url);
+    }
 
     return request.then((response) => ({ unseenCount: Number((response && response.unseenCount) || 0) }));
 };

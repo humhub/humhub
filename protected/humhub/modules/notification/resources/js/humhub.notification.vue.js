@@ -106,12 +106,19 @@
     }
     return vue$1.client.get(vue$1.apiUrl("notification", params)).then(normalizePage);
   };
-  const markAsSeen = (ids = null) => {
+  const markAsSeen = (ids = null, categories = null) => {
     if (Array.isArray(ids) && !ids.length) {
       return Promise.resolve(null);
     }
     const url = vue$1.apiUrl("notification/mark-as-seen");
-    const request = Array.isArray(ids) ? vue$1.client.post(url, { data: { ids } }) : vue$1.client.post(url);
+    let request;
+    if (Array.isArray(ids)) {
+      request = vue$1.client.post(url, { data: { ids } });
+    } else if (Array.isArray(categories)) {
+      request = vue$1.client.post(url, { data: { categories: categories.length ? categories : [""] } });
+    } else {
+      request = vue$1.client.post(url);
+    }
     return request.then((response) => ({ unseenCount: Number(response && response.unseenCount || 0) }));
   };
   const normalizePage = (response) => ({
@@ -772,10 +779,11 @@
       onLoaded(response) {
         this.unseenCount = Number(response.unseenCount) || 0;
       },
+      /** Marks only the notifications of the selected categories as seen. */
       markAsSeen() {
-        return markAsSeen().then(() => {
-          this.unseenCount = 0;
-          vue$1.events.trigger(SET_COUNT_EVENT, [0]);
+        return markAsSeen(null, this.requestCategories).then((response) => {
+          this.unseenCount = response.unseenCount;
+          vue$1.events.trigger(SET_COUNT_EVENT, [this.unseenCount]);
           return this.$refs.list.reload();
         }).catch((response) => {
           vue$1.log.error(response, true);

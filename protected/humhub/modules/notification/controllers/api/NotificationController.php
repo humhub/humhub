@@ -94,14 +94,21 @@ class NotificationController extends BaseController
 
     /**
      * Marks notifications of the caller as seen: with `ids[]` the entries (groups) of those
-     * notifications - ids of other users' notifications are ignored -, without every one.
+     * notifications - ids of other users' notifications are ignored -, with `categories[]` those
+     * of the given categories (same semantics as in {@see actionIndex()}), without both every one.
      */
     public function actionMarkAsSeen()
     {
         $user = Yii::$app->user->getIdentity();
         $ids = Yii::$app->request->post('ids');
+        $categories = Yii::$app->request->post('categories');
 
-        if ($ids === null) {
+        if ($ids === null && $categories !== null) {
+            NotificationManager::markAllSeen(
+                $user,
+                (new NotificationListService())->classesOfCategories(self::listValues($categories)),
+            );
+        } elseif ($ids === null) {
             NotificationManager::markAllSeen($user);
         } else {
             $ids = array_map('intval', self::listValues($ids));

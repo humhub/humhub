@@ -371,12 +371,17 @@ class NotificationManager extends Component
     /**
      * Marks all notifications of the user seen.
      *
+     * @param string[]|null $classes only notifications of these classes, `null` for all
      * @internal
      * @since 1.20
      */
-    public static function markAllSeen(User $user): void
+    public static function markAllSeen(User $user, ?array $classes = null): void
     {
-        self::updateSeen($user, []);
+        if ($classes === []) {
+            return;
+        }
+
+        self::updateSeen($user, $classes === null ? [] : ['class' => $classes]);
     }
 
     /**

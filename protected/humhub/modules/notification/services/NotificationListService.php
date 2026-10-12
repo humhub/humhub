@@ -142,7 +142,7 @@ class NotificationListService
      * @param string[] $categories
      * @return string[]
      */
-    private function classesOfCategories(array $categories): array
+    public function classesOfCategories(array $categories): array
     {
         $classes = [];
 

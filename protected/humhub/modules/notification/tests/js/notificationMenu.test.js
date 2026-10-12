@@ -324,6 +324,17 @@ describe('NotificationOverview', () => {
         expect(counts).toEqual([0]);
     });
 
+    it('marks only the selected categories as seen once the selection is narrowed', async () => {
+        wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
+
+        await wrapper.findAll('.form-check input')[2].setValue(false);
+        await flushPromises();
+        await wrapper.find('#notification_overview_markseen').trigger('click');
+        await flushPromises();
+
+        expect(postConfigs[0]).toEqual({ data: { categories: ['social'] } });
+    });
+
     it('refreshes its list when the menu marked everything as seen', async () => {
         wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
 
@@ -344,6 +355,16 @@ describe('notificationApi.markAsSeen', () => {
         await markAsSeen([5, 7]);
         expect(postCalls[1]).toContain('/api/v2/notification/mark-as-seen');
         expect(postConfigs[1]).toEqual({ data: { ids: [5, 7] } });
+    });
+});
+
+describe('notificationApi.markAsSeen with categories', () => {
+    it('sends the categories, an empty selection as one empty entry', async () => {
+        await markAsSeen(null, ['social']);
+        expect(postConfigs[0]).toEqual({ data: { categories: ['social'] } });
+
+        await markAsSeen(null, []);
+        expect(postConfigs[1]).toEqual({ data: { categories: [''] } });
     });
 });
 

@@ -157,10 +157,11 @@ paths:
       summary: Mark notifications as seen
       operationId: markNotificationsAsSeen
       description: |
-        Without `ids`, marks every notification of the caller as seen. With `ids`, marks the
-        entries of those notifications — each with its whole group — as seen; ids of
-        notifications that are not the caller's are ignored. Answers the caller's unseen count
-        afterwards.
+        Without `ids`, marks every notification of the caller as seen — with `categories` only
+        those of the given notification categories (an empty selection, one empty entry, marks
+        nothing). With `ids`, marks the entries of those notifications — each with its whole
+        group — as seen; ids of notifications that are not the caller's are ignored. Answers the
+        caller's unseen count afterwards.
       requestBody:
         required: false
         content:
@@ -173,6 +174,11 @@ paths:
                   description: Notification ids (an entry's `id`)
                   items:
                     type: integer
+                categories:
+                  type: array
+                  description: Notification category ids, ignored with `ids`
+                  items:
+                    type: string
             example:
               ids: [137, 129]
           application/x-www-form-urlencoded:
@@ -183,6 +189,10 @@ paths:
                   type: array
                   items:
                     type: integer
+                "categories[]":
+                  type: array
+                  items:
+                    type: string
       responses:
         "200":
           description: Successful operation

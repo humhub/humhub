@@ -156,12 +156,13 @@ export default {
         onLoaded(response) {
             this.unseenCount = Number(response.unseenCount) || 0;
         },
+        /** Marks only the notifications of the selected categories as seen. */
         markAsSeen() {
-            return markNotificationsAsSeen().then(() => {
-                this.unseenCount = 0;
+            return markNotificationsAsSeen(null, this.requestCategories).then((response) => {
+                this.unseenCount = response.unseenCount;
                 // Tells the notification menu's badge and the document title, which are owned
                 // by the other island on this page.
-                events.trigger(SET_COUNT_EVENT, [0]);
+                events.trigger(SET_COUNT_EVENT, [this.unseenCount]);
                 return this.$refs.list.reload();
             }).catch((response) => {
                 log.error(response, true);

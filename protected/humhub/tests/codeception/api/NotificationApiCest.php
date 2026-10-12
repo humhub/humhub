@@ -274,6 +274,27 @@ class NotificationApiCest
         Assert::assertNull(Notification::findOne(['id' => $foreign])->seen_at, 'a foreign id is ignored');
     }
 
+    public function testMarkAsSeenByCategories(ApiTester $I)
+    {
+        $I->wantTo('mark only the notifications of the filtered categories as seen');
+        $followers = $this->seedNotification(1, FollowedNotification::class);
+        $direct = $this->seedNotification(1, FriendshipRequestNotification::class);
+
+        $I->amLoggedInAs(1);
+        $this->withCsrf($I);
+
+        // An empty selection marks nothing.
+        $I->sendPost('notification/mark-as-seen', ['categories' => ['']]);
+        $I->seeResponseCodeIs(200);
+        Assert::assertNull(Notification::findOne(['id' => $followers])->seen_at);
+        Assert::assertNull(Notification::findOne(['id' => $direct])->seen_at);
+
+        $I->sendPost('notification/mark-as-seen', ['categories' => ['followers']]);
+        $I->seeResponseCodeIs(200);
+        Assert::assertNotNull(Notification::findOne(['id' => $followers])->seen_at);
+        Assert::assertNull(Notification::findOne(['id' => $direct])->seen_at, 'another category is untouched');
+    }
+
     public function testMarkAsSeenNeedsACsrfTokenAndThePostVerb(ApiTester $I)
     {
         $I->wantTo('be refused without a CSRF token or with the wrong verb');
