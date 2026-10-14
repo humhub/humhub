@@ -71,18 +71,18 @@ class ImpersonationTest extends HumHubDbTestCase
     {
         $impersonation = new Impersonation();
 
-        $this->assertFalse(
+        $this->assertTrue(
             $impersonation->allowPrivateContentAccess,
-            'By default private content is hidden while impersonating',
+            'By default private content stays accessible while impersonating',
         );
         $this->assertTrue($impersonation->log, 'By default impersonations are logged');
     }
 
     public function testComponentConfiguration()
     {
-        Yii::$app->user->impersonation = ['allowPrivateContentAccess' => true, 'log' => false];
+        Yii::$app->user->impersonation = ['allowPrivateContentAccess' => false, 'log' => false];
 
-        $this->assertTrue(Yii::$app->user->impersonation->allowPrivateContentAccess);
+        $this->assertFalse(Yii::$app->user->impersonation->allowPrivateContentAccess);
         $this->assertFalse(Yii::$app->user->impersonation->log);
     }
 
