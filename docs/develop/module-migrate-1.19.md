@@ -312,16 +312,16 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
   and `EVENT_INIT_BANNER_IMAGE` (`humhub\modules\content\events\ContentContainerImageEvent`) to customize
   or replace a container's profile/banner `AssetImage`. Use these instead of overriding `$profileImageClass`,
   which only affects the deprecated `ProfileImage` path.
-- **Impersonation no longer grants access to private content.** Until now an admin impersonating a user saw
-  everything that user sees. Private content and private spaces are now hidden while impersonating, and each
-  impersonation is written to the log (category `user`). Both are configurable via the new
+- **Impersonation can hide private content.** Private content and private spaces can be hidden while
+  impersonating (opt-in since 1.19.1, it was the default in 1.19.0), and each impersonation is written to the
+  log (category `user`). Both are configurable via the new
   `humhub\modules\user\components\Impersonation` component (`Yii::$app->user->impersonation`):
 
   ```php
   'components' => [
       'user' => [
           'impersonation' => [
-              'allowPrivateContentAccess' => true, // pre-1.19 behavior
+              'allowPrivateContentAccess' => false, // hide private content while impersonating
               'log' => false,
           ],
       ],
