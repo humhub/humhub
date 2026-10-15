@@ -20,7 +20,7 @@ use humhub\widgets\bootstrap\Button;
     </div>
     <div class="ms-auto mb-3 flex-sm-grow-0 flex-grow-1">
         <?= Button::success(Yii::t('MarketplaceModule.base', 'Add License'))
-            ->link('/marketplace/licence')
+            ->link(['/marketplace/licence'])
             ->cssClass('w-100') ?>
     </div>
 </div>

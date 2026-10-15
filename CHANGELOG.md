@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #8577: Child themes (e.g. Enterprise White) lost their parent theme views when an empty parent theme list was cached, e.g. while the module providing the parent theme was not loaded during an update
 - Fix #8580: Users without an active impersonation lost access to their private spaces ("Space is invisible!") when an impersonation marker was left in the session, e.g. after the auth timeout of an impersonated session (since 1.19.0)
 - Enh #8579: Private content and private spaces are accessible again while impersonating a user (as before 1.19); hiding them is now opt-in via `'user' => ['impersonation' => ['allowPrivateContentAccess' => false]]`
+- Fix #8582: Fix "Add/Edit License" button link when pretty URLs are disabled
 
 1.19.0 (October 12, 2026)
 -------------------------
