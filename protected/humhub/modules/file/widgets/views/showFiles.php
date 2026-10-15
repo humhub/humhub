@@ -86,6 +86,7 @@ $getColumnClass = static function (int $nbFiles, bool $enlarge = false) use ($is
                             <div class="<?= $getColumnClass(count($videos), true) ?>">
                                 <a data-ui-gallery="<?= 'gallery-' . $object->getUniqueId() ?>"
                                    href="<?= $video->getUrl() ?>#.<?= $ext ?>"
+                                   type="<?= $videoTypes[$ext] ?>"
                                    title="<?= Html::encode($video->file_name) ?>"
                                    class="d-flex align-items-center justify-content-center h-100 w-100"
                                 >
