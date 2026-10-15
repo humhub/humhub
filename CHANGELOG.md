@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
 - Fix #8581: Attached videos opened in the gallery showed an error icon instead of playing
 - Fix #8577: Child themes (e.g. Enterprise White) lost their parent theme views when an empty parent theme list was cached, e.g. while the module providing the parent theme was not loaded during an update
 - Fix #8580: Users without an active impersonation lost access to their private spaces ("Space is invisible!") when an impersonation marker was left in the session, e.g. after the auth timeout of an impersonated session (since 1.19.0)
