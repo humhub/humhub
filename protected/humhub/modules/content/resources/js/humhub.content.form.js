@@ -37,7 +37,9 @@ humhub.module('content.form', function (module, require, $) {
 
         this.setDefaultVisibility();
         this.$.fadeIn('fast');
-        this.showMenu();
+        if (!this.isModal) {
+            this.showMenu();
+        }
 
         if (!module.config['disabled']) {
             this.$.on('click.humhub:content:form dragover.humhub:content:form', function (evt) {
