@@ -52,7 +52,7 @@ class ViewController extends Controller
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
-        if (!Yii::$app->request->isAjax) {
+        if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
             return $this->redirectToModal($file);
         }
 
@@ -76,8 +76,8 @@ class ViewController extends Controller
     }
 
     /**
-     * The view is a modal only, so on a direct request (e.g. a copied link) it is opened
-     * on top of the page of the underlying content instead
+     * The view is a modal only, so on a direct or pjax request (e.g. a copied link or a link
+     * posted as text) it is opened on top of the page of the underlying content instead
      *
      * @param File $file
      * @return Response
