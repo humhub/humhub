@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
 - Fix #8581: Attached videos opened in the gallery showed an error icon instead of playing
 - Fix #8577: Child themes (e.g. Enterprise White) lost their parent theme views when an empty parent theme list was cached, e.g. while the module providing the parent theme was not loaded during an update
