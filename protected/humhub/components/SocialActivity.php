@@ -14,6 +14,7 @@ use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortHtmlConverter;
 use humhub\modules\space\models\Space;
@@ -175,9 +176,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     }
 
     /**
-     * Returns the related content instance in case the source is of type ContentOwner.
+     * Returns the related content instance in case the source is of type ContentOwner or ContentProvider.
      *
-     * @return \humhub\modules\content\models\Content Content ActiveRecord or null if not related to a ContentOwner source
+     * @return \humhub\modules\content\models\Content Content ActiveRecord or null if not related to a ContentOwner or ContentProvider source
      */
     public function getContent()
     {
@@ -212,13 +213,13 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
     /**
      * Determines if this activity is related to a content. This is the case if the activitiy source
-     * is of type ContentOwner.
+     * is of type ContentOwner or ContentProvider (e.g. a content addon like a Like).
      *
-     * @return bool true if this activity is related to a ContentOwner else false
+     * @return bool true if this activity is related to a ContentOwner or ContentProvider else false
      */
     public function hasContent()
     {
-        return $this->source instanceof ContentOwner;
+        return $this->source instanceof ContentOwner || $this->source instanceof ContentProvider;
     }
 
     /**
