@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #8579: Private content and private spaces are accessible again while impersonating a user (as before 1.19); hiding them is now opt-in via `'user' => ['impersonation' => ['allowPrivateContentAccess' => false]]`
 - Fix #8582: Fix "Add/Edit License" button link when pretty URLs are disabled
 - Fix #8586: Like notifications redirected to the Dashboard instead of the liked content; likes on comments now link to the comment itself
+- Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
 
 1.19.0 (October 12, 2026)
 -------------------------
