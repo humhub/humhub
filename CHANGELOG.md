@@ -10,7 +10,7 @@ HumHub Changelog
 - Fix #8580: Users without an active impersonation lost access to their private spaces ("Space is invisible!") when an impersonation marker was left in the session, e.g. after the auth timeout of an impersonated session (since 1.19.0)
 - Enh #8579: Private content and private spaces are accessible again while impersonating a user (as before 1.19); hiding them is now opt-in via `'user' => ['impersonation' => ['allowPrivateContentAccess' => false]]`
 - Fix #8582: Fix "Add/Edit License" button link when pretty URLs are disabled
-- Fix #8589: Fix hidden upload button on empty image containers on the Design settings form
+- Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
 
 1.19.0 (October 12, 2026)
 -------------------------
