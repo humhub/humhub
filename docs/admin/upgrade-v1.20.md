@@ -197,6 +197,17 @@ The three example files are new. They are commented-out starting points for the 
 installations end up making — URL rewriting, view overrides, a reverse proxy, a separate console
 log. Copying one and removing the `.example` is all it takes.
 
+**Keeping data outside the installation directory?** Container images and similar setups can
+point every directory that has to survive an update somewhere else through the environment,
+without entry scripts or links of their own:
+
+```sh
+HUMHUB_ALIASES__CONFIG=/data/config        # configuration files, dynamic.php, messages/, views/
+HUMHUB_ALIASES__LOGS=/data/logs            # app.log, by default in protected/runtime/logs
+HUMHUB_ALIASES__THEMES=/data/themes        # custom themes
+HUMHUB_CONFIG__COMPONENTS__FS__MOUNTS__DATA__PATH=/data/uploads
+```
+
 **Nothing breaks if you do nothing.** `protected/config/` is still read, and the new directory is
 merged on top of it, so you can move one file at a time. Support for the old location will be
 removed in a later release.

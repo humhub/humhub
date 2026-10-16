@@ -80,6 +80,7 @@ $config = [
         '@npm' => '@vendor/npm-asset',
         '@config' => $configDirectory->getPath(),
         '@themes' => $rootPath . DIRECTORY_SEPARATOR . 'themes',
+        '@logs' => '@runtime/logs',
     ],
     'components' => [
         'moduleManager' => [
@@ -116,7 +117,7 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 \yii\log\FileTarget::class => \yii\helpers\ArrayHelper::merge(
-                    ['class' => \yii\log\FileTarget::class],
+                    ['class' => \yii\log\FileTarget::class, 'logFile' => '@logs/app.log'],
                     $logTargetConfig,
                 ),
                 \yii\log\DbTarget::class => \yii\helpers\ArrayHelper::merge(
