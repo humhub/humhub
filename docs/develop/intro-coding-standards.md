@@ -20,6 +20,12 @@ CI runs the same fixer in `--dry-run` mode and rejects PRs that diverge from the
 
 JavaScript code under `static/js/` follows the existing patterns — 4-space indent, no semicolons omitted, `humhub.module(...)` registration. There is no automated formatter for JS at the moment; match the surrounding file.
 
+## Migrations
+
+Core migrations must not load module classes — not even via `class_exists()` on
+a stored `object_model`. They run during core upgrades while outdated module
+versions are still installed. See [Core migrations](concept-models.md#core-migrations).
+
 ## Commit style
 
 - Imperative subject ("Fix X" not "Fixed X" or "Fixes X")
