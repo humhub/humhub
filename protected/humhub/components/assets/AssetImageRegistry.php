@@ -11,6 +11,7 @@ use yii\base\InvalidConfigException;
  * @property-read AssetImage $icon
  * @property-read AssetImage $loginBackground
  * @property-read AssetImage $mailHeader
+ * @property-read AssetImage $mailLogo
  */
 class AssetImageRegistry extends Component
 {
@@ -21,6 +22,14 @@ class AssetImageRegistry extends Component
      */
     private array $_instances = [];
 
+    /**
+     * @since 1.19.1
+     */
+    public function has(string $name): bool
+    {
+        return isset($this->definitions[$name]);
+    }
+
     public function __get($name)
     {
         if (!isset($this->_instances[$name])) {
@@ -28,7 +37,9 @@ class AssetImageRegistry extends Component
                 throw new InvalidConfigException("Image '$name' is not defined in ImageRegistry.");
             }
 
-            $this->_instances[$name] = Yii::$container->get(AssetImage::class, [], $this->definitions[$name]);
+            $this->_instances[$name] = Yii::$container->get(AssetImage::class, [], $this->definitions[$name] + [
+                'permanentUrlRoute' => ['/asset-image/registry', 'name' => $name],
+            ]);
         }
 
         return $this->_instances[$name];

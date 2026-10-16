@@ -52,6 +52,14 @@ class AssetImage extends Component implements \Stringable
     public array $masterOptions = [];
     public ?string $defaultFile = null;
 
+    /**
+     * @var array|null route (with its parameters) of the permanent URL, pointing to an action that
+     * resolves this image again, e.g. `['/asset-image/registry', 'name' => 'logo']`; `null` if the
+     * image has no permanent URL ({@see getPermanentUrl()} then falls back to {@see getUrl()}).
+     * @since 1.19.1
+     */
+    public ?array $permanentUrlRoute = null;
+
     private array $filesystemOptions = [
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
@@ -105,6 +113,35 @@ class AssetImage extends Component implements \Stringable
         }
 
         return Url::to($published[1], $scheme);
+    }
+
+    /**
+     * Returns an absolute URL that stays valid as long as the image exists.
+     *
+     * {@see getUrl()} points into the published assets, which are volatile: they are removed on
+     * every cache flush (so after every update), by a manual deletion of the `assets` directory or
+     * by a redeployment, and republished on the next render. A URL that leaves the platform - in
+     * an email, which is never rendered again - must therefore not point there. The permanent URL
+     * points to {@see \humhub\controllers\AssetImageController} instead, which publishes the
+     * image if needed and redirects to its current URL.
+     *
+     * The image is always served with its {@see $defaultOptions}: images for a specific purpose
+     * (e.g. `Yii::$app->img->mailLogo`) are defined with their own defaults.
+     *
+     * @return string the URL, or an empty string if neither an uploaded image nor a `defaultFile` is set
+     * @since 1.19.1
+     */
+    public function getPermanentUrl(): string
+    {
+        if ($this->permanentUrlRoute === null) {
+            return $this->getUrl(null, true);
+        }
+
+        if (!$this->exists() && !$this->defaultFile) {
+            return '';
+        }
+
+        return Url::to($this->permanentUrlRoute, true);
     }
 
     public function setUploadedFile(?UploadedFile $file = null): void

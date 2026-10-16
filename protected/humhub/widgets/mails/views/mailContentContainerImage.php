@@ -14,7 +14,7 @@ use humhub\helpers\Html;
 
 <a href="<?= $url ?>">
     <div>
-        <img src="<?= $container->image->getUrl(null, true); ?>"
+        <img src="<?= $container->image->getPermanentUrl() ?>"
              width="50"
              height="50"
              alt=""

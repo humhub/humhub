@@ -30,32 +30,4 @@ class AssetManagerClearTest extends HumHubDbTestCase
         $this->assertFalse($fs->directoryExists('a1b2c3d4'));
         $this->assertTrue($fs->fileExists('.gitignore'));
     }
-
-    /**
-     * The published copies of AssetImages are linked from emails, which are never rendered
-     * again: a cache flush, run after every migration, must not break them.
-     */
-    public function testClearKeepsPublishedAssetImages()
-    {
-        $fs = Yii::$app->fs->getAssetsMount();
-
-        $fs->write('a1b2c3d4/test.js', 'test');
-        $fs->write('_/e5f6a7b8/header_1a2b3c4d.png', 'image');
-
-        Yii::$app->assetManager->clear();
-
-        $this->assertFalse($fs->directoryExists('a1b2c3d4'));
-        $this->assertTrue($fs->fileExists('_/e5f6a7b8/header_1a2b3c4d.png'));
-    }
-
-    public function testClearRemovesPublishedAssetImagesOnRequest()
-    {
-        $fs = Yii::$app->fs->getAssetsMount();
-
-        $fs->write('_/e5f6a7b8/header_1a2b3c4d.png', 'image');
-
-        Yii::$app->assetManager->clear(true);
-
-        $this->assertFalse($fs->directoryExists('_'));
-    }
 }

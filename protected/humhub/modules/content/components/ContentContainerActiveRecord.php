@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\assets\AssetImage;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileImage;
+    use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\content\events\ContentContainerImageEvent;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
@@ -139,6 +140,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($this->_image === null) {
             $this->_image = $this->triggerInitImageEvent(self::EVENT_INIT_PROFILE_IMAGE, [
                 'file' => '/profile_image/' . $this->guid . '.jpg',
+                'permanentUrlRoute' => ['/asset-image/container', 'guid' => $this->guid],
                 'defaultOptions' => [
                     'width' => 150,
                     'height' => 150,
@@ -160,6 +162,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($this->_bannerImage === null) {
             $this->_bannerImage = $this->triggerInitImageEvent(self::EVENT_INIT_BANNER_IMAGE, [
                 'file' => '/profile_image/banner/' . $this->guid . '.jpg',
+                'permanentUrlRoute' => [
+                    '/asset-image/container',
+                    'guid' => $this->guid,
+                    'type' => ContainerImageController::TYPE_PROFILE_BANNER_IMAGE,
+                ],
                 'defaultOptions' => [
                     'width' => 1134,
                     'height' => 192,

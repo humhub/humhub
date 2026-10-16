@@ -190,7 +190,21 @@ $config = [
                     'defaultFile' => '@humhub/resources/img/default_icon.png',
                 ],
                 'loginBackground' => ['file' => '/login-bg/background.png'],
-                'mailHeader' => ['file' => '/mail-header/header.png'],
+                'mailHeader' => [
+                    'file' => '/mail-header/header.png',
+                    'defaultOptions' => [
+                        'maxWidth' => \humhub\widgets\mails\MailHeaderImage::MAX_WIDTH,
+                        'maxHeight' => \humhub\widgets\mails\MailHeaderImage::MAX_HEIGHT,
+                    ],
+                ],
+                // The logo as shown in emails (same file as `logo`, sized for the mail header)
+                'mailLogo' => [
+                    'file' => '/logo_image/logo.png',
+                    'defaultOptions' => [
+                        'maxWidth' => \humhub\widgets\mails\MailHeaderImage::MAX_WIDTH,
+                        'maxHeight' => \humhub\widgets\mails\MailHeaderImage::LOGO_MAX_HEIGHT,
+                    ],
+                ],
             ],
         ],
         'view' => [
