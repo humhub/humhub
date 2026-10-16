@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit\modules\like;
 
+use humhub\modules\comment\models\Comment;
 use humhub\modules\like\activities\LikeActivity;
 use humhub\modules\like\notifications\NewLike;
 use humhub\modules\like\services\LikeService;
@@ -49,6 +50,38 @@ class LikeTest extends HumHubDbTestCase
         $html = NewLike::instance()->from(User::findOne(['id' => 3]))->about($like)->html();
 
         $this->assertStringEndsWith('likes post.', $html);
+    }
+
+    public function testNotificationUrlPointsToLikedContent()
+    {
+        $this->becomeUser('User2');
+
+        $post = Post::findOne(['id' => 1]);
+        $this->assertTrue((new LikeService($post))->like());
+
+        $like = Like::findOne(['content_id' => $post->content->id, 'created_by' => 3]);
+        $notification = NewLike::instance()->from(User::findOne(['id' => 3]))->about($like);
+
+        $this->assertTrue($notification->hasContent());
+        $this->assertEquals($post->content->id, $notification->getContent()->id);
+        $this->assertEquals($post->content->getUrl(true), $notification->getUrl());
+    }
+
+    public function testNotificationUrlOfCommentLikePointsToComment()
+    {
+        $this->becomeUser('User1');
+
+        $post = Post::findOne(['id' => 1]);
+        $comment = new Comment(['message' => 'Test comment', 'content_id' => $post->content->id]);
+        $this->assertTrue($comment->save());
+
+        $this->becomeUser('User2');
+        $this->assertTrue((new LikeService($comment))->like());
+
+        $like = Like::findOne(['content_id' => $post->content->id, 'created_by' => 3]);
+        $notification = NewLike::instance()->from(User::findOne(['id' => 3]))->about($like);
+
+        $this->assertEquals($comment->getUrl(true), $notification->getUrl());
     }
 
     public function testDeleteLikesOnContentHardDelete()
