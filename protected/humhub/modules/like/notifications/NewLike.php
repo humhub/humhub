@@ -3,6 +3,7 @@
 namespace humhub\modules\like\notifications;
 
 use humhub\helpers\Html;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\like\models\Like;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
@@ -24,6 +25,21 @@ class NewLike extends BaseNotification
     {
         $model = $this->source->getContentOwnerObject();
         return $model::class . '-' . $model->getPrimaryKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUrl()
+    {
+        $owner = $this->source->getContentOwnerObject();
+
+        // A like on a comment links to the comment itself, otherwise to the liked content
+        if ($owner instanceof Comment) {
+            return $owner->getUrl(true);
+        }
+
+        return parent::getUrl();
     }
 
     public function getMailSubject()
