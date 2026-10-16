@@ -36,6 +36,12 @@ class AssetManager extends \yii\web\AssetManager
     private const CACHE_VERSION_KEY = 'assetManager.published.version';
     private const CACHE_KEY_PREFIX = 'assetManager.published';
 
+    /**
+     * Directory of the assets mount holding the published copies of {@see AssetImage}s
+     * (logo, mail header, profile and banner images...), one sub-directory per image type.
+     */
+    private const ASSET_IMAGE_DIR = '_';
+
     private array $filesystemOptions = [
         'visibility' => Visibility::PUBLIC,
         'directory_visibility' => Visibility::PUBLIC,
@@ -163,7 +169,7 @@ class AssetManager extends \yii\web\AssetManager
         //Yii::debug("Published asset image '{$fileNameWithOptions}'", __METHOD__);
 
         // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all AssetImage types in an individual directory
-        $dstDir = '_/' . hash('xxh32', $assetImage->path);
+        $dstDir = self::ASSET_IMAGE_DIR . '/' . hash('xxh32', $assetImage->path);
         $dstFile = $dstDir . DIRECTORY_SEPARATOR . basename($fileNameWithOptions);
 
         // Timestamp of an up-to-date published copy; `null` means it has to be (re)written.
@@ -203,7 +209,7 @@ class AssetManager extends \yii\web\AssetManager
     public function unpublishAssetImage(AssetImage $assetImage, string $fileNameWithOptions): void
     {
         // Remove root dir, and hash e.g. '/uploads/profile_image/', to store all AssetImage types in an individual directory
-        $dstDir = '_/' . hash('xxh32', $assetImage->path);
+        $dstDir = self::ASSET_IMAGE_DIR . '/' . hash('xxh32', $assetImage->path);
         $dstFile = $dstDir . DIRECTORY_SEPARATOR . basename($fileNameWithOptions);
 
         if ($this->fs->fileExists($dstFile)) {
@@ -213,7 +219,18 @@ class AssetManager extends \yii\web\AssetManager
         $this->removePublished($fileNameWithOptions);
     }
 
-    public function clear()
+    /**
+     * Removes the published assets.
+     *
+     * The published copies of {@see AssetImage}s are kept unless `$assetImages` is true: they
+     * are copies of uploaded files, never outdated by a code change, and their URLs are sent
+     * outside the platform - in emails, where a removed copy would leave a broken image for
+     * good, since an email is not rendered again. A copy is rewritten when its source changes
+     * and removed with it ({@see unpublishAssetImage()}).
+     *
+     * @param bool $assetImages whether to remove the published copies of AssetImages too
+     */
+    public function clear(bool $assetImages = false)
     {
         // Only remove the contents of the assets mount, not the mount directory itself.
         // Deleting the root would call rmdir() on the mount, which requires write permission
@@ -222,6 +239,10 @@ class AssetManager extends \yii\web\AssetManager
         foreach ($this->fs->listContents('.')->toArray() as $item) {
             // Keep dot files such as the shipped `assets/.gitignore` - published assets never start with a dot.
             if (str_starts_with(basename($item->path()), '.')) {
+                continue;
+            }
+
+            if (!$assetImages && $item->isDir() && basename($item->path()) === self::ASSET_IMAGE_DIR) {
                 continue;
             }
 
