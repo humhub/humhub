@@ -11,7 +11,7 @@ use humhub\modules\user\components\MaintenanceModeGate;
 use humhub\modules\user\components\MustChangePasswordGate;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Mentioning;

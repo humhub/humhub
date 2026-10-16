@@ -5,7 +5,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
@@ -28,7 +28,7 @@ use humhub\widgets\TimeAgo;
             <div class="flex-fill">
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                    <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-light" type="submit"><?= Icon::get('search') ?></button>
                 </div>
             </div>
             <div class="flex-fill">

@@ -3,12 +3,13 @@
 namespace humhub\modules\comment\activities;
 
 use humhub\modules\activity\components\BaseContentActivity;
+use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\notification\components\MessageParam;
 use Yii;
-use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use yii\base\InvalidValueException;
 
 final class NewCommentActivity extends BaseContentActivity implements ConfigurableActivityInterface
@@ -50,26 +51,28 @@ final class NewCommentActivity extends BaseContentActivity implements Configurab
         return Yii::t('CommentModule.base', '{displayName} wrote a new comment {comment}.', $params);
     }
 
-    protected function getMessageParamsWeb(): array
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
     {
-        return array_merge(parent::getMessageParamsWeb(), [
-            'comment' => '"' . RichText::preview($this->comment->message, $this->webContentLength) . '"',
-        ]);
+        return Yii::t('CommentModule.base', '{displayName} commented on a {contentType}.', $params);
     }
 
-    protected function getMessageParamsMailText(): array
+    /**
+     * @inheritdoc
+     */
+    protected function getMessageParams(): array
     {
-        return array_merge(parent::getMessageParamsMailText(), [
-            'comment' => "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
-                RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $this->mailContentLength,
-            ]) . '"',
-        ]);
-    }
+        $length = $this->getPreviewLength();
 
-    protected function getMessageParamsMailHtml(): array
-    {
-        return array_merge(parent::getMessageParamsMailHtml(), [
-            'comment' => '"' . RichText::preview($this->comment->message, $this->mailContentLength) . '"',
-        ]);
+        return [
+            'comment' => MessageParam::html(
+                '"' . RichText::preview($this->comment->message, $length) . '"',
+                "\n" . '"' . RichTextToPlainTextConverter::process($this->comment->message, [
+                    RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $length,
+                ]) . '"',
+            ),
+        ];
     }
 }

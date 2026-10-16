@@ -1,14 +1,14 @@
 <?php
 
 use humhub\components\View;
-use humhub\helpers\Html;
-use humhub\modules\comment\widgets\Form;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\widgets\Comments;
+use humhub\modules\content\models\Content;
 use humhub\widgets\modal\Modal;
 
 /* @var $this View */
-/* @var $content \humhub\modules\content\models\Content */
-/* @var $output string */
-/* @var $id string */
+/* @var $content Content */
+/* @var $parentComment ?Comment */
 ?>
 
 <?php Modal::beginDialog([
@@ -19,22 +19,6 @@ use humhub\widgets\modal\Modal;
     ],
 ]) ?>
 
-    <div id="userlist-content">
-        <div class="bg-light p-3" id="comment_<?= $id ?>">
-            <div class="comment" id="comments_area_<?= $id ?>">
-                <?= $output ?>
-            </div>
-            <?= Form::widget(['content' => $content]); ?>
-        </div>
-    </div>
+    <?= Comments::widget(['content' => $content, 'parentComment' => $parentComment]) ?>
 
 <?php Modal::endDialog() ?>
-
-<script <?= Html::nonce() ?>>
-    // scroll to top of list
-    $(".comment-modal-body").animate({scrollTop: 0}, 200);
-
-    <?php if(empty(trim((string) $output))) : ?>
-    $('#comment_<?= $id ?>').find('.comment_create hr').hide();
-    <?php endif; ?>
-</script>

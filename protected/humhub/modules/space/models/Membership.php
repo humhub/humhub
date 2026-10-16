@@ -464,6 +464,31 @@ class Membership extends ActiveRecord
         return Yii::$app->runtimeCache->getOrSet(self::class . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
     }
 
+    /**
+     * Loads the memberships of one user in many spaces with one query and puts them into the
+     * cache {@see self::findMembership()} reads — also the absence of one — so a batch of spaces
+     * can be asked for their membership state ({@see Space::getMembership()}, `isMember()`,
+     * `canJoin()`, ...) without a query per space.
+     *
+     * @param int[] $spaceIds
+     * @since 1.20
+     */
+    public static function preloadForUser(array $spaceIds, int $userId): void
+    {
+        if ($spaceIds === []) {
+            return;
+        }
+
+        $memberships = self::find()
+            ->where(['user_id' => $userId, 'space_id' => $spaceIds])
+            ->indexBy('space_id')
+            ->all();
+
+        foreach ($spaceIds as $spaceId) {
+            Yii::$app->runtimeCache->set(self::class . "_$spaceId-$userId", $memberships[$spaceId] ?? null);
+        }
+    }
+
     public static function unsetCache(int $spaceId, int $userId)
     {
         Yii::$app->runtimeCache->delete(self::class . "_$spaceId-$userId");

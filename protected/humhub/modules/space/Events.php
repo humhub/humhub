@@ -15,7 +15,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\space\widgets\HeaderControlsMenu;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\models\Follow;
 use Yii;

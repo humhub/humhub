@@ -8,7 +8,7 @@
 
 namespace humhub\widgets\bootstrap;
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 
 /**
  * @inheritdoc

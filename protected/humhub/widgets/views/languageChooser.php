@@ -2,6 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\models\forms\ChooseLanguage;
+use humhub\widgets\Icon;
 
 /**
  * @var $languages array
@@ -28,7 +29,7 @@ $wrapperClasses = $vertical ? 'd-flex justify-content-center w-100' : 'd-inline-
            data-bs-auto-close="outside"
            data-bs-display="static"
            aria-expanded="false">
-            <i class="fa fa-globe" aria-hidden="true"></i>
+            <?= Icon::get('world') ?>
             <span class="language-chooser-current"><?= Html::encode($currentLabel) ?></span>
         </a>
         <div class="dropdown-menu language-chooser-menu p-0">

@@ -1,0 +1,572 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Space API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Space
+    description: |
+      The spaces the caller may see, the caller's relationship to them (member, follower, unseen
+      items), and the caller's own membership in and follow of one space.
+paths:
+  "/space":
+    get:
+      tags:
+        - Space
+      summary: The spaces the caller may see
+      operationId: listSpaces
+      description: |
+        The platform's space search: one page of the spaces the caller may see, searched,
+        scoped and ordered by the parameters below — the space directory, the space chooser
+        and pickers all read it. The **shape** is caller-neutral — the same space reads the
+        same for everyone, which is what lets them share one representation. Which spaces the
+        list holds does depend on the caller (`scope` narrows it to their own, and visibility
+        always applies); what the caller IS to a space (member, follower, unseen items) is
+        `/space/states`.
+
+        A space the caller may not see, or one that blocked them, never appears, whatever the
+        parameters say. Archived spaces are left out unless `scope=archived` (or `archived=1`)
+        asks for only them.
+
+        An unknown value of one of the parameters below answers `422`, and so does a parameter
+        the list does not know: modules add their own filters to the list (a directory's
+        `category`, say), which are then accepted like the ones below, and may narrow the list
+        by `purpose`.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and tags. Every keyword must match.
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: false
+          description: |
+            `all` (default), `member`, `following`, `mine` for both, `none` for the spaces
+            the caller is neither a member nor a follower of, or `archived` for only the
+            archived spaces (the directory's "Archived" status, the same as `archived=1`).
+            Without `sort`, a list scoped to
+            `member`, `following` or `mine` is ordered the way the platform orders a user's
+            spaces: memberships first, in the order the `spaceOrder` setting asks for,
+            followed spaces after them.
+          schema:
+            type: string
+            enum: [all, member, following, mine, none, archived]
+        - name: archived
+          in: query
+          required: false
+          description: |
+            `1` for only the archived spaces — with a `scope`, its archived spaces
+            (`scope=member&archived=1`: the archived memberships); `0` (default) leaves
+            archived spaces out, which contradicts `scope=archived` and answers `422`.
+          schema:
+            type: integer
+            enum: [0, 1]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `default` — the spaces' sort order, then their name ·
+            `name` — by name ·
+            `newest` / `oldest` — by creation date.
+            Absent: the scope's order (see `scope`), `default` otherwise.
+          schema:
+            type: string
+            enum: [default, name, newest, oldest]
+        - name: ids
+          in: query
+          required: false
+          description: |
+            Only these spaces — comma-separated (or repeated `ids[]=`) positive ids, at most
+            100.
+          schema:
+            type: string
+        - name: exclude
+          in: query
+          required: false
+          description: |
+            Not these spaces — comma-separated (or repeated `exclude[]=`) positive ids, at
+            most 100.
+          schema:
+            type: string
+        - name: purpose
+          in: query
+          required: false
+          description: |
+            What the list is for: `directory`, `picker` or `chooser`; absent = neutral. The
+            core does not filter by it — modules may, to restrict a list in one context and
+            not in another (e.g. keep spaces out of the directory but not out of a picker).
+          schema:
+            type: string
+            enum: [directory, picker, chooser]
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: false
+          description: Entries per page (default 25, maximum 100)
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SpaceListEntry"
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  pages:
+                    type: integer
+              example:
+                results:
+                  - id: 3
+                    guid: 9a8b7c6d-5e4f-3210-9876-543210fedcba
+                    name: Product Team
+                    url: https://example.com/s/product-team/
+                    color: "#7a9299"
+                    imageUrl: null
+                    contentContainerId: 21
+                    description: Where the product happens
+                    tags: [product, roadmap]
+                    visibility: public
+                    archived: false
+                    bannerUrl: https://example.com/uploads/profile_image/banner/9a8b7c6d-5e4f-3210-9876-543210fedcba.jpg
+                    memberCount: 12
+                    followerCount: 4
+                total: 1
+                page: 1
+                pageSize: 25
+                pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/states":
+    get:
+      tags:
+        - Space
+      summary: What the caller is to the given spaces
+      operationId: getSpaceStates
+      description: |
+        Membership, following, unseen items and what the caller may do for the spaces named —
+        the ones a client displays, never "every space of the caller": a user can be a member
+        of a great many while a client shows one page of them. One request answers a whole
+        page, with a fixed number of queries.
+
+        This is where the caller context of a space lives, which is why the list above carries
+        none of it. `newItems` counts what was posted since the membership's last visit and is
+        therefore `0` without a membership. A space the caller may not see is not answered.
+      parameters:
+        - name: ids
+          in: query
+          required: true
+          description: |
+            Comma-separated (or repeated `ids[]=`) ids of the spaces to answer for; anything
+            beyond the first 100 is ignored.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: object
+                    description: Space id to state
+                    additionalProperties:
+                      $ref: "#/components/schemas/SpaceState"
+              example:
+                results:
+                  "3":
+                    isMember: true
+                    isFollowing: false
+                    newItems: 3
+                    membership:
+                      state: member
+                      canJoin: false
+                      needsApproval: false
+                      canLeave: true
+                      isOwner: false
+                      isFollowing: false
+                    canViewMembers: true
+                    canViewFollowers: true
+                    canFollow: false
+                    memberCount: 12
+                    followerCount: 4
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+  "/space/{id}/membership":
+    get:
+      tags:
+        - Space
+      summary: The caller's membership in a space
+      operationId: getSpaceMembership
+      description: |
+        Answers what the caller's relationship to this space is, and what they may do next
+        (see the `MembershipState` schema).
+
+        Reachable for a space the caller can see, is a member of, or was invited to — an
+        invite to an otherwise invisible space has to be answerable.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MembershipState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    put:
+      tags:
+        - Space
+      summary: Join a space, apply for membership, or accept an invite
+      operationId: setSpaceMembership
+      description: |
+        **Affirms** membership. Which of the three it is follows from the current state and
+        the space's join policy, and is decided server-side rather than by the client:
+
+        - an open invite (`state: invited`) is accepted — possible even where joining on
+          one's own is not,
+        - a space that approves memberships (`needsApproval: true`) receives an application
+          with the `message` the caller introduces themselves with,
+        - any other joinable space is joined immediately.
+
+        Answers the new state, in the same shape `GET` returns. Idempotent, as `PUT` is:
+        affirming a membership that is already affirmed (member, or applicant waiting for
+        approval) changes nothing and answers the state. `403` when the space allows no
+        self-join or when the caller is blocked.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: |
+                    How the caller introduces themselves. Required for a space that approves
+                    memberships (`needsApproval: true`), ignored everywhere else.
+              example:
+                message: I would like to join because …
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MembershipState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+    delete:
+      tags:
+        - Space
+      summary: Leave a space, withdraw an application, or decline an invite
+      operationId: removeSpaceMembership
+      description: |
+        **Removes** the caller's membership, whichever of the three states it is in.
+        Answers the new state, like the other two verbs.
+
+        Removing a membership that does not exist is a success (the answer is simply the
+        `none` state). `403` for the space owner, who cannot leave their own space, and for
+        a space whose configuration does not let its members leave.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MembershipState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/space/{id}/follow":
+    get:
+      tags:
+        - Space
+      summary: Whether the caller follows a space
+      operationId: getSpaceFollow
+      description: |
+        The caller's follow relationship to the space, and whether following can be started
+        (see the `FollowState` schema).
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    put:
+      tags:
+        - Space
+      summary: Follow a space
+      operationId: setSpaceFollow
+      description: |
+        Follows the space, without notifications. Answers the new state, in the same shape
+        `GET` returns. Idempotent: following a space already followed changes nothing and
+        answers the state.
+
+        `403` where following is not possible: for a member of the space (members cannot
+        follow), while following is disabled, and for a space the caller may not see or that
+        blocked them.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    delete:
+      tags:
+        - Space
+      summary: Stop following a space
+      operationId: removeSpaceFollow
+      description: |
+        Ends the caller's follow of the space and answers the new state. Unfollowing a space
+        that is not followed is a success, and ending a follow stays possible after following
+        was disabled. `403` for a space the caller may not see or that blocked them.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowState"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  parameters:
+    spaceIdParam:
+      name: id
+      in: path
+      description: Id of the space
+      required: true
+      schema:
+        type: integer
+  schemas:
+    SpaceListEntry:
+      type: object
+      description: One space, as every caller sees it
+      properties:
+        id:
+          type: integer
+        guid:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+        color:
+          type: [string, 'null']
+        imageUrl:
+          type: [string, 'null']
+          description: |
+            `null` when the space has no profile image of its own — which is what decides
+            whether a client renders an image or the coloured acronym tile.
+        contentContainerId:
+          type: [integer, 'null']
+        description:
+          type: [string, 'null']
+        tags:
+          type: array
+          items:
+            type: string
+        visibility:
+          type: [string, 'null']
+          enum: [private, registered, public]
+          description: |
+            `private` — visible to members only ·
+            `registered` — visible to every registered user ·
+            `public` — visible to guests too
+        archived:
+          type: boolean
+        bannerUrl:
+          type: [string, 'null']
+          description: Absolute URL of the banner image, `null` when the space has none of its own
+        memberCount:
+          type: [integer, 'null']
+          description: |
+            Active, not hidden members — the same number for every caller. `null` where the
+            space hides its members.
+        followerCount:
+          type: [integer, 'null']
+          description: |
+            Active, not hidden followers — the same number for every caller. `null` where the
+            space hides its followers or following is disabled.
+    SpaceState:
+      type: object
+      description: What the caller is to one space
+      properties:
+        isMember:
+          type: boolean
+        isFollowing:
+          type: boolean
+        newItems:
+          type: integer
+          description: Items posted since the membership's last visit, `0` without a membership
+        membership:
+          $ref: "#/components/schemas/MembershipState"
+        canViewMembers:
+          type: boolean
+          description: |
+            Whether the member list may be opened: the space shows its members, or the caller
+            is one of its privileged members.
+        canViewFollowers:
+          type: boolean
+          description: Whether the follower list may be opened
+        canFollow:
+          type: boolean
+          description: |
+            Whether following can be started: the caller is not a member and following is not
+            disabled.
+        memberCount:
+          type: [integer, 'null']
+          description: As in the list (`SpaceListEntry`)
+        followerCount:
+          type: [integer, 'null']
+          description: As in the list (`SpaceListEntry`)
+    FollowState:
+      type: object
+      description: The caller's follow relationship to a space
+      properties:
+        isFollowing:
+          type: boolean
+        followerCount:
+          type: [integer, 'null']
+          description: As in the list (`SpaceListEntry`)
+        canFollow:
+          type: boolean
+          description: |
+            Whether following can be started: not a guest, not a member (members cannot
+            follow), and following is not disabled. Ending a follow is always possible.
+      examples:
+        - isFollowing: true
+          followerCount: 5
+          canFollow: true
+    MembershipState:
+      type: object
+      description: |
+        The caller's membership in a space — the answer to "what is my relationship to this
+        space", and therefore the one space shape that depends on who is asking (it is never
+        embedded in a space payload, and never cached).
+
+        It carries the state AND what the caller may do next, because neither follows from
+        the other: whether a non-member may join depends on the space's join policy, its
+        status and the caller's own permissions, and whether a member may leave depends on
+        ownership and the space configuration. A client deciding that itself would
+        reimplement authorization.
+      properties:
+        state:
+          type: string
+          enum: [none, invited, applicant, member]
+          description: |
+            `none` — no membership and no pending request ·
+            `invited` — invited by someone, not accepted yet ·
+            `applicant` — applied for membership, waiting for approval ·
+            `member` — member of the space
+        canJoin:
+          type: boolean
+          description: Whether joining (or applying) is possible at all
+        needsApproval:
+          type: boolean
+          description: |
+            Whether a join request needs approval instead of taking effect immediately — the
+            case in which `POST` expects a `message`.
+        canLeave:
+          type: boolean
+          description: |
+            Whether the current membership can be removed. Covers withdrawing an application
+            and declining an invite; never true for the space owner.
+        isOwner:
+          type: boolean
+          description: Whether the caller owns this space
+        isFollowing:
+          type: boolean
+          description: |
+            Whether the caller follows this space. Not membership state, but the state of the
+            sibling follow action the same UI offers: following is for non-members, so a
+            membership change flips it.
+      examples:
+        - state: none
+          canJoin: true
+          needsApproval: true
+          canLeave: false
+          isOwner: false
+          isFollowing: false
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

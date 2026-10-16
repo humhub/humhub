@@ -47,7 +47,7 @@ In case you just want to exclude your content from the wall stream, set the stre
 This setting can also be changed by model updates in order to exclude the content only if some conditions are met.
 As with activities, this field can also be used to create own custom streams.
 
-`ContentActiveRecord::silentContentCreation` defaults to `false`. Set it to `true` to suppress the `ContentCreated` notifications and activities for this type of content. Activity records are only created on insert, so flipping the flag after the fact has no effect.
+`ContentActiveRecord::silentContentCreation` defaults to `false`. Set it to `true` to suppress the `ContentCreatedNotification` notifications and the `ContentCreatedActivity` activities for this type of content. Activity records are only created on insert, so flipping the flag after the fact has no effect.
 
 ### Custom ContentActiveRecord
 

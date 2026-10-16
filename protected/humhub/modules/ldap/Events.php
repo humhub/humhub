@@ -16,7 +16,7 @@ use humhub\modules\ldap\authclient\LdapAuth;
 use humhub\modules\ldap\jobs\LdapSyncJob;
 use humhub\modules\ldap\models\LdapSettings;
 use humhub\modules\ldap\source\LdapUserSource;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\authclient\Collection;
 use Yii;
 use yii\base\BaseObject;

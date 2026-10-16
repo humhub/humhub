@@ -10,8 +10,8 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\Menu;
 use Yii;
 
 /**
@@ -44,6 +44,7 @@ class SpaceDirectoryHeadingButtons extends Menu
                 'sortOrder' => 100,
                 'icon' => 'plus',
                 'htmlOptions' => [
+                    'class' => 'btn-accent',
                     'data-action-click' => 'ui.modal.load',
                 ],
             ]));

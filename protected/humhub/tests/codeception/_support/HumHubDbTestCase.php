@@ -14,6 +14,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Configuration;
 use Codeception\Test\Unit;
+use humhub\components\db\AfterCommit;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\components\ContentContainerPermissionManager;
@@ -32,6 +33,7 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
+use humhub\services\DocumentRootService;
 use humhub\tests\codeception\fixtures\SettingFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use PHPUnit\Framework\SkippedTestError;
@@ -57,6 +59,9 @@ class HumHubDbTestCase extends Unit
     {
         if (\Yii::$app !== null) {
             \Yii::$app->db->trigger('afterOpen');
+            // With `transaction: true` the Yii2 module wraps the test into a transaction it never
+            // commits, so work deferred until the commit has to run at once.
+            AfterCommit::$immediate = (bool)Yii::$app->db->getTransaction()?->getIsActive();
         }
 
         if (Yii::$app === null) {
@@ -69,8 +74,9 @@ class HumHubDbTestCase extends Unit
             return;
         }
 
-        $webRoot = dirname(__DIR__, 2) . '/../../..';
-        Yii::setAlias('@webroot', realpath($webRoot));
+        $rootPath = realpath(dirname(__DIR__, 2) . '/../../..');
+        Yii::setAlias('@root', $rootPath);
+        Yii::setAlias('@webroot', $rootPath . DIRECTORY_SEPARATOR . DocumentRootService::PUBLIC_DIR);
         static::initModules(__METHOD__);
         static::reloadSettings(__METHOD__);
         static::flushCache(__METHOD__);

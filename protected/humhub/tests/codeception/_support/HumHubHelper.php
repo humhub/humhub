@@ -13,6 +13,7 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use humhub\components\db\AfterCommit;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
@@ -37,8 +38,23 @@ class HumHubHelper extends Module
     /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
     public function _before(\Codeception\TestInterface $test)
     {
+        // With `transaction: true` the Yii2 module wraps the test into a transaction it never
+        // commits, so work deferred until the commit has to run at once.
+        AfterCommit::$immediate = $this->hasModule('Yii2') && $this->getModule('Yii2')->_getConfig('transaction');
         static::reloadSettings(__METHOD__);
         static::flushCache(__METHOD__);
+    }
+
+    /**
+     * Returns a header of the last response. The functional suite has no step for this -
+     * `seeHttpHeader()` belongs to PhpBrowser/REST, which a framework suite does not use.
+     */
+    public function grabHttpHeader(string $name): ?string
+    {
+        /** @var \Codeception\Lib\InnerBrowser $browser */
+        $browser = $this->getModule('Yii2');
+
+        return $browser->client?->getInternalResponse()?->getHeader($name);
     }
 
     public function fetchInviteToken($mail)

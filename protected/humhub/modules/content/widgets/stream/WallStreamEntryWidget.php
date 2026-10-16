@@ -19,7 +19,7 @@ use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\menu\DropdownDivider;
+use humhub\widgets\menu\DropdownDivider;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
 use Yii;

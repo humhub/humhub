@@ -8,8 +8,9 @@
 
 namespace humhub\modules\user\search;
 
+use humhub\components\listing\ListContext;
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\user\components\UserList;
 use humhub\services\MetaSearchService;
 use Yii;
 
@@ -72,18 +73,21 @@ class UserSearchProvider implements MetaSearchProviderInterface
      */
     public function getResults(int $maxResults): array
     {
-        $peopleQuery = new PeopleQuery([
-            'defaultFilters' => ['keyword' => $this->getKeyword()],
-            'pageSize' => $maxResults,
-        ]);
+        // The directory's search (with the restrictions modules apply to it), whose "Show all
+        // results" is the directory itself.
+        $query = (new UserList())->build(
+            // At most as long as the list's search takes: a longer keyword is cut, not refused.
+            ['q' => mb_substr((string)$this->getKeyword(), 0, UserList::MAX_SEARCH_LENGTH)],
+            ListContext::forCurrentUser(UserList::PURPOSE_DIRECTORY),
+        )->query();
 
         $results = [];
-        foreach ($peopleQuery->all() as $user) {
+        foreach ((clone $query)->limit($maxResults)->all() as $user) {
             $results[] = Yii::createObject(SearchRecord::class, [$user]);
         }
 
         return [
-            'totalCount' => $peopleQuery->pagination->totalCount,
+            'totalCount' => (int)$query->count(),
             'results' => $results,
         ];
     }

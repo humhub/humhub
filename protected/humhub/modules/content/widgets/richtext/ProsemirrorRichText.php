@@ -131,17 +131,11 @@ class ProsemirrorRichText extends AbstractRichText
      */
     public function run()
     {
-        $output = $this->text;
+        $output = $this->getMarkdown();
 
         // E.g. when initializing empty editor
         if (empty($output)) {
             return $output;
-        }
-
-        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
-
-        foreach (static::getExtensions() as $extension) {
-            $output = $extension->onBeforeOutput($this, $output);
         }
 
         // Wrap encoded output in root div
@@ -155,5 +149,46 @@ class ProsemirrorRichText extends AbstractRichText
         $this->trigger(self::EVENT_AFTER_OUTPUT, new ParameterEvent(['output' => &$output]));
 
         return trim($output);
+    }
+
+    /**
+     * The markdown text this richtext will render, after every extension's
+     * {@see \humhub\modules\content\widgets\richtext\extensions\RichTextExtension::onBeforeOutput()} hook
+     * has run (mention resolution, legacy-compat rewriting, ...) - i.e. exactly the text {@see self::run()}
+     * itself HTML-encodes and wraps in the root div. Extracted into its own method so a caller that
+     * needs the processed markdown without the HTML envelope ({@see RichText::outputMarkdown()}, which
+     * the API serializers use) shares this SAME extension pipeline instead of re-implementing it, and
+     * can never drift from what {@see self::run()} itself renders.
+     *
+     * The result is the same for every reader: what an extension contributes here is derived from
+     * the text and the record alone. Per-user work such as fetching oembed previews (the oembed
+     * consent) belongs to {@see \humhub\modules\content\widgets\richtext\extensions\RichTextExtension::onAfterOutput()},
+     * which only {@see self::run()} calls.
+     *
+     * No return type declared (matching `$this->text`'s own undeclared, effectively nullable
+     * type) - `$this->text` can legitimately be `null` (e.g. an empty editor initialization
+     * via `AbstractRichTextEditor::editOutput()`), and this preserves `run()`'s original,
+     * pre-extraction behavior of returning it verbatim in that case rather than coercing to
+     * `''` and risking a behavior change for callers upstream of `run()`.
+     *
+     * @return string|null
+     * @since 1.20
+     */
+    public function getMarkdown()
+    {
+        $output = $this->text;
+
+        // E.g. when initializing empty editor
+        if (empty($output)) {
+            return $output;
+        }
+
+        $this->trigger(self::EVENT_BEFORE_OUTPUT, new ParameterEvent(['output' => &$output]));
+
+        foreach (static::getExtensions() as $extension) {
+            $output = $extension->onBeforeOutput($this, $output);
+        }
+
+        return $output;
     }
 }

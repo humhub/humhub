@@ -19,6 +19,9 @@ return [
     'id' => 'topic',
     'class' => Module::class,
     'isCoreModule' => true,
+    'urlManagerRules' => [
+        ['pattern' => 'api/v2/topic/picker', 'route' => 'topic/api/topic/picker', 'verb' => ['GET', 'HEAD']],
+    ],
     'events' => [
         ['class' => WallEntryControls::class, 'event' => WallEntryControls::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryControlsInit']],
         ['class' => DefaultMenu::class, 'event' => DefaultMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSettingMenuInit']],

@@ -12,7 +12,10 @@ use humhub\helpers\Html;
 use humhub\libs\MimeHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\controllers\SearchController;
+use humhub\modules\content\helpers\SearchHelper;
 use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\handler\DownloadFileHandler;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
@@ -113,7 +116,31 @@ class FileHelper extends \yii\helpers\FileHelper
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
         $label = $htmlOptions['label'] ?? Html::encode($file->file_name);
+        $viewUrl = static::getViewUrl($file);
 
+        if ($viewUrl === null) {
+            $htmlOptions['target'] = '_blank';
+            $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
+            return Html::a($label, $file->getUrl(), $htmlOptions);
+        }
+
+        $htmlOptions = array_merge($htmlOptions, ['data-bs-target' => '#globalModal']);
+
+        return Html::a($label, $viewUrl, $htmlOptions);
+    }
+
+    /**
+     * URL of the modal opening a file with the handlers registered for it, or `null` when
+     * plain download is all there is - in which case a caller should link the file
+     * directly instead of routing a download through a dialog.
+     *
+     * Handlers are contributed by modules ({@see FileHandlerCollection::EVENT_INIT}) and
+     * may take the current user into account, so the result is caller specific.
+     *
+     * @since 1.20
+     */
+    public static function getViewUrl(File $file): ?string
+    {
         $fileHandlers = FileHandlerCollection::getByType(
             [
                 FileHandlerCollection::TYPE_VIEW,
@@ -123,17 +150,37 @@ class FileHelper extends \yii\helpers\FileHelper
             ],
             $file,
         );
+
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
-            $htmlOptions['target'] = '_blank';
-            $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
-            return Html::a($label, $file->getUrl(), $htmlOptions);
+            return null;
         }
 
-        $htmlOptions = array_merge($htmlOptions, ['data-bs-target' => '#globalModal']);
+        return Url::to(['/file/view', 'guid' => $file->guid]);
+    }
 
-        $urlOptions = ['/file/view', 'guid' => $file->guid];
+    /**
+     * Whether the file's text content matches the keyword of the search result page
+     * currently being rendered, and should therefore be marked as a hit.
+     *
+     * @since 1.20
+     */
+    public static function isSearchHighlighted(File $file): bool
+    {
+        $controller = Yii::$app->controller;
 
-        return Html::a($label, Url::to($urlOptions), $htmlOptions);
+        if (!$controller instanceof SearchController) {
+            return false;
+        }
+
+        $keyword = $controller->searchRequest->keyword;
+        if (empty($keyword)) {
+            return false;
+        }
+
+        $converter = new TextConverter();
+
+        return $converter->applyFile($file)
+            && SearchHelper::matchQuery($keyword, $converter->getContentAsText());
     }
 
     /**

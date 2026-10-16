@@ -1,6 +1,6 @@
 <?php
 
-use humhub\helpers\Html;
+use humhub\modules\friendship\widgets\FriendshipButton;
 use humhub\modules\friendship\widgets\ManageMenu;
 use humhub\widgets\GridView;
 
@@ -21,14 +21,15 @@ use humhub\widgets\GridView;
             'profile.lastname',
             [
                 'header' => Yii::t('base', 'Actions'),
-                'class' => 'yii\grid\ActionColumn',
-                'buttons' => [
-                    'update' => fn($url, $model) => Html::a('Accept', ['/friendship/request/add', 'userId' => $model->id], ['class' => 'btn btn-success btn-sm', 'data-method' => 'POST']),
-                    'view' => function (): void {
-                        return;
-                    },
-                    'delete' => fn($url, $model) => Html::a('Deny', ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']),
-                ],
+                'format' => 'raw',
+                // The same island as on the profile: its received-request state accepts, its
+                // dropdown denies.
+                'value' => fn($model) => FriendshipButton::widget([
+                    'user' => $model,
+                    'buttonClass' => 'btn btn-accent btn-sm',
+                    'stateClass' => 'btn btn-accent active btn-sm',
+                    'togglerClass' => 'btn btn-accent active btn-sm',
+                ]),
             ]],
     ]);
     ?>

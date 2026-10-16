@@ -10,7 +10,7 @@
 namespace humhub\widgets\bootstrap;
 
 use humhub\helpers\Html;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -89,11 +89,11 @@ trait BootstrapVariationsTrait
 
     public function icon(string|Icon|null $icon, $options = []): static
     {
-        // Extract icon from FontAwesome 4 HTML element
+        // Extract the name from an icon passed as HTML element carrying a `fa-<name>` or `ti-<name>` class
         // TODO: remove later ($icon should be the name of the Icon or an instance of Icon)
         $matches = [];
-        if (is_string($icon) && preg_match('/fa-([a-z0-9-]+)/', $icon, $matches)) {
-            $icon = $matches[1] ?? null;
+        if (is_string($icon) && preg_match('/(?:^|[\s"\'])(?:fa|ti)-([a-z0-9-]+)/', $icon, $matches)) {
+            $icon = $matches[1];
         }
 
         $this->icon = Icon::get($icon, $options);

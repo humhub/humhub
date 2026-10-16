@@ -2,7 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
-use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
+use humhub\widgets\form\CodeMirrorInputWidget;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $model StatisticSettingsForm */

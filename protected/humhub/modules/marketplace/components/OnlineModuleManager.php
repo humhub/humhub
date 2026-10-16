@@ -39,6 +39,25 @@ class OnlineModuleManager extends Component
     public const EVENT_BEFORE_UPDATE = 'beforeUpdate';
     public const EVENT_AFTER_UPDATE = 'afterUpdate';
 
+    /**
+     * @since 1.20
+     */
+    public const CACHE_KEY_MODULES = 'onlineModuleManager_modules';
+
+    /**
+     * @since 1.20
+     */
+    public const CACHE_KEY_CATEGORIES = 'marketplace-category-list';
+
+    /**
+     * How long a failure to reach humhub.com (an empty answer for the module list or the
+     * category list) is cached, so repeated calls during an outage do not each retry the
+     * request.
+     *
+     * @since 1.20
+     */
+    public const FAILURE_CACHE_TTL = 120;
+
     private $_modules = null;
 
     /**
@@ -258,14 +277,18 @@ class OnlineModuleManager extends Component
      *  - latestVersion
      *  - latestCompatibleVersion
      *
-     * @param bool $cached
+     * A cached `[]` (an empty answer from humhub.com, kept for {@see self::FAILURE_CACHE_TTL}
+     * seconds, see below) is a cache hit like any other and is returned without a request; only
+     * an actual cache miss (nothing stored yet, or `$cached` is `false`) triggers one.
+     *
+     * @param bool $cached false bypasses the cache and always asks humhub.com
      * @return array of modules
      */
     public function getModules(bool $cached = true)
     {
         if (!$cached) {
             $this->_modules = null;
-            Yii::$app->cache->delete('onlineModuleManager_modules');
+            Yii::$app->cache->delete(self::CACHE_KEY_MODULES);
         }
 
         if ($this->_modules !== null) {
@@ -275,7 +298,7 @@ class OnlineModuleManager extends Component
         /** @var Module $module */
         $module = Yii::$app->getModule('marketplace');
 
-        $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
+        $this->_modules = Yii::$app->cache->get(self::CACHE_KEY_MODULES);
         if ($this->_modules === null || !is_array($this->_modules)) {
             $this->_modules = HumHubAPI::request('v1/modules/list', [
                 'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates'),
@@ -285,7 +308,15 @@ class OnlineModuleManager extends Component
                 unset($this->_modules[$blacklistedModuleId]);
             }
 
-            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cacheExpireTime'));
+            if (!empty($this->_modules)) {
+                Yii::$app->cache->set(self::CACHE_KEY_MODULES, $this->_modules, Yii::$app->settings->get('cacheExpireTime'));
+            } else {
+                // Negative cache: humhub.com answered nothing (unreachable, or a truly empty
+                // catalogue). Cached briefly rather than not at all, so a page that builds
+                // several widgets, or repeated requests during an outage, do not each retry it.
+                $this->_modules = [];
+                Yii::$app->cache->set(self::CACHE_KEY_MODULES, $this->_modules, self::FAILURE_CACHE_TTL);
+            }
         }
 
         if (!(bool)$module->settings->get('includeCommunityModules', false)) {
@@ -302,50 +333,76 @@ class OnlineModuleManager extends Component
         return $this->_modules;
     }
 
-    public function getCategories(): array
+    /**
+     * The categories of the marketplace with the number of listed modules in each, plus the
+     * number of listed modules without a category. A module is counted under the same rule the
+     * list uses (installed, or not installed but marketplaced), so a category's count matches
+     * what filtering by it returns.
+     *
+     * A failure (no modules, or no categories) is cached too, as a marker, for
+     * {@see self::FAILURE_CACHE_TTL} seconds, so it keeps answering `null` without a new
+     * request during that window; a successful answer is cached for `cacheExpireTime` as before.
+     *
+     * @return array{categories: array<array{id: int, name: string, count: int}>, uncategorized: int}|null
+     *         `null` while humhub.com cannot be reached
+     * @since 1.20
+     */
+    public function getCategoryList(): ?array
     {
-        return Yii::$app->cache->getOrSet('marketplace-categories', function () {
-            $modules = $this->getModules();
-            $categories = HumHubAPI::request('v1/modules/list-categories');
+        $cached = Yii::$app->cache->get(self::CACHE_KEY_CATEGORIES);
+        if (is_array($cached)) {
+            return ($cached['failed'] ?? false) ? null : $cached;
+        }
 
-            $totalCount = 0;
-            $withoutCategoryCount = 0;
-            foreach ($modules as $module) {
-                $onlineModule = new ModelModule($module);
-                if (!$onlineModule->isMarketplaced()) {
-                    continue;
-                }
+        $modules = $this->getModules();
+        if (empty($modules)) {
+            return $this->cacheCategoryListFailure();
+        }
 
-                $totalCount++;
+        $categories = HumHubAPI::request('v1/modules/list-categories');
+        if (empty($categories) || !is_array($categories)) {
+            return $this->cacheCategoryListFailure();
+        }
 
-                if (empty($module['categories'])) {
-                    $withoutCategoryCount++;
-                    continue;
-                }
-
-                foreach ($module['categories'] as $catIndex) {
-                    if (isset($categories[$catIndex])) {
-                        if (!isset($categories[$catIndex]['count'])) {
-                            $categories[$catIndex]['count'] = 0;
-                        }
-                        $categories[$catIndex]['count']++;
-                    }
-                }
+        $counts = [];
+        $uncategorized = 0;
+        foreach ($modules as $module) {
+            $onlineModule = new ModelModule($module);
+            if (!$onlineModule->isInstalled() && !$onlineModule->isMarketplaced()) {
+                continue;
             }
-
-            $names = [];
-            $names[0] = Yii::t('MarketplaceModule.base', 'All modules') . ' (' . $totalCount . ')';
-
-            foreach ($categories as $c => $category) {
-                $names[$c] = $category['name'] . ' (' . ($category['count'] ?? '0') . ')';
+            if (empty($module['categories'])) {
+                $uncategorized++;
+                continue;
             }
-
-            if ($withoutCategoryCount > 0) {
-                $names[-1] = Yii::t('MarketplaceModule.base', 'Without category') . ' (' . $withoutCategoryCount . ')';
+            foreach ((array)$module['categories'] as $categoryId) {
+                $counts[$categoryId] = ($counts[$categoryId] ?? 0) + 1;
             }
+        }
 
-            return $names;
-        });
+        $list = [];
+        foreach ($categories as $categoryId => $category) {
+            $list[] = [
+                'id' => (int)$categoryId,
+                'name' => (string)($category['name'] ?? ''),
+                'count' => $counts[$categoryId] ?? 0,
+            ];
+        }
+
+        $data = ['categories' => $list, 'uncategorized' => $uncategorized];
+        Yii::$app->cache->set(self::CACHE_KEY_CATEGORIES, $data, (int)Yii::$app->settings->get('cacheExpireTime'));
+
+        return $data;
+    }
+
+    /**
+     * Caches the failure marker read back by {@see self::getCategoryList()}.
+     */
+    private function cacheCategoryListFailure(): ?array
+    {
+        Yii::$app->cache->set(self::CACHE_KEY_CATEGORIES, ['failed' => true], self::FAILURE_CACHE_TTL);
+
+        return null;
     }
 
 

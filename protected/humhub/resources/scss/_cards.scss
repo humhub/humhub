@@ -188,7 +188,7 @@
 
             .card-icons > * {
                 color: var(--bs-accent);
-                .fa {
+                .ti {
                     margin-right: .4rem;
                 }
                 span {
@@ -273,14 +273,14 @@
                     vertical-align: bottom;
                     font-size: 16px;
 
-                    .fa {
+                    .ti {
                         @if contrast-ratio($background-color-main, $accent) < $min-contrast-ratio {
                             color: var(--hh-text-color-main);
                         } @else {
                             color: var(--bs-accent);
                         }
 
-                        &.fa-mobile-phone {
+                        &.ti-device-mobile {
                             font-size: 22px;
                             line-height: 15px;
                             position: relative;

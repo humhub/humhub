@@ -10,15 +10,12 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\user\components\PeopleQuery;
+use humhub\modules\user\components\UserList;
 use humhub\modules\user\permissions\PeopleAccess;
-use humhub\modules\user\widgets\PeopleCard;
-use humhub\modules\user\widgets\PeopleFilterPicker;
 use Yii;
-use yii\helpers\Url;
 
 /**
- * PeopleController displays users directory
+ * PeopleController displays the People directory (the `PeopleDirectory` island)
  *
  * @since 1.9
  */
@@ -57,42 +54,49 @@ class PeopleController extends Controller
      */
     public function actionIndex()
     {
-        $peopleQuery = new PeopleQuery();
-
-        $urlParams = Yii::$app->request->getQueryParams();
-        unset($urlParams['page']);
-        array_unshift($urlParams, '/user/people/load-more');
-        $this->getView()->registerJsConfig('cards', [
-            'loadMoreUrl' => Url::to($urlParams),
-        ]);
-
-        return $this->render('index', [
-            'people' => $peopleQuery,
-        ]);
-    }
-
-    /**
-     * Action to load cards for next page by AJAX
-     */
-    public function actionLoadMore()
-    {
-        $peopleQuery = new PeopleQuery();
-
-        $peopleCards = '';
-        foreach ($peopleQuery->all() as $user) {
-            $peopleCards .= PeopleCard::widget(['user' => $user]);
+        $legacyParams = $this->translateLegacyParams(Yii::$app->request->getQueryParams());
+        if ($legacyParams !== null) {
+            return $this->redirect(array_merge(['/user/people'], $legacyParams), 301);
         }
 
-        return $peopleCards;
+        return $this->render('index');
     }
-
 
     /**
-     * Returns people list in JSON format filtered by keyword
+     * The directory's parameters before 1.20 in the ones of `GET /api/v2/user` it uses now:
+     * `keyword` → `q`, `connection=followers|following|friends|pending_friends` →
+     * `scope=followers|following|friends|pendingFriends` — left out when the feature of that
+     * scope is off, so an old link does not end in a refused list. Every other parameter
+     * (`groupId`, `fields[…]`, `sort`) is kept.
+     *
+     * @return array|null the translated parameters, `null` when none of the old ones is present
+     * @since 1.20
      */
-    public function actionFilterPeopleJson($field, $keyword = null)
+    private function translateLegacyParams(array $params): ?array
     {
-        return $this->asJson((new PeopleFilterPicker(['itemKey' => $field]))->getSuggestions($keyword));
-    }
+        if (!array_key_exists('keyword', $params) && !array_key_exists('connection', $params)) {
+            return null;
+        }
 
+        $keyword = $params['keyword'] ?? null;
+        $connection = $params['connection'] ?? null;
+        unset($params['keyword'], $params['connection']);
+
+        if (is_string($keyword) && trim($keyword) !== '') {
+            $params['q'] = $keyword;
+        }
+
+        $scope = match ($connection) {
+            'followers' => 'followers',
+            'following' => 'following',
+            'friends' => 'friends',
+            'pending_friends' => 'pendingFriends',
+            default => null,
+        };
+        if ($scope !== null && in_array($scope, UserList::availableScopes(), true)) {
+            $params['scope'] = $scope;
+        }
+
+        return $params;
+    }
 }

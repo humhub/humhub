@@ -106,4 +106,8 @@ return [
     'Verified' => '',
     'View' => '',
     'We couldn\'t verify that you\'re human. Please check the box again.' => '',
+  'Code' => 'Kodea',
+  'Heading' => 'Goiburua',
+  'Image' => 'Irudia',
+  'Sort Order' => 'Sailkapen hurrenkera',
 ];

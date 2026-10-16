@@ -4,14 +4,14 @@ humhub.module('ui.showMore', function (module, require, $) {
 
     var DEFAULT_COLLAPSE_AT = 380;
 
-    module.requiredI18nCategories = ['UiModule.base'];
+    module.requiredI18nCategories = ['base'];
 
     var CollapseContent = function (node, options) {
         this.options = options || {};
         this.$ = node instanceof $ ? node : $(node);
         this.collapseAt = this.$.data('collapse-at') || DEFAULT_COLLAPSE_AT;
-        this.options.readMoreText = this.$.data('read-more-text') || i18n.t('UiModule.base', 'Read more');
-        this.options.readLessText = this.$.data('read-less-text') || i18n.t('UiModule.base', 'Collapse');
+        this.options.readMoreText = this.$.data('read-more-text') || i18n.t('base', 'Read more');
+        this.options.readLessText = this.$.data('read-less-text') || i18n.t('base', 'Collapse');
         this.init();
     };
 
@@ -46,8 +46,15 @@ humhub.module('ui.showMore', function (module, require, $) {
                 this.$gradient.children().css({background: 'linear-gradient(rgba(251,251,251,0), '+determineBackground(this.$)+')'});
             }
 
-            // Init collapse button
-            this.$collapseButton.add(this.$gradient).on('click', function (evt) {
+            // Init collapse button. Namespaced + unbound-before-bound so
+            // repeat application (e.g. a Vue island's v-additions running
+            // ui.additions.applyTo() again on `updated`, see humhub.vue.js)
+            // is idempotent instead of stacking another click handler on top
+            // of the still-attached previous one - the DOM insertion above
+            // is already guarded by `if (!this.$collapseButton.length)`, but
+            // this binding wasn't, so every re-apply on the SAME collapse
+            // button used to toggle collapsed/expanded twice per click.
+            this.$collapseButton.add(this.$gradient).off('click.humhubShowMore').on('click.humhubShowMore', function (evt) {
                 evt.preventDefault();
                 if (that.$.data('state') === 'collapsed') {
                     that.expand();
@@ -96,14 +103,14 @@ humhub.module('ui.showMore', function (module, require, $) {
 
     CollapseContent.prototype.collapse = function () {
         this.$.css({'display': 'block', 'max-height': this.collapseAt + 'px'});
-        this.$collapseButton.html('<i class="fa fa-arrow-down"></i> ' + this.options.readMoreText);
+        this.$collapseButton.html('<i class="ti ti-arrow-down"></i> ' + this.options.readMoreText);
         this.$.data('state', 'collapsed');
         this.$gradient.show();
     };
 
     CollapseContent.prototype.expand = function () {
         this.$.css('max-height', '');
-        this.$collapseButton.html('<i class="fa fa-arrow-up"></i> ' + this.options.readLessText);
+        this.$collapseButton.html('<i class="ti ti-arrow-up"></i> ' + this.options.readLessText);
         this.$.data('state', 'expanded');
         this.$gradient.hide();
     };

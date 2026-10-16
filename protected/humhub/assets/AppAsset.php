@@ -58,12 +58,14 @@ class AppAsset extends AssetBundle
         BootstrapAsset::class,
         BootstrapPluginAsset::class,
         BluebirdAsset::class,
-        FontAwesomeAsset::class,
+        TablerIconsAsset::class, // listed before IconAsset: the production build only bundles direct dependencies
+        IconAsset::class,
         AnimateCssAsset::class, // preload
         OpenSansAsset::class,
         PjaxAsset::class,
         JqueryTimeAgoAsset::class,
         IntlMessageFormatAsset::class,
+        VueAsset::class,
 
         /**
          * Style only assets

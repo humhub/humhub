@@ -1,0 +1,25 @@
+//
+// Spaces directory island (protected/humhub/modules/space/vue/SpaceDirectory.vue): what the space
+// card has beyond the shared entity card (`_entity-card.scss`) — after the HumHub design system
+// v2 space card. The toolbar comes from `_page-toolbar.scss`, grid and skeleton blocks from
+// `_card-directory.scss`.
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-space-directory {
+    // The note of an archived space, in the body below the description
+    .c-space-card__archived {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin: 0;
+        color: var(--bs-warning-text-emphasis);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 18px;
+
+        > .ti {
+            font-size: 14px;
+        }
+    }
+}

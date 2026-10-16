@@ -14,7 +14,7 @@ use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Json;

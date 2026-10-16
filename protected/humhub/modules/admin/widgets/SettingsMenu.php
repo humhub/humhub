@@ -10,8 +10,8 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\TabMenu;
 use Yii;
 
 /**

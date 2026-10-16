@@ -1,0 +1,422 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Comment API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Comment
+    description: |
+      Comment lists are **cursor windows**, not offset pages (see the window endpoints): a
+      window is addressed by `cursor` + `direction`, by `focus`, or by nothing, and sized by
+      `limit`.
+
+      The comment shape is **caller-neutral**: identical for every reader who may see the
+      content. What depends on the caller has its own endpoints — `GET /comment/{id}/permissions`
+      for edit/delete, `GET /like/states` for like state.
+paths:
+  "/content/{id}/comments":
+    get:
+      tags:
+        - Comment
+      summary: Root comments of a content
+      operationId: listContentComments
+      description: |
+        A window of the content's root comments. Without any parameter the newest comments are
+        returned; `cursor` + `direction` page from a comment the client already has ("show
+        previous/next N comments"), `focus` centres the window on a permalinked comment.
+        `limit` sizes whichever window that is.
+
+        `total` counts all comments of the content **including replies** (what a comment
+        badge shows), while `results`, `prevCount` and `nextCount` describe the root level
+        only. `rootTotal` is the root-only total a root list needs to compute its own
+        remaining count.
+
+        Readable by guests for guest-visible content while guest access is enabled
+        platform-wide, unless the comment module hides comments from guests
+        (`guestHideComments`).
+      parameters:
+        - name: id
+          in: path
+          description: The primary key of the content
+          required: true
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/cursorParam"
+        - $ref: "#/components/parameters/directionParam"
+        - $ref: "#/components/parameters/focusParam"
+        - $ref: "#/components/parameters/windowLimitParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentWindow"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/comment/{id}/replies":
+    get:
+      tags:
+        - Comment
+      summary: Replies of a comment
+      operationId: listCommentReplies
+      description: |
+        The same window semantics as the content's root comments, for the replies of one
+        root comment.
+        `total`/`rootTotal` still describe the whole content, so a client can keep its badge
+        and its root list consistent while paging replies.
+      parameters:
+        - name: id
+          in: path
+          description: The primary key of the root comment
+          required: true
+          schema:
+            type: integer
+        - $ref: "#/components/parameters/cursorParam"
+        - $ref: "#/components/parameters/directionParam"
+        - $ref: "#/components/parameters/focusParam"
+        - $ref: "#/components/parameters/windowLimitParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentWindow"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/comment":
+    post:
+      tags:
+        - Comment
+      summary: Create a comment
+      operationId: createComment
+      description: |
+        Creates a comment on the content named by `contentId`. Replies pass their parent
+        through `parentCommentId`; comments nest at most one level, a deeper reply answers
+        `422`. Everything travels in the body — a missing `contentId` is a validation
+        failure like a missing `message`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentCreate"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/comment/{id}/permissions":
+    get:
+      tags:
+        - Comment
+      summary: What the caller may do with a comment
+      operationId: getCommentPermissions
+      description: |
+        Deliberately not part of the comment shape: these are the only caller-dependent
+        values a comment needs, and only when its context menu is opened — keeping them out
+        is what makes the comment payload identical for every reader (and cacheable). The
+        same checks the update and delete endpoints enforce.
+
+        Authenticated callers only: a guest has no permissions to report.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  canEdit:
+                    type: boolean
+                  canDelete:
+                    type: boolean
+                    description: |
+                      `true` on someone else's comment means moderation.
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+  "/comment/{id}":
+    get:
+      tags:
+        - Comment
+      summary: A single comment
+      operationId: getComment
+      description: |
+        A root comment carries a preview of its newest replies under `replies`; a reply has
+        `replies: null`. Readable by guests under the same conditions as the windows.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+    patch:
+      tags:
+        - Comment
+      summary: Update a comment
+      operationId: updateComment
+      description: |
+        Partial update: a field the body does not carry keeps its value, so `fileList` can be
+        changed without resending `message` and vice versa. `message` is validated whenever
+        it is sent, and an empty one answers `422`.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentUpdate"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+    delete:
+      tags:
+        - Comment
+      summary: Delete a comment
+      operationId: deleteComment
+      description: |
+        Deletes the comment. The optional query parameters trigger the moderation flow: with
+        `notify`, the author receives a notification carrying a preview of the removed text
+        and the given `message` as the reason. Query rather than body — a `DELETE` carries
+        no body in this API.
+      parameters:
+        - $ref: "#/components/parameters/commentPathParam"
+        - name: notify
+          in: query
+          required: false
+          description: "`1` to notify the author about the removal"
+          schema:
+            type: integer
+            enum: [0, 1]
+        - name: message
+          in: query
+          required: false
+          description: Reason shown to the author
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted, no content
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
+  parameters:
+    commentPathParam:
+      name: id
+      in: path
+      description: The primary key of the comment
+      required: true
+      schema:
+        type: integer
+    cursorParam:
+      name: cursor
+      in: query
+      description: |
+        Id of a comment the client already has, to page from in `direction`. Only read
+        together with `direction`.
+      required: false
+      schema:
+        type: integer
+    directionParam:
+      name: direction
+      in: query
+      description: Paging direction relative to `cursor`
+      required: false
+      schema:
+        type: string
+        enum:
+          - previous
+          - next
+    focusParam:
+      name: focus
+      in: query
+      description: |
+        Id of a comment to centre the window on — a permalink. Ignored while paging with
+        `cursor` + `direction`.
+      required: false
+      schema:
+        type: integer
+    windowLimitParam:
+      name: limit
+      in: query
+      description: |
+        Size of the window, whichever way it is addressed. Clamped to the comment module's
+        configured block load size.
+      required: false
+      schema:
+        type: integer
+  schemas:
+    CommentWindow:
+      type: object
+      properties:
+        results:
+          type: array
+          description: The window's comments, oldest first
+          items:
+            $ref: "#/components/schemas/Comment"
+        total:
+          type: integer
+          description: All comments of the content, including replies
+        rootTotal:
+          type: integer
+          description: Root comments of the content only
+        prevCount:
+          type: integer
+          description: Comments of this level before the window
+        nextCount:
+          type: integer
+          description: Comments of this level after the window
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+          description: |
+            The message in HumHub richtext markdown (see the *Rich text* convention), not
+            rendered HTML. Mentions carry the user's current name and URL; oembed links stay
+            `[url](oembed:url)`, a client fetches their previews itself.
+        contentId:
+          type: integer
+        parentCommentId:
+          type: [integer, 'null']
+        recordId:
+          type: integer
+          description: Platform-wide record id, e.g. for the like endpoints
+        createdBy:
+          $ref: "common.yaml#/components/schemas/UserShort"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: [string, 'null']
+          format: date-time
+          description: |
+            Equal to `createdAt` for an unedited comment — a client derives "edited" from the
+            two.
+        url:
+          type: string
+          description: Absolute permalink
+        files:
+          type: array
+          items:
+            $ref: "common.yaml#/components/schemas/File"
+        childCount:
+          type: integer
+          description: Number of replies
+        replies:
+          type: [object, 'null']
+          description: |
+            Preview of the newest replies of a root comment; `null` on a reply.
+          properties:
+            total:
+              type: integer
+            hasMore:
+              type: boolean
+            items:
+              type: array
+              items:
+                $ref: "#/components/schemas/Comment"
+    CommentCreate:
+      type: object
+      properties:
+        contentId:
+          type: integer
+          description: The primary key of the content to comment on
+        parentCommentId:
+          type: integer
+          description: The primary key of the root comment this is a reply to
+        message:
+          type: string
+          description: Markdown message
+        fileList:
+          type: array
+          description: Guids of already uploaded files to attach
+          items:
+            type: string
+      required:
+        - contentId
+        - message
+    CommentUpdate:
+      type: object
+      description: Every field is optional; one that is left out keeps its value.
+      properties:
+        message:
+          type: string
+          description: Markdown message, must not be empty when sent
+        fileList:
+          type: array
+          description: Guids of the files to attach — replaces the current attachment list
+          items:
+            type: string

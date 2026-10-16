@@ -37,10 +37,7 @@ class InvisibleUserCest
 
         $I->amGoingTo('be sure Sara Tester is visible for owner');
         $I->amUser2(true);
-        // People
-        $I->amOnRoute(['/people']);
-        $I->waitForText('People');
-        $I->see($userName);
+        // (People leaves out the current user)
         // Space members
         $I->amOnSpace1();
         $I->waitForText('Space members');
@@ -52,7 +49,7 @@ class InvisibleUserCest
         $I->amUser1(true);
         // People
         $I->amOnRoute(['/people']);
-        $I->waitForText('People');
+        $I->waitForElementVisible('.c-people-card');
         $I->dontSee($userName);
         // Space members
         $I->amOnSpace1();

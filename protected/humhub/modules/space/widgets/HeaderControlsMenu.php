@@ -8,11 +8,13 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\components\api\ApiRules;
 use humhub\helpers\Html;
+use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\menu\DropdownDivider;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\DropdownMenu;
+use humhub\widgets\menu\DropdownDivider;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\DropdownMenu;
 use Yii;
 
 /**
@@ -46,7 +48,7 @@ class HeaderControlsMenu extends DropdownMenu
         }
 
         if ($this->template === '@humhub/widgets/views/dropdownNavigation') {
-            $this->template = '@ui/menu/widgets/views/dropdown-menu.php';
+            $this->template = '@humhub/widgets/menu/views/dropdown-menu.php';
         }
 
 
@@ -86,7 +88,7 @@ class HeaderControlsMenu extends DropdownMenu
         if ($this->space->isMember()) {
             $membership = $this->space->getMembership();
 
-            if (!$membership->send_notifications && !Yii::$app->notification->hasSpace($this->space)) {
+            if (!$membership->send_notifications && !(new NotificationSpaceService())->hasSpace($this->space)) {
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Receive Notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),
@@ -105,13 +107,17 @@ class HeaderControlsMenu extends DropdownMenu
             }
 
             if (!$this->space->isSpaceOwner() && $this->space->canLeave()) {
+                // The same transition the membership button offers, through the same endpoint
+                // (`DELETE /api/v2/space/<id>/membership`): the `space.leave` client action
+                // calls it and reloads, see humhub.space.js.
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Cancel Membership'),
-                    'url' => $this->space->createUrl('/space/membership/revoke-membership', ['redirect' => true]),
+                    'url' => '#',
                     'icon' => 'remove',
                     'sortOrder' => 700,
                     'htmlOptions' => [
-                        'data-method' => 'POST',
+                        'data-action-click' => 'space.leave',
+                        'data-action-url' => ApiRules::url('space/' . $this->space->id . '/membership'),
                         'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
                         'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
                         'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
@@ -136,7 +142,7 @@ class HeaderControlsMenu extends DropdownMenu
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Show posts on dashboard'),
                     'url' => $this->space->createUrl('/space/membership/switch-dashboard-display', ['show' => 1]),
-                    'icon' => 'fa-eye',
+                    'icon' => 'eye',
                     'sortOrder' => 800,
                     'htmlOptions' => ['data-method' => 'POST',
                         'data-bs-toggle' => 'tooltip',

@@ -3,7 +3,6 @@
 namespace humhub\modules\comment;
 
 use humhub\modules\comment\permissions\CreateComment;
-use humhub\modules\comment\notifications\NewComment;
 use humhub\modules\content\models\Content;
 use Yii;
 
@@ -44,6 +43,18 @@ class Module extends \humhub\components\Module
     public bool $guestHideComments = false;
 
     /**
+     * @since 1.20
+     * @var int seconds a serialized comment or comment window stays cached
+     * ({@see \humhub\modules\comment\services\CommentPayloadCache}), `0` disables the
+     * cache entirely.
+     *
+     * Comment changes invalidate the affected content's entries immediately, so this only
+     * bounds how long the payload may lag behind data it embeds without owning: an author's
+     * display name and profile image.
+     */
+    public int $payloadCacheTtl = 3600;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -63,16 +74,6 @@ class Module extends \humhub\components\Module
     public function getName()
     {
         return Yii::t('CommentModule.base', 'Comments');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        return [
-            NewComment::class,
-        ];
     }
 
     /**

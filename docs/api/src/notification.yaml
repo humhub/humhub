@@ -1,0 +1,569 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Notification API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Notification
+    description: |
+      **Always the caller's own notifications.** There is no user parameter, and no action here
+      is reachable for a guest. (The module's `/api/v1` notification endpoints, which let an
+      admin token read another user's notifications, are unaffected.) The settings endpoints
+      read and change the caller's own settings too, or with `scope=global` the defaults an
+      administrator sets for everyone.
+
+      **Cursor paging instead of page numbers.** The list is ordered newest entry first, and new
+      notifications arrive at its top while a user pages through it. Page numbers would silently
+      repeat entries, so a page carries a `nextCursor` — an opaque string — to hand back, and
+      `null` once the list is exhausted. This is the one list of this API generation that does
+      not use the `{results, total, page, pageSize, pages}` envelope.
+
+      **Grouped entries.** Notifications of the same kind about the same thing (several likes
+      on one post, say) are one entry: `count` is the size of the group, `id` its newest
+      notification, and the sentence names the group (*"Jane and 2 more liked …"*).
+
+      **The sentence comes from the server.** A notification's `html` is the localized,
+      module-defined phrase (*"Jane commented on Post 'Release notes'"*) — the one part a client
+      cannot build. Everything around it (avatar, space badge, relative time, unread marker) is
+      data in this payload, rendered by the client.
+paths:
+  "/notification":
+    get:
+      tags:
+        - Notification
+      summary: The caller's notifications
+      operationId: listNotifications
+      description: |
+        One page of the caller's notifications, newest entry first. Grouped notifications
+        (several likes on the same post, say) count as one entry. Notifications about a content
+        that is not published (a draft, a scheduled or a deleted content) are left out.
+
+        A notification whose source no longer exists — its class left with an uninstalled
+        module, its source record deleted — is dropped from the list (and from the database)
+        instead of failing the request, so a page may contain fewer entries than `limit` even
+        when `nextCursor` is set.
+
+        An invalid `seen` answers `422`.
+      parameters:
+        - name: cursor
+          in: query
+          required: false
+          description: |
+            `nextCursor` of the previous page — an opaque string. Omit for the first page; an
+            unreadable value is treated as no cursor.
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          description: Entries per page (default 6, maximum 50)
+          schema:
+            type: integer
+        - name: "categories[]"
+          in: query
+          required: false
+          description: |
+            Notification category ids to include: `direct` (mentions, invitations, requests),
+            `social` (comments, likes), `followers` (new followers), `content` (new content in
+            the caller's spaces), `admin` (administrative events), plus the categories modules add,
+            named by their module id. The notification settings endpoint lists the categories an
+            installation offers.
+
+            Omit the parameter for no category filter at all. Passing a value that matches no
+            category — including a single empty entry — is a filter of its own and answers an
+            empty list, which is what "no category selected" means in the UI.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: seen
+          in: query
+          required: false
+          description: |
+            Restrict to seen or unseen entries; a group is unseen while any of its
+            notifications is. Any other value answers `422`.
+          schema:
+            type: string
+            enum: [seen, unseen]
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Notification"
+                  unseenCount:
+                    type: integer
+                    description: |
+                      The caller's number of unseen entries (a group counts once) — what a
+                      client shows as its badge, independent of the filters of this request.
+                  nextCursor:
+                    type: [string, 'null']
+                    description: |
+                      Opaque; pass as `cursor` for the next page. `null` when there is nothing
+                      behind this one.
+              example:
+                results:
+                  - id: 137
+                    html: <strong>Jane Doe</strong> and <strong>John Doe</strong> commented on post "Release notes".
+                    url: https://example.com/notification/entry?id=137
+                    isNew: true
+                    createdAt: "2026-08-20T10:12:00+00:00"
+                    groupKey: bjE6MTM1
+                    count: 2
+                    priority: low
+                    originator:
+                      id: 7
+                      guid: 4f3e2d1c-0b9a-8765-4321-0fedcba98765
+                      displayName: Jane Doe
+                      url: https://example.com/u/jane/
+                      imageUrl: https://example.com/uploads/profile_image/abc.jpg
+                      contentContainerId: 12
+                    space:
+                      id: 3
+                      guid: 9a8b7c6d-5e4f-3210-9876-543210fedcba
+                      name: Product Team
+                      url: https://example.com/s/product-team/
+                      color: "#7a9299"
+                      imageUrl: null
+                      contentContainerId: 21
+                unseenCount: 4
+                nextCursor: bjE6MTM1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/notification/mark-as-seen":
+    post:
+      tags:
+        - Notification
+      summary: Mark notifications as seen
+      operationId: markNotificationsAsSeen
+      description: |
+        Without `ids`, marks every notification of the caller as seen — with `categories` only
+        those of the given notification categories (an empty selection, one empty entry, marks
+        nothing). With `ids`, marks the entries of those notifications — each with its whole
+        group — as seen; ids of notifications that are not the caller's are ignored. Answers the
+        caller's unseen count afterwards.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: Notification ids (an entry's `id`)
+                  items:
+                    type: integer
+                categories:
+                  type: array
+                  description: Notification category ids, ignored with `ids`
+                  items:
+                    type: string
+            example:
+              ids: [137, 129]
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                "ids[]":
+                  type: array
+                  items:
+                    type: integer
+                "categories[]":
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  unseenCount:
+                    type: integer
+                    description: The caller's number of unseen entries after the change
+              example:
+                unseenCount: 0
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+  "/notification/settings":
+    get:
+      tags:
+        - Notification
+      summary: The caller's notification settings
+      operationId: getNotificationSettings
+      description: |
+        Per notification category the channels it reaches the caller through, what the switches
+        would be without own settings, and the spaces whose new content notifies — what the
+        notification settings page shows.
+        With `scope=global`, the defaults for everyone (requires the *Manage Settings*
+        permission, `403` otherwise).
+      parameters:
+        - $ref: "#/components/parameters/scopeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationSettings"
+              examples:
+                settings:
+                  $ref: "#/components/examples/NotificationSettings"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+    patch:
+      tags:
+        - Notification
+      summary: Change the caller's notification settings
+      operationId: updateNotificationSettings
+      description: |
+        A partial update — every part is optional: a category or channel left out keeps its
+        setting, `null` removes the caller's own switch so the default applies again, `spaces` replaces the selection (and from then on the default spaces no longer
+        apply to the caller). Spaces the caller may not see are ignored. Nothing is changed when
+        anything is invalid — a body `categories` that is no object (`categories`), an unknown category or
+        a category value that is no object (`categories.<category>`), a channel that is not available for
+        the category, an invalid value or switching off the `direct` category
+        (`categories.<category>.<channel>`), an invalid `spaces` list, or a `privacy` that is
+        invalid, sent for the caller's own settings or set in the configuration file answer `422`
+        with the errors under those keys. Answers the settings as `GET` does. With
+        `scope=global`, the defaults for everyone (requires the *Manage Settings* permission),
+        which also take the network's `privacy` mode.
+      parameters:
+        - $ref: "#/components/parameters/scopeParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                categories:
+                  type: object
+                  description: |
+                    `{<category id>: {<channel id>: boolean|null}}`, the switches to change — `null`
+                    for the default
+                  additionalProperties:
+                    type: object
+                    additionalProperties:
+                      type: [boolean, 'null']
+                spaces:
+                  type: array
+                  description: Ids of the spaces whose new content notifies
+                  items:
+                    type: integer
+                privacy:
+                  type: string
+                  enum: [full, redacted, minimal]
+                  description: |
+                    `scope=global` only: how much notification mails, push messages and the activity
+                    summary mail show — everything, names without content, or neither names nor content
+            example:
+              categories:
+                social:
+                  email: false
+                followers:
+                  web: true
+              spaces: [3]
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationSettings"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/notification/settings/reset":
+    post:
+      tags:
+        - Notification
+      summary: Reset the caller's notification settings
+      operationId: resetNotificationSettings
+      description: |
+        Removes the caller's own category switches and space selection, so the defaults
+        apply again — including the default spaces for new content. Answers the settings as
+        `GET` does.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationSettings"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+  "/notification/settings/reset-all":
+    post:
+      tags:
+        - Notification
+      summary: Reset the notification settings of every user
+      operationId: resetAllNotificationSettings
+      description: |
+        Removes the category switches and space selections of every user, so everyone
+        follows the defaults again. Requires the *Manage Settings* and the *Manage Users*
+        permission. Answers the
+        defaults as `GET` with `scope=global` does.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotificationSettings"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+components:
+  parameters:
+    scopeParam:
+      name: scope
+      in: query
+      required: false
+      description: "`global` for the defaults for everyone instead of the caller's settings"
+      schema:
+        type: string
+        enum: [global]
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"
+  schemas:
+    Notification:
+      type: object
+      description: One notification of the caller
+      properties:
+        id:
+          type: integer
+          description: The newest notification of the entry's group
+        html:
+          type: string
+          description: |
+            The notification's own localized sentence, as HTML (display names wrapped in
+            `<strong>`). Composed server-side from escaped values by the notification class;
+            for a group it names the group (*"Jane and 2 more …"*).
+        url:
+          type: string
+          description: |
+            Absolute URL of the notification target — a redirect that also marks the entry
+            (its whole group) as seen.
+        isNew:
+          type: boolean
+          description: Whether the caller has not seen this entry yet — any notification of its group
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO-8601 timestamp with offset
+        groupKey:
+          type: string
+          description: |
+            Opaque key of the entry, equal to the `notificationGroup` the live event of a new
+            notification carries, so a client can match an arriving event against an entry it
+            already shows.
+        count:
+          type: integer
+          description: Number of notifications the entry stands for, `1` when not grouped
+        priority:
+          type: string
+          enum: [low, normal, high]
+          description: How urgent the notification is
+        originator:
+          oneOf:
+            - $ref: "common.yaml#/components/schemas/UserShort"
+            - type: 'null'
+          description: The user who caused the notification, when there is one
+        space:
+          oneOf:
+            - $ref: "common.yaml#/components/schemas/SpaceShort"
+            - type: 'null'
+          description: The space the notification happened in, when it happened in one
+    NotificationSettings:
+      type: object
+      description: The notification settings of the caller, or the defaults for everyone
+      required: [scope, channels, categories, defaults, spaces, privacy]
+      properties:
+        scope:
+          type: string
+          enum: [user, global]
+          description: The caller's own settings, or the defaults for everyone
+        channels:
+          type: array
+          description: |
+            The channels available — the web list first, then e-mail, mobile push when a push
+            provider is installed, and channels of modules.
+          items:
+            type: object
+            required: [id, title]
+            properties:
+              id:
+                type: string
+                description: "`web`, `email`, `mobile` or the id of a module's channel"
+              title:
+                type: string
+        categories:
+          type: array
+          description: |
+            The notification categories — the core categories first, then those of modules; the `admin`
+            category only for users with an administrative permission, a category no available channel
+            carries not at all.
+          items:
+            type: object
+            required: [id, title, description, icon, module, fixed, channels]
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              icon:
+                type: string
+                description: Tabler icon name, e.g. `ti-heart`
+              module:
+                type: boolean
+                description: Whether the category is a module's own rather than a core category
+              fixed:
+                type: boolean
+                description: Not switchable (`direct`) — always on
+              channels:
+                type: object
+                description: |
+                  Whether the category reaches the user through the channel, by channel id — only the
+                  channels that apply to the category: the web list only for a category with
+                  notifications shown in it.
+                additionalProperties:
+                  type: boolean
+        defaults:
+          description: |
+            For the caller's settings, what the switches of `categories` would be without own
+            settings — `{<category id>: {<channel id>: boolean}}`; `null` for the global scope.
+          oneOf:
+            - type: object
+              additionalProperties:
+                type: object
+                additionalProperties:
+                  type: boolean
+            - type: 'null'
+        spaces:
+          type: object
+          properties:
+            selected:
+              type: array
+              description: |
+                The spaces whose new content notifies the user; for the global scope the default
+                spaces, which notify every user who has not chosen own spaces.
+              items:
+                $ref: "common.yaml#/components/schemas/SpaceShort"
+            enabled:
+              type: boolean
+              description: Whether the selection applies (the `content` category is offered)
+        privacy:
+          description: |
+            For the global scope, the network's privacy mode of notification mails, push messages
+            and the activity summary mail; `null` for the caller's settings.
+          oneOf:
+            - type: object
+              required: [mode, fixed]
+              properties:
+                mode:
+                  type: string
+                  enum: [full, redacted, minimal]
+                  description: |
+                    `full` — everything; `redacted` — names, but no content and no Space names;
+                    `minimal` — neither names nor content, only the categories and counts
+                fixed:
+                  type: boolean
+                  description: Set in the configuration file, so it cannot be changed through the API
+            - type: 'null'
+  examples:
+    NotificationSettings:
+      value:
+        scope: user
+        channels:
+          - id: web
+            title: Web
+          - id: email
+            title: E-Mail
+        categories:
+          - id: direct
+            title: Directly addressed to you
+            description: Mentions, invitations and requests.
+            icon: ti-at
+            module: false
+            fixed: true
+            channels:
+              web: true
+              email: true
+          - id: followers
+            title: New followers
+            description: People who follow you.
+            icon: ti-user-plus
+            module: false
+            fixed: false
+            channels:
+              web: true
+              email: false
+          - id: mail
+            title: Messenger
+            description: Notifications of the Messenger module
+            icon: ti-message
+            module: true
+            fixed: false
+            channels:
+              email: true
+        defaults:
+          direct:
+            web: true
+            email: true
+          followers:
+            web: true
+            email: false
+          mail:
+            email: true
+        spaces:
+          selected:
+            - id: 3
+              guid: 9a8b7c6d-5e4f-3210-9876-543210fedcba
+              name: Product Team
+              url: https://example.com/s/product-team/
+              color: "#7a9299"
+              imageUrl: null
+              contentContainerId: 21
+          enabled: true
+        privacy: null

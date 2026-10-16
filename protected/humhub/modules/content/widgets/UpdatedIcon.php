@@ -3,7 +3,7 @@
 namespace humhub\modules\content\widgets;
 
 use DateTime;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use Yii;
 use yii\base\InvalidConfigException;
 

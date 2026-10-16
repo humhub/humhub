@@ -67,20 +67,28 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
      */
     public function run()
     {
+        $addedUserIds = [];
         if ($this->allUsers) {
             foreach (User::find()->active()->batch() as $users) {
-                $this->addUsers($users);
+                $addedUserIds = array_merge($addedUserIds, $this->addUsers($users));
             }
         } else {
-            $this->addUsers($this->userIds);
+            $addedUserIds = $this->addUsers($this->userIds);
+        }
+
+        // one notification dispatch for all users added directly
+        if ($addedUserIds !== []) {
+            UserAddedNotification::send($addedUserIds, $this->space, $this->originator, dedupe: false);
         }
     }
 
     /**
      * @param User[]|int[] $users
+     * @return int[] the ids of the users added as members directly (`forceMembership`)
      */
-    private function addUsers($users)
+    private function addUsers($users): array
     {
+        $addedUserIds = [];
         foreach ($users as $user) {
             try {
                 $user = ($user instanceof User) ? $user : User::findOne(['id' => $user]);
@@ -92,12 +100,15 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
                 $this->space->inviteMember($user->id, $this->originator->id, !$this->forceMembership);
 
                 if ($this->forceMembership) {
-                    $this->space->addMember($user->id, 2, true);
-                    UserAddedNotification::instance()->from($this->originator)->about($this->space)->send($user);
+                    if ($this->space->addMember($user->id, 2, true)) {
+                        $addedUserIds[] = (int)$user->id;
+                    }
                 }
             } catch (Exception $e) {
                 Yii::error($e);
             }
         }
+
+        return $addedUserIds;
     }
 }

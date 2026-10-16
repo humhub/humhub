@@ -63,6 +63,7 @@ return [
     'Show less' => 'Показати менше',
     'Show more' => 'Показати більше',
     'Some files could not be uploaded:' => 'Деякі файли не завантажені:',
+  'Sort Order' => 'Сортувати за номером',
     'Stop impersonation' => 'Припиніть видавати себе за іншу особу',
     'Text could not be copied to clipboard' => 'Текст не може бути скопійований до буферу пам\'яті',
     'Text has been copied to clipboard' => 'Текст скопійован до буферу пам\'яті',
@@ -106,4 +107,7 @@ return [
     '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '',
     '{attribute} must be a string (UUID) or null; {type} given.' => '',
     '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '',
+  'Code' => 'Код',
+  'Heading' => 'Заголовок',
+  'Image' => 'Зображення',
 ];

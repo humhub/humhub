@@ -230,7 +230,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         Html::addCssClass($htmlOptions, ['btn', 'btn-light', 'btn-ac-' . $client->getName()]);
         $htmlOptions['data-pjax-prevent'] = '';
 
-        $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i>' : '';
+        $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i> ' : '';
 
         return $style . parent::clientLink($client, $icon . $client->getTitle(), $htmlOptions);
     }

@@ -11,6 +11,7 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\db\AfterCommit;
 use humhub\components\Module;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
@@ -28,13 +29,14 @@ use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
-use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
+use humhub\modules\content\notifications\ContentCreatedNotification;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -357,7 +359,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         if ($this->container) {
-            Yii::$app->live->send(new NewContent([
+            $event = new NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
                 'originator' => $this->createdBy->guid,
@@ -369,7 +371,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
                 'insert' => true,
-            ]));
+            ]);
+            AfterCommit::run(static fn() => Yii::$app->live->send($event));
         }
     }
 
@@ -391,20 +394,23 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
-        $userQuery = Yii::$app->notification->getFollowers($this);
-        if (count($this->notifyUsersOfNewContent) != 0) {
-            // Add manually notified users
-            $userQuery->union(
+        // The explicitly notified users first: a follower among them keeps the explicit wording,
+        // the followers' dispatch skips them as duplicates.
+        if (!empty($this->notifyUsersOfNewContent)) {
+            ContentCreatedNotification::send(
                 User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)]),
+                $contentSource,
+                $this->createdBy,
+                payload: ['explicit' => true],
             );
         }
 
-        NotificationsContentCreated::instance()
-            ->from($this->createdBy)
-            ->about($contentSource)
-            ->sendBulk($userQuery);
+        $followers = (new NotificationSpaceService())->getFollowers($this);
+        if ($followers !== null) {
+            ContentCreatedNotification::send($followers, $contentSource, $this->createdBy);
+        }
 
-        ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);
+        ContentCreatedActivity::send($contentSource, $this->createdBy);
     }
 
     /**
@@ -453,10 +459,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function softDeleteInternal(): bool
     {
-        Notification::deleteAll([
-            'source_class' => PolymorphicRelation::getObjectModel($this),
-            'source_pk' => $this->getPrimaryKey(),
-        ]);
+        // The notifications about the content and its addons (e.g. comments): a deleted content cannot be opened
+        Notification::deleteAll(['content_id' => $this->id]);
 
         return $this->getStateService()->delete();
     }

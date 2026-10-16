@@ -53,6 +53,10 @@ Yii::$app->view->theme->variable('background-color-page');
 
 SCSS is compiled to CSS on cache flush (*Administration → Settings → Flush Cache*). There is no separate build step for themes.
 
+## Icons
+
+Icons are [Tabler Icons](https://tabler.io/icons), rendered by `humhub\widgets\Icon` as `<i class="ti ti-<name>">`; a filled variant is `ti-<name>-filled`. Style them through `.ti` and `.ti-<name>`, and use a Tabler codepoint with `font-family: tabler-icons` (or `tabler-icons-filled`) for glyphs placed via `content`. The library-neutral size and utility classes `icon-sm`, `icon-lg`, `icon-2x` … `icon-10x`, `icon-fw`, `icon-pull-left`, `icon-pull-right` and `icon-spin` live in the core's `_icon.scss`.
+
 ## Suppressing default component imports
 
 The core `build.scss` imports a number of optional partials (login, modals, …). Each can be suppressed by setting a flag *before* the parent build runs:

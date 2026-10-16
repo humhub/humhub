@@ -10,14 +10,12 @@ namespace humhub\modules\marketplace\controllers;
 
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
 use humhub\modules\marketplace\Module;
-use humhub\modules\marketplace\services\ModuleService;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 /**
- * Class BrowseController
+ * The marketplace page; everything it does goes through `/api/v2/marketplace` (see `controllers\api\`).
  *
  * @property Module $module
  * @package humhub\modules\marketplace\controllers
@@ -48,90 +46,18 @@ class BrowseController extends Controller
 
     public function actionIndex()
     {
+        // The meta search links its "all results" to a provider's route with `keyword`, the
+        // parameter every directory page used to read; the marketplace filters by `q`.
+        $keyword = Yii::$app->request->get('keyword');
+        if (is_string($keyword) && $keyword !== '') {
+            $params = Yii::$app->request->get();
+            unset($params['keyword']);
+            $params['q'] ??= $keyword;
+
+            return $this->redirect(array_merge(['/marketplace/browse'], $params));
+        }
+
         $this->subLayout = '@admin/views/layouts/module';
         return $this->render('index');
     }
-
-    /**
-     * Returns the thirdparty disclaimer
-     */
-    public function actionThirdpartyDisclaimer()
-    {
-        return $this->renderAjax('thirdpartyDisclaimer');
-    }
-
-    /**
-     * Installs a given moduleId from marketplace
-     */
-    public function actionInstall()
-    {
-        $this->forcePostRequest();
-
-        $this->getModuleService()->install();
-
-        return $this->renderAjax('installed', [
-            'moduleId' => Yii::$app->request->post('moduleId'),
-        ]);
-    }
-
-    /**
-     * Enables a module after installation
-     *
-     * @throws HttpException
-     */
-    public function actionEnable(): string
-    {
-        $this->forcePostRequest();
-
-        $moduleService = $this->getModuleService();
-
-        if (!$moduleService->enable()) {
-            throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Could not find the requested module!'));
-        }
-
-        return $this->renderAjax('enabled', [
-            'moduleConfigUrl' => $moduleService->module->getConfigUrl(),
-        ]);
-    }
-
-    /**
-     * Module settings
-     * @return string
-     */
-    public function actionModuleSettings()
-    {
-        $moduleSettingsForm = new GeneralModuleSettingsForm();
-
-        if ($moduleSettingsForm->load(Yii::$app->request->post()) && $moduleSettingsForm->save()) {
-            $this->view->saved();
-            return $this->redirect(['/marketplace/browse']);
-        }
-
-        return $this->renderAjax('moduleSettings', [
-            'settings' => $moduleSettingsForm,
-        ]);
-    }
-
-    /**
-     * Toggles the marketplace setting that controls whether unverified community
-     * modules are included in the marketplace listing.
-     *
-     * @since 1.19
-     */
-    public function actionToggleCommunity()
-    {
-        $this->forcePostRequest();
-
-        $value = (bool) Yii::$app->request->post('value');
-        $this->module->settings->set('includeCommunityModules', $value);
-        Yii::$app->cache->delete('marketplace-categories');
-
-        return $this->asJson(['success' => true, 'enabled' => $value]);
-    }
-
-    private function getModuleService(): ModuleService
-    {
-        return new ModuleService(Yii::$app->request->post('moduleId'));
-    }
-
 }

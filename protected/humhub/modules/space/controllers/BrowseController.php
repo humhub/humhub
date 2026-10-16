@@ -67,15 +67,6 @@ class BrowseController extends Controller
     }
 
     /**
-     * @return Response
-     * @throws Throwable
-     */
-    public function actionSearchLazy()
-    {
-        return $this->asJson(Chooser::getLazyLoadResult());
-    }
-
-    /**
      * Returns space tags list in JSON format filtered by keyword
      */
     public function actionSearchTagsJson()

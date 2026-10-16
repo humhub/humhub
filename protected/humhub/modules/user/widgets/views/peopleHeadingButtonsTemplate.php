@@ -2,7 +2,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\menu\MenuEntry;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
 use humhub\widgets\bootstrap\Button;
 

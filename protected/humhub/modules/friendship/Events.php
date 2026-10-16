@@ -9,7 +9,7 @@
 namespace humhub\modules\friendship;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use Yii;
 use yii\base\BaseObject;

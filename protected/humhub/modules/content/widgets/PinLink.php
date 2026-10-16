@@ -9,19 +9,18 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use yii\base\Widget;
+use humhub\widgets\menu\MenuLink;
+use Yii;
 use yii\helpers\Url;
 
 /**
- * PinLinkWidget for Wall Entries shows a pin link.
+ * The "Pin to top" / "Unpin" entry of a content's context menu ({@see WallEntryControls}).
  *
- * This widget will attached to the WallEntryControlsWidget and displays
- * the "Pin or Unpin" Link to the Content Objects.
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
  *
- * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class PinLink extends Widget
+class PinLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -31,19 +30,27 @@ class PinLink extends Widget
     /**
      * @inheritdoc
      */
-    public function run()
+    public function init()
     {
+        parent::init();
 
-        // Show pin links only inside content container streams
-        if (!$this->content->content->canPin()) {
-            return '';
+        $content = $this->content->content;
+
+        if (!$content->canPin()) {
+            $this->setIsVisible(false);
+            return;
         }
 
-        return $this->render('pinLink', [
-            'pinUrl' => Url::to(['/content/content/pin', 'id' => $this->content->content->id]),
-            'unpinUrl' => Url::to(['/content/content/un-pin', 'id' => $this->content->content->id]),
-            'isPinned' => $this->content->content->isPinned(),
-        ]);
-    }
+        $pinned = $content->isPinned();
 
+        $this->setLabel($pinned
+            ? Yii::t('ContentModule.base', 'Unpin')
+            : Yii::t('ContentModule.base', 'Pin to top'));
+        $this->setIcon('map-pin');
+        $this->setUrl('#');
+        $this->getLink()->action(
+            $pinned ? 'unpin' : 'pin',
+            Url::to([$pinned ? '/content/content/un-pin' : '/content/content/pin', 'id' => $content->id]),
+        );
+    }
 }

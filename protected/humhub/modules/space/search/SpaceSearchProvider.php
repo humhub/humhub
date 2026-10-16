@@ -8,8 +8,9 @@
 
 namespace humhub\modules\space\search;
 
+use humhub\components\listing\ListContext;
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\modules\space\components\SpaceDirectoryQuery;
+use humhub\modules\space\components\SpaceList;
 use humhub\services\MetaSearchService;
 use Yii;
 
@@ -72,18 +73,20 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
      */
     public function getResults(int $maxResults): array
     {
-        $spaceDirectoryQuery = new SpaceDirectoryQuery([
-            'defaultFilters' => ['keyword' => $this->getKeyword()],
-            'pageSize' => $maxResults,
-        ]);
+        // The directory's search (with the restrictions modules apply to it), whose "Show all
+        // results" is the directory itself.
+        $query = (new SpaceList())->build(
+            ['q' => (string)$this->getKeyword()],
+            ListContext::forCurrentUser(SpaceList::PURPOSE_DIRECTORY),
+        )->query();
 
         $results = [];
-        foreach ($spaceDirectoryQuery->all() as $space) {
+        foreach ((clone $query)->limit($maxResults)->all() as $space) {
             $results[] = Yii::createObject(SearchRecord::class, [$space]);
         }
 
         return [
-            'totalCount' => $spaceDirectoryQuery->pagination->totalCount,
+            'totalCount' => (int)$query->count(),
             'results' => $results,
         ];
     }

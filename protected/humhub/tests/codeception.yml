@@ -13,6 +13,7 @@ coverage:
   - ../events/*
   - ../libs/*
   - ../models/*
+  - ../services/*
 extensions:
   enabled:
   - tests\codeception\_support\HumHubExtension

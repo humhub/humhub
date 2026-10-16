@@ -21,7 +21,7 @@ class Module extends \humhub\components\Module
     /**
      * @var string defines the icon for topics used in badges etc.
      */
-    public $icon = 'fa-star';
+    public $icon = 'star';
 
     /**
      * @inheritdoc

@@ -2,9 +2,10 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\menu\WidgetMenuEntry;
-use humhub\modules\ui\menu\widgets\DropdownMenu;
+use humhub\widgets\menu\DropdownDivider;
+use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\menu\WidgetMenuEntry;
+use humhub\widgets\menu\DropdownMenu;
 
 /* @var $this View */
 /* @var $menu DropdownMenu */
@@ -26,7 +27,10 @@ use humhub\modules\ui\menu\widgets\DropdownMenu;
 
     <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
-            <?php if ($entry instanceof WidgetMenuEntry) : ?>
+            <?php if (!$entry->isVisible()) : ?>
+                <?php continue ?>
+            <?php elseif ($entry instanceof WidgetMenuEntry || $entry instanceof DropdownDivider) : ?>
+                <?php // Both render their own `<li>`. ?>
                 <?= $entry->render() ?>
             <?php else: ?>
                 <li>

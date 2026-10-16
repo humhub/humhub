@@ -2,13 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\stream\models;
 
-class WallStreamQuery extends StreamSuppressQuery
+/**
+ * @deprecated since 1.20, use \humhub\modules\content\models\stream\WallStreamQuery instead. Will be removed in 1.21.
+ */
+class WallStreamQuery extends \humhub\modules\content\models\stream\WallStreamQuery
 {
 }

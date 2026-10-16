@@ -4,6 +4,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\AboutPageSidebar;
 use humhub\modules\user\widgets\Image;
+use humhub\widgets\Icon;
 
 /**
  * @var Space $space
@@ -92,12 +93,12 @@ use humhub\modules\user\widgets\Image;
             <div class="row">
                 <div class="col-lg-4">
                     <p><strong><?= Yii::t('SpaceModule.base', 'Join Policy') ?></strong></p>
-                    <p><i class="fa fa-users text-info"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
+                    <p><?= Icon::get('users')->class('text-info') ?> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
                     <br/>
                 </div>
                 <div class="col-lg-8">
                     <p><strong><?= Yii::t('SpaceModule.base', 'Space Visibility') ?></strong></p>
-                    <p><i class="fa fa-globe text-info"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
+                    <p><?= Icon::get('world')->class('text-info') ?> <?= Space::visibilityOptions()[$space->visibility] ?></p>
                 </div>
             </div>
         </div>

@@ -50,7 +50,18 @@ class HumHubApiTestCest
 
         $record = $recordModelClass::findOne([$recordModelClass::tableName() . '.id' => $id]);
 
-        return ($record ? call_user_func($this->recordDefinitionFunction, $record) : []);
+        return ($record ? static::normalizeDefinition(call_user_func($this->recordDefinitionFunction, $record)) : []);
+    }
+
+    /**
+     * Definitions may carry `(object)` casts (fields that must serialize as `{}` instead
+     * of `[]` on the wire, e.g. a comment's `extensions`). The JSON-contains comparator
+     * only understands nested arrays, so expected definitions are normalized through a
+     * JSON round-trip before comparison.
+     */
+    protected static function normalizeDefinition(array $definition): array
+    {
+        return json_decode(json_encode($definition), true);
     }
 
     protected function getRecordDefinitions(array $ids, ?string $recordModelClass = null, ?array $recordDefinitionFunction = null): array
@@ -67,7 +78,7 @@ class HumHubApiTestCest
 
         $records = [];
         foreach ($recordsQuery->all() as $record) {
-            $records[$record->id] = call_user_func($recordDefinitionFunction, $record);
+            $records[$record->id] = static::normalizeDefinition(call_user_func($recordDefinitionFunction, $record));
         }
 
         $recordDefinitions = [];

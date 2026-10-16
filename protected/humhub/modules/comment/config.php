@@ -14,6 +14,19 @@ return [
     'id' => 'comment',
     'class' => Module::class,
     'isCoreModule' => true,
+    // HTTP API (see docs/develop/concept-api.md). Routes point at
+    // `controllers/api/CommentController`; Yii resolves the `api/` subdirectory from the
+    // route itself. Registered prepended by the ModuleManager, so they win over the
+    // generic fallback routing.
+    'urlManagerRules' => [
+        ['pattern' => 'api/v2/content/<id:\d+>/comments', 'route' => 'comment/api/comment/content-comments', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/comment/<id:\d+>/replies', 'route' => 'comment/api/comment/replies', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/comment', 'route' => 'comment/api/comment/create', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/comment/<id:\d+>', 'route' => 'comment/api/comment/view', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/comment/<id:\d+>/permissions', 'route' => 'comment/api/comment/permissions', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/comment/<id:\d+>', 'route' => 'comment/api/comment/update', 'verb' => 'PATCH'],
+        ['pattern' => 'api/v2/comment/<id:\d+>', 'route' => 'comment/api/comment/delete', 'verb' => 'DELETE'],
+    ],
     'events' => [
         [User::class, User::EVENT_BEFORE_DELETE, [Events::class, 'onUserDelete']],
         [ContentActiveRecord::class, ContentActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onContentDelete']],

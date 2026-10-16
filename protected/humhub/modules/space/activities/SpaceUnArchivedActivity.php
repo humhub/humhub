@@ -2,11 +2,11 @@
 
 namespace humhub\modules\space\activities;
 
-use humhub\modules\space\components\BaseSpaceActivity;
-use Yii;
+use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use Yii;
 
-class SpaceUnArchivedActivity extends BaseSpaceActivity implements ConfigurableActivityInterface
+class SpaceUnArchivedActivity extends BaseActivity implements ConfigurableActivityInterface
 {
     public static function getTitle(): string
     {
@@ -25,5 +25,13 @@ class SpaceUnArchivedActivity extends BaseSpaceActivity implements ConfigurableA
         }
 
         return Yii::t('SpaceModule.base', '{displayName} has unarchived the Space "{spaceName}".', $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getRedactedMessage(array $params): ?string
+    {
+        return Yii::t('SpaceModule.base', '{displayName} unarchived a Space.', $params);
     }
 }

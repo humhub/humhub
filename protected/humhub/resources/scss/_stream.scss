@@ -128,7 +128,7 @@
                     color: var(--bs-danger);
                 }
 
-                .fa-archive {
+                .ti-archive {
                     color: var(--bs-warning);
                 }
             }
@@ -136,7 +136,7 @@
             .wall-entry-header-image {
                 padding-right: $wallEntryInnerPadding;
 
-                .fa {
+                .ti {
                     font-size: 2.39em;
                     margin-top: 5px;
 
@@ -175,7 +175,7 @@
             }
 
             h4, h5 {
-                i.fa-caret-right {
+                i.ti-caret-right-filled {
                     margin: 0 2px;
                 }
 

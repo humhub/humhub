@@ -4,13 +4,9 @@ namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
 use humhub\helpers\Html;
-use humhub\modules\content\controllers\SearchController;
-use humhub\modules\content\helpers\SearchHelper;
-use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\widgets\JsWidget;
-use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
@@ -115,7 +111,7 @@ class FilePreview extends JsWidget
                 if (is_string($file)) {
                     $file = File::findOne(['guid' => $file]);
                 }
-                $result[] = ArrayHelper::merge(FileHelper::getFileInfos($file), ['highlight' => $this->isHighlighed($file)]);
+                $result[] = ArrayHelper::merge(FileHelper::getFileInfos($file), ['highlight' => FileHelper::isSearchHighlighted($file)]);
             }
         }
 
@@ -147,29 +143,4 @@ class FilePreview extends JsWidget
         }
     }
 
-    /**
-     * Checks whether the file should be highlighed in the results or not.
-     *
-     * @param File $file
-     * @return bool is highlighed
-     */
-    protected function isHighlighed(File $file)
-    {
-        if (Yii::$app->controller instanceof SearchController) {
-            /** @var SearchController $searchController */
-            $searchController = Yii::$app->controller;
-
-            if (!empty($searchController->searchRequest->keyword)) {
-                $converter = new TextConverter();
-                if (
-                    $converter->applyFile($file)
-                    && SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
-                ) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }

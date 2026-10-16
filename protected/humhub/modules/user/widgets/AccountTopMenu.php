@@ -10,9 +10,9 @@ namespace humhub\modules\user\widgets;
 
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\admin\widgets\AdminMenu;
-use humhub\modules\ui\menu\DropdownDivider;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\DropdownDivider;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\Menu;
 use humhub\modules\user\controllers\AuthController;
 use humhub\modules\user\models\User;
 use humhub\widgets\modal\ModalButton;

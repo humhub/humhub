@@ -7,7 +7,7 @@
 
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\PanelMenu;
 
 /* @var Topic[] $topics */

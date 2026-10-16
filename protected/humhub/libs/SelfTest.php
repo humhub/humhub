@@ -14,6 +14,9 @@ use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\ConfigDirectoryService;
+use humhub\services\DocumentRootProbeService;
+use humhub\services\DocumentRootService;
 use humhub\services\MailLinkService;
 use humhub\services\MigrationService;
 use Yii;
@@ -508,6 +511,9 @@ class SelfTest
             }
         }
 
+        $checks = self::getDocumentRootResults($checks);
+        $checks = self::getConfigDirectoryResults($checks);
+
         // Check Runtime Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Runtime');
         $path = realpath(Yii::getAlias('@runtime'));
@@ -607,6 +613,124 @@ class SelfTest
         }
 
         return self::getMarketplaceResults($checks);
+    }
+
+    /**
+     * Checks how the web server is wired to the installation: which entry script serves it, and
+     * whether the installation root beside the document root is reachable over the web.
+     *
+     * @param array $checks results collected so far
+     * @return array
+     * @since 1.20
+     */
+    private static function getDocumentRootResults(array $checks): array
+    {
+        $documentRoot = DocumentRootService::instance();
+        $webServer = Yii::t('AdminModule.information', 'Web server');
+
+        // Check Entry Script
+        $title = $webServer . ' - ' . Yii::t('AdminModule.information', 'Entry script');
+        if (!$documentRoot->isLegacyEntryScript()) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK',
+            ];
+        } elseif ($documentRoot->hasUnresolvableWebUrl()) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'ERROR',
+                'hint' => Yii::t('AdminModule.information', 'The deprecated entry script in {filePath} is in use and the URL of the document root {publicPath} could not be determined, so assets cannot be loaded. Set the environment variable {envVariable} to the URL the document root is reachable under.', [
+                    'filePath' => $documentRoot->getLegacyEntryScriptPath(),
+                    'publicPath' => $documentRoot->getPublicPath(),
+                    'envVariable' => DocumentRootService::ENV_PUBLIC_URL,
+                ]),
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'The deprecated entry script in {filePath} is in use. Point the document root of your web server to {publicPath} and let it serve the {entryScript} there. Support for the old entry script will be removed in a future version.', [
+                    'filePath' => $documentRoot->getLegacyEntryScriptPath(),
+                    'publicPath' => $documentRoot->getPublicPath(),
+                    'entryScript' => 'index.php',
+                ]),
+            ];
+        }
+
+        // Check Document Root
+        $title = $webServer . ' - ' . Yii::t('AdminModule.information', 'Document root');
+        $probe = DocumentRootProbeService::instance();
+        $state = $probe->getState();
+
+        if ($state === DocumentRootProbeService::STATE_EXPOSED) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'ERROR',
+                'hint' => Yii::t('AdminModule.information', 'The installation directory {filePath} is reachable over the web, which exposes your configuration, uploads and installed modules. Point the document root of your web server to {publicPath}.', [
+                    'filePath' => $documentRoot->getRootPath(),
+                    'publicPath' => $documentRoot->getPublicPath(),
+                ]),
+            ];
+        } elseif ($state === DocumentRootProbeService::STATE_UNKNOWN) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Could not check whether the installation directory is reachable over the web, because this installation cannot reach itself. Please verify manually that {url} is not served.', [
+                    'url' => $probe->getInstallationRootUrl(),
+                ]),
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK',
+            ];
+        }
+
+        return $checks;
+    }
+
+    /**
+     * Reports configuration left in the directory below `protected/`, which 1.20 replaced with the
+     * one in the installation root.
+     *
+     * The old directory is still read, so this is a warning rather than an error, and it stays out
+     * of [[IncompleteSetupWarning]] on purpose: the transition gets a release to happen in before
+     * the dashboard asks for it in 1.21. Files HumHub itself shipped there, and the configuration
+     * files it shipped empty, are not reported - they say nothing about whether anything was moved.
+     *
+     * @param array $checks results collected so far
+     * @return array
+     * @since 1.20
+     */
+    private static function getConfigDirectoryResults(array $checks): array
+    {
+        $configDirectory = ConfigDirectoryService::instance();
+        $title = Yii::t('AdminModule.information', 'Configuration') . ' - ' . Yii::t('AdminModule.information', 'Directory');
+
+        $legacyEntries = $configDirectory->getLegacyEntries();
+
+        if ($legacyEntries === []) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK',
+            ];
+
+            return $checks;
+        }
+
+        $checks[] = [
+            'title' => $title,
+            'state' => 'WARNING',
+            'hint' => Yii::t('AdminModule.information', 'The configuration directory moved to {filePath}. Move what is left in {legacyPath} there: {entries}. The old directory is still loaded, but translation overrides in {messagesDir} and view overrides in {viewsDir} are only looked up in the new location.', [
+                'filePath' => $configDirectory->getPath(),
+                'legacyPath' => $configDirectory->getLegacyPath(),
+                'entries' => implode(', ', $legacyEntries),
+                'messagesDir' => 'messages',
+                'viewsDir' => 'views',
+            ]),
+        ];
+
+        return $checks;
     }
 
     /**

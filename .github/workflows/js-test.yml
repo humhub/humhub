@@ -1,0 +1,77 @@
+name: JavaScript Tests
+
+# The client-side counterpart of php-test.yml: runs the vitest suite and verifies that the
+# committed Vue build artifacts still match their sources. The artifacts are committed on
+# purpose (an installation ships them, there is no build step on deploy — see
+# docs/develop/ui-js-vuejs.md), which means a stale one is invisible in review: the source
+# change looks complete while the browser keeps running the old component. This job is what
+# makes that impossible to miss.
+#
+# No workflow input is interpolated into a run: step - every step operates on the checkout
+# only, so there is nothing here a branch or commit message could inject into.
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - master
+            - develop
+            - next
+        paths:
+            - '**.vue'
+            - '**.js'
+            - '**.mjs'
+            - 'package.json'
+            - 'package-lock.json'
+            - '.github/workflows/js-test.yml'
+    pull_request:
+        branches:
+            - master
+            - develop
+            - next
+        paths:
+            - '**.vue'
+            - '**.js'
+            - '**.mjs'
+            - 'package.json'
+            - 'package-lock.json'
+            - '.github/workflows/js-test.yml'
+
+permissions:
+    contents: read
+
+jobs:
+    js-tests:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: 'npm'
+
+            # `npm ci` (not install) so the build runs against the locked vite/plugin-vue
+            # versions the committed artifacts were produced with - the freshness check
+            # below compares bytes, and a different compiler version legitimately emits
+            # different ones.
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run vitest
+              run: npm run test:js
+
+            - name: Rebuild every Vue artifact
+              run: node vue.build.mjs --module all
+
+            # `git status --porcelain`, not `git diff`: this has to fail for an artifact that
+            # was never added either (a new island whose module ships its first artifact),
+            # which a diff against the index would not report at all.
+            - name: Verify the committed artifacts are up to date
+              run: |
+                  CHANGED=$(git status --porcelain -- '**/humhub.*.vue.js' '**/humhub.*.vue.js.map')
+                  if [ -n "$CHANGED" ]; then
+                      echo "$CHANGED"
+                      git diff -- '**/humhub.*.vue.js'
+                      echo "::error::Committed Vue artifacts are out of date. Run 'grunt build-vue --module=all' and commit the result."
+                      exit 1
+                  fi

@@ -4,6 +4,7 @@ namespace humhub\modules\admin\libs;
 
 use humhub\modules\admin\events\FetchReloadableScriptsEvent;
 use humhub\modules\admin\Module;
+use humhub\services\ActiveThemeService;
 use Yii;
 use yii\base\Component;
 
@@ -31,7 +32,12 @@ class CacheHelper extends Component
         Yii::$app->assetManager->clear();
 
         $output .= "\nFlushing theme cache ...";
-        Yii::$app->view->theme->activate();
+        // Not activate(): that would persist the current in-memory theme as the admin's
+        // choice, which is wrong whenever it is only the fallback ActiveThemeService
+        // resolved because the selected theme could not be found.
+        ActiveThemeService::flush();
+        Yii::$app->view->theme->publishResources(true);
+        Yii::$app->systemRevision->touch();
 
         return $output;
     }

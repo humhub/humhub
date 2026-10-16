@@ -8,12 +8,12 @@
 
 namespace humhub\widgets;
 
+use humhub\components\api\ApiRules;
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\validators\FileValidator;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
-use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -29,13 +29,20 @@ class CoreJsConfig extends Widget
     {
 
         if (!Yii::$app->user->isGuest) {
-            $userConfig = UserPicker::asJSON(Yii::$app->user->getIdentity());
+            $identity = Yii::$app->user->getIdentity();
+            $userConfig = UserPicker::asJSON($identity);
             $userConfig['isGuest'] = false;
-            $userConfig['email'] = Yii::$app->user->getIdentity()->email;
+            $userConfig['email'] = $identity->email;
+            $userConfig['id'] = $identity->id;
+            // The viewer's own block list — drives client-side blocked-author masking
+            // (e.g. the comment island; the API deliberately serves unmasked payloads, see
+            // docs/develop/concept-api.md). @since 1.20
+            $userConfig['blockedUserIds'] = array_map('intval', $identity->getBlockedUserIds());
         } else {
             $userConfig = ['isGuest' => true];
         }
         $userConfig['locale'] = Yii::$app->formatter->locale;
+        $userConfig['loginUrl'] = Url::to(Yii::$app->user->loginUrl);
 
         $this->getView()->registerJsConfig(
             [
@@ -46,8 +53,14 @@ class CoreJsConfig extends Widget
                 ],
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
+                    // Base of the HTTP API the Vue islands consume (see humhub.vue.js's
+                    // apiUrl() and docs/develop/concept-api.md). Relative to the host the page
+                    // is served from, not the configured base URL: a request to another host is
+                    // cross-origin, which the Content Security Policy (`default-src 'self'`)
+                    // blocks - and the two differ whenever the site is reached under a second
+                    // name, an IP, or through a proxy. @since 1.20
+                    'apiUrl' => ApiRules::url(),
                     'reloadableScripts' => CacheHelper::getReloadableScriptUrls(),
-                    'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'syncScriptOrigins' => $this->getAssetOrigins(),
                 ],
                 'core' => [
@@ -74,7 +87,7 @@ class CoreJsConfig extends Widget
                     ],
                 ],
                 'topic' => [
-                    'icon' => '<i class="fa ' . Yii::$app->getModule('topic')->icon . '"></i>',
+                    'icon' => Icon::get(Yii::$app->getModule('topic')->icon)->asString(),
                 ],
                 'ui.richtext' => [
                     'emoji.url' => Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/emoji/'),
@@ -109,29 +122,29 @@ class CoreJsConfig extends Widget
                 ],
                 'ui.markdown', [
                     'text' => [
-                        'Bold' => Yii::t('UiModule.markdownEditor', 'Bold'),
-                        'Italic' => Yii::t('UiModule.markdownEditor', 'Italic'),
-                        'Heading' => Yii::t('UiModule.markdownEditor', 'Heading'),
-                        'URL/Link' => Yii::t('UiModule.markdownEditor', 'URL/Link'),
-                        'Image/File' => Yii::t('UiModule.markdownEditor', 'Image/File'),
-                        'Image' => Yii::t('UiModule.markdownEditor', 'Image'),
-                        'List' => Yii::t('UiModule.markdownEditor', 'List'),
-                        'Preview' => Yii::t('UiModule.markdownEditor', 'Preview'),
-                        'strong text' => Yii::t('UiModule.markdownEditor', 'strong text'),
-                        'emphasized text' => Yii::t('UiModule.markdownEditor', 'emphasized text'),
-                        'heading text' => Yii::t('UiModule.markdownEditor', 'heading text'),
-                        'enter link description here' => Yii::t('UiModule.markdownEditor', 'enter link description here'),
-                        'Insert Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Hyperlink'),
-                        'enter image description here' => Yii::t('UiModule.markdownEditor', 'enter image description here'),
-                        'Insert Image Hyperlink' => Yii::t('UiModule.markdownEditor', 'Insert Image Hyperlink'),
-                        'enter image title here' => Yii::t('UiModule.markdownEditor', 'enter image title here'),
-                        'list text here' => Yii::t('UiModule.markdownEditor', 'list text here'),
-                        'Quote' => Yii::t('UiModule.markdownEditor', 'Quote'),
-                        'quote here' => Yii::t('UiModule.markdownEditor', 'quote here'),
-                        'Code' => Yii::t('UiModule.markdownEditor', 'Code'),
-                        'code text here' => Yii::t('UiModule.markdownEditor', 'code text here'),
-                        'Unordered List' => Yii::t('UiModule.markdownEditor', 'Unordered List'),
-                        'Ordered List' => Yii::t('UiModule.markdownEditor', 'Ordered List'),
+                        'Bold' => Yii::t('base', 'Bold'),
+                        'Italic' => Yii::t('base', 'Italic'),
+                        'Heading' => Yii::t('base', 'Heading'),
+                        'URL/Link' => Yii::t('base', 'URL/Link'),
+                        'Image/File' => Yii::t('base', 'Image/File'),
+                        'Image' => Yii::t('base', 'Image'),
+                        'List' => Yii::t('base', 'List'),
+                        'Preview' => Yii::t('base', 'Preview'),
+                        'strong text' => Yii::t('base', 'strong text'),
+                        'emphasized text' => Yii::t('base', 'emphasized text'),
+                        'heading text' => Yii::t('base', 'heading text'),
+                        'enter link description here' => Yii::t('base', 'enter link description here'),
+                        'Insert Hyperlink' => Yii::t('base', 'Insert Hyperlink'),
+                        'enter image description here' => Yii::t('base', 'enter image description here'),
+                        'Insert Image Hyperlink' => Yii::t('base', 'Insert Image Hyperlink'),
+                        'enter image title here' => Yii::t('base', 'enter image title here'),
+                        'list text here' => Yii::t('base', 'list text here'),
+                        'Quote' => Yii::t('base', 'Quote'),
+                        'quote here' => Yii::t('base', 'quote here'),
+                        'Code' => Yii::t('base', 'Code'),
+                        'code text here' => Yii::t('base', 'code text here'),
+                        'Unordered List' => Yii::t('base', 'Unordered List'),
+                        'Ordered List' => Yii::t('base', 'Ordered List'),
                     ],
                 ],
                 'log' => [
@@ -184,7 +197,10 @@ class CoreJsConfig extends Widget
                     'adminDeleteModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
                 ],
                 'stream' => [
-                    'defaultSort' => Yii::$app->getModule('stream')->settings->get('defaultSort', 'c'),
+                    'defaultSort' => Yii::$app->getModule('content')->settings->get('defaultStreamSort', 'c'),
+                ],
+                'url' => [
+                    'template' => Url::to(['/__route__']),
                 ],
             ],
         );

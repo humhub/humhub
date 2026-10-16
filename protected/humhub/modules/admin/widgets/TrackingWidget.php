@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
-use humhub\modules\web\security\helpers\Security;
+use humhub\helpers\Html;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
@@ -37,7 +37,7 @@ class TrackingWidget extends Widget
 
         $twig = new Environment(new ArrayLoader(['trackingHtmlCode' => $trackingCode]));
         $twig->addExtension(new SandboxExtension(new SecurityPolicy(['if'], ['escape']), true));
-        return $twig->render('trackingHtmlCode', ['nonce' => Security::getNonce()]);
+        return $twig->render('trackingHtmlCode', ['nonce' => Html::getNonce()]);
     }
 
 }

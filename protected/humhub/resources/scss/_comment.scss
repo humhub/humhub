@@ -25,7 +25,15 @@
                     }
                 }
 
-                &:hover > .nav-pills.preferences  > .dropdown > .dropdown-toggle {
+                // :hover matches every ancestor of the hovered element (that's
+                // how the pseudo-class works, regardless of DOM nesting depth in
+                // between) - a nested reply's .single-comment is also a descendant
+                // of its parent .single-comment, so hovering the reply would reveal
+                // the PARENT's own dropdown-toggle too without the :not(:has(...))
+                // guard below. That guard keeps only the innermost hovered
+                // .single-comment "active"; replies never nest further (one level
+                // only, see CommentEntry.vue), so a single :has() check suffices.
+                &:hover:not(:has(.single-comment:hover)) > .nav-pills.preferences > .dropdown > .dropdown-toggle {
                     visibility: visible;
                 }
 
@@ -141,14 +149,6 @@
                 text-align: center;
             }
 
-            .jp-progress {
-                background-color: #dbdcdd !important;
-            }
-
-            .jp-play-bar {
-                background: #cacaca;
-            }
-
             .post-file-list {
                 background-color: darken($background-color-secondary, 2%);
             }
@@ -172,6 +172,21 @@
                 .richtext-create-buttons {
                     display: block;
                 }
+            }
+
+            // The inline (focusMenu) editor toolbar pulls itself 27px up over
+            // whatever sits above the input (margin-top: -27px, see
+            // .ProsemirrorEditor.focusMenu in _richtext.scss). Inside the
+            // comment layout only the hr band above the input (10px margin +
+            // 1px rule + 10px margin = 21px, see the hr rule below) is dead
+            // space, so the revealed toolbar clipped the Reply/Like row of the
+            // comment directly above by the missing 6px (browser-verified).
+            // Reserve exactly that shortfall while the toolbar is revealed —
+            // the editor toggles `d-none` on it on focus/blur — via padding
+            // (a margin would just collapse into the hr's larger 10px one);
+            // the unfocused layout stays byte-identical.
+            &:has(.ProseMirror-menubar:not(.d-none)) .richtext-create-input-group {
+                padding-top: 6px;
             }
         }
 

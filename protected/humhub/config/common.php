@@ -7,6 +7,8 @@
  */
 
 use humhub\components\i18n\PhpMessageSource;
+use humhub\services\ConfigDirectoryService;
+use humhub\services\DocumentRootService;
 
 // TODO: Remove this line, should be already handled by BootstrapService
 Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
@@ -49,6 +51,12 @@ $logTargetConfig = [
     ],
 ];
 
+// The installation root. Only `public/` below it is meant to be reachable over the web.
+$rootPath = realpath(__DIR__ . '/../../../');
+
+// The aliases this file defines do not exist yet, so the service is built from the path directly.
+$configDirectory = new ConfigDirectoryService($rootPath);
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.20.0-dev',
@@ -66,11 +74,12 @@ $config = [
     'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
     'aliases' => [
-        '@webroot' => realpath(__DIR__ . '/../../../'),
+        '@root' => $rootPath,
+        '@webroot' => $rootPath . DIRECTORY_SEPARATOR . DocumentRootService::PUBLIC_DIR,
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
-        '@config' => '@app/config',
-        '@themes' => '@webroot/themes',
+        '@config' => $configDirectory->getPath(),
+        '@themes' => $rootPath . DIRECTORY_SEPARATOR . 'themes',
     ],
     'components' => [
         'moduleManager' => [
@@ -82,13 +91,9 @@ $config = [
         'notification' => [
             'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [
-                \humhub\modules\notification\targets\WebTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class],
-                ],
-                \humhub\modules\notification\targets\MailTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class],
-                ],
-                \humhub\modules\notification\targets\MobileTarget::class => [],
+                'web' => ['class' => \humhub\modules\notification\targets\WebTarget::class],
+                'email' => ['class' => \humhub\modules\notification\targets\MailTarget::class],
+                'mobile' => ['class' => \humhub\modules\notification\targets\MobileTarget::class],
             ],
         ],
         'fs' => [
@@ -101,7 +106,9 @@ $config = [
                 ],
                 'data' => [
                     'class' => 'humhub\components\fs\LocalMountConfig',
-                    'path' => '@webroot/uploads',
+                    // Uploads are never served directly - they are published into the assets mount
+                    // on demand - so they stay out of the document root.
+                    'path' => '@root/uploads',
                 ],
             ],
         ],
@@ -242,7 +249,7 @@ $config = [
     'params' => [
         'installed' => false,
         'databaseDefaultStorageEngine' => 'InnoDB',
-        'dynamicConfigFile' => '@config/dynamic.php',
+        'dynamicConfigFile' => $configDirectory->getDynamicConfigFileReference(),
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'bsVersion' => 5, // Kartik Plugins
         'availableLanguages' => [
@@ -342,6 +349,28 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
+        'pwa' => [
+            // Progressive Web App support: web app manifest members and the service worker
+            'enabled' => true,
+        ],
+        'icon' => [
+            // Semantic icon names, mapped to the icon they are rendered as.
+            // Resolved by humhub\widgets\Icon; a name not listed here is used as given.
+            'alias' => [
+                'dropdownToggle' => 'chevron-down',
+                'edit' => 'pencil',
+                'delete' => 'trash',
+                'dashboard' => 'dashboard',
+                'directory' => 'book',
+                'back' => 'arrow-left',
+                'add' => 'plus',
+                'invite' => 'send',
+                'remove' => 'x',
+                'controls' => 'settings',
+                'about' => 'info-circle',
+                'stream' => 'menu-2',
+            ],
+        ],
     ],
     'container' => [
         'definitions' => [

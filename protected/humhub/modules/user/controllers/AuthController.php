@@ -573,8 +573,6 @@ class AuthController extends Controller
             }
         }
 
-        // NOTE: The method `htmlRedirect` renders `Html::nonce()`, so it must be run before
-        //       a resetting of nonce on the event `humhub\modules\web\Events\onAfterLogin`
         $result = Yii::$app->request->getIsAjax()
             ? $this->htmlRedirect($redirectUrl)
             : $this->redirect($redirectUrl);

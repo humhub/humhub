@@ -74,4 +74,60 @@ class MimeHelperTest extends Unit
 
         $this->assertEquals(MimeHelper::ICON_FILE, MimeHelper::getMimeIconClassByExtension($temp));
     }
+
+    /**
+     * @dataProvider dataIconNames
+     */
+    public function testIconNameByExtension($expected, $extension)
+    {
+        $this->assertSame($expected, MimeHelper::getIconNameByExtension($extension));
+    }
+
+    public function testIconNameByFileObject()
+    {
+        $file = new File();
+        $file->file_name = 'Report.PDF';
+
+        $this->assertSame('file-type-pdf', MimeHelper::getIconNameByExtension($file));
+    }
+
+    public static function dataIconNames(): array
+    {
+        return [
+            ['file-type-pdf', 'pdf'],
+            ['file-type-pdf', 'PDF'],
+            ['file-type-doc', 'docx'],
+            ['file-type-doc', 'odt'],
+            ['file-type-xls', 'xlsx'],
+            ['file-type-csv', 'tsv'],
+            ['file-type-ppt', 'key'],
+            ['file-type-txt', 'log'],
+            ['file-type-svg', 'svg'],
+            ['file-type-jpg', 'jpeg'],
+            ['file-type-png', 'png'],
+            ['file-type-bmp', 'bmp'],
+            ['photo', 'webp'],
+            ['photo', 'heic'],
+            ['file-music', 'flac'],
+            ['movie', 'mkv'],
+            ['file-zip', '7z'],
+            ['file-type-html', 'htm'],
+            ['file-type-css', 'scss'],
+            ['file-type-js', 'mjs'],
+            ['file-type-jsx', 'jsx'],
+            ['file-type-ts', 'ts'],
+            ['file-type-tsx', 'tsx'],
+            ['file-type-vue', 'vue'],
+            ['file-type-sql', 'sql'],
+            ['file-type-rs', 'rs'],
+            ['file-type-php', 'php'],
+            ['file-type-xml', 'xml'],
+            ['file-text', 'md'],
+            ['file-code', 'py'],
+            ['file-code', 'json'],
+            ['file-settings', 'env'],
+            ['file', 'unknown'],
+            ['file', ''],
+        ];
+    }
 }

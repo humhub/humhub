@@ -10,27 +10,41 @@
 namespace humhub\modules\topic\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\widgets\WallEntryControlLink;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\menu\MenuLink;
 use Yii;
 
-class ContentTopicButton extends WallEntryControlLink
+/**
+ * The "Topics" entry of a content's context menu
+ * ({@see \humhub\modules\content\widgets\WallEntryControls}), opening the topic dialog.
+ *
+ * A menu entry, not a widget, since 1.20.
+ */
+class ContentTopicButton extends MenuLink
 {
     /**
      * @var ContentActiveRecord
      */
     public $record;
 
-    public function renderLink()
+    /**
+     * @inheritdoc
+     */
+    public function init()
     {
+        parent::init();
+
         if ($this->record->content->getStateService()->isDeleted()) {
-            return '';
+            $this->setIsVisible(false);
+            return;
         }
 
-        return Link::modal(Yii::t('TopicModule.base', 'Topics'))
-            ->icon(Topic::getIcon())
-            ->load(['/topic/content-topic', 'contentId' => $this->record->content->id])
-            ->options($this->options);
+        $this->setId('topics');
+        $this->setLink(
+            Link::modal(Yii::t('TopicModule.base', 'Topics'))
+                ->icon(Topic::getIcon())
+                ->load(['/topic/content-topic', 'contentId' => $this->record->content->id]),
+        );
     }
 }

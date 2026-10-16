@@ -293,13 +293,13 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.template = {
         selectionWithImage: '{imageNodeSelected}<span class="picker-text with-image"></span>',
         selectionNoImage: '<span class="picker-text no-image"></span>',
-        selectionClear: ' <i class="fa fa-times-circle picker-close" role="button" tabindex="0"></i>',
-        selectionLocked: ' <i class="fa fa-lock picker-locked"></i>',
+        selectionClear: ' <i class="ti ti-circle-x picker-close" role="button" tabindex="0"></i>',
+        selectionLocked: ' <i class="ti ti-lock picker-locked"></i>',
         result: '<a href="#" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
         imageNode: '<img class="rounded" src="{image}" alt="" style="width:40px;height:40px;"  height="40" width="40">',
         imageNodeSelected: '<img class="rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
-        imageIcon: '<i class="fa {image}"></i> ',
+        imageIcon: '<i class="{iconLib} {image}"></i> ',
         imageColor: '<span class="picker-color" style="background:{image}"></span> ',
         option: '<option value="{id}" data-image=\'{image}\' selected></option>',
     };
@@ -339,7 +339,7 @@ humhub.module('ui.picker', function (module, require, $) {
                 'id': '_add:' + params.term,
                 'text': i18n.t('base', 'Add:') + ' \'' + encodedTerm + '\'',
                 'textValue': params.term,
-                'image': '<i class="fa fa-plus-circle" aria-hidden="true"></i>',
+                'image': '<i class="ti ti-circle-plus" aria-hidden="true"></i>',
                 'new': true
             });
         }
@@ -478,13 +478,15 @@ humhub.module('ui.picker', function (module, require, $) {
 
         if (image.indexOf('<') >= 0) {
             return image;
-        } else if (!image.startsWith('/') && !image.startsWith('http') && !image.startsWith('fa-') && !image.startsWith('#')) {
-            // If image isn't a path (/), URL (http), color (#), or already prefixed, assume it's an icon name and prepend "fa-"
-            image = 'fa-' + image;
+        } else if (!image.startsWith('/') && !image.startsWith('http') && !/^(ti|fa)-/.test(image) && !image.startsWith('#')) {
+            // If image isn't a path (/), URL (http), color (#), or already prefixed, assume it's a Tabler icon name and prepend "ti-"
+            image = 'ti-' + image;
             item.image = image;
         }
 
-        if (image.indexOf('fa-') === 0) {
+        if (/^(ti|fa)-/.test(image)) {
+            // "fa-" prefixed values are Font Awesome 4 names of modules, rendered by the compatibility layer
+            item.iconLib = image.substring(0, 2);
             return string.template(Picker.template.imageIcon, item);
         } else if (image.indexOf('#') === 0) {
             return string.template(Picker.template.imageColor, item);

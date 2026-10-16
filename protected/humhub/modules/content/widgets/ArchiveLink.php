@@ -9,19 +9,19 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\widgets\menu\MenuLink;
 use Yii;
-use humhub\modules\content\components\ContentContainerController;
-use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
- * PinLink for Wall Entries
+ * The "Move to archive" / "Unarchive" entry of a content's context menu
+ * ({@see WallEntryControls}).
  *
- * This widget will attached to the WallEntryControlsWidget and displays
- * the "Pin or Unpin" Link to the Content Objects.
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
  *
  * @since 0.5
  */
-class ArchiveLink extends Widget
+class ArchiveLink extends MenuLink
 {
     /**
      * @var ContentActiveRecord
@@ -29,18 +29,29 @@ class ArchiveLink extends Widget
     public $content;
 
     /**
-     * Executes the widget.
+     * @inheritdoc
      */
-    public function run()
+    public function init()
     {
-        if (!$this->content->content->canArchive()) {
-            return '';
+        parent::init();
+
+        $content = $this->content->content;
+
+        if (!$content->canArchive()) {
+            $this->setIsVisible(false);
+            return;
         }
 
-        return $this->render('archiveLink', [
-            'object' => $this->content,
-            'id' => $this->content->content->id,
+        $archived = $content->isArchived();
+
+        $this->setLabel($archived
+            ? Yii::t('ContentModule.base', 'Unarchive')
+            : Yii::t('ContentModule.base', 'Move to archive'));
+        $this->setIcon('archive');
+        $this->setUrl('#');
+        $this->setHtmlOptions([
+            'data-action-click' => $archived ? 'unarchive' : 'archive',
+            'data-action-url' => Url::to([$archived ? '/content/content/unarchive' : '/content/content/archive', 'id' => $content->id]),
         ]);
     }
-
 }

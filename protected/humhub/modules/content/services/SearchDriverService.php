@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\services;
 
+use humhub\components\db\AfterCommit;
 use humhub\components\Event;
 use humhub\modules\content\events\ContentEvent;
 use humhub\modules\content\jobs\SearchDeleteDocument;
@@ -36,7 +37,8 @@ class SearchDriverService extends Component
     public function update(Content $content, bool $async = false): void
     {
         if ($async) {
-            Yii::$app->queue->push(new SearchUpdateDocument(['contentId' => $content->id]));
+            // after the commit, so the worker finds the saved content
+            AfterCommit::run(static fn() => Yii::$app->queue->push(new SearchUpdateDocument(['contentId' => $content->id])));
             return;
         }
 
@@ -48,7 +50,7 @@ class SearchDriverService extends Component
     public function delete(int $contentId, bool $async = false): void
     {
         if ($async) {
-            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $contentId]));
+            AfterCommit::run(static fn() => Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $contentId])));
             return;
         }
 

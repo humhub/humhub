@@ -60,7 +60,7 @@ class MaintenanceModeCest
         // and especially must not poison the returnUrl for the next login (the browser
         // would be sent to the service worker source instead of the dashboard).
         $I->haveHttpHeader('Accept', '*/*');
-        $I->amOnPage('/index-test.php?r=web%2Fpwa-service-worker%2Findex');
+        $I->amOnPage('/index-test.php?r=pwa%2Fservice-worker');
 
         $I->seeResponseCodeIs(403);
     }

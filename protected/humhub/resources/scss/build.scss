@@ -130,6 +130,30 @@ $prev-print: false !default;
 $prev-cards: false !default;
 @import "cards";
 
+$prev-page-toolbar: false !default;
+@import "page-toolbar";
+
+$prev-card-directory: false !default;
+@import "card-directory";
+
+$prev-item-browser: false !default;
+@import "item-browser";
+
+$prev-marketplace: false !default;
+@import "marketplace";
+
+$prev-entity-card: false !default;
+@import "entity-card";
+
+$prev-space-directory: false !default;
+@import "space-directory";
+
+$prev-people-directory: false !default;
+@import "people-directory";
+
+$prev-notification-settings: false !default;
+@import "notification-settings";
+
 $prev-modules: false !default;
 @import "modules";
 

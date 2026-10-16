@@ -12,6 +12,8 @@ use humhub\components\Widget;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\libs\SelfTest;
 use humhub\modules\admin\Module;
+use humhub\services\DocumentRootProbeService;
+use humhub\services\DocumentRootService;
 use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\db\Query;
@@ -28,6 +30,8 @@ class IncompleteSetupWarning extends Widget
     public const PROBLEM_QUEUE_RUNNER = 'queue-runner';
     public const PROBLEM_CRON_JOBS = 'cron-jobs';
     public const PROBLEM_MOBILE_APP_PUSH_SERVICE = 'mobile-app-push-service';
+    public const PROBLEM_LEGACY_ENTRY_SCRIPT = 'legacy-entry-script';
+    public const PROBLEM_DOCUMENT_ROOT_EXPOSED = 'document-root-exposed';
 
 
     /**
@@ -80,7 +84,38 @@ class IncompleteSetupWarning extends Widget
             $problems[] = static::PROBLEM_MOBILE_APP_PUSH_SERVICE;
         }
 
-        return $problems;
+        return [...$problems, ...static::getDocumentRootProblems()];
+    }
+
+    /**
+     * Problems with how the web server is wired to the installation.
+     *
+     * Both cases mean the same thing - the installation root is served - so only the one naming the
+     * actual cause is reported; two bullets asking for the same move would be noise. An
+     * installation that cannot reach itself yields nothing here: that is a verification gap rather
+     * than a finding, and the prerequisites list is where it belongs.
+     *
+     * For a correctly served installation this costs no HTTP request: the probe only asks anything
+     * when the site is reached under the document root's directory name.
+     *
+     * @return string[]
+     * @since 1.20
+     */
+    public static function getDocumentRootProblems(
+        ?DocumentRootService $documentRoot = null,
+        ?DocumentRootProbeService $probe = null,
+    ): array {
+        $documentRoot ??= DocumentRootService::instance();
+
+        if ($documentRoot->isLegacyEntryScript()) {
+            return [static::PROBLEM_LEGACY_ENTRY_SCRIPT];
+        }
+
+        $probe ??= DocumentRootProbeService::instance();
+
+        return $probe->getState() === DocumentRootProbeService::STATE_EXPOSED
+            ? [static::PROBLEM_DOCUMENT_ROOT_EXPOSED]
+            : [];
     }
 
     /**

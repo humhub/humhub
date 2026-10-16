@@ -184,7 +184,7 @@ class SetupController extends Controller
             if (file_exists(Yii::getAlias('@webroot/.htaccess'))) {
                 $info[] = Yii::t('InstallerModule.base', 'The <strong>.htaccess</strong> file is in place.');
             } else {
-                $errors[] = Yii::t('InstallerModule.base', 'The <strong>.htaccess</strong> file is not in place. In the installation folder, locate the <strong>.htaccess.dist</strong> file and rename it to <strong>.htaccess</strong>.');
+                $errors[] = Yii::t('InstallerModule.base', 'The <strong>.htaccess</strong> file is missing from the <strong>public</strong> directory. It is part of HumHub - restore it from the release package.');
             }
         } elseif (StringHelper::startsWith($serverSoftware, 'nginx')) {
             $info[] = Yii::t('InstallerModule.base', '<strong>Nginx</strong> web server detected.');

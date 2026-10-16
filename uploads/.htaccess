@@ -1,0 +1,11 @@
+# Uploaded files are never served from here. What is meant to be public - profile images, the site
+# icon - is published into the assets mount on demand and delivered from there, so this directory
+# has no business answering requests. Protects the files even when the document root is the
+# installation directory and mod_rewrite is unavailable.
+<IfModule authz_core_module>
+    Require all denied
+</IfModule>
+<IfModule !authz_core_module>
+    Order deny,allow
+    Deny from all
+</IfModule>

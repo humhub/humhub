@@ -34,7 +34,8 @@ class InviteLinkCest
         // See Invite On People Page
         $I->amUser2(true);
         $I->amOnPage('/people');
-        $I->click('Invite');
+        $I->waitForElementVisible('[data-action-id="invite-people-button"]');
+        $I->click('[data-action-id="invite-people-button"]');
         $I->waitForText('Invite by link');
 
         $I->click('Invite by link');
@@ -76,7 +77,8 @@ class InviteLinkCest
 
         $I->amUser2(true);
         $I->amOnPage('/people');
-        $I->click('Invite');
+        $I->waitForElementVisible('[data-action-id="invite-people-button"]');
+        $I->click('[data-action-id="invite-people-button"]');
         $I->waitForText('Send invite');
         $I->dontSee('Invite by email');
 

@@ -14,7 +14,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\actions\StreamEntryResponse;
+use humhub\modules\content\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\services\TopicService;
 use humhub\modules\user\models\User;

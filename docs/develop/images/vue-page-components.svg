@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Core Vue page components: a sheet of panels, one composition per panel.
+  Hand-maintained. Edit this file directly when a core Vue page component or one of
+  these compositions changes. Colours: toolbar = indigo, filters = teal,
+  content / item browser = orange, forms and overlays = magenta, feedback = green.
+  Each component is named by a monospace tag attached to the region it renders.
+  Panels are <g> elements: #toolbar-filterbar, #card-directory, #item-browser,
+  #dialog, #feedback. Shared icons live in <defs> as <symbol id="i-*">.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1274" width="1200" height="1274" role="img" aria-labelledby="title desc">
+<title id="title">Core Vue page components</title>
+<desc id="desc">Five panels. 1: PageToolbar with title, .c-icon-button actions and ViewSwitch, holding a FilterBar with a text search, an open FilterSelect, a FilterPicker with two chips, a UserFilterControl chip, the filter panel toggle and clear all. 2: CardDirectory composes PageToolbar, FilterBar and a CardGrid of entity cards with a CardSkeleton. 3: an item browser built from DropZone, PathBar with SelectionMenu, and TileGrid with folder tiles, a selected tile, an uploading tile in a ProgressFrame and a tile with an open DropdownMenu. 4: a UiModal holding a HumHubForm with TextField, SelectField, SubmitButton and a field showing a validation error. 5: a StatusBar toast and module buttons added through an ExtensionSlot.</desc>
+<defs>
+<style>
+  .t     { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; fill: #334155; }
+  .h1    { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 26px; font-weight: 700; fill: #0f172a; letter-spacing: -0.3px; }
+  .lead  { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; fill: #475569; }
+  .ptitle { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; font-weight: 700; fill: #0f172a; }
+  .psub  { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 400; fill: #64748b; }
+  .note  { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 12.5px; fill: #64748b; }
+  .code  { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+  .tag   { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; font-weight: 600; }
+  .ph    { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; fill: #94a3b8; }
+  .val   { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; fill: #334155; }
+  .sm    { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 12px; fill: #334155; }
+  .smm   { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 12px; fill: #64748b; }
+  .btn   { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 12.5px; font-weight: 600; }
+  .ui-h  { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-weight: 700; fill: #0f172a; }
+</style>
+<filter id="shadow" x="-6%" y="-6%" width="112%" height="118%">
+  <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#0f172a" flood-opacity="0.05"/>
+  <feDropShadow dx="0" dy="6" stdDeviation="9" flood-color="#0f172a" flood-opacity="0.07"/>
+</filter>
+<filter id="pop" x="-20%" y="-20%" width="140%" height="150%">
+  <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.16"/>
+</filter>
+<filter id="soft" x="-10%" y="-10%" width="120%" height="130%">
+  <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#0f172a" flood-opacity="0.08"/>
+</filter>
+<linearGradient id="shimmer" x1="0" x2="1" y1="0" y2="0">
+  <stop offset="0" stop-color="#e2e8f0"/><stop offset="0.5" stop-color="#f1f5f9"/><stop offset="1" stop-color="#e2e8f0"/>
+</linearGradient>
+<linearGradient id="cov1" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#c7d2fe"/><stop offset="1" stop-color="#a5b4fc"/></linearGradient>
+<linearGradient id="cov2" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#99f6e4"/><stop offset="1" stop-color="#5eead4"/></linearGradient>
+<linearGradient id="cov3" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fed7aa"/><stop offset="1" stop-color="#fdba74"/></linearGradient>
+<pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#e2e8f0"/></pattern>
+<symbol id="i-search" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.6"/><path d="M10.6 10.6 14 14"/></g></symbol>
+<symbol id="i-down" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></g></symbol>
+<symbol id="i-up" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10l4-4 4 4"/></g></symbol>
+<symbol id="i-x" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></g></symbol>
+<symbol id="i-plus" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3 8h10"/></g></symbol>
+<symbol id="i-grid" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></g></symbol>
+<symbol id="i-list" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4h8M5.5 8h8M5.5 12h8"/><circle cx="2.6" cy="4" r=".6"/><circle cx="2.6" cy="8" r=".6"/><circle cx="2.6" cy="12" r=".6"/></g></symbol>
+<symbol id="i-gear" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.8v1.7M8 12.5v1.7M1.8 8h1.7M12.5 8h1.7M3.6 3.6l1.2 1.2M11.2 11.2l1.2 1.2M3.6 12.4l1.2-1.2M11.2 4.8l1.2-1.2"/></g></symbol>
+<symbol id="i-funnel" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 3h11l-4.2 5.2v4.3l-2.6 1.2V8.2z"/></g></symbol>
+<symbol id="i-home" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 7.5 8 3l5.5 4.5M4 6.5V13h8V6.5"/></g></symbol>
+<symbol id="i-check" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.4l3 3 6-6.4"/></g></symbol>
+<symbol id="i-dots" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="3.5" cy="8" r=".9" fill="currentColor"/><circle cx="8" cy="8" r=".9" fill="currentColor"/><circle cx="12.5" cy="8" r=".9" fill="currentColor"/></g></symbol>
+<symbol id="i-upload" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10.5V2.8M4.8 5.8 8 2.6l3.2 3.2M2.5 10.5v2.7h11v-2.7"/></g></symbol>
+<symbol id="i-info" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 7.4v3.6M8 5h0"/></g></symbol>
+<symbol id="i-pencil" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 2.8l2.7 2.7L6 12.7l-3.4.7.7-3.4z"/></g></symbol>
+<symbol id="i-move" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 5h4l1.3 1.5h5.7V12.5h-11z"/></g></symbol>
+<symbol id="i-trash" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5h10M6.3 4.5V3h3.4v1.5M4.4 4.5l.6 8.5h6l.6-8.5"/></g></symbol>
+<symbol id="i-alert" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.8v3.8M8 11h0"/></g></symbol>
+<symbol id="i-cal" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.8h11M5.5 2v3M10.5 2v3"/></g></symbol>
+<symbol id="i-chev" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></g></symbol>
+<symbol id="i-folder" viewBox="0 0 48 40"><path d="M2 6a3 3 0 0 1 3-3h13l4 5h21a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="#fbbf24"/><path d="M2 13h44v22a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="#fcd34d"/></symbol>
+<symbol id="i-doc" viewBox="0 0 36 44"><path d="M3 3a2 2 0 0 1 2-2h18l10 10v30a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#fff" stroke="#94a3b8" stroke-width="1.5"/><path d="M23 1v10h10" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+<symbol id="i-spin" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-opacity=".3" stroke-width="2"/><path d="M8 2.5a5.5 5.5 0 0 1 5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</defs>
+<rect id="background" width="1200" height="1274" fill="#f4f6fa"/>
+<rect width="1200" height="1274" fill="url(#dots)" opacity=".7"/>
+<g id="header">
+<text class="h1" x="24" y="52">Core Vue page components</text>
+<text class="lead" x="24" y="78">Each panel is one composition drawn as a UI sketch; a tag names the component that renders that region.</text>
+<circle cx="749.6" cy="47" r="5" fill="#4f46e5"/>
+<text class="smm" x="758.6" y="51">toolbar</text>
+<circle cx="822.6" cy="47" r="5" fill="#0f766e"/>
+<text class="smm" x="831.64" y="51">filters</text>
+<circle cx="895.7" cy="47" r="5" fill="#c2410c"/>
+<text class="smm" x="904.68" y="51">content</text>
+<circle cx="968.7" cy="47" r="5" fill="#a21caf"/>
+<text class="smm" x="977.72" y="51">forms &amp; overlays</text>
+<circle cx="1102.2" cy="47" r="5" fill="#15803d"/>
+<text class="smm" x="1111.24" y="51">feedback</text>
+</g>
+<g id="toolbar-filterbar">
+<rect x="24" y="100" width="1152" height="326" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
+<rect x="44" y="118" width="4" height="18" rx="2" fill="#4f46e5"/>
+<text class="ptitle" x="56" y="133">PageToolbar + FilterBar<tspan class="psub" dx="10">the head of every list page</tspan></text>
+<text class="note" x="1156" y="132" text-anchor="end">used by People, Spaces, Marketplace, cfiles</text>
+<g id="page-toolbar">
+<rect x="48" y="156" width="1104" height="196" rx="12" fill="#fff" stroke="#c7d2fe" stroke-width="1.5" filter="url(#soft)"/>
+<text class="ui-h" x="72" y="200" font-size="20">Members</text>
+<text class="smm" x="178" y="200">128 people</text>
+<rect x="914" y="174" width="222" height="44" rx="9" fill="none" stroke="#a5b4fc" stroke-dasharray="4 3"/>
+<text class="smm" x="904" y="200" text-anchor="end">actions slot</text>
+<rect x="924" y="180" width="74" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+<rect x="927" y="183" width="34" height="26" rx="6" fill="#fff" filter="url(#soft)"/>
+<use href="#i-grid" x="936" y="188" width="16" height="16" color="#4f46e5"/>
+<use href="#i-list" x="972" y="188" width="16" height="16" color="#64748b"/>
+<rect x="1008" y="180" width="34" height="32" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-gear" x="1017" y="188" width="16" height="16" color="#334155"/>
+<rect x="1050" y="180" width="34" height="32" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-dots" x="1059" y="188" width="16" height="16" color="#334155"/>
+<rect x="1092" y="180" width="34" height="32" rx="7" fill="#4f46e5"/>
+<use href="#i-plus" x="1101" y="188" width="16" height="16" color="#fff"/>
+<rect x="924.0" y="147.0" width="86.2" height="18" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1"/>
+<text class="tag" x="967.1" y="160.2" text-anchor="middle" fill="#4f46e5">ViewSwitch</text>
+<rect x="1010.9" y="217.0" width="115.1" height="18" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1"/>
+<text class="tag" x="1068.4" y="230.2" text-anchor="middle" fill="#4f46e5">.c-icon-button</text>
+<rect x="66.0" y="147.0" width="93.5" height="18" rx="5" fill="#4f46e5"/>
+<text class="tag" x="112.7" y="160.2" text-anchor="middle" fill="#fff">PageToolbar</text>
+</g>
+<g id="filter-bar">
+<rect x="72" y="244" width="1056" height="88" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+<rect x="88.0" y="235.0" width="79.0" height="18" rx="5" fill="#0f766e"/>
+<text class="tag" x="127.5" y="248.2" text-anchor="middle" fill="#fff">FilterBar</text>
+<rect x="92" y="266" width="222" height="36" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-search" x="104" y="276" width="16" height="16" color="#94a3b8"/>
+<text class="ph" x="128" y="289">Search members</text>
+<rect x="104.0" y="257.5" width="40.9" height="17" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1"/>
+<text class="tag" x="124.4" y="270.2" text-anchor="middle" fill="#0f766e">text</text>
+<rect x="326" y="266" width="172" height="36" rx="8" fill="#fff" stroke="#0f766e" stroke-width="1.5"/>
+<text class="val" x="338" y="289">Role: <tspan font-weight="600" fill="#0f172a">Admin</tspan></text>
+<use href="#i-up" x="472" y="276" width="16" height="16" color="#0f766e"/>
+<rect x="338.0" y="257.5" width="98.7" height="17" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1"/>
+<text class="tag" x="387.3" y="270.2" text-anchor="middle" fill="#0f766e">FilterSelect</text>
+<rect x="510" y="266" width="250" height="36" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<rect x="518" y="273" width="74" height="22" rx="11" fill="#ccfbf1"/>
+<text class="sm" x="528" y="288" fill="#115e59">Design</text>
+<use href="#i-x" x="572" y="277" width="14" height="14" color="#0f766e"/>
+<rect x="598" y="273" width="72" height="22" rx="11" fill="#ccfbf1"/>
+<text class="sm" x="608" y="288" fill="#115e59">Events</text>
+<use href="#i-x" x="650" y="277" width="14" height="14" color="#0f766e"/>
+<text class="ph" x="680" y="289">Topic…</text>
+<use href="#i-down" x="734" y="276" width="16" height="16" color="#64748b"/>
+<rect x="522.0" y="257.5" width="98.7" height="17" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1"/>
+<text class="tag" x="571.3" y="270.2" text-anchor="middle" fill="#0f766e">FilterPicker</text>
+<rect x="772" y="266" width="186" height="36" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<rect x="779" y="273" width="100" height="22" rx="11" fill="#ccfbf1"/>
+<circle cx="790" cy="284" r="8" fill="#0ea5e9"/>
+<text x="790" y="287.2" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="9" font-weight="700" fill="#fff">J</text>
+<text class="sm" x="803" y="288" fill="#115e59">Jane Doe</text>
+<use href="#i-x" x="858" y="277" width="14" height="14" color="#0f766e"/>
+<text class="ph" x="890" y="289">User…</text>
+<rect x="784.0" y="257.5" width="134.8" height="17" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1"/>
+<text class="tag" x="851.4" y="270.2" text-anchor="middle" fill="#0f766e">UserFilterControl</text>
+<rect x="970" y="266" width="112" height="36" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-funnel" x="981" y="276" width="16" height="16" color="#334155"/>
+<text class="btn" x="1003" y="289" fill="#334155">Filters</text>
+<circle cx="1064" cy="284" r="9" fill="#0f766e"/>
+<text class="btn" x="1064" y="288.3" text-anchor="middle" fill="#fff" font-size="11.5">2</text>
+<rect x="1090" y="266" width="30" height="36" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-x" x="1097" y="276" width="16" height="16" color="#64748b"/>
+<text class="smm" x="1026" y="322" text-anchor="middle">panel toggle</text>
+<text class="smm" x="1105" y="322" text-anchor="middle">clear all</text>
+<g filter="url(#pop)">
+<rect x="326" y="308" width="172" height="104" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+</g>
+<rect x="331" y="314" width="162" height="29" rx="6" fill="#ccfbf1"/>
+<use href="#i-check" x="471" y="321" width="15" height="15" color="#0f766e"/>
+<text class="val" x="340" y="333" font-weight="600" fill="#115e59">Admin</text>
+<text class="val" x="340" y="364">Moderator</text>
+<text class="val" x="340" y="395">Member</text>
+</g>
+<use href="#i-info" x="540" y="372" width="16" height="16" color="#0f766e"/>
+<text class="t" x="564" y="384"><tspan class="code" fill="#0f766e">FilterBar</tspan> renders a list’s filter definitions and syncs their values to the URL;</text>
+<text class="t" x="564" y="404">registered types (user, space, topic) build on <tspan class="code" fill="#0f766e">PickerFilterControl</tspan>.</text>
+</g>
+<g id="card-directory">
+<rect x="24" y="448" width="564" height="398" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
+<rect x="44" y="466" width="4" height="18" rx="2" fill="#c2410c"/>
+<text class="ptitle" x="56" y="481">CardDirectory<tspan class="psub" dx="10">= a composition, ready to use</tspan></text>
+<rect x="44" y="506" width="524" height="288" rx="12" fill="#fffaf5" stroke="#c2410c" stroke-width="1.5"/>
+<rect x="60.0" y="497.0" width="107.9" height="18" rx="5" fill="#c2410c"/>
+<text class="tag" x="114.0" y="510.2" text-anchor="middle" fill="#fff">CardDirectory</text>
+<rect x="60" y="528" width="492" height="82" rx="9" fill="#fff" stroke="#c7d2fe" stroke-width="1.2"/>
+<text class="ui-h" x="74" y="554" font-size="15">People</text>
+<rect x="516" y="537" width="26" height="24" rx="6" fill="#4f46e5"/>
+<use href="#i-plus" x="521" y="541" width="16" height="16" color="#fff"/>
+<rect x="484" y="537" width="26" height="24" rx="6" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-grid" x="489" y="541" width="16" height="16" color="#334155"/>
+<rect x="142.0" y="519.5" width="91.5" height="17" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1"/>
+<text class="tag" x="187.7" y="532.2" text-anchor="middle" fill="#4f46e5">PageToolbar</text>
+<rect x="70" y="572" width="472" height="30" rx="7" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1"/>
+<rect x="76" y="577" width="170" height="20" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-search" x="82" y="580" width="14" height="14" color="#94a3b8"/>
+<text class="ph" x="102" y="591.5" font-size="12">Search</text>
+<rect x="254" y="577" width="102" height="20" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="ph" x="262" y="591.5" font-size="12">Status</text>
+<use href="#i-down" x="338" y="580" width="13" height="13" color="#64748b"/>
+<rect x="364" y="577" width="102" height="20" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="ph" x="372" y="591.5" font-size="12">Sort by</text>
+<use href="#i-down" x="448" y="580" width="13" height="13" color="#64748b"/>
+<rect x="463.0" y="563.5" width="77.0" height="17" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="1"/>
+<text class="tag" x="501.5" y="576.2" text-anchor="middle" fill="#0f766e">FilterBar</text>
+<rect x="60" y="632" width="492" height="152" rx="9" fill="none" stroke="#fdba74" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="72.0" y="623.0" width="71.8" height="18" rx="5" fill="#c2410c"/>
+<text class="tag" x="107.9" y="636.2" text-anchor="middle" fill="#fff">CardGrid</text>
+<rect x="70" y="648" width="112" height="124" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<path d="M70.0 656 a8 8 0 0 1 8 -8 h96.0 a8 8 0 0 1 8 8 v26 h-112.0z" fill="url(#cov1)"/>
+<circle cx="92" cy="682" r="15" fill="#fff"/>
+<circle cx="92" cy="682" r="13" fill="#6366f1"/>
+<text x="92" y="686.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="11" font-weight="700" fill="#fff">AI</text>
+<text class="sm" x="80" y="714" font-weight="700" fill="#0f172a">Anna Ito</text>
+<text class="smm" x="80" y="729">Design</text>
+<rect x="78" y="740" width="96" height="24" rx="6" fill="#c2410c"/>
+<text class="btn" x="126" y="756.3" text-anchor="middle" fill="#fff">Following</text>
+<rect x="190" y="648" width="112" height="124" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<path d="M190.0 656 a8 8 0 0 1 8 -8 h96.0 a8 8 0 0 1 8 8 v26 h-112.0z" fill="url(#cov2)"/>
+<circle cx="212" cy="682" r="15" fill="#fff"/>
+<circle cx="212" cy="682" r="13" fill="#0d9488"/>
+<text x="212" y="686.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="11" font-weight="700" fill="#fff">BR</text>
+<text class="sm" x="200" y="714" font-weight="700" fill="#0f172a">Ben Ruiz</text>
+<text class="smm" x="200" y="729">Support</text>
+<rect x="198" y="740" width="96" height="24" rx="6" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="btn" x="246" y="756.3" text-anchor="middle" fill="#334155">Follow</text>
+<rect x="310" y="648" width="112" height="124" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<path d="M310.0 656 a8 8 0 0 1 8 -8 h96.0 a8 8 0 0 1 8 8 v26 h-112.0z" fill="url(#cov3)"/>
+<circle cx="332" cy="682" r="15" fill="#fff"/>
+<circle cx="332" cy="682" r="13" fill="#ea580c"/>
+<text x="332" y="686.0" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="11" font-weight="700" fill="#fff">CP</text>
+<text class="sm" x="320" y="714" font-weight="700" fill="#0f172a">Cleo Park</text>
+<text class="smm" x="320" y="729">Sales</text>
+<rect x="318" y="740" width="96" height="24" rx="6" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="btn" x="366" y="756.3" text-anchor="middle" fill="#334155">Follow</text>
+<rect x="430" y="648" width="112" height="124" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+<path d="M430.0 656 a8 8 0 0 1 8 -8 h96.0 a8 8 0 0 1 8 8 v26 h-112.0z" fill="#f1f5f9"/>
+<circle cx="452.0" cy="682" r="13" fill="#e2e8f0" stroke="#fff" stroke-width="2"/>
+<rect x="440" y="706" width="76" height="9" rx="4.5" fill="url(#shimmer)"/>
+<rect x="440" y="722" width="56" height="8" rx="4" fill="url(#shimmer)"/>
+<rect x="438" y="740" width="96" height="24" rx="6" fill="url(#shimmer)"/>
+<rect x="436.7" y="639.5" width="98.7" height="17" rx="5" fill="#fff7ed" stroke="#c2410c" stroke-width="1"/>
+<text class="tag" x="486.0" y="652.2" text-anchor="middle" fill="#c2410c">CardSkeleton</text>
+<use href="#i-info" x="44" y="804" width="16" height="16" color="#c2410c"/>
+<text class="t" x="68" y="816">Loads pages, applies filters and keeps per-viewer states (following, member).</text>
+<text class="note" x="68" y="834">Used by People, Spaces, Marketplace.</text>
+</g>
+<g id="item-browser">
+<rect x="612" y="448" width="564" height="398" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
+<rect x="632" y="466" width="4" height="18" rx="2" fill="#c2410c"/>
+<text class="ptitle" x="644" y="481">Item browser<tspan class="psub" dx="10">= parts you compose</tspan></text>
+<rect x="632" y="506" width="524" height="288" rx="12" fill="#fff7ed" stroke="#c2410c" stroke-width="1.6" stroke-dasharray="7 5"/>
+<rect x="648.0" y="497.0" width="71.8" height="18" rx="5" fill="#c2410c"/>
+<text class="tag" x="683.9" y="510.2" text-anchor="middle" fill="#fff">DropZone</text>
+<g opacity=".9">
+<rect x="971.6" y="764" width="168.4" height="22" rx="11" fill="#ffedd5"/>
+<use href="#i-upload" x="980.6" y="768" width="14" height="14" color="#c2410c"/>
+<text class="sm" x="998.6" y="779" fill="#c2410c">Drop files to upload</text>
+</g>
+<rect x="648" y="528" width="492" height="38" rx="9" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-home" x="660" y="539" width="16" height="16" color="#334155"/>
+<use href="#i-chev" x="682" y="541" width="12" height="12" color="#94a3b8"/>
+<text class="val" x="700" y="552">Projects</text>
+<use href="#i-chev" x="758" y="541" width="12" height="12" color="#94a3b8"/>
+<text class="val" x="776" y="552" font-weight="700" fill="#0f172a">Launch 2026</text>
+<rect x="1028" y="534" width="104" height="26" rx="7" fill="#fff7ed" stroke="#fdba74" stroke-width="1"/>
+<text class="btn" x="1038" y="551.5" fill="#c2410c">2 selected</text>
+<use href="#i-down" x="1110" y="539" width="14" height="14" color="#c2410c"/>
+<rect x="660.0" y="519.5" width="62.6" height="17" rx="5" fill="#fff7ed" stroke="#c2410c" stroke-width="1"/>
+<text class="tag" x="691.3" y="532.2" text-anchor="middle" fill="#c2410c">PathBar</text>
+<rect x="1026.1" y="519.5" width="105.9" height="17" rx="5" fill="#fff7ed" stroke="#c2410c" stroke-width="1"/>
+<text class="tag" x="1079.0" y="532.2" text-anchor="middle" fill="#c2410c">SelectionMenu</text>
+<rect x="648" y="586" width="492" height="166" rx="9" fill="none" stroke="#fdba74" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="660.0" y="577.0" width="71.8" height="18" rx="5" fill="#c2410c"/>
+<text class="tag" x="695.9" y="590.2" text-anchor="middle" fill="#fff">TileGrid</text>
+<rect x="658" y="604" width="88" height="112" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<use href="#i-folder" x="680" y="622" width="44" height="44" color="#64748b"/>
+<text class="sm" x="702" y="684" text-anchor="middle" font-weight="600" fill="#0f172a">Briefs</text>
+<text class="smm" x="702" y="700" text-anchor="middle">4 items</text>
+<rect x="754" y="604" width="88" height="112" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<use href="#i-folder" x="776" y="622" width="44" height="44" color="#64748b"/>
+<text class="sm" x="798" y="684" text-anchor="middle" font-weight="600" fill="#0f172a">Assets</text>
+<text class="smm" x="798" y="700" text-anchor="middle">empty</text>
+<rect x="850" y="604" width="88" height="112" rx="9" fill="#ffedd5" stroke="#fb923c" stroke-width="1.5"/>
+<rect x="857" y="611" width="16" height="16" rx="4" fill="#c2410c"/>
+<use href="#i-check" x="858" y="612" width="14" height="14" color="#fff"/>
+<use href="#i-doc" x="879.0" y="618" width="30" height="38"/>
+<text class="smm" x="894" y="650" text-anchor="middle" font-size="9" font-weight="700">PDF</text>
+<text class="sm" x="894" y="684" text-anchor="middle" font-weight="600" fill="#0f172a">Plan.pdf</text>
+<text class="smm" x="894" y="700" text-anchor="middle">1.2 MB</text>
+<rect x="946" y="604" width="88" height="112" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+<rect x="946.0" y="604" width="88.0" height="112" rx="9" fill="none" stroke="#15803d" stroke-width="3" stroke-dasharray="246.1 384.5" stroke-linecap="round" transform="translate(1980.0 0) scale(-1 1)"/>
+<use href="#i-doc" x="975.0" y="618" width="30" height="38"/>
+<text class="smm" x="990" y="650" text-anchor="middle" font-size="9" font-weight="700">MP4</text>
+<text class="sm" x="990" y="684" text-anchor="middle" font-weight="600" fill="#0f172a">Clip.mp4</text>
+<text class="smm" x="990" y="700" text-anchor="middle" fill="#15803d" font-weight="600">64 %</text>
+<rect x="930.0" y="707.5" width="105.9" height="17" rx="5" fill="#f0fdf4" stroke="#15803d" stroke-width="1"/>
+<text class="tag" x="983.0" y="720.2" text-anchor="middle" fill="#15803d">ProgressFrame</text>
+<rect x="1042" y="604" width="88" height="112" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<use href="#i-doc" x="1071.0" y="618" width="30" height="38"/>
+<text class="smm" x="1086" y="650" text-anchor="middle" font-size="9" font-weight="700">MD</text>
+<text class="sm" x="1086" y="684" text-anchor="middle" font-weight="600" fill="#0f172a">Notes.md</text>
+<text class="smm" x="1086" y="700" text-anchor="middle">3 KB</text>
+<rect x="1102" y="609" width="22" height="22" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-dots" x="1106" y="613" width="14" height="14" color="#334155"/>
+<g filter="url(#pop)">
+<rect x="1039" y="634" width="94" height="108" rx="9" fill="#fff" stroke="#e2e8f0" stroke-width="1"/>
+</g>
+<rect x="1044" y="641" width="84" height="26" rx="6" fill="#f1f5f9"/>
+<use href="#i-pencil" x="1049" y="647" width="14" height="14" color="#334155"/>
+<text class="sm" x="1069" y="659" fill="#334155">Edit</text>
+<use href="#i-move" x="1049" y="677" width="14" height="14" color="#334155"/>
+<text class="sm" x="1069" y="689" fill="#334155">Move</text>
+<use href="#i-trash" x="1049" y="713" width="14" height="14" color="#dc2626"/>
+<text class="sm" x="1069" y="725" fill="#dc2626">Delete</text>
+<path d="M1047.0 704 h78.0" stroke="#e2e8f0"/>
+<rect x="1036.7" y="733.5" width="98.7" height="17" rx="5" fill="#fdf4ff" stroke="#a21caf" stroke-width="1"/>
+<text class="tag" x="1086.0" y="746.2" text-anchor="middle" fill="#a21caf">DropdownMenu</text>
+<use href="#i-info" x="632" y="804" width="16" height="16" color="#c2410c"/>
+<text class="t" x="656" y="816">Your island composes these parts and owns level, selection and uploads.</text>
+<text class="note" x="656" y="834">e.g. cfiles; <tspan class="code" fill="#4f46e5">ViewSwitch</tspan> toggles <tspan class="code" fill="#c2410c">TileGrid</tspan> / list.</text>
+</g>
+<g id="dialog">
+<rect x="24" y="868" width="564" height="366" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
+<rect x="44" y="886" width="4" height="18" rx="2" fill="#a21caf"/>
+<text class="ptitle" x="56" y="901">Dialog<tspan class="psub" dx="10">= a form in a Vue-owned modal</tspan></text>
+<rect x="44" y="918" width="524" height="300" rx="10" fill="#e2e8f0"/>
+<g filter="url(#pop)">
+<rect x="84" y="932" width="444" height="274" rx="12" fill="#fff"/>
+</g>
+<rect x="84" y="932" width="444" height="274" rx="12" fill="none" stroke="#e879f9" stroke-width="1.5"/>
+<rect x="100.0" y="923.0" width="64.6" height="18" rx="5" fill="#a21caf"/>
+<text class="tag" x="132.3" y="936.2" text-anchor="middle" fill="#fff">UiModal</text>
+<text class="ui-h" x="104" y="962" font-size="15">Create space</text>
+<use href="#i-x" x="494" y="949" width="16" height="16" color="#64748b"/>
+<path d="M84 978 h444" stroke="#e2e8f0"/>
+<rect x="96" y="990" width="420" height="206" rx="8" fill="none" stroke="#f0abfc" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="419.8" y="981.0" width="86.2" height="18" rx="5" fill="#a21caf"/>
+<text class="tag" x="462.9" y="994.2" text-anchor="middle" fill="#fff">HumHubForm</text>
+<text class="sm" x="108" y="1018" font-weight="600">Name</text>
+<rect x="223.0" y="1005.5" width="77.0" height="17" rx="5" fill="#fdf4ff" stroke="#a21caf" stroke-width="1"/>
+<text class="tag" x="261.5" y="1018.2" text-anchor="middle" fill="#a21caf">TextField</text>
+<rect x="108" y="1024" width="192" height="32" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="val" x="118" y="1045">Design team</text>
+<text class="sm" x="312" y="1018" font-weight="600">Visibility</text>
+<rect x="412.5" y="1005.5" width="91.5" height="17" rx="5" fill="#fdf4ff" stroke="#a21caf" stroke-width="1"/>
+<text class="tag" x="458.3" y="1018.2" text-anchor="middle" fill="#a21caf">SelectField</text>
+<rect x="312" y="1024" width="192" height="32" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="val" x="322" y="1045">Members only</text>
+<use href="#i-down" x="480" y="1032" width="16" height="16" color="#64748b"/>
+<text class="sm" x="108" y="1076" font-weight="600">URL</text>
+<rect x="427.0" y="1063.5" width="77.0" height="17" rx="5" fill="#fdf4ff" stroke="#a21caf" stroke-width="1"/>
+<text class="tag" x="465.5" y="1076.2" text-anchor="middle" fill="#a21caf">TextField</text>
+<rect x="108" y="1082" width="396" height="32" rx="7" fill="#fef2f2" stroke="#ef4444" stroke-width="1.4"/>
+<text class="val" x="118" y="1103">s/design</text>
+<use href="#i-alert" x="478" y="1090" width="16" height="16" color="#dc2626"/>
+<text class="sm" x="108" y="1130" fill="#dc2626">This URL is already taken.</text>
+<text class="note" x="280" y="1130" fill="#a21caf" font-style="italic">← 422 errors land on their field</text>
+<use href="#i-spin" x="108" y="1165" width="16" height="16" color="#a21caf"/>
+<text class="smm" x="130" y="1178">spinner while it submits</text>
+<rect x="348" y="1158" width="72" height="30" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<text class="btn" x="384" y="1177.3" text-anchor="middle" fill="#334155">Cancel</text>
+<rect x="428" y="1158" width="76" height="30" rx="7" fill="#a21caf"/>
+<text class="btn" x="466" y="1177.3" text-anchor="middle" fill="#fff">Create</text>
+<rect x="405.3" y="1139.5" width="98.7" height="17" rx="5" fill="#fdf4ff" stroke="#a21caf" stroke-width="1"/>
+<text class="tag" x="454.7" y="1152.2" text-anchor="middle" fill="#a21caf">SubmitButton</text>
+</g>
+<g id="feedback">
+<rect x="612" y="868" width="564" height="366" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
+<rect x="632" y="886" width="4" height="18" rx="2" fill="#15803d"/>
+<text class="ptitle" x="644" y="901">Feedback &amp; extension<tspan class="psub" dx="10">= small parts used everywhere</tspan></text>
+<rect x="636" y="938" width="232" height="190" rx="10" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
+<path d="M636 948 a10 10 0 0 1 10 -10 h212 a10 10 0 0 1 10 10 v40 h-232z" fill="url(#cov1)"/>
+<circle cx="666" cy="988" r="20" fill="#fff"/>
+<circle cx="666" cy="988" r="18" fill="#4f46e5"/>
+<text x="666" y="993.4" text-anchor="middle" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="15" font-weight="700" fill="#fff">DT</text>
+<text class="sm" x="650" y="1030" font-weight="700" fill="#0f172a" font-size="13.5">Design team</text>
+<text class="smm" x="650" y="1047">24 members</text>
+<rect x="648" y="1066" width="92" height="30" rx="7" fill="#4f46e5"/>
+<text class="btn" x="694" y="1085.3" text-anchor="middle" fill="#fff">Join</text>
+<rect x="746" y="1060" width="114" height="42" rx="9" fill="#fff7ed" stroke="#c2410c" stroke-dasharray="4 3"/>
+<rect x="752" y="1066" width="102" height="30" rx="7" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
+<use href="#i-cal" x="762" y="1074" width="14" height="14" color="#334155"/>
+<text class="btn" x="812" y="1085.3" text-anchor="middle" fill="#334155">Calendar</text>
+<rect x="750.0" y="1093.5" width="105.9" height="17" rx="5" fill="#fff7ed" stroke="#c2410c" stroke-width="1"/>
+<text class="tag" x="803.0" y="1106.2" text-anchor="middle" fill="#c2410c">ExtensionSlot</text>
+<text class="note" x="636" y="1154">Module buttons via <tspan class="code" fill="#c2410c">ExtensionSlot</tspan></text>
+<rect x="894" y="926" width="262" height="214" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+<path d="M894 936 a10 10 0 0 1 10 -10 h242 a10 10 0 0 1 10 10 v26 h-262z" fill="#fff"/>
+<path d="M894 962 h262" stroke="#e2e8f0"/>
+<text class="ui-h" x="908" y="949" font-size="13">Space settings</text>
+<rect x="910" y="978" width="230" height="16" rx="5" fill="#eef2f7"/>
+<rect x="910" y="1008" width="170" height="16" rx="5" fill="#eef2f7"/>
+<rect x="910" y="1038" width="230" height="16" rx="5" fill="#eef2f7"/>
+<g filter="url(#pop)">
+<rect x="954" y="1078" width="142" height="38" rx="19" fill="#14532d"/>
+</g>
+<circle cx="975.0" cy="1097" r="10" fill="#22c55e"/>
+<use href="#i-check" x="968" y="1090" width="14" height="14" color="#fff"/>
+<text class="btn" x="994" y="1102" fill="#fff" font-size="13.5">Saved</text>
+<use href="#i-x" x="1070" y="1090" width="14" height="14" color="#bbf7d0"/>
+<rect x="985.5" y="1055.0" width="79.0" height="18" rx="5" fill="#15803d"/>
+<text class="tag" x="1025.0" y="1068.2" text-anchor="middle" fill="#fff">StatusBar</text>
+<text class="note" x="894" y="1166">Short toasts after an action</text>
+</g>
+<text class="note" x="24" y="1258" font-size="12">Hand-maintained SVG. Tag colour = component family; a smaller outlined tag marks a part shown inside a larger composition.</text>
+</svg>

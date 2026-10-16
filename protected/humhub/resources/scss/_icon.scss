@@ -3,45 +3,86 @@
 // --------------------------------------------------
 
 @if not $prev-icon {
-    .icon-sm, .fa-sm {
+    // Tabler glyphs sit on a 24px grid and hang slightly below the text baseline at 1em.
+    .ti {
+        vertical-align: -.125em;
+    }
+
+    .icon-xs {
+        font-size: .75em;
+    }
+
+    .icon-sm {
         font-size: .875em;
     }
 
-    .icon-lg, .fa-lg {
+    .icon-lg {
         font-size: 1.33333em;
         line-height: .75em;
         vertical-align: -.0667em;
     }
 
-    .icon-2x, .fa-2x {
+    .icon-2x {
         font-size: 2em;
     }
 
-    .icon-3x, .fa-3x {
+    .icon-3x {
         font-size: 3em;
     }
 
-    .icon-4x, .fa-4x {
+    .icon-4x {
         font-size: 4em;
     }
 
-    .icon-5x, .fa-5x {
+    .icon-5x {
         font-size: 5em;
     }
 
-    .icon-6x, .fa-6x {
+    .icon-6x {
         font-size: 6em;
     }
 
-    .icon-7x, .fa-7x {
+    .icon-7x {
         font-size: 7em;
     }
 
-    .icon-9x, .fa-9x {
+    .icon-8x {
+        font-size: 8em;
+    }
+
+    .icon-9x {
         font-size: 9em;
     }
 
-    .icon-10x, .fa-10x {
+    .icon-10x {
         font-size: 10em;
+    }
+
+    .icon-fw {
+        width: 1.25em;
+        text-align: center;
+    }
+
+    .icon-pull-left {
+        float: left;
+        margin-right: .3em;
+    }
+
+    .icon-pull-right {
+        float: right;
+        margin-left: .3em;
+    }
+
+    .icon-spin {
+        animation: icon-spin 2s infinite linear;
+    }
+
+    @keyframes icon-spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(359deg);
+        }
     }
 }

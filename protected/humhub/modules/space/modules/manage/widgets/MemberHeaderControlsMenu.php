@@ -9,8 +9,8 @@
 namespace humhub\modules\space\modules\manage\widgets;
 
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\DropdownMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\DropdownMenu;
 use Yii;
 
 /**

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\notification\widgets;
 
-use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\NotificationListService;
 use Yii;
 use yii\base\Widget;
 
@@ -31,7 +31,7 @@ class UpdateNotificationCount extends Widget
         }
 
         return $this->render('updateNotificationCount', [
-            'count' => Notification::findUnseen()->count(),
+            'count' => NotificationListService::unseenCount(Yii::$app->user->getIdentity()),
         ]);
     }
 }

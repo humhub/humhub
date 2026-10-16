@@ -10,8 +10,8 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\Menu;
 
 /**
  * WallCreateContentMenu is the widget for Menu above wall create content Form
