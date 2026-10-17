@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
 - Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
