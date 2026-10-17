@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #8588: Upgrade to 1.19 failed in the activity migration when a not yet updated module (e.g. Files 0.17) could not be loaded
 - Fix #8586: Like notifications redirected to the Dashboard instead of the liked content; likes on comments now link to the comment itself
 - Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
+- Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
 
 1.19.0 (October 12, 2026)
 -------------------------
