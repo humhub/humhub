@@ -22,7 +22,7 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 | `HumHubForm` | Form root: renders `<form>`, provides context | `modelName` (String), `busy` (Boolean) | emits `submit`; exposes `setErrors()`, `clearErrors()`, `focusFirstError()`, `focusFirstField()` |
 | `TextField` | Single-line input | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue`, `type` (`text`/`email`/`password`/`number`, default `text`) | `update:modelValue` |
 | `TextareaField` | Multi-line input | same as `TextField` + `rows` (default 4) | `update:modelValue` |
-| `CheckboxField` | Checkbox | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue` (Boolean) | `update:modelValue` |
+| `CheckboxField` | Checkbox, or with `toggle` a toggle switch like `ActiveField::toggle()` | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue` (Boolean), `toggle` (Boolean) | `update:modelValue` |
 | `SelectField` | `<select>` dropdown | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue`, `options` (`[{value, label}]`), `prompt` | `update:modelValue` |
 | `SubmitButton` | `type="submit"` button | `disabled`, `loader` (default `true`) | default slot = label/icon |
 | `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlersHtml`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |

@@ -58,7 +58,7 @@ JS, View::POS_READY);
 
 <?php $form = ActiveForm::begin() ?>
 
-<?= $form->field($settings, 'requestConfirmation')->checkbox() ?>
+<?= $form->field($settings, 'requestConfirmation')->toggle() ?>
 
 <?= Button::primary(Yii::t('AdminModule.settings', 'Save'))->submit() ?>
 

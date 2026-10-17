@@ -271,6 +271,126 @@
         }
     }
 
+    // Toggle switch (`ActiveField::toggle()`): the switch left of label, error and hint, like a checkbox;
+    // in a modal as a bordered row with the switch on the right
+    // @since 1.20
+    .form-check.form-switch {
+        --hh-toggle-width: 30px;
+        --hh-toggle-height: 16px;
+        --hh-toggle-knob-size: 12px;
+        --hh-toggle-bg: var(--hh-background-color-page);
+        --hh-toggle-color: var(--hh-text-color-soft);
+        --hh-toggle-checked-bg: var(--bs-accent);
+        --hh-toggle-checked-color: var(--hh-accent-contrast);
+
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        column-gap: 8px;
+        align-items: start;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+
+        > .form-check-label,
+        > .invalid-feedback,
+        > .form-text {
+            grid-column: 2;
+            margin: 0;
+        }
+
+        > .form-check-label {
+            // Centers the first line on the switch
+            padding-block: max(0px, (var(--hh-toggle-height) - 1lh) / 2);
+        }
+
+        > .form-text {
+            color: var(--hh-text-color-soft);
+        }
+
+        > .form-check-input {
+            --hh-toggle-knob-x: calc((var(--hh-toggle-height) - var(--hh-toggle-knob-size)) / 2);
+            --hh-toggle-track: var(--hh-toggle-bg);
+            --hh-toggle-outline: var(--hh-toggle-color);
+            grid-column: 1;
+            grid-row: 1 / span 3;
+            float: none;
+            width: var(--hh-toggle-width);
+            height: var(--hh-toggle-height);
+            // Centered on the first line of the label (`1lh` of the label's font, inherited), plus 1px as
+            // the letters sit below the center of the line box
+            margin: calc(max(0px, (1lh - var(--hh-toggle-height)) / 2) + 1px) 0 0;
+            font: inherit;
+            padding: 0;
+            // `!important` beats the global checkbox rules above, which use it while focused or disabled
+            border: 0 !important;
+            border-radius: var(--hh-toggle-height);
+            // The knob is a radial gradient, moved to the right end of the track when checked
+            background: radial-gradient(circle closest-side, var(--hh-toggle-color) calc(100% - .5px), transparent 100%)
+                var(--hh-toggle-knob-x) center / var(--hh-toggle-knob-size) var(--hh-toggle-knob-size) no-repeat
+                var(--hh-toggle-track) !important;
+            box-shadow: inset 0 0 0 1px var(--hh-toggle-outline);
+            cursor: pointer;
+            transition: background .2s, box-shadow .2s;
+
+            // No check mark of the global checkbox rules
+            &::after {
+                content: none;
+            }
+
+            &:checked {
+                --hh-toggle-knob-x: calc(100% - (var(--hh-toggle-height) - var(--hh-toggle-knob-size)) / 2);
+                --hh-toggle-track: var(--hh-toggle-checked-bg);
+                --hh-toggle-color: var(--hh-toggle-checked-color);
+                --hh-toggle-outline: transparent;
+            }
+
+            &.is-invalid {
+                --hh-toggle-outline: var(--bs-form-invalid-border-color);
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--bs-accent);
+                outline-offset: 2px;
+            }
+
+            &:disabled {
+                opacity: .4;
+                cursor: default;
+
+                ~ .form-check-label {
+                    cursor: default;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: none;
+            }
+        }
+    }
+
+    .modal .form-check.form-switch {
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 8px;
+        padding: 8px;
+        border: 1px dashed var(--bs-border-color);
+        border-radius: 6px;
+        background: var(--hh-background-color-secondary);
+
+        > .form-check-label,
+        > .invalid-feedback,
+        > .form-text {
+            grid-column: 1;
+        }
+
+        > .form-check-label {
+            font-weight: 600;
+        }
+
+        > .form-check-input {
+            grid-column: 2;
+        }
+    }
+
     // Radio pills
     .radio-pills {
         display: flex;
