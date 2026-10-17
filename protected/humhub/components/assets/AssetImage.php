@@ -12,6 +12,8 @@ use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidValueException;
+use yii\helpers\Json;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
@@ -77,8 +79,19 @@ class AssetImage extends Component implements \Stringable
     }
 
     /**
+     * Returns the URL of the image.
+     *
+     * A relative URL points to the published copy in the assets, which are volatile: they are
+     * removed on every cache flush (so after every update), by a manual deletion of the `assets`
+     * directory or by a redeployment, and republished on the next render.
+     *
+     * An absolute URL (`$scheme`) is meant to leave the platform, e.g. in emails or Open Graph
+     * tags, where it is never rendered again. It therefore points to
+     * {@see \humhub\controllers\AssetImageController} instead, which republishes the image if
+     * needed and redirects to its current URL.
+     *
      * @param array|null $options use `null` use default options, `[]` get unmodified file. All available options in class header
-     * @param bool $scheme
+     * @param bool $scheme whether to return an absolute URL that stays valid as long as the image exists
      * @return string the URL, or an empty string if neither an uploaded image nor a `defaultFile` is set
      */
     public function getUrl(?array $options = null, bool $scheme = false): string
@@ -93,6 +106,10 @@ class AssetImage extends Component implements \Stringable
             return '';
         }
 
+        if ($scheme && ($token = $this->createToken($options)) !== null) {
+            return Url::to(['/asset-image', 'i' => $token], true);
+        }
+
         $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $fileNameWithOptions;
 
         $published = Yii::$app->assetManager->getPublishedAssetImage($scaledFileName);
@@ -105,6 +122,50 @@ class AssetImage extends Component implements \Stringable
         }
 
         return Url::to($published[1], $scheme);
+    }
+
+    /**
+     * Creates the AssetImage referenced by a token of {@see getUrl()}.
+     *
+     * @return array|null [AssetImage, options], or `null` if the token is invalid
+     * @since 1.19.1
+     */
+    public static function fromToken(string $token): ?array
+    {
+        $secret = Yii::$app->settings->get('secret');
+        $data = $secret ? Yii::$app->security->validateData(StringHelper::base64UrlDecode($token), $secret) : false;
+        if ($data === false) {
+            return null;
+        }
+
+        [$file, $options, $defaultFile] = Json::decode($data);
+
+        return [new static(['file' => $file, 'defaultFile' => $defaultFile]), $options];
+    }
+
+    /**
+     * The token identifies the image and its variant. It is signed, since `file` is a path on the
+     * data mount, which also holds private files.
+     *
+     * @return string|null `null` if no secret is set yet (e.g. during the installation)
+     */
+    private function createToken(array $options): ?string
+    {
+        $secret = Yii::$app->settings->get('secret');
+        if (!$secret) {
+            return null;
+        }
+
+        // Keep the URL independent of the installation path, which may change (e.g. on a redeployment)
+        $defaultFile = $this->defaultFile;
+        $webroot = Yii::getAlias('@webroot');
+        if ($defaultFile && str_starts_with($defaultFile, $webroot . '/')) {
+            $defaultFile = '@webroot' . substr($defaultFile, strlen($webroot));
+        }
+
+        return StringHelper::base64UrlEncode(
+            Yii::$app->security->hashData(Json::encode([$this->file, $options, $defaultFile]), $secret),
+        );
     }
 
     public function setUploadedFile(?UploadedFile $file = null): void

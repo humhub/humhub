@@ -4,7 +4,6 @@ namespace humhub\widgets\mails;
 
 use Yii;
 use yii\base\Widget;
-use yii\helpers\Url;
 
 /**
  * @since 1.18
@@ -24,21 +23,19 @@ class MailHeaderImage extends Widget
         $hasLogoImage = Yii::$app->img->logo->exists();
         $showNameInsteadOfLogo = (bool)Yii::$app->settings->get('showNameInsteadOfLogo');
 
-        // Get relative image URL
+        // Absolute URLs stay valid even after the published assets are removed
         $imgUrl = null;
         if ($hasMailHeaderImage) {
             $imgUrl = Yii::$app->img->mailHeader->getUrl(
                 ['maxHeight' => MailHeaderImage::MAX_HEIGHT, 'maxWidth' => MailHeaderImage::MAX_WIDTH],
+                true,
             );
         } elseif ($hasLogoImage && !$showNameInsteadOfLogo) {
             $imgUrl = Yii::$app->img->logo->getUrl([
                 'maxWidth' => static::MAX_WIDTH,
                 'maxHeight' => static::LOGO_MAX_HEIGHT,
-            ]);
+            ], true);
         }
-
-        // Change it to absolute URL
-        $imgUrl = $imgUrl ? Url::to($imgUrl, true) : null;
 
         return $this->render('mailHeaderImage', [
             'imgUrl' => $imgUrl,
