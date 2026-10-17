@@ -20,6 +20,12 @@ final class BootstrapService
         if (!empty($_ENV['HUMHUB_ALIASES__HUMHUB'])) {
             $this->humhubPath = $_ENV['HUMHUB_ALIASES__HUMHUB'];
         }
+
+        // The `@config` alias set in the environment also decides where the local configuration
+        // files are loaded from, so a relocated configuration directory needs no entry script of its own.
+        if (!empty($_ENV['HUMHUB_ALIASES__CONFIG'])) {
+            $this->configPath = $_ENV['HUMHUB_ALIASES__CONFIG'];
+        }
     }
 
     public function setPaths(
