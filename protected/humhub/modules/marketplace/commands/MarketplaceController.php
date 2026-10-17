@@ -168,6 +168,11 @@ class MarketplaceController extends Controller
             return 1;
         }
 
+        if (!(new ModuleService($module))->canRemove()) {
+            $this->error('Module ' . $moduleId . ' is not located in the marketplace module directory and cannot be removed.');
+            return 1;
+        }
+
         $this->stdout(PHP_EOL . 'Removing ' . $moduleId . '...' . PHP_EOL);
 
         (new ModuleService($module))->remove();
@@ -188,6 +193,11 @@ class MarketplaceController extends Controller
 
         if (!array_key_exists($moduleId, $installed)) {
             $this->error('Module ' . $moduleId . ' is not installed.');
+            return 1;
+        }
+
+        if (!$this->getMarketplaceModule()->onlineModuleManager->isMarketplaceModule($moduleId)) {
+            $this->error('Module ' . $moduleId . ' is not located in the marketplace module directory and cannot be updated.');
             return 1;
         }
 

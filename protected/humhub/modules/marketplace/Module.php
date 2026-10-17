@@ -112,6 +112,23 @@ class Module extends BaseModule
         return $this->_onlineModuleManager;
     }
 
+    /**
+     * Returns true if the given module directory lies within {@see self::$modulesPath}.
+     * Only such modules were installed by the marketplace and may be updated or removed by it.
+     *
+     * @since 1.20
+     */
+    public function isInModulesPath(string $moduleBasePath): bool
+    {
+        $marketplacePath = realpath(Yii::getAlias($this->modulesPath));
+        $modulePath = realpath($moduleBasePath);
+
+        if ($marketplacePath === false || $modulePath === false) {
+            return false;
+        }
+
+        return str_starts_with($modulePath, rtrim($marketplacePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
+    }
 
     /**
      * Returns the currently active Licence object

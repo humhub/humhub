@@ -126,14 +126,8 @@ class ModuleService
     {
         /** @var MarketplaceModule|null $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        if ($marketplaceModule === null) {
-            return false;
-        }
 
-        $modulePath = FileHelper::normalizePath($this->module->getBasePath());
-        $marketplacePath = FileHelper::normalizePath(realpath(Yii::getAlias($marketplaceModule->modulesPath)));
-
-        return str_contains($modulePath, $marketplacePath);
+        return $marketplaceModule !== null && $marketplaceModule->isInModulesPath($this->module->getBasePath());
     }
 
     /**
@@ -142,12 +136,18 @@ class ModuleService
      * When {@see ModuleManager::$createBackup} is enabled (default), a backup copy is created
      * under `@runtime/module_backups/` before deletion.
      *
+     * Only modules located in the marketplace module directory can be removed, see {@see self::canRemove()}.
+     *
      * @return string|null path to the backup directory, or null if no backup was created
      * @throws Exception
      * @throws ErrorException
      */
     public function remove(bool $disableBeforeRemove = true): ?string
     {
+        if (!$this->canRemove()) {
+            throw new Exception('Module "' . $this->module->id . '" is not located in the marketplace module directory and cannot be removed.');
+        }
+
         if ($disableBeforeRemove && Yii::$app->hasModule($this->module->id)) {
             $this->module->disable();
         }
