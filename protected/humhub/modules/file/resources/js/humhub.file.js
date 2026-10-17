@@ -548,8 +548,17 @@ humhub.module('file', function (module, require, $) {
                 files = [files];
             }
 
+            // Only a handler offered next to a legacy upload widget is handled here. A handler
+            // offered elsewhere - e.g. in a Vue island, which attaches the created files itself -
+            // has no widget to push them into.
             var $processTrigger = action.getProcessTrigger('file-handler');
-            var upload = Widget.instance($processTrigger.closest('.btn-group').find('[data-ui-widget]'));
+            var upload = $processTrigger
+                ? Widget.instance($processTrigger.closest('.btn-group').find('[data-ui-widget]'))
+                : null;
+
+            if (!upload) {
+                return;
+            }
 
             $.each(files, function (index, file) {
                 upload.handleFileResponse(file);
