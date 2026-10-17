@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'Receive Notifications of Space Membership events.' => 'Primajte obavijesti o događajima o članstvu u prostoru.',
-    'Space Membership' => 'Članstvo u prostoru',
-    'View Online' => 'Vidi Online',
     'You were added to Space {spaceName}' => 'Dodani ste u prostor {spaceName}',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName} prihvatio vašu pozivnicu za prostor {spaceName}',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName} odobrio vaše članstvo u prostoru {spaceName}',
@@ -13,7 +10,15 @@ return [
     '{displayName} invited you to the space {spaceName}' => '{displayName} vas je pozvao u prostor {spaceName}',
     '{displayName} requests membership for the space {spaceName}' => '{displayName} traži članstvo u prostoru {spaceName}',
     '{displayName} revoked your invitation for the space {spaceName}' => 'Korisnik {displayName} opozvao je vašu pozivnicu za prostor {spaceName}',
-    'New Space' => '',
-    'Receive Notifications when a new Space is created by a non-space manager.' => '',
+    'You were added to a Space.' => '',
+    '{displayName} accepted your invitation to a Space.' => '',
+    '{displayName} approved your membership request for a Space.' => '',
+    '{displayName} changed your role in a Space.' => '',
+    '{displayName} created a new Space.' => '',
     '{displayName} created the new Space {spaceName}' => '',
+    '{displayName} declined your invitation to a Space.' => '',
+    '{displayName} declined your membership request for a Space.' => '',
+    '{displayName} invited you to a Space.' => '',
+    '{displayName} requests membership for a Space.' => '',
+    '{displayName} revoked your invitation to a Space.' => '',
 ];

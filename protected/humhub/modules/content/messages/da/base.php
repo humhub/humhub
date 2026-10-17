@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Tilbage til stream',
     'Cancel' => 'Afbryd',
     'Cancel Edit' => 'Afbryd redigering',
-    'Cannot notify the author.' => 'Kan ikke underrette forfatteren.',
     'Change to "Private"' => 'Skift til "Privat"',
     'Change to "Public"' => 'Skift til "Offentlig"',
     'Comments are locked' => 'Kommentarer er låst',

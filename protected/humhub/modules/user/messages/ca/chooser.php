@@ -4,7 +4,6 @@ return [
     'Add user' => 'Afegeix membres',
     'An unexpected error occurred while loading the result.' => 'S\'ha produït un error inesperat en carregar el resultat.',
     'Load more' => 'Carregar més',
-    'No results found.' => 'No s\'han trobat resultats.',
     'No users found for the given query.' => 'No s\'ha trobat cap usuari per aquesta consulta.',
     'Please enter at least {n} character' => 'Si us plau, introduïu com a mínim {n} caràcter',
     'Select...' => 'Selecciona...',

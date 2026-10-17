@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Zurück zum Stream',
     'Cancel' => 'Abbrechen',
     'Cancel Edit' => 'Bearbeitung abbrechen',
-    'Cannot notify the author.' => 'Autor kann nicht benachrichtigt werden.',
     'Change to "Private"' => 'Ändern zu "Privat"',
     'Change to "Public"' => 'Ändern zu "Öffentlich"',
     'Comments are locked' => 'Kommentarsektion ist gesperrt',

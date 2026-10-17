@@ -11,7 +11,7 @@ return [
     'Requests' => 'درخواست ها',
     'Sent requests' => 'درخواست هاي ارسال شده',
     'Show all friends' => 'نمايش تمام دوستان',
-    'Unfriend' => 'دوستي را قطع كن',
+    'Friendship system is not enabled!' => '',
     'Pending' => '',
     'Would you like to accept the friendship request?' => '',
     'Would you like to end your friendship with {userName}?' => '',

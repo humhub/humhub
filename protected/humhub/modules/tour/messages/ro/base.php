@@ -24,7 +24,7 @@ return [
     'Ok' => '',
     'Save and close' => '',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
-    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => '',
+    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings {icon} Settings.' => '',
     'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => '',
     'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => '',
     'Your firstname' => '',

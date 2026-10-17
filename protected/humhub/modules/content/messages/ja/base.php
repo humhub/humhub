@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'ストリームに戻る',
     'Cancel' => 'キャンセル',
     'Cancel Edit' => '編集を中止',
-    'Cannot notify the author.' => '作成者に通知できません。',
     'Change to "Private"' => 'プライベート',
     'Change to "Public"' => '公開',
     'Comments are locked' => 'コメントはロックされています',

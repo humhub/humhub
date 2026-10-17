@@ -14,7 +14,6 @@ return [
     'Back to stream' => 'Zpět na příspěvky',
     'Cancel' => 'Zrušit',
     'Cancel Edit' => 'Zrušit úpravy',
-    'Cannot notify the author.' => 'Nelze upozornit autora.',
     'Change to "Private"' => 'Neveřejné',
     'Change to "Public"' => 'Zveřejnit',
     'Comments are locked' => 'Komentáře jsou uzamčeny',

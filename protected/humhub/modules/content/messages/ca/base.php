@@ -15,7 +15,6 @@ return [
     'Back to stream' => 'Torna a l\'activitat',
     'Cancel' => 'Cancel·la',
     'Cancel Edit' => 'Cancel·lar edició',
-    'Cannot notify the author.' => 'No es pot notificar a l\'autor.',
     'Change to "Private"' => 'Fer privat',
     'Change to "Public"' => 'Fer públic',
     'Comments are locked' => 'Els comentaris estan bloquejats',

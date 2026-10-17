@@ -15,7 +15,6 @@ return [
     'Back to stream' => 'Vissza a hírfolyamhoz',
     'Cancel' => 'Mégsem',
     'Cancel Edit' => 'Szerkesztés visszavonása',
-    'Cannot notify the author.' => 'A szerzőt nem lehet értesíteni.',
     'Change to "Private"' => 'Legyen zárt',
     'Change to "Public"' => 'Legyen nyilvános',
     'Comments are locked' => 'A hozzászólások zárolva',

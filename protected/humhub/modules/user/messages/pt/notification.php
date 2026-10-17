@@ -1,11 +1,9 @@
 <?php
-return array (
-  'Following' => 'Seguindo',
-  'Mentionings' => 'Menções',
-  'Receive Notifications when someone is following you.' => 'Receber Notificações quando alguém te segue.',
-  'Receive Notifications when someone mentioned you in a post.' => 'Receber Notificações quando alguém te menciona numa publicação.',
-  'View Online' => 'Ver Online',
-  '{displayName} is now following you.' => '{displayName} agora segue-te.',
-  '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} acabou de te mencionar em {contentTitle} "{preview}"',
-  '{displayName} mentioned you in {contentTitle}.' => '{displayName} mencionou-te em {contentTitle}.',
-);
+
+return [
+    '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} acabou de te mencionar em {contentTitle} "{preview}"',
+    '{displayName} mentioned you in a {contentType}.' => '',
+    '{displayName} mentioned you in {content}.' => '',
+    '{displayName} mentioned you.' => '',
+    '{namedCount, plural, =2{{displayNames} are} other{{displayName} is}} now following you.' => '',
+];

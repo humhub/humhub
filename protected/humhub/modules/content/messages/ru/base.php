@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Вернуться в ленту',
     'Cancel' => 'Отменить',
     'Cancel Edit' => 'Отменить Редактирование',
-    'Cannot notify the author.' => 'Не удаётся уведомить автора.',
     'Change to "Private"' => 'Сделать «приватной»',
     'Change to "Public"' => 'Сделать «частной»',
     'Comments are locked' => 'Комментарии заблокированы',

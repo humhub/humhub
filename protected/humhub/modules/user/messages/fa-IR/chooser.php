@@ -5,7 +5,6 @@ return [
     'Load more' => 'بارگذاری بیشتر',
     'Your search returned no matches.' => 'جستجوی شما هيچ نتيجه‌ای نداشت.',
     'An unexpected error occurred while loading the result.' => '',
-    'No results found.' => '',
     'No users found for the given query.' => '',
     'Please enter at least {n} character' => '',
     'Select {n,plural,=1{item} other{items}}' => '',

@@ -1,11 +1,9 @@
 <?php
-return array (
-  'Following' => 'sleduji',
-  'Mentionings' => 'Zprávy',
-  'Receive Notifications when someone is following you.' => 'Dostávat upozornění, pokud vás někdo začne sledovat.',
-  'Receive Notifications when someone mentioned you in a post.' => 'Dostávat upozornění, pokud vás někdo označí v příspěvku.',
-  'View Online' => 'Zobrazit online',
-  '{displayName} is now following you.' => '{displayName} Vás začal/a sledovat.',
-  '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} Vás právě zmínil/a v příspěvku {contentTitle} "{preview}"',
-  '{displayName} mentioned you in {contentTitle}.' => '{displayName} Vás zmínil/a v příspěvku {contentTitle}.',
-);
+
+return [
+    '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} Vás právě zmínil/a v příspěvku {contentTitle} "{preview}"',
+    '{displayName} mentioned you in a {contentType}.' => '',
+    '{displayName} mentioned you in {content}.' => '',
+    '{displayName} mentioned you.' => '',
+    '{namedCount, plural, =2{{displayNames} are} other{{displayName} is}} now following you.' => '',
+];

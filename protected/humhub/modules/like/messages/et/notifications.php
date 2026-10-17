@@ -1,11 +1,7 @@
 <?php
 
 return [
-    'Likes' => '',
-    'Receive Notifications when someone likes your content.' => '',
-    'View Online' => '',
-    '{displayNames} likes your {contentTitle}.' => '',
-    '{displayNames} likes {contentTitle}.' => '',
-    '{displayName} likes your {contentTitle}.' => '',
-    '{displayName} likes {contentTitle}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {contentType}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {content}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} {content}.' => '',
 ];

@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Späť na stream',
     'Cancel' => 'Zrušiť',
     'Cancel Edit' => 'Zrušiť Úpravu',
-    'Cannot notify the author.' => 'Nie je možné upovedomiť autora.',
     'Change to "Private"' => 'Zmeniť na "Súkromné"',
     'Change to "Public"' => 'Zmeniť na „Verejné“',
     'Comments are locked' => 'Komentáre sú uzamknuté',

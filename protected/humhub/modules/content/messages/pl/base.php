@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Powrót do strumienia',
     'Cancel' => 'Anuluj',
     'Cancel Edit' => 'Anuluj Edycję',
-    'Cannot notify the author.' => 'Nie można powiadomić autora.',
     'Change to "Private"' => 'Ustaw na prywatny',
     'Change to "Public"' => 'Ustaw na publiczny',
     'Comments are locked' => 'Komentarze są zablokowane',

@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Tillbaka till flöde',
     'Cancel' => 'Avbryt',
     'Cancel Edit' => 'Avbryt ändra',
-    'Cannot notify the author.' => 'Kan inte meddela författaren.',
     'Change to "Private"' => 'Gör privat',
     'Change to "Public"' => 'Gör publik',
     'Comments are locked' => 'Kommentarer är låsta',

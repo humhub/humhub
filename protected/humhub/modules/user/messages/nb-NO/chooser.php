@@ -12,7 +12,6 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Dette feltet tillater maks {n,plural,=1{# bruker} other{# brukere}}.',
     'You reached the maximum number of allowed characters ({n}).' => 'Du har nått maks antall tegn ({n}).',
     'Your search returned no matches.' => 'Ditt søk ga ingen treff.',
-    'No results found.' => '',
     'Select...' => '',
     'You are not allowed to remove this item.' => '',
 ];

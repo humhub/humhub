@@ -14,7 +14,6 @@ return [
     'Back to stream' => 'Povratak na stream',
     'Cancel' => 'Poništi',
     'Cancel Edit' => 'Poništi uređivanje',
-    'Cannot notify the author.' => 'Nije moguće obavestiti autora',
     'Change to "Private"' => 'Učini privatnim',
     'Change to "Public"' => 'Učini javnim',
     'Comments are locked' => 'Komentari su zakljucani',

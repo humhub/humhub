@@ -5,7 +5,6 @@ return [
     'Load more' => '載入更多',
     'Your search returned no matches.' => '沒有符合您搜尋條件的結果。',
     'An unexpected error occurred while loading the result.' => '',
-    'No results found.' => '',
     'No users found for the given query.' => '',
     'Please enter at least {n} character' => '',
     'Select {n,plural,=1{item} other{items}}' => '',

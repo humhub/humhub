@@ -14,7 +14,6 @@ return [
     'Back to stream' => 'Grįžti į srautą',
     'Cancel' => 'Atšaukti',
     'Cancel Edit' => 'Atšaukti redagavimą',
-    'Cannot notify the author.' => 'Nepavyko pranešti autoriui.',
     'Change to "Private"' => 'Padaryti privačiu',
     'Change to "Public"' => 'Padaryti viešą',
     'Comments are locked' => 'Komentarai yra užrakinti',

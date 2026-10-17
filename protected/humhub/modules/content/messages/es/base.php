@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Volver a Actividad',
     'Cancel' => 'Cancelar',
     'Cancel Edit' => 'Cancelar edición',
-    'Cannot notify the author.' => 'No se puede notificar al autor.',
     'Change to "Private"' => 'Hacer Privado',
     'Change to "Public"' => 'Hacer Público',
     'Comments are locked' => 'Los comentarios están cerrados',

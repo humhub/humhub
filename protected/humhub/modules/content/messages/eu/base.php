@@ -15,7 +15,6 @@ return [
     'Back to stream' => 'Itzuli jariora',
     'Cancel' => 'Ezeztatu',
     'Cancel Edit' => 'Edizioa ezeztatu',
-    'Cannot notify the author.' => 'Ezin zaio egileari jakinarazi.',
     'Change to "Private"' => 'Aldatu "Pribatua"ra',
     'Change to "Public"' => 'Aldatu "Publikoa"ra',
     'Comments are locked' => 'Iruzkinak blokeatuta daude',

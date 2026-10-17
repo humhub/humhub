@@ -20,6 +20,7 @@ return [
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'Modulu hau ez da instalatu oraindik. Minutu gutxi barru kenduko dute.',
     'User default state' => 'Erabiltzailearen lehenetsitako egoera',
     'Users' => 'Erabiltzaileak',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Uninstall Module' => '',

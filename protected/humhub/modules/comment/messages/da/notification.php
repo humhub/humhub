@@ -1,17 +1,13 @@
 <?php
+
 return [
-  'Comments' => 'Kommentarer',
-  'Receive Notifications when someone comments on my own or a following post.' => 'Modtag notifikationer når nogen kommenterer på et opslag jeg har lavet, eller som jeg følger.',
-  'View Online' => 'Se Online',
-  '[Deleted]' => '[Slettet]',
-  '{displayNames} commented {contentTitle}' => '{displayNames} kommenterede på {contentTitle}',
-  '{displayNames} commented {contentTitle} in Space {space}' => '{displayNames} kommenterede på {contentTitle} på siden {space}',
-  '{displayNames} commented {contentTitle}.' => '{displayNames} kommenterede på {contentTitle}',
-  '{displayNames} just commented your {contentTitle}' => '{displayNames} kommenterede på dit opslag {contentTitle}',
-  '{displayNames} just commented your {contentTitle} in Space {space}' => '{displayNames} kommenterede på dit opslag {contentTitle} på siden {space}',
-  '{displayName} commented {contentTitle}' => '{displayName} kommenterede {contentTitle}.',
-  '{displayName} commented {contentTitle} in Space {space}' => '{displayName} kommenterede {contentTitle}. i space {space}',
-  '{displayName} commented {contentTitle}.' => '{displayName} kommenterede{contentTitle}.',
-  '{displayName} just commented your {contentTitle}' => '{displayName} har lige kommenteret på {contentTitle}',
-  '{displayName} just commented your {contentTitle} in Space {space}' => '{displayName} char lige kommenteret på {contentTitle} i  {space}',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on a {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on your {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented your {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} replied to your {content}.' => '',
 ];

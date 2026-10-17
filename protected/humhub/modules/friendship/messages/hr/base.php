@@ -11,7 +11,7 @@ return [
     'Requests' => 'Zahtjevi',
     'Sent requests' => 'Poslani zahtjevi',
     'Show all friends' => 'Prikaži sve prijatelje',
-    'Unfriend' => 'Unfriend',
+    'Friendship system is not enabled!' => '',
     'Pending' => '',
     'Would you like to accept the friendship request?' => '',
     'Would you like to end your friendship with {userName}?' => '',
