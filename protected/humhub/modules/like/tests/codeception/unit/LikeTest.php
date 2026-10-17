@@ -105,6 +105,8 @@ class LikeTest extends HumHubDbTestCase
 
         $record = Notification::findOne(['class' => NewLikeNotification::class, 'user_id' => 2]);
         $this->assertStringContainsString('Liked comment', NotificationManager::load($record)->asWeb());
+        // links to the comment itself, not only to the post
+        $this->assertSame($comment->getUrl(true), NotificationManager::load($record)->getUrl(true));
     }
 
     public function testDeleteLikesOnContentHardDelete()

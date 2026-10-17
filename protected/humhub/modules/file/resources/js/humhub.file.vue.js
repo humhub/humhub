@@ -12,7 +12,13 @@
     }
     return target;
   };
-  const VIDEO_EXTENSIONS = ["webm", "mp4", "ogv", "mov"];
+  const VIDEO_TYPES = {
+    webm: "video/webm",
+    mp4: "video/mp4",
+    ogv: "video/ogg",
+    mov: "video/quicktime"
+  };
+  const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
   const AUDIO_EXTENSIONS = ["mp3"];
   const MEDIA_MIME_ICONS = ["mime-image", "mime-video", "mime-audio"];
   const SIZE_UNITS = ["B", "KB", "MB", "GB", "TB"];
@@ -56,6 +62,9 @@
         const name = String(file.fileName || "");
         const dot = name.lastIndexOf(".");
         return dot === -1 ? "" : name.slice(dot + 1).toLowerCase();
+      },
+      videoType(file) {
+        return VIDEO_TYPES[this.extension(file)];
       },
       // A file belongs to a media bucket by its extension, but only when it has no
       // image preview - an image preview always wins (mirrors showFiles.php, whose
@@ -130,7 +139,7 @@
     key: 1,
     class: "post-files-videos d-flex flex-wrap justify-content-center"
   };
-  const _hoisted_6 = ["data-ui-gallery", "href", "title"];
+  const _hoisted_6 = ["data-ui-gallery", "href", "type", "title"];
   const _hoisted_7 = ["src"];
   const _hoisted_8 = {
     key: 2,
@@ -197,6 +206,7 @@
                     vue.createElementVNode("a", {
                       "data-ui-gallery": $props.galleryId,
                       href: file.url + "#." + $options.extension(file),
+                      type: $options.videoType(file),
                       title: file.fileName,
                       class: "d-flex align-items-center justify-content-center h-100 w-100"
                     }, [

@@ -60,8 +60,25 @@ HumHub Changelog
 - Enh #8403: The control links of the content menu (`EditLink`, `DeleteLink`, `PermaLink`, … and `ContentTopicButton`) are `MenuLink`s instead of widgets and describe themselves to the `/api/v2/content/<id>/controls` endpoint; `WallEntryControlLink` is deprecated, `DescribableWidget` removed
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 
-1.19.0 (Unreleased)
-----------------------------------
+1.19.1 (Unreleased)
+-------------------
+- Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
+- Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
+- Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
+- Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
+- Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
+- Fix #8581: Attached videos opened in the gallery showed an error icon instead of playing
+- Fix #8577: Child themes (e.g. Enterprise White) lost their parent theme views when an empty parent theme list was cached, e.g. while the module providing the parent theme was not loaded during an update
+- Fix #8580: Users without an active impersonation lost access to their private spaces ("Space is invisible!") when an impersonation marker was left in the session, e.g. after the auth timeout of an impersonated session (since 1.19.0)
+- Enh #8579: Private content and private spaces are accessible again while impersonating a user (as before 1.19); hiding them is now opt-in via `'user' => ['impersonation' => ['allowPrivateContentAccess' => false]]`
+- Fix #8582: Fix "Add/Edit License" button link when pretty URLs are disabled
+- Fix #8588: Upgrade to 1.19 failed in the activity migration when a not yet updated module (e.g. Files 0.17) could not be loaded
+- Fix #8586: Like notifications redirected to the Dashboard instead of the liked content; likes on comments now link to the comment itself
+- Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
+- Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
+
+1.19.0 (October 12, 2026)
+-------------------------
 - Fix #8508: Fixed mention notifications crediting the original author instead of the user who added the mention on edit
 - Enh #8509: Marketplace wording "Community modules" replaced by "Non-curated modules", without a status badge on the module card
 - Fix #8511: The like title's "and {count} more like this." text appeared even when every liking user was already listed by name, and inflated the total like count

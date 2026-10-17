@@ -261,6 +261,7 @@ class HForm extends \yii\base\Component
                             'items' => $definition['items'],
                             'options' => $definition['options'],
                             'maxSelection' => $definition['maxSelection'] ?? 50,
+                            'lockedItems' => $definition['lockedItems'] ?? null,
                         ]);
                         break;
                     case 'dropdownlist':

@@ -176,6 +176,9 @@ class User extends \yii\web\User
     {
         $identity->updateAttributes(['last_login' => date('Y-m-d G:i:s')]);
 
+        // A regular login never continues an impersonation left over in the session
+        $this->removeImpersonationMarker();
+
         parent::afterLogin($identity, $cookieBased, $duration);
     }
 
@@ -188,7 +191,17 @@ class User extends \yii\web\User
             Yii::$app->session->set(MobileAppHelper::SESSION_VAR_SHOW_OPENER, 1);
         }
 
+        // The session may survive the logout (auth timeout, pending single logout)
+        $this->removeImpersonationMarker();
+
         parent::afterLogout($identity);
+    }
+
+    private function removeImpersonationMarker(): void
+    {
+        if ($this->enableSession && Yii::$app->has('session')) {
+            Yii::$app->session->remove(Impersonation::SESSION_KEY);
+        }
     }
 
     /**

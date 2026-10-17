@@ -47,6 +47,8 @@ describe('AttachedFiles', () => {
         const videoEl = wrapper.find('.post-files-videos video');
         expect(videoEl.attributes('src')).toBe(video.url + '#t=0.001');
         expect(videoEl.attributes('controls')).toBeDefined();
+        // without the type the gallery loads the video as an image
+        expect(wrapper.find('.post-files-videos a').attributes('type')).toBe('video/mp4');
 
         const audioBucket = wrapper.find('.post-files-audio .col-media');
         expect(audioBucket.find('audio').attributes('src')).toBe(audio.url);

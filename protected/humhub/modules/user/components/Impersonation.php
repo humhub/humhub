@@ -18,9 +18,9 @@ use yii\base\Component;
  * Impersonation holds the state and configuration of an impersonation session, in which an
  * administrator temporarily takes over another user's identity.
  *
- * While an impersonation is active, private content (content with non-public visibility, private
- * spaces, and module data guarded by [[\humhub\components\access\ControllerAccess::RULE_DENY_IMPERSONATED]])
- * is hidden from the impersonating user by default, see [[$allowPrivateContentAccess]].
+ * Private content (content with non-public visibility, private spaces, and module data guarded by
+ * [[\humhub\components\access\ControllerAccess::RULE_DENY_IMPERSONATED]]) can be hidden from the
+ * impersonating user while an impersonation is active, see [[$allowPrivateContentAccess]].
  *
  * The impersonation state is bound to the session and fails closed: the impersonated identity never
  * receives an auto-login cookie, and ending an impersonation whose impersonator can no longer be
@@ -32,7 +32,7 @@ use yii\base\Component;
  * 'components' => [
  *     'user' => [
  *         'impersonation' => [
- *             'allowPrivateContentAccess' => true, // pre-1.19 behavior
+ *             'allowPrivateContentAccess' => false, // hide private content while impersonating
  *             'log' => false,
  *         ],
  *     ],
@@ -49,10 +49,11 @@ class Impersonation extends Component
     public const SESSION_KEY = 'impersonator';
 
     /**
-     * @var bool whether the impersonating user keeps access to private content (the behavior of
-     * HumHub before 1.19). By default, private content and private spaces are hidden while impersonating.
+     * @var bool whether the impersonating user keeps access to private content. Disable it to hide
+     * private content and private spaces while impersonating.
+     * @since 1.19.1 enabled by default (as before 1.19)
      */
-    public bool $allowPrivateContentAccess = false;
+    public bool $allowPrivateContentAccess = true;
 
     /**
      * @var bool whether each started impersonation is written to the log (category `user`),

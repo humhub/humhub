@@ -12,6 +12,7 @@
                 <a
                     :data-ui-gallery="galleryId"
                     :href="file.url + '#.' + extension(file)"
+                    :type="videoType(file)"
                     :title="file.fileName"
                     class="d-flex align-items-center justify-content-center h-100 w-100"
                 >
@@ -114,7 +115,14 @@
  *
  * @since 1.20
  */
-const VIDEO_EXTENSIONS = ['webm', 'mp4', 'ogv', 'mov'];
+// The gallery needs the type, otherwise it loads a video as an image
+const VIDEO_TYPES = {
+    webm: 'video/webm',
+    mp4: 'video/mp4',
+    ogv: 'video/ogg',
+    mov: 'video/quicktime',
+};
+const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
 const AUDIO_EXTENSIONS = ['mp3'];
 
 // Mime icon classes of files the media grid renders a preview for - `excludeMedia`
@@ -171,6 +179,9 @@ export default {
             const dot = name.lastIndexOf('.');
 
             return dot === -1 ? '' : name.slice(dot + 1).toLowerCase();
+        },
+        videoType(file) {
+            return VIDEO_TYPES[this.extension(file)];
         },
         // A file belongs to a media bucket by its extension, but only when it has no
         // image preview - an image preview always wins (mirrors showFiles.php, whose
