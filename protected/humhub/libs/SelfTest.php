@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\components\fs\LocalMountConfig;
 use humhub\components\InstallationState;
 use humhub\helpers\ArrayHelper;
 use humhub\helpers\Html;
@@ -546,52 +547,30 @@ class SelfTest
             ];
         }
 
-        // Check Uploads Directory
-        $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads');
-        $path = realpath(Yii::getAlias('@webroot/uploads'));
-        if (is_writable($path)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
+        // Check Upload Directories - only a local data mount has directories to check
+        $dataMountConfig = Yii::$app->fs->getDataMountConfig();
+        if ($dataMountConfig instanceof LocalMountConfig) {
+            $uploadsPath = Yii::getAlias($dataMountConfig->path);
+            $uploadDirectories = [
+                Yii::t('AdminModule.information', 'Uploads') => $uploadsPath,
+                Yii::t('AdminModule.information', 'Uploads - File') => $uploadsPath . '/file',
+                Yii::t('AdminModule.information', 'Profile Image') => $uploadsPath . '/profile_image',
             ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
-            ];
-        }
-
-        // Check Uploads - File Directory
-        $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads - File');
-        $path = realpath(Yii::getAlias('@webroot/uploads/file'));
-        if (is_writable($path)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
-            ];
-        }
-
-        // Check Profile Image Directory
-        $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Profile Image');
-        $path = realpath(Yii::getAlias('@webroot/uploads/profile_image'));
-        if (is_writable($path)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
-            ];
+            foreach ($uploadDirectories as $name => $path) {
+                $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . $name;
+                if (is_writable($path)) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'ERROR',
+                        'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
+                    ];
+                }
+            }
         }
 
         // Check Custom Modules Directory
