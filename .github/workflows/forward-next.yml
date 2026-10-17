@@ -1,0 +1,32 @@
+name: Forward next
+
+# Brings every push to "develop" into "next", so "next" does not have to be merged by hand
+# while it has no or only small own changes (e.g. the version in the config).
+# A fast-forward when "next" has no own commits, a merge commit otherwise. On a merge
+# conflict the job fails and "develop" has to be merged into "next" manually.
+
+on:
+  push:
+    branches: [develop]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forward-next
+
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: next
+          fetch-depth: 0
+
+      - name: Merge develop into next
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-edit origin/develop
+          git push origin HEAD:next
