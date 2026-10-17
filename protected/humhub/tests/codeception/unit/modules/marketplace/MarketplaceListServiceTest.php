@@ -26,6 +26,8 @@ use Yii;
  */
 class MarketplaceListServiceTest extends HumHubDbTestCase
 {
+    private string $modulesPath;
+
     public static function catalogue(): array
     {
         return [
@@ -44,12 +46,16 @@ class MarketplaceListServiceTest extends HumHubDbTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // the core modules `friendship` and `like` stand in for modules installed by the marketplace
+        $this->modulesPath = Yii::$app->getModule('marketplace')->modulesPath;
+        Yii::$app->getModule('marketplace')->modulesPath = '@humhub/modules';
         Yii::$app->cache->set(OnlineModuleManager::CACHE_KEY_MODULES, self::catalogue());
         Yii::$app->getModule('marketplace')->settings->delete('includeCommunityModules');
     }
 
     protected function tearDown(): void
     {
+        Yii::$app->getModule('marketplace')->modulesPath = $this->modulesPath;
         Yii::$app->cache->delete(OnlineModuleManager::CACHE_KEY_MODULES);
         Yii::$app->getModule('marketplace')->settings->delete('includeCommunityModules');
         parent::tearDown();
@@ -93,6 +99,15 @@ class MarketplaceListServiceTest extends HumHubDbTestCase
     public function testCountsAvailableUpdates(): void
     {
         $this->assertSame(1, $this->service()->updateCount());
+    }
+
+    public function testOffersNoUpdateForModulesOutsideTheMarketplaceDirectory(): void
+    {
+        Yii::$app->getModule('marketplace')->modulesPath = $this->modulesPath;
+
+        $this->assertSame(0, $this->service()->updateCount());
+        $this->assertFalse($this->service()->all()['friendship']->isUpdateAvailable());
+        $this->assertArrayNotHasKey('friendship', (new OnlineModuleManager())->getModuleUpdates());
     }
 
     public function testIsUnavailableWithAnEmptyCatalogue(): void

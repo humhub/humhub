@@ -26,8 +26,13 @@ use Yii;
  */
 class MarketplaceApiCest
 {
+    private string $modulesPath;
+
     public function _before(ApiTester $I): void
     {
+        // the core modules `friendship` and `like` stand in for modules installed by the marketplace
+        $this->modulesPath = Yii::$app->getModule('marketplace')->modulesPath;
+        Yii::$app->getModule('marketplace')->modulesPath = '@humhub/modules';
         Yii::$app->cache->set(OnlineModuleManager::CACHE_KEY_MODULES, MarketplaceListServiceTest::catalogue());
         Yii::$app->cache->set(OnlineModuleManager::CACHE_KEY_CATEGORIES, [
             'categories' => [
@@ -43,6 +48,7 @@ class MarketplaceApiCest
 
     public function _after(ApiTester $I): void
     {
+        Yii::$app->getModule('marketplace')->modulesPath = $this->modulesPath;
         Yii::$app->cache->delete(OnlineModuleManager::CACHE_KEY_MODULES);
         Yii::$app->cache->delete(OnlineModuleManager::CACHE_KEY_CATEGORIES);
         Yii::$app->cache->delete('latestVersion');

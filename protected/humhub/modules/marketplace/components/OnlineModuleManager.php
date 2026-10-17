@@ -235,6 +235,10 @@ class OnlineModuleManager extends Component
      */
     public function update($moduleId)
     {
+        if (!$this->isMarketplaceModule($moduleId)) {
+            $this->throwError($moduleId, 'Module is not located in the marketplace module directory.');
+        }
+
         $this->trigger(static::EVENT_BEFORE_UPDATE, new ModuleEvent(['module' => Yii::$app->moduleManager->getModule($moduleId, false)]));
 
         $moduleZipFile = $this->downloadModule($moduleId);
@@ -416,7 +420,7 @@ class OnlineModuleManager extends Component
             }
 
             $installedVersion = $this->getInstalledVersion($moduleId);
-            if ($installedVersion === null) {
+            if ($installedVersion === null || !$this->isMarketplaceModule($moduleId)) {
                 continue;
             }
 
@@ -426,6 +430,23 @@ class OnlineModuleManager extends Component
         }
 
         return $updates;
+    }
+
+    /**
+     * Returns true if the module is installed in the marketplace module directory.
+     * Modules located elsewhere (e.g. custom autoload paths or development checkouts)
+     * are not managed by the marketplace and therefore must not be updated or removed by it.
+     *
+     * @since 1.20
+     */
+    public function isMarketplaceModule(string $moduleId): bool
+    {
+        $module = Yii::$app->moduleManager->hasModule($moduleId)
+            ? Yii::$app->moduleManager->getModule($moduleId, false)
+            : null;
+        $basePath = $module?->getBasePath() ?? ModuleDiscoveryService::findModuleBasePath($moduleId);
+
+        return $basePath !== null && Yii::$app->getModule('marketplace')->isInModulesPath($basePath);
     }
 
     /**

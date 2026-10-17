@@ -278,7 +278,8 @@ class Module extends Model
 
         return $installedVersion !== null
             && !empty($this->latestCompatibleVersion)
-            && version_compare((string)$this->latestCompatibleVersion, $installedVersion, '>');
+            && version_compare((string)$this->latestCompatibleVersion, $installedVersion, '>')
+            && Yii::$app->getModule('marketplace')->onlineModuleManager->isMarketplaceModule($this->id);
     }
 
     /**
