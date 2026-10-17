@@ -105,6 +105,21 @@ class ActiveField extends \yii\bootstrap5\ActiveField
     }
 
     /**
+     * Renders a boolean attribute as a toggle switch, left of label and hint (in a modal as a row, the switch on the right).
+     * Preferred over [[checkbox()]] for on/off settings; a checkbox remains the choice for e.g. consents.
+     *
+     * @param array $options the same options as for [[checkbox()]]
+     * @return $this
+     * @since 1.20
+     */
+    public function toggle($options = []): self
+    {
+        $options['switch'] = true;
+
+        return $this->checkbox($options);
+    }
+
+    /**
      * Use option 'template' = 'pills' to stylize radio inputs to pills
      * Other options for the template:
      *  - 'wide' = true to make it wide to full width

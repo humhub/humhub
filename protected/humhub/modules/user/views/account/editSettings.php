@@ -31,11 +31,11 @@ use humhub\widgets\form\ActiveForm;
 <?php endif; ?>
 
 <?php if ($isEnabledOnlineStatus): ?>
-    <?= $form->field($model, 'hideOnlineStatus')->checkbox(); ?>
+    <?= $form->field($model, 'hideOnlineStatus')->toggle(); ?>
 <?php endif; ?>
 
 <?php if (Yii::$app->getModule('tour')->settings->get('enable') == 1): ?>
-    <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
+    <?= $form->field($model, 'show_introduction_tour')->toggle(); ?>
 <?php endif; ?>
 
 <?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList(), ['data-ui-select2' => '']) ?>

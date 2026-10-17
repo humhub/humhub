@@ -352,6 +352,16 @@ describe('CheckboxField', () => {
         expect(errorIndex).toBeGreaterThan(-1);
         expect(hintIndex).toBeGreaterThan(errorIndex);
     });
+
+    it('renders a toggle switch with `toggle`, matching ActiveField::toggle()', () => {
+        const plain = mount(CheckboxField, { props: { attribute: 'notify' } });
+        expect(plain.find('.form-check').classes()).not.toContain('form-switch');
+        expect(plain.find('input').attributes('role')).toBeUndefined();
+
+        const toggle = mount(CheckboxField, { props: { attribute: 'notify', toggle: true } });
+        expect(toggle.find('.form-check').classes()).toContain('form-switch');
+        expect(toggle.find('input').attributes('role')).toBe('switch');
+    });
 });
 
 describe('SelectField', () => {

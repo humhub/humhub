@@ -35,20 +35,20 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]) ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')) ?>
-    <?= $form->field($model, 'tour')->checkbox() ?>
-    <?= $form->field($model, 'dashboardShowProfilePostForm')->checkbox() ?>
-    <?= $form->field($model, 'dashboardShowTopicSidebar')->checkbox() ?>
+    <?= $form->field($model, 'tour')->toggle() ?>
+    <?= $form->field($model, 'dashboardShowProfilePostForm')->toggle() ?>
+    <?= $form->field($model, 'dashboardShowTopicSidebar')->toggle() ?>
     <?= $form->endCollapsibleFields() ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Friendship')) ?>
-    <?= $form->field($model, 'enableFriendshipModule')->checkbox() ?>
+    <?= $form->field($model, 'enableFriendshipModule')->toggle() ?>
     <?= $form->endCollapsibleFields() ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Maintenance mode'), !$model->maintenanceMode) ?>
     <?= Alert::warning(Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'))
         ->closeButton(false)
         ->icon(Icon::get('exclamation-triangle')) ?>
-    <?= $form->field($model, 'maintenanceMode')->checkbox() ?>
+    <?= $form->field($model, 'maintenanceMode')->toggle() ?>
     <?= $form->field($model, 'maintenanceModeInfo')->textInput(['placeholder' => Yii::t('AdminModule.settings', 'Add individual info text...')]) ?>
     <?= $form->endCollapsibleFields() ?>
 

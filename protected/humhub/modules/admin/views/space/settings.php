@@ -42,19 +42,19 @@ AdminSpaceAsset::register($this);
 
 <?= $form->field($model, 'defaultStreamSort')->dropDownList($model::defaultStreamSortOptions()) ?>
 
-<?= $form->field($model, 'defaultHideMembers')->checkbox() ?>
+<?= $form->field($model, 'defaultHideMembers')->toggle() ?>
 
-<?= $form->field($model, 'defaultHideActivities')->checkbox() ?>
+<?= $form->field($model, 'defaultHideActivities')->toggle() ?>
 
-<?= $form->field($model, 'defaultHideAbout')->checkbox() ?>
+<?= $form->field($model, 'defaultHideAbout')->toggle() ?>
 
-<?= $form->field($model, 'defaultHideFollowers')->checkbox() ?>
+<?= $form->field($model, 'defaultHideFollowers')->toggle() ?>
 
-<?= $form->field($model, 'defaultShowTopicSidebar')->checkbox() ?>
+<?= $form->field($model, 'defaultShowTopicSidebar')->toggle() ?>
 
 <?= $form->field($model, 'defaultTopicSidebarSortOrder')->widget(SortOrderField::class) ?>
 
-<?= $form->field($model, 'allowSpaceTopics')->checkbox(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
+<?= $form->field($model, 'allowSpaceTopics')->toggle(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
 
 <?= Button::primary(Yii::t('base', 'Save'))->submit(); ?>
 

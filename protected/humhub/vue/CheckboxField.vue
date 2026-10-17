@@ -1,11 +1,12 @@
 <template>
     <div class="mb-3" :class="[`field-${fieldId}`, { required }]">
-        <div class="form-check">
+        <div class="form-check" :class="{ 'form-switch': toggle }">
             <input
                 ref="input"
                 :id="fieldId"
                 :name="fieldName"
                 type="checkbox"
+                :role="toggle ? 'switch' : null"
                 class="form-check-input"
                 :class="{ 'is-invalid': hasError }"
                 value="1"
@@ -42,6 +43,9 @@
  * (`ActiveField::render()` always calls `begin()`/`end()` around the template,
  * regardless of which template is active).
  *
+ * With `toggle` it renders as a toggle switch instead, mirroring `ActiveField::toggle()`
+ * (`ActiveField::$switchTemplate`: the same parts, plus `form-switch` and `role="switch"`).
+ *
  * @since 1.20
  */
 import fieldMixin from './form/fieldMixin.js';
@@ -50,6 +54,7 @@ export default {
     mixins: [fieldMixin],
     props: {
         modelValue: { type: Boolean, default: false },
+        toggle: { type: Boolean, default: false },
     },
     emits: ['update:modelValue'],
     computed: {

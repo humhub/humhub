@@ -127,7 +127,7 @@
     role: "alert",
     class: "c-card-grid__message-text"
   };
-  const _hoisted_5$c = {
+  const _hoisted_5$b = {
     key: 2,
     class: "c-card-grid__message c-card-grid__message--empty"
   };
@@ -227,7 +227,7 @@
                   1
                   /* TEXT */
                 )
-              ])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$c, [
+              ])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$b, [
                 vue.createElementVNode("p", _hoisted_6$b, [
                   vue.renderSlot(_ctx.$slots, "empty", {}, () => [
                     vue.createElementVNode(
@@ -729,7 +729,7 @@
     class: "spinner-border spinner-border-sm c-select__spinner",
     "aria-hidden": "true"
   };
-  const _hoisted_5$b = {
+  const _hoisted_5$a = {
     key: 1,
     class: "ti ti-chevron-up c-select__chevron",
     "aria-hidden": "true"
@@ -823,7 +823,7 @@
             onFocus: _cache[2] || (_cache[2] = (...args) => $options.onFocus && $options.onFocus(...args))
           }, null, 40, _hoisted_3$f)
         ]),
-        $data.loading ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$e)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_5$b)),
+        $data.loading ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_4$e)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_5$a)),
         vue.createElementVNode("button", {
           type: "button",
           class: "c-select__clear",
@@ -1141,7 +1141,7 @@
     class: "ti ti-chevron-up c-select__chevron",
     "aria-hidden": "true"
   };
-  const _hoisted_5$a = ["disabled", "aria-hidden", "aria-label", "title"];
+  const _hoisted_5$9 = ["disabled", "aria-hidden", "aria-label", "title"];
   const _hoisted_6$9 = ["id", "aria-label", "aria-activedescendant"];
   const _hoisted_7$7 = ["id", "aria-selected", "onClick", "onMousemove"];
   const _hoisted_8$6 = {
@@ -1204,7 +1204,7 @@
             -1
             /* CACHED */
           )
-        ])], 8, _hoisted_5$a),
+        ])], 8, _hoisted_5$9),
         vue.createElementVNode("ul", {
           id: $data.listboxId,
           ref: "listbox",
@@ -1292,7 +1292,7 @@
     class: "c-filter-tags__label",
     "aria-hidden": "true"
   };
-  const _hoisted_5$9 = ["aria-pressed", "onClick"];
+  const _hoisted_5$8 = ["aria-pressed", "onClick"];
   const _hoisted_6$8 = {
     key: 4,
     class: "c-filter-check form-check"
@@ -1367,7 +1367,7 @@
             class: vue.normalizeClass(["c-filter-tags__tag", { active: $options.isTagActive(option.value) }]),
             "aria-pressed": $options.isTagActive(option.value) ? "true" : "false",
             onClick: ($event) => $options.toggleTag(option.value)
-          }, vue.toDisplayString(option.label), 11, _hoisted_5$9);
+          }, vue.toDisplayString(option.label), 11, _hoisted_5$8);
         }),
         128
         /* KEYED_FRAGMENT */
@@ -1864,7 +1864,7 @@
   const _hoisted_2$f = ["id"];
   const _hoisted_3$c = ["data-filter-bar-keep"];
   const _hoisted_4$b = ["aria-expanded", "aria-controls", "aria-label", "title"];
-  const _hoisted_5$8 = { class: "c-filter-bar__toggle-label" };
+  const _hoisted_5$7 = { class: "c-filter-bar__toggle-label" };
   const _hoisted_6$7 = {
     key: 0,
     class: "c-filter-bar__count",
@@ -1947,7 +1947,7 @@
                     [
                       vue.createElementVNode(
                         "span",
-                        _hoisted_5$8,
+                        _hoisted_5$7,
                         vue.toDisplayString($options.panelLabel),
                         1
                         /* TEXT */
@@ -2569,7 +2569,8 @@
   const _sfc_main$k = {
     mixins: [fieldMixin],
     props: {
-      modelValue: { type: Boolean, default: false }
+      modelValue: { type: Boolean, default: false },
+      toggle: { type: Boolean, default: false }
     },
     emits: ["update:modelValue"],
     computed: {
@@ -2591,11 +2592,10 @@
       }
     }
   };
-  const _hoisted_1$i = { class: "form-check" };
-  const _hoisted_2$c = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
-  const _hoisted_3$a = ["for"];
+  const _hoisted_1$i = ["id", "name", "role", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_2$c = ["for"];
+  const _hoisted_3$a = ["id"];
   const _hoisted_4$9 = ["id"];
-  const _hoisted_5$7 = ["id"];
   function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
@@ -2603,54 +2603,63 @@
         class: vue.normalizeClass(["mb-3", [`field-${_ctx.fieldId}`, { required: _ctx.required }]])
       },
       [
-        vue.createElementVNode("div", _hoisted_1$i, [
-          vue.withDirectives(vue.createElementVNode("input", {
-            ref: "input",
-            id: _ctx.fieldId,
-            name: _ctx.fieldName,
-            type: "checkbox",
-            class: vue.normalizeClass(["form-check-input", { "is-invalid": _ctx.hasError }]),
-            value: "1",
-            disabled: _ctx.isDisabled,
-            "aria-required": _ctx.required ? "true" : null,
-            "aria-invalid": _ctx.hasError ? "true" : null,
-            "aria-describedby": _ctx.describedBy,
-            "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
-          }, null, 10, _hoisted_2$c), [
-            [vue.vModelCheckbox, $options.internalValue]
-          ]),
-          _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
-            key: 0,
-            for: _ctx.fieldId,
-            class: "form-check-label"
-          }, vue.toDisplayString(_ctx.label), 9, _hoisted_3$a)) : vue.createCommentVNode("v-if", true),
-          _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
-            key: 1,
-            id: _ctx.errorId,
-            class: "invalid-feedback"
-          }, [
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
-              null,
-              vue.renderList(_ctx.errorMessages, (message, index) => {
-                return vue.openBlock(), vue.createElementBlock(
-                  "div",
-                  { key: index },
-                  vue.toDisplayString(message),
-                  1
-                  /* TEXT */
-                );
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            ))
-          ], 8, _hoisted_4$9)) : vue.createCommentVNode("v-if", true),
-          _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
-            key: 2,
-            id: _ctx.hintId,
-            class: "form-text text-muted"
-          }, vue.toDisplayString(_ctx.hint), 9, _hoisted_5$7)) : vue.createCommentVNode("v-if", true)
-        ])
+        vue.createElementVNode(
+          "div",
+          {
+            class: vue.normalizeClass(["form-check", { "form-switch": $props.toggle }])
+          },
+          [
+            vue.withDirectives(vue.createElementVNode("input", {
+              ref: "input",
+              id: _ctx.fieldId,
+              name: _ctx.fieldName,
+              type: "checkbox",
+              role: $props.toggle ? "switch" : null,
+              class: vue.normalizeClass(["form-check-input", { "is-invalid": _ctx.hasError }]),
+              value: "1",
+              disabled: _ctx.isDisabled,
+              "aria-required": _ctx.required ? "true" : null,
+              "aria-invalid": _ctx.hasError ? "true" : null,
+              "aria-describedby": _ctx.describedBy,
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
+            }, null, 10, _hoisted_1$i), [
+              [vue.vModelCheckbox, $options.internalValue]
+            ]),
+            _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
+              key: 0,
+              for: _ctx.fieldId,
+              class: "form-check-label"
+            }, vue.toDisplayString(_ctx.label), 9, _hoisted_2$c)) : vue.createCommentVNode("v-if", true),
+            _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
+              key: 1,
+              id: _ctx.errorId,
+              class: "invalid-feedback"
+            }, [
+              (vue.openBlock(true), vue.createElementBlock(
+                vue.Fragment,
+                null,
+                vue.renderList(_ctx.errorMessages, (message, index) => {
+                  return vue.openBlock(), vue.createElementBlock(
+                    "div",
+                    { key: index },
+                    vue.toDisplayString(message),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ], 8, _hoisted_3$a)) : vue.createCommentVNode("v-if", true),
+            _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
+              key: 2,
+              id: _ctx.hintId,
+              class: "form-text text-muted"
+            }, vue.toDisplayString(_ctx.hint), 9, _hoisted_4$9)) : vue.createCommentVNode("v-if", true)
+          ],
+          2
+          /* CLASS */
+        )
       ],
       2
       /* CLASS */

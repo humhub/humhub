@@ -264,7 +264,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemePrimaryColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
 
@@ -275,7 +275,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeAccentColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
 
@@ -286,7 +286,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeSecondaryColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
         </div>
@@ -299,7 +299,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeSuccessColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
 
@@ -310,7 +310,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeDangerColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
 
@@ -321,7 +321,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeWarningColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
         </div>
@@ -334,7 +334,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeInfoColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
 
@@ -345,7 +345,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeLightColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
 
@@ -356,7 +356,7 @@ $themeVariables = Yii::$app->view->theme->variables;
                         'disabled' => $model->useDefaultThemeDarkColor,
                         'class' => 'rounded'
                     ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
+                    <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->toggle() ?>
                 </div>
             </div>
         </div>

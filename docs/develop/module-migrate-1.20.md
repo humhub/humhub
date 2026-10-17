@@ -2037,3 +2037,16 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - The plain text summary mail shows the `content` and `contentTitle` parameters (and the liked
     content of `LikeActivity`) decoded instead of HTML-encoded (`&quot;`, `&lt;b&gt;`), as
     notifications do.
+
+- **Toggle switches for on/off settings.** New: `ActiveField::toggle()` renders a boolean attribute
+  as a toggle switch (Bootstrap's `form-check form-switch` markup with `role="switch"`, still a
+  checkbox input); the Vue `CheckboxField` does the same with its new `toggle` prop. Prefer it over
+  `checkbox()` for settings that switch something on or off; keep `checkbox()` for confirmations and
+  one-off actions (e.g. "Delete contributions too").
+  - The switch sits left of label and hint like a checkbox; inside a `.modal` the field is a bordered
+    row with the switch on the right. Size and colors are CSS variables on `.form-check.form-switch`
+    (`--hh-toggle-width`, `--hh-toggle-height`, `--hh-toggle-knob-size`, `--hh-toggle-bg`,
+    `--hh-toggle-color`, `--hh-toggle-checked-bg`, `--hh-toggle-checked-color`).
+  - `->checkbox(['switch' => true])` renders the same toggle.
+  - The admin and account settings use toggles now. Theme views overriding these views keep their
+    checkboxes; tests checking the fields by label or name (`checkOption()`) work unchanged.

@@ -21,8 +21,8 @@ $fileModule = Yii::$app->getModule('file');
 <?= $form->field($model, 'maxFileSize')->textInput(['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
 <?= $form->field($model, 'allowedExtensions')->textarea(['class' => 'form-control']); ?>
 <br/>
-<?= $form->field($model, 'useXSendfile')->checkbox(['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
-<?= $form->field($model, 'excludeMediaFilesPreview')->checkbox(['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
+<?= $form->field($model, 'useXSendfile')->toggle(['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
+<?= $form->field($model, 'excludeMediaFilesPreview')->toggle(['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
 
 <hr>
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
