@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
 - Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
 - Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
