@@ -789,6 +789,22 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `lockCommentsLink.php` and `notificationSwitchLink.php` are removed — a theme override of
       one of them no longer applies. The rendered anchors keep their classes and
       `data-action-*` attributes; labels are HTML-encoded now.
+    - **Breaking**: the `WallEntryControlLink` API these links inherited is gone from them as
+      well. Code that instantiates one to read it — as `wiki` did with
+      `(new MoveContentLink(['model' => $record]))->preventRender()` — fails with
+      `UnknownMethodException`/`UnknownPropertyException`:
+
+      | Before | After |
+      |---|---|
+      | `preventRender()` | `!isVisible()` |
+      | `getActionUrl()`, `$actionUrl` | `getHtmlOptions()['data-action-url']` |
+      | `$action` | `getHtmlOptions()['data-action-click']` |
+      | `$options` | `getHtmlOptions()` |
+
+      `$icon` and `$label` still read through `getIcon()` and `getLabel()`.
+
+      A module that supports 1.19 as well cannot use either side; build the entry from the
+      record directly (for moving: `$content->container` and `$content->checkMovePermission()`).
     - **Deprecated**: `WallEntryControlLink`. Extend `MenuLink` instead. A subclass keeps
       working and stays described through the new `WallEntryControlLink::toMenuLink()`, which
       the controls endpoint uses.
