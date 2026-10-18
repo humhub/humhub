@@ -568,6 +568,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
   - `Yii::getAlias('@ui/…')` now throws. No known module used it.
 
+  - **The `UiModule.*` translation categories have no fallback**, unlike the classes. A module
+    that still calls `Yii::t('UiModule.base', …)` (or `.form`, `.markdownEditor`, `.icon`) fails
+    with `InvalidConfigException: Unable to locate message source for category 'UiModule.base'`
+    when the string is rendered, and `message/extract-module` aborts with `Could not find/load
+    requested module: ui`. Switch to `base` if the module requires 1.20; a module that still
+    supports 1.19 should use its own category instead, because in 1.19 the strings are not yet
+    in `base`.
+
   - The 39 strings of the three categories moved into `base` with their translations. Where a
     string already existed in `base` the existing translation was kept; this affects one string,
     `Collapse`, whose wording now follows the core catalogue in Arabic, French, Italian, Dutch,
