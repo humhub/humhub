@@ -4,6 +4,7 @@ HumHub Changelog
 1.19.1 (Unreleased)
 -------------------
 - Fix #8607: The two-step login picked a random user when the entered login was one user's username and another user's email
+- Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
 - Fix #8605: Users of a user source other than "local" could not log in with their password although their source allowed the Password client; a source allowing it also blocked the password login of local users
 - Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
 - Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
@@ -20,6 +21,8 @@ HumHub Changelog
 - Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
 - Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
 - Fix #8604: The PWA manifest (`/manifest.json`) was redirected to the page of an open user gate (e.g. the 2FA check or a forced password change) and could set it as the return URL; `web/pwa-manifest` is now an infrastructure route that no gate intercepts
+- Fix #8606: Installer pages are marked `noindex`; an already installed instance answers `/installer` with 404 instead of a logged 500 error
+- Fix #8609: Topic sidebar counted deleted, archived, hidden, draft and scheduled content, so a topic stayed listed although filtering by it showed no matches
 
 1.19.0 (October 12, 2026)
 -------------------------
