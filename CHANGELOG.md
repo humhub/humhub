@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
 - Fix #8604: The PWA manifest (`/manifest.json`) was redirected to the page of an open user gate (e.g. the 2FA check or a forced password change) and could set it as the return URL; `web/pwa-manifest` is now an infrastructure route that no gate intercepts
 - Fix #8606: Installer pages are marked `noindex`; an already installed instance answers `/installer` with 404 instead of a logged 500 error
+- Fix #8609: Topic sidebar counted deleted, archived, hidden, draft and scheduled content, so a topic stayed listed although filtering by it showed no matches
 
 1.19.0 (October 12, 2026)
 -------------------------

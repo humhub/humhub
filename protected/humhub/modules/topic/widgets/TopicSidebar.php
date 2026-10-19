@@ -10,6 +10,7 @@ namespace humhub\modules\topic\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use Yii;
@@ -81,19 +82,24 @@ class TopicSidebar extends Widget
                     'usages_count' => SORT_DESC,
                     'name' => SORT_ASC,
                 ]);
-            if ($this->isGlobal()) {
-                $query->addSelect(['usages_count' => new Expression('COUNT(content_tag_relation.id)')]);
-            } else {
-                // Use an inner join here (instead of left join) so that topics without any
-                // content in this specific container (e.g. global topics only used elsewhere)
-                // are excluded instead of showing up with a usage count of zero.
-                $query->addSelect(['usages_count' => new Expression('COUNT(content.id)')])
-                    ->innerJoin('content', [
-                        'and',
-                        'content.id = content_tag_relation.content_id',
-                        ['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id],
-                    ]);
+
+            // Count only content visible in a stream by default: published, not archived and not hidden
+            $contentCondition = [
+                'and',
+                'content.id = content_tag_relation.content_id',
+                ['content.state' => Content::STATE_PUBLISHED],
+                ['content.archived' => 0],
+                ['content.hidden' => 0],
+            ];
+
+            // Topics without any content in this specific container (e.g. global topics only used elsewhere)
+            // are excluded instead of showing up with a usage count of zero.
+            if (!$this->isGlobal()) {
+                $contentCondition[] = ['content.contentcontainer_id' => $this->contentContainer->contentcontainer_id];
             }
+
+            $query->addSelect(['usages_count' => new Expression('COUNT(content.id)')]);
+            $query->innerJoin('content', $contentCondition);
 
             $this->_topics = $query->limit($this->limit)->all();
         }
