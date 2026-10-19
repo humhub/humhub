@@ -59,17 +59,34 @@ class LoginIdentity extends Model
      * Used to decide whether to redirect to an IdP. Returns null when no match
      * is found — callers must treat this case identically to a matched user
      * with form-based auth (account-enumeration protection).
+     *
+     * A username match takes precedence over an email match, as a username
+     * may contain "@" and thus equal another user's email.
      */
     public function findUser(): ?User
     {
+        return $this->findUsers()[0] ?? null;
+    }
+
+    /**
+     * @return User[] the user matched by username, then a different user matched by email
+     */
+    private function findUsers(): array
+    {
         if ((string)$this->username === '') {
-            return null;
+            return [];
         }
 
-        return User::find()
-            ->where(['username' => $this->username])
-            ->orWhere(['email' => $this->username])
-            ->one();
+        $users = [];
+
+        foreach ([['username' => $this->username], ['email' => $this->username]] as $condition) {
+            $user = User::findOne($condition);
+            if ($user !== null) {
+                $users[$user->id] = $user;
+            }
+        }
+
+        return array_values($users);
     }
 
     /**
@@ -100,17 +117,24 @@ class LoginIdentity extends Model
      */
     public function getStep1Redirect(): ?array
     {
-        $user = $this->findUser();
-        if ($user === null) {
+        $users = $this->findUsers();
+        if ($users === []) {
             return null;
         }
 
+        // If the login matches two users (one by username, one by email), the
+        // password screen is shown as soon as one of them can use it: the
+        // Password client falls back to the email match when the username
+        // match cannot log in with a password.
+        foreach ($users as $candidate) {
+            if ($this->hasUsableFormAuth($candidate, $this->getAllowedAuthClientIds($candidate))) {
+                return null;
+            }
+        }
+
+        $user = $users[0];
         $collection = Yii::$app->authClientCollection;
-        $allowedIds = UserSourceService::getForUser($user)->getUserSource()->getAllowedAuthClientIds();
-
-        if ($this->hasUsableFormAuth($user, $allowedIds)) {
-            return null;
-        }
+        $allowedIds = $this->getAllowedAuthClientIds($user);
 
         // No usable form-based auth — pick an external provider.
         // Preference 1: the first explicitly allowed client (the source's
@@ -153,6 +177,14 @@ class LoginIdentity extends Model
         (new LoginHintService())->set((string)$user->email);
 
         return ['/user/auth/external', 'authclient' => $clientId];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllowedAuthClientIds(User $user): array
+    {
+        return UserSourceService::getForUser($user)->getUserSource()->getAllowedAuthClientIds();
     }
 
     /**

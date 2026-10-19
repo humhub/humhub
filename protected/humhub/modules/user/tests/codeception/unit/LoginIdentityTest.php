@@ -202,6 +202,59 @@ class LoginIdentityTest extends HumHubDbTestCase
         $this->assertNull((new LoginHintService())->consume());
     }
 
+    public function testUsernameMatchWinsOverEmailMatch(): void
+    {
+        // usernames may contain "@", so one user's username can be another user's email
+        $other = $this->renameUser('User2', 'user1@example.com');
+
+        $login = new LoginIdentity(['username' => 'user1@example.com']);
+
+        $this->assertSame($other->id, $login->findUser()?->id);
+    }
+
+    public function testEmailMatchWithPasswordGetsThePasswordScreen(): void
+    {
+        // The username matches an SSO-only user, the email a user with a
+        // password. Step 2 (the Password client) falls back to the email match
+        // in this case, so Step 1 must not redirect to the SSO user's IdP.
+        $this->moveToSsoSource($this->renameUser('User2', 'user1@example.com'), 'saml');
+
+        $login = new LoginIdentity(['username' => 'user1@example.com']);
+
+        $this->assertNull($login->getStep1Redirect());
+    }
+
+    public function testUsernameMatchDecidesWhenNoMatchCanUseThePasswordScreen(): void
+    {
+        $this->moveToSsoSource($this->renameUser('User2', 'user1@example.com'), 'saml');
+        $this->moveToSsoSource(User::findOne(['username' => 'User1']), 'oidc');
+
+        $login = new LoginIdentity(['username' => 'user1@example.com']);
+
+        $this->assertSame(['/user/auth/external', 'authclient' => 'saml'], $login->getStep1Redirect());
+    }
+
+    private function renameUser(string $username, string $newUsername): User
+    {
+        $user = User::findOne(['username' => $username]);
+        $user->updateAttributes(['username' => $newUsername]);
+
+        return $user;
+    }
+
+    /**
+     * Moves the user into a source that only allows the given external client.
+     */
+    private function moveToSsoSource(User $user, string $clientId): void
+    {
+        $this->registerAuthClient($clientId, new ExternalAuthClientStub());
+        Yii::$app->userSourceCollection->setUserSource($clientId . '-source', new GenericUserSource([
+            'id' => $clientId . '-source',
+            'allowedAuthClientIds' => [$clientId],
+        ]));
+        $user->updateAttributes(['user_source' => $clientId . '-source']);
+    }
+
     private function registerAuthClient(string $id, BaseClient $client): void
     {
         $client->setId($id);
