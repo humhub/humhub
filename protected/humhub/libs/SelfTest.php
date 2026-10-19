@@ -530,6 +530,26 @@ class SelfTest
             ];
         }
 
+        // Check Log Directory - only when it is not inside the runtime directory checked above
+        $logsPath = Yii::getAlias('@logs');
+        if (!str_starts_with($logsPath . DIRECTORY_SEPARATOR, Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR)) {
+            $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Logs');
+            // The file log target creates the directory itself, so a missing one only needs a writable parent
+            $path = is_dir($logsPath) ? $logsPath : dirname($logsPath);
+            if (is_writable($path)) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK',
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'ERROR',
+                    'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
+                ];
+            }
+        }
+
         // Check Assets Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Assets');
         $path = realpath(Yii::getAlias('@webroot/assets'));

@@ -58,6 +58,10 @@ final class BootstrapService
             ? \humhub\components\console\Application::class
             : \humhub\components\Application::class;
 
+        // `@config` is set from the path the configuration is loaded from, so a directory relocated
+        // by `setPaths()` or the environment is also the one `dynamic.php` is written to.
+        Yii::setAlias('@config', realpath($this->configPath) ?: $this->configPath);
+
         $humhubConfig = [
             require($this->humhubPath . '/config/common.php'),
             require($this->humhubPath . '/config/' . $mode . '.php'),

@@ -54,8 +54,9 @@ $logTargetConfig = [
 // The installation root. Only `public/` below it is meant to be reachable over the web.
 $rootPath = realpath(__DIR__ . '/../../../');
 
-// The aliases this file defines do not exist yet, so the service is built from the path directly.
-$configDirectory = new ConfigDirectoryService($rootPath);
+// The aliases this file defines do not exist yet, so the service is built from the paths directly;
+// `@config` is already there when the bootstrap loads the configuration from a relocated directory.
+$configDirectory = new ConfigDirectoryService($rootPath, Yii::getAlias('@config', false) ?: null);
 
 $config = [
     'name' => 'HumHub',
