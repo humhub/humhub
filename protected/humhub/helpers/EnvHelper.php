@@ -102,12 +102,18 @@ class EnvHelper
             $config['aliases'] = [];
         }
 
+        $aliases = [];
+
         foreach ($_ENV as $key => $value) {
             if (StringHelper::startsWith($key, self::ALIASES_PREFIX . self::DEPTH_SEPARATOR)) {
                 $aliasName = str_replace(self::ALIASES_PREFIX . self::DEPTH_SEPARATOR, '', $key);
-                $config['aliases']['@' . strtolower($aliasName)] = $value;
+                $aliases['@' . strtolower($aliasName)] = $value;
             }
         }
+
+        // Set before the shipped aliases: Yii resolves an alias naming another one when it is set,
+        // so a shipped alias derived from an environment one - `@logs` from `@runtime` - follows it.
+        $config['aliases'] = $aliases + $config['aliases'];
 
         return $config;
     }

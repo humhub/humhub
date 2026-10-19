@@ -27,7 +27,7 @@ return [
     //     'log' => [
     //         'targets' => [
     //             \yii\log\FileTarget::class => [
-    //                 'logFile' => '@runtime/logs/console.log',
+    //                 'logFile' => '@logs/console.log',
     //             ],
     //         ],
     //     ],
