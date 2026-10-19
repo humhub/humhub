@@ -132,7 +132,7 @@ class UserSourceCollection extends Component
      */
     public function findUserSourceForAuthClient(string $authClientId, array $attributes = []): UserSourceInterface
     {
-        if ($this->isPasswordClient($authClientId)) {
+        if ($authClientId === Password::ID) {
             return $this->getLocalUserSource();
         }
 
@@ -163,7 +163,7 @@ class UserSourceCollection extends Component
      */
     public function isAuthClientClaimed(string $authClientId): bool
     {
-        if ($this->isPasswordClient($authClientId)) {
+        if ($authClientId === Password::ID) {
             return false;
         }
 
@@ -173,14 +173,6 @@ class UserSourceCollection extends Component
             }
         }
         return false;
-    }
-
-    /**
-     * The Password client shares its ID with the local user source.
-     */
-    private function isPasswordClient(string $authClientId): bool
-    {
-        return $authClientId === (new Password())->getId();
     }
 
     /**

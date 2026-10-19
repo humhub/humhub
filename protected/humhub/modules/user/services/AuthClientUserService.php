@@ -92,7 +92,7 @@ class AuthClientUserService
                 // Add auth client whose ID matches user_source (the source-owning client),
                 // and the Password client for users of other sources that allow password login
                 if ($this->user->user_source == $client->getId()
-                    || ($client instanceof Password && UserSourceService::getForUser($this->user)->isAuthClientAllowed($client->getId()))) {
+                    || ($client->getId() === Password::ID && UserSourceService::getForUser($this->user)->isAuthClientAllowed($client->getId()))) {
                     $this->_authClients[] = $client;
                 }
 

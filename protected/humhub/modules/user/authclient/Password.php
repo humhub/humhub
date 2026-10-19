@@ -19,11 +19,18 @@ use humhub\modules\user\services\UserSourceService;
 class Password extends BaseFormClient
 {
     /**
+     * ID of the password client; it is also the ID of the local user source.
+     *
+     * @since 1.19.1
+     */
+    public const ID = 'local';
+
+    /**
      * @inheritdoc
      */
     public function getId()
     {
-        return 'local';
+        return self::ID;
     }
 
     /**
@@ -43,29 +50,49 @@ class Password extends BaseFormClient
     }
 
     /**
-     * Finds the user regardless of its user source; the user's source must allow
-     * the password client, see {@see UserSourceService::isAuthClientAllowed()}.
-     *
-     * Users of other sources than "local" may log in with their local password
-     * if their source lists this client in its allowedAuthClientIds (or allows
-     * all clients). Users of other sources are not found at all, so a failed
-     * attempt on their behalf (e.g. an LDAP user, whose LDAP client comes after
-     * this one in the login form) is not counted against them.
+     * Finds the user a login belongs to, regardless of its user source, see
+     * {@see isPasswordUser()} for which users are found.
      *
      * A username takes precedence over an email address, as a username may
-     * contain "@" and thus equal another user's email.
+     * contain "@" and thus equal another user's email. If the user matched by
+     * username cannot log in with a password, the user matched by email is
+     * used instead, so one user's username cannot block another user's login
+     * by email.
      *
      * @inheritdoc
      */
     protected function findUserByLogin(string $login): ?User
     {
-        $user = User::findOne(['username' => $login]) ?? User::findOne(['email' => $login]);
-
-        if ($user === null || !UserSourceService::getForUser($user)->isAuthClientAllowed($this->getId())) {
-            return null;
+        foreach ([['username' => $login], ['email' => $login]] as $condition) {
+            $user = User::findOne($condition);
+            if ($user !== null && $this->isPasswordUser($user)) {
+                return $user;
+            }
         }
 
-        return $user;
+        return null;
+    }
+
+    /**
+     * Whether the given user may log in with this client.
+     *
+     * The user's source must allow the password client, see
+     * {@see UserSourceService::isAuthClientAllowed()}: users of other sources
+     * than "local" may log in with their local password if their source lists
+     * this client in its allowedAuthClientIds (or allows all clients).
+     *
+     * Such users additionally need a password. Without one, another form
+     * client owns the login attempt (e.g. the LDAP client, which comes after
+     * this one in the login form), so this client must neither find the user
+     * nor count a failed attempt against them.
+     */
+    private function isPasswordUser(User $user): bool
+    {
+        if (!UserSourceService::getForUser($user)->isAuthClientAllowed($this->getId())) {
+            return false;
+        }
+
+        return $user->user_source === self::ID || $user->currentPassword !== null;
     }
 
     /**

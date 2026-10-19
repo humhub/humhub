@@ -9,7 +9,9 @@
 namespace humhub\modules\user\tests\codeception\unit;
 
 use humhub\modules\user\authclient\Password;
+use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\forms\Login;
+use humhub\modules\user\models\Password as UserPassword;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\AuthClientUserService;
@@ -171,7 +173,6 @@ class PasswordLoginUserSourceTest extends HumHubDbTestCase
 
     public function testPasswordClientIsAnAuthClientOfUsersAllowedToUseIt(): void
     {
-        Yii::$app->authClientCollection->setClient('local', new Password());
         $this->registerSource('hr', ['local']);
         $this->registerSource('sso', ['oauth']);
 
@@ -183,5 +184,53 @@ class PasswordLoginUserSourceTest extends HumHubDbTestCase
         $this->assertContains('local', $clientIds($this->moveToSource('User1', 'hr')));
         $this->assertNotContains('local', $clientIds($this->moveToSource('User2', 'sso')));
         $this->assertSame(['local'], $clientIds(User::findOne(['username' => 'User3'])), 'local users list it once');
+    }
+
+    public function testEmailMatchIsUsedWhenUsernameMatchCannotUsePassword(): void
+    {
+        // another user's username equals User1's email, but that user's source does not allow the password client
+        $this->registerSource('sso', ['oauth']);
+        $this->moveToSource('User2', 'sso')->updateAttributes(['username' => 'user1@example.com']);
+
+        $this->assertSame('User1', $this->logIn('user1@example.com')?->username);
+    }
+
+    public function testUserOfOtherSourceWithoutPasswordIsNotFound(): void
+    {
+        // e.g. an LDAP user whose source also allows the password client: the LDAP client owns the attempt
+        $this->registerSource('directory', ['directory', 'local']);
+        $user = $this->moveToSource('User1', 'directory');
+        UserPassword::deleteAll(['user_id' => $user->id]);
+
+        $client = $this->createPasswordClient('User1');
+
+        $this->assertNull($client->getUserByLogin());
+        $this->assertFalse($client->authenticate('User1', 'wrong'));
+        $this->assertNull($user->getSettings()->get('failedLoginAttemptsCount'));
+    }
+
+    public function testLocalUserWithoutPasswordIsStillFound(): void
+    {
+        // unchanged behaviour: failed attempts of local users are counted even without a password
+        $user = User::findOne(['username' => 'User1']);
+        UserPassword::deleteAll(['user_id' => $user->id]);
+
+        $client = $this->createPasswordClient('User1');
+
+        $this->assertSame('User1', $client->getUserByLogin()?->username);
+        $this->assertFalse($client->authenticate('User1', self::PASSWORD));
+        $this->assertSame(1, (int) $user->getSettings()->get('failedLoginAttemptsCount'));
+    }
+
+    public function testUserAuthRowDoesNotBypassTheSourceCheck(): void
+    {
+        $this->registerSource('sso', ['oauth']);
+        $user = $this->moveToSource('User1', 'sso');
+        (new Auth(['user_id' => $user->id, 'source' => 'local', 'source_id' => (string) $user->id]))->save();
+
+        $client = new Password();
+        $client->setUserAttributes(['id' => $user->id]);
+
+        $this->assertNull((new AuthClientService($client))->getUser());
     }
 }
