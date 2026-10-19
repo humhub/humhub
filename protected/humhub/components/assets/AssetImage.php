@@ -12,6 +12,8 @@ use League\Flysystem\Visibility;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidValueException;
+use yii\helpers\Json;
+use yii\helpers\StringHelper;
 use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
@@ -35,6 +37,16 @@ class AssetImage extends Component implements \Stringable
      * Cache key prefix for the data-mount existence lookup, see {@see exists()}.
      */
     private const EXISTS_CACHE_KEY = 'assetImage.exists';
+
+    /**
+     * Length of the token signature in bytes, see {@see signToken()}.
+     */
+    private const TOKEN_MAC_LENGTH = 16;
+
+    /**
+     * Aliases the default file is stored relative to in a token, most specific first.
+     */
+    private const TOKEN_ALIASES = ['@humhub', '@webroot'];
 
     /**
      * @var string File with path to the AssetImage
@@ -77,8 +89,19 @@ class AssetImage extends Component implements \Stringable
     }
 
     /**
+     * Returns the URL of the image.
+     *
+     * A relative URL points to the published copy in the assets, which are volatile: they are
+     * removed on every cache flush (so after every update), by a manual deletion of the `assets`
+     * directory or by a redeployment, and republished on the next render.
+     *
+     * An absolute URL (`$scheme`) is meant to leave the platform, e.g. in emails or Open Graph
+     * tags, where it is never rendered again. It therefore points to
+     * {@see \humhub\controllers\AssetImageController} instead, which republishes the image if
+     * needed and redirects to its current URL.
+     *
      * @param array|null $options use `null` use default options, `[]` get unmodified file. All available options in class header
-     * @param bool $scheme
+     * @param bool $scheme whether to return an absolute URL that stays valid as long as the image exists
      * @return string the URL, or an empty string if neither an uploaded image nor a `defaultFile` is set
      */
     public function getUrl(?array $options = null, bool $scheme = false): string
@@ -93,6 +116,10 @@ class AssetImage extends Component implements \Stringable
             return '';
         }
 
+        if ($scheme && ($token = $this->createToken($options)) !== null) {
+            return Url::to(['/asset-image', 'i' => $token], true);
+        }
+
         $scaledFileName = $this->path . DIRECTORY_SEPARATOR . $fileNameWithOptions;
 
         $published = Yii::$app->assetManager->getPublishedAssetImage($scaledFileName);
@@ -105,6 +132,110 @@ class AssetImage extends Component implements \Stringable
         }
 
         return Url::to($published[1], $scheme);
+    }
+
+    /**
+     * Creates the AssetImage referenced by a token of {@see getUrl()}.
+     *
+     * @return array|null [AssetImage, options], or `null` if the token is invalid
+     * @since 1.19.1
+     */
+    public static function fromToken(string $token): ?array
+    {
+        $key = self::getTokenKey();
+        $raw = StringHelper::base64UrlDecode($token);
+        if ($key === null || strlen($raw) <= self::TOKEN_MAC_LENGTH) {
+            return null;
+        }
+
+        $data = substr($raw, self::TOKEN_MAC_LENGTH);
+        if (!hash_equals(self::signToken($data, $key), substr($raw, 0, self::TOKEN_MAC_LENGTH))) {
+            return null;
+        }
+
+        $decoded = json_decode($data, true);
+        $file = $decoded[0] ?? null;
+        $options = $decoded[1] ?? null;
+        $defaultFile = $decoded[2] ?? null;
+        if (!is_string($file) || $file === '' || !is_array($options) || ($defaultFile !== null && !is_string($defaultFile))) {
+            return null;
+        }
+
+        return [new static(['file' => $file, 'defaultFile' => $defaultFile]), $options];
+    }
+
+    /**
+     * The token identifies the image and its variant. It is signed, since `file` is a path on the
+     * data mount, which also holds private files.
+     *
+     * @return string|null `null` if no secret is set yet (e.g. during the installation)
+     */
+    private function createToken(array $options): ?string
+    {
+        $key = self::getTokenKey();
+        if ($key === null) {
+            return null;
+        }
+
+        $data = Json::encode([$this->file, $options, $this->getPortableDefaultFile()]);
+
+        return StringHelper::base64UrlEncode(self::signToken($data, $key) . $data);
+    }
+
+    /**
+     * Raw HMAC truncated to 128 bits: the token is part of a URL, so every byte counts, and
+     * 128 bits are far beyond what forging a token would require.
+     */
+    private static function signToken(string $data, string $key): string
+    {
+        return substr(hash_hmac('sha256', $data, $key, true), 0, self::TOKEN_MAC_LENGTH);
+    }
+
+    /**
+     * Key derived from the installation secret for this purpose only. The secret itself also
+     * validates cookies, so nothing signed for another purpose is ever a valid token.
+     *
+     * @return string|null `null` if no secret is set yet (e.g. during the installation)
+     */
+    private static function getTokenKey(): ?string
+    {
+        $secret = Yii::$app->settings->get('secret');
+        if (!$secret) {
+            return null;
+        }
+
+        return Yii::$app->security->hkdf('sha256', $secret, null, 'asset-image');
+    }
+
+    /**
+     * The default file relative to the first matching alias of {@see TOKEN_ALIASES}: keeps the
+     * token short and independent of the installation path, which may change (e.g. on a
+     * redeployment).
+     *
+     * In web requests `@webroot` is the script directory, which may be a symlink to the
+     * installation (e.g. a `current` release link), while default files are usually built from
+     * resolved paths, so the resolved alias path is matched as well.
+     */
+    private function getPortableDefaultFile(): ?string
+    {
+        if (!$this->defaultFile) {
+            return null;
+        }
+
+        foreach (self::TOKEN_ALIASES as $alias) {
+            $aliasPath = Yii::getAlias($alias, false);
+            if (!$aliasPath) {
+                continue;
+            }
+
+            foreach (array_unique([$aliasPath, realpath($aliasPath)]) as $path) {
+                if ($path && str_starts_with($this->defaultFile, $path . '/')) {
+                    return $alias . substr($this->defaultFile, strlen($path));
+                }
+            }
+        }
+
+        return $this->defaultFile;
     }
 
     public function setUploadedFile(?UploadedFile $file = null): void
