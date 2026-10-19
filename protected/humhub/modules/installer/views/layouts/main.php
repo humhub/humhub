@@ -17,6 +17,7 @@ AppAsset::register($this);
     <title><?php echo Html::encode($this->title); ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="language" content="en"/>
+    <meta name="robots" content="noindex, nofollow"/>
 
     <?= Html::csrfMetaTags() ?>
 
