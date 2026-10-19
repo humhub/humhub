@@ -20,6 +20,12 @@ final class BootstrapService
         if (!empty($_ENV['HUMHUB_ALIASES__HUMHUB'])) {
             $this->humhubPath = $_ENV['HUMHUB_ALIASES__HUMHUB'];
         }
+
+        // The `@config` alias set in the environment also decides where the local configuration
+        // files are loaded from, so a relocated configuration directory needs no entry script of its own.
+        if (!empty($_ENV['HUMHUB_ALIASES__CONFIG'])) {
+            $this->configPath = $_ENV['HUMHUB_ALIASES__CONFIG'];
+        }
     }
 
     public function setPaths(
@@ -51,6 +57,10 @@ final class BootstrapService
         $appClass = $mode === 'console'
             ? \humhub\components\console\Application::class
             : \humhub\components\Application::class;
+
+        // `@config` is set from the path the configuration is loaded from, so a directory relocated
+        // by `setPaths()` or the environment is also the one `dynamic.php` is written to.
+        Yii::setAlias('@config', realpath($this->configPath) ?: $this->configPath);
 
         $humhubConfig = [
             require($this->humhubPath . '/config/common.php'),

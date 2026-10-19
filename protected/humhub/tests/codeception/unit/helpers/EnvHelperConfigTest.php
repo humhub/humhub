@@ -4,6 +4,7 @@ namespace humhub\tests\codeception\unit\helpers;
 
 use humhub\helpers\EnvHelper;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class EnvHelperConfigTest extends HumHubDbTestCase
 {
@@ -180,5 +181,35 @@ class EnvHelperConfigTest extends HumHubDbTestCase
         ];
 
         $this->assertEquals($config, EnvHelper::toConfig($ENV, \humhub\components\console\Application::class));
+    }
+
+    /**
+     * Yii resolves an alias value naming another alias when the alias is set, not when it is read,
+     * so a shipped alias derived from an environment one - `@logs` from `@runtime` - only follows
+     * the environment when that one is already in place.
+     */
+    public function testEnvAliasesAreSetBeforeTheShippedOnes()
+    {
+        $_ENV['HUMHUB_ALIASES__ENVHELPERTESTROOT'] = '/env/root';
+
+        try {
+            $config = EnvHelper::resolveConfigAliases([
+                'aliases' => ['@envhelpertestlogs' => '@envhelpertestroot/logs'],
+            ]);
+
+            $this->assertSame(['@envhelpertestroot', '@envhelpertestlogs'], array_keys($config['aliases']));
+
+            // What `preInit()` leaves behind for `@runtime` before the configured aliases are applied
+            Yii::setAlias('@envhelpertestroot', '/shipped/root');
+            foreach ($config['aliases'] as $name => $path) {
+                Yii::setAlias($name, $path);
+            }
+
+            $this->assertSame('/env/root/logs', Yii::getAlias('@envhelpertestlogs'));
+        } finally {
+            unset($_ENV['HUMHUB_ALIASES__ENVHELPERTESTROOT']);
+            Yii::setAlias('@envhelpertestroot', null);
+            Yii::setAlias('@envhelpertestlogs', null);
+        }
     }
 }

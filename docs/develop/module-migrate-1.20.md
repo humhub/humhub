@@ -175,6 +175,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   in the old one and which dynamic configuration is in use. Administration -> Information ->
   Prerequisites reports leftovers.
 
+- **New `@logs` alias** for the directory the application log is written to: `@runtime/logs` by
+  default, relocatable through `HUMHUB_ALIASES__LOGS` like the configuration directory through
+  `HUMHUB_ALIASES__CONFIG`. A module that writes a log file of its own should put it under `@logs`
+  rather than `@runtime/logs`, so it follows the environment as well.
+
 - The `web` module is gone. Its PWA part moved in the change above; the security part - the
   headers and the Content Security Policy - is now applied by `humhub\components\Response`
   itself and configured on that component.

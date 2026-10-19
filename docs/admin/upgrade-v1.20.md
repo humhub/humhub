@@ -228,6 +228,20 @@ repository and are not any more, so the pull deletes them. If you edited one, gi
 until you deal with it — copy it to `config/` first, then `git checkout -- protected/config` and
 pull again.
 
+**Keeping data outside the installation directory?** Container images and similar setups can
+point every directory that has to survive an update somewhere else through the environment,
+without entry scripts or links of their own:
+
+```sh
+HUMHUB_ALIASES__CONFIG=/data/config        # configuration files, dynamic.php, messages/, views/
+HUMHUB_ALIASES__LOGS=/data/logs            # app.log, by default in protected/runtime/logs
+HUMHUB_ALIASES__THEMES=/data/themes        # custom themes
+HUMHUB_CONFIG__COMPONENTS__FS__MOUNTS__DATA__PATH=/data/uploads
+```
+
+The `.env` file itself stays in the installation directory — it is where these variables are read
+from — and so does `protected/config/` for as long as it is still read.
+
 ## Configuration changes
 
 Three core modules were dissolved in 1.20: `stream` into `content`, `web` onto the response

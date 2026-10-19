@@ -53,7 +53,7 @@ class WebHelper extends Module
 
         $filePath = codecept_output_dir() . str_replace(['\\', '/', ':', ' '], '.', $test->getSignature());
 
-        $logFilePath = Yii::getAlias('@runtime/logs') . DIRECTORY_SEPARATOR . 'app.log';
+        $logFilePath = Yii::getAlias('@logs/app.log');
         if (file_exists($logFilePath)) {
             copy($logFilePath, $filePath . '.app.log');
         }
