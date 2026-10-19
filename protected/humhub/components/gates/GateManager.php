@@ -57,7 +57,7 @@ class GateManager extends Component
      * `asset-image` resolves image URLs that left the platform (emails, Open Graph tags): they are
      * fetched without a session, and the published copies they redirect to are public anyway.
      */
-    private array $infrastructureRoutes = ['i18n/translations', 'asset-image'];
+    private array $infrastructureRoutes = ['i18n/translations', 'web/pwa-manifest', 'asset-image'];
 
     /**
      * @var bool whether EVENT_INIT_GATES has been triggered

@@ -4,6 +4,9 @@ HumHub Changelog
 1.19.1 (Unreleased)
 -------------------
 - Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
+- Fix #8605: Users of a user source other than "local" could not log in with their password although their source allowed the Password client; a source allowing it also blocked the password login of local users
+- Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
+- Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
 - Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
@@ -15,6 +18,8 @@ HumHub Changelog
 - Fix #8588: Upgrade to 1.19 failed in the activity migration when a not yet updated module (e.g. Files 0.17) could not be loaded
 - Fix #8586: Like notifications redirected to the Dashboard instead of the liked content; likes on comments now link to the comment itself
 - Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
+- Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
+- Fix #8604: The PWA manifest (`/manifest.json`) was redirected to the page of an open user gate (e.g. the 2FA check or a forced password change) and could set it as the return URL; `web/pwa-manifest` is now an infrastructure route that no gate intercepts
 
 1.19.0 (October 12, 2026)
 -------------------------

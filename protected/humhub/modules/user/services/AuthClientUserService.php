@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\services;
 
+use humhub\modules\user\authclient\Password;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use Yii;
@@ -88,8 +89,10 @@ class AuthClientUserService
             $this->_authClients = [];
 
             foreach (AuthClientService::getCollection()->getClients() as $client) {
-                // Add auth client whose ID matches user_source (the source-owning client)
-                if ($this->user->user_source == $client->getId()) {
+                // Add auth client whose ID matches user_source (the source-owning client),
+                // and the Password client for users of other sources that allow password login
+                if ($this->user->user_source == $client->getId()
+                    || ($client->getId() === Password::ID && UserSourceService::getForUser($this->user)->isAuthClientAllowed($client->getId()))) {
                     $this->_authClients[] = $client;
                 }
 

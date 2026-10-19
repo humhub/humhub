@@ -398,3 +398,14 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
   browsers ignore or punish (Chrome's quiet UI / automatic block) and browser security extensions
   flag as excessive notification requests. A module that still relied on `window.notify` must ship
   the library itself; permission requests must only be made from a user gesture.
+- Password login is governed by the user source (#8605, 1.19.1). The `Password` auth client
+  (ID `local`) now finds users of **any** user source whose `allowedAuthClientIds` lists `local`
+  (or is empty), provided the user has a password (`user_password` row); before, it only found users
+  with `user_source = 'local'`. Consequently `UserSourceCollection::findUserSourceForAuthClient('local')`
+  always returns `LocalUserSource` and `UserSourceCollection::isAuthClientClaimed('local')` is always
+  `false`: listing `local` on a source only allows its users to log in with their password, it never
+  makes the source claim password sign-ups or count as a trusted provider for
+  `AuthClientService::allowSelfRegistration()`. The client is identified by the new constant
+  `humhub\modules\user\authclient\Password::ID`. Form-based auth clients may override the new
+  `BaseFormClient::findUserByLogin(string $login): ?User` hook to change how the submitted login
+  (username or email) is resolved; the default keeps the `user_source = <client ID>` filter.
