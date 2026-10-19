@@ -33,7 +33,7 @@ $mailerTransportTypeIsFixed = $settings->isFixed('mailerTransportType');
     </div>
 </div>
 
-<?= $form->field($model, 'showNameInsteadOfLogo')->checkbox() ?>
+<?= $form->field($model, 'showNameInsteadOfLogo')->toggle() ?>
 
 <?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['disabled' => $mailerTransportTypeIsFixed, 'readonly' => $mailerTransportTypeIsFixed]) ?>
 
@@ -51,10 +51,10 @@ $mailerTransportTypeIsFixed = $settings->isFixed('mailerTransportType');
 
         <div class="row">
             <div class="col-lg-6">
-                <?= $form->field($model, 'useSmtps')->checkbox(['disabled' => $settings->isFixed('mailerUseSmtps')]) ?>
+                <?= $form->field($model, 'useSmtps')->toggle(['disabled' => $settings->isFixed('mailerUseSmtps')]) ?>
             </div>
             <div class="col-lg-6" id="encryptionOptions">
-                <?= $form->field($model, 'allowSelfSignedCerts')->checkbox(['disabled' => $settings->isFixed('mailerAllowSelfSignedCerts')]) ?>
+                <?= $form->field($model, 'allowSelfSignedCerts')->toggle(['disabled' => $settings->isFixed('mailerAllowSelfSignedCerts')]) ?>
             </div>
         </div>
 

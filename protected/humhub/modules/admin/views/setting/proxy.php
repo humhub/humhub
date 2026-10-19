@@ -15,7 +15,7 @@ use humhub\widgets\form\ActiveForm;
 
 <?= $form->errorSummary($model); ?>
 
-<?= $form->field($model, 'enabled')->checkbox(['readonly' => Yii::$app->settings->isFixed('proxyEnabled')]); ?>
+<?= $form->field($model, 'enabled')->toggle(['readonly' => Yii::$app->settings->isFixed('proxyEnabled')]); ?>
 
 <hr>
 

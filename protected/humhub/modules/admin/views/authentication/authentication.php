@@ -21,15 +21,15 @@ $userModule = Yii::$app->getModule('user');
 <div class="panel-body">
     <?php $form = ActiveForm::begin(['id' => 'authentication-settings-form', 'acknowledge' => true]); ?>
         <?= $form->errorSummary($model) ?>
-        <?= $form->field($model, 'allowGuestAccess')->checkbox() ?>
-        <?= $form->field($model, 'internalAllowAnonymousRegistration')->checkbox() ?>
-        <?= $form->field($model, 'internalUsersCanInviteByEmail')->checkbox() ?>
-        <?= $form->field($model, 'internalUsersCanInviteByLink')->checkbox() ?>
-        <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->checkbox() ?>
-        <?= $form->field($model, 'showRegistrationUserGroup')->checkbox() ?>
-        <?= $form->field($model, 'blockUsers')->checkbox() ?>
-        <?= $form->field($model, 'hideOnlineStatus')->checkbox() ?>
-        <?= $form->field($model, 'allowUserTopics')->checkbox(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
+        <?= $form->field($model, 'allowGuestAccess')->toggle() ?>
+        <?= $form->field($model, 'internalAllowAnonymousRegistration')->toggle() ?>
+        <?= $form->field($model, 'internalUsersCanInviteByEmail')->toggle() ?>
+        <?= $form->field($model, 'internalUsersCanInviteByLink')->toggle() ?>
+        <?= $form->field($model, 'internalRequireApprovalAfterRegistration')->toggle() ?>
+        <?= $form->field($model, 'showRegistrationUserGroup')->toggle() ?>
+        <?= $form->field($model, 'blockUsers')->toggle() ?>
+        <?= $form->field($model, 'hideOnlineStatus')->toggle() ?>
+        <?= $form->field($model, 'allowUserTopics')->toggle(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
         <?= $form->field($model, 'defaultUserIdleTimeoutSec')
             ->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]) ?>
         <p class="text-body-secondary"><?= Yii::t('AdminModule.user', 'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.') ?></p>

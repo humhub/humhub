@@ -23,7 +23,7 @@ use yii\web\View;
 
 <?= $form->errorSummary($model) ?>
 
-<?= $form->field($model, 'enableLinkService')->checkbox() ?>
+<?= $form->field($model, 'enableLinkService')->toggle() ?>
 
 <?= $form->field($model, 'whiteListedUrls')->widget(Select2::class, [
     'options' => ['multiple' => true],

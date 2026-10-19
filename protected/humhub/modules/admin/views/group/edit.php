@@ -43,11 +43,11 @@ use yii\helpers\Url;
         'disabled' => !$canManage,
     ]) ?>
 
-    <?= $form->field($group, 'notify_users')->checkbox() ?>
-    <?= $form->field($group, 'show_at_registration')->checkbox() ?>
-    <?= $form->field($group, 'show_at_directory')->checkbox() ?>
+    <?= $form->field($group, 'notify_users')->toggle() ?>
+    <?= $form->field($group, 'show_at_registration')->toggle() ?>
+    <?= $form->field($group, 'show_at_directory')->toggle() ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
-    <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool)$group->is_default_group]) ?>
+    <?= $form->field($group, 'is_default_group')->toggle(['disabled' => (bool)$group->is_default_group]) ?>
 
     <?= Button::save()->submit() ?>
     <?php if ($group->canDelete()) : ?>
