@@ -11,6 +11,7 @@ namespace humhub\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\assets\AssetImage;
 use humhub\components\Controller;
+use Yii;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -46,6 +47,8 @@ class AssetImageController extends Controller
             throw new NotFoundHttpException();
         }
 
-        return $this->redirect($url);
+        // Always answer with a Location header: the URL is fetched as a sub-resource (an image),
+        // never by a script that would act on the X-Redirect header of an AJAX response
+        return Yii::$app->response->redirect($url, 302, false);
     }
 }

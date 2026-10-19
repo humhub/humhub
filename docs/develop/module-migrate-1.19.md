@@ -291,6 +291,7 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
     - `Space|User::getProfileImage()` => `Space|User::getImage()` / `$container->image` (returns `AssetImage`); `getProfileImage()` itself remains as a deprecated shim returning `humhub\libs\ProfileImage`
     - `Space|User::getProfileBannerImage()` => `Space|User::getBannerImage()` / `$container->bannerImage` — **removed without a shim**: `getProfileBannerImage()`, the `profileBannerImage` property and the `humhub\libs\ProfileBannerImage` class no longer exist; modules using them fatal until migrated
     - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
+  - Since 1.19.1, an **absolute** URL (`$image->getUrl($options, true)`) is a permanent URL to the `asset-image` controller instead of the published copy: the controller republishes the variant if needed and redirects to it, so the links in emails or Open Graph tags survive a cache flush (#8594). Request absolute URLs only where the image leaves the platform — a page rendering its images with absolute URLs turns every image load into a PHP request. For a direct absolute URL of the published copy (e.g. in API responses) use `Url::to($image->getUrl(), true)`.
 - `AssetManager::forcePublish()` removed
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option

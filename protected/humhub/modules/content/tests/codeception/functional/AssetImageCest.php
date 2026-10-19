@@ -9,6 +9,7 @@
 namespace content\functional;
 
 use content\FunctionalTester;
+use humhub\modules\user\components\MaintenanceModeGate;
 use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
 use Yii;
@@ -41,6 +42,34 @@ class AssetImageCest
         $location = Yii::$app->response->headers->get('location');
         Assert::assertStringContainsString('/assets/', $location);
         Assert::assertSame(Url::to($user->image->getUrl(), true), $location);
+    }
+
+    public function testAbsoluteUrlResolvesInMaintenanceMode(FunctionalTester $I)
+    {
+        $I->wantTo('ensure an absolute image URL still resolves while maintenance mode is active');
+        $I->stopFollowingRedirects();
+
+        $url = User::findOne(['id' => 2])->image->getUrl(null, true);
+        Yii::$app->settings->set(MaintenanceModeGate::SETTING_MAINTENANCE_MODE, 1);
+
+        try {
+            $I->amOnPage($url);
+            $I->seeResponseCodeIs(302);
+            Assert::assertStringContainsString('/assets/', (string) Yii::$app->response->headers->get('location'));
+        } finally {
+            Yii::$app->settings->set(MaintenanceModeGate::SETTING_MAINTENANCE_MODE, 0);
+        }
+    }
+
+    public function testAbsoluteUrlRedirectsAjaxRequests(FunctionalTester $I)
+    {
+        $I->wantTo('ensure an absolute image URL redirects a script fetching it via XHR as well');
+        $I->stopFollowingRedirects();
+        $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
+
+        $I->amOnPage(User::findOne(['id' => 2])->image->getUrl(null, true));
+        $I->seeResponseCodeIs(302);
+        Assert::assertStringContainsString('/assets/', (string) Yii::$app->response->headers->get('location'));
     }
 
     public function testInvalidTokenIsRejected(FunctionalTester $I)

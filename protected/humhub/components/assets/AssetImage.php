@@ -39,6 +39,16 @@ class AssetImage extends Component implements \Stringable
     private const EXISTS_CACHE_KEY = 'assetImage.exists';
 
     /**
+     * Length of the token signature in bytes, see {@see signToken()}.
+     */
+    private const TOKEN_MAC_LENGTH = 16;
+
+    /**
+     * Aliases the default file is stored relative to in a token, most specific first.
+     */
+    private const TOKEN_ALIASES = ['@humhub', '@webroot'];
+
+    /**
      * @var string File with path to the AssetImage
      */
     public string $file;
@@ -132,13 +142,24 @@ class AssetImage extends Component implements \Stringable
      */
     public static function fromToken(string $token): ?array
     {
-        $secret = Yii::$app->settings->get('secret');
-        $data = $secret ? Yii::$app->security->validateData(StringHelper::base64UrlDecode($token), $secret) : false;
-        if ($data === false) {
+        $key = self::getTokenKey();
+        $raw = StringHelper::base64UrlDecode($token);
+        if ($key === null || strlen($raw) <= self::TOKEN_MAC_LENGTH) {
             return null;
         }
 
-        [$file, $options, $defaultFile] = Json::decode($data);
+        $data = substr($raw, self::TOKEN_MAC_LENGTH);
+        if (!hash_equals(self::signToken($data, $key), substr($raw, 0, self::TOKEN_MAC_LENGTH))) {
+            return null;
+        }
+
+        $decoded = json_decode($data, true);
+        $file = $decoded[0] ?? null;
+        $options = $decoded[1] ?? null;
+        $defaultFile = $decoded[2] ?? null;
+        if (!is_string($file) || $file === '' || !is_array($options) || ($defaultFile !== null && !is_string($defaultFile))) {
+            return null;
+        }
 
         return [new static(['file' => $file, 'defaultFile' => $defaultFile]), $options];
     }
@@ -151,21 +172,70 @@ class AssetImage extends Component implements \Stringable
      */
     private function createToken(array $options): ?string
     {
+        $key = self::getTokenKey();
+        if ($key === null) {
+            return null;
+        }
+
+        $data = Json::encode([$this->file, $options, $this->getPortableDefaultFile()]);
+
+        return StringHelper::base64UrlEncode(self::signToken($data, $key) . $data);
+    }
+
+    /**
+     * Raw HMAC truncated to 128 bits: the token is part of a URL, so every byte counts, and
+     * 128 bits are far beyond what forging a token would require.
+     */
+    private static function signToken(string $data, string $key): string
+    {
+        return substr(hash_hmac('sha256', $data, $key, true), 0, self::TOKEN_MAC_LENGTH);
+    }
+
+    /**
+     * Key derived from the installation secret for this purpose only. The secret itself also
+     * validates cookies, so nothing signed for another purpose is ever a valid token.
+     *
+     * @return string|null `null` if no secret is set yet (e.g. during the installation)
+     */
+    private static function getTokenKey(): ?string
+    {
         $secret = Yii::$app->settings->get('secret');
         if (!$secret) {
             return null;
         }
 
-        // Keep the URL independent of the installation path, which may change (e.g. on a redeployment)
-        $defaultFile = $this->defaultFile;
-        $webroot = Yii::getAlias('@webroot');
-        if ($defaultFile && str_starts_with($defaultFile, $webroot . '/')) {
-            $defaultFile = '@webroot' . substr($defaultFile, strlen($webroot));
+        return Yii::$app->security->hkdf('sha256', $secret, null, 'asset-image');
+    }
+
+    /**
+     * The default file relative to the first matching alias of {@see TOKEN_ALIASES}: keeps the
+     * token short and independent of the installation path, which may change (e.g. on a
+     * redeployment).
+     *
+     * In web requests `@webroot` is the script directory, which may be a symlink to the
+     * installation (e.g. a `current` release link), while default files are usually built from
+     * resolved paths, so the resolved alias path is matched as well.
+     */
+    private function getPortableDefaultFile(): ?string
+    {
+        if (!$this->defaultFile) {
+            return null;
         }
 
-        return StringHelper::base64UrlEncode(
-            Yii::$app->security->hashData(Json::encode([$this->file, $options, $defaultFile]), $secret),
-        );
+        foreach (self::TOKEN_ALIASES as $alias) {
+            $aliasPath = Yii::getAlias($alias, false);
+            if (!$aliasPath) {
+                continue;
+            }
+
+            foreach (array_unique([$aliasPath, realpath($aliasPath)]) as $path) {
+                if ($path && str_starts_with($this->defaultFile, $path . '/')) {
+                    return $alias . substr($this->defaultFile, strlen($path));
+                }
+            }
+        }
+
+        return $this->defaultFile;
     }
 
     public function setUploadedFile(?UploadedFile $file = null): void
