@@ -62,15 +62,26 @@ class BaseFormClient extends \yii\authclient\BaseClient implements PasswordAuth
     {
         if (!$this->loginUser) {
             $this->loginUser = ($this->login instanceof Login)
-                ? User::find()
-                    ->where(['username' => $this->login->username])
-                    ->orWhere(['email' => $this->login->username])
-                    ->andWhere(['user_source' => $this->id])
-                    ->one()
+                ? $this->findUserByLogin((string) $this->login->username)
                 : null;
         }
 
         return $this->loginUser;
+    }
+
+    /**
+     * Finds the user a login (username or email) belongs to, among the users of
+     * the user source this client authenticates.
+     *
+     * @since 1.19.1
+     */
+    protected function findUserByLogin(string $login): ?User
+    {
+        return User::find()
+            ->where(['username' => $login])
+            ->orWhere(['email' => $login])
+            ->andWhere(['user_source' => $this->id])
+            ->one();
     }
 
     /**
