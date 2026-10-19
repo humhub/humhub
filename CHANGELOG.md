@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Fix #8607: The two-step login picked a random user when the entered login was one user's username and another user's email
 - Fix #8605: Users of a user source other than "local" could not log in with their password although their source allowed the Password client; a source allowing it also blocked the password login of local users
 - Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
 - Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
