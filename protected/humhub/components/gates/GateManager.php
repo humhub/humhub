@@ -55,7 +55,7 @@ class GateManager extends Component
     /**
      * @var string[] routes never intercepted by any gate, see [[registerInfrastructureRoute()]]
      */
-    private array $infrastructureRoutes = ['i18n/translations'];
+    private array $infrastructureRoutes = ['i18n/translations', 'web/pwa-manifest'];
 
     /**
      * @var bool whether EVENT_INIT_GATES has been triggered
