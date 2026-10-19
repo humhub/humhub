@@ -20,6 +20,7 @@ return [
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'Ennek a modulnak az eltávolítása még nem fejeződött be. Néhány percen belül eltávolítják.',
     'User default state' => 'Felhasználó alapértelmezett állapota',
     'Users' => 'Felhasználók',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Uninstall Module' => '',

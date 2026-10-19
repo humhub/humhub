@@ -112,8 +112,10 @@ $themeVariables = Yii::$app->view->theme->variables;
             'class' => 'd-none',
             'name' => 'logo[]',
         ]) ?>
-        <div class="image-upload-container" id="logo-upload">
-            <?= Html::img($logoUrl, [
+        <div class="image-upload-container" id="logo-upload" style="min-height:40px">
+            <?= Html::tag('img', '', [
+                'src' => $logoUrl ?: null,
+                'alt' => $model->getAttributeLabel('logo'),
                 'id' => 'logo-image',
                 'class' => 'rounded' . ($logoUrl === '' ? ' d-none' : ''),
                 'style' => 'max-height:40px',
@@ -146,8 +148,10 @@ $themeVariables = Yii::$app->view->theme->variables;
             'class' => 'd-none',
             'name' => 'icon[]',
         ]) ?>
-        <div class="image-upload-container" id="icon-upload">
-            <?= Html::img($iconUrl, [
+        <div class="image-upload-container" id="icon-upload" style="min-height:40px">
+            <?= Html::tag('img', '', [
+                'src' => $iconUrl ?: null,
+                'alt' => $model->getAttributeLabel('icon'),
                 'id' => 'icon-image',
                 'class' => 'rounded' . ($iconUrl === '' ? ' d-none' : ''),
                 'style' => 'max-height:40px',
@@ -180,8 +184,10 @@ $themeVariables = Yii::$app->view->theme->variables;
             'class' => 'd-none',
             'name' => 'loginBackgroundImage[]',
         ]) ?>
-        <div class="image-upload-container" id="loginBg-upload">
-            <?= Html::img($loginBgUrl, [
+        <div class="image-upload-container" id="loginBg-upload" style="min-height:40px">
+            <?= Html::tag('img', '', [
+                'src' => $loginBgUrl ?: null,
+                'alt' => $model->getAttributeLabel('loginBackgroundImage'),
                 'id' => 'loginBg-image',
                 'class' => 'rounded' . ($loginBgUrl === '' ? ' d-none' : ''),
                 'style' => 'max-height:40px',
@@ -214,8 +220,10 @@ $themeVariables = Yii::$app->view->theme->variables;
             'class' => 'd-none',
             'name' => 'mailHeaderImage[]',
         ]) ?>
-        <div class="image-upload-container" id="mailHeader-upload">
-            <?= Html::img($mailHeaderUrl, [
+        <div class="image-upload-container" id="mailHeader-upload" style="min-height:40px">
+            <?= Html::tag('img', '', [
+                'src' => $mailHeaderUrl ?: null,
+                'alt' => $model->getAttributeLabel('mailHeaderImage'),
                 'id' => 'mailHeader-image',
                 'class' => 'rounded' . ($mailHeaderUrl === '' ? ' d-none' : ''),
                 'style' => 'max-height:40px',

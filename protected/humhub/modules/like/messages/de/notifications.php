@@ -1,12 +1,7 @@
 <?php
-return array (
-  'Likes' => 'Gefällt mir',
-  'Receive Notifications when someone likes your content.' => 'Benachrichtigung empfangen, wenn jemandem deine Inhalte gefallen.',
-  'View Online' => 'Online ansehen',
-  '{displayNames} likes your {contentTitle}.' => '{displayNames} gefällt dein {contentTitle}.
-',
-  '{displayNames} likes {contentTitle}.' => '{displayNames} gefällt {contentTitle}.',
-  '{displayName} likes your {contentTitle}.' => '{displayName} gefällt dein {contentTitle}.
-',
-  '{displayName} likes {contentTitle}.' => '{displayName} gefällt {contentTitle}.',
-);
+
+return [
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {contentType}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {content}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} {content}.' => '',
+];

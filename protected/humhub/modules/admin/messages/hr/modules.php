@@ -12,6 +12,7 @@ return [
     'Save' => 'Spremi',
     'Spaces' => 'Prostori',
     'Users' => 'Korisnici',
+    'Could not enable module!' => '',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',

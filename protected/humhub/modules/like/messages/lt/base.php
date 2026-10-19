@@ -1,13 +1,11 @@
 <?php
 
 return [
-    ' likes this.' => 'Mėgsta',
     '<strong>Users</strong> who like this' => '<strong>Vartotojai</strong>, kuriems tai patinka',
     'Like' => 'Patinka',
     'Unlike' => 'Nepatinka',
-    'You' => 'Tu',
-    'You like this.' => 'Tau tai patinka',
-    'and {count} more like this.' => 'ir {count} daugiau tokių, kaip šis.',
     '{displayNames} like {content}.' => '',
     '{displayName} likes {content}.' => '',
+    '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a comment.' => '',
+    '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a {contentType}.' => '',
 ];

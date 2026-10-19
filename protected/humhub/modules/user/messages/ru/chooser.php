@@ -4,7 +4,6 @@ return [
     'Add user' => 'Добавить пользователя',
     'An unexpected error occurred while loading the result.' => 'При загрузке результата возникла неожиданная ошибка.',
     'Load more' => 'Показать ещё',
-    'No results found.' => 'Результатов не найдено.',
     'No users found for the given query.' => 'Пользователей по данному запросу не найдено.',
     'Please enter at least {n} character' => 'Пожалуйста, введите не менее {n} символов',
     'Select {n,plural,=1{item} other{items}}' => 'Выберите {n,plural,one{# элемент} few{# элемента} other{# элементов}}',

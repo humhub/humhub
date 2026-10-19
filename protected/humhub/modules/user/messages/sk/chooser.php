@@ -4,7 +4,6 @@ return [
     'Add user' => 'Pridať používateľa',
     'An unexpected error occurred while loading the result.' => 'Pri načítavaní výsledku sa vyskytla neočakávaná chyba.',
     'Load more' => 'Načítať viac',
-    'No results found.' => 'Neboli nájdené žiadne výsledky.',
     'No users found for the given query.' => 'Pre daný dopyt sa nenašli žiadni používatelia.',
     'Please enter at least {n} character' => 'Zadajte aspoň {n} znakov',
     'Select {n,plural,=1{item} other{items}}' => 'Vyberte {n,plural,=1{item} other{items}}',

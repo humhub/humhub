@@ -1,10 +1,7 @@
 <?php
-return array (
-  'Likes' => 'Харесвания',
-  'Receive Notifications when someone likes your content.' => 'Получавайте известия, когато някой харесва вашето съдържание.',
-  'View Online' => 'Преглед онлайн',
-  '{displayNames} likes your {contentTitle}.' => '{displayNames} харесва вашето {contentTitle}.',
-  '{displayNames} likes {contentTitle}.' => '{displayNames} харесва {contentTitle}.',
-  '{displayName} likes your {contentTitle}.' => '{displayName} харесва вашето {contentTitle}.',
-  '{displayName} likes {contentTitle}.' => '{displayName} харесва {contentTitle}.',
-);
+
+return [
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {contentType}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {content}.' => '',
+    '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} {content}.' => '',
+];

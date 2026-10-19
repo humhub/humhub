@@ -545,6 +545,40 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         // cannot be removed, since it does not exist within the marketplace dir
         static::assertFalse($module->getModuleService()->canRemove());
+
+        // a sibling directory sharing the marketplace dir as name prefix is not within it
+        $sibling = static::$testModuleRoot . '_sibling';
+        FileHelper::createDirectory($sibling);
+        $module->setBasePath($sibling);
+        static::assertFalse($module->getModuleService()->canRemove());
+        FileHelper::removeDirectory($sibling);
+    }
+
+    /**
+     * @throws Exception
+     * @throws ErrorException
+     * @throws InvalidConfigException
+     */
+    public function testRemoveModuleOutsideMarketplaceDirectory()
+    {
+        $this->skipIfMarketplaceNotEnabled();
+
+        [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
+
+        $module = $this->registerModuleAsEnabled($basePath, $config);
+
+        $tmp = $this->createTempDir();
+        $module->setBasePath($tmp);
+
+        try {
+            (new ModuleService($module))->remove(false);
+            static::fail('Module outside of the marketplace directory must not be removed.');
+        } catch (Exception $e) {
+            static::assertStringContainsString('cannot be removed', $e->getMessage());
+        }
+
+        static::assertDirectoryExists($tmp);
+        FileHelper::removeDirectory($tmp);
     }
 
     /**
@@ -562,6 +596,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
         $module = $this->registerModuleAsEnabled($basePath, $config);
+
+        // treat the temp dir as the marketplace dir, so the module may be removed
+        Yii::setAlias(Yii::$app->getModule('marketplace')->modulesPath, sys_get_temp_dir());
 
         $tmp = $this->createTempDir();
         $module->setBasePath($tmp);

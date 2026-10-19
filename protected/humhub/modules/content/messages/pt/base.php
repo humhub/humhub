@@ -99,7 +99,6 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',
-    'Cannot notify the author.' => '',
     'Create as draft' => '',
     'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',

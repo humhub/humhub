@@ -87,7 +87,7 @@ return [
     'Test email successfully sent to: {address}' => '',
     'Test message' => '',
     'The <strong>.htaccess</strong> file is in place.' => '',
-    'The <strong>.htaccess</strong> file is not in place. In the installation folder, locate the <strong>.htaccess.dist</strong> file and rename it to <strong>.htaccess</strong>.' => '',
+    'The <strong>.htaccess</strong> file is missing from the <strong>public</strong> directory. It is part of HumHub - restore it from the release package.' => '',
     'The <strong>mod_rewrite</strong> module is active.' => '',
     'The <strong>mod_rewrite</strong> module is not enabled.' => '',
     'This topic is covered in more detail in our <a href="{link}" target="_blank">documentation</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your server administrator for support.' => '',

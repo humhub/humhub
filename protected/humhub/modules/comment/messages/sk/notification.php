@@ -1,17 +1,13 @@
 <?php
-return array (
-  'Comments' => 'Komentáre',
-  'Receive Notifications when someone comments on my own or a following post.' => 'Dostávať upozornenia, keď niekto komentuje môj vlastný alebo sledovaný príspevok.',
-  'View Online' => 'Zobraziť online',
-  '[Deleted]' => '[Odstránené]',
-  '{displayNames} commented {contentTitle}' => '{displayNames} komentovali {contentTitle}',
-  '{displayNames} commented {contentTitle} in Space {space}' => '{displayNames} komentovali {contentTitle} v priestore {space}',
-  '{displayNames} commented {contentTitle}.' => '{displayNames} komentovali {contentTitle}.',
-  '{displayNames} just commented your {contentTitle}' => '{displayNames} práve komentovali váš {contentTitle}',
-  '{displayNames} just commented your {contentTitle} in Space {space}' => '{displayNames} práve komentovali váš {contentTitle} v priestore {space}',
-  '{displayName} commented {contentTitle}' => '{displayName} komentoval {contentTitle}',
-  '{displayName} commented {contentTitle} in Space {space}' => '{displayName} komentoval {contentTitle} v priestore {space}',
-  '{displayName} commented {contentTitle}.' => '{displayName} komentoval {contentTitle}',
-  '{displayName} just commented your {contentTitle}' => '{displayName} práve komentoval váš {contentTitle}',
-  '{displayName} just commented your {contentTitle} in Space {space}' => '{displayName} práve komentoval váš {contentTitle} v priestore {space}',
-);
+
+return [
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on a {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on your {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented your {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} replied to your {content}.' => '',
+];

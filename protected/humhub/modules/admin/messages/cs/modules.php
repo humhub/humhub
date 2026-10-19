@@ -16,6 +16,7 @@ return [
     'Spaces' => 'Prostory',
     'User default state' => 'Výchozí stav uživatele',
     'Users' => 'Uživatelé',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Module uninstall in progress. This process may take a moment.' => '',

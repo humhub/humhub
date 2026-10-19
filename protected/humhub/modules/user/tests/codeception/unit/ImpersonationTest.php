@@ -71,18 +71,18 @@ class ImpersonationTest extends HumHubDbTestCase
     {
         $impersonation = new Impersonation();
 
-        $this->assertFalse(
+        $this->assertTrue(
             $impersonation->allowPrivateContentAccess,
-            'By default private content is hidden while impersonating',
+            'By default private content stays accessible while impersonating',
         );
         $this->assertTrue($impersonation->log, 'By default impersonations are logged');
     }
 
     public function testComponentConfiguration()
     {
-        Yii::$app->user->impersonation = ['allowPrivateContentAccess' => true, 'log' => false];
+        Yii::$app->user->impersonation = ['allowPrivateContentAccess' => false, 'log' => false];
 
-        $this->assertTrue(Yii::$app->user->impersonation->allowPrivateContentAccess);
+        $this->assertFalse(Yii::$app->user->impersonation->allowPrivateContentAccess);
         $this->assertFalse(Yii::$app->user->impersonation->log);
     }
 
@@ -359,6 +359,36 @@ class ImpersonationTest extends HumHubDbTestCase
 
         $this->assertTrue(Yii::$app->user->impersonation->stop());
         $this->assertTrue(Yii::$app->user->isGuest);
+    }
+
+    public function testLogoutWithoutDestroyingTheSessionEndsTheImpersonation()
+    {
+        $this->becomeUser('Admin');
+        $this->impersonate('User1');
+
+        // E.g. on an expired auth timeout or a logout with a pending single logout response
+        Yii::$app->user->logout(false);
+
+        $this->assertFalse(Yii::$app->user->impersonation->isActive());
+        $this->assertNull(Yii::$app->session->get(Impersonation::SESSION_KEY));
+    }
+
+    public function testLoginEndsAStaleImpersonation()
+    {
+        $this->becomeUser('Admin');
+        $this->impersonate('User1');
+        $this->logout();
+
+        // Session marker left over from an impersonation which was never stopped
+        Yii::$app->session->set(Impersonation::SESSION_KEY, ['id' => 1, 'duration' => 0]);
+
+        $this->assertTrue(Yii::$app->user->login(User::findOne(['username' => 'User1'])));
+
+        $this->assertFalse(Yii::$app->user->impersonation->isActive());
+        $this->assertTrue(
+            Space::findOne(['id' => self::PRIVATE_SPACE_ID])->canAccessPrivateContent(),
+            'A regular login has full access to the private spaces of the user',
+        );
     }
 
     private function runDenyImpersonatedRule(): bool

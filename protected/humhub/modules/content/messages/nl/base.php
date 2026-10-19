@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Terug naar berichten',
     'Cancel' => 'Annuleren',
     'Cancel Edit' => 'Annuleer bewerking',
-    'Cannot notify the author.' => 'Kan de auteur niet op de hoogte stellen.',
     'Change to "Private"' => 'Maak privé',
     'Change to "Public"' => 'Maak publiek',
     'Comments are locked' => 'Reacties zijn vergrendeld',

@@ -4,7 +4,6 @@ return [
     'Add user' => 'ユーザーを追加',
     'An unexpected error occurred while loading the result.' => '結果のロード中に予期しないエラーが発生しました。',
     'Load more' => 'さらに読み込む',
-    'No results found.' => '検索結果は見つかりませんでした',
     'No users found for the given query.' => 'ユーザーが見つかりませんでした',
     'Please enter at least {n} character' => '最低でも {n} 文字を入力してください',
     'Select {n,plural,=1{item} other{items}}' => '{n,plural,=1{item} other{items}} を選択します',

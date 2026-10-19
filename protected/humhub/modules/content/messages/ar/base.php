@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'العودة للمحتويات',
     'Cancel' => 'إلغاء',
     'Cancel Edit' => 'إلغاء تحرير',
-    'Cannot notify the author.' => 'لا يمكن إخطار المؤلف.',
     'Change to "Private"' => 'إجعله خاص',
     'Change to "Public"' => 'إجعله عام',
     'Comments are locked' => 'التعليقات مقفلة',

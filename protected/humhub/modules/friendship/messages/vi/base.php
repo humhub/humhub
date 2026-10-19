@@ -11,7 +11,7 @@ return [
     'Requests' => 'Yêu cầu',
     'Sent requests' => 'Gửi yêu cầu',
     'Show all friends' => 'Hiện toàn bộ danh sách bạn',
-    'Unfriend' => 'Hủy kết bạn',
+    'Friendship system is not enabled!' => '',
     'Pending' => '',
     'Would you like to accept the friendship request?' => '',
     'Would you like to end your friendship with {userName}?' => '',

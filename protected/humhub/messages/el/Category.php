@@ -1,0 +1,4 @@
+<?php
+return [
+  'Message' => 'Μήνυμα',
+];

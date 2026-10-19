@@ -20,6 +20,7 @@ return [
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'Odinštalovanie tohto modulu ešte nebolo dokončené. Odstráni sa v priebehu niekoľkých minút.',
     'User default state' => 'Predvolený stav používateľa',
     'Users' => 'Užívatelia',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Uninstall Module' => '',

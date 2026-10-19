@@ -4,7 +4,6 @@ return [
     'Add user' => 'Felhasználó hozzáadása',
     'An unexpected error occurred while loading the result.' => 'Váratlan hiba történt az eredmények betöltése közben.',
     'Load more' => 'Továbbiak betöltése',
-    'No results found.' => 'Nincs találat.',
     'No users found for the given query.' => 'Nem található felhasználó a kért feltételekkel.',
     'Please enter at least {n} character' => 'Kérjük, hogy adj meg legalább {n} karaktert',
     'Select {n,plural,=1{item} other{items}}' => 'Válassz ki {n,plural,=1{item} other{items}}',

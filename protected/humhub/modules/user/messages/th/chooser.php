@@ -13,6 +13,5 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'ฟิลด์นี้อนุญาตสูงสุด {n,plural,=1{# user} other{# users}} เท่านั้น',
     'You reached the maximum number of allowed characters ({n}).' => 'คุณมีอักขระครบจำนวนสูงสุดที่อนุญาตแล้ว ({n})',
     'Your search returned no matches.' => 'การค้นหาของคุณไม่มีผลลัพธ์ที่ตรงกัน',
-    'No results found.' => '',
     'You are not allowed to remove this item.' => '',
 ];

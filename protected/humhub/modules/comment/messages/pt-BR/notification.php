@@ -1,17 +1,13 @@
 <?php
-return array (
-  'Comments' => 'Comentários',
-  'Receive Notifications when someone comments on my own or a following post.' => 'Receber notificações quando alguém comentar em uma publicação minha ou que eu siga.',
-  'View Online' => 'Ver Online',
-  '[Deleted]' => '[Excluído]',
-  '{displayNames} commented {contentTitle}' => '{displayNames} comentaram {contentTitle}',
-  '{displayNames} commented {contentTitle} in Space {space}' => '{displayNames} comentaram {contentTitle} no espaço {space}',
-  '{displayNames} commented {contentTitle}.' => '{displayNames} comentaram {contentTitle}.',
-  '{displayNames} just commented your {contentTitle}' => '{displayNames} acabaram de comentar em {contentTitle}',
-  '{displayNames} just commented your {contentTitle} in Space {space}' => '{displayNames} acabaram de comentar em {contentTitle} no espaço {space}',
-  '{displayName} commented {contentTitle}' => '{displayName} comentou {contentTitle}',
-  '{displayName} commented {contentTitle} in Space {space}' => '{displayName} comentou {contentTitle} no espaço {space}',
-  '{displayName} commented {contentTitle}.' => '{displayName} comentou {contentTitle}.',
-  '{displayName} just commented your {contentTitle}' => '{displayName} acabou de comentar em {contentTitle}',
-  '{displayName} just commented your {contentTitle} in Space {space}' => '{displayName} acabou de comentar em {contentTitle} no espaço {space}',
-);
+
+return [
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on a {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on your {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented your {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} replied to your {content}.' => '',
+];

@@ -17,7 +17,6 @@ return [
     'Back to stream' => '',
     'Cancel' => '',
     'Cancel Edit' => '',
-    'Cannot notify the author.' => '',
     'Change to "Private"' => '',
     'Change to "Public"' => '',
     'Comments are locked' => '',

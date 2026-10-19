@@ -30,6 +30,13 @@ class LoginPage extends BasePage
      */
     public function login($username, $password)
     {
+        if (method_exists($this->actor, 'executeJS')) {
+            // `humhub.user.login.js` pre-fills the field with the value remembered in the session
+            // storage, which outlives a test. When that happens between clearing the field and
+            // typing, a value left by an earlier test is prepended (e.g. "User1User1").
+            $this->actor->executeJS("try { sessionStorage.removeItem('humhub.user.login.email'); } catch (e) {}");
+        }
+
         $this->actor->fillField('Login[username]', $username);
         $this->actor->click('#continue-button');
 

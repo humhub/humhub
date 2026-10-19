@@ -4,7 +4,6 @@ return [
     'Add user' => 'Lägg till användare',
     'An unexpected error occurred while loading the result.' => 'Ett oväntat fel inträffade när resultatet laddades.',
     'Load more' => 'Ladda mer',
-    'No results found.' => 'Inga resultat funna.',
     'No users found for the given query.' => 'Inga användare hittades för den angivna frågan.',
     'Please enter at least {n} character' => 'Ange minst {n} tecken',
     'Select {n,plural,=1{item} other{items}}' => 'Välj {n,plural,=1{item} other{items}}',

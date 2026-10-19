@@ -4,7 +4,6 @@ return [
     'Add user' => 'Aggiungi utente',
     'An unexpected error occurred while loading the result.' => 'Un errore inaspettato è accaduto mentre il sistema caricava i risultati.',
     'Load more' => 'Carica altri',
-    'No results found.' => 'Nessun risultato trovato.',
     'No users found for the given query.' => 'Nessun utente trovato per la query richiesta.',
     'Please enter at least {n} character' => 'Per favore inserisci almeno {n} caratteri',
     'Select {n,plural,=1{item} other{items}}' => 'Seleziona {n,plural,=1{elemento} other{elementi}}',

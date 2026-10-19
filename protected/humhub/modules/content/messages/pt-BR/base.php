@@ -16,7 +16,6 @@ return [
     'Back to stream' => 'Voltar ao mural',
     'Cancel' => 'Cancelar',
     'Cancel Edit' => 'Cancelar Alteração',
-    'Cannot notify the author.' => 'Não é possível notificar o autor.',
     'Change to "Private"' => 'Tornar privado',
     'Change to "Public"' => 'Tornar público',
     'Comments are locked' => 'Comentários estão bloqueados',

@@ -1,13 +1,11 @@
 <?php
 
 return [
-    ' likes this.' => 'beğendi.',
     '<strong>Users</strong> who like this' => '<strong>Hangi</strong> kullanıcılar beğendi',
     'Like' => 'Beğen',
     'Unlike' => 'Beğenme',
-    'You' => 'Sen',
-    'You like this.' => 'Beğendin.',
-    'and {count} more like this.' => 've {count} kişi beğendi.',
     '{displayNames} like {content}.' => '',
     '{displayName} likes {content}.' => '',
+    '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a comment.' => '',
+    '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a {contentType}.' => '',
 ];

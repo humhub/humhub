@@ -29,9 +29,14 @@ use yii\base\Event;
  */
 class ModuleListTest extends HumHubDbTestCase
 {
+    private string $modulesPath;
+
     protected function setUp(): void
     {
         parent::setUp();
+        // the core modules `friendship` and `like` stand in for modules installed by the marketplace
+        $this->modulesPath = Yii::$app->getModule('marketplace')->modulesPath;
+        Yii::$app->getModule('marketplace')->modulesPath = '@humhub/modules';
         Yii::$app->cache->set(OnlineModuleManager::CACHE_KEY_MODULES, MarketplaceListServiceTest::catalogue());
         Yii::$app->getModule('marketplace')->settings->delete('includeCommunityModules');
     }
@@ -39,6 +44,7 @@ class ModuleListTest extends HumHubDbTestCase
     protected function tearDown(): void
     {
         Event::off(ModuleList::class, ModuleList::EVENT_INIT);
+        Yii::$app->getModule('marketplace')->modulesPath = $this->modulesPath;
         Yii::$app->cache->delete(OnlineModuleManager::CACHE_KEY_MODULES);
         Yii::$app->getModule('marketplace')->settings->delete('includeCommunityModules');
         parent::tearDown();

@@ -11,6 +11,7 @@
 namespace humhub\components;
 
 use ArrayAccess;
+use humhub\services\ActiveThemeService;
 use humhub\services\ModuleDiscoveryService;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\exceptions\InvalidArgumentTypeException;
@@ -676,6 +677,9 @@ class ModuleManager extends Component
     {
         Yii::$app->cache->delete(ModuleDiscoveryService::CACHE_ID);
         Yii::$app->runtimeCache->delete(Module::CACHE_KEY_IS_ENABLED);
+
+        // Parent themes may be provided by modules, so resolve the active theme again
+        ActiveThemeService::flush();
     }
 
     /**

@@ -73,7 +73,6 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',
-    'Cannot notify the author.' => '',
     'Content Tag with invalid contentcontainer_id assigned.' => '',
     'Could not find requested content!' => '',
     'Create as draft' => '',

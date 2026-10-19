@@ -12,7 +12,6 @@ return [
     'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => 'Ovo polje dozvoljava samo maksimalno {n,plural,=1{# user} other{# users}}.',
     'You reached the maximum number of allowed characters ({n}).' => 'Dosegli ste maksimalni broj dopuštenih znakova ({n}).',
     'Your search returned no matches.' => 'Vaša pretraga nije vratila nijedan rezultat.',
-    'No results found.' => '',
     'Select...' => '',
     'You are not allowed to remove this item.' => '',
 ];

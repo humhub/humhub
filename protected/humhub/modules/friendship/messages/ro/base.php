@@ -11,7 +11,7 @@ return [
     'Requests' => 'Cereri',
     'Sent requests' => 'Cereri trimise',
     'Show all friends' => 'Arată toți prietenii',
-    'Unfriend' => 'Nu mai fi-ți prieteni',
+    'Friendship system is not enabled!' => '',
     'Pending' => '',
     'Would you like to accept the friendship request?' => '',
     'Would you like to end your friendship with {userName}?' => '',

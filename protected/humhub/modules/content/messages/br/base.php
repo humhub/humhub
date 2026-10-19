@@ -2,7 +2,6 @@
 
 return [
     'Archived' => 'Diellaouet',
-    'Date "From" should be before "To"!' => '',
     'Delete' => 'Dilemel',
     'Edit' => 'Embann',
     'Public' => 'Foran',
@@ -20,7 +19,6 @@ return [
     'Back to stream' => '',
     'Cancel' => '',
     'Cancel Edit' => '',
-    'Cannot notify the author.' => '',
     'Change to "Private"' => '',
     'Change to "Public"' => '',
     'Comments are locked' => '',
@@ -35,6 +33,7 @@ return [
     'Created at:' => '',
     'Created by me' => '',
     'Creation time' => '',
+    'Date "From" should be before "To"!' => '',
     'Deleted' => '',
     'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',

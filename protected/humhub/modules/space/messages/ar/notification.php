@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'Receive Notifications of Space Membership events.' => 'تلقي إشعارات أحداث عضوية الباحة.',
-    'Space Membership' => 'عضوية الباحة',
-    'View Online' => 'مشاهدة حية',
     'You were added to Space {spaceName}' => 'تمت إضافتك إلى الباحة {spaceName}',
     '{displayName} accepted your invite for the space {spaceName}' => 'قبل {displayName} دعوتك للباحة {spaceName}',
     '{displayName} approved your membership for the space {spaceName}' => 'وافق {displayName} على عضويتك في الباحة {spaceName}',
@@ -13,7 +10,15 @@ return [
     '{displayName} invited you to the space {spaceName}' => 'دعاك {displayName} إلى الباحة {spaceName}',
     '{displayName} requests membership for the space {spaceName}' => 'يطلب {displayName} عضوية للباحة {spaceName}',
     '{displayName} revoked your invitation for the space {spaceName}' => '{displayName} أبطل دعوتك للباحة {spaceName}',
-    'New Space' => '',
-    'Receive Notifications when a new Space is created by a non-space manager.' => '',
+    'You were added to a Space.' => '',
+    '{displayName} accepted your invitation to a Space.' => '',
+    '{displayName} approved your membership request for a Space.' => '',
+    '{displayName} changed your role in a Space.' => '',
+    '{displayName} created a new Space.' => '',
     '{displayName} created the new Space {spaceName}' => '',
+    '{displayName} declined your invitation to a Space.' => '',
+    '{displayName} declined your membership request for a Space.' => '',
+    '{displayName} invited you to a Space.' => '',
+    '{displayName} requests membership for a Space.' => '',
+    '{displayName} revoked your invitation to a Space.' => '',
 ];

@@ -344,9 +344,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\form\assets\CodeMirrorAssetBundle` | `humhub\assets\CodeMirrorAssetBundle` |
   | `humhub\modules\ui\form\interfaces\TabbedFormModel` | `humhub\interfaces\TabbedFormModel` |
 
-  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass (and, for
-    `TabbedFormModel`, a deprecated interface extending the new one), so existing modules keep
-    working. **The shims are removed in 1.21** — migrate during the 1.20 cycle.
+  - **Every old name stays available as a deprecated subclass** (and, for `TabbedFormModel`, a
+    deprecated interface extending the new one). **The shims are removed in 1.21** — migrate during
+    the 1.20 cycle. Checking an object against an old name does not work, see *References to a
+    deprecated shim class have to be changed* below.
 
   - Note for `DatePicker`, `TimePicker` and `DurationPicker`: these were moved *into*
     `humhub\modules\ui\form\widgets` from `humhub\widgets` in 1.19. A module that has not migrated
@@ -386,10 +387,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\icon\components\FontAwesomeIconProvider` | `humhub\components\icon\FontAwesomeIconProvider` |
   | i18n category `UiModule.icon` | `base` |
 
-  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass, and
-    `IconProvider` as a deprecated interface extending the new one. **The shims are removed in
-    1.21** — `Icon::get()` alone appears well over a hundred times across the module ecosystem, so
-    migrate during the 1.20 cycle. In most modules it is one `use` line per file.
+  - **Every old name stays available as a deprecated subclass**, and `IconProvider` as a deprecated
+    interface extending the new one. **The shims are removed in 1.21** — `Icon::get()` alone appears
+    well over a hundred times across the module ecosystem, so migrate during the 1.20 cycle. In most
+    modules it is one `use` line per file. Checking an object against an old name does not work, see
+    *References to a deprecated shim class have to be changed* below.
 
   - **The icon alias map moved out of the module into an application parameter.** It used to live
     on the module as `iconAlias` and was read through `Module::getModuleInstance()->getIconAlias()`
@@ -432,8 +434,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\menu\DropdownDivider` | `humhub\widgets\menu\DropdownDivider` |
   | `humhub\modules\ui\menu\WidgetMenuEntry` | `humhub\widgets\menu\WidgetMenuEntry` |
 
-  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass. **The
-    shims are removed in 1.21** — migrate during the 1.20 cycle.
+  - **Every old name stays available as a deprecated subclass. The shims are removed in 1.21** —
+    migrate during the 1.20 cycle. Checking an object against an old name does not work, see
+    *References to a deprecated shim class have to be changed* below.
 
   - **Event handlers are unaffected.** All five menu widgets are abstract and can never be an
     event sender; handlers are always registered on a concrete menu such as
@@ -487,8 +490,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\widgets\CounterSetItem` | `humhub\widgets\CounterSetItem` |
   | `humhub\modules\ui\widgets\DirectoryFilters` | `humhub\widgets\DirectoryFilters` |
 
-  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass,
-    `DirectoryFilters` as a deprecated abstract one. **The shims are removed in 1.21.**
+  - **Every old name stays available as a deprecated subclass**, `DirectoryFilters` as a deprecated
+    abstract one. **The shims are removed in 1.21.** Checking an object against an old name does not
+    work, see *References to a deprecated shim class have to be changed* below.
 
   - The three views move with them, so a widget pointing `$template` or `render()` at them has to
     follow: `@ui/widgets/views/counterSetHeader` and
@@ -522,8 +526,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\filter\models\QueryFilter` | `humhub\models\filter\QueryFilter` |
   | `humhub\modules\ui\filter\assets\FilterAsset` | `humhub\assets\FilterAsset` |
 
-  - **Nothing breaks in 1.20.** Every old name stays available as a deprecated subclass. **The
-    shims are removed in 1.21** — migrate during the 1.20 cycle.
+  - **Every old name stays available as a deprecated subclass. The shims are removed in 1.21** —
+    migrate during the 1.20 cycle. Checking an object against an old name does not work, see
+    *References to a deprecated shim class have to be changed* below.
 
   - The filter machinery landed in the core rather than in the `stream` module even though the
     stream filter panel is its only consumer inside the core. It carries no knowledge of streams,
@@ -568,6 +573,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
   - `Yii::getAlias('@ui/…')` now throws. No known module used it.
 
+  - **The `UiModule.*` translation categories have no fallback**, unlike the classes. A module
+    that still calls `Yii::t('UiModule.base', …)` (or `.form`, `.markdownEditor`, `.icon`) fails
+    with `InvalidConfigException: Unable to locate message source for category 'UiModule.base'`
+    when the string is rendered, and `message/extract-module` aborts with `Could not find/load
+    requested module: ui`. Switch to `base` if the module requires 1.20; a module that still
+    supports 1.19 should use its own category instead, because in 1.19 the strings are not yet
+    in `base`.
+
   - The 39 strings of the three categories moved into `base` with their translations. Where a
     string already existed in `base` the existing translation was kept; this affects one string,
     `Collapse`, whose wording now follows the core catalogue in Arabic, French, Italian, Dutch,
@@ -590,6 +603,37 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   after. Only a module that registers `FilterAsset` on its own *and* renders a topic picker has
   to register `TopicAsset` itself now.
 
+- **References to a deprecated shim class have to be changed — the shims only cover code that
+  creates or extends the old class.** Every class moved in this cycle (`ui` and `stream` module)
+  stays available under its old name as a deprecated *subclass* of its replacement, while the core
+  itself only creates instances of the replacement. So with an old name:
+
+  - **Keeps working:** `new Old()`, `Old::widget()`, other static calls and constants,
+    `class MyClass extends Old`, and an event registered on `Old` in `config.php` (redirected, see
+    below).
+  - **Fails for every object the core creates:** `$object instanceof Old` and
+    `is_a($object, Old::class)` are **always `false`, silently**; a parameter or return type `Old`
+    throws a `TypeError`.
+
+  The `instanceof` case is the dangerous one, because nothing reports it. An event handler that is
+  still reached through the redirect, but checks its sender against the old name, simply does
+  nothing any more — e.g. the news module's stream filter:
+
+  ```php
+  use humhub\modules\stream\models\StreamQuery; // old name: the check below is never true
+
+  public static function onStreamQueryBeforeFilter($event)
+  {
+      if ($event->sender instanceof StreamQuery) {
+          $event->sender->addFilterHandlers([ReadNewsStreamFilter::class]);
+      }
+  }
+  ```
+
+  **Replace every old name in your module during the 1.20 cycle, not only the ones in
+  `config.php`.** Searching the module for `humhub\modules\ui\` and `humhub\modules\stream\`
+  finds all of them; in most files it is one `use` line.
+
 - **An event registered on a deprecated shim class is now redirected to its replacement.**
   `Event::trigger()` walks the parents of the sender upwards. A deprecated shim is a *subclass*
   of the class that replaced it, so a handler registered on the shim was never reached once the
@@ -602,8 +646,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   namespaces of dissolved modules are inspected, so no event class of an unrelated module is
   autoloaded for it.
 
-  The redirect disappears with the shims in 1.21. Migrate the event configuration during the 1.20
-  cycle; the warning in the application log tells you which registrations are affected.
+  The redirect only makes sure the handler is called. Checks inside the handler against an old
+  class name still fail, see above. The redirect disappears with the shims in 1.21. Migrate the
+  event configuration during the 1.20 cycle; the warning in the application log tells you which
+  registrations are affected.
 
 - **The `stream` module is gone.** It had no controllers and no routes, and everything in it was
   content-specific — the queries build on `ActiveQueryContent`, the filters filter content, and
@@ -626,8 +672,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | i18n category `StreamModule.filter` | `ContentModule.filter` |
   | alias `@stream` | `@content` |
 
-  - **Every old class name stays available as a deprecated subclass. The shims are removed in
-    1.21** — migrate during the 1.20 cycle.
+  - **Every old class name stays available as a deprecated subclass. The shims are removed in 1.21**
+    — migrate during the 1.20 cycle. Checking an object against an old name does not work, see
+    *References to a deprecated shim class have to be changed* below. Stream query filters and
+    stream event handlers typically check `$event->sender instanceof StreamQuery`; with the old
+    `use` line such a check is never true.
 
   - **`Yii::$app->getModule('stream')` returns `null` and cannot be shimmed.** The four module
     properties moved to the content module under the same names:
@@ -745,6 +794,22 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `lockCommentsLink.php` and `notificationSwitchLink.php` are removed — a theme override of
       one of them no longer applies. The rendered anchors keep their classes and
       `data-action-*` attributes; labels are HTML-encoded now.
+    - **Breaking**: the `WallEntryControlLink` API these links inherited is gone from them as
+      well. Code that instantiates one to read it — as `wiki` did with
+      `(new MoveContentLink(['model' => $record]))->preventRender()` — fails with
+      `UnknownMethodException`/`UnknownPropertyException`:
+
+      | Before | After |
+      |---|---|
+      | `preventRender()` | `!isVisible()` |
+      | `getActionUrl()`, `$actionUrl` | `getHtmlOptions()['data-action-url']` |
+      | `$action` | `getHtmlOptions()['data-action-click']` |
+      | `$options` | `getHtmlOptions()` |
+
+      `$icon` and `$label` still read through `getIcon()` and `getLabel()`.
+
+      A module that supports 1.19 as well cannot use either side; build the entry from the
+      record directly (for moving: `$content->container` and `$content->checkMovePermission()`).
     - **Deprecated**: `WallEntryControlLink`. Extend `MenuLink` instead. A subclass keeps
       working and stays described through the new `WallEntryControlLink::toMenuLink()`, which
       the controls endpoint uses.

@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'Receive Notifications of Space Membership events.' => '멤버십 이벤트 알림을 수신합니다.',
-    'Space Membership' => '멤버십',
-    'View Online' => '온라인 보기',
     'You were added to Space {spaceName}' => '{spaceName} 방에 추가되었습니다.',
     '{displayName} accepted your invite for the space {spaceName}' => '{displayName}님이 {spaceName} 방에 대한 초대를 수락했습니다.',
     '{displayName} approved your membership for the space {spaceName}' => '{displayName}님이 {spaceName} 방에 대한 멤버십을 승인했습니다.',
@@ -13,7 +10,15 @@ return [
     '{displayName} invited you to the space {spaceName}' => '{displayName}님이 {spaceName} 방에 당신을 초대했습니다.',
     '{displayName} requests membership for the space {spaceName}' => '{displayName}님이 {spaceName} 방의 멤버십을 요청했습니다.',
     '{displayName} revoked your invitation for the space {spaceName}' => '{displayName}님이 {spaceName} 방의 초대를 취소했습니다.',
-    'New Space' => '',
-    'Receive Notifications when a new Space is created by a non-space manager.' => '',
+    'You were added to a Space.' => '',
+    '{displayName} accepted your invitation to a Space.' => '',
+    '{displayName} approved your membership request for a Space.' => '',
+    '{displayName} changed your role in a Space.' => '',
+    '{displayName} created a new Space.' => '',
     '{displayName} created the new Space {spaceName}' => '',
+    '{displayName} declined your invitation to a Space.' => '',
+    '{displayName} declined your membership request for a Space.' => '',
+    '{displayName} invited you to a Space.' => '',
+    '{displayName} requests membership for a Space.' => '',
+    '{displayName} revoked your invitation to a Space.' => '',
 ];

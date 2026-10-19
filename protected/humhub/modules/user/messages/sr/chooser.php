@@ -4,7 +4,6 @@ return [
     'Add user' => 'Dodaj korisnika',
     'An unexpected error occurred while loading the result.' => 'Došlo je do neočekivane greške prilikom učitavanja rezultata.',
     'Load more' => 'Učitaj još',
-    'No results found.' => 'Nije pronajden rezultat',
     'No users found for the given query.' => 'Nije pronađen nijedan korisnik za zadani upit.',
     'Please enter at least {n} character' => 'Unesite najmanje {n} znakova',
     'Select {n,plural,=1{item} other{items}}' => 'Odaberite {n,plural,=1{item} drugih{items}}',

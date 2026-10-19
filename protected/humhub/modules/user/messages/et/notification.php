@@ -1,12 +1,9 @@
 <?php
 
 return [
-    'Following' => '',
-    'Mentionings' => '',
-    'Receive Notifications when someone is following you.' => '',
-    'Receive Notifications when someone mentioned you in a post.' => '',
-    'View Online' => '',
-    '{displayName} is now following you.' => '',
     '{displayName} just mentioned you in {contentTitle} "{preview}"' => '',
-    '{displayName} mentioned you in {contentTitle}.' => '',
+    '{displayName} mentioned you in a {contentType}.' => '',
+    '{displayName} mentioned you in {content}.' => '',
+    '{displayName} mentioned you.' => '',
+    '{namedCount, plural, =2{{displayNames} are} other{{displayName} is}} now following you.' => '',
 ];

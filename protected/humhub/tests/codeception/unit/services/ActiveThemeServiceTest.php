@@ -301,6 +301,16 @@ class ActiveThemeServiceTest extends HumHubDbTestCase
         }
     }
 
+    public function testModuleCacheFlushDropsTheStoredState()
+    {
+        // A parent theme may come from a module that was not loaded when the state was built
+        $this->markStoredState();
+
+        Yii::$app->moduleManager->flushCache();
+
+        $this->assertFalse($this->storedStateIsMarked());
+    }
+
     public function testFlushDropsTheStoredState()
     {
         ActiveThemeService::getState();
