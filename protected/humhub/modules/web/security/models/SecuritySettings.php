@@ -130,7 +130,7 @@ class SecuritySettings extends Model
         $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
 
         if ($this->isCspReportEnabled()) {
-            $this->csp->setReportUri(Url::toRoute('/web/security-report'));
+            $this->csp->setReportUri(static::getReportUrl($this->isReportOnlyCSP()));
         }
     }
 

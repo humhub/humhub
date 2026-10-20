@@ -96,7 +96,7 @@ class ReportOnlyHeaderTest extends WebSecurityTest
 
         $values = Yii::$app->response->headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, null, false);
         $this->assertCount(1, $values);
-        $this->assertStringContainsString('report-uri', $values[0]);
+        $this->assertStringContainsString('report-uri ' . SecuritySettings::getReportUrl(true), $values[0]);
         $this->assertStringNotContainsString('report-to', $values[0]);
         $this->assertNull(Yii::$app->response->headers->get(SecuritySettings::HEADER_REPORTING_ENDPOINTS));
     }
