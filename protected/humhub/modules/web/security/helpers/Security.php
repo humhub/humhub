@@ -34,12 +34,21 @@ class Security
                 static::setHeader($key, $header);
             }
 
-            if ($settings->hasSection(SecuritySettings::CSP_SECTION_REPORT_ONLY)) {
+            $reportOnlyHeader = $settings->getReportOnlyHeader();
+            if ($reportOnlyHeader !== null) {
+                // Replaces a legacy `csp-report-only` section, so violations are not reported twice
+                static::setHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, $reportOnlyHeader);
+            } elseif ($settings->hasSection(SecuritySettings::CSP_SECTION_REPORT_ONLY)) {
                 $reportOnlySettings = new SecuritySettings(['cspSection' => SecuritySettings::CSP_SECTION_REPORT_ONLY]);
                 $header = $reportOnlySettings->getHeader(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY);
                 foreach ($reportOnlySettings->getCSPHeaderKeys() as $key) {
                     static::setHeader($key, $header);
                 }
+            }
+
+            $reportingEndpoints = $settings->getReportingEndpointsHeader();
+            if ($reportingEndpoints !== null) {
+                static::setHeader(SecuritySettings::HEADER_REPORTING_ENDPOINTS, $reportingEndpoints);
             }
         }
 

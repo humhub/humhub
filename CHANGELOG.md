@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Enh #8612: Optional `Content-Security-Policy-Report-Only` header (`web.enableCspReportOnly`) to test a stricter policy; violations are logged as warnings, also reports from guests
 - Fix #8607: The two-step login picked a random user when the entered login was one user's username and another user's email
 - Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
 - Fix #8605: Users of a user source other than "local" could not log in with their password although their source allowed the Password client; a source allowing it also blocked the password login of local users
