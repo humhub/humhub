@@ -33,7 +33,13 @@
         </div>
 
         <div class="c-entity-card__body">
-            <p v-for="(detail, index) in details" :key="index" class="c-people-card__detail" :title="detail">{{ detail }}</p>
+            <template v-if="user.detailsHtml">
+                <!-- Rendered by the server from the administrator's details template, values encoded -->
+                <p v-for="(detail, index) in user.detailsHtml" :key="index" class="c-people-card__detail" :title="user.details[index]" v-html="detail"></p>
+            </template>
+            <template v-else>
+                <p v-for="(detail, index) in details" :key="index" class="c-people-card__detail" :title="detail">{{ detail }}</p>
+            </template>
         </div>
 
         <div v-if="tags.length" class="c-entity-card__tags">
@@ -69,7 +75,8 @@ const MAX_TAGS = 5;
  * friendship system is on, else the followers — clicking opens the existing friend list
  * (`friendship/list/popup`) or follower list (`user/profile/follower-list`) in the global
  * modal), the name linking to the profile, the `title` line and the extension slot
- * `user.card-subtitle`, the detail lines (the administrator's People card fields), the tags (at
+ * `user.card-subtitle`, the detail lines (the administrator's People card fields, or the HTML
+ * lines of the details template, `detailsHtml`), the tags (at
  * most five; a click emits `filter-tag`), and the footer: the extension slot
  * `user.card-actions`. One's own card has no footer. The avatar carries the online status
  * (`state.isOnline`, see `UserImage`'s `online`) once the state is loaded and tells one.

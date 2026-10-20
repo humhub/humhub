@@ -7,6 +7,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
@@ -24,9 +25,15 @@ use humhub\widgets\form\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'detail1')->dropDownList($model->getDetailOptions()); ?>
-    <?= $form->field($model, 'detail2')->dropDownList($model->getDetailOptions()); ?>
-    <?= $form->field($model, 'detail3')->dropDownList($model->getDetailOptions()); ?>
+    <?php $detailsTemplateActive = PeopleDetailsTemplate::isActive(); ?>
+    <?php if ($detailsTemplateActive) : ?>
+        <div class="alert alert-info">
+            <?= Yii::t('AdminModule.user', 'The user information is defined by a template in the configuration file (\'peopleCardDetailsTemplate\' of the user module).') ?>
+        </div>
+    <?php endif; ?>
+    <?= $form->field($model, 'detail1')->dropDownList($model->getDetailOptions(), ['disabled' => $detailsTemplateActive]); ?>
+    <?= $form->field($model, 'detail2')->dropDownList($model->getDetailOptions(), ['disabled' => $detailsTemplateActive]); ?>
+    <?= $form->field($model, 'detail3')->dropDownList($model->getDetailOptions(), ['disabled' => $detailsTemplateActive]); ?>
 
     <?= $form->field($model, 'defaultSorting')->dropDownList(PeopleSettingsForm::getSortingOptions()); ?>
     <div

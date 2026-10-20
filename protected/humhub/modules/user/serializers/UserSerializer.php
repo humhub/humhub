@@ -9,6 +9,7 @@
 namespace humhub\modules\user\serializers;
 
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\ProfileField;
@@ -85,7 +86,10 @@ class UserSerializer
      *   `null` when empty.
      * - `details` are the up to three profile fields an administrator picked for the People
      *   card (`people.detail1..3`, see {@see PeopleSettingsForm}) as plain text, empty ones left
-     *   out — the same for every caller.
+     *   out — the same for every caller. With a details template
+     *   ({@see Module::$peopleCardDetailsTemplate}) they are its lines instead, as plain text.
+     * - `detailsHtml` are the lines of the details template as HTML (e.g. with links), `null`
+     *   without a template.
      * - `followerCount` counts active users that are not hidden, `null` while following is
      *   disabled; `friendCount` counts mutual friendships the same way, `null` while the
      *   friendship system is off.
@@ -108,6 +112,7 @@ class UserSerializer
      *     bannerUrl: string|null,
      *     title: string|null,
      *     details: string[],
+     *     detailsHtml: string[]|null,
      *     tags: string[],
      *     followerCount: int|null,
      *     friendCount: int|null,
@@ -127,10 +132,18 @@ class UserSerializer
             : self::plainValue($fields['title'], $user));
 
         $details = [];
-        foreach ($fields['details'] as $field) {
-            $value = self::plainValue($field, $user);
-            if ($value !== '') {
-                $details[] = StringHelper::truncate($value, self::DETAIL_LENGTH, '...');
+        $detailsHtml = null;
+        if (PeopleDetailsTemplate::isActive()) {
+            $detailsHtml = PeopleDetailsTemplate::render($user);
+            foreach ($detailsHtml as $line) {
+                $details[] = StringHelper::truncate(self::plainText($line), self::DETAIL_LENGTH, '...');
+            }
+        } else {
+            foreach ($fields['details'] as $field) {
+                $value = self::plainValue($field, $user);
+                if ($value !== '') {
+                    $details[] = StringHelper::truncate($value, self::DETAIL_LENGTH, '...');
+                }
             }
         }
 
@@ -138,6 +151,7 @@ class UserSerializer
             'bannerUrl' => $banner->exists() ? $banner->getUrl(null, true) : null,
             'title' => $title === '' ? null : $title,
             'details' => $details,
+            'detailsHtml' => $detailsHtml,
             'tags' => array_values(array_filter(array_map('trim', $user->getTags()), static fn(string $tag) => $tag !== '')),
             'followerCount' => $counts['followerCount'],
             'friendCount' => $counts['friendCount'],
@@ -157,9 +171,15 @@ class UserSerializer
         }
 
         // Encoded, so that what is markup and what is text is told apart by strip_tags().
-        $rendered = (string)$field->getUserValue($user, false);
+        return self::plainText((string)$field->getUserValue($user, false));
+    }
 
-        return trim(html_entity_decode(strip_tags($rendered), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    /**
+     * The text of encoded HTML, without its markup.
+     */
+    private static function plainText(string $html): string
+    {
+        return trim(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     /**
@@ -189,7 +209,10 @@ class UserSerializer
     {
         $settings = new PeopleSettingsForm();
         $title = (string)Yii::$app->settings->get('displayNameSubFormat', '');
-        $names = array_values(array_filter([$settings->detail1, $settings->detail2, $settings->detail3], static fn($name) => (string)$name !== ''));
+        // The details template replaces the selected fields.
+        $names = PeopleDetailsTemplate::isActive()
+            ? []
+            : array_values(array_filter([$settings->detail1, $settings->detail2, $settings->detail3], static fn($name) => (string)$name !== ''));
 
         $fields = $names === [] && $title === ''
             ? []

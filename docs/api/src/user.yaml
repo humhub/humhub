@@ -179,6 +179,7 @@ paths:
                     bannerUrl: null
                     title: Product Manager
                     details: [Berlin, Product]
+                    detailsHtml: null
                     tags: [roadmap, ux]
                     followerCount: 4
                     friendCount: null
@@ -548,7 +549,17 @@ components:
                 type: string
               description: |
                 The up to three profile fields an administrator picked for the People card, as
-                plain text (at most 200 characters each); empty ones are left out.
+                plain text (at most 200 characters each); empty ones are left out. With a details
+                template configured (`peopleCardDetailsTemplate` of the user module), the lines
+                of `detailsHtml` as plain text instead.
+            detailsHtml:
+              type: [array, 'null']
+              items:
+                type: string
+              description: |
+                The non-empty lines of the details template configured for the People card, as
+                HTML (profile field values encoded, markup such as links from the template);
+                `null` without a template.
             tags:
               type: array
               items:

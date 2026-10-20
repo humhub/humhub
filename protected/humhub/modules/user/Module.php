@@ -10,6 +10,7 @@ namespace humhub\modules\user;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\permissions\CanMention;
 use Yii;
@@ -174,6 +175,20 @@ class Module extends \humhub\components\Module
      * @since 1.16
      */
     public $peopleEnableNestedFilters = true;
+
+    /**
+     * @var string|null Twig template of the detail lines of the People cards, replaces the profile fields
+     * selected in the People settings ("Information 1-3") when set.
+     * Each visible profile field is available by its internal name (formatted, HTML encoded), its raw value
+     * under `raw`. Every non-empty line of the rendered template is one detail line, HTML is allowed, e.g.
+     * ```
+     * {{ city }}
+     * <a href="https://example.com/?room={{ raw.room|url_encode }}" target="_blank">{{ room }}</a>
+     * ```
+     * @see PeopleDetailsTemplate
+     * @since 1.19.1
+     */
+    public ?string $peopleCardDetailsTemplate = null;
 
     /**
      * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.

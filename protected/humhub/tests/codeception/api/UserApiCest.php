@@ -210,13 +210,14 @@ class UserApiCest
         $user = json_decode($I->grabResponse(), true)['results'][0];
 
         Assert::assertSame(
-            ['id', 'guid', 'displayName', 'url', 'imageUrl', 'contentContainerId', 'bannerUrl', 'title', 'details', 'tags', 'followerCount', 'friendCount'],
+            ['id', 'guid', 'displayName', 'url', 'imageUrl', 'contentContainerId', 'bannerUrl', 'title', 'details', 'detailsHtml', 'tags', 'followerCount', 'friendCount'],
             array_keys($user),
         );
         Assert::assertSame(3, $user['id']);
         Assert::assertSame('Sara Tester', $user['displayName']);
         Assert::assertStringStartsWith('http', $user['url'], 'an absolute URL');
         Assert::assertSame(['Tester'], $user['details'], "the administrator's card field");
+        Assert::assertNull($user['detailsHtml'], 'no details template configured');
         Assert::assertSame([], $user['tags']);
         Assert::assertNull($user['bannerUrl']);
         // Caller context is not part of this shape - it is the same for everyone asking.

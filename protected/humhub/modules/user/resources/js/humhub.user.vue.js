@@ -178,13 +178,14 @@
     class: "c-entity-card__subtitle"
   };
   const _hoisted_7$1 = { class: "c-entity-card__body" };
-  const _hoisted_8$1 = ["title"];
-  const _hoisted_9$1 = {
+  const _hoisted_8$1 = ["title", "innerHTML"];
+  const _hoisted_9$1 = ["title"];
+  const _hoisted_10 = {
     key: 0,
     class: "c-entity-card__tags"
   };
-  const _hoisted_10 = ["title", "aria-label", "onClick"];
-  const _hoisted_11 = {
+  const _hoisted_11 = ["title", "aria-label", "onClick"];
+  const _hoisted_12 = {
     key: 1,
     class: "c-entity-card__footer"
   };
@@ -261,21 +262,43 @@
         }, null, 8, ["context"])
       ]),
       vue.createElementVNode("div", _hoisted_7$1, [
-        (vue.openBlock(true), vue.createElementBlock(
+        $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock(
           vue.Fragment,
-          null,
+          { key: 0 },
+          [
+            vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
+            (vue.openBlock(true), vue.createElementBlock(
+              vue.Fragment,
+              null,
+              vue.renderList($props.user.detailsHtml, (detail, index) => {
+                return vue.openBlock(), vue.createElementBlock("p", {
+                  key: index,
+                  class: "c-people-card__detail",
+                  title: $props.user.details[index],
+                  innerHTML: detail
+                }, null, 8, _hoisted_8$1);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ],
+          64
+          /* STABLE_FRAGMENT */
+        )) : (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          { key: 1 },
           vue.renderList($options.details, (detail, index) => {
             return vue.openBlock(), vue.createElementBlock("p", {
               key: index,
               class: "c-people-card__detail",
               title: detail
-            }, vue.toDisplayString(detail), 9, _hoisted_8$1);
+            }, vue.toDisplayString(detail), 9, _hoisted_9$1);
           }),
           128
           /* KEYED_FRAGMENT */
         ))
       ]),
-      $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$1, [
+      $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_10, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           null,
@@ -287,13 +310,13 @@
               title: $options.filterByLabel(tag),
               "aria-label": $options.filterByLabel(tag),
               onClick: ($event) => _ctx.$emit("filter-tag", tag)
-            }, vue.toDisplayString(tag), 9, _hoisted_10);
+            }, vue.toDisplayString(tag), 9, _hoisted_11);
           }),
           128
           /* KEYED_FRAGMENT */
         ))
       ])) : vue.createCommentVNode("v-if", true),
-      $options.showFooter ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_11, [
+      $options.showFooter ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_12, [
         $props.state === void 0 ? (vue.openBlock(), vue.createElementBlock(
           "button",
           {
