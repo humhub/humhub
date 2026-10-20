@@ -72,9 +72,9 @@ class InvisibleUserCest
 
         $I->amGoingTo('make user public');
         $I->amUser1(true);
-        $I->amOnPage('/user/account/edit-settings');
+        $I->amOnPage('/user/security/privacy');
         $I->waitForText('Profile visibility');
-        $I->selectOption('#accountsettings-visibility', User::VISIBILITY_ALL);
+        $I->selectOption('#privacysettings-visibility', User::VISIBILITY_ALL);
         $I->click('Save');
         $I->seeSuccess();
 
@@ -85,9 +85,9 @@ class InvisibleUserCest
 
         $I->amGoingTo('make user visible only for registered users');
         $I->amUser1();
-        $I->amOnPage('/user/account/edit-settings');
+        $I->amOnPage('/user/security/privacy');
         $I->waitForText('Profile visibility');
-        $I->selectOption('#accountsettings-visibility', User::VISIBILITY_REGISTERED_ONLY);
+        $I->selectOption('#privacysettings-visibility', User::VISIBILITY_REGISTERED_ONLY);
         $I->click('Save');
         $I->seeSuccess();
 

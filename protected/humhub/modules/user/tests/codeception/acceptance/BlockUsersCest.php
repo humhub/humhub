@@ -15,14 +15,14 @@ class BlockUsersCest
         $this->isUsersBlockingEnabled($I);
 
         $I->amGoingTo('block some users for the current user "Sara Tester"');
-        $I->selectUserFromPicker('#accountsettings-blockedusers', 'Peter Tester');
-        $I->selectUserFromPicker('#accountsettings-blockedusers', 'Sara Tester');
-        $I->selectUserFromPicker('#accountsettings-blockedusers', 'Andreas Tester');
+        $I->selectUserFromPicker('#privacysettings-blockedusers', 'Peter Tester');
+        $I->selectUserFromPicker('#privacysettings-blockedusers', 'Sara Tester');
+        $I->selectUserFromPicker('#privacysettings-blockedusers', 'Andreas Tester');
         $I->click('Save');
         $I->seeSuccess('Saved');
-        $I->see('Peter Tester', '.field-accountsettings-blockedusers');
-        $I->dontSee('Sara Tester', '.field-accountsettings-blockedusers');
-        $I->see('Andreas Tester', '.field-accountsettings-blockedusers');
+        $I->see('Peter Tester', '.field-privacysettings-blockedusers');
+        $I->dontSee('Sara Tester', '.field-privacysettings-blockedusers');
+        $I->see('Andreas Tester', '.field-privacysettings-blockedusers');
 
         $I->amGoingTo('check the current user "Peter Tester" is blocked for the user "Sara Tester"');
         $I->amUser1(true);
@@ -51,13 +51,13 @@ class BlockUsersCest
 
     private function isUsersBlockingDisabled(AcceptanceTester $I)
     {
-        $I->amOnPage('/user/account/edit-settings');
+        $I->amOnPage('/user/security/privacy');
         $I->dontSee('Blocked users');
     }
 
     private function isUsersBlockingEnabled(AcceptanceTester $I)
     {
-        $I->amOnPage('/user/account/edit-settings');
+        $I->amOnPage('/user/security/privacy');
         $I->see('Blocked users');
     }
 

@@ -47,22 +47,6 @@ class AccountProfileMenu extends TabMenu
             'isVisible' => UserSourceService::getForUser()->canChangeEmail(),
         ]));
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Change Password'),
-            'url' => ['/user/account/change-password'],
-            'sortOrder' => 400,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-password'),
-            'isVisible' => UserSourceService::getForUser()->canChangePassword(),
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Delete Account'),
-            'url' => ['/user/account/delete'],
-            'sortOrder' => 500,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'delete'),
-            'isVisible' => UserSourceService::getForUser()->canDeleteAccount(),
-        ]));
-
         parent::init();
     }
 }

@@ -4,7 +4,7 @@ use humhub\helpers\Html;
 use humhub\modules\space\widgets\Image;
 
 ?>
-<?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
+<?php $this->beginContent('@user/views/security/_layout.php') ?>
 <strong><?= Yii::t('UserModule.account', 'Your account cannot be deleted!'); ?></strong><br/>
 <br/>
 <?= Yii::t('UserModule.account', 'You are currently the owner of following spaces:'); ?><br/>
