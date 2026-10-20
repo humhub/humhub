@@ -47,6 +47,28 @@ class SecuritySettings extends Model
     public const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
 
     /**
+     * @since 1.19.1
+     */
+    public const HEADER_REPORTING_ENDPOINTS = 'Reporting-Endpoints';
+
+    /**
+     * Replaced with the script nonce of the session, e.g. `'nonce-xZnHrdklZksbCle1zhrmDj9g'`
+     * @since 1.19.1
+     */
+    public const PLACEHOLDER_NONCE = '{{ nonce }}';
+
+    /**
+     * Replaced with the `report-uri` and `report-to` directives pointing to the report endpoint
+     * @since 1.19.1
+     */
+    public const PLACEHOLDER_REPORTING = '{{ reporting }}';
+
+    /**
+     * @since 1.19.1
+     */
+    public const REPORTING_ENDPOINT_NAME = 'csp-endpoint';
+
+    /**
      * @var [] static config cache
      */
     private static $rules;
@@ -67,13 +89,16 @@ class SecuritySettings extends Model
     private $nonceAttached = false;
 
     /**
-     * @return bool checks if any csp section has reporting enabled
+     * @return bool checks if any csp section, the Report-Only policy of the web module or a configured
+     * header has reporting enabled
      */
     public static function isReportingEnabled()
     {
         $instance = new static();
         return $instance->isCspReportEnabled()
-            || $instance->hasSection(static::CSP_SECTION_REPORT_ONLY);
+            || $instance->hasSection(static::CSP_SECTION_REPORT_ONLY)
+            || Yii::$app->getModule('web')->enableCspReportOnly
+            || $instance->usesReportingPlaceholder();
     }
 
     /**
@@ -205,9 +230,7 @@ class SecuritySettings extends Model
     }
 
     /**
-     * Converts mask in header param like 'Content-Security-Policy' to proper value:
-     *  - {{ nonce }} is converted to 'nonce-xZnHrdklZksbCle1zhrmDj9g'
-     *                when config `web.csp.nonce` === `true`, otherwise
+     * Converts the placeholders in a header value of the `headers` section, see [[applyPlaceholders()]]
      *
      * @param string $header
      * @return string|null
@@ -221,21 +244,87 @@ class SecuritySettings extends Model
         $headerValue = static::$rules['headers'][$header];
 
         if (is_string($headerValue)) {
-            $headerValue = $this->applyMaskNonce($headerValue);
+            $headerValue = $this->applyPlaceholders($headerValue);
         }
 
         return $headerValue;
     }
 
-    private function applyMaskNonce(string $value): string
+    /**
+     * Converts placeholders to their values:
+     *  - {{ nonce }} is converted to 'nonce-xZnHrdklZksbCle1zhrmDj9g'
+     *                when config `web.csp.nonce` === `true`, otherwise to an empty string
+     *  - {{ reporting }} is converted to the `report-uri` and `report-to` directives of the report endpoint
+     */
+    private function applyPlaceholders(string $value): string
     {
-        if (!str_contains($value, '{{ nonce }}')) {
-            return $value;
+        if (str_contains($value, static::PLACEHOLDER_NONCE)) {
+            $nonce = $this->isNonceSupportActive() ? Security::getNonce(true) : null;
+            $value = str_replace(static::PLACEHOLDER_NONCE, $nonce ? '\'nonce-' . $nonce . '\'' : '', $value);
         }
 
-        $nonce = $this->isNonceSupportActive() ? Security::getNonce(true) : null;
+        if (str_contains($value, static::PLACEHOLDER_REPORTING)) {
+            $value = str_replace(
+                static::PLACEHOLDER_REPORTING,
+                'report-uri ' . static::getReportUrl() . '; report-to ' . static::REPORTING_ENDPOINT_NAME,
+                $value,
+            );
+        }
 
-        return str_replace('{{ nonce }}', $nonce ? '\'nonce-' . $nonce . '\'' : '', $value);
+        return $value;
+    }
+
+    /**
+     * @return string|null the Report-Only policy of the web module with its placeholders converted,
+     * null when it is not enabled
+     * @since 1.19.1
+     */
+    public function getReportOnlyHeader(): ?string
+    {
+        $module = Yii::$app->getModule('web');
+
+        if (!$module->enableCspReportOnly || !is_string($module->cspReportOnly) || $module->cspReportOnly === '') {
+            return null;
+        }
+
+        return $this->applyPlaceholders($module->cspReportOnly);
+    }
+
+    /**
+     * @return bool whether a sent CSP header contains the {{ reporting }} placeholder
+     * @since 1.19.1
+     */
+    public function usesReportingPlaceholder(): bool
+    {
+        $module = Yii::$app->getModule('web');
+
+        if ($module->enableCspReportOnly
+            && is_string($module->cspReportOnly)
+            && str_contains($module->cspReportOnly, static::PLACEHOLDER_REPORTING)) {
+            return true;
+        }
+
+        $header = static::$rules['headers'][static::HEADER_CONTENT_SECRUITY_POLICY] ?? null;
+
+        return is_string($header) && str_contains($header, static::PLACEHOLDER_REPORTING);
+    }
+
+    /**
+     * @return string value of the Reporting-Endpoints header for the `report-to` directive
+     * @since 1.19.1
+     */
+    public function getReportingEndpointsHeader(): string
+    {
+        return static::REPORTING_ENDPOINT_NAME . '="' . static::getReportUrl() . '"';
+    }
+
+    /**
+     * @return string absolute URL of the report endpoint, absolute because Reporting-Endpoints requires it
+     * @since 1.19.1
+     */
+    public static function getReportUrl(): string
+    {
+        return Url::to(['/web/security-report'], true);
     }
 
     /**
