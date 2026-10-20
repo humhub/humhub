@@ -30,7 +30,7 @@ class ReportController extends Controller
             return;
         }
 
-        foreach (CspReport::parse(Yii::$app->request->getRawBody()) as $report) {
+        foreach (CspReport::parse(Yii::$app->request->getRawBody(), Yii::$app->request->get('disposition') === 'report') as $report) {
             $report->log();
         }
     }

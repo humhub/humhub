@@ -46,8 +46,9 @@ class Security
                 }
             }
 
-            if ($settings->usesReportingPlaceholder()) {
-                static::setHeader(SecuritySettings::HEADER_REPORTING_ENDPOINTS, $settings->getReportingEndpointsHeader());
+            $reportingEndpoints = $settings->getReportingEndpointsHeader();
+            if ($reportingEndpoints !== null) {
+                static::setHeader(SecuritySettings::HEADER_REPORTING_ENDPOINTS, $reportingEndpoints);
             }
         }
 

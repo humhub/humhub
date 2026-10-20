@@ -46,6 +46,23 @@ class CspReportTest extends HumHubDbTestCase
         $this->assertFalse($reports[0]->isReportOnly());
     }
 
+    public function testReportOnlyUrlOverridesMissingDisposition()
+    {
+        $reports = CspReport::parse($this->legacyBody(['disposition' => null]), true);
+
+        $this->assertCount(1, $reports);
+        $this->assertTrue($reports[0]->isReportOnly());
+        $this->assertStringStartsWith('CSP violation (report-only): ', $reports[0]->getSummary());
+    }
+
+    public function testReportOnlyUrlAppliesToReportingApiEntries()
+    {
+        $reports = CspReport::parse(json_encode([$this->reportingApiEntry(['disposition' => 'enforce'])]), true);
+
+        $this->assertCount(1, $reports);
+        $this->assertTrue($reports[0]->isReportOnly());
+    }
+
     public function testReportingApiUsesOnlyCspViolations()
     {
         $reports = CspReport::parse(json_encode([

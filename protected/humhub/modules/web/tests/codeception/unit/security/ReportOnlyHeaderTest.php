@@ -55,12 +55,12 @@ class ReportOnlyHeaderTest extends WebSecurityTest
         $this->assertNotEmpty($nonce);
         $this->assertSame(
             "script-src 'nonce-" . $nonce . "' 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; "
-            . $this->expectedReporting(),
+            . $this->expectedReportOnlyReporting(),
             $headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY),
         );
         $this->assertStringContainsString($nonce, $headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY));
         $this->assertSame(
-            'csp-endpoint="' . SecuritySettings::getReportUrl() . '"',
+            'csp-report-only-endpoint="' . SecuritySettings::getReportUrl(true) . '"',
             $headers->get(SecuritySettings::HEADER_REPORTING_ENDPOINTS),
         );
         $this->assertTrue(SecuritySettings::isReportingEnabled());
@@ -86,7 +86,7 @@ class ReportOnlyHeaderTest extends WebSecurityTest
 
         $values = Yii::$app->response->headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, null, false);
         $this->assertCount(1, $values);
-        $this->assertStringContainsString('report-to csp-endpoint', $values[0]);
+        $this->assertStringContainsString('report-to csp-report-only-endpoint', $values[0]);
     }
 
     public function testLegacyReportOnlySectionUnchangedWhenDisabled()
@@ -119,6 +119,27 @@ class ReportOnlyHeaderTest extends WebSecurityTest
         $this->assertTrue(SecuritySettings::isReportingEnabled());
     }
 
+    public function testBothPoliciesListBothEndpoints()
+    {
+        $this->setConfigFile('security.headers-reporting.json');
+        $this->enableReportOnly();
+        Security::applyHeader(true);
+
+        $headers = Yii::$app->response->headers;
+        $this->assertSame(
+            'csp-endpoint="' . SecuritySettings::getReportUrl() . '", csp-report-only-endpoint="' . SecuritySettings::getReportUrl(true) . '"',
+            $headers->get(SecuritySettings::HEADER_REPORTING_ENDPOINTS),
+        );
+        $this->assertStringContainsString('report-to csp-endpoint', $headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY));
+        $this->assertStringContainsString('report-to csp-report-only-endpoint', $headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY));
+    }
+
+    public function testReportOnlyUrlCarriesDisposition()
+    {
+        $this->assertStringContainsString('disposition=report', SecuritySettings::getReportUrl(true));
+        $this->assertStringNotContainsString('disposition=report', SecuritySettings::getReportUrl());
+    }
+
     public function testCustomPolicyWithoutPlaceholderSendsNoReportingEndpoints()
     {
         $this->setConfigFile('security.strict.json');
@@ -145,5 +166,10 @@ class ReportOnlyHeaderTest extends WebSecurityTest
     private function expectedReporting(): string
     {
         return 'report-uri ' . SecuritySettings::getReportUrl() . '; report-to csp-endpoint';
+    }
+
+    private function expectedReportOnlyReporting(): string
+    {
+        return 'report-uri ' . SecuritySettings::getReportUrl(true) . '; report-to csp-report-only-endpoint';
     }
 }

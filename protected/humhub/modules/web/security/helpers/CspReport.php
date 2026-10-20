@@ -30,14 +30,16 @@ class CspReport
 
     public const LOG_CATEGORY = 'web.security';
 
-    private function __construct(private readonly array $report)
+    private function __construct(private readonly array $report, private readonly bool $reportOnly = false)
     {
     }
 
     /**
+     * @param bool $reportOnly whether the reports were sent to the Report-Only URL (disposition=report); they then
+     * count as Report-Only regardless of their disposition field
      * @return self[] the CSP violation reports contained in the request body, empty if it holds none
      */
-    public static function parse(string $body): array
+    public static function parse(string $body, bool $reportOnly = false): array
     {
         if ($body === '' || strlen($body) > self::MAX_BODY_SIZE) {
             return [];
@@ -58,7 +60,7 @@ class CspReport
             $reports = [];
             foreach ($data as $entry) {
                 if (is_array($entry) && ($entry['type'] ?? null) === 'csp-violation' && is_array($entry['body'] ?? null)) {
-                    $reports[] = new self($entry['body']);
+                    $reports[] = new self($entry['body'], $reportOnly);
                 }
             }
 
@@ -67,18 +69,19 @@ class CspReport
 
         // report-uri: a single report
         if (is_array($data['csp-report'] ?? null)) {
-            return [new self($data['csp-report'])];
+            return [new self($data['csp-report'], $reportOnly)];
         }
 
         return [];
     }
 
     /**
-     * A report without a disposition counts as enforced, so a real violation is never logged as a warning.
+     * The Report-Only URL decides first; otherwise a report without a disposition counts as enforced, so a real
+     * violation is never logged as a warning.
      */
     public function isReportOnly(): bool
     {
-        return ($this->report['disposition'] ?? null) === 'report';
+        return $this->reportOnly || ($this->report['disposition'] ?? null) === 'report';
     }
 
     /**

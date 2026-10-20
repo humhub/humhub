@@ -69,6 +69,12 @@ class SecuritySettings extends Model
     public const REPORTING_ENDPOINT_NAME = 'csp-endpoint';
 
     /**
+     * Endpoint name of the Report-Only policy, its URL carries `disposition=report`
+     * @since 1.19.1
+     */
+    public const REPORT_ONLY_ENDPOINT_NAME = 'csp-report-only-endpoint';
+
+    /**
      * @var [] static config cache
      */
     private static $rules;
@@ -254,9 +260,10 @@ class SecuritySettings extends Model
      * Converts placeholders to their values:
      *  - {{ nonce }} is converted to 'nonce-xZnHrdklZksbCle1zhrmDj9g'
      *                when config `web.csp.nonce` === `true`, otherwise to an empty string
-     *  - {{ reporting }} is converted to the `report-uri` and `report-to` directives of the report endpoint
+     *  - {{ reporting }} is converted to the `report-uri` and `report-to` directives of the report endpoint,
+     *                of the Report-Only endpoint if `$reportOnly` is set
      */
-    private function applyPlaceholders(string $value): string
+    private function applyPlaceholders(string $value, bool $reportOnly = false): string
     {
         if (str_contains($value, static::PLACEHOLDER_NONCE)) {
             $nonce = $this->isNonceSupportActive() ? Security::getNonce(true) : null;
@@ -266,7 +273,8 @@ class SecuritySettings extends Model
         if (str_contains($value, static::PLACEHOLDER_REPORTING)) {
             $value = str_replace(
                 static::PLACEHOLDER_REPORTING,
-                'report-uri ' . static::getReportUrl() . '; report-to ' . static::REPORTING_ENDPOINT_NAME,
+                'report-uri ' . static::getReportUrl($reportOnly) . '; report-to '
+                . ($reportOnly ? static::REPORT_ONLY_ENDPOINT_NAME : static::REPORTING_ENDPOINT_NAME),
                 $value,
             );
         }
@@ -287,7 +295,7 @@ class SecuritySettings extends Model
             return null;
         }
 
-        return $this->applyPlaceholders($module->cspReportOnly);
+        return $this->applyPlaceholders($module->cspReportOnly, true);
     }
 
     /**
@@ -296,35 +304,59 @@ class SecuritySettings extends Model
      */
     public function usesReportingPlaceholder(): bool
     {
-        $module = Yii::$app->getModule('web');
+        return $this->usesReportingInHeaders() || $this->usesReportingInReportOnly();
+    }
 
-        if ($module->enableCspReportOnly
-            && is_string($module->cspReportOnly)
-            && str_contains($module->cspReportOnly, static::PLACEHOLDER_REPORTING)) {
-            return true;
-        }
-
+    private function usesReportingInHeaders(): bool
+    {
         $header = static::$rules['headers'][static::HEADER_CONTENT_SECRUITY_POLICY] ?? null;
 
         return is_string($header) && str_contains($header, static::PLACEHOLDER_REPORTING);
     }
 
-    /**
-     * @return string value of the Reporting-Endpoints header for the `report-to` directive
-     * @since 1.19.1
-     */
-    public function getReportingEndpointsHeader(): string
+    private function usesReportingInReportOnly(): bool
     {
-        return static::REPORTING_ENDPOINT_NAME . '="' . static::getReportUrl() . '"';
+        $module = Yii::$app->getModule('web');
+
+        return $module->enableCspReportOnly
+            && is_string($module->cspReportOnly)
+            && str_contains($module->cspReportOnly, static::PLACEHOLDER_REPORTING);
     }
 
     /**
+     * @return string|null value of the Reporting-Endpoints header for the `report-to` directives in use,
+     * null if none is used
+     * @since 1.19.1
+     */
+    public function getReportingEndpointsHeader(): ?string
+    {
+        $endpoints = [];
+
+        if ($this->usesReportingInHeaders()) {
+            $endpoints[] = static::REPORTING_ENDPOINT_NAME . '="' . static::getReportUrl() . '"';
+        }
+
+        if ($this->usesReportingInReportOnly()) {
+            $endpoints[] = static::REPORT_ONLY_ENDPOINT_NAME . '="' . static::getReportUrl(true) . '"';
+        }
+
+        return $endpoints === [] ? null : implode(', ', $endpoints);
+    }
+
+    /**
+     * @param bool $reportOnly whether the URL is used by a Report-Only policy; adds `disposition=report`,
+     * so the endpoint can classify reports of browsers that omit the disposition field
      * @return string absolute URL of the report endpoint, absolute because Reporting-Endpoints requires it
      * @since 1.19.1
      */
-    public static function getReportUrl(): string
+    public static function getReportUrl(bool $reportOnly = false): string
     {
-        return Url::to(['/web/security-report'], true);
+        $route = ['/web/security-report'];
+        if ($reportOnly) {
+            $route['disposition'] = 'report';
+        }
+
+        return Url::to($route, true);
     }
 
     /**
