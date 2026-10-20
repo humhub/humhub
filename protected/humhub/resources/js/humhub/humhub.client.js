@@ -588,6 +588,11 @@ humhub.module('client', function (module, require, $) {
                 return;
             }
 
+            // Violations of a Content-Security-Policy-Report-Only header block nothing, so there is nothing to recover by reloading
+            if (event.disposition === 'report') {
+                return;
+            }
+
             const lastReloadTime = localStorage.getItem('cspViolationReloadTime');
             const nextReloadTime = lastReloadTime
                 ? module.config.cspViolationReloadInterval * 1000 - (Date.now() - lastReloadTime)
