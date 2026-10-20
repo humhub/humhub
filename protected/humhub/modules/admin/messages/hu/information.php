@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Utolsó futás (óránként):',
   'Licences' => 'Licencek',
   'Logging' => 'Naplózás',
+  'Logs' => 'Logok',
   'Make sure that the `proc_open` function is not disabled.' => 'Győződjön meg arról, hogy a \'proc_open\' funkció nincs letiltva.',
   'Make {filePath} writable for the Webserver/PHP!' => 'Tedd írhatóvá a {filePath} fájlt a webszerverhez/PHP-hez!',
   'Marketplace API Connection' => 'Marketplace API kapcsolat',

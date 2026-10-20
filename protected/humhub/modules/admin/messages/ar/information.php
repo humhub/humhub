@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'الجولة الأخيرة (كل ساعة):',
   'Licences' => 'الشهادات',
   'Logging' => 'تسجيل',
+  'Logs' => 'السجلات',
   'Make sure that the `proc_open` function is not disabled.' => 'تأكد من أن وظيفة `proc_open` غير معطلة.',
   'Make {filePath} writable for the Webserver/PHP!' => 'جعل {filePath} قابلاً للكتابة لخادم الويب/PHP!',
   'Marketplace API Connection' => 'اتصال واجهة برمجة تطبيقات المتجر',

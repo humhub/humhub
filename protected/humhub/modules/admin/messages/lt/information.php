@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Paskutinė veikla (valandinė):',
   'Licences' => 'Licencijos',
   'Logging' => 'Prisijungimas',
+  'Logs' => 'Prisijungimai',
   'Make sure that the `proc_open` function is not disabled.' => 'Įsitikinkite, ar`proc_open` funkcija yra įjungta',
   'Make {filePath} writable for the Webserver/PHP!' => 'Užtikrinkite, kad {filePath} būtų įrašomas į žiniatinklio serverį/PHP!',
   'Marketplace API Connection' => 'Prekybvietės API jungtis',

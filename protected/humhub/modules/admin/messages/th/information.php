@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'เรียกใช้ล่าสุด (รายชั่วโมง):',
   'Licences' => 'ใบอนุญาต',
   'Logging' => 'การบันทึก',
+  'Logs' => 'บันทึก',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

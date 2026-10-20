@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Последний запуск (ежечасный):',
   'Licences' => 'Лицензии',
   'Logging' => 'Логирование',
+  'Logs' => 'Логи',
   'Make sure that the `proc_open` function is not disabled.' => 'Убедитесь, что функция `proc_open` не отключена.',
   'Make {filePath} writable for the Webserver/PHP!' => 'Сделайте {filePath} доступным для записи на веб-сервер/PHP!',
   'Marketplace API Connection' => 'Подключение к API Маркетплейса',

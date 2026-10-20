@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'آخرین اجرا (ساعت):',
   'Licences' => 'گواهینامه‌ها',
   'Logging' => 'ثبت رویدادها',
+  'Logs' => 'سیاهه',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

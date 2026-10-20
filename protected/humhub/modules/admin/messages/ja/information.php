@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => '毎時Cronの最終実行',
   'Licences' => 'ライセンス',
   'Logging' => 'ログ',
+  'Logs' => 'ログ',
   'Make sure that the `proc_open` function is not disabled.' => '`proc_open` 関数が無効になっていないことを確認してください。',
   'Make {filePath} writable for the Webserver/PHP!' => '{filePath}をWebサーバー/ PHPで書き込み可能にします。',
   'Marketplace API Connection' => 'マーケットプレイス API 接続',

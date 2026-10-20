@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Τελευταία εκτέλεση (ωριαία):',
   'Licences' => 'Άδειες',
   'Logging' => 'Σύνδεση',
+  'Logs' => 'Αρχεία καταγραφής',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

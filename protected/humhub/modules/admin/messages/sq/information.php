@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Aktivizimi i fundit (çdo orë)',
   'Licences' => 'Licensat',
   'Logging' => 'Logging',
+  'Logs' => 'Regjistrat',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

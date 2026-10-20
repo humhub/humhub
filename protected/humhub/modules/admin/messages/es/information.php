@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Última ejecución (por horas):',
   'Licences' => 'Licencias',
   'Logging' => 'Registro',
+  'Logs' => 'Logs',
   'Make sure that the `proc_open` function is not disabled.' => 'Asegúrate de que la función \'proc_open\' no está desactivada',
   'Make {filePath} writable for the Webserver/PHP!' => 'Hacer que {filePath} sea escribible por el servidor web/PHP',
   'Marketplace API Connection' => 'Conexión al marketplace mediante API',

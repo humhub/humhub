@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Naposledy spustené (hodinový interval):',
   'Licences' => 'Licencia',
   'Logging' => 'Logovanie',
+  'Logs' => 'Denníky',
   'Make sure that the `proc_open` function is not disabled.' => 'Uistite sa, že funkcia `proc_open` nie je zakázaná.',
   'Make {filePath} writable for the Webserver/PHP!' => 'Urobte {filePath} zapisovateľný pre webový server/PHP!',
   'Marketplace API Connection' => 'Marketplace API Connection',

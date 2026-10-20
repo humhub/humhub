@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Poslední spuštění (hourly):',
   'Licences' => 'Licence',
   'Logging' => 'Protokol',
+  'Logs' => 'Logy',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

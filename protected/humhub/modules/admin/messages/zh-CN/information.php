@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => '最后运行（小时）',
   'Licences' => '许可证',
   'Logging' => '日志',
+  'Logs' => '日志',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

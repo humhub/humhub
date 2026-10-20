@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Viimeisin tehty tehtävä (Tunti):',
   'Licences' => 'Lisenssit',
   'Logging' => 'Valvonta',
+  'Logs' => 'Logit',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',

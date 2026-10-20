@@ -55,6 +55,7 @@ return [
     'Last run (hourly):' => '',
     'Licences' => '',
     'Logging' => '',
+    'Logs' => '',
     'Make sure that the `proc_open` function is not disabled.' => '',
     'Make {filePath} writable for the Webserver/PHP!' => '',
     'Marketplace API Connection' => '',

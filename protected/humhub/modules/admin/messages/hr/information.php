@@ -54,6 +54,7 @@ return [
   'Last run (hourly):' => 'Zadnji put pokrenuto (hourly):',
   'Licences' => 'Licence',
   'Logging' => 'Logging',
+  'Logs' => 'Logovi',
   'Make sure that the `proc_open` function is not disabled.' => '',
   'Make {filePath} writable for the Webserver/PHP!' => '',
   'Marketplace API Connection' => '',
