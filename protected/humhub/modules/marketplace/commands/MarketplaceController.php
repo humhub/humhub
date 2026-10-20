@@ -28,6 +28,8 @@ use yii\web\HttpException;
  *
  * Third-party module configs are not loaded at bootstrap ({@see WithoutModuleAutoload}).
  * Each action that needs a specific module calls {@see loadModule()} to register it on demand.
+ * Actions that evaluate a module's `requirements.php` first call {@see loadEnabledModules()},
+ * as requirements usually check other modules (e.g. a child theme requiring its parent theme).
  *
  * @property \humhub\modules\marketplace\Module $module
  * @since 0.5
@@ -145,6 +147,7 @@ class MarketplaceController extends Controller
 
         $this->stdout(PHP_EOL . 'Installing ' . $moduleId . '...' . PHP_EOL);
 
+        $this->loadEnabledModules();
         $this->getMarketplaceModule()->onlineModuleManager->install($moduleId);
 
         $version = ModuleDiscoveryService::findInstalledVersion($moduleId);
@@ -211,6 +214,7 @@ class MarketplaceController extends Controller
         // No pre-loading: OnlineModuleManager::update() removes old files first, then
         // calls install() which registers the fresh config.php. Loading the old module
         // here would put stale class definitions into the process before the files change.
+        $this->loadEnabledModules($moduleId);
         $this->getMarketplaceModule()->onlineModuleManager->update($moduleId);
 
         $this->success('Module ' . $moduleId . ' updated to v' . $newVersion . '.');
@@ -287,6 +291,7 @@ class MarketplaceController extends Controller
     {
         $this->stdout(PHP_EOL . 'Enabling ' . $moduleId . '...' . PHP_EOL);
 
+        $this->loadEnabledModules($moduleId);
         $module = $this->loadModule($moduleId);
         if ($module === null) {
             $this->error('Module ' . $moduleId . ' is not installed.');
@@ -431,6 +436,36 @@ class MarketplaceController extends Controller
         }
 
         return Yii::$app->moduleManager->getModule($moduleId, false);
+    }
+
+    /**
+     * Registers all enabled modules (except the given one) that are not registered yet.
+     *
+     * Needed before a module's `requirements.php` is evaluated, which usually checks other
+     * modules via `Yii::$app->getModule()`. A module that cannot be registered (e.g. a stale
+     * config referencing removed core classes) is skipped.
+     */
+    private function loadEnabledModules(?string $exceptModuleId = null): void
+    {
+        $enabledModuleIds = ModuleEnabled::getEnabledIds();
+
+        foreach (ModuleDiscoveryService::locateModuleConfigs() as $basePath => $config) {
+            $moduleId = $config['id'] ?? null;
+            if (
+                $moduleId === null
+                || $moduleId === $exceptModuleId
+                || !in_array($moduleId, $enabledModuleIds, true)
+                || Yii::$app->moduleManager->hasModule($moduleId)
+            ) {
+                continue;
+            }
+
+            try {
+                Yii::$app->moduleManager->register($basePath, $config);
+            } catch (\Throwable $e) {
+                Yii::warning('Could not load config for module "' . $moduleId . '": ' . $e->getMessage(), 'module');
+            }
+        }
     }
 
     private function heading(string $title): void
