@@ -43,16 +43,16 @@ class PeopleDetails extends Widget
     public function run()
     {
         if (PeopleDetailsTemplate::isActive()) {
-            $lines = PeopleDetailsTemplate::render($this->user);
+            $html = PeopleDetailsTemplate::render($this->user);
         } else {
-            $lines = $this->getProfileFieldLines();
+            $html = implode($this->separator, $this->getProfileFieldLines());
         }
 
-        if (empty($lines)) {
+        if ($html === '') {
             return '';
         }
 
-        return str_replace('{lines}', implode($this->separator, $lines), $this->template);
+        return str_replace('{lines}', $html, $this->template);
     }
 
     /**

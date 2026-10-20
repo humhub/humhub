@@ -18,12 +18,12 @@ use Twig\TemplateWrapper;
 use Yii;
 
 /**
- * Renders the detail lines of a People card from the Twig template {@see Module::$peopleCardDetailsTemplate}.
+ * Renders the details of a People card from the Twig template {@see Module::$peopleCardDetailsTemplate}.
  *
  * Each visible profile field is available by its internal name as the formatted, HTML encoded value
  * (e.g. the label of a select option, a link for URL fields), e.g. `{{ city }}`. The raw values,
  * e.g. for URL parameters, are available under `raw`, e.g. `{{ raw.room|url_encode }}`.
- * Every non-empty line of the rendered template becomes one detail line (HTML).
+ * The rendered template is one HTML block, line breaks are up to the template (e.g. `<br>`).
  *
  * @since 1.19.1
  */
@@ -54,13 +54,13 @@ class PeopleDetailsTemplate
 
     /**
      * @param User $user
-     * @return string[] the HTML detail lines of the user, empty when no template is set
+     * @return string the HTML of the user's details, empty when no template is set
      */
-    public static function render(User $user): array
+    public static function render(User $user): string
     {
         $template = self::getTemplate();
         if ($template === null || $user->profile === null) {
-            return [];
+            return '';
         }
 
         $variables = ['raw' => []];
@@ -70,12 +70,7 @@ class PeopleDetailsTemplate
             $variables['raw'][$profileField->internal_name] = (string)$profileField->getUserValue($user, true, false);
         }
 
-        $html = self::getCompiledTemplate($template)->render($variables);
-
-        return array_values(array_filter(
-            array_map('trim', preg_split('/\R/', $html)),
-            static fn(string $line) => $line !== '',
-        ));
+        return trim(self::getCompiledTemplate($template)->render($variables));
     }
 
     private static function getCompiledTemplate(string $template): TemplateWrapper

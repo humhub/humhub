@@ -29,15 +29,15 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         $this->setTemplate("  \n ");
 
         $this->assertFalse(PeopleDetailsTemplate::isActive());
-        $this->assertSame([], PeopleDetailsTemplate::render(User::findOne(['id' => 1])));
+        $this->assertSame('', PeopleDetailsTemplate::render(User::findOne(['id' => 1])));
     }
 
-    public function testRenderLines()
+    public function testRenderHtmlBlock()
     {
-        $this->setTemplate("{{ firstname }} {{ lastname }}\n\n{% if mobile %}{{ mobile }}{% endif %}\n<small>{{ unknown }}Room</small>");
+        $this->setTemplate("\n{{ firstname }} {{ lastname }}<br>\n{% if mobile %}{{ mobile }}<br>{% endif %}\n<small>{{ unknown }}Room</small>\n");
 
         $this->assertSame(
-            ['Admin Tester', '<small>Room</small>'],
+            "Admin Tester<br>\n<small>Room</small>",
             PeopleDetailsTemplate::render(User::findOne(['id' => 1])),
         );
     }
@@ -48,13 +48,12 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         $user->profile->firstname = '<b>A&B</b>';
         $user->profile->url = 'https://example.com/?a=1&b=2';
 
-        $this->setTemplate('{{ firstname }}' . "\n" . '{{ url }}' . "\n" . '<a href="https://nav.example/?q={{ raw.firstname|url_encode }}">x</a>');
+        $this->setTemplate('{{ firstname }}|{{ url }}|<a href="https://nav.example/?q={{ raw.firstname|url_encode }}">x</a>');
 
-        $this->assertSame([
-            '&lt;b&gt;A&amp;B&lt;/b&gt;',
-            'https://example.com/?a=1&amp;b=2',
-            '<a href="https://nav.example/?q=%3Cb%3EA%26B%3C%2Fb%3E">x</a>',
-        ], PeopleDetailsTemplate::render($user));
+        $this->assertSame(
+            '&lt;b&gt;A&amp;B&lt;/b&gt;|https://example.com/?a=1&amp;b=2|<a href="https://nav.example/?q=%3Cb%3EA%26B%3C%2Fb%3E">x</a>',
+            PeopleDetailsTemplate::render($user),
+        );
     }
 
     public function testHiddenFieldsAreNotAvailable()
@@ -62,7 +61,7 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         ProfileField::updateAll(['visible' => 0], ['internal_name' => 'lastname']);
         $this->setTemplate('{{ firstname }}|{{ lastname }}|{{ raw.lastname }}');
 
-        $this->assertSame(['Admin||'], PeopleDetailsTemplate::render(User::findOne(['id' => 1])));
+        $this->assertSame('Admin||', PeopleDetailsTemplate::render(User::findOne(['id' => 1])));
     }
 
     public function testWidgetUsesTemplateInsteadOfSelectedFields()
@@ -72,8 +71,11 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
 
         $this->assertSame('Admin', PeopleDetails::widget(['user' => $user]));
 
-        $this->setTemplate("{{ lastname }}\n{{ firstname }}");
-        $this->assertSame('Tester<br>Admin', PeopleDetails::widget(['user' => $user]));
+        $this->setTemplate('{{ lastname }}<br>{{ firstname }}');
+        $this->assertSame('<div>Tester<br>Admin</div>', PeopleDetails::widget(['user' => $user, 'template' => '<div>{lines}</div>']));
+
+        $this->setTemplate('{{ unknown }}');
+        $this->assertSame('', PeopleDetails::widget(['user' => $user]));
     }
 
     private function setTemplate(?string $template): void
