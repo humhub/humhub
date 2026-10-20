@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
-- Enh #XXXX: People cards: Twig template for the detail lines via `'user' => ['peopleCardDetailsTemplate' => ...]` (profile fields as variables, HTML allowed, e.g. links); replaces the selected "Information 1-3" fields, which are then disabled in the People settings
+- Enh #8614: People cards: Twig template for the detail lines via `'user' => ['peopleCardDetailsTemplate' => ...]` (profile fields as variables, HTML allowed, e.g. links); replaces the selected "Information 1-3" fields, which are then disabled in the People settings
 - Enh #8612: Optional `Content-Security-Policy-Report-Only` header (`web.enableCspReportOnly`) to test a stricter policy; violations are logged as warnings, also reports from guests
 - Fix #8607: The two-step login picked a random user when the entered login was one user's username and another user's email
 - Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
