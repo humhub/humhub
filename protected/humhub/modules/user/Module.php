@@ -177,12 +177,12 @@ class Module extends \humhub\components\Module
     public $peopleEnableNestedFilters = true;
 
     /**
-     * @var string|null Twig template of the detail lines of the People cards, replaces the profile fields
+     * @var string|null Twig template of the details of the People cards, replaces the profile fields
      * selected in the People settings ("Information 1-3") when set.
      * Each visible profile field is available by its internal name (formatted, HTML encoded), its raw value
-     * under `raw`. Every non-empty line of the rendered template is one detail line, HTML is allowed, e.g.
+     * under `raw`. The template renders one HTML block, line breaks are up to the template, e.g.
      * ```
-     * {{ city }}
+     * {{ city }}<br>
      * <a href="https://example.com/?room={{ raw.room|url_encode }}" target="_blank">{{ room }}</a>
      * ```
      * @see PeopleDetailsTemplate

@@ -87,9 +87,10 @@ class UserSerializer
      * - `details` are the up to three profile fields an administrator picked for the People
      *   card (`people.detail1..3`, see {@see PeopleSettingsForm}) as plain text, empty ones left
      *   out — the same for every caller. With a details template
-     *   ({@see Module::$peopleCardDetailsTemplate}) they are its lines instead, as plain text.
-     * - `detailsHtml` are the lines of the details template as HTML (e.g. with links), `null`
-     *   without a template.
+     *   ({@see Module::$peopleCardDetailsTemplate}) it is the text of `detailsHtml` instead, one
+     *   entry with its line breaks (`<br>`) as newlines.
+     * - `detailsHtml` is the details template rendered for the user, one HTML block (e.g. with
+     *   links), `null` without a template.
      * - `followerCount` counts active users that are not hidden, `null` while following is
      *   disabled; `friendCount` counts mutual friendships the same way, `null` while the
      *   friendship system is off.
@@ -112,7 +113,7 @@ class UserSerializer
      *     bannerUrl: string|null,
      *     title: string|null,
      *     details: string[],
-     *     detailsHtml: string[]|null,
+     *     detailsHtml: string|null,
      *     tags: string[],
      *     followerCount: int|null,
      *     friendCount: int|null,
@@ -135,8 +136,9 @@ class UserSerializer
         $detailsHtml = null;
         if (PeopleDetailsTemplate::isActive()) {
             $detailsHtml = PeopleDetailsTemplate::render($user);
-            foreach ($detailsHtml as $line) {
-                $details[] = StringHelper::truncate(self::plainText($line), self::DETAIL_LENGTH, '...');
+            $text = self::plainText(preg_replace('/<br\s*\/?>/i', "\n", $detailsHtml));
+            if ($text !== '') {
+                $details[] = StringHelper::truncate($text, self::DETAIL_LENGTH, '...');
             }
         } else {
             foreach ($fields['details'] as $field) {

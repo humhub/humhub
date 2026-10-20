@@ -178,7 +178,7 @@
     class: "c-entity-card__subtitle"
   };
   const _hoisted_7$1 = { class: "c-entity-card__body" };
-  const _hoisted_8$1 = ["title", "innerHTML"];
+  const _hoisted_8$1 = ["innerHTML"];
   const _hoisted_9$1 = ["title"];
   const _hoisted_10 = {
     key: 0,
@@ -262,29 +262,12 @@
         }, null, 8, ["context"])
       ]),
       vue.createElementVNode("div", _hoisted_7$1, [
-        $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock(
-          vue.Fragment,
-          { key: 0 },
-          [
-            vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
-              null,
-              vue.renderList($props.user.detailsHtml, (detail, index) => {
-                return vue.openBlock(), vue.createElementBlock("p", {
-                  key: index,
-                  class: "c-people-card__detail",
-                  title: $props.user.details[index],
-                  innerHTML: detail
-                }, null, 8, _hoisted_8$1);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            ))
-          ],
-          64
-          /* STABLE_FRAGMENT */
-        )) : (vue.openBlock(true), vue.createElementBlock(
+        vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
+        $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 0,
+          class: "c-people-card__details",
+          innerHTML: $props.user.detailsHtml
+        }, null, 8, _hoisted_8$1)) : (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           { key: 1 },
           vue.renderList($options.details, (detail, index) => {
