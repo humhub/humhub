@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix #8610: Flaky grouping tests when a unit test ran across a 15-minute grouping bucket boundary; `HumHubDbTestCase` now waits out the last seconds of a bucket
 - Enh #8592: `HUMHUB_ALIASES__CONFIG` also relocates the local configuration files; new `@logs` alias (`HUMHUB_ALIASES__LOGS`) for the application log
 - Fix #8601: The marketplace offered updates for, and could remove, modules outside the marketplace module directory
 - Fix #8599: The `humhub:file:created` handler of the file module threw an error, and blocked every later listener, when a file handler was offered without a legacy upload widget next to it (e.g. in a Vue island)

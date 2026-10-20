@@ -47,6 +47,15 @@ class HumHubDbTestCase extends Unit
 {
     use HumHubHelperTrait;
 
+    /**
+     * Activities and notifications are grouped within fixed 15-minute buckets of `created_at`
+     * ({@see \humhub\modules\notification\components\Grouping}), so a test inserting its records
+     * across a bucket boundary finds them split in two. Until the tests can freeze the clock
+     * (humhub-internal#1386), the last seconds of a bucket are waited out before each test.
+     */
+    private const GROUPING_BUCKET_SECONDS = 900;
+    private const GROUPING_BUCKET_MARGIN_SECONDS = 10;
+
     protected $fixtureConfig;
 
     public $appConfig = '@tests/codeception/config/unit.php';
@@ -57,6 +66,8 @@ class HumHubDbTestCase extends Unit
 
     protected function setUp(): void
     {
+        self::waitOutGroupingBucketBoundary();
+
         if (\Yii::$app !== null) {
             \Yii::$app->db->trigger('afterOpen');
             // With `transaction: true` the Yii2 module wraps the test into a transaction it never
@@ -100,6 +111,15 @@ class HumHubDbTestCase extends Unit
             foreach ($cfg['humhub_modules'] as $moduleId) {
                 Yii::$app->moduleManager->getModule($moduleId)->enable();
             }
+        }
+    }
+
+    private static function waitOutGroupingBucketBoundary(): void
+    {
+        $secondsLeft = self::GROUPING_BUCKET_SECONDS - time() % self::GROUPING_BUCKET_SECONDS;
+        if ($secondsLeft <= self::GROUPING_BUCKET_MARGIN_SECONDS) {
+            codecept_debug(sprintf('[%s] Waiting %d s for the next grouping bucket', __METHOD__, $secondsLeft));
+            sleep($secondsLeft);
         }
     }
 
