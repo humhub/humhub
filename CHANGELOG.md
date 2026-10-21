@@ -3,6 +3,13 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Enh #8612: Optional `Content-Security-Policy-Report-Only` header (`web.enableCspReportOnly`) to test a stricter policy; violations are logged as warnings, also reports from guests
+- Fix #8607: The two-step login picked a random user when the entered login was one user's username and another user's email
+- Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
+- Fix #8605: Users of a user source other than "local" could not log in with their password although their source allowed the Password client; a source allowing it also blocked the password login of local users
+- Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
+- Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
+- Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
 - Fix #8617: Posting from a content form in a modal (e.g. sharing files from the mobile app) failed with "Cannot read properties of undefined (reading 'find')"
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
@@ -11,6 +18,13 @@ HumHub Changelog
 - Fix #8580: Users without an active impersonation lost access to their private spaces ("Space is invisible!") when an impersonation marker was left in the session, e.g. after the auth timeout of an impersonated session (since 1.19.0)
 - Enh #8579: Private content and private spaces are accessible again while impersonating a user (as before 1.19); hiding them is now opt-in via `'user' => ['impersonation' => ['allowPrivateContentAccess' => false]]`
 - Fix #8582: Fix "Add/Edit License" button link when pretty URLs are disabled
+- Fix #8588: Upgrade to 1.19 failed in the activity migration when a not yet updated module (e.g. Files 0.17) could not be loaded
+- Fix #8586: Like notifications redirected to the Dashboard instead of the liked content; likes on comments now link to the comment itself
+- Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
+- Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
+- Fix #8604: The PWA manifest (`/manifest.json`) was redirected to the page of an open user gate (e.g. the 2FA check or a forced password change) and could set it as the return URL; `web/pwa-manifest` is now an infrastructure route that no gate intercepts
+- Fix #8606: Installer pages are marked `noindex`; an already installed instance answers `/installer` with 404 instead of a logged 500 error
+- Fix #8609: Topic sidebar counted deleted, archived, hidden, draft and scheduled content, so a topic stayed listed although filtering by it showed no matches
 
 1.19.0 (October 12, 2026)
 -------------------------

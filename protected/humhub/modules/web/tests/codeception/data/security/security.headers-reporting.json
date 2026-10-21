@@ -1,0 +1,8 @@
+{
+    "headers": {
+        "Content-Security-Policy": "default-src *; script-src {{ nonce }} 'self'; {{ reporting }}"
+    },
+    "csp": {
+        "nonce": true
+    }
+}

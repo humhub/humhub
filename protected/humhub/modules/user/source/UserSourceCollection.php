@@ -9,6 +9,7 @@
 namespace humhub\modules\user\source;
 
 use humhub\libs\ParameterEvent;
+use humhub\modules\user\authclient\Password;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
@@ -116,6 +117,9 @@ class UserSourceCollection extends Component
      * from the given auth client.
      *
      * Dispatch:
+     *  0. The Password client ("local") always belongs to LocalUserSource. Other
+     *     sources may allow it for login (allowedAuthClientIds), but a user
+     *     signing up with a password is a local user.
      *  1. Non-local sources first — they ask {@see UserSourceInterface::claimsUserCreation()}
      *     which may inspect $attributes (e.g. LDAP verifies the user exists
      *     in the directory before claiming a foreign auth client).
@@ -128,6 +132,10 @@ class UserSourceCollection extends Component
      */
     public function findUserSourceForAuthClient(string $authClientId, array $attributes = []): UserSourceInterface
     {
+        if ($authClientId === Password::ID) {
+            return $this->getLocalUserSource();
+        }
+
         foreach ($this->getUserSources() as $source) {
             if ($source->getId() === 'local') {
                 continue;
@@ -149,9 +157,16 @@ class UserSourceCollection extends Component
      * AuthClient ID in its allowedAuthClientIds. Used to detect "trusted"
      * providers that may auto-register users without the anonymousRegistration
      * setting being enabled.
+     *
+     * The Password client is never claimed: listing it only allows the users
+     * of a source to log in with their password.
      */
     public function isAuthClientClaimed(string $authClientId): bool
     {
+        if ($authClientId === Password::ID) {
+            return false;
+        }
+
         foreach ($this->getUserSources() as $source) {
             if (in_array($authClientId, $source->getAllowedAuthClientIds(), true)) {
                 return true;

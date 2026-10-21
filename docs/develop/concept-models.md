@@ -92,6 +92,23 @@ Your `uninstall.php` migration runs while your module is still registered.
 (see [Settings](concept-settings.md)), so an uninstall migration only needs to
 drop tables and columns.
 
+### Core migrations
+
+Core migrations must not load module classes. During a core upgrade they run
+while the previously installed module versions are still in place, and those
+may not be loadable with the new core (e.g. because they implement a removed
+core interface). Autoloading such a class throws an `\Error` and aborts the
+whole upgrade.
+
+This also applies indirectly: `class_exists()`, `is_subclass_of()`,
+`$model::tableName()` or `RecordMap::getById()` on a class name read from
+polymorphic columns like `object_model` all trigger autoloading.
+
+- Work with plain SQL on the stored class names instead of instantiating or
+  inspecting the classes.
+- If a class check is unavoidable, wrap it in `try { ... } catch (\Throwable)`
+  so an unloadable class cannot abort the migration.
+
 ## Uninstall Migration
 
 Your module should also provide an `uninstall.php` file.

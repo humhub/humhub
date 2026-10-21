@@ -286,6 +286,7 @@ class GateManagerTest extends HumHubDbTestCase
 
         // Core default, collected routes and their sub-routes are infrastructure...
         $this->assertTrue($manager->isInfrastructureRoute('i18n/translations'));
+        $this->assertTrue($manager->isInfrastructureRoute('web/pwa-manifest/index'));
         $this->assertTrue($manager->isInfrastructureRoute('mymodule/css'));
         $this->assertTrue($manager->isInfrastructureRoute('mymodule/css/index'));
         $this->assertTrue($manager->isInfrastructureRoute('/mymodule/css/'));
@@ -296,6 +297,7 @@ class GateManagerTest extends HumHubDbTestCase
         // An open gate does not intercept an infrastructure route, whatever the request class
         $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'mymodule/css/index'));
         $this->assertNull($manager->findOpenGate(RequestClass::Ajax, 'i18n/translations'));
+        $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'web/pwa-manifest/index'));
         $this->assertEquals('a', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
     }
 }

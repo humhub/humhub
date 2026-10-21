@@ -57,7 +57,7 @@ class AssetManager extends \yii\web\AssetManager
         parent::init();
 
         $this->fs = Yii::$app->fs->getAssetsMount();
-        $this->baseUrl = Yii::$app->fs->getAssetsMountConfig()->getBaseUrl();
+        $this->baseUrl = rtrim(Yii::getAlias(Yii::$app->fs->getAssetsMountConfig()->getBaseUrl()), '/');
 
         $this->cachePublishState ??= !(Yii::$app->fs->getAssetsMountConfig() instanceof LocalMountConfig)
             || !(Yii::$app->fs->getDataMountConfig() instanceof LocalMountConfig);
