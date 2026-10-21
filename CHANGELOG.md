@@ -25,6 +25,7 @@ HumHub Changelog
 - Fix #8604: The PWA manifest (`/manifest.json`) was redirected to the page of an open user gate (e.g. the 2FA check or a forced password change) and could set it as the return URL; `web/pwa-manifest` is now an infrastructure route that no gate intercepts
 - Fix #8606: Installer pages are marked `noindex`; an already installed instance answers `/installer` with 404 instead of a logged 500 error
 - Fix #8609: Topic sidebar counted deleted, archived, hidden, draft and scheduled content, so a topic stayed listed although filtering by it showed no matches
+- Enh #8613: The `Template` profile field ignored source fields hidden from the profile (Visible off) and rendered them empty; hidden fields are now available as variables; Source fields with the value `0` are no longer treated as empty
 
 1.19.0 (October 12, 2026)
 -------------------------
