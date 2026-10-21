@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
 - Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
 - Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
+- Fix #8617: Posting from a content form in a modal (e.g. sharing files from the mobile app) failed with "Cannot read properties of undefined (reading 'find')"
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
 - Fix #8581: Attached videos opened in the gallery showed an error icon instead of playing
