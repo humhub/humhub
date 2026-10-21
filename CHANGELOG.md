@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
-- Fix #8585: Posting from a content form in a modal (e.g. sharing files from the mobile app) failed with "Cannot read properties of undefined (reading 'find')"
+- Fix #8617: Posting from a content form in a modal (e.g. sharing files from the mobile app) failed with "Cannot read properties of undefined (reading 'find')"
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
 - Fix #8581: Attached videos opened in the gallery showed an error icon instead of playing
