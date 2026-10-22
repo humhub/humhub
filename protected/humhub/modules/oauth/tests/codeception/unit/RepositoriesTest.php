@@ -9,13 +9,16 @@
 namespace humhub\modules\oauth\tests\codeception\unit;
 
 use DateTimeImmutable;
+use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\entities\ClientEntity;
 use humhub\modules\oauth\entities\ScopeEntity;
+use humhub\modules\oauth\events\ScopesEvent;
 use humhub\modules\oauth\models\AccessToken;
 use humhub\modules\oauth\models\AuthCode;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\models\RefreshToken;
+use humhub\modules\oauth\models\Scope;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\repositories\AccessTokenRepository;
 use humhub\modules\oauth\repositories\AuthCodeRepository;
@@ -23,10 +26,12 @@ use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\repositories\RefreshTokenRepository;
 use humhub\modules\oauth\repositories\ScopeRepository;
 use humhub\modules\oauth\services\GrantService;
+use humhub\modules\oauth\tests\codeception\_support\OAuthTestHelper;
 use humhub\modules\user\models\User;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\base\Event;
 
 class RepositoriesTest extends HumHubDbTestCase
 {
@@ -80,12 +85,15 @@ class RepositoriesTest extends HumHubDbTestCase
         $this->assertFalse($repository->validateClient('confidential-test', null, 'refresh_token'));
     }
 
-    public function testScopeRepositoryKnowsOnlyRegisteredScopes()
+    public function testScopeRepositoryAcceptsEveryWellFormedScope()
     {
         $repository = new ScopeRepository();
 
         $this->assertSame('content:read', $repository->getScopeEntityByIdentifier('content:read')->getIdentifier());
-        $this->assertNull($repository->getScopeEntityByIdentifier('nope'));
+        $this->assertSame('gone:read', $repository->getScopeEntityByIdentifier('gone:read')->getIdentifier());
+        $this->assertNull($repository->getScopeEntityByIdentifier('Bad Scope'));
+        $this->assertNull($repository->getScopeEntityByIdentifier(':read'));
+        $this->assertNull($repository->getScopeEntityByIdentifier(str_repeat('a', 81)));
     }
 
     public function testAccessTokenRevocationFollowsTheGrant()
@@ -185,8 +193,72 @@ class RepositoriesTest extends HumHubDbTestCase
         $scopes = $repository->finalizeScopes([new ScopeEntity('content:read'), new ScopeEntity('content:write')], 'authorization_code', $entity, $grant->guid);
         $this->assertSame(['content:read'], array_map(fn($s) => $s->getIdentifier(), $scopes));
 
-        $this->expectException(OAuthServerException::class);
-        $repository->finalizeScopes([new ScopeEntity('content:write')], 'authorization_code', $entity, $grant->guid);
+        // The grant decides, not the requested list
+        $scopes = $repository->finalizeScopes([new ScopeEntity('content:write')], 'refresh_token', $entity, $grant->guid);
+        $this->assertSame(['content:read'], array_map(fn($s) => $s->getIdentifier(), $scopes));
+
+        $client->updateAttributes(['scopes' => json_encode([])]);
+        $this->assertSame([], $repository->finalizeScopes([new ScopeEntity('content:read')], 'refresh_token', $entity, $grant->guid));
+    }
+
+    public function testRefreshSurvivesADisabledScopeModule()
+    {
+        $client = $this->adminClient(['content:read', 'gone:read']);
+        $handler = static function (ScopesEvent $event) {
+            $event->scopes[] = new Scope('gone:read', 'Read something');
+        };
+        Event::on(ScopeRegistry::class, ScopeRegistry::EVENT_COLLECT_SCOPES, $handler);
+        ScopeRegistry::reset();
+
+        try {
+            $tokens = OAuthTestHelper::issueTokens(1, $client->client_id, ['content:read', 'gone:read']);
+        } finally {
+            Event::off(ScopeRegistry::class, ScopeRegistry::EVENT_COLLECT_SCOPES, $handler);
+            ScopeRegistry::reset();
+        }
+        $this->assertArrayHasKey('refresh_token', $tokens);
+
+        $refreshed = OAuthTestHelper::refresh($tokens['refresh_token'], $client->client_id);
+
+        $this->assertArrayHasKey('access_token', $refreshed, json_encode($refreshed));
+        $this->assertSame(['content:read'], $this->jwtScopes($refreshed['access_token']));
+        $this->assertSame(1, (int)Grant::find()->where(['client_id' => $client->id])->count());
+    }
+
+    public function testRefreshSurvivesClientScopesNarrowedToNone()
+    {
+        $client = $this->adminClient(['content:read']);
+        $tokens = OAuthTestHelper::issueTokens(1, $client->client_id, ['content:read']);
+
+        $client->updateAttributes(['scopes' => json_encode([])]);
+        $refreshed = OAuthTestHelper::refresh($tokens['refresh_token'], $client->client_id);
+
+        $this->assertArrayHasKey('access_token', $refreshed, json_encode($refreshed));
+        $this->assertSame([], $this->jwtScopes($refreshed['access_token']));
+        $this->assertSame(1, (int)Grant::find()->where(['client_id' => $client->id])->count(), 'the grant is kept');
+    }
+
+    private function adminClient(array $scopes): Client
+    {
+        $client = new Client([
+            'client_id' => 'refresh-test-' . bin2hex(random_bytes(4)),
+            'type' => Client::TYPE_ADMIN,
+            'name' => 'Refresh',
+            'redirect_uris' => json_encode([OAuthTestHelper::REDIRECT_URI]),
+            'scopes' => json_encode($scopes),
+            'is_active' => 1,
+            'created_at' => time(),
+        ]);
+        $client->save(false);
+        Module::instance()->settings->set('allowClients', true);
+
+        return $client;
+    }
+
+    private function jwtScopes(string $jwt): array
+    {
+        $payload = json_decode(base64_decode(strtr(explode('.', $jwt)[1], '-_', '+/')), true);
+        return $payload['scopes'];
     }
 
     public function testExpiredAccessTokenIsRevoked()

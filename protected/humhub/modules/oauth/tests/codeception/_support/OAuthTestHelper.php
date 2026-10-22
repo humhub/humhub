@@ -15,6 +15,7 @@ use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\user\models\User;
+use League\OAuth2\Server\Exception\OAuthServerException;
 
 /**
  * Runs the authorization step in-process, so tests can start at the token endpoint.
@@ -84,6 +85,28 @@ class OAuthTestHelper
 
         $response = AuthorizationServerFactory::createAuthorizationServer()
             ->respondToAccessTokenRequest($request, HttpFactory::instance()->createResponse());
+
+        return json_decode((string)$response->getBody(), true);
+    }
+
+    /**
+     * @return array the decoded token response, an error body on failure
+     */
+    public static function refresh(string $refreshToken, string $clientId = Client::SYSTEM_CLIENT_ID): array
+    {
+        $request = HttpFactory::instance()->createServerRequest('POST', 'http://localhost/oauth/token')
+            ->withParsedBody([
+                'grant_type' => 'refresh_token',
+                'client_id' => $clientId,
+                'refresh_token' => $refreshToken,
+            ]);
+
+        try {
+            $response = AuthorizationServerFactory::createAuthorizationServer()
+                ->respondToAccessTokenRequest($request, HttpFactory::instance()->createResponse());
+        } catch (OAuthServerException $e) {
+            $response = $e->generateHttpResponse(HttpFactory::instance()->createResponse());
+        }
 
         return json_decode((string)$response->getBody(), true);
     }

@@ -160,6 +160,20 @@ class AuthorizeCest
         Assert::assertStringContainsString('state=xyz', $this->location());
     }
 
+    public function testUnregisteredScopesAreDropped(FunctionalTester $I)
+    {
+        $this->createAdminClient(['scopes' => json_encode(['content:read', 'gone:read'])]);
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'gone:read content:read', 'http://127.0.0.1/callback'));
+        $I->see('Read content, comments and likes');
+        $I->dontSee('gone:read');
+
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'gone:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('error=invalid_scope', $this->location());
+    }
+
     public function testAllowRedirectsWithCodeAndState(FunctionalTester $I)
     {
         $I->amAdmin();
