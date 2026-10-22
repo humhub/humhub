@@ -10,9 +10,14 @@ namespace humhub\modules\oauth\tests\codeception\functional;
 
 use FunctionalTester;
 use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\forms\SettingsForm;
+use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
+use humhub\modules\oauth\services\GrantService;
+use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
+use Yii;
 
 class AdminCest
 {
@@ -31,8 +36,14 @@ class AdminCest
         $this->cleanUp();
     }
 
+    private const ADMIN_PASSWORD = 'admin&humhub@PASS%worD!';
+
     private function cleanUp(): void
     {
+        Grant::deleteAll();
+        Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
+        // Failed password confirmations are throttled via the cache
+        Yii::$app->cache->flush();
         foreach (self::SETTINGS as $name) {
             Module::instance()->settings->delete($name);
         }
@@ -151,5 +162,226 @@ class AdminCest
         $I->amUser1();
         $I->amOnRoute('/oauth/admin/index');
         $I->seeResponseCodeIs(403);
+    }
+
+    private function adminClient(array $attributes = []): Client
+    {
+        $client = new Client($attributes + [
+            'client_id' => 'agent', 'type' => Client::TYPE_ADMIN, 'name' => 'Research Agent',
+            'secret_hash' => hash('sha256', 'old-secret'),
+            'redirect_uris' => json_encode(['https://example.org/cb']),
+            'scopes' => json_encode(['content:read', 'spaces:read']),
+            'is_active' => 1, 'created_at' => time(),
+        ]);
+        $client->save(false);
+
+        return $client;
+    }
+
+    private function grant(int $userId, Client $client, array $scopes = ['content:read']): Grant
+    {
+        Module::instance()->settings->set('allowClients', true);
+
+        return (new GrantService())->createOAuthGrant(User::findOne(['id' => $userId]), $client, $scopes);
+    }
+
+    private function post(FunctionalTester $I, string $route, array $params = [], array $data = []): void
+    {
+        $I->sendAjaxPostRequest('/index-test.php?' . http_build_query(['r' => $route] + $params), $data);
+    }
+
+    private function grabSecret(FunctionalTester $I): string
+    {
+        Assert::assertSame(1, preg_match('/id="oauth-client-secret"[^>]*value="([^"]+)"/', $I->grabPageSource(), $match));
+
+        return $match[1];
+    }
+
+    public function testClientsAreListedAndSystemClientIsProtected(FunctionalTester $I)
+    {
+        $this->adminClient();
+        $system = Client::findByClientId(Client::SYSTEM_CLIENT_ID);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/clients');
+        $I->seeResponseCodeIs(200);
+        $I->see('Research Agent');
+        $I->see(Client::SYSTEM_CLIENT_ID);
+
+        $I->amOnRoute('/oauth/admin/client', ['id' => $system->id]);
+        $I->seeResponseCodeIs(403);
+        $this->post($I, 'oauth/admin/delete-client', ['id' => $system->id]);
+        $I->seeResponseCodeIs(403);
+        $this->post($I, 'oauth/admin/regenerate-secret', ['id' => $system->id]);
+        $I->seeResponseCodeIs(403);
+        Assert::assertNotNull(Client::findByClientId(Client::SYSTEM_CLIENT_ID));
+    }
+
+    public function testClientIsCreatedAndSecretShownOnce(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/client');
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Server app',
+            'ClientForm[redirectUris]' => 'https://example.org/callback',
+            'ClientForm[confidential]' => '1',
+            'ClientForm[scopes]' => ['content:read', 'full'],
+            'ClientForm[skipConsent]' => '1',
+            'ClientForm[isActive]' => '1',
+        ]);
+        $I->see('Copy the secret now.');
+        Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
+        $secret = $this->grabSecret($I);
+
+        $client = Client::findOne(['name' => 'Server app']);
+        Assert::assertSame(Client::TYPE_ADMIN, $client->type);
+        Assert::assertTrue($client->validateSecret($secret));
+        Assert::assertSame(1, (int)$client->skip_consent);
+        Assert::assertSame(['content:read', 'full'], $client->getAllowedScopes());
+
+        $I->amOnRoute('/oauth/admin/clients');
+        $I->see('Server app');
+        $I->dontSee($secret);
+        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
+        $I->dontSee($secret);
+    }
+
+    public function testClientIsEditedAndDeactivated(FunctionalTester $I)
+    {
+        $client = $this->adminClient();
+        $grant = $this->grant(2, $client);
+        Assert::assertTrue((new GrantService())->isUsable($grant));
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Research Agent',
+            'ClientForm[redirectUris]' => 'https://example.org/cb',
+            'ClientForm[confidential]' => '1',
+            'ClientForm[scopes]' => ['spaces:read'],
+            'ClientForm[isActive]' => '1',
+        ]);
+        $client->refresh();
+        Assert::assertSame(['spaces:read'], $client->getAllowedScopes());
+        Assert::assertTrue($client->validateSecret('old-secret'));
+
+        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Research Agent',
+            'ClientForm[redirectUris]' => 'https://example.org/cb',
+            'ClientForm[confidential]' => '1',
+            'ClientForm[scopes]' => ['spaces:read'],
+            'ClientForm[isActive]' => '0',
+        ]);
+        $client->refresh();
+        Assert::assertSame(0, (int)$client->is_active);
+        Assert::assertFalse((new GrantService())->isUsable(Grant::findOne(['id' => $grant->id])));
+    }
+
+    public function testSecretIsRegeneratedAfterReauthentication(FunctionalTester $I)
+    {
+        $client = $this->adminClient();
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
+        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => 'wrong']);
+        $I->see('Your password is incorrect.');
+        Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
+
+        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => self::ADMIN_PASSWORD]);
+        $I->see('Copy the secret now.');
+        Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
+        $secret = $this->grabSecret($I);
+
+        $client->refresh();
+        Assert::assertFalse($client->validateSecret('old-secret'));
+        Assert::assertTrue($client->validateSecret($secret));
+    }
+
+    public function testClientIsDeletedWithItsGrants(FunctionalTester $I)
+    {
+        $client = $this->adminClient();
+        $grant = $this->grant(2, $client);
+
+        $I->amAdmin();
+        // A GET must not delete
+        $I->amOnRoute('/oauth/admin/delete-client', ['id' => $client->id]);
+        Assert::assertNotNull(Client::findOne(['id' => $client->id]));
+
+        $this->post($I, 'oauth/admin/delete-client', ['id' => $client->id]);
+        Assert::assertNull(Client::findOne(['id' => $client->id]));
+        Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
+    }
+
+    public function testGrantsAreFilteredAndRevoked(FunctionalTester $I)
+    {
+        $agent = $this->adminClient();
+        $other = $this->adminClient(['client_id' => 'other', 'name' => 'Other Tool']);
+        $user1 = $this->grant(2, $agent);
+        $user2 = $this->grant(3, $agent);
+        $otherGrant = $this->grant(2, $other);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/grants');
+        $I->seeResponseCodeIs(200);
+        $I->see('Research Agent', 'table');
+        $I->see('Other Tool', 'table');
+
+        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['user' => User::findOne(['id' => 3])->username]]);
+        $I->see('Research Agent', 'table');
+        $I->dontSee('Other Tool', 'table');
+        Assert::assertSame(1, substr_count($I->grabPageSource(), 'data-action-confirm-header="Revoke this grant?"'));
+
+        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['client_id' => $other->id]]);
+        $I->see('Other Tool', 'table');
+        $I->dontSee('Research Agent', 'table');
+
+        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['type' => Grant::TYPE_PAT]]);
+        $I->dontSee('Research Agent', 'table');
+        $I->dontSee('Other Tool', 'table');
+
+        $this->post($I, 'oauth/admin/revoke-grant', ['id' => $user1->id]);
+        Assert::assertFalse(Grant::find()->where(['id' => $user1->id])->exists());
+        Assert::assertTrue(Grant::find()->where(['id' => $user2->id])->exists());
+    }
+
+    public function testRevokeAllUsesTheCurrentFilter(FunctionalTester $I)
+    {
+        $agent = $this->adminClient();
+        $other = $this->adminClient(['client_id' => 'other', 'name' => 'Other Tool']);
+        $this->grant(2, $agent);
+        $this->grant(3, $agent);
+        $keep = $this->grant(2, $other);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['client_id' => $agent->id]]);
+        // The button posts exactly the filter of the list
+        $source = $I->grabPageSource();
+        Assert::assertStringContainsString('GrantSearch%5Bclient_id%5D=' . $agent->id, html_entity_decode($source));
+
+        // A GET does nothing
+        $I->amOnRoute('/oauth/admin/revoke-grants', ['GrantSearch' => ['client_id' => $agent->id]]);
+        Assert::assertSame(3, (int)Grant::find()->count());
+
+        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['client_id' => $agent->id]]);
+        Assert::assertSame([$keep->id], array_map('intval', Grant::find()->select('id')->column()));
+    }
+
+    public function testInvalidFilterRevokesNothing(FunctionalTester $I)
+    {
+        $this->grant(2, $this->adminClient());
+
+        $I->amAdmin();
+        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['type' => 'bogus']]);
+        Assert::assertSame(1, (int)Grant::find()->count());
+    }
+
+    public function testClientAndGrantPagesAreForbiddenForUsers(FunctionalTester $I)
+    {
+        $I->amUser1();
+        foreach (['clients', 'client', 'grants'] as $action) {
+            $I->amOnRoute('/oauth/admin/' . $action);
+            $I->seeResponseCodeIs(403);
+        }
     }
 }

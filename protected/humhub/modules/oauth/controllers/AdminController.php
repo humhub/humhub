@@ -9,9 +9,20 @@
 namespace humhub\modules\oauth\controllers;
 
 use humhub\modules\admin\components\Controller;
+use humhub\components\access\ControllerAccess;
 use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\models\forms\ClientForm;
+use humhub\modules\oauth\models\forms\ReauthenticationForm;
 use humhub\modules\oauth\models\forms\SettingsForm;
+use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\models\GrantSearch;
+use humhub\modules\oauth\services\GrantService;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * "Apps & API Access" in the user settings of the administration.
@@ -25,7 +36,10 @@ class AdminController extends Controller
      */
     protected function getAccessRules()
     {
-        return [['permissions' => [ManageSettings::class]]];
+        return [
+            ['permissions' => [ManageSettings::class]],
+            [ControllerAccess::RULE_POST => ['delete-client', 'regenerate-secret', 'revoke-grant', 'revoke-grants']],
+        ];
     }
 
     /**
@@ -46,5 +60,130 @@ class AdminController extends Controller
         }
 
         return $this->render('index', ['model' => $model]);
+    }
+
+    public function actionClients()
+    {
+        return $this->render('clients', [
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Client::find(),
+                'sort' => ['defaultOrder' => ['id' => SORT_ASC], 'attributes' => ['name', 'type', 'is_active', 'created_at', 'id']],
+                'pagination' => ['pageSize' => 50],
+            ]),
+        ]);
+    }
+
+    public function actionClient(?int $id = null)
+    {
+        $model = new ClientForm($id === null ? new Client() : $this->findClient($id), Yii::$app->user->getIdentity(), [
+            'scenario' => ClientForm::SCENARIO_ADMIN,
+        ]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->getSecret() !== null) {
+                return $this->renderSecret($model->client, $model->getSecret());
+            }
+
+            $this->view->saved();
+            return $this->redirect(['clients']);
+        }
+
+        return $this->render('client', ['model' => $model, 'reauthentication' => $this->createReauthentication()]);
+    }
+
+    public function actionDeleteClient(int $id)
+    {
+        // Its grants go with it (foreign key)
+        $this->findClient($id)->delete();
+        $this->view->success(Yii::t('OauthModule.base', 'The client has been deleted.'));
+
+        return $this->redirect(['clients']);
+    }
+
+    public function actionRegenerateSecret(int $id)
+    {
+        $client = $this->findClient($id);
+        if (!$client->isConfidential()) {
+            throw new BadRequestHttpException();
+        }
+
+        $model = new ClientForm($client, Yii::$app->user->getIdentity(), ['scenario' => ClientForm::SCENARIO_ADMIN]);
+        $reauthentication = $this->createReauthentication();
+        if (!$reauthentication->load(Yii::$app->request->post()) || !$reauthentication->validate()) {
+            return $this->render('client', ['model' => $model, 'reauthentication' => $reauthentication]);
+        }
+
+        $model->generateSecret();
+        $client->save(false);
+
+        return $this->renderSecret($client, $model->getSecret());
+    }
+
+    public function actionGrants()
+    {
+        $searchModel = new GrantSearch();
+
+        return $this->render('grants', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $searchModel->search(Yii::$app->request->queryParams),
+        ]);
+    }
+
+    public function actionRevokeGrant(int $id)
+    {
+        $grant = Grant::findOne(['id' => $id]);
+        if ($grant === null) {
+            throw new NotFoundHttpException();
+        }
+
+        (new GrantService())->revoke($grant);
+        $this->view->success(Yii::t('OauthModule.base', 'Access revoked.'));
+
+        return $this->redirect(['grants']);
+    }
+
+    public function actionRevokeGrants()
+    {
+        // The filter travels in the URL of the button, the same parameters the list was filtered by
+        $searchModel = new GrantSearch();
+        $searchModel->load(Yii::$app->request->queryParams);
+
+        $service = new GrantService();
+        $count = 0;
+        foreach ($searchModel->query()->all() as $grant) {
+            $service->revoke($grant);
+            $count++;
+        }
+        $this->view->success(Yii::t('OauthModule.base', '{count} grants revoked.', ['count' => $count]));
+
+        return $this->redirect(['grants']);
+    }
+
+    private function findClient(int $id): Client
+    {
+        $client = Client::findOne(['id' => $id]);
+        if ($client === null) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($client->type === Client::TYPE_SYSTEM) {
+            throw new ForbiddenHttpException();
+        }
+
+        return $client;
+    }
+
+    private function createReauthentication(): ReauthenticationForm
+    {
+        return new ReauthenticationForm(Yii::$app->user->getIdentity());
+    }
+
+    /**
+     * Rendered, not redirected to: the secret must not pass through the session or any cache.
+     */
+    private function renderSecret(Client $client, string $secret): string
+    {
+        Yii::$app->response->headers->set('Cache-Control', 'no-store');
+
+        return $this->render('client-secret', ['client' => $client, 'secret' => $secret]);
     }
 }
