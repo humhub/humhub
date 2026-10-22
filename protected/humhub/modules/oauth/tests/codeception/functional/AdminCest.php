@@ -9,6 +9,8 @@
 namespace humhub\modules\oauth\tests\codeception\functional;
 
 use FunctionalTester;
+use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\models\forms\SettingsForm;
 use humhub\modules\oauth\Module;
 use PHPUnit\Framework\Assert;
 
@@ -91,6 +93,57 @@ class AdminCest
 
         Assert::assertFalse(Module::instance()->allowsClients());
         Assert::assertNotContains('full', Module::instance()->getUserClientScopes());
+    }
+
+    public function testRefreshTokenLifetimeOfZeroIsRejected(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[allowClients]' => '1',
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '0',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+
+        Assert::assertFalse(Module::instance()->allowsClients());
+        Assert::assertSame(90, Module::instance()->getRefreshTokenLifetimeDays());
+    }
+
+    public function testDefaultScopeSelectionStaysUnset(FunctionalTester $I)
+    {
+        $default = ScopeRegistry::getDefaultRestrictedScopeIds();
+        Module::instance()->settings->set('patScopes', json_encode(['content:read']));
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[patScopes]' => array_reverse($default),
+            'SettingsForm[userClientScopes]' => $default,
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+
+        Assert::assertNull(Module::instance()->settings->get('patScopes'));
+        Assert::assertNull(Module::instance()->settings->get('userClientScopes'));
+    }
+
+    public function testUnregisteredStoredScopeDoesNotBlockSaving(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('patScopes', json_encode(['content:read', 'gone:read']));
+        Assert::assertSame(['content:read'], (new SettingsForm())->patScopes);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[allowClients]' => '1',
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+
+        Assert::assertTrue(Module::instance()->allowsClients());
     }
 
     public function testNormalUserIsForbidden(FunctionalTester $I)

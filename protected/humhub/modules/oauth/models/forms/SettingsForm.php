@@ -47,9 +47,9 @@ class SettingsForm extends Model
         $this->allowApp = $module->allowsApp();
         $this->allowClients = $module->allowsClients();
         $this->allowUserClients = $module->allowsUserClients();
-        $this->userClientScopes = $module->getUserClientScopes();
+        $this->userClientScopes = $this->onlyRegistered($module->getUserClientScopes());
         $this->allowPersonalAccessTokens = $module->allowsPersonalAccessTokens();
-        $this->patScopes = $module->getPatScopes();
+        $this->patScopes = $this->onlyRegistered($module->getPatScopes());
         $this->patMaxLifetimeDays = $module->getPatMaxLifetimeDays();
         $this->refreshTokenLifetimeDays = $module->getRefreshTokenLifetimeDays();
         $this->grantMaxLifetimeDays = $module->getGrantMaxLifetimeDays();
@@ -113,12 +113,17 @@ class SettingsForm extends Model
      */
     public function attributeHints()
     {
+        $off = Yii::t('OauthModule.base', 'Switching this off also stops all existing sign-ins and tokens of this kind immediately; switching it on again restores them.');
+
         return [
-            'allowUserClients' => Yii::t('OauthModule.base', 'Creating clients requires the group permission "Manage own OAuth clients".'),
-            'userClientScopes' => Yii::t('OauthModule.base', 'The upper bound of what a user client can request.'),
-            'allowPersonalAccessTokens' => Yii::t('OauthModule.base', 'Creating tokens requires the group permission "Create personal access tokens".'),
-            'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do.'),
+            'allowApp' => $off,
+            'allowClients' => $off,
+            'allowUserClients' => $off . ' ' . Yii::t('OauthModule.base', 'Creating clients requires the group permission "Manage own OAuth clients".'),
+            'userClientScopes' => Yii::t('OauthModule.base', 'The upper bound of what a user client can request. An empty selection means no access.'),
+            'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Creating tokens requires the group permission "Create personal access tokens".'),
+            'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do. An empty selection means no access.'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited and offers "never" as a lifetime.'),
+            'refreshTokenLifetimeDays' => Yii::t('OauthModule.base', 'Idle lifetime: renewed on every refresh, so an app in regular use stays signed in.'),
             'grantMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited.'),
             'revokeOnPasswordChange' => Yii::t('OauthModule.base', 'A password change deletes all grants of the user except the app session the change was made in.'),
         ];
@@ -153,9 +158,27 @@ class SettingsForm extends Model
             $settings->set($name, (int)$this->$name);
         }
         foreach (['patScopes', 'userClientScopes'] as $name) {
-            $settings->set($name, json_encode(array_values(array_unique($this->$name))));
+            $selection = array_values(array_unique($this->$name));
+            $default = ScopeRegistry::getDefaultRestrictedScopeIds();
+            sort($selection);
+            sort($default);
+
+            // The default stays unset, so newly registered core read scopes keep being included
+            if ($selection === $default) {
+                $settings->delete($name);
+            } else {
+                $settings->set($name, json_encode($selection));
+            }
         }
 
         return true;
+    }
+
+    /**
+     * A stored id of a scope that is no longer registered (disabled module) must not block saving.
+     */
+    private function onlyRegistered(array $scopeIds): array
+    {
+        return array_values(array_filter($scopeIds, static fn(string $id) => ScopeRegistry::has($id)));
     }
 }
