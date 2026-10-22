@@ -304,8 +304,9 @@ A session can be established from a credential issued earlier — the HumHub app
 OAuth grant into a web session for its WebViews (see `concept-oauth.md`). The login flow ran
 when the credential was issued, so a gate that verifies the login itself (a second factor)
 must not ask again. Such a gate implements the marker interface
-`humhub\components\gates\LoginVerificationGateInterface`; the `GateManager` skips it in `findOpenGate()` and `hasOpenGate()` while the
-session carries `GateManager::SESSION_KEY_ISSUED_CREDENTIAL`. Every other gate (terms,
+`humhub\components\gates\LoginVerificationGateInterface`; the `GateManager` skips it in
+`findOpenGate()` and `hasOpenGate()` while the session carries
+`GateManager::SESSION_KEY_ISSUED_CREDENTIAL`. Every other gate (terms,
 password change, maintenance) applies to these sessions as to any browser session.
 
 ## Core gates

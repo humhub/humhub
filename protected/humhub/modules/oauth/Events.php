@@ -17,8 +17,10 @@ use humhub\modules\oauth\models\WebSessionCode;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
 use Yii;
-use yii\helpers\Url;
+use yii\base\ActionEvent;
+use yii\base\Event;
 use yii\web\UnauthorizedHttpException;
+use yii\web\UserEvent;
 
 /**
  * @since 1.20
@@ -43,7 +45,7 @@ class Events
     /**
      * Removes expired codes, tokens and grants, and grants whose code was never exchanged.
      */
-    public static function onCronDailyRun($event): void
+    public static function onCronDailyRun(Event $event): void
     {
         $now = time();
 
@@ -69,27 +71,35 @@ class Events
     }
 
     /**
-     * A session established from a grant ends with the grant: a revoked or unusable grant logs
-     * the session out. The binding is removed first so this logout does not revoke anything.
+     * A session established from a grant ends with the grant: an unusable grant logs the
+     * session out. A stale binding of a guest or of another user is only dropped.
+     *
+     * Covers controllers extending [[\humhub\components\Controller]].
      */
-    public static function onBeforeAction($event): void
+    public static function onBeforeAction(ActionEvent $event): void
     {
-        $service = new WebSessionService();
-        $grantId = $service->getBoundGrantId();
-        if ($grantId === null || str_starts_with($event->action->getUniqueId(), self::WEB_SESSION_ROUTE_PREFIX)) {
+        // The redemption replaces whatever session it finds itself; a WebView with an old
+        // cookie must not lose its new code to a logout and redirect.
+        if (str_starts_with($event->action->getUniqueId(), self::WEB_SESSION_ROUTE_PREFIX)) {
             return;
         }
 
         $user = Yii::$app->user;
         if (!$user->isSessionBased()) {
-            // API request not authenticated by the session (token, or guest): the session is not involved
+            // API request not authenticated by the session (token, or guest): leave the session untouched
+            return;
+        }
+
+        $service = new WebSessionService();
+        $grantId = $service->getBoundGrantId();
+        if ($grantId === null) {
             return;
         }
 
         $grant = Grant::findOne(['id' => $grantId]);
 
-        // A stale binding (left by a session timeout, which does not log out) must not carry
-        // over to a later login: drop it without logging out or revoking anything.
+        // A session timeout does not log out, so its binding must not carry over: drop it
+        // without logging out or revoking anything.
         if ($user->isGuest || ($grant !== null && (int)$grant->user_id !== self::sessionOwnerId())) {
             $service->unbindSession();
             return;
@@ -99,12 +109,13 @@ class Events
             return;
         }
 
+        // Unbound first, so this logout does not revoke anything
         $service->unbindSession();
+        $event->isValid = false;
 
         if ($user->enableSession) {
             $user->logout();
-            $event->isValid = false;
-            Yii::$app->response->redirect(Url::to(['/user/auth/login']));
+            $user->loginRequired();
             return;
         }
 
@@ -114,12 +125,17 @@ class Events
     }
 
     /**
-     * Logging out of a session established from a grant revokes the grant: a logout in the
-     * app's WebView is an app logout. Any other end of the session (maintenance mode, a required
-     * login, account deletion, …) only unbinds it, so the app stays signed in.
+     * Logging out in the app's WebView (the logout action) revokes the grant: it is an app
+     * logout. Any other end of the session (maintenance mode, a required login, account
+     * deletion, …) only unbinds it, so the app stays signed in.
      */
-    public static function onUserBeforeLogout($event): void
+    public static function onUserBeforeLogout(UserEvent $event): void
     {
+        // Session-less user components (API token logins) never touch the browser session
+        if (!$event->sender->enableSession) {
+            return;
+        }
+
         $service = new WebSessionService();
         $grantId = $service->getBoundGrantId();
         if ($grantId === null) {
@@ -140,8 +156,12 @@ class Events
     /**
      * Any login starts without a previous binding; the web session route binds after its own login.
      */
-    public static function onUserAfterLogin($event): void
+    public static function onUserAfterLogin(UserEvent $event): void
     {
+        if (!$event->sender->enableSession) {
+            return;
+        }
+
         $service = new WebSessionService();
         if ($service->getBoundGrantId() !== null) {
             $service->unbindSession();

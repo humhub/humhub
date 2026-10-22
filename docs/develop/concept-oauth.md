@@ -381,18 +381,22 @@ The app turns its grant into a regular web session for its WebViews:
    - redirects to `returnUrl`, if it is a path on this installation (no scheme or host, no
      `//`, no backslash, no whitespace or control characters), otherwise to the dashboard, with
      `Referrer-Policy: no-referrer` and `Cache-Control: no-store`.
-3. **Binding.** `Events::onBeforeAction` (on `humhub\components\Controller::EVENT_BEFORE_ACTION`)
-   loads the grant of a session holding `oauth.grantId`:
+3. **Binding.** `Events::onBeforeAction` (on `humhub\components\Controller::EVENT_BEFORE_ACTION`,
+   so it covers controllers extending `humhub\components\Controller` only) loads the grant of a
+   session holding `oauth.grantId`:
    - skipped on the redemption route `oauth/web-session/*`, which replaces the session itself
      (a WebView with an old cookie must not lose its new code to a logout and redirect);
-   - skipped on API requests not authenticated by the session (token or guest);
+   - skipped on API requests not authenticated by the session (token or guest), before the
+     session is read. Login and logout events of session-less user components (API auth
+     methods) leave the binding alone as well;
    - a guest session, or a session of another user than the grant's (the impersonating admin
      counts while an impersonation runs), only drops the binding. A session timeout does not
      log out, so the binding would otherwise carry over to a later login. Every login
      (`yii\web\User::EVENT_AFTER_LOGIN`) clears a previous binding as well; the redemption
      binds after its own login;
-   - an unusable grant (deleted, expired, user disabled) logs the session out, and the next
-     page is the login page. A session-authenticated API request gets `401`.
+   - an unusable grant (deleted, expired, user disabled) logs the session out and answers
+     like `yii\web\User::loginRequired()`: a redirect to the login page, or `403` where no
+     redirect is acceptable. A session-authenticated API request gets `401`.
 4. **Logout.** Logging out in the WebView (the logout action `user/auth/logout`) deletes the
    grant (`yii\web\User::EVENT_BEFORE_LOGOUT`): a logout in the WebView is an app logout. Other
    ends of the session (maintenance mode, a required login, account deletion, …) only unbind
@@ -409,8 +413,11 @@ gate already ran in the system browser before the grant was issued, so it must n
   such gates. It has no methods.
 - `GateManager::SESSION_KEY_ISSUED_CREDENTIAL` marks a session established from an issued
   credential.
-- In a marked session, `GateManager::findOpenGate()` skips every gate implementing the
-  interface.
+- In a marked session, `GateManager::findOpenGate()` and `GateManager::hasOpenGate()` skip
+  every gate implementing the interface.
+
+A grant issued before a second factor was enabled or enforced for its user keeps skipping it in
+the WebView for the grant's lifetime; to enforce it, revoke the user's app grants.
 
 A login-verification gate that does not implement the interface still intercepts the
 WebView: it asks again, which is safe.

@@ -10,6 +10,7 @@ namespace humhub\tests\codeception\api;
 
 use ApiTester;
 use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
@@ -78,6 +79,20 @@ class OAuthWebSessionCest
 
         $I->sendGet('user/4/follow');
         $I->seeResponseCodeIs(401);
+    }
+
+    public function testATokenRequestLeavesABoundSessionAlone(ApiTester $I)
+    {
+        $tokens = OAuthTestHelper::issueTokens(2);
+        $grant = Grant::find()->orderBy(['id' => SORT_DESC])->one();
+        $I->amLoggedInAs(2);
+        Yii::$app->session->set(WebSessionService::SESSION_KEY_GRANT, $grant->id);
+
+        $I->haveHttpHeader('Authorization', 'Bearer ' . $tokens['access_token']);
+        $I->sendGet('user/4/follow');
+        $I->seeResponseCodeIs(200);
+
+        Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
     }
 
     public function testSessionAuthenticationIsNotAccepted(ApiTester $I)

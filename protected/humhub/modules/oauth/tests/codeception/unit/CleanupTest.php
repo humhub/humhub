@@ -15,6 +15,7 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\base\Event;
 
 class CleanupTest extends HumHubDbTestCase
 {
@@ -38,7 +39,7 @@ class CleanupTest extends HumHubDbTestCase
 
         $fresh = $this->grant();
 
-        Events::onCronDailyRun(null);
+        Events::onCronDailyRun(new Event());
 
         $this->assertNull(AccessToken::findOne(['id' => 'expired']));
         $this->assertNotNull(AccessToken::findOne(['id' => 'valid']));

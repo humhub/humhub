@@ -244,6 +244,49 @@ class WebSessionCest
         Assert::assertSame(1, (int)Yii::$app->user->id);
     }
 
+    public function testImpersonationKeepsTheBindingUntilTheGrantEnds(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(1);
+        $this->redeem($I, $grant);
+        Assert::assertTrue(Yii::$app->user->getImpersonation()->start(User::findOne(['id' => 2])));
+
+        $I->amOnRoute('/user/account/edit');
+        Assert::assertSame(2, (int)Yii::$app->user->id);
+        Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+
+        (new GrantService())->revoke($grant);
+
+        $I->amOnRoute('/user/account/edit');
+        $I->seeInCurrentUrl('login');
+        Assert::assertTrue(Yii::$app->user->isGuest);
+    }
+
+    public function testAJsonRequestOfARevokedSessionGetsLoginRequired(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+        (new GrantService())->revoke($grant);
+
+        $I->haveHttpHeader('Accept', 'application/json');
+        $I->sendAjaxGetRequest(Url::to(['/user/account/edit']));
+        $I->seeResponseCodeIs(403);
+        Assert::assertTrue(Yii::$app->user->isGuest);
+    }
+
+    public function testSessionLessLoginsLeaveTheBindingAlone(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        // As a module's API auth method logs in on the API's session-less user component
+        $apiUser = Yii::createObject(array_merge(Yii::$app->getComponents()['user'], ['enableSession' => false]));
+        $apiUser->login(User::findOne(['id' => 2]));
+        $apiUser->logout();
+
+        Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+        Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
+    }
+
     public function testOtherLogoutsOnlyUnbind(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);
