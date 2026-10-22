@@ -26,16 +26,19 @@ class OAuthApiAuthCest
         Module::instance()->getKeyStore()->generateIfMissing();
     }
 
-    private function adminClient(array $scopes): string
+    /**
+     * The api suite does not roll back: the caller deletes the client (its grants cascade).
+     */
+    private function adminClient(array $scopes): Client
     {
         Yii::$app->getModule('oauth')->settings->set('allowClients', true);
-        $clientId = 'agent-' . bin2hex(random_bytes(4));
-        (new Client([
-            'client_id' => $clientId, 'type' => Client::TYPE_ADMIN, 'name' => 'Agent',
+        $client = new Client([
+            'client_id' => 'agent-' . bin2hex(random_bytes(4)), 'type' => Client::TYPE_ADMIN, 'name' => 'Agent',
             'redirect_uris' => json_encode([OAuthTestHelper::REDIRECT_URI]),
             'scopes' => json_encode($scopes), 'is_active' => 1, 'created_at' => time(),
-        ]))->save(false);
-        return $clientId;
+        ]);
+        $client->save(false);
+        return $client;
     }
 
     public function testAppTokenReachesTheApiAsItsUser(ApiTester $I)
@@ -59,21 +62,26 @@ class OAuthApiAuthCest
 
     public function testScopesLimitAnAdminClient(ApiTester $I)
     {
-        $tokens = OAuthTestHelper::issueTokens(1, $this->adminClient(['content:read']), ['content:read']);
-        $I->haveHttpHeader('Authorization', 'Bearer ' . $tokens['access_token']);
+        $client = $this->adminClient(['content:read']);
+        try {
+            $tokens = OAuthTestHelper::issueTokens(1, $client->client_id, ['content:read']);
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $tokens['access_token']);
 
-        $I->sendGet('content/1/comments');
-        $I->seeResponseCodeIs(200);
+            $I->sendGet('content/1/comments');
+            $I->seeResponseCodeIs(200);
 
-        $I->sendGet('account');
-        $I->seeResponseCodeIs(403);
-        $I->seeResponseContainsJson(['error' => 'insufficient_scope', 'scope' => 'account:read']);
-        $I->seeHttpHeader('WWW-Authenticate', 'Bearer error="insufficient_scope", scope="account:read"');
+            $I->sendGet('account');
+            $I->seeResponseCodeIs(403);
+            $I->seeResponseContainsJson(['error' => 'insufficient_scope', 'scope' => 'account:read']);
+            $I->seeHttpHeader('WWW-Authenticate', 'Bearer error="insufficient_scope", scope="account:read"');
 
-        // endpoints without a declared scope need `full`
-        $I->sendGet('marketplace/module');
-        $I->seeResponseCodeIs(403);
-        $I->seeResponseContainsJson(['scope' => 'full']);
+            // endpoints without a declared scope need `full`
+            $I->sendGet('marketplace/module');
+            $I->seeResponseCodeIs(403);
+            $I->seeResponseContainsJson(['scope' => 'full']);
+        } finally {
+            $client->delete();
+        }
     }
 
     public function testRevokedGrantAndDisabledUserFail(ApiTester $I)

@@ -131,20 +131,26 @@ class OAuthTokenEndpointCest
     public function testRevokeByAnotherClientLeavesTheGrant(ApiTester $I)
     {
         Module::instance()->settings->set('allowClients', true);
+        // the api suite does not roll back, so the client gets a unique id and is removed afterwards
+        $clientId = 'other-' . bin2hex(random_bytes(4));
         $client = new Client([
-            'client_id' => 'other-client', 'type' => Client::TYPE_ADMIN, 'name' => 'Other',
+            'client_id' => $clientId, 'type' => Client::TYPE_ADMIN, 'name' => 'Other',
             'secret_hash' => hash('sha256', 's3cret'), 'redirect_uris' => '[]', 'scopes' => '["full"]', 'is_active' => 1,
         ]);
         Assert::assertTrue($client->save(false));
 
-        $tokens = OAuthTestHelper::issueTokens(1);
-        $grantCount = Grant::find()->count();
+        try {
+            $tokens = OAuthTestHelper::issueTokens(1);
+            $grantCount = Grant::find()->count();
 
-        $I->sendPost(self::BASE . 'oauth/revoke', [
-            'token' => $tokens['refresh_token'], 'client_id' => 'other-client', 'client_secret' => 's3cret',
-        ]);
-        $I->seeResponseCodeIs(200);
-        Assert::assertSame($grantCount, (int)Grant::find()->count());
+            $I->sendPost(self::BASE . 'oauth/revoke', [
+                'token' => $tokens['refresh_token'], 'client_id' => $clientId, 'client_secret' => 's3cret',
+            ]);
+            $I->seeResponseCodeIs(200);
+            Assert::assertSame($grantCount, (int)Grant::find()->count());
+        } finally {
+            $client->delete();
+        }
     }
 
     public function testRevokeByAccessToken(ApiTester $I)
