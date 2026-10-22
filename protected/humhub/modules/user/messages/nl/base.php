@@ -105,7 +105,7 @@ return [
   'Unblock user' => 'Deblokkeer gebruiker',
   'Unfollow' => 'Stop volgen',
   'Unknown user status!' => 'Onbekende gebruikersstatus!',
-  'Unknown value "{value}".' => '',
+  'Unknown value "{value}".' => 'Onbekende waarde "{value}".',
   'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}' => 'Mislukte inlogpogingen sinds laatste login: {failedLoginAttemptsCount}',
   'Updated at' => 'Bewerkt op',
   'Updated by' => 'Bewerkt door',
