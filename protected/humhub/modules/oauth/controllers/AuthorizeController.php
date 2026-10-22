@@ -19,6 +19,7 @@ use humhub\modules\oauth\entities\ClientEntity;
 use humhub\modules\oauth\entities\ScopeEntity;
 use humhub\modules\oauth\entities\UserEntity;
 use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -69,6 +70,11 @@ class AuthorizeController extends Controller
             return ResponseBridge::toYii($e->generateHttpResponse(HttpFactory::instance()->createResponse()), Yii::$app->response);
         }
 
+        // Only S256: league would also accept `plain`, which is the default without a method
+        if ($authRequest->getCodeChallenge() !== null && $authRequest->getCodeChallengeMethod() !== 'S256') {
+            return $this->redirectWithError($authRequest, 'invalid_request');
+        }
+
         /** @var ClientEntity $clientEntity */
         $clientEntity = $authRequest->getClient();
         $client = $clientEntity->getRecord();
@@ -88,23 +94,26 @@ class AuthorizeController extends Controller
         }
 
         $requestId = Yii::$app->security->generateRandomString(32);
-        Yii::$app->session->set(self::SESSION_PREFIX . $requestId, $authRequest);
+        Yii::$app->session->set(self::SESSION_PREFIX . $requestId, ['userId' => (int)Yii::$app->user->id, 'request' => $authRequest]);
 
         return $this->render('index', [
             'client' => $client,
             'scopes' => array_map([ScopeRegistry::class, 'get'], $scopeIds),
-            'redirectHost' => $this->describeRedirect((string)$authRequest->getRedirectUri()),
+            'redirectHost' => $this->describeRedirect($this->redirectUri($authRequest)),
             'requestId' => $requestId,
         ]);
     }
 
     private function decide(AuthorizationServer $server): Response
     {
-        $key = self::SESSION_PREFIX . Yii::$app->request->post('request', '');
-        $authRequest = Yii::$app->session->get($key);
-        Yii::$app->session->remove($key);
+        $requestId = Yii::$app->request->post('request');
+        $stored = is_string($requestId) ? Yii::$app->session->get(self::SESSION_PREFIX . $requestId) : null;
+        if (is_string($requestId)) {
+            Yii::$app->session->remove(self::SESSION_PREFIX . $requestId);
+        }
 
-        if (!$authRequest instanceof AuthorizationRequestInterface) {
+        $authRequest = is_array($stored) ? ($stored['request'] ?? null) : null;
+        if (!$authRequest instanceof AuthorizationRequestInterface || (int)($stored['userId'] ?? 0) !== (int)Yii::$app->user->id) {
             throw new BadRequestHttpException(Yii::t('OauthModule.base', 'The authorization request has expired. Please start again.'));
         }
 
@@ -118,9 +127,17 @@ class AuthorizeController extends Controller
         if ($approved) {
             /** @var ClientEntity $clientEntity */
             $clientEntity = $authRequest->getClient();
+
+            // The client may have been disabled or changed since the request was validated
+            $client = (new ClientRepository())->findUsableClient($clientEntity->getIdentifier());
+            if ($client === null
+                || ($client->type === Client::TYPE_USER && (int)$client->owner_user_id !== (int)Yii::$app->user->id)) {
+                return $this->redirectWithError($authRequest, 'access_denied');
+            }
+
             $grant = (new GrantService())->createOAuthGrant(
                 Yii::$app->user->getIdentity(),
-                $clientEntity->getRecord(),
+                $client,
                 array_map(static fn($scope) => $scope->getIdentifier(), $authRequest->getScopes()),
             );
             $userEntity = new UserEntity($grant->guid);
@@ -155,13 +172,29 @@ class AuthorizeController extends Controller
 
     private function redirectWithError(AuthorizationRequestInterface $authRequest, string $error): Response
     {
-        $uri = (string)$authRequest->getRedirectUri();
-        $query = http_build_query(array_filter(['error' => $error, 'state' => $authRequest->getState()]));
+        $uri = $this->redirectUri($authRequest);
+        $query = http_build_query(array_filter(
+            ['error' => $error, 'state' => $authRequest->getState()],
+            static fn($value) => $value !== null && $value !== '',
+        ));
 
         return ResponseBridge::toYii(
             HttpFactory::instance()->createResponse(302)->withHeader('Location', $uri . (str_contains($uri, '?') ? '&' : '?') . $query),
             Yii::$app->response,
         );
+    }
+
+    /**
+     * league allows omitting the redirect URI when the client has exactly one registered
+     */
+    private function redirectUri(AuthorizationRequestInterface $authRequest): string
+    {
+        if ($authRequest->getRedirectUri() !== null) {
+            return (string)$authRequest->getRedirectUri();
+        }
+
+        $registered = $authRequest->getClient()->getRedirectUri();
+        return (string)(is_array($registered) ? reset($registered) : $registered);
     }
 
     private function describeRedirect(string $uri): string

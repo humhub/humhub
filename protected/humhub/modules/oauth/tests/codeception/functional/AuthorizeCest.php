@@ -35,6 +35,8 @@ class AuthorizeCest
     {
         Grant::deleteAll();
         Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
+        Module::instance()->settings->delete('allowClients');
+        Module::instance()->settings->delete('allowUserClients');
     }
 
     private function params(string $clientId = Client::SYSTEM_CLIENT_ID, string $scope = '', string $redirectUri = OAuthTestHelper::REDIRECT_URI): array
@@ -119,5 +121,86 @@ class AuthorizeCest
 
         $I->amOnRoute('/oauth/authorize/index', $this->params());
         $I->seeResponseCodeIs(403);
+    }
+
+    private function createAdminClient(array $attributes = []): void
+    {
+        Module::instance()->settings->set('allowClients', true);
+        (new Client($attributes + [
+            'client_id' => 'agent', 'type' => Client::TYPE_ADMIN, 'name' => 'Research Agent',
+            'redirect_uris' => json_encode(['http://127.0.0.1/callback']),
+            'scopes' => json_encode(['content:read']),
+            'is_active' => 1, 'created_at' => time(),
+        ]))->save(false);
+    }
+
+    private function location(): string
+    {
+        return Yii::$app->response->headers->get('Location') ?? '';
+    }
+
+    public function testPlainPkceIsRejected(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', ['code_challenge_method' => 'plain'] + $this->params());
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('error=invalid_request', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testUnallowedScopeIsRejected(FunctionalTester $I)
+    {
+        $this->createAdminClient();
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'spaces:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('error=invalid_scope', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testAllowRedirectsWithCodeAndState(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertStringStartsWith(OAuthTestHelper::REDIRECT_URI . '?', $this->location());
+        Assert::assertStringContainsString('code=', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testDenyRedirectsWithAccessDenied(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Deny');
+        Assert::assertStringContainsString('error=access_denied', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testRequestIdIsSingleUse(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $requestId = $I->grabValueFrom('input[name=request]');
+        $I->stopFollowingRedirects();
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestId, 'decision' => 'deny']);
+        $I->seeResponseCodeIsRedirection();
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestId, 'decision' => 'allow']);
+        $I->seeResponseCodeIs(400);
+    }
+
+    public function testSkipConsentRedirectsImmediately(FunctionalTester $I)
+    {
+        $this->createAdminClient(['skip_consent' => 1]);
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('code=', $this->location());
+        Assert::assertEquals(1, Grant::find()->where(['user_id' => 1])->count());
     }
 }
