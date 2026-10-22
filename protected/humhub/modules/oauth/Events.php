@@ -10,6 +10,8 @@ namespace humhub\modules\oauth;
 
 use humhub\components\gates\GateInitEvent;
 use humhub\helpers\ControllerHelper;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\widgets\AuthenticationMenu;
 use humhub\modules\oauth\models\AccessToken;
 use humhub\modules\oauth\models\AuthCode;
 use humhub\modules\oauth\models\Grant;
@@ -236,6 +238,22 @@ class Events
             'url' => ['/oauth/account/index'],
             'sortOrder' => 350,
             'isActive' => ControllerHelper::isActivePath('oauth', 'account'),
+        ]));
+    }
+
+    /**
+     * Adds "Apps & API Access" to the user settings of the administration.
+     */
+    public static function onAuthenticationMenuInit(Event $event): void
+    {
+        /** @var AuthenticationMenu $menu */
+        $menu = $event->sender;
+        $menu->addEntry(new MenuLink([
+            'label' => Yii::t('OauthModule.base', 'Apps & API Access'),
+            'url' => ['/oauth/admin/index'],
+            'sortOrder' => 500,
+            'isActive' => ControllerHelper::isActivePath('oauth', 'admin'),
+            'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
     }
 

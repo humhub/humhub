@@ -3,6 +3,7 @@
 use humhub\commands\CronController;
 use humhub\components\Controller;
 use humhub\components\gates\GateManager;
+use humhub\modules\admin\widgets\AuthenticationMenu;
 use humhub\modules\oauth\commands\OauthController;
 use humhub\modules\oauth\Events;
 use humhub\modules\oauth\Module;
@@ -35,5 +36,6 @@ return [
         [Password::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onPasswordAfterInsert']],
         [Password::class, ActiveRecord::EVENT_AFTER_UPDATE, [Events::class, 'onPasswordAfterUpdate']],
         [SecuritySettingsMenu::class, SecuritySettingsMenu::EVENT_INIT, [Events::class, 'onSecuritySettingsMenuInit']],
+        [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenuInit']],
     ],
 ];
