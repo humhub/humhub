@@ -42,11 +42,10 @@ class PeopleDetails extends Widget
      */
     public function run()
     {
-        if (PeopleDetailsTemplate::isActive()) {
-            $html = PeopleDetailsTemplate::render($this->user);
-        } else {
-            $html = implode($this->separator, $this->getProfileFieldLines());
-        }
+        $html = implode($this->separator, array_filter([
+            implode($this->separator, $this->getProfileFieldLines()),
+            PeopleDetailsTemplate::render($this->user),
+        ], static fn(string $part) => $part !== ''));
 
         if ($html === '') {
             return '';

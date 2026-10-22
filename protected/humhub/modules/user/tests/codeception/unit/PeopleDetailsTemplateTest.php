@@ -64,7 +64,7 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         $this->assertSame('Admin||', PeopleDetailsTemplate::render(User::findOne(['id' => 1])));
     }
 
-    public function testWidgetUsesTemplateInsteadOfSelectedFields()
+    public function testWidgetShowsTemplateBelowSelectedFields()
     {
         Yii::$app->settings->set('people.detail1', 'firstname');
         $user = User::findOne(['id' => 1]);
@@ -72,9 +72,16 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         $this->assertSame('Admin', PeopleDetails::widget(['user' => $user]));
 
         $this->setTemplate('{{ lastname }}<br>{{ firstname }}');
-        $this->assertSame('<div>Tester<br>Admin</div>', PeopleDetails::widget(['user' => $user, 'template' => '<div>{lines}</div>']));
+        $this->assertSame('<div>Admin<br>Tester<br>Admin</div>', PeopleDetails::widget(['user' => $user, 'template' => '<div>{lines}</div>']));
 
         $this->setTemplate('{{ unknown }}');
+        $this->assertSame('Admin', PeopleDetails::widget(['user' => $user]));
+
+        Yii::$app->settings->set('people.detail1', '');
+        $this->setTemplate('{{ lastname }}');
+        $this->assertSame('Tester', PeopleDetails::widget(['user' => $user]));
+
+        $this->setTemplate(null);
         $this->assertSame('', PeopleDetails::widget(['user' => $user]));
     }
 

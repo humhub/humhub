@@ -24,6 +24,7 @@ use Yii;
  * (e.g. the label of a select option, a link for URL fields), e.g. `{{ city }}`. The raw values,
  * e.g. for URL parameters, are available under `raw`, e.g. `{{ raw.room|url_encode }}`.
  * The rendered template is one HTML block, line breaks are up to the template (e.g. `<br>`).
+ * It is shown below the profile fields selected in the People settings.
  *
  * @since 1.19.1
  */
