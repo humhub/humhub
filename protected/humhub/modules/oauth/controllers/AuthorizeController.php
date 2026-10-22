@@ -37,7 +37,12 @@ use yii\web\Response;
  */
 class AuthorizeController extends Controller
 {
-    private const SESSION_PREFIX = 'oauth.authRequest.';
+    private const SESSION_KEY = 'oauth.authRequests';
+
+    /**
+     * Pending consent requests kept per session, the oldest are dropped.
+     */
+    private const MAX_PENDING_REQUESTS = 5;
 
     /**
      * @inheritdoc
@@ -67,7 +72,7 @@ class AuthorizeController extends Controller
         try {
             $authRequest = $server->validateAuthorizationRequest(ServerRequestFactory::fromYii(Yii::$app->request));
         } catch (OAuthServerException $e) {
-            return ResponseBridge::toYii($e->generateHttpResponse(HttpFactory::instance()->createResponse()), Yii::$app->response);
+            return $this->errorResponse($e);
         }
 
         // Only S256: league would also accept `plain`, which is the default without a method
@@ -94,7 +99,9 @@ class AuthorizeController extends Controller
         }
 
         $requestId = Yii::$app->security->generateRandomString(32);
-        Yii::$app->session->set(self::SESSION_PREFIX . $requestId, ['userId' => (int)Yii::$app->user->id, 'request' => $authRequest]);
+        $pending = $this->pendingRequests();
+        $pending[$requestId] = ['userId' => (int)Yii::$app->user->id, 'request' => $authRequest];
+        Yii::$app->session->set(self::SESSION_KEY, array_slice($pending, -self::MAX_PENDING_REQUESTS, null, true));
 
         return $this->render('index', [
             'client' => $client,
@@ -107,9 +114,11 @@ class AuthorizeController extends Controller
     private function decide(AuthorizationServer $server): Response
     {
         $requestId = Yii::$app->request->post('request');
-        $stored = is_string($requestId) ? Yii::$app->session->get(self::SESSION_PREFIX . $requestId) : null;
-        if (is_string($requestId)) {
-            Yii::$app->session->remove(self::SESSION_PREFIX . $requestId);
+        $pending = $this->pendingRequests();
+        $stored = is_string($requestId) ? ($pending[$requestId] ?? null) : null;
+        if ($stored !== null) {
+            unset($pending[$requestId]);
+            Yii::$app->session->set(self::SESSION_KEY, $pending);
         }
 
         $authRequest = is_array($stored) ? ($stored['request'] ?? null) : null;
@@ -154,6 +163,26 @@ class AuthorizeController extends Controller
         }
 
         return ResponseBridge::toYii($response, Yii::$app->response);
+    }
+
+    private function pendingRequests(): array
+    {
+        $pending = Yii::$app->session->get(self::SESSION_KEY);
+        return is_array($pending) ? $pending : [];
+    }
+
+    /**
+     * Errors go back to the client only via a verified redirect URI, the others are shown here.
+     *
+     * @throws BadRequestHttpException
+     */
+    private function errorResponse(OAuthServerException $e): Response
+    {
+        if (!$e->hasRedirect()) {
+            throw new BadRequestHttpException($e->getHint() ?? $e->getMessage(), 0, $e);
+        }
+
+        return ResponseBridge::toYii($e->generateHttpResponse(HttpFactory::instance()->createResponse()), Yii::$app->response);
     }
 
     /**

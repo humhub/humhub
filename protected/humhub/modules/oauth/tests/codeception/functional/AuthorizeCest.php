@@ -207,6 +207,45 @@ class AuthorizeCest
         $I->seeResponseCodeIs(400);
     }
 
+    public function testOnlyTheLatestPendingRequestsAreKept(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $requestIds = [];
+        for ($i = 0; $i < 6; $i++) {
+            $I->amOnRoute('/oauth/authorize/index', $this->params());
+            $requestIds[] = $I->grabValueFrom('input[name=request]');
+        }
+
+        $I->stopFollowingRedirects();
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestIds[0], 'decision' => 'deny']);
+        $I->seeResponseCodeIs(400);
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestIds[1], 'decision' => 'deny']);
+        $I->seeResponseCodeIsRedirection();
+    }
+
+    public function testErrorsWithoutAVerifiedRedirectAreShownHere(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+
+        $I->amOnRoute('/oauth/authorize/index', $this->params('unknown-client'));
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+        $I->see('Client authentication failed');
+
+        $I->amOnRoute('/oauth/authorize/index', $this->params(Client::SYSTEM_CLIENT_ID, '', 'https://evil.example/cb'));
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+
+        $params = $this->params();
+        unset($params['code_challenge'], $params['code_challenge_method']);
+        $I->amOnRoute('/oauth/authorize/index', $params);
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+        $I->see('Code challenge must be provided');
+        Assert::assertStringNotContainsString('"error"', $I->grabPageSource(), 'a HumHub error page, not the JSON body');
+    }
+
     public function testSkipConsentRedirectsImmediately(FunctionalTester $I)
     {
         $this->createAdminClient(['skip_consent' => 1]);
