@@ -69,4 +69,34 @@ class WebSessionCest
         $I->amOnRoute('/oauth/web-session/index', ['code' => $code]);
         Assert::assertSame(2, (int)Yii::$app->user->id);
     }
+
+    public function testRevokingTheGrantEndsTheSession(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $I->amOnRoute('/oauth/web-session/index', ['code' => (new WebSessionService())->createCode($grant)]);
+
+        (new GrantService())->revoke($grant);
+
+        $I->amOnRoute('/user/account/edit');
+        $I->seeInCurrentUrl('login');
+    }
+
+    public function testLogoutInTheWebViewRevokesTheGrant(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $I->amOnRoute('/oauth/web-session/index', ['code' => (new WebSessionService())->createCode($grant)]);
+
+        $I->sendAjaxPostRequest(Url::to(['/user/auth/logout']));
+
+        Assert::assertNull(Grant::findOne(['id' => $grant->id]));
+    }
+
+    public function testRegularLogoutLeavesGrantsAlone(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(1);
+        $I->amAdmin();
+        $I->sendAjaxPostRequest(Url::to(['/user/auth/logout']));
+
+        Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use humhub\commands\CronController;
+use humhub\components\Controller;
 use humhub\components\gates\GateManager;
 use humhub\modules\oauth\commands\OauthController;
 use humhub\modules\oauth\Events;
@@ -24,5 +25,7 @@ return [
     'events' => [
         [CronController::class, CronController::EVENT_ON_DAILY_RUN, [Events::class, 'onCronDailyRun']],
         [GateManager::class, GateManager::EVENT_INIT_GATES, [Events::class, 'onGateInit']],
+        [Controller::class, Controller::EVENT_BEFORE_ACTION, [Events::class, 'onBeforeAction']],
+        [\yii\web\User::class, \yii\web\User::EVENT_BEFORE_LOGOUT, [Events::class, 'onUserBeforeLogout']],
     ],
 ];
