@@ -1,6 +1,7 @@
 <?php
 
 use humhub\commands\CronController;
+use humhub\components\gates\GateManager;
 use humhub\modules\oauth\commands\OauthController;
 use humhub\modules\oauth\Events;
 use humhub\modules\oauth\Module;
@@ -22,5 +23,6 @@ return [
     ],
     'events' => [
         [CronController::class, CronController::EVENT_ON_DAILY_RUN, [Events::class, 'onCronDailyRun']],
+        [GateManager::class, GateManager::EVENT_INIT_GATES, [Events::class, 'onGateInit']],
     ],
 ];

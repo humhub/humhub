@@ -8,6 +8,7 @@
 
 namespace humhub\modules\oauth;
 
+use humhub\components\gates\GateInitEvent;
 use humhub\modules\oauth\models\AccessToken;
 use humhub\modules\oauth\models\AuthCode;
 use humhub\modules\oauth\models\Grant;
@@ -42,5 +43,13 @@ class Events
             ['last_used_at' => null],
             ['<', 'created_at', $now - self::ABANDONED_GRANT_AGE],
         ]);
+    }
+
+    /**
+     * The web session route logs the user in, so a previous user's open gate must not intercept it.
+     */
+    public static function onGateInit(GateInitEvent $event): void
+    {
+        $event->manager->registerInfrastructureRoute('oauth/web-session');
     }
 }
