@@ -12,6 +12,7 @@ use humhub\components\psr\ServerRequestFactory;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
+use humhub\modules\oauth\services\PersonalAccessTokenService;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Yii;
 use yii\filters\auth\AuthMethod;
@@ -20,9 +21,10 @@ use yii\web\IdentityInterface;
 use yii\web\User;
 
 /**
- * Authenticates API requests with a bearer token of the OAuth server.
+ * Authenticates API requests with a bearer token of the OAuth server: an access token (JWT)
+ * or a personal access token (`hhpat_` prefix).
  *
- * A token that is not one of ours (no `hh-` key id) yields `null`, so the next method may
+ * A token that is not one of ours (no `hhpat_` prefix, no `hh-` key id) yields `null`, so the next method may
  * try (e.g. the rest module's JWT). One of ours that fails validation is a 401.
  *
  * The identity is set without a login: no `last_login` write and no login events per request.
@@ -45,6 +47,15 @@ class TokenAuth extends AuthMethod
         }
 
         $token = $matches[1];
+        if (str_starts_with($token, PersonalAccessTokenService::PREFIX)) {
+            $grant = (new PersonalAccessTokenService())->find($token);
+            if ($grant === null || !(new GrantService())->isUsable($grant)) {
+                $this->fail($response);
+            }
+
+            return $this->authenticateGrant($user, $grant);
+        }
+
         if (!TokenResolver::isOwnJwt($token)) {
             return null;
         }
