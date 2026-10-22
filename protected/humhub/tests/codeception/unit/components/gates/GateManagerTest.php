@@ -337,4 +337,21 @@ class GateManagerTest extends HumHubDbTestCase
             Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
         }
     }
+
+    public function testIssuedCredentialSnapshotIsNotValidForRegularSession()
+    {
+        $manager = $this->createManager(
+            new FakeLoginVerificationGate(['id' => 'twofa', 'sortOrder' => 100, 'open' => true]),
+            new FakeGate(['id' => 'legal', 'sortOrder' => 200, 'open' => false]),
+        );
+
+        Yii::$app->session->set(GateManager::SESSION_KEY_ISSUED_CREDENTIAL, true);
+        try {
+            $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'dashboard'));
+            Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
+            $this->assertSame('twofa', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
+        } finally {
+            Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
+        }
+    }
 }

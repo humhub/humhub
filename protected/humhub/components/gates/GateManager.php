@@ -254,14 +254,20 @@ class GateManager extends Component
         }
     }
 
+    private function isIssuedCredentialSession(): bool
+    {
+        $session = Yii::$app->has('session') ? Yii::$app->session : null;
+
+        return $session !== null && ($session->getIsActive() || $session->getHasSessionId())
+            && $session->get(self::SESSION_KEY_ISSUED_CREDENTIAL);
+    }
+
     /**
      * @return UserGateInterface[] the gates that apply to the current session at all
      */
     private function getSessionGates(): array
     {
-        $session = Yii::$app->has('session') ? Yii::$app->session : null;
-        $issued = $session !== null && ($session->getIsActive() || $session->getHasSessionId())
-            && $session->get(self::SESSION_KEY_ISSUED_CREDENTIAL);
+        $issued = $this->isIssuedCredentialSession();
 
         if (!$issued) {
             return $this->getGates();
@@ -322,7 +328,9 @@ class GateManager extends Component
 
         $userId = Yii::$app->user->isGuest ? 'guest' : (string)Yii::$app->user->id;
 
-        return $this->getStateVersion() . ':' . $userId;
+        // Skipped gates are not evaluated in issued-credential sessions, so their snapshot
+        // must never be valid for a regular session.
+        return $this->getStateVersion() . ':' . $userId . ($this->isIssuedCredentialSession() ? ':issued' : '');
     }
 
     private function isAllClosedSnapshotValid(): bool
