@@ -134,6 +134,21 @@ class WebSessionCest
         Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
     }
 
+    public function testRedemptionIssuesNoAutoLoginCookie(FunctionalTester $I)
+    {
+        // An auto-login cookie of an earlier login in this WebView
+        $admin = User::findOne(['id' => 1]);
+        $I->setCookie('_identity', json_encode([$admin->id, $admin->getAuthKey(), 3600]));
+        // Auto-login cookies are skipped for CLI requests, which test requests are
+        Yii::$app->set('request', array_merge(Yii::$app->getComponents()['request'], ['isConsoleRequest' => false]));
+
+        $I->stopFollowingRedirects();
+        $this->redeem($I, $this->appGrant(2));
+
+        Assert::assertSame(2, (int)Yii::$app->user->id);
+        $I->dontSeeCookie('_identity');
+    }
+
     public function testRehandoffForTheSameGrantKeepsTheGrant(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);

@@ -369,11 +369,13 @@ The app turns its grant into a regular web session for its WebViews:
      deleted row (unknown code, wrong secret, expired, used) → error page. A wrong secret does
      not match the row, so it does not consume the code;
    - checks that the grant is valid and the user is enabled;
-   - always starts a fresh session: a user already logged in to this WebView, even the same
-     one, is logged out first. A session bound to the very grant being redeemed is unbound
-     before, so this logout does not revoke it. No existing session (for example one with a
-     pending second factor) is ever marked, and a regular browser session is never bound;
-   - logs in the user without an auto-login cookie (`login($user, 0)`);
+   - clears any previous login: a user already logged in to this WebView, even the same one,
+     is logged out first, which also drops a previous binding (a logout on this route revokes
+     no grant). The login regenerates the session id. No existing login (for example one with
+     a pending second factor) is ever marked, and a regular browser session is never bound;
+   - logs in the user without an auto-login cookie: auto-login is off for this login, and an
+     existing identity cookie is deleted. A cookie login would outlive the grant, since every
+     login drops the binding;
    - stores the grant id under the session key `oauth.grantId`;
    - sets the session key `GateManager::SESSION_KEY_ISSUED_CREDENTIAL`;
    - redirects to `returnUrl`, if it is a path on this installation (no scheme or host, no

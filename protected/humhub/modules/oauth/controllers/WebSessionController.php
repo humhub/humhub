@@ -14,6 +14,7 @@ use humhub\modules\oauth\services\WebSessionService;
 use Yii;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
+use yii\web\Cookie;
 
 /**
  * Redeems the app's single-use code: logs the user in and binds the session to the grant.
@@ -42,17 +43,22 @@ class WebSessionController extends Controller
             throw new BadRequestHttpException(Yii::t('OauthModule.base', 'This sign-in link is invalid or has expired.'));
         }
 
-        // Always a fresh session: an existing one (perhaps with a pending login verification) must
-        // not be marked as issued-credential, and a regular browser session never gets bound.
+        // A previous login and its binding are cleared (a logout on this route revokes nothing) and
+        // the session id is regenerated: no existing login, perhaps with a pending login
+        // verification, gets marked as issued-credential.
+        // No auto-login cookie: a cookie login would outlive the grant, as every login drops the binding.
         $user = Yii::$app->user;
-        if (!$user->isGuest) {
-            if ($service->getBoundGrantId() === $grant->id) {
-                // Re-handoff: this logout must not revoke the grant being redeemed
-                $service->unbindSession();
+        $enableAutoLogin = $user->enableAutoLogin;
+        $user->enableAutoLogin = false;
+        try {
+            if (!$user->isGuest) {
+                $user->logout();
             }
-            $user->logout();
+            $user->login($grant->user, 0);
+        } finally {
+            $user->enableAutoLogin = $enableAutoLogin;
         }
-        $user->login($grant->user, 0);
+        Yii::$app->response->getCookies()->remove(new Cookie($user->identityCookie));
         $service->bindSession($grant);
 
         Yii::$app->response->getHeaders()
