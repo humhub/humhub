@@ -62,7 +62,7 @@ class PendingRegistrationsController extends Controller
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            'types' => [null => null] + $searchModel->getAllowedSources(),
+            'types' => ['' => Yii::t('AdminModule.base', 'All')] + $searchModel->getAllowedSources(),
         ]);
     }
 

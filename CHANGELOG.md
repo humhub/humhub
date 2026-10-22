@@ -27,6 +27,7 @@ HumHub Changelog
 - Fix #8606: Installer pages are marked `noindex`; an already installed instance answers `/installer` with 404 instead of a logged 500 error
 - Fix #8609: Topic sidebar counted deleted, archived, hidden, draft and scheduled content, so a topic stayed listed although filtering by it showed no matches
 - Enh #8613: The `Template` profile field ignored source fields hidden from the profile (Visible off) and rendered them empty; hidden fields are now available as variables; Source fields with the value `0` are no longer treated as empty
+- Fix #8618: Pending registrations page crashed on PHP 8.5 (null used as array key)
 
 1.19.0 (October 12, 2026)
 -------------------------
