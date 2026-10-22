@@ -336,8 +336,18 @@ existing grants immediately:
 - an admin client the administrator allowed it;
 - a PAT, if the administrator added it to `patScopes`.
 
-User clients never hold `full`. `finalizeScopes()` applies the same intersection at code
-exchange and refresh.
+User clients never hold `full`.
+
+Scopes are grant-based: enforcement always uses the grant's effective scopes, never the
+`scopes` claim of an access token. At code exchange and refresh, `finalizeScopes()` writes
+the current effective scopes into the new token for information only; a narrower `scope`
+parameter on refresh has no effect. An unregistered scope id is ignored and never fails an
+exchange or refresh — a refresh token is consumed before league validates scopes, so a
+failure there would burn it and the client's retry would revoke the grant.
+
+Controllers keep the `'*'` default for the stronger scope of the controller and list
+read actions explicitly, so a newly added action needs the write scope until it is
+classified.
 
 ## WebView sessions (app)
 
@@ -443,8 +453,8 @@ Rules:
 - **Revoking a grant deletes the row.** The foreign keys remove its codes and tokens, which
   makes every one of them unknown and thus revoked. Grants keep no revoked state.
 - **Deleting a user or a client** removes its grants the same way.
-- **Soft-deleting or disabling a user** is covered by the enabled check in `TokenAuth` and the
-  repositories. The grants remain, but authenticate nobody.
+- **Soft-deleting or disabling a user** is covered by the usability check of the repositories
+  (`GrantService::isUsable()`), which every token validation runs. The grants remain, but authenticate nobody.
 - **The initial migration** creates the tables, the system client and the keys.
 
 The system client row:
@@ -565,6 +575,7 @@ protected/humhub/modules/oauth/
 │   ├── AuthorizationServerFactory.php    # league AuthorizationServer / ResourceServer
 │   ├── KeyStore.php                      # read, generate, rotate keys
 │   ├── TokenAuth.php
+│   ├── TokenResolver.php                 # own JWT detection, token → grant for revocation
 │   ├── ScopeFilter.php
 │   └── ScopeRegistry.php
 ├── controllers/
@@ -577,6 +588,7 @@ protected/humhub/modules/oauth/
 │   └── api/WebSessionController.php
 ├── entities/                   # league entity implementations
 ├── repositories/               # league repository implementations
+├── services/GrantService.php   # create, usability, effective scopes, revoke
 ├── events/ScopesEvent.php
 ├── models/                     # Client, Grant, AccessToken, RefreshToken, AuthCode,
 │                               # WebSessionCode, Scope, forms
