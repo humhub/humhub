@@ -50,7 +50,8 @@ class ClientForm extends Model
             $this->description = $this->client->description;
             $this->confidential = $this->client->isConfidential();
             $this->redirectUris = implode("\n", $this->client->getRedirectUris());
-            $this->scopes = $this->client->getAllowedScopes();
+            // Scopes no longer offered would block saving
+            $this->scopes = array_values(array_intersect($this->client->getAllowedScopes(), array_keys($this->getScopeOptions())));
             $this->skipConsent = (bool)$this->client->skip_consent;
             $this->isActive = (bool)$this->client->is_active;
         }
@@ -129,14 +130,18 @@ class ClientForm extends Model
      */
     public static function isAllowedRedirectUri(string $uri, bool $confidential): bool
     {
+        if (preg_match('/[\s\x00-\x1F\x7F]/', $uri) || str_contains($uri, '#')) {
+            return false;
+        }
+
         $parts = parse_url($uri);
-        if ($parts === false || empty($parts['scheme']) || str_contains($uri, '#')) {
+        if ($parts === false || empty($parts['scheme']) || isset($parts['user']) || isset($parts['pass'])) {
             return false;
         }
 
         $scheme = strtolower($parts['scheme']);
         if ($scheme === 'https') {
-            return !empty($parts['host']);
+            return self::isValidHost($parts['host'] ?? '');
         }
         if ($scheme === 'http') {
             // parse_url() keeps the brackets of IPv6 hosts
@@ -144,7 +149,20 @@ class ClientForm extends Model
         }
 
         // Private-use scheme in reverse-domain form, e.g. com.example.app:/callback
-        return !$confidential && preg_match('/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/', $scheme) === 1;
+        return !$confidential
+            && preg_match('/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/', $scheme) === 1
+            && (!isset($parts['host']) || self::isValidHost($parts['host']));
+    }
+
+    private static function isValidHost(string $host): bool
+    {
+        if (str_starts_with($host, '[') && str_ends_with($host, ']')) {
+            return filter_var(substr($host, 1, -1), FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
+        }
+
+        return $host !== ''
+            && (filter_var($host, FILTER_VALIDATE_IP) !== false
+                || filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false);
     }
 
     /**
@@ -156,7 +174,15 @@ class ClientForm extends Model
             return [];
         }
 
-        return array_values(array_unique(array_filter(array_map('trim', preg_split('/\R/', $this->redirectUris)))));
+        $uris = array_filter(array_map('trim', preg_split('/\R/', $this->redirectUris)));
+
+        // The scheme is case-insensitive; the exact match at the authorization endpoint is not
+        $uris = array_map(
+            static fn(string $uri) => preg_replace_callback('/^[A-Za-z][A-Za-z0-9+.-]*:/', static fn(array $m) => strtolower($m[0]), $uri),
+            $uris,
+        );
+
+        return array_values(array_unique($uris));
     }
 
     public function save(): bool

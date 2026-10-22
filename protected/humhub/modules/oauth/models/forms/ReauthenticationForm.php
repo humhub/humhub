@@ -14,7 +14,8 @@ use Yii;
 use yii\base\Model;
 
 /**
- * Confirms the current user before an action that hands out a credential.
+ * Confirms the current user before an action that hands out a credential. Forms creating
+ * such a credential extend it and merge [[rules()]] and [[attributeLabels()]].
  *
  * @since 1.20
  */
@@ -24,7 +25,7 @@ class ReauthenticationForm extends Model
 
     private ?RecentAuthentication $recentAuthentication = null;
 
-    public function __construct(private readonly User $user, $config = [])
+    public function __construct(protected readonly User $user, $config = [])
     {
         parent::__construct($config);
     }

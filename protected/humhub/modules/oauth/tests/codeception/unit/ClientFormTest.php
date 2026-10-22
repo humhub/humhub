@@ -59,9 +59,38 @@ class ClientFormTest extends HumHubDbTestCase
             'fragment' => ['https://example.org/cb#x', false, false],
             'several, one bad' => ["https://example.org/cb\nhttp://example.org/cb", false, false],
             'several' => ["https://example.org/cb\r\n\r\nhttp://127.0.0.1/cb", false, true],
+            'wildcard host' => ['https://*.example.org/cb', false, false],
+            'userinfo' => ['https://user:pw@example.org/cb', false, false],
+            'user only' => ['https://user@example.org/cb', false, false],
+            'space in host' => ['https://exa mple.org/cb', false, false],
+            'space in path' => ['https://example.org/c b', false, false],
+            'control character' => ["https://example.org/c\x01b", false, false],
+            'no host' => ['https:/cb', false, false],
+            'ip host' => ['https://192.0.2.1/cb', false, true],
+            'upper-case scheme' => ['HTTPS://Example.org/cb', false, true],
             'empty' => ['', false, false],
             'whitespace only' => ["  \n ", false, false],
         ];
+    }
+
+    public function testSchemeIsStoredInLowerCase()
+    {
+        $form = $this->form(ClientForm::SCENARIO_USER, ['redirectUris' => "HTTPS://Example.org/cb\nCom.Example.App:/cb"]);
+        $this->assertTrue($form->save());
+
+        $this->assertSame(['https://Example.org/cb', 'com.example.app:/cb'], Client::findOne(['id' => $form->client->id])->getRedirectUris());
+    }
+
+    public function testScopesNoLongerOfferedAreDroppedOnEdit()
+    {
+        $form = $this->form(ClientForm::SCENARIO_USER, ['scopes' => ['content:read', 'spaces:read']]);
+        $this->assertTrue($form->save());
+
+        Module::instance()->settings->set('userClientScopes', json_encode(['content:read']));
+        $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_USER]);
+        $this->assertSame(['content:read'], $edit->scopes);
+        $this->assertTrue($edit->save());
+        $this->assertSame(['content:read'], Client::findOne(['id' => $form->client->id])->getAllowedScopes());
     }
 
     public function testUserScenarioOffersOnlyUserClientScopesWithoutFull()
