@@ -37,11 +37,13 @@ final class KeyStore
 
     public function getPrivateKey(): string
     {
+        $this->assertNoPartialOverride();
         return $this->resolve($this->module->privateKey, self::SETTING_PRIVATE_KEY);
     }
 
     public function getPublicKey(): string
     {
+        $this->assertNoPartialOverride();
         return $this->resolve($this->module->publicKey, self::SETTING_PUBLIC_KEY);
     }
 
@@ -95,11 +97,19 @@ final class KeyStore
     public static function createKeyPair(): array
     {
         $resource = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
-        if ($resource === false || !openssl_pkey_export($resource, $privateKey)) {
-            throw new InvalidConfigException('Could not generate the OAuth key pair: ' . openssl_error_string());
+        $details = $resource === false ? false : openssl_pkey_get_details($resource);
+        if ($resource === false || $details === false || !openssl_pkey_export($resource, $privateKey)) {
+            throw new InvalidConfigException('Could not generate the OAuth key pair: ' . (openssl_error_string() ?: 'unknown OpenSSL error'));
         }
 
-        return [$privateKey, openssl_pkey_get_details($resource)['key']];
+        return [$privateKey, $details['key']];
+    }
+
+    private function assertNoPartialOverride(): void
+    {
+        if (($this->module->privateKey === null) !== ($this->module->publicKey === null)) {
+            throw new InvalidConfigException('The OAuth module: configure both privateKey and publicKey, or neither.');
+        }
     }
 
     private function resolve(?string $override, string $setting): string

@@ -11,6 +11,7 @@ namespace humhub\modules\oauth\tests\codeception\unit;
 use humhub\modules\oauth\components\KeyStore;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\Module;
+use yii\base\InvalidConfigException;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class KeyStoreTest extends HumHubDbTestCase
@@ -23,7 +24,7 @@ class KeyStoreTest extends HumHubDbTestCase
         Module::instance()->getKeyStore()->generateIfMissing();
     }
 
-    public function testMigrationCreatedKeysAndTheSystemClient()
+    public function testKeysAndTheSystemClient()
     {
         $keyStore = Module::instance()->getKeyStore();
 
@@ -70,6 +71,19 @@ class KeyStoreTest extends HumHubDbTestCase
             $module->privateKey = null;
             $module->publicKey = null;
             unlink($file);
+        }
+    }
+
+    public function testPartialOverrideThrows()
+    {
+        $module = Module::instance();
+        $module->privateKey = 'file:///nonexistent';
+
+        try {
+            $this->expectException(InvalidConfigException::class);
+            (new KeyStore($module))->getPublicKey();
+        } finally {
+            $module->privateKey = null;
         }
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\Migration;
-use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\Module;
 
 /**
@@ -75,16 +74,19 @@ class m261022_120000_oauth_initial extends Migration
         ]);
         $this->safeAddForeignKey('fk_oauth_web_session_code_grant', 'oauth_web_session_code', 'grant_id', 'oauth_grant', 'id', 'CASCADE', 'CASCADE');
 
-        $this->insertSilent('oauth_client', [
-            'client_id' => Client::SYSTEM_CLIENT_ID,
-            'type' => Client::TYPE_SYSTEM,
-            'name' => 'HumHub App',
-            'redirect_uris' => json_encode(['com.humhub.app:/oauth/callback']),
-            'scopes' => json_encode(['full']),
-            'skip_consent' => 0,
-            'is_active' => 1,
-            'created_at' => time(),
-        ]);
+        // A re-run after a failed attempt finds the tables (DDL is not rolled back) and the client
+        if (!(new \yii\db\Query())->from('oauth_client')->where(['client_id' => 'humhub-app'])->exists($this->db)) {
+            $this->insertSilent('oauth_client', [
+                'client_id' => 'humhub-app',
+                'type' => 'system',
+                'name' => 'HumHub App',
+                'redirect_uris' => json_encode(['com.humhub.app:/oauth/callback']),
+                'scopes' => json_encode(['full']),
+                'skip_consent' => 0,
+                'is_active' => 1,
+                'created_at' => time(),
+            ]);
+        }
 
         Module::instance()->getKeyStore()->generateIfMissing();
     }
