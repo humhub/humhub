@@ -168,10 +168,15 @@ hhpat_<32 random base62 characters><6 base62 characters CRC32 of the random part
 - **Lifetime:** chosen at creation from 7 days, 30 days (default), 90 days, 1 year and
   *never*. Options beyond `patMaxLifetimeDays` are hidden. *Never* is offered only when
   `patMaxLifetimeDays` is 0.
-- **Creation requires re-authentication:**
-  - a user with a local password (`User::getCurrentPassword()`) confirms it;
-  - any other user must have logged in to the current session within the last 15 minutes
-    (`user_http_session.logged_in_at`). Otherwise the form asks them to sign out and in again.
+- **Creation requires re-authentication** (`RecentAuthentication`), since a PAT bypasses 2FA:
+  - a user with a local password (`User::getCurrentPassword()`) confirms it. Five failed
+    attempts within 15 minutes block further confirmations for that window;
+  - any other user must have signed in interactively (password, LDAP, SSO …) to the current
+    session within the last 15 minutes. The login controller records the time in the session
+    (`AuthController::EVENT_AFTER_LOGIN`), bound to the user; remember-me cookie logins and
+    impersonations do not count. Otherwise the form asks them to sign out and in again.
+- **Never during an impersonation:** creating a PAT is refused (`403`), like any other
+  credential (client secrets).
 
 The CRC32 suffix lets `TokenAuth` reject a mistyped token without a database query, and the
 `hhpat_` prefix makes leaked tokens recognizable to secret scanners.
@@ -519,9 +524,10 @@ A new tab in the security settings, `SecuritySettingsMenu`:
 
 The tab is visible when any of these holds:
 
-- the user has a grant;
-- the user may create PATs;
-- the user may create user clients.
+- the user has a PAT (also an expired one) or an OAuth grant that has been used
+  (`last_used_at` set); grants whose code was never exchanged are not listed;
+- the user may create PATs (`allowPersonalAccessTokens` and `CreatePersonalAccessToken`);
+- the user may manage own clients (`allowUserClients` and `ManageOwnOAuthClients`).
 
 Its sections:
 
@@ -532,8 +538,15 @@ Its sections:
 - **Personal access tokens.** Name, `hhpat_…<hint>`, scopes, expiry, last used, *Revoke*.
   Then *Create token* (name, scopes from `patScopes`, lifetime, re-authentication). The token
   is shown once.
-- **My OAuth clients.** Only with the permission `ManageOwnOAuthClients`. Create, edit, delete,
-  regenerate the secret (shown once). The scopes are chosen from `userClientScopes`.
+- **My OAuth apps.** Only with `allowUserClients` and the permission `ManageOwnOAuthClients`.
+  Create, edit, delete, regenerate the secret (shown once). The scopes are chosen from
+  `userClientScopes`.
+
+A client secret needs no re-authentication: on its own it gives no access to an account (there
+is no client credentials grant), the user still has to authorize the client. Regenerating it
+is a confirmed POST. Like PATs, client secrets are never created while impersonating: saving a
+client and regenerating its secret are refused (`403`), in the account and in the
+administration.
 
 Creating a PAT or connecting an admin or user client sends the user the notification
 `GrantCreatedNotification` (web and mail). Signing in with the app does not.
@@ -570,8 +583,13 @@ reject grants of a disallowed kind.
 - name, description;
 - public or confidential;
 - redirect URIs;
-- allowed scopes (`full` allowed);
-- skip consent.
+- allowed scopes;
+- skip consent (admin clients only).
+
+`full` and *skip consent* can only be set by system administrators
+(`User::isSystemAdmin()`). Other holders of `ManageSettings` neither see nor may submit them;
+when they edit a client, what a system administrator set stays. User clients edited in the
+administration are never offered either.
 
 **Grants.** Every grant, filterable by user, client and type, with *Revoke* and *Revoke all*
 (for the current filter).
@@ -580,6 +598,9 @@ reject grants of a disallowed kind.
 
 - `CreatePersonalAccessToken`;
 - `ManageOwnOAuthClients`.
+
+Removing a permission only stops creating new credentials; existing PATs and clients keep
+working. To stop them, switch the matching `allow…` setting off or revoke the grants.
 
 ## PSR-7 bridge
 
@@ -604,7 +625,9 @@ protected/humhub/modules/oauth/
 ├── commands/OauthController.php          # rotate-key
 ├── components/
 │   ├── AuthorizationServerFactory.php    # league AuthorizationServer / ResourceServer
+│   ├── CredentialActions.php             # secret display, regeneration, impersonation guard
 │   ├── KeyStore.php                      # read, generate, rotate keys
+│   ├── RecentAuthentication.php          # re-authentication before creating a PAT
 │   ├── TokenAuth.php
 │   ├── TokenResolver.php                 # own JWT detection, token → grant for revocation
 │   ├── ScopeFilter.php
@@ -619,15 +642,21 @@ protected/humhub/modules/oauth/
 │   └── api/WebSessionController.php
 ├── entities/                   # league entity implementations
 ├── repositories/               # league repository implementations
-├── services/GrantService.php   # create, usability, effective scopes, revoke
+├── services/
+│   ├── GrantService.php                  # create, usability, effective scopes, revoke
+│   ├── PersonalAccessTokenService.php    # create, find, lifetimes
+│   └── WebSessionService.php             # web session codes, session binding
 ├── events/ScopesEvent.php
-├── models/                     # Client, Grant, AccessToken, RefreshToken, AuthCode,
-│                               # WebSessionCode, Scope, forms
-├── notifications/GrantCreatedNotification.php
+├── models/                     # Client, Grant, GrantSearch (admin filter), AccessToken,
+│                               # RefreshToken, AuthCode, WebSessionCode, Scope, forms
+├── notifications/
+│   └── GrantCreatedNotification.php
 ├── permissions/CreatePersonalAccessToken.php
 ├── permissions/ManageOwnOAuthClients.php
 ├── migrations/
 ├── views/
+├── widgets/                    # the sections of "Apps & Tokens" (devices, connected apps,
+│                               # tokens, own apps)
 └── tests/
 ```
 
