@@ -16,9 +16,11 @@ use humhub\modules\oauth\models\RefreshToken;
 use humhub\modules\oauth\models\WebSessionCode;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
+use humhub\modules\user\models\Password;
 use Yii;
 use yii\base\ActionEvent;
 use yii\base\Event;
+use yii\db\AfterSaveEvent;
 use yii\web\UnauthorizedHttpException;
 use yii\web\UserEvent;
 
@@ -165,6 +167,32 @@ class Events
         $service = new WebSessionService();
         if ($service->getBoundGrantId() !== null) {
             $service->unbindSession();
+        }
+    }
+
+    /**
+     * Optionally revokes every grant of a user whose password changed. A user's first
+     * password is no change.
+     */
+    public static function onPasswordAfterInsert(AfterSaveEvent $event): void
+    {
+        /** @var Password $password */
+        $password = $event->sender;
+        if (!Module::instance()->revokesOnPasswordChange()) {
+            return;
+        }
+
+        $isChange = Password::find()
+            ->where(['user_id' => $password->user_id])
+            ->andWhere(['!=', 'id', $password->id])
+            ->exists();
+        if (!$isChange) {
+            return;
+        }
+
+        $service = new GrantService();
+        foreach (Grant::findAll(['user_id' => $password->user_id]) as $grant) {
+            $service->revoke($grant);
         }
     }
 
