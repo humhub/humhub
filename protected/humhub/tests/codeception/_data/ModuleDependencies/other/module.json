@@ -1,0 +1,9 @@
+{
+    "id": "dep-other",
+    "version": "1.0.0",
+    "name": "Dependency Other",
+    "description": "Fixture module for module dependency tests.",
+    "humhub": {
+        "minVersion": "1.19"
+    }
+}

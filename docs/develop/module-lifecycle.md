@@ -21,8 +21,9 @@ A module starts inert. To make it do anything, enable it via:
 
 Enabling will:
 
-1. run all of the module's [database migrations](concept-models.md#initial-migration)
-2. insert a row into `module_enabled`
+1. check the module's [dependencies](module-development.md#module-dependencies) and its `requirements.php`, if any
+2. run all of the module's [database migrations](concept-models.md#initial-migration)
+3. insert a row into `module_enabled`
 
 The `ModuleManager` fires:
 

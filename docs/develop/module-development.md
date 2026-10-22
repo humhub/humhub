@@ -92,7 +92,7 @@ Marketplace metadata.
 | `version`     | yes      | `X.Y.Z` semver — only bumped on release                                    |
 | `name`        | yes      | Display name                                                               |
 | `description` | yes      | One-line description                                                       |
-| `humhub`      | no       | `minVersion` and `maxVersion` core compatibility                           |
+| `humhub`      | no       | `minVersion` and `maxVersion` core compatibility, `modules` [dependencies](#module-dependencies) |
 | `keywords`    | no       | Array of keywords for marketplace search                                   |
 | `screenshots` | no       | Screenshot file names, relative to [`Module::$resourcesPath`](module-base-class.md#resourcespath) |
 | `homepage`    | no       | Module homepage URL                                                        |
@@ -125,6 +125,24 @@ Example:
 ```
 
 Bump `minVersion` whenever you start relying on a feature that arrived in a newer core version, and test against the supported range. When unsure, use the version you're developing against.
+
+#### Module dependencies
+
+A module that needs other modules declares them under `humhub.modules`, optionally with a minimum version:
+
+```json
+"humhub": {
+    "minVersion": "1.19.1",
+    "modules": {
+        "calendar": {},
+        "clean-theme": { "minVersion": "2.5.1" }
+    }
+}
+```
+
+Each dependency must be installed and enabled — and installed in at least `minVersion` — before the module can be installed, updated or enabled. The check only reads metadata (the `module_enabled` table and the dependencies' `module.json`), so it works the same in the web application and in the `module/*` console commands, which do not load third-party modules. `php yii module/update-all` checks the dependencies against the versions installed once all updates are applied and updates dependencies first.
+
+Declare dependencies here instead of checking them in `requirements.php` via `Yii::$app->getModule()`. Keep `requirements.php` for anything else, e.g. a required PHP extension.
 
 ### `Module.php`
 

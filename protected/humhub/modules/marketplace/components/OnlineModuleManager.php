@@ -11,6 +11,7 @@ namespace humhub\modules\marketplace\components;
 use humhub\components\ModuleEvent;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\services\ModuleDependencyService;
 use humhub\services\ModuleDiscoveryService;
 use humhub\services\ModuleService;
 use humhub\modules\marketplace\models\Module as ModelModule;
@@ -25,6 +26,7 @@ use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
+use yii\helpers\Json;
 use yii\web\HttpException;
 use yii\web\ServerErrorHttpException;
 use ZipArchive;
@@ -133,6 +135,16 @@ class OnlineModuleManager extends Component
 
     private function checkRequirements($moduleId, $moduleZipFile)
     {
+        $dependencyService = new ModuleDependencyService($this->readPackageModuleInfo($moduleId, $moduleZipFile));
+        $unmetDependencies = $dependencyService->getUnmetDependencies();
+        if ($unmetDependencies !== []) {
+            $this->throwError($moduleId, implode(' ', $unmetDependencies));
+        }
+
+        // Lets a requirements.php that checks its dependencies via Yii::$app->getModule() also work
+        // in console commands, which do not load third-party modules
+        $dependencyService->registerDependencies();
+
         $zip = new ZipArchive();
         $zip->open($moduleZipFile);
         if ($zip->locateName($moduleId . '/requirements.php')) {
@@ -141,6 +153,40 @@ class OnlineModuleManager extends Component
                 $this->throwError($moduleId, $requirementCheckResult);
             }
         }
+    }
+
+    /**
+     * Downloads the latest compatible version of a module and returns the `module.json` of the package.
+     *
+     * The download is kept, so a following {@see install()} or {@see update()} of the same version
+     * does not download it again.
+     *
+     * @return array the `module.json` contents, an empty array if the package has none
+     * @throws ServerErrorHttpException
+     * @since 1.19.1
+     */
+    public function getPackageModuleInfo(string $moduleId): array
+    {
+        return $this->readPackageModuleInfo($moduleId, $this->downloadModule($moduleId));
+    }
+
+    private function readPackageModuleInfo(string $moduleId, string $moduleZipFile): array
+    {
+        $zip = new ZipArchive();
+        if ($zip->open($moduleZipFile) !== true) {
+            return [];
+        }
+
+        $moduleJson = $zip->getFromName($moduleId . '/module.json');
+        $zip->close();
+
+        try {
+            $moduleInfo = $moduleJson !== false ? Json::decode($moduleJson) : [];
+        } catch (\Throwable) {
+            $moduleInfo = [];
+        }
+
+        return is_array($moduleInfo) ? $moduleInfo : [];
     }
 
     private function downloadModule($moduleId): string
