@@ -9,6 +9,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use yii\helpers\StringHelper;
@@ -41,6 +42,23 @@ class PeopleDetails extends Widget
      */
     public function run()
     {
+        $html = implode($this->separator, array_filter([
+            implode($this->separator, $this->getProfileFieldLines()),
+            PeopleDetailsTemplate::render($this->user),
+        ], static fn(string $part) => $part !== ''));
+
+        if ($html === '') {
+            return '';
+        }
+
+        return str_replace('{lines}', $html, $this->template);
+    }
+
+    /**
+     * @return string[] values of the profile fields selected in the People settings
+     */
+    private function getProfileFieldLines(): array
+    {
         $lines = [];
 
         for ($i = 1; $i <= 3; $i++) {
@@ -49,11 +67,7 @@ class PeopleDetails extends Widget
             }
         }
 
-        if (empty($lines)) {
-            return '';
-        }
-
-        return str_replace('{lines}', implode($this->separator, $lines), $this->template);
+        return $lines;
     }
 
     /**
