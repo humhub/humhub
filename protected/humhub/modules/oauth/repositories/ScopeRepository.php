@@ -9,6 +9,7 @@
 namespace humhub\modules\oauth\repositories;
 
 use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\entities\ClientEntity;
 use humhub\modules\oauth\entities\ScopeEntity;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
@@ -41,15 +42,27 @@ class ScopeRepository implements ScopeRepositoryInterface
         $grant = Grant::findByGuid($userIdentifier);
         $service = new GrantService();
 
-        if ($grant === null || !$service->isUsable($grant)) {
+        if (
+            $grant === null
+            || $grant->type !== Grant::TYPE_OAUTH
+            || !$clientEntity instanceof ClientEntity
+            || (int)$grant->client_id !== $clientEntity->recordId
+            || !$service->isUsable($grant)
+        ) {
             throw OAuthServerException::invalidGrant('The authorization is no longer valid.');
         }
 
         $effective = $service->getEffectiveScopes($grant);
 
-        return array_values(array_filter(
+        $granted = array_values(array_filter(
             $scopes,
             static fn(ScopeEntityInterface $scope) => in_array($scope->getIdentifier(), $effective, true),
         ));
+
+        if ($granted === []) {
+            throw OAuthServerException::invalidScope('');
+        }
+
+        return $granted;
     }
 }

@@ -19,7 +19,7 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
  */
 class ClientRepository implements ClientRepositoryInterface
 {
-    private const GRANT_TYPES = ['authorization_code', 'refresh_token'];
+    public const GRANT_TYPES = ['authorization_code', 'refresh_token'];
 
     public function getClientEntity(string $clientIdentifier): ?ClientEntityInterface
     {

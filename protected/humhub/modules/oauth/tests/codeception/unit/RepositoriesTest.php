@@ -12,15 +12,20 @@ use DateTimeImmutable;
 use humhub\modules\oauth\entities\ClientEntity;
 use humhub\modules\oauth\entities\ScopeEntity;
 use humhub\modules\oauth\models\AccessToken;
+use humhub\modules\oauth\models\AuthCode;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\models\RefreshToken;
+use humhub\modules\oauth\Module;
 use humhub\modules\oauth\repositories\AccessTokenRepository;
+use humhub\modules\oauth\repositories\AuthCodeRepository;
 use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\repositories\RefreshTokenRepository;
 use humhub\modules\oauth\repositories\ScopeRepository;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\user\models\User;
+use League\OAuth2\Server\CryptKey;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class RepositoriesTest extends HumHubDbTestCase
@@ -30,7 +35,7 @@ class RepositoriesTest extends HumHubDbTestCase
         parent::_before();
 
         // The settings fixture is reset per test and drops the keys the migration stored
-        \humhub\modules\oauth\Module::instance()->getKeyStore()->generateIfMissing();
+        Module::instance()->getKeyStore()->generateIfMissing();
     }
 
     private function systemGrant(): Grant
@@ -68,7 +73,7 @@ class RepositoriesTest extends HumHubDbTestCase
             'created_at' => time(),
         ]);
         $client->save(false);
-        \humhub\modules\oauth\Module::instance()->settings->set('allowClients', true);
+        Module::instance()->settings->set('allowClients', true);
 
         $this->assertTrue($repository->validateClient('confidential-test', 's3cret', 'refresh_token'));
         $this->assertFalse($repository->validateClient('confidential-test', 'wrong', 'refresh_token'));
@@ -104,7 +109,6 @@ class RepositoriesTest extends HumHubDbTestCase
     public function testReusingARevokedRefreshTokenRevokesTheGrant()
     {
         $grant = $this->systemGrant();
-        $grant->refresh();
         $jti = $this->persistAccessToken($grant);
 
         $refresh = new RefreshToken(['id' => 'rt-1', 'grant_id' => $grant->id, 'access_token_id' => $jti, 'expires_at' => time() + 3600, 'is_revoked' => 0]);
@@ -113,7 +117,6 @@ class RepositoriesTest extends HumHubDbTestCase
 
         $this->assertFalse($repository->isRefreshTokenRevoked('rt-1'));
 
-        $repository->revokeRefreshToken('rt-1');
         $this->assertTrue($repository->isRefreshTokenRevoked('rt-1'));
         $this->assertNull(Grant::findOne(['id' => $grant->id]), 'a reused refresh token revokes its grant');
     }
@@ -127,18 +130,18 @@ class RepositoriesTest extends HumHubDbTestCase
         $scopes = $repository->finalizeScopes([new ScopeEntity('full')], 'authorization_code', $clientEntity, $grant->guid);
         $this->assertSame(['full'], array_map(fn($s) => $s->getIdentifier(), $scopes));
 
-        $this->expectException(\League\OAuth2\Server\Exception\OAuthServerException::class);
+        $this->expectException(OAuthServerException::class);
         $repository->finalizeScopes([new ScopeEntity('full')], 'authorization_code', $clientEntity, 'no-such-grant');
     }
 
     public function testAccessTokenCarriesIssuerAndKeyId()
     {
-        $module = \humhub\modules\oauth\Module::instance();
+        $module = Module::instance();
         $grant = $this->systemGrant();
         $token = (new AccessTokenRepository())->getNewToken(new ClientEntity($grant->client), [new ScopeEntity('full')], $grant->guid);
         $token->setIdentifier(bin2hex(random_bytes(20)));
         $token->setExpiryDateTime(new DateTimeImmutable('+1 hour'));
-        $token->setPrivateKey(new \League\OAuth2\Server\CryptKey($module->getKeyStore()->getPrivateKey(), null, false));
+        $token->setPrivateKey(new CryptKey($module->getKeyStore()->getPrivateKey(), null, false));
 
         [$header, $payload] = array_map(
             fn($part) => json_decode(base64_decode(strtr($part, '-_', '+/')), true),
@@ -149,5 +152,57 @@ class RepositoriesTest extends HumHubDbTestCase
         $this->assertSame($module->getKeyStore()->getKeyId(), $header['kid']);
         $this->assertSame($module->getIssuer(), $payload['iss']);
         $this->assertSame($grant->guid, $payload['sub']);
+    }
+
+    public function testReusingAnAuthCodeRevokesTheGrant()
+    {
+        $grant = $this->systemGrant();
+        (new AuthCode(['id' => 'ac-1', 'grant_id' => $grant->id, 'expires_at' => time() + 60, 'is_revoked' => 0]))->save(false);
+        $repository = new AuthCodeRepository();
+
+        $this->assertFalse($repository->isAuthCodeRevoked('ac-1'));
+        $this->assertTrue($repository->isAuthCodeRevoked('ac-1'));
+        $this->assertNull(Grant::findOne(['id' => $grant->id]));
+    }
+
+    public function testFinalizeScopesNarrowsToTheEffectiveScopes()
+    {
+        $client = new Client([
+            'client_id' => 'narrow-test',
+            'type' => Client::TYPE_ADMIN,
+            'name' => 'Narrow',
+            'redirect_uris' => json_encode(['https://example.org/cb']),
+            'scopes' => json_encode(['content:read']),
+            'is_active' => 1,
+            'created_at' => time(),
+        ]);
+        $client->save(false);
+        Module::instance()->settings->set('allowClients', true);
+        $grant = (new GrantService())->createOAuthGrant(User::findOne(['id' => 1]), $client, ['content:read', 'content:write']);
+        $repository = new ScopeRepository();
+        $entity = new ClientEntity($client);
+
+        $scopes = $repository->finalizeScopes([new ScopeEntity('content:read'), new ScopeEntity('content:write')], 'authorization_code', $entity, $grant->guid);
+        $this->assertSame(['content:read'], array_map(fn($s) => $s->getIdentifier(), $scopes));
+
+        $this->expectException(OAuthServerException::class);
+        $repository->finalizeScopes([new ScopeEntity('content:write')], 'authorization_code', $entity, $grant->guid);
+    }
+
+    public function testExpiredAccessTokenIsRevoked()
+    {
+        $jti = $this->persistAccessToken($this->systemGrant());
+        AccessToken::updateAll(['expires_at' => time() - 10], ['id' => $jti]);
+
+        $this->assertTrue((new AccessTokenRepository())->isAccessTokenRevoked($jti));
+    }
+
+    public function testClientEntityRejectsUnsupportedGrantTypes()
+    {
+        $entity = new ClientEntity(Client::findByClientId(Client::SYSTEM_CLIENT_ID));
+
+        $this->assertTrue($entity->supportsGrantType('authorization_code'));
+        $this->assertTrue($entity->supportsGrantType('refresh_token'));
+        $this->assertFalse($entity->supportsGrantType('client_credentials'));
     }
 }

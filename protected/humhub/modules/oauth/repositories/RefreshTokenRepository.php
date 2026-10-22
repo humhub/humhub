@@ -14,8 +14,10 @@ use humhub\modules\oauth\models\RefreshToken;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use Yii;
+use yii\db\IntegrityException;
 
 /**
  * @since 1.20
@@ -35,13 +37,17 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
             throw OAuthServerException::invalidGrant('The authorization is no longer valid.');
         }
 
-        (new RefreshToken([
-            'id' => $refreshTokenEntity->getIdentifier(),
-            'grant_id' => $grant->id,
-            'access_token_id' => $accessToken->getIdentifier(),
-            'expires_at' => $refreshTokenEntity->getExpiryDateTime()->getTimestamp(),
-            'is_revoked' => 0,
-        ]))->save(false);
+        try {
+            (new RefreshToken([
+                'id' => $refreshTokenEntity->getIdentifier(),
+                'grant_id' => $grant->id,
+                'access_token_id' => $accessToken->getIdentifier(),
+                'expires_at' => $refreshTokenEntity->getExpiryDateTime()->getTimestamp(),
+                'is_revoked' => 0,
+            ]))->save(false);
+        } catch (IntegrityException) {
+            throw UniqueTokenIdentifierConstraintViolationException::create();
+        }
     }
 
     public function revokeRefreshToken(string $tokenId): void
@@ -67,6 +73,17 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
             return true;
         }
 
-        return $token->expires_at < time() || !$service->isUsable($token->grant);
+        if ($token->expires_at < time() || !$service->isUsable($token->grant)) {
+            return true;
+        }
+
+        // Claimed atomically, so concurrent refreshes of one token cannot both succeed
+        if (RefreshToken::updateAll(['is_revoked' => 1], ['id' => $tokenId, 'is_revoked' => 0]) === 0) {
+            Yii::warning('A refresh token was reused concurrently; revoking grant ' . $token->grant_id . '.', 'oauth');
+            $service->revoke($token->grant);
+            return true;
+        }
+
+        return false;
     }
 }

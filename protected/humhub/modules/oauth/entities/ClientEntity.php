@@ -9,6 +9,7 @@
 namespace humhub\modules\oauth\entities;
 
 use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\repositories\ClientRepository;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
@@ -34,6 +35,14 @@ class ClientEntity implements ClientEntityInterface
         $this->isConfidential = $client->isConfidential();
         $this->recordId = $client->id;
         $this->type = $client->type;
+    }
+
+    /**
+     * League skips the repository's grant check for public clients, so it is enforced here too.
+     */
+    public function supportsGrantType(string $grantType): bool
+    {
+        return in_array($grantType, ClientRepository::GRANT_TYPES, true);
     }
 
     public function getRecord(): ?Client

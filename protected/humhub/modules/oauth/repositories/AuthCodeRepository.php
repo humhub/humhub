@@ -14,7 +14,9 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
+use yii\db\IntegrityException;
 
 /**
  * @since 1.20
@@ -33,12 +35,16 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
             throw OAuthServerException::invalidGrant('The authorization is no longer valid.');
         }
 
-        (new AuthCode([
-            'id' => $authCodeEntity->getIdentifier(),
-            'grant_id' => $grant->id,
-            'expires_at' => $authCodeEntity->getExpiryDateTime()->getTimestamp(),
-            'is_revoked' => 0,
-        ]))->save(false);
+        try {
+            (new AuthCode([
+                'id' => $authCodeEntity->getIdentifier(),
+                'grant_id' => $grant->id,
+                'expires_at' => $authCodeEntity->getExpiryDateTime()->getTimestamp(),
+                'is_revoked' => 0,
+            ]))->save(false);
+        } catch (IntegrityException) {
+            throw UniqueTokenIdentifierConstraintViolationException::create();
+        }
     }
 
     public function revokeAuthCode(string $codeId): void
@@ -63,6 +69,16 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
             return true;
         }
 
-        return !$service->isUsable($code->grant);
+        if ($code->expires_at < time() || !$service->isUsable($code->grant)) {
+            return true;
+        }
+
+        // Claimed atomically, so concurrent exchanges of one code cannot both succeed
+        if (AuthCode::updateAll(['is_revoked' => 1], ['id' => $codeId, 'is_revoked' => 0]) === 0) {
+            $service->revoke($code->grant);
+            return true;
+        }
+
+        return false;
     }
 }
