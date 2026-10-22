@@ -9,6 +9,7 @@
 namespace humhub\modules\oauth\services;
 
 use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\notifications\GrantCreatedNotification;
 use humhub\modules\oauth\Module;
 use humhub\modules\user\models\User;
 use yii\base\InvalidArgumentException;
@@ -52,6 +53,8 @@ class PersonalAccessTokenService
         ]);
         $grant->setScopeIds($scopeIds);
         $grant->save(false);
+
+        GrantCreatedNotification::send($user, payload: ['type' => 'pat', 'name' => $grant->name], dedupe: false);
 
         return [$token, $grant];
     }

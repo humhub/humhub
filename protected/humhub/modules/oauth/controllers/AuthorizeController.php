@@ -19,6 +19,7 @@ use humhub\modules\oauth\entities\ClientEntity;
 use humhub\modules\oauth\entities\ScopeEntity;
 use humhub\modules\oauth\entities\UserEntity;
 use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\notifications\GrantCreatedNotification;
 use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\AuthorizationServer;
@@ -150,6 +151,15 @@ class AuthorizeController extends Controller
                 array_map(static fn($scope) => $scope->getIdentifier(), $authRequest->getScopes()),
             );
             $userEntity = new UserEntity($grant->guid);
+
+            // Signing in to the app is the user's own routine, anything else is worth a notice
+            if ($client->type !== Client::TYPE_SYSTEM) {
+                GrantCreatedNotification::send(
+                    Yii::$app->user->getIdentity(),
+                    payload: ['type' => 'oauth', 'name' => $client->name],
+                    dedupe: false,
+                );
+            }
         }
 
         $authRequest->setUser($userEntity);

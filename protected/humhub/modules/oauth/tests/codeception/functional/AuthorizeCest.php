@@ -10,7 +10,9 @@ namespace humhub\modules\oauth\tests\codeception\functional;
 
 use FunctionalTester;
 use humhub\modules\oauth\models\Client;
+use humhub\modules\notification\models\Notification;
 use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\notifications\GrantCreatedNotification;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\tests\codeception\_support\OAuthTestHelper;
 use humhub\modules\user\models\User;
@@ -255,5 +257,36 @@ class AuthorizeCest
         $I->seeResponseCodeIsRedirection();
         Assert::assertStringContainsString('code=', $this->location());
         Assert::assertEquals(1, Grant::find()->where(['user_id' => 1])->count());
+    }
+
+    private function notificationCount(): int
+    {
+        return (int)Notification::find()->where(['class' => GrantCreatedNotification::class, 'user_id' => 1])->count();
+    }
+
+    public function testApprovingAnAdminClientNotifiesTheUser(FunctionalTester $I)
+    {
+        Notification::deleteAll(['class' => GrantCreatedNotification::class]);
+        $this->createAdminClient();
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertSame(1, $this->notificationCount());
+    }
+
+    public function testAppSignInAndDenyNotifyNobody(FunctionalTester $I)
+    {
+        Notification::deleteAll(['class' => GrantCreatedNotification::class]);
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertSame(0, $this->notificationCount());
+
+        $this->createAdminClient();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->click('Deny');
+        Assert::assertSame(0, $this->notificationCount());
     }
 }
