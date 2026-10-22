@@ -26,6 +26,26 @@ class WebSessionCest
         return (new GrantService())->createOAuthGrant(User::findOne(['id' => $userId]), Client::findByClientId(Client::SYSTEM_CLIENT_ID), ['full']);
     }
 
+    /**
+     * Loads the code's URL the way the app does: with the secret header.
+     */
+    private function redeem(FunctionalTester $I, Grant $grant, array $params = [], ?string $secret = null): array
+    {
+        $credentials = (new WebSessionService())->createCode($grant);
+        $this->open($I, $credentials['code'], $secret ?? $credentials['secret'], $params);
+
+        return $credentials;
+    }
+
+    private function open(FunctionalTester $I, string $code, ?string $secret, array $params = []): void
+    {
+        if ($secret !== null) {
+            $I->haveHttpHeader(WebSessionService::SECRET_HEADER, $secret);
+        }
+        $I->amOnRoute('/oauth/web-session/index', ['code' => $code] + $params);
+        $I->deleteHeader(WebSessionService::SECRET_HEADER);
+    }
+
     public function _after()
     {
         Grant::deleteAll();
@@ -34,9 +54,7 @@ class WebSessionCest
     public function testCodeLogsInAndBindsTheSession(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);
-        $code = (new WebSessionService())->createCode($grant);
-
-        $I->amOnRoute('/oauth/web-session/index', ['code' => $code, 'returnUrl' => Url::to(['/user/account/edit'])]);
+        $this->redeem($I, $grant, ['returnUrl' => Url::to(['/user/account/edit'])]);
 
         Assert::assertSame(2, (int)Yii::$app->user->id);
         Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
@@ -46,34 +64,51 @@ class WebSessionCest
 
     public function testCodeIsSingleUse(FunctionalTester $I)
     {
-        $code = (new WebSessionService())->createCode($this->appGrant(2));
+        $credentials = $this->redeem($I, $this->appGrant(2));
 
-        $I->amOnRoute('/oauth/web-session/index', ['code' => $code]);
-        $I->amOnRoute('/oauth/web-session/index', ['code' => $code]);
+        $this->open($I, $credentials['code'], $credentials['secret']);
         $I->seeResponseCodeIs(400);
+    }
+
+    public function testCodeWithoutSecretHeaderIsRejected(FunctionalTester $I)
+    {
+        $credentials = (new WebSessionService())->createCode($this->appGrant(2));
+
+        $this->open($I, $credentials['code'], null);
+        $I->seeResponseCodeIs(400);
+        Assert::assertTrue(Yii::$app->user->isGuest);
+    }
+
+    public function testWrongSecretIsRejectedAndDoesNotConsumeTheCode(FunctionalTester $I)
+    {
+        $credentials = (new WebSessionService())->createCode($this->appGrant(2));
+
+        $this->open($I, $credentials['code'], 'wrong');
+        $I->seeResponseCodeIs(400);
+        Assert::assertTrue(Yii::$app->user->isGuest);
+
+        $this->open($I, $credentials['code'], $credentials['secret']);
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame(2, (int)Yii::$app->user->id);
     }
 
     public function testAbsoluteReturnUrlsAreIgnored(FunctionalTester $I)
     {
-        $code = (new WebSessionService())->createCode($this->appGrant(2));
-
-        $I->amOnRoute('/oauth/web-session/index', ['code' => $code, 'returnUrl' => 'https://evil.example/']);
+        $this->redeem($I, $this->appGrant(2), ['returnUrl' => 'https://evil.example/']);
         $I->dontSeeInCurrentUrl('evil');
     }
 
     public function testADifferentLoggedInUserIsReplaced(FunctionalTester $I)
     {
         $I->amAdmin();
-        $code = (new WebSessionService())->createCode($this->appGrant(2));
-
-        $I->amOnRoute('/oauth/web-session/index', ['code' => $code]);
+        $this->redeem($I, $this->appGrant(2));
         Assert::assertSame(2, (int)Yii::$app->user->id);
     }
 
     public function testRevokingTheGrantEndsTheSession(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);
-        $I->amOnRoute('/oauth/web-session/index', ['code' => (new WebSessionService())->createCode($grant)]);
+        $this->redeem($I, $grant);
 
         (new GrantService())->revoke($grant);
 
@@ -84,7 +119,7 @@ class WebSessionCest
     public function testLogoutInTheWebViewRevokesTheGrant(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);
-        $I->amOnRoute('/oauth/web-session/index', ['code' => (new WebSessionService())->createCode($grant)]);
+        $this->redeem($I, $grant);
 
         $I->sendAjaxPostRequest(Url::to(['/user/auth/logout']));
 

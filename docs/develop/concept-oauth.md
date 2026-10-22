@@ -355,13 +355,19 @@ The app turns its grant into a regular web session for its WebViews:
 
 1. **Request a code.** The app calls `POST /api/v2/oauth/web-session` with its access token.
    - Only grants of the system client get a code; any other grant gets `403`.
-   - The response is `{"url": "<base>/oauth/web-session?code=<code>", "expiresIn": 60}`.
-   - The code is 32 random bytes, base64url, stored as a SHA-256 hash in
-     `oauth_web_session_code`.
-2. **Redeem it.** The WebView loads that URL, optionally with `&returnUrl=<relative URL>`.
-   `GET /oauth/web-session`:
+   - The response is
+     `{"url": "<base>/oauth/web-session?code=<code>", "headers": {"X-HumHub-Session-Secret": "<secret>"}, "expiresIn": 60}`
+     with `Cache-Control: no-store`.
+   - Code and secret are 32 random bytes each, base64url. Only
+     `SHA-256(<code> + ":" + <secret>)` is stored in `oauth_web_session_code`.
+   - The secret prevents login CSRF: a link to the URL alone, sent to someone else's browser,
+     cannot log that browser in, because a plain link cannot set a request header.
+2. **Redeem it.** The WebView loads that URL, optionally with `&returnUrl=<relative URL>`, and
+   sends the returned headers with that first request. `GET /oauth/web-session`:
+   - reads the secret from the `X-HumHub-Session-Secret` header; a missing header → error page;
    - deletes the code row atomically (`DELETE … WHERE code_hash = ? AND expires_at > now`); no
-     deleted row → error page;
+     deleted row (unknown code, wrong secret, expired, used) → error page. A wrong secret does
+     not match the row, so it does not consume the code;
    - checks that the grant is valid and the user is enabled;
    - logs out a different user already logged in to this WebView;
    - logs in the user without an auto-login cookie (`login($user, 0)`);
@@ -666,6 +672,8 @@ What the HumHub app implements against this:
 4. **API.** Requests carry `Authorization: Bearer <access token>`.
    - `401`: refresh once (refreshes serialized); if that fails, sign in again.
    - `403` with `gate`: open the `url` in the WebView.
-5. **WebView.** `POST /api/v2/oauth/web-session`, then load the returned URL. Whenever the
-   WebView reaches the login page, request a new code.
+5. **WebView.** `POST /api/v2/oauth/web-session`, then load the returned `url` with the
+   returned `headers` as request headers (`URLRequest` on iOS, `loadUrl(url, headers)` on
+   Android) — only on this first load. Whenever the WebView reaches the login page, request a
+   new code.
 6. **Sign-out.** `POST /oauth/revoke` with the refresh token, then clear the WebView cookies.

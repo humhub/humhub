@@ -30,29 +30,39 @@ class WebSessionService
      */
     public const SESSION_KEY_GRANT = 'oauth.grantId';
 
-    public function createCode(Grant $grant): string
+    /**
+     * Request header carrying the secret that belongs to a code. A plain link to the code's URL
+     * cannot set it, so a code alone cannot log a foreign browser in.
+     */
+    public const SECRET_HEADER = 'X-HumHub-Session-Secret';
+
+    /**
+     * @return array{code: string, secret: string} the code goes into the URL, the secret into the header
+     */
+    public function createCode(Grant $grant): array
     {
         if (!$this->isAppGrant($grant)) {
             throw new InvalidArgumentException('Only grants of the HumHub app get web sessions.');
         }
 
-        $code = rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+        $code = $this->randomToken();
+        $secret = $this->randomToken();
 
         (new WebSessionCode([
-            'code_hash' => hash('sha256', $code),
+            'code_hash' => $this->hash($code, $secret),
             'grant_id' => $grant->id,
             'expires_at' => time() + self::CODE_LIFETIME,
         ]))->save(false);
 
-        return $code;
+        return ['code' => $code, 'secret' => $secret];
     }
 
     /**
-     * @return Grant|null the grant, if the code is valid; a valid code is consumed, expired ones are left for the daily cleanup
+     * @return Grant|null the grant, if code and secret are valid; a valid code is consumed, expired ones are left for the daily cleanup
      */
-    public function redeem(string $code): ?Grant
+    public function redeem(string $code, string $secret): ?Grant
     {
-        $hash = hash('sha256', $code);
+        $hash = $this->hash($code, $secret);
         $row = WebSessionCode::findOne(['code_hash' => $hash]);
         if ($row === null) {
             return null;
@@ -103,6 +113,16 @@ class WebSessionService
     {
         Yii::$app->session->remove(self::SESSION_KEY_GRANT);
         Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
+    }
+
+    private function randomToken(): string
+    {
+        return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
+    }
+
+    private function hash(string $code, string $secret): string
+    {
+        return hash('sha256', $code . ':' . $secret);
     }
 
     private function isAppGrant(Grant $grant): bool

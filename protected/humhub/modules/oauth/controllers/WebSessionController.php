@@ -18,7 +18,7 @@ use yii\web\BadRequestHttpException;
 /**
  * Redeems the app's single-use code: logs the user in and binds the session to the grant.
  *
- * Reachable for guests even when guest access is disabled — the code is the credential.
+ * Reachable for guests even when guest access is disabled — code and secret header are the credential.
  *
  * @since 1.20
  */
@@ -32,8 +32,11 @@ class WebSessionController extends Controller
     public function actionIndex()
     {
         $code = Yii::$app->request->get('code');
+        $secret = Yii::$app->request->headers->get(WebSessionService::SECRET_HEADER);
         $service = new WebSessionService();
-        $grant = is_string($code) && $code !== '' ? $service->redeem($code) : null;
+        $grant = is_string($code) && $code !== '' && is_string($secret) && $secret !== ''
+            ? $service->redeem($code, $secret)
+            : null;
 
         if ($grant === null) {
             throw new BadRequestHttpException(Yii::t('OauthModule.base', 'This sign-in link is invalid or has expired.'));

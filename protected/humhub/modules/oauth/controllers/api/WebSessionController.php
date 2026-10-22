@@ -50,7 +50,7 @@ class WebSessionController extends BaseController
         }
 
         try {
-            $code = (new WebSessionService())->createCode($grant);
+            $credentials = (new WebSessionService())->createCode($grant);
         } catch (\yii\base\InvalidArgumentException) {
             throw new ForbiddenHttpException(Yii::t('OauthModule.base', 'Only the HumHub app can open web sessions.'));
         }
@@ -59,7 +59,8 @@ class WebSessionController extends BaseController
         Yii::$app->response->headers->set('Cache-Control', 'no-store');
 
         return [
-            'url' => Module::instance()->getEndpointUrl(['/oauth/web-session/index', 'code' => $code]),
+            'url' => Module::instance()->getEndpointUrl(['/oauth/web-session/index', 'code' => $credentials['code']]),
+            'headers' => [WebSessionService::SECRET_HEADER => $credentials['secret']],
             'expiresIn' => WebSessionService::CODE_LIFETIME,
         ];
     }

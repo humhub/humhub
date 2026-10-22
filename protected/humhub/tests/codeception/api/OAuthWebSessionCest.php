@@ -11,6 +11,7 @@ namespace humhub\tests\codeception\api;
 use ApiTester;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\Module;
+use humhub\modules\oauth\services\WebSessionService;
 use humhub\modules\oauth\tests\codeception\_support\OAuthTestHelper;
 use PHPUnit\Framework\Assert;
 
@@ -32,8 +33,13 @@ class OAuthWebSessionCest
         $I->sendPost('oauth/web-session');
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['expiresIn' => 60]);
-        $url = $I->grabDataFromResponseByJsonPath('$.url')[0];
+        $I->seeHttpHeader('Cache-Control', 'no-store');
+        $response = json_decode($I->grabResponse(), true);
+        $url = $response['url'];
         Assert::assertMatchesRegularExpression('#/oauth/web-session\?code=[A-Za-z0-9_-]{43}$#', $url);
+        $secret = $response['headers'][WebSessionService::SECRET_HEADER];
+        Assert::assertMatchesRegularExpression('#^[A-Za-z0-9_-]{43}$#', $secret);
+        Assert::assertStringNotContainsString($secret, $url);
     }
 
     public function testOtherClientsAndSessionsGetNoCode(ApiTester $I)
