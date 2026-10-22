@@ -27,5 +27,6 @@ return [
         [GateManager::class, GateManager::EVENT_INIT_GATES, [Events::class, 'onGateInit']],
         [Controller::class, Controller::EVENT_BEFORE_ACTION, [Events::class, 'onBeforeAction']],
         [\yii\web\User::class, \yii\web\User::EVENT_BEFORE_LOGOUT, [Events::class, 'onUserBeforeLogout']],
+        [\yii\web\User::class, \yii\web\User::EVENT_AFTER_LOGIN, [Events::class, 'onUserAfterLogin']],
     ],
 ];

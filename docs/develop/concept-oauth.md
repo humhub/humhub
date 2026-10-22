@@ -386,7 +386,9 @@ The app turns its grant into a regular web session for its WebViews:
    - skipped on API requests not authenticated by the session (token or guest);
    - a guest session, or a session of another user than the grant's (the impersonating admin
      counts while an impersonation runs), only drops the binding. A session timeout does not
-     log out, so the binding would otherwise carry over to a later login;
+     log out, so the binding would otherwise carry over to a later login. Every login
+     (`yii\web\User::EVENT_AFTER_LOGIN`) clears a previous binding as well; the redemption
+     binds after its own login;
    - an unusable grant (deleted, expired, user disabled) logs the session out, and the next
      page is the login page. A session-authenticated API request gets `401`.
 4. **Logout.** Logging out in the WebView (the logout action `user/auth/logout`) deletes the

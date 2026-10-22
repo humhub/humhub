@@ -138,6 +138,17 @@ class Events
     }
 
     /**
+     * Any login starts without a previous binding; the web session route binds after its own login.
+     */
+    public static function onUserAfterLogin($event): void
+    {
+        $service = new WebSessionService();
+        if ($service->getBoundGrantId() !== null) {
+            $service->unbindSession();
+        }
+    }
+
+    /**
      * The user the session belongs to: the impersonating admin while an impersonation runs,
      * since it switches the identity within the same session.
      */

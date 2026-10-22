@@ -214,6 +214,21 @@ class WebSessionCest
         Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
     }
 
+    public function testALaterLoginOfAnotherUserClearsTheBinding(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        // Session timeout, then a login without a request in between (e.g. by auto-login cookie)
+        Yii::$app->user->switchIdentity(null);
+        Yii::$app->user->login(User::findOne(['id' => 1]));
+        (new GrantService())->revoke($grant);
+
+        $I->amOnRoute('/user/account/edit');
+        $I->dontSeeInCurrentUrl('login');
+        Assert::assertSame(1, (int)Yii::$app->user->id);
+    }
+
     public function testOtherLogoutsOnlyUnbind(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);
