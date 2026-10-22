@@ -13,6 +13,7 @@ use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\user\models\User;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 
 /**
@@ -91,6 +92,10 @@ class GrantService
             return $this->module->allowsPersonalAccessTokens();
         }
 
+        if ($grant->type !== Grant::TYPE_OAUTH) {
+            return false;
+        }
+
         $client = $grant->client;
         return $client !== null && $client->is_active && $this->isClientTypeAllowed($client);
     }
@@ -116,7 +121,7 @@ class GrantService
     }
 
     /**
-     * The scopes the grant holds right now.
+     * The scopes the grant holds right now. Does not check usability, callers check [[isUsable()]].
      *
      * @return string[]
      */
@@ -126,6 +131,10 @@ class GrantService
 
         if ($grant->type === Grant::TYPE_PAT) {
             return array_values(array_intersect($scopes, $this->module->getPatScopes()));
+        }
+
+        if ($grant->type !== Grant::TYPE_OAUTH) {
+            return [];
         }
 
         $client = $grant->client;
@@ -142,7 +151,9 @@ class GrantService
 
     public function revoke(Grant $grant): void
     {
-        $grant->delete();
+        if ($grant->delete() === false) {
+            throw new Exception('Could not revoke grant ' . $grant->guid);
+        }
     }
 
     /**

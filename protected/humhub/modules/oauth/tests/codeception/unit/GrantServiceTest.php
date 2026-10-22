@@ -103,4 +103,60 @@ class GrantServiceTest extends HumHubDbTestCase
 
         $this->assertNull(Grant::findOne(['id' => $grant->id]));
     }
+
+    private function createPatGrant(array $scopes): Grant
+    {
+        $grant = new Grant(['user_id' => 1, 'type' => Grant::TYPE_PAT, 'name' => 'PAT']);
+        $grant->setScopeIds($scopes);
+        $this->assertTrue($grant->save(false));
+        return $grant;
+    }
+
+    public function testPersonalAccessTokenScopesAreBoundedAndNeedTheSetting()
+    {
+        Module::instance()->settings->set('patScopes', json_encode(['content:read']));
+        $service = new GrantService();
+        $grant = $this->createPatGrant(['content:read', 'content:write']);
+
+        $this->assertSame(['content:read'], $service->getEffectiveScopes($grant));
+
+        Module::instance()->settings->set('allowPersonalAccessTokens', false);
+        $this->assertFalse($service->isUsable($grant));
+        Module::instance()->settings->set('allowPersonalAccessTokens', true);
+        $this->assertTrue($service->isUsable($grant));
+    }
+
+    public function testTouchIsThrottled()
+    {
+        $service = new GrantService();
+        $grant = $this->createPatGrant(['content:read']);
+
+        $service->touch($grant);
+        $first = $grant->last_used_at;
+        $this->assertEqualsWithDelta(time(), $first, 5);
+
+        $grant->updateAttributes(['last_used_at' => $first - 10]);
+        $service->touch($grant);
+        $this->assertSame($first - 10, $grant->last_used_at);
+
+        $grant->updateAttributes(['last_used_at' => time() - GrantService::TOUCH_INTERVAL - 10]);
+        $service->touch($grant);
+        $this->assertEqualsWithDelta(time(), $grant->last_used_at, 5);
+    }
+
+    public function testInactiveClientAndDisabledAppMakeAGrantUnusable()
+    {
+        Module::instance()->settings->set('allowClients', true);
+        $service = new GrantService();
+        $client = $this->createClient(Client::TYPE_ADMIN, ['content:read']);
+        $grant = $service->createOAuthGrant(User::findOne(['id' => 1]), $client, ['content:read']);
+        $this->assertTrue($service->isUsable($grant));
+
+        $client->updateAttributes(['is_active' => 0]);
+        $this->assertFalse($service->isUsable(Grant::findOne(['id' => $grant->id])));
+
+        $app = $service->createOAuthGrant(User::findOne(['id' => 1]), Client::findByClientId(Client::SYSTEM_CLIENT_ID), ['full']);
+        Module::instance()->settings->set('allowApp', false);
+        $this->assertFalse($service->isUsable($app));
+    }
 }

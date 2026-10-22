@@ -34,17 +34,18 @@ final class ScopeRegistry
     public const FULL = 'full';
 
     /**
-     * @var array<string, Scope>|null
+     * @var array<string, array<string, Scope>> by language, labels are translated
      */
-    private static ?array $scopes = null;
+    private static array $scopes = [];
 
     /**
      * @return array<string, Scope> by id
      */
     public static function getScopes(): array
     {
-        if (self::$scopes !== null) {
-            return self::$scopes;
+        $language = (string)Yii::$app->language;
+        if (isset(self::$scopes[$language])) {
+            return self::$scopes[$language];
         }
 
         $scopes = [];
@@ -62,7 +63,7 @@ final class ScopeRegistry
             $scopes[$scope->id] = $scope;
         }
 
-        return self::$scopes = $scopes;
+        return self::$scopes[$language] = $scopes;
     }
 
     public static function has(string $id): bool
@@ -91,7 +92,7 @@ final class ScopeRegistry
      */
     public static function reset(): void
     {
-        self::$scopes = null;
+        self::$scopes = [];
     }
 
     /**
