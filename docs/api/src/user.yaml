@@ -549,15 +549,14 @@ components:
                 type: string
               description: |
                 The up to three profile fields an administrator picked for the People card, as
-                plain text (at most 200 characters each); empty ones are left out. With a details
-                template configured (`peopleCardDetailsTemplate` of the user module), the text of
-                `detailsHtml` instead: one entry, its line breaks as newlines.
+                plain text (at most 200 characters each); empty ones are left out.
             detailsHtml:
               type: [string, 'null']
               description: |
-                The details template configured for the People card, rendered for the user as one
-                HTML block (profile field values encoded, markup such as links and line breaks
-                from the template); `null` without a template.
+                The details template configured for the People card (`peopleCardDetailsTemplate`
+                of the user module), rendered for the user as one HTML block shown below `details`
+                (profile field values encoded, markup such as links and line breaks from the
+                template); `null` without a template.
             tags:
               type: array
               items:

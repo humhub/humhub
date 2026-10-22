@@ -64,7 +64,7 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         $this->assertSame('Admin||', PeopleDetailsTemplate::render(User::findOne(['id' => 1])));
     }
 
-    public function testSerializerUsesTemplateInsteadOfSelectedFields()
+    public function testSerializerAddsTemplateToSelectedFields()
     {
         Yii::$app->settings->set('people.detail1', 'firstname');
         $user = User::findOne(['id' => 1]);
@@ -77,13 +77,11 @@ class PeopleDetailsTemplateTest extends HumHubDbTestCase
         $this->setTemplate('<a href="https://nav.example/?q={{ raw.lastname|url_encode }}">{{ lastname }}</a><br>{{ firstname }}');
 
         $entry = UserSerializer::list($user);
+        $this->assertSame(['Admin'], $entry['details']);
         $this->assertSame('<a href="https://nav.example/?q=A%26B">A&amp;B</a><br>Admin', $entry['detailsHtml']);
-        $this->assertSame(["A&B\nAdmin"], $entry['details']);
 
         $this->setTemplate('{{ unknown }}');
-        $entry = UserSerializer::list($user);
-        $this->assertSame('', $entry['detailsHtml']);
-        $this->assertSame([], $entry['details']);
+        $this->assertSame('', UserSerializer::list($user)['detailsHtml']);
     }
 
     private function setTemplate(?string $template): void

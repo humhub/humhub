@@ -178,8 +178,8 @@
     class: "c-entity-card__subtitle"
   };
   const _hoisted_7$1 = { class: "c-entity-card__body" };
-  const _hoisted_8$1 = ["innerHTML"];
-  const _hoisted_9$1 = ["title"];
+  const _hoisted_8$1 = ["title"];
+  const _hoisted_9$1 = ["innerHTML"];
   const _hoisted_10 = {
     key: 0,
     class: "c-entity-card__tags"
@@ -262,24 +262,25 @@
         }, null, 8, ["context"])
       ]),
       vue.createElementVNode("div", _hoisted_7$1, [
-        vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
-        $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
-          key: 0,
-          class: "c-people-card__details",
-          innerHTML: $props.user.detailsHtml
-        }, null, 8, _hoisted_8$1)) : (vue.openBlock(true), vue.createElementBlock(
+        (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
-          { key: 1 },
+          null,
           vue.renderList($options.details, (detail, index) => {
             return vue.openBlock(), vue.createElementBlock("p", {
               key: index,
               class: "c-people-card__detail",
               title: detail
-            }, vue.toDisplayString(detail), 9, _hoisted_9$1);
+            }, vue.toDisplayString(detail), 9, _hoisted_8$1);
           }),
           128
           /* KEYED_FRAGMENT */
-        ))
+        )),
+        vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
+        $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 0,
+          class: "c-people-card__details",
+          innerHTML: $props.user.detailsHtml
+        }, null, 8, _hoisted_9$1)) : vue.createCommentVNode("v-if", true)
       ]),
       $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_10, [
         (vue.openBlock(true), vue.createElementBlock(

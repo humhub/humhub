@@ -9,8 +9,8 @@
 namespace humhub\modules\user\serializers;
 
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
-use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
@@ -86,11 +86,10 @@ class UserSerializer
      *   `null` when empty.
      * - `details` are the up to three profile fields an administrator picked for the People
      *   card (`people.detail1..3`, see {@see PeopleSettingsForm}) as plain text, empty ones left
-     *   out — the same for every caller. With a details template
-     *   ({@see Module::$peopleCardDetailsTemplate}) it is the text of `detailsHtml` instead, one
-     *   entry with its line breaks (`<br>`) as newlines.
-     * - `detailsHtml` is the details template rendered for the user, one HTML block (e.g. with
-     *   links), `null` without a template.
+     *   out — the same for every caller.
+     * - `detailsHtml` is the details template ({@see Module::$peopleCardDetailsTemplate}) rendered
+     *   for the user, one HTML block (e.g. with links) the card shows below `details`, `null`
+     *   without a template.
      * - `followerCount` counts active users that are not hidden, `null` while following is
      *   disabled; `friendCount` counts mutual friendships the same way, `null` while the
      *   friendship system is off.
@@ -133,19 +132,10 @@ class UserSerializer
             : self::plainValue($fields['title'], $user));
 
         $details = [];
-        $detailsHtml = null;
-        if (PeopleDetailsTemplate::isActive()) {
-            $detailsHtml = PeopleDetailsTemplate::render($user);
-            $text = self::plainText(preg_replace('/<br\s*\/?>/i', "\n", $detailsHtml));
-            if ($text !== '') {
-                $details[] = StringHelper::truncate($text, self::DETAIL_LENGTH, '...');
-            }
-        } else {
-            foreach ($fields['details'] as $field) {
-                $value = self::plainValue($field, $user);
-                if ($value !== '') {
-                    $details[] = StringHelper::truncate($value, self::DETAIL_LENGTH, '...');
-                }
+        foreach ($fields['details'] as $field) {
+            $value = self::plainValue($field, $user);
+            if ($value !== '') {
+                $details[] = StringHelper::truncate($value, self::DETAIL_LENGTH, '...');
             }
         }
 
@@ -153,7 +143,7 @@ class UserSerializer
             'bannerUrl' => $banner->exists() ? $banner->getUrl(null, true) : null,
             'title' => $title === '' ? null : $title,
             'details' => $details,
-            'detailsHtml' => $detailsHtml,
+            'detailsHtml' => PeopleDetailsTemplate::isActive() ? PeopleDetailsTemplate::render($user) : null,
             'tags' => array_values(array_filter(array_map('trim', $user->getTags()), static fn(string $tag) => $tag !== '')),
             'followerCount' => $counts['followerCount'],
             'friendCount' => $counts['friendCount'],
@@ -173,15 +163,9 @@ class UserSerializer
         }
 
         // Encoded, so that what is markup and what is text is told apart by strip_tags().
-        return self::plainText((string)$field->getUserValue($user, false));
-    }
+        $rendered = (string)$field->getUserValue($user, false);
 
-    /**
-     * The text of encoded HTML, without its markup.
-     */
-    private static function plainText(string $html): string
-    {
-        return trim(html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        return trim(html_entity_decode(strip_tags($rendered), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     /**
@@ -211,10 +195,7 @@ class UserSerializer
     {
         $settings = new PeopleSettingsForm();
         $title = (string)Yii::$app->settings->get('displayNameSubFormat', '');
-        // The details template replaces the selected fields.
-        $names = PeopleDetailsTemplate::isActive()
-            ? []
-            : array_values(array_filter([$settings->detail1, $settings->detail2, $settings->detail3], static fn($name) => (string)$name !== ''));
+        $names = array_values(array_filter([$settings->detail1, $settings->detail2, $settings->detail3], static fn($name) => (string)$name !== ''));
 
         $fields = $names === [] && $title === ''
             ? []
