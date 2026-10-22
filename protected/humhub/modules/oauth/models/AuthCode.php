@@ -34,9 +34,4 @@ class AuthCode extends ActiveRecord
     {
         return $this->hasOne(Grant::class, ['id' => 'grant_id']);
     }
-
-    public function isValid(): bool
-    {
-        return !$this->is_revoked && $this->expires_at >= time();
-    }
 }

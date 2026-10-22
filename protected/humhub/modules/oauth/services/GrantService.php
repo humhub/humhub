@@ -41,14 +41,13 @@ class GrantService
     /**
      * @param string[] $scopeIds the scopes the user approved
      */
-    public function createOAuthGrant(User $user, Client $client, array $scopeIds, ?string $userAgent = null): Grant
+    public function createOAuthGrant(User $user, Client $client, array $scopeIds): Grant
     {
         $grant = new Grant([
             'user_id' => $user->id,
             'type' => Grant::TYPE_OAUTH,
             'client_id' => $client->id,
             'name' => $client->name,
-            'user_agent' => $userAgent === null ? null : mb_substr($userAgent, 0, 255),
         ]);
         $grant->setScopeIds($scopeIds);
 

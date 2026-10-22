@@ -28,9 +28,9 @@ class AccessTokenEntity implements AccessTokenEntityInterface
     public string $keyId = '';
 
     /**
-     * League's token plus `iss` and the `kid` header that marks HumHub's own tokens.
+     * League 9.4's token (same builder chain as AccessTokenTrait) plus `iss` and the `kid`
+     * header that marks HumHub's own tokens.
      */
-    // Mirrors the builder chain of league 9.4's AccessTokenTrait, plus iss and kid
     private function convertToJWT(): Token
     {
         $this->initJwtConfiguration();
