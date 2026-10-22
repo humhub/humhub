@@ -10,6 +10,7 @@ namespace humhub\modules\user\serializers;
 
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\modules\friendship\models\Friendship;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
@@ -86,6 +87,9 @@ class UserSerializer
      * - `details` are the up to three profile fields an administrator picked for the People
      *   card (`people.detail1..3`, see {@see PeopleSettingsForm}) as plain text, empty ones left
      *   out — the same for every caller.
+     * - `detailsHtml` is the details template ({@see Module::$peopleCardDetailsTemplate}) rendered
+     *   for the user, one HTML block (e.g. with links) the card shows below `details`, `null`
+     *   without a template.
      * - `followerCount` counts active users that are not hidden, `null` while following is
      *   disabled; `friendCount` counts mutual friendships the same way, `null` while the
      *   friendship system is off.
@@ -108,6 +112,7 @@ class UserSerializer
      *     bannerUrl: string|null,
      *     title: string|null,
      *     details: string[],
+     *     detailsHtml: string|null,
      *     tags: string[],
      *     followerCount: int|null,
      *     friendCount: int|null,
@@ -138,6 +143,7 @@ class UserSerializer
             'bannerUrl' => $banner->exists() ? $banner->getUrl(null, true) : null,
             'title' => $title === '' ? null : $title,
             'details' => $details,
+            'detailsHtml' => PeopleDetailsTemplate::isActive() ? PeopleDetailsTemplate::render($user) : null,
             'tags' => array_values(array_filter(array_map('trim', $user->getTags()), static fn(string $tag) => $tag !== '')),
             'followerCount' => $counts['followerCount'],
             'friendCount' => $counts['friendCount'],

@@ -179,12 +179,13 @@
   };
   const _hoisted_7$1 = { class: "c-entity-card__body" };
   const _hoisted_8$1 = ["title"];
-  const _hoisted_9$1 = {
+  const _hoisted_9$1 = ["innerHTML"];
+  const _hoisted_10 = {
     key: 0,
     class: "c-entity-card__tags"
   };
-  const _hoisted_10 = ["title", "aria-label", "onClick"];
-  const _hoisted_11 = {
+  const _hoisted_11 = ["title", "aria-label", "onClick"];
+  const _hoisted_12 = {
     key: 1,
     class: "c-entity-card__footer"
   };
@@ -273,9 +274,15 @@
           }),
           128
           /* KEYED_FRAGMENT */
-        ))
+        )),
+        vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
+        $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 0,
+          class: "c-people-card__details",
+          innerHTML: $props.user.detailsHtml
+        }, null, 8, _hoisted_9$1)) : vue.createCommentVNode("v-if", true)
       ]),
-      $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$1, [
+      $options.tags.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_10, [
         (vue.openBlock(true), vue.createElementBlock(
           vue.Fragment,
           null,
@@ -287,13 +294,13 @@
               title: $options.filterByLabel(tag),
               "aria-label": $options.filterByLabel(tag),
               onClick: ($event) => _ctx.$emit("filter-tag", tag)
-            }, vue.toDisplayString(tag), 9, _hoisted_10);
+            }, vue.toDisplayString(tag), 9, _hoisted_11);
           }),
           128
           /* KEYED_FRAGMENT */
         ))
       ])) : vue.createCommentVNode("v-if", true),
-      $options.showFooter ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_11, [
+      $options.showFooter ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_12, [
         $props.state === void 0 ? (vue.openBlock(), vue.createElementBlock(
           "button",
           {
