@@ -20,18 +20,48 @@ use Yii;
 class AppsSections extends SecuritySectionStack
 {
     /**
-     * Whether the current user gets the tab: with a grant, or when allowed to create tokens or clients.
+     * @var \WeakMap<object, array<int, bool>>|null availability per request and user
      */
-    public static function isAvailable(): bool
+    private static ?\WeakMap $available = null;
+
+    /**
+     * Whether the current user gets the tab: with a listed grant, or when allowed to create tokens or clients.
+     *
+     * @param bool $refresh whether to recheck after a change within the request
+     */
+    public static function isAvailable(bool $refresh = false): bool
     {
         $user = Yii::$app->user;
         if ($user->isGuest) {
             return false;
         }
 
-        return Grant::find()->where(['user_id' => $user->id])->exists()
-            || TokensSection::canCreate()
-            || OwnClientsSection::canManage();
+        // Asked by the menu and by the controller of every request
+        self::$available ??= new \WeakMap();
+        $request = Yii::$app->request;
+        $cache = self::$available[$request] ?? [];
+        if ($refresh || !isset($cache[$user->id])) {
+            $cache[$user->id] = self::hasListedGrants((int)$user->id)
+                || TokensSection::canCreate()
+                || OwnClientsSection::canManage();
+            self::$available[$request] = $cache;
+        }
+
+        return $cache[$user->id];
+    }
+
+    /**
+     * Personal access tokens, also expired ones, and OAuth grants in use, as the sections list them.
+     */
+    private static function hasListedGrants(int $userId): bool
+    {
+        return Grant::find()
+            ->where(['user_id' => $userId])
+            ->andWhere(['or',
+                ['type' => Grant::TYPE_PAT],
+                ['and', ['type' => Grant::TYPE_OAUTH], ['not', ['last_used_at' => null]]],
+            ])
+            ->exists();
     }
 
     public function init()

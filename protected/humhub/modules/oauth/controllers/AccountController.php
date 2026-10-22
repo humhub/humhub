@@ -79,7 +79,7 @@ class AccountController extends BaseAccountController
         $this->view->success(Yii::t('OauthModule.base', 'Access revoked.'));
 
         // Without the last grant the tab may be gone
-        return $this->redirect(AppsSections::isAvailable() ? ['index'] : ['/user/security/index']);
+        return $this->redirect(AppsSections::isAvailable(true) ? ['index'] : ['/user/security/index']);
     }
 
     public function actionCreateToken()
@@ -90,7 +90,8 @@ class AccountController extends BaseAccountController
 
         $model = new PersonalAccessTokenForm($this->getUser());
         if ($model->load(Yii::$app->request->post()) && $model->create()) {
-            // Rendered, not redirected to: the token must not pass through the session
+            // Rendered, not redirected to: the token must not pass through the session or any cache
+            Yii::$app->response->headers->set('Cache-Control', 'no-store');
             return $this->render('token-created', ['token' => $model->getToken(), 'name' => $model->name]);
         }
 

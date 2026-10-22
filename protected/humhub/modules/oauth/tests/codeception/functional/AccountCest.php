@@ -144,10 +144,44 @@ class AccountCest
     {
         (new GrantService())->createOAuthGrant(User::findOne(['id' => 2]), Client::findByClientId(Client::SYSTEM_CLIENT_ID), ['full']);
 
+        // Nothing to list, so no tab
+        $I->amUser1();
+        $I->amOnRoute('/user/security/login');
+        $I->dontSee('Apps & Tokens');
+        $I->amOnRoute('/oauth/account/index');
+        $I->seeResponseCodeIs(404);
+    }
+
+    public function testExpiredTokensKeepTheTab(FunctionalTester $I)
+    {
+        [, $grant] = (new PersonalAccessTokenService())->create(User::findOne(['id' => 2]), 'Old script', ['content:read'], 30);
+        $grant->updateAttributes(['expires_at' => time() - 60]);
+
         $I->amUser1();
         $I->amOnRoute('/oauth/account/index');
-        $I->dontSee('Devices');
-        $I->see('No apps or tokens have access to your account.');
+        $I->see('Old script');
+        $I->see('Expired');
+    }
+
+    public function testNamesAreEncoded(FunctionalTester $I)
+    {
+        $this->allowUserClients($I);
+        $client = $this->userClient(2, ['name' => '<script>alert(1)</script>']);
+        $this->usedGrant(2, $client->client_id, ['content:read']);
+        (new PersonalAccessTokenService())->create(User::findOne(['id' => 2]), '<script>alert(2)</script>', ['content:read'], 30);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/account/index');
+        $I->see('Connected apps');
+        $I->see('My OAuth apps');
+        $I->see('Personal access tokens');
+        $source = $I->grabPageSource();
+        Assert::assertStringNotContainsString('<script>alert(', $source);
+        Assert::assertSame(2, substr_count($source, '&lt;script&gt;alert(1)&lt;/script&gt;'));
+        Assert::assertSame(1, substr_count($source, '&lt;script&gt;alert(2)&lt;/script&gt;'));
+
+        $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
+        Assert::assertStringNotContainsString('<script>alert(', $I->grabPageSource());
     }
 
     public function testTokenIsCreatedShownOnceAndRevoked(FunctionalTester $I)
@@ -177,6 +211,7 @@ class AccountCest
         ]);
         Assert::assertSame(1, preg_match('/hhpat_[A-Za-z0-9]{38}/', $I->grabPageSource(), $match));
         $I->see('Copy the token now.');
+        Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
 
         $grant = (new PersonalAccessTokenService())->find($match[0]);
         Assert::assertNotNull($grant);
