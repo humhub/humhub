@@ -44,12 +44,19 @@ final class TokenResolver
 
     /**
      * The grant an access or refresh token of this server belongs to, or `null`.
+     *
+     * Checks authenticity (signature or decryption) only, not expiry or client ownership: meant
+     * for revocation. Callers must check that the grant belongs to the authenticated client.
      */
     public static function resolveGrant(string $token): ?Grant
     {
-        $row = self::isOwnJwt($token)
-            ? AccessToken::findOne(['id' => self::verifiedJwtId($token)])
-            : RefreshToken::findOne(['id' => self::refreshTokenId($token)]);
+        $isJwt = self::isOwnJwt($token);
+        $id = $isJwt ? self::verifiedJwtId($token) : self::refreshTokenId($token);
+        if ($id === null) {
+            return null;
+        }
+
+        $row = $isJwt ? AccessToken::findOne(['id' => $id]) : RefreshToken::findOne(['id' => $id]);
 
         return $row?->grant;
     }
