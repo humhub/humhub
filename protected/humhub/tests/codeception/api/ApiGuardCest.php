@@ -27,9 +27,9 @@ use yii\base\Event;
 class ApiGuardCest
 {
     /**
-     * Core ships no token authentication (that is the rest module's job), so every
-     * authenticated case here logs in a session — exactly what the platform's own frontend
-     * does. `amLoggedInAs()` must run before the first request of a test.
+     * Every authenticated case here logs in a session — exactly what the platform's own
+     * frontend does (token requests are covered by the OAuth cests). `amLoggedInAs()` must
+     * run before the first request of a test.
      */
     public function testApiActionIsUnreachableOutsideTheApiPrefix(ApiTester $I)
     {
