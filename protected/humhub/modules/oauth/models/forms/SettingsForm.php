@@ -8,8 +8,10 @@
 
 namespace humhub\modules\oauth\models\forms;
 
+use humhub\libs\BasePermission;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\Module;
+use humhub\modules\user\models\GroupPermission;
 use Yii;
 use yii\base\Model;
 
@@ -113,9 +115,9 @@ class SettingsForm extends Model
         return [
             'allowApp' => $off,
             'allowClients' => $off,
-            'allowUserClients' => $off . ' ' . Yii::t('OauthModule.base', 'Creating clients requires the group permission "Manage own OAuth clients".'),
+            'allowUserClients' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Register own OAuth apps".'),
             'userClientScopes' => Yii::t('OauthModule.base', 'The upper bound of what a user client can request. An empty selection means no access.'),
-            'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Creating tokens requires the group permission "Create personal access tokens".'),
+            'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Create personal access tokens".'),
             'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do. An empty selection means no access.'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited and offers "never" as a lifetime.'),
             'refreshTokenLifetimeDays' => Yii::t('OauthModule.base', 'Idle lifetime: renewed on every refresh, so an app in regular use stays signed in.'),
@@ -175,5 +177,18 @@ class SettingsForm extends Model
     private function onlyRegistered(array $scopeIds): array
     {
         return array_values(array_filter($scopeIds, static fn(string $id) => ScopeRegistry::has($id)));
+    }
+
+    /**
+     * Whether any group is allowed the permission — without one, an enabled feature is
+     * invisible to every user.
+     *
+     * @param class-string<BasePermission> $permissionClass
+     */
+    public function isGrantedToAnyGroup(string $permissionClass): bool
+    {
+        return GroupPermission::find()
+            ->where(['permission_id' => (new $permissionClass())->getId(), 'state' => BasePermission::STATE_ALLOW])
+            ->exists();
     }
 }

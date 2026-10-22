@@ -14,6 +14,7 @@ use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\forms\SettingsForm;
 use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
@@ -47,7 +48,7 @@ class AdminCest
         Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
         // Failed password confirmations are throttled via the cache
         Yii::$app->cache->flush();
-        GroupPermission::deleteAll(['group_id' => self::USER1_GROUP, 'class' => ManageSettings::class]);
+        GroupPermission::deleteAll(['group_id' => self::USER1_GROUP, 'class' => [ManageSettings::class, CreatePersonalAccessToken::class]]);
         foreach (self::SETTINGS as $name) {
             Module::instance()->settings->delete($name);
         }
@@ -62,6 +63,19 @@ class AdminCest
         $I->amOnRoute('/oauth/admin/index');
         $I->seeResponseCodeIs(200);
         $I->see('Personal access tokens');
+    }
+
+    public function testEnabledFeatureWithoutGroupPermissionIsFlagged(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('allowPersonalAccessTokens', true);
+        $I->amAdmin();
+
+        $I->amOnRoute('/oauth/admin/index');
+        $I->see('No group has the permission "Create personal access tokens" yet');
+
+        $I->setGroupPermission(self::USER1_GROUP, CreatePersonalAccessToken::class);
+        $I->amOnRoute('/oauth/admin/index');
+        $I->dontSee('No group has the permission "Create personal access tokens" yet');
     }
 
     public function testSettingsAreSaved(FunctionalTester $I)

@@ -1,6 +1,10 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
+use humhub\modules\oauth\permissions\ManageOwnOAuthClients;
+use humhub\widgets\bootstrap\Alert;
+use yii\helpers\Url;
 use humhub\modules\oauth\models\forms\SettingsForm;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\MultiSelect;
@@ -22,6 +26,12 @@ use humhub\widgets\form\MultiSelect;
         <h4><?= Yii::t('OauthModule.base', 'Clients') ?></h4>
         <?= $form->field($model, 'allowClients')->checkbox() ?>
         <?= $form->field($model, 'allowUserClients')->checkbox() ?>
+        <?php if ($model->allowUserClients && !$model->isGrantedToAnyGroup(ManageOwnOAuthClients::class)): ?>
+            <?= Alert::warning(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet, so no user can use this. Allow it under <a href="{url}">Groups → Permissions</a>.', [
+                'permission' => Html::encode((new ManageOwnOAuthClients())->getTitle()),
+                'url' => Html::encode(Url::to(['/admin/group'])),
+            ]))->closeButton(false) ?>
+        <?php endif; ?>
         <?= $form->field($model, 'userClientScopes')->widget(MultiSelect::class, [
             'items' => $model->getScopeOptions(false),
             'placeholderMore' => '',
@@ -31,6 +41,12 @@ use humhub\widgets\form\MultiSelect;
         <hr>
         <h4><?= Yii::t('OauthModule.base', 'Personal access tokens') ?></h4>
         <?= $form->field($model, 'allowPersonalAccessTokens')->checkbox() ?>
+        <?php if ($model->allowPersonalAccessTokens && !$model->isGrantedToAnyGroup(CreatePersonalAccessToken::class)): ?>
+            <?= Alert::warning(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet, so no user can use this. Allow it under <a href="{url}">Groups → Permissions</a>.', [
+                'permission' => Html::encode((new CreatePersonalAccessToken())->getTitle()),
+                'url' => Html::encode(Url::to(['/admin/group'])),
+            ]))->closeButton(false) ?>
+        <?php endif; ?>
         <?= $form->field($model, 'patScopes')->widget(MultiSelect::class, [
             'items' => $model->getScopeOptions(),
             'placeholderMore' => '',
