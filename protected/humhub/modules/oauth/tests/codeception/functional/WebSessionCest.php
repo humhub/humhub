@@ -163,6 +163,68 @@ class WebSessionCest
         $I->seeInCurrentUrl('login');
     }
 
+    public function testAnUnusableGrantEndsTheSession(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        $grant->updateAttributes(['expires_at' => time() - 1]);
+
+        $I->amOnRoute('/user/account/edit');
+        $I->seeInCurrentUrl('login');
+        Assert::assertTrue(Yii::$app->user->isGuest);
+    }
+
+    public function testANewCodeIsRedeemedDespiteARevokedBinding(FunctionalTester $I)
+    {
+        $old = $this->appGrant(2);
+        $this->redeem($I, $old);
+        (new GrantService())->revoke($old);
+
+        $new = $this->appGrant(2);
+        $this->redeem($I, $new);
+
+        Assert::assertSame(2, (int)Yii::$app->user->id);
+        Assert::assertSame($new->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+    }
+
+    public function testAStaleBindingOfAGuestSessionIsDroppedSilently(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        // A session timeout switches the identity without logging out
+        Yii::$app->user->switchIdentity(null);
+        $I->amOnRoute('/user/auth/login');
+
+        Assert::assertNull(Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+        Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
+    }
+
+    public function testABindingOfAnotherUserIsDroppedSilently(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        Yii::$app->user->switchIdentity(User::findOne(['id' => 1]));
+        $I->amOnRoute('/user/account/edit');
+
+        Assert::assertSame(1, (int)Yii::$app->user->id);
+        Assert::assertNull(Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+        Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
+    }
+
+    public function testOtherLogoutsOnlyUnbind(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        // For example the maintenance mode gate or a required login
+        Yii::$app->user->logout();
+
+        Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
+    }
+
     public function testLogoutInTheWebViewRevokesTheGrant(FunctionalTester $I)
     {
         $grant = $this->appGrant(2);

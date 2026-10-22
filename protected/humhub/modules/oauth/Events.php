@@ -31,6 +31,16 @@ class Events
     private const ABANDONED_GRANT_AGE = 3600;
 
     /**
+     * The only route whose logout ends the app's sign-in.
+     */
+    private const LOGOUT_ROUTE = 'user/auth/logout';
+
+    /**
+     * Redeems web session codes and replaces whatever session it finds itself.
+     */
+    private const WEB_SESSION_ROUTE_PREFIX = 'oauth/web-session/';
+
+    /**
      * Removes expired codes, tokens and grants, and grants whose code was never exchanged.
      */
     public static function onCronDailyRun($event): void
@@ -66,17 +76,30 @@ class Events
     {
         $service = new WebSessionService();
         $grantId = $service->getBoundGrantId();
-        if ($grantId === null) {
+        if ($grantId === null || str_starts_with($event->action->getUniqueId(), self::WEB_SESSION_ROUTE_PREFIX)) {
+            return;
+        }
+
+        $user = Yii::$app->user;
+        if (!$user->isSessionBased()) {
+            // API request not authenticated by the session (token, or guest): the session is not involved
             return;
         }
 
         $grant = Grant::findOne(['id' => $grantId]);
+
+        // A stale binding (left by a session timeout, which does not log out) must not carry
+        // over to a later login: drop it without logging out or revoking anything.
+        if ($user->isGuest || ($grant !== null && (int)$grant->user_id !== self::sessionOwnerId())) {
+            $service->unbindSession();
+            return;
+        }
+
         if ($grant !== null && (new GrantService())->isUsable($grant)) {
             return;
         }
 
         $service->unbindSession();
-        $user = Yii::$app->user;
 
         if ($user->enableSession) {
             $user->logout();
@@ -92,7 +115,8 @@ class Events
 
     /**
      * Logging out of a session established from a grant revokes the grant: a logout in the
-     * app's WebView is an app logout.
+     * app's WebView is an app logout. Any other end of the session (maintenance mode, a required
+     * login, account deletion, …) only unbinds it, so the app stays signed in.
      */
     public static function onUserBeforeLogout($event): void
     {
@@ -103,9 +127,28 @@ class Events
         }
 
         $service->unbindSession();
+        if (Yii::$app->controller?->action?->getUniqueId() !== self::LOGOUT_ROUTE) {
+            return;
+        }
+
         $grant = Grant::findOne(['id' => $grantId]);
         if ($grant !== null) {
             (new GrantService())->revoke($grant);
         }
+    }
+
+    /**
+     * The user the session belongs to: the impersonating admin while an impersonation runs,
+     * since it switches the identity within the same session.
+     */
+    private static function sessionOwnerId(): ?int
+    {
+        $user = Yii::$app->user;
+        if ($user->getImpersonation()->isActive()) {
+            $impersonator = $user->getImpersonation()->getImpersonator();
+            return $impersonator === null ? null : (int)$impersonator->id;
+        }
+
+        return (int)$user->id;
     }
 }

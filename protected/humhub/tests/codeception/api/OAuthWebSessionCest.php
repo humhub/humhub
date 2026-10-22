@@ -11,9 +11,12 @@ namespace humhub\tests\codeception\api;
 use ApiTester;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\Module;
+use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
 use humhub\modules\oauth\tests\codeception\_support\OAuthTestHelper;
+use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
+use Yii;
 
 /**
  * `POST /api/v2/oauth/web-session`: the app's code for a WebView session.
@@ -60,6 +63,21 @@ class OAuthWebSessionCest
         } finally {
             $client->delete();
         }
+    }
+
+    public function testABoundSessionEndsWithItsGrant(ApiTester $I)
+    {
+        $grant = (new GrantService())->createOAuthGrant(User::findOne(['id' => 2]), Client::findByClientId(Client::SYSTEM_CLIENT_ID), ['full']);
+        $I->amLoggedInAs(2);
+        Yii::$app->session->set(WebSessionService::SESSION_KEY_GRANT, $grant->id);
+
+        $I->sendGet('user/4/follow');
+        $I->seeResponseCodeIs(200);
+
+        (new GrantService())->revoke($grant);
+
+        $I->sendGet('user/4/follow');
+        $I->seeResponseCodeIs(401);
     }
 
     public function testSessionAuthenticationIsNotAccepted(ApiTester $I)

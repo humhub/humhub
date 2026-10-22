@@ -380,10 +380,19 @@ The app turns its grant into a regular web session for its WebViews:
      `//`, no backslash, no whitespace or control characters), otherwise to the dashboard, with
      `Referrer-Policy: no-referrer` and `Cache-Control: no-store`.
 3. **Binding.** `Events::onBeforeAction` (on `humhub\components\Controller::EVENT_BEFORE_ACTION`)
-   loads the grant of a session holding `oauth.grantId`. A deleted or expired grant logs the
-   session out, and the next page is the login page.
-4. **Logout.** Logging out of a session holding `oauth.grantId` deletes the grant
-   (`yii\web\User::EVENT_BEFORE_LOGOUT`). A logout in the WebView is therefore an app logout.
+   loads the grant of a session holding `oauth.grantId`:
+   - skipped on the redemption route `oauth/web-session/*`, which replaces the session itself
+     (a WebView with an old cookie must not lose its new code to a logout and redirect);
+   - skipped on API requests not authenticated by the session (token or guest);
+   - a guest session, or a session of another user than the grant's (the impersonating admin
+     counts while an impersonation runs), only drops the binding. A session timeout does not
+     log out, so the binding would otherwise carry over to a later login;
+   - an unusable grant (deleted, expired, user disabled) logs the session out, and the next
+     page is the login page. A session-authenticated API request gets `401`.
+4. **Logout.** Logging out in the WebView (the logout action `user/auth/logout`) deletes the
+   grant (`yii\web\User::EVENT_BEFORE_LOGOUT`): a logout in the WebView is an app logout. Other
+   ends of the session (maintenance mode, a required login, account deletion, …) only unbind
+   it, so the app stays signed in.
 
 **Gates in a WebView session.** A WebView session is a regular browser session and is
 classified as usual (`RequestClass::FullPage` / `Ajax`). Every gate applies, for example
