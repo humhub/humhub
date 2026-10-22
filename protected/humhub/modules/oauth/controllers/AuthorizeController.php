@@ -1,0 +1,172 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\oauth\controllers;
+
+use humhub\components\access\ControllerAccess;
+use humhub\components\Controller;
+use humhub\components\psr\HttpFactory;
+use humhub\components\psr\ResponseBridge;
+use humhub\components\psr\ServerRequestFactory;
+use humhub\modules\oauth\components\AuthorizationServerFactory;
+use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\entities\ClientEntity;
+use humhub\modules\oauth\entities\ScopeEntity;
+use humhub\modules\oauth\entities\UserEntity;
+use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\services\GrantService;
+use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Exception\OAuthServerException;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
+use Yii;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
+use yii\web\Response;
+
+/**
+ * The authorization endpoint: a regular web route, so login (any method), gates and consent
+ * run in the browser before a code is issued.
+ *
+ * @since 1.20
+ */
+class AuthorizeController extends Controller
+{
+    private const SESSION_PREFIX = 'oauth.authRequest.';
+
+    /**
+     * @inheritdoc
+     */
+    public $layout = '@humhub/modules/user/views/layouts/main';
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
+    {
+        return [[ControllerAccess::RULE_LOGGED_IN_ONLY]];
+    }
+
+    public function actionIndex()
+    {
+        if (Yii::$app->user->getImpersonation()->isActive()) {
+            throw new ForbiddenHttpException(Yii::t('OauthModule.base', 'Apps cannot be authorized while impersonating a user.'));
+        }
+
+        $server = AuthorizationServerFactory::createAuthorizationServer();
+
+        if (Yii::$app->request->isPost) {
+            return $this->decide($server);
+        }
+
+        try {
+            $authRequest = $server->validateAuthorizationRequest(ServerRequestFactory::fromYii(Yii::$app->request));
+        } catch (OAuthServerException $e) {
+            return ResponseBridge::toYii($e->generateHttpResponse(HttpFactory::instance()->createResponse()), Yii::$app->response);
+        }
+
+        /** @var ClientEntity $clientEntity */
+        $clientEntity = $authRequest->getClient();
+        $client = $clientEntity->getRecord();
+
+        if ($client->type === Client::TYPE_USER && (int)$client->owner_user_id !== (int)Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('OauthModule.base', 'This app can only be used by the person who created it.'));
+        }
+
+        $scopeIds = $this->grantableScopes($authRequest, $client);
+        if ($scopeIds === []) {
+            return $this->redirectWithError($authRequest, 'invalid_scope');
+        }
+        $authRequest->setScopes(array_map(static fn(string $id) => new ScopeEntity($id), $scopeIds));
+
+        if ($client->type === Client::TYPE_ADMIN && $client->skip_consent) {
+            return $this->complete($server, $authRequest, true);
+        }
+
+        $requestId = Yii::$app->security->generateRandomString(32);
+        Yii::$app->session->set(self::SESSION_PREFIX . $requestId, $authRequest);
+
+        return $this->render('index', [
+            'client' => $client,
+            'scopes' => array_map([ScopeRegistry::class, 'get'], $scopeIds),
+            'redirectHost' => $this->describeRedirect((string)$authRequest->getRedirectUri()),
+            'requestId' => $requestId,
+        ]);
+    }
+
+    private function decide(AuthorizationServer $server): Response
+    {
+        $key = self::SESSION_PREFIX . Yii::$app->request->post('request', '');
+        $authRequest = Yii::$app->session->get($key);
+        Yii::$app->session->remove($key);
+
+        if (!$authRequest instanceof AuthorizationRequestInterface) {
+            throw new BadRequestHttpException(Yii::t('OauthModule.base', 'The authorization request has expired. Please start again.'));
+        }
+
+        return $this->complete($server, $authRequest, Yii::$app->request->post('decision') === 'allow');
+    }
+
+    private function complete(AuthorizationServer $server, AuthorizationRequestInterface $authRequest, bool $approved): Response
+    {
+        $userEntity = new UserEntity('');
+
+        if ($approved) {
+            /** @var ClientEntity $clientEntity */
+            $clientEntity = $authRequest->getClient();
+            $grant = (new GrantService())->createOAuthGrant(
+                Yii::$app->user->getIdentity(),
+                $clientEntity->getRecord(),
+                array_map(static fn($scope) => $scope->getIdentifier(), $authRequest->getScopes()),
+            );
+            $userEntity = new UserEntity($grant->guid);
+        }
+
+        $authRequest->setUser($userEntity);
+        $authRequest->setAuthorizationApproved($approved);
+
+        $response = HttpFactory::instance()->createResponse();
+        try {
+            $response = $server->completeAuthorizationRequest($authRequest, $response);
+        } catch (OAuthServerException $e) {
+            $response = $e->generateHttpResponse($response);
+        }
+
+        return ResponseBridge::toYii($response, Yii::$app->response);
+    }
+
+    /**
+     * @return string[] the requested scopes reduced to what the client may get; `full` for the app
+     */
+    private function grantableScopes(AuthorizationRequestInterface $authRequest, Client $client): array
+    {
+        $allowed = (new GrantService())->getAllowedScopes($client);
+        if ($client->type === Client::TYPE_SYSTEM) {
+            return $allowed;
+        }
+
+        $requested = array_map(static fn($scope) => $scope->getIdentifier(), $authRequest->getScopes());
+        return array_values(array_intersect($requested, $allowed));
+    }
+
+    private function redirectWithError(AuthorizationRequestInterface $authRequest, string $error): Response
+    {
+        $uri = (string)$authRequest->getRedirectUri();
+        $query = http_build_query(array_filter(['error' => $error, 'state' => $authRequest->getState()]));
+
+        return ResponseBridge::toYii(
+            HttpFactory::instance()->createResponse(302)->withHeader('Location', $uri . (str_contains($uri, '?') ? '&' : '?') . $query),
+            Yii::$app->response,
+        );
+    }
+
+    private function describeRedirect(string $uri): string
+    {
+        $parts = parse_url($uri);
+        return $parts['host'] ?? (($parts['scheme'] ?? '') . ':');
+    }
+}
