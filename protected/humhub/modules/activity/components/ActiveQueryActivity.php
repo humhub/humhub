@@ -165,7 +165,7 @@ class ActiveQueryActivity extends ActiveQuery
         /** @var \humhub\modules\activity\Module $activityModule */
         $activityModule = Yii::$app->getModule('activity');
         $default = $activityModule->settings->get('mailSummaryLimitSpacesMode', '');
-        return $activityModule->settings->user($user)->get('mailSummaryLimitSpacesMode', $default);
+        return (int)$activityModule->settings->user($user)->get('mailSummaryLimitSpacesMode', $default);
     }
 
     /**
