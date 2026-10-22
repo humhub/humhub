@@ -45,15 +45,16 @@ $never = Yii::t('OauthModule.base', 'Never');
         </div>
         <div class="col-lg-3">
             <?= Html::submitButton(Yii::t('OauthModule.base', 'Filter'), ['class' => 'btn btn-primary']) ?>
+            <?php if ($filter !== []): ?>
             <?= Link::danger(Yii::t('OauthModule.base', 'Revoke all'))
                 ->post(['/oauth/admin/revoke-grants', $searchModel->formName() => $filter])
                 ->confirm(
                     Yii::t('OauthModule.base', 'Revoke all matching grants?'),
-                    Yii::t('OauthModule.base', 'All {count} grants matching the current filter are revoked.{withoutFilter}', [
+                    Yii::t('OauthModule.base', 'All {count} grants matching the current filter are revoked.', [
                         'count' => $dataProvider->getTotalCount(),
-                        'withoutFilter' => $filter === [] ? ' ' . Yii::t('OauthModule.base', 'No filter is set, this affects every grant of every user.') : '',
                     ]),
                 ) ?>
+            <?php endif ?>
         </div>
     </div>
     <?php ActiveForm::end() ?>
@@ -87,7 +88,7 @@ $never = Yii::t('OauthModule.base', 'Never');
                     'label' => Yii::t('OauthModule.base', 'Scopes'),
                     'format' => 'raw',
                     'value' => fn(Grant $grant) => implode(' ', array_map(
-                        fn(string $id) => Badge::light(Html::encode($id)),
+                        fn(string $id) => Badge::light($id),
                         $grant->getScopeIds(),
                     )),
                 ],
@@ -104,7 +105,7 @@ $never = Yii::t('OauthModule.base', 'Never');
                     'format' => 'raw',
                     'contentOptions' => ['class' => 'text-end text-nowrap'],
                     'value' => fn(Grant $grant) => Link::danger(Yii::t('OauthModule.base', 'Revoke'))
-                        ->post(['/oauth/admin/revoke-grant', 'id' => $grant->id])
+                        ->post(['/oauth/admin/revoke-grant', 'id' => $grant->id, $searchModel->formName() => $filter])
                         ->confirm(Yii::t('OauthModule.base', 'Revoke this grant?'))
                         ->sm(),
                 ],

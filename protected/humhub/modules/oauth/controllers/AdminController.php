@@ -138,7 +138,9 @@ class AdminController extends Controller
         (new GrantService())->revoke($grant);
         $this->view->success(Yii::t('OauthModule.base', 'Access revoked.'));
 
-        return $this->redirect(['grants']);
+        // Back to the list with the filter it was shown with
+        $filter = Yii::$app->request->get('GrantSearch');
+        return $this->redirect(['grants'] + (is_array($filter) ? ['GrantSearch' => $filter] : []));
     }
 
     public function actionRevokeGrants()
@@ -146,14 +148,26 @@ class AdminController extends Controller
         // The filter travels in the URL of the button, the same parameters the list was filtered by
         $searchModel = new GrantSearch();
         $searchModel->load(Yii::$app->request->queryParams);
-
-        $service = new GrantService();
-        $count = 0;
-        foreach ($searchModel->query()->all() as $grant) {
-            $service->revoke($grant);
-            $count++;
+        if (!$searchModel->hasFilter()) {
+            throw new BadRequestHttpException();
         }
-        $this->view->success(Yii::t('OauthModule.base', '{count} grants revoked.', ['count' => $count]));
+
+        // Ids first: deleting while iterating a query skips rows
+        $ids = $searchModel->query()->select('g.id')->column();
+        $service = new GrantService();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            foreach ($ids as $id) {
+                if ($grant = Grant::findOne(['id' => $id])) {
+                    $service->revoke($grant);
+                }
+            }
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+        $this->view->success(Yii::t('OauthModule.base', '{count} grants revoked.', ['count' => count($ids)]));
 
         return $this->redirect(['grants']);
     }

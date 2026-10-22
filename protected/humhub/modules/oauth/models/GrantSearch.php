@@ -48,7 +48,7 @@ class GrantSearch extends Model
      */
     public function query(): ActiveQuery
     {
-        $query = Grant::find()->alias('g')->with(['user.profile', 'client']);
+        $query = Grant::find()->alias('g');
 
         if (!$this->validate()) {
             // An invalid filter must never widen the set
@@ -75,12 +75,20 @@ class GrantSearch extends Model
         return $query;
     }
 
+    /**
+     * Whether any filter is set; bulk actions refuse to run without one.
+     */
+    public function hasFilter(): bool
+    {
+        return array_filter($this->getAttributes(), fn($value) => $value !== null && trim((string)$value) !== '') !== [];
+    }
+
     public function search(array $params): ActiveDataProvider
     {
         $this->load($params);
 
         return new ActiveDataProvider([
-            'query' => $this->query(),
+            'query' => $this->query()->with(['user.profile', 'client']),
             'sort' => [
                 'defaultOrder' => ['created_at' => SORT_DESC],
                 'attributes' => ['created_at', 'last_used_at', 'expires_at'],

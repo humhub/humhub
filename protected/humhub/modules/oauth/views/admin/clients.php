@@ -2,7 +2,6 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\libs\ActionColumn;
 use humhub\modules\oauth\models\Client;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
@@ -54,18 +53,18 @@ $types = [
                 ],
                 ['attribute' => 'created_at', 'format' => 'datetime'],
                 [
-                    'class' => ActionColumn::class,
-                    'actions' => fn(Client $client) => $client->type === Client::TYPE_SYSTEM ? [] : [
-                        Yii::t('OauthModule.base', 'Edit') => ['client', 'id' => $client->id],
-                        '---',
-                        Yii::t('OauthModule.base', 'Delete') => [
-                            'delete-client', 'id' => $client->id,
-                            'linkOptions' => [
-                                'data-method' => 'post',
-                                'data-confirm' => Yii::t('OauthModule.base', 'Delete this client? All its grants are revoked.'),
-                            ],
-                        ],
-                    ],
+                    'format' => 'raw',
+                    'contentOptions' => ['class' => 'text-end text-nowrap'],
+                    'value' => fn(Client $client) => $client->type === Client::TYPE_SYSTEM ? '' : (
+                        Button::light(Yii::t('OauthModule.base', 'Edit'))->link(['client', 'id' => $client->id])->sm() . ' ' .
+                        Link::danger(Yii::t('OauthModule.base', 'Delete'))
+                            ->post(['delete-client', 'id' => $client->id])
+                            ->confirm(
+                                Yii::t('OauthModule.base', 'Delete this client?'),
+                                Yii::t('OauthModule.base', 'All its grants are revoked.'),
+                            )
+                            ->sm()
+                    ),
                 ],
             ],
         ]) ?>

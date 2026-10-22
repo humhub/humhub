@@ -15,6 +15,7 @@ use humhub\modules\oauth\models\forms\SettingsForm;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
+use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
 use Yii;
@@ -383,5 +384,51 @@ class AdminCest
             $I->amOnRoute('/oauth/admin/' . $action);
             $I->seeResponseCodeIs(403);
         }
+    }
+
+    public function testRevokeAllNeedsAFilter(FunctionalTester $I)
+    {
+        $this->grant(2, $this->adminClient());
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/grants');
+        $I->dontSee('Revoke all');
+
+        $this->post($I, 'oauth/admin/revoke-grants');
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame(1, (int)Grant::find()->count());
+    }
+
+    public function testRevokeAllByTypeKeepsOtherTypes(FunctionalTester $I)
+    {
+        $oauth = $this->grant(2, $this->adminClient());
+        [, $pat] = (new PersonalAccessTokenService())->create(User::findOne(['id' => 2]), 'Script', ['content:read'], 30);
+
+        $I->amAdmin();
+        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['type' => Grant::TYPE_PAT]]);
+        Assert::assertTrue(Grant::find()->where(['id' => $oauth->id])->exists());
+        Assert::assertFalse(Grant::find()->where(['id' => $pat->id])->exists());
+    }
+
+    public function testSingleRevokeKeepsTheFilter(FunctionalTester $I)
+    {
+        $grant = $this->grant(2, $this->adminClient());
+
+        $I->amAdmin();
+        $this->post($I, 'oauth/admin/revoke-grant', ['id' => $grant->id, 'GrantSearch' => ['type' => 'oauth']]);
+        $I->seeResponseCodeIs(302);
+        Assert::assertStringContainsString('GrantSearch%5Btype%5D=oauth', (string)$I->grabHttpHeader('X-Redirect'));
+    }
+
+    public function testPostOnlyActionsDoNotMutateOnGet(FunctionalTester $I)
+    {
+        $client = $this->adminClient();
+        $grant = $this->grant(2, $client);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/revoke-grant', ['id' => $grant->id]);
+        $I->amOnRoute('/oauth/admin/regenerate-secret', ['id' => $client->id]);
+        Assert::assertTrue(Grant::find()->where(['id' => $grant->id])->exists());
+        Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
     }
 }
