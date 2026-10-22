@@ -85,7 +85,7 @@ class PersonalAccessTokenService
     public static function isWellFormed(string $token): bool
     {
         $length = strlen(self::PREFIX) + self::RANDOM_LENGTH + self::CHECKSUM_LENGTH;
-        if (strlen($token) !== $length || !str_starts_with($token, self::PREFIX) || !ctype_alnum(substr($token, strlen(self::PREFIX)))) {
+        if (strlen($token) !== $length || !str_starts_with($token, self::PREFIX) || !preg_match('/^[A-Za-z0-9]+$/D', substr($token, strlen(self::PREFIX)))) {
             return false;
         }
 
@@ -102,10 +102,11 @@ class PersonalAccessTokenService
     {
         $result = '';
         while (strlen($result) < $length) {
-            $byte = ord(random_bytes(1));
-            // rejection sampling keeps the distribution uniform
-            if ($byte < 248) {
-                $result .= self::ALPHABET[$byte % 62];
+            foreach (unpack('C*', random_bytes($length)) as $byte) {
+                // rejection sampling keeps the distribution uniform
+                if ($byte < 248 && strlen($result) < $length) {
+                    $result .= self::ALPHABET[$byte % 62];
+                }
             }
         }
         return $result;

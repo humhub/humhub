@@ -24,8 +24,8 @@ use yii\web\User;
  * Authenticates API requests with a bearer token of the OAuth server: an access token (JWT)
  * or a personal access token (`hhpat_` prefix).
  *
- * A token that is not one of ours (no `hhpat_` prefix, no `hh-` key id) yields `null`, so the next method may
- * try (e.g. the rest module's JWT). One of ours that fails validation is a 401.
+ * A token that is not one of ours (no `hhpat_` prefix, no `hh-` key id) yields `null`, so the
+ * next method may try (e.g. the rest module's JWT). One of ours that fails validation is a 401.
  *
  * The identity is set without a login: no `last_login` write and no login events per request.
  *

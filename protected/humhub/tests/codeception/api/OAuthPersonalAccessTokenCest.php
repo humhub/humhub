@@ -78,4 +78,34 @@ class OAuthPersonalAccessTokenCest
             $grant->delete();
         }
     }
+
+    public function testExpiredTokensFail(ApiTester $I)
+    {
+        [$token, $grant] = (new PersonalAccessTokenService())->create(User::findOne(['id' => 1]), 'x', ['content:read'], 30);
+
+        try {
+            $grant->updateAttributes(['expires_at' => time() - 10]);
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+            $I->sendGet('content/1/comments');
+            $I->seeResponseCodeIs(401);
+        } finally {
+            $grant->delete();
+        }
+    }
+
+    public function testTokensOfDisabledUsersFail(ApiTester $I)
+    {
+        $user = User::findOne(['id' => 1]);
+        [$token, $grant] = (new PersonalAccessTokenService())->create($user, 'x', ['content:read'], 30);
+
+        try {
+            $user->updateAttributes(['status' => User::STATUS_DISABLED]);
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $token);
+            $I->sendGet('content/1/comments');
+            $I->seeResponseCodeIs(401);
+        } finally {
+            $user->updateAttributes(['status' => User::STATUS_ENABLED]);
+            $grant->delete();
+        }
+    }
 }

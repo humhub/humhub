@@ -27,14 +27,22 @@ final class RecentAuthentication
      */
     public const MAX_LOGIN_AGE = 900;
 
-    private readonly ?int $loggedInAt;
+    /**
+     * Failed password attempts allowed per window before confirmations are refused.
+     */
+    public const MAX_FAILURES = 5;
+    public const FAILURE_WINDOW = 900;
 
     /**
-     * @param int|null $loggedInAt login time of the session; -1 = read it from the current session
+     * @param int|null $loggedInAt login time of the session, null if unknown
      */
-    public function __construct(private readonly User $user, ?int $loggedInAt = -1)
+    public function __construct(private readonly User $user, private readonly ?int $loggedInAt)
     {
-        $this->loggedInAt = $loggedInAt === -1 ? self::currentSessionLoginTime() : $loggedInAt;
+    }
+
+    public static function forCurrentSession(User $user): self
+    {
+        return new self($user, self::currentSessionLoginTime());
     }
 
     public function requiresPassword(): bool
@@ -42,13 +50,34 @@ final class RecentAuthentication
         return CheckPasswordValidator::hasPassword($this->user);
     }
 
+    public function isThrottled(): bool
+    {
+        return (int)Yii::$app->cache->get($this->throttleKey()) >= self::MAX_FAILURES;
+    }
+
     public function check(?string $password): bool
     {
-        if ($this->requiresPassword()) {
-            return $password !== null && $password !== '' && $this->user->currentPassword->validatePassword($password);
+        if (!$this->requiresPassword()) {
+            return $this->loggedInAt !== null && $this->loggedInAt >= time() - self::MAX_LOGIN_AGE;
         }
 
-        return $this->loggedInAt !== null && $this->loggedInAt >= time() - self::MAX_LOGIN_AGE;
+        if ($this->isThrottled()) {
+            return false;
+        }
+
+        if ($password !== null && $password !== '' && $this->user->currentPassword->validatePassword($password)) {
+            Yii::$app->cache->delete($this->throttleKey());
+            return true;
+        }
+
+        $key = $this->throttleKey();
+        Yii::$app->cache->set($key, (int)Yii::$app->cache->get($key) + 1, self::FAILURE_WINDOW);
+        return false;
+    }
+
+    private function throttleKey(): string
+    {
+        return 'oauth.recentAuthentication.' . $this->user->id;
     }
 
     private static function currentSessionLoginTime(): ?int
