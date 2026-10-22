@@ -7,7 +7,7 @@ use humhub\widgets\form\ActiveForm;
 
 /* @var AccountDelete $model */
 ?>
-<?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
+<?php $this->beginContent('@user/views/security/_layout.php') ?>
 
 <strong><?= Yii::t('UserModule.account', 'Are you sure that you want to delete your account?') ?></strong>
 <br>

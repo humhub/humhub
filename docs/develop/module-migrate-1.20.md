@@ -2066,3 +2066,35 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - The plain text summary mail shows the `content` and `contentTitle` parameters (and the liked
     content of `LikeActivity`) decoded instead of HTML-encoded (`&quot;`, `&lt;b&gt;`), as
     notifications do.
+- **Account settings: new "Security & Privacy" page (`user/security`).** Change password, connected
+  accounts, profile permissions, the privacy settings of the "General" tab and account deletion
+  moved from the "Profile" and "General" tabs and the "Permissions" entry of the left navigation to
+  tabs of the new page. The old routes `user/account/change-password`, `connected-accounts`,
+  `permissions` and `delete` redirect (301); their views in `@user/views/account/` are removed or
+  moved to `@user/views/security/`. The profile permissions are now at `user/security/privacy`.
+  - New tab menu `humhub\modules\user\widgets\SecuritySettingsMenu` (`EVENT_INIT`). Sort orders of
+    the core tabs: Login 100, Sessions 300, Privacy 400, My Data 900 — a two-factor module should
+    use 200. Module pages render inside `@user/views/security/_layout.php`.
+  - New section stacks `humhub\modules\user\widgets\security\SecurityLoginSections`,
+    `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section extends
+    `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
+  - Modules that add security or privacy related entries to `AccountSettingsMenu`, e.g. two-factor
+    authentication or a personal data export, should move them to `SecuritySettingsMenu` or
+    `SecurityDataSections`.
+  - `user_http_session` records `logged_in_at` and `user_agent`;
+    `humhub\modules\user\services\UserSessionService` lists and terminates the sessions of a user,
+    and `humhub\modules\user\components\User::rotateAuthKey()` invalidates the remember-me cookies of
+    other devices.
+  - The protected method `AccountSettingsMenu::getSecondaryAuthProviders()` was removed.
+  - Profile visibility, hide online status, allowed external content sources and blocked users moved
+    from `humhub\modules\user\models\forms\AccountSettings` to the new form
+    `humhub\modules\user\models\forms\PrivacySettings` (Privacy tab). Removed from `AccountSettings`:
+    the properties `$visibility`, `$hideOnlineStatus`, `$allowedExternalSources`, `$blockedUsers` and
+    the methods `getAllowedExternalSources()`, `isHiddenUser()`, `isVisibilityViewable()`,
+    `isVisibilityEditable()`, `getVisibilityOptions()`. The view `@user/views/account/editSettings.php`
+    no longer receives `$isEnabledOnlineStatus` and `$allowedExternalSources`.
+  - A module page rendered inside `@user/views/security/_layout.php` should be served by a controller
+    extending `humhub\modules\user\components\BaseAccountController` (account sub-layout and left
+    navigation).
+  - User gates whose `getAllowedRoutes()` allow `user/account/delete` (or another moved route) must
+    allow the new `user/security/*` routes, since the old routes only redirect.

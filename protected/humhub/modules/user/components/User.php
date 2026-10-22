@@ -246,6 +246,32 @@ class User extends \yii\web\User
     }
 
     /**
+     * Invalidates all auto-login (remember me) cookies of the identity, except the one of the current request
+     *
+     * @since 1.20
+     */
+    public function rotateAuthKey(UserModel $identity): void
+    {
+        $isCurrent = !$this->getIsGuest() && $this->getIdentity()->id === $identity->id;
+        $isOwnCookie = $isCurrent && !$this->getImpersonation()->isActive();
+        $duration = $isOwnCookie ? $this->getAuthCookieDuration() : 0;
+
+        $identity->updateAttributes(['auth_key' => Yii::$app->security->generateRandomString(32)]);
+
+        if ($isCurrent && $this->enableSession) {
+            // Keep the current session valid, Yii compares the session's auth key on every request
+            Yii::$app->session->set($this->authKeyParam, $identity->getAuthKey());
+            if ($this->getIdentity() !== $identity) {
+                $this->getIdentity()->auth_key = $identity->auth_key;
+            }
+        }
+
+        if ($duration > 0) {
+            $this->sendIdentityCookie($identity, $duration);
+        }
+    }
+
+    /**
      * @inheritdoc
      */
     public function switchIdentity($identity, $duration = 0)
