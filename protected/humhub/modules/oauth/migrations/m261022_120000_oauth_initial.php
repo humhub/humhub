@@ -49,6 +49,8 @@ class m261022_120000_oauth_initial extends Migration
         ]);
         $this->safeCreateIndex('ux_oauth_grant_guid', 'oauth_grant', 'guid', true);
         $this->safeCreateIndex('ux_oauth_grant_token_hash', 'oauth_grant', 'token_hash', true);
+        $this->safeCreateIndex('idx_oauth_grant_expires_at', 'oauth_grant', 'expires_at');
+        $this->safeCreateIndex('idx_oauth_grant_created_at', 'oauth_grant', 'created_at');
         $this->safeAddForeignKey('fk_oauth_grant_user', 'oauth_grant', 'user_id', 'user', 'id', 'CASCADE', 'CASCADE');
         $this->safeAddForeignKey('fk_oauth_grant_client', 'oauth_grant', 'client_id', 'oauth_client', 'id', 'CASCADE', 'CASCADE');
 
@@ -72,6 +74,7 @@ class m261022_120000_oauth_initial extends Migration
             'grant_id' => $this->integer()->notNull(),
             'expires_at' => $this->integer()->notNull(),
         ]);
+        $this->safeCreateIndex('idx_oauth_web_session_code_expires_at', 'oauth_web_session_code', 'expires_at');
         $this->safeAddForeignKey('fk_oauth_web_session_code_grant', 'oauth_web_session_code', 'grant_id', 'oauth_grant', 'id', 'CASCADE', 'CASCADE');
 
         // A re-run after a failed attempt finds the tables (DDL is not rolled back) and the client
