@@ -132,6 +132,34 @@ class Module extends \humhub\components\Module
         return max(0, (int)$this->settings->get('grantMaxLifetimeDays', 0));
     }
 
+    /**
+     * @return int maximum PAT lifetime in days, 0 = unlimited (offers "never")
+     */
+    public function getPatMaxLifetimeDays(): int
+    {
+        return max(0, (int)$this->settings->get('patMaxLifetimeDays', 365));
+    }
+
+    public function revokesOnPasswordChange(): bool
+    {
+        return (bool)$this->settings->get('revokeOnPasswordChange', false);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions($contentContainer = null)
+    {
+        if ($contentContainer !== null) {
+            return [];
+        }
+
+        return [
+            new permissions\CreatePersonalAccessToken(),
+            new permissions\ManageOwnOAuthClients(),
+        ];
+    }
+
     private function getScopeListSetting(string $name): array
     {
         $value = $this->settings->get($name);
