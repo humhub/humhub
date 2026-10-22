@@ -38,6 +38,14 @@ class GateManager extends Component
     public const EVENT_INIT_GATES = 'initGates';
 
     /**
+     * Session key marking a session established from an issued credential (e.g. the app's
+     * OAuth grant). Gates implementing [[LoginVerificationGateInterface]] skip such sessions.
+     *
+     * @since 1.20
+     */
+    public const SESSION_KEY_ISSUED_CREDENTIAL = 'gates.issuedCredential';
+
+    /**
      * Name of the settings entry holding the global gate state version.
      */
     private const SETTING_STATE_VERSION = 'gateStateVersion';
@@ -166,7 +174,7 @@ class GateManager extends Component
         $allGatesEvaluated = true;
         $result = null;
 
-        foreach ($this->getGates() as $gate) {
+        foreach ($this->getSessionGates() as $gate) {
             $isOpen = ($gate->isCacheable() && $snapshotValid) ? false : $gate->isOpen();
             if (!$isOpen) {
                 continue;
@@ -211,7 +219,7 @@ class GateManager extends Component
     {
         $snapshotValid = $this->isAllClosedSnapshotValid();
 
-        foreach ($this->getGates() as $gate) {
+        foreach ($this->getSessionGates() as $gate) {
             if ($gate->isCacheable() && $snapshotValid) {
                 continue;
             }
@@ -244,6 +252,25 @@ class GateManager extends Component
             $this->collected = true;
             $this->trigger(self::EVENT_INIT_GATES, new GateInitEvent(['manager' => $this]));
         }
+    }
+
+    /**
+     * @return UserGateInterface[] the gates that apply to the current session at all
+     */
+    private function getSessionGates(): array
+    {
+        $session = Yii::$app->has('session') ? Yii::$app->session : null;
+        $issued = $session !== null && ($session->getIsActive() || $session->getHasSessionId())
+            && $session->get(self::SESSION_KEY_ISSUED_CREDENTIAL);
+
+        if (!$issued) {
+            return $this->getGates();
+        }
+
+        return array_values(array_filter(
+            $this->getGates(),
+            static fn(UserGateInterface $gate) => !$gate instanceof LoginVerificationGateInterface,
+        ));
     }
 
     /**

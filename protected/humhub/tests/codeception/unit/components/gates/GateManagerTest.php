@@ -13,6 +13,7 @@ use humhub\components\gates\GateManager;
 use humhub\components\gates\RequestClass;
 use humhub\components\gates\UserGate;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 use yii\base\Event;
 
 class GateManagerTest extends HumHubDbTestCase
@@ -297,5 +298,43 @@ class GateManagerTest extends HumHubDbTestCase
         $this->assertNull($manager->findOpenGate(RequestClass::FullPage, 'mymodule/css/index'));
         $this->assertNull($manager->findOpenGate(RequestClass::Ajax, 'i18n/translations'));
         $this->assertEquals('a', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
+    }
+
+    public function testLoginVerificationGatesAreSkippedInIssuedCredentialSessions()
+    {
+        $manager = $this->createManager(
+            new FakeLoginVerificationGate(['id' => 'twofa', 'sortOrder' => 100, 'open' => true]),
+            new FakeGate(['id' => 'legal', 'sortOrder' => 200, 'open' => true]),
+        );
+
+        Yii::$app->session->set(GateManager::SESSION_KEY_ISSUED_CREDENTIAL, true);
+        try {
+            $this->assertSame('legal', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
+        } finally {
+            Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
+        }
+    }
+
+    public function testLoginVerificationGatesApplyInRegularSessions()
+    {
+        $manager = $this->createManager(
+            new FakeLoginVerificationGate(['id' => 'twofa', 'sortOrder' => 100, 'open' => true]),
+        );
+
+        $this->assertSame('twofa', $manager->findOpenGate(RequestClass::FullPage, 'dashboard')?->getId());
+    }
+
+    public function testHasOpenGateIgnoresSkippedGates()
+    {
+        $twofa = new FakeLoginVerificationGate(['id' => 'twofa', 'open' => true, 'cacheable' => false]);
+        $manager = $this->createManager($twofa);
+
+        Yii::$app->session->set(GateManager::SESSION_KEY_ISSUED_CREDENTIAL, true);
+        try {
+            $this->assertFalse($manager->hasOpenGate());
+            $this->assertSame(0, $twofa->isOpenCalls, 'a skipped gate is not evaluated');
+        } finally {
+            Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
+        }
     }
 }

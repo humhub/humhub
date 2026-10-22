@@ -1342,6 +1342,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `EVENT_COLLECT_AUTH_METHODS`; tokens it does not recognize fall through unchanged.
   - Modules can offer scopes through `humhub\modules\oauth\components\ScopeRegistry::EVENT_COLLECT_SCOPES`.
   - New `humhub\components\psr\` (PSR-7/17 bridge backed by `guzzlehttp/psr7`) for libraries that need PSR-7.
+- New marker interface `humhub\components\gates\LoginVerificationGateInterface` for gates that
+  verify the login itself (2FA): they are skipped in sessions established from an issued
+  credential (`GateManager::SESSION_KEY_ISSUED_CREDENTIAL`, the app's WebView sessions).
+  Second-factor modules should implement it.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working
