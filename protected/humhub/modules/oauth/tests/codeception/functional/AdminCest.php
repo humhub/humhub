@@ -9,6 +9,7 @@
 namespace humhub\modules\oauth\tests\codeception\functional;
 
 use FunctionalTester;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\forms\SettingsForm;
@@ -16,6 +17,7 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
+use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
 use Yii;
@@ -37,7 +39,7 @@ class AdminCest
         $this->cleanUp();
     }
 
-    private const ADMIN_PASSWORD = 'admin&humhub@PASS%worD!';
+    private const USER1_GROUP = 2;
 
     private function cleanUp(): void
     {
@@ -45,6 +47,7 @@ class AdminCest
         Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
         // Failed password confirmations are throttled via the cache
         Yii::$app->cache->flush();
+        GroupPermission::deleteAll(['group_id' => self::USER1_GROUP, 'class' => ManageSettings::class]);
         foreach (self::SETTINGS as $name) {
             Module::instance()->settings->delete($name);
         }
@@ -279,17 +282,16 @@ class AdminCest
         Assert::assertFalse((new GrantService())->isUsable(Grant::findOne(['id' => $grant->id])));
     }
 
-    public function testSecretIsRegeneratedAfterReauthentication(FunctionalTester $I)
+    public function testSecretIsRegenerated(FunctionalTester $I)
     {
         $client = $this->adminClient();
 
         $I->amAdmin();
         $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
-        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => 'wrong']);
-        $I->see('Your password is incorrect.');
-        Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
+        $I->see('Regenerate secret');
+        $I->dontSee('Your password');
 
-        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => self::ADMIN_PASSWORD]);
+        $this->post($I, 'oauth/admin/regenerate-secret', ['id' => $client->id]);
         $I->see('Copy the secret now.');
         Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
         $secret = $this->grabSecret($I);
@@ -430,5 +432,105 @@ class AdminCest
         $I->amOnRoute('/oauth/admin/regenerate-secret', ['id' => $client->id]);
         Assert::assertTrue(Grant::find()->where(['id' => $grant->id])->exists());
         Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
+    }
+
+    public function testOnlySystemAdminsSetFullAndSkipConsent(FunctionalTester $I)
+    {
+        $I->setGroupPermission(self::USER1_GROUP, ManageSettings::class);
+        $privileged = $this->adminClient(['scopes' => json_encode(['full', 'content:read']), 'skip_consent' => 1]);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/admin/client');
+        $I->seeResponseCodeIs(200);
+        $I->dontSee('Trusted: skip the consent page');
+        $I->dontSee('Full access to your account');
+
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Sneaky app',
+            'ClientForm[redirectUris]' => 'https://example.org/cb',
+            'ClientForm[scopes]' => ['content:read', 'full'],
+            'ClientForm[isActive]' => '1',
+        ]);
+        Assert::assertFalse(Client::find()->where(['name' => 'Sneaky app'])->exists());
+
+        $this->post($I, 'oauth/admin/client', [], ['ClientForm' => [
+            'name' => 'Sneaky app', 'redirectUris' => 'https://example.org/cb', 'scopes' => ['content:read'],
+            'skipConsent' => '1', 'isActive' => '1',
+        ]]);
+        Assert::assertFalse(Client::find()->where(['name' => 'Sneaky app'])->exists());
+
+        // What a system administrator set stays
+        $I->amOnRoute('/oauth/admin/client', ['id' => $privileged->id]);
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Renamed agent',
+            'ClientForm[redirectUris]' => 'https://example.org/cb',
+            'ClientForm[confidential]' => '1',
+            'ClientForm[scopes]' => ['spaces:read'],
+            'ClientForm[isActive]' => '1',
+        ]);
+        $privileged->refresh();
+        Assert::assertSame('Renamed agent', $privileged->name);
+        Assert::assertSame(['spaces:read', 'full'], $privileged->getAllowedScopes());
+        Assert::assertSame(1, (int)$privileged->skip_consent);
+    }
+
+    public function testUserClientsGetNoFullOrSkipConsent(FunctionalTester $I)
+    {
+        $client = $this->adminClient(['type' => Client::TYPE_USER, 'owner_user_id' => 2]);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
+        $I->dontSee('Trusted: skip the consent page');
+        $I->dontSee('Full access to your account');
+
+        $I->amOnRoute('/oauth/admin/client');
+        $I->see('Trusted: skip the consent page');
+        $I->see('Full access to your account');
+    }
+
+    public function testNoSecretIsCreatedWhileImpersonating(FunctionalTester $I)
+    {
+        $I->setGroupPermission(self::USER1_GROUP, ManageSettings::class);
+        $client = $this->adminClient();
+
+        $I->amAdmin();
+        Yii::$app->user->getImpersonation()->start(User::findOne(['id' => 2]));
+
+        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
+        $I->seeResponseCodeIs(200);
+        $this->post($I, 'oauth/admin/regenerate-secret', ['id' => $client->id]);
+        $I->seeResponseCodeIs(403);
+        $this->post($I, 'oauth/admin/client', [], ['ClientForm' => [
+            'name' => 'Backdoor', 'redirectUris' => 'https://example.org/cb', 'scopes' => ['content:read'],
+            'confidential' => '1', 'isActive' => '1',
+        ]]);
+        $I->seeResponseCodeIs(403);
+
+        Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
+        Assert::assertFalse(Client::find()->where(['name' => 'Backdoor'])->exists());
+    }
+
+    public function testArrayFilterValuesAreIgnored(FunctionalTester $I)
+    {
+        $this->grant(2, $this->adminClient());
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['user' => ['x'], 'type' => ['oauth']]]);
+        $I->seeResponseCodeIs(200);
+        $I->dontSee('Revoke all');
+
+        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['user' => ['x'], 'client_id' => ['1']]]);
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame(1, (int)Grant::find()->count());
+    }
+
+    public function testGrantsShowScopeLabels(FunctionalTester $I)
+    {
+        $this->grant(2, $this->adminClient());
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/grants');
+        $I->see('Read content, comments and likes', 'table');
+        $I->dontSee('content:read', 'table');
     }
 }

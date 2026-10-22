@@ -10,10 +10,10 @@ namespace humhub\modules\oauth\controllers;
 
 use humhub\modules\admin\components\Controller;
 use humhub\components\access\ControllerAccess;
+use humhub\modules\oauth\components\CredentialActions;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\forms\ClientForm;
-use humhub\modules\oauth\models\forms\ReauthenticationForm;
 use humhub\modules\oauth\models\forms\SettingsForm;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\models\GrantSearch;
@@ -31,6 +31,8 @@ use yii\web\NotFoundHttpException;
  */
 class AdminController extends Controller
 {
+    use CredentialActions;
+
     /**
      * @inheritdoc
      */
@@ -49,6 +51,23 @@ class AdminController extends Controller
     {
         $this->subLayout = '@admin/views/layouts/user';
         parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // Saving a client may create its secret
+        if ($action->id === 'regenerate-secret' || ($action->id === 'client' && Yii::$app->request->isPost)) {
+            $this->denyWhileImpersonating();
+        }
+
+        return true;
     }
 
     public function actionIndex()
@@ -87,7 +106,7 @@ class AdminController extends Controller
             return $this->redirect(['clients']);
         }
 
-        return $this->render('client', ['model' => $model, 'reauthentication' => $this->createReauthentication()]);
+        return $this->render('client', ['model' => $model]);
     }
 
     public function actionDeleteClient(int $id)
@@ -101,21 +120,7 @@ class AdminController extends Controller
 
     public function actionRegenerateSecret(int $id)
     {
-        $client = $this->findClient($id);
-        if (!$client->isConfidential()) {
-            throw new BadRequestHttpException();
-        }
-
-        $model = new ClientForm($client, Yii::$app->user->getIdentity(), ['scenario' => ClientForm::SCENARIO_ADMIN]);
-        $reauthentication = $this->createReauthentication();
-        if (!$reauthentication->load(Yii::$app->request->post()) || !$reauthentication->validate()) {
-            return $this->render('client', ['model' => $model, 'reauthentication' => $reauthentication]);
-        }
-
-        $model->generateSecret();
-        $client->save(false);
-
-        return $this->renderSecret($client, $model->getSecret());
+        return $this->regenerateSecret($this->findClient($id));
     }
 
     public function actionGrants()
@@ -184,20 +189,5 @@ class AdminController extends Controller
         }
 
         return $client;
-    }
-
-    private function createReauthentication(): ReauthenticationForm
-    {
-        return new ReauthenticationForm(Yii::$app->user->getIdentity());
-    }
-
-    /**
-     * Rendered, not redirected to: the secret must not pass through the session or any cache.
-     */
-    private function renderSecret(Client $client, string $secret): string
-    {
-        Yii::$app->response->headers->set('Cache-Control', 'no-store');
-
-        return $this->render('client-secret', ['client' => $client, 'secret' => $secret]);
     }
 }

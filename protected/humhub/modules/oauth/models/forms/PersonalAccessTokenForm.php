@@ -8,17 +8,20 @@
 
 namespace humhub\modules\oauth\models\forms;
 
+use humhub\modules\oauth\components\RecentAuthentication;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
+use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Model;
 
 /**
- * Creating a personal access token.
+ * Creating a personal access token. The token bypasses 2FA, so the user confirms it is them.
  *
  * @since 1.20
  */
-class PersonalAccessTokenForm extends ReauthenticationForm
+class PersonalAccessTokenForm extends Model
 {
     private const DEFAULT_LIFETIME = '30';
 
@@ -30,7 +33,16 @@ class PersonalAccessTokenForm extends ReauthenticationForm
      */
     public $lifetime;
 
+    public $currentPassword;
+
     private ?string $token = null;
+
+    private ?RecentAuthentication $recentAuthentication = null;
+
+    public function __construct(private readonly User $user, $config = [])
+    {
+        parent::__construct($config);
+    }
 
     public function init()
     {
@@ -47,7 +59,7 @@ class PersonalAccessTokenForm extends ReauthenticationForm
             ['name', 'string', 'max' => 100],
             ['scopes', 'each', 'rule' => ['in', 'range' => array_keys($this->getScopeOptions())]],
             ['lifetime', 'in', 'range' => $this->getLifetimeValues(), 'strict' => true],
-            ...parent::rules(),
+            ['currentPassword', 'validateReauthentication', 'skipOnEmpty' => false],
         ];
     }
 
@@ -57,7 +69,7 @@ class PersonalAccessTokenForm extends ReauthenticationForm
             'name' => Yii::t('OauthModule.base', 'Name'),
             'scopes' => Yii::t('OauthModule.base', 'Access'),
             'lifetime' => Yii::t('OauthModule.base', 'Expiration'),
-            ...parent::attributeLabels(),
+            'currentPassword' => Yii::t('OauthModule.base', 'Your password'),
         ];
     }
 
@@ -66,6 +78,28 @@ class PersonalAccessTokenForm extends ReauthenticationForm
         $this->lifetime = is_scalar($this->lifetime) ? (string)$this->lifetime : null;
 
         return parent::beforeValidate();
+    }
+
+    public function requiresPassword(): bool
+    {
+        return $this->getRecentAuthentication()->requiresPassword();
+    }
+
+    public function validateReauthentication(string $attribute): void
+    {
+        $authentication = $this->getRecentAuthentication();
+        if ($authentication->isThrottled()) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'Too many attempts, try again later.'));
+            return;
+        }
+
+        if ($authentication->check(is_string($this->currentPassword) ? $this->currentPassword : null)) {
+            return;
+        }
+
+        $this->addError($attribute, $this->requiresPassword()
+            ? Yii::t('OauthModule.base', 'Your password is incorrect.')
+            : Yii::t('OauthModule.base', 'Please sign out and sign in again to continue.'));
     }
 
     /**
@@ -120,6 +154,11 @@ class PersonalAccessTokenForm extends ReauthenticationForm
     public function getToken(): ?string
     {
         return $this->token;
+    }
+
+    private function getRecentAuthentication(): RecentAuthentication
+    {
+        return $this->recentAuthentication ??= RecentAuthentication::forCurrentSession($this->user);
     }
 
     /**

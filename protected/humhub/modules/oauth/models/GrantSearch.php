@@ -80,7 +80,15 @@ class GrantSearch extends Model
      */
     public function hasFilter(): bool
     {
-        return array_filter($this->getAttributes(), fn($value) => $value !== null && trim((string)$value) !== '') !== [];
+        return $this->getFilter() !== [];
+    }
+
+    /**
+     * @return array<string, string> the set filter values; anything but a non-empty string is ignored
+     */
+    public function getFilter(): array
+    {
+        return array_filter($this->getAttributes(), static fn($value) => is_string($value) && trim($value) !== '');
     }
 
     public function search(array $params): ActiveDataProvider

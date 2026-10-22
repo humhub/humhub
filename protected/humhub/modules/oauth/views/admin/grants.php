@@ -2,6 +2,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
+use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\models\GrantSearch;
@@ -18,7 +19,7 @@ use yii\helpers\Url;
 /* @var ActiveDataProvider $dataProvider */
 
 $clients = ArrayHelper::map(Client::find()->orderBy(['name' => SORT_ASC])->all(), 'id', 'name');
-$filter = array_filter($searchModel->getAttributes(), fn($value) => $value !== null && $value !== '');
+$filter = $searchModel->getFilter();
 $never = Yii::t('OauthModule.base', 'Never');
 ?>
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
@@ -32,7 +33,7 @@ $never = Yii::t('OauthModule.base', 'Never');
     <?php $form = ActiveForm::begin(['method' => 'get', 'action' => ['/oauth/admin/grants'], 'id' => 'oauth-grant-filter']) ?>
     <div class="row gy-2 mb-3">
         <div class="col-lg-4">
-            <?= Html::activeTextInput($searchModel, 'user', ['class' => 'form-control', 'placeholder' => Yii::t('OauthModule.base', 'User (name, username or email)')]) ?>
+            <?= Html::activeTextInput($searchModel, 'user', ['value' => $filter['user'] ?? '', 'class' => 'form-control', 'placeholder' => Yii::t('OauthModule.base', 'User (name, username or email)')]) ?>
         </div>
         <div class="col-lg-3">
             <?= Html::activeDropDownList($searchModel, 'client_id', $clients, ['class' => 'form-select', 'prompt' => Yii::t('OauthModule.base', 'All clients')]) ?>
@@ -45,7 +46,7 @@ $never = Yii::t('OauthModule.base', 'Never');
         </div>
         <div class="col-lg-3">
             <?= Html::submitButton(Yii::t('OauthModule.base', 'Filter'), ['class' => 'btn btn-primary']) ?>
-            <?php if ($filter !== []): ?>
+            <?php if ($searchModel->hasFilter()): ?>
             <?= Link::danger(Yii::t('OauthModule.base', 'Revoke all'))
                 ->post(['/oauth/admin/revoke-grants', $searchModel->formName() => $filter])
                 ->confirm(
@@ -87,8 +88,9 @@ $never = Yii::t('OauthModule.base', 'Never');
                 [
                     'label' => Yii::t('OauthModule.base', 'Scopes'),
                     'format' => 'raw',
+                    // A scope of a disabled module is shown by its id
                     'value' => fn(Grant $grant) => implode(' ', array_map(
-                        fn(string $id) => Badge::light($id),
+                        fn(string $id) => Badge::light(ScopeRegistry::get($id)?->label ?? $id),
                         $grant->getScopeIds(),
                     )),
                 ],

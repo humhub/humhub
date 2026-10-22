@@ -52,6 +52,32 @@ class RecentAuthenticationTest extends HumHubDbTestCase
         $this->assertFalse(RecentAuthentication::forCurrentSession($user)->check(null));
     }
 
+    public function testOnlyARecordedInteractiveLoginOfTheUserCounts()
+    {
+        $user = User::findOne(['id' => 2]);
+        $user->currentPassword?->delete();
+        $user->refresh();
+        Yii::$app->session->open();
+
+        try {
+            RecentAuthentication::forgetInteractiveLogin();
+            $this->assertFalse(RecentAuthentication::forCurrentSession($user)->check(null));
+
+            RecentAuthentication::recordInteractiveLogin($user);
+            $this->assertTrue(RecentAuthentication::forCurrentSession($user)->check(null));
+
+            // Another identity in the same session (e.g. an impersonation) does not inherit it
+            RecentAuthentication::recordInteractiveLogin(User::findOne(['id' => 1]));
+            $this->assertFalse(RecentAuthentication::forCurrentSession($user)->check(null));
+
+            RecentAuthentication::recordInteractiveLogin($user);
+            RecentAuthentication::forgetInteractiveLogin();
+            $this->assertFalse(RecentAuthentication::forCurrentSession($user)->check(null));
+        } finally {
+            Yii::$app->session->destroy();
+        }
+    }
+
     public function testRepeatedWrongPasswordsAreThrottled()
     {
         $user = User::findOne(['id' => 2]);

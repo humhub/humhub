@@ -12,6 +12,7 @@ use humhub\components\gates\GateInitEvent;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\widgets\AuthenticationMenu;
+use humhub\modules\oauth\components\RecentAuthentication;
 use humhub\modules\oauth\models\AccessToken;
 use humhub\modules\oauth\models\AuthCode;
 use humhub\modules\oauth\models\Grant;
@@ -20,7 +21,9 @@ use humhub\modules\oauth\models\WebSessionCode;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
 use humhub\modules\oauth\widgets\AppsSections;
+use humhub\modules\user\events\UserEvent as AuthUserEvent;
 use humhub\modules\user\models\Password;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\SecuritySettingsMenu;
 use humhub\widgets\menu\MenuLink;
 use Yii;
@@ -163,6 +166,7 @@ class Events
 
     /**
      * Any login starts without a previous binding; the web session route binds after its own login.
+     * It also drops a recorded interactive login: only the login controller records a new one.
      */
     public static function onUserAfterLogin(UserEvent $event): void
     {
@@ -170,9 +174,22 @@ class Events
             return;
         }
 
+        RecentAuthentication::forgetInteractiveLogin();
+
         $service = new WebSessionService();
         if ($service->getBoundGrantId() !== null) {
             $service->unbindSession();
+        }
+    }
+
+    /**
+     * Triggered by the login controller only, i.e. for interactive logins (password, LDAP, SSO …),
+     * not for remember-me cookie logins.
+     */
+    public static function onAuthAfterLogin(AuthUserEvent $event): void
+    {
+        if ($event->user instanceof User) {
+            RecentAuthentication::recordInteractiveLogin($event->user);
         }
     }
 

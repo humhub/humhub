@@ -2,15 +2,12 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\oauth\components\RecentAuthentication;
 use humhub\modules\oauth\models\forms\ClientForm;
-use humhub\modules\oauth\models\forms\ReauthenticationForm;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 
 /* @var View $this */
 /* @var ClientForm $model */
-/* @var ReauthenticationForm $reauthentication */
 
 $client = $model->client;
 $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client', 'id' => $client->id];
@@ -40,7 +37,9 @@ $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client
         ->hint(Yii::t('OauthModule.base', 'https:// URIs, loopback URIs such as http://127.0.0.1/callback (any port) or, for public clients, a reverse-domain scheme such as com.example.app:/callback.')) ?>
     <?= $form->field($model, 'confidential')->checkbox() ?>
     <?= $form->field($model, 'scopes')->checkboxList($model->getScopeOptions()) ?>
-    <?= $form->field($model, 'skipConsent')->checkbox() ?>
+    <?php if ($model->canSetPrivileged()): ?>
+        <?= $form->field($model, 'skipConsent')->checkbox() ?>
+    <?php endif ?>
     <?= $form->field($model, 'isActive')->checkbox() ?>
 
     <?= Button::save()->submit() ?>
@@ -56,19 +55,13 @@ $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client
             <?= Yii::t('OauthModule.base', 'A new secret replaces the current one immediately. The client has to be updated with it.') ?>
         </p>
 
-        <?php $form = ActiveForm::begin(['action' => ['/oauth/admin/regenerate-secret', 'id' => $client->id], 'id' => 'oauth-secret-form']) ?>
-
-        <?php if ($reauthentication->requiresPassword()): ?>
-            <?= $form->field($reauthentication, 'currentPassword')->passwordInput(['autocomplete' => 'current-password']) ?>
-        <?php else: ?>
-            <p class="text-body-secondary">
-                <?= Yii::t('OauthModule.base', 'For your security, you must have signed in within the last {minutes} minutes.', ['minutes' => RecentAuthentication::MAX_LOGIN_AGE / 60]) ?>
-            </p>
-            <?= $form->field($reauthentication, 'currentPassword', ['template' => '{error}'])->hiddenInput() ?>
-        <?php endif ?>
-
-        <?= Button::danger(Yii::t('OauthModule.base', 'Regenerate secret'))->submit() ?>
-        <?php ActiveForm::end() ?>
+        <?= Button::danger(Yii::t('OauthModule.base', 'Regenerate secret'))
+            ->link(['/oauth/admin/regenerate-secret', 'id' => $client->id])
+            ->options(['data-method' => 'POST'])
+            ->confirm(
+                Yii::t('OauthModule.base', 'Regenerate the secret?'),
+                Yii::t('OauthModule.base', 'The current secret stops working immediately.'),
+            ) ?>
     </div>
 <?php endif ?>
 <?php $this->endContent() ?>

@@ -19,6 +19,7 @@ use humhub\modules\oauth\permissions\ManageOwnOAuthClients;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\user\models\GroupPermission;
+use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
 use Yii;
@@ -360,7 +361,7 @@ class AccountCest
         $I->dontSee($secret);
     }
 
-    public function testSecretIsRegeneratedAfterReauthentication(FunctionalTester $I)
+    public function testSecretIsRegenerated(FunctionalTester $I)
     {
         $this->allowUserClients($I);
         $client = $this->userClient(2);
@@ -368,11 +369,13 @@ class AccountCest
         $I->amUser1();
         $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
         $I->see('Regenerate secret');
-        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => 'wrong']);
-        $I->see('Your password is incorrect.');
+        $I->dontSee('Your password');
+
+        // A GET does nothing
+        $I->amOnRoute('/oauth/account/regenerate-secret', ['id' => $client->id]);
         Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
 
-        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => self::PASSWORD]);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fregenerate-secret&id=' . $client->id);
         $I->see('Copy the secret now.');
         Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
         $secret = $this->grabSecret($I);
@@ -408,9 +411,7 @@ class AccountCest
 
         $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fdelete-client&id=' . $foreign->id);
         $I->seeResponseCodeIs(404);
-        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fregenerate-secret&id=' . $foreign->id, [
-            'ReauthenticationForm' => ['currentPassword' => self::PASSWORD],
-        ]);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fregenerate-secret&id=' . $foreign->id);
         $I->seeResponseCodeIs(404);
         Assert::assertTrue(Client::findOne(['id' => $foreign->id])->validateSecret('old-secret'));
     }
@@ -432,5 +433,61 @@ class AccountCest
         $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fdelete-client&id=' . $client->id);
         $I->seeResponseCodeIs(403);
         Assert::assertTrue(Client::find()->where(['id' => $client->id])->exists());
+    }
+
+    public function testNoCredentialsAreCreatedWhileImpersonating(FunctionalTester $I)
+    {
+        $this->allowTokens($I);
+        $this->allowUserClients($I);
+        $client = $this->userClient(2);
+
+        $I->amAdmin();
+        Yii::$app->user->getImpersonation()->start(User::findOne(['id' => 2]));
+
+        $I->amOnRoute('/oauth/account/index');
+        $I->seeResponseCodeIs(200);
+        $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
+        $I->seeResponseCodeIs(200);
+
+        $I->amOnRoute('/oauth/account/create-token');
+        $I->seeResponseCodeIs(403);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fcreate-token', [
+            'PersonalAccessTokenForm' => ['name' => 'Backdoor', 'scopes' => ['content:read'], 'lifetime' => '30'],
+        ]);
+        $I->seeResponseCodeIs(403);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fregenerate-secret&id=' . $client->id);
+        $I->seeResponseCodeIs(403);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fclient', [
+            'ClientForm' => ['name' => 'Backdoor', 'redirectUris' => 'https://example.org/cb', 'scopes' => ['content:read'], 'confidential' => '1'],
+        ]);
+        $I->seeResponseCodeIs(403);
+
+        Assert::assertFalse(Grant::find()->where(['type' => Grant::TYPE_PAT])->exists());
+        Assert::assertFalse(Client::find()->where(['name' => 'Backdoor'])->exists());
+        Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
+    }
+
+    public function testAnInteractiveLoginConfirmsUsersWithoutAPassword(FunctionalTester $I)
+    {
+        $this->allowTokens($I);
+
+        // The login form records the interactive login; the password is removed afterwards
+        $I->amUser1();
+        $password = User::findOne(['id' => 2])->currentPassword;
+        $password->delete();
+
+        try {
+            $I->amOnRoute('/oauth/account/create-token');
+            $I->dontSee('Your password');
+            $I->submitForm('form[action*="create-token"]', [
+                'PersonalAccessTokenForm[name]' => 'Backup script',
+                'PersonalAccessTokenForm[scopes]' => ['content:read'],
+                'PersonalAccessTokenForm[lifetime]' => '30',
+            ]);
+            $I->see('Copy the token now.');
+            Assert::assertTrue(Grant::find()->where(['type' => Grant::TYPE_PAT, 'user_id' => 2])->exists());
+        } finally {
+            Yii::$app->db->createCommand()->insert(Password::tableName(), $password->getAttributes())->execute();
+        }
     }
 }
