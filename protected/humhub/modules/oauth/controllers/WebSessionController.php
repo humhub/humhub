@@ -42,26 +42,39 @@ class WebSessionController extends Controller
             throw new BadRequestHttpException(Yii::t('OauthModule.base', 'This sign-in link is invalid or has expired.'));
         }
 
+        // Always a fresh session: an existing one (perhaps with a pending login verification) must
+        // not be marked as issued-credential, and a regular browser session never gets bound.
         $user = Yii::$app->user;
-        if (!$user->isGuest && (int)$user->id !== (int)$grant->user_id) {
+        if (!$user->isGuest) {
+            if ($service->getBoundGrantId() === $grant->id) {
+                // Re-handoff: this logout must not revoke the grant being redeemed
+                $service->unbindSession();
+            }
             $user->logout();
         }
-        if ($user->isGuest) {
-            $user->login($grant->user, 0);
-        }
+        $user->login($grant->user, 0);
         $service->bindSession($grant);
 
-        Yii::$app->response->getHeaders()->set('Referrer-Policy', 'no-referrer');
+        Yii::$app->response->getHeaders()
+            ->set('Referrer-Policy', 'no-referrer')
+            ->set('Cache-Control', 'no-store');
 
         return $this->redirect($this->safeReturnUrl(Yii::$app->request->get('returnUrl')) ?? Url::home());
     }
 
     /**
-     * Only a path on this installation: no scheme, no host, no protocol-relative `//`.
+     * Only a path on this installation: no scheme, no host, no protocol-relative `//`, and no
+     * whitespace or control characters, which browsers strip (`/\t/evil` becomes `//evil`).
      */
     private function safeReturnUrl(mixed $url): ?string
     {
-        if (!is_string($url) || !str_starts_with($url, '/') || str_starts_with($url, '//') || str_contains($url, '\\')) {
+        if (
+            !is_string($url)
+            || !str_starts_with($url, '/')
+            || str_starts_with($url, '//')
+            || str_contains($url, '\\')
+            || preg_match('/[\x00-\x20\x7f]/', $url)
+        ) {
             return null;
         }
 

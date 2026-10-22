@@ -98,6 +98,53 @@ class WebSessionCest
         $I->dontSeeInCurrentUrl('evil');
     }
 
+    public function testUnsafeReturnUrlsLandOnTheHomePage(FunctionalTester $I)
+    {
+        $I->stopFollowingRedirects();
+        foreach (['//evil.example', '/\\evil', "/\t/evil", 'https://evil.example/'] as $returnUrl) {
+            $this->redeem($I, $this->appGrant(2), ['returnUrl' => $returnUrl]);
+            $location = $I->grabHttpHeader('Location');
+            Assert::assertStringNotContainsString('evil', $location, $returnUrl);
+            Assert::assertStringEndsWith(Url::home(), $location, $returnUrl);
+        }
+    }
+
+    public function testRedirectIsNotCached(FunctionalTester $I)
+    {
+        $I->stopFollowingRedirects();
+        $this->redeem($I, $this->appGrant(2));
+
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
+        Assert::assertSame('no-referrer', $I->grabHttpHeader('Referrer-Policy'));
+    }
+
+    public function testSameLoggedInUserGetsAFreshSession(FunctionalTester $I)
+    {
+        $I->amUser1();
+        Assert::assertSame(2, (int)Yii::$app->user->id);
+        $sessionId = Yii::$app->session->getId();
+        Assert::assertNull(Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+
+        Assert::assertSame(2, (int)Yii::$app->user->id);
+        Assert::assertNotSame($sessionId, Yii::$app->session->getId());
+        Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+    }
+
+    public function testRehandoffForTheSameGrantKeepsTheGrant(FunctionalTester $I)
+    {
+        $grant = $this->appGrant(2);
+        $this->redeem($I, $grant);
+        $this->redeem($I, $grant);
+
+        Assert::assertNotNull(Grant::findOne(['id' => $grant->id]));
+        Assert::assertSame(2, (int)Yii::$app->user->id);
+        Assert::assertSame($grant->id, (int)Yii::$app->session->get(WebSessionService::SESSION_KEY_GRANT));
+    }
+
     public function testADifferentLoggedInUserIsReplaced(FunctionalTester $I)
     {
         $I->amAdmin();

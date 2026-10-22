@@ -369,11 +369,16 @@ The app turns its grant into a regular web session for its WebViews:
      deleted row (unknown code, wrong secret, expired, used) → error page. A wrong secret does
      not match the row, so it does not consume the code;
    - checks that the grant is valid and the user is enabled;
-   - logs out a different user already logged in to this WebView;
+   - always starts a fresh session: a user already logged in to this WebView, even the same
+     one, is logged out first. A session bound to the very grant being redeemed is unbound
+     before, so this logout does not revoke it. No existing session (for example one with a
+     pending second factor) is ever marked, and a regular browser session is never bound;
    - logs in the user without an auto-login cookie (`login($user, 0)`);
    - stores the grant id under the session key `oauth.grantId`;
    - sets the session key `GateManager::SESSION_KEY_ISSUED_CREDENTIAL`;
-   - redirects to `returnUrl`, if relative, or the dashboard, with `Referrer-Policy: no-referrer`.
+   - redirects to `returnUrl`, if it is a path on this installation (no scheme or host, no
+     `//`, no backslash, no whitespace or control characters), otherwise to the dashboard, with
+     `Referrer-Policy: no-referrer` and `Cache-Control: no-store`.
 3. **Binding.** `Events::onBeforeAction` (on `humhub\components\Controller::EVENT_BEFORE_ACTION`)
    loads the grant of a session holding `oauth.grantId`. A deleted or expired grant logs the
    session out, and the next page is the login page.
