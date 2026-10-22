@@ -1333,6 +1333,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     - New helpers: `file\libs\FileHelper::getViewUrl()` (extracted from `createLink()`, whose
       output is unchanged) and `file\libs\FileHelper::isSearchHighlighted()` (moved from the
       protected `FilePreview::isHighlighed()`, which is removed).
+- Added an **OAuth server in core** (new core module `oauth`, see `docs/develop/concept-oauth.md`).
+  Purely additive:
+  - `humhub\components\api\BaseController` gets `protected array $scopes`, the scope a bearer
+    token needs per action (`*` for every other action). An API controller that serves tokens
+    should declare it; without it only a `full` token reaches the endpoint.
+  - Core's `TokenAuth` now precedes the methods modules contribute via
+    `EVENT_COLLECT_AUTH_METHODS`; tokens it does not recognize fall through unchanged.
+  - Modules can offer scopes through `humhub\modules\oauth\components\ScopeRegistry::EVENT_COLLECT_SCOPES`.
+  - New `humhub\components\psr\` (PSR-7/17 bridge backed by `guzzlehttp/psr7`) for libraries that need PSR-7.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working

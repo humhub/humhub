@@ -235,8 +235,8 @@ both token kinds:
 
 On success:
 
-- the user component logs in session-less (`$user->login($identity)` with
-  `enableSession = false`);
+- the identity is set on the session-less user component (`$user->setIdentity()`), not
+  logged in: no `last_login` write and no login events per request;
 - the grant is published as `Module::$activeGrant`;
 - `last_used_at` is updated when it is older than 5 minutes.
 

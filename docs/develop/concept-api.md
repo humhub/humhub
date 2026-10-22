@@ -66,12 +66,13 @@ core-owned v1 would make marketplace compatibility considerably harder.
 
 Two questions that are easy to conflate — keep them apart:
 
-**1. Which authentication methods exist?** Core ships browser-session authentication only
-(`humhub\components\api\SessionAuth`). The module contributes the token methods to *every*
-API controller through `BaseController::EVENT_COLLECT_AUTH_METHODS`
-(`AuthMethodsEvent`) — a decided point: an installation with the module can call core
-endpoints with a token too (the mobile app can read comments), a core-only installation has
-a session-authenticated API and no machine-to-machine access.
+**1. Which authentication methods exist?** Core ships browser-session authentication
+(`humhub\components\api\SessionAuth`) and OAuth bearer tokens
+(`humhub\modules\oauth\components\TokenAuth`, see
+[OAuth and personal access tokens](concept-oauth.md)). `TokenAuth` runs first; a token that
+is not one of core's falls through. Modules contribute further methods (the rest module's
+JWT, Bearer, Basic …) through `BaseController::EVENT_COLLECT_AUTH_METHODS`
+(`AuthMethodsEvent`); they run after `TokenAuth` and before session authentication.
 
 **2. Which endpoints accept session authentication?** Only those that explicitly opt in —
 and that is core's own endpoints.
@@ -93,6 +94,12 @@ controller keeps that from happening by default, and keeps the decision greppabl
 
 A module that later wants a browser-callable endpoint for its own island uses the same flag
 and takes responsibility for its own authorization.
+
+**3. What may an OAuth token reach?** A controller declares `protected array $scopes`
+(action id, or `*` for every other action, → scope). A token passes when its grant holds the
+action's scope, or holds `full` on a controller that allows session authentication. An action
+without a declared scope is reachable with `full` only. Requests authenticated otherwise are
+not affected.
 
 Further contracts, all explicit:
 
