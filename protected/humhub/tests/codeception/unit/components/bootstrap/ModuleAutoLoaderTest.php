@@ -32,6 +32,7 @@ class ModuleAutoLoaderTest extends Unit
         'humhub\modules\live\Module' => 'live',
         'humhub\modules\marketplace\Module' => 'marketplace',
         'humhub\modules\notification\Module' => 'notification',
+        'humhub\modules\oauth\Module' => 'oauth',
         'humhub\modules\post\Module' => 'post',
         'humhub\modules\queue\Module' => 'queue',
         'humhub\modules\space\Module' => 'space',
