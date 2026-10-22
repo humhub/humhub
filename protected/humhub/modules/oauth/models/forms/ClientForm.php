@@ -75,6 +75,7 @@ class ClientForm extends Model
             ['description', 'string', 'max' => 1000],
             [['confidential', 'skipConsent', 'isActive'], 'boolean'],
             ['scopes', 'each', 'rule' => ['in', 'range' => array_keys($this->getScopeOptions())]],
+            ['skipConsent', 'validateSkipConsent'],
             ['redirectUris', 'validateRedirectUris'],
         ];
     }
@@ -93,13 +94,29 @@ class ClientForm extends Model
     }
 
     /**
+     * Whether `full` and skipping the consent can be set: only by system administrators, and
+     * never for user clients, which must not get more than their owner could consent to.
+     */
+    public function canSetPrivileged(): bool
+    {
+        return $this->scenario === self::SCENARIO_ADMIN
+            && $this->client->type !== Client::TYPE_USER
+            && $this->actor->isSystemAdmin();
+    }
+
+    /**
      * @return array<string, string> scope id => label, as allowed in the current scenario
      */
     public function getScopeOptions(): array
     {
-        $ids = $this->scenario === self::SCENARIO_ADMIN
-            ? array_keys(ScopeRegistry::getScopes())
-            : array_diff(Module::instance()->getUserClientScopes(), [ScopeRegistry::FULL]);
+        if ($this->scenario === self::SCENARIO_ADMIN) {
+            $ids = array_keys(ScopeRegistry::getScopes());
+            if (!$this->canSetPrivileged()) {
+                $ids = array_diff($ids, [ScopeRegistry::FULL]);
+            }
+        } else {
+            $ids = array_diff(Module::instance()->getUserClientScopes(), [ScopeRegistry::FULL]);
+        }
 
         $options = [];
         foreach ($ids as $id) {
@@ -109,6 +126,13 @@ class ClientForm extends Model
         }
 
         return $options;
+    }
+
+    public function validateSkipConsent(string $attribute): void
+    {
+        if (!$this->canSetPrivileged() && (bool)$this->skipConsent !== (bool)$this->client->skip_consent) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'Only system administrators can change this.'));
+        }
     }
 
     public function validateRedirectUris(string $attribute): void
@@ -206,12 +230,20 @@ class ClientForm extends Model
         $client->name = $this->name;
         $client->description = $this->description ?: null;
         $client->redirect_uris = json_encode($this->getRedirectUriList());
-        $client->scopes = json_encode(array_values((array)$this->scopes));
+        $scopes = array_values((array)$this->scopes);
+        // `full` set by a system administrator stays when someone else edits the client
+        if (!$this->canSetPrivileged() && $client->type !== Client::TYPE_USER
+            && in_array(ScopeRegistry::FULL, $client->getAllowedScopes(), true)) {
+            $scopes[] = ScopeRegistry::FULL;
+        }
+        $client->scopes = json_encode(array_values(array_unique($scopes)));
 
         // Users must not override what an administrator set for their client
         if ($isAdmin) {
-            $client->skip_consent = $this->skipConsent ? 1 : 0;
             $client->is_active = $this->isActive ? 1 : 0;
+        }
+        if ($this->canSetPrivileged()) {
+            $client->skip_consent = $this->skipConsent ? 1 : 0;
         }
 
         if ($this->confidential && $client->secret_hash === null) {
@@ -228,8 +260,7 @@ class ClientForm extends Model
      */
     public function generateSecret(): void
     {
-        $this->secret = Yii::$app->security->generateRandomString(48);
-        $this->client->secret_hash = hash('sha256', $this->secret);
+        $this->secret = $this->client->generateSecret();
     }
 
     /**

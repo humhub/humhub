@@ -23,9 +23,9 @@ class ClientFormTest extends HumHubDbTestCase
         Module::instance()->settings->delete('userClientScopes');
     }
 
-    private function form(string $scenario, array $attributes = [], ?Client $client = null): ClientForm
+    private function form(string $scenario, array $attributes = [], ?Client $client = null, int $actorId = 1): ClientForm
     {
-        $form = new ClientForm($client ?? new Client(), User::findOne(['id' => 1]), ['scenario' => $scenario]);
+        $form = new ClientForm($client ?? new Client(), User::findOne(['id' => $actorId]), ['scenario' => $scenario]);
         $form->setAttributes($attributes + [
             'name' => 'My app',
             'redirectUris' => 'https://example.org/cb',
@@ -199,5 +199,52 @@ class ClientFormTest extends HumHubDbTestCase
         $this->assertSame(1, (int)$client->created_by);
         $this->assertSame(1, (int)$client->skip_consent);
         $this->assertSame(0, (int)$client->is_active);
+    }
+
+    public function testOnlySystemAdminsSetFullAndSkipConsent()
+    {
+        // User 2 is no system administrator, e.g. a holder of "Manage settings"
+        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full']], actorId: 2);
+        $this->assertFalse($form->canSetPrivileged());
+        $this->assertArrayNotHasKey(ScopeRegistry::FULL, $form->getScopeOptions());
+        $this->assertFalse($form->validate());
+        $this->assertTrue($form->hasErrors('scopes'));
+
+        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['skipConsent' => true], actorId: 2);
+        $this->assertFalse($form->validate());
+        $this->assertTrue($form->hasErrors('skipConsent'));
+
+        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full'], 'skipConsent' => true]);
+        $this->assertTrue($form->canSetPrivileged());
+        $this->assertTrue($form->validate());
+    }
+
+    public function testPrivilegedValuesStayWhenOthersEditTheClient()
+    {
+        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full', 'content:read'], 'skipConsent' => true]);
+        $this->assertTrue($form->save());
+
+        $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 2]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
+        $this->assertSame(['content:read'], $edit->scopes);
+        $edit->setAttributes(['name' => 'Renamed', 'scopes' => ['spaces:read']]);
+        $this->assertTrue($edit->save(), implode(', ', $edit->getErrorSummary(true)));
+
+        $client = Client::findOne(['id' => $form->client->id]);
+        $this->assertSame('Renamed', $client->name);
+        $this->assertSame(['spaces:read', 'full'], $client->getAllowedScopes());
+        $this->assertSame(1, (int)$client->skip_consent);
+    }
+
+    public function testUserClientsGetNoPrivilegesInTheAdministration()
+    {
+        $form = $this->form(ClientForm::SCENARIO_USER);
+        $this->assertTrue($form->save());
+
+        $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
+        $this->assertFalse($edit->canSetPrivileged());
+        $this->assertArrayNotHasKey(ScopeRegistry::FULL, $edit->getScopeOptions());
+        $edit->setAttributes(['skipConsent' => true]);
+        $this->assertFalse($edit->validate());
+        $this->assertTrue($edit->hasErrors('skipConsent'));
     }
 }

@@ -20,11 +20,6 @@ use yii\base\Model;
  */
 class SettingsForm extends Model
 {
-    /**
-     * Never grantable to user clients.
-     */
-    private const SCOPE_FULL = 'full';
-
     public $allowApp;
     public $allowClients;
     public $allowUserClients;
@@ -70,7 +65,7 @@ class SettingsForm extends Model
             ['grantMaxLifetimeDays', 'integer', 'min' => 0],
             [['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'], 'required'],
             ['patScopes', 'each', 'rule' => ['in', 'range' => $scopeIds]],
-            ['userClientScopes', 'each', 'rule' => ['in', 'range' => array_values(array_diff($scopeIds, [self::SCOPE_FULL]))]],
+            ['userClientScopes', 'each', 'rule' => ['in', 'range' => array_values(array_diff($scopeIds, [ScopeRegistry::FULL]))]],
         ];
     }
 
@@ -136,7 +131,7 @@ class SettingsForm extends Model
     {
         $options = [];
         foreach (ScopeRegistry::getScopes() as $scope) {
-            if ($includeFull || $scope->id !== self::SCOPE_FULL) {
+            if ($includeFull || $scope->id !== ScopeRegistry::FULL) {
                 $options[$scope->id] = $scope->label;
             }
         }

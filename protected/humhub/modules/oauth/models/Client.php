@@ -10,6 +10,7 @@ namespace humhub\modules\oauth\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\db\ActiveQuery;
 
 /**
@@ -68,6 +69,17 @@ class Client extends ActiveRecord
     {
         return $secret !== null && $this->secret_hash !== null
             && hash_equals($this->secret_hash, hash('sha256', $secret));
+    }
+
+    /**
+     * Sets a new secret and returns it in plain text: only its hash is stored. The caller saves the client.
+     */
+    public function generateSecret(): string
+    {
+        $secret = Yii::$app->security->generateRandomString(48);
+        $this->secret_hash = hash('sha256', $secret);
+
+        return $secret;
     }
 
     /**
