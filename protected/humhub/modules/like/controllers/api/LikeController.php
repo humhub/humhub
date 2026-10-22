@@ -51,7 +51,7 @@ class LikeController extends BaseController
     /**
      * @inheritdoc
      */
-    protected array $scopes = ['affirm' => 'content:write', 'remove' => 'content:write', '*' => 'content:read'];
+    protected array $scopes = ['state' => 'content:read', 'states' => 'content:read', 'users' => 'content:read', '*' => 'content:write'];
 
     /**
      * @inheritdoc

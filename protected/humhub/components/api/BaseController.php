@@ -138,6 +138,8 @@ abstract class BaseController extends Controller
      * @var array<string, string|string[]> action id (or `*` for every other action) → the OAuth
      *      scope a token needs, see `docs/develop/concept-oauth.md`. An action without an entry
      *      is reachable with the `full` scope only, and only where [[$allowSessionAuth]] is set.
+     *      List read actions explicitly and map `*` to the write scope, so a new action is
+     *      never reachable with a read scope by accident.
      * @since 1.20
      */
     protected array $scopes = [];
