@@ -13,6 +13,7 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
+use humhub\modules\oauth\services\WebSessionService;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -77,5 +78,47 @@ class PasswordChangeTest extends HumHubDbTestCase
         $this->changePassword(2);
 
         $this->assertSame(2, (int)Grant::find()->where(['user_id' => 2])->count());
+    }
+
+    public function testUpdatingTheExistingRowRevokes()
+    {
+        Module::instance()->settings->set('revokeOnPasswordChange', true);
+        $this->createGrants(2);
+
+        $password = Password::findOne(['user_id' => 2]);
+        $password->setPassword('Other123!');
+        $this->assertTrue($password->save());
+
+        $this->assertSame(0, (int)Grant::find()->where(['user_id' => 2])->count());
+    }
+
+    public function testUpdateWithoutPasswordChangeKeepsGrants()
+    {
+        Module::instance()->settings->set('revokeOnPasswordChange', true);
+        $this->createGrants(2);
+
+        $password = Password::findOne(['user_id' => 2]);
+        $password->save(false);
+        $password->updateAttributes(['user_id' => 2]);
+
+        $this->assertSame(2, (int)Grant::find()->where(['user_id' => 2])->count());
+    }
+
+    public function testTheGrantOfTheCurrentAppSessionSurvives()
+    {
+        Module::instance()->settings->set('revokeOnPasswordChange', true);
+        $this->createGrants(2);
+        $appGrant = Grant::findOne(['user_id' => 2, 'type' => Grant::TYPE_OAUTH]);
+        (new WebSessionService())->bindSession($appGrant);
+
+        $this->changePassword(2);
+
+        $this->assertSame([(int)$appGrant->id], array_map('intval', Grant::find()->select('id')->where(['user_id' => 2])->column()));
+
+        $password = Password::findOne(['user_id' => 2]);
+        $this->assertNotNull($password);
+        $password->setPassword('Third123!');
+        $password->save();
+        $this->assertSame(1, (int)Grant::find()->where(['user_id' => 2])->count());
     }
 }

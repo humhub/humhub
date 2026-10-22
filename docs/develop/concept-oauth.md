@@ -560,7 +560,7 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 | `patMaxLifetimeDays` | 365 | 0 = unlimited, offers *never* |
 | `refreshTokenLifetimeDays` | 90 | |
 | `grantMaxLifetimeDays` | 0 | 0 = unlimited |
-| `revokeOnPasswordChange` | off | a password change deletes all grants of the user |
+| `revokeOnPasswordChange` | off | a password change deletes all grants of the user except the app session the change was made in |
 
 Each `allow…` switch also takes effect on existing grants: `TokenAuth` and `isAccessTokenRevoked()`
 reject grants of a disallowed kind.

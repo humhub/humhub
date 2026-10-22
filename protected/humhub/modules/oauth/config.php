@@ -33,6 +33,7 @@ return [
         [User::class, User::EVENT_BEFORE_LOGOUT, [Events::class, 'onUserBeforeLogout']],
         [User::class, User::EVENT_AFTER_LOGIN, [Events::class, 'onUserAfterLogin']],
         [Password::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onPasswordAfterInsert']],
+        [Password::class, ActiveRecord::EVENT_AFTER_UPDATE, [Events::class, 'onPasswordAfterUpdate']],
         [SecuritySettingsMenu::class, SecuritySettingsMenu::EVENT_INIT, [Events::class, 'onSecuritySettingsMenuInit']],
     ],
 ];

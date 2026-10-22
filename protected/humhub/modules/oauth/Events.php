@@ -175,8 +175,7 @@ class Events
     }
 
     /**
-     * Optionally revokes every grant of a user whose password changed. A user's first
-     * password is no change.
+     * A new password row is a change unless it is the user's first password.
      */
     public static function onPasswordAfterInsert(AfterSaveEvent $event): void
     {
@@ -190,13 +189,34 @@ class Events
             ->where(['user_id' => $password->user_id])
             ->andWhere(['!=', 'id', $password->id])
             ->exists();
-        if (!$isChange) {
-            return;
+        if ($isChange) {
+            self::revokeGrantsOfPasswordOwner($password);
         }
+    }
+
+    /**
+     * Some flows change the password by updating the existing row.
+     */
+    public static function onPasswordAfterUpdate(AfterSaveEvent $event): void
+    {
+        if (array_key_exists('password', $event->changedAttributes) && Module::instance()->revokesOnPasswordChange()) {
+            self::revokeGrantsOfPasswordOwner($event->sender);
+        }
+    }
+
+    /**
+     * Revokes the user's grants but the one of the app session the change was made in,
+     * so changing the password in the app's WebView does not sign the app out.
+     */
+    private static function revokeGrantsOfPasswordOwner(Password $password): void
+    {
+        $keep = (new WebSessionService())->getBoundGrantId();
 
         $service = new GrantService();
         foreach (Grant::findAll(['user_id' => $password->user_id]) as $grant) {
-            $service->revoke($grant);
+            if ($keep === null || (int)$grant->id !== $keep) {
+                $service->revoke($grant);
+            }
         }
     }
 
