@@ -8,12 +8,39 @@
 
 namespace humhub\modules\oauth;
 
+use humhub\modules\oauth\models\AccessToken;
+use humhub\modules\oauth\models\AuthCode;
+use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\models\RefreshToken;
+use humhub\modules\oauth\models\WebSessionCode;
+
 /**
  * @since 1.20
  */
 class Events
 {
+    /**
+     * How long an authorized grant may wait for its code exchange.
+     */
+    private const ABANDONED_GRANT_AGE = 3600;
+
+    /**
+     * Removes expired codes, tokens and grants, and grants whose code was never exchanged.
+     */
     public static function onCronDailyRun($event): void
     {
+        $now = time();
+
+        foreach ([AuthCode::class, AccessToken::class, RefreshToken::class, WebSessionCode::class] as $class) {
+            $class::deleteAll(['<', 'expires_at', $now]);
+        }
+
+        Grant::deleteAll(['and', ['not', ['expires_at' => null]], ['<', 'expires_at', $now]]);
+        Grant::deleteAll([
+            'and',
+            ['type' => Grant::TYPE_OAUTH],
+            ['last_used_at' => null],
+            ['<', 'created_at', $now - self::ABANDONED_GRANT_AGE],
+        ]);
     }
 }
