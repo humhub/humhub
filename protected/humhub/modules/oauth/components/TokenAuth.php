@@ -13,8 +13,11 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Yii;
 use yii\filters\auth\AuthMethod;
-use yii\web\UnauthorizedHttpException;
+use yii\web\HttpException;
+use yii\web\IdentityInterface;
+use yii\web\User;
 
 /**
  * Authenticates API requests with a bearer token of the OAuth server.
@@ -72,7 +75,7 @@ class TokenAuth extends AuthMethod
     /**
      * Sets the grant's user as the identity of the session-less user component.
      */
-    protected function authenticateGrant($user, Grant $grant)
+    protected function authenticateGrant(User $user, Grant $grant): IdentityInterface
     {
         $identity = $grant->user;
         $user->setIdentity($identity);
@@ -84,11 +87,14 @@ class TokenAuth extends AuthMethod
     }
 
     /**
-     * @throws UnauthorizedHttpException
+     * Not an `UnauthorizedHttpException`: `AuthMethod` turns that into a guest request on
+     * optional (guest-allowed) actions, and an invalid token must never become one.
+     *
+     * @throws HttpException
      */
     private function fail($response): never
     {
         $this->challenge($response);
-        $this->handleFailure($response);
+        throw new HttpException(401, Yii::t('yii', 'Your request was made with invalid credentials.'));
     }
 }

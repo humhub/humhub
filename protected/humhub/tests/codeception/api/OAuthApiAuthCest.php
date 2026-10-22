@@ -106,6 +106,23 @@ class OAuthApiAuthCest
         }
     }
 
+    public function testInvalidTokenDoesNotFallBackToGuestAccess(ApiTester $I)
+    {
+        $tokens = OAuthTestHelper::issueTokens(2);
+        TokenResolver::resolveGrant($tokens['refresh_token'])->delete();
+
+        Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
+        try {
+            $I->haveHttpHeader('Authorization', 'Bearer ' . $tokens['access_token']);
+            $I->sendGet('content/1/comments');
+            $I->seeResponseCodeIs(401);
+            $I->seeResponseIsJson();
+            $I->seeHttpHeader('WWW-Authenticate', 'Bearer realm="api"');
+        } finally {
+            Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
+        }
+    }
+
     public function testForeignAndForgedTokens(ApiTester $I)
     {
         // not ours (no hh- kid): falls through to the next method; core-only installation → 401

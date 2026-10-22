@@ -12,6 +12,7 @@ use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\oauth\components\ScopeFilter;
 use humhub\modules\oauth\components\TokenAuth;
+use humhub\modules\oauth\Module as OAuthModule;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
@@ -190,6 +191,9 @@ abstract class BaseController extends Controller
         Yii::$app->request->setBodyParams(null);
         Yii::$app->request->enableCsrfCookie = false;
         Yii::$app->request->parsers['application/json'] = JsonParser::class;
+
+        // Set by TokenAuth only; a grant left from an earlier request must not reach ScopeFilter.
+        OAuthModule::instance()->activeGrant = null;
 
         return parent::beforeAction($action);
     }
