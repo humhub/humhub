@@ -74,6 +74,18 @@ class Module extends \humhub\components\Module
         return rtrim($baseUrl !== '' ? $baseUrl : Url::base(true), '/');
     }
 
+    /**
+     * An endpoint URL on the issuer's host (the metadata must be consistent with `issuer`).
+     * `Url::to()` already contains the base path, so only scheme, host and port are taken from the issuer.
+     */
+    public function getEndpointUrl(array $route): string
+    {
+        $parts = parse_url($this->getIssuer());
+        $origin = ($parts['scheme'] ?? 'http') . '://' . ($parts['host'] ?? '') . (isset($parts['port']) ? ':' . $parts['port'] : '');
+
+        return $origin . Url::to($route);
+    }
+
     public function allowsApp(): bool
     {
         return (bool)$this->settings->get('allowApp', true);

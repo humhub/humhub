@@ -9,6 +9,7 @@
 namespace humhub\tests\codeception\api;
 
 use ApiTester;
+use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\tests\codeception\_support\OAuthTestHelper;
@@ -35,7 +36,11 @@ class OAuthTokenEndpointCest
             'grant_types_supported' => ['authorization_code', 'refresh_token'],
             'code_challenge_methods_supported' => ['S256'],
         ]);
-        Assert::assertStringEndsWith('/oauth/token', $I->grabDataFromResponseByJsonPath('$.token_endpoint')[0]);
+        $token = $I->grabDataFromResponseByJsonPath('$.token_endpoint')[0];
+        $issuer = $I->grabDataFromResponseByJsonPath('$.issuer')[0];
+        Assert::assertStringEndsWith('/oauth/token', $token);
+        Assert::assertSame(parse_url($issuer, PHP_URL_SCHEME) . '://' . parse_url($issuer, PHP_URL_HOST), parse_url($token, PHP_URL_SCHEME) . '://' . parse_url($token, PHP_URL_HOST));
+        $I->seeResponseContainsJson(['revocation_endpoint_auth_methods_supported' => ['none', 'client_secret_basic', 'client_secret_post']]);
     }
 
     public function testCodeExchangeAndRefreshWithRotation(ApiTester $I)
@@ -121,5 +126,70 @@ class OAuthTokenEndpointCest
         $I->sendPost(self::BASE . 'oauth/revoke', ['token' => $tokens['refresh_token'], 'client_id' => 'unknown']);
         $I->seeResponseCodeIs(401);
         $I->seeResponseContainsJson(['error' => 'invalid_client']);
+    }
+
+    public function testRevokeByAnotherClientLeavesTheGrant(ApiTester $I)
+    {
+        Module::instance()->settings->set('allowClients', true);
+        $client = new Client([
+            'client_id' => 'other-client', 'type' => Client::TYPE_ADMIN, 'name' => 'Other',
+            'secret_hash' => hash('sha256', 's3cret'), 'redirect_uris' => '[]', 'scopes' => '["full"]', 'is_active' => 1,
+        ]);
+        Assert::assertTrue($client->save(false));
+
+        $tokens = OAuthTestHelper::issueTokens(1);
+        $grantCount = Grant::find()->count();
+
+        $I->sendPost(self::BASE . 'oauth/revoke', [
+            'token' => $tokens['refresh_token'], 'client_id' => 'other-client', 'client_secret' => 's3cret',
+        ]);
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame($grantCount, (int)Grant::find()->count());
+    }
+
+    public function testRevokeByAccessToken(ApiTester $I)
+    {
+        $tokens = OAuthTestHelper::issueTokens(1);
+        $grantCount = Grant::find()->count();
+
+        $I->sendPost(self::BASE . 'oauth/revoke', ['token' => $tokens['access_token'], 'client_id' => 'humhub-app']);
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame($grantCount - 1, (int)Grant::find()->count());
+    }
+
+    public function testTokenResponseIsNotCacheable(ApiTester $I)
+    {
+        $tokens = OAuthTestHelper::issueTokens(1);
+
+        $I->sendPost(self::BASE . 'oauth/token', ['grant_type' => 'refresh_token', 'client_id' => 'humhub-app', 'refresh_token' => $tokens['refresh_token']]);
+        $I->seeResponseCodeIs(200);
+        $I->seeHttpHeader('Cache-Control', 'no-store');
+    }
+
+    public function testCodeReuseRevokesTheGrant(ApiTester $I)
+    {
+        $verifier = bin2hex(random_bytes(32));
+        $code = OAuthTestHelper::issueAuthorizationCode(1, $verifier);
+        $params = [
+            'grant_type' => 'authorization_code', 'client_id' => 'humhub-app',
+            'redirect_uri' => OAuthTestHelper::REDIRECT_URI, 'code' => $code, 'code_verifier' => $verifier,
+        ];
+
+        $I->sendPost(self::BASE . 'oauth/token', $params);
+        $I->seeResponseCodeIs(200);
+        $refresh = $I->grabDataFromResponseByJsonPath('$.refresh_token')[0];
+
+        $I->sendPost(self::BASE . 'oauth/token', $params);
+        $I->seeResponseCodeIs(400);
+
+        $I->sendPost(self::BASE . 'oauth/token', ['grant_type' => 'refresh_token', 'client_id' => 'humhub-app', 'refresh_token' => $refresh]);
+        $I->seeResponseCodeIs(400);
+    }
+
+    public function testRevokeWithoutTokenIsAnInvalidRequest(ApiTester $I)
+    {
+        $I->sendPost(self::BASE . 'oauth/revoke', ['client_id' => 'humhub-app']);
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseContainsJson(['error' => 'invalid_request']);
     }
 }

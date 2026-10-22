@@ -16,6 +16,7 @@ use humhub\modules\oauth\components\TokenResolver;
 use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Throwable;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -58,6 +59,10 @@ class TokenController extends Controller
                 ->respondToAccessTokenRequest(ServerRequestFactory::fromYii(Yii::$app->request), $response);
         } catch (OAuthServerException $e) {
             $response = $e->generateHttpResponse($response);
+        } catch (Throwable $e) {
+            Yii::error($e, 'oauth');
+            $response = OAuthServerException::serverError('The token request could not be processed.')
+                ->generateHttpResponse(HttpFactory::instance()->createResponse());
         }
 
         return ResponseBridge::toYii($response, Yii::$app->response);
@@ -73,18 +78,31 @@ class TokenController extends Controller
         $response->format = Response::FORMAT_JSON;
 
         [$basicId, $basicSecret] = $request->getAuthCredentials();
-        $clientId = (string)($basicId ?? $request->post('client_id', ''));
-        $secret = $basicSecret ?? $request->post('client_secret');
+        $usesBasic = is_string($basicId);
+        $clientId = $usesBasic ? $basicId : $request->post('client_id', '');
+        $secret = $usesBasic ? $basicSecret : $request->post('client_secret');
+        $clientId = is_string($clientId) ? $clientId : '';
+        $secret = is_string($secret) ? $secret : null;
 
         $clients = new ClientRepository();
         if ($clientId === '' || !$clients->validateClient($clientId, $secret, null)) {
             $response->setStatusCode(401);
+            if ($usesBasic) {
+                $response->getHeaders()->set('WWW-Authenticate', 'Basic realm="oauth"');
+            }
             $response->data = ['error' => 'invalid_client'];
             return $response;
         }
 
+        $token = $request->post('token');
+        if (!is_string($token) || $token === '') {
+            $response->setStatusCode(400);
+            $response->data = ['error' => 'invalid_request'];
+            return $response;
+        }
+
         $client = $clients->findUsableClient($clientId);
-        $grant = TokenResolver::resolveGrant((string)$request->post('token', ''));
+        $grant = TokenResolver::resolveGrant($token);
         if ($grant !== null && $grant->client_id === $client->id) {
             (new GrantService())->revoke($grant);
         }
