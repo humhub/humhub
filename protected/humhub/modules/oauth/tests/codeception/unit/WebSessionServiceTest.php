@@ -62,4 +62,24 @@ class WebSessionServiceTest extends HumHubDbTestCase
         $this->expectException(\yii\base\InvalidArgumentException::class);
         (new WebSessionService())->createCode($grant);
     }
+
+    public function testRedeemRejectsCodesOfNonAppGrants()
+    {
+        \humhub\modules\oauth\Module::instance()->settings->set('allowClients', true);
+        $client = new Client([
+            'client_id' => 'agent-' . bin2hex(random_bytes(4)), 'type' => Client::TYPE_ADMIN, 'name' => 'Agent',
+            'redirect_uris' => '[]', 'scopes' => json_encode(['full']), 'is_active' => 1, 'created_at' => time(),
+        ]);
+        $client->save(false);
+        $grant = (new GrantService())->createOAuthGrant(User::findOne(['id' => 1]), $client, ['full']);
+
+        (new WebSessionCode(['code_hash' => hash('sha256', 'foreign'), 'grant_id' => $grant->id, 'expires_at' => time() + 60]))->save(false);
+
+        $this->assertNull((new WebSessionService())->redeem('foreign'));
+    }
+
+    public function testBoundGrantIdIsNullWithoutSession()
+    {
+        $this->assertNull((new WebSessionService())->getBoundGrantId());
+    }
 }

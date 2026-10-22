@@ -45,12 +45,18 @@ class WebSessionController extends BaseController
     public function actionCreate(): array
     {
         $grant = Module::instance()->activeGrant;
+        if ($grant === null) {
+            throw new ForbiddenHttpException(Yii::t('OauthModule.base', 'Only the HumHub app can open web sessions.'));
+        }
 
         try {
             $code = (new WebSessionService())->createCode($grant);
         } catch (\yii\base\InvalidArgumentException) {
             throw new ForbiddenHttpException(Yii::t('OauthModule.base', 'Only the HumHub app can open web sessions.'));
         }
+
+        // The response carries a secret
+        Yii::$app->response->headers->set('Cache-Control', 'no-store');
 
         return [
             'url' => Module::instance()->getEndpointUrl(['/oauth/web-session/index', 'code' => $code]),

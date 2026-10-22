@@ -48,7 +48,7 @@ class WebSessionService
     }
 
     /**
-     * @return Grant|null the grant, if the code is valid; the code is consumed either way
+     * @return Grant|null the grant, if the code is valid; a valid code is consumed, expired ones are left for the daily cleanup
      */
     public function redeem(string $code): ?Grant
     {
@@ -59,7 +59,7 @@ class WebSessionService
         }
 
         // Deleting is the claim: of two concurrent redemptions only one deletes the row.
-        $claimed = WebSessionCode::deleteAll(['and', ['code_hash' => $hash], ['>=', 'expires_at', time()]]);
+        $claimed = WebSessionCode::deleteAll(['and', ['code_hash' => $hash], ['>', 'expires_at', time()]]);
         if ($claimed !== 1) {
             return null;
         }
