@@ -9,6 +9,7 @@
 namespace humhub\modules\oauth;
 
 use humhub\components\gates\GateInitEvent;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\oauth\models\AccessToken;
 use humhub\modules\oauth\models\AuthCode;
 use humhub\modules\oauth\models\Grant;
@@ -16,7 +17,10 @@ use humhub\modules\oauth\models\RefreshToken;
 use humhub\modules\oauth\models\WebSessionCode;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
+use humhub\modules\oauth\widgets\AppsSections;
 use humhub\modules\user\models\Password;
+use humhub\modules\user\widgets\SecuritySettingsMenu;
+use humhub\widgets\menu\MenuLink;
 use Yii;
 use yii\base\ActionEvent;
 use yii\base\Event;
@@ -194,6 +198,25 @@ class Events
         foreach (Grant::findAll(['user_id' => $password->user_id]) as $grant) {
             $service->revoke($grant);
         }
+    }
+
+    /**
+     * Adds the "Apps & Tokens" tab to the security settings.
+     */
+    public static function onSecuritySettingsMenuInit(Event $event): void
+    {
+        if (!AppsSections::isAvailable()) {
+            return;
+        }
+
+        /** @var SecuritySettingsMenu $menu */
+        $menu = $event->sender;
+        $menu->addEntry(new MenuLink([
+            'label' => Yii::t('OauthModule.base', 'Apps & Tokens'),
+            'url' => ['/oauth/account/index'],
+            'sortOrder' => 350,
+            'isActive' => ControllerHelper::isActivePath('oauth', 'account'),
+        ]));
     }
 
     /**
