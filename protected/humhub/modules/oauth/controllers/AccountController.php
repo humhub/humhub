@@ -9,13 +9,18 @@
 namespace humhub\modules\oauth\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\oauth\models\Client;
+use humhub\modules\oauth\models\forms\ClientForm;
 use humhub\modules\oauth\models\forms\PersonalAccessTokenForm;
+use humhub\modules\oauth\models\forms\ReauthenticationForm;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\widgets\AppsSections;
+use humhub\modules\oauth\widgets\OwnClientsSection;
 use humhub\modules\oauth\widgets\TokensSection;
 use humhub\modules\user\components\BaseAccountController;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -29,7 +34,7 @@ class AccountController extends BaseAccountController
     protected function getAccessRules()
     {
         return array_merge(parent::getAccessRules(), [
-            [ControllerAccess::RULE_POST => ['revoke']],
+            [ControllerAccess::RULE_POST => ['revoke', 'delete-client', 'regenerate-secret']],
         ]);
     }
 
@@ -38,6 +43,8 @@ class AccountController extends BaseAccountController
         $this->setActionTitles([
             'index' => Yii::t('OauthModule.base', 'Apps & Tokens'),
             'create-token' => Yii::t('OauthModule.base', 'Create token'),
+            'client' => Yii::t('OauthModule.base', 'OAuth app'),
+            'regenerate-secret' => Yii::t('OauthModule.base', 'OAuth app'),
         ]);
 
         parent::init();
@@ -88,5 +95,83 @@ class AccountController extends BaseAccountController
         }
 
         return $this->render('create-token', ['model' => $model]);
+    }
+
+    public function actionClient(?int $id = null)
+    {
+        $this->ensureCanManageClients();
+
+        $model = new ClientForm($id === null ? new Client() : $this->findOwnClient($id), $this->getUser(), [
+            'scenario' => ClientForm::SCENARIO_USER,
+        ]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->getSecret() !== null) {
+                return $this->renderSecret($model->client, $model->getSecret());
+            }
+
+            $this->view->saved();
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('client', ['model' => $model, 'reauthentication' => new ReauthenticationForm($this->getUser())]);
+    }
+
+    public function actionDeleteClient(int $id)
+    {
+        $this->ensureCanManageClients();
+
+        // Its grants go with it (foreign key)
+        $this->findOwnClient($id)->delete();
+        $this->view->success(Yii::t('OauthModule.base', 'The app has been deleted.'));
+
+        return $this->redirect(['index']);
+    }
+
+    public function actionRegenerateSecret(int $id)
+    {
+        $this->ensureCanManageClients();
+
+        $client = $this->findOwnClient($id);
+        if (!$client->isConfidential()) {
+            throw new BadRequestHttpException();
+        }
+
+        $model = new ClientForm($client, $this->getUser(), ['scenario' => ClientForm::SCENARIO_USER]);
+        $reauthentication = new ReauthenticationForm($this->getUser());
+        if (!$reauthentication->load(Yii::$app->request->post()) || !$reauthentication->validate()) {
+            return $this->render('client', ['model' => $model, 'reauthentication' => $reauthentication]);
+        }
+
+        $model->generateSecret();
+        $client->save(false);
+
+        return $this->renderSecret($client, $model->getSecret());
+    }
+
+    private function ensureCanManageClients(): void
+    {
+        if (!OwnClientsSection::canManage()) {
+            throw new ForbiddenHttpException();
+        }
+    }
+
+    private function findOwnClient(int $id): Client
+    {
+        $client = Client::findOne(['id' => $id, 'type' => Client::TYPE_USER, 'owner_user_id' => $this->getUser()->id]);
+        if ($client === null) {
+            throw new NotFoundHttpException();
+        }
+
+        return $client;
+    }
+
+    /**
+     * Rendered, not redirected to: the secret must not pass through the session or any cache.
+     */
+    private function renderSecret(Client $client, string $secret): string
+    {
+        Yii::$app->response->headers->set('Cache-Control', 'no-store');
+
+        return $this->render('client-secret', ['client' => $client, 'secret' => $secret]);
     }
 }

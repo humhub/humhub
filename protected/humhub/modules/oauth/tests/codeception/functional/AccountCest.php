@@ -15,6 +15,7 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\notifications\GrantCreatedNotification;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
+use humhub\modules\oauth\permissions\ManageOwnOAuthClients;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\user\models\GroupPermission;
@@ -43,10 +44,11 @@ class AccountCest
     {
         Grant::deleteAll();
         Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
-        GroupPermission::deleteAll(['class' => CreatePersonalAccessToken::class]);
+        GroupPermission::deleteAll(['class' => [CreatePersonalAccessToken::class, ManageOwnOAuthClients::class]]);
         Notification::deleteAll(['class' => GrantCreatedNotification::class]);
         Module::instance()->settings->delete('allowPersonalAccessTokens');
         Module::instance()->settings->delete('allowClients');
+        Module::instance()->settings->delete('allowUserClients');
         // Failed password confirmations are throttled via the cache
         Yii::$app->cache->flush();
     }
@@ -68,6 +70,33 @@ class AccountCest
     {
         Module::instance()->settings->set('allowPersonalAccessTokens', true);
         $I->setGroupPermission(self::USER1_GROUP, CreatePersonalAccessToken::class);
+    }
+
+    private function allowUserClients(FunctionalTester $I): void
+    {
+        Module::instance()->settings->set('allowUserClients', true);
+        $I->setGroupPermission(self::USER1_GROUP, ManageOwnOAuthClients::class);
+    }
+
+    private function userClient(int $ownerId, array $attributes = []): Client
+    {
+        $client = new Client($attributes + [
+            'client_id' => 'own-' . $ownerId, 'type' => Client::TYPE_USER, 'name' => 'Own app',
+            'owner_user_id' => $ownerId, 'secret_hash' => hash('sha256', 'old-secret'),
+            'redirect_uris' => json_encode(['https://example.org/cb']),
+            'scopes' => json_encode(['content:read']),
+            'is_active' => 1, 'created_at' => time(),
+        ]);
+        $client->save(false);
+
+        return $client;
+    }
+
+    private function grabSecret(FunctionalTester $I): string
+    {
+        Assert::assertSame(1, preg_match('/id="oauth-client-secret"[^>]*value="([^"]+)"/', $I->grabPageSource(), $match));
+
+        return $match[1];
     }
 
     public function testDevicesAreListedAndSignedOut(FunctionalTester $I)
@@ -217,5 +246,156 @@ class AccountCest
 
         $I->amOnRoute('/oauth/account/index');
         $I->seeResponseCodeIs(404);
+    }
+
+    public function testUserClientIsRegisteredListedAndEdited(FunctionalTester $I)
+    {
+        $this->allowUserClients($I);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/account/index');
+        $I->see('My OAuth apps');
+        $I->see('Register app');
+
+        $I->amOnRoute('/oauth/account/client');
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'CLI agent',
+            'ClientForm[redirectUris]' => 'http://example.org/cb',
+            'ClientForm[scopes]' => ['content:read'],
+        ]);
+        $I->see('Not allowed: http://example.org/cb');
+        Assert::assertFalse(Client::find()->where(['type' => Client::TYPE_USER])->exists());
+
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'CLI agent',
+            'ClientForm[redirectUris]' => "http://127.0.0.1/cb\ncom.example.cli:/cb",
+            'ClientForm[scopes]' => ['content:read', 'spaces:read'],
+        ]);
+        $client = Client::findOne(['type' => Client::TYPE_USER, 'name' => 'CLI agent']);
+        Assert::assertNotNull($client);
+        Assert::assertSame(2, (int)$client->owner_user_id);
+        Assert::assertFalse($client->isConfidential());
+        Assert::assertSame(['http://127.0.0.1/cb', 'com.example.cli:/cb'], $client->getRedirectUris());
+        Assert::assertSame(['content:read', 'spaces:read'], $client->getAllowedScopes());
+
+        $I->amOnRoute('/oauth/account/index');
+        $I->see('CLI agent');
+        $I->see($client->client_id);
+        $I->see('Public');
+
+        $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
+        $I->seeInField('ClientForm[name]', 'CLI agent');
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Renamed agent',
+            'ClientForm[redirectUris]' => 'http://127.0.0.1/cb',
+            'ClientForm[scopes]' => ['content:read'],
+        ]);
+        $client->refresh();
+        Assert::assertSame('Renamed agent', $client->name);
+        Assert::assertSame(['http://127.0.0.1/cb'], $client->getRedirectUris());
+        Assert::assertSame(['content:read'], $client->getAllowedScopes());
+    }
+
+    public function testConfidentialClientShowsItsSecretOnce(FunctionalTester $I)
+    {
+        $this->allowUserClients($I);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/account/client');
+        $I->submitForm('#oauth-client-form', [
+            'ClientForm[name]' => 'Server app',
+            'ClientForm[redirectUris]' => 'https://example.org/cb',
+            'ClientForm[scopes]' => ['content:read'],
+            'ClientForm[confidential]' => '1',
+        ]);
+        $I->see('Copy the secret now.');
+        Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
+        $secret = $this->grabSecret($I);
+
+        $client = Client::findOne(['type' => Client::TYPE_USER, 'name' => 'Server app']);
+        $I->seeInField('#oauth-client-id', $client->client_id);
+        Assert::assertTrue($client->validateSecret($secret));
+        Assert::assertNotSame($secret, $client->secret_hash);
+
+        $I->amOnRoute('/oauth/account/index');
+        $I->see('Server app');
+        $I->see('Confidential');
+        $I->dontSee($secret);
+        $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
+        $I->dontSee($secret);
+    }
+
+    public function testSecretIsRegeneratedAfterReauthentication(FunctionalTester $I)
+    {
+        $this->allowUserClients($I);
+        $client = $this->userClient(2);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
+        $I->see('Regenerate secret');
+        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => 'wrong']);
+        $I->see('Your password is incorrect.');
+        Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
+
+        $I->submitForm('#oauth-secret-form', ['ReauthenticationForm[currentPassword]' => self::PASSWORD]);
+        $I->see('Copy the secret now.');
+        Assert::assertSame('no-store', $I->grabHttpHeader('Cache-Control'));
+        $secret = $this->grabSecret($I);
+
+        $client->refresh();
+        Assert::assertFalse($client->validateSecret('old-secret'));
+        Assert::assertTrue($client->validateSecret($secret));
+    }
+
+    public function testOwnClientIsDeleted(FunctionalTester $I)
+    {
+        $this->allowUserClients($I);
+        $client = $this->userClient(2);
+        $grant = $this->usedGrant(2, $client->client_id, ['content:read']);
+
+        $I->amUser1();
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fdelete-client&id=' . $client->id);
+        Assert::assertFalse(Client::find()->where(['id' => $client->id])->exists());
+        Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
+    }
+
+    public function testForeignClientCannotBeManaged(FunctionalTester $I)
+    {
+        $this->allowUserClients($I);
+        $foreign = $this->userClient(3);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/account/index');
+        $I->dontSee('Own app');
+
+        $I->amOnRoute('/oauth/account/client', ['id' => $foreign->id]);
+        $I->seeResponseCodeIs(404);
+
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fdelete-client&id=' . $foreign->id);
+        $I->seeResponseCodeIs(404);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fregenerate-secret&id=' . $foreign->id, [
+            'ReauthenticationForm' => ['currentPassword' => self::PASSWORD],
+        ]);
+        $I->seeResponseCodeIs(404);
+        Assert::assertTrue(Client::findOne(['id' => $foreign->id])->validateSecret('old-secret'));
+    }
+
+    public function testClientsCannotBeManagedWithoutPermission(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('allowUserClients', true);
+        $this->usedGrant(2, Client::SYSTEM_CLIENT_ID, ['full']);
+        $client = $this->userClient(2);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/account/index');
+        $I->dontSee('My OAuth apps');
+
+        $I->amOnRoute('/oauth/account/client');
+        $I->seeResponseCodeIs(403);
+        $I->amOnRoute('/oauth/account/client', ['id' => $client->id]);
+        $I->seeResponseCodeIs(403);
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fdelete-client&id=' . $client->id);
+        $I->seeResponseCodeIs(403);
+        Assert::assertTrue(Client::find()->where(['id' => $client->id])->exists());
     }
 }

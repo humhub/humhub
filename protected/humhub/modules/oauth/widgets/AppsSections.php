@@ -9,8 +9,6 @@
 namespace humhub\modules\oauth\widgets;
 
 use humhub\modules\oauth\models\Grant;
-use humhub\modules\oauth\Module;
-use humhub\modules\oauth\permissions\ManageOwnOAuthClients;
 use humhub\modules\user\widgets\security\SecuritySectionStack;
 use Yii;
 
@@ -33,7 +31,7 @@ class AppsSections extends SecuritySectionStack
 
         return Grant::find()->where(['user_id' => $user->id])->exists()
             || TokensSection::canCreate()
-            || (Module::instance()->allowsUserClients() && $user->can(ManageOwnOAuthClients::class));
+            || OwnClientsSection::canManage();
     }
 
     public function init()
@@ -41,6 +39,7 @@ class AppsSections extends SecuritySectionStack
         $this->addWidget(DevicesSection::class, [], ['sortOrder' => 100]);
         $this->addWidget(ConnectedAppsSection::class, [], ['sortOrder' => 200]);
         $this->addWidget(TokensSection::class, [], ['sortOrder' => 300]);
+        $this->addWidget(OwnClientsSection::class, [], ['sortOrder' => 400]);
 
         parent::init();
     }
