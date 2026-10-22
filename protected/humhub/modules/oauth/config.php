@@ -16,6 +16,8 @@ return [
         ['pattern' => 'oauth/authorize', 'route' => 'oauth/authorize/index', 'verb' => ['GET', 'POST']],
         ['pattern' => 'oauth/token', 'route' => 'oauth/token/token', 'verb' => 'POST'],
         ['pattern' => 'oauth/revoke', 'route' => 'oauth/token/revoke', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/oauth/web-session', 'route' => 'oauth/api/web-session/create', 'verb' => 'POST'],
+        ['pattern' => 'oauth/web-session', 'route' => 'oauth/web-session/index', 'verb' => ['GET']],
         ['pattern' => '.well-known/oauth-authorization-server', 'route' => 'oauth/metadata/index', 'verb' => ['GET', 'HEAD']],
     ],
     'events' => [
