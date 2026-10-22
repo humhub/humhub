@@ -33,12 +33,21 @@ class ClientRepository implements ClientRepositoryInterface
             return false;
         }
 
+        return $this->authenticateClient($clientIdentifier, $clientSecret) !== null;
+    }
+
+    /**
+     * @return Client|null the usable client the credentials belong to
+     */
+    public function authenticateClient(string $clientIdentifier, ?string $clientSecret): ?Client
+    {
         $client = $this->findUsableClient($clientIdentifier);
         if ($client === null) {
-            return false;
+            return null;
         }
 
-        return $client->isConfidential() ? $client->validateSecret($clientSecret) : $clientSecret === null;
+        $valid = $client->isConfidential() ? $client->validateSecret($clientSecret) : $clientSecret === null;
+        return $valid ? $client : null;
     }
 
     public function findUsableClient(string $clientIdentifier): ?Client

@@ -83,6 +83,10 @@ class RepositoriesTest extends HumHubDbTestCase
         $this->assertTrue($repository->validateClient('confidential-test', 's3cret', 'refresh_token'));
         $this->assertFalse($repository->validateClient('confidential-test', 'wrong', 'refresh_token'));
         $this->assertFalse($repository->validateClient('confidential-test', null, 'refresh_token'));
+
+        $this->assertSame($client->id, $repository->authenticateClient('confidential-test', 's3cret')?->id);
+        $this->assertNull($repository->authenticateClient('confidential-test', 'wrong'));
+        $this->assertNull($repository->authenticateClient(Client::SYSTEM_CLIENT_ID, 'secret'));
     }
 
     public function testScopeRepositoryAcceptsEveryWellFormedScope()

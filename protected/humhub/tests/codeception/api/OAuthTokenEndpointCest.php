@@ -109,6 +109,7 @@ class OAuthTokenEndpointCest
 
         $I->sendPost(self::BASE . 'oauth/revoke', ['token' => $tokens['refresh_token'], 'client_id' => 'humhub-app']);
         $I->seeResponseCodeIs(200);
+        Assert::assertSame('{}', $I->grabResponse());
         Assert::assertSame($grantCount - 1, (int)Grant::find()->count());
 
         // unknown or already revoked: still 200 (RFC 7009)
@@ -126,6 +127,7 @@ class OAuthTokenEndpointCest
         $I->sendPost(self::BASE . 'oauth/revoke', ['token' => $tokens['refresh_token'], 'client_id' => 'unknown']);
         $I->seeResponseCodeIs(401);
         $I->seeResponseContainsJson(['error' => 'invalid_client']);
+        $I->seeResponseJsonMatchesJsonPath('$.error_description');
     }
 
     public function testRevokeByAnotherClientLeavesTheGrant(ApiTester $I)

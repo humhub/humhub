@@ -16,6 +16,7 @@ use humhub\modules\oauth\components\TokenResolver;
 use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\services\GrantService;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use stdClass;
 use Throwable;
 use Yii;
 use yii\filters\VerbFilter;
@@ -84,30 +85,36 @@ class TokenController extends Controller
         $clientId = is_string($clientId) ? $clientId : '';
         $secret = is_string($secret) ? $secret : null;
 
-        $clients = new ClientRepository();
-        if ($clientId === '' || !$clients->validateClient($clientId, $secret, null)) {
+        $client = $clientId === '' ? null : (new ClientRepository())->authenticateClient($clientId, $secret);
+        if ($client === null) {
             $response->setStatusCode(401);
             if ($usesBasic) {
                 $response->getHeaders()->set('WWW-Authenticate', 'Basic realm="oauth"');
             }
-            $response->data = ['error' => 'invalid_client'];
+            $response->data = ['error' => 'invalid_client', 'error_description' => 'Client authentication failed.'];
             return $response;
         }
 
         $token = $request->post('token');
         if (!is_string($token) || $token === '') {
             $response->setStatusCode(400);
-            $response->data = ['error' => 'invalid_request'];
+            $response->data = ['error' => 'invalid_request', 'error_description' => 'The token parameter is missing.'];
             return $response;
         }
 
-        $client = $clients->findUsableClient($clientId);
         $grant = TokenResolver::resolveGrant($token);
-        if ($grant !== null && $grant->client_id === $client->id) {
-            (new GrantService())->revoke($grant);
+        if ($grant !== null && (int)$grant->client_id === (int)$client->id) {
+            try {
+                (new GrantService())->revoke($grant);
+            } catch (Throwable $e) {
+                Yii::error($e, 'oauth');
+                $response->setStatusCode(500);
+                $response->data = ['error' => 'server_error', 'error_description' => 'The token could not be revoked.'];
+                return $response;
+            }
         }
 
-        $response->data = [];
+        $response->data = new stdClass();
         return $response;
     }
 }
