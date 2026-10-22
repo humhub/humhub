@@ -50,6 +50,11 @@ class LikeController extends BaseController
 
     /**
      * @inheritdoc
+     */
+    protected array $scopes = ['affirm' => 'content:write', 'remove' => 'content:write', '*' => 'content:read'];
+
+    /**
+     * @inheritdoc
      *
      * Guests may read the like state and the list of likers of content they can see;
      * `liked`/`canLike` are always `false` for them.

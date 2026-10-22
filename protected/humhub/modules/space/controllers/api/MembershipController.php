@@ -56,6 +56,11 @@ class MembershipController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['state' => 'spaces:read', '*' => 'spaces:write'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

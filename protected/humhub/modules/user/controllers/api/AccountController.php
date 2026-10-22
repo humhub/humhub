@@ -32,6 +32,11 @@ class AccountController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['*' => 'account:read'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

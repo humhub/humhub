@@ -44,6 +44,11 @@ class NotificationController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['mark-as-seen' => 'notifications:write', '*' => 'notifications:read'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

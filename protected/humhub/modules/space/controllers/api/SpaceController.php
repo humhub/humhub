@@ -62,6 +62,11 @@ class SpaceController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['*' => 'spaces:read'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

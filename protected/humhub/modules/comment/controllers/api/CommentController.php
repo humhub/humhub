@@ -56,6 +56,11 @@ class CommentController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['create' => 'content:write', 'update' => 'content:write', 'delete' => 'content:write', '*' => 'content:read'];
+
+    /**
+     * @inheritdoc
+     */
     protected array $guestAllowedActions = ['content-comments', 'replies', 'view'];
 
     /**
