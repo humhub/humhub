@@ -60,18 +60,19 @@ Plain `http://` URIs to other hosts are rejected.
 All URLs are relative to the installation's base URL. A subdirectory installation serves the
 metadata below its base path (`/humhub/.well-known/oauth-authorization-server`).
 
-**Metadata** (`issuer` = base URL):
+**Metadata** (`issuer` = base URL; every endpoint URL uses the same scheme and host):
 
 - the endpoint URLs (`authorization_endpoint`, `token_endpoint`, `revocation_endpoint`);
 - `response_types_supported: ["code"]`;
 - `grant_types_supported: ["authorization_code", "refresh_token"]`;
 - `code_challenge_methods_supported: ["S256"]`;
 - `token_endpoint_auth_methods_supported: ["none", "client_secret_basic", "client_secret_post"]`;
+- `revocation_endpoint_auth_methods_supported`: the same three methods;
 - `scopes_supported`: every registered scope.
 
 **`/oauth/token` and `/oauth/revoke`:**
 
-- run session-less: they start no session, set no cookie and are not CSRF-checked;
+- authenticate the client only: a session or cookie a request may carry is ignored, and they are not CSRF-checked;
 - are reachable for guests even when guest access is disabled;
 - answer in the OAuth JSON error format.
 
@@ -101,8 +102,11 @@ or already revoked token answers `200`, as RFC 7009 requires.
    - the host of the redirect URI;
    - the label of every scope.
 
-   An admin client with *skip consent* set and the system client skip the scope list. The
-   system client shows the confirmation "Sign in to the HumHub app on this device?" instead.
+   An admin client with *skip consent* set skips the consent page entirely; the code is
+   issued right away. The system client skips the scope list and shows the confirmation
+   "Sign in to the HumHub app on this device?" instead.
+
+   Only `S256` is accepted as `code_challenge_method`.
 4. **Decision.**
    - *Allow* creates the grant ([Data model](#data-model)) and completes the request with the
      grant's `guid` as league user identifier. Then 302 to the redirect URI with `code` and
@@ -198,7 +202,7 @@ deployments that manage secrets outside the database:
     'oauth' => [
         'privateKey' => 'file:///run/secrets/humhub-oauth-private.pem',
         'publicKey' => 'file:///run/secrets/humhub-oauth-public.pem',
-        'encryptionKey' => getenv('HUMHUB_OAUTH_ENCRYPTION_KEY'),
+        'encryptionKey' => getenv('HUMHUB_OAUTH_ENCRYPTION_KEY') ?: null,
     ],
 ],
 ```
@@ -245,7 +249,7 @@ On success:
   sets `$allowSessionAuth` or declares `$scopes`.
 - **New property `protected array $scopes = []`**: action id → required scope (or a list, any
   of which suffices). `'*'` is the default for actions without their own entry.
-- **New behavior `scopes`.** A `humhub\modules\oauth\components\ScopeFilter`, attached after
+- **New behavior `scopeFilter`.** A `humhub\modules\oauth\components\ScopeFilter`, attached after
   the authenticator, with:
   - `scopes` set to `$this->scopes`;
   - `allowFull` set to `$this->allowSessionAuth`. A grant with `full` reaches exactly what the
