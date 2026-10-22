@@ -34,6 +34,11 @@ final class ScopeRegistry
     public const FULL = 'full';
 
     /**
+     * Scopes contributed by modules are prefixed with the module id.
+     */
+    public const MODULE_SCOPE_PATTERN = '/^[a-z0-9-]+:[a-z0-9:_-]+$/';
+
+    /**
      * @var array<string, array<string, Scope>> by language, labels are translated
      */
     private static array $scopes = [];
@@ -56,8 +61,16 @@ final class ScopeRegistry
         $event = new ScopesEvent();
         Event::trigger(self::class, self::EVENT_COLLECT_SCOPES, $event);
         foreach ($event->scopes as $scope) {
-            if (!$scope instanceof Scope || isset($scopes[$scope->id])) {
-                Yii::warning('Ignored an invalid or duplicate OAuth scope.', 'oauth');
+            if (!$scope instanceof Scope) {
+                Yii::warning('Ignored an OAuth scope that is not a Scope object.', 'oauth');
+                continue;
+            }
+            if (!preg_match(self::MODULE_SCOPE_PATTERN, $scope->id)) {
+                Yii::warning('Ignored the OAuth scope "' . $scope->id . '": module scopes are named "<module-id>:<name>".', 'oauth');
+                continue;
+            }
+            if (isset($scopes[$scope->id])) {
+                Yii::warning('Ignored the duplicate OAuth scope "' . $scope->id . '".', 'oauth');
                 continue;
             }
             $scopes[$scope->id] = $scope;

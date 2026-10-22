@@ -57,4 +57,24 @@ class ScopeRegistryTest extends HumHubDbTestCase
         $this->assertNotSame('Hijack', ScopeRegistry::get('full')->label);
         $this->assertNotSame('Duplicate', ScopeRegistry::get('content:read')->label);
     }
+
+    public function testModuleScopesNeedAModulePrefix()
+    {
+        $this->handler = function (ScopesEvent $event) {
+            $event->scopes[] = new Scope('calendar:entries:read', 'Read entries');
+            $event->scopes[] = new Scope('calendar', 'No prefix');
+            $event->scopes[] = new Scope('Calendar:read', 'Upper case');
+            $event->scopes[] = new Scope(':read', 'Empty module');
+            $event->scopes[] = new Scope('calendar:read write', 'Space');
+        };
+        Event::on(ScopeRegistry::class, ScopeRegistry::EVENT_COLLECT_SCOPES, $this->handler);
+        ScopeRegistry::reset();
+
+        $this->assertTrue(ScopeRegistry::has('calendar:entries:read'));
+        $this->assertFalse(ScopeRegistry::has('calendar'));
+        $this->assertFalse(ScopeRegistry::has('Calendar:read'));
+        $this->assertFalse(ScopeRegistry::has(':read'));
+        $this->assertFalse(ScopeRegistry::has('calendar:read write'));
+        $this->assertTrue(ScopeRegistry::has('full'), 'core scopes are not subject to the module prefix');
+    }
 }
