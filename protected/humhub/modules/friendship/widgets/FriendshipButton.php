@@ -15,6 +15,7 @@ use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
@@ -112,7 +113,7 @@ class FriendshipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to end your friendship with {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to end your friendship with {userName}?', ['{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
                     'class' => 'btn btn-accent active',
@@ -123,7 +124,7 @@ class FriendshipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to send a friendship request to {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
+                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to send a friendship request to {userName}?', ['{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>']),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
                     'class' => 'btn btn-accent',
