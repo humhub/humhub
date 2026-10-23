@@ -1,0 +1,808 @@
+# OAuth and personal access tokens
+
+**Since 1.20.** Core ships an OAuth 2.0 authorization server and personal access tokens
+(PATs) in the core module `oauth` (`humhub\modules\oauth\`). Both issue credentials for the
+[HTTP API](concept-api.md); no additional module is required.
+
+Clients:
+
+- the **HumHub app** — a built-in system client (`client_id` `humhub-app`). The app signs in
+  through the system browser and turns its token into a web session for its WebViews.
+  Customer-specific (white-label) builds of the app use the same client with their own app ID
+  ([White-label apps](#white-label-apps));
+- **admin clients** — integrations and agents an administrator registers.
+
+A **personal access token** is a static token a user creates for scripts and agents that do
+not speak OAuth.
+
+Out of scope: the client credentials grant, dynamic client registration and the device
+authorization grant.
+
+## Protocol
+
+OAuth 2.0 as profiled by RFC 9700 (security BCP) and RFC 8252 (native apps), implemented with
+[`league/oauth2-server`](https://oauth2.thephpleague.com/) ^9.4:
+
+- **Authorization code grant with PKCE.** `S256` only. PKCE is mandatory for public clients
+  (league's default) and accepted from confidential ones.
+- **Refresh token grant** with rotation: every refresh issues a new refresh token and revokes
+  the old one.
+- No implicit grant and no password grant.
+
+Client types:
+
+- **Public** clients (the app, native and CLI agents) have no secret.
+- **Confidential** clients authenticate at the token endpoint with `client_secret_basic` or
+  `client_secret_post`.
+
+Redirect URIs are matched exactly. Loopback URIs (`http://127.0.0.1/...`, `http://[::1]/...`)
+match on any port (RFC 8252 §7.3, league's `RedirectUriValidator`).
+
+Redirect URIs a client may register:
+
+- `https://` URIs;
+- loopback URIs;
+- private-use schemes in reverse-domain form (`com.example.app:/callback`) for public clients.
+
+Plain `http://` URIs to other hosts are rejected.
+
+### Endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /oauth/authorize` | authorization request; login, gates, consent |
+| `POST /oauth/authorize` | consent decision (CSRF-protected form post) |
+| `POST /oauth/token` | code exchange and refresh (league) |
+| `POST /oauth/revoke` | token revocation (RFC 7009) |
+| `GET /.well-known/oauth-authorization-server` | authorization server metadata (RFC 8414) |
+| `POST /api/v2/oauth/web-session` | app only: one-time code for a WebView session |
+| `GET /oauth/web-session` | app only: redeems that code and starts the web session |
+
+All URLs are relative to the installation's base URL. A subdirectory installation serves the
+metadata below its base path (`/humhub/.well-known/oauth-authorization-server`).
+
+**Metadata** (`issuer` = base URL; every endpoint URL uses the same scheme and host):
+
+- the endpoint URLs (`authorization_endpoint`, `token_endpoint`, `revocation_endpoint`);
+- `response_types_supported: ["code"]`;
+- `grant_types_supported: ["authorization_code", "refresh_token"]`;
+- `code_challenge_methods_supported: ["S256"]`;
+- `token_endpoint_auth_methods_supported: ["none", "client_secret_basic", "client_secret_post"]`;
+- `revocation_endpoint_auth_methods_supported`: the same three methods;
+- `scopes_supported`: every registered scope.
+
+**`/oauth/token` and `/oauth/revoke`:**
+
+- authenticate the client only: a session or cookie a request may carry is ignored, and they are not CSRF-checked;
+- are reachable for guests even when guest access is disabled;
+- answer in the OAuth JSON error format.
+
+**`/oauth/revoke`** accepts an access or refresh token, resolves its grant and deletes that
+grant. Every token issued under the grant is revoked with it, as RFC 7009 permits. An unknown
+or already revoked token answers `200`, as RFC 7009 requires.
+
+### Authorization flow
+
+`GET /oauth/authorize` is a regular web route that requires login:
+
+1. **Login and gates.** A guest is sent to the login page; the authorization URL is kept as
+   the return URL. Every login method therefore works on the way: local, LDAP, any auth client
+   (Google, SAML, company SSO). All gates (2FA, legal, forced password change …) run as for
+   any browser request, and the request reaches the authorize action only once they are
+   closed.
+2. **Validation.** league validates the request (client, redirect URI, PKCE, `state`).
+   Additional checks:
+   - impersonation is not active (`Yii::$app->user->impersonation->isActive()`); otherwise `403`;
+   - the client is active and its type is allowed (see [Administration](#administration));
+   - the requested scopes, reduced to what the client may get ([Scopes](#scopes)), are not empty;
+     otherwise `invalid_scope`. The system client gets `full` without a `scope` parameter.
+3. **Consent.** The validated `AuthorizationRequest` is stored in the session under a random
+   id. The consent page posts that id back, and the id is single-use. The page shows:
+   - the client name;
+   - the host of the redirect URI;
+   - the label of every scope.
+
+   An admin client with *skip consent* set skips the consent page entirely; the code is
+   issued right away. The system client skips the scope list and shows the confirmation
+   "Sign in to the app on this device?" with the installation name (`Yii::$app->name`)
+   instead — neutral, because white-label apps use the same client.
+
+   Only `S256` is accepted as `code_challenge_method`.
+4. **Decision.**
+   - *Allow* creates the grant ([Data model](#data-model)) and completes the request with the
+     grant's `guid` as league user identifier. Then 302 to the redirect URI with `code` and
+     `state`.
+   - *Deny* answers `access_denied`.
+
+The league user identifier is the grant's `guid`, not the user id. It travels through the
+authorization code, the refresh token and the access token (`sub`), so every token resolves
+to its grant without further bookkeeping. Clients must not read `sub`; they get the user from
+`GET /api/v2/account`.
+
+A grant whose code is never exchanged has `last_used_at = NULL`. It is not listed and is
+deleted by the daily cleanup after one hour.
+
+### Lifetimes
+
+| Item | Lifetime |
+|---|---|
+| authorization code | 10 minutes, single use |
+| access token | 1 hour |
+| refresh token | `refreshTokenLifetimeDays` (default 90), renewed on every refresh, so a grant in use stays alive |
+| grant | `grantMaxLifetimeDays` (default 0 = unlimited); set at creation as `expires_at` |
+| web-session code | 60 seconds, single use |
+
+**Reuse detection.** A revoked refresh token presented again means it was copied. The grant is
+deleted, so every token of it dies. A client must therefore serialize its refreshes.
+
+## Tokens
+
+### Access tokens
+
+Access tokens are league JWTs, signed RS256. The access token entity overrides league's
+`convertToJWT()` to add:
+
+- `iss`: the base URL;
+- `kid` in the header: `hh-` + the first 8 hex characters of the SHA-256 of the public key.
+
+Every token's `jti` is stored ([Data model](#data-model)). League calls
+`isAccessTokenRevoked()` on every validation, and the repository answers `true` (revoked)
+when any of these holds:
+
+- the row is missing or revoked;
+- the grant has expired;
+- the user is not enabled.
+
+An unknown `jti` therefore never authenticates. A token forged with a stolen key does not work
+without write access to the database.
+
+### Personal access tokens
+
+```
+hhpat_<32 random base62 characters><6 base62 characters CRC32 of the random part>
+```
+
+- **Generation:** `random_bytes`.
+- **Storage:** the SHA-256 hex digest of the whole token (`token_hash`) and its last four
+  characters (`token_hint`, for display). The token itself is shown once, on creation, and
+  never stored.
+- **Lifetime:** chosen at creation from 7 days, 30 days (default), 90 days, 1 year and
+  *never*. Options beyond `patMaxLifetimeDays` are hidden. *Never* is offered only when
+  `patMaxLifetimeDays` is 0.
+- **Creation requires re-authentication** (`RecentAuthentication`), since a PAT bypasses 2FA:
+  - a user with a local password (`User::getCurrentPassword()`) confirms it. Five failed
+    attempts within 15 minutes block further confirmations for that window;
+  - any other user must have signed in interactively (password, LDAP, SSO …) to the current
+    session within the last 15 minutes. The login controller records the time in the session
+    (`AuthController::EVENT_AFTER_LOGIN`), bound to the user; remember-me cookie logins and
+    impersonations do not count. Otherwise the form asks them to sign out and in again.
+- **Never during an impersonation:** creating a PAT is refused (`403`), like any other
+  credential (client secrets).
+
+The CRC32 suffix lets `TokenAuth` reject a mistyped token without a database query, and the
+`hhpat_` prefix makes leaked tokens recognizable to secret scanners.
+
+PATs are core code; league is not involved.
+
+### Keys
+
+Three secrets, stored in the module settings:
+
+| Setting | Content |
+|---|---|
+| `privateKey` | RSA 2048 private key, PEM (`openssl_pkey_new()`) |
+| `publicKey` | the matching public key, PEM |
+| `encryptionKey` | `Defuse\Crypto\Key::createNewRandomKey()->saveToAsciiSafeString()`; league encrypts authorization codes and refresh tokens with it |
+
+**Generation.** The module's initial migration generates all three. The installer runs the
+migrations, so new installations and updates share one code path. Every node of a cluster
+reads the same keys from the database.
+
+**Override.** Module properties `$privateKey`, `$publicKey` and `$encryptionKey`. When set,
+they take precedence over the settings. Each accepts the value itself or a `file://` path, for
+deployments that manage secrets outside the database:
+
+```php
+// config/common.php
+'modules' => [
+    'oauth' => [
+        'privateKey' => 'file:///run/secrets/humhub-oauth-private.pem',
+        'publicKey' => 'file:///run/secrets/humhub-oauth-public.pem',
+        'encryptionKey' => getenv('HUMHUB_OAUTH_ENCRYPTION_KEY') ?: null,
+    ],
+],
+```
+
+**Rotation.** `php yii oauth/rotate-key` generates a new key pair and keeps the encryption
+key.
+
+- Access tokens signed with the old key fail validation (`kid` with prefix `hh-`, signature
+  mismatch → `401`). Clients refresh.
+- Refresh tokens keep working: they are encrypted with the encryption key, not signed with the
+  key pair.
+- PATs are not affected.
+
+## Authentication on API requests
+
+`humhub\modules\oauth\components\TokenAuth` (a `yii\filters\auth\AuthMethod`) authenticates
+both token kinds:
+
+1. **No token.** No `Authorization: Bearer` header → `null`.
+2. **PAT.** The token starts with `hhpat_`:
+   - the checksum must hold;
+   - a grant of type `pat` with this `token_hash` must exist and must not be expired;
+   - the user must be enabled.
+
+   Otherwise `401`.
+3. **OAuth JWT.** The token is a JWT whose header `kid` starts with `hh-`. league's
+   `ResourceServer` validates it; any failure → `401`.
+4. **Any other token** → `null`. The next method (e.g. the rest module's bearer or JWT auth)
+   may try.
+
+On success:
+
+- the identity is set on the session-less user component (`$user->setIdentity()`), not
+  logged in: no `last_login` write and no login events per request;
+- the grant is published as `Module::$activeGrant`;
+- `last_used_at` is updated when it is older than 5 minutes.
+
+### In `/api/v2`
+
+`humhub\components\api\BaseController`:
+
+- **`TokenAuth` placement.** It is the first method of the chain, ahead of everything
+  modules contribute via `EVENT_COLLECT_AUTH_METHODS`. It is added only when the controller
+  sets `$allowSessionAuth` or declares `$scopes`.
+- **New property `protected array $scopes = []`**: action id → required scope (or a list, any
+  of which suffices). `'*'` is the default for actions without their own entry.
+- **New behavior `scopeFilter`.** A `humhub\modules\oauth\components\ScopeFilter`, attached after
+  the authenticator, with:
+  - `scopes` set to `$this->scopes`;
+  - `allowFull` set to `$this->allowSessionAuth`. A grant with `full` reaches exactly what the
+    platform's own frontend reaches, and nothing else.
+
+`ScopeFilter`:
+
+- **Session and other methods.** A request not authenticated by `TokenAuth`
+  (`Module::$activeGrant === null`) passes. Those authentication methods have their own
+  authorization.
+- **Token requests.** A token request passes when either holds:
+  - `full` is among the grant's effective scopes and `allowFull` is set;
+  - the action's required scope (`scopes[actionId] ?? scopes['*']`) is among them.
+- **Rejection.** Otherwise `403` with `{"error": "insufficient_scope", "scope": "<required>"}`
+  and `WWW-Authenticate: Bearer error="insufficient_scope", scope="<required>"`.
+- **Fail-closed.** An action without a declared scope is reachable with `full` only — or not
+  at all with `requireDeclaredScope` set (used for `/api/v1`, see [rest module](#rest-module));
+  that rejection names no scope.
+
+A scope is an upper bound. Permissions are checked exactly as for the same user in the web
+interface.
+
+Gates: token requests are session-less, so `GateFilter` classifies them as
+`RequestClass::Api` and only gates that apply to API requests intercept (forced password
+change, maintenance mode). As `docs/develop/user-gates.md` states, every other gate is
+enforced when the credential is issued. Here, issuance is the authorization flow or the PAT
+form, both regular web requests subject to all gates.
+
+## Scopes
+
+A scope is a `humhub\modules\oauth\models\Scope`:
+
+- id;
+- label (translated), shown on the consent page and the token form.
+
+`humhub\modules\oauth\components\ScopeRegistry::getScopes()` returns:
+
+- the core scopes below;
+- every scope modules append in `ScopeRegistry::EVENT_COLLECT_SCOPES` (`ScopesEvent::$scopes`).
+
+Rules for scope ids:
+
+- A module scope id starts with the module id and a colon (`calendar:read`).
+- `full` is reserved.
+- A grant may contain an id that is not registered (e.g. its module was disabled); it is
+  ignored.
+
+### Core scopes
+
+| Scope | Label | Endpoints |
+|---|---|---|
+| `full` | Full access to your account | everything the web interface can do (`allowFull`) |
+| `account:read` | Read your account and settings | `GET account`, `GET account/blocked-users`, `GET notification/settings` |
+| `account:write` | Change your settings | `PATCH notification/settings`, `POST notification/settings/reset`, `POST notification/settings/reset-all` |
+| `notifications:read` | Read your notifications | `GET notification` |
+| `notifications:write` | Mark notifications as seen | `POST notification/mark-as-seen` |
+| `users:read` | Read people and profiles | `GET user`, `GET user/states`, `GET user/field-values`, `GET user/tags`, `GET user/picker`, `GET user/<id>/follow`, `GET user/<id>/friendship` |
+| `users:write` | Follow people and manage friendships | `PUT`/`DELETE user/<id>/follow`, `PUT`/`DELETE user/<id>/friendship` |
+| `spaces:read` | Read spaces and memberships | `GET space`, `GET space/states`, `GET space/<id>/membership`, `GET space/<id>/follow` |
+| `spaces:write` | Join, leave and follow spaces | `PUT`/`DELETE space/<id>/membership`, `PUT`/`DELETE space/<id>/follow` |
+| `content:read` | Read content, comments and likes | `GET content/<id>/comments`, `GET comment/<id>`, `GET comment/<id>/replies`, `GET comment/<id>/permissions`, `GET content/<id>/controls`, `GET like/<id>`, `GET like/<id>/users`, `GET like/states`, `GET activity`, `GET topic/picker` |
+| `content:write` | Write comments, like, upload files | `POST comment`, `PATCH`/`DELETE comment/<id>`, `PUT`/`DELETE like/<id>`, `POST file`, `DELETE file/<id>` |
+
+These endpoints declare no scope and are reachable with `full` only:
+
+- `POST module/<id>/enable`;
+- every `marketplace/*` endpoint;
+- `POST oauth/web-session`.
+
+### Effective scopes
+
+The scopes of a grant are fixed at creation. On every request `TokenAuth` intersects them with
+what its client or token kind may hold now, so an administrator's restriction applies to
+existing grants immediately:
+
+| Grant | Effective scopes |
+|---|---|
+| system client | `full` |
+| admin client | grant ∩ client's allowed scopes |
+| PAT | grant ∩ `patScopes` |
+
+`full` can be held by:
+
+- the system client;
+- an admin client the administrator allowed it;
+- a PAT, if the administrator added it to `patScopes`.
+
+`full` covers every other scope, so a scope selection containing it is stored as `full` alone
+(`PersonalAccessTokenForm`, `ClientForm`). In their checkbox lists, checking `full` checks and
+disables every other scope; unchecking it restores the previous selection. Disabled checkboxes
+are not submitted, so the form models normalize on the server.
+
+Scopes are grant-based: enforcement always uses the grant's effective scopes, never the
+`scopes` claim of an access token. At code exchange and refresh, `finalizeScopes()` writes
+the current effective scopes into the new token for information only; a narrower `scope`
+parameter on refresh has no effect. An unregistered scope id is ignored and never fails an
+exchange or refresh — a refresh token is consumed before league validates scopes, so a
+failure there would burn it and the client's retry would revoke the grant.
+
+Controllers keep the `'*'` default for the stronger scope of the controller and list
+read actions explicitly, so a newly added action needs the write scope until it is
+classified.
+
+## WebView sessions (app)
+
+The app turns its grant into a regular web session for its WebViews:
+
+1. **Request a code.** The app calls `POST /api/v2/oauth/web-session` with its access token.
+   - Only grants of the system client get a code; any other grant gets `403`.
+   - The response is
+     `{"url": "<base>/oauth/web-session?code=<code>", "headers": {"X-HumHub-Session-Secret": "<secret>"}, "expiresIn": 60}`
+     with `Cache-Control: no-store`.
+   - Code and secret are 32 random bytes each, base64url. Only
+     `SHA-256(<code> + ":" + <secret>)` is stored in `oauth_web_session_code`.
+   - The secret prevents login CSRF: a link to the URL alone, sent to someone else's browser,
+     cannot log that browser in, because a plain link cannot set a request header.
+2. **Redeem it.** The WebView loads that URL, optionally with `&returnUrl=<relative URL>`, and
+   sends the returned headers with that first request. `GET /oauth/web-session`:
+   - reads the secret from the `X-HumHub-Session-Secret` header; a missing header → error page;
+   - deletes the code row atomically (`DELETE … WHERE code_hash = ? AND expires_at > now`); no
+     deleted row (unknown code, wrong secret, expired, used) → error page. A wrong secret does
+     not match the row, so it does not consume the code;
+   - checks that the grant is valid and the user is enabled;
+   - clears any previous login: a user already logged in to this WebView, even the same one,
+     is logged out first, which also drops a previous binding (a logout on this route revokes
+     no grant). The login regenerates the session id. No existing login (for example one with
+     a pending second factor) is ever marked, and a regular browser session is never bound;
+   - logs in the user without an auto-login cookie: auto-login is off for this login, and an
+     existing identity cookie is deleted. A cookie login would outlive the grant, since every
+     login drops the binding;
+   - stores the grant id under the session key `oauth.grantId`;
+   - sets the session key `GateManager::SESSION_KEY_ISSUED_CREDENTIAL`;
+   - redirects to `returnUrl`, if it is a path on this installation (no scheme or host, no
+     `//`, no backslash, no whitespace or control characters), otherwise to the dashboard, with
+     `Referrer-Policy: no-referrer` and `Cache-Control: no-store`.
+3. **Binding.** `Events::onBeforeAction` (on `humhub\components\Controller::EVENT_BEFORE_ACTION`,
+   so it covers controllers extending `humhub\components\Controller` only) loads the grant of a
+   session holding `oauth.grantId`:
+   - skipped on the redemption route `oauth/web-session/*`, which replaces the session itself
+     (a WebView with an old cookie must not lose its new code to a logout and redirect);
+   - skipped on API requests not authenticated by the session (token or guest), before the
+     session is read. Login and logout events of session-less user components (API auth
+     methods) leave the binding alone as well;
+   - a guest session, or a session of another user than the grant's (the impersonating admin
+     counts while an impersonation runs), only drops the binding. A session timeout does not
+     log out, so the binding would otherwise carry over to a later login. Every login
+     (`yii\web\User::EVENT_AFTER_LOGIN`) clears a previous binding as well; the redemption
+     binds after its own login;
+   - an unusable grant (deleted, expired, user disabled) logs the session out and answers
+     like `yii\web\User::loginRequired()`: a redirect to the login page, or `403` where no
+     redirect is acceptable. A session-authenticated API request gets `401`.
+4. **Logout.** Logging out in the WebView (the logout action `user/auth/logout`) deletes the
+   grant (`yii\web\User::EVENT_BEFORE_LOGOUT`): a logout in the WebView is an app logout. Other
+   ends of the session (maintenance mode, a required login, account deletion, …) only unbind
+   it, so the app stays signed in.
+
+**Gates in a WebView session.** A WebView session is a regular browser session and is
+classified as usual (`RequestClass::FullPage` / `Ajax`). Every gate applies, for example
+legal (new terms), forced password change, maintenance mode and the gates of other modules.
+
+The one exception is a gate that verifies the login itself, such as a second factor. Such a
+gate already ran in the system browser before the grant was issued, so it must not ask again:
+
+- The new marker interface `humhub\components\gates\LoginVerificationGateInterface` identifies
+  such gates. It has no methods.
+- `GateManager::SESSION_KEY_ISSUED_CREDENTIAL` marks a session established from an issued
+  credential.
+- In a marked session, `GateManager::findOpenGate()` and `GateManager::hasOpenGate()` skip
+  every gate implementing the interface.
+
+A grant issued before a second factor was enabled or enforced for its user keeps skipping it in
+the WebView for the grant's lifetime; to enforce it, revoke the user's app grants.
+
+A login-verification gate that does not implement the interface still intercepts the
+WebView: it asks again, which is safe.
+
+`docs/develop/user-gates.md` documents the interface and the session key.
+
+## Data model
+
+All timestamps are Unix integers.
+
+**`oauth_client`**
+
+| Column | Type | |
+|---|---|---|
+| `id` | int PK | |
+| `client_id` | varchar(80) unique | random 32 hex characters; `humhub-app` for the system client |
+| `type` | varchar(10) | `system`, `admin` |
+| `name` | varchar(100) | |
+| `description` | text null | |
+| `secret_hash` | char(64) null | SHA-256 hex; null = public client |
+| `redirect_uris` | text | JSON list |
+| `scopes` | text | JSON list of allowed scopes |
+| `skip_consent` | tinyint(1) | admin clients only |
+| `is_active` | tinyint(1) | |
+| `created_at`, `created_by` | int, int null | |
+
+**`oauth_grant`**
+
+| Column | Type | |
+|---|---|---|
+| `id` | int PK | |
+| `guid` | char(36) unique | league user identifier |
+| `user_id` | int, FK `user` cascade | |
+| `type` | varchar(10) | `oauth`, `pat` |
+| `client_id` | int null, FK `oauth_client` cascade | `oauth` grants |
+| `name` | varchar(100) | client name, or the PAT name the user typed |
+| `scopes` | text | JSON list |
+| `token_hash` | char(64) null unique | PAT |
+| `token_hint` | char(4) null | PAT |
+| `user_agent` | varchar(255) null | of the code exchange (app: its device) |
+| `created_at`, `last_used_at`, `expires_at` | int, int null, int null | |
+
+**`oauth_auth_code`, `oauth_access_token`, `oauth_refresh_token`**
+
+| Column | Type | |
+|---|---|---|
+| `id` | varchar(80) PK | league identifier (`jti` for access tokens) |
+| `grant_id` | int, FK `oauth_grant` cascade | |
+| `access_token_id` | varchar(80) | `oauth_refresh_token` only |
+| `expires_at` | int | |
+| `is_revoked` | tinyint(1) | |
+
+**`oauth_web_session_code`**
+
+| Column | Type | |
+|---|---|---|
+| `code_hash` | char(64) PK | |
+| `grant_id` | int, FK `oauth_grant` cascade | |
+| `expires_at` | int | |
+
+Rules:
+
+- **Revoking a grant deletes the row.** The foreign keys remove its codes and tokens, which
+  makes every one of them unknown and thus revoked. Grants keep no revoked state.
+- **Deleting a user or a client** removes its grants the same way.
+- **Soft-deleting or disabling a user** is covered by the usability check of the repositories
+  (`GrantService::isUsable()`), which every token validation runs. The grants remain, but authenticate nobody.
+- **The initial migration** creates the tables, the system client and the keys.
+
+The system client row:
+
+| Field | Value |
+|---|---|
+| `client_id` | `humhub-app` |
+| `type` | `system` |
+| `name` | `HumHub App` |
+| public | yes |
+| `redirect_uris` | `["com.humhub.app:/oauth/callback"]` |
+| `scopes` | `["full"]` |
+
+It cannot be edited or deleted. It can only be deactivated through `allowApp`.
+
+Its stored `redirect_uris` are not used: `Client::getRedirectUris()` derives the system
+client's list from `Module::getAppIds()` — `<app ID>:/oauth/callback` for the built-in
+`com.humhub.app` and every additional app ID ([White-label apps](#white-label-apps)). league
+gets that list through `ClientEntity` and matches it exactly as for any client.
+
+**Daily cleanup** (`CronController::EVENT_ON_DAILY_RUN`) deletes:
+
+- expired codes and tokens, and expired web-session codes;
+- expired grants;
+- `oauth` grants with `last_used_at IS NULL` that are older than one hour.
+
+## User interface
+
+### Account: "Devices & Access"
+
+The module adds its sections to the "Devices & Access" tab of the security settings
+(`user/security/sessions`, the stack `SecuritySessionSections`), below the browser sessions of
+the user module. There is no tab of its own.
+
+The sections:
+
+- **HumHub app** (sortOrder 200). Grants of the system client: device (from `user_agent`, via
+  `UserAgentHelper`), created, last used, *Sign out*.
+- **Connected apps** (300). Grants of admin clients: client, scopes, created, last used,
+  *Disconnect*.
+- **Personal access tokens** (400). Name, `hhpat_…<hint>`, scopes, expiry, last used,
+  *Revoke*. Then *Create token* (name, scopes from `patScopes`, lifetime,
+  re-authentication). The token is shown once.
+
+The HumHub app and connected apps sections are shown when they list a grant: one that has
+been used (`last_used_at` set); grants whose code was never exchanged are not listed. Personal
+access tokens are shown when the user has a PAT (also an expired one) or may create PATs
+(`allowPersonalAccessTokens` and `CreatePersonalAccessToken`).
+
+`oauth/account` only handles the actions of these sections (`revoke`, `create-token`); its
+pages render in the security layout with the tab active and lead back to
+`user/security/sessions`.
+
+Creating a PAT or connecting an admin client sends the user the notification
+`GrantCreatedNotification` (web and mail), linking to the tab. Signing in with the app does
+not.
+
+### Administration: "Apps & API Access"
+
+A new tab in `AuthenticationMenu` (Users → Settings):
+
+- label "Apps & API Access";
+- sortOrder 500;
+- route `oauth/admin/index`;
+- permission `ManageSettings`.
+
+**Settings:**
+
+| Setting | Default | |
+|---|---|---|
+| `allowApp` | on | the HumHub app may sign in |
+| `appIds` | empty | additional app IDs of white-label apps ([White-label apps](#white-label-apps)); system administrators only |
+| `allowClients` | off | admin clients may authorize |
+| `allowPersonalAccessTokens` | off | PATs authenticate; creating them requires `CreatePersonalAccessToken` |
+| `patScopes` | all `*:read` core scopes | upper bound for PATs |
+| `patMaxLifetimeDays` | 365 | 0 = unlimited, offers *never* |
+| `refreshTokenLifetimeDays` | 90 | |
+| `grantMaxLifetimeDays` | 0 | 0 = unlimited |
+| `revokeOnPasswordChange` | off | a password change deletes all grants of the user except the app session the change was made in |
+
+Each `allow…` switch also takes effect on existing grants: `TokenAuth` and `isAccessTokenRevoked()`
+reject grants of a disallowed kind.
+
+The settings of personal access tokens (`patScopes`, `patMaxLifetimeDays` and the warning about
+a missing group permission) are only shown while `allowPersonalAccessTokens` is checked; the
+form toggles them on the client. Hidden fields are still submitted, so their values are kept.
+
+#### White-label apps
+
+Customer-specific builds of the app with their own app ID (iOS bundle ID / Android package
+name) sign in as the system client `humhub-app` — no client of their own, no free redirect
+URIs. The administrator adds their app ID under "HumHub app" → "Additional app IDs" (one per
+line); the system client then accepts the redirect URI `<app ID>:/oauth/callback`.
+`allowApp` covers them as well.
+
+- `com.humhub.app` is always included and cannot be removed (`Module::getAppIds()`).
+- Only system administrators (`User::isSystemAdmin()`) can change the list; other holders
+  of `ManageSettings` see it read-only, and a submitted value is rejected.
+- **Format.** The app ID becomes a private-use URI scheme, so it must be a valid scheme
+  (RFC 3986 §3.1) in reverse-domain form: at least two dot-separated segments of lower-case
+  letters, digits and hyphens, starting with a letter (`/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/`,
+  max. 255 characters). Input is trimmed and lower-cased; schemes are case-insensitive, and
+  the app registers the lower-case form. Underscores — valid in Android package names — are
+  not valid in a scheme; such an app uses a redirect scheme without them and enters that
+  here.
+- **Override.** Module property `$appIds` (list, or a comma-separated string). When set, it
+  takes precedence over the stored setting, like the [key overrides](#keys); the
+  administration shows it read-only with a note. An empty list allows only the built-in app.
+  Invalid entries are ignored.
+
+  ```php
+  // config/common.php
+  'modules' => [
+      'oauth' => [
+          'appIds' => ['com.acme.app', 'de.example.intranet'],
+      ],
+  ],
+  ```
+
+  As environment variable (`APP_IDS` becomes `appIds`; a JSON list or a comma-separated
+  string):
+
+  ```env
+  HUMHUB_CONFIG__MODULES__OAUTH__APP_IDS='["com.acme.app","de.example.intranet"]'
+  ```
+
+**Clients.** List, create, edit, deactivate, delete, regenerate the secret. Fields:
+
+- name, description;
+- public or confidential;
+- redirect URIs;
+- allowed scopes;
+- skip consent (admin clients only).
+
+`full` and *skip consent* can only be set by system administrators
+(`User::isSystemAdmin()`). Other holders of `ManageSettings` neither see nor may submit them;
+when they edit a client, what a system administrator set stays.
+
+A client secret needs no re-authentication: on its own it gives no access to an account (there
+is no client credentials grant), the user still has to authorize the client. Regenerating it
+is a confirmed POST. Like PATs, client secrets are never created while impersonating: saving a
+client and regenerating its secret are refused (`403`).
+
+**Grants.** Every grant, filterable by user, client and type, with *Revoke* and *Revoke all*
+(for the current filter).
+
+**Group permission** (Users → Groups → Permissions), off by default:
+`CreatePersonalAccessToken`.
+
+Removing it only stops creating new tokens; existing PATs keep working. To stop them, switch
+`allowPersonalAccessTokens` off or revoke the grants.
+
+## Extending: further client types
+
+Clients are typed (`oauth_client.type`), and every rule that depends on the kind of client
+branches on the type. Another type — for example clients that users register for their own
+account — is added like this:
+
+- **Type.** A new `Client::TYPE_…` constant, plus any column the type needs (e.g. an owner) in
+  a migration of its own.
+- **Grant rules.** `GrantService::isClientTypeAllowed()` (the `allow…` setting that switches
+  the type on) and `GrantService::getAllowedScopes()` (the upper bound of its scopes, e.g.
+  never `full`). `getEffectiveScopes()` and `isUsable()` follow from both.
+- **Authorization.** Checks beyond the type rules (e.g. only the owner may authorize the
+  client) go into `AuthorizeController`, at validation and again when the grant is created.
+- **Form.** A `ClientForm` scenario of its own with the attributes it may set; `save()` sets
+  the type and `getScopeOptions()` / `canSetPrivileged()` limit what it offers.
+- **Consent wording.** The consent page (`views/authorize/index.php`) tells the user who
+  stands behind a client that no administrator registered (e.g. "Created by *name*, not
+  verified").
+- **Lists.** *Connected apps* in the account lists every client type but the system client,
+  so the new type appears there without changes; the administration's client list needs a
+  label for it.
+
+## PSR-7 bridge
+
+`humhub\components\psr\` is the only place that knows the PSR-7 implementation
+(`guzzlehttp/psr7`, required directly by core). Other code types against
+`Psr\Http\Message\*` only:
+
+- `ServerRequestFactory::fromYii(yii\web\Request): ServerRequestInterface`. Carries method,
+  URI, headers, raw body, parsed body, query, cookies and uploaded files.
+- `ResponseBridge::toYii(ResponseInterface, yii\web\Response): yii\web\Response`. Carries
+  status, headers and body.
+- `HttpFactory::instance()` provides the PSR-17 factories. Nobody instantiates
+  `GuzzleHttp\Psr7\*` directly.
+
+## Module layout
+
+```
+protected/humhub/modules/oauth/
+├── Module.php                  # key properties, $activeGrant
+├── config.php                  # URL rules, events
+├── Events.php                  # session binding, logout, menus, cron, password change
+├── commands/OauthController.php          # rotate-key
+├── components/
+│   ├── AuthorizationServerFactory.php    # league AuthorizationServer / ResourceServer
+│   ├── CredentialActions.php             # impersonation guard for credential actions
+│   ├── KeyStore.php                      # read, generate, rotate keys
+│   ├── RecentAuthentication.php          # re-authentication before creating a PAT
+│   ├── TokenAuth.php
+│   ├── TokenResolver.php                 # own JWT detection, token → grant for revocation
+│   ├── ScopeFilter.php
+│   └── ScopeRegistry.php
+├── controllers/
+│   ├── AuthorizeController.php
+│   ├── TokenController.php               # token, revoke
+│   ├── MetadataController.php
+│   ├── WebSessionController.php
+│   ├── AccountController.php
+│   ├── AdminController.php
+│   └── api/WebSessionController.php
+├── entities/                   # league entity implementations
+├── repositories/               # league repository implementations
+├── services/
+│   ├── GrantService.php                  # create, usability, effective scopes, revoke
+│   ├── PersonalAccessTokenService.php    # create, find, lifetimes
+│   └── WebSessionService.php             # web session codes, session binding
+├── events/ScopesEvent.php
+├── models/                     # Client, Grant, GrantSearch (admin filter), AccessToken,
+│                               # RefreshToken, AuthCode, WebSessionCode, Scope, forms
+├── notifications/
+│   └── GrantCreatedNotification.php
+├── permissions/CreatePersonalAccessToken.php
+├── migrations/
+├── views/
+├── widgets/                    # the sections in "Devices & Access" (HumHub app, connected apps,
+│                               # tokens)
+└── tests/
+```
+
+## Changes outside the module
+
+- `components/api/BaseController`: `$scopes`, `TokenAuth` first in `getAuthMethods()`, the
+  `scopes` behavior.
+- Every core v2 controller declares `$scopes` as listed in [Core scopes](#core-scopes).
+- `components/gates/`:
+  - `LoginVerificationGateInterface` (new);
+  - `GateManager::SESSION_KEY_ISSUED_CREDENTIAL` and the corresponding skip in
+    `findOpenGate()`;
+  - update `docs/develop/user-gates.md` accordingly.
+- `components/psr/` (new).
+- user module: the "Sessions" tab of the security settings became "Devices & Access", a section
+  stack (`SecuritySessionSections`) with the browser sessions first, which other modules
+  extend on `EVENT_INIT`.
+- `composer.json`: `league/oauth2-server` ^9.4, `guzzlehttp/psr7` ^2.13.
+- Docs:
+  - `docs/develop/concept-api.md` "Authentication model": core now ships `TokenAuth`, it runs
+    before contributed methods, and `$scopes` is introduced;
+  - `docs/develop/module-migrate-1.20.md`: new `BaseController::$scopes`, `TokenAuth`
+    precedence and `ScopeRegistry::EVENT_COLLECT_SCOPES`;
+  - `CHANGELOG.md`.
+
+## rest module
+
+`/api/v1` opens to OAuth grants and PATs endpoint by endpoint: only an action that declares a
+scope is reachable with a token, so safe endpoints can be unlocked one at a time.
+
+- **Declaration.** The rest module's `components/BaseController` gets the same
+  `protected array $scopes` as core's API controllers (action id or `*` → scope). Controllers
+  of other modules that extend it (calendar, mail, wiki …) declare their own. Their scopes are
+  registered by the declaring module in `ScopeRegistry::EVENT_COLLECT_SCOPES`
+  (`<module>:…`).
+- **Authentication.** `TokenAuth` is prepended to the controller's `authMethods` only when it
+  declares `$scopes`; without a declaration the endpoint stays unreachable for OAuth tokens
+  and PATs (the module's own methods are unaffected).
+- **Authorization.** `ScopeFilter` with `allowFull` = `true` and `requireDeclaredScope` =
+  `true`: a token passes when it holds the action's declared scope or `full`; an action
+  without a declared scope is refused even with `full`.
+- **Allowlist.** After authentication, a request authenticated by `TokenAuth` additionally
+  passes `AuthMethods::isUserEnabled()`, the same allowlist as the module's own methods.
+- **Initial set.** The rest module declares no scopes yet; endpoints are unlocked one at a
+  time in later releases.
+- **Version.** CHANGELOG entry under the existing `0.13.0 (Unreleased)`; `minVersion` stays
+  1.20.
+
+## twofa module
+
+- `TwofaGate` implements `LoginVerificationGateInterface`, so the app's WebView sessions do
+  not ask for the second factor again.
+- CHANGELOG entry under the open `develop` section; `minVersion` 1.20.
+
+## App integration
+
+What the HumHub app implements against this:
+
+1. **Discovery.** The user enters the instance URL. The app reads
+   `<base>/.well-known/oauth-authorization-server`. If it is missing, the instance predates
+   1.20 and the app keeps its current WebView login.
+2. **Sign-in.** The app opens `authorization_endpoint` with these parameters in
+   `ASWebAuthenticationSession` (iOS) or a Custom Tab (Android):
+   - `client_id=humhub-app`;
+   - `redirect_uri=com.humhub.app:/oauth/callback`; a white-label app sends
+     `<its app ID>:/oauth/callback` (also `client_id=humhub-app`), which the administrator
+     has to add as an additional app ID ([White-label apps](#white-label-apps));
+   - `response_type=code`;
+   - `code_challenge` (S256);
+   - `state`.
+
+   It then exchanges the code at `token_endpoint` and sends a descriptive `User-Agent` with
+   the exchange (stored as the device).
+3. **Storage.** The refresh token goes to the Keychain or Keystore. The access token is held
+   in memory.
+4. **API.** Requests carry `Authorization: Bearer <access token>`.
+   - `401`: refresh once (refreshes serialized); if that fails, sign in again.
+   - `403` with `gate`: open the `url` in the WebView.
+5. **WebView.** `POST /api/v2/oauth/web-session`, then load the returned `url` with the
+   returned `headers` as request headers (`URLRequest` on iOS, `loadUrl(url, headers)` on
+   Android) — only on this first load. Whenever the WebView reaches the login page, request a
+   new code.
+6. **Sign-out.** `POST /oauth/revoke` with the refresh token, then clear the WebView cookies.

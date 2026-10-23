@@ -51,6 +51,11 @@ class TopicController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['*' => 'content:read'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

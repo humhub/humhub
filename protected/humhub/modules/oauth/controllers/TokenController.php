@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\oauth\controllers;
+
+use humhub\components\psr\HttpFactory;
+use humhub\components\psr\ResponseBridge;
+use humhub\components\psr\ServerRequestFactory;
+use humhub\modules\oauth\components\AuthorizationServerFactory;
+use humhub\modules\oauth\components\TokenResolver;
+use humhub\modules\oauth\repositories\ClientRepository;
+use humhub\modules\oauth\services\GrantService;
+use League\OAuth2\Server\Exception\OAuthServerException;
+use stdClass;
+use Throwable;
+use Yii;
+use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\Response;
+
+/**
+ * The token endpoint (code exchange, refresh) and token revocation (RFC 7009).
+ *
+ * A plain Yii controller on purpose: no session, no CSRF, no access control — the client
+ * authenticates itself, and guest access settings do not apply.
+ *
+ * @since 1.20
+ */
+class TokenController extends Controller
+{
+    /**
+     * @inheritdoc
+     */
+    public $enableCsrfValidation = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => ['token' => ['POST'], 'revoke' => ['POST']],
+            ],
+        ];
+    }
+
+    public function actionToken(): Response
+    {
+        $response = HttpFactory::instance()->createResponse();
+
+        try {
+            $response = AuthorizationServerFactory::createAuthorizationServer()
+                ->respondToAccessTokenRequest(ServerRequestFactory::fromYii(Yii::$app->request), $response);
+        } catch (OAuthServerException $e) {
+            $response = $e->generateHttpResponse($response);
+        } catch (Throwable $e) {
+            Yii::error($e, 'oauth');
+            $response = OAuthServerException::serverError('The token request could not be processed.')
+                ->generateHttpResponse(HttpFactory::instance()->createResponse());
+        }
+
+        return ResponseBridge::toYii($response, Yii::$app->response);
+    }
+
+    /**
+     * Revokes the grant of an access or refresh token. Unknown tokens answer 200 as well.
+     */
+    public function actionRevoke(): Response
+    {
+        $request = Yii::$app->request;
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+
+        [$basicId, $basicSecret] = $request->getAuthCredentials();
+        $usesBasic = is_string($basicId);
+        $clientId = $usesBasic ? $basicId : $request->post('client_id', '');
+        $secret = $usesBasic ? $basicSecret : $request->post('client_secret');
+        $clientId = is_string($clientId) ? $clientId : '';
+        $secret = is_string($secret) ? $secret : null;
+
+        $client = $clientId === '' ? null : (new ClientRepository())->authenticateClient($clientId, $secret);
+        if ($client === null) {
+            $response->setStatusCode(401);
+            if ($usesBasic) {
+                $response->getHeaders()->set('WWW-Authenticate', 'Basic realm="oauth"');
+            }
+            $response->data = ['error' => 'invalid_client', 'error_description' => 'Client authentication failed.'];
+            return $response;
+        }
+
+        $token = $request->post('token');
+        if (!is_string($token) || $token === '') {
+            $response->setStatusCode(400);
+            $response->data = ['error' => 'invalid_request', 'error_description' => 'The token parameter is missing.'];
+            return $response;
+        }
+
+        $grant = TokenResolver::resolveGrant($token);
+        if ($grant !== null && (int)$grant->client_id === (int)$client->id) {
+            try {
+                (new GrantService())->revoke($grant);
+            } catch (Throwable $e) {
+                Yii::error($e, 'oauth');
+                $response->setStatusCode(500);
+                $response->data = ['error' => 'server_error', 'error_description' => 'The token could not be revoked.'];
+                return $response;
+            }
+        }
+
+        $response->data = new stdClass();
+        return $response;
+    }
+}

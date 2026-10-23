@@ -56,6 +56,11 @@ class FriendshipController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['state' => 'users:read', '*' => 'users:write'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

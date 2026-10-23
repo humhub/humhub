@@ -1333,6 +1333,19 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     - New helpers: `file\libs\FileHelper::getViewUrl()` (extracted from `createLink()`, whose
       output is unchanged) and `file\libs\FileHelper::isSearchHighlighted()` (moved from the
       protected `FilePreview::isHighlighed()`, which is removed).
+- Added an **OAuth server in core** (new core module `oauth`, see `docs/develop/concept-oauth.md`).
+  Purely additive:
+  - `humhub\components\api\BaseController` gets `protected array $scopes`, the scope a bearer
+    token needs per action (`*` for every other action). An API controller that serves tokens
+    should declare it; without it only a `full` token reaches the endpoint.
+  - Core's `TokenAuth` now precedes the methods modules contribute via
+    `EVENT_COLLECT_AUTH_METHODS`; tokens it does not recognize fall through unchanged.
+  - Modules can offer scopes through `humhub\modules\oauth\components\ScopeRegistry::EVENT_COLLECT_SCOPES`.
+  - New `humhub\components\psr\` (PSR-7/17 bridge backed by `guzzlehttp/psr7`) for libraries that need PSR-7.
+- New marker interface `humhub\components\gates\LoginVerificationGateInterface` for gates that
+  verify the login itself (2FA): they are skipped in sessions established from an issued
+  credential (`GateManager::SESSION_KEY_ISSUED_CREDENTIAL`, the app's WebView sessions).
+  Second-factor modules should implement it.
 - Added the **HTTP API framework** in `humhub\components\api\` and the first core endpoints
   under `/api/v2` — see `docs/develop/concept-api.md`. Purely additive for existing modules;
   the `humhub/rest` module and the 13 modules extending its `BaseController` keep working
@@ -2073,11 +2086,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `permissions` and `delete` redirect (301); their views in `@user/views/account/` are removed or
   moved to `@user/views/security/`. The profile permissions are now at `user/security/privacy`.
   - New tab menu `humhub\modules\user\widgets\SecuritySettingsMenu` (`EVENT_INIT`). Sort orders of
-    the core tabs: Login 100, Sessions 300, Privacy 400, My Data 900 — a two-factor module should
-    use 200. Module pages render inside `@user/views/security/_layout.php`.
+    the core tabs: Login 100, Devices & Access 300, Privacy 400, My Data 900 — a two-factor module
+    should use 200. Module pages render inside `@user/views/security/_layout.php`.
   - New section stacks `humhub\modules\user\widgets\security\SecurityLoginSections`,
-    `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section extends
-    `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
+    `SecuritySessionSections` (browser sessions and other access, e.g. app devices and tokens),
+    `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section
+    extends `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
   - Modules that add security or privacy related entries to `AccountSettingsMenu`, e.g. two-factor
     authentication or a personal data export, should move them to `SecuritySettingsMenu` or
     `SecurityDataSections`.

@@ -167,6 +167,10 @@ humhub.module('ui.picker', function (module, require, $) {
 
             var select2 = $node.select2(options).data('select2');
 
+            if (select2.options.get('multiple')) {
+                _hideSelectedResults($node, select2);
+            }
+
             // Refuse client side removal of locked items (e.g. via backspace in the
             // search field, which bypasses the templateSelection close icon entirely).
             // This mirrors the visual lock in templateSelection and is itself only a
@@ -254,6 +258,93 @@ humhub.module('ui.picker', function (module, require, $) {
             }
 
             Widget.instance($node).fire('afterInitSelect2');
+        });
+    };
+
+    /**
+     * Removes the items which are already selected from the given select2 result list,
+     * including the children of option groups (a group left empty is dropped).
+     *
+     * @param {Array} results select2 result items
+     * @param {Array} selectedIds ids of the current selection as strings
+     * @param {Function} idOf returns the option value an item would be selected as
+     * @returns {Array}
+     */
+    var _withoutSelected = function (results, selectedIds, idOf) {
+        var filtered = [];
+
+        $.each(results, function (i, item) {
+            if (item.children) {
+                var children = _withoutSelected(item.children, selectedIds, idOf);
+                if (children.length) {
+                    filtered.push($.extend({}, item, {children: children}));
+                }
+            } else if (typeof idOf(item) === 'undefined' || selectedIds.indexOf(String(idOf(item))) < 0) {
+                filtered.push(item);
+            }
+        });
+
+        return filtered;
+    };
+
+    /**
+     * Select2 keeps offering the selected items of a multi-select in its dropdown (only
+     * flagged by aria-selected, picking one again removes it). Filter them out of every
+     * result set instead - static options, ajax results and default results alike - so
+     * only items which can actually be added are offered.
+     *
+     * Filtering the data rather than hiding the rendered options keeps the keyboard
+     * navigation and the "no results" message consistent with what is shown.
+     *
+     * @param $node select field node
+     * @param select2 select2 instance
+     */
+    var _hideSelectedResults = function ($node, select2) {
+        var results = select2.results;
+        var append = results.append;
+        var Utils = $.fn.select2.amd.require('select2/utils');
+
+        // Ajax results may carry the selected value in another field than `id` (see
+        // prepareItem(), e.g. the guid of users), which only replaces `id` on rendering.
+        var itemKey = $node.data('item-key');
+        var idOf = function (item) {
+            return (itemKey && itemKey !== 'id' && item.hasOwnProperty(itemKey)) ? item[itemKey] : item.id;
+        };
+
+        var selectedIds = function () {
+            return $.map($node.val() || [], function (id) {
+                return String(id);
+            });
+        };
+
+        // A page left empty by this filter is not refilled: picker results are never paginated
+        // (prepareResult() sets no `pagination.more`), so there is no next page to load.
+        results.append = function (data) {
+            if (data && data.results) {
+                data.results = _withoutSelected(data.results, selectedIds(), idOf);
+            }
+
+            return append.apply(this, arguments);
+        };
+
+        // With the dropdown kept open (ctrl/meta + click), take a just selected item off
+        // the list right away instead of on the next query.
+        select2.on('select', function (params) {
+            if (!select2.isOpen() || !params || !params.data) {
+                return;
+            }
+
+            var id = String(idOf(params.data));
+            results.$results.find('.select2-results__option[aria-selected]').filter(function () {
+                var item = Utils.GetData(this, 'data');
+                return item && String(idOf(item)) === id;
+            }).remove();
+
+            if (results.$results.find('.select2-results__option[aria-selected]').length) {
+                results.highlightFirstItem();
+            } else {
+                results.trigger('results:message', {message: 'noResults'});
+            }
         });
     };
 

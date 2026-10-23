@@ -10,6 +10,9 @@ namespace humhub\components\api;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\oauth\components\ScopeFilter;
+use humhub\modules\oauth\components\TokenAuth;
+use humhub\modules\oauth\Module as OAuthModule;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
@@ -50,11 +53,15 @@ use yii\web\NotFoundHttpException;
  *
  * ## Authentication
  *
- * Core ships session authentication ({@see SessionAuth}) only, and a controller must opt in
+ * Core ships session authentication ({@see SessionAuth}), and a controller must opt in
  * to it via {@see self::$allowSessionAuth}. Additional methods (token, JWT, HTTP Basic …)
  * are contributed by modules through {@see self::EVENT_COLLECT_AUTH_METHODS}, and they apply
- * to every API controller: an installation with such a module can call core endpoints with a
- * token, a core-only installation cannot.
+ * to every API controller.
+ *
+ * Core also ships OAuth bearer tokens ({@see TokenAuth}). They run first, before contributed
+ * methods, on controllers that allow session authentication or declare {@see self::$scopes}:
+ * a token holding `full` reaches what the session reaches, any other token only the actions
+ * whose scope it holds ({@see ScopeFilter}).
  *
  * Ordering is a contract, not an accident: contributed (token) methods run BEFORE session
  * authentication, so a request carrying a valid token authenticates as the token user even
@@ -128,6 +135,16 @@ abstract class BaseController extends Controller
     protected array $guestAllowedActions = [];
 
     /**
+     * @var array<string, string|string[]> action id (or `*` for every other action) → the OAuth
+     *      scope a token needs, see `docs/develop/concept-oauth.md`. An action without an entry
+     *      is reachable with the `full` scope only, and only where [[$allowSessionAuth]] is set.
+     *      List read actions explicitly and map `*` to the write scope, so a new action is
+     *      never reachable with a read scope by accident.
+     * @since 1.20
+     */
+    protected array $scopes = [];
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -137,6 +154,11 @@ abstract class BaseController extends Controller
                 'class' => ApiAuth::class,
                 'optional' => AuthHelper::isGuestAccessEnabled() ? $this->guestAllowedActions : [],
                 'authMethods' => $this->getAuthMethods(),
+            ],
+            'scopeFilter' => [
+                'class' => ScopeFilter::class,
+                'scopes' => $this->scopes,
+                'allowFull' => $this->allowSessionAuth,
             ],
         ];
     }
@@ -172,21 +194,28 @@ abstract class BaseController extends Controller
         Yii::$app->request->enableCsrfCookie = false;
         Yii::$app->request->parsers['application/json'] = JsonParser::class;
 
+        // Set by TokenAuth only; a grant left from an earlier request must not reach ScopeFilter.
+        OAuthModule::instance()->activeGrant = null;
+
         return parent::beforeAction($action);
     }
 
     /**
-     * The authentication methods of this request, in precedence order: everything modules
-     * contribute first, session authentication last.
+     * The authentication methods of this request, in precedence order: OAuth bearer tokens
+     * first, then everything modules contribute, session authentication last.
      *
      * @return array method configurations for {@see ApiAuth::$authMethods}
      */
     protected function getAuthMethods(): array
     {
+        // OAuth tokens first: they reach what the frontend reaches (`full`) or what a scope
+        // grants, so only controllers that allow either get the method.
+        $authMethods = $this->allowSessionAuth || $this->scopes !== [] ? [['class' => TokenAuth::class]] : [];
+
         $event = new AuthMethodsEvent();
         Event::trigger(self::class, self::EVENT_COLLECT_AUTH_METHODS, $event);
 
-        $authMethods = $event->authMethods;
+        $authMethods = array_merge($authMethods, $event->authMethods);
 
         if ($this->allowSessionAuth) {
             $authMethods[] = ['class' => SessionAuth::class];

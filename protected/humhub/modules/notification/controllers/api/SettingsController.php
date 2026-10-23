@@ -41,6 +41,11 @@ class SettingsController extends BaseController
     /**
      * @inheritdoc
      */
+    protected array $scopes = ['index' => 'account:read', '*' => 'account:write'];
+
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return ArrayHelper::merge(parent::behaviors(), [

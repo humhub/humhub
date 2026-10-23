@@ -1,0 +1,9 @@
+{
+    "id": "oauth",
+    "name": "OAuth",
+    "description": "OAuth authorization server and personal access tokens",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

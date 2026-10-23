@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8626: OAuth 2.0 server and personal access tokens for the HumHub app and integrations; the "Sessions" account tab becomes "Devices & Access"
+- Fix #8626: Pickers no longer offer items that are already selected
 - Enh #8611: New "Security & Privacy" account settings with an overview of the active sessions
 - Fix #8610: Flaky grouping tests when a unit test ran across a 15-minute grouping bucket boundary; `HumHubDbTestCase` now waits out the last seconds of a bucket
 - Enh #8592: `HUMHUB_ALIASES__CONFIG` also relocates the local configuration files; new `@logs` alias (`HUMHUB_ALIASES__LOGS`) for the application log

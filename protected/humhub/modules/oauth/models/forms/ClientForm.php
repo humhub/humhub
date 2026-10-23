@@ -1,0 +1,273 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\oauth\models\forms;
+
+use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\models\Client;
+use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Model;
+
+/**
+ * Creating and editing an OAuth client. One scenario per client type: `admin` for the clients
+ * administrators register.
+ *
+ * @since 1.20
+ */
+class ClientForm extends Model
+{
+    public const SCENARIO_ADMIN = 'admin';
+
+    public $name;
+    public $description;
+    public $confidential = false;
+    public $redirectUris = '';
+    public $scopes = [];
+    public $skipConsent = false;
+    public $isActive = true;
+
+    private ?string $secret = null;
+
+    public function __construct(public readonly Client $client, private readonly User $actor, $config = [])
+    {
+        parent::__construct($config);
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        if (!$this->client->isNewRecord) {
+            $this->name = $this->client->name;
+            $this->description = $this->client->description;
+            $this->confidential = $this->client->isConfidential();
+            $this->redirectUris = implode("\n", $this->client->getRedirectUris());
+            // Scopes no longer offered would block saving
+            $this->scopes = array_values(array_intersect($this->client->getAllowedScopes(), array_keys($this->getScopeOptions())));
+            $this->skipConsent = (bool)$this->client->skip_consent;
+            $this->isActive = (bool)$this->client->is_active;
+        }
+    }
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_ADMIN => ['name', 'description', 'redirectUris', 'scopes', 'confidential', 'skipConsent', 'isActive'],
+        ];
+    }
+
+    public function rules()
+    {
+        return [
+            [['name', 'redirectUris'], 'required'],
+            ['scopes', 'required', 'when' => fn() => !$this->hasLockedFullAccess()],
+            ['name', 'string', 'max' => 100],
+            ['description', 'string', 'max' => 1000],
+            [['confidential', 'skipConsent', 'isActive'], 'boolean'],
+            ['scopes', 'each', 'rule' => ['in', 'range' => array_keys($this->getScopeOptions())]],
+            ['skipConsent', 'validateSkipConsent'],
+            ['redirectUris', 'validateRedirectUris'],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'name' => Yii::t('OauthModule.base', 'Name'),
+            'description' => Yii::t('OauthModule.base', 'Description'),
+            'confidential' => Yii::t('OauthModule.base', 'Confidential client (has a secret, e.g. a server application)'),
+            'redirectUris' => Yii::t('OauthModule.base', 'Redirect URIs (one per line)'),
+            'scopes' => Yii::t('OauthModule.base', 'Allowed access'),
+            'skipConsent' => Yii::t('OauthModule.base', 'Trusted: skip the consent page'),
+            'isActive' => Yii::t('OauthModule.base', 'Active'),
+        ];
+    }
+
+    /**
+     * `full` covers every other scope, so it is stored alone. Disabled checkboxes are not
+     * submitted, so the form cannot be relied on for that.
+     */
+    public function beforeValidate()
+    {
+        if (is_array($this->scopes) && in_array(ScopeRegistry::FULL, $this->scopes, true)) {
+            $this->scopes = [ScopeRegistry::FULL];
+        }
+
+        return parent::beforeValidate();
+    }
+
+    /**
+     * Whether `full` and skipping the consent can be set: only by system administrators.
+     */
+    public function canSetPrivileged(): bool
+    {
+        return $this->scenario === self::SCENARIO_ADMIN && $this->actor->isSystemAdmin();
+    }
+
+    /**
+     * Whether the client has `full`, which the current actor cannot change: it stays when they edit the client.
+     */
+    public function hasLockedFullAccess(): bool
+    {
+        return !$this->canSetPrivileged() && in_array(ScopeRegistry::FULL, $this->client->getAllowedScopes(), true);
+    }
+
+    /**
+     * @return array<string, string> scope id => label, as allowed in the current scenario
+     */
+    public function getScopeOptions(): array
+    {
+        $ids = array_keys(ScopeRegistry::getScopes());
+        if (!$this->canSetPrivileged()) {
+            $ids = array_diff($ids, [ScopeRegistry::FULL]);
+        }
+
+        $options = [];
+        foreach ($ids as $id) {
+            if ($scope = ScopeRegistry::get($id)) {
+                $options[$id] = $scope->label;
+            }
+        }
+
+        return $options;
+    }
+
+    public function validateSkipConsent(string $attribute): void
+    {
+        if (!$this->canSetPrivileged() && (bool)$this->skipConsent !== (bool)$this->client->skip_consent) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'Only system administrators can change this.'));
+        }
+    }
+
+    public function validateRedirectUris(string $attribute): void
+    {
+        if (!is_string($this->redirectUris) || $this->getRedirectUriList() === []) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'Enter at least one redirect URI.'));
+            return;
+        }
+
+        foreach ($this->getRedirectUriList() as $uri) {
+            if (!self::isAllowedRedirectUri($uri, (bool)$this->confidential)) {
+                $this->addError($attribute, Yii::t('OauthModule.base', 'Not allowed: {uri}', ['uri' => $uri]));
+            }
+        }
+    }
+
+    /**
+     * https, loopback http (any port) and, for public clients, reverse-domain private-use schemes.
+     */
+    public static function isAllowedRedirectUri(string $uri, bool $confidential): bool
+    {
+        if (preg_match('/[\s\x00-\x1F\x7F]/', $uri) || str_contains($uri, '#')) {
+            return false;
+        }
+
+        $parts = parse_url($uri);
+        if ($parts === false || empty($parts['scheme']) || isset($parts['user']) || isset($parts['pass'])) {
+            return false;
+        }
+
+        $scheme = strtolower($parts['scheme']);
+        if ($scheme === 'https') {
+            return self::isValidHost($parts['host'] ?? '');
+        }
+        if ($scheme === 'http') {
+            // parse_url() keeps the brackets of IPv6 hosts
+            return in_array($parts['host'] ?? '', ['127.0.0.1', '[::1]'], true);
+        }
+
+        // Private-use scheme in reverse-domain form, e.g. com.example.app:/callback
+        return !$confidential
+            && preg_match('/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/', $scheme) === 1
+            && (!isset($parts['host']) || self::isValidHost($parts['host']));
+    }
+
+    private static function isValidHost(string $host): bool
+    {
+        if (str_starts_with($host, '[') && str_ends_with($host, ']')) {
+            return filter_var(substr($host, 1, -1), FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
+        }
+
+        return $host !== ''
+            && (filter_var($host, FILTER_VALIDATE_IP) !== false
+                || filter_var($host, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) !== false);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRedirectUriList(): array
+    {
+        if (!is_string($this->redirectUris)) {
+            return [];
+        }
+
+        $uris = array_filter(array_map('trim', preg_split('/\R/', $this->redirectUris)));
+
+        // The scheme is case-insensitive; the exact match at the authorization endpoint is not
+        $uris = array_map(
+            static fn(string $uri) => preg_replace_callback('/^[A-Za-z][A-Za-z0-9+.-]*:/', static fn(array $m) => strtolower($m[0]), $uri),
+            $uris,
+        );
+
+        return array_values(array_unique($uris));
+    }
+
+    public function save(): bool
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $client = $this->client;
+        if ($client->isNewRecord) {
+            $client->client_id = bin2hex(random_bytes(16));
+            $client->type = Client::TYPE_ADMIN;
+            $client->created_by = $this->actor->id;
+            $client->created_at = time();
+            $client->skip_consent = 0;
+            $client->is_active = 1;
+        }
+
+        $client->name = $this->name;
+        $client->description = $this->description ?: null;
+        $client->redirect_uris = json_encode($this->getRedirectUriList());
+        // `full` set by a system administrator stays when someone else edits the client
+        $scopes = $this->hasLockedFullAccess() ? [ScopeRegistry::FULL] : array_values((array)$this->scopes);
+        $client->scopes = json_encode(array_values(array_unique($scopes)));
+        $client->is_active = $this->isActive ? 1 : 0;
+        if ($this->canSetPrivileged()) {
+            $client->skip_consent = $this->skipConsent ? 1 : 0;
+        }
+
+        if ($this->confidential && $client->secret_hash === null) {
+            $this->generateSecret();
+        } elseif (!$this->confidential) {
+            $client->secret_hash = null;
+        }
+
+        return $client->save(false);
+    }
+
+    /**
+     * Sets a new secret; it is readable once via [[getSecret()]]. The caller saves the client.
+     */
+    public function generateSecret(): void
+    {
+        $this->secret = $this->client->generateSecret();
+    }
+
+    /**
+     * @return string|null the secret set by this form, null if none was set
+     */
+    public function getSecret(): ?string
+    {
+        return $this->secret;
+    }
+}

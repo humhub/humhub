@@ -13,7 +13,8 @@ use humhub\components\Widget;
 /**
  * A section in a tab of the security settings, rendered as a card with title, description and content
  *
- * Modules add sections to [[SecurityLoginSections]], [[SecurityPrivacySections]] or [[SecurityDataSections]] on their `EVENT_INIT`.
+ * Modules add sections to [[SecurityLoginSections]], [[SecuritySessionSections]], [[SecurityPrivacySections]] or
+ * [[SecurityDataSections]] on their `EVENT_INIT`.
  *
  * @since 1.20
  */

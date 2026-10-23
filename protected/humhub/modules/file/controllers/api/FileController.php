@@ -63,6 +63,11 @@ class FileController extends BaseController
     protected bool $allowSessionAuth = true;
 
     /**
+     * @inheritdoc
+     */
+    protected array $scopes = ['*' => 'content:write'];
+
+    /**
      * @var string the request field name carrying the uploaded files
      */
     public const UPLOAD_FIELD = 'files';

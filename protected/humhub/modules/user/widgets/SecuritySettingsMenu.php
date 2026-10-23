@@ -9,10 +9,10 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\user\services\UserSessionService;
 use humhub\modules\user\widgets\security\SecurityDataSections;
 use humhub\modules\user\widgets\security\SecurityLoginSections;
 use humhub\modules\user\widgets\security\SecurityPrivacySections;
+use humhub\modules\user\widgets\security\SecuritySessionSections;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\TabMenu;
 use Yii;
@@ -20,7 +20,7 @@ use Yii;
 /**
  * Tabs of the "Security & Privacy" account settings
  *
- * Modules add tabs on `EVENT_INIT`. Sort orders of the core tabs: Login 100, Sessions 300,
+ * Modules add tabs on `EVENT_INIT`. Sort orders of the core tabs: Login 100, Devices & Access 300,
  * Privacy 400, My Data 900 - a two-factor authentication module should use 200.
  * Module pages render inside `@user/views/security/_layout.php`.
  * `EVENT_INIT` handlers may run several times per request (visibility checks) and must be cheap and side-effect free.
@@ -45,11 +45,11 @@ class SecuritySettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'Sessions'),
+            'label' => Yii::t('UserModule.account', 'Devices & Access'),
             'url' => ['/user/security/sessions'],
             'sortOrder' => 300,
             'isActive' => ControllerHelper::isActivePath('user', 'security', 'sessions'),
-            'isVisible' => (new UserSessionService(Yii::$app->user->getIdentity()))->isAvailable(),
+            'isVisible' => (new SecuritySessionSections())->hasVisibleSections(),
         ]));
 
         $this->addEntry(new MenuLink([

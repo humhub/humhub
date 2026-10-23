@@ -11,6 +11,7 @@ namespace user\functional;
 use humhub\modules\user\models\User;
 use humhub\modules\user\tests\codeception\_support\TestExportSection;
 use humhub\modules\user\widgets\security\SecurityDataSections;
+use humhub\modules\user\widgets\security\SecuritySessionSections;
 use humhub\modules\user\widgets\SecuritySettingsMenu;
 use humhub\widgets\menu\MenuLink;
 use PHPUnit\Framework\Assert;
@@ -151,6 +152,8 @@ class SecuritySettingsCest
         ])->execute();
 
         $I->amOnRoute('/user/security/sessions');
+        $I->see('Devices & Access', '.nav-tabs .nav-link.active');
+        $I->see('Browser sessions');
         $I->see('Chrome · Android');
 
         $I->sendAjaxPostRequest('/index-test.php?r=user%2Fsecurity%2Fterminate-session&key=' . hash('sha256', 'other-device'));
@@ -177,6 +180,25 @@ class SecuritySettingsCest
         } finally {
             Event::off(SecuritySettingsMenu::class, SecuritySettingsMenu::EVENT_INIT, $tabHandler);
             Event::off(SecurityDataSections::class, SecurityDataSections::EVENT_INIT, $sectionHandler);
+        }
+    }
+
+    public function testModuleSectionInDevicesAndAccessTab(FunctionalTester $I)
+    {
+        $handler = function ($event) {
+            $event->sender->addWidget(TestExportSection::class, [], ['sortOrder' => 200]);
+        };
+        Event::on(SecuritySessionSections::class, SecuritySessionSections::EVENT_INIT, $handler);
+
+        try {
+            $I->amUser1();
+            $I->amOnRoute('/user/security/sessions');
+            $source = $I->grabPageSource();
+            // The browser sessions come first
+            Assert::assertNotFalse(strpos($source, 'Test export section'));
+            Assert::assertLessThan(strpos($source, 'Test export section'), strpos($source, 'Browser sessions'));
+        } finally {
+            Event::off(SecuritySessionSections::class, SecuritySessionSections::EVENT_INIT, $handler);
         }
     }
 }
