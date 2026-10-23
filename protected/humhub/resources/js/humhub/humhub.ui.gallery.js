@@ -5,7 +5,20 @@
  */
 humhub.module('ui.gallery', function (module, require, $) {
 
+    /**
+     * Currently opened gallery instance (if any), used to close the overlay on browser back navigation.
+     */
+    var current = null;
+
     var init = function () {
+        // Close an open gallery overlay when the user navigates with the browser back/forward buttons
+        $(window).off('popstate.humhub:ui:gallery').on('popstate.humhub:ui:gallery', function () {
+            if (current) {
+                current.close();
+                current = null;
+            }
+        });
+
         $(document).on('click.humhub:ui:gallery', '[data-ui-gallery]', function (evt) {
             var $this = $(this);
 
@@ -23,7 +36,11 @@ humhub.module('ui.gallery', function (module, require, $) {
             if($this.is('img')) {
                 options['urlProperty'] = 'src';
             }
-            blueimp.Gallery($links.get(), options);
+            options['onclosed'] = function () {
+                current = null;
+            };
+
+            current = blueimp.Gallery($links.get(), options);
         });
     };
 
