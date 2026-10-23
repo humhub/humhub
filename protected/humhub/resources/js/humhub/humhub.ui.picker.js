@@ -317,6 +317,8 @@ humhub.module('ui.picker', function (module, require, $) {
             });
         };
 
+        // A page left empty by this filter is not refilled: picker results are never paginated
+        // (prepareResult() sets no `pagination.more`), so there is no next page to load.
         results.append = function (data) {
             if (data && data.results) {
                 data.results = _withoutSelected(data.results, selectedIds(), idOf);
