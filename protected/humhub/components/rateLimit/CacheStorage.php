@@ -18,15 +18,24 @@ use Yii;
  */
 class CacheStorage implements StorageInterface
 {
-    public function increment(string $key, int $ttl): int
+    public function increment(array $counters): array
     {
         $cache = Yii::$app->cache;
-        if ($cache->add($key, 1, $ttl)) {
-            return 1;
+        $values = [];
+        foreach ($counters as $key => ['ttl' => $ttl, 'limit' => $limit]) {
+            if ($cache->add($key, 1, $ttl)) {
+                $value = 1;
+            } else {
+                $value = (int)$cache->get($key) + 1;
+                $cache->set($key, $value, $ttl);
+            }
+
+            $values[] = $value;
+            if ($value > $limit) {
+                break;
+            }
         }
 
-        $value = (int)$cache->get($key) + 1;
-        $cache->set($key, $value, $ttl);
-        return $value;
+        return $values;
     }
 }

@@ -11,13 +11,16 @@ namespace humhub\components\rateLimit;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\caching\CacheInterface;
+use yii\caching\DummyCache;
 use yii\redis\Cache as RedisCache;
 
 /**
  * Counts hits of named policies per subject in fixed time windows.
  *
- * A policy is a list of windows (`name => ['limit' => 300, 'span' => 60]`); a hit counts in every
- * window and is refused as soon as one of them is exhausted. A policy set to `false` is disabled.
+ * A policy is a list of windows (`name => ['limit' => 300, 'span' => 60]`); a hit counts in the
+ * windows, shortest span first, and is refused as soon as one of them is exhausted. The longer
+ * windows are then not charged. A policy set to `false` is disabled.
  *
  * Config merging works by name: windows merge by name and their values by key, so an override
  * may change only the `limit`. A default window can only be removed by disabling the policy.
@@ -28,6 +31,8 @@ use yii\redis\Cache as RedisCache;
  */
 class RateLimiter extends Component
 {
+    private const PAUSE_KEY = 'rateLimit:pausedUntil';
+
     public bool $enabled = true;
 
     /**
@@ -40,7 +45,25 @@ class RateLimiter extends Component
      */
     public $storage = null;
 
-    private ?string $keyPrefix = null;
+    /**
+     * @var string|null Separates the counters of instances sharing one store. Null or empty: the
+     * `keyPrefix` of the application cache when that cache (or its Redis) is the store, else a short
+     * hash of the installation's `secret`, else the application ID.
+     */
+    public ?string $keyPrefix = null;
+
+    /**
+     * @var int Seconds to skip rate limiting after a storage failure
+     */
+    public int $pauseAfterFailure = 60;
+
+    /** @var string|null The `keyPrefix` of the application cache, when the autodetected store is based on it */
+    private ?string $cacheKeyPrefix = null;
+
+    private ?string $resolvedKeyPrefix = null;
+
+    /** @var int|null Until when rate limiting is paused in this request */
+    private ?int $pausedUntil = null;
 
     /** @var array<string, true> Policies whose invalid windows were already logged in this request */
     private array $invalidLogged = [];
@@ -83,67 +106,110 @@ class RateLimiter extends Component
             return $this->storage = $storage;
         }
 
-        if (Yii::$app->cache instanceof RedisCache) {
-            $this->keyPrefix = (string)Yii::$app->cache->keyPrefix;
-            return $this->storage = new RedisStorage(Yii::$app->cache->redis);
+        $cache = Yii::$app->cache;
+        if ($cache instanceof RedisCache) {
+            $this->cacheKeyPrefix = (string)$cache->keyPrefix;
+            return $this->storage = new RedisStorage($cache->redis);
         }
 
         if (Yii::$app->has('redis')) {
             return $this->storage = new RedisStorage(Yii::$app->redis);
         }
 
-        $this->keyPrefix = (string)Yii::$app->cache->keyPrefix;
+        $this->cacheKeyPrefix = (string)$cache->keyPrefix;
         return $this->storage = new CacheStorage();
     }
 
     /**
-     * Separates instances that share one Redis or cache.
+     * Separates instances that share one Redis or cache, see [[$keyPrefix]].
      */
-    protected function getKeyPrefix(): string
+    public function getKeyPrefix(): string
     {
+        if ($this->keyPrefix !== null && $this->keyPrefix !== '') {
+            return $this->keyPrefix;
+        }
+        if ($this->resolvedKeyPrefix !== null) {
+            return $this->resolvedKeyPrefix;
+        }
+
         $this->getStorage();
-        return $this->keyPrefix !== null && $this->keyPrefix !== '' ? $this->keyPrefix : (string)Yii::$app->id;
+        if ($this->cacheKeyPrefix !== null && $this->cacheKeyPrefix !== '') {
+            return $this->resolvedKeyPrefix = $this->cacheKeyPrefix;
+        }
+
+        $secret = (string)Yii::$app->settings->get('secret');
+        if ($secret !== '') {
+            return $this->resolvedKeyPrefix = substr(hash('sha256', $secret), 0, 12);
+        }
+
+        return $this->resolvedKeyPrefix = (string)Yii::$app->id;
     }
 
     /**
-     * Counts one request of $subject in every window of the policy.
+     * Counts one request of $subject in the windows of the policy, shortest span first. Once a window
+     * is exhausted, the longer ones are not charged for the refused request.
+     *
+     * @param string|null $context Appended to the log line of a refusal, e.g. `route 'api/v2/…'`
      */
-    public function hit(string $policy, string $subject): RateLimitResult
+    public function hit(string $policy, string $subject, ?string $context = null): RateLimitResult
     {
         $windows = $this->enabled ? $this->getPolicy($policy) : null;
         if ($windows === null) {
             return RateLimitResult::unlimited($policy);
         }
 
+        // Counted by span; stable, so windows of one span keep their order. The headers keep the configured one.
+        $ordered = $windows;
+        uasort($ordered, fn($a, $b) => $a['span'] <=> $b['span']);
+
         $now = $this->now();
-        $deciding = null;
+        $counters = [];
 
         try {
             $storage = $this->getStorage();
-            $prefix = $this->getKeyPrefix();
-            foreach ($windows as $name => ['limit' => $limit, 'span' => $span]) {
-                $start = intdiv($now, $span) * $span;
-                $count = $storage->increment("rateLimit:$prefix:$policy:$name:$subject:$start", $span);
-
-                if ($count === $limit + 1) {
-                    Yii::warning("Rate limit exceeded: policy '$policy', window '$name', subject '$subject'.", 'rateLimit');
-                }
-
-                $candidate = [
-                    'window' => $name,
-                    'limit' => $limit,
-                    'span' => $span,
-                    'remaining' => max(0, $limit - $count),
-                    'resetsIn' => $start + $span - $now,
-                    'exhausted' => $count > $limit,
-                ];
-
-                if ($deciding === null || $this->decides($candidate, $deciding)) {
-                    $deciding = $candidate;
-                }
+            if ($this->isPaused()) {
+                return RateLimitResult::unlimited($policy);
             }
+
+            $prefix = $this->getKeyPrefix();
+            foreach ($ordered as $name => ['limit' => $limit, 'span' => $span]) {
+                $start = intdiv($now, $span) * $span;
+                $counters["rateLimit:$prefix:$policy:$name:$subject:$start"] = ['ttl' => $span, 'limit' => $limit, 'window' => $name, 'start' => $start];
+            }
+
+            $values = $storage->increment(array_map(fn($c) => ['ttl' => $c['ttl'], 'limit' => $c['limit']], $counters));
         } catch (\Throwable $e) {
-            Yii::error("Rate limit storage failed, request allowed: {$e->getMessage()}", 'rateLimit');
+            $this->pause($e);
+            return RateLimitResult::unlimited($policy);
+        }
+
+        $deciding = null;
+        foreach (array_values($counters) as $i => ['window' => $name, 'limit' => $limit, 'ttl' => $span, 'start' => $start]) {
+            if (!isset($values[$i])) {
+                break;
+            }
+            $count = $values[$i];
+
+            if ($count === $limit + 1) {
+                Yii::warning("Rate limit exceeded: policy '$policy', window '$name', subject '$subject'"
+                    . ($context !== null ? ", $context" : '') . '.', 'rateLimit');
+            }
+
+            $candidate = [
+                'window' => $name,
+                'limit' => $limit,
+                'span' => $span,
+                'remaining' => max(0, $limit - $count),
+                'resetsIn' => $start + $span - $now,
+                'exhausted' => $count > $limit,
+            ];
+
+            if ($deciding === null || $this->decides($candidate, $deciding)) {
+                $deciding = $candidate;
+            }
+        }
+
+        if ($deciding === null) {
             return RateLimitResult::unlimited($policy);
         }
 
@@ -157,6 +223,53 @@ class RateLimiter extends Component
             $deciding['exhausted'] ? $deciding['resetsIn'] : null,
             $windows,
         );
+    }
+
+    /**
+     * Whether rate limiting is paused after a storage failure.
+     */
+    protected function isPaused(): bool
+    {
+        if ($this->pausedUntil !== null && $this->pausedUntil > $this->now()) {
+            return true;
+        }
+
+        $cache = $this->getPauseCache();
+        return $cache !== null && (int)$cache->get(self::PAUSE_KEY) > $this->now();
+    }
+
+    /**
+     * Logs a storage failure and skips rate limiting for [[$pauseAfterFailure]] seconds: across requests
+     * when the application cache is not the failing store, else for this request.
+     */
+    protected function pause(\Throwable $e): void
+    {
+        $until = $this->now() + $this->pauseAfterFailure;
+        $this->pausedUntil = $until;
+
+        $where = 'this request';
+        $cache = $this->getPauseCache();
+        try {
+            if ($cache?->set(self::PAUSE_KEY, $until, $this->pauseAfterFailure)) {
+                $where = "$this->pauseAfterFailure seconds";
+            }
+        } catch (\Throwable) {
+        }
+
+        Yii::error("Rate limit storage failed, rate limiting paused for $where: {$e->getMessage()}", 'rateLimit');
+    }
+
+    /**
+     * The application cache, if it can keep the pause: it must not be the store (or share its Redis).
+     */
+    private function getPauseCache(): ?CacheInterface
+    {
+        if (!$this->storage instanceof StorageInterface || $this->storage instanceof CacheStorage) {
+            return null;
+        }
+
+        $cache = Yii::$app->cache;
+        return $cache instanceof RedisCache || $cache instanceof DummyCache ? null : $cache;
     }
 
     protected function now(): int

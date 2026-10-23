@@ -14,10 +14,12 @@ use humhub\components\rateLimit\RateLimiter;
 use humhub\components\rateLimit\RedisStorage;
 use humhub\components\rateLimit\StorageInterface;
 use Yii;
+use yii\base\Exception;
 use yii\caching\ArrayCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
 use yii\redis\Cache as RedisCache;
+use yii\redis\Connection as RedisConnection;
 use yii\redis\ConnectionInterface;
 
 /**
@@ -25,6 +27,37 @@ use yii\redis\ConnectionInterface;
  */
 class RateLimiterTest extends Unit
 {
+    private $cacheBackup;
+
+    protected function _before()
+    {
+        // A pause after a storage failure is kept in the cache; never in the shared one
+        $this->cacheBackup = Yii::$app->cache;
+        Yii::$app->set('cache', new ArrayCache());
+    }
+
+    protected function _after()
+    {
+        Yii::$app->set('cache', $this->cacheBackup);
+        Yii::$app->clear('redis');
+    }
+
+    private function logSpy(): Logger
+    {
+        $spy = new class () extends Logger {
+            public array $seen = [];
+
+            public function log($message, $level, $category = 'application')
+            {
+                if ($category === 'rateLimit') {
+                    $this->seen[] = [$level, $category, (string)$message];
+                }
+            }
+        };
+        Yii::setLogger($spy);
+        return $spy;
+    }
+
     private function limiter(array $policies, ?StorageInterface $storage = null, int $now = 1000): TestRateLimiter
     {
         $limiter = new TestRateLimiter([
@@ -114,6 +147,74 @@ class RateLimiterTest extends Unit
         $this->assertSame([], $result->toHeaders());
     }
 
+    public function testStorageFailurePausesRateLimitingAcrossRequests()
+    {
+        $policies = ['p' => ['burst' => ['limit' => 1, 'span' => 60]]];
+        $storage = new MemoryStorage();
+        $storage->fail = true;
+
+        $original = Yii::getLogger();
+        $spy = $this->logSpy();
+        try {
+            $limiter = $this->limiter($policies, $storage);
+            $limiter->hit('p', 'u1');
+            $limiter->hit('p', 'u1');
+
+            // Another request within the pause: the cache (not the failing store) keeps it
+            $next = $this->limiter($policies, $storage, 1059);
+            $this->assertTrue($next->hit('p', 'u1')->allowed);
+            $this->assertSame(1, $storage->calls, 'No storage call during the pause');
+            $this->assertCount(1, $spy->seen, 'The failure is logged once per pause');
+            $this->assertSame(Logger::LEVEL_ERROR, $spy->seen[0][0]);
+
+            // After the pause the store is tried again
+            $later = $this->limiter($policies, $storage, 1060);
+            $later->hit('p', 'u1');
+            $this->assertSame(2, $storage->calls);
+            $this->assertCount(2, $spy->seen);
+
+            $storage->fail = false;
+            $recovered = $this->limiter($policies, $storage, 1120);
+            $this->assertSame('burst', $recovered->hit('p', 'u1')->window);
+        } finally {
+            Yii::setLogger($original);
+        }
+    }
+
+    public function testStorageFailurePausesOnlyThisRequestWhenTheCacheIsTheStore()
+    {
+        Yii::$app->set('cache', new RedisCache(['redis' => $this->createMock(ConnectionInterface::class)]));
+        $policies = ['p' => ['burst' => ['limit' => 1, 'span' => 60]]];
+        $storage = new MemoryStorage();
+        $storage->fail = true;
+
+        $original = Yii::getLogger();
+        $spy = $this->logSpy();
+        try {
+            $limiter = $this->limiter($policies, $storage);
+            $limiter->hit('p', 'u1');
+            $this->assertTrue($limiter->hit('p', 'u1')->allowed);
+            $this->assertSame(1, $storage->calls, 'Paused for the rest of the request');
+
+            $this->limiter($policies, $storage)->hit('p', 'u1');
+            $this->assertSame(2, $storage->calls, 'The next request tries again');
+            $this->assertCount(2, $spy->seen);
+        } finally {
+            Yii::setLogger($original);
+        }
+    }
+
+    public function testCacheStorageFailurePausesOnlyThisRequest()
+    {
+        $cache = $this->createMock(ArrayCache::class);
+        $cache->expects($this->once())->method('add')->willThrowException(new Exception('cache down'));
+        Yii::$app->set('cache', $cache);
+
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 1, 'span' => 60]]], new CacheStorage());
+        $this->assertTrue($limiter->hit('p', 'u1')->allowed);
+        $this->assertTrue($limiter->hit('p', 'u1')->allowed);
+    }
+
     public function testHeaders()
     {
         $limiter = $this->limiter(['p' => ['burst' => ['limit' => 2, 'span' => 60], 'long' => ['limit' => 50, 'span' => 3600]]]);
@@ -171,71 +272,122 @@ class RateLimiterTest extends Unit
         $this->assertNull($limiter->getPolicy('bad'));
     }
 
-    public function testRedisStorageIncrementsAtomically()
+    public function testRedisStorageCountsAllWindowsInOneScript()
     {
         $redis = $this->createMock(ConnectionInterface::class);
         $calls = [];
         $redis->method('executeCommand')->willReturnCallback(function (string $name, array $params) use (&$calls) {
             $calls[] = [$name, $params];
-            return 3;
+            return ['3', '4'];
         });
 
-        $this->assertSame(3, (new RedisStorage($redis))->increment('k', 60));
+        $values = (new RedisStorage($redis))->increment(['k1' => ['ttl' => 60, 'limit' => 5], 'k2' => ['ttl' => 3600, 'limit' => 50]]);
+
+        $this->assertSame([3, 4], $values);
         $this->assertCount(1, $calls);
         $this->assertSame('EVAL', $calls[0][0]);
-        $this->assertStringContainsString("redis.call('INCR', KEYS[1])", $calls[0][1][0]);
-        $this->assertSame([1, 'k', 60], array_slice($calls[0][1], 1));
+        $this->assertStringContainsString("redis.call('INCR', key)", $calls[0][1][0]);
+        $this->assertSame([2, 'k1', 'k2', 60, 5, 3600, 50], array_slice($calls[0][1], 1));
+    }
+
+    public function testRedisScriptStopsAfterTheFirstExceededCounter()
+    {
+        $redis = new RedisConnection(['hostname' => '127.0.0.1', 'database' => 15, 'connectionTimeout' => 1]);
+        try {
+            $redis->open();
+        } catch (\Throwable) {
+            $this->markTestSkipped('No local Redis');
+        }
+
+        $keys = ['rateLimitTest:' . uniqid() . ':a', 'rateLimitTest:' . uniqid() . ':b'];
+        $counters = [$keys[0] => ['ttl' => 60, 'limit' => 1], $keys[1] => ['ttl' => 3600, 'limit' => 10]];
+        try {
+            $storage = new RedisStorage($redis);
+            $this->assertSame([1, 1], $storage->increment($counters));
+            $this->assertSame([2], $storage->increment($counters));
+            $this->assertSame([3], $storage->increment($counters));
+            $this->assertSame('1', (string)$redis->executeCommand('GET', [$keys[1]]));
+            $ttl = (int)$redis->executeCommand('TTL', [$keys[1]]);
+            $this->assertTrue($ttl > 3500 && $ttl <= 3600);
+        } finally {
+            $redis->executeCommand('DEL', $keys);
+            $redis->close();
+        }
     }
 
     public function testStorageAutodetection()
     {
-        $cacheBackup = Yii::$app->cache;
-        try {
-            Yii::$app->set('cache', new ArrayCache());
-            $this->assertInstanceOf(CacheStorage::class, (new RateLimiter())->getStorage());
+        $this->assertInstanceOf(CacheStorage::class, (new RateLimiter())->getStorage());
 
-            $redis = $this->createMock(ConnectionInterface::class);
-            Yii::$app->set('redis', $redis);
-            $this->assertInstanceOf(RedisStorage::class, (new RateLimiter())->getStorage());
-            Yii::$app->clear('redis');
+        $redis = $this->createMock(ConnectionInterface::class);
+        Yii::$app->set('redis', $redis);
+        $this->assertInstanceOf(RedisStorage::class, (new RateLimiter())->getStorage());
+        Yii::$app->clear('redis');
 
-            Yii::$app->set('cache', new RedisCache(['redis' => $redis]));
-            $this->assertInstanceOf(RedisStorage::class, (new RateLimiter())->getStorage());
-        } finally {
-            Yii::$app->set('cache', $cacheBackup);
-            Yii::$app->clear('redis');
-        }
+        Yii::$app->set('cache', new RedisCache(['redis' => $redis]));
+        $this->assertInstanceOf(RedisStorage::class, (new RateLimiter())->getStorage());
     }
 
     public function testKeysCarryTheInstancePrefix()
     {
-        $cacheBackup = Yii::$app->cache;
         Yii::$app->set('cache', new ArrayCache(['keyPrefix' => 'inst1']));
+
+        $limiter = new TestRateLimiter(['policies' => ['p' => ['w' => ['limit' => 5, 'span' => 60]]]]);
+        $limiter->hit('p', 'u1');
+        $this->assertSame('inst1', $limiter->getKeyPrefix());
+        $this->assertSame(1, (int)Yii::$app->cache->get('rateLimit:inst1:p:w:u1:960'));
+
+        Yii::$app->set('cache', new RedisCache(['redis' => $this->createMock(ConnectionInterface::class), 'keyPrefix' => 'inst2']));
+        $this->assertSame('inst2', (new RateLimiter())->getKeyPrefix());
+    }
+
+    public function testKeyPrefixFallsBackToTheInstallationSecret()
+    {
+        $secret = Yii::$app->settings->get('secret');
         try {
-            $limiter = new TestRateLimiter(['policies' => ['p' => ['w' => ['limit' => 5, 'span' => 60]]]]);
-            $limiter->hit('p', 'u1');
-            $this->assertSame(1, (int)Yii::$app->cache->get('rateLimit:inst1:p:w:u1:960'));
+            Yii::$app->settings->set('secret', 'secret-of-instance-1');
+            $expected = substr(hash('sha256', 'secret-of-instance-1'), 0, 12);
+
+            // A separate redis component: the cache prefix does not separate its keys
+            Yii::$app->set('cache', new ArrayCache(['keyPrefix' => 'inst1']));
+            Yii::$app->set('redis', $this->createMock(ConnectionInterface::class));
+            $this->assertSame($expected, (new RateLimiter())->getKeyPrefix());
+            Yii::$app->clear('redis');
+
+            // A cache without prefix, or a configured store
+            Yii::$app->set('cache', new ArrayCache(['keyPrefix' => '']));
+            $this->assertSame($expected, (new RateLimiter())->getKeyPrefix());
+            $this->assertSame($expected, (new RateLimiter(['storage' => new MemoryStorage()]))->getKeyPrefix());
+
+            Yii::$app->settings->set('secret', 'secret-of-instance-2');
+            $this->assertNotSame($expected, (new RateLimiter(['storage' => new MemoryStorage()]))->getKeyPrefix());
+
+            Yii::$app->settings->set('secret', '');
+            $this->assertSame(Yii::$app->id, (new RateLimiter(['storage' => new MemoryStorage()]))->getKeyPrefix());
         } finally {
-            Yii::$app->set('cache', $cacheBackup);
+            Yii::$app->settings->set('secret', $secret);
         }
+    }
+
+    public function testConfiguredKeyPrefixWins()
+    {
+        Yii::$app->set('cache', new ArrayCache(['keyPrefix' => 'inst1']));
+        $storage = new MemoryStorage();
+        $limiter = $this->limiter(['p' => ['w' => ['limit' => 5, 'span' => 60]]], $storage);
+        $limiter->keyPrefix = 'mine';
+
+        $limiter->hit('p', 'u1');
+        $this->assertSame(['rateLimit:mine:p:w:u1:960'], array_keys($storage->counters));
     }
 
     public function testRefusalIsLoggedOnlyOnce()
     {
         $original = Yii::getLogger();
-        $spy = new class () extends Logger {
-            public array $seen = [];
-
-            public function log($message, $level, $category = 'application')
-            {
-                $this->seen[] = [$level, $category, (string)$message];
-            }
-        };
-        Yii::setLogger($spy);
+        $spy = $this->logSpy();
         try {
             $limiter = $this->limiter(['once-policy' => ['w' => ['limit' => 1, 'span' => 60]]]);
             for ($i = 0; $i < 4; $i++) {
-                $limiter->hit('once-policy', 'u1');
+                $limiter->hit('once-policy', 'u1', "route 'api/v2/test'");
             }
         } finally {
             Yii::setLogger($original);
@@ -243,19 +395,44 @@ class RateLimiterTest extends Unit
 
         $this->assertCount(1, $spy->seen);
         $this->assertSame([Logger::LEVEL_WARNING, 'rateLimit'], array_slice($spy->seen[0], 0, 2));
+        $this->assertStringContainsString("subject 'u1', route 'api/v2/test'.", $spy->seen[0][2]);
     }
 
-    public function testAllWindowsAreCountedAfterOneIsExhausted()
+    public function testLongerWindowsAreNotChargedOnceOneIsExhausted()
     {
         $storage = new MemoryStorage();
-        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 1, 'span' => 60], 'long' => ['limit' => 10, 'span' => 3600]]], $storage);
+        // Configured long first: windows are counted by span, shortest first
+        $limiter = $this->limiter(['p' => ['long' => ['limit' => 10, 'span' => 3600], 'burst' => ['limit' => 1, 'span' => 60]]], $storage);
 
         $limiter->hit('p', 'u1');
         $limiter->hit('p', 'u1');
         $result = $limiter->hit('p', 'u1');
 
+        $this->assertFalse($result->allowed);
         $this->assertSame('burst', $result->window);
-        $this->assertSame([3, 3], array_values($storage->counters));
+        $this->assertSame(['burst' => 3, 'long' => 1], [
+            'burst' => $storage->counters[$this->key($limiter, 'burst', 960)],
+            'long' => $storage->counters[$this->key($limiter, 'long', 0)],
+        ]);
+        $this->assertSame(3, $storage->calls, 'One storage round trip per hit');
+        $this->assertSame(['long', 'burst'], array_keys($result->windows), 'Headers keep the configured order');
+    }
+
+    public function testShorterWindowsAreChargedWhenALongerOneIsExhausted()
+    {
+        $storage = new MemoryStorage();
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 100, 'span' => 60], 'long' => ['limit' => 1, 'span' => 3600]]], $storage);
+
+        $limiter->hit('p', 'u1');
+        $result = $limiter->hit('p', 'u1');
+
+        $this->assertSame('long', $result->window);
+        $this->assertSame([2, 2], array_values($storage->counters));
+    }
+
+    private function key(RateLimiter $limiter, string $window, int $start): string
+    {
+        return "rateLimit:{$limiter->getKeyPrefix()}:p:$window:u1:$start";
     }
 
     public function testLastSecondOfAWindowResetsInOne()
@@ -267,16 +444,13 @@ class RateLimiterTest extends Unit
 
     public function testCacheStorageCounts()
     {
-        $cacheBackup = Yii::$app->cache;
-        Yii::$app->set('cache', new ArrayCache());
-        try {
-            $storage = new CacheStorage();
-            $this->assertSame(1, $storage->increment('k', 60));
-            $this->assertSame(2, $storage->increment('k', 60));
-            $this->assertSame(1, $storage->increment('other', 60));
-        } finally {
-            Yii::$app->set('cache', $cacheBackup);
-        }
+        $storage = new CacheStorage();
+        $counters = ['k' => ['ttl' => 60, 'limit' => 1], 'other' => ['ttl' => 3600, 'limit' => 10]];
+
+        $this->assertSame([1, 1], $storage->increment($counters));
+        $this->assertSame([2], $storage->increment($counters), 'Stops after the exceeded counter');
+        $this->assertSame(1, (int)Yii::$app->cache->get('other'));
+        $this->assertSame([1], $storage->increment(['third' => ['ttl' => 60, 'limit' => 5]]));
     }
 }
 
@@ -294,12 +468,22 @@ class MemoryStorage implements StorageInterface
 {
     public array $counters = [];
     public bool $fail = false;
+    public int $calls = 0;
 
-    public function increment(string $key, int $ttl): int
+    public function increment(array $counters): array
     {
+        $this->calls++;
         if ($this->fail) {
             throw new \RuntimeException('down');
         }
-        return $this->counters[$key] = ($this->counters[$key] ?? 0) + 1;
+
+        $values = [];
+        foreach ($counters as $key => ['limit' => $limit]) {
+            $values[] = $this->counters[$key] = ($this->counters[$key] ?? 0) + 1;
+            if ($this->counters[$key] > $limit) {
+                break;
+            }
+        }
+        return $values;
     }
 }

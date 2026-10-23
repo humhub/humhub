@@ -16,7 +16,13 @@ namespace humhub\components\rateLimit;
 interface StorageInterface
 {
     /**
-     * Increments the counter and returns the new value; a new counter expires after $ttl seconds.
+     * Increments the counters in the given order, in one round trip where the store allows it.
+     *
+     * A new counter expires after its `ttl` seconds. Incrementing stops after the first counter whose
+     * new value exceeds its `limit`: the counters after it are left untouched and missing from the result.
+     *
+     * @param array<string, array{ttl: int, limit: int}> $counters key => ttl and limit
+     * @return int[] the new values, in the order of $counters
      */
-    public function increment(string $key, int $ttl): int;
+    public function increment(array $counters): array;
 }

@@ -24,8 +24,16 @@ class MemoryRateLimitStorage implements StorageInterface
 {
     private array $counters = [];
 
-    public function increment(string $key, int $ttl): int
+    public function increment(array $counters): array
     {
-        return $this->counters[$key] = ($this->counters[$key] ?? 0) + 1;
+        $values = [];
+        foreach ($counters as $key => ['limit' => $limit]) {
+            $values[] = $this->counters[$key] = ($this->counters[$key] ?? 0) + 1;
+            if ($this->counters[$key] > $limit) {
+                break;
+            }
+        }
+
+        return $values;
     }
 }
