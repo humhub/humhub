@@ -1,6 +1,6 @@
 import { afterEach, beforeAll, describe, expect, it } from 'vitest';
 
-// ui.picker runs against the real select2 build (the one Select2Asset ships), so the
+// ui.picker runs against the real select2 build (the version Select2Asset ships, via npm), so the
 // filtering is tested through select2's own data adapters and result rendering.
 
 const $ = globalThis.jQuery;
@@ -30,7 +30,7 @@ globalThis.humhub.module('ui.loader', function (module) {
 });
 
 // The UMD build takes its CommonJS branch here and only registers itself once called.
-const select2 = await import('../../../vendor/npm-asset/select2/dist/js/select2.full.js');
+const select2 = await import('select2/dist/js/select2.full.js');
 if (!$.fn.select2) {
     (select2.default || select2)(window, $);
 }
