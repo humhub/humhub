@@ -96,6 +96,7 @@ class AccountCest
 
         $I->amOnRoute('/user/security/sessions');
         $I->see('Browser sessions');
+        $I->see('HumHub app', '.security-section h2');
         $I->see('Devices signed in with the HumHub app.');
         $I->see('Safari · iOS');
         $I->see('Sign out');
@@ -174,6 +175,9 @@ class AccountCest
         $I->amOnRoute('/oauth/account/create-token');
         // The page belongs to the tab of its section
         $I->see('Devices & Access', '.nav-tabs .nav-link.active');
+        // Without `full` among the scopes, no lock and no hint
+        $I->dontSeeElement('#personalaccesstokenform-scopes-full-hint');
+        Assert::assertStringNotContainsString('"#personalaccesstokenform-scopes"', $I->grabPageSource());
         $I->submitForm('form[action*="create-token"]', [
             'PersonalAccessTokenForm[name]' => 'Backup script',
             'PersonalAccessTokenForm[scopes]' => ['content:read'],
@@ -218,6 +222,7 @@ class AccountCest
             $I->amUser1();
             $I->amOnRoute('/oauth/account/create-token');
             $I->seeElement('#personalaccesstokenform-scopes input[value="full"]');
+            $I->see('Full access includes all other scopes.', '#personalaccesstokenform-scopes-full-hint');
             // The checkbox list gets the script that locks the other scopes while `full` is checked
             Assert::assertStringContainsString('"#personalaccesstokenform-scopes"', $I->grabPageSource());
 
@@ -293,6 +298,7 @@ class AccountCest
     {
         $this->allowTokens($I);
 
+        // The former "Apps & Tokens" page was merged into "Devices & Access"
         $I->amUser1();
         $I->amOnRoute('/oauth/account/index');
         $I->seeResponseCodeIs(404);

@@ -45,7 +45,10 @@ $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client
         </div>
     <?php else: ?>
         <?= $form->field($model, 'scopes')->checkboxList($model->getScopeOptions()) ?>
-        <?= $this->render('@oauth/views/common/_full-scope', ['listId' => Html::getInputId($model, 'scopes')]) ?>
+        <?= $this->render('@oauth/views/common/_full-scope', [
+            'listId' => Html::getInputId($model, 'scopes'),
+            'scopeOptions' => $model->getScopeOptions(),
+        ]) ?>
     <?php endif ?>
     <?php if ($model->canSetPrivileged()): ?>
         <?= $form->field($model, 'skipConsent')->checkbox() ?>

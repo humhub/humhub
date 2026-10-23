@@ -523,7 +523,7 @@ the user module. There is no tab of its own.
 
 The sections:
 
-- **Devices** (sortOrder 200). Grants of the system client: device (from `user_agent`, via
+- **HumHub app** (sortOrder 200). Grants of the system client: device (from `user_agent`, via
   `UserAgentHelper`), created, last used, *Sign out*.
 - **Connected apps** (300). Grants of admin clients: client, scopes, created, last used,
   *Disconnect*.
@@ -531,9 +531,9 @@ The sections:
   *Revoke*. Then *Create token* (name, scopes from `patScopes`, lifetime,
   re-authentication). The token is shown once.
 
-Devices and connected apps are shown when they list a grant: one that has been used
-(`last_used_at` set); grants whose code was never exchanged are not listed. Personal access
-tokens are shown when the user has a PAT (also an expired one) or may create PATs
+The HumHub app and connected apps sections are shown when they list a grant: one that has
+been used (`last_used_at` set); grants whose code was never exchanged are not listed. Personal
+access tokens are shown when the user has a PAT (also an expired one) or may create PATs
 (`allowPersonalAccessTokens` and `CreatePersonalAccessToken`).
 
 `oauth/account` only handles the actions of these sections (`revoke`, `create-token`); its
@@ -673,7 +673,7 @@ protected/humhub/modules/oauth/
 ├── permissions/CreatePersonalAccessToken.php
 ├── migrations/
 ├── views/
-├── widgets/                    # the sections in "Devices & Access" (devices, connected apps,
+├── widgets/                    # the sections in "Devices & Access" (HumHub app, connected apps,
 │                               # tokens)
 └── tests/
 ```

@@ -235,6 +235,7 @@ class AdminCest
         $I->amOnRoute('/oauth/admin/client');
         // The checkbox list gets the script that locks the other scopes while `full` is checked
         Assert::assertStringContainsString('"#clientform-scopes"', $I->grabPageSource());
+        $I->see('Full access includes all other scopes.', '#clientform-scopes-full-hint');
         $I->submitForm('#oauth-client-form', [
             'ClientForm[name]' => 'Server app',
             'ClientForm[redirectUris]' => 'https://example.org/callback',
@@ -455,6 +456,7 @@ class AdminCest
         $I->seeResponseCodeIs(200);
         $I->dontSee('Trusted: skip the consent page');
         $I->dontSee('Full access to your account');
+        $I->dontSeeElement('#clientform-scopes-full-hint');
 
         $I->submitForm('#oauth-client-form', [
             'ClientForm[name]' => 'Sneaky app',

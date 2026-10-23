@@ -12,14 +12,28 @@ use yii\helpers\Json;
  *
  * @var View $this
  * @var string $listId the id of the checkbox list
+ * @var array<string, string> $scopeOptions the scopes offered in the list
  */
+
+if (!array_key_exists(ScopeRegistry::FULL, $scopeOptions)) {
+    return;
+}
+
+$hintId = $listId . '-full-hint';
 ?>
+<div id="<?= Html::encode($hintId) ?>" class="form-text mt-n2 mb-3">
+    <?= Yii::t('OauthModule.base', 'Full access includes all other scopes.') ?>
+</div>
+
 <script <?= Html::nonce() ?>>
     $(function () {
         const $list = $(<?= Json::htmlEncode('#' . $listId) ?>);
         const $full = $list.find('input[type=checkbox]').filter(function () {
             return this.value === <?= Json::htmlEncode(ScopeRegistry::FULL) ?>;
         });
+        if (!$full.length) {
+            return;
+        }
         const $others = $list.find('input[type=checkbox]').not($full);
 
         const apply = function () {
@@ -35,7 +49,7 @@ use yii\helpers\Json;
             }
         };
 
-        $full.on('change', apply);
+        $full.attr('aria-describedby', <?= Json::htmlEncode($hintId) ?>).on('change', apply);
         apply();
     });
 </script>

@@ -22,7 +22,7 @@ class DevicesSection extends GrantSection
 {
     public function getTitle(): string
     {
-        return Yii::t('OauthModule.base', 'Devices');
+        return Yii::t('OauthModule.base', 'HumHub app');
     }
 
     public function getDescription(): string

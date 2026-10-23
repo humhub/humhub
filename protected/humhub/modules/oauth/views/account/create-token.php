@@ -22,7 +22,10 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => 100, 'autocomplete' => 'off']) ?>
 
     <?= $form->field($model, 'scopes')->checkboxList($model->getScopeOptions()) ?>
-    <?= $this->render('@oauth/views/common/_full-scope', ['listId' => Html::getInputId($model, 'scopes')]) ?>
+    <?= $this->render('@oauth/views/common/_full-scope', [
+        'listId' => Html::getInputId($model, 'scopes'),
+        'scopeOptions' => $model->getScopeOptions(),
+    ]) ?>
 
     <?= $form->field($model, 'lifetime')->dropDownList($model->getLifetimeOptions()) ?>
 

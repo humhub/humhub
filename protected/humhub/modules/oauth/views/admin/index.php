@@ -56,7 +56,9 @@ use humhub\widgets\form\MultiSelect;
 <?php $this->endContent(); ?>
 
 <script <?= Html::nonce() ?>>
-    $('#<?= Html::getInputId($model, 'allowPersonalAccessTokens') ?>').on('change', function () {
-        $('#oauth-pat-settings').toggleClass('d-none', !$(this).is(':checked'));
+    $(function () {
+        $('#<?= Html::getInputId($model, 'allowPersonalAccessTokens') ?>').on('change', function () {
+            $('#oauth-pat-settings').toggleClass('d-none', !$(this).is(':checked'));
+        });
     });
 </script>
