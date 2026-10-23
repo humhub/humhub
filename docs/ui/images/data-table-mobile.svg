@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="680" viewBox="0 0 800 680" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Data table on a phone: columns fold into expandable rows</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="680" fill="#fff"/>
+<text x="30" y="24" class="sec">390 PX · COLUMNS FOLDED</text>
+<rect x="30" y="36" width="340" height="560" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="38" y="48" width="324" height="536" rx="8" fill="#fff"/>
+<text x="50" y="78" class="title">Users</text>
+<use href="#i-cols" x="234" y="61" width="20" height="20" color="#333"/>
+<rect x="264" y="52" width="38" height="38" rx="6" fill="#037283"/><use href="#i-plus" x="273" y="61" width="20" height="20" color="#fff"/>
+<use href="#i-kebab" x="322" y="61" width="20" height="20" color="#333"/>
+<rect x="46" y="98" width="262" height="38" rx="6" class="empty"/><use href="#i-search" x="56" y="109" width="16" height="16" color="#757575"/><text x="80" y="122" class="ph">Name or Email</text>
+<use href="#i-funnel" x="324" y="107" width="20" height="20" color="#333"/>
+<text x="102" y="160" class="th-on">Name</text><use href="#i-up" x="140" y="148" width="14" height="14" color="#000"/>
+<use href="#i-up" x="56" y="189" width="16" height="16" color="#555"/>
+<rect x="84" y="179" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="90.48" y="186.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="128" y="194" class="name">Alexander Schmidt</text><text x="128" y="212" class="sub">alexander.schmidt@exampl…</text>
+<use href="#i-kebab" x="330" y="187" width="20" height="20" color="#333"/>
+<use href="#i-up" x="56" y="243" width="16" height="16" color="#555"/>
+<rect x="84" y="233" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="90.48" y="240.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="128" y="248" class="name">Brandon Williams</text><text x="128" y="266" class="sub">brandon.williams@example…</text>
+<use href="#i-kebab" x="330" y="241" width="20" height="20" color="#333"/>
+<use href="#i-up" x="56" y="297" width="16" height="16" color="#555"/>
+<rect x="84" y="287" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="90.48" y="294.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="128" y="302" class="name">David Brown</text><text x="128" y="320" class="sub">david.brown@example.com…</text>
+<use href="#i-kebab" x="330" y="295" width="20" height="20" color="#333"/>
+<use href="#i-up" x="56" y="351" width="16" height="16" color="#555"/>
+<rect x="84" y="341" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="90.48" y="348.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="128" y="356" class="name">Emma Williams</text><text x="128" y="374" class="sub">emma.williams@example.co…</text>
+<use href="#i-kebab" x="330" y="349" width="20" height="20" color="#333"/>
+<text x="50" y="524" class="txt">1–25 of 35 users</text>
+<rect x="286" y="500" width="64" height="36" rx="6" class="empty"/><text x="296" y="523" class="val">25</text><use href="#i-down" x="324" y="510" width="16" height="16" color="#555"/>
+<text x="200" y="564" class="txt" text-anchor="middle">1 of 2</text><use href="#i-right" x="234" y="552" width="16" height="16" color="#333"/>
+<text x="430" y="24" class="sec">390 PX · ONE ROW EXPANDED</text>
+<rect x="430" y="36" width="340" height="560" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="438" y="48" width="324" height="536" rx="8" fill="#fff"/>
+<text x="450" y="78" class="title">Users</text>
+<use href="#i-cols" x="634" y="61" width="20" height="20" color="#333"/>
+<rect x="664" y="52" width="38" height="38" rx="6" fill="#037283"/><use href="#i-plus" x="673" y="61" width="20" height="20" color="#fff"/>
+<use href="#i-kebab" x="722" y="61" width="20" height="20" color="#333"/>
+<rect x="446" y="98" width="262" height="38" rx="6" class="empty"/><use href="#i-search" x="456" y="109" width="16" height="16" color="#757575"/><text x="480" y="122" class="ph">Name or Email</text>
+<use href="#i-funnel" x="724" y="107" width="20" height="20" color="#333"/>
+<text x="502" y="160" class="th-on">Name</text><use href="#i-up" x="540" y="148" width="14" height="14" color="#000"/>
+<use href="#i-up" x="456" y="189" width="16" height="16" color="#555"/>
+<rect x="484" y="179" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="490.48" y="186.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="528" y="194" class="name">Alexander Schmidt</text><text x="528" y="212" class="sub">alexander.schmidt@exampl…</text>
+<use href="#i-kebab" x="730" y="187" width="20" height="20" color="#333"/>
+<use href="#i-down" x="456" y="243" width="16" height="16" color="#555"/>
+<rect x="484" y="233" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="490.48" y="240.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="528" y="248" class="name">Brandon Williams</text><text x="528" y="266" class="sub">brandon.williams@example…</text>
+<use href="#i-kebab" x="730" y="241" width="20" height="20" color="#333"/>
+<rect x="442" y="224" width="316" height="146" rx="6" fill="none" stroke="#e5e5e5"/>
+<text x="484" y="290" class="sub">Group</text>
+<rect x="572" y="276" width="51" height="20" rx="10" fill="#efefef"/><text x="597.5" y="290" class="chipt" fill="#555" text-anchor="middle">SALES</text>
+<text x="484" y="316" class="sub">Source</text>
+<rect x="572" y="302" width="44" height="20" rx="10" fill="#efefef"/><text x="594.0" y="316" class="chipt" fill="#555" text-anchor="middle">SCIM</text>
+<text x="484" y="342" class="sub">Status</text>
+<rect x="572" y="328" width="65" height="20" rx="10" fill="#e3f1e5"/><text x="604.5" y="342" class="chipt" fill="#1c822a" text-anchor="middle">ENABLED</text>
+<use href="#i-up" x="456" y="393" width="16" height="16" color="#555"/>
+<rect x="484" y="383" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="490.48" y="390.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="528" y="398" class="name">David Brown</text><text x="528" y="416" class="sub">david.brown@example.com…</text>
+<use href="#i-kebab" x="730" y="391" width="20" height="20" color="#333"/>
+<use href="#i-up" x="456" y="447" width="16" height="16" color="#555"/>
+<rect x="484" y="437" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="490.48" y="444.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="528" y="452" class="name">Emma Williams</text><text x="528" y="470" class="sub">emma.williams@example.co…</text>
+<use href="#i-kebab" x="730" y="445" width="20" height="20" color="#333"/>
+<text x="450" y="524" class="txt">1–25 of 35 users</text>
+<rect x="686" y="500" width="64" height="36" rx="6" class="empty"/><text x="696" y="523" class="val">25</text><use href="#i-down" x="724" y="510" width="16" height="16" color="#555"/>
+<text x="600" y="564" class="txt" text-anchor="middle">1 of 2</text><use href="#i-right" x="634" y="552" width="16" height="16" color="#333"/>
+<text x="30" y="624" class="note">Group, Source and Status left the row by priority; every row gets a chevron.</text>
+<text x="30" y="642" class="note">Expanded rows show the hidden columns as label / value pairs. Nothing scrolls sideways.</text>
+<text x="30" y="660" class="note">Footer: count and rows per page on one line, the pager below as "1 of 2".</text>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="330" viewBox="0 0 800 330" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Page toolbar on a phone: filters fold behind a filter button; back arrow in a folded master/detail layout</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <linearGradient id="fr" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <clipPath id="c2"><rect x="464" y="102" width="292" height="56"/></clipPath>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .phone { fill: #ededed; stroke: #bdbdbd; stroke-width: 2; }
+    .card { fill: #fff; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .field { fill: #f5f5f5; stroke: #e5e5e5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .pill { fill: #fff; stroke: #e2e2e2; stroke-width: 2; }
+    .pill-on { fill: #e9eaed; stroke: #9a9ea6; stroke-width: 2; }
+    .t { font-size: 15px; fill: #555; }
+    .t-on { font-size: 15px; fill: #000; }
+    .note { font-size: 12px; fill: #037283; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="330" fill="#fff"/>
+
+  <text x="30" y="24" class="sec">390 px · MODULE PAGE</text>
+  <rect x="30" y="36" width="320" height="200" rx="16" class="phone"/>
+  <rect x="38" y="48" width="304" height="114" rx="8" class="card"/>
+  <text x="54" y="84" class="title">Tasks</text>
+  <rect x="252" y="60" width="38" height="38" rx="6" fill="#d5d5d5"/><use href="#i-gear" x="261" y="69" width="20" height="20" color="#333"/>
+  <rect x="296" y="60" width="38" height="38" rx="6" fill="#037283"/><use href="#i-plus" x="305" y="69" width="20" height="20" color="#fff"/>
+  <rect x="46" y="110" width="244" height="38" rx="6" class="field"/><use href="#i-search" x="56" y="121" width="16" height="16" color="#757575"/><text x="80" y="134" class="ph">Search</text>
+  <use href="#i-funnel" x="303" y="119" width="20" height="20" color="#333"/>
+  <rect x="38" y="170" width="304" height="58" rx="8" class="card"/>
+  <rect x="50" y="182" width="200" height="10" rx="5" fill="#f0f0f0"/><rect x="50" y="200" width="150" height="10" rx="5" fill="#f0f0f0"/>
+  <path d="M313 140 V256" class="lead"/>
+  <text x="30" y="270" class="note">all filters except search fold behind the filter button;</text>
+  <text x="30" y="288" class="note">it opens them in place (height animation)</text>
+  <text x="30" y="306" class="note">actions stay visible; the title row never hides them</text>
+
+  <text x="450" y="24" class="sec">390 px · SECTION IN A FOLDED MASTER/DETAIL</text>
+  <rect x="450" y="36" width="320" height="200" rx="16" class="phone"/>
+  <rect x="458" y="48" width="304" height="120" rx="8" class="card"/>
+  <path d="M480 92 L474 86 L480 80 M474 86 H488" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <text x="500" y="92" class="title">People</text>
+  <g clip-path="url(#c2)">
+    <rect x="466" y="110" width="80" height="40" rx="20" class="pill-on"/><text x="506" y="135" class="t-on" text-anchor="middle">Users</text>
+    <rect x="554" y="110" width="122" height="40" rx="20" class="pill"/><text x="572" y="135" class="t">Invitations</text><circle cx="660" cy="130" r="3.5" fill="#cc2629"/>
+    <rect x="684" y="110" width="116" height="40" rx="20" class="pill"/><text x="702" y="135" class="t">Approvals</text>
+  </g>
+  <rect x="724" y="102" width="32" height="56" fill="url(#fr)"/>
+  <path d="M472 86 H462 V256" class="lead"/>
+  <text x="450" y="270" class="note">back arrow returns to the section menu (admin) or the list</text>
+  <text x="450" y="288" class="note">(messages); only shown while the layout is folded</text>
+  <text x="450" y="306" class="note">tabs scroll with fades — see tabs.md</text>
+</svg>

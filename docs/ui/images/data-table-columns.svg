@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="584" viewBox="0 0 800 584" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Data table column types</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="584" fill="#ededed"/>
+<rect x="20" y="20" width="760" height="544" rx="8" class="card"/>
+<text x="40" y="48" class="th">TYPE</text><text x="200" y="48" class="th">EXAMPLE CELL</text><text x="560" y="48" class="th">NOTES</text>
+<rect x="28" y="60" width="744" height="1" fill="#eee"/>
+<text x="40" y="92" class="name">Main</text>
+<rect x="200" y="70" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="206.48" y="77.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="244" y="86" class="name">Emma Williams</text><text x="244" y="104" class="sub">emma.williams@example.com</text>
+<text x="560" y="94" class="sub">image or glyph, linked name, subtitle</text>
+<rect x="28" y="116" width="744" height="1" fill="#eee"/>
+<text x="40" y="148" class="name">Chip · status</text>
+<rect x="200" y="135" width="65" height="20" rx="10" fill="#e3f1e5"/><text x="232.5" y="149" class="chipt" fill="#1c822a" text-anchor="middle">ENABLED</text>
+<rect x="271" y="135" width="65" height="20" rx="10" fill="#f6ecd9"/><text x="303.5" y="149" class="chipt" fill="#8a5600" text-anchor="middle">PENDING</text>
+<rect x="342" y="135" width="65" height="20" rx="10" fill="#f8e1e1"/><text x="374.5" y="149" class="chipt" fill="#b42225" text-anchor="middle">BLOCKED</text>
+<rect x="413" y="135" width="58" height="20" rx="10" fill="#dfeef8"/><text x="442.0" y="149" class="chipt" fill="#00598f" text-anchor="middle">UPDATE</text>
+<rect x="477" y="135" width="72" height="20" rx="10" fill="#efefef"/><text x="513.0" y="149" class="chipt" fill="#555" text-anchor="middle">DISABLED</text>
+<text x="560" y="150" class="sub">tone comes with the value</text>
+<rect x="28" y="172" width="744" height="1" fill="#eee"/>
+<text x="40" y="204" class="name">Chip · category</text>
+<rect x="200" y="191" width="79" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="239.5" y="205" class="chipt" fill="#555" text-anchor="middle">MARKETING</text>
+<rect x="285" y="191" width="44" height="20" rx="10" fill="#efefef"/><text x="307.0" y="205" class="chipt" fill="#555" text-anchor="middle">OKTA</text>
+<text x="560" y="206" class="sub">neutral; can filter the table</text>
+<rect x="28" y="228" width="744" height="1" fill="#eee"/>
+<text x="40" y="260" class="name">Number</text>
+<text x="200" y="262" class="txt">1,284</text>
+<text x="270" y="262" class="lnk" text-decoration="underline">13</text>
+<text x="560" y="262" class="sub">tabular figures; may open a dialog</text>
+<rect x="28" y="284" width="744" height="1" fill="#eee"/>
+<text x="40" y="316" class="name">Date</text>
+<text x="200" y="318" class="txt">Oct 23, 2026</text>
+<text x="560" y="318" class="sub">user's locale; full date on hover</text>
+<rect x="28" y="340" width="744" height="1" fill="#eee"/>
+<text x="40" y="372" class="name">Text</text>
+<text x="200" y="374" class="txt">2.4.1 · humhub/calendar · develop…</text>
+<text x="560" y="374" class="sub">one line, ellipsis</text>
+<rect x="28" y="396" width="744" height="1" fill="#eee"/>
+<text x="40" y="428" class="name">Person / Space</text>
+<text x="200" y="430" class="lnk">Noah Edwards</text><text x="310" y="430" class="lnk">Marketing</text>
+<text x="560" y="430" class="sub">linked name with hover card</text>
+<rect x="28" y="452" width="744" height="1" fill="#eee"/>
+<text x="40" y="484" class="name">Selection</text>
+<rect x="200" y="472" width="18" height="18" rx="4" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/><rect x="230" y="472" width="18" height="18" rx="4" fill="#037283"/><use href="#i-check" x="231" y="473" width="16" height="16" color="#fff"/><rect x="260" y="472" width="18" height="18" rx="4" fill="#037283"/><use href="#i-minus" x="261" y="473" width="16" height="16" color="#fff"/>
+<text x="560" y="486" class="sub">only with bulk actions</text>
+<rect x="28" y="508" width="744" height="1" fill="#eee"/>
+<text x="40" y="540" class="name">Actions</text>
+<use href="#i-pencil" x="206" y="528" width="18" height="18" color="#333"/>
+<use href="#i-kebab" x="250" y="528" width="18" height="18" color="#333"/>
+<text x="560" y="542" class="sub">one icon, or ⋮ for several</text>
+</svg>

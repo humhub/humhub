@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Pill tabs: variants and pill types</title>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .pill { fill: #fff; stroke: #e2e2e2; stroke-width: 2; }
+    .pill-on { fill: #e9eaed; stroke: #9a9ea6; stroke-width: 2; }
+    .flat-on { fill: #e5e5e5; }
+    .t { font-size: 15px; fill: #555; }
+    .t-on { font-size: 15px; fill: #000; }
+    .ico { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .note { font-size: 12px; fill: #037283; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="560" fill="#ededed"/>
+
+  <!-- A: primary, text pills with waiting dots -->
+  <text x="20" y="30" class="sec">PRIMARY · PAGE LEVEL · LINK TABS</text>
+  <rect x="20" y="42" width="760" height="72" rx="8" class="card"/>
+  <rect x="36" y="58" width="80" height="40" rx="20" class="pill-on"/>
+  <text x="76" y="83" class="t-on" text-anchor="middle">Users</text>
+  <rect x="124" y="58" width="122" height="40" rx="20" class="pill"/>
+  <text x="142" y="83" class="t">Invitations</text>
+  <circle cx="230" cy="78" r="3.5" fill="#cc2629"/>
+  <rect x="254" y="58" width="116" height="40" rx="20" class="pill"/>
+  <text x="272" y="83" class="t">Approvals</text>
+  <circle cx="354" cy="78" r="3.5" fill="#cc2629"/>
+  <rect x="378" y="58" width="88" height="40" rx="20" class="pill"/>
+  <text x="422" y="83" class="t" text-anchor="middle">Groups</text>
+  <rect x="474" y="58" width="112" height="40" rx="20" class="pill"/>
+  <text x="530" y="83" class="t" text-anchor="middle">Onboarding</text>
+  <rect x="594" y="58" width="90" height="40" rx="20" class="pill"/>
+  <text x="639" y="83" class="t" text-anchor="middle">Profiles</text>
+
+  <path d="M76 98 V132" class="lead"/><text x="40" y="146" class="note">active page</text>
+  <path d="M230 82 V132" class="lead"/><text x="190" y="146" class="note">"waiting" dot (red)</text>
+  <path d="M422 98 V132" class="lead"/><text x="392" y="146" class="note">resting pill</text>
+  <path d="M684 78 H712 V132" class="lead"/><text x="640" y="146" class="note">never wraps, scrolls</text>
+
+  <!-- B: primary with icons -->
+  <text x="20" y="190" class="sec">PRIMARY WITH ICONS · SPACE / PROFILE TABS</text>
+  <rect x="20" y="202" width="760" height="72" rx="8" class="card"/>
+  <g color="#000">
+    <rect x="36" y="218" width="112" height="40" rx="20" class="pill-on"/>
+    <g class="ico" transform="translate(54 230)"><path d="M8 1 L15 5 L8 9 L1 5 Z M1 9 L8 13 L15 9"/></g>
+    <text x="76" y="243" class="t-on">Stream</text>
+  </g>
+  <g color="#555">
+    <rect x="156" y="218" width="124" height="40" rx="20" class="pill"/>
+    <g class="ico" transform="translate(174 230)"><rect x="1" y="2" width="14" height="13" rx="1.5"/><path d="M1 6 H15 M5 0 V3 M11 0 V3"/></g>
+    <text x="196" y="243" class="t">Calendar</text>
+    <rect x="288" y="218" width="94" height="40" rx="20" class="pill"/>
+    <g class="ico" transform="translate(306 230)"><path d="M1 3 H6 L8 5 H15 V14 H1 Z"/></g>
+    <text x="328" y="243" class="t">Files</text>
+    <rect x="390" y="218" width="94" height="40" rx="20" class="pill"/>
+    <g class="ico" transform="translate(408 230)"><path d="M1 3 H6 Q8 3 8 5 V15 Q8 13 6 13 H1 Z M15 3 H10 Q8 3 8 5 V15 Q8 13 10 13 H15 Z"/></g>
+    <text x="430" y="243" class="t">Wiki</text>
+    <rect x="492" y="218" width="100" height="40" rx="20" class="pill"/>
+    <g class="ico" transform="translate(510 230)"><path d="M2 4 L4 6 L7 2 M9 4 H15 M2 11 L4 13 L7 9 M9 11 H15"/></g>
+    <text x="532" y="243" class="t">Tasks</text>
+    <rect x="600" y="218" width="104" height="40" rx="20" class="pill"/>
+    <g class="ico" transform="translate(618 230)"><circle cx="8" cy="8" r="7"/><path d="M8 7 V12 M8 4.5 V4.6"/></g>
+    <text x="640" y="243" class="t">About</text>
+  </g>
+  <path d="M60 258 V292" class="lead"/><text x="40" y="306" class="note">icon + label, 4px gap</text>
+
+  <!-- C: secondary -->
+  <text x="20" y="350" class="sec">SECONDARY · INSIDE A CARD OR DIALOG · PANEL TABS</text>
+  <rect x="20" y="362" width="370" height="150" rx="8" class="card"/>
+  <rect x="36" y="378" width="70" height="36" rx="18" class="flat-on"/>
+  <text x="71" y="401" class="t-on" text-anchor="middle">All</text>
+  <text x="128" y="401" class="t">Unread</text>
+  <text x="208" y="401" class="t">Read</text>
+  <rect x="36" y="430" width="338" height="12" rx="6" fill="#f5f5f5"/>
+  <rect x="36" y="452" width="290" height="12" rx="6" fill="#f5f5f5"/>
+  <rect x="36" y="474" width="310" height="12" rx="6" fill="#f5f5f5"/>
+  <text x="36" y="532" class="note">no outlines · active = filled · switches a panel below</text>
+
+  <rect x="410" y="362" width="370" height="150" rx="8" class="card"/>
+  <rect x="426" y="378" width="132" height="36" rx="18" class="flat-on"/>
+  <text x="492" y="401" class="t-on" text-anchor="middle">Administrator</text>
+  <text x="576" y="401" class="t">Moderator</text>
+  <circle cx="660" cy="396" r="3.5" fill="#037283"/>
+  <text x="682" y="401" class="t">Member</text>
+  <rect x="426" y="430" width="338" height="12" rx="6" fill="#f5f5f5"/>
+  <rect x="426" y="452" width="250" height="12" rx="6" fill="#f5f5f5"/>
+  <rect x="426" y="474" width="300" height="12" rx="6" fill="#f5f5f5"/>
+  <text x="426" y="532" class="note">"unsaved changes" dot (accent) — e.g. permission role tabs</text>
+</svg>

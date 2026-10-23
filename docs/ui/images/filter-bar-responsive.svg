@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Filter bar at different widths of its own container: 4, 2 and 1 per row, collapsed behind a filter button at 570 px</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <g id="sel"><rect width="100%" height="38" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/></g>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 13px; fill: #757575; }
+    .val { font-size: 13px; fill: #000; }
+    .note { font-size: 12px; fill: #037283; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="560" fill="#fff"/>
+
+  <!-- > 1000 -->
+  <text x="20" y="24" class="sec">CONTAINER &gt; 1000 PX · 4 PER ROW</text>
+  <rect x="20" y="34" width="760" height="70" rx="8" class="card"/>
+  <rect x="36" y="50" width="164" height="38" rx="6" class="empty"/><use href="#i-search" x="46" y="61" width="16" height="16" color="#757575"/><text x="68" y="74" class="ph">Search</text>
+  <rect x="208" y="50" width="164" height="38" rx="6" class="filled"/><text x="218" y="74" class="val">Sales</text><use href="#i-x" x="348" y="61" width="16" height="16" color="#555"/>
+  <rect x="380" y="50" width="164" height="38" rx="6" class="filled"/><text x="390" y="74" class="val">Enabled</text><use href="#i-x" x="520" y="61" width="16" height="16" color="#555"/>
+  <rect x="552" y="50" width="164" height="38" rx="6" class="empty"/><text x="562" y="74" class="ph">Source</text><use href="#i-down" x="692" y="61" width="16" height="16" color="#555"/>
+  <use href="#i-x" x="733" y="60" width="20" height="20" color="#333"/>
+
+  <!-- 571-1000 -->
+  <text x="20" y="168" class="sec">571 – 1000 PX · 2 PER ROW</text>
+  <rect x="20" y="178" width="480" height="116" rx="8" class="card"/>
+  <rect x="36" y="194" width="203" height="38" rx="6" class="empty"/><use href="#i-search" x="46" y="205" width="16" height="16" color="#757575"/><text x="68" y="218" class="ph">Search</text>
+  <rect x="247" y="194" width="203" height="38" rx="6" class="filled"/><text x="257" y="218" class="val">Sales</text><use href="#i-x" x="426" y="205" width="16" height="16" color="#555"/>
+  <rect x="36" y="240" width="203" height="38" rx="6" class="filled"/><text x="46" y="264" class="val">Enabled</text><use href="#i-x" x="215" y="251" width="16" height="16" color="#555"/>
+  <rect x="247" y="240" width="203" height="38" rx="6" class="empty"/><text x="257" y="264" class="ph">Source</text><use href="#i-down" x="426" y="251" width="16" height="16" color="#555"/>
+  <use href="#i-x" x="463" y="250" width="20" height="20" color="#333"/>
+  <text x="520" y="214" class="note">cells stay equal; the bar measures</text>
+  <text x="520" y="230" class="note">its own width (container query),</text>
+  <text x="520" y="246" class="note">not the viewport — so it folds the</text>
+  <text x="520" y="262" class="note">same with or without the sidebar</text>
+
+  <!-- <= 570 collapsed -->
+  <text x="20" y="366" class="sec">≤ 570 PX · COLLAPSED</text>
+  <rect x="20" y="376" width="340" height="56" rx="8" class="card"/>
+  <rect x="28" y="385" width="232" height="38" rx="6" class="empty"/><use href="#i-search" x="38" y="396" width="16" height="16" color="#757575"/><text x="60" y="409" class="ph">Search</text>
+  <rect x="266" y="385" width="38" height="38" rx="6" fill="#e6f1f3"/><use href="#i-funnel" x="275" y="394" width="20" height="20" color="#037283"/>
+  <use href="#i-x" x="319" y="394" width="20" height="20" color="#333"/>
+  <path d="M285 432 V460" class="lead"/><text x="20" y="476" class="note">filter button (accent tint while filters are set or open)</text>
+  <path d="M329 432 V490" class="lead"/><text x="20" y="504" class="note">clear all moves next to the filter button</text>
+
+  <!-- <= 570 open -->
+  <text x="420" y="366" class="sec">≤ 570 PX · OPEN</text>
+  <rect x="420" y="376" width="340" height="148" rx="8" class="card"/>
+  <rect x="428" y="385" width="278" height="38" rx="6" class="empty"/><use href="#i-search" x="438" y="396" width="16" height="16" color="#757575"/><text x="460" y="409" class="ph">Search</text>
+  <rect x="714" y="385" width="38" height="38" rx="6" fill="#e6f1f3"/><use href="#i-funnel" x="723" y="394" width="20" height="20" color="#037283"/>
+  <rect x="428" y="431" width="278" height="38" rx="6" class="filled"/><text x="438" y="455" class="val">Sales</text><use href="#i-x" x="682" y="442" width="16" height="16" color="#555"/>
+  <rect x="428" y="477" width="278" height="38" rx="6" class="filled"/><text x="438" y="501" class="val">Enabled</text><use href="#i-x" x="682" y="488" width="16" height="16" color="#555"/>
+  <use href="#i-x" x="723" y="487" width="20" height="20" color="#333"/>
+  <text x="420" y="546" class="note">one filter per row · opens with a height animation</text>
+</svg>

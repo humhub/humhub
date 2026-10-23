@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="620" viewBox="0 0 800 620" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Data table anatomy</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="620" fill="#ededed"/>
+<rect x="20" y="20" width="760" height="470" rx="8" class="card"/>
+<text x="40" y="58" class="title">Users</text>
+<use href="#i-cols" x="654" y="41" width="20" height="20" color="#333"/>
+<rect x="684" y="32" width="38" height="38" rx="6" fill="#037283"/><use href="#i-plus" x="693" y="41" width="20" height="20" color="#fff"/>
+<rect x="728" y="32" width="40" height="38" rx="6" fill="#e6f1f3"/><text x="740" y="56" font-size="13" font-weight="700" fill="#037283">2</text><use href="#i-kebab" x="748" y="43" width="16" height="16" color="#037283"/>
+<rect x="36" y="82" width="164" height="38" rx="6" class="empty"/><use href="#i-search" x="46" y="93" width="16" height="16" color="#757575"/><text x="70" y="106" class="ph">Name or Email</text>
+<rect x="208" y="82" width="164" height="38" rx="6" class="empty"/><text x="218" y="106" class="ph">Group</text><use href="#i-down" x="348" y="93" width="16" height="16" color="#555"/>
+<rect x="380" y="82" width="164" height="38" rx="6" class="filled"/><text x="390" y="106" class="val">Enabled</text><use href="#i-x" x="520" y="93" width="16" height="16" color="#555"/>
+<rect x="552" y="82" width="164" height="38" rx="6" class="empty"/><text x="562" y="106" class="ph">Source</text><use href="#i-down" x="692" y="93" width="16" height="16" color="#555"/>
+<use href="#i-x" x="734" y="92" width="20" height="20" color="#333"/>
+<rect x="40" y="138" width="18" height="18" rx="4" fill="#037283"/><use href="#i-minus" x="41" y="139" width="16" height="16" color="#fff"/>
+<text x="112" y="152" class="th-on">Name</text><use href="#i-up" x="152" y="140" width="14" height="14" color="#000"/>
+<text x="330" y="152" class="th">Group</text><use href="#i-updown" x="374" y="140" width="14" height="14" color="#9a9ea6"/>
+<text x="470" y="152" class="th">Source</text><use href="#i-updown" x="518" y="140" width="14" height="14" color="#9a9ea6"/>
+<text x="600" y="152" class="th">Status</text><use href="#i-updown" x="646" y="140" width="14" height="14" color="#9a9ea6"/>
+<rect x="40" y="180" width="18" height="18" rx="4" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/>
+<rect x="68" y="171" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="74.48" y="178.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="112" y="186" class="name">Alexander Schmidt</text><text x="112" y="204" class="sub">alexander.schmidt@example.com</text>
+<rect x="330" y="179" width="51" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="355.5" y="193" class="chipt" fill="#555" text-anchor="middle">SALES</text>
+<rect x="470" y="179" width="44" height="20" rx="10" fill="#efefef"/><text x="492.0" y="193" class="chipt" fill="#555" text-anchor="middle">OKTA</text>
+<rect x="600" y="179" width="65" height="20" rx="10" fill="#e3f1e5"/><text x="632.5" y="193" class="chipt" fill="#1c822a" text-anchor="middle">ENABLED</text>
+<use href="#i-kebab" x="744" y="179" width="20" height="20" color="#333"/>
+<rect x="28" y="216" width="744" height="50" rx="6" fill="#eef5f6"/>
+<rect x="40" y="232" width="18" height="18" rx="4" fill="#037283"/><use href="#i-check" x="41" y="233" width="16" height="16" color="#fff"/>
+<rect x="68" y="223" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="74.48" y="230.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="112" y="238" class="name">Brandon Williams</text><text x="112" y="256" class="sub">brandon.williams@example.com</text>
+<rect x="330" y="231" width="51" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="355.5" y="245" class="chipt" fill="#555" text-anchor="middle">SALES</text>
+<rect x="470" y="231" width="44" height="20" rx="10" fill="#efefef"/><text x="492.0" y="245" class="chipt" fill="#555" text-anchor="middle">SCIM</text>
+<rect x="600" y="231" width="65" height="20" rx="10" fill="#e3f1e5"/><text x="632.5" y="245" class="chipt" fill="#1c822a" text-anchor="middle">ENABLED</text>
+<use href="#i-kebab" x="744" y="231" width="20" height="20" color="#333"/>
+<rect x="28" y="268" width="744" height="50" rx="6" fill="#eef5f6"/>
+<rect x="40" y="284" width="18" height="18" rx="4" fill="#037283"/><use href="#i-check" x="41" y="285" width="16" height="16" color="#fff"/>
+<rect x="68" y="275" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="74.48" y="282.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="112" y="290" class="name">David Brown</text><text x="112" y="308" class="sub">david.brown@example.com</text>
+<rect x="330" y="283" width="107" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="383.5" y="297" class="chipt" fill="#555" text-anchor="middle">IT DEPARTMENT</text>
+<rect x="470" y="283" width="44" height="20" rx="10" fill="#efefef"/><text x="492.0" y="297" class="chipt" fill="#555" text-anchor="middle">LDAP</text>
+<rect x="600" y="283" width="65" height="20" rx="10" fill="#f6ecd9"/><text x="632.5" y="297" class="chipt" fill="#8a5600" text-anchor="middle">PENDING</text>
+<use href="#i-kebab" x="744" y="283" width="20" height="20" color="#333"/>
+<rect x="28" y="320" width="744" height="50" rx="6" fill="#f5f5f5"/>
+<rect x="40" y="336" width="18" height="18" rx="4" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/>
+<rect x="68" y="327" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="74.48" y="334.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="112" y="342" class="name">Emma Williams</text><text x="112" y="360" class="sub">emma.williams@example.com</text>
+<rect x="330" y="335" width="79" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="369.5" y="349" class="chipt" fill="#555" text-anchor="middle">MARKETING</text>
+<rect x="470" y="335" width="72" height="20" rx="10" fill="#efefef"/><text x="506.0" y="349" class="chipt" fill="#555" text-anchor="middle">ENTRA ID</text>
+<rect x="600" y="335" width="72" height="20" rx="10" fill="#efefef"/><text x="636.0" y="349" class="chipt" fill="#555" text-anchor="middle">DISABLED</text>
+<use href="#i-kebab" x="744" y="335" width="20" height="20" color="#333"/>
+<rect x="40" y="388" width="18" height="18" rx="4" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/>
+<rect x="68" y="379" width="36" height="36" rx="4" fill="#e3e4e6"/><use href="#i-person" x="74.48" y="386.2" width="23.04" height="23.04" color="#c9ccd1"/>
+<text x="112" y="394" class="name">Harry Evans</text><text x="112" y="412" class="sub">harry.evans@example.com</text>
+<rect x="330" y="387" width="79" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="369.5" y="401" class="chipt" fill="#555" text-anchor="middle">MARKETING</text>
+<rect x="470" y="387" width="51" height="20" rx="10" fill="#efefef"/><text x="495.5" y="401" class="chipt" fill="#555" text-anchor="middle">LOCAL</text>
+<rect x="600" y="387" width="65" height="20" rx="10" fill="#e3f1e5"/><text x="632.5" y="401" class="chipt" fill="#1c822a" text-anchor="middle">ENABLED</text>
+<use href="#i-kebab" x="744" y="387" width="20" height="20" color="#333"/>
+<rect x="28" y="426" width="744" height="1" fill="#eee"/>
+<text x="40" y="466" class="txt">1–25 of 35 users</text>
+<rect x="370" y="446" width="30" height="30" rx="6" fill="#e5e5e5"/><text x="385" y="466" class="txt" text-anchor="middle">1</text>
+<text x="420" y="466" class="txt" text-anchor="middle">2</text><use href="#i-right" x="440" y="453" width="16" height="16" color="#333"/>
+<rect x="700" y="442" width="68" height="38" rx="6" class="empty"/><text x="712" y="466" class="val">25</text><use href="#i-down" x="742" y="453" width="16" height="16" color="#555"/>
+<circle cx="640" cy="26" r="9" fill="#037283"/><text x="640" y="30" class="num" text-anchor="middle">1</text>
+<circle cx="30" cy="101" r="9" fill="#037283"/><text x="30" y="105" class="num" text-anchor="middle">2</text>
+<circle cx="182" cy="143" r="9" fill="#037283"/><text x="182" y="147" class="num" text-anchor="middle">3</text>
+<circle cx="31" cy="146" r="9" fill="#037283"/><text x="31" y="150" class="num" text-anchor="middle">4</text>
+<circle cx="290" cy="180" r="9" fill="#037283"/><text x="290" y="184" class="num" text-anchor="middle">5</text>
+<circle cx="340" cy="170" r="9" fill="#037283"/><text x="340" y="174" class="num" text-anchor="middle">6</text>
+<circle cx="610" cy="170" r="9" fill="#037283"/><text x="610" y="174" class="num" text-anchor="middle">7</text>
+<circle cx="764" cy="180" r="9" fill="#037283"/><text x="764" y="184" class="num" text-anchor="middle">8</text>
+<circle cx="774" cy="32" r="9" fill="#037283"/><text x="774" y="36" class="num" text-anchor="middle">9</text>
+<circle cx="30" cy="461" r="9" fill="#037283"/><text x="30" y="465" class="num" text-anchor="middle">10</text>
+<text x="24" y="518" class="legend">1  Header: title · columns chooser · primary action</text>
+<text x="24" y="538" class="legend">2  Filter bar (see filter-bar.md)</text>
+<text x="24" y="558" class="legend">3  Sortable header: ↑ sorted, ⇕ sortable</text>
+<text x="24" y="578" class="legend">4  Select all on this page: none / some / all</text>
+<text x="24" y="598" class="legend">5  Main column: image, name, subtitle; never hidden</text>
+<text x="414" y="518" class="legend">6  Chip column; a chip can filter the table</text>
+<text x="414" y="538" class="legend">7  Status chip with tone</text>
+<text x="414" y="558" class="legend">8  Row actions: ⋮ menu, or one icon button</text>
+<text x="414" y="578" class="legend">9  While rows are selected, ⋮ becomes the selection menu</text>
+<text x="414" y="598" class="legend">10 Footer: count · pager · rows per page</text>
+</svg>

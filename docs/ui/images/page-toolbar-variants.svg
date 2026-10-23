@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Page toolbar: variants and the order of header actions</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-board" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="5.5" height="13" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1.5" width="5.5" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-list" viewBox="0 0 16 16"><rect x="1.5" y="2" width="13" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="9" width="13" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .field { fill: #f5f5f5; stroke: #e5e5e5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .pill { fill: #fff; stroke: #e2e2e2; stroke-width: 2; }
+    .pill-on { fill: #e9eaed; stroke: #9a9ea6; stroke-width: 2; }
+    .t { font-size: 15px; fill: #555; }
+    .t-on { font-size: 15px; fill: #000; }
+    .note { font-size: 12px; fill: #037283; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="640" fill="#ededed"/>
+
+  <!-- A -->
+  <text x="20" y="28" class="sec">TITLE · ACTIONS · FILTER BAR — MODULE AND DIRECTORY PAGES</text>
+  <rect x="20" y="40" width="760" height="162" rx="8" class="card"/>
+  <text x="40" y="82" class="title">Tasks</text>
+  <rect x="680" y="57" width="38" height="38" rx="6" fill="#d5d5d5"/>
+  <use href="#i-gear" x="689" y="66" width="20" height="20" color="#333"/>
+  <rect x="726" y="57" width="38" height="38" rx="6" fill="#037283"/>
+  <use href="#i-plus" x="735" y="66" width="20" height="20" color="#fff"/>
+  <g>
+    <rect x="36" y="108" width="174" height="38" rx="6" class="field"/><use href="#i-search" x="46" y="119" width="16" height="16" color="#757575"/><text x="70" y="132" class="ph">Search</text>
+    <rect x="218" y="108" width="174" height="38" rx="6" class="field"/><text x="228" y="132" class="ph">Space</text>
+    <rect x="400" y="108" width="174" height="38" rx="6" class="field"/><text x="410" y="132" class="ph">Assigned</text>
+    <rect x="582" y="108" width="182" height="38" rx="6" class="field"/><text x="592" y="132" class="ph">Filter</text><use href="#i-down" x="740" y="119" width="16" height="16" color="#555"/>
+    <rect x="36" y="154" width="174" height="38" rx="6" class="field"/><text x="46" y="178" class="ph">Stage</text><use href="#i-down" x="186" y="165" width="16" height="16" color="#555"/>
+    <rect x="218" y="154" width="174" height="38" rx="6" class="field"/><text x="228" y="178" class="ph">Priority</text><use href="#i-down" x="368" y="165" width="16" height="16" color="#555"/>
+    <rect x="400" y="154" width="174" height="38" rx="6" class="field"/><text x="410" y="178" class="ph">From Date</text><use href="#i-cal" x="550" y="165" width="16" height="16" color="#555"/>
+    <rect x="582" y="154" width="182" height="38" rx="6" class="field"/><text x="592" y="178" class="ph">To Date</text><use href="#i-cal" x="740" y="165" width="16" height="16" color="#555"/>
+  </g>
+  <path d="M60 88 V100 H120" class="lead"/><text x="126" y="104" class="note">page title (h1)</text>
+  <path d="M699 57 V48 H560" class="lead"/><text x="400" y="52" class="note">secondary tool (settings)</text>
+  <path d="M780 76 H790 V214 H700" class="lead"/>
+  <text x="420" y="226" class="note">primary action: accent, icon only, at most one, right before ⋮</text>
+  <path d="M20 170 H10 V250 H36" class="lead"/>
+  <text x="42" y="254" class="note">filter bar — see filter-bar.md</text>
+
+  <!-- B -->
+  <text x="20" y="296" class="sec">TITLE · PILL TABS — SECTION WITH SUB-PAGES (ADMINISTRATION)</text>
+  <rect x="20" y="308" width="760" height="110" rx="8" class="card"/>
+  <text x="40" y="350" class="title">People</text>
+  <rect x="36" y="364" width="80" height="40" rx="20" class="pill-on"/><text x="76" y="389" class="t-on" text-anchor="middle">Users</text>
+  <rect x="124" y="364" width="122" height="40" rx="20" class="pill"/><text x="142" y="389" class="t">Invitations</text><circle cx="230" cy="384" r="3.5" fill="#cc2629"/>
+  <rect x="254" y="364" width="116" height="40" rx="20" class="pill"/><text x="272" y="389" class="t">Approvals</text><circle cx="354" cy="384" r="3.5" fill="#cc2629"/>
+  <rect x="378" y="364" width="88" height="40" rx="20" class="pill"/><text x="422" y="389" class="t" text-anchor="middle">Groups</text>
+  <rect x="474" y="364" width="112" height="40" rx="20" class="pill"/><text x="530" y="389" class="t" text-anchor="middle">Onboarding</text>
+  <path d="M600 384 H640" class="lead"/><text x="646" y="388" class="note">Pill Tabs (primary)</text>
+
+  <!-- C -->
+  <text x="20" y="460" class="sec">THE SAME ACTION ORDER IN CONTENT CARD HEADERS</text>
+  <rect x="20" y="472" width="370" height="76" rx="8" class="card"/>
+  <text x="36" y="516" class="title">Users</text>
+  <use href="#i-cols" x="257" y="501" width="20" height="20" color="#333"/>
+  <rect x="294" y="492" width="38" height="38" rx="6" fill="#037283"/><use href="#i-plus" x="303" y="501" width="20" height="20" color="#fff"/>
+  <use href="#i-kebab" x="345" y="501" width="20" height="20" color="#333"/>
+  <circle cx="267" cy="562" r="8" fill="#037283"/><text x="267" y="566" class="num" text-anchor="middle">1</text>
+  <circle cx="313" cy="562" r="8" fill="#037283"/><text x="313" y="566" class="num" text-anchor="middle">2</text>
+  <circle cx="355" cy="562" r="8" fill="#037283"/><text x="355" y="566" class="num" text-anchor="middle">3</text>
+  <text x="20" y="592" class="note">1 secondary tools (ghost) · 2 primary action (accent)</text>
+  <text x="20" y="610" class="note">3 overflow menu (ghost ⋮) — opens the context menu</text>
+
+  <rect x="410" y="472" width="370" height="76" rx="8" class="card"/>
+  <rect x="426" y="491" width="38" height="38" rx="6" fill="#f5f5f5"/><use href="#i-down" x="435" y="500" width="20" height="20" color="#bbb" transform="rotate(90 445 510)"/>
+  <use href="#i-down" x="473" y="500" width="20" height="20" color="#333" transform="rotate(-90 483 510)"/>
+  <rect x="680" y="491" width="84" height="38" rx="19" fill="#ededed"/>
+  <rect x="684" y="495" width="38" height="30" rx="15" fill="#d5d5d5"/>
+  <use href="#i-board" x="694" y="501" width="18" height="18" color="#000"/>
+  <use href="#i-list" x="734" y="501" width="18" height="18" color="#555"/>
+  <text x="410" y="592" class="note">content navigation left (‹ ›, path bar) · view switch at the</text>
+  <text x="410" y="610" class="note">far right of the content card, never in the page toolbar</text>
+</svg>
