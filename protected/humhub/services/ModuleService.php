@@ -178,6 +178,18 @@ class ModuleService
      */
     public function checkRequirements(): void
     {
+        $dependencyService = ModuleDependencyService::forModulePath($this->module->getBasePath());
+        $unmetDependencies = $dependencyService->getUnmetDependencies();
+        if ($unmetDependencies !== []) {
+            $message = implode(' ', $unmetDependencies);
+            Yii::error('Error enabling the "' . $this->module->id . '" module: ' . $message, 'module');
+            throw new ServerErrorHttpException($message);
+        }
+
+        // Lets a requirements.php that checks its dependencies via Yii::$app->getModule() also work
+        // in console commands, which do not load third-party modules
+        $dependencyService->registerDependencies();
+
         $requirementsPath = $this->module->getBasePath() . DIRECTORY_SEPARATOR . 'requirements.php';
         if (!file_exists($requirementsPath)) {
             return;

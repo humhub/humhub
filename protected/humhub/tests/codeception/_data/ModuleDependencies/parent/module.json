@@ -1,0 +1,9 @@
+{
+    "id": "dep-parent",
+    "version": "2.0.0",
+    "name": "Dependency Parent",
+    "description": "Fixture module for module dependency tests.",
+    "humhub": {
+        "minVersion": "1.19"
+    }
+}
