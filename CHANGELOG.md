@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #8556: Refined content tag and content addon validation
 - Fix #8568: Prevent browser password managers from autofilling the username into "New E-Mail"/"New username" fields
 - Fix #8563: Cache `Module::getIsEnabled()` per request to avoid repeated `queue_exclusive` queries on each call (e.g. from theme view events); Invalidate it on module enable/disable/remove and when a disable/remove job is queued
+- Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
 
 1.18.6 (September 22, 2026)
 ---------------------------
