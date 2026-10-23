@@ -26,6 +26,13 @@ section of each page lists the gaps between the design and the current implement
 | [Mobile Navigation](mobile-navigation.md) | in review | PHP (proposed) |
 | [Card Directory](card-directory.md) | in review | Vue (exists) |
 | [Entity Card](entity-card.md) | in review | Vue (exists) |
+| [Badges & Status](badges.md) | in review | Both |
+| [Buttons](buttons.md) | in review | Both |
+| [Settings Page](settings-page.md) | in review | Both (proposed) |
+| [Master / Detail & Section Menu](master-detail.md) | in review | Both (proposed) |
+| [Dialog](dialog.md) | in review | Both |
+| [Context Menu](context-menu.md) | in review | Both |
+| [Item Browser](item-browser.md) | in review | Vue (exists) |
 
 Technology is decided per component:
 

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="840" viewBox="0 0 800 840" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Item browser: path bar, tiles, selection, upload, list view and details</title>
+  <defs>
+<symbol id="i-folder" viewBox="0 0 32 26"><path d="M0 3 Q0 0 3 0 H11 L14 3 H29 Q32 3 32 6 V23 Q32 26 29 26 H3 Q0 26 0 23 Z" fill="currentColor"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 30"><path d="M2 0 H16 L24 8 V28 Q24 30 22 30 H2 Q0 30 0 28 V2 Q0 0 2 0 Z" fill="currentColor"/><path d="M16 0 V8 H24" fill="#fff" fill-opacity=".5"/></symbol>
+<symbol id="i-root" viewBox="0 0 16 16"><path d="M1.5 4 H6 L7.5 5.5 H14.5 V13 H1.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-grid" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-rows" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="12" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-uploadcloud" viewBox="0 0 16 16"><path d="M4.5 12 H4 A3 3 0 0 1 4 6 A4 4 0 0 1 12 6 A3 3 0 0 1 12 12 H11.5 M8 8 V14 M5.5 10.5 L8 8 L10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="840" fill="#ededed"/>
+<text x="20" y="28" class="sec">GRID VIEW</text>
+<rect x="20" y="40" width="760" height="350" rx="8" class="card"/>
+<rect x="36" y="56" width="620" height="38" rx="6" fill="#f2f2f2"/><use href="#i-root" x="46" y="67" width="16" height="16" color="#333"/>
+<text x="68" y="80" class="txt" text-anchor="start">›</text><text x="82" y="80" class="lnk" style="fill:#333">Marketing</text><text x="160" y="80" class="txt">›</text><text x="174" y="80" class="txt" style="fill:#757575;font-weight:600">Campaigns</text>
+<rect x="586" y="60" width="62" height="30" rx="6" fill="#e6f1f3"/><text x="602" y="80" font-size="13" font-weight="700" fill="#037283">2</text><use href="#i-kebab" x="616" y="67" width="16" height="16" color="#037283"/>
+<rect x="668" y="56" width="96" height="38" rx="19" fill="#ededed"/><rect x="672" y="60" width="44" height="30" rx="15" fill="#d5d5d5"/><use href="#i-grid" x="686" y="67" width="16" height="16" color="#000"/><use href="#i-rows" x="730" y="67" width="16" height="16" color="#555"/>
+<rect x="40" y="116" width="112" height="128" rx="8" fill="#037283" fill-opacity=".08" stroke="#037283" stroke-width="1.5"/><use href="#i-folder" x="64" y="128" width="64" height="64" color="#f5c518"/><text x="96" y="202" class="txt" text-anchor="middle">Assets</text><text x="96" y="218" class="sub" font-size="11" text-anchor="middle">12 items</text>
+<use href="#i-folder" x="186" y="128" width="64" height="64" color="#f5c518"/><text x="218" y="202" class="txt" text-anchor="middle">Briefings</text><text x="218" y="218" class="sub" font-size="11" text-anchor="middle">4 items</text>
+<rect x="284" y="116" width="112" height="128" rx="8" fill="#eef5f6"/><rect x="304" y="126" width="72" height="56" rx="6" fill="#9fb7c9"/><path d="M304 174 L328 152 L346 168 L358 160 L376 174 V182 H304 Z" fill="#6c8aa2"/><text x="340" y="202" class="txt" text-anchor="middle">Hero.jpg</text><text x="340" y="218" class="sub" font-size="11" text-anchor="middle">1.2 MB</text><rect x="292" y="124" width="18" height="18" rx="4" fill="#037283"/><use href="#i-check" x="293" y="125" width="16" height="16" color="#fff"/>
+<rect x="406" y="116" width="112" height="128" rx="8" fill="#eef5f6"/><use href="#i-file" x="444" y="126" width="36" height="36" color="#c0392b"/><text x="462" y="202" class="txt" text-anchor="middle">Plan.pdf</text><text x="462" y="218" class="sub" font-size="11" text-anchor="middle">84 KB</text><rect x="414" y="124" width="18" height="18" rx="4" fill="#037283"/><use href="#i-check" x="415" y="125" width="16" height="16" color="#fff"/>
+<use href="#i-file" x="566" y="126" width="36" height="36" color="#1c822a"/><text x="584" y="202" class="txt" text-anchor="middle">Budget.xlsx</text><text x="584" y="218" class="sub" font-size="11" text-anchor="middle">Uploading…</text><rect x="530" y="118" width="108" height="124" rx="6" fill="#fff" fill-opacity=".55"/><rect x="530" y="118" width="108" height="124" rx="6" fill="none" stroke="#037283" stroke-width="2.5" stroke-dasharray="287.68 464"/>
+<use href="#i-file" x="688" y="126" width="36" height="36" color="#366899"/><text x="706" y="202" class="txt" text-anchor="middle">Notes.docx</text><text x="706" y="218" class="sub" font-size="11" text-anchor="middle">22 KB</text><rect x="658" y="124" width="18" height="18" rx="4" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/>
+<text x="46" y="270" class="sub" font-size="11.5">tiles ≥ 136 px · the whole tile opens the item · right-click (or ⋮ on touch) opens its menu</text>
+<circle cx="30" cy="66" r="9" fill="#037283"/><text x="30" y="70" class="num" text-anchor="middle">1</text>
+<circle cx="580" cy="52" r="9" fill="#037283"/><text x="580" y="56" class="num" text-anchor="middle">2</text>
+<circle cx="664" cy="52" r="9" fill="#037283"/><text x="664" y="56" class="num" text-anchor="middle">3</text>
+<circle cx="52" cy="118" r="9" fill="#037283"/><text x="52" y="122" class="num" text-anchor="middle">4</text>
+<circle cx="290" cy="118" r="9" fill="#037283"/><text x="290" y="122" class="num" text-anchor="middle">5</text>
+<circle cx="534" cy="118" r="9" fill="#037283"/><text x="534" y="122" class="num" text-anchor="middle">6</text>
+<text x="36" y="304" class="legend">1  path bar: root icon, ancestors as links, current level as text</text>
+<text x="36" y="324" class="legend">2  selection menu: count + actions for the selection</text>
+<text x="36" y="344" class="legend">3  view switch: grid / list</text>
+<text x="416" y="304" class="legend">4  drop target: a folder takes dragged items or files</text>
+<text x="416" y="324" class="legend">5  selected: checkbox shows on hover, stays while selecting</text>
+<text x="416" y="344" class="legend">6  uploading: progress traced round the tile</text>
+<text x="20" y="430" class="sec">LIST VIEW + DETAILS</text>
+<rect x="20" y="442" width="470" height="220" rx="8" class="card"/>
+<use href="#i-folder" x="40" y="464" width="28" height="28" color="#f5c518"/>
+<text x="82" y="474" class="name">Assets</text><text x="82" y="490" class="sub" font-size="11">12 items · Oct 20</text><use href="#i-kebab" x="456" y="468" width="18" height="18" color="#555"/>
+<rect x="40" y="510" width="28" height="28" rx="4" fill="#9fb7c9"/>
+<text x="82" y="522" class="name">Hero.jpg</text><text x="82" y="538" class="sub" font-size="11">1.2 MB · Oct 22</text><use href="#i-kebab" x="456" y="516" width="18" height="18" color="#555"/>
+<rect x="28" y="550" width="454" height="44" rx="6" fill="#eef5f6"/>
+<use href="#i-file" x="44" y="556" width="22" height="22" color="#c0392b"/>
+<text x="82" y="570" class="name">Plan.pdf</text><text x="82" y="586" class="sub" font-size="11">84 KB · Oct 23</text><use href="#i-kebab" x="456" y="564" width="18" height="18" color="#555"/>
+<use href="#i-file" x="44" y="604" width="22" height="22" color="#366899"/>
+<text x="82" y="618" class="name">Notes.docx</text><text x="82" y="634" class="sub" font-size="11">22 KB · Sep 30</text><use href="#i-kebab" x="456" y="612" width="18" height="18" color="#555"/>
+<rect x="502" y="442" width="278" height="220" rx="8" class="card"/>
+<use href="#i-file" x="518" y="458" width="22" height="22" color="#c0392b"/><text x="550" y="476" class="name" style="font-weight:600">Plan.pdf</text><use href="#i-x" x="752" y="462" width="16" height="16" color="#333"/>
+<rect x="518" y="492" width="70" height="26" rx="13" fill="#e5e5e5"/><text x="553" y="509" class="txt" font-size="12" text-anchor="middle">Info</text><text x="606" y="509" class="txt" font-size="12">Discussion</text>
+<text x="518" y="544" class="sub">Size</text><text x="600" y="544" class="txt">84 KB</text>
+<text x="518" y="566" class="sub">Modified</text><text x="600" y="566" class="txt">Oct 23, 2026</text>
+<text x="518" y="588" class="sub">By</text><text x="600" y="588" class="txt">Noah Edwards</text>
+<text x="518" y="610" class="sub">Space</text><text x="600" y="610" class="txt">Marketing</text>
+<rect x="518" y="624" width="246" height="28" rx="6" fill="#2d3340"/><text x="641" y="643" font-size="13" fill="#fff" text-anchor="middle">Download</text>
+<text x="20" y="684" class="note">Details open as a 400 px side card next to the browser (≥ 768 px), as a dialog on phones.</text>
+<text x="20" y="722" class="sec">DROP FILES FROM THE DESKTOP</text>
+<rect x="20" y="734" width="760" height="90" rx="8" fill="#037283" fill-opacity=".06" stroke="#037283" stroke-width="1.5" stroke-dasharray="6 4"/>
+<use href="#i-uploadcloud" x="380" y="752" width="40" height="40" color="#037283"/><text x="400" y="812" font-size="13" font-weight="600" fill="#037283" text-anchor="middle">Drop to upload into "Campaigns"</text>
+</svg>

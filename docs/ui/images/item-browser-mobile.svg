@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="448" viewBox="0 0 800 448" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Item browser on a phone</title>
+  <defs>
+<symbol id="i-folder" viewBox="0 0 32 26"><path d="M0 3 Q0 0 3 0 H11 L14 3 H29 Q32 3 32 6 V23 Q32 26 29 26 H3 Q0 26 0 23 Z" fill="currentColor"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 30"><path d="M2 0 H16 L24 8 V28 Q24 30 22 30 H2 Q0 30 0 28 V2 Q0 0 2 0 Z" fill="currentColor"/><path d="M16 0 V8 H24" fill="#fff" fill-opacity=".5"/></symbol>
+<symbol id="i-root" viewBox="0 0 16 16"><path d="M1.5 4 H6 L7.5 5.5 H14.5 V13 H1.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-grid" viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="2" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="9" y="9" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-rows" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="2" y="9" width="12" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-uploadcloud" viewBox="0 0 16 16"><path d="M4.5 12 H4 A3 3 0 0 1 4 6 A4 4 0 0 1 12 6 A3 3 0 0 1 12 12 H11.5 M8 8 V14 M5.5 10.5 L8 8 L10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="448" fill="#fff"/>
+<text x="20" y="24" class="sec">390 PX · GRID</text>
+<rect x="20" y="36" width="360" height="330" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="28" y="46" width="344" height="310" rx="8" fill="#fff"/>
+<rect x="36" y="56" width="264" height="34" rx="6" fill="#f2f2f2"/><use href="#i-root" x="46" y="65" width="16" height="16" color="#333"/>
+<rect x="308" y="56" width="56" height="34" rx="17" fill="#ededed"/><use href="#i-grid" x="317" y="65" width="16" height="16" color="#000"/><use href="#i-rows" x="341" y="65" width="16" height="16" color="#555"/>
+<use href="#i-folder" x="78" y="114" width="64" height="64" color="#f5c518"/><text x="110" y="188" class="txt" text-anchor="middle">Marketing</text><text x="110" y="204" class="sub" font-size="11" text-anchor="middle">4 items</text>
+<use href="#i-kebab" x="144" y="110" width="16" height="16" color="#555"/>
+<use href="#i-folder" x="238" y="114" width="64" height="64" color="#f5c518"/><text x="270" y="188" class="txt" text-anchor="middle">Sales</text><text x="270" y="204" class="sub" font-size="11" text-anchor="middle">6 items</text>
+<use href="#i-kebab" x="304" y="110" width="16" height="16" color="#555"/>
+<use href="#i-folder" x="78" y="238" width="64" height="64" color="#f5c518"/><text x="110" y="312" class="txt" text-anchor="middle">Product</text><text x="110" y="328" class="sub" font-size="11" text-anchor="middle">9 items</text>
+<use href="#i-kebab" x="144" y="234" width="16" height="16" color="#555"/>
+<use href="#i-folder" x="238" y="238" width="64" height="64" color="#f5c518"/><text x="270" y="312" class="txt" text-anchor="middle">HR</text><text x="270" y="328" class="sub" font-size="11" text-anchor="middle">3 items</text>
+<use href="#i-kebab" x="304" y="234" width="16" height="16" color="#555"/>
+<text x="420" y="24" class="sec">390 PX · INSIDE A FOLDER</text>
+<rect x="420" y="36" width="360" height="330" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="428" y="46" width="344" height="310" rx="8" fill="#fff"/>
+<rect x="436" y="56" width="264" height="34" rx="6" fill="#f2f2f2"/><path d="M452 79 L446 73 L452 67 M446 73 H460" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/><text x="470" y="78" class="txt" style="fill:#757575;font-weight:600">Campaigns</text>
+<rect x="708" y="56" width="56" height="34" rx="17" fill="#ededed"/><use href="#i-grid" x="717" y="65" width="16" height="16" color="#000"/><use href="#i-rows" x="741" y="65" width="16" height="16" color="#555"/>
+<use href="#i-folder" x="478" y="114" width="64" height="64" color="#f5c518"/><text x="510" y="188" class="txt" text-anchor="middle">Assets</text><text x="510" y="204" class="sub" font-size="11" text-anchor="middle">12 items</text>
+<use href="#i-kebab" x="544" y="110" width="16" height="16" color="#555"/>
+<use href="#i-folder" x="638" y="114" width="64" height="64" color="#f5c518"/><text x="670" y="188" class="txt" text-anchor="middle">Briefings</text><text x="670" y="204" class="sub" font-size="11" text-anchor="middle">4 items</text>
+<use href="#i-kebab" x="704" y="110" width="16" height="16" color="#555"/>
+<rect x="474" y="236" width="72" height="56" rx="6" fill="#9fb7c9"/><path d="M474 284 L498 262 L516 278 L528 270 L546 284 V292 H474 Z" fill="#6c8aa2"/><text x="510" y="312" class="txt" text-anchor="middle">Hero.jpg</text><text x="510" y="328" class="sub" font-size="11" text-anchor="middle">1.2 MB</text>
+<use href="#i-kebab" x="544" y="234" width="16" height="16" color="#555"/>
+<use href="#i-file" x="652" y="236" width="36" height="36" color="#366899"/><text x="670" y="312" class="txt" text-anchor="middle">Plan.pdf</text><text x="670" y="328" class="sub" font-size="11" text-anchor="middle">84 KB</text>
+<use href="#i-kebab" x="704" y="234" width="16" height="16" color="#555"/>
+<text x="20" y="392" class="note">Tiles fill the width (at least 136 px each). On touch, every tile shows a ⋮ button for its menu.</text>
+<text x="20" y="410" class="note">The path bar turns into a back arrow with the current folder's name.</text>
+<text x="20" y="428" class="note">A long press selects the first item; then taps add to the selection.</text>
+</svg>

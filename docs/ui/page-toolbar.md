@@ -47,7 +47,7 @@ The same order applies to the header of every content card (e.g. the Users table
 columns · + · ⋮). It is a general rule, not one specific to the toolbar.
 
 Content navigation does **not** go into the page toolbar. This covers ‹ › period navigation, the
-path bar and the [view switch](#open-questions). They belong to the content card below: navigation
+path bar and the view switch. They belong to the content card below: navigation
 on the left, the view switch at the far right.
 
 ## Behaviour
