@@ -14,6 +14,7 @@ use humhub\components\rateLimit\RateLimiter;
 use humhub\components\rateLimit\StorageInterface;
 use Yii;
 use yii\caching\ArrayCache;
+use yii\helpers\ArrayHelper;
 
 /**
  * @since 1.20
@@ -32,7 +33,7 @@ class RateLimiterTest extends Unit
 
     public function testBurstWindowRefusesAfterTheLimit()
     {
-        $limiter = $this->limiter(['p' => ['burst' => [2, 60]]]);
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 2, 'span' => 60]]]);
 
         $this->assertTrue($limiter->hit('p', 'u1')->allowed);
         $this->assertTrue($limiter->hit('p', 'u1')->allowed);
@@ -48,7 +49,7 @@ class RateLimiterTest extends Unit
 
     public function testLongWindowRefusesWhileBurstStillAllows()
     {
-        $limiter = $this->limiter(['p' => ['burst' => [100, 60], 'long' => [2, 3600]]]);
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 100, 'span' => 60], 'long' => ['limit' => 2, 'span' => 3600]]]);
 
         $limiter->hit('p', 'u1');
         $limiter->hit('p', 'u1');
@@ -61,7 +62,7 @@ class RateLimiterTest extends Unit
 
     public function testDecidingWindowIsTheOneWithTheFewestRemaining()
     {
-        $limiter = $this->limiter(['p' => ['burst' => [10, 60], 'long' => [5, 3600]]]);
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 10, 'span' => 60], 'long' => ['limit' => 5, 'span' => 3600]]]);
 
         $result = $limiter->hit('p', 'u1');
 
@@ -74,7 +75,7 @@ class RateLimiterTest extends Unit
 
     public function testTieGoesToTheShorterWindow()
     {
-        $limiter = $this->limiter(['p' => ['long' => [5, 3600], 'burst' => [5, 60]]]);
+        $limiter = $this->limiter(['p' => ['long' => ['limit' => 5, 'span' => 3600], 'burst' => ['limit' => 5, 'span' => 60]]]);
 
         $this->assertSame('burst', $limiter->hit('p', 'u1')->window);
     }
@@ -82,7 +83,7 @@ class RateLimiterTest extends Unit
     public function testUnknownDisabledPolicyAndDisabledLimiterAreUnlimitedAndNotCounted()
     {
         $storage = new MemoryStorage();
-        $limiter = $this->limiter(['off' => false, 'on' => ['w' => [1, 60]]], $storage);
+        $limiter = $this->limiter(['off' => false, 'on' => ['w' => ['limit' => 1, 'span' => 60]]], $storage);
 
         $this->assertTrue($limiter->hit('unknown', 'u1')->allowed);
         $this->assertTrue($limiter->hit('off', 'u1')->allowed);
@@ -101,7 +102,7 @@ class RateLimiterTest extends Unit
     {
         $storage = new MemoryStorage();
         $storage->fail = true;
-        $limiter = $this->limiter(['p' => ['burst' => [1, 60]]], $storage);
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 1, 'span' => 60]]], $storage);
 
         $result = $limiter->hit('p', 'u1');
 
@@ -111,7 +112,7 @@ class RateLimiterTest extends Unit
 
     public function testHeaders()
     {
-        $limiter = $this->limiter(['p' => ['burst' => [2, 60], 'long' => [50, 3600]]]);
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 2, 'span' => 60], 'long' => ['limit' => 50, 'span' => 3600]]]);
 
         $headers = $limiter->hit('p', 'u1')->toHeaders();
         $this->assertSame('"burst";q=2;w=60, "long";q=50;w=3600', $headers['RateLimit-Policy']);
@@ -126,7 +127,7 @@ class RateLimiterTest extends Unit
 
     public function testNewWindowStartResetsTheCount()
     {
-        $limiter = $this->limiter(['p' => ['burst' => [1, 60]]], null, 1000);
+        $limiter = $this->limiter(['p' => ['burst' => ['limit' => 1, 'span' => 60]]], null, 1000);
 
         $this->assertTrue($limiter->hit('p', 'u1')->allowed);
         $this->assertFalse($limiter->hit('p', 'u1')->allowed);
@@ -135,12 +136,35 @@ class RateLimiterTest extends Unit
         $this->assertTrue($limiter->hit('p', 'u1')->allowed);
     }
 
-    public function testAnOverridingWindowReplacesTheDefaultOne()
+    public function testPolicyOverridesMergeByWindowNameAndKey()
     {
-        // ArrayHelper::merge appends indexed arrays: [300, 60] + [30, 60]
-        $limiter = $this->limiter(['p' => ['burst' => [300, 60, 30, 60]]]);
+        $defaults = ['p' => ['burst' => ['limit' => 300, 'span' => 60], 'long' => ['limit' => 5000, 'span' => 3600]], 'q' => ['w' => ['limit' => 1, 'span' => 60]]];
 
-        $this->assertSame(['burst' => [30, 60]], $limiter->getPolicy('p'));
+        $limitOnly = $this->limiter(ArrayHelper::merge($defaults, ['p' => ['burst' => ['limit' => 30]]]));
+        $this->assertSame(
+            ['burst' => ['limit' => 30, 'span' => 60], 'long' => ['limit' => 5000, 'span' => 3600]],
+            $limitOnly->getPolicy('p'),
+        );
+
+        $full = $this->limiter(ArrayHelper::merge($defaults, ['p' => ['burst' => ['limit' => 10, 'span' => 30]]]));
+        $this->assertSame(['limit' => 10, 'span' => 30], $full->getPolicy('p')['burst']);
+
+        $off = $this->limiter(ArrayHelper::merge($defaults, ['p' => false]));
+        $this->assertNull($off->getPolicy('p'));
+        $this->assertNotNull($off->getPolicy('q'));
+    }
+
+    public function testInvalidWindowsAreSkipped()
+    {
+        $limiter = $this->limiter(['p' => [
+            'ok' => ['limit' => 5, 'span' => 60],
+            'zero' => ['limit' => 0, 'span' => 60],
+            'missing' => ['limit' => 5],
+            'string' => ['limit' => '5', 'span' => 60],
+        ], 'bad' => ['x' => ['limit' => 1]]]);
+
+        $this->assertSame(['ok' => ['limit' => 5, 'span' => 60]], $limiter->getPolicy('p'));
+        $this->assertNull($limiter->getPolicy('bad'));
     }
 
     public function testCacheStorageCounts()

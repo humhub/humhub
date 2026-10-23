@@ -17,8 +17,8 @@ every window of its policy and is refused as soon as one of them is exhausted. W
 and a long window, a policy allows bursts but caps sustained use:
 
 ```php
-'burst' => [300, 60],     // 300 requests per minute
-'long'  => [5000, 3600],  // 5000 requests per hour
+'burst' => ['limit' => 300, 'span' => 60],    // 300 requests per minute
+'long'  => ['limit' => 5000, 'span' => 3600], // 5000 requests per hour
 ```
 
 The windows are fixed: the counter of a window resets when the window starts again
@@ -80,21 +80,36 @@ The component `rateLimiter` (`humhub\components\rateLimit\RateLimiter`) is confi
 `config/common.php`, or per environment variable
 (`HUMHUB_CONFIG__COMPONENTS__RATE_LIMITER__…`).
 
-- A policy given there replaces the default policy of the same name.
-- A new name adds a policy, e.g. a specific scope.
-- `false` disables a policy.
+- The configuration is merged into the defaults: policies merge by name, windows by name,
+  and window values by key. A window may thus change only its `limit`
+  (`'burst' => ['limit' => 30]`); a window with both values replaces it.
+- A new policy name adds a policy, e.g. a specific scope.
+- `false` disables a policy. A default window cannot be removed on its own, only by
+  disabling the whole policy (and, if needed, defining a new one under another name).
 - `enabled` = `false` disables rate limiting entirely.
 
 ```php
 'components' => [
     'rateLimiter' => [
         'policies' => [
-            'token.content:write' => ['burst' => [30, 60], 'long' => [500, 3600]],
+            'token.content:write' => [
+                'burst' => ['limit' => 30, 'span' => 60],
+                'long' => ['limit' => 500, 'span' => 3600],
+            ],
             'session.*:read' => false,
         ],
     ],
 ],
 ```
+
+As environment variable, the policies are one JSON value (policy names cannot be part of
+the variable name):
+
+```
+HUMHUB_CONFIG__COMPONENTS__RATE_LIMITER__POLICIES='{"token.content:write":{"burst":{"limit":30,"span":60}},"session.*:read":false}'
+```
+
+A window needs a positive integer `limit` and `span`; an invalid window is ignored and logged.
 
 There is no admin UI.
 

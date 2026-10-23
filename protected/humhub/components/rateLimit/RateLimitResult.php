@@ -16,7 +16,7 @@ namespace humhub\components\rateLimit;
 final class RateLimitResult
 {
     /**
-     * @param array<string, array{int, int}> $windows All windows of the policy: name => [limit, seconds]
+     * @param array<string, array{limit: int, span: int}> $windows All windows of the policy
      */
     public function __construct(
         public readonly bool $allowed,
@@ -45,7 +45,7 @@ final class RateLimitResult
         }
 
         $parts = [];
-        foreach ($this->windows as $name => [$limit, $span]) {
+        foreach ($this->windows as $name => ['limit' => $limit, 'span' => $span]) {
             $parts[] = sprintf('"%s";q=%d;w=%d', $name, $limit, $span);
         }
 

@@ -16,11 +16,11 @@ use yii\redis\Cache as RedisCache;
 /**
  * Counts hits of named policies per subject in fixed time windows.
  *
- * A policy is a list of windows (`name => [limit, seconds]`); a hit counts in every window
- * and is refused as soon as one of them is exhausted. A policy set to `false` is disabled.
+ * A policy is a list of windows (`name => ['limit' => 300, 'span' => 60]`); a hit counts in every
+ * window and is refused as soon as one of them is exhausted. A policy set to `false` is disabled.
  *
- * Config merging appends indexed arrays: a window given again in the user config arrives as
- * `[defaultLimit, defaultSpan, limit, span]`, so [[getPolicy()]] uses the last two values.
+ * Config merging works by name: windows merge by name and their values by key, so an override
+ * may change only the `limit`. A default window can only be removed by disabling the policy.
  *
  * See `docs/develop/concept-rate-limiting.md`.
  *
@@ -31,7 +31,7 @@ class RateLimiter extends Component
     public bool $enabled = true;
 
     /**
-     * @var array<string, array<string, array{int, int}>|false> Policy name => windows, or false
+     * @var array<string, array<string, array{limit: int, span: int}>|false> Policy name => windows, or false
      */
     public array $policies = [];
 
@@ -49,10 +49,13 @@ class RateLimiter extends Component
 
         $windows = [];
         foreach ($policy as $window => $values) {
-            if (is_array($values) && count($values) >= 2) {
-                $values = array_slice(array_values($values), -2);
-                $windows[$window] = [(int)$values[0], (int)$values[1]];
+            $limit = is_array($values) ? ($values['limit'] ?? null) : null;
+            $span = is_array($values) ? ($values['span'] ?? null) : null;
+            if (!is_int($limit) || !is_int($span) || $limit < 1 || $span < 1) {
+                Yii::error("Invalid rate limit window '$window' in policy '$name' ignored.", 'rateLimit');
+                continue;
             }
+            $windows[$window] = ['limit' => $limit, 'span' => $span];
         }
 
         return $windows ?: null;
@@ -99,7 +102,7 @@ class RateLimiter extends Component
 
         try {
             $storage = $this->getStorage();
-            foreach ($windows as $name => [$limit, $span]) {
+            foreach ($windows as $name => ['limit' => $limit, 'span' => $span]) {
                 $start = intdiv($now, $span) * $span;
                 $count = $storage->increment("rateLimit:$policy:$name:$subject:$start", $span);
 
