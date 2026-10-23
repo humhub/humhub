@@ -76,7 +76,8 @@ class Session extends DbSession
         try {
             $userId = Yii::$app->user->getIsGuest() ? null : (int)Yii::$app->user->id;
 
-            $row = (new Query())->select(['id', 'user_id'])
+            $hasLoginColumns = $this->hasLoginColumns();
+            $row = (new Query())->select($hasLoginColumns ? ['id', 'user_id', 'user_agent'] : ['id', 'user_id'])
                 ->from($this->sessionTable)
                 ->where(['id' => $id])
                 ->createCommand($this->db)
@@ -89,8 +90,12 @@ class Session extends DbSession
             ];
 
             // DbSession::regenerateID() copies the guest row on login, so a login is the change of the user
-            if ($userId !== null && ($row === false || (int)$row['user_id'] !== $userId) && $this->hasLoginColumns()) {
+            if ($userId !== null && ($row === false || (int)$row['user_id'] !== $userId) && $hasLoginColumns) {
                 $fields['logged_in_at'] = time();
+                $fields['user_agent'] = $this->getUserAgent();
+            } elseif ($userId !== null && $hasLoginColumns && $row['user_agent'] === null) {
+                // Sessions started before the columns existed: a session belongs to one browser, so
+                // its current user agent is the right one; the login time stays unknown
                 $fields['user_agent'] = $this->getUserAgent();
             }
 

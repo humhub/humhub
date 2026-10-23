@@ -67,6 +67,18 @@ class SessionTest extends HumHubDbTestCase
         $this->assertSame(self::UA, $row['user_agent']);
     }
 
+    public function testUserAgentIsFilledInForSessionsFromBeforeTheColumns(): void
+    {
+        $user = $this->becomeUser('User1');
+        Yii::$app->db->createCommand()->insert('user_http_session', ['id' => 'sess-old', 'user_id' => $user->id, 'expire' => time() + 60, 'data' => ''])->execute();
+
+        (new Session())->writeSession('sess-old', 'data');
+
+        $row = $this->getRow('sess-old');
+        $this->assertSame(self::UA, $row['user_agent']);
+        $this->assertNull($row['logged_in_at']);
+    }
+
     public function testUserAgentIsTruncated(): void
     {
         Yii::$app->request->headers->set('User-Agent', str_repeat('x', 400));
