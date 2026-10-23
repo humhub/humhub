@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="680" viewBox="0 0 800 680" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">File upload: dropzone, sources, file rows and image settings</title>
+  <defs>
+<symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4 H13.5 M6 4 V2.5 H10 V4 M4 4 L4.8 14 H11.2 L12 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-gear2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+<symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8 A5 5 0 1 0 5 4 M3 2 V5.5 H6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-checkc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 L7.2 10.4 L11 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-spin" viewBox="0 0 16 16"><path d="M8 2 A6 6 0 1 1 2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+
+<symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 1.8 L15 14 H1 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2 V9.6 M8 11.6 V11.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-eye" viewBox="0 0 16 16"><path d="M1 8 Q8 1.5 15 8 Q8 14.5 1 8 Z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-upload" viewBox="0 0 16 16"><path d="M8 11 V2 M4.5 5.5 L8 2 L11.5 5.5 M2 11 V14 H14 V11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-pluscircle" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 V11 M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-lock" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 7 V5 A2.5 2.5 0 0 1 10.5 5 V7" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-pdf" viewBox="0 0 24 30"><path d="M2 0 H16 L24 8 V28 Q24 30 22 30 H2 Q0 30 0 28 V2 Q0 0 2 0 Z" fill="currentColor"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="680" fill="#ededed"/>
+<text x="20" y="28" class="sec">DROPZONE</text>
+<rect x="20" y="40" width="370" height="130" rx="8" fill="#f5f5f5" stroke="#c9ccd1" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="205" y="76" class="name" text-anchor="middle" style="fill:#333">Drag and drop files</text><use href="#i-upload" x="193" y="88" width="24" height="24" color="#333"/>
+<text x="205" y="136" class="sub" text-anchor="middle">JPG, PNG, PDF · max. 64 MB</text>
+<text x="20" y="188" class="sub" font-size="11.5">idle</text>
+<rect x="410" y="40" width="370" height="130" rx="8" fill="#037283" fill-opacity=".07" stroke="#037283" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="595" y="76" class="name" text-anchor="middle" style="fill:#037283">Drop to upload</text><use href="#i-upload" x="583" y="88" width="24" height="24" color="#037283"/>
+<text x="595" y="136" class="sub" text-anchor="middle">JPG, PNG, PDF · max. 64 MB</text>
+<text x="410" y="188" class="sub" font-size="11.5">files dragged over</text>
+<rect x="20" y="200" width="181" height="38" rx="6" fill="#d5d5d5"/><text x="110.5" y="224.0" font-size="14" font-weight="500" style="fill:#222" text-anchor="middle">From Files</text><rect x="209" y="200" width="181" height="38" rx="6" fill="#037283"/><text x="299.5" y="224.0" font-size="14" font-weight="500" style="fill:#fff" text-anchor="middle">From Device</text>
+<text x="410" y="222" class="sub" font-size="11.5">two sources: existing files or the device; one source = "Browse"</text>
+<text x="20" y="276" class="sec">FILE ROWS</text>
+<rect x="20" y="288" width="760" height="190" rx="8" class="card"/>
+<rect x="36" y="304" width="728" height="38" rx="6" fill="#fff" stroke="#e5e5e5"/>
+<use href="#i-pdf" x="48" y="313" width="16" height="16" color="#c0392b"/><text x="72" y="328" class="txt">quarterly-report-final-version</text><text x="277.0" y="328" class="sub">.pdf (2 MB)</text>
+<use href="#i-trash" x="738" y="315" width="16" height="16" color="#555"/>
+<rect x="36" y="350" width="728" height="38" rx="6" fill="#fff" stroke="#e5e5e5"/>
+<rect x="36" y="350" width="728" height="38" rx="6" fill="none" stroke="#037283" stroke-width="2" stroke-dasharray="842.6 1532"/>
+<use href="#i-pdf" x="48" y="359" width="16" height="16" color="#c0392b"/><text x="72" y="374" class="txt">campaign-hero-image</text><text x="203.3" y="374" class="sub">.jpg (4.1 MB)</text>
+<use href="#i-trash" x="738" y="361" width="16" height="16" color="#555"/>
+<rect x="36" y="396" width="728" height="38" rx="6" fill="#fff" stroke="#b42225"/>
+<use href="#i-pdf" x="48" y="405" width="16" height="16" color="#c0392b"/><text x="72" y="420" class="txt">budget-2027</text><text x="149.7" y="420" class="sub">.xlsx (180 KB)</text>
+<text x="520" y="420" class="txt" font-size="12" style="fill:#b42225">File type not allowed</text>
+<use href="#i-trash" x="738" y="407" width="16" height="16" color="#555"/>
+<rect x="36" y="442" width="728" height="30" rx="6" fill="#f5f5f5"/><text x="48" y="462" class="sub">3 of 12 files</text><text x="700" y="462" class="lnk" style="fill:#333">Show all</text>
+<text x="20" y="498" class="sub" font-size="11.5">Uploading: progress runs round the row · done: the line fades · error: red edge and the reason · long lists shorten</text>
+<text x="20" y="540" class="sec">IMAGE SETTING</text>
+<rect x="20" y="552" width="370" height="110" rx="8" class="card"/>
+<rect x="36" y="568" width="200" height="78" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><circle cx="96" cy="607" r="20" fill="#5aa832"/><text x="126" y="612" class="name" style="font-weight:700">Logo</text>
+<rect x="250" y="568" width="124" height="34" rx="6" fill="#d5d5d5"/><use href="#i-upload" x="277.8" y="577.0" width="16" height="16" color="#222"/><text x="322.0" y="590.0" font-size="14" font-weight="500" style="fill:#222" text-anchor="middle">Upload</text><rect x="250" y="610" width="124" height="34" rx="6" fill="none"/><use href="#i-trash" x="277.8" y="619.0" width="16" height="16" color="#555"/><text x="322.0" y="632.0" font-size="14" font-weight="500" style="fill:#555" text-anchor="middle">Delete</text>
+<text x="410" y="590" class="sub" font-size="11.5">Logo, icon, avatar, cover: preview + actions.</text><text x="410" y="608" class="sub" font-size="11.5">Avatar and cover open the crop dialog.</text>
+</svg>

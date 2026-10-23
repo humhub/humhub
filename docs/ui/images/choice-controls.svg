@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="566" viewBox="0 0 800 566" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Switch, checkbox, radio cards and matrix</title>
+  <defs>
+<symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4 H13.5 M6 4 V2.5 H10 V4 M4 4 L4.8 14 H11.2 L12 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-gear2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+<symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8 A5 5 0 1 0 5 4 M3 2 V5.5 H6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-checkc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 L7.2 10.4 L11 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-spin" viewBox="0 0 16 16"><path d="M8 2 A6 6 0 1 1 2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+
+<symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 1.8 L15 14 H1 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2 V9.6 M8 11.6 V11.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-eye" viewBox="0 0 16 16"><path d="M1 8 Q8 1.5 15 8 Q8 14.5 1 8 Z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-upload" viewBox="0 0 16 16"><path d="M8 11 V2 M4.5 5.5 L8 2 L11.5 5.5 M2 11 V14 H14 V11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-pluscircle" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 V11 M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-lock" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 7 V5 A2.5 2.5 0 0 1 10.5 5 V7" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-pdf" viewBox="0 0 24 30"><path d="M2 0 H16 L24 8 V28 Q24 30 22 30 H2 Q0 30 0 28 V2 Q0 0 2 0 Z" fill="currentColor"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="566" fill="#ededed"/>
+<text x="20" y="28" class="sec">SWITCH — A SETTING THAT IS ON OR OFF, APPLIES WHEN SAVED</text>
+<rect x="20" y="40" width="760" height="92" rx="8" class="card"/>
+<rect x="40" y="58" width="40" height="22" rx="11" fill="#c9ccd1" opacity="1"/><circle cx="51" cy="69" r="8" fill="#fff"/><text x="40" y="100" class="sub" font-size="11.5">off</text>
+<rect x="140" y="58" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="169" cy="69" r="8" fill="#fff"/><text x="140" y="100" class="sub" font-size="11.5">on</text>
+<rect x="240" y="58" width="40" height="22" rx="11" fill="#e0e0e0" opacity="0.5"/><circle cx="251" cy="69" r="8" fill="#fff"/><text x="240" y="100" class="sub" font-size="11.5">disabled</text>
+<rect x="340" y="58" width="40" height="22" rx="11" fill="#e0e0e0" opacity="0.5"/><circle cx="369" cy="69" r="8" fill="#fff"/><text x="340" y="100" class="sub" font-size="11.5">disabled, on</text>
+<rect x="440" y="52" width="324" height="64" rx="6" fill="#fff" stroke="#e7e7e7"/><text x="452" y="72" class="name">Guest access</text><text x="452" y="90" class="sub">Visitors can see public content.</text><text x="452" y="106" class="sub" font-size="11" style="fill:#757575">Default: off</text><rect x="712" y="62" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="741" cy="73" r="8" fill="#fff"/>
+<text x="440" y="128" class="sub" font-size="11">switch row: the usual form in settings</text>
+<text x="20" y="170" class="sec">CHECKBOX — CHOOSE ITEMS, CONFIRM SOMETHING</text>
+<rect x="20" y="182" width="370" height="150" rx="8" class="card"/>
+<rect x="36" y="202" width="18" height="18" rx="4" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/><text x="64" y="216" class="txt">Send me a copy</text>
+<rect x="36" y="238" width="18" height="18" rx="4" fill="#037283"/><use href="#i-check" x="37" y="239" width="16" height="16" color="#fff"/><text x="64" y="252" class="txt">I accept the terms of use</text>
+<rect x="36" y="274" width="18" height="18" rx="4" fill="#037283"/><use href="#i-minus" x="37" y="275" width="16" height="16" color="#fff"/><text x="64" y="288" class="txt">Select all (some selected)</text>
+<text x="36" y="316" class="sub" font-size="11.5">the label text is part of the target</text>
+<text x="410" y="170" class="sec">RADIO CARDS — ONE OF A FEW OPTIONS</text>
+<rect x="410" y="182" width="370" height="150" rx="8" class="card"/>
+<rect x="422" y="194" width="346" height="38" rx="6" fill="#eef5f6" stroke="#037283"/>
+<circle cx="440" cy="213" r="7" fill="#fff" stroke="#037283" stroke-width="1.5"/><circle cx="440" cy="213" r="3.5" fill="#037283"/>
+<text x="456" y="211" class="name" font-size="13" style="font-weight:600">Recommended</text><text x="456" y="225" class="sub" font-size="11">The network's defaults</text>
+<rect x="422" y="238" width="346" height="38" rx="6" fill="#fff" stroke="#e5e5e5"/>
+<circle cx="440" cy="257" r="7" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/>
+<text x="456" y="255" class="name" font-size="13" style="font-weight:600">Important only</text><text x="456" y="269" class="sub" font-size="11">Only what needs you</text>
+<rect x="422" y="282" width="346" height="38" rx="6" fill="#fff" stroke="#e5e5e5"/>
+<circle cx="440" cy="301" r="7" fill="#fff" stroke="#9a9ea6" stroke-width="1.5"/>
+<text x="456" y="299" class="name" font-size="13" style="font-weight:600">Custom</text><text x="456" y="313" class="sub" font-size="11">Your own choice</text>
+<text x="20" y="370" class="sec">MATRIX — SEVERAL SWITCHES PER ROW</text>
+<rect x="20" y="382" width="760" height="150" rx="8" class="card"/>
+<text x="36" y="406" class="sub">Kind</text>
+<text x="560" y="406" class="sub" text-anchor="middle">Web</text>
+<text x="632" y="406" class="sub" text-anchor="middle">E-mail</text>
+<text x="704" y="406" class="sub" text-anchor="middle">Mobile</text>
+<rect x="36" y="416" width="728" height="1" fill="#eee"/><text x="36" y="438" class="txt">Comments</text>
+<rect x="540" y="424" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="569" cy="435" r="8" fill="#fff"/>
+<rect x="612" y="424" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="641" cy="435" r="8" fill="#fff"/>
+<rect x="684" y="424" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="713" cy="435" r="8" fill="#fff"/>
+<rect x="36" y="452" width="728" height="1" fill="#eee"/><text x="36" y="474" class="txt">Likes</text>
+<rect x="540" y="460" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="569" cy="471" r="8" fill="#fff"/>
+<rect x="612" y="460" width="40" height="22" rx="11" fill="#c9ccd1" opacity="1"/><circle cx="623" cy="471" r="8" fill="#fff"/>
+<rect x="684" y="460" width="40" height="22" rx="11" fill="#c9ccd1" opacity="1"/><circle cx="695" cy="471" r="8" fill="#fff"/>
+<rect x="36" y="488" width="728" height="1" fill="#eee"/><text x="36" y="510" class="txt">Mentions</text>
+<rect x="540" y="496" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="569" cy="507" r="8" fill="#fff"/>
+<rect x="612" y="496" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="641" cy="507" r="8" fill="#fff"/>
+<rect x="684" y="496" width="40" height="22" rx="11" fill="#037283" opacity="1"/><circle cx="713" cy="507" r="8" fill="#fff"/>
+<text x="20" y="552" class="sub" font-size="11.5">The matrix scrolls inside its box on narrow screens.</text>
+</svg>

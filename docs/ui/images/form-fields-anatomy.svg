@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="664" viewBox="0 0 800 664" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Form fields: anatomy, states and field types</title>
+  <defs>
+<symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4 H13.5 M6 4 V2.5 H10 V4 M4 4 L4.8 14 H11.2 L12 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-gear2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+<symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8 A5 5 0 1 0 5 4 M3 2 V5.5 H6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-checkc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 L7.2 10.4 L11 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-spin" viewBox="0 0 16 16"><path d="M8 2 A6 6 0 1 1 2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+
+<symbol id="i-warn" viewBox="0 0 16 16"><path d="M8 1.8 L15 14 H1 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6.2 V9.6 M8 11.6 V11.7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-eye" viewBox="0 0 16 16"><path d="M1 8 Q8 1.5 15 8 Q8 14.5 1 8 Z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-upload" viewBox="0 0 16 16"><path d="M8 11 V2 M4.5 5.5 L8 2 L11.5 5.5 M2 11 V14 H14 V11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-pluscircle" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M8 5 V11 M5 8 H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-lock" viewBox="0 0 16 16"><rect x="3" y="7" width="10" height="7.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5.5 7 V5 A2.5 2.5 0 0 1 10.5 5 V7" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-pdf" viewBox="0 0 24 30"><path d="M2 0 H16 L24 8 V28 Q24 30 22 30 H2 Q0 30 0 28 V2 Q0 0 2 0 Z" fill="currentColor"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="664" fill="#ededed"/>
+<text x="20" y="28" class="sec">ANATOMY</text>
+<rect x="20" y="40" width="460" height="186" rx="8" class="card"/>
+<text x="40" y="72" class="name" style="font-weight:600">Space name</text><text x="125.0" y="72" class="name" style="fill:#cc2629">*</text>
+<rect x="40" y="82" width="420" height="38" rx="6" fill="#fff" stroke="#d5d5d5"/><text x="50" y="106.0" class="val" style="fill:#000">Marketing</text>
+<text x="40" y="140" class="sub">Shown in the sidebar, in e-mails and in the browser tab.</text>
+<text x="40" y="176" class="name" style="font-weight:600">URL</text>
+<rect x="40" y="186" width="420" height="38" rx="6" fill="#fff" stroke="#cc2629"/><text x="50" y="210.0" class="ph">marketing</text><use href="#i-warn" x="434" y="197.0" width="16" height="16" color="#cc2629"/>
+<circle cx="30" cy="66" r="9" fill="#037283"/><text x="30" y="70" class="num" text-anchor="middle">1</text>
+<circle cx="30" cy="100" r="9" fill="#037283"/><text x="30" y="104" class="num" text-anchor="middle">2</text>
+<circle cx="30" cy="136" r="9" fill="#037283"/><text x="30" y="140" class="num" text-anchor="middle">3</text>
+<circle cx="470" cy="204" r="9" fill="#037283"/><text x="470" y="208" class="num" text-anchor="middle">4</text>
+<text x="40" y="244" class="txt" style="fill:#b42225">This URL is already taken.</text><circle cx="30" cy="240" r="9" fill="#037283"/><text x="30" y="244" class="num" text-anchor="middle">5</text>
+<text x="500" y="60" class="legend">1  label, always visible · * marks required</text>
+<text x="500" y="80" class="legend">2  field: grey when empty, white when filled</text>
+<text x="500" y="100" class="legend">3  hint: what the field is for (optional)</text>
+<text x="500" y="120" class="legend">4  invalid: red edge and warning icon</text>
+<text x="500" y="140" class="legend">5  error message below the field</text>
+<text x="20" y="290" class="sec">STATES</text>
+<rect x="20" y="302" width="760" height="96" rx="8" class="card"/>
+<rect x="36" y="322" width="112" height="38" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="46" y="346.0" class="ph">Title</text>
+<text x="36" y="382" class="sub" font-size="11.5">empty</text>
+<rect x="160" y="322" width="112" height="38" rx="6" fill="#f5f5f5" stroke="#037283"/><text x="170" y="346.0" class="ph">Title</text>
+<text x="160" y="382" class="sub" font-size="11.5">hover</text>
+<rect x="281" y="319" width="118" height="44" rx="8" fill="#037283" opacity=".2"/><rect x="284" y="322" width="112" height="38" rx="6" fill="#fff" stroke="#037283"/><text x="294" y="346.0" class="val" style="fill:#000">Q4 plan</text>
+<text x="284" y="382" class="sub" font-size="11.5">focus</text>
+<rect x="408" y="322" width="112" height="38" rx="6" fill="#fff" stroke="#d5d5d5"/><text x="418" y="346.0" class="val" style="fill:#000">Q4 plan</text>
+<text x="408" y="382" class="sub" font-size="11.5">filled</text>
+<rect x="532" y="322" width="112" height="38" rx="6" fill="#fff" stroke="#cc2629"/><text x="542" y="346.0" class="ph">Title</text><use href="#i-warn" x="618" y="333.0" width="16" height="16" color="#cc2629"/>
+<text x="532" y="382" class="sub" font-size="11.5">invalid</text>
+<rect x="656" y="322" width="112" height="38" rx="6" fill="#ededed" stroke="#e0e0e0"/><text x="666" y="346.0" class="val" style="fill:#999">Locked</text>
+<text x="656" y="382" class="sub" font-size="11.5">disabled</text>
+<text x="20" y="436" class="sec">FIELD TYPES</text>
+<rect x="20" y="448" width="760" height="196" rx="8" class="card"/>
+<text x="36" y="476" class="name" style="font-weight:600">E-mail</text><rect x="36" y="486" width="230" height="38" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="46" y="510.0" class="ph">name@example.com</text>
+<text x="282" y="476" class="name" style="font-weight:600">Password</text><rect x="282" y="486" width="230" height="38" rx="6" fill="#fff" stroke="#d5d5d5"/><text x="292" y="510.0" class="val" style="fill:#000">••••••••••</text><use href="#i-eye" x="486" y="497.0" width="16" height="16" color="#555"/>
+<text x="528" y="476" class="name" style="font-weight:600">Duration (min)</text><rect x="528" y="486" width="236" height="38" rx="6" fill="#fff" stroke="#d5d5d5"/><text x="538" y="510.0" class="val" style="fill:#000">45</text>
+<text x="36" y="556" class="name" style="font-weight:600">Description</text>
+<rect x="36" y="566" width="476" height="64" rx="6" fill="#fff" stroke="#d5d5d5"/><text x="46" y="588" class="val">Kickoff for the Q4 campaign.</text>
+<text x="528" y="556" class="name" style="font-weight:600">Custom CSS</text>
+<rect x="528" y="566" width="236" height="64" rx="6" fill="#fff" stroke="#d5d5d5"/><text x="538" y="588" font-family="monospace" font-size="12.5" fill="#000">.navbar {</text><text x="538" y="606" font-family="monospace" font-size="12.5" fill="#000">  color: #037283;</text>
+<text x="282" y="544" class="sub" font-size="11">action inside the field (show)</text><text x="528" y="642" class="sub" font-size="11">code: monospace</text>
+</svg>

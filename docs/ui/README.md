@@ -45,6 +45,18 @@ Small building blocks used everywhere.
 | [Dialog](dialog.md) | Confirm, form, tabbed and multi-step dialogs | in review | Both |
 | [Context Menu](context-menu.md) | The ⋮ menu for one item or area | in review | Both |
 
+### Forms
+
+Entering and changing data.
+
+| Component | What it is | Status | Technology |
+|---|---|---|---|
+| [Form Fields](form-fields.md) | Field anatomy, states, types, layout and validation | in review | Both |
+| [Select & Pickers](select-pickers.md) | Choose from a list, or search people, spaces, topics | in review | Both |
+| [Date Picker](date-picker.md) | Dates, ranges and times | in review | Both |
+| [Switch, Checkbox & Radio](choice-controls.md) | On/off settings, choices, radio cards, matrix | in review | Both |
+| [File Upload](file-upload.md) | Dropzone, file rows with progress, image settings | in review | Both |
+
 ### Collections
 
 Showing, filtering and acting on many items.
@@ -80,6 +92,10 @@ How components combine into a whole page.
 | …ask for a decision or a short task | [Dialog](dialog.md) |
 | …offer more actions for one item | [Context Menu](context-menu.md) |
 | …structure a long settings page | [Settings Page](settings-page.md) with [Accordions](accordion.md) |
+| …let people pick one of a short list | Select ([Select & Pickers](select-pickers.md)) |
+| …let people find and pick records (people, spaces, topics) | Picker ([Select & Pickers](select-pickers.md)) |
+| …offer a setting that is on or off | Switch ([Switch, Checkbox & Radio](choice-controls.md)) |
+| …let people choose items or confirm something | Checkbox ([Switch, Checkbox & Radio](choice-controls.md)) |
 | …mark a state or a fact | Chip ([Badges & Status](badges.md)) |
 | …show that something waits | Count badge on the menu entry, dot on the page ([Badges & Status](badges.md)) |
 
@@ -89,8 +105,6 @@ These appear in the design but have no page yet. They follow when their implemen
 
 - **Layout:** top bar (search, message and notification drawers, user menu), sidebar (main nav,
   space categories), space and profile header
-- **Forms:** form fields and validation, select and pickers, date picker, switch and checkbox,
-  file upload
 - **Feedback:** toast, tooltip, hover card, skeleton loading, empty states
 - **Stream:** wall entry, composer, comments, topic chips, embedded media
 - **Module views:** tasks board, calendar, messages, notifications, marketplace dialogs
