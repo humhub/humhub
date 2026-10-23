@@ -10,6 +10,7 @@ namespace humhub\components\api;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\components\rateLimit\ApiRateLimitFilter;
 use humhub\modules\oauth\components\ScopeFilter;
 use humhub\modules\oauth\components\TokenAuth;
 use humhub\modules\oauth\Module as OAuthModule;
@@ -159,6 +160,11 @@ abstract class BaseController extends Controller
                 'class' => ScopeFilter::class,
                 'scopes' => $this->scopes,
                 'allowFull' => $this->allowSessionAuth,
+            ],
+            // After scopeFilter, so a refused request is not counted.
+            'rateLimit' => [
+                'class' => ApiRateLimitFilter::class,
+                'scopes' => $this->scopes,
             ],
         ];
     }

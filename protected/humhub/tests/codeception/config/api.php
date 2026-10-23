@@ -10,6 +10,10 @@ $testConfig = [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
         ],
+        // Counters per test instead of the cache, which this suite never flushes
+        'rateLimiter' => [
+            'storage' => ['class' => \tests\codeception\_support\MemoryRateLimitStorage::class],
+        ],
     ],
 ];
 
