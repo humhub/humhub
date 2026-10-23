@@ -8,6 +8,7 @@
 
 namespace humhub\modules\oauth\models\forms;
 
+use humhub\helpers\Html;
 use humhub\libs\BasePermission;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\Module;
@@ -23,6 +24,7 @@ use yii\base\Model;
 class SettingsForm extends Model
 {
     public $allowApp;
+    public $appIds = '';
     public $allowClients;
     public $allowPersonalAccessTokens;
     public $patScopes = [];
@@ -40,6 +42,7 @@ class SettingsForm extends Model
 
         $module = Module::instance();
         $this->allowApp = $module->allowsApp();
+        $this->appIds = implode("\n", $module->getAdditionalAppIds());
         $this->allowClients = $module->allowsClients();
         $this->allowPersonalAccessTokens = $module->allowsPersonalAccessTokens();
         $this->patScopes = $this->onlyRegistered($module->getPatScopes());
@@ -63,6 +66,7 @@ class SettingsForm extends Model
             ['grantMaxLifetimeDays', 'integer', 'min' => 0],
             [['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'], 'required'],
             ['patScopes', 'each', 'rule' => ['in', 'range' => $scopeIds]],
+            ['appIds', 'validateAppIds'],
         ];
     }
 
@@ -86,6 +90,7 @@ class SettingsForm extends Model
     {
         return [
             'allowApp' => Yii::t('OauthModule.base', 'Allow the HumHub app to sign in'),
+            'appIds' => Yii::t('OauthModule.base', 'Additional app IDs (one per line)'),
             'allowClients' => Yii::t('OauthModule.base', 'Allow clients created by administrators'),
             'allowPersonalAccessTokens' => Yii::t('OauthModule.base', 'Allow personal access tokens'),
             'patScopes' => Yii::t('OauthModule.base', 'Scopes available to personal access tokens'),
@@ -105,6 +110,8 @@ class SettingsForm extends Model
 
         return [
             'allowApp' => $off,
+            // Hints are not encoded
+            'appIds' => Html::encode(Yii::t('OauthModule.base', 'Customer-specific apps that sign in as the HumHub app. Each app signs in with the redirect URI <app ID>:/oauth/callback.')),
             'allowClients' => $off,
             'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Create personal access tokens".'),
             'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do. An empty selection means no access.'),
@@ -113,6 +120,52 @@ class SettingsForm extends Model
             'grantMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited.'),
             'revokeOnPasswordChange' => Yii::t('OauthModule.base', 'A password change deletes all grants of the user except the app session the change was made in.'),
         ];
+    }
+
+    /**
+     * Whether the additional app IDs can be changed here: only by system administrators, and not when set in the configuration.
+     */
+    public function canEditAppIds(): bool
+    {
+        return !Module::instance()->isAppIdsConfigured()
+            && (bool)Yii::$app->user->getIdentity()?->isSystemAdmin();
+    }
+
+    public function validateAppIds(string $attribute): void
+    {
+        if (!is_string($this->appIds)) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'Invalid input.'));
+            return;
+        }
+
+        if (!$this->canEditAppIds()) {
+            if ($this->getAppIdList() !== Module::instance()->getAdditionalAppIds()) {
+                $this->addError($attribute, Module::instance()->isAppIdsConfigured()
+                    ? Yii::t('OauthModule.base', 'This is set in the configuration file.')
+                    : Yii::t('OauthModule.base', 'Only system administrators can change this.'));
+            }
+            return;
+        }
+
+        foreach ($this->getAppIdList() as $appId) {
+            if (!Module::isValidAppId($appId)) {
+                $this->addError($attribute, Yii::t('OauthModule.base', 'Not a valid app ID: {id}', ['id' => $appId]));
+            }
+        }
+    }
+
+    /**
+     * @return string[] the entered app IDs, normalized, without the built-in one
+     */
+    public function getAppIdList(): array
+    {
+        if (!is_string($this->appIds)) {
+            return [];
+        }
+
+        $ids = array_filter(array_map([Module::class, 'normalizeAppId'], preg_split('/[\s,]+/', $this->appIds)));
+
+        return array_values(array_unique(array_diff($ids, [Module::BUILT_IN_APP_ID])));
     }
 
     /**
@@ -135,6 +188,14 @@ class SettingsForm extends Model
         }
 
         $settings = Module::instance()->settings;
+        if ($this->canEditAppIds()) {
+            $appIds = $this->getAppIdList();
+            if ($appIds === []) {
+                $settings->delete('appIds');
+            } else {
+                $settings->set('appIds', json_encode($appIds));
+            }
+        }
         foreach (['allowApp', 'allowClients', 'allowPersonalAccessTokens', 'revokeOnPasswordChange'] as $name) {
             $settings->set($name, (bool)$this->$name);
         }

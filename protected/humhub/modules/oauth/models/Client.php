@@ -9,6 +9,7 @@
 namespace humhub\modules\oauth\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\oauth\Module;
 use Yii;
 
 /**
@@ -72,10 +73,16 @@ class Client extends ActiveRecord
     }
 
     /**
+     * The system client's redirect URIs are derived from the app IDs (`Module::getAppIds()`), not stored.
+     *
      * @return string[]
      */
     public function getRedirectUris(): array
     {
+        if ($this->type === self::TYPE_SYSTEM) {
+            return array_map([Module::class, 'getAppRedirectUri'], Module::instance()->getAppIds());
+        }
+
         return self::decodeList($this->redirect_uris);
     }
 

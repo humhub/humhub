@@ -7,7 +7,9 @@
 Clients:
 
 - the **HumHub app** — a built-in system client (`client_id` `humhub-app`). The app signs in
-  through the system browser and turns its token into a web session for its WebViews;
+  through the system browser and turns its token into a web session for its WebViews.
+  Customer-specific (white-label) builds of the app use the same client with their own app ID
+  ([White-label apps](#white-label-apps));
 - **admin clients** — integrations and agents an administrator registers.
 
 A **personal access token** is a static token a user creates for scripts and agents that do
@@ -102,7 +104,8 @@ or already revoked token answers `200`, as RFC 7009 requires.
 
    An admin client with *skip consent* set skips the consent page entirely; the code is
    issued right away. The system client skips the scope list and shows the confirmation
-   "Sign in to the HumHub app on this device?" instead.
+   "Sign in to the app on this device?" with the installation name (`Yii::$app->name`)
+   instead — neutral, because white-label apps use the same client.
 
    Only `S256` is accepted as `code_challenge_method`.
 4. **Decision.**
@@ -507,6 +510,11 @@ The system client row:
 
 It cannot be edited or deleted. It can only be deactivated through `allowApp`.
 
+Its stored `redirect_uris` are not used: `Client::getRedirectUris()` derives the system
+client's list from `Module::getAppIds()` — `<app ID>:/oauth/callback` for the built-in
+`com.humhub.app` and every additional app ID ([White-label apps](#white-label-apps)). league
+gets that list through `ClientEntity` and matches it exactly as for any client.
+
 **Daily cleanup** (`CronController::EVENT_ON_DAILY_RUN`) deletes:
 
 - expired codes and tokens, and expired web-session codes;
@@ -558,6 +566,7 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 | Setting | Default | |
 |---|---|---|
 | `allowApp` | on | the HumHub app may sign in |
+| `appIds` | empty | additional app IDs of white-label apps ([White-label apps](#white-label-apps)); system administrators only |
 | `allowClients` | off | admin clients may authorize |
 | `allowPersonalAccessTokens` | off | PATs authenticate; creating them requires `CreatePersonalAccessToken` |
 | `patScopes` | all `*:read` core scopes | upper bound for PATs |
@@ -572,6 +581,45 @@ reject grants of a disallowed kind.
 The settings of personal access tokens (`patScopes`, `patMaxLifetimeDays` and the warning about
 a missing group permission) are only shown while `allowPersonalAccessTokens` is checked; the
 form toggles them on the client. Hidden fields are still submitted, so their values are kept.
+
+#### White-label apps
+
+Customer-specific builds of the app with their own app ID (iOS bundle ID / Android package
+name) sign in as the system client `humhub-app` — no client of their own, no free redirect
+URIs. The administrator adds their app ID under "HumHub app" → "Additional app IDs" (one per
+line); the system client then accepts the redirect URI `<app ID>:/oauth/callback`.
+`allowApp` covers them as well.
+
+- `com.humhub.app` is always included and cannot be removed (`Module::getAppIds()`).
+- Only system administrators (`User::isSystemAdmin()`) can change the list; other holders
+  of `ManageSettings` see it read-only, and a submitted value is rejected.
+- **Format.** The app ID becomes a private-use URI scheme, so it must be a valid scheme
+  (RFC 3986 §3.1) in reverse-domain form: at least two dot-separated segments of lower-case
+  letters, digits and hyphens, starting with a letter (`/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/`,
+  max. 255 characters). Input is trimmed and lower-cased; schemes are case-insensitive, and
+  the app registers the lower-case form. Underscores — valid in Android package names — are
+  not valid in a scheme; such an app uses a redirect scheme without them and enters that
+  here.
+- **Override.** Module property `$appIds` (list, or a comma-separated string). When set, it
+  takes precedence over the stored setting, like the [key overrides](#keys); the
+  administration shows it read-only with a note. An empty list allows only the built-in app.
+  Invalid entries are ignored.
+
+  ```php
+  // config/common.php
+  'modules' => [
+      'oauth' => [
+          'appIds' => ['com.acme.app', 'de.example.intranet'],
+      ],
+  ],
+  ```
+
+  As environment variable (`APP_IDS` becomes `appIds`; a JSON list or a comma-separated
+  string):
+
+  ```env
+  HUMHUB_CONFIG__MODULES__OAUTH__APP_IDS='["com.acme.app","de.example.intranet"]'
+  ```
 
 **Clients.** List, create, edit, deactivate, delete, regenerate the secret. Fields:
 
@@ -739,7 +787,9 @@ What the HumHub app implements against this:
 2. **Sign-in.** The app opens `authorization_endpoint` with these parameters in
    `ASWebAuthenticationSession` (iOS) or a Custom Tab (Android):
    - `client_id=humhub-app`;
-   - `redirect_uri=com.humhub.app:/oauth/callback`;
+   - `redirect_uri=com.humhub.app:/oauth/callback`; a white-label app sends
+     `<its app ID>:/oauth/callback` (also `client_id=humhub-app`), which the administrator
+     has to add as an additional app ID ([White-label apps](#white-label-apps));
    - `response_type=code`;
    - `code_challenge` (S256);
    - `state`.

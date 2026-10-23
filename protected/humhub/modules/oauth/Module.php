@@ -10,6 +10,7 @@ namespace humhub\modules\oauth;
 
 use humhub\modules\oauth\components\KeyStore;
 use humhub\modules\oauth\components\ScopeRegistry;
+use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\Grant;
 use Yii;
 use yii\helpers\Url;
@@ -21,6 +22,16 @@ use yii\helpers\Url;
  */
 class Module extends \humhub\components\Module
 {
+    /**
+     * The app ID (bundle ID / package name) of the HumHub app. It always signs in as the system client.
+     */
+    public const BUILT_IN_APP_ID = 'com.humhub.app';
+
+    /**
+     * App IDs are used as private-use URI schemes, so only what a scheme allows (RFC 3986), in reverse-domain form.
+     */
+    private const APP_ID_PATTERN = '/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/';
+
     /**
      * @var string|null the private key (PEM or `file://` path), overrides the stored key
      */
@@ -35,6 +46,12 @@ class Module extends \humhub\components\Module
      * @var string|null the defuse encryption key (ASCII-safe string or `file://` path), overrides the stored key
      */
     public ?string $encryptionKey = null;
+
+    /**
+     * @var string[]|string|null additional app IDs of customer-specific (white-label) apps that sign in as the
+     * system client; a list or a comma-separated string. When set, it takes precedence over the stored setting.
+     */
+    public array|string|null $appIds = null;
 
     /**
      * @var int lifetime of an access token in seconds
@@ -99,6 +116,61 @@ class Module extends \humhub\components\Module
     public function allowsPersonalAccessTokens(): bool
     {
         return (bool)$this->settings->get('allowPersonalAccessTokens', false);
+    }
+
+    /**
+     * @return string[] every app ID that signs in as the system client: the built-in one first, then the additional ones
+     */
+    public function getAppIds(): array
+    {
+        return array_values(array_unique([self::BUILT_IN_APP_ID, ...$this->getAdditionalAppIds()]));
+    }
+
+    /**
+     * @return string[] the additional app IDs, from the configuration if set there, otherwise from the settings
+     */
+    public function getAdditionalAppIds(): array
+    {
+        if ($this->isAppIdsConfigured()) {
+            $ids = is_array($this->appIds) ? $this->appIds : explode(',', $this->appIds);
+        } else {
+            $ids = Client::decodeList($this->settings->get('appIds'));
+        }
+
+        $ids = array_map(static fn($id) => self::normalizeAppId((string)$id), $ids);
+        $ids = array_filter($ids, static fn(string $id) => $id !== self::BUILT_IN_APP_ID && self::isValidAppId($id));
+
+        return array_values(array_unique($ids));
+    }
+
+    public function isAppIdsConfigured(): bool
+    {
+        return $this->appIds !== null;
+    }
+
+    /**
+     * App IDs are compared in lower case: URI schemes are case-insensitive.
+     */
+    public static function normalizeAppId(string $appId): string
+    {
+        return strtolower(trim($appId));
+    }
+
+    /**
+     * Reverse-domain form with at least two segments of lower-case letters, digits and hyphens, starting with a letter.
+     * Underscores (allowed in Android package names) are not allowed in URI schemes.
+     */
+    public static function isValidAppId(string $appId): bool
+    {
+        return strlen($appId) <= 255 && preg_match(self::APP_ID_PATTERN, $appId) === 1;
+    }
+
+    /**
+     * The redirect URI an app signs in with.
+     */
+    public static function getAppRedirectUri(string $appId): string
+    {
+        return $appId . ':/oauth/callback';
     }
 
     /**

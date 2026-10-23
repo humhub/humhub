@@ -26,7 +26,7 @@ use Yii;
 class AdminCest
 {
     private const SETTINGS = [
-        'allowApp', 'allowClients', 'allowPersonalAccessTokens',
+        'allowApp', 'appIds', 'allowClients', 'allowPersonalAccessTokens',
         'patScopes', 'patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays', 'revokeOnPasswordChange',
     ];
 
@@ -52,6 +52,7 @@ class AdminCest
         foreach (self::SETTINGS as $name) {
             Module::instance()->settings->delete($name);
         }
+        Module::instance()->appIds = null;
     }
 
     public function testMenuEntryAndPageForAdmin(FunctionalTester $I)
@@ -118,6 +119,84 @@ class AdminCest
         Assert::assertSame(14, $module->getRefreshTokenLifetimeDays());
         Assert::assertSame(200, $module->getGrantMaxLifetimeDays());
         Assert::assertTrue($module->revokesOnPasswordChange());
+    }
+
+    public function testSystemAdminSetsAppIds(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->see('Customer-specific apps that sign in as the HumHub app.');
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[appIds]' => "Com.Acme.App\ncom.humhub.app\n\nde.example.intranet",
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+        Assert::assertSame(['com.humhub.app', 'com.acme.app', 'de.example.intranet'], Module::instance()->getAppIds());
+        Assert::assertSame(
+            ['com.humhub.app:/oauth/callback', 'com.acme.app:/oauth/callback', 'de.example.intranet:/oauth/callback'],
+            Client::findByClientId(Client::SYSTEM_CLIENT_ID)->getRedirectUris(),
+        );
+
+        $I->amOnRoute('/oauth/admin/index');
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[appIds]' => "com.acme.app\nhttps://x",
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+        $I->see('Not a valid app ID: https://x');
+        Assert::assertSame(['com.humhub.app', 'com.acme.app', 'de.example.intranet'], Module::instance()->getAppIds());
+    }
+
+    public function testOnlySystemAdminsChangeAppIds(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('appIds', json_encode(['com.acme.app']));
+        $I->setGroupPermission(self::USER1_GROUP, ManageSettings::class);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->seeResponseCodeIs(200);
+        $I->dontSeeElement('textarea[name="SettingsForm[appIds]"]');
+        $I->see('com.acme.app', '#oauth-app-ids');
+        $I->see('Only system administrators can change this.', '#oauth-app-ids');
+
+        // Saving the other settings keeps the app IDs
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[allowClients]' => '1',
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+        Assert::assertTrue(Module::instance()->allowsClients());
+        Assert::assertSame(['com.humhub.app', 'com.acme.app'], Module::instance()->getAppIds());
+
+        $this->post($I, 'oauth/admin/index', [], ['SettingsForm' => [
+            'allowClients' => '0', 'appIds' => 'com.evil.app',
+            'patMaxLifetimeDays' => '30', 'refreshTokenLifetimeDays' => '14', 'grantMaxLifetimeDays' => '0',
+        ]]);
+        Assert::assertTrue(Module::instance()->allowsClients());
+        Assert::assertSame(['com.humhub.app', 'com.acme.app'], Module::instance()->getAppIds());
+    }
+
+    public function testConfiguredAppIdsAreReadOnly(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('appIds', json_encode(['com.stored.app']));
+        Module::instance()->appIds = ['com.configured.app'];
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->dontSeeElement('textarea[name="SettingsForm[appIds]"]');
+        $I->see('com.configured.app', '#oauth-app-ids');
+        $I->dontSee('com.stored.app');
+        $I->see('Set in the configuration file.', '#oauth-app-ids');
+
+        $this->post($I, 'oauth/admin/index', [], ['SettingsForm' => [
+            'appIds' => 'com.other.app',
+            'patMaxLifetimeDays' => '30', 'refreshTokenLifetimeDays' => '14', 'grantMaxLifetimeDays' => '0',
+        ]]);
+        Assert::assertSame(['com.humhub.app', 'com.configured.app'], Module::instance()->getAppIds());
+        Assert::assertSame(json_encode(['com.stored.app']), Module::instance()->settings->get('appIds'));
     }
 
     public function testRefreshTokenLifetimeOfZeroIsRejected(FunctionalTester $I)

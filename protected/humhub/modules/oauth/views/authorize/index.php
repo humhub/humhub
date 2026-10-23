@@ -24,12 +24,14 @@ $isApp = $client->type === Client::TYPE_SYSTEM;
         <div class="panel-heading">
             <strong class="fw-bolder">
                 <?= $isApp
-                    ? Yii::t('OauthModule.base', 'Sign in to the HumHub app on this device?')
+                    ? Yii::t('OauthModule.base', 'Sign in to the app on this device?')
                     : Yii::t('OauthModule.base', '{app} wants to access your account', ['app' => Html::encode($client->name)]) ?>
             </strong>
         </div>
         <div class="panel-body">
-            <?php if (!$isApp): ?>
+            <?php if ($isApp): ?>
+                <p class="text-muted"><?= Html::encode(Yii::$app->name) ?></p>
+            <?php else: ?>
                 <p><?= Yii::t('OauthModule.base', 'It will be allowed to:') ?></p>
                 <ul>
                     <?php foreach ($scopes as $scope): ?>

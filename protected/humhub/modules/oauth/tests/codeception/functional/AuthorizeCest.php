@@ -38,6 +38,7 @@ class AuthorizeCest
         Grant::deleteAll();
         Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
         Module::instance()->settings->delete('allowClients');
+        Module::instance()->settings->delete('appIds');
     }
 
     private function params(string $clientId = Client::SYSTEM_CLIENT_ID, string $scope = '', string $redirectUri = OAuthTestHelper::REDIRECT_URI): array
@@ -63,7 +64,8 @@ class AuthorizeCest
     {
         $I->amAdmin();
         $I->amOnRoute('/oauth/authorize/index', $this->params());
-        $I->see('Sign in to the HumHub app on this device?');
+        $I->see('Sign in to the app on this device?');
+        $I->see(Yii::$app->name, '#oauth-authorize .panel-body');
 
         $grants = Grant::find()->where(['user_id' => 1])->count();
         $I->stopFollowingRedirects();
@@ -170,6 +172,37 @@ class AuthorizeCest
         Assert::assertStringStartsWith(OAuthTestHelper::REDIRECT_URI . '?', $this->location());
         Assert::assertStringContainsString('code=', $this->location());
         Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testAdditionalAppIdSignsInAsTheApp(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('appIds', json_encode(['com.acme.app']));
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params(Client::SYSTEM_CLIENT_ID, '', 'com.acme.app:/oauth/callback'));
+        $I->see('Sign in to the app on this device?');
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertStringStartsWith('com.acme.app:/oauth/callback?', $this->location());
+        Assert::assertStringContainsString('code=', $this->location());
+
+        // The built-in app keeps working
+        $I->startFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertStringStartsWith(OAuthTestHelper::REDIRECT_URI . '?', $this->location());
+    }
+
+    public function testUnknownAppIdIsRejected(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('appIds', json_encode(['com.acme.app']));
+
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params(Client::SYSTEM_CLIENT_ID, '', 'com.other.app:/oauth/callback'));
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
     }
 
     public function testDenyRedirectsWithAccessDenied(FunctionalTester $I)

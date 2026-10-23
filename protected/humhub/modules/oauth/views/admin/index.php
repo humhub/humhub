@@ -1,6 +1,7 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\modules\oauth\Module;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
 use humhub\widgets\bootstrap\Alert;
 use yii\helpers\Url;
@@ -20,6 +21,22 @@ use humhub\widgets\form\MultiSelect;
 
         <h4><?= Yii::t('OauthModule.base', 'HumHub app') ?></h4>
         <?= $form->field($model, 'allowApp')->checkbox() ?>
+        <?php if ($model->canEditAppIds()): ?>
+            <?= $form->field($model, 'appIds')->textarea(['rows' => 3, 'class' => 'form-control font-monospace']) ?>
+        <?php else: ?>
+            <div class="mb-3" id="oauth-app-ids">
+                <label class="form-label"><?= Html::encode($model->getAttributeLabel('appIds')) ?></label>
+                <p class="font-monospace"><?= $model->getAppIdList() === []
+                    ? Yii::t('OauthModule.base', 'None')
+                    : implode('<br>', array_map([Html::class, 'encode'], $model->getAppIdList())) ?></p>
+                <div class="form-text">
+                    <?= $model->getAttributeHint('appIds') ?>
+                    <?= Module::instance()->isAppIdsConfigured()
+                        ? Yii::t('OauthModule.base', 'Set in the configuration file.')
+                        : Yii::t('OauthModule.base', 'Only system administrators can change this.') ?>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <hr>
         <h4><?= Yii::t('OauthModule.base', 'Clients') ?></h4>
