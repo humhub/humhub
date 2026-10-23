@@ -68,6 +68,7 @@ class SettingsForm extends Model
             ['grantMaxLifetimeDays', 'integer', 'min' => 0],
             ['maxPersonalAccessTokensPerUser', 'integer', 'min' => 0],
             ['maxPersonalAccessTokensPerUser', 'required'],
+            ['maxPersonalAccessTokensPerUser', 'validateMaxPersonalAccessTokensPerUser'],
             [['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'], 'required'],
             ['patScopes', 'each', 'rule' => ['in', 'range' => $scopeIds]],
             ['appIds', 'validateAppIds'],
@@ -135,6 +136,14 @@ class SettingsForm extends Model
     {
         return !Module::instance()->isAppIdsConfigured()
             && (bool)Yii::$app->user->getIdentity()?->isSystemAdmin();
+    }
+
+    public function validateMaxPersonalAccessTokensPerUser(string $attribute): void
+    {
+        if (Module::instance()->isMaxPersonalAccessTokensPerUserConfigured()
+            && (int)$this->$attribute !== Module::instance()->getMaxPersonalAccessTokensPerUser()) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'This is set in the configuration file.'));
+        }
     }
 
     public function validateAppIds(string $attribute): void

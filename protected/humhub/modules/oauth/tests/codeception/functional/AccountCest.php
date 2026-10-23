@@ -234,9 +234,11 @@ class AccountCest
             'PersonalAccessTokenForm[lifetime]' => '30',
             'PersonalAccessTokenForm[currentPassword]' => self::PASSWORD,
         ];
+        // The form is not offered; a direct POST creates nothing either
         $I->amOnRoute('/oauth/account/create-token');
-        $I->submitForm('form[action*="create-token"]', $post);
+        $I->dontSeeElement('form[action*="create-token"]');
         $I->see('You have reached the maximum of 2 personal access tokens.');
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fcreate-token', $post);
         Assert::assertSame(2, (int)Grant::find()->where(['type' => Grant::TYPE_PAT])->count());
 
         // Revoking frees a slot

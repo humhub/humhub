@@ -196,6 +196,7 @@ class AdminCest
             'maxPersonalAccessTokensPerUser' => '1',
             'patMaxLifetimeDays' => '30', 'refreshTokenLifetimeDays' => '14', 'grantMaxLifetimeDays' => '0',
         ]]);
+        $I->see('This is set in the configuration file.');
         Assert::assertEquals(4, Module::instance()->settings->get('maxPersonalAccessTokensPerUser'));
         Assert::assertSame(9, Module::instance()->getMaxPersonalAccessTokensPerUser());
     }
