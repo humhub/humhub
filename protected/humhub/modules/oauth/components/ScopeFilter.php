@@ -18,7 +18,8 @@ use yii\web\Response;
  * Enforces the scope an action requires on token requests. Requests authenticated otherwise
  * (session, other modules' methods) pass — those carry their own authorization.
  *
- * Fail-closed: an action without a declared scope is reachable with `full` only.
+ * Fail-closed: an action without a declared scope is reachable with `full` only, or not at
+ * all with [[requireDeclaredScope]].
  *
  * @since 1.20
  */
@@ -36,6 +37,12 @@ class ScopeFilter extends ActionFilter
     public bool $allowFull = false;
 
     /**
+     * @var bool whether an action without a declared scope is refused even with `full` — for
+     *      APIs opened to tokens endpoint by endpoint (the rest module's `/api/v1`)
+     */
+    public bool $requireDeclaredScope = false;
+
+    /**
      * @inheritdoc
      */
     public function beforeAction($action)
@@ -45,23 +52,35 @@ class ScopeFilter extends ActionFilter
             return true;
         }
 
+        $required = (array)($this->scopes[$action->id] ?? $this->scopes['*'] ?? []);
+        if ($required === [] && $this->requireDeclaredScope) {
+            // No scope can reach the action, so none is named.
+            return $this->deny(null);
+        }
+
         $effective = (new GrantService())->getEffectiveScopes($grant);
 
         if ($this->allowFull && in_array(ScopeRegistry::FULL, $effective, true)) {
             return true;
         }
 
-        $required = (array)($this->scopes[$action->id] ?? $this->scopes['*'] ?? []);
         if ($required !== [] && array_intersect($required, $effective) !== []) {
             return true;
         }
 
-        $scope = implode(' ', $required !== [] ? $required : [ScopeRegistry::FULL]);
+        return $this->deny(implode(' ', $required !== [] ? $required : [ScopeRegistry::FULL]));
+    }
+
+    /**
+     * Answers `403 insufficient_scope`, naming the scope that would pass if there is one.
+     */
+    private function deny(?string $scope): bool
+    {
         $response = Yii::$app->response;
         $response->format = Response::FORMAT_JSON;
         $response->setStatusCode(403);
-        $response->getHeaders()->set('WWW-Authenticate', 'Bearer error="insufficient_scope", scope="' . $scope . '"');
-        $response->data = ['error' => 'insufficient_scope', 'scope' => $scope];
+        $response->getHeaders()->set('WWW-Authenticate', 'Bearer error="insufficient_scope"' . ($scope !== null ? ', scope="' . $scope . '"' : ''));
+        $response->data = ['error' => 'insufficient_scope'] + ($scope !== null ? ['scope' => $scope] : []);
 
         return false;
     }

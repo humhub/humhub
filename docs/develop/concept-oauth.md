@@ -271,7 +271,8 @@ On success:
 - **Rejection.** Otherwise `403` with `{"error": "insufficient_scope", "scope": "<required>"}`
   and `WWW-Authenticate: Bearer error="insufficient_scope", scope="<required>"`.
 - **Fail-closed.** An action without a declared scope is reachable with `full` only — or not
-  at all with `requireDeclaredScope` set (used for `/api/v1`, see [rest module](#rest-module)).
+  at all with `requireDeclaredScope` set (used for `/api/v1`, see [rest module](#rest-module));
+  that rejection names no scope.
 
 A scope is an upper bound. Permissions are checked exactly as for the same user in the web
 interface.

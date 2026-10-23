@@ -44,11 +44,12 @@ class ScopeFilterTest extends HumHubDbTestCase
         return (new GrantService())->createOAuthGrant($user, $client, $scopes);
     }
 
-    private function filter(array $scopes, bool $allowFull, string $actionId = 'index'): bool
+    private function filter(array $scopes, bool $allowFull, string $actionId = 'index', bool $requireDeclaredScope = false): bool
     {
         Yii::$app->response->setStatusCode(200);
+        Yii::$app->response->getHeaders()->remove('WWW-Authenticate');
         $controller = Yii::$app->createController('oauth/metadata')[0];
-        $filter = new ScopeFilter(['scopes' => $scopes, 'allowFull' => $allowFull]);
+        $filter = new ScopeFilter(['scopes' => $scopes, 'allowFull' => $allowFull, 'requireDeclaredScope' => $requireDeclaredScope]);
 
         return $filter->beforeAction(new Action($actionId, $controller));
     }
@@ -89,5 +90,40 @@ class ScopeFilterTest extends HumHubDbTestCase
 
         Module::instance()->activeGrant = $this->grant(['full']);
         $this->assertTrue($this->filter($scopes, true));
+    }
+
+    public function testRequireDeclaredScopeRefusesUndeclaredActionEvenWithFull()
+    {
+        $scopes = ['view' => 'content:read'];
+
+        Module::instance()->activeGrant = $this->grant(['full']);
+        $this->assertFalse($this->filter($scopes, true, 'index', true));
+        $this->assertSame(403, Yii::$app->response->statusCode);
+        $this->assertSame(['error' => 'insufficient_scope'], Yii::$app->response->data);
+        $this->assertSame('Bearer error="insufficient_scope"', Yii::$app->response->getHeaders()->get('WWW-Authenticate'));
+
+        $this->assertFalse($this->filter([], true, 'index', true));
+    }
+
+    public function testRequireDeclaredScopePassesDeclaredScopeOrFull()
+    {
+        $scopes = ['view' => 'content:read', '*' => 'content:write'];
+
+        Module::instance()->activeGrant = $this->grant(['full']);
+        $this->assertTrue($this->filter($scopes, true, 'view', true));
+        $this->assertTrue($this->filter($scopes, true, 'index', true));
+        $this->assertFalse($this->filter($scopes, false, 'view', true));
+        $this->assertSame(['error' => 'insufficient_scope', 'scope' => 'content:read'], Yii::$app->response->data);
+
+        Module::instance()->activeGrant = $this->grant(['content:read']);
+        $this->assertTrue($this->filter($scopes, true, 'view', true));
+        $this->assertFalse($this->filter($scopes, true, 'index', true));
+        $this->assertSame(['error' => 'insufficient_scope', 'scope' => 'content:write'], Yii::$app->response->data);
+    }
+
+    public function testRequireDeclaredScopeLetsRequestsWithoutGrantPass()
+    {
+        Module::instance()->activeGrant = null;
+        $this->assertTrue($this->filter([], false, 'index', true));
     }
 }
