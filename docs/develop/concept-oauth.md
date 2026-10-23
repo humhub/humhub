@@ -270,7 +270,8 @@ On success:
   - the action's required scope (`scopes[actionId] ?? scopes['*']`) is among them.
 - **Rejection.** Otherwise `403` with `{"error": "insufficient_scope", "scope": "<required>"}`
   and `WWW-Authenticate: Bearer error="insufficient_scope", scope="<required>"`.
-- **Fail-closed.** An action without a declared scope is reachable with `full` only.
+- **Fail-closed.** An action without a declared scope is reachable with `full` only — or not
+  at all with `requireDeclaredScope` set (used for `/api/v1`, see [rest module](#rest-module)).
 
 A scope is an upper bound. Permissions are checked exactly as for the same user in the web
 interface.
@@ -681,20 +682,24 @@ protected/humhub/modules/oauth/
 
 ## rest module
 
-The rest module makes `/api/v1` reachable with OAuth grants and PATs through one scope:
+`/api/v1` opens to OAuth grants and PATs endpoint by endpoint: only an action that declares a
+scope is reachable with a token, so safe endpoints can be unlocked one at a time.
 
-- **Scope.** It registers `rest:v1` ("Access the REST API v1") in
-  `ScopeRegistry::EVENT_COLLECT_SCOPES`. The scope is not among the defaults of
-  `userClientScopes` and `patScopes`; an administrator grants it explicitly.
-- **Authentication.** `components/BaseController::behaviors()` prepends `TokenAuth` to its
-  `authMethods` and attaches `ScopeFilter` with:
-  - `scopes` = `['*' => 'rest:v1']`;
-  - `allowFull` = `false`.
-
-  `full` never reaches `/api/v1`. Controllers of other modules that extend it (calendar,
-  mail …) inherit this.
+- **Declaration.** The rest module's `components/BaseController` gets the same
+  `protected array $scopes` as core's API controllers (action id or `*` → scope). Controllers
+  of other modules that extend it (calendar, mail, wiki …) declare their own. Their scopes are
+  registered by the declaring module in `ScopeRegistry::EVENT_COLLECT_SCOPES`
+  (`<module>:…`).
+- **Authentication.** `TokenAuth` is prepended to the controller's `authMethods` only when it
+  declares `$scopes`; without a declaration the endpoint stays unreachable for OAuth tokens
+  and PATs (the module's own methods are unaffected).
+- **Authorization.** `ScopeFilter` with `allowFull` = `true` and `requireDeclaredScope` =
+  `true`: a token passes when it holds the action's declared scope or `full`; an action
+  without a declared scope is refused even with `full`.
 - **Allowlist.** After authentication, a request authenticated by `TokenAuth` additionally
   passes `AuthMethods::isUserEnabled()`, the same allowlist as the module's own methods.
+- **Initial set.** The rest module declares no scopes yet; endpoints are unlocked one at a
+  time in later releases.
 - **Version.** CHANGELOG entry under the existing `0.13.0 (Unreleased)`; `minVersion` stays
   1.20.
 
