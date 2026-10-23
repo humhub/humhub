@@ -170,6 +170,11 @@ with policy, window, subject and route. Later refusals in the same window are no
 `RateLimiter` knows nothing of routes; the filter passes the route as the optional log
 context of `hit()`.
 
+In the browser, the shared client (`humhub.client.js`) shows a refusal as a status message,
+once per burst: the server's `message`, else a generic text with the `Retry-After` seconds.
+It marks the response (`statusShown`), so `humhub.log` does not add a generic error for it.
+Requests are not retried.
+
 ## Storage
 
 Counting uses the atomic increment of the store wherever one exists:

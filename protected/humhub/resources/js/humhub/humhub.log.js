@@ -93,7 +93,11 @@ humhub.module('log', function (module, require, $) {
                 details = undefined;
             }
 
-            if(msg instanceof Error && level >= TRACE_WARN) {
+            if(msg.statusShown) { // client.Response the user was already told about (e.g. 429)
+                details = msg;
+                msg = msg.statusShown;
+                setStatus = false;
+            } else if(msg instanceof Error && level >= TRACE_WARN) {
                 details = msg;
                 msg = this.getMessage(details.message, level, true);
             } else if(msg.error && msg.error.message) { // client.Response
