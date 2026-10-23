@@ -29,6 +29,7 @@ HumHub Changelog
 - Enh #8613: The `Template` profile field ignored source fields hidden from the profile (Visible off) and rendered them empty; hidden fields are now available as variables; Source fields with the value `0` are no longer treated as empty
 - Fix #8618: Pending registrations page crashed on PHP 8.5 (null used as array key)
 - Fix #8621: Mail summary job failed with a TypeError when a space limit mode setting was stored as a string
+- Fix #8623: Secrets from `.env` (e.g. `HUMHUB_CONFIG__*` passwords, keys, tokens, DSNs) were written in plain text to `app.log` and the `logging` table via the `$_SERVER` dump; values are now masked by key name (PASS, SECRET, KEY, TOKEN, DSN, AUTH, COOKIE, ...)
 - Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
 
 1.19.0 (October 12, 2026)
