@@ -34,15 +34,18 @@ The policy of an `/api/v2` request follows from two things:
 - **The channel:** `token` (an OAuth access token or a PAT) or `session` (the platform's
   own frontend, e.g. the Vue islands).
 - **The action's scope:** the one declared in `BaseController::$scopes`, resolved as
-  `ScopeFilter` does (`scopes[actionId] ?? scopes['*']`). An action without a declared
-  scope uses `full`.
+  `ScopeFilter` does (`scopes[actionId] ?? scopes['*']`). If an action declares a list of
+  scopes, the first one counts. An action without a declared scope uses `full`.
 
-The policy is looked up in this order; the first match wins:
+The policy is looked up in this order; the first name present in `policies` decides:
 
 1. `<channel>.<scope>`, e.g. `token.content:write`;
 2. `<channel>.*:<suffix>`, e.g. `token.*:write` (the suffix after the last colon: `read`
    or `write`);
 3. `<channel>.full`.
+
+A policy set to `false` ends the lookup: its requests are unlimited, they do not fall through
+to `<channel>.full`. The same holds for a policy whose windows are all invalid (logged once).
 
 Modules therefore get sensible limits for their scopes (`calendar:read`, `mail:write` …)
 without declaring anything.
@@ -56,6 +59,11 @@ What is counted:
 - **Session requests:** the user (`session:<user id>`).
 - **Guest requests** (guest-allowed actions): the client IP (`guest:<ip>`), on the
   `session` policies.
+- **Other token methods:** a request authenticated by another module's method, e.g. the JWT of
+  the `rest` module on `/api/v2`, has no OAuth grant and counts as `session:<user id>` on the
+  `session` policies.
+- **Failed authentication** (`401`) is not counted, as there is no subject yet. A per-IP limit
+  for it would use the component as described under [Extending](#extending).
 
 Counters are kept per subject *and* policy. A grant holding `content:read` and
 `content:write` thus has separate budgets for reading and writing.
@@ -110,6 +118,7 @@ HUMHUB_CONFIG__COMPONENTS__RATE_LIMITER__POLICIES='{"token.content:write":{"burs
 ```
 
 A window needs a positive integer `limit` and `span`; an invalid window is ignored and logged.
+Environment variables carry strings, so `…__ENABLED=false` works as for any component flag.
 
 There is no admin UI.
 
@@ -125,7 +134,8 @@ A new filter `humhub\components\rateLimit\ApiRateLimitFilter` is attached in
 - Console requests and queue jobs are never limited (there are no API controllers there).
 
 The resolution of an action's scope moves from `ScopeFilter` into a shared static helper
-`ScopeFilter::resolveScope(array $scopes, string $actionId): ?string`, used by both filters.
+`ScopeFilter::resolveScope(array $scopes, string $actionId): string|array|null`, used by both
+filters. It returns the raw declaration; `ApiRateLimitFilter` uses the first entry of a list.
 
 ### Response
 
