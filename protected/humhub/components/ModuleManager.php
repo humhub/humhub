@@ -113,6 +113,16 @@ class ModuleManager extends Component
     protected array $moduleNamespaces = [];
 
     /**
+     * Asset bundles registered along with another bundle, by the class name of that bundle - see
+     * {@see addVueAssetExtension()}. Filled from the `vueAssetExtensions` key of the enabled
+     * modules' `config.php` by {@see register()}.
+     *
+     * @var array<string, string[]> host bundle class => extension bundle classes
+     * @since 1.20
+     */
+    protected array $vueAssetExtensions = [];
+
+    /**
      * List of all enabled module ids
      *
      * @var array
@@ -272,6 +282,13 @@ class ModuleManager extends Component
 
         // Register Event Handlers
         $this->registerEventHandlers($basePath, $config);
+
+        // Register Vue asset bundle extensions
+        foreach ($config['vueAssetExtensions'] ?? [] as $hostBundle => $extensionBundles) {
+            foreach ((array)$extensionBundles as $extensionBundle) {
+                $this->addVueAssetExtension($hostBundle, $extensionBundle);
+            }
+        }
 
         // Register Console ControllerMap
         if (Yii::$app instanceof ConsoleApplication && !(empty($config['consoleControllerMap']))) {
@@ -452,6 +469,51 @@ class ModuleManager extends Component
         }
 
         return $moduleId;
+    }
+
+    /**
+     * Declares an asset bundle that is registered along with another one: wherever a view
+     * registers `$hostBundle` (directly or as a dependency), it registers `$extensionBundle`
+     * right after it. This is how a module's `*VueAsset` bundle reaches the pages of another
+     * module's islands it contributes to (extension slots, menu entries, filter types),
+     * without that module having to know about it.
+     *
+     * Usually declared in a module's `config.php`, which is only applied while the module is
+     * enabled:
+     *
+     * ```php
+     * 'vueAssetExtensions' => [
+     *     'humhub\modules\user\assets\UserVueAsset' => ['johndoe\example\assets\ExampleVueAsset'],
+     * ],
+     * ```
+     *
+     * See "Loading the bundle along with the host" in docs/develop/ui-js-vuejs-extensions.md.
+     *
+     * @param string $hostBundle class name of the bundle to extend, e.g. another module's `*VueAsset`
+     * @param string $extensionBundle class name of the bundle to register along with it
+     * @since 1.20
+     */
+    public function addVueAssetExtension(string $hostBundle, string $extensionBundle): void
+    {
+        $hostBundle = ltrim($hostBundle, '\\');
+        $extensionBundle = ltrim($extensionBundle, '\\');
+
+        if (!in_array($extensionBundle, $this->vueAssetExtensions[$hostBundle] ?? [], true)) {
+            $this->vueAssetExtensions[$hostBundle][] = $extensionBundle;
+        }
+    }
+
+    /**
+     * Returns the bundles registered along with the given one, in the order they were declared.
+     *
+     * @param string $hostBundle class name of the extended bundle
+     * @return string[] class names of the extension bundles
+     * @see addVueAssetExtension()
+     * @since 1.20
+     */
+    public function getVueAssetExtensions(string $hostBundle): array
+    {
+        return $this->vueAssetExtensions[ltrim($hostBundle, '\\')] ?? [];
     }
 
     /**

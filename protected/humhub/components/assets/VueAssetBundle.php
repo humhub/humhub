@@ -32,12 +32,26 @@ use yii\base\InvalidConfigException;
  * modules' `*VueAsset` bundles in [[$depends]]; the core dependency is prepended automatically.
  *
  * Module artifacts are loaded on demand (only pages rendering one of the module's islands
- * register the bundle) and must not be added to the compressed core bundle.
+ * register the bundle) and must not be added to the compressed core bundle. A bundle whose
+ * components go into another module's islands (extension slots, menu entries, filter types)
+ * is declared an extension of that module's bundle in the module's `config.php`
+ * (`vueAssetExtensions`, see {@see \humhub\components\ModuleManager::addVueAssetExtension()}),
+ * and is then registered wherever that bundle is.
  *
  * @since 1.20
  */
 abstract class VueAssetBundle extends AssetBundle
 {
+    /**
+     * @var string[] message categories preloaded before any island of a page registering this
+     * bundle mounts, in addition to the `i18nCategories` the mounted component declares itself.
+     * The mounter only consults the top-level component of an island, so this is where a bundle
+     * declares the categories of the components it contributes to other islands — an extension
+     * slot entry, a menu entry, a filter type — which are rendered nested in a host component
+     * that knows nothing of them.
+     * @since 1.20
+     */
+    public array $i18nCategories = [];
     /**
      * @inheritdoc
      */

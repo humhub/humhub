@@ -58,6 +58,7 @@ Defines the module ID, class, event handlers and URL rules. The file is *loaded 
 | `urlManagerRules`      | no       | [URL Manager rules](https://www.yiiframework.com/doc/guide/2.0/en/runtime-routing#creating-rules)          |
 | `modules`              | no       | Submodules                                                                                                 |
 | `consoleControllerMap` | no       | Console controllers — see Yii's [`controllerMap`](https://www.yiiframework.com/doc/api/2.0/yii-base-module#$controllerMap-detail) |
+| `vueAssetExtensions`   | no       | Asset bundles registered along with another module's bundle (`[HostVueAsset::class => [MyVueAsset::class]]`) — see [Extending Vue.js islands](ui-js-vuejs-extensions.md#loading-the-bundle-along-with-the-host) |
 
 Example:
 

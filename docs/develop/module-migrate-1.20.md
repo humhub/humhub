@@ -2,6 +2,18 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **A module's Vue bundle can be loaded along with another module's.** New `config.php` key
+  `vueAssetExtensions` (`[HostVueAsset::class => [MyVueAsset::class]]`) and
+  `ModuleManager::addVueAssetExtension()`/`getVueAssetExtensions()`: wherever a view registers the
+  host bundle, `humhub\components\View::registerAssetBundle()` registers the extension bundles
+  right after it, so a module's extension slot entries, menu entries and filter types reach the
+  host's islands without the host knowing the module. New `VueAssetBundle::$i18nCategories`:
+  message categories the island mounter preloads, together with the top-level component's own
+  `i18nCategories`, before any island of a page registering the bundle mounts (handed over as the
+  `vueBundles` JS config) — for components a bundle contributes to another module's island. See
+  "Loading the bundle along with the host" in `docs/develop/ui-js-vuejs-extensions.md`. Additive,
+  nothing to migrate.
+
 - **`/api/v2` controllers are rate limited by their declared scopes.** The filter
   `humhub\components\api\ApiRateLimitFilter` is attached in `BaseController::behaviors()`;
   modules need no change. A module may add policies named `<channel>.<scope>` (`token` or

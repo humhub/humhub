@@ -157,6 +157,45 @@ describe('humhub.vue', () => {
         preload.mockRestore();
     });
 
+    it('also preloads the i18n categories of the asset bundles registered on the page', async () => {
+        const preload = vi.spyOn(globalThis.humhubStubs.i18n, 'preload');
+        // As humhub\components\View hands them over for VueAssetBundle::$i18nCategories, e.g. of
+        // a bundle loaded as an extension of the island's own bundle.
+        const bundles = globalThis.humhub.config.module('vueBundles');
+        bundles['host\\HostVueAsset'] = { i18nCategories: ['HostModule.base'] };
+        bundles['extension\\ExtensionVueAsset'] = { i18nCategories: ['ExtensionModule.base', 'HostModule.base'] };
+
+        try {
+            vueModule.register('TestI18nBundleOmega', {
+                i18nCategories: ['TestModule.base', 'HostModule.base'],
+                render: () => Vue.h('i', 'x'),
+            });
+            vueModule.register('TestI18nBundleUndeclaredOmega', { render: () => Vue.h('i', 'x') });
+
+            await vueModule.mountElement(createTag('test-i18n-bundle-omega'));
+            // The component's own categories first, each category once.
+            expect(preload).toHaveBeenLastCalledWith(['TestModule.base', 'HostModule.base', 'ExtensionModule.base']);
+
+            // An island declaring nothing itself waits for the bundles' categories too.
+            await vueModule.mountElement(createTag('test-i18n-bundle-undeclared-omega'));
+            expect(preload).toHaveBeenLastCalledWith(['HostModule.base', 'ExtensionModule.base']);
+        } finally {
+            delete bundles['host\\HostVueAsset'];
+            delete bundles['extension\\ExtensionVueAsset'];
+            preload.mockRestore();
+        }
+    });
+
+    it('does not preload anything for an island when neither it nor a bundle declares categories', async () => {
+        const preload = vi.spyOn(globalThis.humhubStubs.i18n, 'preload');
+        vueModule.register('TestI18nNonePsi', { render: () => Vue.h('i', 'x') });
+
+        await vueModule.mountElement(createTag('test-i18n-none-psi'));
+
+        expect(preload).not.toHaveBeenCalled();
+        preload.mockRestore();
+    });
+
     it('shares a single in-flight mount when mountElement is called concurrently', async () => {
         let mountCount = 0;
         vueModule.register('TestConcurrentMountLambda', {

@@ -473,6 +473,48 @@ class ModuleManagerTest extends HumHubDbTestCase
     }
 
     /**
+     * @since 1.20
+     */
+    public function testVueAssetExtensionsOfAnEnabledModuleAreRegistered()
+    {
+        $this->moduleManager = new ModuleManagerMock();
+
+        [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
+
+        $this->moduleManager->myEnabledModules()[] = $this->moduleId;
+
+        $config['vueAssetExtensions'] = [
+            '\host\HostVueAsset' => ['ext\FirstVueAsset', 'ext\SecondVueAsset'],
+            'host\OtherVueAsset' => 'ext\FirstVueAsset',
+        ];
+
+        $this->moduleManager->register($basePath, $config);
+        // Declared twice - e.g. by a module's config and programmatically - it is registered once.
+        $this->moduleManager->addVueAssetExtension('host\HostVueAsset', '\ext\FirstVueAsset');
+
+        $this->assertSame(['ext\FirstVueAsset', 'ext\SecondVueAsset'], $this->moduleManager->getVueAssetExtensions('host\HostVueAsset'));
+        $this->assertSame(['ext\FirstVueAsset', 'ext\SecondVueAsset'], $this->moduleManager->getVueAssetExtensions('\host\HostVueAsset'));
+        $this->assertSame(['ext\FirstVueAsset'], $this->moduleManager->getVueAssetExtensions('host\OtherVueAsset'));
+        $this->assertSame([], $this->moduleManager->getVueAssetExtensions('host\UnknownVueAsset'));
+    }
+
+    /**
+     * @since 1.20
+     */
+    public function testVueAssetExtensionsOfADisabledModuleAreIgnored()
+    {
+        $this->moduleManager = new ModuleManagerMock();
+
+        [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
+
+        $config['vueAssetExtensions'] = ['host\HostVueAsset' => ['ext\FirstVueAsset']];
+
+        $this->moduleManager->register($basePath, $config);
+
+        $this->assertSame([], $this->moduleManager->getVueAssetExtensions('host\HostVueAsset'));
+    }
+
+    /**
      * @throws Exception
      */
     public function testGetEnabledModules()

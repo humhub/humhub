@@ -609,6 +609,26 @@ humhub.module('vue', function (module, require, $) {
         return props;
     };
 
+    // The message categories preloaded before an island mounts: those its top-level component
+    // declares, plus those of every Vue asset bundle the page registered
+    // (VueAssetBundle::$i18nCategories, handed over as the `vueBundles` config by
+    // humhub\components\View). The latter is how a bundle contributing components to another
+    // module's island (an extension slot or menu entry, loaded via `vueAssetExtensions`) gets
+    // its translations loaded although the island's own component does not know of it. The
+    // config accumulates over pjax navigations, which only means a category already loaded is
+    // asked for again - a no-op for humhub.i18n.
+    var i18nCategoriesFor = function (component) {
+        var categories = (component.i18nCategories || []).slice();
+        $.each(humhub.config.module('vueBundles'), function (bundle, bundleConfig) {
+            $.each((bundleConfig && bundleConfig.i18nCategories) || [], function (index, category) {
+                if (categories.indexOf(category) === -1) {
+                    categories.push(category);
+                }
+            });
+        });
+        return categories;
+    };
+
     var mountElement = function (element) {
         if (apps.has(element)) {
             var current = apps.get(element);
@@ -634,7 +654,7 @@ humhub.module('vue', function (module, require, $) {
         var token = {};
         apps.set(element, token); // reserve against double mounting while preloading
 
-        var categories = resolved.component.i18nCategories || [];
+        var categories = i18nCategoriesFor(resolved.component);
         var preload;
         try {
             preload = categories.length ? i18n.preload(categories) : Promise.resolve();
