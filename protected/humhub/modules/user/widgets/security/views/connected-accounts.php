@@ -9,11 +9,6 @@ use humhub\widgets\bootstrap\Link;
 /* @var string $currentAuthProviderId */
 /* @var string[] $activeAuthClientIds */
 ?>
-
-<?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
-<div class="text-body-secondary">
-    <?= Yii::t('UserModule.base', 'Here you can connect to external service provider for using external services like a single sign on authentication.') ?>
-</div>
 <table class="table table-hover" aria-label="<?= Html::encode(Yii::t('UserModule.base', 'Connected accounts')) ?>">
     <caption class="visually-hidden"><?= Yii::t('UserModule.base', 'Connected accounts') ?></caption>
     <thead>
@@ -26,10 +21,10 @@ use humhub\widgets\bootstrap\Link;
     <?php foreach ($authClients as $client) : ?>
         <tr>
             <td aria-hidden="true" style="width:10px">
-                <div class="<?= $client->getViewOptions()['cssIcon'] ?? '' ?> float-start" style="font-size:200%"></div>
+                <div class="<?= Html::encode($client->getViewOptions()['cssIcon'] ?? '') ?> float-start" style="font-size:200%"></div>
             </td>
             <td class="align-middle">
-                <strong><?= $client->getTitle() ?></strong>
+                <strong><?= Html::encode($client->getTitle()) ?></strong>
             </td>
             <td class="text-center">
                 <?php if ($client->getId() == $currentAuthProviderId): ?>
@@ -38,7 +33,7 @@ use humhub\widgets\bootstrap\Link;
                         ->sm() ?>
                 <?php elseif (in_array($client->getId(), $activeAuthClientIds)) : ?>
                     <?= Link::danger(Yii::t('UserModule.base', 'Disconnect account'))
-                        ->post(['connected-accounts', 'disconnect' => $client->getId()])
+                        ->post(['/user/security/disconnect', 'authclient' => $client->getId()])
                         ->confirm()
                         ->options(['aria-label' => Yii::t('UserModule.base', 'Disconnect {provider} account', ['provider' => $client->getTitle()])])
                         ->sm() ?>
@@ -54,4 +49,3 @@ use humhub\widgets\bootstrap\Link;
     <?php endforeach ?>
     </tbody>
 </table>
-<?php $this->endContent() ?>

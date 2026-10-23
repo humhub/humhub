@@ -9,21 +9,13 @@
 namespace humhub\modules\user\controllers;
 
 use Collator;
-use Exception;
 use humhub\compat\HForm;
-use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\ContainerTagPicker;
-use humhub\modules\space\helpers\MembershipHelper;
-use humhub\modules\user\authclient\BaseFormClient;
 use humhub\modules\user\components\BaseAccountController;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
-use humhub\modules\user\models\forms\AccountDelete;
 use humhub\modules\user\models\forms\AccountSettings;
-use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
-use humhub\modules\user\Module;
 use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
@@ -47,14 +39,10 @@ class AccountController extends BaseAccountController
         $this->setActionTitles([
             'edit' => Yii::t('UserModule.base', 'Profile'),
             'edit-settings' => Yii::t('UserModule.base', 'Settings'),
-            'security' => Yii::t('UserModule.base', 'Security'),
-            'connected-accounts' => Yii::t('UserModule.base', 'Connected accounts'),
             'edit-modules' => Yii::t('UserModule.base', 'Modules'),
-            'delete' => Yii::t('UserModule.base', 'Delete'),
             'notification' => Yii::t('UserModule.base', 'Notifications'),
             'change-email' => Yii::t('UserModule.base', 'Email'),
             'change-email-validate' => Yii::t('UserModule.base', 'Email'),
-            'change-password' => Yii::t('UserModule.base', 'Password'),
         ]);
         return parent::init();
     }
@@ -123,16 +111,10 @@ class AccountController extends BaseAccountController
         }
 
         $model->tags = $user->getTags();
-        $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
         $model->markdownEditorMode = $user->settings->get("markdownEditorMode");
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
-        $model->visibility = $user->visibility;
-        $model->blockedUsers = $user->getBlockedUserGuids();
-        $allowedExternalSources = UrlOembed::getAllowedDomains();
-        $model->allowedExternalSources = $allowedExternalSources;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
             $user->settings->set('markdownEditorMode', $model->markdownEditorMode);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
@@ -140,15 +122,7 @@ class AccountController extends BaseAccountController
             $user->language = $model->language;
             $user->tagsField = $model->tags;
             $user->time_zone = $model->timeZone;
-            $user->visibility = $model->visibility;
-            if (Yii::$app->getModule('user')->allowBlockUsers()) {
-                $user->blockedUsersField = $model->blockedUsers;
-            }
             $user->save();
-
-            if ($allowedExternalSources !== []) {
-                UrlOembed::restrictAllowedDomains($model->getAllowedExternalSources());
-            }
 
             $this->view->saved();
             return $this->redirect(['edit-settings']);
@@ -159,15 +133,9 @@ class AccountController extends BaseAccountController
         $col = new Collator(Yii::$app->language);
         $col->asort($languages);
 
-        /* @var $module Module */
-        $module = Yii::$app->getModule('user');
-        $settingsManager = $module->settings;
-
         return $this->render('editSettings', [
             'model' => $model,
             'languages' => $languages,
-            'isEnabledOnlineStatus' => !$settingsManager->get('auth.hideOnlineStatus'),
-            'allowedExternalSources' => $allowedExternalSources,
         ]);
     }
 
@@ -187,73 +155,19 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Change Account
-     * @throws Exception
-     * @todo Add Group
+     * @deprecated since 1.20, moved to [[SecurityController::actionPrivacy()]]
      */
     public function actionPermissions()
     {
-        if (empty($this->module->settings->get('enableProfilePermissions'))) {
-            throw new HttpException(403);
-        }
-
-        $groups = [];
-        $groupAccessEnabled = AuthHelper::isGuestAccessEnabled();
-
-        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
-            $groups[User::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
-            $groups[User::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
-        } else {
-            $groups[User::USERGROUP_USER] = Yii::t('UserModule.account', 'Users');
-        }
-
-        if ($groupAccessEnabled) {
-            $groups[User::USERGROUP_GUEST] = Yii::t('UserModule.account', 'Not registered users');
-        }
-
-        $currentGroup = Yii::$app->request->get('groupId');
-        if ($currentGroup == '' || !isset($groups[$currentGroup])) {
-            $currentGroup = User::USERGROUP_USER;
-        }
-
-        // Handle permission state change
-        $return = $this->getUser()->permissionManager->handlePermissionStateChange($currentGroup);
-
-        return $return ?? $this->render('permissions', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
+        return $this->redirect(['/user/security/privacy'], 301);
     }
 
+    /**
+     * @deprecated since 1.20, moved to [[SecurityController::actionLogin()]]
+     */
     public function actionConnectedAccounts()
     {
-        if (Yii::$app->request->isPost && Yii::$app->request->get('disconnect')) {
-            foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
-                if ($authClient->getId() == Yii::$app->request->get('disconnect')) {
-                    Yii::$app->user->getAuthClientUserService()->remove($authClient);
-                }
-            }
-            return $this->redirect(['connected-accounts']);
-        }
-        $clients = [];
-        foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof BaseFormClient) {
-                $clients[] = $client;
-            }
-        }
-
-        $currentAuthProviderId = "";
-        if (Yii::$app->user->getCurrentAuthClient() !== null) {
-            $currentAuthProviderId = Yii::$app->user->getCurrentAuthClient()->getId();
-        }
-
-        $activeAuthClientIds = [];
-        foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
-            $activeAuthClientIds[] = $authClient->getId();
-        }
-
-        return $this->render('connected-accounts', [
-            'authClients' => $clients,
-            'currentAuthProviderId' => $currentAuthProviderId,
-            'activeAuthClientIds' => $activeAuthClientIds,
-        ]);
+        return $this->redirect(['/user/security/login'], 301);
     }
 
     /**
@@ -318,27 +232,11 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Delete Action
+     * @deprecated since 1.20, moved to [[SecurityController::actionDelete()]]
      */
     public function actionDelete()
     {
-        if (!UserSourceService::getForUser()->canDeleteAccount()) {
-            throw new HttpException(500, 'Account deletion not allowed!');
-        }
-
-        // Ensure user is not owner of a space
-        $ownSpaces = MembershipHelper::getOwnSpaces($this->user);
-        if (count($ownSpaces) !== 0) {
-            return $this->render('delete_spaceowner', ['ownSpaces' => $ownSpaces]);
-        }
-
-        $model = new AccountDelete(['user' => $this->getUser()]);
-        if ($model->load(Yii::$app->request->post()) && $model->performDelete()) {
-            Yii::$app->user->logout();
-            return $this->goHome();
-        }
-
-        return $this->render('delete', ['model' => $model]);
+        return $this->redirect(['/user/security/delete'], 301);
     }
 
     /**
@@ -411,26 +309,11 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Change users current password
+     * @deprecated since 1.20, moved to [[SecurityController::actionLogin()]]
      */
     public function actionChangePassword()
     {
-        if (!UserSourceService::getForUser()->canChangePassword()) {
-            throw new HttpException(500, 'Password change is not allowed');
-        }
-
-        $userPassword = new Password();
-        $userPassword->scenario = 'changePassword';
-
-        if ($userPassword->load(Yii::$app->request->post()) && $userPassword->validate()) {
-            $userPassword->user_id = Yii::$app->user->id;
-            $userPassword->setPassword($userPassword->newPassword);
-            if ($userPassword->save()) {
-                return $this->render('changePassword_success');
-            }
-        }
-
-        return $this->render('changePassword', ['model' => $userPassword]);
+        return $this->redirect(['/user/security/login'], 301);
     }
 
     /**

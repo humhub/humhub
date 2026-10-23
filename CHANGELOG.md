@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8611: New "Security & Privacy" account settings with an overview of the active sessions
 - Fix #8610: Flaky grouping tests when a unit test ran across a 15-minute grouping bucket boundary; `HumHubDbTestCase` now waits out the last seconds of a bucket
 - Enh #8592: `HUMHUB_ALIASES__CONFIG` also relocates the local configuration files; new `@logs` alias (`HUMHUB_ALIASES__LOGS`) for the application log
 - Fix #8601: The marketplace offered updates for, and could remove, modules outside the marketplace module directory
@@ -64,6 +65,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Enh #8614: People cards: Twig template for additional card details via `'user' => ['peopleCardDetailsTemplate' => ...]` (one HTML block with the profile fields as variables, e.g. with links and `<br>`), shown below the selected "Information 1-3" fields
 - Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
 - Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
 - Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color

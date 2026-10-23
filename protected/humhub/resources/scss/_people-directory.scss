@@ -18,6 +18,14 @@
         white-space: nowrap;
     }
 
+    // The HTML block of the details template wraps instead of cutting each line
+    .c-people-card__details {
+        color: var(--hh-text-color-default);
+        font-size: 14px;
+        line-height: 22px;
+        overflow-wrap: anywhere;
+    }
+
     // The details sit closer together than the entity card's body blocks
     .c-people-card .c-entity-card__body {
         gap: 0;

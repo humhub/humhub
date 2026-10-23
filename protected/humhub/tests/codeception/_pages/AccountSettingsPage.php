@@ -14,7 +14,9 @@ class AccountSettingsPage extends BasePage
 
     public function clickPermissions()
     {
-        $this->actor->click('Permissions');
+        $this->actor->click('Security & Privacy');
+        $this->actor->waitForText('Privacy', 30, '.tab-menu');
+        $this->actor->click('Privacy', '.tab-menu');
         $this->actor->waitForText('These settings allow you to determine', 30);
     }
 

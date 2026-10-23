@@ -12,6 +12,7 @@ use Exception;
 use Yii;
 use yii\web\DbSession;
 use yii\web\ErrorHandler;
+use yii\web\Request;
 use yii\db\Query;
 use yii\db\Expression;
 
@@ -21,9 +22,14 @@ use yii\db\Expression;
 class Session extends DbSession
 {
     /**
+     * @since 1.20
+     */
+    public const TABLE = 'user_http_session';
+
+    /**
      * @inheritdoc
      */
-    public $sessionTable = 'user_http_session';
+    public $sessionTable = self::TABLE;
 
     /**
      * Returns all current logged in users.
@@ -68,29 +74,33 @@ class Session extends DbSession
         // exception must be caught in session write handler
         // http://us.php.net/manual/en/function.session-set-save-handler.php
         try {
-            $userId = new Expression('NULL');
-            if (!Yii::$app->user->getIsGuest()) {
-                $userId = Yii::$app->user->id;
-            }
+            $userId = Yii::$app->user->getIsGuest() ? null : (int)Yii::$app->user->id;
 
-            $expire = time() + $this->getTimeout();
-            $query = new Query();
-            $exists = $query->select(['id'])
+            $row = (new Query())->select(['id', 'user_id'])
                 ->from($this->sessionTable)
                 ->where(['id' => $id])
                 ->createCommand($this->db)
-                ->queryScalar();
-            if ($exists === false) {
+                ->queryOne();
+
+            $fields = [
+                'data' => $data,
+                'expire' => time() + $this->getTimeout(),
+                'user_id' => $userId,
+            ];
+
+            // DbSession::regenerateID() copies the guest row on login, so a login is the change of the user
+            if ($userId !== null && ($row === false || (int)$row['user_id'] !== $userId) && $this->hasLoginColumns()) {
+                $fields['logged_in_at'] = time();
+                $fields['user_agent'] = $this->getUserAgent();
+            }
+
+            if ($row === false) {
                 $this->db->createCommand()
-                    ->insert($this->sessionTable, [
-                        'id' => $id,
-                        'data' => $data,
-                        'expire' => $expire,
-                        'user_id' => $userId,
-                    ])->execute();
+                    ->insert($this->sessionTable, array_merge(['id' => $id], $fields))
+                    ->execute();
             } else {
                 $this->db->createCommand()
-                    ->update($this->sessionTable, ['data' => $data, 'expire' => $expire, 'user_id' => $userId], ['id' => $id])
+                    ->update($this->sessionTable, $fields, ['id' => $id])
                     ->execute();
             }
         } catch (Exception $e) {
@@ -105,4 +115,18 @@ class Session extends DbSession
         return true;
     }
 
+    /**
+     * The code may run before the migration adding the columns, e.g. during an update
+     */
+    private function hasLoginColumns(): bool
+    {
+        return $this->db->getTableSchema($this->sessionTable)?->getColumn('logged_in_at') !== null;
+    }
+
+    private function getUserAgent(): ?string
+    {
+        $userAgent = Yii::$app->request instanceof Request ? Yii::$app->request->getUserAgent() : null;
+
+        return empty($userAgent) ? null : mb_substr($userAgent, 0, 255);
+    }
 }

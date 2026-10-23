@@ -397,10 +397,10 @@ class AuthController extends Controller
         if (!Yii::$app->user->isGuest) {
             if (!$this->isAuthClientAllowed(Yii::$app->user->identity, $authClient)) {
                 Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'This login method is not allowed for your account.'));
-                return $this->redirect(['/user/account/connected-accounts']);
+                return $this->redirect(['/user/security/login']);
             }
             Yii::$app->user->getAuthClientUserService()->add($authClient);
-            return $this->redirect(['/user/account/connected-accounts']);
+            return $this->redirect(['/user/security/login']);
         }
 
         $authClientService = new AuthClientService($authClient);
