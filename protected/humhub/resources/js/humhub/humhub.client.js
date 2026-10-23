@@ -247,6 +247,10 @@ humhub.module('client', function (module, require, $) {
                     return;
                 }
 
+                if (response.status == 429) {
+                    notifyRateLimited(response);
+                }
+
                 if (errorHandler && object.isFunction(errorHandler)) {
                     errorHandler(response);
                 }
@@ -329,6 +333,50 @@ humhub.module('client', function (module, require, $) {
         };
 
         return promise;
+    };
+
+    /**
+     * The message about an exceeded rate limit stays visible for the `Retry-After` seconds,
+     * kept within these bounds. While it is visible, further refusals (e.g. the parallel
+     * requests of several islands) do not show it again.
+     */
+    var RATE_LIMIT_NOTICE_MIN = 5;
+    var RATE_LIMIT_NOTICE_MAX = 30;
+    var rateLimitNoticeUntil = 0;
+
+    var retryAfterSeconds = function (response) {
+        var seconds = parseInt(response.retryAfter, 10);
+        if (isNaN(seconds)) {
+            seconds = parseInt(response.header('Retry-After'), 10);
+        }
+        return (isNaN(seconds) || seconds < 0) ? null : seconds;
+    };
+
+    /**
+     * Tells the user that the rate limit is reached (`429`, see
+     * docs/develop/concept-rate-limiting.md), once per burst, with the server's message if
+     * the response carries one. Sets `response.statusShown` to the message, so
+     * `humhub.log` does not show a generic error for the same response again. The request
+     * is not retried.
+     */
+    var notifyRateLimited = function (response) {
+        var seconds = retryAfterSeconds(response);
+        var message = (response.dataType === 'json' && object.isString(response.message) && response.message)
+            ? response.message
+            : (seconds !== null
+                ? i18n.t('base', 'Too many requests. Please wait {seconds} seconds and try again.', {seconds: seconds})
+                : i18n.t('base', 'Too many requests. Please wait a moment and try again.'));
+
+        response.statusShown = message;
+
+        var now = Date.now();
+        if (now < rateLimitNoticeUntil) {
+            return;
+        }
+
+        var visible = Math.min(Math.max(seconds || 0, RATE_LIMIT_NOTICE_MIN), RATE_LIMIT_NOTICE_MAX) * 1000;
+        rateLimitNoticeUntil = now + visible;
+        require('ui.status').warn(message, undefined, visible);
     };
 
     var _redirect = function (xhr) {

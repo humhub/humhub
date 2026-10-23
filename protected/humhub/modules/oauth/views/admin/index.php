@@ -1,6 +1,7 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
 use humhub\widgets\bootstrap\Alert;
@@ -56,7 +57,11 @@ use humhub\widgets\form\MultiSelect;
                 'items' => $model->getScopeOptions(),
                 'placeholderMore' => '',
                 'options' => ['data-tags' => 'false'],
-            ]) ?>
+            ])->hint($model->hasLockedFullAccess()
+                ? $model->getAttributeHint('patScopes') . ' ' . Yii::t('OauthModule.base', '"{scope}" is included, set by a system administrator.', [
+                    'scope' => Html::encode(ScopeRegistry::get(ScopeRegistry::FULL)->label),
+                ])
+                : null) ?>
             <?= $form->field($model, 'patMaxLifetimeDays')->textInput(['type' => 'number', 'min' => 0]) ?>
             <?= $form->field($model, 'maxPersonalAccessTokensPerUser')->textInput([
                 'type' => 'number',
