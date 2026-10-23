@@ -14,6 +14,7 @@ use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\log\Logger;
 
 class PersonalAccessTokenLimitTest extends HumHubDbTestCase
 {
@@ -40,6 +41,20 @@ class PersonalAccessTokenLimitTest extends HumHubDbTestCase
         // 0 in the configuration is a value, not "unset"
         $module->maxPersonalAccessTokensPerUser = 0;
         $this->assertSame(0, $module->getMaxPersonalAccessTokensPerUser());
+    }
+
+    public function testANegativeValueIsInvalidAndUsesTheDefault()
+    {
+        static::logInitialize();
+        $module = Module::instance();
+        $module->settings->set('maxPersonalAccessTokensPerUser', 7);
+        $module->maxPersonalAccessTokensPerUser = -1;
+        $this->assertSame(3, $module->getMaxPersonalAccessTokensPerUser());
+        static::assertLog('Invalid maxPersonalAccessTokensPerUser -1, using the default.', Logger::LEVEL_WARNING, ['oauth']);
+
+        $module->maxPersonalAccessTokensPerUser = null;
+        $module->settings->set('maxPersonalAccessTokensPerUser', -5);
+        $this->assertSame(3, $module->getMaxPersonalAccessTokensPerUser());
     }
 
     public function testTheEnvironmentVariableSetsTheProperty()

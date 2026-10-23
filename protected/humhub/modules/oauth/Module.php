@@ -30,6 +30,8 @@ class Module extends \humhub\components\Module
     /**
      * App IDs are used as private-use URI schemes, so only what a scheme allows (RFC 3986), in reverse-domain form.
      */
+    private const DEFAULT_MAX_PERSONAL_ACCESS_TOKENS_PER_USER = 3;
+
     private const APP_ID_PATTERN = '/^[a-z][a-z0-9-]*(\.[a-z0-9-]+)+$/';
 
     /**
@@ -206,11 +208,19 @@ class Module extends \humhub\components\Module
     }
 
     /**
-     * @return int maximum number of active personal access tokens per user, 0 = unlimited
+     * @return int maximum number of active personal access tokens per user, 0 = unlimited; an invalid
+     * negative value counts as the default
      */
     public function getMaxPersonalAccessTokensPerUser(): int
     {
-        return max(0, $this->maxPersonalAccessTokensPerUser ?? (int)$this->settings->get('maxPersonalAccessTokensPerUser', 3));
+        $max = $this->maxPersonalAccessTokensPerUser
+            ?? (int)$this->settings->get('maxPersonalAccessTokensPerUser', self::DEFAULT_MAX_PERSONAL_ACCESS_TOKENS_PER_USER);
+        if ($max < 0) {
+            Yii::warning("Invalid maxPersonalAccessTokensPerUser $max, using the default.", 'oauth');
+            return self::DEFAULT_MAX_PERSONAL_ACCESS_TOKENS_PER_USER;
+        }
+
+        return $max;
     }
 
     public function isMaxPersonalAccessTokensPerUserConfigured(): bool
