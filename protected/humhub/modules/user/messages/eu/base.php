@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Delete' => 'Ezabatu',
     'Description' => 'Deskribapena',
     'Edit' => 'Editatu',
     'Follow' => 'Bilatu espazioak deskribapenarekin edo etiketekin.',
@@ -19,7 +18,6 @@ return [
     'Password' => 'Pasahitza',
     'People' => 'Jendea',
     'Search' => 'Bilatu',
-    'Security' => 'Segurtasun',
     'Settings' => 'Ezarpenak',
     'Show all' => 'Erakutsi dena',
     'Sign in' => 'Sinatu',
@@ -44,12 +42,10 @@ return [
     'Basic Settings' => '',
     'Block user' => '',
     'Change Email' => '',
-    'Change Password' => '',
     'Change Username' => '',
     'Confirm new password' => '',
     'Connect account' => '',
     'Connect {provider} account' => '',
-    'Connected Accounts' => '',
     'Connected accounts' => '',
     'Could not load the user list.' => '',
     'Created at' => '',
@@ -58,7 +54,6 @@ return [
     'Currently in use' => '',
     'Default Group' => '',
     'Default Space' => '',
-    'Delete Account' => '',
     'Did you forget your password?' => '',
     'Disconnect account' => '',
     'Disconnect {provider} account' => '',

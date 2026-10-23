@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'Delete' => 'Dilemel',
     'Name' => 'Anv',
     'Settings' => 'Reolamantoù',
     '<strong>Followers</strong>' => '',
@@ -16,12 +15,10 @@ return [
     'Basic Settings' => '',
     'Block user' => '',
     'Change Email' => '',
-    'Change Password' => '',
     'Change Username' => '',
     'Confirm new password' => '',
     'Connect account' => '',
     'Connect {provider} account' => '',
-    'Connected Accounts' => '',
     'Connected accounts' => '',
     'Could not load the user list.' => '',
     'Created at' => '',
@@ -30,7 +27,6 @@ return [
     'Currently in use' => '',
     'Default Group' => '',
     'Default Space' => '',
-    'Delete Account' => '',
     'Description' => '',
     'Did you forget your password?' => '',
     'Disconnect account' => '',
@@ -85,7 +81,6 @@ return [
     'Register now and participate!' => '',
     'Search' => '',
     'Search people...' => '',
-    'Security' => '',
     'Show At Registration' => '',
     'Show all' => '',
     'Show all content' => '',
