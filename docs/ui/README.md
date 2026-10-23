@@ -24,6 +24,8 @@ section of each page lists the gaps between the design and the current implement
 | [Filter Bar](filter-bar.md) | in review | Vue (exists) |
 | [Accordion](accordion.md) | in review | Both (proposed) |
 | [Mobile Navigation](mobile-navigation.md) | in review | PHP (proposed) |
+| [Card Directory](card-directory.md) | in review | Vue (exists) |
+| [Entity Card](entity-card.md) | in review | Vue (exists) |
 
 Technology is decided per component:
 
