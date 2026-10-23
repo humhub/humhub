@@ -566,6 +566,10 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 Each `allow…` switch also takes effect on existing grants: `TokenAuth` and `isAccessTokenRevoked()`
 reject grants of a disallowed kind.
 
+The settings of personal access tokens (`patScopes`, `patMaxLifetimeDays` and the warning about
+a missing group permission) are only shown while `allowPersonalAccessTokens` is checked; the
+form toggles them on the client. Hidden fields are still submitted, so their values are kept.
+
 **Clients.** List, create, edit, deactivate, delete, regenerate the secret. Fields:
 
 - name, description;

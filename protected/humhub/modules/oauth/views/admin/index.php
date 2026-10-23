@@ -28,18 +28,20 @@ use humhub\widgets\form\MultiSelect;
         <hr>
         <h4><?= Yii::t('OauthModule.base', 'Personal access tokens') ?></h4>
         <?= $form->field($model, 'allowPersonalAccessTokens')->checkbox() ?>
-        <?php if ($model->allowPersonalAccessTokens && !$model->isGrantedToAnyGroup(CreatePersonalAccessToken::class)): ?>
-            <?= Alert::warning(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet, so no user can use this. Allow it under <a href="{url}">Groups → Permissions</a>.', [
-                'permission' => Html::encode((new CreatePersonalAccessToken())->getTitle()),
-                'url' => Html::encode(Url::to(['/admin/group'])),
-            ]))->closeButton(false) ?>
-        <?php endif; ?>
-        <?= $form->field($model, 'patScopes')->widget(MultiSelect::class, [
-            'items' => $model->getScopeOptions(),
-            'placeholderMore' => '',
-            'options' => ['data-tags' => 'false'],
-        ]) ?>
-        <?= $form->field($model, 'patMaxLifetimeDays')->textInput(['type' => 'number', 'min' => 0]) ?>
+        <div id="oauth-pat-settings"<?= $model->allowPersonalAccessTokens ? '' : ' class="d-none"' ?>>
+            <?php if ($model->allowPersonalAccessTokens && !$model->isGrantedToAnyGroup(CreatePersonalAccessToken::class)): ?>
+                <?= Alert::warning(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet, so no user can use this. Allow it under <a href="{url}">Groups → Permissions</a>.', [
+                    'permission' => Html::encode((new CreatePersonalAccessToken())->getTitle()),
+                    'url' => Html::encode(Url::to(['/admin/group'])),
+                ]))->closeButton(false) ?>
+            <?php endif; ?>
+            <?= $form->field($model, 'patScopes')->widget(MultiSelect::class, [
+                'items' => $model->getScopeOptions(),
+                'placeholderMore' => '',
+                'options' => ['data-tags' => 'false'],
+            ]) ?>
+            <?= $form->field($model, 'patMaxLifetimeDays')->textInput(['type' => 'number', 'min' => 0]) ?>
+        </div>
 
         <hr>
         <h4><?= Yii::t('OauthModule.base', 'Lifetimes and revocation') ?></h4>
@@ -52,3 +54,9 @@ use humhub\widgets\form\MultiSelect;
     <?php ActiveForm::end() ?>
 </div>
 <?php $this->endContent(); ?>
+
+<script <?= Html::nonce() ?>>
+    $('#<?= Html::getInputId($model, 'allowPersonalAccessTokens') ?>').on('change', function () {
+        $('#oauth-pat-settings').toggleClass('d-none', !$(this).is(':checked'));
+    });
+</script>

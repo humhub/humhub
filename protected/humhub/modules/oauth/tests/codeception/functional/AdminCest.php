@@ -78,6 +78,22 @@ class AdminCest
         $I->dontSee('No group has the permission "Create personal access tokens" yet');
     }
 
+    public function testTokenSettingsAreHiddenWhileTokensAreOff(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->seeElement('#oauth-pat-settings.d-none');
+        $I->seeElement('#oauth-pat-settings select[name="SettingsForm[patScopes][]"]');
+        $I->seeElement('#oauth-pat-settings input[name="SettingsForm[patMaxLifetimeDays]"]');
+
+        Module::instance()->settings->set('allowPersonalAccessTokens', true);
+        $I->amOnRoute('/oauth/admin/index');
+        $I->seeElement('#oauth-pat-settings');
+        $I->dontSeeElement('#oauth-pat-settings.d-none');
+        // The permission warning is part of it
+        $I->see('No group has the permission "Create personal access tokens" yet', '#oauth-pat-settings');
+    }
+
     public function testSettingsAreSaved(FunctionalTester $I)
     {
         $I->amAdmin();
