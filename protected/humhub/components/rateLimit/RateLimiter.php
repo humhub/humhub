@@ -40,6 +40,11 @@ class RateLimiter extends Component
      */
     public $storage = null;
 
+    private ?string $keyPrefix = null;
+
+    /** @var array<string, true> Policies whose invalid windows were already logged in this request */
+    private array $invalidLogged = [];
+
     public function getPolicy(string $name): ?array
     {
         $policy = $this->policies[$name] ?? null;
@@ -52,7 +57,10 @@ class RateLimiter extends Component
             $limit = is_array($values) ? ($values['limit'] ?? null) : null;
             $span = is_array($values) ? ($values['span'] ?? null) : null;
             if (!is_int($limit) || !is_int($span) || $limit < 1 || $span < 1) {
-                Yii::error("Invalid rate limit window '$window' in policy '$name' ignored.", 'rateLimit');
+                if (!isset($this->invalidLogged[$name])) {
+                    Yii::error("Invalid rate limit window '$window' in policy '$name' ignored.", 'rateLimit');
+                    $this->invalidLogged[$name] = true;
+                }
                 continue;
             }
             $windows[$window] = ['limit' => $limit, 'span' => $span];
@@ -76,6 +84,7 @@ class RateLimiter extends Component
         }
 
         if (Yii::$app->cache instanceof RedisCache) {
+            $this->keyPrefix = (string)Yii::$app->cache->keyPrefix;
             return $this->storage = new RedisStorage(Yii::$app->cache->redis);
         }
 
@@ -83,7 +92,17 @@ class RateLimiter extends Component
             return $this->storage = new RedisStorage(Yii::$app->redis);
         }
 
+        $this->keyPrefix = (string)Yii::$app->cache->keyPrefix;
         return $this->storage = new CacheStorage();
+    }
+
+    /**
+     * Separates instances that share one Redis or cache.
+     */
+    protected function getKeyPrefix(): string
+    {
+        $this->getStorage();
+        return $this->keyPrefix !== null && $this->keyPrefix !== '' ? $this->keyPrefix : (string)Yii::$app->id;
     }
 
     /**
@@ -98,13 +117,13 @@ class RateLimiter extends Component
 
         $now = $this->now();
         $deciding = null;
-        $exhausted = false;
 
         try {
             $storage = $this->getStorage();
+            $prefix = $this->getKeyPrefix();
             foreach ($windows as $name => ['limit' => $limit, 'span' => $span]) {
                 $start = intdiv($now, $span) * $span;
-                $count = $storage->increment("rateLimit:$policy:$name:$subject:$start", $span);
+                $count = $storage->increment("rateLimit:$prefix:$policy:$name:$subject:$start", $span);
 
                 if ($count === $limit + 1) {
                     Yii::warning("Rate limit exceeded: policy '$policy', window '$name', subject '$subject'.", 'rateLimit');

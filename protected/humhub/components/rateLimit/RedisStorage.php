@@ -17,16 +17,15 @@ use yii\redis\ConnectionInterface;
  */
 class RedisStorage implements StorageInterface
 {
+    /** INCR and the first EXPIRE in one step, so a crash in between cannot leave a counter without expiry. */
+    private const SCRIPT = "local v = redis.call('INCR', KEYS[1]) if v == 1 then redis.call('EXPIRE', KEYS[1], ARGV[1]) end return v";
+
     public function __construct(private readonly ConnectionInterface $redis)
     {
     }
 
     public function increment(string $key, int $ttl): int
     {
-        $value = (int)$this->redis->executeCommand('INCR', [$key]);
-        if ($value === 1) {
-            $this->redis->executeCommand('EXPIRE', [$key, $ttl]);
-        }
-        return $value;
+        return (int)$this->redis->executeCommand('EVAL', [self::SCRIPT, 1, $key, $ttl]);
     }
 }

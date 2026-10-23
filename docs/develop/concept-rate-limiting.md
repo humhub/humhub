@@ -156,14 +156,16 @@ Counting uses the atomic increment of the store wherever one exists:
 
 - **Redis.** If the application cache is `yii\redis\Cache`, its connection is used. Else, if
   a `redis` component is configured, that one is used. Counting is `INCR` with `EXPIRE` on
-  the first hit, atomic and shared by every node of a cluster.
+  the first hit in one Lua script, atomic and shared by every node of a cluster.
 - **Other caches.** The application cache with `add()` / `get()` / `set()`. Under
   concurrency a counter can miss increments, and with `FileCache` every node of a cluster
   counts on its own. Both make the limit looser, never stricter. The admin documentation
-  recommends Redis for clusters.
+  recommends Redis for clusters. With `DummyCache` nothing is counted, so there are no limits.
 
-Keys are `rateLimit:<policy>:<window>:<subject>:<window start>`. They expire with their
-window.
+Keys are `rateLimit:<prefix>:<policy>:<window>:<subject>:<window start>`. They expire with
+their window. The prefix is the `keyPrefix` of the application cache (the application ID
+when the cache has none, or when a `redis` component is used with another cache), so instances
+sharing one Redis or cache do not share counters.
 
 The storage sits behind `humhub\components\rateLimit\StorageInterface`
 (`increment(string $key, int $ttl): int`), implemented by `RedisStorage` and `CacheStorage`.
