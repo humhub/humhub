@@ -388,6 +388,35 @@ stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome gly
 `content: '\f0xx'` with `font-family: FontAwesome` need the Tabler codepoint and
 `font-family: tabler-icons`, see https://tabler.io/icons.
 
+## Rate limiting of the API
+
+`/api/v2` is rate limited as of 1.20, by the OAuth scope of each action and per token (per user
+for the platform's own frontend, per IP for guests). Defaults: reading 300 requests per minute
+and 5000 per hour for tokens (600 and 10000 for the frontend), writing 60 and 1000 (120 and
+2000). Refused requests answer `429` with a `Retry-After` header. Personal access tokens are
+capped at 3 unexpired tokens per user (`maxPersonalAccessTokensPerUser`, 0 = unlimited; also
+under *Apps & API Access*).
+
+Override the policies in `config/common.php` or per environment variable, which takes the
+policies as one JSON value, and switch the limiter off entirely if needed:
+
+```sh
+HUMHUB_CONFIG__COMPONENTS__RATE_LIMITER__POLICIES='{"token.*:read":{"burst":{"limit":600}},"session.*:read":false}'
+HUMHUB_CONFIG__COMPONENTS__RATE_LIMITER__ENABLED=false
+HUMHUB_CONFIG__MODULES__OAUTH__MAX_PERSONAL_ACCESS_TOKENS_PER_USER=10
+```
+
+**Use Redis on clusters.** With Redis as application cache (or a `redis` component) all nodes
+count together. With other caches every node counts on its own, and under `DummyCache` nothing
+is limited. Give the Redis connection a short `connectionTimeout` (e.g. `1`): if Redis is
+unreachable, requests are not refused, but each attempt waits for the timeout, by default
+PHP's `default_socket_timeout` of 60 seconds. After a failure, rate limiting pauses for 60
+seconds.
+
+**Behind a reverse proxy or load balancer, configure `trustedHosts`** of the request component.
+Otherwise every guest request appears to come from the proxy and all guests share one budget.
+Details: [Rate limiting](../develop/concept-rate-limiting.md).
+
 ## Notification settings
 
 The notification settings of users and your defaults are converted on update. Those of the core

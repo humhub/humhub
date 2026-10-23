@@ -29,6 +29,7 @@ class SettingsForm extends Model
     public $allowPersonalAccessTokens;
     public $patScopes = [];
     public $patMaxLifetimeDays;
+    public $maxPersonalAccessTokensPerUser;
     public $refreshTokenLifetimeDays;
     public $grantMaxLifetimeDays;
     public $revokeOnPasswordChange;
@@ -47,6 +48,7 @@ class SettingsForm extends Model
         $this->allowPersonalAccessTokens = $module->allowsPersonalAccessTokens();
         $this->patScopes = $this->onlyRegistered($module->getPatScopes());
         $this->patMaxLifetimeDays = $module->getPatMaxLifetimeDays();
+        $this->maxPersonalAccessTokensPerUser = $module->getMaxPersonalAccessTokensPerUser();
         $this->refreshTokenLifetimeDays = $module->getRefreshTokenLifetimeDays();
         $this->grantMaxLifetimeDays = $module->getGrantMaxLifetimeDays();
         $this->revokeOnPasswordChange = $module->revokesOnPasswordChange();
@@ -64,6 +66,9 @@ class SettingsForm extends Model
             ['patMaxLifetimeDays', 'integer', 'min' => 0],
             ['refreshTokenLifetimeDays', 'integer', 'min' => 1],
             ['grantMaxLifetimeDays', 'integer', 'min' => 0],
+            ['maxPersonalAccessTokensPerUser', 'integer', 'min' => 0],
+            ['maxPersonalAccessTokensPerUser', 'required'],
+            ['maxPersonalAccessTokensPerUser', 'validateMaxPersonalAccessTokensPerUser'],
             [['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'], 'required'],
             ['patScopes', 'each', 'rule' => ['in', 'range' => $scopeIds]],
             ['appIds', 'validateAppIds'],
@@ -95,6 +100,7 @@ class SettingsForm extends Model
             'allowPersonalAccessTokens' => Yii::t('OauthModule.base', 'Allow personal access tokens'),
             'patScopes' => Yii::t('OauthModule.base', 'Scopes available to personal access tokens'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', 'Maximum lifetime of personal access tokens (days)'),
+            'maxPersonalAccessTokensPerUser' => Yii::t('OauthModule.base', 'Maximum personal access tokens per user'),
             'refreshTokenLifetimeDays' => Yii::t('OauthModule.base', 'Refresh token lifetime (days)'),
             'grantMaxLifetimeDays' => Yii::t('OauthModule.base', 'Maximum lifetime of a grant (days)'),
             'revokeOnPasswordChange' => Yii::t('OauthModule.base', 'Revoke access when the password changes'),
@@ -116,6 +122,7 @@ class SettingsForm extends Model
             'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Create personal access tokens".'),
             'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do. An empty selection means no access.'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited and offers "never" as a lifetime.'),
+            'maxPersonalAccessTokensPerUser' => Yii::t('OauthModule.base', '0 means unlimited. Expired tokens do not count.'),
             'refreshTokenLifetimeDays' => Yii::t('OauthModule.base', 'Idle lifetime: renewed on every refresh, so an app in regular use stays signed in.'),
             'grantMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited.'),
             'revokeOnPasswordChange' => Yii::t('OauthModule.base', 'A password change deletes all grants of the user except the app session the change was made in.'),
@@ -129,6 +136,14 @@ class SettingsForm extends Model
     {
         return !Module::instance()->isAppIdsConfigured()
             && (bool)Yii::$app->user->getIdentity()?->isSystemAdmin();
+    }
+
+    public function validateMaxPersonalAccessTokensPerUser(string $attribute): void
+    {
+        if (Module::instance()->isMaxPersonalAccessTokensPerUserConfigured()
+            && (int)$this->$attribute !== Module::instance()->getMaxPersonalAccessTokensPerUser()) {
+            $this->addError($attribute, Yii::t('OauthModule.base', 'This is set in the configuration file.'));
+        }
     }
 
     public function validateAppIds(string $attribute): void
@@ -201,6 +216,9 @@ class SettingsForm extends Model
         }
         foreach (['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'] as $name) {
             $settings->set($name, (int)$this->$name);
+        }
+        if (!Module::instance()->isMaxPersonalAccessTokensPerUserConfigured()) {
+            $settings->set('maxPersonalAccessTokensPerUser', (int)$this->maxPersonalAccessTokensPerUser);
         }
         $selection = array_values(array_unique($this->patScopes));
         $default = ScopeRegistry::getDefaultRestrictedScopeIds();

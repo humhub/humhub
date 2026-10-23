@@ -52,7 +52,7 @@ class ScopeFilter extends ActionFilter
             return true;
         }
 
-        $required = (array)($this->scopes[$action->id] ?? $this->scopes['*'] ?? []);
+        $required = (array)(self::resolveScope($this->scopes, $action->id) ?? []);
         if ($required === [] && $this->requireDeclaredScope) {
             // No scope can reach the action, so none is named.
             return $this->deny(null);
@@ -69,6 +69,17 @@ class ScopeFilter extends ActionFilter
         }
 
         return $this->deny(implode(' ', $required !== [] ? $required : [ScopeRegistry::FULL]));
+    }
+
+    /**
+     * The scope declared for an action: its own entry, else the `*` entry.
+     *
+     * @param array<string, string|string[]> $scopes action id (or `*`) → scope
+     * @return string|string[]|null as declared, a list meaning any of its scopes
+     */
+    public static function resolveScope(array $scopes, string $actionId): string|array|null
+    {
+        return $scopes[$actionId] ?? $scopes['*'] ?? null;
     }
 
     /**

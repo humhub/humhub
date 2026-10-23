@@ -8,6 +8,7 @@ use humhub\widgets\bootstrap\Button;
 /* @var Grant[] $grants */
 /* @var array<int, string[]> $scopeLabels */
 /* @var bool $canCreate */
+/* @var bool $limitReached */
 ?>
 <?php if ($grants !== []): ?>
     <ul class="list-group mb-3">
@@ -39,7 +40,9 @@ use humhub\widgets\bootstrap\Button;
     </ul>
 <?php endif ?>
 
-<?php if ($canCreate): ?>
+<?php if ($canCreate && $limitReached): ?>
+    <p class="text-body-secondary"><?= Html::encode(PersonalAccessTokenService::getLimitMessage()) ?></p>
+<?php elseif ($canCreate): ?>
     <?= Button::primary(Yii::t('OauthModule.base', 'Create token'))
         ->link(['/oauth/account/create-token'])
         ->icon('plus')
