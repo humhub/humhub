@@ -209,6 +209,33 @@ class AccountCest
         Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
     }
 
+    public function testFullTokenScopeIsStoredAlone(FunctionalTester $I)
+    {
+        $this->allowTokens($I);
+        Module::instance()->settings->set('patScopes', json_encode(['full', 'content:read', 'spaces:read']));
+
+        try {
+            $I->amUser1();
+            $I->amOnRoute('/oauth/account/create-token');
+            $I->seeElement('#personalaccesstokenform-scopes input[value="full"]');
+            // The checkbox list gets the script that locks the other scopes while `full` is checked
+            Assert::assertStringContainsString('"#personalaccesstokenform-scopes"', $I->grabPageSource());
+
+            $I->submitForm('form[action*="create-token"]', [
+                'PersonalAccessTokenForm[name]' => 'Agent',
+                'PersonalAccessTokenForm[scopes]' => ['content:read', 'full'],
+                'PersonalAccessTokenForm[lifetime]' => '30',
+                'PersonalAccessTokenForm[currentPassword]' => self::PASSWORD,
+            ]);
+            $I->see('Copy the token now.');
+
+            $grant = Grant::findOne(['type' => Grant::TYPE_PAT, 'user_id' => 2]);
+            Assert::assertSame(['full'], $grant->getScopeIds());
+        } finally {
+            Module::instance()->settings->delete('patScopes');
+        }
+    }
+
     public function testRepeatedWrongPasswordsAreThrottled(FunctionalTester $I)
     {
         $this->allowTokens($I);

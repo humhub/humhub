@@ -340,7 +340,10 @@ existing grants immediately:
 - an admin client the administrator allowed it;
 - a PAT, if the administrator added it to `patScopes`.
 
-`full` covers every other scope, so a scope selection containing it is stored as `full` alone.
+`full` covers every other scope, so a scope selection containing it is stored as `full` alone
+(`PersonalAccessTokenForm`, `ClientForm`). In their checkbox lists, checking `full` checks and
+disables every other scope; unchecking it restores the previous selection. Disabled checkboxes
+are not submitted, so the form models normalize on the server.
 
 Scopes are grant-based: enforcement always uses the grant's effective scopes, never the
 `scopes` claim of an access token. At code exchange and refresh, `finalizeScopes()` writes

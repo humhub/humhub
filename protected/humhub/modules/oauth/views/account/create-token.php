@@ -1,6 +1,7 @@
 <?php
 
 use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\oauth\components\RecentAuthentication;
 use humhub\modules\oauth\models\forms\PersonalAccessTokenForm;
 use humhub\widgets\bootstrap\Button;
@@ -21,6 +22,7 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'name')->textInput(['maxlength' => 100, 'autocomplete' => 'off']) ?>
 
     <?= $form->field($model, 'scopes')->checkboxList($model->getScopeOptions()) ?>
+    <?= $this->render('@oauth/views/common/_full-scope', ['listId' => Html::getInputId($model, 'scopes')]) ?>
 
     <?= $form->field($model, 'lifetime')->dropDownList($model->getLifetimeOptions()) ?>
 

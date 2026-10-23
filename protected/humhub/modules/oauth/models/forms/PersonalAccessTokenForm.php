@@ -77,6 +77,11 @@ class PersonalAccessTokenForm extends Model
     {
         $this->lifetime = is_scalar($this->lifetime) ? (string)$this->lifetime : null;
 
+        // `full` covers every other scope, so it is stored alone
+        if (is_array($this->scopes) && in_array(ScopeRegistry::FULL, $this->scopes, true)) {
+            $this->scopes = [ScopeRegistry::FULL];
+        }
+
         return parent::beforeValidate();
     }
 

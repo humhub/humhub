@@ -233,6 +233,8 @@ class AdminCest
     {
         $I->amAdmin();
         $I->amOnRoute('/oauth/admin/client');
+        // The checkbox list gets the script that locks the other scopes while `full` is checked
+        Assert::assertStringContainsString('"#clientform-scopes"', $I->grabPageSource());
         $I->submitForm('#oauth-client-form', [
             'ClientForm[name]' => 'Server app',
             'ClientForm[redirectUris]' => 'https://example.org/callback',
