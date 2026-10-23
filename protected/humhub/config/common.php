@@ -29,6 +29,17 @@ if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);
 }
 
+// The context dump of log entries contains `$_SERVER`, which also holds every variable loaded from `.env`.
+// Values of keys whose name contains one of these words are masked (case-insensitive, e.g.
+// `HUMHUB_CONFIG__COMPONENTS__DB__PASSWORD`, `HUMHUB_FIXED_SETTINGS__BASE__MAILER_DSN`, `HTTP_AUTHORIZATION`).
+$logMaskedWords = ['PASS', 'SECRET', 'KEY', 'TOKEN', 'DSN', 'CREDENTIAL', 'AUTH', 'PRIVATE', 'SALT', 'COOKIE'];
+$logMaskVars = [];
+foreach (['_SERVER', '_GET'] as $logVar) {
+    foreach ($logMaskedWords as $logMaskedWord) {
+        $logMaskVars[] = $logVar . '.*' . $logMaskedWord . '*';
+    }
+}
+
 $logTargetConfig = [
     'levels' => ['error', 'warning'],
     'except' => [
@@ -41,12 +52,7 @@ $logTargetConfig = [
         'yii\web\User::renewAuthStatus',
     ],
     'logVars' => ['_GET', '_SERVER'],
-    'maskVars' => [
-        '_SERVER.HTTP_AUTHORIZATION',
-        '_SERVER.PHP_AUTH_USER',
-        '_SERVER.PHP_AUTH_PW',
-        '_SERVER.HUMHUB_CONFIG__COMPONENTS__DB__PASSWORD',
-    ],
+    'maskVars' => $logMaskVars,
 ];
 
 $config = [
