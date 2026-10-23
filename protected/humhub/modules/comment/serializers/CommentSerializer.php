@@ -153,7 +153,7 @@ class CommentSerializer
         }
 
         $firstId = $comments[0]->id ?? null;
-        $lastId = $comments[array_key_last($comments)]->id ?? null;
+        $lastId = $comments === [] ? null : $comments[array_key_last($comments)]->id;
 
         return [
             'results' => array_map(fn(Comment $c) => static::comment($c), $comments),
