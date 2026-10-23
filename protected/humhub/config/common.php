@@ -87,6 +87,17 @@ $config = [
         'moduleManager' => [
             'class' => \humhub\components\ModuleManager::class,
         ],
+        'rateLimiter' => [
+            'class' => \humhub\components\rateLimit\RateLimiter::class,
+            'policies' => [
+                'token.*:read' => ['burst' => [300, 60], 'long' => [5000, 3600]],
+                'token.*:write' => ['burst' => [60, 60], 'long' => [1000, 3600]],
+                'token.full' => ['burst' => [300, 60], 'long' => [5000, 3600]],
+                'session.*:read' => ['burst' => [600, 60], 'long' => [10000, 3600]],
+                'session.*:write' => ['burst' => [120, 60], 'long' => [2000, 3600]],
+                'session.full' => ['burst' => [600, 60], 'long' => [10000, 3600]],
+            ],
+        ],
         'gateManager' => [
             'class' => \humhub\components\gates\GateManager::class,
         ],
