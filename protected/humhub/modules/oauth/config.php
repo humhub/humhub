@@ -9,7 +9,7 @@ use humhub\modules\oauth\Events;
 use humhub\modules\oauth\Module;
 use humhub\modules\user\controllers\AuthController;
 use humhub\modules\user\models\Password;
-use humhub\modules\user\widgets\SecuritySettingsMenu;
+use humhub\modules\user\widgets\security\SecuritySessionSections;
 use yii\db\ActiveRecord;
 use yii\web\User;
 
@@ -37,7 +37,7 @@ return [
         [AuthController::class, AuthController::EVENT_AFTER_LOGIN, [Events::class, 'onAuthAfterLogin']],
         [Password::class, ActiveRecord::EVENT_AFTER_INSERT, [Events::class, 'onPasswordAfterInsert']],
         [Password::class, ActiveRecord::EVENT_AFTER_UPDATE, [Events::class, 'onPasswordAfterUpdate']],
-        [SecuritySettingsMenu::class, SecuritySettingsMenu::EVENT_INIT, [Events::class, 'onSecuritySettingsMenuInit']],
+        [SecuritySessionSections::class, SecuritySessionSections::EVENT_INIT, [Events::class, 'onSecuritySessionSectionsInit']],
         [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenuInit']],
     ],
 ];

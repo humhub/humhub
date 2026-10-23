@@ -34,7 +34,7 @@ use humhub\widgets\form\ActiveForm;
     <?php endif ?>
 
     <?= Button::save(Yii::t('OauthModule.base', 'Create token'))->submit() ?>
-    <?= Button::light(Yii::t('base', 'Cancel'))->link(['/oauth/account/index']) ?>
+    <?= Button::light(Yii::t('base', 'Cancel'))->link(['/user/security/sessions']) ?>
 
     <?php ActiveForm::end() ?>
 </section>

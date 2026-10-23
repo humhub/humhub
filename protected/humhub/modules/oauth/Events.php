@@ -20,11 +20,13 @@ use humhub\modules\oauth\models\RefreshToken;
 use humhub\modules\oauth\models\WebSessionCode;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\WebSessionService;
-use humhub\modules\oauth\widgets\AppsSections;
+use humhub\modules\oauth\widgets\ConnectedAppsSection;
+use humhub\modules\oauth\widgets\DevicesSection;
+use humhub\modules\oauth\widgets\TokensSection;
 use humhub\modules\user\events\UserEvent as AuthUserEvent;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\SecuritySettingsMenu;
+use humhub\modules\user\widgets\security\SecuritySessionSections;
 use humhub\widgets\menu\MenuLink;
 use Yii;
 use yii\base\ActionEvent;
@@ -240,22 +242,15 @@ class Events
     }
 
     /**
-     * Adds the "Apps & Tokens" tab to the security settings.
+     * Adds the app devices, connected apps and personal access tokens to the "Devices & Access" tab.
      */
-    public static function onSecuritySettingsMenuInit(Event $event): void
+    public static function onSecuritySessionSectionsInit(Event $event): void
     {
-        if (!AppsSections::isAvailable()) {
-            return;
-        }
-
-        /** @var SecuritySettingsMenu $menu */
-        $menu = $event->sender;
-        $menu->addEntry(new MenuLink([
-            'label' => Yii::t('OauthModule.base', 'Apps & Tokens'),
-            'url' => ['/oauth/account/index'],
-            'sortOrder' => 350,
-            'isActive' => ControllerHelper::isActivePath('oauth', 'account'),
-        ]));
+        /** @var SecuritySessionSections $sections */
+        $sections = $event->sender;
+        $sections->addWidget(DevicesSection::class, [], ['sortOrder' => 200]);
+        $sections->addWidget(ConnectedAppsSection::class, [], ['sortOrder' => 300]);
+        $sections->addWidget(TokensSection::class, [], ['sortOrder' => 400]);
     }
 
     /**

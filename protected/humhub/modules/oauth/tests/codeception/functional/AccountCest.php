@@ -91,10 +91,12 @@ class AccountCest
 
         $I->amUser1();
         $I->amOnRoute('/user/security/login');
-        $I->see('Apps & Tokens');
+        $I->see('Devices & Access');
+        $I->dontSee('Apps & Tokens');
 
-        $I->amOnRoute('/oauth/account/index');
-        $I->see('Devices');
+        $I->amOnRoute('/user/security/sessions');
+        $I->see('Browser sessions');
+        $I->see('Devices signed in with the HumHub app.');
         $I->see('Safari · iOS');
         $I->see('Sign out');
 
@@ -108,13 +110,13 @@ class AccountCest
         $grant = $this->usedGrant(2, 'agent', ['content:read', 'unknown:scope']);
 
         $I->amUser1();
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->see('Connected apps');
         $I->see('Research Agent');
         $I->see('Read content, comments and likes');
         $I->dontSee('Read spaces and memberships');
         $I->dontSee('unknown:scope');
-        $I->dontSee('Devices');
+        $I->dontSee('Devices signed in with the HumHub app.');
 
         $this->revoke($I, $grant);
         Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
@@ -124,12 +126,13 @@ class AccountCest
     {
         (new GrantService())->createOAuthGrant(User::findOne(['id' => 2]), Client::findByClientId(Client::SYSTEM_CLIENT_ID), ['full']);
 
-        // Nothing to list, so no tab
+        // Nothing to list, so no section
         $I->amUser1();
-        $I->amOnRoute('/user/security/login');
-        $I->dontSee('Apps & Tokens');
-        $I->amOnRoute('/oauth/account/index');
-        $I->seeResponseCodeIs(404);
+        $I->amOnRoute('/user/security/sessions');
+        $I->see('Browser sessions');
+        $I->dontSee('Devices signed in with the HumHub app.');
+        $I->dontSee('Connected apps');
+        $I->dontSee('Personal access tokens');
     }
 
     public function testExpiredTokensKeepTheTab(FunctionalTester $I)
@@ -138,7 +141,7 @@ class AccountCest
         $grant->updateAttributes(['expires_at' => time() - 60]);
 
         $I->amUser1();
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->see('Old script');
         $I->see('Expired');
     }
@@ -150,7 +153,7 @@ class AccountCest
         (new PersonalAccessTokenService())->create(User::findOne(['id' => 2]), '<script>alert(2)</script>', ['content:read'], 30);
 
         $I->amUser1();
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->see('Connected apps');
         $I->see('Personal access tokens');
         $source = $I->grabPageSource();
@@ -164,11 +167,13 @@ class AccountCest
         $this->allowTokens($I);
 
         $I->amUser1();
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->see('Personal access tokens');
         $I->see('Create token');
 
         $I->amOnRoute('/oauth/account/create-token');
+        // The page belongs to the tab of its section
+        $I->see('Devices & Access', '.nav-tabs .nav-link.active');
         $I->submitForm('form[action*="create-token"]', [
             'PersonalAccessTokenForm[name]' => 'Backup script',
             'PersonalAccessTokenForm[scopes]' => ['content:read'],
@@ -195,7 +200,7 @@ class AccountCest
         Assert::assertSame(['content:read'], $grant->getScopeIds());
         Assert::assertEqualsWithDelta(time() + 30 * 86400, $grant->expires_at, 60);
 
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->see('Backup script');
         $I->see('hhpat_…' . $grant->token_hint);
         $I->dontSee($match[0]);
@@ -228,7 +233,7 @@ class AccountCest
         $this->usedGrant(2, Client::SYSTEM_CLIENT_ID, ['full']);
 
         $I->amUser1();
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->dontSee('Create token');
 
         $I->amOnRoute('/oauth/account/create-token');
@@ -246,14 +251,22 @@ class AccountCest
         Assert::assertTrue(Grant::find()->where(['id' => $foreign->id])->exists());
     }
 
-    public function testTabIsHiddenWithoutGrantsOrPermissions(FunctionalTester $I)
+    public function testTokenSectionIsHiddenWithoutTokensOrPermission(FunctionalTester $I)
     {
         Module::instance()->settings->set('allowPersonalAccessTokens', true);
 
         $I->amUser1();
-        $I->amOnRoute('/user/security/login');
-        $I->dontSee('Apps & Tokens');
+        $I->amOnRoute('/user/security/sessions');
+        $I->see('Browser sessions');
+        $I->dontSee('Personal access tokens');
+        $I->dontSee('Create token');
+    }
 
+    public function testFormerAppsAndTokensPageIsGone(FunctionalTester $I)
+    {
+        $this->allowTokens($I);
+
+        $I->amUser1();
         $I->amOnRoute('/oauth/account/index');
         $I->seeResponseCodeIs(404);
     }
@@ -265,7 +278,7 @@ class AccountCest
         $I->amAdmin();
         Yii::$app->user->getImpersonation()->start(User::findOne(['id' => 2]));
 
-        $I->amOnRoute('/oauth/account/index');
+        $I->amOnRoute('/user/security/sessions');
         $I->seeResponseCodeIs(200);
 
         $I->amOnRoute('/oauth/account/create-token');

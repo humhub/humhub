@@ -13,15 +13,16 @@ use humhub\modules\oauth\components\CredentialActions;
 use humhub\modules\oauth\models\forms\PersonalAccessTokenForm;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
-use humhub\modules\oauth\widgets\AppsSections;
 use humhub\modules\oauth\widgets\TokensSection;
 use humhub\modules\user\components\BaseAccountController;
+use humhub\modules\user\widgets\security\SecuritySessionSections;
+use humhub\modules\user\widgets\SecuritySettingsMenu;
 use Yii;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * The "Apps & Tokens" tab of the account's security settings.
+ * Actions of the OAuth sections in the "Devices & Access" tab of the account's security settings.
  *
  * @since 1.20
  */
@@ -39,7 +40,6 @@ class AccountController extends BaseAccountController
     public function init()
     {
         $this->setActionTitles([
-            'index' => Yii::t('OauthModule.base', 'Apps & Tokens'),
             'create-token' => Yii::t('OauthModule.base', 'Create token'),
         ]);
 
@@ -52,20 +52,14 @@ class AccountController extends BaseAccountController
             return false;
         }
 
-        if (!AppsSections::isAvailable()) {
-            throw new NotFoundHttpException();
-        }
+        // The pages belong to the tab of their sections
+        SecuritySettingsMenu::markAsActive(['/user/security/sessions']);
 
         if ($action->id === 'create-token') {
             $this->denyWhileImpersonating();
         }
 
         return true;
-    }
-
-    public function actionIndex()
-    {
-        return $this->render('index');
     }
 
     public function actionRevoke(int $id)
@@ -78,8 +72,9 @@ class AccountController extends BaseAccountController
         (new GrantService())->revoke($grant);
         $this->view->success(Yii::t('OauthModule.base', 'Access revoked.'));
 
-        // Without the last grant the tab may be gone
-        return $this->redirect(AppsSections::isAvailable(true) ? ['index'] : ['/user/security/index']);
+        // Without the last grant the tab may be gone (no browser sessions listed)
+        $tabVisible = (new SecuritySessionSections())->hasVisibleSections();
+        return $this->redirect($tabVisible ? ['/user/security/sessions'] : ['/user/security/index']);
     }
 
     public function actionCreateToken()

@@ -512,32 +512,34 @@ It cannot be edited or deleted. It can only be deactivated through `allowApp`.
 
 ## User interface
 
-### Account: "Apps & Tokens"
+### Account: "Devices & Access"
 
-A new tab in the security settings, `SecuritySettingsMenu`:
+The module adds its sections to the "Devices & Access" tab of the security settings
+(`user/security/sessions`, the stack `SecuritySessionSections`), below the browser sessions of
+the user module. There is no tab of its own.
 
-- label "Apps & Tokens";
-- sortOrder 350;
-- route `oauth/account/index`.
+The sections:
 
-The tab is visible when any of these holds:
-
-- the user has a PAT (also an expired one) or an OAuth grant that has been used
-  (`last_used_at` set); grants whose code was never exchanged are not listed;
-- the user may create PATs (`allowPersonalAccessTokens` and `CreatePersonalAccessToken`).
-
-Its sections:
-
-- **Devices.** Grants of the system client: device (from `user_agent`, via
+- **Devices** (sortOrder 200). Grants of the system client: device (from `user_agent`, via
   `UserAgentHelper`), created, last used, *Sign out*.
-- **Connected apps.** Grants of admin clients: client, scopes, created, last used,
+- **Connected apps** (300). Grants of admin clients: client, scopes, created, last used,
   *Disconnect*.
-- **Personal access tokens.** Name, `hhpat_…<hint>`, scopes, expiry, last used, *Revoke*.
-  Then *Create token* (name, scopes from `patScopes`, lifetime, re-authentication). The token
-  is shown once.
+- **Personal access tokens** (400). Name, `hhpat_…<hint>`, scopes, expiry, last used,
+  *Revoke*. Then *Create token* (name, scopes from `patScopes`, lifetime,
+  re-authentication). The token is shown once.
+
+Devices and connected apps are shown when they list a grant: one that has been used
+(`last_used_at` set); grants whose code was never exchanged are not listed. Personal access
+tokens are shown when the user has a PAT (also an expired one) or may create PATs
+(`allowPersonalAccessTokens` and `CreatePersonalAccessToken`).
+
+`oauth/account` only handles the actions of these sections (`revoke`, `create-token`); its
+pages render in the security layout with the tab active and lead back to
+`user/security/sessions`.
 
 Creating a PAT or connecting an admin client sends the user the notification
-`GrantCreatedNotification` (web and mail). Signing in with the app does not.
+`GrantCreatedNotification` (web and mail), linking to the tab. Signing in with the app does
+not.
 
 ### Administration: "Apps & API Access"
 
@@ -664,7 +666,7 @@ protected/humhub/modules/oauth/
 ├── permissions/CreatePersonalAccessToken.php
 ├── migrations/
 ├── views/
-├── widgets/                    # the sections of "Apps & Tokens" (devices, connected apps,
+├── widgets/                    # the sections in "Devices & Access" (devices, connected apps,
 │                               # tokens)
 └── tests/
 ```
@@ -680,6 +682,9 @@ protected/humhub/modules/oauth/
     `findOpenGate()`;
   - update `docs/develop/user-gates.md` accordingly.
 - `components/psr/` (new).
+- user module: the "Sessions" tab of the security settings became "Devices & Access", a section
+  stack (`SecuritySessionSections`) with the browser sessions first, which other modules
+  extend on `EVENT_INIT`.
 - `composer.json`: `league/oauth2-server` ^9.4, `guzzlehttp/psr7` ^2.13.
 - Docs:
   - `docs/develop/concept-api.md` "Authentication model": core now ships `TokenAuth`, it runs

@@ -37,7 +37,7 @@ final class GrantCreatedNotification extends BaseNotification
      */
     public function getUrl(bool $scheme = false): ?string
     {
-        return Url::to(['/oauth/account/index'], $scheme);
+        return Url::to(['/user/security/sessions'], $scheme);
     }
 
     /**

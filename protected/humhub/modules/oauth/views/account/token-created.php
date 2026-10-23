@@ -16,7 +16,7 @@ use humhub\helpers\Html;
             ['id' => 'oauth-created-token', 'label' => Yii::t('OauthModule.base', 'Personal access token'), 'value' => $token, 'copy' => true],
         ],
         'copied' => Yii::t('OauthModule.base', 'The token has been copied to your clipboard.'),
-        'doneUrl' => ['/oauth/account/index'],
+        'doneUrl' => ['/user/security/sessions'],
     ]) ?>
 </section>
 <?php $this->endContent() ?>

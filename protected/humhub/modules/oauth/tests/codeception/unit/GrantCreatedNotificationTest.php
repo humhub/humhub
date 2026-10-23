@@ -16,6 +16,7 @@ use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\helpers\Url;
 
 /**
  * The queue of the test application is synchronous, so the notification is written inline.
@@ -40,6 +41,7 @@ class GrantCreatedNotificationTest extends HumHubDbTestCase
         $notification = NotificationManager::load($rows[0]);
         $this->assertInstanceOf(GrantCreatedNotification::class, $notification);
         $this->assertStringContainsString('CI script', strip_tags($notification->asWeb()));
+        $this->assertSame(Url::to(['/user/security/sessions']), $notification->getUrl());
     }
 
     public function testNotificationSurvivesTheRevokedGrant()
