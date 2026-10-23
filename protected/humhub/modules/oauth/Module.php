@@ -54,6 +54,12 @@ class Module extends \humhub\components\Module
     public array|string|null $appIds = null;
 
     /**
+     * @var int|null the maximum number of active personal access tokens per user, 0 = unlimited; when set, it
+     * takes precedence over the stored setting
+     */
+    public ?int $maxPersonalAccessTokensPerUser = null;
+
+    /**
      * @var int lifetime of an access token in seconds
      */
     public int $accessTokenLifetime = 3600;
@@ -197,6 +203,19 @@ class Module extends \humhub\components\Module
     public function getPatMaxLifetimeDays(): int
     {
         return max(0, (int)$this->settings->get('patMaxLifetimeDays', 365));
+    }
+
+    /**
+     * @return int maximum number of active personal access tokens per user, 0 = unlimited
+     */
+    public function getMaxPersonalAccessTokensPerUser(): int
+    {
+        return max(0, $this->maxPersonalAccessTokensPerUser ?? (int)$this->settings->get('maxPersonalAccessTokensPerUser', 3));
+    }
+
+    public function isMaxPersonalAccessTokensPerUserConfigured(): bool
+    {
+        return $this->maxPersonalAccessTokensPerUser !== null;
     }
 
     public function revokesOnPasswordChange(): bool

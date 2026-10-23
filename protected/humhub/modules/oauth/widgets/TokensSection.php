@@ -11,6 +11,8 @@ namespace humhub\modules\oauth\widgets;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
+use humhub\modules\oauth\services\PersonalAccessTokenService;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -60,6 +62,7 @@ class TokensSection extends GrantSection
             'grants' => $this->getGrants(),
             'scopeLabels' => $scopeLabels,
             'canCreate' => self::canCreate(),
+            'limitReached' => self::canCreate() && (new PersonalAccessTokenService())->hasReachedLimit(User::findOne(['id' => self::getUserId()])),
         ]);
     }
 }

@@ -58,6 +58,13 @@ use humhub\widgets\form\MultiSelect;
                 'options' => ['data-tags' => 'false'],
             ]) ?>
             <?= $form->field($model, 'patMaxLifetimeDays')->textInput(['type' => 'number', 'min' => 0]) ?>
+            <?= $form->field($model, 'maxPersonalAccessTokensPerUser')->textInput([
+                'type' => 'number',
+                'min' => 0,
+                'readonly' => Module::instance()->isMaxPersonalAccessTokensPerUserConfigured(),
+            ])->hint($model->getAttributeHint('maxPersonalAccessTokensPerUser') . (Module::instance()->isMaxPersonalAccessTokensPerUserConfigured()
+                ? ' ' . Yii::t('OauthModule.base', 'Set in the configuration file.')
+                : '')) ?>
         </div>
 
         <hr>
