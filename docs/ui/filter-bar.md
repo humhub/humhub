@@ -61,7 +61,7 @@ filter type.
 ## Mobile
 
 The bar reacts to its **own width** (container query), not to the viewport. It therefore folds
-the same way in a narrow content column next to the sidebar as it does on a phone.
+the same way in a narrow content column as it does on a phone.
 
 | Bar width | Filters per row | Folded |
 |---|---|---|

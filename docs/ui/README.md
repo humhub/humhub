@@ -13,6 +13,24 @@ Since 1.20, parts of the design already exist in core as Vue components: `PageTo
 [Vue.js Components](../develop/ui-js-vuejs-components.md)). For those, the *Implementation in core*
 section of each page lists the gaps between the design and the current implementation.
 
+## Themes
+
+This styleguide describes the new design for the **Community theme**, the default theme in core
+(`protected/humhub/themes/HumHub`). Every component page refers to it.
+
+The designer's prototype is built on the **Enterprise theme** (module `enterprise-theme`). Most
+of the design applies to both themes unchanged: toolbar, tabs, tables, forms, dialogs, cards,
+feedback and the mobile navigation. The differences are in the page frame:
+
+| | Community theme (core) | Enterprise theme |
+|---|---|---|
+| Main navigation | Horizontal, in the [Top Bar](top-bar.md) | Vertical, in the left [Sidebar](sidebar.md) |
+| Spaces | Space chooser dropdown in the top bar | Space list in the sidebar, with filter |
+| Space categories | — | Yes ("space types"), also as a directory filter |
+| Phones | [Mobile Navigation](mobile-navigation.md) | [Mobile Navigation](mobile-navigation.md) |
+
+Pages that only apply to the Enterprise theme say so in their header.
+
 **Start here:** [Principles](principles.md). These are the rules every component follows: hide,
 don't disable; one main action per header; what the colours mean; how things fold on mobile.
 
@@ -31,7 +49,17 @@ How a page is framed and how people move between pages.
 | [Page Toolbar](page-toolbar.md) | The card at the top of a page: title, actions, filters or tabs | in review | Both (proposed) |
 | [Pill Tabs](tabs.md) | Switch between sibling pages or views | in review | Both (proposed) |
 | [Master / Detail & Section Menu](master-detail.md) | Side pane + main pane that folds on mobile; the administration menu | in review | Both (proposed) |
+| [Top Bar](top-bar.md) | Search, drawers, user menu, space chooser and main navigation | in review | Both (proposed) |
+| [Space & Profile Header](container-header.md) | Cover, picture, counters, relationship buttons, tabs | in review | PHP (proposed) |
 | [Mobile Navigation](mobile-navigation.md) | Bottom bar, menu sheet and widget drawer on phones | in review | PHP (proposed) |
+
+### Enterprise theme
+
+Parts that only the Enterprise theme adds.
+
+| Component | What it is | Status | Technology |
+|---|---|---|---|
+| [Sidebar](sidebar.md) | Main navigation and the user's spaces in categories, on the left | in review | PHP + Vue (exists in the theme) |
 
 ### Basic components
 
@@ -56,6 +84,17 @@ Entering and changing data.
 | [Date Picker](date-picker.md) | Dates, ranges and times | in review | Both |
 | [Switch, Checkbox & Radio](choice-controls.md) | On/off settings, choices, radio cards, matrix | in review | Both |
 | [File Upload](file-upload.md) | Dropzone, file rows with progress, image settings | in review | Both |
+
+### Feedback
+
+Telling people what happens.
+
+| Component | What it is | Status | Technology |
+|---|---|---|---|
+| [Toast](toast.md) | Short message about the result of an action, grouped | in review | Vue (exists) |
+| [Tooltip](tooltip.md) | Names an icon control or shows cut-off text | in review | Both |
+| [Hover Card](hover-card.md) | Preview of a person or space | in review | Both |
+| [Loading, Empty & Error States](loading-empty-error.md) | Skeletons, empty messages with a first step, retry | in review | Both |
 
 ### Collections
 
@@ -96,6 +135,9 @@ How components combine into a whole page.
 | …let people find and pick records (people, spaces, topics) | Picker ([Select & Pickers](select-pickers.md)) |
 | …offer a setting that is on or off | Switch ([Switch, Checkbox & Radio](choice-controls.md)) |
 | …let people choose items or confirm something | Checkbox ([Switch, Checkbox & Radio](choice-controls.md)) |
+| …report the result of an action | [Toast](toast.md) |
+| …explain an icon button | [Tooltip](tooltip.md) |
+| …show that there is nothing (yet) | Empty state ([Loading, Empty & Error](loading-empty-error.md)) |
 | …mark a state or a fact | Chip ([Badges & Status](badges.md)) |
 | …show that something waits | Count badge on the menu entry, dot on the page ([Badges & Status](badges.md)) |
 
@@ -103,9 +145,6 @@ How components combine into a whole page.
 
 These appear in the design but have no page yet. They follow when their implementation starts:
 
-- **Layout:** top bar (search, message and notification drawers, user menu), sidebar (main nav,
-  space categories), space and profile header
-- **Feedback:** toast, tooltip, hover card, skeleton loading, empty states
 - **Stream:** wall entry, composer, comments, topic chips, embedded media
 - **Module views:** tasks board, calendar, messages, notifications, marketplace dialogs
 

@@ -19,7 +19,7 @@ install) directly on the card.
 |---|---|---|
 | 1 | **Cover** | The banner image, or plain grey without one. The entity's image (80px) sits on top of it. A person's image shows the online state as a green ring. |
 | 2 | **Stat pill** | Counts on the cover: friends or followers for people; followers and members for spaces. Each count opens the list in a dialog. |
-| 3 | **Title and subtitle** | The name links to the profile, space or marketplace page. The subtitle is the job title, the space category or the module version. |
+| 3 | **Title and subtitle** | The name links to the profile, space or marketplace page. The subtitle is the job title, the module version, or for spaces what a module adds through the `space.card-subtitle` slot (the Enterprise theme shows the space category there). |
 | 4 | **Body** | People: the profile fields chosen by the admin. Spaces and modules: the description. The body always keeps room for 3 lines, so cards in a row stay aligned. Descriptions are cut after 3 lines, and each profile field is one line with an ellipsis. |
 | 5 | **Tags** | Up to 5 uppercase chips. Each one filters the directory by that tag. |
 | 6 | **Footer** | The card's actions, sharing the full width. Icon-only actions (send message, changelog) are square and 38px high. |
@@ -30,7 +30,7 @@ install) directly on the card.
 | Variant | Cover | Subtitle | Body | Footer |
 |---|---|---|---|---|
 | **People** | Profile banner, avatar with online ring, friends or followers pill | Job title | Admin-chosen profile fields, optional details template | Friendship (Add friend / Pending / Friends), Follow; modules add e.g. Send message |
-| **Space** | Space banner, space image, followers and members pill | Category | Description; "Archived" note for archived spaces | Membership (Join / Pending / Member), Follow |
+| **Space** | Space banner, space image, followers and members pill | Via extension slot (Enterprise theme: category) | Description; "Archived" note for archived spaces | Membership (Join / Pending / Member), Follow |
 | **Module** | No banner: module icon, badges | Version | Description, error message | Install / Buy / Update / Learn more, or a disabled "Installed" / "Not compatible"; ghost icon to the changelog or marketplace page |
 
 ## Relationship buttons

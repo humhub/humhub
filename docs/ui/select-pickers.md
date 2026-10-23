@@ -31,7 +31,7 @@ Both share the [Form Fields](form-fields.md) anatomy and states.
 
 - **Search:** results appear after typing (usually from 2–3 characters). Some pickers show
   suggestions before typing (e.g. people of the current space). Matches are highlighted.
-- **Results** are list rows: image or icon, name, a subtitle (job title, space category, "Content
+- **Results** are list rows: image or icon, name, a subtitle (job title, space description, "Content
   type"). Already chosen records are hidden from the results.
 - **Chosen records** become chips in the field (accent, with image and ×). Backspace in the empty
   input removes the last chip.

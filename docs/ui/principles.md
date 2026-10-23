@@ -52,11 +52,11 @@ contradict them. When a new component is designed or built, check it against thi
 ## Layout and responsiveness
 
 15. **Components fold by their own width, not the viewport.** Container queries decide, so a
-    component behaves the same on a phone, in a narrow window or next to the sidebar.
+    component behaves the same on a phone, in a narrow window or next to a widget column.
 
     | Width | Change |
     |---|---|
-    | 768px | App shell: sidebar → bottom bar ([Mobile Navigation](mobile-navigation.md)) |
+    | 768px | App shell: desktop navigation → bottom bar ([Mobile Navigation](mobile-navigation.md)) |
     | 816px | Master/detail: one pane ([Master / Detail](master-detail.md)) |
     | 1000px / 570px | Filter bar: 4 → 2 → 1 per row, then fold ([Filter Bar](filter-bar.md)) |
     | per column | Data table: columns fold by priority ([Data Table](data-table.md)) |

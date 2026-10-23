@@ -1,6 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="880" viewBox="0 0 800 880" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
-  <title id="t">Where the components live on a page</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="950" viewBox="0 0 800 950" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Where the components live on a page (Community theme)</title>
   <defs>
+<symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4 H13.5 M6 4 V2.5 H10 V4 M4 4 L4.8 14 H11.2 L12 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-gear2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+<symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8 A5 5 0 1 0 5 4 M3 2 V5.5 H6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-checkc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 L7.2 10.4 L11 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-spin" viewBox="0 0 16 16"><path d="M8 2 A6 6 0 1 1 2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+
+<symbol id="i-bell" viewBox="0 0 16 16"><path d="M4 11 V7 A4 4 0 0 1 12 7 V11 L13.5 12.5 H2.5 Z M6.5 14 H9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-mail" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 4 L8 9 L14 4" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-people2" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 14 Q1.5 9 6 9 Q10.5 9 10.5 14" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="11.5" cy="5.5" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-puzzle" viewBox="0 0 16 16"><path d="M3 5 H6 A1.5 1.5 0 1 1 9 5 H12 V8 A1.5 1.5 0 1 1 12 11 V14 H3 Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 16 16"><path d="M8 1.5 L10 6 L14.8 6.3 L11.1 9.4 L12.3 14.2 L8 11.6 L3.7 14.2 L4.9 9.4 L1.2 6.3 L6 6 Z" fill="currentColor"/></symbol>
+<symbol id="i-arrowup" viewBox="0 0 16 16"><path d="M8 13 V3 M4 7 L8 3 L12 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+
+<symbol id="i-ok" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M4.8 8.2 L7 10.4 L11.2 6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M8 7.2 V11.5 M8 4.6 V4.7" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-wtri" viewBox="0 0 16 16"><path d="M8 1.5 L15 14 H1 Z" fill="currentColor"/><path d="M8 6.2 V9.6 M8 11.6 V11.7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-xc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M5.5 5.5 L10.5 10.5 M10.5 5.5 L5.5 10.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-collapse" viewBox="0 0 16 16"><path d="M3 8 H13 M8 2 V6 M6 4 L8 6 L10 4 M8 14 V10 M6 12 L8 10 L10 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 16 16"><path d="M1.5 9 L3.5 3 H12.5 L14.5 9 V13 H1.5 Z M1.5 9 H5.5 L6.5 10.5 H9.5 L10.5 9 H14.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-cloudx" viewBox="0 0 16 16"><path d="M4.5 12 H4 A3 3 0 0 1 4 6 A4 4 0 0 1 12 6 A3 3 0 0 1 12 12 H11.5 M6.5 8.5 L9.5 11.5 M9.5 8.5 L6.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-dash" viewBox="0 0 16 16"><path d="M2 12 A6 6 0 0 1 14 12 M8 12 L11 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-p1" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 14.5 Q2.5 9 8 9 Q13.5 9 13.5 14.5" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-sp" viewBox="0 0 16 16"><circle cx="8" cy="4" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4" cy="11" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="11" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-ucheck" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9 9 10 11" fill="currentColor"/><path d="M10 12 L12 14 L15.5 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-users" viewBox="0 0 16 16"><circle cx="5.5" cy="5" r="2.5" fill="currentColor"/><circle cx="11" cy="5.5" r="2" fill="currentColor"/><path d="M1 13 Q1 8.5 5.5 8.5 Q10 8.5 10 13 Z M10.5 13 Q10.5 9.5 13 9.5 Q15 9.5 15 13 Z" fill="currentColor"/></symbol>
+<symbol id="i-useradd" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9.5 9 10.5 11.5 L10.5 14 Z" fill="currentColor"/><path d="M13 9 V14 M10.5 11.5 H15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+
     <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
     <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -39,79 +66,86 @@
     .num { font-size: 11px; font-weight: 700; fill: #fff; }
     .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
   </style>
-  <rect width="800" height="880" fill="#fff"/>
+  <rect width="800" height="950" fill="#fff"/>
 <circle cx="26" cy="22" r="6" fill="#037283"/><text x="38" y="26" class="txt">Layout &amp; navigation</text>
-<circle cx="235.6" cy="22" r="6" fill="#7a4fb5"/><text x="247.6" y="26" class="txt">Basic components</text>
-<circle cx="394.79999999999995" cy="22" r="6" fill="#c26a00"/><text x="406.79999999999995" y="26" class="txt">Collections</text>
-<circle cx="518.0" cy="22" r="6" fill="#2f6db3"/><text x="530.0" y="26" class="txt">Page patterns</text>
-<rect x="20" y="44" width="760" height="470" rx="10" fill="#ededed" stroke="#d5d5d5"/>
-<rect x="20" y="44" width="150" height="470" rx="10" fill="#fff"/><rect x="160" y="44" width="10" height="470" fill="#fff"/>
-<rect x="34" y="90" width="90" height="10" rx="4" fill="#e5e5e5"/>
-<rect x="34" y="114" width="78" height="10" rx="4" fill="#e5e5e5"/>
-<rect x="34" y="138" width="66" height="10" rx="4" fill="#e5e5e5"/>
-<rect x="34" y="162" width="90" height="10" rx="4" fill="#e5e5e5"/>
-<rect x="34" y="186" width="78" height="10" rx="4" fill="#e5e5e5"/>
-<rect x="34" y="210" width="66" height="10" rx="4" fill="#e5e5e5"/>
-<rect x="180" y="54" width="590" height="30" rx="6" fill="#fff"/><rect x="190" y="61" width="380" height="16" rx="5" fill="#f2f2f2"/>
-<rect x="180" y="96" width="590" height="96" rx="8" fill="#fff"/><rect x="196" y="110" width="110" height="12" rx="4" fill="#ccc"/>
-<rect x="728" y="106" width="28" height="28" rx="6" fill="#037283"/>
-<rect x="196" y="138" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
-<rect x="288" y="138" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
-<rect x="380" y="138" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
-<rect x="472" y="138" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
-<rect x="196" y="166" width="134" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
-<rect x="338" y="166" width="134" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
-<rect x="480" y="166" width="134" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
-<rect x="622" y="166" width="134" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
-<rect x="180" y="204" width="590" height="200" rx="8" fill="#fff"/>
-<rect x="196" y="238" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="220" y="241" width="140" height="9" rx="4" fill="#ddd"/><rect x="420" y="240" width="50" height="12" rx="6" fill="#efefef"/><rect x="560" y="240" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="246" r="2" fill="#555"/>
-<rect x="196" y="264" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="220" y="267" width="140" height="9" rx="4" fill="#ddd"/><rect x="420" y="266" width="50" height="12" rx="6" fill="#efefef"/><rect x="560" y="266" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="272" r="2" fill="#555"/>
-<rect x="196" y="290" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="220" y="293" width="140" height="9" rx="4" fill="#ddd"/><rect x="420" y="292" width="50" height="12" rx="6" fill="#efefef"/><rect x="560" y="292" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="298" r="2" fill="#555"/>
-<rect x="196" y="316" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="220" y="319" width="140" height="9" rx="4" fill="#ddd"/><rect x="420" y="318" width="50" height="12" rx="6" fill="#efefef"/><rect x="560" y="318" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="324" r="2" fill="#555"/>
-<rect x="196" y="342" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="220" y="345" width="140" height="9" rx="4" fill="#ddd"/><rect x="420" y="344" width="50" height="12" rx="6" fill="#efefef"/><rect x="560" y="344" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="350" r="2" fill="#555"/>
-<rect x="196" y="368" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="220" y="371" width="140" height="9" rx="4" fill="#ddd"/><rect x="420" y="370" width="50" height="12" rx="6" fill="#efefef"/><rect x="560" y="370" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="376" r="2" fill="#555"/>
-<rect x="196" y="214" width="80" height="12" rx="4" fill="#ccc"/>
-<rect x="640" y="280" width="120" height="84" rx="6" fill="#fff" stroke="#d5d5d5"/>
-<rect x="652" y="292" width="80" height="8" rx="4" fill="#ddd"/>
-<rect x="652" y="314" width="70" height="8" rx="4" fill="#ddd"/>
-<rect x="652" y="336" width="60" height="8" rx="4" fill="#f3c5c6"/>
-<rect x="180" y="416" width="590" height="88" rx="8" fill="#fff"/>
-<rect x="196" y="426" width="134" height="68" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="202" y="432" width="122" height="26" rx="4" fill="#d9dde3"/><rect x="202" y="476" width="122" height="12" rx="4" fill="#d5d5d5"/>
-<rect x="338" y="426" width="134" height="68" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="344" y="432" width="122" height="26" rx="4" fill="#d9dde3"/><rect x="344" y="476" width="122" height="12" rx="4" fill="#d5d5d5"/>
-<rect x="480" y="426" width="134" height="68" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="486" y="432" width="122" height="26" rx="4" fill="#d9dde3"/><rect x="486" y="476" width="122" height="12" rx="4" fill="#d5d5d5"/>
-<rect x="622" y="426" width="134" height="68" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="628" y="432" width="122" height="26" rx="4" fill="#d9dde3"/><rect x="628" y="476" width="122" height="12" rx="4" fill="#d5d5d5"/>
-<rect x="34" y="64" width="64.30000000000001" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="66.15" y="78" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Sidebar</text>
-<rect x="580" y="59" width="64.30000000000001" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="612.15" y="73" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Top bar</text>
-<rect x="316" y="106" width="98.80000000000001" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="365.4" y="120" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Page Toolbar</text>
-<rect x="564" y="138" width="78.1" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="603.05" y="152" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Pill Tabs</text>
-<rect x="640.6" y="108" width="57.400000000000006" height="20" rx="10" fill="#fff" stroke="#7a4fb5" stroke-width="1.5"/><text x="669.3000000000001" y="122" font-size="11.5" font-weight="600" style="fill:#7a4fb5" text-anchor="middle">Button</text>
-<rect x="679.0" y="164" width="85.0" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="721.5" y="178" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Filter Bar</text>
-<rect x="290" y="212" width="85.0" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="332.5" y="226" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Data Table</text>
-<rect x="470" y="254" width="50.5" height="20" rx="10" fill="#fff" stroke="#7a4fb5" stroke-width="1.5"/><text x="495.25" y="268" font-size="11.5" font-weight="600" style="fill:#7a4fb5" text-anchor="middle">Badge</text>
-<rect x="665.2" y="254" width="98.80000000000001" height="20" rx="10" fill="#fff" stroke="#7a4fb5" stroke-width="1.5"/><text x="714.6" y="268" font-size="11.5" font-weight="600" style="fill:#7a4fb5" text-anchor="middle">Context Menu</text>
-<rect x="554.8" y="420" width="209.20000000000002" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="659.4" y="434" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Card Directory · Entity Card</text>
-<text x="20" y="548" class="sec">ON A PHONE</text>
-<rect x="20" y="560" width="200" height="300" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
-<rect x="28" y="572" width="184" height="60" rx="8" fill="#fff"/><path d="M44 594 L38 588 L44 582 M38 588 H52" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/><rect x="60" y="583" width="70" height="10" rx="4" fill="#ccc"/><rect x="38" y="606" width="56" height="18" rx="9" fill="#fff" stroke="#e2e2e2"/><rect x="100" y="606" width="56" height="18" rx="9" fill="#fff" stroke="#e2e2e2"/>
-<rect x="28" y="640" width="184" height="160" rx="8" fill="#fff"/>
-<rect x="40" y="652" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="655" width="110" height="9" rx="4" fill="#ddd"/>
-<rect x="40" y="680" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="683" width="110" height="9" rx="4" fill="#ddd"/>
-<rect x="40" y="708" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="711" width="110" height="9" rx="4" fill="#ddd"/>
-<rect x="40" y="736" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="739" width="110" height="9" rx="4" fill="#ddd"/>
-<rect x="40" y="764" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="767" width="110" height="9" rx="4" fill="#ddd"/>
-<rect x="22" y="812" width="196" height="46" fill="#fff"/>
-<rect x="38" y="826" width="18" height="18" rx="4" fill="#d5d5d5"/>
-<rect x="74" y="826" width="18" height="18" rx="4" fill="#d5d5d5"/>
-<rect x="110" y="826" width="18" height="18" rx="4" fill="#d5d5d5"/>
-<rect x="146" y="826" width="18" height="18" rx="4" fill="#d5d5d5"/>
-<rect x="182" y="826" width="18" height="18" rx="4" fill="#d5d5d5"/>
-<rect x="232" y="580" width="209.20000000000002" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="336.6" y="594" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Master / Detail (back arrow)</text>
-<rect x="232" y="700" width="257.5" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="360.75" y="714" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Data Table · columns fold into rows</text>
-<rect x="232" y="826" width="133.3" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="298.65" y="840" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Mobile Navigation</text>
-<text x="470" y="548" class="sec">PAGE PATTERNS</text>
-<rect x="470" y="562" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="562" width="6" height="48" rx="3" fill="#2f6db3"/><text x="488" y="582" class="name" style="font-weight:600">Settings Page</text><text x="488" y="600" class="sub" font-size="11.5">Accordion · switch rows · Save/Reset</text>
-<rect x="470" y="620" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="620" width="6" height="48" rx="3" fill="#037283"/><text x="488" y="640" class="name" style="font-weight:600">Section Menu</text><text x="488" y="658" class="sub" font-size="11.5">Master / Detail · count badges</text>
-<rect x="470" y="678" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="678" width="6" height="48" rx="3" fill="#c26a00"/><text x="488" y="698" class="name" style="font-weight:600">Card Directory</text><text x="488" y="716" class="sub" font-size="11.5">Page Toolbar · Filter Bar · Entity Cards</text>
-<rect x="470" y="736" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="736" width="6" height="48" rx="3" fill="#c26a00"/><text x="488" y="756" class="name" style="font-weight:600">Item Browser</text><text x="488" y="774" class="sub" font-size="11.5">path bar · tiles · selection · upload</text>
-<rect x="470" y="794" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="794" width="6" height="48" rx="3" fill="#7a4fb5"/><text x="488" y="814" class="name" style="font-weight:600">Dialog</text><text x="488" y="832" class="sub" font-size="11.5">confirm · form · tabs · steps</text>
+<circle cx="206.8" cy="22" r="6" fill="#7a4fb5"/><text x="218.8" y="26" class="txt">Basic components</text>
+<circle cx="366.0" cy="22" r="6" fill="#c26a00"/><text x="378.0" y="26" class="txt">Collections</text>
+<circle cx="489.2" cy="22" r="6" fill="#2f6db3"/><text x="501.2" y="26" class="txt">Page patterns</text>
+<rect x="20" y="44" width="760" height="520" rx="10" fill="#ededed" stroke="#d5d5d5"/>
+<rect x="30" y="54" width="740" height="104" rx="8" fill="#fff" stroke="#e5e5e5"/>
+<rect x="46" y="66" width="96" height="28" rx="6" fill="#e5e5e5"/><text x="94" y="85" font-size="13" text-anchor="middle" fill="#555">Logo</text>
+<rect x="158" y="62" width="410" height="36" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><use href="#i-search" x="170" y="72" width="16" height="16" color="#757575"/><text x="194" y="85" class="ph">Search…</text>
+<use href="#i-mail" x="594" y="69" width="22" height="22" color="#333"/><circle cx="614" cy="71" r="5" fill="#cc2629" stroke="#fff" stroke-width="2"/>
+<use href="#i-bell" x="640" y="69" width="22" height="22" color="#333"/><circle cx="660" cy="71" r="5" fill="#cc2629" stroke="#fff" stroke-width="2"/>
+<rect x="700" y="62" width="36" height="36" rx="6" fill="#9aa5b1"/><use href="#i-down" x="742" y="72" width="14" height="14" color="#555"/>
+<rect x="38" y="106" width="724" height="1" fill="#eee"/>
+<use href="#i-sp" x="56" y="125" width="16" height="16" color="#333"/><text x="78" y="138" class="txt" style="fill:#333">Spaces</text><use href="#i-down" x="121.6" y="126" width="14" height="14" color="#333"/>
+<rect x="145.6" y="116" width="102.39999999999999" height="34" rx="6" fill="#2d3340"/><use href="#i-dash" x="155.6" y="125" width="16" height="16" color="#fff"/><text x="177.6" y="138" class="txt" style="fill:#fff">Dashboard</text>
+<use href="#i-p1" x="264.0" y="125" width="16" height="16" color="#333"/><text x="286.0" y="138" class="txt" style="fill:#333">People</text>
+<use href="#i-check" x="349.6" y="125" width="16" height="16" color="#333"/><text x="371.6" y="138" class="txt" style="fill:#333">Tasks</text>
+<use href="#i-cal" x="427.6" y="125" width="16" height="16" color="#333"/><text x="449.6" y="138" class="txt" style="fill:#333">Calendar</text>
+<use href="#i-cols" x="528.4" y="125" width="16" height="16" color="#333"/><text x="550.4" y="138" class="txt" style="fill:#333">Files</text>
+<text x="602.4" y="138" class="txt">More</text><use href="#i-down" x="640.4" y="126" width="14" height="14" color="#333"/>
+<rect x="30" y="170" width="740" height="96" rx="8" fill="#fff"/><rect x="46" y="184" width="110" height="12" rx="4" fill="#ccc"/>
+<rect x="728" y="180" width="28" height="28" rx="6" fill="#037283"/>
+<rect x="46" y="212" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
+<rect x="138" y="212" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
+<rect x="230" y="212" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
+<rect x="322" y="212" width="84" height="20" rx="10" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/>
+<rect x="46" y="240" width="172" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
+<rect x="226" y="240" width="172" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
+<rect x="406" y="240" width="172" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
+<rect x="586" y="240" width="172" height="18" rx="5" fill="#f5f5f5" stroke="#e5e5e5"/>
+<rect x="30" y="278" width="740" height="186" rx="8" fill="#fff"/>
+<rect x="46" y="310" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="70" y="313" width="160" height="9" rx="4" fill="#ddd"/><rect x="360" y="312" width="50" height="12" rx="6" fill="#efefef"/><rect x="520" y="312" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="318" r="2" fill="#555"/>
+<rect x="46" y="338" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="70" y="341" width="160" height="9" rx="4" fill="#ddd"/><rect x="360" y="340" width="50" height="12" rx="6" fill="#efefef"/><rect x="520" y="340" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="346" r="2" fill="#555"/>
+<rect x="46" y="366" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="70" y="369" width="160" height="9" rx="4" fill="#ddd"/><rect x="360" y="368" width="50" height="12" rx="6" fill="#efefef"/><rect x="520" y="368" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="374" r="2" fill="#555"/>
+<rect x="46" y="394" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="70" y="397" width="160" height="9" rx="4" fill="#ddd"/><rect x="360" y="396" width="50" height="12" rx="6" fill="#efefef"/><rect x="520" y="396" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="402" r="2" fill="#555"/>
+<rect x="46" y="422" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="70" y="425" width="160" height="9" rx="4" fill="#ddd"/><rect x="360" y="424" width="50" height="12" rx="6" fill="#efefef"/><rect x="520" y="424" width="56" height="12" rx="6" fill="#e3f1e5"/><circle cx="752" cy="430" r="2" fill="#555"/>
+<rect x="46" y="288" width="80" height="12" rx="4" fill="#ccc"/>
+<rect x="640" y="350" width="120" height="84" rx="6" fill="#fff" stroke="#d5d5d5"/>
+<rect x="652" y="362" width="80" height="8" rx="4" fill="#ddd"/>
+<rect x="652" y="384" width="70" height="8" rx="4" fill="#ddd"/>
+<rect x="652" y="406" width="60" height="8" rx="4" fill="#f3c5c6"/>
+<rect x="30" y="474" width="740" height="80" rx="8" fill="#fff"/>
+<rect x="46" y="482" width="172" height="64" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="52" y="488" width="160" height="24" rx="4" fill="#d9dde3"/><rect x="52" y="528" width="160" height="12" rx="4" fill="#d5d5d5"/>
+<rect x="226" y="482" width="172" height="64" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="232" y="488" width="160" height="24" rx="4" fill="#d9dde3"/><rect x="232" y="528" width="160" height="12" rx="4" fill="#d5d5d5"/>
+<rect x="406" y="482" width="172" height="64" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="412" y="488" width="160" height="24" rx="4" fill="#d9dde3"/><rect x="412" y="528" width="160" height="12" rx="4" fill="#d5d5d5"/>
+<rect x="586" y="482" width="172" height="64" rx="6" fill="#fff" stroke="#e5e5e5"/><rect x="592" y="488" width="160" height="24" rx="4" fill="#d9dde3"/><rect x="592" y="528" width="160" height="12" rx="4" fill="#d5d5d5"/>
+<rect x="699.7" y="58" width="64.30000000000001" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="731.85" y="72" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Top Bar</text>
+<rect x="42" y="118" width="105.7" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="94.85" y="132" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Space chooser</text>
+<rect x="166" y="180" width="98.80000000000001" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="215.4" y="194" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Page Toolbar</text>
+<rect x="564" y="212" width="78.1" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="603.05" y="226" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Pill Tabs</text>
+<rect x="660.6" y="182" width="57.400000000000006" height="20" rx="10" fill="#fff" stroke="#7a4fb5" stroke-width="1.5"/><text x="689.3000000000001" y="196" font-size="11.5" font-weight="600" style="fill:#7a4fb5" text-anchor="middle">Button</text>
+<rect x="679.0" y="240" width="85.0" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="721.5" y="254" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Filter Bar</text>
+<rect x="140" y="286" width="85.0" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="182.5" y="300" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Data Table</text>
+<rect x="420" y="326" width="50.5" height="20" rx="10" fill="#fff" stroke="#7a4fb5" stroke-width="1.5"/><text x="445.25" y="340" font-size="11.5" font-weight="600" style="fill:#7a4fb5" text-anchor="middle">Badge</text>
+<rect x="665.2" y="326" width="98.80000000000001" height="20" rx="10" fill="#fff" stroke="#7a4fb5" stroke-width="1.5"/><text x="714.6" y="340" font-size="11.5" font-weight="600" style="fill:#7a4fb5" text-anchor="middle">Context Menu</text>
+<rect x="554.8" y="478" width="209.20000000000002" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="659.4" y="492" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Card Directory · Entity Card</text>
+<text x="20" y="598" class="sec">ON A PHONE</text>
+<rect x="20" y="610" width="200" height="300" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="28" y="620" width="184" height="36" rx="8" fill="#fff"/><rect x="36" y="628" width="20" height="20" rx="4" fill="#d5d5d5"/><rect x="62" y="628" width="90" height="20" rx="5" fill="#f2f2f2"/><circle cx="170" cy="638" r="6" fill="#ccc"/><rect x="186" y="628" width="20" height="20" rx="4" fill="#9aa5b1"/>
+<rect x="28" y="662" width="184" height="58" rx="8" fill="#fff"/><path d="M44 684 L38 678 L44 672 M38 678 H52" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/><rect x="60" y="673" width="70" height="10" rx="4" fill="#ccc"/><rect x="38" y="694" width="56" height="18" rx="9" fill="#fff" stroke="#e2e2e2"/><rect x="100" y="694" width="56" height="18" rx="9" fill="#fff" stroke="#e2e2e2"/>
+<rect x="28" y="726" width="184" height="128" rx="8" fill="#fff"/>
+<rect x="40" y="738" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="741" width="110" height="9" rx="4" fill="#ddd"/>
+<rect x="40" y="766" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="769" width="110" height="9" rx="4" fill="#ddd"/>
+<rect x="40" y="794" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="797" width="110" height="9" rx="4" fill="#ddd"/>
+<rect x="40" y="822" width="16" height="16" rx="3" fill="#e3e4e6"/><rect x="64" y="825" width="110" height="9" rx="4" fill="#ddd"/>
+<rect x="22" y="862" width="196" height="46" fill="#fff"/>
+<rect x="38" y="876" width="18" height="18" rx="4" fill="#d5d5d5"/>
+<rect x="74" y="876" width="18" height="18" rx="4" fill="#d5d5d5"/>
+<rect x="110" y="876" width="18" height="18" rx="4" fill="#d5d5d5"/>
+<rect x="146" y="876" width="18" height="18" rx="4" fill="#d5d5d5"/>
+<rect x="182" y="876" width="18" height="18" rx="4" fill="#d5d5d5"/>
+<rect x="232" y="628" width="229.9" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="346.95" y="642" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Top Bar (search, drawers, user)</text>
+<rect x="232" y="670" width="209.20000000000002" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="336.6" y="684" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Master / Detail (back arrow)</text>
+<rect x="232" y="780" width="188.5" height="20" rx="10" fill="#fff" stroke="#c26a00" stroke-width="1.5"/><text x="326.25" y="794" font-size="11.5" font-weight="600" style="fill:#c26a00" text-anchor="middle">Data Table (columns fold)</text>
+<rect x="232" y="876" width="133.3" height="20" rx="10" fill="#fff" stroke="#037283" stroke-width="1.5"/><text x="298.65" y="890" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">Mobile Navigation</text>
+<text x="470" y="598" class="sec">PAGE PATTERNS</text>
+<rect x="470" y="612" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="612" width="6" height="48" rx="3" fill="#2f6db3"/><text x="488" y="632" class="name" style="font-weight:600">Settings Page</text><text x="488" y="650" class="sub" font-size="11.5">Accordion · switch rows · Save/Reset</text>
+<rect x="470" y="670" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="670" width="6" height="48" rx="3" fill="#037283"/><text x="488" y="690" class="name" style="font-weight:600">Section Menu</text><text x="488" y="708" class="sub" font-size="11.5">Master / Detail · count badges</text>
+<rect x="470" y="728" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="728" width="6" height="48" rx="3" fill="#c26a00"/><text x="488" y="748" class="name" style="font-weight:600">Card Directory</text><text x="488" y="766" class="sub" font-size="11.5">Page Toolbar · Filter Bar · Entity Cards</text>
+<rect x="470" y="786" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="786" width="6" height="48" rx="3" fill="#c26a00"/><text x="488" y="806" class="name" style="font-weight:600">Item Browser</text><text x="488" y="824" class="sub" font-size="11.5">path bar · tiles · selection · upload</text>
+<rect x="470" y="844" width="310" height="48" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="470" y="844" width="6" height="48" rx="3" fill="#7a4fb5"/><text x="488" y="864" class="name" style="font-weight:600">Dialog</text><text x="488" y="882" class="sub" font-size="11.5">confirm · form · tabs · steps</text>
+<text x="20" y="934" class="sub" font-size="11.5">Shown with the Community theme. The Enterprise theme moves the navigation and spaces into a left sidebar (see Sidebar).</text>
 </svg>

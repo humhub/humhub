@@ -42,7 +42,7 @@ and the chosen section's page in the main pane.
 
 - **The fold depends on the layout's own width, not the viewport.** Below **816px** (two
   400px panes plus the gap) it shows one pane. This also happens on a narrow desktop window, or
-  when the sidebar takes room.
+  when other columns take room.
 - **Folded:**
   - the side pane (menu, list) is the start
   - opening an entry shows the main pane, with a **back arrow** before its title

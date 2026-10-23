@@ -1,11 +1,14 @@
 # Mobile Navigation
 
 > Found in the design: any page at a width of 768px or less, e.g. the dashboard
+> · Theme: **both** (Community and Enterprise)
 > · Core: not yet available
 > · Technology: **PHP** (proposed). The bar and sheet are rendered from the existing menus, with a
 > small JS module for the sheet and the widget drawer.
 
-On phones, the left sidebar is replaced by three mechanics:
+On phones, the desktop navigation is replaced by three mechanics. In the Community theme that
+is the navigation row of the [Top Bar](top-bar.md), and in the Enterprise theme the
+[Sidebar](sidebar.md). The mechanics are:
 
 1. a fixed **bottom bar** with the most important destinations
 2. a **menu sheet** behind "≡" with everything else, including all spaces
@@ -74,8 +77,8 @@ On phones, that column is reached through the widget drawer:
 
 | Width | Navigation |
 |---|---|
-| ≤ 768px | Bottom bar, menu sheet, widget drawer. The sidebar is hidden. |
-| > 768px | Sidebar and aside column. Bottom bar, sheet and notch are hidden. |
+| ≤ 768px | Bottom bar, menu sheet, widget drawer. The top bar keeps only search, drawers and user menu, and the Enterprise sidebar is hidden. |
+| > 768px | Top bar navigation row (Community) or sidebar (Enterprise), and the aside column. Bottom bar, sheet and notch are hidden. |
 
 ## Accessibility
 
@@ -104,14 +107,14 @@ On phones, that column is reached through the widget drawer:
 **Proposal: Technology PHP**, because the navigation is part of the main layout and must work on
 every page, also on pages without a Vue island:
 
-- **`MobileNav` widget**, rendered once in the main layout. Its entries come from the existing
+- **`MobileNav` widget**, rendered once in the main layout of both themes. Its entries come from the existing
   menus, so modules that add entries via `TopMenu` events appear automatically:
   - the bar's fixed destinations from `TopMenu`
   - the sheet from `TopMenu` plus the user's spaces
 - **`humhub.ui.mobileNav`** JS module for the sheet: open and close, swipe-down, focus trap,
   search and the recent slot.
-- **Widget drawer:** the same module works on the existing sidebar markup. A page opts in by
-  marking its sidebar (`data-mobile-widgets`), and `BaseSidebar` can set this by default.
+- **Widget drawer:** the same module works on the existing widget column markup. A page opts in
+  by marking its widget column (`data-mobile-widgets`), and `BaseSidebar` can set this by default.
 
 ```php
 // main layout
@@ -125,8 +128,8 @@ every page, also on pages without a Vue island:
 
 1. **Fixed destinations:** configurable by the admin (which three) or fixed? Modules could also
    suggest themselves (e.g. Tasks).
-2. **Space categories:** the sidebar groups spaces (START, PRODUCTS, …), but the sheet is a flat
-   list. Do we keep the groups on mobile?
+2. **Space groups in the sheet:** the sheet lists spaces flat (Community). Should a theme be able
+   to group them (Enterprise space categories)?
 3. **Recent slot:** remembered per browser (prototype) or server-side as "last visited"?
 4. **Badges:** should the bottom bar show unread counts (e.g. on "≡" when a sheet item has news),
    or does the top bar cover this?
