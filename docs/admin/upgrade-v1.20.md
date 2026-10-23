@@ -388,6 +388,14 @@ stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome gly
 `content: '\f0xx'` with `font-family: FontAwesome` need the Tabler codepoint and
 `font-family: tabler-icons`, see https://tabler.io/icons.
 
+## Apps and API access
+
+1.20 brings an OAuth 2.0 server and personal access tokens: the HumHub app signs in through the
+system browser, administrators can register clients for integrations, and users can create
+tokens for scripts. Only the app is allowed after the update; clients and tokens stay off until
+you allow them under *Administration → Users → Settings → Apps & API Access*. A white-label build
+of the app needs its app ID entered there. See [Apps & API access](api-access.md).
+
 ## Rate limiting of the API
 
 `/api/v2` is rate limited as of 1.20, by the OAuth scope of each action and per token (per user
@@ -415,7 +423,8 @@ seconds.
 
 **Behind a reverse proxy or load balancer, configure `trustedHosts`** of the request component.
 Otherwise every guest request appears to come from the proxy and all guests share one budget.
-Details: [Rate limiting](../develop/concept-rate-limiting.md).
+Details: [Apps & API access — Rate limiting](api-access.md#rate-limiting), and for developers
+[Rate limiting](../develop/concept-rate-limiting.md).
 
 ## Notification settings
 
