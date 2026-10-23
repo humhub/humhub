@@ -6,8 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\components\rateLimit;
+namespace humhub\components\api;
 
+use humhub\components\rateLimit\RateLimiter;
 use humhub\modules\oauth\components\ScopeFilter;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\Module as OAuthModule;
@@ -47,7 +48,7 @@ class ApiRateLimitFilter extends ActionFilter
             return true;
         }
 
-        $result = $limiter->hit($policy, $subject);
+        $result = $limiter->hit($policy, $subject, "route '{$action->getUniqueId()}'");
 
         $response = Yii::$app->response;
         foreach ($result->toHeaders() as $name => $value) {

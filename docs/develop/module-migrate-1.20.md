@@ -3,7 +3,7 @@
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
 - **`/api/v2` controllers are rate limited by their declared scopes.** The filter
-  `humhub\components\rateLimit\ApiRateLimitFilter` is attached in `BaseController::behaviors()`;
+  `humhub\components\api\ApiRateLimitFilter` is attached in `BaseController::behaviors()`;
   modules need no change. A module may add policies named `<channel>.<scope>` (`token` or
   `session`, e.g. `token.calendar:write`) to the `rateLimiter` component, see
   `docs/develop/concept-rate-limiting.md`. `ScopeFilter::resolveScope()` is new.

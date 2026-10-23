@@ -6,10 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\tests\codeception\unit\components\rateLimit;
+namespace humhub\tests\codeception\unit\components\api;
 
 use Codeception\Test\Unit;
-use humhub\components\rateLimit\ApiRateLimitFilter;
+use humhub\components\api\ApiRateLimitFilter;
 use humhub\components\rateLimit\RateLimiter;
 use humhub\modules\oauth\components\ScopeFilter;
 
