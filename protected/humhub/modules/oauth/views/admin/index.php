@@ -2,7 +2,6 @@
 
 use humhub\helpers\Html;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
-use humhub\modules\oauth\permissions\ManageOwnOAuthClients;
 use humhub\widgets\bootstrap\Alert;
 use yii\helpers\Url;
 use humhub\modules\oauth\models\forms\SettingsForm;
@@ -25,18 +24,6 @@ use humhub\widgets\form\MultiSelect;
         <hr>
         <h4><?= Yii::t('OauthModule.base', 'Clients') ?></h4>
         <?= $form->field($model, 'allowClients')->checkbox() ?>
-        <?= $form->field($model, 'allowUserClients')->checkbox() ?>
-        <?php if ($model->allowUserClients && !$model->isGrantedToAnyGroup(ManageOwnOAuthClients::class)): ?>
-            <?= Alert::warning(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet, so no user can use this. Allow it under <a href="{url}">Groups → Permissions</a>.', [
-                'permission' => Html::encode((new ManageOwnOAuthClients())->getTitle()),
-                'url' => Html::encode(Url::to(['/admin/group'])),
-            ]))->closeButton(false) ?>
-        <?php endif; ?>
-        <?= $form->field($model, 'userClientScopes')->widget(MultiSelect::class, [
-            'items' => $model->getScopeOptions(false),
-            'placeholderMore' => '',
-            'options' => ['data-tags' => 'false'],
-        ]) ?>
 
         <hr>
         <h4><?= Yii::t('OauthModule.base', 'Personal access tokens') ?></h4>

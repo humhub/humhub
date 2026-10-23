@@ -25,7 +25,7 @@ class AppsSections extends SecuritySectionStack
     private static ?\WeakMap $available = null;
 
     /**
-     * Whether the current user gets the tab: with a listed grant, or when allowed to create tokens or clients.
+     * Whether the current user gets the tab: with a listed grant, or when allowed to create tokens.
      *
      * @param bool $refresh whether to recheck after a change within the request
      */
@@ -41,9 +41,7 @@ class AppsSections extends SecuritySectionStack
         $request = Yii::$app->request;
         $cache = self::$available[$request] ?? [];
         if ($refresh || !isset($cache[$user->id])) {
-            $cache[$user->id] = self::hasListedGrants((int)$user->id)
-                || TokensSection::canCreate()
-                || OwnClientsSection::canManage();
+            $cache[$user->id] = self::hasListedGrants((int)$user->id) || TokensSection::canCreate();
             self::$available[$request] = $cache;
         }
 
@@ -69,7 +67,6 @@ class AppsSections extends SecuritySectionStack
         $this->addWidget(DevicesSection::class, [], ['sortOrder' => 100]);
         $this->addWidget(ConnectedAppsSection::class, [], ['sortOrder' => 200]);
         $this->addWidget(TokensSection::class, [], ['sortOrder' => 300]);
-        $this->addWidget(OwnClientsSection::class, [], ['sortOrder' => 400]);
 
         parent::init();
     }

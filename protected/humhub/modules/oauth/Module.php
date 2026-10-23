@@ -96,22 +96,9 @@ class Module extends \humhub\components\Module
         return (bool)$this->settings->get('allowClients', false);
     }
 
-    public function allowsUserClients(): bool
-    {
-        return (bool)$this->settings->get('allowUserClients', false);
-    }
-
     public function allowsPersonalAccessTokens(): bool
     {
         return (bool)$this->settings->get('allowPersonalAccessTokens', false);
-    }
-
-    /**
-     * @return string[] the upper bound of scopes for user clients
-     */
-    public function getUserClientScopes(): array
-    {
-        return $this->getScopeListSetting('userClientScopes');
     }
 
     /**
@@ -156,7 +143,6 @@ class Module extends \humhub\components\Module
 
         return [
             new permissions\CreatePersonalAccessToken(),
-            new permissions\ManageOwnOAuthClients(),
         ];
     }
 

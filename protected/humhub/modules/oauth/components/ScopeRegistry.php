@@ -90,7 +90,7 @@ final class ScopeRegistry
     }
 
     /**
-     * @return string[] the default upper bound for user clients and personal access tokens
+     * @return string[] the default upper bound for personal access tokens
      */
     public static function getDefaultRestrictedScopeIds(): array
     {

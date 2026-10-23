@@ -30,11 +30,6 @@ $isApp = $client->type === Client::TYPE_SYSTEM;
         </div>
         <div class="panel-body">
             <?php if (!$isApp): ?>
-                <?php if ($client->type === Client::TYPE_USER): ?>
-                    <p class="text-warning">
-                        <?= Yii::t('OauthModule.base', 'Created by {name}, not verified.', ['name' => Html::encode($client->owner?->displayName)]) ?>
-                    </p>
-                <?php endif; ?>
                 <p><?= Yii::t('OauthModule.base', 'It will be allowed to:') ?></p>
                 <ul>
                     <?php foreach ($scopes as $scope): ?>

@@ -38,7 +38,6 @@ class AuthorizeCest
         Grant::deleteAll();
         Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
         Module::instance()->settings->delete('allowClients');
-        Module::instance()->settings->delete('allowUserClients');
     }
 
     private function params(string $clientId = Client::SYSTEM_CLIENT_ID, string $scope = '', string $redirectUri = OAuthTestHelper::REDIRECT_URI): array
@@ -100,20 +99,6 @@ class AuthorizeCest
         $I->see('Research Agent');
         $I->see('Read content, comments and likes');
         $I->dontSee('Read spaces and memberships');
-    }
-
-    public function testUserClientIsOnlyUsableByItsOwner(FunctionalTester $I)
-    {
-        Yii::$app->getModule('oauth')->settings->set('allowUserClients', true);
-        (new Client([
-            'client_id' => 'mine', 'type' => Client::TYPE_USER, 'name' => 'My Script', 'owner_user_id' => 2,
-            'redirect_uris' => json_encode(['http://127.0.0.1/callback']),
-            'scopes' => json_encode(['content:read']), 'is_active' => 1, 'created_at' => time(),
-        ]))->save(false);
-
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/authorize/index', $this->params('mine', 'content:read', 'http://127.0.0.1/callback'));
-        $I->seeResponseCodeIs(403);
     }
 
     public function testNoAuthorizationWhileImpersonating(FunctionalTester $I)

@@ -15,7 +15,6 @@ use yii\data\ActiveDataProvider;
 $types = [
     Client::TYPE_SYSTEM => Yii::t('OauthModule.base', 'HumHub app'),
     Client::TYPE_ADMIN => Yii::t('OauthModule.base', 'Administrator'),
-    Client::TYPE_USER => Yii::t('OauthModule.base', 'User'),
 ];
 ?>
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>

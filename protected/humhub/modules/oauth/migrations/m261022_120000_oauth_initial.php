@@ -19,7 +19,6 @@ class m261022_120000_oauth_initial extends Migration
             'type' => $this->string(10)->notNull(),
             'name' => $this->string(100)->notNull(),
             'description' => $this->text()->null(),
-            'owner_user_id' => $this->integer()->null(),
             'secret_hash' => $this->char(64)->null(),
             'redirect_uris' => $this->text()->notNull(),
             'scopes' => $this->text()->notNull(),
@@ -29,7 +28,6 @@ class m261022_120000_oauth_initial extends Migration
             'created_by' => $this->integer()->null(),
         ]);
         $this->safeCreateIndex('ux_oauth_client_client_id', 'oauth_client', 'client_id', true);
-        $this->safeAddForeignKey('fk_oauth_client_owner', 'oauth_client', 'owner_user_id', 'user', 'id', 'CASCADE', 'CASCADE');
         $this->safeAddForeignKey('fk_oauth_client_created_by', 'oauth_client', 'created_by', 'user', 'id', 'SET NULL', 'CASCADE');
 
         $this->safeCreateTable('oauth_grant', [

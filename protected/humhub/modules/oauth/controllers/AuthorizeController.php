@@ -85,10 +85,6 @@ class AuthorizeController extends Controller
         $clientEntity = $authRequest->getClient();
         $client = $clientEntity->getRecord();
 
-        if ($client->type === Client::TYPE_USER && (int)$client->owner_user_id !== (int)Yii::$app->user->id) {
-            throw new ForbiddenHttpException(Yii::t('OauthModule.base', 'This app can only be used by the person who created it.'));
-        }
-
         $scopeIds = $this->grantableScopes($authRequest, $client);
         if ($scopeIds === []) {
             return $this->redirectWithError($authRequest, 'invalid_scope');
@@ -140,8 +136,7 @@ class AuthorizeController extends Controller
 
             // The client may have been disabled or changed since the request was validated
             $client = (new ClientRepository())->findUsableClient($clientEntity->getIdentifier());
-            if ($client === null
-                || ($client->type === Client::TYPE_USER && (int)$client->owner_user_id !== (int)Yii::$app->user->id)) {
+            if ($client === null) {
                 return $this->redirectWithError($authRequest, 'access_denied');
             }
 

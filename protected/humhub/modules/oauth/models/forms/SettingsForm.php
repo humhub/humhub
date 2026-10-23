@@ -24,8 +24,6 @@ class SettingsForm extends Model
 {
     public $allowApp;
     public $allowClients;
-    public $allowUserClients;
-    public $userClientScopes = [];
     public $allowPersonalAccessTokens;
     public $patScopes = [];
     public $patMaxLifetimeDays;
@@ -43,8 +41,6 @@ class SettingsForm extends Model
         $module = Module::instance();
         $this->allowApp = $module->allowsApp();
         $this->allowClients = $module->allowsClients();
-        $this->allowUserClients = $module->allowsUserClients();
-        $this->userClientScopes = $this->onlyRegistered($module->getUserClientScopes());
         $this->allowPersonalAccessTokens = $module->allowsPersonalAccessTokens();
         $this->patScopes = $this->onlyRegistered($module->getPatScopes());
         $this->patMaxLifetimeDays = $module->getPatMaxLifetimeDays();
@@ -61,13 +57,12 @@ class SettingsForm extends Model
         $scopeIds = array_keys(ScopeRegistry::getScopes());
 
         return [
-            [['allowApp', 'allowClients', 'allowUserClients', 'allowPersonalAccessTokens', 'revokeOnPasswordChange'], 'boolean'],
+            [['allowApp', 'allowClients', 'allowPersonalAccessTokens', 'revokeOnPasswordChange'], 'boolean'],
             ['patMaxLifetimeDays', 'integer', 'min' => 0],
             ['refreshTokenLifetimeDays', 'integer', 'min' => 1],
             ['grantMaxLifetimeDays', 'integer', 'min' => 0],
             [['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'], 'required'],
             ['patScopes', 'each', 'rule' => ['in', 'range' => $scopeIds]],
-            ['userClientScopes', 'each', 'rule' => ['in', 'range' => array_values(array_diff($scopeIds, [ScopeRegistry::FULL]))]],
         ];
     }
 
@@ -77,10 +72,8 @@ class SettingsForm extends Model
     public function beforeValidate()
     {
         // A multi select without a selection is not submitted at all
-        foreach (['patScopes', 'userClientScopes'] as $attribute) {
-            if (!is_array($this->$attribute)) {
-                $this->$attribute = [];
-            }
+        if (!is_array($this->patScopes)) {
+            $this->patScopes = [];
         }
 
         return parent::beforeValidate();
@@ -94,8 +87,6 @@ class SettingsForm extends Model
         return [
             'allowApp' => Yii::t('OauthModule.base', 'Allow the HumHub app to sign in'),
             'allowClients' => Yii::t('OauthModule.base', 'Allow clients created by administrators'),
-            'allowUserClients' => Yii::t('OauthModule.base', 'Allow clients created by users'),
-            'userClientScopes' => Yii::t('OauthModule.base', 'Scopes available to user clients'),
             'allowPersonalAccessTokens' => Yii::t('OauthModule.base', 'Allow personal access tokens'),
             'patScopes' => Yii::t('OauthModule.base', 'Scopes available to personal access tokens'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', 'Maximum lifetime of personal access tokens (days)'),
@@ -115,8 +106,6 @@ class SettingsForm extends Model
         return [
             'allowApp' => $off,
             'allowClients' => $off,
-            'allowUserClients' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Register own OAuth apps".'),
-            'userClientScopes' => Yii::t('OauthModule.base', 'The upper bound of what a user client can request. An empty selection means no access.'),
             'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Create personal access tokens".'),
             'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do. An empty selection means no access.'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited and offers "never" as a lifetime.'),
@@ -127,15 +116,13 @@ class SettingsForm extends Model
     }
 
     /**
-     * @return array<string, string> scope labels by id; with or without `full`
+     * @return array<string, string> scope labels by id
      */
-    public function getScopeOptions(bool $includeFull = true): array
+    public function getScopeOptions(): array
     {
         $options = [];
         foreach (ScopeRegistry::getScopes() as $scope) {
-            if ($includeFull || $scope->id !== ScopeRegistry::FULL) {
-                $options[$scope->id] = $scope->label;
-            }
+            $options[$scope->id] = $scope->label;
         }
 
         return $options;
@@ -148,24 +135,22 @@ class SettingsForm extends Model
         }
 
         $settings = Module::instance()->settings;
-        foreach (['allowApp', 'allowClients', 'allowUserClients', 'allowPersonalAccessTokens', 'revokeOnPasswordChange'] as $name) {
+        foreach (['allowApp', 'allowClients', 'allowPersonalAccessTokens', 'revokeOnPasswordChange'] as $name) {
             $settings->set($name, (bool)$this->$name);
         }
         foreach (['patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays'] as $name) {
             $settings->set($name, (int)$this->$name);
         }
-        foreach (['patScopes', 'userClientScopes'] as $name) {
-            $selection = array_values(array_unique($this->$name));
-            $default = ScopeRegistry::getDefaultRestrictedScopeIds();
-            sort($selection);
-            sort($default);
+        $selection = array_values(array_unique($this->patScopes));
+        $default = ScopeRegistry::getDefaultRestrictedScopeIds();
+        sort($selection);
+        sort($default);
 
-            // The default stays unset, so newly registered core read scopes keep being included
-            if ($selection === $default) {
-                $settings->delete($name);
-            } else {
-                $settings->set($name, json_encode($selection));
-            }
+        // The default stays unset, so newly registered core read scopes keep being included
+        if ($selection === $default) {
+            $settings->delete('patScopes');
+        } else {
+            $settings->set('patScopes', json_encode($selection));
         }
 
         return true;

@@ -2,6 +2,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
+use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\models\forms\ClientForm;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
@@ -36,7 +37,15 @@ $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client
     <?= $form->field($model, 'redirectUris')->textarea(['rows' => 3, 'class' => 'form-control font-monospace'])
         ->hint(Yii::t('OauthModule.base', 'https:// URIs, loopback URIs such as http://127.0.0.1/callback (any port) or, for public clients, a reverse-domain scheme such as com.example.app:/callback.')) ?>
     <?= $form->field($model, 'confidential')->checkbox() ?>
-    <?= $form->field($model, 'scopes')->checkboxList($model->getScopeOptions()) ?>
+    <?php if ($model->hasLockedFullAccess()): ?>
+        <div class="mb-3">
+            <label class="form-label"><?= Html::encode($model->getAttributeLabel('scopes')) ?></label>
+            <p><?= Html::encode(ScopeRegistry::get(ScopeRegistry::FULL)->label) ?></p>
+            <div class="form-text"><?= Yii::t('OauthModule.base', 'Set by a system administrator.') ?></div>
+        </div>
+    <?php else: ?>
+        <?= $form->field($model, 'scopes')->checkboxList($model->getScopeOptions()) ?>
+    <?php endif ?>
     <?php if ($model->canSetPrivileged()): ?>
         <?= $form->field($model, 'skipConsent')->checkbox() ?>
     <?php endif ?>

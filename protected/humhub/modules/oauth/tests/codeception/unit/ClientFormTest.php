@@ -11,21 +11,14 @@ namespace humhub\modules\oauth\tests\codeception\unit;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\forms\ClientForm;
-use humhub\modules\oauth\Module;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 
 class ClientFormTest extends HumHubDbTestCase
 {
-    protected function setUp(): void
+    private function form(array $attributes = [], ?Client $client = null, int $actorId = 1): ClientForm
     {
-        parent::setUp();
-        Module::instance()->settings->delete('userClientScopes');
-    }
-
-    private function form(string $scenario, array $attributes = [], ?Client $client = null, int $actorId = 1): ClientForm
-    {
-        $form = new ClientForm($client ?? new Client(), User::findOne(['id' => $actorId]), ['scenario' => $scenario]);
+        $form = new ClientForm($client ?? new Client(), User::findOne(['id' => $actorId]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
         $form->setAttributes($attributes + [
             'name' => 'My app',
             'redirectUris' => 'https://example.org/cb',
@@ -40,7 +33,7 @@ class ClientFormTest extends HumHubDbTestCase
      */
     public function testRedirectUris(string $uris, bool $confidential, bool $valid)
     {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['redirectUris' => $uris, 'confidential' => $confidential]);
+        $form = $this->form(['redirectUris' => $uris, 'confidential' => $confidential]);
         $this->assertSame($valid, $form->validate(), implode(', ', $form->getErrorSummary(true)));
     }
 
@@ -75,64 +68,23 @@ class ClientFormTest extends HumHubDbTestCase
 
     public function testSchemeIsStoredInLowerCase()
     {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['redirectUris' => "HTTPS://Example.org/cb\nCom.Example.App:/cb"]);
+        $form = $this->form(['redirectUris' => "HTTPS://Example.org/cb\nCom.Example.App:/cb"]);
         $this->assertTrue($form->save());
 
         $this->assertSame(['https://Example.org/cb', 'com.example.app:/cb'], Client::findOne(['id' => $form->client->id])->getRedirectUris());
     }
 
-    public function testScopesNoLongerOfferedAreDroppedOnEdit()
-    {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['scopes' => ['content:read', 'spaces:read']]);
-        $this->assertTrue($form->save());
-
-        Module::instance()->settings->set('userClientScopes', json_encode(['content:read']));
-        $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_USER]);
-        $this->assertSame(['content:read'], $edit->scopes);
-        $this->assertTrue($edit->save());
-        $this->assertSame(['content:read'], Client::findOne(['id' => $form->client->id])->getAllowedScopes());
-    }
-
-    public function testUserScenarioOffersOnlyUserClientScopesWithoutFull()
-    {
-        Module::instance()->settings->set('userClientScopes', json_encode(['full', 'content:read', 'spaces:read']));
-        $form = $this->form(ClientForm::SCENARIO_USER, ['scopes' => ['full']]);
-
-        $this->assertSame(['content:read', 'spaces:read'], array_keys($form->getScopeOptions()));
-        $this->assertFalse($form->validate());
-        $this->assertTrue($form->hasErrors('scopes'));
-    }
-
     public function testAdminScenarioOffersAllScopes()
     {
-        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full']]);
+        $form = $this->form(['scopes' => ['full']]);
 
         $this->assertSame(array_keys(ScopeRegistry::getScopes()), array_keys($form->getScopeOptions()));
         $this->assertTrue($form->validate());
     }
 
-    public function testUserClientIsPublicAndOwned()
-    {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['skipConsent' => true, 'isActive' => false]);
-        $this->assertTrue($form->save());
-
-        $client = Client::findOne(['id' => $form->client->id]);
-        $this->assertMatchesRegularExpression('/^[0-9a-f]{32}$/', $client->client_id);
-        $this->assertSame(Client::TYPE_USER, $client->type);
-        $this->assertSame(1, (int)$client->owner_user_id);
-        $this->assertSame(1, (int)$client->created_by);
-        $this->assertSame(['https://example.org/cb'], $client->getRedirectUris());
-        $this->assertSame(['content:read'], $client->getAllowedScopes());
-        $this->assertFalse($client->isConfidential());
-        $this->assertNull($form->getSecret());
-        // Not offered to users
-        $this->assertSame(0, (int)$client->skip_consent);
-        $this->assertSame(1, (int)$client->is_active);
-    }
-
     public function testConfidentialClientGetsASecretOnce()
     {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['confidential' => true]);
+        $form = $this->form(['confidential' => true]);
         $this->assertTrue($form->save());
 
         $secret = $form->getSecret();
@@ -144,7 +96,7 @@ class ClientFormTest extends HumHubDbTestCase
         $this->assertTrue($client->validateSecret($secret));
 
         // Editing keeps the secret and shows none
-        $edit = new ClientForm($client, User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_USER]);
+        $edit = new ClientForm($client, User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
         $edit->name = 'Renamed';
         $this->assertTrue($edit->save());
         $this->assertNull($edit->getSecret());
@@ -153,7 +105,7 @@ class ClientFormTest extends HumHubDbTestCase
 
     public function testRegeneratingTheSecretChangesTheHash()
     {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['confidential' => true]);
+        $form = $this->form(['confidential' => true]);
         $form->save();
         $oldHash = $form->client->secret_hash;
 
@@ -167,84 +119,85 @@ class ClientFormTest extends HumHubDbTestCase
 
     public function testMakingAClientPublicDropsTheSecret()
     {
-        $form = $this->form(ClientForm::SCENARIO_USER, ['confidential' => true]);
+        $form = $this->form(['confidential' => true]);
         $form->save();
 
-        $edit = new ClientForm($form->client, User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_USER]);
+        $edit = new ClientForm($form->client, User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
         $edit->confidential = false;
         $this->assertTrue($edit->save());
         $this->assertNull(Client::findOne(['id' => $form->client->id])->secret_hash);
     }
 
-    public function testUserCannotReactivateADeactivatedClient()
-    {
-        $form = $this->form(ClientForm::SCENARIO_USER);
-        $form->save();
-        $form->client->updateAttributes(['is_active' => 0]);
-
-        $edit = new ClientForm($form->client, User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_USER]);
-        $edit->setAttributes(['isActive' => true]);
-        $this->assertTrue($edit->save());
-        $this->assertSame(0, (int)Client::findOne(['id' => $form->client->id])->is_active);
-    }
-
     public function testAdminClient()
     {
-        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['skipConsent' => true, 'isActive' => false]);
+        $form = $this->form(['skipConsent' => true, 'isActive' => false]);
         $this->assertTrue($form->save());
 
         $client = Client::findOne(['id' => $form->client->id]);
+        $this->assertMatchesRegularExpression('/^[0-9a-f]{32}$/', $client->client_id);
         $this->assertSame(Client::TYPE_ADMIN, $client->type);
-        $this->assertNull($client->owner_user_id);
+        $this->assertSame(['https://example.org/cb'], $client->getRedirectUris());
+        $this->assertSame(['content:read'], $client->getAllowedScopes());
+        $this->assertFalse($client->isConfidential());
+        $this->assertNull($form->getSecret());
         $this->assertSame(1, (int)$client->created_by);
         $this->assertSame(1, (int)$client->skip_consent);
         $this->assertSame(0, (int)$client->is_active);
     }
 
+    public function testFullIsStoredAlone()
+    {
+        $form = $this->form(['scopes' => ['content:read', 'full', 'spaces:read']]);
+        $this->assertTrue($form->save());
+
+        $this->assertSame(['full'], $form->scopes);
+        $this->assertSame(['full'], Client::findOne(['id' => $form->client->id])->getAllowedScopes());
+    }
+
+    public function testScopesNoLongerRegisteredAreDroppedOnEdit()
+    {
+        $form = $this->form();
+        $this->assertTrue($form->save());
+        $form->client->updateAttributes(['scopes' => json_encode(['content:read', 'gone:read'])]);
+
+        $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
+        $this->assertSame(['content:read'], $edit->scopes);
+        $this->assertTrue($edit->save());
+    }
+
     public function testOnlySystemAdminsSetFullAndSkipConsent()
     {
         // User 2 is no system administrator, e.g. a holder of "Manage settings"
-        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full']], actorId: 2);
+        $form = $this->form(['scopes' => ['full']], actorId: 2);
         $this->assertFalse($form->canSetPrivileged());
         $this->assertArrayNotHasKey(ScopeRegistry::FULL, $form->getScopeOptions());
         $this->assertFalse($form->validate());
         $this->assertTrue($form->hasErrors('scopes'));
 
-        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['skipConsent' => true], actorId: 2);
+        $form = $this->form(['skipConsent' => true], actorId: 2);
         $this->assertFalse($form->validate());
         $this->assertTrue($form->hasErrors('skipConsent'));
 
-        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full'], 'skipConsent' => true]);
+        $form = $this->form(['scopes' => ['full'], 'skipConsent' => true]);
         $this->assertTrue($form->canSetPrivileged());
         $this->assertTrue($form->validate());
     }
 
     public function testPrivilegedValuesStayWhenOthersEditTheClient()
     {
-        $form = $this->form(ClientForm::SCENARIO_ADMIN, ['scopes' => ['full', 'content:read'], 'skipConsent' => true]);
+        $form = $this->form(['scopes' => ['full'], 'skipConsent' => true]);
         $this->assertTrue($form->save());
 
         $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 2]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
-        $this->assertSame(['content:read'], $edit->scopes);
+        $this->assertTrue($edit->hasLockedFullAccess());
+        $this->assertSame([], $edit->scopes);
+        // No scope has to be chosen, and none can replace `full`
         $edit->setAttributes(['name' => 'Renamed', 'scopes' => ['spaces:read']]);
         $this->assertTrue($edit->save(), implode(', ', $edit->getErrorSummary(true)));
 
         $client = Client::findOne(['id' => $form->client->id]);
         $this->assertSame('Renamed', $client->name);
-        $this->assertSame(['spaces:read', 'full'], $client->getAllowedScopes());
+        $this->assertSame(['full'], $client->getAllowedScopes());
         $this->assertSame(1, (int)$client->skip_consent);
-    }
-
-    public function testUserClientsGetNoPrivilegesInTheAdministration()
-    {
-        $form = $this->form(ClientForm::SCENARIO_USER);
-        $this->assertTrue($form->save());
-
-        $edit = new ClientForm(Client::findOne(['id' => $form->client->id]), User::findOne(['id' => 1]), ['scenario' => ClientForm::SCENARIO_ADMIN]);
-        $this->assertFalse($edit->canSetPrivileged());
-        $this->assertArrayNotHasKey(ScopeRegistry::FULL, $edit->getScopeOptions());
-        $edit->setAttributes(['skipConsent' => true]);
-        $this->assertFalse($edit->validate());
-        $this->assertTrue($edit->hasErrors('skipConsent'));
     }
 }

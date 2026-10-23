@@ -68,7 +68,6 @@ class GrantService
         return match ($client->type) {
             Client::TYPE_SYSTEM => $this->module->allowsApp(),
             Client::TYPE_ADMIN => $this->module->allowsClients(),
-            Client::TYPE_USER => $this->module->allowsUserClients(),
             default => false,
         };
     }
@@ -111,10 +110,6 @@ class GrantService
         return match ($client->type) {
             Client::TYPE_SYSTEM => [ScopeRegistry::FULL],
             Client::TYPE_ADMIN => $scopes,
-            Client::TYPE_USER => array_values(array_diff(
-                array_intersect($scopes, $this->module->getUserClientScopes()),
-                [ScopeRegistry::FULL],
-            )),
             default => [],
         };
     }

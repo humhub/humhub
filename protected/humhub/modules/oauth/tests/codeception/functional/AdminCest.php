@@ -26,7 +26,7 @@ use Yii;
 class AdminCest
 {
     private const SETTINGS = [
-        'allowApp', 'allowClients', 'allowUserClients', 'userClientScopes', 'allowPersonalAccessTokens',
+        'allowApp', 'allowClients', 'allowPersonalAccessTokens',
         'patScopes', 'patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays', 'revokeOnPasswordChange',
     ];
 
@@ -85,8 +85,6 @@ class AdminCest
         $I->submitForm('#oauth-settings-form', [
             'SettingsForm[allowApp]' => '0',
             'SettingsForm[allowClients]' => '1',
-            'SettingsForm[allowUserClients]' => '1',
-            'SettingsForm[userClientScopes]' => ['content:read'],
             'SettingsForm[allowPersonalAccessTokens]' => '1',
             'SettingsForm[patScopes]' => ['content:read', 'full'],
             'SettingsForm[patMaxLifetimeDays]' => '30',
@@ -98,30 +96,12 @@ class AdminCest
         $module = Module::instance();
         Assert::assertFalse($module->allowsApp());
         Assert::assertTrue($module->allowsClients());
-        Assert::assertTrue($module->allowsUserClients());
-        Assert::assertSame(['content:read'], $module->getUserClientScopes());
         Assert::assertTrue($module->allowsPersonalAccessTokens());
         Assert::assertSame(['content:read', 'full'], $module->getPatScopes());
         Assert::assertSame(30, $module->getPatMaxLifetimeDays());
         Assert::assertSame(14, $module->getRefreshTokenLifetimeDays());
         Assert::assertSame(200, $module->getGrantMaxLifetimeDays());
         Assert::assertTrue($module->revokesOnPasswordChange());
-    }
-
-    public function testUserClientScopesDoNotAllowFull(FunctionalTester $I)
-    {
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/index');
-        $I->submitForm('#oauth-settings-form', [
-            'SettingsForm[allowClients]' => '1',
-            'SettingsForm[userClientScopes]' => ['full'],
-            'SettingsForm[patMaxLifetimeDays]' => '30',
-            'SettingsForm[refreshTokenLifetimeDays]' => '14',
-            'SettingsForm[grantMaxLifetimeDays]' => '0',
-        ]);
-
-        Assert::assertFalse(Module::instance()->allowsClients());
-        Assert::assertNotContains('full', Module::instance()->getUserClientScopes());
     }
 
     public function testRefreshTokenLifetimeOfZeroIsRejected(FunctionalTester $I)
@@ -148,14 +128,12 @@ class AdminCest
         $I->amOnRoute('/oauth/admin/index');
         $I->submitForm('#oauth-settings-form', [
             'SettingsForm[patScopes]' => array_reverse($default),
-            'SettingsForm[userClientScopes]' => $default,
             'SettingsForm[patMaxLifetimeDays]' => '30',
             'SettingsForm[refreshTokenLifetimeDays]' => '14',
             'SettingsForm[grantMaxLifetimeDays]' => '0',
         ]);
 
         Assert::assertNull(Module::instance()->settings->get('patScopes'));
-        Assert::assertNull(Module::instance()->settings->get('userClientScopes'));
     }
 
     public function testUnregisteredStoredScopeDoesNotBlockSaving(FunctionalTester $I)
@@ -255,7 +233,8 @@ class AdminCest
         Assert::assertSame(Client::TYPE_ADMIN, $client->type);
         Assert::assertTrue($client->validateSecret($secret));
         Assert::assertSame(1, (int)$client->skip_consent);
-        Assert::assertSame(['content:read', 'full'], $client->getAllowedScopes());
+        // `full` covers the others and is stored alone
+        Assert::assertSame(['full'], $client->getAllowedScopes());
 
         $I->amOnRoute('/oauth/admin/clients');
         $I->see('Server app');
@@ -451,7 +430,7 @@ class AdminCest
     public function testOnlySystemAdminsSetFullAndSkipConsent(FunctionalTester $I)
     {
         $I->setGroupPermission(self::USER1_GROUP, ManageSettings::class);
-        $privileged = $this->adminClient(['scopes' => json_encode(['full', 'content:read']), 'skip_consent' => 1]);
+        $privileged = $this->adminClient(['scopes' => json_encode(['full']), 'skip_consent' => 1]);
 
         $I->amUser1();
         $I->amOnRoute('/oauth/admin/client');
@@ -475,31 +454,19 @@ class AdminCest
 
         // What a system administrator set stays
         $I->amOnRoute('/oauth/admin/client', ['id' => $privileged->id]);
+        $I->see('Full access to your account');
+        $I->see('Set by a system administrator.');
+        $I->dontSeeElement('input[name="ClientForm[scopes][]"]');
         $I->submitForm('#oauth-client-form', [
             'ClientForm[name]' => 'Renamed agent',
             'ClientForm[redirectUris]' => 'https://example.org/cb',
             'ClientForm[confidential]' => '1',
-            'ClientForm[scopes]' => ['spaces:read'],
             'ClientForm[isActive]' => '1',
         ]);
         $privileged->refresh();
         Assert::assertSame('Renamed agent', $privileged->name);
-        Assert::assertSame(['spaces:read', 'full'], $privileged->getAllowedScopes());
+        Assert::assertSame(['full'], $privileged->getAllowedScopes());
         Assert::assertSame(1, (int)$privileged->skip_consent);
-    }
-
-    public function testUserClientsGetNoFullOrSkipConsent(FunctionalTester $I)
-    {
-        $client = $this->adminClient(['type' => Client::TYPE_USER, 'owner_user_id' => 2]);
-
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
-        $I->dontSee('Trusted: skip the consent page');
-        $I->dontSee('Full access to your account');
-
-        $I->amOnRoute('/oauth/admin/client');
-        $I->see('Trusted: skip the consent page');
-        $I->see('Full access to your account');
     }
 
     public function testNoSecretIsCreatedWhileImpersonating(FunctionalTester $I)

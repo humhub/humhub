@@ -120,7 +120,15 @@ class AdminController extends Controller
 
     public function actionRegenerateSecret(int $id)
     {
-        return $this->regenerateSecret($this->findClient($id));
+        $client = $this->findClient($id);
+        if (!$client->isConfidential()) {
+            throw new BadRequestHttpException();
+        }
+
+        $secret = $client->generateSecret();
+        $client->save(false);
+
+        return $this->renderSecret($client, $secret);
     }
 
     public function actionGrants()
@@ -175,6 +183,16 @@ class AdminController extends Controller
         $this->view->success(Yii::t('OauthModule.base', '{count} grants revoked.', ['count' => count($ids)]));
 
         return $this->redirect(['grants']);
+    }
+
+    /**
+     * Rendered, not redirected to: the secret must not pass through the session or any cache.
+     */
+    private function renderSecret(Client $client, string $secret): string
+    {
+        Yii::$app->response->headers->set('Cache-Control', 'no-store');
+
+        return $this->render('client-secret', ['client' => $client, 'secret' => $secret]);
     }
 
     private function findClient(int $id): Client

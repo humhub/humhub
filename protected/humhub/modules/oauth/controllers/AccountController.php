@@ -10,13 +10,10 @@ namespace humhub\modules\oauth\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\modules\oauth\components\CredentialActions;
-use humhub\modules\oauth\models\Client;
-use humhub\modules\oauth\models\forms\ClientForm;
 use humhub\modules\oauth\models\forms\PersonalAccessTokenForm;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\widgets\AppsSections;
-use humhub\modules\oauth\widgets\OwnClientsSection;
 use humhub\modules\oauth\widgets\TokensSection;
 use humhub\modules\user\components\BaseAccountController;
 use Yii;
@@ -35,7 +32,7 @@ class AccountController extends BaseAccountController
     protected function getAccessRules()
     {
         return array_merge(parent::getAccessRules(), [
-            [ControllerAccess::RULE_POST => ['revoke', 'delete-client', 'regenerate-secret']],
+            [ControllerAccess::RULE_POST => ['revoke']],
         ]);
     }
 
@@ -44,8 +41,6 @@ class AccountController extends BaseAccountController
         $this->setActionTitles([
             'index' => Yii::t('OauthModule.base', 'Apps & Tokens'),
             'create-token' => Yii::t('OauthModule.base', 'Create token'),
-            'client' => Yii::t('OauthModule.base', 'OAuth app'),
-            'regenerate-secret' => Yii::t('OauthModule.base', 'OAuth app'),
         ]);
 
         parent::init();
@@ -61,9 +56,7 @@ class AccountController extends BaseAccountController
             throw new NotFoundHttpException();
         }
 
-        // Saving a client may create its secret
-        if (in_array($action->id, ['create-token', 'regenerate-secret'], true)
-            || ($action->id === 'client' && Yii::$app->request->isPost)) {
+        if ($action->id === 'create-token') {
             $this->denyWhileImpersonating();
         }
 
@@ -103,59 +96,5 @@ class AccountController extends BaseAccountController
         }
 
         return $this->render('create-token', ['model' => $model]);
-    }
-
-    public function actionClient(?int $id = null)
-    {
-        $this->ensureCanManageClients();
-
-        $model = new ClientForm($id === null ? new Client() : $this->findOwnClient($id), $this->getUser(), [
-            'scenario' => ClientForm::SCENARIO_USER,
-        ]);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if ($model->getSecret() !== null) {
-                return $this->renderSecret($model->client, $model->getSecret());
-            }
-
-            $this->view->saved();
-            return $this->redirect(['index']);
-        }
-
-        return $this->render('client', ['model' => $model]);
-    }
-
-    public function actionDeleteClient(int $id)
-    {
-        $this->ensureCanManageClients();
-
-        // Its grants go with it (foreign key)
-        $this->findOwnClient($id)->delete();
-        $this->view->success(Yii::t('OauthModule.base', 'The app has been deleted.'));
-
-        return $this->redirect(['index']);
-    }
-
-    public function actionRegenerateSecret(int $id)
-    {
-        $this->ensureCanManageClients();
-
-        return $this->regenerateSecret($this->findOwnClient($id));
-    }
-
-    private function ensureCanManageClients(): void
-    {
-        if (!OwnClientsSection::canManage()) {
-            throw new ForbiddenHttpException();
-        }
-    }
-
-    private function findOwnClient(int $id): Client
-    {
-        $client = Client::findOne(['id' => $id, 'type' => Client::TYPE_USER, 'owner_user_id' => $this->getUser()->id]);
-        if ($client === null) {
-            throw new NotFoundHttpException();
-        }
-
-        return $client;
     }
 }

@@ -9,9 +9,7 @@
 namespace humhub\modules\oauth\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\user\models\User;
 use Yii;
-use yii\db\ActiveQuery;
 
 /**
  * An OAuth client.
@@ -21,7 +19,6 @@ use yii\db\ActiveQuery;
  * @property string $type
  * @property string $name
  * @property string|null $description
- * @property int|null $owner_user_id
  * @property string|null $secret_hash
  * @property string $redirect_uris JSON list
  * @property string $scopes JSON list of allowed scopes
@@ -30,15 +27,12 @@ use yii\db\ActiveQuery;
  * @property int $created_at
  * @property int|null $created_by
  *
- * @property-read User|null $owner
- *
  * @since 1.20
  */
 class Client extends ActiveRecord
 {
     public const TYPE_SYSTEM = 'system';
     public const TYPE_ADMIN = 'admin';
-    public const TYPE_USER = 'user';
 
     /**
      * The built-in client of the HumHub app.
@@ -53,11 +47,6 @@ class Client extends ActiveRecord
     public static function findByClientId(string $clientId): ?self
     {
         return static::findOne(['client_id' => $clientId]);
-    }
-
-    public function getOwner(): ActiveQuery
-    {
-        return $this->hasOne(User::class, ['id' => 'owner_user_id']);
     }
 
     public function isConfidential(): bool

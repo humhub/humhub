@@ -14,7 +14,7 @@ use Yii;
 use yii\db\ActiveQuery;
 
 /**
- * The apps the user connected to the account: admin and user clients.
+ * The apps the user connected to the account: every client but the HumHub app.
  *
  * @since 1.20
  */
@@ -43,8 +43,8 @@ class ConnectedAppsSection extends GrantSection
             ->where([
                 'oauth_grant.user_id' => self::getUserId(),
                 'oauth_grant.type' => Grant::TYPE_OAUTH,
-                'client.type' => [Client::TYPE_ADMIN, Client::TYPE_USER],
             ])
+            ->andWhere(['!=', 'client.type', Client::TYPE_SYSTEM])
             ->andWhere(['not', ['oauth_grant.last_used_at' => null]])
             ->orderBy(['oauth_grant.created_at' => SORT_DESC]);
     }

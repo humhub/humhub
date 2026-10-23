@@ -8,8 +8,7 @@ Clients:
 
 - the **HumHub app** — a built-in system client (`client_id` `humhub-app`). The app signs in
   through the system browser and turns its token into a web session for its WebViews;
-- **admin clients** — integrations and agents an administrator registers;
-- **user clients** — clients a user registers for their own account, if permitted.
+- **admin clients** — integrations and agents an administrator registers.
 
 A **personal access token** is a static token a user creates for scripts and agents that do
 not speak OAuth.
@@ -93,12 +92,11 @@ or already revoked token answers `200`, as RFC 7009 requires.
    Additional checks:
    - impersonation is not active (`Yii::$app->user->impersonation->isActive()`); otherwise `403`;
    - the client is active and its type is allowed (see [Administration](#administration));
-   - a user client is used by its owner only; otherwise `403`;
    - the requested scopes, reduced to what the client may get ([Scopes](#scopes)), are not empty;
      otherwise `invalid_scope`. The system client gets `full` without a `scope` parameter.
 3. **Consent.** The validated `AuthorizationRequest` is stored in the session under a random
    id. The consent page posts that id back, and the id is single-use. The page shows:
-   - the client name, and for a user client "created by *name*, not verified";
+   - the client name;
    - the host of the redirect URI;
    - the label of every scope.
 
@@ -334,7 +332,6 @@ existing grants immediately:
 |---|---|
 | system client | `full` |
 | admin client | grant ∩ client's allowed scopes |
-| user client | grant ∩ client's allowed scopes ∩ `userClientScopes` |
 | PAT | grant ∩ `patScopes` |
 
 `full` can be held by:
@@ -343,7 +340,7 @@ existing grants immediately:
 - an admin client the administrator allowed it;
 - a PAT, if the administrator added it to `patScopes`.
 
-User clients never hold `full`.
+`full` covers every other scope, so a scope selection containing it is stored as `full` alone.
 
 Scopes are grant-based: enforcement always uses the grant's effective scopes, never the
 `scopes` claim of an access token. At code exchange and refresh, `finalizeScopes()` writes
@@ -441,10 +438,9 @@ All timestamps are Unix integers.
 |---|---|---|
 | `id` | int PK | |
 | `client_id` | varchar(80) unique | random 32 hex characters; `humhub-app` for the system client |
-| `type` | varchar(10) | `system`, `admin`, `user` |
+| `type` | varchar(10) | `system`, `admin` |
 | `name` | varchar(100) | |
 | `description` | text null | |
-| `owner_user_id` | int null, FK `user` cascade | user clients |
 | `secret_hash` | char(64) null | SHA-256 hex; null = public client |
 | `redirect_uris` | text | JSON list |
 | `scopes` | text | JSON list of allowed scopes |
@@ -528,29 +524,19 @@ The tab is visible when any of these holds:
 
 - the user has a PAT (also an expired one) or an OAuth grant that has been used
   (`last_used_at` set); grants whose code was never exchanged are not listed;
-- the user may create PATs (`allowPersonalAccessTokens` and `CreatePersonalAccessToken`);
-- the user may manage own clients (`allowUserClients` and `ManageOwnOAuthClients`).
+- the user may create PATs (`allowPersonalAccessTokens` and `CreatePersonalAccessToken`).
 
 Its sections:
 
 - **Devices.** Grants of the system client: device (from `user_agent`, via
   `UserAgentHelper`), created, last used, *Sign out*.
-- **Connected apps.** Grants of admin and user clients: client, scopes, created, last used,
+- **Connected apps.** Grants of admin clients: client, scopes, created, last used,
   *Disconnect*.
 - **Personal access tokens.** Name, `hhpat_…<hint>`, scopes, expiry, last used, *Revoke*.
   Then *Create token* (name, scopes from `patScopes`, lifetime, re-authentication). The token
   is shown once.
-- **My OAuth apps.** Only with `allowUserClients` and the permission `ManageOwnOAuthClients`.
-  Create, edit, delete, regenerate the secret (shown once). The scopes are chosen from
-  `userClientScopes`.
 
-A client secret needs no re-authentication: on its own it gives no access to an account (there
-is no client credentials grant), the user still has to authorize the client. Regenerating it
-is a confirmed POST. Like PATs, client secrets are never created while impersonating: saving a
-client and regenerating its secret are refused (`403`), in the account and in the
-administration.
-
-Creating a PAT or connecting an admin or user client sends the user the notification
+Creating a PAT or connecting an admin client sends the user the notification
 `GrantCreatedNotification` (web and mail). Signing in with the app does not.
 
 ### Administration: "Apps & API Access"
@@ -568,8 +554,6 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 |---|---|---|
 | `allowApp` | on | the HumHub app may sign in |
 | `allowClients` | off | admin clients may authorize |
-| `allowUserClients` | off | user clients may authorize; creating them requires `ManageOwnOAuthClients` |
-| `userClientScopes` | all `*:read` core scopes | upper bound for user clients |
 | `allowPersonalAccessTokens` | off | PATs authenticate; creating them requires `CreatePersonalAccessToken` |
 | `patScopes` | all `*:read` core scopes | upper bound for PATs |
 | `patMaxLifetimeDays` | 365 | 0 = unlimited, offers *never* |
@@ -590,19 +574,43 @@ reject grants of a disallowed kind.
 
 `full` and *skip consent* can only be set by system administrators
 (`User::isSystemAdmin()`). Other holders of `ManageSettings` neither see nor may submit them;
-when they edit a client, what a system administrator set stays. User clients edited in the
-administration are never offered either.
+when they edit a client, what a system administrator set stays.
+
+A client secret needs no re-authentication: on its own it gives no access to an account (there
+is no client credentials grant), the user still has to authorize the client. Regenerating it
+is a confirmed POST. Like PATs, client secrets are never created while impersonating: saving a
+client and regenerating its secret are refused (`403`).
 
 **Grants.** Every grant, filterable by user, client and type, with *Revoke* and *Revoke all*
 (for the current filter).
 
-**Group permissions** (Users → Groups → Permissions), both off by default:
+**Group permission** (Users → Groups → Permissions), off by default:
+`CreatePersonalAccessToken`.
 
-- `CreatePersonalAccessToken`;
-- `ManageOwnOAuthClients`.
+Removing it only stops creating new tokens; existing PATs keep working. To stop them, switch
+`allowPersonalAccessTokens` off or revoke the grants.
 
-Removing a permission only stops creating new credentials; existing PATs and clients keep
-working. To stop them, switch the matching `allow…` setting off or revoke the grants.
+## Extending: further client types
+
+Clients are typed (`oauth_client.type`), and every rule that depends on the kind of client
+branches on the type. Another type — for example clients that users register for their own
+account — is added like this:
+
+- **Type.** A new `Client::TYPE_…` constant, plus any column the type needs (e.g. an owner) in
+  a migration of its own.
+- **Grant rules.** `GrantService::isClientTypeAllowed()` (the `allow…` setting that switches
+  the type on) and `GrantService::getAllowedScopes()` (the upper bound of its scopes, e.g.
+  never `full`). `getEffectiveScopes()` and `isUsable()` follow from both.
+- **Authorization.** Checks beyond the type rules (e.g. only the owner may authorize the
+  client) go into `AuthorizeController`, at validation and again when the grant is created.
+- **Form.** A `ClientForm` scenario of its own with the attributes it may set; `save()` sets
+  the type and `getScopeOptions()` / `canSetPrivileged()` limit what it offers.
+- **Consent wording.** The consent page (`views/authorize/index.php`) tells the user who
+  stands behind a client that no administrator registered (e.g. "Created by *name*, not
+  verified").
+- **Lists.** *Connected apps* in the account lists every client type but the system client,
+  so the new type appears there without changes; the administration's client list needs a
+  label for it.
 
 ## PSR-7 bridge
 
@@ -627,7 +635,7 @@ protected/humhub/modules/oauth/
 ├── commands/OauthController.php          # rotate-key
 ├── components/
 │   ├── AuthorizationServerFactory.php    # league AuthorizationServer / ResourceServer
-│   ├── CredentialActions.php             # secret display, regeneration, impersonation guard
+│   ├── CredentialActions.php             # impersonation guard for credential actions
 │   ├── KeyStore.php                      # read, generate, rotate keys
 │   ├── RecentAuthentication.php          # re-authentication before creating a PAT
 │   ├── TokenAuth.php
@@ -654,11 +662,10 @@ protected/humhub/modules/oauth/
 ├── notifications/
 │   └── GrantCreatedNotification.php
 ├── permissions/CreatePersonalAccessToken.php
-├── permissions/ManageOwnOAuthClients.php
 ├── migrations/
 ├── views/
 ├── widgets/                    # the sections of "Apps & Tokens" (devices, connected apps,
-│                               # tokens, own apps)
+│                               # tokens)
 └── tests/
 ```
 

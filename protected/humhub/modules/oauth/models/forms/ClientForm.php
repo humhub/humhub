@@ -10,21 +10,19 @@ namespace humhub\modules\oauth\models\forms;
 
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\models\Client;
-use humhub\modules\oauth\Module;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 
 /**
- * Creating and editing an OAuth client — by an administrator (`admin` scenario) or by a user
- * for their own account (`user` scenario).
+ * Creating and editing an OAuth client. One scenario per client type: `admin` for the clients
+ * administrators register.
  *
  * @since 1.20
  */
 class ClientForm extends Model
 {
     public const SCENARIO_ADMIN = 'admin';
-    public const SCENARIO_USER = 'user';
 
     public $name;
     public $description;
@@ -59,18 +57,16 @@ class ClientForm extends Model
 
     public function scenarios()
     {
-        $common = ['name', 'description', 'redirectUris', 'scopes', 'confidential'];
-
         return [
-            self::SCENARIO_ADMIN => [...$common, 'skipConsent', 'isActive'],
-            self::SCENARIO_USER => $common,
+            self::SCENARIO_ADMIN => ['name', 'description', 'redirectUris', 'scopes', 'confidential', 'skipConsent', 'isActive'],
         ];
     }
 
     public function rules()
     {
         return [
-            [['name', 'redirectUris', 'scopes'], 'required'],
+            [['name', 'redirectUris'], 'required'],
+            ['scopes', 'required', 'when' => fn() => !$this->hasLockedFullAccess()],
             ['name', 'string', 'max' => 100],
             ['description', 'string', 'max' => 1000],
             [['confidential', 'skipConsent', 'isActive'], 'boolean'],
@@ -94,14 +90,32 @@ class ClientForm extends Model
     }
 
     /**
-     * Whether `full` and skipping the consent can be set: only by system administrators, and
-     * never for user clients, which must not get more than their owner could consent to.
+     * `full` covers every other scope, so it is stored alone. Disabled checkboxes are not
+     * submitted, so the form cannot be relied on for that.
+     */
+    public function beforeValidate()
+    {
+        if (is_array($this->scopes) && in_array(ScopeRegistry::FULL, $this->scopes, true)) {
+            $this->scopes = [ScopeRegistry::FULL];
+        }
+
+        return parent::beforeValidate();
+    }
+
+    /**
+     * Whether `full` and skipping the consent can be set: only by system administrators.
      */
     public function canSetPrivileged(): bool
     {
-        return $this->scenario === self::SCENARIO_ADMIN
-            && $this->client->type !== Client::TYPE_USER
-            && $this->actor->isSystemAdmin();
+        return $this->scenario === self::SCENARIO_ADMIN && $this->actor->isSystemAdmin();
+    }
+
+    /**
+     * Whether the client has `full`, which the current actor cannot change: it stays when they edit the client.
+     */
+    public function hasLockedFullAccess(): bool
+    {
+        return !$this->canSetPrivileged() && in_array(ScopeRegistry::FULL, $this->client->getAllowedScopes(), true);
     }
 
     /**
@@ -109,13 +123,9 @@ class ClientForm extends Model
      */
     public function getScopeOptions(): array
     {
-        if ($this->scenario === self::SCENARIO_ADMIN) {
-            $ids = array_keys(ScopeRegistry::getScopes());
-            if (!$this->canSetPrivileged()) {
-                $ids = array_diff($ids, [ScopeRegistry::FULL]);
-            }
-        } else {
-            $ids = array_diff(Module::instance()->getUserClientScopes(), [ScopeRegistry::FULL]);
+        $ids = array_keys(ScopeRegistry::getScopes());
+        if (!$this->canSetPrivileged()) {
+            $ids = array_diff($ids, [ScopeRegistry::FULL]);
         }
 
         $options = [];
@@ -215,12 +225,10 @@ class ClientForm extends Model
             return false;
         }
 
-        $isAdmin = $this->scenario === self::SCENARIO_ADMIN;
         $client = $this->client;
         if ($client->isNewRecord) {
             $client->client_id = bin2hex(random_bytes(16));
-            $client->type = $isAdmin ? Client::TYPE_ADMIN : Client::TYPE_USER;
-            $client->owner_user_id = $isAdmin ? null : $this->actor->id;
+            $client->type = Client::TYPE_ADMIN;
             $client->created_by = $this->actor->id;
             $client->created_at = time();
             $client->skip_consent = 0;
@@ -230,18 +238,10 @@ class ClientForm extends Model
         $client->name = $this->name;
         $client->description = $this->description ?: null;
         $client->redirect_uris = json_encode($this->getRedirectUriList());
-        $scopes = array_values((array)$this->scopes);
         // `full` set by a system administrator stays when someone else edits the client
-        if (!$this->canSetPrivileged() && $client->type !== Client::TYPE_USER
-            && in_array(ScopeRegistry::FULL, $client->getAllowedScopes(), true)) {
-            $scopes[] = ScopeRegistry::FULL;
-        }
+        $scopes = $this->hasLockedFullAccess() ? [ScopeRegistry::FULL] : array_values((array)$this->scopes);
         $client->scopes = json_encode(array_values(array_unique($scopes)));
-
-        // Users must not override what an administrator set for their client
-        if ($isAdmin) {
-            $client->is_active = $this->isActive ? 1 : 0;
-        }
+        $client->is_active = $this->isActive ? 1 : 0;
         if ($this->canSetPrivileged()) {
             $client->skip_consent = $this->skipConsent ? 1 : 0;
         }

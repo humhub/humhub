@@ -17,13 +17,12 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class GrantServiceTest extends HumHubDbTestCase
 {
-    private function createClient(string $type, array $scopes, ?int $ownerId = null): Client
+    private function createClient(string $type, array $scopes): Client
     {
         $client = new Client([
             'client_id' => bin2hex(random_bytes(16)),
             'type' => $type,
             'name' => 'Test ' . $type,
-            'owner_user_id' => $ownerId,
             'redirect_uris' => json_encode(['https://example.org/cb']),
             'scopes' => json_encode($scopes),
             'is_active' => 1,
@@ -50,18 +49,6 @@ class GrantServiceTest extends HumHubDbTestCase
         $service = new GrantService();
 
         $grant = $service->createOAuthGrant(User::findOne(['id' => 1]), $client, ['content:read', 'content:write', 'unknown:scope']);
-
-        $this->assertSame(['content:read'], $service->getEffectiveScopes($grant));
-    }
-
-    public function testUserClientsNeverHoldFullAndAreBoundedBySettings()
-    {
-        Module::instance()->settings->set('allowUserClients', true);
-        Module::instance()->settings->set('userClientScopes', json_encode(['content:read']));
-        $client = $this->createClient(Client::TYPE_USER, ['full', 'content:read', 'spaces:read'], 2);
-        $service = new GrantService();
-
-        $grant = $service->createOAuthGrant(User::findOne(['id' => 2]), $client, ['full', 'content:read', 'spaces:read']);
 
         $this->assertSame(['content:read'], $service->getEffectiveScopes($grant));
     }
