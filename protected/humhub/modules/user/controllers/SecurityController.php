@@ -17,6 +17,7 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\services\UserSessionService;
 use humhub\modules\user\services\UserSourceService;
 use humhub\modules\user\widgets\security\ProfilePermissionsSection;
+use humhub\modules\user\widgets\security\SecuritySessionSections;
 use humhub\modules\user\widgets\SecuritySettingsMenu;
 use Yii;
 use yii\web\HttpException;
@@ -45,7 +46,7 @@ class SecurityController extends BaseAccountController
     {
         $this->setActionTitles([
             'login' => Yii::t('UserModule.account', 'Login'),
-            'sessions' => Yii::t('UserModule.account', 'Sessions'),
+            'sessions' => Yii::t('UserModule.account', 'Devices & Access'),
             'privacy' => Yii::t('UserModule.account', 'Privacy'),
             'data' => Yii::t('UserModule.account', 'My Data'),
             'delete' => Yii::t('UserModule.account', 'Delete account'),
@@ -103,7 +104,11 @@ class SecurityController extends BaseAccountController
 
     public function actionSessions()
     {
-        return $this->render('sessions', ['sessions' => $this->getSessionService()->getActiveSessions()]);
+        if (!(new SecuritySessionSections())->hasVisibleSections()) {
+            throw new HttpException(404);
+        }
+
+        return $this->render('sessions');
     }
 
     public function actionTerminateSession(string $key)

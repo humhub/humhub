@@ -2086,11 +2086,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `permissions` and `delete` redirect (301); their views in `@user/views/account/` are removed or
   moved to `@user/views/security/`. The profile permissions are now at `user/security/privacy`.
   - New tab menu `humhub\modules\user\widgets\SecuritySettingsMenu` (`EVENT_INIT`). Sort orders of
-    the core tabs: Login 100, Sessions 300, Privacy 400, My Data 900 — a two-factor module should
-    use 200. Module pages render inside `@user/views/security/_layout.php`.
+    the core tabs: Login 100, Devices & Access 300, Privacy 400, My Data 900 — a two-factor module
+    should use 200. Module pages render inside `@user/views/security/_layout.php`.
   - New section stacks `humhub\modules\user\widgets\security\SecurityLoginSections`,
-    `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section extends
-    `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
+    `SecuritySessionSections` (browser sessions and other access, e.g. app devices and tokens),
+    `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section
+    extends `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
   - Modules that add security or privacy related entries to `AccountSettingsMenu`, e.g. two-factor
     authentication or a personal data export, should move them to `SecuritySettingsMenu` or
     `SecurityDataSections`.
