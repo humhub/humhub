@@ -12,6 +12,7 @@ return [
     'Save' => 'Kaydet',
     'Spaces' => 'Alanlar',
     'Users' => 'Kullanıcılar',
+    'Could not enable module!' => '',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',

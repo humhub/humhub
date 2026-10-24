@@ -4,7 +4,7 @@ namespace humhub\modules\dashboard\stream\filters;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\content\models\stream\filters\StreamQueryFilter;
 use yii\db\Query;
 
 /**

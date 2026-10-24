@@ -82,7 +82,6 @@ class ThemeTest extends Unit
         $theme = new Theme($config);
 
         $parents = new ReflectionProperty(Theme::class, 'parents');
-        $parents->setAccessible(true);
         $parents->setValue($theme, []);
 
         return $theme;
@@ -244,7 +243,6 @@ class ThemeTest extends Unit
         $theme = $this->makeTheme();
 
         $initPathMap = new ReflectionMethod(Theme::class, 'initPathMap');
-        $initPathMap->setAccessible(true);
         $initPathMap->invoke($theme);
         $initPathMap->invoke($theme);
 
@@ -274,7 +272,6 @@ class ThemeTest extends Unit
     private function invokeMergeConfiguredPathMap(?BaseTheme $configured, BaseTheme $active): void
     {
         $method = new ReflectionMethod(ThemeLoader::class, 'mergeConfiguredPathMap');
-        $method->setAccessible(true);
         $method->invoke(null, $configured, $active);
     }
 

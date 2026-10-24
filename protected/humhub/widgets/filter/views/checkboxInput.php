@@ -1,0 +1,23 @@
+<?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ *
+ */
+
+use humhub\components\View;
+use humhub\helpers\Html;
+
+/* @var $this View */
+/* @var $options array */
+/* @var $title string */
+/* @var $value bool */
+/* @var $checked bool */
+/* @var $iconInActive bool */
+/* @var $iconActive bool */
+?>
+
+<?= Html::beginTag('a', $options) ?>
+<i class="ti <?= ($checked) ? $iconActive : $iconInActive ?>" aria-hidden="true"></i> <?= $title ?>
+<?= Html::endTag('a') ?>

@@ -15,7 +15,7 @@ use yii\helpers\Url;
             <!-- start: tags for user skills -->
             <ul class="tags list-unstyled d-flex flex-wrap gap-1">
                 <?php foreach ($user->getTags() as $tag): ?>
-                    <li><?= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => $tag]), ['class' => 'btn btn-light btn-sm tag']) ?></li>
+                    <li><?= Html::a(Html::encode($tag), Url::to(['/user/people', 'q' => $tag]), ['class' => 'btn btn-light btn-sm tag']) ?></li>
                 <?php endforeach; ?>
             </ul>
             <!-- end: tags for user skills -->

@@ -11,11 +11,12 @@ namespace humhub\modules\friendship\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
 use humhub\modules\friendship\FriendshipEvent;
-use humhub\modules\friendship\notifications\RequestDeclined;
-use humhub\modules\friendship\notifications\Request;
-use humhub\modules\friendship\notifications\RequestApproved;
+use humhub\modules\friendship\notifications\FriendshipApprovedNotification;
+use humhub\modules\friendship\notifications\FriendshipDeclinedNotification;
+use humhub\modules\friendship\notifications\FriendshipRequestNotification;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\IntegrityException;
 use yii\db\Query;
 
 /**
@@ -109,13 +110,13 @@ class Friendship extends ActiveRecord
 
             if ($state === self::STATE_REQUEST_SENT) {
                 // Send Request Notification
-                Request::instance()->from($this->user)->about($this)->send($this->friendUser);
+                FriendshipRequestNotification::send($this->friendUser, $this, $this->user);
             } elseif ($state === self::STATE_FRIENDS) {
                 // Remove request notification
-                Request::instance()->from($this->friendUser)->delete($this->user);
+                FriendshipRequestNotification::revoke(user: $this->user, originator: $this->friendUser);
 
                 // User approved friends request notification
-                RequestApproved::instance()->from($this->user)->about($this)->send($this->friendUser);
+                FriendshipApprovedNotification::send($this->friendUser, $this, $this->user);
 
                 $this->trigger(self::EVENT_FRIENDSHIP_CREATED, new FriendshipEvent([
                     'user1' => $this->user,
@@ -243,7 +244,25 @@ class Friendship extends ActiveRecord
         $friendship = new Friendship();
         $friendship->user_id = $user->id;
         $friendship->friend_user_id = $friend->id;
-        if ($friendship->save()) {
+
+        try {
+            $saved = $friendship->save();
+        } catch (IntegrityException $e) {
+            // Concurrent request may have already created this friendship (race on
+            // the unique index) - verify before treating as success, don't swallow other errors.
+            $record = static::find()->where([
+                'user_id' => $user->id,
+                'friend_user_id' => $friend->id,
+            ]);
+
+            if (!$record->exists()) {
+                throw $e;
+            }
+
+            $saved = true;
+        }
+
+        if ($saved) {
             $friend->follow($user, false);
             return true;
         }
@@ -271,7 +290,7 @@ class Friendship extends ActiveRecord
             $myFriendship->delete();
         } elseif ($friendsFriendship !== null) {
             // Is declined friendship request - send declined notification
-            RequestDeclined::instance()->from($user)->send($friend);
+            FriendshipDeclinedNotification::send($friend, originator: $user);
         }
 
         if ($myFriendship !== null && $friendsFriendship !== null) {

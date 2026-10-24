@@ -124,10 +124,34 @@ class UrlOembedTest extends HumHubDbTestCase
         $this->assertEquals(2, UrlOembedMock::getFetchLoadCount());
     }
 
+    public function testConfirmationContentEncodesUrl()
+    {
+        $url = 'https:youtube.com<script>alert(1)</script>';
+        $html = UrlOembedMock::buildConfirmationContent($url);
+
+        // The requested url is attacker controllable and must be rendered inert
+        $this->assertStringNotContainsString('<script>', $html);
+        $this->assertStringContainsString('&lt;script&gt;', $html);
+    }
+
     private function getOembedRecordCount()
     {
         return UrlOembedMock::find()->count();
     }
 
+    public function testRestrictAllowedDomains()
+    {
+        $this->becomeUser('User1');
 
+        UrlOembed::saveAllowedDomain('a.com');
+        UrlOembed::saveAllowedDomain('b.com');
+        UrlOembed::saveAllowedDomain('c.com');
+
+        // Unknown domains must not be added
+        UrlOembed::restrictAllowedDomains(['a.com', 'c.com', 'new.com']);
+        $this->assertEquals(['a.com', 'c.com'], UrlOembed::getAllowedDomains());
+
+        UrlOembed::restrictAllowedDomains([]);
+        $this->assertEquals([], UrlOembed::getAllowedDomains());
+    }
 }

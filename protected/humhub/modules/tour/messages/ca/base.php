@@ -2,6 +2,7 @@
 
 return [
     'Cancel' => 'Cancel·la',
+    'Done' => 'Fet',
     'Drag a photo here or click to browse your files' => 'Arrossegar una foto aquí o feu clic per navegar pels arxius',
     'Hide my year of birth' => 'Ocultar el meu any de naixement',
     'Ok' => 'D\'acord',
@@ -13,6 +14,7 @@ return [
     'Your phone number at work' => 'El seu número de telèfon al treball',
     'Your title or position' => 'El teu títol o posició',
     ' Remove panel' => '',
+    '&larr; Previous' => '',
     '<strong>Account</strong> Menu' => '',
     '<strong>Getting</strong> Started' => '',
     '<strong>Guide:</strong> Administration (Modules)' => '',
@@ -26,8 +28,10 @@ return [
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
     'Get to know your way around the site\'s most important features with the following guides:' => '',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
+    'Next &rarr;' => '',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
-    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => '',
+    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings {icon} Settings.' => '',
     'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => '',
     'Your skills, knowledge and experience' => '',
+    '{{current}} of {{total}}' => '',
 ];

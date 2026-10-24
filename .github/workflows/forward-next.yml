@@ -1,0 +1,34 @@
+name: Forward next
+
+# Brings "develop" into "next" once a day (or when started manually), so "next" does not have
+# to be merged by hand while it has no or only small own changes (e.g. the version in the config).
+# Scheduled workflows only run from the default branch, so this file must be on "master".
+# A fast-forward when "next" has no own commits, a merge commit otherwise. On a merge
+# conflict the job fails and "develop" has to be merged into "next" manually.
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forward-next
+
+jobs:
+  forward:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: next
+          fetch-depth: 0
+
+      - name: Merge develop into next
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-edit origin/develop
+          git push origin HEAD:next

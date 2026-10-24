@@ -20,6 +20,7 @@ return [
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'Aún no se ha terminado de desinstalar este módulo. Será eliminado en unos minutos.',
     'User default state' => 'Estado por defecto del usuario',
     'Users' => 'Usuarios',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Uninstall Module' => '',

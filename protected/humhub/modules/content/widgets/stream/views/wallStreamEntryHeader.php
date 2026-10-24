@@ -12,7 +12,7 @@ use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\content\widgets\VisibilityIcon;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\widgets\TimeAgo;
 
 /* @var $this View */

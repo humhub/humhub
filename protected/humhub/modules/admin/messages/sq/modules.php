@@ -5,6 +5,7 @@ return [
     'Users' => 'Përdoruesit',
     '%moduleName% - Set as default module' => '',
     'Always activated' => '',
+    'Could not enable module!' => '',
     'Could not find requested module!' => '',
     'Deactivated' => '',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',

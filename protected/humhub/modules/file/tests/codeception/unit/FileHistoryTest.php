@@ -65,6 +65,10 @@ class FileHistoryTest extends HumHubDbTestCase
      */
     private function prepareFile()
     {
+        // A file can only be attached by its own creator, so we need an authenticated
+        // user in context for both creating and attaching the file (see FileManager::attach()).
+        self::becomeUser('Admin');
+
         $post = Post::findOne(['id' => 1]);
 
         $file = new File();

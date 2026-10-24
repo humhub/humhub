@@ -71,8 +71,8 @@ class MobileAppController extends Controller
         $domains = [];
 
         foreach ($urls as $url) {
-            $scheme = parse_url($url, PHP_URL_SCHEME) ?: 'https';
-            $host   = parse_url($url, PHP_URL_HOST);
+            $scheme = parse_url((string) $url, PHP_URL_SCHEME) ?: 'https';
+            $host   = parse_url((string) $url, PHP_URL_HOST);
             if ($host) {
                 $domains[] = $scheme . '://' . $host;
             }

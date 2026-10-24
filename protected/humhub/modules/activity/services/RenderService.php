@@ -4,26 +4,23 @@ namespace humhub\modules\activity\services;
 
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\notification\components\NotificationPrivacy;
 use Yii;
 
+/**
+ * Renders an activity record for the summary mail - with the full sentence, or under
+ * {@see NotificationPrivacy::Redacted} the sentence without content
+ * ({@see BaseActivity::asRedactedHtml()}) and without the Space.
+ *
+ * @internal
+ */
 class RenderService
 {
     private readonly BaseActivity $activity;
 
-    public function __construct(Activity $record)
+    public function __construct(Activity $record, private readonly NotificationPrivacy $privacy = NotificationPrivacy::Full)
     {
         $this->activity = ActivityManager::load($record);
-    }
-
-    public function getWeb(): string
-    {
-        return Yii::$app->getView()->renderFile(
-            '@activity/views/layouts/web.php',
-            array_merge(
-                $this->getViewParams(),
-                ['message' => $this->activity->asWeb()],
-            ),
-        );
     }
 
     public function getMailText(): string
@@ -32,7 +29,10 @@ class RenderService
             '@activity/views/layouts/mail_plaintext.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->activity->asMailText(), 'url' => $this->activity->getUrl(true)],
+                [
+                    'message' => $this->privacy === NotificationPrivacy::Full ? $this->activity->asMailText() : $this->activity->asRedactedText(),
+                    'url' => $this->activity->getUrl(true),
+                ],
             ),
         );
     }
@@ -43,7 +43,10 @@ class RenderService
             '@activity/views/layouts/mail.php',
             array_merge(
                 $this->getViewParams(),
-                ['message' => $this->activity->asMailHtml(), 'url' => $this->activity->getUrl(true)],
+                [
+                    'message' => $this->privacy === NotificationPrivacy::Full ? $this->activity->asMailHtml() : $this->activity->asRedactedHtml(),
+                    'url' => $this->activity->getUrl(true),
+                ],
             ),
         );
     }
@@ -52,7 +55,8 @@ class RenderService
     {
         return [
             'url' => $this->activity->getUrl(),
-            'contentContainer' => $this->activity->contentContainer,
+            // the layouts name the Space; a Space name may tell too much when content is hidden
+            'contentContainer' => $this->privacy === NotificationPrivacy::Full ? $this->activity->contentContainer : null,
             'createdAt' => $this->activity->createdAt,
             'user' => $this->activity->user,
         ];

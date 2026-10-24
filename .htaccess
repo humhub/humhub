@@ -1,0 +1,37 @@
+# Maps every request into the `public/` directory, so nothing beside it can be requested.
+#
+# HumHub serves from `public/`. Where the web server lets you choose, point its document root at
+# that directory directly and this file is never read. Where it does not - most shared hosting -
+# leaving the document root on the installation directory and letting these rules map requests into
+# `public/` protects `protected/`, `uploads/`, the `.env` file and the Composer metadata just as
+# well: they are not reachable under any URL.
+#
+# Requires mod_rewrite. Without it the installation directory is served as-is, and only the fallback
+# at the bottom applies; Administration -> Information -> Prerequisites reports that.
+
+# The ACME challenge is exempt so certificate renewal keeps working.
+RedirectMatch 403 (^|/)\.(?!well-known/)
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine on
+
+    # Certificate renewal writes its challenge into the document root, so leave it where it is.
+    RewriteRule ^\.well-known/ - [L]
+
+    # Already mapped - hand over to the rules in public/.htaccess.
+    RewriteRule ^public/ - [L]
+
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Without mod_rewrite nothing is mapped, so at least keep the Composer metadata out of reach.
+<FilesMatch "^composer\.(json|lock|phar)$">
+    <IfModule authz_core_module>
+        Require all denied
+    </IfModule>
+    <IfModule !authz_core_module>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>

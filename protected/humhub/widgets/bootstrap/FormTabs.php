@@ -8,7 +8,7 @@
 
 namespace humhub\widgets\bootstrap;
 
-use humhub\modules\ui\form\interfaces\TabbedFormModel;
+use humhub\interfaces\TabbedFormModel;
 use yii\base\Model;
 
 /**

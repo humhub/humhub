@@ -2,48 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\form\assets;
 
-use yii\web\AssetBundle;
-use yii\web\View;
-
-class CodeMirrorAssetBundle extends AssetBundle
+/**
+ * @deprecated since 1.20, use \humhub\assets\CodeMirrorAssetBundle instead. Will be removed in 1.21.
+ */
+class CodeMirrorAssetBundle extends \humhub\assets\CodeMirrorAssetBundle
 {
-    /**
-     * v1.5 compatibility defer script loading
-     *
-     * Migrate to HumHub AssetBundle once minVersion is >=1.5
-     *
-     * @var bool
-     */
-    public $defer = true;
-
-    public $jsOptions = ['position' => View::POS_HEAD];
-    public $sourcePath = '@vendor/npm-asset/codemirror';
-
-    public $js = [
-        'lib/codemirror.js',
-        'addon/display/autorefresh.js',
-        'addon/hint/show-hint.js',
-        'addon/hint/html-hint.js',
-        'addon/hint/xml-hint.js',
-        'mode/xml/xml.js',
-        'mode/javascript/javascript.js',
-        'mode/css/css.js',
-        'mode/htmlmixed/htmlmixed.js',
-        'addon/dialog/dialog.js',
-        'addon/search/searchcursor.js',
-        'addon/search/search.js',
-    ];
-
-    public $css = [
-        'lib/codemirror.css',
-        'addon/hint/show-hint.css',
-        'addon/dialog/dialog.css',
-    ];
-
 }

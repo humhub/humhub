@@ -12,13 +12,17 @@ use humhub\helpers\Html;
 use humhub\libs\MimeHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\controllers\SearchController;
+use humhub\modules\content\helpers\SearchHelper;
 use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\handler\DownloadFileHandler;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
 use Yii;
+use yii\helpers\Inflector;
 use yii\helpers\Url;
 
 /**
@@ -72,6 +76,37 @@ class FileHelper extends \yii\helpers\FileHelper
     }
 
     /**
+     * Returns a `Content-Disposition` header value that is safe to use with both old and new
+     * browsers, built the same way [[\yii\web\Response::sendFile()]] builds it.
+     *
+     * Needed whenever a download is not served by the response itself and the header has to be
+     * handed to something else - e.g. [[\humhub\modules\file\actions\DownloadAction]] passing it
+     * into a temporary storage URL, where the object key carries no usable file name.
+     * [[\yii\web\Response::getDispositionHeaderValue()]] does the same but is protected.
+     *
+     * @param string $disposition `attachment` or `inline`
+     * @param string $fileName the file name presented to the browser
+     * @return string the header value
+     * @since 1.19
+     */
+    public static function getContentDispositionHeaderValue(string $disposition, string $fileName): string
+    {
+        $fallbackName = str_replace(
+            ['%', '/', '\\', '"', "\x7F"],
+            ['_', '_', '_', '\\"', '_'],
+            Inflector::transliterate($fileName, Inflector::TRANSLITERATE_LOOSE),
+        );
+        $utfName = rawurlencode(str_replace(['%', '/', '\\'], '', $fileName));
+
+        $header = "$disposition; filename=\"$fallbackName\"";
+        if ($utfName !== $fallbackName) {
+            $header .= "; filename*=utf-8''$utfName";
+        }
+
+        return $header;
+    }
+
+    /**
      * Creates a file with options
      *
      * @param File $file
@@ -81,7 +116,31 @@ class FileHelper extends \yii\helpers\FileHelper
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
         $label = $htmlOptions['label'] ?? Html::encode($file->file_name);
+        $viewUrl = static::getViewUrl($file);
 
+        if ($viewUrl === null) {
+            $htmlOptions['target'] = '_blank';
+            $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
+            return Html::a($label, $file->getUrl(), $htmlOptions);
+        }
+
+        $htmlOptions = array_merge($htmlOptions, ['data-bs-target' => '#globalModal']);
+
+        return Html::a($label, $viewUrl, $htmlOptions);
+    }
+
+    /**
+     * URL of the modal opening a file with the handlers registered for it, or `null` when
+     * plain download is all there is - in which case a caller should link the file
+     * directly instead of routing a download through a dialog.
+     *
+     * Handlers are contributed by modules ({@see FileHandlerCollection::EVENT_INIT}) and
+     * may take the current user into account, so the result is caller specific.
+     *
+     * @since 1.20
+     */
+    public static function getViewUrl(File $file): ?string
+    {
         $fileHandlers = FileHandlerCollection::getByType(
             [
                 FileHandlerCollection::TYPE_VIEW,
@@ -91,17 +150,37 @@ class FileHelper extends \yii\helpers\FileHelper
             ],
             $file,
         );
+
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
-            $htmlOptions['target'] = '_blank';
-            $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
-            return Html::a($label, $file->getUrl(), $htmlOptions);
+            return null;
         }
 
-        $htmlOptions = array_merge($htmlOptions, ['data-bs-target' => '#globalModal']);
+        return Url::to(['/file/view', 'guid' => $file->guid]);
+    }
 
-        $urlOptions = ['/file/view', 'guid' => $file->guid];
+    /**
+     * Whether the file's text content matches the keyword of the search result page
+     * currently being rendered, and should therefore be marked as a hit.
+     *
+     * @since 1.20
+     */
+    public static function isSearchHighlighted(File $file): bool
+    {
+        $controller = Yii::$app->controller;
 
-        return Html::a($label, Url::to($urlOptions), $htmlOptions);
+        if (!$controller instanceof SearchController) {
+            return false;
+        }
+
+        $keyword = $controller->searchRequest->keyword;
+        if (empty($keyword)) {
+            return false;
+        }
+
+        $converter = new TextConverter();
+
+        return $converter->applyFile($file)
+            && SearchHelper::matchQuery($keyword, $converter->getContentAsText());
     }
 
     /**

@@ -13,8 +13,8 @@ use humhub\helpers\Html;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\TabMenu;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 

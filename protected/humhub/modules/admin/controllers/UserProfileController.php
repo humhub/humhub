@@ -85,6 +85,8 @@ class UserProfileController extends Controller
      */
     public function actionDeleteCategory()
     {
+        $this->forcePostRequest();
+
         $id = (int)Yii::$app->request->get('id');
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);

@@ -90,7 +90,7 @@ class ModuleAutoLoader implements BootstrapInterface
         }
 
         $route = $_SERVER['argv'][1] ?? '';
-        $controllerId = explode('/', $route)[0];
+        $controllerId = explode('/', (string) $route)[0];
 
         if (empty($controllerId)) {
             return false;

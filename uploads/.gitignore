@@ -1,6 +1,7 @@
 # Ignore everything in this directory
 *
 !.gitignore
+!.htaccess
 !index.html
 !file
 !profile_image

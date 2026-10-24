@@ -77,7 +77,7 @@ use humhub\helpers\MailStyleHelper;
                                                                         <?= $message ?>
 
                                                                         <!-- check if activity object has a space -->
-                                                                        <?php if ($contentContainer->polymorphicRelation instanceof Space): ?>
+                                                                        <?php if ($contentContainer?->polymorphicRelation instanceof Space): ?>
                                                                             <?= Html::a(
                                                                                 $contentContainer->polymorphicRelation->displayName,
                                                                                 $contentContainer->polymorphicRelation->createUrl(null, [], true),

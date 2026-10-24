@@ -47,7 +47,7 @@ class Events extends BaseObject
 
         // Delete unused files
         $deleteTime = time() - (60 * 60 * 24 * 1); // Older than 1 day
-        foreach (File::find()->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->andWhere('(object_model IS NULL or object_model = "")')->all() as $file) {
+        foreach (File::find()->andWhere(['<', 'created_at', date('Y-m-d', $deleteTime)])->andWhere('(object_model IS NULL or object_model = "")')->andWhere(['standalone' => 0])->all() as $file) {
             $file->delete();
         }
 

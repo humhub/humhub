@@ -49,12 +49,6 @@ parameters:
 			path: protected/humhub/components/SettingsManager.php
 
 		-
-			message: '#^Method humhub\\components\\SocialActivity\:\:asArray\(\) invoked with 0 parameters, 1 required\.$#'
-			identifier: arguments.count
-			count: 1
-			path: protected/humhub/components/SocialActivity.php
-
-		-
 			message: '#^Access to an undefined property humhub\\components\\access\\PermissionAccessValidator\:\:\$action\.$#'
 			identifier: property.notFound
 			count: 1
@@ -109,16 +103,16 @@ parameters:
 			path: protected/humhub/libs/StdClassConfigurable.php
 
 		-
+			message: '#^Call to an undefined static method humhub\\modules\\activity\\components\\BaseActivity\:\:getTitle\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: protected/humhub/modules/activity/components/BaseActivity.php
+
+		-
 			message: '#^Value for attribute "grouping_key" on ActiveRecord humhub\\modules\\activity\\models\\Activity in updateAll\(\) attributes must be string, int given\.$#'
 			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
 			count: 1
 			path: protected/humhub/modules/activity/services/GroupingService.php
-
-		-
-			message: '#^View "notification" does not exist at "/home/mspirkov/opensource/humhub/humhub/protected/humhub/modules/admin/views/setting/notification\.php"\. Check the view name or create the view file\.$#'
-			identifier: mspirkovYii2.controllerViewExistenceValidation
-			count: 1
-			path: protected/humhub/modules/admin/controllers/SettingController.php
 
 		-
 			message: '#^Unknown attribute "defaultStreamSort" for model humhub\\modules\\admin\\models\\forms\\BasicSettingsForm\.$#'
@@ -131,18 +125,6 @@ parameters:
 			identifier: mspirkovYii2.activeRecordConditionValidation
 			count: 1
 			path: protected/humhub/modules/admin/models/forms/UserEditForm.php
-
-		-
-			message: '#^Class yii\\base\\Model referenced with incorrect case\: Yii\\base\\Model\.$#'
-			identifier: class.nameCase
-			count: 1
-			path: protected/humhub/modules/comment/models/AdminDeleteCommentForm.php
-
-		-
-			message: '#^Method humhub\\modules\\content\\components\\ContentContainerControllerAccess\:\:canAccessUser\(\) should return bool but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: protected/humhub/modules/content/components/ContentContainerControllerAccess.php
 
 		-
 			message: '#^Anonymous function has an unused use \$groupId\.$#'
@@ -173,6 +155,12 @@ parameters:
 			identifier: empty.variable
 			count: 1
 			path: protected/humhub/modules/content/models/ContentTag.php
+
+		-
+			message: '#^Method humhub\\modules\\content\\models\\stream\\StreamSuppressQuery\:\:load\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 2
+			path: protected/humhub/modules/content/models/stream/StreamSuppressQuery.php
 
 		-
 			message: '#^Result of method yii\\base\\BaseObject\:\:__construct\(\) \(void\) is used\.$#'
@@ -241,16 +229,28 @@ parameters:
 			path: protected/humhub/modules/live/driver/Push.php
 
 		-
-			message: '#^Variable \$moduleId on left side of \?\? is never defined\.$#'
-			identifier: nullCoalesce.variable
+			message: '#^Object option "entries" for humhub\\modules\\notification\\jobs\\DispatchJob must be array\<array\<string, array\|bool\|class\-string\<humhub\\modules\\notification\\components\\BaseNotification\>\|humhub\\modules\\user\\components\\ActiveQueryUser\|int\|null\>\>, array\<int, array\<string, array\<int\|string, int\>\|string\>\> given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
 			count: 1
-			path: protected/humhub/modules/marketplace/services/FilterService.php
+			path: protected/humhub/modules/notification/tests/codeception/unit/DispatchTest.php
 
 		-
-			message: '#^Call to an undefined method humhub\\modules\\notification\\components\\BaseNotification\:\:getAsHtml\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Object option "targets" for humhub\\modules\\notification\\components\\NotificationManager must be array\<string, array\|string\>, array\<int\|string, array\<string, bool\|int\|list\<int\>\|string\>\> given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
 			count: 1
-			path: protected/humhub/modules/notification/components/BaseNotification.php
+			path: protected/humhub/modules/notification/tests/codeception/unit/DispatchTest.php
+
+		-
+			message: '#^Value for attribute "email" on ActiveRecord humhub\\modules\\user\\models\\User in updateAll\(\) attributes must be string, null given\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 1
+			path: protected/humhub/modules/notification/tests/codeception/unit/MailTargetTest.php
+
+		-
+			message: '#^Cannot unset offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\}\.$#'
+			identifier: unset.offset
+			count: 1
+			path: protected/humhub/modules/notification/tests/codeception/unit/NotificationPrivacyTest.php
 
 		-
 			message: '#^Class yii\\base\\Model referenced with incorrect case\: Yii\\base\\Model\.$#'
@@ -295,15 +295,9 @@ parameters:
 			path: protected/humhub/modules/space/behaviors/SpaceModelMembership.php
 
 		-
-			message: '#^Instantiated class Yii\\validators\\StringValidator not found\.$#'
-			identifier: class.notFound
+			message: '#^Class yii\\validators\\StringValidator referenced with incorrect case\: Yii\\validators\\StringValidator\.$#'
+			identifier: class.nameCase
 			count: 1
-			path: protected/humhub/modules/space/components/UrlValidator.php
-
-		-
-			message: '#^Undefined variable\: \$error$#'
-			identifier: variable.undefined
-			count: 2
 			path: protected/humhub/modules/space/components/UrlValidator.php
 
 		-
@@ -319,64 +313,10 @@ parameters:
 			path: protected/humhub/modules/space/models/Space.php
 
 		-
-			message: '#^Widget option "isMember" for humhub\\modules\\space\\widgets\\SpaceChooserItem must be string, true given\.$#'
-			identifier: mspirkovYii2.widgetPropertiesValidation
-			count: 1
-			path: protected/humhub/modules/space/widgets/Chooser.php
-
-		-
-			message: '#^Widget option "space" for humhub\\modules\\space\\widgets\\FollowButton must be humhub\\modules\\user\\models\\User, humhub\\modules\\space\\models\\Space given\.$#'
-			identifier: mspirkovYii2.widgetPropertiesValidation
-			count: 1
-			path: protected/humhub/modules/space/widgets/SpaceDirectoryActionButtons.php
-
-		-
 			message: '#^Widget option "space" for humhub\\modules\\space\\widgets\\Image must be humhub\\modules\\space\\models\\Space, yii\\db\\ActiveRecord given\.$#'
 			identifier: mspirkovYii2.widgetPropertiesValidation
 			count: 1
 			path: protected/humhub/modules/space/widgets/SpacePickerField.php
-
-		-
-			message: '#^Method humhub\\modules\\stream\\models\\StreamSuppressQuery\:\:load\(\) should return bool but return statement is missing\.$#'
-			identifier: return.missing
-			count: 2
-			path: protected/humhub/modules/stream/models/StreamSuppressQuery.php
-
-		-
-			message: '#^Class humhub\\modules\\ui\\form\\widgets\\ActiveField not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: protected/humhub/modules/ui/form/widgets/JsInputWidget.php
-
-		-
-			message: '#^Access to an undefined property humhub\\modules\\ui\\helpers\\models\\ItemDrop\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 2
-			path: protected/humhub/modules/ui/helpers/models/ItemDrop.php
-
-		-
-			message: '#^Call to an undefined method humhub\\modules\\ui\\helpers\\models\\ItemDrop\:\:moveItemIndex\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: protected/humhub/modules/ui/helpers/models/ItemDrop.php
-
-		-
-			message: '#^Method humhub\\modules\\ui\\helpers\\models\\ItemDrop\:\:run\(\) should return bool but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: protected/humhub/modules/ui/helpers/models/ItemDrop.php
-
-		-
-			message: '#^Unknown attribute "id" for model humhub\\modules\\ui\\helpers\\models\\ItemDrop\.$#'
-			identifier: mspirkovYii2.modelRulesValidation
-			count: 1
-			path: protected/humhub/modules/ui/helpers/models/ItemDrop.php
-
-		-
-			message: '#^Method humhub\\modules\\ui\\menu\\WidgetMenuEntry\:\:renderEntry\(\) should return string but return statement is missing\.$#'
-			identifier: return.missing
-			count: 1
-			path: protected/humhub/modules/ui/menu/WidgetMenuEntry.php
 
 		-
 			message: '#^Method humhub\\modules\\user\\authclient\\BaseFormClient\:\:initUserAttributes\(\) should return array but return statement is missing\.$#'
@@ -389,12 +329,6 @@ parameters:
 			identifier: mspirkovYii2.baseObjectInstantiationValidation
 			count: 1
 			path: protected/humhub/modules/user/components/User.php
-
-		-
-			message: '#^Call to an undefined method humhub\\modules\\user\\controllers\\InviteController\:\:forbidden\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: protected/humhub/modules/user/controllers/InviteController.php
 
 		-
 			message: '#^Array has 2 duplicate keys with value ''name'' \(''name'', ''name''\)\.$#'
@@ -439,28 +373,10 @@ parameters:
 			path: protected/humhub/modules/user/models/Group.php
 
 		-
-			message: '#^Validator option "user" for humhub\\modules\\user\\components\\CheckPasswordValidator must be humhub\\modules\\user\\components\\User, humhub\\modules\\user\\models\\User given\.$#'
-			identifier: mspirkovYii2.modelRulesValidation
-			count: 1
-			path: protected/humhub/modules/user/models/forms/AccountDelete.php
-
-		-
-			message: '#^Widget option "followOptions" for humhub\\modules\\user\\widgets\\UserFollowButton must be string, array\<string, string\> given\.$#'
-			identifier: mspirkovYii2.widgetPropertiesValidation
-			count: 1
-			path: protected/humhub/modules/user/widgets/PeopleActionButtons.php
-
-		-
 			message: '#^Call to an undefined method humhub\\modules\\user\\widgets\\ProfileHeader\:\:getController\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: protected/humhub/modules/user/widgets/ProfileHeader.php
-
-		-
-			message: '#^Variable \$ruleKeys in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: protected/humhub/modules/web/security/helpers/CSPBuilder.php
 
 		-
 			message: '#^Object option "levels" for tests\\codeception\\_support\\ArrayTarget must be int, array\<int, string\> given\.$#'
@@ -553,10 +469,22 @@ parameters:
 			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
 
 		-
-			message: '#^Class Yii\\base\\ErrorException not found\.$#'
-			identifier: class.notFound
+			message: '#^Class yii\\base\\ErrorException referenced with incorrect case\: Yii\\base\\ErrorException\.$#'
+			identifier: class.nameCase
 			count: 1
 			path: protected/humhub/tests/codeception/unit/LogAssertionsSelfTest.php
+
+		-
+			message: '#^Object option "depends" for humhub\\assets\\VueAsset must be array\<class\-string\>, array\<int, string\> given\.$#'
+			identifier: mspirkovYii2.yiiCreateObjectValidation
+			count: 1
+			path: protected/humhub/tests/codeception/unit/assets/VueAssetTest.php
+
+		-
+			message: '#^Object option "job_message_id" for humhub\\modules\\queue\\models\\QueueExclusive must be string, int given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/ModuleIsEnabledTest.php
 
 		-
 			message: '#^Variable \$rules might not be defined\.$#'
@@ -583,31 +511,61 @@ parameters:
 			path: protected/humhub/tests/codeception/unit/components/access/TestControllerAccess.php
 
 		-
+			message: '#^Unknown parameter \$scope in call to humhub\\components\\listing\\FilterDefinition constructor\.$#'
+			identifier: argument.unknown
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/listing/FilterableListTest.php
+
+		-
+			message: '#^Method humhub\\tests\\codeception\\unit\\components\\listing\\ListFiltersTest\:\:assertValue\(\) invoked with 3 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 6
+			path: protected/humhub/tests/codeception/unit/components/listing/ListFiltersTest.php
+
+		-
 			message: '#^Class humhub\\tests\\codeception\\unit\\helpers\\NonExistingClassName not found\.$#'
 			identifier: class.notFound
 			count: 4
 			path: protected/humhub/tests/codeception/unit/helpers/DataTypeHelperTest.php
 
 		-
-			message: '#^Widget option "timestamp" for humhub\\widgets\\TimeAgo must be string, int given\.$#'
-			identifier: mspirkovYii2.widgetPropertiesValidation
-			count: 3
-			path: protected/humhub/tests/codeception/unit/widgets/TimeAgoWidgetTest.php
-
-		-
-			message: '#^Widget option "timestamp" for humhub\\widgets\\TimeAgo must be string, int\<\-172809, max\> given\.$#'
-			identifier: mspirkovYii2.widgetPropertiesValidation
+			message: '#^Unknown attribute "test_skills" for ActiveRecord humhub\\modules\\user\\models\\Profile in updateAll\(\) attributes\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
 			count: 5
-			path: protected/humhub/tests/codeception/unit/widgets/TimeAgoWidgetTest.php
+			path: protected/humhub/tests/codeception/unit/modules/user/UserListTest.php
 
 		-
-			message: '#^Widget option "timestamp" for humhub\\widgets\\TimeAgo must be string, int\<\-59, max\> given\.$#'
+			message: '#^Unknown attribute "test_skills_other_selection" for ActiveRecord humhub\\modules\\user\\models\\Profile in updateAll\(\) attributes\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 3
+			path: protected/humhub/tests/codeception/unit/modules/user/UserListTest.php
+
+		-
+			message: '#^Cannot unset offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\}\.$#'
+			identifier: unset.offset
+			count: 1
+			path: protected/humhub/tests/codeception/unit/services/DocumentRootProbeServiceTest.php
+
+		-
+			message: '#^Offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\} on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: protected/humhub/tests/codeception/unit/services/DocumentRootProbeServiceTest.php
+
+		-
+			message: '#^Widget option "content" for humhub\\widgets\\VueFormShell must be Closure, string given\.$#'
 			identifier: mspirkovYii2.widgetPropertiesValidation
-			count: 2
-			path: protected/humhub/tests/codeception/unit/widgets/TimeAgoWidgetTest.php
+			count: 1
+			path: protected/humhub/tests/codeception/unit/widgets/VueFormShellTest.php
 
 		-
 			message: '#^Access to an undefined property humhub\\widgets\\bootstrap\\Alert\:\:\$label\.$#'
 			identifier: property.notFound
 			count: 1
 			path: protected/humhub/widgets/bootstrap/Alert.php
+
+		-
+			message: '#^Method humhub\\widgets\\menu\\WidgetMenuEntry\:\:renderEntry\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/widgets/menu/WidgetMenuEntry.php

@@ -10,9 +10,9 @@ return [
     'The specified URL cannot be called directly.' => 'URL tidak dapat dipanggil secara langsung.',
     'You are not allowed to perform this action.' => 'Anda tidak diizinkan untuk melakukan aksi ini.',
     'You are not permitted to access this section.' => 'Anda tidak diperbolehkan mengakses bagian ini.',
-    'You must change password.' => 'Anda harus mengubah password.',
     'You need admin permissions to access this section.' => 'Anda memerlukan izin administrator untuk mengakses bagian ini.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Akun Anda belum disetujui, coba lagi nanti atau hubungi administrator.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Akun Anda tidak aktif, silakan masuk dengan akun aktif atau hubungi administrator.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

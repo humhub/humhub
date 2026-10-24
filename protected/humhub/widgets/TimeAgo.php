@@ -20,7 +20,7 @@ use yii\base\Widget;
 class TimeAgo extends Widget
 {
     /**
-     * @var string Database (Y-m-d H:i:s) or Unix timestamp
+     * @var string|int Database (Y-m-d H:i:s) or Unix timestamp
      */
     public $timestamp;
 

@@ -8,8 +8,8 @@
 use humhub\helpers\Html;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
-use humhub\modules\ui\form\widgets\DatePicker;
-use humhub\modules\ui\form\widgets\TimePicker;
+use humhub\widgets\form\DatePicker;
+use humhub\widgets\form\TimePicker;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 

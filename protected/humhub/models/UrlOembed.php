@@ -14,7 +14,7 @@ use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Json;
@@ -159,11 +159,14 @@ class UrlOembed extends ActiveRecord
 
             if (static::hasOEmbedSupport($url)) {
                 if (!$forceAllowedDomain && !self::isAllowedDomain($url)) {
-                    $result = self::confirmationContent($url);
-                } else {
-                    $urlOembed = static::findExistingOembed($url);
-                    $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
+                    // The confirmation prompt is built from the (untrusted) requested url and must
+                    // never be run through the script reconstruction below, which would grant any
+                    // embedded markup a valid CSP nonce. Return it as-is (already safely encoded).
+                    return trim((string) preg_replace('/\s+/', ' ', self::confirmationContent($url)));
                 }
+
+                $urlOembed = static::findExistingOembed($url);
+                $result = $urlOembed ? $urlOembed->preview : self::loadUrl($url);
 
                 if (!empty($result)) {
                     // Fix to run the appended scripts after ajax/pjax loading
@@ -341,7 +344,7 @@ class UrlOembed extends ActiveRecord
 
         $html = Html::tag('strong', Yii::t('base', 'Allow content from external source'))
             . Html::tag('br')
-            . Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)])
+            . Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', Html::encode($urlPrefix))])
             . Html::tag('br')
             . Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!'))
             . Html::tag('br')
@@ -553,6 +556,35 @@ class UrlOembed extends ActiveRecord
         /* @var User $user */
         $user = Yii::$app->user->getIdentity();
         $user->settings->set('allowedOembedUrls', implode(',', $allowedUrls));
+
+        return true;
+    }
+
+    /**
+     * Restrict the domains always allowed for oembed URLs of the current User to the given ones.
+     * Only already allowed domains are kept, new domains cannot be added this way.
+     *
+     * @param array $domains
+     * @return bool
+     * @since 1.19
+     */
+    public static function restrictAllowedDomains(array $domains): bool
+    {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+
+        // Intersect with the already allowed domains, so new domains can't be added here (e.g. by a forged request),
+        // only removed. New domains are allowed only via the oEmbed confirmation (see saveAllowedDomain()).
+        $allowedUrls = array_values(array_intersect(self::getAllowedDomains(), $domains));
+
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
+        if ($allowedUrls === []) {
+            $user->settings->delete('allowedOembedUrls');
+        } else {
+            $user->settings->set('allowedOembedUrls', implode(',', $allowedUrls));
+        }
 
         return true;
     }

@@ -100,7 +100,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     protected function renderImage($block)
     {
         $pattern = '/\([^)]+?\b(video|audio)\b[^)]*?\)/i';
-        $type = preg_match($pattern, $block['orig'], $type) ? ucfirst($type[1]) : 'Image';
+        $type = preg_match($pattern, (string) $block['orig'], $type) ? ucfirst($type[1]) : 'Image';
         return Yii::t('ContentModule.richtexteditor', '[' . $type . ']') . "\n\n";
     }
 

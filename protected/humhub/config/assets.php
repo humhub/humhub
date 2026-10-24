@@ -30,7 +30,8 @@ use yii\web\JqueryAsset;
  */
 
 // In the console environment, some path aliases may not exist. Please define these:
-Yii::setAlias('@webroot', __DIR__ . '/../../../');
+Yii::setAlias('@root', __DIR__ . '/../../../');
+Yii::setAlias('@webroot', '@root/' . \humhub\services\DocumentRootService::PUBLIC_DIR);
 Yii::setAlias('@web', '/');
 
 $bundles = ArrayHelper::merge(
@@ -38,12 +39,7 @@ $bundles = ArrayHelper::merge(
     CoreBundleAsset::STATIC_DEPENDS,
 );
 
-$publishOptions = [
-    'except' => [
-        'scss/',
-        '.gitignore',
-    ],
-];
+$publishOptions = AssetBundle::HUMHUB_RESOURCES_PUBLISH_OPTIONS;
 
 // `basePath` is the filesystem location Yii writes the compressed output to
 // and uses to compute relative URLs inside the bundled CSS. `baseUrl` would
@@ -64,7 +60,6 @@ return [
         AppAsset::BUNDLE_NAME => [
             'class' => AssetBundle::class,
             'defer' => false,
-            'defaultDepends' => false,
             'sourcePath' => '@humhub/resources',
             'basePath' => '@humhub/resources',
             'baseUrl' => '',
@@ -82,7 +77,6 @@ return [
             'class' => AssetBundle::class,
             'defer' => true,
             'jsPosition' => View::POS_HEAD,
-            'defaultDepends' => false,
             'sourcePath' => '@humhub/resources',
             'basePath' => '@humhub/resources',
             'baseUrl' => '',

@@ -8,12 +8,13 @@
 
 namespace humhub\modules\notification\controllers;
 
-use Yii;
 use humhub\modules\user\components\BaseAccountController;
-use humhub\modules\notification\models\forms\NotificationSettings;
 
 /**
  * UserController allows users to modify the Notification settings.
+ *
+ * The page is the `NotificationSettings` island ({@see \humhub\modules\notification\widgets\SettingsPage}),
+ * which saves and resets through `/api/v2/notification/settings`.
  *
  * @since 1.2
  * @author buddha
@@ -22,24 +23,6 @@ class UserController extends BaseAccountController
 {
     public function actionIndex()
     {
-        $form = new NotificationSettings(['user' => Yii::$app->user->getIdentity()]);
-
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('notification', ['model' => $form]);
-    }
-
-    /**
-     * Resets the overwritten user settings to the system defaults
-     */
-    public function actionReset()
-    {
-        $this->forcePostRequest();
-        $model = new NotificationSettings(['user' => $this->getUser()]);
-        $model->resetUserSettings();
-        $this->view->saved();
-        $this->redirect(['index']);
+        return $this->render('notification');
     }
 }

@@ -89,7 +89,7 @@
     $.fn.fadeToggle = function (duration, easing, complete) {
         return this.each(function () {
             const $el = $(this);
-            if ($el.hasClass('d-none')) {
+            if ($el.hasClass('d-none') || $el.css('display') === 'none') {
                 $el.fadeIn(duration, easing, complete);
             } else {
                 $el.fadeOut(duration, easing, complete);
@@ -103,7 +103,8 @@
         return this.each(function () {
             const $el = $(this);
 
-            if (!$el.hasClass('d-none')) {
+            // Elements may be hidden by the d-none class, an inline style or a stylesheet rule
+            if (!$el.hasClass('d-none') && $el.css('display') !== 'none') {
                 return;
             }
 
@@ -113,13 +114,14 @@
                 display: ''
             });
 
+            if ($el.css('display') === 'none') {
+                $el.addClass('d-revert');
+            }
+
             const fullHeight = this.scrollHeight;
 
             $el.stop(true, true).animate({ height: fullHeight }, duration, easing, function () {
                 $el.css({ height: '', overflow: '' });
-                if ($el.css('display') === 'none') {
-                    $el.addClass('d-revert');
-                }
                 if (typeof complete === 'function') complete.call(this);
             });
         });
@@ -147,7 +149,7 @@
     $.fn.slideToggle = function (duration, easing, complete) {
         return this.each(function () {
             const $el = $(this);
-            if ($el.hasClass('d-none')) {
+            if ($el.hasClass('d-none') || $el.css('display') === 'none') {
                 $el.slideDown(duration, easing, complete);
             } else {
                 $el.slideUp(duration, easing, complete);

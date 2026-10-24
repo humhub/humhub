@@ -32,15 +32,13 @@ class ModuleAutoLoaderTest extends Unit
         'humhub\modules\live\Module' => 'live',
         'humhub\modules\marketplace\Module' => 'marketplace',
         'humhub\modules\notification\Module' => 'notification',
+        'humhub\modules\oauth\Module' => 'oauth',
         'humhub\modules\post\Module' => 'post',
         'humhub\modules\queue\Module' => 'queue',
         'humhub\modules\space\Module' => 'space',
-        'humhub\modules\stream\Module' => 'stream',
         'humhub\modules\topic\Module' => 'topic',
         'humhub\modules\tour\Module' => 'tour',
-        'humhub\modules\ui\Module' => 'ui',
         'humhub\modules\user\Module' => 'user',
-        'humhub\modules\web\Module' => 'web',
     ];
 
     /**

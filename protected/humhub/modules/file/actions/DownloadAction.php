@@ -12,6 +12,7 @@ use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use humhub\components\fs\LocalMountConfig;
+use humhub\components\fs\MountConfigInterface;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -118,9 +119,18 @@ class DownloadAction extends Action
                 $options,
             );
         } elseif ($dataMountConfig->useTemporaryUrls()) {
+            // The object key ends in `file`, so the backend has to be told the real file name and
+            // mime type - otherwise the browser derives both from the redirect target's path.
             $url = Yii::$app->fs->getDataMount()->temporaryUrl(
                 $this->file->store->get($this->variant),
                 new DateTimeImmutable('+1 hour'),
+                [
+                    MountConfigInterface::CONFIG_CONTENT_DISPOSITION => FileHelper::getContentDispositionHeaderValue(
+                        $options['inline'] ? 'inline' : 'attachment',
+                        $fileName,
+                    ),
+                    MountConfigInterface::CONFIG_CONTENT_TYPE => $mimeType,
+                ],
             );
             Yii::$app->response->redirect($url);
         } else {
@@ -149,21 +159,28 @@ class DownloadAction extends Action
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
         }
 
-        $user = null;
-        if ($token !== null) {
-            $user = static::getUserByDownloadToken($token, $file);
-        }
+        $user = $token !== null
+            ? static::getUserByDownloadToken($token, $file)
+            : Yii::$app->user->identity;
 
-        // File is not assigned to any database record (yet)
-        if (empty($file->object_model) && (Yii::$app->user->isGuest || $file->created_by != Yii::$app->user->id)) {
-            throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
-        }
-
-        if (!$file->canView($user)) {
+        if (!$this->checkAccess($file, $user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
         $this->file = $file;
+    }
+
+    /**
+     * Checks if the given user may download the file.
+     *
+     * Modules serving standalone files with custom access rules can subclass
+     * this action and override this method.
+     *
+     * @since 1.18.4
+     */
+    protected function checkAccess(File $file, ?User $user): bool
+    {
+        return $file->canView($user);
     }
 
 

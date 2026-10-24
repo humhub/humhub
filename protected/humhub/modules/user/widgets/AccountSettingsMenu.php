@@ -9,12 +9,9 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\TabMenu;
-use humhub\modules\user\authclient\BaseFormClient;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\TabMenu;
 use Yii;
-use yii\authclient\ClientInterface;
-use yii\base\InvalidConfigException;
 
 /**
  * Account Settings Tab Menu
@@ -23,7 +20,6 @@ class AccountSettingsMenu extends TabMenu
 {
     /**
      * @inheritdoc
-     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -35,34 +31,6 @@ class AccountSettingsMenu extends TabMenu
             'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit-settings'),
         ]));
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Connected Accounts'),
-            'url' => ['/user/account/connected-accounts'],
-            'sortOrder' => 300,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'connected-accounts'),
-            'isVisible' => count($this->getSecondaryAuthProviders()) !== 0,
-        ]));
-
-
         parent::init();
     }
-
-    /**
-     * Returns optional authclients
-     *
-     * @return ClientInterface[]
-     * @throws InvalidConfigException
-     */
-    protected function getSecondaryAuthProviders()
-    {
-        $clients = [];
-        foreach (Yii::$app->get('authClientCollection')->getClients() as $client) {
-            if (!$client instanceof BaseFormClient) {
-                $clients[] = $client;
-            }
-        }
-
-        return $clients;
-    }
-
 }

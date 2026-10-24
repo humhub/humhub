@@ -1,2 +1,0 @@
-<div>MyLayout:<?= $content ?></div>
-

@@ -91,6 +91,20 @@ class Module extends \humhub\components\Module
     public $hideFollowers = false;
 
     /**
+     * @var bool Show topic widget in Stream sidebar (default value for advanced settings page)
+     * @since 1.19
+     */
+    public $showTopicSidebar = false;
+
+    /**
+     * @var int Sort order (position) of the topic widget in the space stream sidebar
+     * (default value for advanced settings page). A lower value moves the widget further
+     * up; the "Members" widget uses sortOrder 30 by default (see views/space/home.php).
+     * @since 1.19
+     */
+    public $topicSidebarSortOrder = 25;
+
+    /**
      * @var SpaceSettingsForm|null
      */
     private ?SpaceSettingsForm $defaultSettings = null;
@@ -118,22 +132,6 @@ class Module extends \humhub\components\Module
     public function getName()
     {
         return Yii::t('SpaceModule.base', 'Space');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        return [
-            'humhub\modules\space\notifications\ApprovalRequest',
-            'humhub\modules\space\notifications\ApprovalRequestAccepted',
-            'humhub\modules\space\notifications\ApprovalRequestDeclined',
-            'humhub\modules\space\notifications\Invite',
-            'humhub\modules\space\notifications\InviteAccepted',
-            'humhub\modules\space\notifications\InviteDeclined',
-            'humhub\modules\space\notifications\SpaceCreated',
-        ];
     }
 
     /**

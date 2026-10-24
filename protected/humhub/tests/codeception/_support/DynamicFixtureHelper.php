@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Module;
 use Codeception\TestInterface;
+use humhub\components\db\AfterCommit;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture;
 use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
@@ -70,6 +71,10 @@ class DynamicFixtureHelper extends Module
      */
     public function _before(TestInterface $test)
     {
+        // With `transaction: true` the Yii2 module wraps the test into a transaction it never
+        // commits, so work deferred until the commit has to run at once.
+        AfterCommit::$immediate = $this->hasModule('Yii2') && $this->getModule('Yii2')->_getConfig('transaction');
+
         $this->unloadFixtures();
 
         if ($this->beforeTest) {
@@ -98,11 +103,22 @@ class DynamicFixtureHelper extends Module
     }
 
     /**
+     * @var array module configuration. A suite whose tests do not load fixtures themselves
+     * (the `api` suite: its Cests are not `HumHubDbTestCase`s) enables
+     * `loadDefaultFixtures` instead of relying on a `fixtures` key in the global config —
+     * without either, this helper loads nothing at all, which only *looks* like it works as
+     * long as a previous run left its rows behind (`_after()` does not unload).
+     */
+    protected array $config = [
+        'loadDefaultFixtures' => false,
+    ];
+
+    /**
      * @inheritdoc
      */
     public function fixtures()
     {
-        $result = [];
+        $result = !empty($this->config['loadDefaultFixtures']) ? $this->getDefaultFixtures() : [];
 
         $cfg = \Codeception\Configuration::config();
         if (isset($cfg['fixtures'])) {

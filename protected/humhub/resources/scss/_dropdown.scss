@@ -4,11 +4,8 @@
 
 @if not $prev-dropdown {
     // Bootstrap overwrite
-    // See all available Bootstrap CSS variables: @humhub/protected/vendor/twbs/bootstrap/dist/css/bootstrap.css
+    // Global dropdown customizations are made through Sass variables, see variables.scss.
     .dropdown-menu {
-        --bs-dropdown-bg: var(--hh-background-color-main);
-        --bs-dropdown-font-size: 14px;
-
         // Fix: dropdown flipped upward by Popper (not enough space below,
         // e.g. browser zoom > 100%) can end up hidden behind the fixed
         // topbars (#topbar-first/.fixed-top: 1030, #topbar-second: 1029)

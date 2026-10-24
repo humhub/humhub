@@ -1,3 +1,8 @@
+<?php
+
+use humhub\widgets\Icon;
+
+?>
 <div class="installer">
     <div class="prerequisites-list">
         <ul>
@@ -5,11 +10,11 @@
                 <li>
 
                     <?php if ($check['state'] == 'OK') : ?>
-                        <i class="fa fa-check-circle check-ok animated bounceIn"></i>
+                        <?= Icon::get('circle-check')->class('check-ok animated bounceIn') ?>
                     <?php elseif ($check['state'] == 'WARNING') : ?>
-                        <i class="fa fa-exclamation-triangle check-warning animated swing"></i>
+                        <?= Icon::get('alert-triangle')->class('check-warning animated swing') ?>
                     <?php else : ?>
-                        <i class="fa fa-minus-circle check-error animated wobble"></i>
+                        <?= Icon::get('circle-minus')->class('check-error animated wobble') ?>
                     <?php endif; ?>
 
                     <strong><?= $check['title']; ?></strong>

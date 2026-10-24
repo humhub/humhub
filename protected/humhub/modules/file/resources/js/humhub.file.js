@@ -535,7 +535,7 @@ humhub.module('file', function (module, require, $) {
 
     Preview.template = {
         root: '<ul class="files"></ul>',
-        file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" ><span class="file-preview-content">{name}&nbsp;&nbsp;<span class="file_upload_remove_link" data-ui-loader><i class="fa fa-trash-o"></i>&nbsp;</span></li>',
+        file_edit: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}" ><span class="file-preview-content">{name}&nbsp;&nbsp;<span class="file_upload_remove_link" data-ui-loader><i class="ti ti-trash"></i>&nbsp;</span></li>',
         file: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}"><span class="file-preview-content"><span class="{highlight}">{openLink}</span><span class="time file-fileInfo"> - {size_format}</span></li>',
         file_image: '<li class="file-preview-item mime {mimeIcon}" data-preview-guid="{guid}"><span class="file-preview-content {highlight}">{openLink}<span class="time file-fileInfo"> - {size_format}</span></li>',
         popover: '<img alt="{name}" src="{thumbnailUrl}" />'
@@ -548,14 +548,33 @@ humhub.module('file', function (module, require, $) {
                 files = [files];
             }
 
+            // Only a handler offered next to a legacy upload widget is handled here. A handler
+            // offered elsewhere - e.g. in a Vue island, which attaches the created files itself -
+            // has no widget to push them into.
             var $processTrigger = action.getProcessTrigger('file-handler');
-            var upload = Widget.instance($processTrigger.closest('.btn-group').find('[data-ui-widget]'));
+            var upload = $processTrigger
+                ? Widget.instance($processTrigger.closest('.btn-group').find('[data-ui-widget]'))
+                : null;
+
+            if (!upload) {
+                return;
+            }
 
             $.each(files, function (index, file) {
                 upload.handleFileResponse(file);
             });
 
             upload.finish();
+        });
+
+        // The upload trigger (e.g. "Attach Files") is a <span data-action-click>
+        // with tabindex, not a native <button> - so unlike a real button, the
+        // browser does not turn Enter/Space into a click on its own. Do that here.
+        $(document).on('keydown', '[data-action-click="file.upload"]', function (evt) {
+            if (evt.which === 13 /* Enter */ || evt.which === 32 /* Space */) {
+                evt.preventDefault();
+                $(this).trigger('click');
+            }
         });
 
         // Bootstrap 3 drop-down menu auto dropup according to screen position

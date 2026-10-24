@@ -18,6 +18,7 @@ return [
     'Insufficient permissions!' => '',
     'Invalid Mime-Type' => '',
     'Last update by:' => '',
+    'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',

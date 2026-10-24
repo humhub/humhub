@@ -36,6 +36,16 @@ class ActiveFileUpload extends InputWidget
 {
     public string $accept = '*';
     public bool $hideInStream = true;
+
+    /**
+     * Whether the managed file is a standalone file owned by the form's model (see File::$standalone).
+     * The generic file delete endpoint refuses standalone files, so the remove button only clears
+     * the input — deleting the old file record is up to the owning form on submit.
+     *
+     * @since 1.18.4
+     */
+    public bool $standalone = false;
+
     public array $inputOptions = [];
     public array $previewOptions = [];
     public array $progressOptions = [];
@@ -52,6 +62,9 @@ class ActiveFileUpload extends InputWidget
             'ui-widget' => 'ActiveFileUpload.Upload',
             'ui-init' => true,
         ];
+        if ($this->standalone) {
+            $this->field->options['data']['standalone'] = 1;
+        }
         $this->field->template = '{label}{hint}{input}{error}';
 
         $previewHeight = ArrayHelper::remove($this->previewOptions, 'height');

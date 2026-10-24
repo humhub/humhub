@@ -1,11 +1,9 @@
 <?php
-return array (
-  'Following' => 'กำลังติดตาม',
-  'Mentionings' => 'กล่าวถึง',
-  'Receive Notifications when someone is following you.' => 'รับการแจ้งเตือนเมื่อมีคนติดตามคุณ',
-  'Receive Notifications when someone mentioned you in a post.' => 'รับการแจ้งเตือนเมื่อมีคนพูดถึงคุณในโพสต์',
-  'View Online' => 'ดูออนไลน์',
-  '{displayName} is now following you.' => '{displayName} กำลังติดตามคุณอยู่',
-  '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} เพิ่งพูดถึงคุณใน {contentTitle} "{preview}"',
-  '{displayName} mentioned you in {contentTitle}.' => '{displayName} พูดถึงคุณใน {contentTitle}',
-);
+
+return [
+    '{displayName} just mentioned you in {contentTitle} "{preview}"' => '{displayName} เพิ่งพูดถึงคุณใน {contentTitle} "{preview}"',
+    '{displayName} mentioned you in a {contentType}.' => '',
+    '{displayName} mentioned you in {content}.' => '',
+    '{displayName} mentioned you.' => '',
+    '{namedCount, plural, =2{{displayNames} are} other{{displayName} is}} now following you.' => '',
+];

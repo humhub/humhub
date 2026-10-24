@@ -11,8 +11,8 @@ namespace humhub\modules\user\widgets;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\widgets\CounterSetItem;
-use humhub\modules\ui\widgets\CounterSet;
+use humhub\widgets\CounterSetItem;
+use humhub\widgets\CounterSet;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -55,6 +55,9 @@ class ProfileHeaderCounterSet extends CounterSet
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
                     'data-action-url' => Url::to(['/user/profile/follower-list', 'container' => $this->user]),
+                    // Kept current by humhub.user.js when a follow button of the page follows or
+                    // unfollows the user (`user:follow-changed`).
+                    'data-user-follower-count' => $this->user->id,
                 ],
             ]);
 

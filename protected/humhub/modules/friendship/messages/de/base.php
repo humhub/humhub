@@ -12,10 +12,10 @@ return [
     'Requests' => 'Anfragen',
     'Sent requests' => 'Gesendete Anfragen',
     'Show all friends' => 'Zeige alle Freunde',
-    'Unfriend' => 'Freundschaft aufheben',
     'Would you like to accept the friendship request?' => 'Möchtest du die Freundschaftsanfrage akzeptieren?',
     'Would you like to end your friendship with {userName}?' => 'Möchtest du deine Freundschaft mi {userName} beenden?',
     'Would you like to send a friendship request to {userName}?' => 'Möchtest du eine Freundschaftsanfrage an {userName} senden?',
     'Would you like to withdraw the friendship request?' => 'Möchtest du die Freundschaftsanfrage zurückziehen?',
     'Would you like to withdraw your friendship request?' => 'Möchtest du deine Freundschaftsanfrage zurückziehen?',
+    'Friendship system is not enabled!' => '',
 ];

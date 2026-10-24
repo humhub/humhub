@@ -34,14 +34,11 @@ class CoreApiAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $js = [
         'js/humhub/humhub.core.js',
+        'js/humhub/humhub.i18n.js', // Must be registered before all modules that require('i18n') at definition time
         'js/humhub/humhub.util.js',
+        'js/humhub/humhub.url.js',
         'js/humhub/humhub.log.js',
         'js/humhub/humhub.ui.additions.js',
         'js/humhub/humhub.ui.loader.js',
@@ -49,15 +46,16 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.widget.js',
         'js/humhub/humhub.ui.view.js',
         'js/humhub/humhub.client.js',
+        'js/humhub/humhub.vue.js', // Vue island registry/mounter, see docs/develop/ui-js-vuejs.md
         'js/humhub/humhub.ui.status.js',
         'js/humhub/humhub.ui.navigation.js', // Required here since we set the active navigation on each call
         'js/humhub/humhub.ui.modal.js', // Should be moved to CoreModuleScriptAssets later
         'js/humhub/humhub.ui.progress.js',
-        'js/humhub/humhub.i18n.js',
     ];
 
     public $depends = [
         IntlMessageFormatAsset::class,
+        VueAsset::class,
     ];
 
 }

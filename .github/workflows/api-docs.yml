@@ -1,0 +1,61 @@
+name: API Reference
+
+# Keeps `docs/api/index.html` honest. The rendered API reference is committed on purpose (it
+# opens straight from a checkout, no build step - see docs/develop/concept-api.md), which
+# means a stale page is invisible in review: the OpenAPI source looks complete while the page
+# still shows the old contract. This job lints the sources, re-renders the page exactly as
+# `docs/api/build.sh` does and fails on any difference to what is committed - the same
+# guarantee js-test.yml gives for the Vue build artifacts.
+#
+# No workflow input is interpolated into a run: step - every step operates on the checkout
+# only, so there is nothing here a branch or commit message could inject into.
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - master
+            - develop
+            - next
+        paths:
+            - 'docs/api/**'
+            - '.github/workflows/api-docs.yml'
+    pull_request:
+        branches:
+            - master
+            - develop
+            - next
+        paths:
+            - 'docs/api/**'
+            - '.github/workflows/api-docs.yml'
+
+permissions:
+    contents: read
+
+jobs:
+    api-reference:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            # The build script pins its Redocly CLI version itself (`npx @redocly/cli@<x>`), so
+            # no dependency install is needed here - the rendered bytes depend on that pin, and
+            # on the pin only.
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+
+            - name: Lint the sources and render the reference
+              run: bash docs/api/build.sh
+
+            # `git status --porcelain`, not `git diff`: this has to fail for a file the build
+            # produced that was never committed (a re-vendored Redoc bundle after a version
+            # bump), which a diff against the index would not report at all.
+            - name: Verify the committed reference is up to date
+              run: |
+                  CHANGED=$(git status --porcelain -- docs/api)
+                  if [ -n "$CHANGED" ]; then
+                      echo "$CHANGED"
+                      git diff --stat -- docs/api
+                      echo "::error::docs/api is out of date. Run 'bash docs/api/build.sh' (or 'grunt build-api-docs') and commit the result."
+                      exit 1
+                  fi

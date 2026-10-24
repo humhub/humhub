@@ -3,7 +3,7 @@
 namespace humhub\modules\dashboard\stream;
 
 use humhub\modules\dashboard\Module;
-use humhub\modules\stream\models\ContentContainerStreamQuery;
+use humhub\modules\content\models\stream\ContentContainerStreamQuery;
 use Yii;
 
 /**

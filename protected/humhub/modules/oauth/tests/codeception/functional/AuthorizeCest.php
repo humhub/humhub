@@ -1,0 +1,310 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\oauth\tests\codeception\functional;
+
+use FunctionalTester;
+use humhub\modules\oauth\models\Client;
+use humhub\modules\notification\models\Notification;
+use humhub\modules\oauth\models\Grant;
+use humhub\modules\oauth\notifications\GrantCreatedNotification;
+use humhub\modules\oauth\Module;
+use humhub\modules\oauth\tests\codeception\_support\OAuthTestHelper;
+use humhub\modules\user\models\User;
+use PHPUnit\Framework\Assert;
+use Yii;
+use yii\helpers\Url;
+
+class AuthorizeCest
+{
+    public function _before(FunctionalTester $I)
+    {
+        Module::instance()->getKeyStore()->generateIfMissing();
+        $this->cleanUp();
+    }
+
+    public function _after(FunctionalTester $I)
+    {
+        $this->cleanUp();
+    }
+
+    private function cleanUp(): void
+    {
+        Grant::deleteAll();
+        Client::deleteAll(['not', ['client_id' => Client::SYSTEM_CLIENT_ID]]);
+        Module::instance()->settings->delete('allowClients');
+        Module::instance()->settings->delete('appIds');
+    }
+
+    private function params(string $clientId = Client::SYSTEM_CLIENT_ID, string $scope = '', string $redirectUri = OAuthTestHelper::REDIRECT_URI): array
+    {
+        return [
+            'response_type' => 'code',
+            'client_id' => $clientId,
+            'redirect_uri' => $redirectUri,
+            'state' => 'xyz',
+            'scope' => $scope,
+            'code_challenge' => OAuthTestHelper::challenge(str_repeat('v', 64)),
+            'code_challenge_method' => 'S256',
+        ];
+    }
+
+    public function testGuestIsSentToTheLogin(FunctionalTester $I)
+    {
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->seeInCurrentUrl(ltrim(Url::to(['/user/auth/login']), '/'));
+    }
+
+    public function testAppSignInShowsTheConfirmationAndCreatesAGrant(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->see('Sign in to the app on this device?');
+        $I->see(Yii::$app->name, '#oauth-authorize .panel-body');
+
+        $grants = Grant::find()->where(['user_id' => 1])->count();
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertEquals($grants + 1, Grant::find()->where(['user_id' => 1])->count());
+    }
+
+    public function testDenyCreatesNoGrant(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+
+        $grants = Grant::find()->count();
+        $I->stopFollowingRedirects();
+        $I->click('Deny');
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertEquals($grants, Grant::find()->count());
+    }
+
+    public function testAdminClientShowsItsScopes(FunctionalTester $I)
+    {
+        Yii::$app->getModule('oauth')->settings->set('allowClients', true);
+        (new Client([
+            'client_id' => 'agent', 'type' => Client::TYPE_ADMIN, 'name' => 'Research Agent',
+            'redirect_uris' => json_encode(['http://127.0.0.1/callback']),
+            'scopes' => json_encode(['content:read', 'spaces:read']),
+            'is_active' => 1, 'created_at' => time(),
+        ]))->save(false);
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1:43123/callback'));
+        $I->see('Research Agent');
+        $I->see('Read content, comments and likes');
+        $I->dontSee('Read spaces and memberships');
+    }
+
+    public function testNoAuthorizationWhileImpersonating(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        Yii::$app->user->getImpersonation()->start(User::findOne(['id' => 2]));
+
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->seeResponseCodeIs(403);
+    }
+
+    private function createAdminClient(array $attributes = []): void
+    {
+        Module::instance()->settings->set('allowClients', true);
+        (new Client($attributes + [
+            'client_id' => 'agent', 'type' => Client::TYPE_ADMIN, 'name' => 'Research Agent',
+            'redirect_uris' => json_encode(['http://127.0.0.1/callback']),
+            'scopes' => json_encode(['content:read']),
+            'is_active' => 1, 'created_at' => time(),
+        ]))->save(false);
+    }
+
+    private function location(): string
+    {
+        return Yii::$app->response->headers->get('Location') ?? '';
+    }
+
+    public function testPlainPkceIsRejected(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', ['code_challenge_method' => 'plain'] + $this->params());
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('error=invalid_request', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testUnallowedScopeIsRejected(FunctionalTester $I)
+    {
+        $this->createAdminClient();
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'spaces:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('error=invalid_scope', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testUnregisteredScopesAreDropped(FunctionalTester $I)
+    {
+        $this->createAdminClient(['scopes' => json_encode(['content:read', 'gone:read'])]);
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'gone:read content:read', 'http://127.0.0.1/callback'));
+        $I->see('Read content, comments and likes');
+        $I->dontSee('gone:read');
+
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'gone:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('error=invalid_scope', $this->location());
+    }
+
+    public function testAllowRedirectsWithCodeAndState(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertStringStartsWith(OAuthTestHelper::REDIRECT_URI . '?', $this->location());
+        Assert::assertStringContainsString('code=', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testAdditionalAppIdSignsInAsTheApp(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('appIds', json_encode(['com.acme.app']));
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params(Client::SYSTEM_CLIENT_ID, '', 'com.acme.app:/oauth/callback'));
+        $I->see('Sign in to the app on this device?');
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertStringStartsWith('com.acme.app:/oauth/callback?', $this->location());
+        Assert::assertStringContainsString('code=', $this->location());
+
+        // The built-in app keeps working
+        $I->startFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertStringStartsWith(OAuthTestHelper::REDIRECT_URI . '?', $this->location());
+    }
+
+    public function testUnknownAppIdIsRejected(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('appIds', json_encode(['com.acme.app']));
+
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params(Client::SYSTEM_CLIENT_ID, '', 'com.other.app:/oauth/callback'));
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+    }
+
+    public function testDenyRedirectsWithAccessDenied(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Deny');
+        Assert::assertStringContainsString('error=access_denied', $this->location());
+        Assert::assertStringContainsString('state=xyz', $this->location());
+    }
+
+    public function testRequestIdIsSingleUse(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $requestId = $I->grabValueFrom('input[name=request]');
+        $I->stopFollowingRedirects();
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestId, 'decision' => 'deny']);
+        $I->seeResponseCodeIsRedirection();
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestId, 'decision' => 'allow']);
+        $I->seeResponseCodeIs(400);
+    }
+
+    public function testOnlyTheLatestPendingRequestsAreKept(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $requestIds = [];
+        for ($i = 0; $i < 6; $i++) {
+            $I->amOnRoute('/oauth/authorize/index', $this->params());
+            $requestIds[] = $I->grabValueFrom('input[name=request]');
+        }
+
+        $I->stopFollowingRedirects();
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestIds[0], 'decision' => 'deny']);
+        $I->seeResponseCodeIs(400);
+        $I->sendAjaxPostRequest(Url::to(['/oauth/authorize/index']), ['request' => $requestIds[1], 'decision' => 'deny']);
+        $I->seeResponseCodeIsRedirection();
+    }
+
+    public function testErrorsWithoutAVerifiedRedirectAreShownHere(FunctionalTester $I)
+    {
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+
+        $I->amOnRoute('/oauth/authorize/index', $this->params('unknown-client'));
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+        $I->see('Client authentication failed');
+
+        $I->amOnRoute('/oauth/authorize/index', $this->params(Client::SYSTEM_CLIENT_ID, '', 'https://evil.example/cb'));
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+
+        $params = $this->params();
+        unset($params['code_challenge'], $params['code_challenge_method']);
+        $I->amOnRoute('/oauth/authorize/index', $params);
+        $I->seeResponseCodeIs(400);
+        Assert::assertSame('', $this->location());
+        $I->see('Code challenge must be provided');
+        Assert::assertStringNotContainsString('"error"', $I->grabPageSource(), 'a HumHub error page, not the JSON body');
+    }
+
+    public function testSkipConsentRedirectsImmediately(FunctionalTester $I)
+    {
+        $this->createAdminClient(['skip_consent' => 1]);
+        $I->amAdmin();
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('code=', $this->location());
+        Assert::assertEquals(1, Grant::find()->where(['user_id' => 1])->count());
+    }
+
+    private function notificationCount(): int
+    {
+        return (int)Notification::find()->where(['class' => GrantCreatedNotification::class, 'user_id' => 1])->count();
+    }
+
+    public function testApprovingAnAdminClientNotifiesTheUser(FunctionalTester $I)
+    {
+        Notification::deleteAll(['class' => GrantCreatedNotification::class]);
+        $this->createAdminClient();
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertSame(1, $this->notificationCount());
+    }
+
+    public function testAppSignInAndDenyNotifyNobody(FunctionalTester $I)
+    {
+        Notification::deleteAll(['class' => GrantCreatedNotification::class]);
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->stopFollowingRedirects();
+        $I->click('Allow');
+        Assert::assertSame(0, $this->notificationCount());
+
+        $this->createAdminClient();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->click('Deny');
+        Assert::assertSame(0, $this->notificationCount());
+    }
+}

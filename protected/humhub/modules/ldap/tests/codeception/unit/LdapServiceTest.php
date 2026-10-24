@@ -119,6 +119,27 @@ class LdapServiceTest extends HumHubDbTestCase
     }
 
     // ---------------------------------------------------------------------------
+    // Page size
+    // ---------------------------------------------------------------------------
+
+    public function testPageSizeZeroDisablesPagination(): void
+    {
+        $service = new LdapService($this->createTestConfig(['pageSize' => 0]));
+
+        $this->assertSame($this->ldapService->countUsers(), $service->countUsers());
+        $this->assertCount($this->ldapService->countUsers(), $service->getAllUserEntries());
+        $this->assertNotEmpty($service->getDnList('(objectClass=inetOrgPerson)'));
+    }
+
+    public function testSmallPageSizeReturnsAllEntries(): void
+    {
+        $service = new LdapService($this->createTestConfig(['pageSize' => 1]));
+
+        $this->assertSame($this->ldapService->countUsers(), $service->countUsers());
+        $this->assertCount($this->ldapService->countUsers(), $service->getAllUserEntries());
+    }
+
+    // ---------------------------------------------------------------------------
     // Authentication
     // ---------------------------------------------------------------------------
 
@@ -163,9 +184,9 @@ class LdapServiceTest extends HumHubDbTestCase
     // Helpers
     // ---------------------------------------------------------------------------
 
-    private function createTestConfig(): LdapConnectionConfig
+    private function createTestConfig(array $overrides = []): LdapConnectionConfig
     {
-        return new LdapConnectionConfig([
+        return new LdapConnectionConfig(array_merge([
             'title' => 'LDAP Test',
             'hostname' => getenv('LDAP_TEST_HOST'),
             'port' => (int)(getenv('LDAP_TEST_PORT') ?: 389),
@@ -176,6 +197,6 @@ class LdapServiceTest extends HumHubDbTestCase
             'usernameAttribute' => getenv('LDAP_TEST_USERNAME_ATTRIBUTE') ?: 'uid',
             'emailAttribute' => 'mail',
             'idAttribute' => 'uid',
-        ]);
+        ], $overrides));
     }
 }

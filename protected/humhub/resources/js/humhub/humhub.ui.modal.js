@@ -128,7 +128,21 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.close = function (reset) {
-        this.getModalInstance().hide();
+        var instance = this.getModalInstance();
+
+        // Bootstrap silently ignores hide() while the show transition is still
+        // running, which leaves the modal stuck open forever. Defer the hide
+        // until the transition finishes in that case. Only do this while
+        // transitioning in (_isShown is true) — while transitioning out the
+        // modal is already closing, and a deferred hide would close the modal
+        // the next time it is shown again.
+        if (instance._isTransitioning && instance._isShown) {
+            this.$.one('shown.bs.modal', function () {
+                instance.hide();
+            });
+        } else {
+            instance.hide();
+        }
 
         if (reset) {
             this.reset();

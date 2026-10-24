@@ -9,8 +9,8 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\TabMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\TabMenu;
 use humhub\modules\user\services\UserSourceService;
 use Yii;
 
@@ -45,22 +45,6 @@ class AccountProfileMenu extends TabMenu
             'sortOrder' => 200,
             'isActive' => ControllerHelper::isActivePath('user', 'account', ['change-email', 'change-email-validate']),
             'isVisible' => UserSourceService::getForUser()->canChangeEmail(),
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Change Password'),
-            'url' => ['/user/account/change-password'],
-            'sortOrder' => 400,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-password'),
-            'isVisible' => UserSourceService::getForUser()->canChangePassword(),
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Delete Account'),
-            'url' => ['/user/account/delete'],
-            'sortOrder' => 500,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'delete'),
-            'isVisible' => UserSourceService::getForUser()->canDeleteAccount(),
         ]));
 
         parent::init();

@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\content\assets;
+
+use humhub\assets\CoreExtensionAsset;
+use humhub\assets\FilterAsset;
+use humhub\components\assets\AssetBundle;
+use humhub\modules\topic\assets\TopicAsset;
+use humhub\modules\user\assets\UserAsset;
+
+/**
+ * Stream related assets.
+ *
+ * @since 1.2
+ * @author buddha
+ */
+class StreamAsset extends AssetBundle
+{
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@content/resources';
+
+    /**
+     * @inheritdoc
+     */
+    public $js = [
+        'js/humhub.stream.StreamEntry.js',
+        'js/humhub.stream.StreamRequest.js',
+        'js/humhub.stream.Stream.js',
+        'js/humhub.stream.wall.js',
+        'js/humhub.stream.SimpleStream.js',
+        'js/humhub.stream.js',
+    ];
+
+    public $depends = [
+        ContentAsset::class,
+        ContentContainerAsset::class,
+        FilterAsset::class,
+        TopicAsset::class,
+        UserAsset::class,
+        CoreExtensionAsset::class,
+    ];
+}

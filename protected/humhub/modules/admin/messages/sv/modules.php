@@ -20,6 +20,7 @@ return [
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'Avinstallationen av denna modul har inte slutförts ännu. Det kommer att tas bort inom några minuter.',
     'User default state' => 'Standardtillstånd för användare',
     'Users' => 'Användare',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Uninstall Module' => '',

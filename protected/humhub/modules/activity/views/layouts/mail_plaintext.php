@@ -16,7 +16,7 @@ use humhub\modules\space\models\Space;
 ---
 
 <?= $message ?>
-<?php if ($contentContainer->polymorphicRelation instanceof Space) : ?>
+<?php if ($contentContainer?->polymorphicRelation instanceof Space) : ?>
     (<?= Yii::t('ActivityModule.base', 'via') ?> <?= $contentContainer->polymorphicRelation->displayName ?>)
 <?php endif; ?>
 

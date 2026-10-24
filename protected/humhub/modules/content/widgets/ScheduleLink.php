@@ -8,50 +8,48 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\widgets\bootstrap\Link;
+use humhub\widgets\menu\MenuLink;
 use Yii;
-use yii\base\Widget;
 
 /**
- * Schedule link for updating the schedule options of Wall Entries.
+ * The "Schedule publication" entry of a content's context menu ({@see WallEntryControls}).
  *
- * @package humhub.modules_core.wall.widgets
+ * A menu entry, not a widget, since 1.20 - see {@see WallEntryControls::createEntry()}.
+ *
  * @since 1.14
  */
-class ScheduleLink extends Widget
+class ScheduleLink extends MenuLink
 {
     public ContentActiveRecord $contentRecord;
+
     public array $allowedStates = [Content::STATE_DRAFT, Content::STATE_SCHEDULED];
 
     /**
      * @inheritdoc
      */
-    public function run()
+    public function init()
     {
+        parent::init();
+
         $content = $this->contentRecord->content;
+        $container = $content->container;
 
-        if (!in_array($content->state, $this->allowedStates)) {
-            return '';
+        if (!in_array($content->state, $this->allowedStates)
+            || !$container instanceof ContentContainerActiveRecord
+            || !$content->canEdit()) {
+            $this->setIsVisible(false);
+            return;
         }
 
-        $contentContainer = $content->container;
-        if (!$contentContainer instanceof ContentContainerActiveRecord) {
-            return '';
-        }
-
-        if (!$content->canEdit()) {
-            return '';
-        }
-
-        return Html::tag('li', Link::withAction(
-            Yii::t('ContentModule.base', 'Schedule publication'),
+        $this->setLabel(Yii::t('ContentModule.base', 'Schedule publication'));
+        $this->setIcon('clock-o');
+        $this->setUrl('#');
+        $this->getLink()->action(
             'scheduleOptions',
-            $contentContainer->createUrl('/content/content/schedule-options', ['id' => $content->id]),
-        )
-            ->icon('clock-o'));
+            $container->createUrl('/content/content/schedule-options', ['id' => $content->id]),
+        );
     }
 }

@@ -74,18 +74,18 @@ class UsernameResolver
     private function deriveBase(array $attributes): string
     {
         if (!empty($attributes['email'])) {
-            $base = strstr($attributes['email'], '@', true);
+            $base = strstr((string) $attributes['email'], '@', true);
         } elseif (!empty($attributes['firstname']) && !empty($attributes['lastname'])) {
             $base = strtolower($attributes['firstname'] . '.' . $attributes['lastname']);
         } elseif (!empty($attributes['firstname'])) {
-            $base = strtolower($attributes['firstname']);
+            $base = strtolower((string) $attributes['firstname']);
         } else {
             $base = 'user';
         }
 
         // Sanitize: keep only alphanumeric, dots, underscores, hyphens
         $base = preg_replace('/[^a-zA-Z0-9._-]/', '', $base);
-        $base = trim($base, '._-');
+        $base = trim((string) $base, '._-');
 
         return $base ?: 'user';
     }

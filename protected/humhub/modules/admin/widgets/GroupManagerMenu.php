@@ -11,8 +11,8 @@ namespace humhub\modules\admin\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\SubTabMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\SubTabMenu;
 use Yii;
 
 /**

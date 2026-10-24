@@ -42,10 +42,10 @@ class ThemeHelper
             return static::$_themes;
         }
 
-        $themes = array_merge(
-            self::getThemesByPath(Yii::getAlias('@humhub/themes')),
-            self::getThemesByPath(Yii::getAlias('@themes')),
-        );
+        // Keyed by name, first one wins: a leftover webroot `themes/HumHub` (#8102) must not
+        // shadow the core theme wherever it is resolved by name, e.g. in the parent lookup.
+        $themes = self::getThemesByPath(Yii::getAlias('@humhub/themes'))
+            + self::getThemesByPath(Yii::getAlias('@themes'));
 
         // Collect themes provided by modules
         foreach (Yii::$app->getModules() as $id => $module) {
@@ -63,10 +63,7 @@ class ThemeHelper
 
             $moduleThemePath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'themes';
             if (is_dir($moduleThemePath)) {
-                $themes = ArrayHelper::merge(
-                    $themes,
-                    self::getThemesByPath($moduleThemePath),
-                );
+                $themes += self::getThemesByPath($moduleThemePath);
             }
         }
 
@@ -86,7 +83,7 @@ class ThemeHelper
         $themes = [];
         $path = realpath($path);
         foreach (scandir($path) as $file) {
-            if ($file == "." || $file == ".." || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
+            if ($file === '.' || $file === '..' || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
                 continue;
             }
 
@@ -120,6 +117,15 @@ class ThemeHelper
             return null;
         }
 
+        // A theme directory without its SCSS variables file is not a usable theme
+        // (e.g. an empty `themes/HumHub` skeleton left behind by an update that moved
+        // the theme into `protected/humhub`). Loading it would break the SCSS build and,
+        // worse, shadow the real core theme in getThemes() since both share the name.
+        if (!is_file(ScssHelper::getVariableFile($theme))) {
+            Yii::warning('Ignoring invalid theme without SCSS variables file: ' . $path, 'ui');
+            return null;
+        }
+
         return $theme;
     }
 
@@ -144,11 +150,13 @@ class ThemeHelper
 
     /**
      * @param Theme $theme
+     * @param bool $includeCustomScss whether the variables of the Custom SCSS overwrite the ones of the theme files
      * @return array
-     * @throws SassException if syntax error in the custom SCSS
-     * @throws RuntimeException if the custom SCSS is malformed
+     * @throws SassException if syntax error in the custom SCSS, only when $includeCustomScss is true
+     * @throws RuntimeException if the custom SCSS is malformed, only when $includeCustomScss is true -
+     *                          reading without it is free of both, which is the point of the parameter
      */
-    public static function getAllVariables(Theme $theme): array
+    public static function getAllVariables(Theme $theme, bool $includeCustomScss = true): array
     {
         // Get variables from theme files
         $variables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
@@ -159,12 +167,14 @@ class ThemeHelper
             );
         }
 
-        // Overwrite with custom variables from DesignSettingsForm
-        $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
-        [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
-            $settingsManager->get('themeCustomScss'),
-        );
-        $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
+        if ($includeCustomScss) {
+            // Overwrite with custom variables from DesignSettingsForm
+            $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
+            [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
+                $settingsManager->get('themeCustomScss'),
+            );
+            $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
+        }
 
         return ScssHelper::updateLinkedScssVariables($variables);
     }
@@ -271,7 +281,10 @@ class ThemeHelper
 
         // Import variables child theme first, because they have the !default flag
         foreach ($treeThemes as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            $variablesFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            if (file_exists($variablesFile . '.scss')) {
+                $imports[] = $variablesFile;
+            }
         }
         $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');

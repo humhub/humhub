@@ -56,7 +56,7 @@ class CheckboxList extends BaseType
      *
      * This is intentionally a class constant, not a configurable property: nothing in
      * the admin UI exposes changing it, there is no migration path for already stored
-     * values if it were changed, and other consumers (e.g. {@see \humhub\modules\user\components\PeopleQuery})
+     * values if it were changed, and other consumers (e.g. {@see \humhub\modules\user\components\listing\ProfileFieldFilter})
      * rely on it being fixed.
      *
      * @since 1.18.4

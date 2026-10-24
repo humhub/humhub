@@ -21,7 +21,8 @@ final class ContentHelper
         $info = self::getContentPreview($content, $maxLength);
 
         if (empty($info)) {
-            return '';
+            // e.g. content without any text, like a post containing only an image
+            return Html::encode($content->getContentName());
         }
 
         return ($withContentName) ? Html::encode($content->getContentName()) . ' "' . $info . '"' : $info;
@@ -30,6 +31,12 @@ final class ContentHelper
     public static function getContentPlainTextInfo(ContentOwner $content, $withContentName = true): string
     {
         $info = self::getContentPlainTextPreview($content);
+
+        if (empty($info)) {
+            // e.g. content without any text, like a post containing only an image
+            return $content->getContentName();
+        }
+
         return ($withContentName) ? $content->getContentName() . ' "' . $info . '"' : $info;
     }
 

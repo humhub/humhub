@@ -37,7 +37,7 @@ class ProfileImage
 
     public function getUrl(?string $compat = null, bool $scheme = false)
     {
-        return $this->container->image->getUrl(null, $scheme);
+        return $this->getContainer()?->image->getUrl(null, $scheme) ?? '';
     }
 
     public function render($width = 32, $cfg = [])

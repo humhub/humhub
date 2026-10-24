@@ -157,6 +157,10 @@ class AuthenticationSettingsForm extends Model
             } else {
                 $settingsManager->set('auth.registrationDenialMailContent', $this->registrationDenialMailContent);
             }
+
+            ApproveUserForm::publishMessageFiles($this->registrationSendMessageMailContent);
+            ApproveUserForm::publishMessageFiles($this->registrationApprovalMailContent);
+            ApproveUserForm::publishMessageFiles($this->registrationDenialMailContent);
         }
 
         if (!$this->allowUserTopics) {

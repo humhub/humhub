@@ -2,6 +2,7 @@
 
 return [
     '<strong>Login</strong> required' => '',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'An internal server error occurred.' => '',
     'Guest mode not active, please login first.' => '',
     'Login required for this section.' => '',
@@ -11,7 +12,6 @@ return [
     'The specified URL cannot be called directly.' => '',
     'You are not allowed to perform this action.' => '',
     'You are not permitted to access this section.' => '',
-    'You must change password.' => '',
     'You need admin permissions to access this section.' => '',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => '',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => '',

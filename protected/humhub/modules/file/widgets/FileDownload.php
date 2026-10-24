@@ -21,7 +21,7 @@ class FileDownload extends Button
     {
         if ($withIcon) {
             $mimeIconClass = MimeHelper::getMimeIconClassByExtension($file);
-            $this->icon(Html::tag('i', '', ['class' => 'mime ' . $mimeIconClass, 'style' => 'width:10px;height:10px;']), false, true);
+            $this->icon(Html::tag('i', '', ['class' => 'mime ' . $mimeIconClass, 'style' => 'width:10px;height:10px;']));
         }
 
         if ($showSize) {

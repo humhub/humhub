@@ -20,7 +20,8 @@ class PurgeDeletedContents extends LongRunningActiveJob
     public function run()
     {
         foreach (Content::findAll(['content.state' => Content::STATE_DELETED]) as $content) {
-            if (!$content->getPolymorphicRelation()->hardDelete()) {
+            $record = $content->getPolymorphicRelation();
+            if (!($record === null ? $content->hardDeleteInternal() : $record->hardDelete())) {
                 Yii::error('Purge deleted contents job: Unable to delete content ID ' . $content->id . '. Error: ' . implode(' ', $content->getErrorSummary(true)), 'content');
             }
         }

@@ -142,6 +142,20 @@ class AssetImagePublishTest extends HumHubDbTestCase
         $this->assertSame('', $withoutDefault->getUrl());
     }
 
+    public function testUrlForSourceFileWithoutExtension()
+    {
+        // e.g. a HumHub `File` record's stored file, saved without an extension as `file`
+        $image = new AssetImage([
+            'file' => '/tests/asset-image/file',
+            'defaultOptions' => self::OPTIONS,
+        ]);
+        $image->delete(); // remove leftovers of previous runs
+        $image->setByFile($this->createTempImage('default_user.jpg'));
+
+        // The variant falls back to the resolved image format for its extension
+        $this->assertStringContainsString('.png', $image->getUrl());
+    }
+
     private function createAssetImage(): AssetImage
     {
         return new AssetImage([

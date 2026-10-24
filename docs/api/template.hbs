@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <title>{{title}}</title>
+    <!-- needed for adaptive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    {{!--
+      The renderer's default page (see build.sh) with one addition: the sidebar logo carries the
+      page's name beneath it. Redoc has no option for a logo caption, and the logo image is the
+      wordmark alone, so the caption is drawn by CSS on the logo link the renderer emits - the
+      link's target is the `x-logo.href` of src/index.yaml, which is what the selector keys on.
+      The logo's size and spacing come from `theme.logo` in redocly.yaml.
+    --}}
+    <style>
+      .menu-content a[href="https://www.humhub.com"] {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+      }
+      /* The renderer sizes the image as a block, so it centres by margin, not by text-align. */
+      .menu-content a[href="https://www.humhub.com"] img {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .menu-content a[href="https://www.humhub.com"]::after {
+        content: "API Reference";
+        display: block;
+        margin: 0 0 16px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #6f7a80;
+      }
+    </style>
+    {{{redocHead}}}
+    {{#unless disableGoogleFont}}<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">{{/unless}}
+  </head>
+  <body>
+    {{{redocHTML}}}
+  </body>
+</html>

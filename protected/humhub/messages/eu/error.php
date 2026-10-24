@@ -10,9 +10,9 @@ return [
     'The specified URL cannot be called directly.' => 'Zehaztutako URLa ezin da zuzenean deitu.',
     'You are not allowed to perform this action.' => 'Ez duzu ekintza hori egiteko baimenik.',
     'You are not permitted to access this section.' => 'Ez duzu atal horretara sartzeko baimenik.',
-    'You must change password.' => 'Pasahitza aldatu beharko zenuke.',
     'You need admin permissions to access this section.' => 'Administratzaile baimenak behar dituzu atal honetan sartzeko.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Zure erabiltzaile-kontua ez da onartu oraindik. Mesedez, saiatu berriro beranduago edo jarri harremanetan sare-administratzaile batekin.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Zure erabiltzaile-kontua ez dago aktibo; mesedez, hasi saioa kontu aktibo batekin edo jarri harremanetan sare-administratzaile batekin.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

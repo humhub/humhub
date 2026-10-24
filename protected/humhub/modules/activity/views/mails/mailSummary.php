@@ -1,9 +1,20 @@
 <?php
 
-/* @var $activities string */
-
+use humhub\helpers\Html;
 use humhub\helpers\MailStyleHelper;
+use humhub\modules\notification\components\NotificationPrivacy;
+use yii\helpers\Url;
 
+/* @var $activities string the rendered activities; empty under NotificationPrivacy::Minimal */
+/* @var $unseenNotificationCount int */
+/* @var $activityCount int */
+/* @var $privacy NotificationPrivacy */
+
+$unseenNotificationCount ??= 0;
+$activityCount ??= 0;
+$privacy ??= NotificationPrivacy::Full;
+$lineStyle = 'font-size: 14px; line-height: 22px; font-family: ' . MailStyleHelper::getFontFamily() . '; color: ' . MailStyleHelper::getTextColorMain() . '; font-weight: 300;';
+$linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary() . '; font-weight: bold;';
 ?>
 
 <tr>
@@ -71,5 +82,69 @@ use humhub\helpers\MailStyleHelper;
         <!-- end  container width 600px -->
     </td>
 </tr>
+
+<?php if ($unseenNotificationCount > 0): ?>
+<!-- START NOTIFICATIONS -->
+<tr>
+    <td align="center" valign="top" class="fix-box">
+        <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
+            <tr>
+                <td valign="top">
+                    <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width">
+                        <tr>
+                            <td valign="top" align="left" style="<?= $lineStyle ?>">
+                                <?= Html::encode(Yii::t(
+                                    'NotificationModule.base',
+                                    '{count,plural,=1{You have # unread notification} other{You have # unread notifications}}',
+                                    ['count' => $unseenNotificationCount],
+                                )) ?>
+                                - <a href="<?= Html::encode(Url::to(['/notification/overview'], true)) ?>"
+                                     style="<?= $linkStyle ?>"><?= Yii::t('NotificationModule.base', 'Open notifications') ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="20"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!-- END NOTIFICATIONS -->
+<?php endif ?>
+
+<?php if ($privacy === NotificationPrivacy::Minimal): ?>
+<!-- START ACTIVITY COUNT -->
+<tr>
+    <td align="center" valign="top" class="fix-box">
+        <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
+               style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>">
+            <tr>
+                <td valign="top">
+                    <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width">
+                        <tr>
+                            <td valign="top" align="left" style="<?= $lineStyle ?>">
+                                <?= Html::encode(Yii::t(
+                                    'ActivityModule.base',
+                                    '{count,plural,=1{# new activity} other{# new activities}}',
+                                    ['count' => $activityCount],
+                                )) ?>
+                                - <a href="<?= Html::encode(Url::to(['/dashboard/dashboard'], true)) ?>"
+                                     style="<?= $linkStyle ?>"><?= Yii::t('ActivityModule.base', 'View online') ?></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="20"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!-- END ACTIVITY COUNT -->
+<?php endif ?>
 
 <?= $activities ?>

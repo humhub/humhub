@@ -30,6 +30,11 @@ class m260108_115053_new_structure extends Migration
             $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         }
 
+        // record_map may have been created with a different collation than `activity` (e.g. the database
+        // default); this is also idempotent, so it doesn't matter whether the `like` migration already
+        // converted the table.
+        $this->safeConvertTableCollation('record_map', 'activity');
+
         $this->safeAddColumn('activity', 'contentcontainer_id', $this->integer()->null()->after('class'));
         $this->safeAddColumn('activity', 'content_id', $this->integer()->null()->after('contentcontainer_id'));
         $this->safeAddColumn('activity', 'content_addon_record_id', $this->integer()->null()->after('content_id'));
@@ -143,7 +148,7 @@ class m260108_115053_new_structure extends Migration
                 ->column();
 
             foreach ($addonModels as $model) {
-                $isContentProvider = class_exists($model) && is_subclass_of($model, ContentProvider::class);
+                $isContentProvider = $this->isContentProvider($model);
 
                 if ($isContentProvider && $this->columnExists('content_id', $model::tableName())) {
                     // Standard content addon: parent content_id lives on the addon row,
@@ -225,6 +230,23 @@ class m260108_115053_new_structure extends Migration
         echo "m170112_115052_settings cannot be reverted.\n";
 
         return false;
+    }
+
+    /**
+     * Checks if the given class is a ContentProvider.
+     *
+     * Loading the class can throw an \Error, e.g. for a not yet updated module whose class implements an
+     * interface that no longer exists in this version. Such a class must not abort the migration, it is
+     * handled like a class that is not a ContentProvider.
+     */
+    private function isContentProvider(string $model): bool
+    {
+        try {
+            return class_exists($model) && is_subclass_of($model, ContentProvider::class);
+        } catch (\Throwable $e) {
+            \Yii::warning('Could not load class "' . $model . '" in the activity migration: ' . $e->getMessage(), 'activity');
+            return false;
+        }
     }
 
     /*

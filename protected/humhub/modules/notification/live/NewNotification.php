@@ -24,7 +24,8 @@ class NewNotification extends LiveEvent
     public $notificationId;
 
     /**
-     * @var string related notification group
+     * @var string the opaque group key ({@see \humhub\modules\notification\services\NotificationListService::encodeCursor()}),
+     * identical to the entry's `groupKey` in the API
      */
     public $notificationGroup;
 

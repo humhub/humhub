@@ -2,12 +2,20 @@
 
 namespace tests\codeception\unit\models;
 
+use humhub\models\RecordMap;
+use humhub\modules\admin\notifications\ExcludeGroupNotification;
+use humhub\modules\admin\notifications\IncludeGroupNotification;
+use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationManager;
+use humhub\modules\notification\components\NotificationPriority;
+use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\helpers\Url;
 
 class GroupTest extends HumHubDbTestCase
 {
@@ -160,7 +168,7 @@ class GroupTest extends HumHubDbTestCase
         $group->addUser($user);
 
         $this->assertSentEmail(1);
-        $this->assertEqualsLastEmailSubject(sprintf('Notify from %s. You were added to the group.', Yii::$app->name));
+        $this->assertEqualsLastEmailSubject(User::findOne(['username' => 'Admin'])->displayName . ' added you to group “Moderators”');
     }
 
     public function testRemoveUserFromGroup()
@@ -170,6 +178,99 @@ class GroupTest extends HumHubDbTestCase
         $user2 = User::findOne(['username' => 'User2']);
         static::assertFalse($group->removeUser($user));
         static::assertTrue((bool)$group->removeUser($user2));
+    }
+
+    public function testAddingAUserToAGroupNotifiesThem()
+    {
+        $this->becomeUser('Admin');
+        $group = $this->createNotifyingGroup('Group <b>One</b>');
+        $user = User::findOne(['username' => 'User1']);
+
+        $this->assertTrue($group->addUser($user));
+
+        $this->assertHasNotification(IncludeGroupNotification::class, $group, 1, $user->id);
+        $record = Notification::findOne(['class' => IncludeGroupNotification::class, 'user_id' => $user->id]);
+        $this->assertSame(RecordMap::getId($group), (int)$record->source_record_id);
+        $this->assertSame(NotificationPriority::Normal->value, (int)$record->priority);
+        $this->assertSame(NotificationCategory::ID_DIRECT, IncludeGroupNotification::category()->id);
+
+        $notification = NotificationManager::load($record);
+        $admin = User::findOne(['username' => 'Admin']);
+        $this->assertSame(
+            '<strong>' . $admin->displayName . '</strong> added you to group <strong>Group &lt;b&gt;One&lt;/b&gt;</strong>',
+            $notification->asWeb(),
+        );
+        $this->assertSame($admin->displayName . ' added you to group “Group <b>One</b>”', $notification->asMailText());
+        $this->assertSame($admin->displayName . ' added you to group “Group <b>One</b>”', $notification->asMailSubject());
+        $this->assertSame(Url::to(['/user/people']), $notification->getUrl());
+    }
+
+    public function testRemovingAUserFromAGroupNotifiesThem()
+    {
+        $this->becomeUser('Admin');
+        $group = $this->createNotifyingGroup('Group One');
+        $user = User::findOne(['username' => 'User1']);
+        $this->assertTrue($group->addUser($user));
+
+        $this->assertTrue((bool)$group->removeUser($user));
+
+        $this->assertHasNotification(ExcludeGroupNotification::class, $group, 1, $user->id);
+        $record = Notification::findOne(['class' => ExcludeGroupNotification::class, 'user_id' => $user->id]);
+        $this->assertSame(NotificationPriority::Normal->value, (int)$record->priority);
+        $this->assertSame(NotificationCategory::ID_DIRECT, ExcludeGroupNotification::category()->id);
+
+        $notification = NotificationManager::load($record);
+        $this->assertSame(
+            '<strong>' . User::findOne(['username' => 'Admin'])->displayName . '</strong> removed you from group <strong>Group One</strong>',
+            $notification->asWeb(),
+        );
+    }
+
+    public function testRemovingAUserWithoutACurrentUserSendsNothing()
+    {
+        $this->becomeUser('Admin');
+        $group = $this->createNotifyingGroup('Group One');
+        $user = User::findOne(['username' => 'User1']);
+        $this->assertTrue($group->addUser($user));
+
+        $this->logout();
+        $this->assertTrue((bool)$group->removeUser($user));
+
+        $this->assertSame(0, (int)Notification::find()->where(['class' => ExcludeGroupNotification::class])->count());
+    }
+
+    public function testAddingAUserAgainNotifiesThemAgain()
+    {
+        $this->becomeUser('Admin');
+        $group = $this->createNotifyingGroup('Group One');
+        $user = User::findOne(['username' => 'User1']);
+
+        $this->assertTrue($group->addUser($user));
+        $this->assertTrue((bool)$group->removeUser($user));
+        $this->assertTrue($group->addUser($user));
+
+        $this->assertSame(2, (int)Notification::find()->where(['class' => IncludeGroupNotification::class, 'user_id' => $user->id])->count());
+    }
+
+    public function testDeletingTheGroupDeletesItsNotifications()
+    {
+        $this->becomeUser('Admin');
+        $group = $this->createNotifyingGroup('Group One');
+        $user = User::findOne(['username' => 'User1']);
+        $this->assertTrue($group->addUser($user));
+        $this->assertHasNotification(IncludeGroupNotification::class, $group, 1, $user->id);
+
+        $this->assertNotFalse($group->delete());
+
+        $this->assertSame(0, (int)Notification::find()->where(['class' => IncludeGroupNotification::class])->count());
+    }
+
+    private function createNotifyingGroup(string $name): Group
+    {
+        $group = new Group(['name' => $name, 'notify_users' => 1]);
+        $this->assertTrue($group->save());
+
+        return $group;
     }
 
     public function testReturnSpaceRelationship()

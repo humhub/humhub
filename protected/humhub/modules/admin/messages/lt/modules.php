@@ -18,6 +18,7 @@ return [
     'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'Šiuo metu modulį naudoja {nbContainers} naudotojai arba erdvės. Jei pakeisite jo prieinamumą, visas su šiuo moduliu sukurtas turinys bus prarastas. Ar norite tęsti?',
     'User default state' => 'Vartotojo numatytoji būsena',
     'Users' => 'Vartotojai',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Module uninstall in progress. This process may take a moment.' => '',

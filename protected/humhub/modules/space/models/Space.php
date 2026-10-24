@@ -10,7 +10,6 @@ namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
-use humhub\modules\activity\services\ActivityManager;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -21,7 +20,7 @@ use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
-use humhub\modules\space\notifications\SpaceCreated;
+use humhub\modules\space\notifications\SpaceCreatedNotification;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\services\MemberListService;
@@ -264,11 +263,15 @@ class Space extends ContentContainerActiveRecord
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
-            ActivityManager::dispatch(SpaceCreatedActivity::class, $this, $user);
+            SpaceCreatedActivity::send($this, $user);
 
             // If the space creator is not allowed to manage spaces, notify space managers
             if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {
-                SpaceCreated::instance()->from($user)->about($this)->sendBulk(PermissionManager::findUsersByPermission(new ManageSpaces()));
+                SpaceCreatedNotification::send(
+                    PermissionManager::findUsersByPermission(new ManageSpaces()),
+                    $this,
+                    $user,
+                );
             }
         }
 
@@ -336,9 +339,15 @@ class Space extends ContentContainerActiveRecord
 
 
     /**
-     * Indicates that this user can join this workspace
+     * Indicates whether this user is allowed to start joining this Space —
+     * either instantly or by submitting a membership application, depending
+     * on the join policy. A `true` result does NOT mean the user may be
+     * added as a member directly: for JOIN_POLICY_APPLICATION spaces, use
+     * requestMembership(), never addMember(). Use canJoinFree() to check
+     * whether immediate membership without admin approval is allowed.
      *
-     * @param $userId int|string|null User Id of User
+     * @param int|string|null $userId User ID
+     * @return bool
      */
     public function canJoin($userId = null): bool
     {
@@ -368,16 +377,21 @@ class Space extends ContentContainerActiveRecord
     }
 
     /**
-     * Indicates that this user can join this workspace w
-     * ithout permission
+     * Indicates whether this user can become a full member of this Space
+     * immediately, without requiring admin approval. Only true for
+     * JOIN_POLICY_FREE spaces, never for a pending application. Safe to use
+     * as a guard directly before calling addMember().
      *
-     * @param $userId User Id of User
+     * @param int|string|null $userId User ID
+     * @return bool
      */
-    public function canJoinFree($userId = '')
+    public function canJoinFree($userId = null): bool
     {
-        // Take current userid if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
+        // Take current userId if none is given
+        $userId ??= Yii::$app->user->id;
+
+        if (!$userId) {
+            return false;
         }
 
         // Checks if User is already member
@@ -385,13 +399,18 @@ class Space extends ContentContainerActiveRecord
             return false;
         }
 
-        if ($this->join_policy == self::JOIN_POLICY_FREE) {
-            return true;
+        if ($this->join_policy != self::JOIN_POLICY_FREE) {
+            return false;
         }
 
-        return false;
-    }
+        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, fn() => User::findOne($userId));
 
+        if ($this->isBlockedForUser($user)) {
+            return false;
+        }
+
+        return true;
+    }
 
     /**
      * Archive this Space
@@ -482,6 +501,10 @@ class Space extends ContentContainerActiveRecord
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
         if (!$user) {
+            return false;
+        }
+
+        if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
             return false;
         }
 
@@ -594,6 +617,13 @@ class Space extends ContentContainerActiveRecord
             if ($this->isSpaceOwner($user->id)) {
                 return self::USERGROUP_OWNER;
             }
+
+            // A stored role which is not assignable must not grant more than a plain member,
+            // so that legacy or manipulated records cannot pass elevated role checks.
+            if (!in_array($membership->group_id, Membership::getAssignableUserGroups(), true)) {
+                return self::USERGROUP_MEMBER;
+            }
+
             return $membership->group_id;
         } else {
             return self::USERGROUP_USER;

@@ -10,9 +10,18 @@ use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensio
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 
 /**
- * This LinkExtension is used to represent mentionings in the richtext as:
+ * This LinkExtension is used to represent oembed links in the richtext as:
  *
- * [<name>](mention:<guid> "<url>")
+ * [<url>](oembed:<url>)
+ *
+ * The link stays in the markdown as it is; the preview markup is what the client renders in
+ * its place. A server-rendered richtext ({@see ProsemirrorRichText::run()}) ships the previews
+ * as a hidden sibling of its envelope ({@see self::onAfterOutput()}), a client that receives the
+ * markdown alone ({@see ProsemirrorRichText::getMarkdown()}, e.g. through the API) fetches them
+ * itself via `humhub.oembed.js` `load()` - see `docs/develop/ui-js-vuejs-interop.md`,
+ * "RichTextOutput". The fetch is per user (the oembed consent, {@see UrlOembed::isAllowedDomain()}),
+ * which is why it does not happen in {@see self::onBeforeOutput()}: the processed markdown must
+ * stay the same for every reader.
  */
 class OembedExtension extends RichTextLinkExtension
 {
@@ -24,9 +33,10 @@ class OembedExtension extends RichTextLinkExtension
     public static $maxOembed = 10;
 
     /**
-     * @var array holds included oembeds used for rendering
+     * @var string the processed markdown of the current render, kept between
+     * {@see self::onBeforeOutput()} and {@see self::onAfterOutput()}
      */
-    private $oembeds = [];
+    private string $markdown = '';
 
     public function onBeforeConvertLink(LinkParserBlock $linkBlock): void
     {
@@ -35,22 +45,23 @@ class OembedExtension extends RichTextLinkExtension
 
     public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
     {
-        $this->oembeds = static::parseOembeds($output, static::$maxOembed);
+        $this->markdown = $output;
         return $output;
     }
 
     public function onAfterOutput(ProsemirrorRichText $richtext, string $output): string
     {
-        return $output . $this->buildOembedOutput();
+        return $output . $this->buildOembedOutput(static::parseOembeds($this->markdown, static::$maxOembed));
     }
 
     /**
+     * @param array $oembeds preview html by url, see {@see self::parseOembeds()}
      * @return string html extension holding the actual oembed dom nodes which will be embedded into the rich text
      */
-    private function buildOembedOutput(): string
+    private function buildOembedOutput(array $oembeds): string
     {
         $result = '';
-        foreach ($this->oembeds as $url => $oembed) {
+        foreach ($oembeds as $url => $oembed) {
             $result .= Html::tag('div', $oembed, ['data-oembed' => Html::encode($url)]);
         }
 

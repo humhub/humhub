@@ -16,6 +16,7 @@ return [
     'Spaces' => 'Prostori',
     'User default state' => 'Podrazumevano stanje korisnika',
     'Users' => 'Korisnici',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Module uninstall in progress. This process may take a moment.' => '',

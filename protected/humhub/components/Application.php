@@ -9,7 +9,11 @@
 namespace humhub\components;
 
 use Exception;
+use humhub\components\api\ApiRules;
 use humhub\interfaces\ApplicationInterface;
+use humhub\services\DocumentRootService;
+use Yii;
+use yii\web\HttpException;
 
 /**
  * Description of Application
@@ -45,6 +49,54 @@ class Application extends \yii\web\Application implements ApplicationInterface
     /**
      * @inheritdoc
      */
+    protected function bootstrap()
+    {
+        $this->setDocumentRootAliases();
+
+        // Deliberately skips yii\web\Application::bootstrap(), which pins `@webroot` and `@web` to
+        // the entry script's directory - with the deprecated entry script in the installation root
+        // that is the wrong directory. Setting the aliases afterwards would be too late: the
+        // bootstrap components run inside the call, and ThemeLoader resolves `@web` while it does.
+        \yii\base\Application::bootstrap();
+    }
+
+    /**
+     * Points `@webroot` and `@web` at the document root, wherever the entry script lives.
+     *
+     * @since 1.20
+     */
+    private function setDocumentRootAliases(): void
+    {
+        $documentRoot = DocumentRootService::instance();
+
+        Yii::setAlias('@webroot', $documentRoot->getPublicPath());
+        Yii::setAlias('@web', $documentRoot->getWebUrl($this->getRequest()->getBaseUrl()));
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Everything in the API URL space answers JSON, errors included. The format is fixed here,
+     * before routing: an unknown route, a request with a verb no rule was registered for, and
+     * an exception thrown before an API controller's own `beforeAction()` ran (which sets the
+     * format too) would otherwise render as the HTML error page -
+     * {@see \yii\web\ErrorHandler::renderException()} decides by the format the response has
+     * when the exception arrives.
+     *
+     * @since 1.20
+     */
+    public function handleRequest($request)
+    {
+        if (ApiRules::isApiPath($request->getPathInfo())) {
+            $this->getResponse()->format = \yii\web\Response::FORMAT_JSON;
+        }
+
+        return parent::handleRequest($request);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function beforeAction($action)
     {
         /**
@@ -55,6 +107,19 @@ class Application extends \yii\web\Application implements ApplicationInterface
             && $this->controller && $this->controller->id != 'error'
             && $this->controller->module != null && $this->controller->module->id != 'installer'
         ) {
+            // A configured but unreachable database must surface as a service
+            // error instead of silently presenting the installer, which would
+            // offer to re-setup an already installed instance during a transient
+            // database outage.
+            if ($this->installationState->isDatabaseUnreachable()) {
+                throw new HttpException(
+                    503,
+                    'The database is currently not reachable.',
+                    0,
+                    $this->installationState->getDatabaseConnectionError(),
+                );
+            }
+
             $this->controller->redirect(['/installer/index']);
 
             return false;

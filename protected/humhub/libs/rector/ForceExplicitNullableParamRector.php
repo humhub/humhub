@@ -36,8 +36,11 @@ CODE,
 
     public function refactor(Node $node): ?Node
     {
-        // Type must exist and be a Node
-        if (!$node->type instanceof Node || $node->type instanceof Node\NullableType) {
+        // Type must exist and be a Node; skip if already nullable or bare `mixed` (which already accepts null)
+        if (!$node->type instanceof Node
+            || $node->type instanceof Node\NullableType
+            || $this->isName($node->type, 'mixed')
+        ) {
             return null;
         }
 

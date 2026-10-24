@@ -9,10 +9,9 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\LeftNavigation;
 use humhub\modules\user\models\User;
-use humhub\modules\user\Module;
 use Yii;
 
 /**
@@ -37,7 +36,7 @@ class AccountMenu extends LeftNavigation
             'icon' => 'user',
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', ['edit', 'change-username', 'change-email', 'change-password', 'delete']),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', ['edit', 'change-username', 'change-email']),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -58,18 +57,15 @@ class AccountMenu extends LeftNavigation
             'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit-settings'),
         ]));
 
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
-        if (!empty($module->settings->get('enableProfilePermissions'))) {
-            $this->addEntry(new MenuLink([
-                'label' => Yii::t('UserModule.account', 'Permissions'),
-                'id' => 'account-settings-permissions',
-                'icon' => 'lock',
-                'url' => ['/user/account/permissions'],
-                'sortOrder' => 115,
-                'isActive' => ControllerHelper::isActivePath('user', 'account', 'permissions'),
-            ]));
-        }
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Security & Privacy'),
+            'id' => 'account-settings-security',
+            'icon' => 'shield',
+            'url' => ['/user/security/index'],
+            'sortOrder' => 112,
+            'isActive' => ControllerHelper::isActivePath('user', 'security'),
+            'isVisible' => (new SecuritySettingsMenu())->getFirstUrl() !== null,
+        ]));
 
         /* @var User $user */
         $user = Yii::$app->user->getIdentity();

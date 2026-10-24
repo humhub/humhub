@@ -47,7 +47,6 @@ class UrlOembedHttpClient implements UrlOembedClient
             }
         }
         $return = curl_exec($curl);
-        curl_close($curl);
 
         return $this->parseJson($return);
     }

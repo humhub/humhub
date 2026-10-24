@@ -51,10 +51,10 @@ $mailerTransportTypeIsFixed = $settings->isFixed('mailerTransportType');
 
         <div class="row">
             <div class="col-lg-6">
-                <?= $form->field($model, 'useSmtps')->checkbox() ?>
+                <?= $form->field($model, 'useSmtps')->checkbox(['disabled' => $settings->isFixed('mailerUseSmtps')]) ?>
             </div>
             <div class="col-lg-6" id="encryptionOptions">
-                <?= $form->field($model, 'allowSelfSignedCerts')->checkbox() ?>
+                <?= $form->field($model, 'allowSelfSignedCerts')->checkbox(['disabled' => $settings->isFixed('mailerAllowSelfSignedCerts')]) ?>
             </div>
         </div>
 

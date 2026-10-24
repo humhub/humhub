@@ -10,9 +10,9 @@ return [
     'The specified URL cannot be called directly.' => 'Zadanou adresu URL nelze zavolat přímo.',
     'You are not allowed to perform this action.' => 'K této akci nemáte dostatečná oprávnění.',
     'You are not permitted to access this section.' => 'Do této sekce nemáte přístup.',
-    'You must change password.' => 'Musíte změnit heslo.',
     'You need admin permissions to access this section.' => 'Pro přístup do této sekce potřebujete oprávnění správce.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Váš uživatelský účet ještě nebyl schválen, zkuste to prosím později nebo se obraťte na správce sítě.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Váš uživatelský účet je neaktivní, přihlaste se pomocí aktivního účtu nebo kontaktujte správce sítě.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

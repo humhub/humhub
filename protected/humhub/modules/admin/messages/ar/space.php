@@ -34,5 +34,7 @@ return [
     'Allow individual topics in Spaces' => '',
     'Convert' => '',
     'Convert Space Topics' => '',
+    'Default "Show topic widget in Stream sidebar"' => '',
+    'Default "Topic widget sort order"' => '',
     'Default Content Sort Order' => '',
 ];

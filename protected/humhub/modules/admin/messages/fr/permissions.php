@@ -4,7 +4,7 @@ return [
   'Can access the \'Administration -> Information\' section.' => 'Accéder à la section \'Administration &gt; Informations\'',
   'Can manage (e.g. edit or delete) all content (even private)' => 'Gérer (modifier, supprimer,…) tout contenu, même privé',
   'Can manage Spaces within the \'Administration -> Spaces\' section.' => 'Gérer les espaces dans la section \'Administration &gt; Espaces\'',
-  'Can manage general settings.' => 'Gérer les paramètres généraux',
+  'Can manage general settings and module settings.' => 'Permet de gérer les paramètres généraux et les paramètres des modules.',
   'Can manage modules within the \'Administration ->  Modules\' section.' => 'Gérer les modules dans la section \'Administration &gt; Modules\'',
   'Can manage users and groups' => 'Gérer les utilisateurs et les groupes',
   'Can manage users and user profiles.' => 'Gérer les comptes et les profils des utilisateurs et utilisatrices',

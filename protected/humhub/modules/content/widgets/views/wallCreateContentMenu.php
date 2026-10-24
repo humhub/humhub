@@ -7,7 +7,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\menu\MenuEntry;
 
 /* @var $menu WallCreateContentMenu */
 /* @var $entries MenuEntry[] */

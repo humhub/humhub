@@ -17,7 +17,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\helpers\StreamHelper;
+use humhub\modules\content\helpers\StreamHelper;
 use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\user\models\User;
 use Yii;

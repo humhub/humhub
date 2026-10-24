@@ -22,12 +22,17 @@ if (!isset($confirmBody)) {
 }
 ?>
 
-<div class="image-upload-buttons d-none">
+<div class="image-upload-buttons">
 
     <?= $upload->button([
-        'cssButtonClass' => 'btn btn-accent btn-sm profile-image-upload',
+        'cssButtonClass' => 'btn btn-accent btn-sm btn-icon-only profile-image-upload',
         'tooltip' => false,
         'dropZone' => $dropZone,
+        // Make the upload trigger keyboard-focusable: the real <input type="file"> is
+        // rendered with display:none (UploadInput::$visible = false) and the wrapping
+        // <span class="btn"> has no tabindex by default, so without this it is skipped
+        // by Tab entirely. Header.js adds the matching Enter/Space activation.
+        'buttonOptions' => ['tabindex' => 0, 'role' => 'button'],
         'options' => ['class' => 'profile-upload-input']]) ?>
 
     <?= ModalButton::accent()

@@ -29,11 +29,6 @@ use yii\db\Expression;
 class PollController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-    protected $doNotInterceptActionIds = ['*'];
-
-    /**
      * @var int maximum events by query
      */
     public $maxEventsByQuery = 500;

@@ -70,7 +70,7 @@ abstract class LiveEvent extends BaseObject
 
         try {
             $event = unserialize($serialized, ['allowed_classes' => [$class]]);
-        } catch (\Throwable $ex) {
+        } catch (\Throwable) {
             return null;
         }
 

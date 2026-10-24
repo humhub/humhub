@@ -8,161 +8,141 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\components\Widget;
-use humhub\helpers\Html;
+use humhub\modules\space\assets\SpaceVueAsset;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\space\serializers\MembershipSerializer;
+use humhub\widgets\Icon;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
 
 /**
- * MembershipButton shows various membership related buttons in space header.
+ * The membership button of a space: join, apply for membership, answer an invite, leave.
+ *
+ * Since 1.20 this widget renders the `MembershipButton` Vue island (see its own docblock) and
+ * hands it the current membership state; every transition afterwards happens client side
+ * against `/api/v2/space/<id>/membership`. What the widget still owns is what only the server
+ * knows: the initial state, the space, the rendered icon markup — and the presentation.
+ *
+ * ## Presentation
+ *
+ * The properties below carry it, replacing the per-button option array of earlier versions.
+ * A caller sets what its context needs; the space directory shows the member state, the space
+ * header hides it (leaving happens through its controls menu) and reloads once the viewer
+ * became a member.
+ *
+ * They are nullable so that a theme customizing the button from an {@see self::EVENT_INIT}
+ * handler can supply a default *without* overriding what the call site itself configured:
+ *
+ * ```php
+ * $membershipButton->buttonClass ??= 'btn btn-accent btn-sm';
+ * ```
+ *
+ * Titles, urls and `data-action-*` attributes are not configurable, and no longer need to be:
+ * the island renders the button and talks to the API itself, so there is nothing left for a
+ * caller to point somewhere else — which is what the option round trip through the client
+ * (#8381, #8382) existed for.
  *
  * @author luke
  * @since 0.11
  */
-class MembershipButton extends Widget
+class MembershipButton extends VueWidget
 {
+    /**
+     * @var string classes of the join / request / accept-invite button
+     */
+    public const DEFAULT_BUTTON_CLASS = 'btn btn-accent';
+
+    /**
+     * @var string classes of the pending and member states
+     */
+    public const DEFAULT_STATE_CLASS = 'btn btn-accent active';
+
     /**
      * @var Space
      */
     public $space;
 
     /**
-     * @var array Options buttons
+     * @var string|null classes of the join / request / accept-invite button
+     * @since 1.20
      */
-    public $options = [];
+    public ?string $buttonClass = null;
 
-    private function getDefaultOptions()
-    {
-        return [
-            'requestMembership' => [
-                'title' => Yii::t('SpaceModule.base', 'Join'),
-                'url' => $this->space->createUrl('/space/membership/request-membership-form', empty($this->options) ? [] : ['options' => Json::encode($this->options)]),
-                'attrs' => [
-                    'class' => 'btn btn-accent',
-                    'data-space-request-membership' => $this->space->id,
-                    'data-bs-target' => '#globalModal',
-                ],
-            ],
-            'becomeMember' => [
-                'title' => Yii::t('SpaceModule.base', 'Join'),
-                'url' => '#',
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => $this->space->createUrl('/space/membership/request-membership'),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent',
-                    'data-space-request-membership' => $this->space->id,
-                ],
-            ],
-            'acceptInvite' => [
-                'title' => Yii::t('SpaceModule.base', 'Accept Invite'),
-                'url' => '#',
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => $this->space->createUrl('/space/membership/invite-accept'),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent',
-                ],
-                'groupClass' => 'btn-group',
-                'togglerClass' => 'btn btn-accent',
-            ],
-            'declineInvite' => [
-                'title' => Yii::t('SpaceModule.base', 'Decline Invite'),
-                'url' => '#',
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                ],
-            ],
-            'cancelPendingMembership' => [
-                'title' => Icon::get('clock-o') . Yii::t('SpaceModule.base', 'Pending'),
-                'url' => '#',
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to withdraw your request to join Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent active',
-                ],
-            ],
-            'cancelMembership' => [
-                'visible' => false,
-                'title' => Icon::get('check') . Yii::t('SpaceModule.base', 'Member'),
-                'url' => '#',
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
-                    'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
-                    'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
-                    'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent active',
-                ],
-            ],
-            'cannotCancelMembership' => [
-                'visible' => false,
-                'memberTitle' => Icon::get('check') . Yii::t('SpaceModule.base', 'Member'),
-                'ownerTitle' => Icon::get('user') . Yii::t('SpaceModule.base', 'Owner'),
-                'attrs' => ['class' => 'btn btn-accent active'],
-            ],
-        ];
-    }
+    /**
+     * @var string|null classes of the "Pending" button of an open application
+     * @since 1.20
+     */
+    public ?string $pendingClass = null;
 
-    public function setDefaultOptions(array $defaultOptions)
-    {
-        $this->options = $this->getOptions($defaultOptions);
-    }
+    /**
+     * @var string|null classes of the "Member"/"Owner" button
+     * @since 1.20
+     */
+    public ?string $memberClass = null;
 
-    public function getOptions(?array $defaultOptions = null): array
+    /**
+     * @var string|null classes of the dropdown toggle next to "Accept Invite"
+     * @since 1.20
+     */
+    public ?string $togglerClass = null;
+
+    /**
+     * @var string|null classes of the button group of the invite state
+     * @since 1.20
+     */
+    public ?string $groupClass = null;
+
+    /**
+     * @var bool|null whether the member state is rendered at all. The space header hides it
+     * (leaving happens through its controls menu), the space directory shows it.
+     * @since 1.20
+     */
+    public ?bool $showMemberState = null;
+
+    /**
+     * @var bool|null whether the page is reloaded once the viewer became a member. Becoming a
+     * member changes the whole page around the button (its menu, what the viewer may see), so
+     * the space header asks for it.
+     * @since 1.20
+     */
+    public ?bool $reloadOnJoin = null;
+
+    protected string $component = 'MembershipButton';
+
+    protected ?string $assetBundle = SpaceVueAsset::class;
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
     {
-        if ($defaultOptions === null) {
-            $defaultOptions = $this->getDefaultOptions();
+        if (Yii::$app->user->isGuest || $this->space->isBlockedForUser()) {
+            return false;
         }
 
-        return $this->prepareButtonOptions(ArrayHelper::merge($defaultOptions, $this->options));
+        return parent::beforeRun();
     }
 
     /**
      * @inheritdoc
      */
-    public function run()
+    protected function getProps(): array
     {
-        if ($this->space->isBlockedForUser()) {
-            return '';
-        }
-
-        return $this->render('membershipButton', [
-            'space' => $this->space,
-            'membership' => $this->space->getMembership(),
-            'options' => $this->getOptions(),
-            'canCancelMembership' => !$this->space->isSpaceOwner() && $this->space->canLeave(),
-        ]);
+        return [
+            'spaceId' => $this->space->id,
+            'spaceName' => $this->space->getDisplayName(),
+            'spaceUrl' => $this->space->createUrl(),
+            'initial' => MembershipSerializer::state($this->space),
+            'buttonClass' => $this->buttonClass ?? self::DEFAULT_BUTTON_CLASS,
+            'pendingClass' => $this->pendingClass ?? self::DEFAULT_STATE_CLASS,
+            'memberClass' => $this->memberClass ?? self::DEFAULT_STATE_CLASS,
+            'togglerClass' => $this->togglerClass ?? self::DEFAULT_BUTTON_CLASS,
+            'groupClass' => $this->groupClass ?? 'btn-group',
+            'showMemberState' => (bool)$this->showMemberState,
+            'reloadOnJoin' => (bool)$this->reloadOnJoin,
+            'checkIconHtml' => Icon::get('check')->asString(),
+            'clockIconHtml' => Icon::get('clock')->asString(),
+            'userIconHtml' => Icon::get('user')->asString(),
+        ];
     }
-
-    private function prepareButtonOptions(array $options): array
-    {
-        foreach ($options as $b => $button) {
-            if (isset($button['mode']) && $button['mode'] === 'link' && isset($button['attrs']['data-action-url'])) {
-                // Switch button to link mode
-                $button['url'] = $button['attrs']['data-action-url'];
-                $button['attrs']['data-method'] = $button['mode_method'] ?? 'POST';
-                unset($button['attrs']['data-action-click']);
-                unset($button['attrs']['data-action-url']);
-                unset($button['attrs']['data-button-options']);
-                $options[$b] = $button;
-            }
-        }
-
-        return $options;
-    }
-
 }

@@ -3,6 +3,7 @@
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceNameColorInput;
+use humhub\widgets\Icon;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
@@ -23,7 +24,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <?= $form->field($model, 'description') ?>
 
     <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
-        <i class="fa fa-caret-right"></i> <?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
+        <?= Icon::get('caret-right-filled') ?> <?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
     </a>
 
     <div id="collapse-access-settings" class="panel-collapse collapse">
@@ -57,14 +58,14 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 
     $('#collapse-access-settings').on('show.bs.collapse', function () {
         // change link arrow
-        $('#access-settings-link i').removeClass('fa-caret-right');
-        $('#access-settings-link i').addClass('fa-caret-down');
+        $('#access-settings-link i').removeClass('ti-caret-right-filled');
+        $('#access-settings-link i').addClass('ti-caret-down-filled');
     });
 
     $('#collapse-access-settings').on('hide.bs.collapse', function () {
         // change link arrow
-        $('#access-settings-link i').removeClass('fa-caret-down');
-        $('#access-settings-link i').addClass('fa-caret-right');
+        $('#access-settings-link i').removeClass('ti-caret-down-filled');
+        $('#access-settings-link i').addClass('ti-caret-right-filled');
     });
 
 </script>

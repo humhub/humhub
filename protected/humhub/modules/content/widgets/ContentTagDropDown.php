@@ -11,7 +11,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\helpers\Html;
 use humhub\modules\content\models\ContentTag;
-use humhub\modules\ui\form\widgets\JsInputWidget;
+use humhub\widgets\form\JsInputWidget;
 use Yii;
 
 class ContentTagDropDown extends JsInputWidget

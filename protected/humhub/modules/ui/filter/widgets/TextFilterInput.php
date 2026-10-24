@@ -1,41 +1,16 @@
 <?php
 
 /**
- * Created by PhpStorm.
- * User: kingb
- * Date: 05.10.2018
- * Time: 21:14
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\filter\widgets;
 
-use humhub\helpers\Html;
-
-class TextFilterInput extends FilterInput
+/**
+ * @deprecated since 1.20, use \humhub\widgets\filter\TextFilterInput instead. Will be removed in 1.21.
+ */
+class TextFilterInput extends \humhub\widgets\filter\TextFilterInput
 {
-    /**
-     * @inheritdoc
-     */
-    public $view = 'textInput';
-
-    /**
-     * @inheritdoc
-     */
-    public $type = 'text';
-
-    /**
-     * @var string data-action-click handler of the input event
-     */
-    public $changeAction = 'inputChange';
-
-    /**
-     * @inheritdoc
-     */
-    public function prepareOptions()
-    {
-        parent::prepareOptions();
-
-        $this->options['data-action-keydown'] = $this->changeAction;
-        Html::addCssClass($this->options, 'form-control');
-    }
 }

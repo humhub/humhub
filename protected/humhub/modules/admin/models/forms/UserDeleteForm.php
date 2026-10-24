@@ -15,6 +15,7 @@ use humhub\modules\user\jobs\SoftDeleteUser;
 use humhub\modules\user\jobs\DeleteUser;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
+use humhub\components\db\AfterCommit;
 
 /**
  * UserDeleteForm shows the deletion options for the admin.
@@ -123,11 +124,10 @@ class UserDeleteForm extends Model
             }
         }
 
-        if (empty($this->deleteContributions)) {
-            Yii::$app->queue->push(new SoftDeleteUser(['user_id' => $this->user->id]));
-        } else {
-            Yii::$app->queue->push(new DeleteUser(['user_id' => $this->user->id]));
-        }
+        $job = empty($this->deleteContributions)
+            ? new SoftDeleteUser(['user_id' => $this->user->id])
+            : new DeleteUser(['user_id' => $this->user->id]);
+        AfterCommit::run(static fn() => Yii::$app->queue->push($job));
 
         return true;
     }

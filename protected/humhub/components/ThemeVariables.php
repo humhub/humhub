@@ -9,49 +9,36 @@
 namespace humhub\components;
 
 use humhub\helpers\ThemeHelper;
-use humhub\modules\ui\Module;
-use RuntimeException;
-use ScssPhp\ScssPhp\Exception\SassException;
+use humhub\services\ActiveThemeService;
+use Throwable;
 use Yii;
 use yii\base\Component;
 
 /**
- * ThemeVariables provides access to LESS variables of a given [[Theme]].
- * The variables will be stored in the application SettingManager for fast access.
+ * ThemeVariables provides access to the SCSS variables of a given [[Theme]].
+ *
+ * For the active theme the variables come from the `theme.state` setting, which
+ * {@see ActiveThemeService} keeps up to date - the base settings are loaded as one
+ * blob on every request, so reading from them is free. Any other theme is read from
+ * its SCSS files and not persisted, so that setting stays a single row.
  *
  * @since 1.3
- * @package humhub\modules\ui\view\components
+ * @package humhub\components
  */
 class ThemeVariables extends Component
 {
-    public const SETTING_PREFIX = 'theme.var.';
-
     /**
      * @var Theme
      */
     public $theme;
 
     /**
-     * @var Module
+     * @var array|null the variables of this theme, resolved once per instance
      */
-    public $module;
+    private ?array $all = null;
 
     /**
-     * @var bool
-     */
-    private $settingsLoaded = false;
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        $this->module = Yii::$app;
-        parent::init();
-    }
-
-    /**
-     * returns a variable by given key
+     * Returns a variable by given key
      *
      * @param $key
      * @param $default
@@ -68,12 +55,7 @@ class ThemeVariables extends Component
             return $custom;
         }
 
-        $this->ensureLoaded();
-
-        return $this->module->settings->get(
-            $this->getSettingKey($key),
-            $default,
-        );
+        return $this->getAll()[$key] ?? $default;
     }
 
     /**
@@ -90,70 +72,44 @@ class ThemeVariables extends Component
     }
 
     /**
-     * Flushes stored variables from settings manager
+     * Drops the state of the active theme - regardless of which theme this instance
+     * wraps, since there is only ever one state and it always describes the active
+     * theme. The variables memoized by this instance are dropped along with it.
+     *
+     * @see ActiveThemeService::flush()
      */
     public function flushCache()
     {
-        $this->module->settings->deleteAll($this->getSettingPrefix());
-    }
+        $this->all = null;
 
-
-    /**
-     * @return string a unique setting key prefix for this theme
-     */
-    protected function getSettingPrefix()
-    {
-        return static::SETTING_PREFIX . $this->theme->name . '.';
+        ActiveThemeService::flush();
     }
 
     /**
-     * Converts a theme variable key into a prefixed settings key.
-     * The prefix is necessary to separate the theme variables
-     *
-     * @param $key
-     *
-     * @return string
+     * Returns all variables of this theme, resolved once per instance: for a theme that
+     * is not the active one every call would otherwise re-parse the whole theme tree,
+     * and a single view renders a dozen variables.
      */
-    protected function getSettingKey($key)
+    protected function getAll(): array
     {
-        return $this->getSettingPrefix() . $key;
-    }
-
-    /**
-     * Ensures that the settings manager was populated with
-     * the theme variables, if not the variables will be loaded into
-     * the settings manager.
-     *
-     * Do not run this method during 'init' to avoid storing variables
-     * of all available themes!
-     *
-     * @throws SassException if syntax error in the custom SCSS
-     * @throws RuntimeException if the custom SCSS is malformed
-     */
-    protected function ensureLoaded(): void
-    {
-        if (!$this->settingsLoaded) {
-            if (empty($this->module->settings->get($this->getSettingKey('primary')))) {
-                $this->storeVariables();
-            }
-            $this->settingsLoaded = true;
+        if ($this->all !== null) {
+            return $this->all;
         }
-    }
 
-    /**
-     * Rewrites theme variables to settings (cache)
-     * @throws SassException if syntax error in the custom SCSS
-     * @throws RuntimeException if the custom SCSS is malformed
-     */
-    protected function storeVariables(): void
-    {
-        $this->flushCache();
+        $state = ActiveThemeService::getState();
 
-        foreach (ThemeHelper::getAllVariables($this->theme) as $key => $val) {
-            $this->module->settings->set(
-                $this->getSettingKey($key),
-                $val,
-            );
+        if ($state !== null && $state['path'] === $this->theme->getBasePath()) {
+            return $this->all = $state['vars'];
+        }
+
+        try {
+            return $this->all = ThemeHelper::getAllVariables($this->theme);
+        } catch (Throwable $e) {
+            // The likely culprit is the admin's Custom SCSS, which is shared across every
+            // theme - a broken snippet must not leave this theme without any variables.
+            // A second failure means the theme's own files are broken and does propagate
+            Yii::error('Could not read the theme variables of "' . $this->theme->name . '": ' . $e->getMessage(), 'ui');
+            return $this->all = ThemeHelper::getAllVariables($this->theme, false);
         }
     }
 }

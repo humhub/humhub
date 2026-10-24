@@ -162,5 +162,6 @@ return [
     'Post title' => '',
     'Remove' => '',
     'Replaced {mailService}' => '',
+    'Show topic widget in Dashboard sidebar' => '',
     'URLs to whitelist' => '',
 ];

@@ -1,0 +1,70 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Account API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Account
+    description: |
+      The authenticated user's own data — always the caller. There is no user parameter, and
+      nothing here is reachable for a guest.
+paths:
+  "/account":
+    get:
+      tags:
+        - Account
+      summary: The authenticated user
+      operationId: getAccount
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "common.yaml#/components/schemas/UserShort"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+  "/account/blocked-users":
+    get:
+      tags:
+        - Account
+      summary: Ids of the users the caller has blocked
+      operationId: listBlockedUsers
+      description: |
+        Clients need this to reproduce the platform's blocked-author masking: payloads are
+        always unmasked, since masking is a display concern rather than an access boundary.
+        Empty when user blocking is disabled by an administrator.
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: integer
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+components:
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

@@ -44,6 +44,12 @@ class MysqlDriver extends AbstractDriver
     {
         $this->delete($content->id);
 
+        $model = $content->getModel();
+        if ($model === null) {
+            // The content class no longer exists (e.g. the module was removed), nothing to index
+            return;
+        }
+
         $record = new ContentFulltext();
         $record->content_id = $content->id;
         $record->contents = $content->id;
@@ -53,7 +59,7 @@ class MysqlDriver extends AbstractDriver
             array_map(fn(ContentTag $tag) => $tag->name, $content->tags),
         ) . " \n";
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
+        foreach ($model->getSearchAttributes() as $attributeValue) {
             $record->contents .= RichTextToPlainTextConverter::process($attributeValue) . " \n";
         }
 
@@ -173,6 +179,13 @@ class MysqlDriver extends AbstractDriver
         $query->joinWith('contentContainer');
         $query->leftJoin('space', 'contentcontainer . pk = space . id and contentcontainer .class=:spaceClass', [':spaceClass' => Space::class]);
         $query->leftJoin('user cuser', 'contentcontainer . pk = cuser . id and contentcontainer .class=:userClass', [':userClass' => User::class]);
+
+        if (!Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            $query->andWhere(['OR',
+                ['content.visibility' => Content::VISIBILITY_PUBLIC],
+                ['content.contentcontainer_id' => null],
+            ]);
+        }
 
         if (!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();

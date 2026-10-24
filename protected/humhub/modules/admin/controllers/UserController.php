@@ -143,6 +143,10 @@ class UserController extends Controller
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
+        // A ManageUsers/ManageGroups holder must never be able to edit a System
+        // Administrator's account (e.g. take it over by changing its e-mail).
+        $this->checkUserAccess($user);
+
         $user->initGroupSelection();
 
         if ($user->canEditAdminFields()) {
@@ -405,7 +409,7 @@ class UserController extends Controller
 
         $this->checkUserAccess($user);
 
-        if (!Yii::$app->user->impersonate($user)) {
+        if (!Yii::$app->user->impersonation->start($user)) {
             throw new HttpException(403);
         }
 

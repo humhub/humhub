@@ -2,34 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\modules\ui\filter\assets;
 
-use humhub\components\assets\AssetBundle;
-use humhub\modules\topic\assets\TopicAsset;
-
-class FilterAsset extends AssetBundle
+/**
+ * @deprecated since 1.20, use \humhub\assets\FilterAsset instead. Will be removed in 1.21.
+ */
+class FilterAsset extends \humhub\assets\FilterAsset
 {
-    /**
-     * @inheritdoc
-     */
-    public $sourcePath = '@ui/filter/resources';
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'js/humhub.ui.filter.js',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        TopicAsset::class,
-    ];
 }

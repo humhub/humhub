@@ -11,6 +11,7 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\db\AfterCommit;
 use humhub\components\Module;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
@@ -28,13 +29,14 @@ use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\interfaces\ContentProvider;
 use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\live\NewContent;
-use humhub\modules\content\notifications\ContentCreated as NotificationsContentCreated;
+use humhub\modules\content\notifications\ContentCreatedNotification;
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\notification\services\NotificationSpaceService;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -149,6 +151,22 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public const EVENT_STATE_CHANGED = 'changedState';
 
     /**
+     * @event ContentEvent triggered right before a Content record is hard deleted.
+     *
+     * Content addon modules (e.g. Comment, Like) that reference `content_id` with a
+     * restrictive foreign key must clean up their records on this event. This is
+     * required in addition to `ContentActiveRecord::EVENT_BEFORE_DELETE`, because that
+     * event is only triggered while deleting the polymorphic content object itself
+     * (e.g. a Post). When a Content record is hard deleted directly - e.g. because its
+     * polymorphic content object no longer exists (see IntegrityController) -
+     * `ContentActiveRecord::EVENT_BEFORE_DELETE` never fires and addon cleanup would
+     * otherwise be skipped, causing foreign key constraint violations.
+     *
+     * @since 1.19
+     */
+    public const EVENT_BEFORE_HARD_DELETE = 'beforeHardDelete';
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -227,8 +245,19 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         $this->pinned ??= 0;
         $this->state ??= Content::STATE_PUBLISHED;
 
-        $this->visibility ??= self::VISIBILITY_PRIVATE;
-        // Force to private content for private space or if user has no permission to create public content
+        $this->visibility = (int)($this->visibility ?? self::VISIBILITY_PRIVATE);
+        // Force to private content for private space or if user has no permission to create public content.
+        //
+        // NOTE: the "no permission to create public content" branch only applies when the visibility is
+        // actually being *changed* to public ($insert, or an existing record whose `visibility` attribute
+        // was just switched to public - see isAttributeChanged() below). The permission being checked here
+        // is about *making* content public, not about keeping it public - matching actionToggleVisibility()/
+        // VisibilityLink. Without this guard, ANY save of an already-public record (e.g. a trivial unrelated
+        // field edit) by an editor who can manage/edit the content but lacks CreatePublicContent in this
+        // container (e.g. a system admin editing another user's content for moderation, or a space role that
+        // has "Manage entries" but not "Create public content") would silently flip the content back to
+        // private for everyone else - with no warning shown anywhere in the UI. Reported and discussed in
+        // https://github.com/humhub/humhub/issues/8443 - has been silently demoting content since 1.15.3.
         if ($this->container instanceof Space
             && $this->container->visibility !== Space::VISIBILITY_ALL
             && $this->visibility === self::VISIBILITY_PUBLIC
@@ -236,6 +265,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 $this->container->visibility === Space::VISIBILITY_NONE
                 || (
                     Yii::$app->user->identity // Allow creating public content from console
+                    && ($insert || $this->isAttributeChanged('visibility', false))
                     && !$this->container->can(CreatePublicContent::class)
                 )
             )
@@ -329,7 +359,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         if ($this->container) {
-            Yii::$app->live->send(new NewContent([
+            $event = new NewContent([
                 'sguid' => ($this->container instanceof Space) ? $this->container->guid : null,
                 'uguid' => ($this->container instanceof User) ? $this->container->guid : null,
                 'originator' => $this->createdBy->guid,
@@ -341,7 +371,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
                 'insert' => true,
-            ]));
+            ]);
+            AfterCommit::run(static fn() => Yii::$app->live->send($event));
         }
     }
 
@@ -363,20 +394,23 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
-        $userQuery = Yii::$app->notification->getFollowers($this);
-        if (count($this->notifyUsersOfNewContent) != 0) {
-            // Add manually notified users
-            $userQuery->union(
+        // The explicitly notified users first: a follower among them keeps the explicit wording,
+        // the followers' dispatch skips them as duplicates.
+        if (!empty($this->notifyUsersOfNewContent)) {
+            ContentCreatedNotification::send(
                 User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)]),
+                $contentSource,
+                $this->createdBy,
+                payload: ['explicit' => true],
             );
         }
 
-        NotificationsContentCreated::instance()
-            ->from($this->createdBy)
-            ->about($contentSource)
-            ->sendBulk($userQuery);
+        $followers = (new NotificationSpaceService())->getFollowers($this);
+        if ($followers !== null) {
+            ContentCreatedNotification::send($followers, $contentSource, $this->createdBy);
+        }
 
-        ActivityManager::dispatch(ContentCreatedActivity::class, $contentSource, $this->createdBy);
+        ContentCreatedActivity::send($contentSource, $this->createdBy);
     }
 
     /**
@@ -425,10 +459,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function softDeleteInternal(): bool
     {
-        Notification::deleteAll([
-            'source_class' => PolymorphicRelation::getObjectModel($this),
-            'source_pk' => $this->getPrimaryKey(),
-        ]);
+        // The notifications about the content and its addons (e.g. comments): a deleted content cannot be opened
+        Notification::deleteAll(['content_id' => $this->id]);
 
         return $this->getStateService()->delete();
     }
@@ -445,6 +477,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
     /**
      * Deletes this content immediately and permanently
+     * including the underlying record and its files.
      *
      * @return bool
      * @throws Throwable
@@ -454,7 +487,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function hardDelete(): bool
     {
-        return $this->hardDeleteInternal();
+        $record = $this->getPolymorphicRelation();
+
+        return $record === null ? $this->hardDeleteInternal() : $record->hardDelete();
     }
 
     /**
@@ -466,6 +501,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      */
     public function hardDeleteInternal(): bool
     {
+        $this->trigger(self::EVENT_BEFORE_HARD_DELETE, new ContentEvent(['content' => $this]));
+
         Activity::deleteAll(['content_id' => $this->id]);
 
         return parent::delete() !== false;
@@ -790,7 +827,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 // Enforce an absolute URL when a scheme was requested, unless the
                 // implementation already returned one. Once the models honor
                 // $scheme themselves, this becomes a no-op.
-                if ($scheme && !str_starts_with($url, 'http')) {
+                if ($scheme && !str_starts_with((string) $url, 'http')) {
                     $url = Url::to($url, $scheme);
                 }
 
@@ -998,6 +1035,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         // Check global content visibility, private global content is visible for logged in all users
         if (empty($this->contentcontainer_id)) {
             return true;
+        }
+
+        if (!$this->isPublic() && $user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            return false;
         }
 
         // User can access own content

@@ -18,6 +18,8 @@ use humhub\components\ActiveRecord;
  * @property int $expire
  * @property int $user_id
  * @property string $data
+ * @property int|null $logged_in_at
+ * @property string|null $user_agent
  *
  * @package humhub.modules_core.user.models
  * @since 0.5

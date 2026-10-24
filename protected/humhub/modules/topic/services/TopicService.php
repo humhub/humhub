@@ -24,7 +24,7 @@ class TopicService
     public const PICKER_VISIBILITY_REQUIRED = 'required';
     public const PICKER_VISIBILITY_HIDDEN = 'hidden';
 
-    private TopicSettingsForm $settings;
+    private readonly TopicSettingsForm $settings;
 
     public function __construct(public ?ContentContainerActiveRecord $contentContainer = null)
     {

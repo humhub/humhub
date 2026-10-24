@@ -12,8 +12,8 @@ use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
-use humhub\modules\ui\form\widgets\DatePicker;
-use humhub\modules\ui\form\widgets\MultiSelect;
+use humhub\widgets\form\DatePicker;
+use humhub\widgets\form\MultiSelect;
 use humhub\widgets\form\ActiveField;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\SortOrderField;
@@ -197,23 +197,18 @@ class HForm extends \yii\base\Component
 
     public function renderForm($element)
     {
-        $class = "";
-        if (isset($element['class'])) {
-            $class = $element['class'];
+        $output = Html::beginTag('fieldset', ['class' => $element['class'] ?? '']);
+
+        if (isset($element['title'])) {
+            $output .= Html::tag('legend', Html::encode($element['title']));
         }
 
-        $output = "<fieldset class='" . $class . "'>";
-        if (isset($element['title'])) {
-            $output .= "<legend>" . $element['title'] . "</legend>";
-        } else {
-            #$output .= "Untitled Form";
-        }
         return $output;
     }
 
     public function renderFormEnd($element)
     {
-        return "</fieldset>";
+        return Html::endTag('fieldset');
     }
 
     public function renderButtons($buttons)
@@ -266,6 +261,7 @@ class HForm extends \yii\base\Component
                             'items' => $definition['items'],
                             'options' => $definition['options'],
                             'maxSelection' => $definition['maxSelection'] ?? 50,
+                            'lockedItems' => $definition['lockedItems'] ?? null,
                         ]);
                         break;
                     case 'dropdownlist':

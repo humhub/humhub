@@ -92,4 +92,19 @@ class OnlineModuleManagerTest extends HumHubDbTestCase
 
         $this->assertArrayHasKey(self::COMMUNITY_INSTALLED_ID, $modules);
     }
+
+    /**
+     * A cached `[]` (the negative-cache marker {@see OnlineModuleManager::FAILURE_CACHE_TTL}
+     * sets after an empty answer from humhub.com) is a cache hit like any other: `getModules()`
+     * returns it as-is instead of asking humhub.com again. This cannot be observed over HTTP in
+     * a unit test, so this asserts the cached value comes back unchanged (if it triggered a
+     * fresh request instead, it would try to reach humhub.com and fail/hang in this
+     * environment).
+     */
+    public function testCachedEmptyModuleListIsReturnedWithoutARequest(): void
+    {
+        Yii::$app->cache->set(self::CACHE_KEY, []);
+
+        $this->assertSame([], (new OnlineModuleManager())->getModules());
+    }
 }

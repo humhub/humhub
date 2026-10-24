@@ -7,7 +7,7 @@ use humhub\models\forms\CropProfileImage;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\widgets\CropImage;
+use humhub\widgets\CropImage;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Json;

@@ -10,9 +10,9 @@ return [
     'The specified URL cannot be called directly.' => 'Зазначену URL адресу не можливо викликати напряму.',
     'You are not allowed to perform this action.' => 'Вам не дозволено так діяти.',
     'You are not permitted to access this section.' => 'Ви не маєте доступу до цього розділу.',
-    'You must change password.' => 'Вам треба змінити пароль.',
     'You need admin permissions to access this section.' => 'Для доступу до цього розділу потрібні права адміністратора.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Ваш обліковий запис ще не підтверджено, будь ласка, спробуйте пізніше або зверніться до адміністратора сайту.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Ваш обліковий запис виключено, будь ласка, зверніться до адміністратора.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

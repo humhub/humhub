@@ -11,7 +11,7 @@ namespace humhub\modules\content\widgets;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainerTag;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\widgets\form\BasePicker;
 use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\User;
 use Yii;
@@ -120,7 +120,7 @@ class ContainerTagPicker extends BasePicker
     public static function searchTagsByContainer(ContentContainerActiveRecord $contentContainer, ?string $keyword): array
     {
         return static::searchTagsByContainerClass(
-            get_class($contentContainer),
+            $contentContainer::class,
             $keyword,
         );
     }

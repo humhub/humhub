@@ -13,6 +13,7 @@ coverage:
   - ../events/*
   - ../libs/*
   - ../models/*
+  - ../services/*
 extensions:
   enabled:
   - tests\codeception\_support\HumHubExtension
@@ -27,5 +28,5 @@ paths:
 settings:
   colors: true
   log: true
-  memory_limit: 1024M
+  memory_limit: 2048M
   suite_class: \PHPUnit_Framework_TestSuite

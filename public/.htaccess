@@ -1,0 +1,54 @@
+# Rules for the document root. Shipped ready to use - local edits are overwritten on update, so
+# host-specific configuration (HTTPS redirects, caching headers, IP restrictions) belongs in the
+# virtual host. A subdirectory installation needs no RewriteBase; the BASE variable below derives it.
+
+# Dot directories and dot files - .git, .svn, editor leftovers - are never content. Matched against
+# the whole URL path so a subdirectory installation is covered too, and kept out of the mod_rewrite
+# block so it still applies without that module. The ACME challenge stays reachable so certificate
+# renewal keeps working.
+RedirectMatch 403 (^|/)\.(?!well-known/)
+
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+
+    RewriteEngine on
+
+    # Keep permalinks working that were handed out before URL rewriting was enabled
+    # (index.php?r=content/perma&id=6 => /content/perma/?id=6)
+    RewriteCond %{QUERY_STRING} ^r=content(/|%2)perma&id=([0-9]*)$
+    RewriteRule ^index\.php$ %{REQUEST_URI}/content/perma/?id=%2 [R=302,L]
+
+    # Derive the URL prefix this directory is reached under, which is what makes RewriteBase
+    # unnecessary.
+    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+    RewriteRule ^(.*) - [E=BASE:%1]
+
+    # Sets the HTTP_AUTHORIZATION header removed by apache
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Files that exist - published assets, robots.txt - are served as they are.
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .? - [L]
+
+    RewriteRule .? %{ENV:BASE}/index.php [L]
+</IfModule>
+
+# GZIP compression (mod_deflate must be enabled in Apache). Fonts and images are left out: woff2,
+# png and jpeg carry their own compression, so deflating them costs CPU for nothing.
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+</IfModule>
+
+# Support for .mjs (ES modules)
+AddType text/javascript .mjs

@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\widgets\menu\Menu;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 

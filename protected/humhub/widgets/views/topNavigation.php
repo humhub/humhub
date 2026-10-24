@@ -2,10 +2,11 @@
 
 use humhub\assets\TopNavigationAsset;
 use humhub\helpers\Html;
+use humhub\widgets\Icon;
 
 /* @var $this \humhub\components\View */
 /* @var $menu \humhub\widgets\TopMenu */
-/* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $entries \humhub\widgets\menu\MenuEntry[] */
 
 TopNavigationAsset::register($this);
 
@@ -29,7 +30,7 @@ TopNavigationAsset::register($this);
 
 <li id="top-menu-sub" class="nav-item dropdown" style="display:none;">
     <a href="#" id="top-dropdown-menu" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-        <i class="fa fa-align-justify"></i><br>
+        <?= Icon::get('align-justified') ?><br>
         <?= Yii::t('base', 'Menu'); ?>
     </a>
     <ul id="top-menu-sub-dropdown" class="dropdown-menu dropdown-menu-end">

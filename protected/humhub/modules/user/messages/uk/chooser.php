@@ -3,7 +3,6 @@
 return [
     'An unexpected error occurred while loading the result.' => 'Під час завантаження результату сталася неочікувана помилка.',
     'Load more' => 'Завантажити ще',
-    'No results found.' => 'Нічого не знайдено.',
     'No users found for the given query.' => 'За даним запитом не знайдено користувачів.',
     'Please enter at least {n} character' => 'Введіть принаймні {n} символів',
     'Select {n,plural,=1{item} other{items}}' => 'Виберіть {n,plural,=1{елемент} few{елемента} other{елементів}}',
@@ -14,4 +13,5 @@ return [
     'You reached the maximum number of allowed characters ({n}).' => 'Ви досягли максимально дозволеної кількості символів ({n}).',
     'Your search returned no matches.' => 'Ваш пошук не дав відповідей.',
     'Add user' => '',
+    'You are not allowed to remove this item.' => '',
 ];

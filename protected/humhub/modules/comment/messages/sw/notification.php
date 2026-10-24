@@ -1,18 +1,13 @@
 <?php
 
 return [
-    'Comments' => '',
-    'Receive Notifications when someone comments on my own or a following post.' => '',
-    'View Online' => '',
-    '[Deleted]' => '',
-    '{displayNames} commented {contentTitle}' => '',
-    '{displayNames} commented {contentTitle} in space {space}' => '',
-    '{displayNames} commented {contentTitle}.' => '',
-    '{displayNames} just commented your {contentTitle}' => '',
-    '{displayNames} just commented your {contentTitle} in space {space}' => '',
-    '{displayName} commented {contentTitle}' => '',
-    '{displayName} commented {contentTitle} in space {space}' => '',
-    '{displayName} commented {contentTitle}.' => '',
-    '{displayName} just commented your {contentTitle}' => '',
-    '{displayName} just commented your {contentTitle} in space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on a {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on your {contentType}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented your {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content} in Space {space}' => '',
+    '{groupCount, plural, =1{{displayName}} other{{displayNames}}} replied to your {content}.' => '',
 ];

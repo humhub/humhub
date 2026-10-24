@@ -47,6 +47,8 @@ class LicenceController extends Controller
 
     public function actionRemove()
     {
+        $this->forcePostRequest();
+
         LicenceManager::remove();
         return $this->redirect(['/marketplace/licence']);
     }

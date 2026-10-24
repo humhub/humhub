@@ -14,7 +14,12 @@ class m260327_092412_module_version extends Migration
 
         foreach (ModuleEnabled::find()->each() as $moduleEnabled) {
             /* @var ModuleEnabled $moduleEnabled */
-            $version = Yii::$app->getModule($moduleEnabled->module_id)?->version ?? '';
+            try {
+                $version = Yii::$app->getModule($moduleEnabled->module_id)?->version ?? '';
+            } catch (\Throwable $e) {
+                Yii::warning('Could not determine version of module "' . $moduleEnabled->module_id . '": ' . $e->getMessage(), 'migration');
+                $version = '';
+            }
             $this->updateSilent('module_enabled', ['version' => $version], ['module_id' => $moduleEnabled->module_id]);
         }
     }

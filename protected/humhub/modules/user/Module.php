@@ -10,6 +10,7 @@ namespace humhub\modules\user;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\PeopleDetailsTemplate;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\permissions\CanMention;
 use Yii;
@@ -176,6 +177,20 @@ class Module extends \humhub\components\Module
     public $peopleEnableNestedFilters = true;
 
     /**
+     * @var string|null Twig template of the details of the People cards, shown below the profile fields
+     * selected in the People settings ("Information 1-3"), which can be set to "None" to show the template only.
+     * Each visible profile field is available by its internal name (formatted, HTML encoded), its raw value
+     * under `raw`. The template renders one HTML block, line breaks are up to the template, e.g.
+     * ```
+     * {{ city }}<br>
+     * <a href="https://example.com/?room={{ raw.room|url_encode }}" target="_blank">{{ room }}</a>
+     * ```
+     * @see PeopleDetailsTemplate
+     * @since 1.19.1
+     */
+    public ?string $peopleCardDetailsTemplate = null;
+
+    /**
      * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
      * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
      *
@@ -185,8 +200,8 @@ class Module extends \humhub\components\Module
     public $showLoginForm = true;
 
     /**
-     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
-     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     * Should the registration form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showRegistrationForm=1` the registration form can still be displayed as a fallback.
      *
      * @since 1.16
      * @var bool
@@ -238,17 +253,6 @@ class Module extends \humhub\components\Module
     public function getName()
     {
         return Yii::t('UserModule.base', 'User');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        return [
-            'humhub\modules\user\notifications\Followed',
-            'humhub\modules\user\notifications\Mentioned',
-        ];
     }
 
     /**

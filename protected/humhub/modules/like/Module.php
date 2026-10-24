@@ -56,18 +56,4 @@ class Module extends \humhub\components\Module
     {
         return Yii::t('LikeModule.base', 'Like');
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        if (!$this->isEnabled) {
-            return [];
-        }
-
-        return [
-            'humhub\modules\like\notifications\NewLike',
-        ];
-    }
 }

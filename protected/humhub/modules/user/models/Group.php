@@ -441,14 +441,16 @@ class Group extends ActiveRecord
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save()) {
+            if ($user instanceof User) {
+                // Drop stale cached group relations/flags on the passed instance
+                // so a following isSystemAdmin()/getGroups() sees this membership.
+                $user->invalidateGroupCache();
+            }
             if ($this->notify_users && !Yii::$app->user->isGuest) {
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
-                IncludeGroupNotification::instance()
-                    ->about($this)
-                    ->from(Yii::$app->user->identity)
-                    ->send($user);
+                IncludeGroupNotification::send($user, $this, Yii::$app->user->identity, dedupe: false);
             }
             return true;
         }
@@ -471,14 +473,14 @@ class Group extends ActiveRecord
         }
 
         if ($groupUser->delete()) {
-            if ($this->notify_users) {
+            if ($user instanceof User) {
+                $user->invalidateGroupCache();
+            }
+            if ($this->notify_users && !Yii::$app->user->isGuest) {
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
-                ExcludeGroupNotification::instance()
-                    ->about($this)
-                    ->from(Yii::$app->user->identity)
-                    ->send($user);
+                ExcludeGroupNotification::send($user, $this, Yii::$app->user->identity, dedupe: false);
             }
             return true;
         }

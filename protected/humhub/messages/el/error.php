@@ -10,9 +10,9 @@ return [
     'The specified URL cannot be called directly.' => 'Το καθορισμένο URL δεν μπορεί να κληθεί απευθείας.',
     'You are not allowed to perform this action.' => 'Δεν επιτρέπεται η εκτέλεση αυτής της ενέργειας.',
     'You are not permitted to access this section.' => 'Δεν επιτρέπεται η πρόσβαση σε αυτήν την ενότητα.',
-    'You must change password.' => 'Πρέπει να αλλάξετε τον κωδικό πρόσβασης.',
     'You need admin permissions to access this section.' => 'Χρειάζεστε δικαιώματα διαχειριστή για να αποκτήσετε πρόσβαση σε αυτήν την ενότητα.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Ο λογαριασμός χρήστη σας δεν έχει εγκριθεί ακόμη, δοκιμάστε ξανά αργότερα ή επικοινωνήστε με έναν διαχειριστή δικτύου.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Ο λογαριασμός χρήστη είναι ανενεργός, συνδεθείτε με έναν ενεργό λογαριασμό ή επικοινωνήστε με έναν διαχειριστή δικτύου.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

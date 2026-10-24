@@ -43,11 +43,6 @@ class AppAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
     public $jsPosition = View::POS_HEAD;
 
     public const BUNDLE_NAME = 'app';
@@ -63,12 +58,14 @@ class AppAsset extends AssetBundle
         BootstrapAsset::class,
         BootstrapPluginAsset::class,
         BluebirdAsset::class,
-        FontAwesomeAsset::class,
+        TablerIconsAsset::class, // listed before IconAsset: the production build only bundles direct dependencies
+        IconAsset::class,
         AnimateCssAsset::class, // preload
         OpenSansAsset::class,
         PjaxAsset::class,
         JqueryTimeAgoAsset::class,
         IntlMessageFormatAsset::class,
+        VueAsset::class,
 
         /**
          * Style only assets
@@ -99,14 +96,6 @@ class AppAsset extends AssetBundle
      * @inheritdoc
      */
     public $depends = self::STATIC_DEPENDS;
-
-    /**
-     * @inheritdoc
-     */
-    public $js = [
-        'js/desktop-notify-min.js',
-        'js/desktop-notify-config.js',
-    ];
 
     /**
      * @inheritdoc

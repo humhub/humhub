@@ -4,7 +4,6 @@ return [
     'Access Admin Information' => 'የአስተዳደራዊ መጠቀሚያ መረጃዎች',
     'Can access the \'Administration -> Information\' section.' => '\'የአስተዳዳር -> መረጃ\' ክፍልን መጠቀመ ይቻላል።',
     'Can manage Spaces within the \'Administration -> Spaces\' section.' => '\'በአስተዳደር -> ምህዳሮች\' ክፍል ውስጥ ምህዳሮችን ማስተካከል (ማፍጠር/አርትዕ/ማስወገድ) ይቻላል።',
-    'Can manage general settings.' => 'ተጠቃሚዎችን - ምህዳሩን - እና አጠቃላይ ማስተካከያውን  ማቀናበር ይቻላል።',
     'Can manage modules within the \'Administration ->  Modules\' section.' => '\'በአስተዳደር -> ሞጁል\' ክፍል ውስጥ ሞጁሉን ማስተካከል ይቻላል።',
     'Can manage users and groups' => 'ተጠቃሚዎችን እና ቡድኖችን ማቀናበር ይቻላል',
     'Can manage users and user profiles.' => 'ተጠቃሚዎችንና የተጠቃሚ የግል መግለጫዎችን ማቀናበር ይቻላል።',
@@ -14,5 +13,6 @@ return [
     'Manage Spaces' => 'ምህዳሮችን ያቀናብሩ',
     'Manage Users' => 'ተጠቃሚዎችን ያቀናብሩ',
     'Can manage (e.g. edit or delete) all content (even private)' => '',
+    'Can manage general settings and module settings.' => '',
     'Manage All Content' => '',
 ];

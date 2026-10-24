@@ -118,18 +118,4 @@ class Module extends \humhub\components\Module
         ] : []);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getNotifications()
-    {
-        if (Yii::$app->user->isAdmin()) {
-            return [
-                'humhub\modules\admin\notifications\NewVersionAvailable',
-            ];
-        }
-
-        return [];
-    }
-
 }

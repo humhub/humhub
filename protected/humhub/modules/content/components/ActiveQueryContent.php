@@ -86,13 +86,20 @@ class ActiveQueryContent extends ActiveQuery
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
 
-        if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
+        if (!Yii::$app->getModule('content')->showDeactivatedUserContent) {
             $this->andWhere(['user.status' => User::STATUS_ENABLED]);
         }
 
         $user = $this->user;
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
+
+            if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+                $this->andWhere(['OR',
+                    ['content.visibility' => Content::VISIBILITY_PUBLIC],
+                    ['content.contentcontainer_id' => null],
+                ]);
+            }
 
             if ($user->canManageAllContent()) {
                 // Don't restrict if user can view all content:

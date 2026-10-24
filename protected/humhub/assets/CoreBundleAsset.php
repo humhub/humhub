@@ -3,19 +3,15 @@
 namespace humhub\assets;
 
 use humhub\components\assets\AssetBundle;
-use humhub\modules\activity\assets\ActivityAsset;
 use humhub\modules\comment\assets\CommentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
-use humhub\modules\like\assets\LikeAsset;
 use humhub\modules\live\assets\LiveAsset;
-use humhub\modules\notification\assets\NotificationAsset;
 use humhub\modules\post\assets\PostAsset;
 use humhub\modules\space\assets\SpaceAsset;
-use humhub\modules\space\assets\SpaceChooserAsset;
-use humhub\modules\stream\assets\StreamAsset;
+use humhub\modules\content\assets\StreamAsset;
 use humhub\modules\topic\assets\TopicAsset;
-use humhub\modules\ui\filter\assets\FilterAsset;
+use humhub\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\assets\UserPickerAsset;
 
@@ -36,10 +32,9 @@ class CoreBundleAsset extends AssetBundle
 
     public const BUNDLE_NAME = 'defer';
 
-    public $defaultDepends = false;
-
     public const STATIC_DEPENDS = [
         AppAsset::class,
+        CoreVueAsset::class,
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,
         Select2Asset::class,
@@ -59,7 +54,6 @@ class CoreBundleAsset extends AssetBundle
         JqueryCookieAsset::class,
         UserAsset::class,
         LiveAsset::class,
-        NotificationAsset::class,
         ContentContainerAsset::class,
         UserPickerAsset::class,
         PostAsset::class,
@@ -67,10 +61,7 @@ class CoreBundleAsset extends AssetBundle
         TopicAsset::class,
         FilterAsset::class,
         CommentAsset::class,
-        LikeAsset::class,
         StreamAsset::class,
-        ActivityAsset::class,
-        SpaceChooserAsset::class,
     ];
 
     public $depends = self::STATIC_DEPENDS;

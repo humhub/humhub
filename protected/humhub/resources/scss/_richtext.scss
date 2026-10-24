@@ -646,6 +646,34 @@
         }
     }
 
+    // Spinner (matches .spinner-border, e.g. the wall stream loader) shown until Prosemirror renders the raw
+    // Markdown source (kept as plain text here) into HTML - JS sets data-ui-richtext-rendered once done, see
+    // RichText.prototype.init() in humhub.ui.richtext.prosemirror.js. Pseudo-element only: a real DOM/text
+    // node here would corrupt this.$.text(), which JS reads as the Markdown source. [data-edit] is the
+    // hidden element holding the editor's initial value and is excluded.
+    [data-ui-richtext]:not([data-ui-richtext-rendered]):not([data-edit]) {
+        position: relative;
+        min-height: calc(var(--bs-spinner-height, 2rem) + var(--bs-spinner-border-width, 0.25em) * 2);
+        color: transparent;
+        pointer-events: none;
+        user-select: none;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: var(--bs-spinner-width, 2rem);
+            height: var(--bs-spinner-height, 2rem);
+            margin: calc(var(--bs-spinner-height, 2rem) / -2) 0 0 calc(var(--bs-spinner-width, 2rem) / -2);
+            color: var(--bs-body-color);
+            border: var(--bs-spinner-border-width, 0.25em) solid currentcolor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: var(--bs-spinner-animation-speed, 0.75s) linear infinite var(--bs-spinner-animation-name, spinner-border);
+        }
+    }
+
     #wallStream {
         [data-ui-markdown],
         [data-ui-richtext] {

@@ -73,7 +73,7 @@ use humhub\widgets\modal\ModalButton;
                                 Yii::t('SpaceModule.base', 'Create new link'),
                                 Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?'),
                             )
-                            ->load(['/user/invite/reset-invite-link', 'target' => $model->target]) ?>
+                            ->post(['/user/invite/reset-invite-link', 'target' => $model->target]) ?>
                     <?php endif; ?>
                 </div>
                 <br>

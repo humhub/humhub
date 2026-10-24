@@ -247,6 +247,10 @@ humhub.module('client', function (module, require, $) {
                     return;
                 }
 
+                if (response.status == 429) {
+                    notifyRateLimited(response);
+                }
+
                 if (errorHandler && object.isFunction(errorHandler)) {
                     errorHandler(response);
                 }
@@ -329,6 +333,50 @@ humhub.module('client', function (module, require, $) {
         };
 
         return promise;
+    };
+
+    /**
+     * The message about an exceeded rate limit stays visible for the `Retry-After` seconds,
+     * kept within these bounds. While it is visible, further refusals (e.g. the parallel
+     * requests of several islands) do not show it again.
+     */
+    var RATE_LIMIT_NOTICE_MIN = 5;
+    var RATE_LIMIT_NOTICE_MAX = 30;
+    var rateLimitNoticeUntil = 0;
+
+    var retryAfterSeconds = function (response) {
+        var seconds = parseInt(response.retryAfter, 10);
+        if (isNaN(seconds)) {
+            seconds = parseInt(response.header('Retry-After'), 10);
+        }
+        return (isNaN(seconds) || seconds < 0) ? null : seconds;
+    };
+
+    /**
+     * Tells the user that the rate limit is reached (`429`, see
+     * docs/develop/concept-rate-limiting.md), once per burst, with the server's message if
+     * the response carries one. Sets `response.statusShown` to the message, so
+     * `humhub.log` does not show a generic error for the same response again. The request
+     * is not retried.
+     */
+    var notifyRateLimited = function (response) {
+        var seconds = retryAfterSeconds(response);
+        var message = (response.dataType === 'json' && object.isString(response.message) && response.message)
+            ? response.message
+            : (seconds !== null
+                ? i18n.t('base', 'Too many requests. Please wait {seconds} seconds and try again.', {seconds: seconds})
+                : i18n.t('base', 'Too many requests. Please wait a moment and try again.'));
+
+        response.statusShown = message;
+
+        var now = Date.now();
+        if (now < rateLimitNoticeUntil) {
+            return;
+        }
+
+        var visible = Math.min(Math.max(seconds || 0, RATE_LIMIT_NOTICE_MIN), RATE_LIMIT_NOTICE_MAX) * 1000;
+        rateLimitNoticeUntil = now + visible;
+        require('ui.status').warn(message, undefined, visible);
     };
 
     var _redirect = function (xhr) {
@@ -466,6 +514,86 @@ humhub.module('client', function (module, require, $) {
         $(document).off('pjax:beforeSend.humhub_client');
     };
 
+    /**
+     * Published assets may be served from a different origin than the site
+     * (e.g. an S3 bucket or CDN configured for the `assets` mount). jQuery
+     * cannot load cross-domain `<script src>` tags synchronously — its script
+     * transport silently ignores `async: false` — so the scripts of an
+     * ajax/pjax response execute in download-completion order instead of
+     * document order, and only after the inserted content was already
+     * processed: widgets initialize before their module registered
+     * ("Required a non initialized module") or a module executes before a
+     * library it depends on (e.g. FullCalendar).
+     *
+     * For the asset origins announced by the backend (`syncScriptOrigins`,
+     * see CoreJsConfig — these hosts are expected to answer with CORS
+     * headers) this transport restores the exact same-origin semantics:
+     * the script is fetched through a synchronous XHR and evaluated in
+     * place by jQuery. It only engages for the synchronous cross-domain
+     * script requests jQuery issues for injected script tags
+     * (jQuery._evalUrl); JSONP and explicitly asynchronous script loads
+     * are not affected.
+     *
+     * If the asset host does not answer with CORS headers, the transport
+     * falls back to an in-order-executing script element: execution then
+     * stays asynchronous (as without this transport), but at least in
+     * document order.
+     */
+    $.ajaxTransport('+script', function (s) {
+        if (!s.crossDomain || s.async !== false || !isSyncScriptOrigin(s.url)) {
+            return; // fall through to jQuery's default script transport
+        }
+
+        return {
+            send: function (headers, complete) {
+                var xhr = new XMLHttpRequest();
+
+                try {
+                    // Synchronous on purpose: this mirrors the blocking XHR jQuery
+                    // itself uses for same-origin script tags inserted into the DOM.
+                    xhr.open('GET', s.url, false);
+                    xhr.send(null);
+                } catch (e) { // Sync XHR throws on network/CORS failure
+                    xhr = null;
+                }
+
+                if (xhr && xhr.status >= 200 && xhr.status < 300) {
+                    complete(200, 'success', {text: xhr.responseText});
+                    return;
+                }
+
+                module.log.warn('Could not load asset synchronously, falling back to asynchronous ' +
+                    'execution. Are CORS headers configured on the asset host? ' + s.url);
+
+                var script = document.createElement('script');
+                script.src = s.url;
+                script.async = false; // keep document order among fallback-loaded scripts
+                script.onload = script.onerror = function (evt) {
+                    script.remove();
+                    complete(evt.type === 'error' ? 404 : 200, evt.type);
+                };
+                document.head.appendChild(script);
+            },
+            abort: function () {
+                // A synchronous request cannot be aborted; nothing to do.
+            }
+        };
+    });
+
+    var isSyncScriptOrigin = function (url) {
+        var origins = module.config.syncScriptOrigins;
+
+        if (!origins || !origins.length) {
+            return false;
+        }
+
+        try {
+            return origins.indexOf(new URL(url, document.baseURI).origin) >= 0;
+        } catch (e) {
+            return false;
+        }
+    };
+
     module.initOnPjaxLoad = true;
 
     var init = function (isPjax) {
@@ -487,45 +615,11 @@ humhub.module('client', function (module, require, $) {
             additions.register('acknowledgeForm', function ($match) {
                 onBeforeLoad($match, ($match.data('acknowledgeMessage') || null));
             });
-
-            checkContentSecurityPolicyViolation();
         } else {
             offBeforeLoad();
         }
 
     };
-
-    const checkContentSecurityPolicyViolation = function () {
-        if (typeof module.config.cspViolationReloadInterval === 'undefined' ||
-            module.config.cspViolationReloadInterval === 0) {
-            // The module is not configured to check the CSP errors
-            return;
-        }
-
-        window.addEventListener('securitypolicyviolation', function (event) {
-            // The directive "script-src" may be violated when nonce value has been recreated, e.g. after re-login in another browser tab
-            if (!event.violatedDirective.includes('script-src')) {
-                return;
-            }
-
-            const lastReloadTime = localStorage.getItem('cspViolationReloadTime');
-            const nextReloadTime = lastReloadTime
-                ? module.config.cspViolationReloadInterval * 1000 - (Date.now() - lastReloadTime)
-                : 0;
-
-            if (nextReloadTime > 0) {
-                // Skip because a previous reloading was less than required seconds ago, to avoid a looping
-                module.log.info('The directive "script-src" is violated. ' +
-                    'Next auto reloading will be forced in ' + Math.floor(nextReloadTime / 60000) + ' minutes.');
-                return;
-            }
-
-            // Reload the page to solve the issue of Content Security Policy
-            module.log.info('Force page reload. The directive "script-src" is violated because nonce is obsolete.');
-            localStorage.setItem('cspViolationReloadTime', Date.now().toString());
-            window.location.reload();
-        });
-    }
 
     module.export({
         ajax: ajax,

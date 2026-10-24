@@ -18,9 +18,9 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\marketplace\services\MarketplaceService;
-use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\LeftNavigation;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 

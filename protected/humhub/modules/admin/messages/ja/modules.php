@@ -20,6 +20,7 @@ return [
     'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'このモジュールのアンインストールはまだ完了していません。数分以内に削除されます。',
     'User default state' => 'ユーザーのデフォルト状態',
     'Users' => 'ユーザー',
+    'Could not enable module!' => '',
     'Disable Module' => '',
     'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.' => '',
     'Uninstall Module' => '',

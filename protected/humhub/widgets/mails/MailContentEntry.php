@@ -9,10 +9,8 @@
 namespace humhub\widgets\mails;
 
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
-use Yii;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
-use humhub\components\rendering\ViewPathRenderer;
-use humhub\components\rendering\Viewable;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 
 /**
@@ -35,7 +33,7 @@ class MailContentEntry extends \yii\base\Widget
     public $receiver;
 
     /**
-     * @var string|Viewable|ContentOwner content to render
+     * @var string|ContentOwner content to render
      */
     public $content;
 
@@ -63,13 +61,6 @@ class MailContentEntry extends \yii\base\Widget
 
         if (is_string($this->content)) {
             $content = $this->content;
-        } elseif ($this->content instanceof Viewable) {
-            try {
-                $renderer = new ViewPathRenderer(['parent' => true, 'subPath' => 'mail']);
-                $content =  $renderer->render($this->content);
-            } catch (\yii\base\ViewNotFoundException $e) {
-                Yii::error($e);
-            }
         } elseif ($this->content instanceof ContentOwner) {
             $content = RichTextToEmailHtmlConverter::process($this->content->getContentDescription(), [
                 RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $this->receiver,
@@ -77,7 +68,9 @@ class MailContentEntry extends \yii\base\Widget
             ]);
 
             if (!$this->originator) {
-                $this->originator = $this->content->content->createdBy;
+                $this->originator = $this->content instanceof ContentAddonActiveRecord
+                    ? $this->content->user
+                    : $this->content->content->createdBy;
             }
         }
 

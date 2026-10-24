@@ -8,121 +8,109 @@
 
 namespace humhub\modules\friendship\widgets;
 
-use humhub\modules\friendship\models\Friendship;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\friendship\assets\FriendshipVueAsset;
+use humhub\modules\friendship\serializers\FriendshipSerializer;
+use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
+use humhub\widgets\VueWidget;
 use Yii;
-use yii\base\Widget;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
- * Displays a membership button between the current and given user.
+ * The friendship button between the current and the given user.
+ *
+ * Since 1.20 this widget renders the `FriendshipButton` Vue island (see its own docblock) and
+ * hands it the current friendship state; every transition afterwards happens client side
+ * against `/api/v2/user/<id>/friendship`. What the widget still owns is what only the server
+ * knows: the initial state, the user, the rendered icon markup — and the presentation.
+ *
+ * ## Presentation
+ *
+ * `$buttonClass` styles the "add" button, `$stateClass` the three states that follow, and
+ * `$togglerClass`/`$groupClass` the dropdown around a received request. They replace the
+ * per-button option array of earlier versions; nullable, so an {@see self::EVENT_INIT} handler
+ * can supply a default without overriding what the call site configured:
+ *
+ * ```php
+ * $friendshipButton->buttonClass ??= 'btn btn-accent btn-sm';
+ * ```
  *
  * @author luke
  */
-class FriendshipButton extends Widget
+class FriendshipButton extends VueWidget
 {
+    /**
+     * @var string classes of the "add friend" button
+     */
+    public const DEFAULT_BUTTON_CLASS = 'btn btn-accent';
+
+    /**
+     * @var string classes of the pending, received-request and friends states
+     */
+    public const DEFAULT_STATE_CLASS = 'btn btn-accent active';
+
     /**
      * @var User the target user
      */
     public $user;
 
     /**
-     * @var array Options buttons
+     * @var string|null classes of the "add friend" button
+     * @since 1.20
      */
-    public $options = [];
+    public ?string $buttonClass = null;
 
-    private function getDefaultOptions()
-    {
-        return [
-            'friends' => [
-                'title' => Icon::get('check') . Yii::t('FriendshipModule.base', 'Friends'),
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to end your friendship with {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent active',
-                ],
-            ],
-            'addFriend' => [
-                'title' => Icon::get('plus') . Yii::t('FriendshipModule.base', 'Friends'),
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to send a friendship request to {userName}?', ['{userName}' => '<strong>' . $this->user->getDisplayName() . '</strong>']),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent',
-                ],
-            ],
-            'acceptFriendRequest' => [
-                'title' => Icon::get('clock-o') . Yii::t('FriendshipModule.base', 'Accept Friend Request'),
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => Url::to(['/friendship/request/add', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to accept the friendship request?'),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent active',
-                ],
-                'groupClass' => 'btn-group',
-                'togglerClass' => 'btn btn-accent active',
-            ],
-            'denyFriendRequest' => [
-                'title' => '<span class="fa fa-times"></span>&nbsp;&nbsp;' . Yii::t('FriendshipModule.base', 'Deny friend request'),
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw the friendship request?'),
-                    'data-button-options' => Json::encode($this->options),
-                ],
-            ],
-            'cancelFriendRequest' => [
-                'title' => Icon::get('clock-o') . Yii::t('FriendshipModule.base', 'Pending'),
-                'attrs' => [
-                    'data-action-click' => 'content.container.relationship',
-                    'data-action-url' => Url::to(['/friendship/request/delete', 'userId' => $this->user->id]),
-                    'data-action-confirm' => Yii::t('FriendshipModule.base', 'Would you like to withdraw your friendship request?'),
-                    'data-button-options' => Json::encode($this->options),
-                    'data-ui-loader' => '',
-                    'class' => 'btn btn-accent active',
-                ],
-            ],
-        ];
-    }
+    /**
+     * @var string|null classes of the pending, received-request and friends states
+     * @since 1.20
+     */
+    public ?string $stateClass = null;
 
-    public function setDefaultOptions(array $defaultOptions)
-    {
-        $this->options = $this->getOptions($defaultOptions);
-    }
+    /**
+     * @var string|null classes of the dropdown toggle next to "Accept Friend Request"
+     * @since 1.20
+     */
+    public ?string $togglerClass = null;
 
-    public function getOptions(?array $defaultOptions = null): array
+    /**
+     * @var string|null classes of the button group of the received-request state
+     * @since 1.20
+     */
+    public ?string $groupClass = null;
+
+    protected string $component = 'FriendshipButton';
+
+    protected ?string $assetBundle = FriendshipVueAsset::class;
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeRun()
     {
-        if ($defaultOptions === null) {
-            $defaultOptions = $this->getDefaultOptions();
+        if (!self::isVisibleForUser($this->user)) {
+            return false;
         }
 
-        return ArrayHelper::merge($defaultOptions, $this->options);
+        return parent::beforeRun();
     }
 
     /**
      * @inheritdoc
      */
-    public function run()
+    protected function getProps(): array
     {
-        if (!self::isVisibleForUser($this->user)) {
-            return '';
-        }
-
-        return $this->render('friendshipButton', [
-            'user' => $this->user,
-            'friendshipState' => Friendship::getStateForUser(Yii::$app->user->getIdentity(), $this->user),
-            'options' => $this->getOptions(),
-        ]);
+        return [
+            'userId' => $this->user->id,
+            'userName' => $this->user->getDisplayName(),
+            'initial' => FriendshipSerializer::state($this->user),
+            'buttonClass' => $this->buttonClass ?? self::DEFAULT_BUTTON_CLASS,
+            'stateClass' => $this->stateClass ?? self::DEFAULT_STATE_CLASS,
+            'togglerClass' => $this->togglerClass ?? self::DEFAULT_STATE_CLASS,
+            'groupClass' => $this->groupClass ?? 'btn-group',
+            'checkIconHtml' => Icon::get('check')->asString(),
+            'plusIconHtml' => Icon::get('plus')->asString(),
+            'clockIconHtml' => Icon::get('clock')->asString(),
+            'timesIconHtml' => Icon::get('x')->asString(),
+        ];
     }
 
     public static function isVisibleForUser(User $user): bool

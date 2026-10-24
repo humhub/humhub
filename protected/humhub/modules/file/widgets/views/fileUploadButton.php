@@ -1,6 +1,7 @@
 <?php
 
 use humhub\helpers\Html;
+use humhub\widgets\Icon;
 use yii\helpers\Url;
 ?>
 
@@ -27,7 +28,7 @@ use yii\helpers\Url;
 </style>
 <span class="btn btn-light fileinput-button tt" data-bs-toggle="tooltip" data-placement="bottom" title=""
       data-bs-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
-    <i class="fa fa-cloud-upload"></i>
+    <?= Icon::get('cloud-upload') ?>
 
     <input id="fileUploaderButton_<?php echo $uploaderId; ?>" type="file" name="files[]"
            data-url="<?php echo Url::to(['/file/file/upload', 'objectModel' => $objectModel, 'objectId' => $objectId]); ?>"

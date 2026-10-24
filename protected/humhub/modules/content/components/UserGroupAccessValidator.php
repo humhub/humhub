@@ -58,6 +58,12 @@ class UserGroupAccessValidator extends ActionAccessValidator
                 return in_array($userGroup, $allowedGroups);
             }
 
+            // getUserGroupLevel() ranks unknown groups highest, which is intended for the
+            // allowed groups of a rule but must never grant access to an unknown user group.
+            if (!in_array($userGroup, $this->getUserGroupLevels(), true)) {
+                return false;
+            }
+
             foreach ($allowedGroups as $allowedUserGroup) {
                 if ($this->getUserGroupLevel($userGroup) >= $this->getUserGroupLevel($allowedUserGroup)) {
                     return true;
@@ -88,13 +94,24 @@ class UserGroupAccessValidator extends ActionAccessValidator
 
     public function getUserGroupLevel($userGroup)
     {
-        $userGroupLevelArr = ($this->contentContainer instanceof Space) ? $this->spaceGroupLevel : $this->profileGroupLevel;
+        $userGroupLevelArr = $this->getUserGroupLevels();
 
         if (!in_array($userGroup, $userGroupLevelArr)) {
             return PHP_INT_MAX;
         }
 
         return array_search($userGroup, $userGroupLevelArr);
+    }
+
+    /**
+     * Returns the known user groups of the current content container, ordered by level.
+     *
+     * @return string[]
+     * @since 1.18.5
+     */
+    public function getUserGroupLevels(): array
+    {
+        return ($this->contentContainer instanceof Space) ? $this->spaceGroupLevel : $this->profileGroupLevel;
     }
 
     protected function extractActions($rule)

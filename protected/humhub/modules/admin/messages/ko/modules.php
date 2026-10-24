@@ -8,6 +8,7 @@ return [
     'Users' => '사용자들',
     '%moduleName% - Set as default module' => '',
     'Always activated' => '',
+    'Could not enable module!' => '',
     'Deactivated' => '',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Disable Module' => '',

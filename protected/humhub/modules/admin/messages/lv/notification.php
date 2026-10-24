@@ -1,11 +1,14 @@
 <?php
 
 return [
-    'Administrative' => 'Administratīvi',
-    'Receive Notifications for administrative events like available updates.' => 'Saņemt notifikācijas par administratīviem notikumiem, kā piem. atjauninājumi.',
     'There is a new HumHub Version ({version}) available.' => 'Ir pieejama jauna HumHub versija ({version}).',
-    'Notify from {appName}. You were added to the group.' => '',
-    'Notify from {appName}. You were removed from the group.' => '',
+    'A new HumHub version is available.' => '',
+    'You were added to a group.' => '',
+    'You were added to the group {groupName}' => '',
+    'You were removed from a group.' => '',
+    'You were removed from the group {groupName}' => '',
+    '{displayName} added you to a group.' => '',
     '{displayName} added you to group {groupName}' => '',
+    '{displayName} removed you from a group.' => '',
     '{displayName} removed you from group {groupName}' => '',
 ];

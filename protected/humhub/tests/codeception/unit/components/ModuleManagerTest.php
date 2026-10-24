@@ -16,6 +16,8 @@ use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\content\models\stream\StreamQuery;
+use humhub\modules\stream\models\StreamQuery as DeprecatedStreamQuery;
 use humhub\services\ModuleDiscoveryService;
 use humhub\services\ModuleService;
 use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
@@ -55,6 +57,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     private ?string $moduleClass = null;
     private ?string $moduleNS = null;
     private static array $aliases;
+    private static int $deprecatedEventHandlerCalls = 0;
     private static ModuleManager $originalModuleManager;
 
 
@@ -156,6 +159,28 @@ class ModuleManagerTest extends HumHubDbTestCase
         );
 
         $this->moduleManager->getModule($this->moduleId);
+    }
+
+    public function testGetModuleIdByClass()
+    {
+        $this->moduleManager->register(static::$testModuleRoot . '/module1');
+        $this->moduleManager->register(static::$testModuleRoot . '/module2');
+
+        // The module class itself, and any class below the module's namespace
+        $this->assertSame('module1', $this->moduleManager->getModuleIdByClass(Module1::class));
+        $this->assertSame('module2', $this->moduleManager->getModuleIdByClass(Module2::class));
+        $this->assertSame('module1', $this->moduleManager->getModuleIdByClass('Some\Name\Space\module1\widgets\Anything'));
+
+        // A prefix of a namespace is not that namespace
+        $this->assertNull($this->moduleManager->getModuleIdByClass('Some\Name\Space\module10\Module'));
+
+        // Classes outside every registered module
+        $this->assertNull($this->moduleManager->getModuleIdByClass(self::class));
+        $this->assertNull($this->moduleManager->getModuleIdByClass(\yii\web\Controller::class));
+
+        // Core modules declare no namespace; theirs is implied by the module class
+        $this->assertSame('space', Yii::$app->moduleManager->getModuleIdByClass(\humhub\modules\space\assets\SpaceVueAsset::class));
+        $this->assertSame('space', Yii::$app->moduleManager->getModuleIdByClass(\humhub\modules\space\modules\manage\Module::class));
     }
 
     public function testRegisterNonExistingModulePath()
@@ -404,6 +429,50 @@ class ModuleManagerTest extends HumHubDbTestCase
     }
 
     /**
+     * An event registered on a deprecated shim class has to end up on the class that replaced it.
+     * Event::trigger() walks the parents of the sender upwards, so a handler left on the shim -
+     * a child of the new class - would never be reached.
+     *
+     * @since 1.20
+     */
+    public function testEventOnDeprecatedShimClassIsRegisteredOnItsReplacement()
+    {
+        self::$deprecatedEventHandlerCalls = 0;
+
+        $this->moduleManager = new ModuleManagerMock();
+
+        [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
+
+        $this->moduleManager->myEnabledModules()[] = $this->moduleId;
+
+        unset($config['namespace']);
+
+        $config['strict'] = true;
+        $config['events'] = [
+            [
+                'class' => DeprecatedStreamQuery::class,
+                'event' => StreamQuery::EVENT_BEFORE_FILTER,
+                'callback' => [self::class, 'onDeprecatedEvent'],
+            ],
+        ];
+
+        $this->moduleManager->register($basePath, $config);
+
+        try {
+            Event::trigger(StreamQuery::class, StreamQuery::EVENT_BEFORE_FILTER);
+
+            $this->assertSame(1, self::$deprecatedEventHandlerCalls);
+        } finally {
+            Event::off(StreamQuery::class, StreamQuery::EVENT_BEFORE_FILTER);
+        }
+    }
+
+    public static function onDeprecatedEvent(): void
+    {
+        self::$deprecatedEventHandlerCalls++;
+    }
+
+    /**
      * @throws Exception
      */
     public function testGetEnabledModules()
@@ -476,6 +545,40 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         // cannot be removed, since it does not exist within the marketplace dir
         static::assertFalse($module->getModuleService()->canRemove());
+
+        // a sibling directory sharing the marketplace dir as name prefix is not within it
+        $sibling = static::$testModuleRoot . '_sibling';
+        FileHelper::createDirectory($sibling);
+        $module->setBasePath($sibling);
+        static::assertFalse($module->getModuleService()->canRemove());
+        FileHelper::removeDirectory($sibling);
+    }
+
+    /**
+     * @throws Exception
+     * @throws ErrorException
+     * @throws InvalidConfigException
+     */
+    public function testRemoveModuleOutsideMarketplaceDirectory()
+    {
+        $this->skipIfMarketplaceNotEnabled();
+
+        [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
+
+        $module = $this->registerModuleAsEnabled($basePath, $config);
+
+        $tmp = $this->createTempDir();
+        $module->setBasePath($tmp);
+
+        try {
+            (new ModuleService($module))->remove(false);
+            static::fail('Module outside of the marketplace directory must not be removed.');
+        } catch (Exception $e) {
+            static::assertStringContainsString('cannot be removed', $e->getMessage());
+        }
+
+        static::assertDirectoryExists($tmp);
+        FileHelper::removeDirectory($tmp);
     }
 
     /**
@@ -493,6 +596,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
         $module = $this->registerModuleAsEnabled($basePath, $config);
+
+        // treat the temp dir as the marketplace dir, so the module may be removed
+        Yii::setAlias(Yii::$app->getModule('marketplace')->modulesPath, sys_get_temp_dir());
 
         $tmp = $this->createTempDir();
         $module->setBasePath($tmp);

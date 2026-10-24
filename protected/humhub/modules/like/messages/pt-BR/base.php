@@ -1,13 +1,11 @@
 <?php
 
 return [
-    ' likes this.' => 'curtiu',
     '<strong>Users</strong> who like this' => '<strong>Usuários</strong> que curtiram',
     'Like' => '🤍',
     'Unlike' => '❤️',
-    'You' => 'Você',
-    'You like this.' => 'Você curtiu',
-    'and {count} more like this.' => 'e mais {count} curtiram',
     '{displayNames} like {content}.' => '',
     '{displayName} likes {content}.' => '',
+    '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a comment.' => '',
+    '{groupCount, plural, =1{{displayName} likes} other{{displayNames} like}} a {contentType}.' => '',
 ];

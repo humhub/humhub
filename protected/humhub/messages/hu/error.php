@@ -10,9 +10,9 @@ return [
     'The specified URL cannot be called directly.' => 'A megadott URL nem hívható közvetlenül.',
     'You are not allowed to perform this action.' => 'Nem engedélyezett számodra ez a művelet.',
     'You are not permitted to access this section.' => 'Nincs hozzáférésed a szekcióhoz.',
-    'You must change password.' => 'Változtasd meg a jelszavadat.',
     'You need admin permissions to access this section.' => 'Engedélyre van szükséged, hogy ehhez a szekcióhoz hozzáférhess.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'A felhasználói fiókod még nincs jóváhagyva. Kérjük, próbálkozz később vagy lépj kapcsolatba egy hálózati adminisztrátorral.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'A felhasználói fiókod inaktív. Kérjük, jelentkezz be egy aktív fiókkal vagy lépj kapcsolatba egy hálózati adminisztrátorral.',
+    'Access to private content is not allowed while impersonating a user.' => '',
     'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
 ];

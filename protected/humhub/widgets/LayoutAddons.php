@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\components\InstallationState;
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\MobileAppHelper;
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
@@ -52,6 +53,11 @@ class LayoutAddons extends BaseStack
         parent::init();
 
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            // If the mobile app Opener page is open (after login and switching instance)
+            if (DeviceDetectorHelper::appOpenerState()) {
+                MobileAppHelper::registerHideOpenerScript();
+            }
+
             if (Yii::$app->session->has(MobileAppHelper::SESSION_VAR_SHOW_OPENER)) {
                 MobileAppHelper::registerShowOpenerScript();
                 Yii::$app->session->remove(MobileAppHelper::SESSION_VAR_SHOW_OPENER);

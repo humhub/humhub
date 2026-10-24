@@ -15,7 +15,7 @@ use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\SearchDriverService;
 use humhub\modules\queue\helpers\QueueHelper;
-use humhub\modules\user\models\User;
+use humhub\modules\user\models\Group;
 use Yii;
 use yii\console\Controller;
 
@@ -73,7 +73,7 @@ class SearchController extends Controller
 
         $options = new SearchRequest([
             'keyword' => $keyword,
-            'user' => User::findOne(['id' => 1]),
+            'user' => Group::getAdminGroup()->getUsers()->one(),
             'orderBy' => $module->searchOrderBy,
         ]);
 

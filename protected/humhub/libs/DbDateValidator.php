@@ -58,6 +58,56 @@ class DbDateValidator extends DateValidator
 
     /**
      * @inheritdoc
+     *
+     * HUMHUB PATCH: On some ICU builds, IntlDateFormatter::parse() (used here in strict/non-lenient
+     * mode, see yii\validators\DateValidator::parseDateValueIntl()) requires an exact character match
+     * for a locale's literal separators - including a "special" space character such as U+202F NARROW
+     * NO-BREAK SPACE that CLDR embeds before a trailing quoted literal, e.g. the "г." year-suffix in
+     * `ru` or "р." in `uk` - while the very same ICU library's own format() output (used by
+     * Yii::$app->formatter->asDate() to render the value the user sees and re-submits, and by the
+     * DatePicker widget when a date is picked) can use a plain space there instead. A value that the
+     * app itself just displayed can therefore fail to parse back. If the raw value fails to parse,
+     * retry after normalizing space variants, so genuinely invalid input is still rejected but this
+     * whitespace mismatch alone no longer blocks a save.
+     *
+     * @param mixed $value
+     * @return int|false
+     */
+    protected function parseDateValue($value)
+    {
+        $result = parent::parseDateValue($value);
+        if ($result !== false || !is_string($value)) {
+            return $result;
+        }
+
+        // (a) collapse every "special" space-like character to a plain space - covers the case where
+        // ICU wrote/parse wants a plain space but the value has some other Unicode space variant.
+        $collapsed = preg_replace('/[\x{00A0}\x{2000}-\x{200A}\x{202F}\x{205F}\x{FEFF}]/u', ' ', $value);
+        if ($collapsed !== $value) {
+            $result = parent::parseDateValue($collapsed);
+            if ($result !== false) {
+                return $result;
+            }
+        }
+
+        // (b) promote only the LAST run of plain spaces (closest to a trailing quoted literal, e.g.
+        // the "<year> г." year-suffix in `ru`) to a narrow no-break space and retry - covers the
+        // opposite case, observed on some servers, where parse() specifically requires it there.
+        if (preg_match('/^(.*) ([^ ]*)$/us', $value, $matches)) {
+            $promoted = $matches[1] . "\u{202F}" . $matches[2];
+            if ($promoted !== $value) {
+                $result = parent::parseDateValue($promoted);
+                if ($result !== false) {
+                    return $result;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function validateAttribute($model, $attribute)
     {

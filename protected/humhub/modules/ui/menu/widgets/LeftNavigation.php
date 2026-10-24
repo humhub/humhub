@@ -2,47 +2,15 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\ui\menu\widgets;
 
 /**
- * Class LeftNavigation
- *
- * @since 1.4
- * @package humhub\modules\ui\menu\widgets
+ * @deprecated since 1.20, use \humhub\widgets\menu\LeftNavigation instead. Will be removed in 1.21.
  */
-abstract class LeftNavigation extends Menu
+abstract class LeftNavigation extends \humhub\widgets\menu\LeftNavigation
 {
-    /**
-     * @var string the title of the panel
-     */
-    public $panelTitle;
-
-    /**
-     * @inheritdoc
-     */
-    public $template = '@ui/menu/widgets/views/left-navigation.php';
-
-    /**
-     * @inheritdoc
-     */
-    public function getAttributes()
-    {
-        return [
-            'class' => 'panel panel-default left-navigation',
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getOptions()
-    {
-        return array_merge(parent::getOptions(), [
-            'aria-label' => strip_tags($this->panelTitle),
-        ]);
-    }
 }

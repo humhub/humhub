@@ -3,7 +3,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 use Throwable;
 use Yii;
 

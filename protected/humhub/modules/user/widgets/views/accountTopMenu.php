@@ -8,8 +8,8 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\menu\widgets\DropdownMenu;
+use humhub\widgets\menu\MenuEntry;
+use humhub\widgets\menu\DropdownMenu;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\FooterMenu;
 

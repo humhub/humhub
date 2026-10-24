@@ -85,8 +85,10 @@ class ModuleController extends Controller
             $this->view->error(Yii::t('AdminModule.modules', 'Deactivation of this module has not been completed yet. Please retry in a few minutes.'));
         } elseif (QueueHelper::isQueued(new RemoveModuleJob(['moduleId' => $moduleId]))) {
             $this->view->error(Yii::t('AdminModule.modules', 'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.'));
+        } elseif ($module->enable() === false) {
+            $this->view->error('Could not enable module!');
         } else {
-            $module->enable();
+            $this->view->saved();
         }
 
         return $this->redirectToModules();

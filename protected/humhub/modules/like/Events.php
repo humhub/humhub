@@ -5,6 +5,7 @@ namespace humhub\modules\like;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\models\RecordMap;
+use humhub\modules\content\events\ContentEvent;
 use humhub\modules\like\models\Like;
 use Throwable;
 use Yii;
@@ -44,6 +45,34 @@ class Events extends BaseObject
     }
 
     /**
+     * On hard delete of a content, delete all its likes
+     *
+     * @param Event $event
+     * @return bool
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public static function onContentDelete($event)
+    {
+        foreach (Like::findAll(['content_id' => $event->sender->content->id]) as $like) {
+            $like->delete();
+        }
+
+        return true;
+    }
+
+    /**
+     * On hard delete of a Content record without a polymorphic content object
+     * (e.g. cleaned up by the IntegrityController), delete all its likes too.
+     */
+    public static function onContentHardDelete(ContentEvent $event)
+    {
+        foreach (Like::findAll(['content_id' => $event->content->id]) as $like) {
+            $like->delete();
+        }
+    }
+
+    /**
      * Callback to validate module database records.
      *
      * @param Event $event
@@ -55,18 +84,18 @@ class Events extends BaseObject
 
         /** @var Like $like */
         foreach (Like::find()->each() as $like) {
-
             // Check underlying record exists
             if (
                 !$like->getContent()->exists()
                 && $integrityController->showFix("Deleting like id " . $like->id . " without existing target!")
             ) {
                 $like->delete();
+                continue;
             }
 
-            // User exists
+            // Check User exists
             if (
-                !$like->getContent()->exists()
+                !$like->getCreatedBy()->exists()
                 && $integrityController->showFix("Deleting like id " . $like->id . " without existing user!")
             ) {
                 $like->delete();

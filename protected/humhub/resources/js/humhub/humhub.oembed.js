@@ -10,7 +10,23 @@ humhub.module('oembed', function(module, require, $) {
     var status = require('ui.status');
     var cache = {};
 
-    var load = function(urls) {
+    /**
+     * Loads the previews of the given oembed urls, from the client cache or the server.
+     *
+     * Without options the media is always embedded - the editor's preview of a link the current
+     * user just pasted. `options.consent` honors the user's oembed consent instead: for a domain
+     * the user has not allowed, the result is the confirmation prompt a server-rendered richtext
+     * shows as well (see `UrlOembed::isAllowedDomain()`) - the setting for rendering text somebody
+     * else wrote (see `RichTextOutput.vue`). `options.silent` skips the status warning about urls
+     * whose provider could not be reached; such urls are left out of the result.
+     *
+     * @param {string[]} urls
+     * @param {{consent?: boolean, silent?: boolean}} [options]
+     * @returns {Promise<Object<string, string>>} preview html by url
+     */
+    var load = function(urls, options) {
+        options = options || {};
+
         return new Promise(function(resolve, reject) {
             var result = {};
             var requestUrls = [];
@@ -22,7 +38,17 @@ humhub.module('oembed', function(module, require, $) {
                 }
             });
 
-            client.post(module.config.loadUrl, {data: {urls: requestUrls}}).then(function(response) {
+            if (!requestUrls.length) {
+                resolve(result);
+                return;
+            }
+
+            var data = {urls: requestUrls};
+            if (options.consent) {
+                data.consent = 1;
+            }
+
+            client.post(module.config.loadUrl, {data: data}).then(function(response) {
                 const fetchedUrls = {};
                 const brokenUrls = [];
                 $.each(response.data, function(url, oembed) {
@@ -35,7 +61,7 @@ humhub.module('oembed', function(module, require, $) {
 
                 $.extend(cache, fetchedUrls);
                 const resolveUrls = $.extend(result, fetchedUrls);
-                if (brokenUrls.length > 0) {
+                if (brokenUrls.length > 0 && !options.silent) {
                     status.warn(module.text('brokenUrl').replace('{urls}',  brokenUrls.join(', ')));
                 }
 
@@ -81,6 +107,10 @@ humhub.module('oembed', function(module, require, $) {
 
         client.post(module.config.displayUrl, {data}).then(function(response) {
             if (response.success) {
+                if (response.content) {
+                    // The next render of this url on the page shows the media, not the prompt again.
+                    cache[data.url] = response.content;
+                }
                 confirmation.after(response.content).remove();
             } else {
                 module.log.error(response, true);

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\file\handler;
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Icon;
 
 /**
  * Allows uploading files of a specific type

@@ -8,7 +8,7 @@ HumHub is built on the [Yii 2.0 PHP Framework](https://www.yiiframework.com/doc/
 
 - [Overview](intro-overview.md) — architecture, core modules, application structure
 - [Development environment](intro-environment.md) — local setup, debug mode, queues
-- [Coding standards](intro-coding-standards.md)
+- [Coding standards](intro-coding-standards.md) — code style, `final`, `@api` and `@internal`
 - [Build system](intro-build.md) — assets, grunt, releases
 - [Pull requests](intro-pull-requests.md) — contribution workflow
 - [Testing](intro-testing.md) — Codeception, unit/functional/acceptance
@@ -37,12 +37,15 @@ The systems modules plug into. Read the ones relevant to what your module does.
 - [Events](concept-events.md) — registering and firing events
 - [Module settings](concept-settings.md) — per-module and per-container settings
 - [Permissions](concept-permissions.md) — permission model, guest access
-- [Notifications](concept-notifications.md)
-- [Activities](concept-activities.md)
+- [Notifications](concept-notifications.md) — notification classes, groups and priorities, dispatching, grouping, the delivery layer, channels
+- [Activities](concept-activities.md) — activity classes and their sentences, dispatching, grouping, the summary mail settings
 - [Files](concept-files.md) — uploads, attachments
+- [Rich text](concept-richtext.md) — the markdown format, editor, post-processing, output and conversion pipelines, PHP extensions and JavaScript plugins
 - [Live updates](concept-live.md)
 - [Search](concept-search.md)
 - [Internationalization](concept-i18n.md)
+- [HTTP API framework](concept-api.md) — `/api/v2`, the auth model, endpoint and serializer ownership (the endpoint reference itself lives in [`docs/api/`](../api/) — open `docs/api/index.html` in a browser)
+- [OAuth and personal access tokens](concept-oauth.md) — core authorization server (app, admin and user clients), PATs, scopes, WebView sessions for the app
 
 ## UI & frontend
 
@@ -58,6 +61,13 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [JavaScript modals](ui-js-modals.md)
 - [JavaScript stream](ui-js-stream.md)
 - [JavaScript client](ui-js-client.md) — REST/AJAX wrapper
+- [Vue.js integration](ui-js-vuejs.md) — island components on server-rendered pages
+- [Vue.js components](ui-js-vuejs-components.md) — authoring and using components, registry, mounting
+- [Vue.js build tooling](ui-js-vuejs-build.md) — grunt build-vue, committed artifacts, vitest
+- [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, menu entries, module data, domain events
+- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
+- [Vue.js form suite](ui-js-vuejs-forms.md) — HumHubForm, native field components, SubmitButton, error contract
+- [Vue.js roadmap](ui-js-vuejs-roadmap.md) — open work of the Vue islands initiative in core
 
 ## Accessibility (WCAG)
 
@@ -79,6 +89,7 @@ How user accounts, authentication and provisioning fit together.
 
 - [Authentication](user-auth.md) — AuthClient families, login flow
 - [UserSource](user-source.md) — provisioning model, attribute sync, LDAP/SCIM
+- [User Gates](user-gates.md) — action interception: 2FA check, terms, wizards
 
 ## Advanced topics
 

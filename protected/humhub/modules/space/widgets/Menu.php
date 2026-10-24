@@ -11,8 +11,8 @@ namespace humhub\modules\space\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\LeftNavigation;
 use Yii;
 use yii\base\Exception;
 

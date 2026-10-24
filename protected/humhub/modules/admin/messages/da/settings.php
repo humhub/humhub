@@ -162,5 +162,6 @@ return [
     'Recommended size: {recommendedWidth} × {recommendedHeight}px (minimum {minWidth} x {minHeight} px).' => '',
     'Replaced {mailService}' => '',
     'Show network name instead of logo in email header' => '',
+    'Show topic widget in Dashboard sidebar' => '',
     'URLs to whitelist' => '',
 ];

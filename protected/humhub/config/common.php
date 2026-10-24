@@ -7,6 +7,8 @@
  */
 
 use humhub\components\i18n\PhpMessageSource;
+use humhub\services\ConfigDirectoryService;
+use humhub\services\DocumentRootService;
 
 // TODO: Remove this line, should be already handled by BootstrapService
 Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
@@ -49,9 +51,16 @@ $logTargetConfig = [
     ],
 ];
 
+// The installation root. Only `public/` below it is meant to be reachable over the web.
+$rootPath = realpath(__DIR__ . '/../../../');
+
+// The aliases this file defines do not exist yet, so the service is built from the paths directly;
+// `@config` is already there when the bootstrap loads the configuration from a relocated directory.
+$configDirectory = new ConfigDirectoryService($rootPath, Yii::getAlias('@config', false) ?: null);
+
 $config = [
     'name' => 'HumHub',
-    'version' => '1.19.0-dev',
+    'version' => '1.20.0-dev',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.2',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -66,26 +75,38 @@ $config = [
     'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
     'aliases' => [
-        '@webroot' => realpath(__DIR__ . '/../../../'),
+        '@root' => $rootPath,
+        '@webroot' => $rootPath . DIRECTORY_SEPARATOR . DocumentRootService::PUBLIC_DIR,
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
-        '@config' => '@app/config',
-        '@themes' => '@webroot/themes',
+        '@config' => $configDirectory->getPath(),
+        '@themes' => $rootPath . DIRECTORY_SEPARATOR . 'themes',
+        '@logs' => '@runtime/logs',
     ],
     'components' => [
         'moduleManager' => [
             'class' => \humhub\components\ModuleManager::class,
         ],
+        'rateLimiter' => [
+            'class' => \humhub\components\rateLimit\RateLimiter::class,
+            'policies' => [
+                'token.*:read' => ['burst' => ['limit' => 300, 'span' => 60], 'long' => ['limit' => 5000, 'span' => 3600]],
+                'token.*:write' => ['burst' => ['limit' => 60, 'span' => 60], 'long' => ['limit' => 1000, 'span' => 3600]],
+                'token.full' => ['burst' => ['limit' => 300, 'span' => 60], 'long' => ['limit' => 5000, 'span' => 3600]],
+                'session.*:read' => ['burst' => ['limit' => 600, 'span' => 60], 'long' => ['limit' => 10000, 'span' => 3600]],
+                'session.*:write' => ['burst' => ['limit' => 120, 'span' => 60], 'long' => ['limit' => 2000, 'span' => 3600]],
+                'session.full' => ['burst' => ['limit' => 600, 'span' => 60], 'long' => ['limit' => 10000, 'span' => 3600]],
+            ],
+        ],
+        'gateManager' => [
+            'class' => \humhub\components\gates\GateManager::class,
+        ],
         'notification' => [
             'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [
-                \humhub\modules\notification\targets\WebTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class],
-                ],
-                \humhub\modules\notification\targets\MailTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class],
-                ],
-                \humhub\modules\notification\targets\MobileTarget::class => [],
+                'web' => ['class' => \humhub\modules\notification\targets\WebTarget::class],
+                'email' => ['class' => \humhub\modules\notification\targets\MailTarget::class],
+                'mobile' => ['class' => \humhub\modules\notification\targets\MobileTarget::class],
             ],
         ],
         'fs' => [
@@ -98,7 +119,9 @@ $config = [
                 ],
                 'data' => [
                     'class' => 'humhub\components\fs\LocalMountConfig',
-                    'path' => '@webroot/uploads',
+                    // Uploads are never served directly - they are published into the assets mount
+                    // on demand - so they stay out of the document root.
+                    'path' => '@root/uploads',
                 ],
             ],
         ],
@@ -106,7 +129,7 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 \yii\log\FileTarget::class => \yii\helpers\ArrayHelper::merge(
-                    ['class' => \yii\log\FileTarget::class],
+                    ['class' => \yii\log\FileTarget::class, 'logFile' => '@logs/app.log'],
                     $logTargetConfig,
                 ),
                 \yii\log\DbTarget::class => \yii\helpers\ArrayHelper::merge(
@@ -165,8 +188,8 @@ $config = [
                 'class' => \yii\web\View::class,
                 'theme' => [
                     'class' => \humhub\components\Theme::class,
-                    'name' => 'HumHub',
-                    'basePath' => '@humhub/themes/Humhub',
+                    'name' => \humhub\components\Theme::CORE_THEME_NAME,
+                    'basePath' => '@humhub/themes/' . \humhub\components\Theme::CORE_THEME_NAME,
                 ],
             ],
         ],
@@ -239,7 +262,7 @@ $config = [
     'params' => [
         'installed' => false,
         'databaseDefaultStorageEngine' => 'InnoDB',
-        'dynamicConfigFile' => '@config/dynamic.php',
+        'dynamicConfigFile' => $configDirectory->getDynamicConfigFileReference(),
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
         'bsVersion' => 5, // Kartik Plugins
         'availableLanguages' => [
@@ -339,6 +362,28 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
+        'pwa' => [
+            // Progressive Web App support: web app manifest members and the service worker
+            'enabled' => true,
+        ],
+        'icon' => [
+            // Semantic icon names, mapped to the icon they are rendered as.
+            // Resolved by humhub\widgets\Icon; a name not listed here is used as given.
+            'alias' => [
+                'dropdownToggle' => 'chevron-down',
+                'edit' => 'pencil',
+                'delete' => 'trash',
+                'dashboard' => 'dashboard',
+                'directory' => 'book',
+                'back' => 'arrow-left',
+                'add' => 'plus',
+                'invite' => 'send',
+                'remove' => 'x',
+                'controls' => 'settings',
+                'about' => 'info-circle',
+                'stream' => 'menu-2',
+            ],
+        ],
     ],
     'container' => [
         'definitions' => [

@@ -14,6 +14,7 @@ use humhub\components\Response;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormClient;
+use humhub\modules\user\components\MaintenanceModeGate;
 use humhub\modules\user\authclient\interfaces\SingleLogout;
 use humhub\modules\user\services\PendingAuthService;
 use humhub\modules\user\events\UserEvent;
@@ -27,6 +28,7 @@ use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\AutoMapResult;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use humhub\modules\user\services\LoginHintService;
 use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
@@ -76,11 +78,6 @@ class AuthController extends Controller
     public $access = ControllerAccess::class;
 
     /**
-     * @inheritdoc
-     */
-    protected $doNotInterceptActionIds = ['*'];
-
-    /**
      * Whether self-registration is currently permitted at all — false in
      * maintenance mode or when the admin has disabled anonymous registration.
      * Covers the back-end gate: blocks AuthClient-driven auto-registration and
@@ -93,23 +90,56 @@ class AuthController extends Controller
      */
     public static function isSelfRegistrationEnabled(): bool
     {
-        return !Yii::$app->settings->get('maintenanceMode')
+        return !MaintenanceModeGate::isActive()
             && (bool)Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration');
     }
 
     /**
-     * Whether the public Sign-Up email form / Sign-Up entry-points should be
-     * rendered. False when self-registration is globally off, or when the admin
-     * disabled the form-based public sign-up via {@see Module::$showRegistrationForm}
-     * (e.g. SSO-only deployments where SAML/OIDC may auto-register but no
-     * public form is offered).
+     * Whether the form-based Sign-Up UI is enabled at all, independent of the
+     * broader {@see isSelfRegistrationEnabled()} gate. Reflects only
+     * {@see Module::$showRegistrationForm} (or its `?showRegistrationForm=1`
+     * escape hatch) — e.g. an SSO-only deployment that wants to hide the local
+     * form and only offer SAML/OIDC entry points.
+     *
+     * Internal building block of {@see isRegistrationFormVisible()} — not
+     * exposed on its own since every caller needs to combine it with the
+     * `$hasValidInviteToken` context.
      *
      * @since 1.19
      */
-    public static function isSelfRegistrationFormVisible(): bool
+    public static function isRegistrationFormEnabled(): bool
     {
-        return self::isSelfRegistrationEnabled()
-            && Yii::$app->getModule('user')->showRegistrationForm;
+        return Yii::$app->getModule('user')->showRegistrationForm
+            || Yii::$app->request->get('showRegistrationForm', false);
+    }
+
+    /**
+     * Whether the registration form fields (username/e-mail/password) should
+     * be rendered.
+     *
+     * For a plain, unsolicited registration attempt (`$hasValidInviteToken =
+     * false`, the default) this requires both {@see isSelfRegistrationEnabled()}
+     * (the `auth.anonymousRegistration` setting is on) and
+     * {@see isRegistrationFormEnabled()} (the form-based UI isn't hidden in
+     * favor of SSO-only entry points).
+     *
+     * Pass `$hasValidInviteToken: true` when the request already carries an
+     * invite token/link independently validated by
+     * {@see \humhub\modules\user\services\InviteRegistrationService} or
+     * {@see \humhub\modules\user\services\LinkRegistrationService} — that
+     * validation is its own authorization for *this* registration, so it must
+     * not be blocked by the global `auth.anonymousRegistration` setting, which
+     * governs *public, unsolicited* self-registration only.
+     * {@see isRegistrationFormEnabled()} (the SSO-only escape hatch) still
+     * applies either way.
+     *
+     * @since 1.19
+     */
+    public static function isRegistrationFormVisible(bool $hasValidInviteToken = false): bool
+    {
+        return $hasValidInviteToken
+            ? self::isRegistrationFormEnabled()
+            : self::isRegistrationFormEnabled() && self::isSelfRegistrationEnabled();
     }
 
     /**
@@ -180,6 +210,7 @@ class AuthController extends Controller
         // so the user lands on a fresh Step 1.
         if (Yii::$app->request->get('forget') !== null) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
+            (new LoginHintService())->clear();
             if (!Yii::$app->request->isAjax) {
                 return $this->redirect(['/user/auth/login']);
             }
@@ -190,14 +221,14 @@ class AuthController extends Controller
         // The actual admin-only enforcement happens post-auth in
         // {@see onAuthSuccess()} — the param only controls which view we
         // render here, it grants no privilege.
-        if (Yii::$app->settings->get('maintenanceMode')
+        if (MaintenanceModeGate::isActive()
             && !Yii::$app->request->get('maintenanceAdmin')) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
             return $this->render('maintenance');
         }
 
         $loginParams = [
-            'signUpAllowed' => self::isSelfRegistrationFormVisible(),
+            'signUpAllowed' => self::isRegistrationFormVisible(),
             'showLoginForm' => $this->module->showLoginForm || Yii::$app->request->get('showLoginForm', false),
         ];
 
@@ -236,9 +267,10 @@ class AuthController extends Controller
         // anyway — there is nothing to preserve.)
         if (!Yii::$app->request->isPost) {
             Yii::$app->session->remove(self::SESSION_KEY_STEP1_USERNAME);
+            (new LoginHintService())->clear();
         }
 
-        if (Yii::$app->settings->get('maintenanceMode')) {
+        if (MaintenanceModeGate::isActive()) {
             Yii::$app->session->setFlash('error', Yii::t('UserModule.auth', 'Maintenance mode is active.'));
         }
 
@@ -303,7 +335,7 @@ class AuthController extends Controller
 
         $params = [
             'model' => $login,
-            'signUpAllowed' => self::isSelfRegistrationFormVisible(),
+            'signUpAllowed' => self::isRegistrationFormVisible(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
         ];
 
@@ -365,10 +397,10 @@ class AuthController extends Controller
         if (!Yii::$app->user->isGuest) {
             if (!$this->isAuthClientAllowed(Yii::$app->user->identity, $authClient)) {
                 Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'This login method is not allowed for your account.'));
-                return $this->redirect(['/user/account/connected-accounts']);
+                return $this->redirect(['/user/security/login']);
             }
             Yii::$app->user->getAuthClientUserService()->add($authClient);
-            return $this->redirect(['/user/account/connected-accounts']);
+            return $this->redirect(['/user/security/login']);
         }
 
         $authClientService = new AuthClientService($authClient);
@@ -379,7 +411,7 @@ class AuthController extends Controller
         // Maintenance gate — applies to all auth flows (form login, OAuth,
         // SAML, …). Non-admins are bounced before any session is created and
         // land on the maintenance view via the /user/auth/login redirect.
-        if (Yii::$app->settings->get('maintenanceMode') && !($user && $user->isSystemAdmin())) {
+        if (MaintenanceModeGate::isActive() && !($user && $user->isSystemAdmin())) {
             Yii::$app->session->setFlash(
                 'error',
                 Yii::t('UserModule.auth', 'Only administrators can sign in during maintenance mode.'),
@@ -541,8 +573,6 @@ class AuthController extends Controller
             }
         }
 
-        // NOTE: The method `htmlRedirect` renders `Html::nonce()`, so it must be run before
-        //       a resetting of nonce on the event `humhub\modules\web\Events\onAfterLogin`
         $result = Yii::$app->request->getIsAjax()
             ? $this->htmlRedirect($redirectUrl)
             : $this->redirect($redirectUrl);
@@ -640,7 +670,7 @@ class AuthController extends Controller
     {
         $this->forcePostRequest();
 
-        if (Yii::$app->user->restoreImpersonator()) {
+        if (Yii::$app->user->impersonation->stop()) {
             return $this->redirect(['/admin/user/list']);
         }
 

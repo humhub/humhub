@@ -8,7 +8,7 @@ HumHub builds on Yii's [asset bundle](https://www.yiiframework.com/doc/guide/2.0
 
 - **Source tree**: `protected/humhub/resources/` — committed JS, CSS, fonts and images that ship with the core. Not web-accessible.
 - **AssetBundle classes**: `protected/humhub/assets/*.php`. Each one declares a `sourcePath` and a list of `$js`/`$css` files relative to it. Almost all of them point at `@humhub/resources`.
-- **AssetManager** (`humhub\components\assets\AssetManager`): copies asset bundles into a web-accessible location at runtime, returns the public URL for each file. Backed by HumHub's filesystem mount system, so the published files can live on the local filesystem (default `webroot/assets/`) *or* on S3-compatible storage / a CDN.
+- **AssetManager** (`humhub\components\assets\AssetManager`): copies asset bundles into a web-accessible location at runtime, returns the public URL for each file. Backed by HumHub's filesystem mount system, so the published files can live on the local filesystem (default `public/assets/`) *or* on S3-compatible storage / a CDN.
 - **The build**: `grunt build-assets` → `php yii asset` combines and compresses bundles into two output files (`humhub-app.{js,css}` and `humhub-bundle.{js,css}`) and writes a runtime config to `assets-prod.php`.
 - **Runtime configuration**: `protected/humhub/config/assets-{dev,prod}.php`. `common.php` loads one based on the environment. Bundles defined here override the class defaults.
 
@@ -17,7 +17,7 @@ HumHub builds on Yii's [asset bundle](https://www.yiiframework.com/doc/guide/2.0
 When a view registers an asset bundle (e.g. `AppAsset::register($view)`), Yii's view layer asks `AssetManager` to load it. If the bundle has a `sourcePath` and no `basePath`/`baseUrl`, the manager:
 
 1. Hashes the `sourcePath` to a stable directory name (so the URL is the same on every host).
-2. Copies the tree into the assets mount (`webroot/assets/<hash>/` by default).
+2. Copies the tree into the assets mount (`public/assets/<hash>/` by default).
 3. Sets `basePath`/`baseUrl` on the bundle to that location.
 4. Caches the mapping so subsequent requests don't re-check the filesystem.
 
@@ -89,7 +89,7 @@ protected/humhub/resources/
     └── ...one hash dir per external dep...
 ```
 
-Every `url(...)` inside the bundled CSS is tree-relative (`url(../build/1a9ffd08/fonts/fa.woff)`). When `AssetBundle::publish()` later copies the whole tree to `webroot/assets/<hash>/` (or to the CDN root, if the assets mount is S3), the relative positions are preserved and every URL still resolves.
+Every `url(...)` inside the bundled CSS is tree-relative (`url(../build/1a9ffd08/fonts/fa.woff)`). When `AssetBundle::publish()` later copies the whole tree to `public/assets/<hash>/` (or to the CDN root, if the assets mount is S3), the relative positions are preserved and every URL still resolves.
 
 This is the property that makes the build robust: there are no absolute paths and no host-specific assumptions baked into the bundle.
 
@@ -102,6 +102,14 @@ Three pieces in core deviate from a vanilla Yii setup.
 The production AssetManager swaps Yii's local filesystem operations for HumHub's [filesystem mount system](concept-files.md) (Flysystem-backed). The same publishing flow works whether the assets mount is local, on S3, or on a remote object store. Configure the mount via `HUMHUB_CONFIG__COMPONENTS__FS__MOUNT_ASSETS` and the corresponding mount definitions in `common.php`.
 
 `clear()` empties the mount on cache flush. There's no special-casing: a fresh publish on the next page request rebuilds everything.
+
+#### Cross-origin assets and script execution order
+
+When the assets mount serves from a different origin than the site (an S3 bucket or CDN `baseUrl`), one browser behavior changes: cross-origin `<script src>` tags injected with ajax/pjax responses execute **asynchronously and in download-completion order** — jQuery silently ignores `async: false` for cross-domain script requests. Content processing (`[data-ui-init]` widget initialization) would then run before the response's module scripts executed, and a module script could run before a library it depends on.
+
+To restore same-origin semantics, `humhub.client.js` registers a jQuery ajax transport that loads scripts from the announced asset origins (`client.syncScriptOrigins`, see `CoreJsConfig`) through a synchronous XHR instead — exactly what jQuery does for same-origin scripts.
+
+**Requirement: the asset host must answer with CORS headers** (`Access-Control-Allow-Origin` covering the site origin, or `*`) for `.js` files, and the site's CSP `connect-src` must allow the asset host. Without CORS headers the transport logs a warning and falls back to an in-order-executing script element — scripts then still run asynchronously (widgets in the response may not initialize on first load), but at least in document order.
 
 ### `humhub\components\assets\BuildAssetManager` (build only)
 

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\user\components\MaintenanceModeGate;
 use Yii;
 use yii\base\Model;
 
@@ -17,6 +18,7 @@ class BasicSettingsForm extends Model
     public $tour;
     public $defaultTimeZone;
     public $dashboardShowProfilePostForm;
+    public $dashboardShowTopicSidebar;
     public $enableFriendshipModule;
     public $maintenanceMode;
     public $maintenanceModeInfo;
@@ -32,10 +34,11 @@ class BasicSettingsForm extends Model
         $this->baseUrl = Yii::$app->settings->get('baseUrl');
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
-        $this->maintenanceMode = Yii::$app->settings->get('maintenanceMode');
+        $this->maintenanceMode = Yii::$app->settings->get(MaintenanceModeGate::SETTING_MAINTENANCE_MODE);
         $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
 
         $this->dashboardShowProfilePostForm = Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm');
+        $this->dashboardShowTopicSidebar = Yii::$app->getModule('dashboard')->settings->get('showTopicSidebar');
         $this->tour = Yii::$app->getModule('tour')->settings->get('enable');
         $this->enableFriendshipModule = Yii::$app->getModule('friendship')->settings->get('enable');
     }
@@ -50,7 +53,7 @@ class BasicSettingsForm extends Model
             ['name', 'string', 'max' => 150],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['defaultTimeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
-            [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
+            [['tour', 'dashboardShowProfilePostForm', 'dashboardShowTopicSidebar', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
             [['baseUrl'], 'url', 'pattern' => '/^{schemes}:\/\/([A-Z0-9][A-Z0-9_\-\.]*)+(?::\d{1,5})?(?:$|[?\/#])/i'],
             [['baseUrl'], 'trim'],
             ['maintenanceModeInfo', 'safe'],
@@ -69,6 +72,7 @@ class BasicSettingsForm extends Model
             'defaultTimeZone' => Yii::t('AdminModule.settings', 'Default Timezone'),
             'tour' => Yii::t('AdminModule.settings', 'Show introduction tour for new users'),
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
+            'dashboardShowTopicSidebar' => Yii::t('AdminModule.settings', 'Show topic widget in Dashboard sidebar'),
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
             'maintenanceMode' => Yii::t('AdminModule.settings', 'Enable maintenance mode'),
@@ -96,10 +100,11 @@ class BasicSettingsForm extends Model
         Yii::$app->settings->set('baseUrl', $this->baseUrl);
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);
-        Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
+        Yii::$app->settings->set(MaintenanceModeGate::SETTING_MAINTENANCE_MODE, $this->maintenanceMode);
         Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);
 
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
+        Yii::$app->getModule('dashboard')->settings->set('showTopicSidebar', $this->dashboardShowTopicSidebar);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);
         Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
 

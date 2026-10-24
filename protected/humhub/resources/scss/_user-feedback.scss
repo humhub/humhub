@@ -3,77 +3,154 @@
 // --------------------------------------------------
 
 @if not $prev-user-feedback {
+    // The toast layer: a fixed strip along the bottom that only positions the card and never
+    // catches pointer events itself, so the page beneath stays usable while a message shows.
     .status-bar-body {
-        color: #fff;
         position: fixed;
-        margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        text-align: center;
-        padding: 20px;
+        // Clear of the web view's safe area on mobile devices.
+        inset: auto 0 calc(16px + var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))) 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        pointer-events: none;
         z-index: 9999999;
-        bottom: 0px;
-        display: block;
-        line-height: 20px;
+        font-size: 14px;
+        line-height: 22px;
+        color: var(--hh-text-color-main);
+
+        @include media-breakpoint-down(md) {
+            padding: 0 8px;
+        }
+    }
+
+    // The toast card: a translucent surface over the page, its border and outline in the
+    // colour of the message level (see the tone classes below).
+    //
+    // Hidden state first. StatusBar.vue renders the element hidden and adds
+    // `status-bar-visible` one frame later, then removes the class and keeps the element
+    // around for the duration of this transition - keep the 220ms in sync with
+    // TRANSITION_MS there.
+    .status-bar-content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        min-width: 280px;
+        max-width: 320px;
+        padding: 4px;
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--hh-background-color-main) 64%, transparent);
+        backdrop-filter: blur(4px);
+        border: 1px solid color-mix(in srgb, var(--hh-text-color-soft) 64%, transparent);
+        outline: 2px solid color-mix(in srgb, var(--hh-text-color-soft) 32%, transparent);
+        pointer-events: auto;
+        opacity: 0;
+        transform: translateY(16px) scale(0.96);
+        transition: opacity 220ms ease, transform 220ms ease;
+
+        @include media-breakpoint-down(md) {
+            max-width: none;
+        }
+    }
+
+    .status-bar-visible .status-bar-content {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    // Tone: border and outline take the level colour, so does the icon.
+    @each $tone, $color in (
+        'info': var(--bs-accent),
+        'success': var(--bs-success),
+        'warning': var(--bs-warning),
+        'error': var(--bs-danger),
+    ) {
+        .status-bar-content.status-bar-#{$tone} {
+            border-color: color-mix(in srgb, #{$color} 64%, transparent);
+            outline-color: color-mix(in srgb, #{$color} 48%, transparent);
+        }
+    }
+
+    .status-bar-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px;
+
+        // The level icon.
+        > i {
+            flex: 0 0 auto;
+            font-size: 20px;
+        }
+
+        // The message. Breaks between words, not inside them - the theme hyphenates body
+        // text, which reads oddly in a two-line notice.
+        > span {
+            flex: 1 1 0;
+            min-width: 0;
+            overflow-wrap: anywhere;
+            hyphens: manual;
+            font-weight: 500;
+        }
+    }
+
+    // The message text doubles as the details toggle when a message carries any.
+    .status-bar-toggle {
+        cursor: pointer;
+    }
+
+    .status-bar-header .showMore {
+        flex: 0 0 auto;
+        cursor: pointer;
+        font-size: 0.85em;
+        color: var(--hh-text-color-soft);
     }
 
     .status-bar-close {
-        color: #fff;
-        font-weight: bold;
-        font-size: 21px;
+        flex: 0 0 auto;
+        padding: 0 4px;
+        font-size: 20px;
+        line-height: 1;
+        color: var(--hh-text-color-soft);
         cursor: pointer;
+
+        &:hover {
+            color: var(--hh-text-color-main);
+        }
     }
 
-    .status-bar-close:hover {
-        color: #fff;
-    }
-
-    .status-bar-close i {
-        vertical-align: top !important;
-        padding-top: 3px;
-    }
-
-    .status-bar-content i {
-        margin-right: 10px;
-        font-size: 21px;
-        vertical-align: middle;
-    }
-
-    .status-bar-content .showMore {
-        float: right;
-        margin-left: 10px;
-        font-size: 0.7em;
-        cursor: pointer;
-        vertical-align: middle;
-        white-space: nowrap;
-    }
-
-    .status-bar-content .status-bar-details {
-        text-align: left;
-        font-size: 0.7em;
-        margin-top: 20px;
+    .status-bar-details {
+        padding: 0 4px 4px;
         max-height: 200px;
         overflow: auto;
+        text-align: left;
+        font-size: 12px;
+        line-height: 1.5;
+
+        pre {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: inherit;
+            white-space: pre-wrap;
+        }
     }
 
-    .status-bar-content span {
-        vertical-align: middle;
-    }
-
-    .status-bar-content i.error, .status-bar-content i.fatal {
+    .status-bar-header i.error, .status-bar-header i.fatal {
         color: var(--bs-danger);
     }
 
-    .status-bar-content i.warning {
+    .status-bar-header i.warning {
         color: var(--bs-warning);
     }
 
-    .status-bar-content i.info, .status-bar-content i.debug {
+    .status-bar-header i.info, .status-bar-header i.debug {
         color: var(--bs-accent);
     }
 
-    .status-bar-content i.success {
-        color: #85CA2B;
+    .status-bar-header i.success {
+        color: var(--bs-success);
     }
 
     //

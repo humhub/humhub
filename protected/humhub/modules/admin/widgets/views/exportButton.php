@@ -6,14 +6,15 @@
  */
 
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\Icon;
 
 ?>
 <div class="btn-group btn-group-sm">
     <button type="button" class="btn btn-accent">
-        <i class="fa fa-download"></i> <?= Yii::t('base', 'Export') ?>
+        <?= Icon::get('download') ?> <?= Yii::t('base', 'Export') ?>
     </button>
     <button type="button" class="btn btn-accent btn-icon-only dropdown-toggle" data-bs-toggle="dropdown">
-        <span class="sr-only">Toggle Dropdown</span>
+        <span class="visually-hidden">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">
         <li><?= Link::to('csv', $csv, false)

@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use DateTimeZone;
 use humhub\components\behaviors\GUID;
+use humhub\components\db\AfterCommit;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageAllContent;
@@ -285,6 +286,27 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         }
 
         return $this->_isGroupManager;
+    }
+
+    /**
+     * Resets the cached group memberships and the derived system-admin / group-manager
+     * flags. Call this after this user's group membership changed within the same request
+     * (e.g. via [[Group::addUser()]] / [[Group::removeUser()]]), so a subsequent
+     * [[isSystemAdmin()]] / [[getGroups()]] reflects the change instead of a stale,
+     * already-populated `groupUsers` relation.
+     *
+     * @since 1.19
+     */
+    public function invalidateGroupCache(): void
+    {
+        $this->_isSystemAdmin = null;
+        $this->_isGroupManager = null;
+
+        foreach (['groupUsers', 'groups', 'managerGroups'] as $relation) {
+            if ($this->isRelationPopulated($relation)) {
+                unset($this->$relation);
+            }
+        }
     }
 
     /**
@@ -588,7 +610,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             if (AuthHelper::isGuestAccessEnabled()) {
                 // Set user profile default visibility
                 $defaultUserProfileVisibility = Yii::$app->getModule('user')->settings->get('auth.defaultUserProfileVisibility');
-                if (array_key_exists($defaultUserProfileVisibility, User::getVisibilityOptions())) {
+                if ($defaultUserProfileVisibility !== null && array_key_exists($defaultUserProfileVisibility, User::getVisibilityOptions())) {
                     $this->visibility = $defaultUserProfileVisibility;
                 }
             }
@@ -627,7 +649,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         // Reindex user content when status is changed to/from Enabled
         if (!$insert && isset($changedAttributes['status'])
             && ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
-            Yii::$app->queue->push(new ReindexUserContent(['userId' => $this->id]));
+            // after the commit, so the worker sees the new status
+            $userId = $this->id;
+            AfterCommit::run(static fn() => Yii::$app->queue->push(new ReindexUserContent(['userId' => $userId])));
         }
 
         // Don't move this line under setUpApproved() because ContentContainer record should be created firstly
@@ -783,6 +807,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             return false;
         }
 
+        if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+            return false;
+        }
+
         // Self
         if ($user->is($this)) {
             return true;
@@ -845,28 +873,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         return $this->isSystemAdmin()
             || (new PermissionManager(['subject' => $this]))->can([ManageUsers::class, ManageGroups::class])
             || $this->isGroupManager();
-    }
-
-    /**
-     * Determines if this user can impersonate the given user.
-     *
-     * @param self $user
-     * @return bool
-     * @since 1.10
-     */
-    public function canImpersonate(self $user): bool
-    {
-        /* @var AdminModule $adminModule */
-        $adminModule = Yii::$app->getModule('admin');
-        if (!$adminModule->allowUserImpersonate) {
-            return false;
-        }
-
-        if ($user->id == $this->id) {
-            return false;
-        }
-
-        return (new PermissionManager(['subject' => $this]))->can(ManageUsers::class);
     }
 
     /**
@@ -972,7 +978,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public function mustChangePassword()
     {
-        return !Yii::$app->user->isImpersonated && (bool)$this->getSettings()->get('mustChangePassword');
+        return !Yii::$app->user->impersonation->isActive() && (bool)$this->getSettings()->get('mustChangePassword');
     }
 
     /**

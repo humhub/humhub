@@ -15,6 +15,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
+use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
 
@@ -97,8 +98,23 @@ abstract class BaseSettingsManager extends Component
         }
 
         $record->value = (string)$value;
-        if (!$record->save()) {
-            Yii::error('Could not store setting: ' . $name);
+
+        try {
+            if (!$record->save()) {
+                Yii::error('Could not store setting: ' . $name);
+            }
+        } catch (IntegrityException $e) {
+            // A concurrent request inserted the same setting between find() and save(),
+            // retry as an update of the concurrently created record
+            $record = $this->find()->andWhere(['name' => $name])->one();
+            if ($record === null) {
+                throw $e;
+            }
+
+            $record->value = (string)$value;
+            if (!$record->save()) {
+                Yii::error('Could not store setting: ' . $name);
+            }
         }
 
         // Store to runtime

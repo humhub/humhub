@@ -2,8 +2,10 @@
 
 return [
     'Cancel' => 'ይቅር',
+    'Done' => 'ተከናውኗል',
     'Ok' => 'እሺ',
     ' Remove panel' => '',
+    '&larr; Previous' => '',
     '<strong>Account</strong> Menu' => '',
     '<strong>Getting</strong> Started' => '',
     '<strong>Guide:</strong> Administration (Modules)' => '',
@@ -19,9 +21,10 @@ return [
     'Get to know your way around the site\'s most important features with the following guides:' => '',
     'Hide my year of birth' => '',
     'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
+    'Next &rarr;' => '',
     'Save and close' => '',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => '',
-    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => '',
+    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings {icon} Settings.' => '',
     'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => '',
     'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => '',
     'Your firstname' => '',
@@ -30,4 +33,5 @@ return [
     'Your phone number at work' => '',
     'Your skills, knowledge and experience' => '',
     'Your title or position' => '',
+    '{{current}} of {{total}}' => '',
 ];

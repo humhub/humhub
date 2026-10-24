@@ -1,20 +1,16 @@
 <?php
 
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
 namespace humhub\modules\stream\events;
 
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\stream\actions\StreamResponse;
-use yii\base\Event;
-
-class StreamResponseEvent extends Event
+/**
+ * @deprecated since 1.20, use \humhub\modules\content\events\StreamResponseEvent instead. Will be removed in 1.21.
+ */
+class StreamResponseEvent extends \humhub\modules\content\events\StreamResponseEvent
 {
-    /**
-     * @var Stream
-     */
-    public $sender;
-
-    /**
-     * @var StreamResponse
-     */
-    public $response;
 }

@@ -131,6 +131,7 @@ return [
     'Server' => '',
     'Show introduction tour for new users' => '',
     'Show network name instead of logo in email header' => '',
+    'Show topic widget in Dashboard sidebar' => '',
     'Show user profile post form on dashboard' => '',
     'Sort by creation date' => '',
     'Sort by update date' => '',

@@ -11,7 +11,7 @@ return [
     'Requests' => '请求',
     'Sent requests' => '发送请求',
     'Show all friends' => '展示所有好友',
-    'Unfriend' => '删除好友',
+    'Friendship system is not enabled!' => '',
     'Pending' => '',
     'Would you like to accept the friendship request?' => '',
     'Would you like to end your friendship with {userName}?' => '',

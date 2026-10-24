@@ -50,7 +50,6 @@ return [
     'Keep me Signed In' => '',
     'Log out' => '',
     'Maintenance mode' => '',
-    'Maintenance mode is active' => '',
     'Maintenance mode is active.' => '',
     'Only administrators can access the platform during maintenance.' => '',
     'Only administrators can sign in during maintenance mode.' => '',
@@ -59,6 +58,7 @@ return [
     'Please wait' => '',
     'Select' => '',
     'Sign In' => '',
+    'Sign In as {username}' => '',
     'Sign Up' => '',
     'Your session expired. Please try signing in again.' => '',
 ];

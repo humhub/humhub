@@ -27,12 +27,35 @@ class CommentListService
         );
     }
 
+    /**
+     * Returns the number of comments of the content, including sub comments.
+     * With a parent comment given, only its sub comments are counted.
+     */
     public function getCount(): int
     {
-        $query = Comment::find();
-        $this->addScopeQueryCondition($query);
+        $query = Comment::find()->andWhere(['content_id' => $this->content->id]);
 
-        return $query->count();
+        if ($this->parentComment) {
+            $query->andWhere(['parent_comment_id' => $this->parentComment->id]);
+        }
+
+        return (int)$query->count();
+    }
+
+    /**
+     * Returns the number of ROOT (top-level) comments of the content - unlike
+     * {@see self::getCount()}, this always counts `parent_comment_id IS NULL` rows only,
+     * regardless of {@see $parentComment} scoping. This is the root-list-only complement to
+     * {@see self::getCount()}'s "all comments including replies" total, which the
+     * comment-count badge relies on (see `humhub\modules\comment\serializers\CommentSerializer::window()`
+     * `rootTotal` vs. `total`).
+     */
+    public function getRootCount(): int
+    {
+        return (int)Comment::find()
+            ->andWhere(['content_id' => $this->content->id])
+            ->andWhere('parent_comment_id is null')
+            ->count();
     }
 
     public function getLimited(?int $limit, ?int $highlightCommentId = null): array
@@ -44,23 +67,26 @@ class CommentListService
             $highlightCommentId = null;
         }
 
-        $query = $this->getQuery()->limit($limit);
+        if ($highlightCommentId === null) {
+            return $this->getSiblings(0, $limit);
+        }
 
         // Force a specific comment in the results
-        if ($highlightCommentId !== null) {
-            $showComment = $this->getComment($highlightCommentId);
-            if ($showComment === null) {
-                Yii::error("Show comment with id $highlightCommentId not found", 'comment');
-                return [];
-            }
-            $commentIds = array_merge(
-                $this->getSiblingIds($showComment->id, $limit, SORT_DESC),
-                [$showComment->id],
-                $this->getSiblingIds($showComment->id, 1, SORT_ASC),
-            );
-            $query->where(['IN', 'id', $commentIds]);
-            $query->limit(count($commentIds));
+        $showComment = $this->getComment($highlightCommentId);
+        if ($showComment === null) {
+            Yii::error("Show comment with id $highlightCommentId not found", 'comment');
+            return [];
         }
+
+        $commentIds = array_merge(
+            $this->getSiblingIds($showComment->id, $limit, self::LIST_DIR_PREV),
+            [$showComment->id],
+            $this->getSiblingIds($showComment->id, 1, self::LIST_DIR_NEXT),
+        );
+
+        $query = $this->getQuery();
+        $query->where(['IN', 'id', $commentIds]);
+        $query->limit(count($commentIds));
 
         return array_reverse($query->all());
     }
@@ -78,6 +104,9 @@ class CommentListService
     private function addScopeQueryCondition(ActiveQuery $query): void
     {
         $query->addSelect('*, (select count(*) from comment sc where sc.parent_comment_id=comment.id) as child_count');
+        // Eager-load the author: every consumer (widgets, rest CommentDefinitions) reads
+        // $comment->createdBy, so this avoids a lazy-loaded query per returned comment.
+        $query->with('createdBy');
         $query->orderBy('created_at DESC, id DESC');
 
         $query->andWhere(['content_id' => $this->content->id]);
@@ -99,18 +128,55 @@ class CommentListService
 
     public function getSiblings(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array
     {
+        // Fetch two more than requested to detect whether exactly one comment
+        // remains beyond the limit (see applyLimit())
         $query = Comment::find()
-            ->limit($limit);
+            ->limit($limit + 2);
 
         $this->addScopeQueryCondition($query);
 
+        // Only a strictly positive integer is a valid cursor (comment ids start at 1).
+        // A plain `if ($commentId)` would also treat 0 as "no cursor", which happens
+        // to be correct here, but it's fragile - be explicit instead.
+        $hasCursor = $commentId > 0;
+
         if ($sortOrder === self::LIST_DIR_NEXT) {
-            $query->andWhere(['>', 'id', $commentId])->orderBy('created_at ASC');
-            return $query->all();
-        } else {
-            $query->andWhere(['<', 'id', $commentId])->orderBy('created_at DESC');
-            return array_reverse($query->all());
+            $query->orderBy(['created_at' => SORT_ASC, 'id' => SORT_ASC]);
+            if ($hasCursor) {
+                $query->andWhere(['>', 'id', $commentId]);
+            }
+            return self::applyLimit($query->all(), $limit);
         }
+
+        $query->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
+        if ($hasCursor) {
+            $query->andWhere(['<', 'id', $commentId]);
+        }
+        return array_reverse(self::applyLimit($query->all(), $limit));
+    }
+
+    /**
+     * Cuts the result down to the limit, but keeps a single comment beyond it:
+     * one remaining comment is shown directly instead of being hidden behind a
+     * "Show previous/next 1 comments" pagination link.
+     */
+    private static function applyLimit(array $comments, int $limit): array
+    {
+        return $limit === 0 || count($comments) > $limit + 1
+            ? array_slice($comments, 0, $limit)
+            : $comments;
+    }
+
+    public function getSiblingsCount(int $commentId, string $sortOrder = self::LIST_DIR_PREV): int
+    {
+        $query = Comment::find();
+        $this->addScopeQueryCondition($query);
+
+        if ($commentId > 0) {
+            $query->andWhere([$sortOrder === self::LIST_DIR_NEXT ? '>' : '<', 'id', $commentId]);
+        }
+
+        return (int)$query->count();
     }
 
     private function getSiblingIds(int $commentId, int $limit = 5, string $sortOrder = self::LIST_DIR_PREV): array

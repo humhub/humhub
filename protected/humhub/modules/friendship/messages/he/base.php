@@ -11,7 +11,7 @@ return [
     'Requests' => 'בקשות',
     'Sent requests' => 'בקשות שנשלחו',
     'Show all friends' => 'הראה את כל החברים',
-    'Unfriend' => 'בטל חברות',
+    'Friendship system is not enabled!' => '',
     'Pending' => '',
     'Would you like to accept the friendship request?' => '',
     'Would you like to end your friendship with {userName}?' => '',

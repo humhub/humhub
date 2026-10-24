@@ -13,6 +13,7 @@ use humhub\helpers\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\CacheHelper;
+use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
@@ -25,9 +26,8 @@ use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\models\Log;
-use humhub\modules\admin\notifications\NewVersionAvailable;
+use humhub\modules\admin\notifications\NewVersionAvailableNotification;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
@@ -173,18 +173,11 @@ class SettingController extends Controller
     }
 
     /**
-     * Notification Mailing Settings
+     * The notification defaults moved to the notification module.
      */
     public function actionNotification()
     {
-        $form = new NotificationSettings();
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            $this->view->saved();
-        }
-
-        return $this->render('notification', [
-            'model' => $form,
-        ]);
+        return $this->redirect(['/notification/admin/defaults']);
     }
 
     /**
@@ -215,8 +208,10 @@ class SettingController extends Controller
         }
 
         if (Yii::$app->request->get('triggerNotification') == 1) {
-            $updateNotification = new NewVersionAvailable();
-            $updateNotification->sendBulk(User::find()->where(['id' => Yii::$app->user->id]));
+            NewVersionAvailableNotification::send(
+                Yii::$app->user->identity,
+                payload: ['version' => HumHubAPI::getLatestHumHubVersion() ?: Yii::$app->version],
+            );
             $this->view->success('Notification queued!');
             return $this->redirect('mobile-app');
         }

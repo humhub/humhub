@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\menu\MenuEntry;
 use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */

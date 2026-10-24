@@ -118,7 +118,7 @@ class MigrateControllerTest extends HumHubDbTestCase
         // Instantiation loads the Module class through the namespace alias and gives
         // migrations access to $module->settings etc. — same context as the web application.
         static::assertInstanceOf(
-            'Some\Name\Space\mismatch\Module',
+            \Some\Name\Space\mismatch\Module::class,
             Yii::$app->getModule(self::MISMATCH_MODULE_ID),
             'an enabled module must be available via Yii::$app->getModule() while its migrations run',
         );
@@ -161,7 +161,6 @@ class MigrateControllerTest extends HumHubDbTestCase
         $controller = new MigrateController('migrate', Yii::$app, ['includeModuleMigrations' => 1]);
 
         $method = new ReflectionMethod($controller, 'getMigrationPaths');
-        $method->setAccessible(true);
 
         return $method->invoke($controller);
     }

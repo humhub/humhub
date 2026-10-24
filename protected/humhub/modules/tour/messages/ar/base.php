@@ -14,6 +14,7 @@ return [
     '<strong>Start</strong> space guide' => '<strong> بدء </strong> دليل الباحة',
     'Cancel' => 'إلغاء',
     'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => 'لا تفقد مسار الأمور!<br><br>سيبقيك هذا الرمز على علم بالأنشطة والمشاركات التي تهمك بشكل مباشر.',
+    'Done' => 'تم',
     'Drag a photo here or click to browse your files' => 'اسحب صورة هنا أو انقر لتصفح ملفاتك',
     'Get to know your way around the site\'s most important features with the following guides:' => 'تعرف على طريقك حول أهم ميزات الموقع مع الأدلة التالية:',
     'Hide my year of birth' => 'إخفاء عام مولدي',
@@ -21,8 +22,6 @@ return [
     'Ok' => 'موافق',
     'Save and close' => 'حفظ وإغلاق',
     'The account menu gives you access to your private settings and allows you to manage your public profile.' => 'تتيح لك قائمة الحساب الوصول إلى إعداداتك الخاصة وتسمح لك بإدارة ملفك الشخصي العام.',
-    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.' => 'سيؤدي هذا الإجراء إلى إزالة لوحة الجولة من لوحة التحكم الخاصة بك. يمكنك إعادة تنشيطه من
-<br> إعدادات الحساب <i></i> الإعدادات.',
     'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:' => 'هذه هي القائمة الأكثر أهمية وربما تكون القائمة التي تستخدمها كثيرًا! <br> <br> الوصول إلى جميع الباحات التي انضممت إليها وإنشاء باحات جديدة هنا. <br> <br> سيوضح لك الدليل التالي كيف:',
     'You are the first user here... Yehaaa! Be a shining example and complete your profile,<br>so that future users know who is the top dog here and to whom they can turn to if they have questions.' => 'أنت أول مستخدم هنا ... هيييي! كن مثالًا ساطعًا وأكمل ملفك الشخصي ، <br> حتى يعرف المستخدمون المستقبليون من هو أفضل شخص هنا ومن يمكنهم اللجوء إليه إذا كانت لديهم أسئلة.',
     'Your firstname' => 'اسمك الأول',
@@ -31,4 +30,8 @@ return [
     'Your phone number at work' => 'رقم هاتفك في العمل',
     'Your skills, knowledge and experience' => 'مهاراتك ومعرفتك وخبرتك',
     'Your title or position' => 'لقبك أو منصبك',
+    '&larr; Previous' => '',
+    'Next &rarr;' => '',
+    'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings {icon} Settings.' => '',
+    '{{current}} of {{total}}' => '',
 ];

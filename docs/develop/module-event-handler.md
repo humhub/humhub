@@ -362,9 +362,9 @@ public static function onUserQueryVisible(ActiveQueryEvent $event)
 
 The `humhub\modules\user\models\forms\Registration` class provides events raised within the registration process:
 
-| Event                                    | Class               | Description                          |    
-|------------------------------------------|---------------------|--------------------------------------|
-| `Registration::EVENT_AFTER_REGISTRATION` | `yii\web\UserEvent` | Raised after successful registration |
+| Event                                    | Class                                  | Description                          |    
+|------------------------------------------|----------------------------------------|--------------------------------------|
+| `Registration::EVENT_AFTER_REGISTRATION` | `humhub\modules\user\events\UserEvent` | Raised after successful registration |
 
 The following example shows how to synchronize the registration process with an external crm service.
 
@@ -440,7 +440,8 @@ public static function onUserFollow(FollowEvent $event)
 {
     if($event->target instanceof User) {
         if($event->target->getFollowerCount() === 5) {
-            FollowAchievementNotification::instance()->send($event->target);
+            // recipient and source: the followed user
+            FollowAchievementNotification::send($event->target, source: $event->target);
         }
     }
 }
@@ -449,7 +450,7 @@ public static function onUserUnfollow(FollowEvent $event)
 {
    if($event->target instanceof User) {
        if($event->target->getFollowerCount() < 5) {
-           FollowAchievementNotification::instance()->delete($event->target);
+           FollowAchievementNotification::revoke(source: $event->target, user: $event->target);
        }
     }
 }

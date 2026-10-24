@@ -10,10 +10,17 @@ humhub.module('content.container.Header', function (module, require, $) {
     var Header = Widget.extend();
 
     Header.prototype.init = function () {
-        this.$.find('.image-upload-container').on('mouseover', function () {
-            $(this).find('.image-upload-buttons').removeClass('d-none');
-        }).on('mouseout', function () {
-            $(this).find('.image-upload-buttons').addClass('d-none');
+        // The upload trigger is a <span class="btn"> (its real file input is hidden),
+        // so unlike the edit/delete <button> elements it doesn't get Enter/Space
+        // activation for free once made focusable via tabindex="0" (see
+        // containerProfileImageMenu.php). Wire it up the same way a native button
+        // would behave: re-dispatch as a click, which the existing
+        // data-action-click="file.upload" handler picks up.
+        this.$.find('.image-upload-buttons .fileinput-button').on('keydown', function (evt) {
+            if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
+                evt.preventDefault();
+                $(this).trigger('click');
+            }
         });
 
         this.$.find('.fileinput-button').each(function () {
