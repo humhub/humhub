@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
-- Fix #8636: A failed session write printed the database exception into the response, so a login by the "remember me" cookie failed with "headers already sent" and HTTP 500; the exception is now only written to the PHP error log
+- Fix #8636: A failed session write printed the database exception into the response, so a login by the "remember me" cookie failed with "headers already sent" and HTTP 500; the exception is now logged (Yii and PHP error log) instead
 - Fix #8622: Console `module/update`, `module/update-all`, `module/install` and `module/enable` failed the `requirements.php` check of modules depending on another module (e.g. "You must first install and enable the Clean Theme module." for Clean Theme Pro), as other modules are not loaded in these commands since 1.19.0. Module dependencies declared in `module.json` (`humhub.modules`, optionally with a `minVersion`) are now checked from metadata only when a module is installed, updated or enabled (new `ModuleDependencyService`), and registered before `requirements.php` is evaluated; `module/update-all` checks them against the versions installed after all updates, skips updates whose dependencies stay unmet and updates dependencies first
 - Enh #8614: People cards: Twig template for additional card details via `'user' => ['peopleCardDetailsTemplate' => ...]` (one HTML block with the profile fields as variables, e.g. with links and `<br>`), shown below the selected "Information 1-3" fields
 - Enh #8612: Optional `Content-Security-Policy-Report-Only` header (`web.enableCspReportOnly`) to test a stricter policy; violations are logged as warnings, also reports from guests

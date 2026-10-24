@@ -94,8 +94,9 @@ class Session extends DbSession
                     ->execute();
             }
         } catch (Exception $e) {
-            // Yii logging may no longer be available (e.g. during PHP shutdown), and a session
-            // write handler must not produce output, as it may run mid-request (e.g. session_regenerate_id())
+            // A session write handler must not produce output, as it may run mid-request (e.g. session_regenerate_id()).
+            // Also log to the PHP error log, as the Yii log targets may fail as well (e.g. DbTarget).
+            Yii::error($e, 'user');
             error_log(ErrorHandler::convertExceptionToString($e));
 
             return false;
