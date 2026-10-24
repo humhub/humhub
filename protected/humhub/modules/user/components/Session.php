@@ -94,10 +94,9 @@ class Session extends DbSession
                     ->execute();
             }
         } catch (Exception $e) {
-            $exception = ErrorHandler::convertExceptionToString($e);
-            // its too late to use Yii logging here
-            error_log($exception);
-            echo $exception;
+            // Yii logging may no longer be available (e.g. during PHP shutdown), and a session
+            // write handler must not produce output, as it may run mid-request (e.g. session_regenerate_id())
+            error_log(ErrorHandler::convertExceptionToString($e));
 
             return false;
         }
