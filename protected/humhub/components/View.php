@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
+use humhub\components\assets\VueAssetBundle;
 use humhub\helpers\Html;
 use humhub\services\PwaService;
 use humhub\widgets\bootstrap\Button;
@@ -252,13 +253,45 @@ class View extends \yii\web\View
      */
     public function registerAssetBundle($name, $position = null)
     {
+        $isNew = !isset($this->assetBundles[$name]);
+
         $bundle = parent::registerAssetBundle($name, $position);
 
         if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
             static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
         }
 
+        if ($isNew) {
+            $this->registerBundleAdditions($name, $bundle);
+        }
+
         return $bundle;
+    }
+
+    /**
+     * Registers what a newly registered bundle brings along: the bundles declared as its
+     * extensions ({@see \humhub\components\ModuleManager::addVueAssetExtension()}), right after
+     * it, so their components are registered before an island of the page mounts; and the
+     * message categories of a Vue bundle ({@see VueAssetBundle::$i18nCategories}), handed to the
+     * island mounter through the `vueBundles` JS config.
+     *
+     * @since 1.20
+     */
+    private function registerBundleAdditions(string $name, $bundle): void
+    {
+        if ($bundle instanceof VueAssetBundle && $bundle->i18nCategories !== []) {
+            $this->registerJsConfig('vueBundles', [
+                ltrim($name, '\\') => ['i18nCategories' => array_values($bundle->i18nCategories)],
+            ]);
+        }
+
+        foreach (Yii::$app->moduleManager->getVueAssetExtensions($name) as $extension) {
+            // An extension already registered - or being registered, e.g. because it depends on
+            // its host - is left alone: it ends up after the host either way.
+            if (!isset($this->assetBundles[$extension])) {
+                $this->registerAssetBundle($extension);
+            }
+        }
     }
 
     protected function registerAssetFiles($name)

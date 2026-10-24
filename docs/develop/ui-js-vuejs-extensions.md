@@ -1,6 +1,6 @@
 # Extending Vue.js Islands
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, filter types, module data served by a module's own endpoint, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers how a module extends another module's island from the outside: extension slots, menu entries, filter types, loading the module's bundle along with the host's, module data served by a module's own endpoint, domain events on the bus, and the (planned) component override mechanism. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
 ## Extension slots
 
@@ -350,6 +350,41 @@ The component gets the props `filter` (the definition, including `label`, `optio
 **Registration order is unconstrained**, as for extension slots: neither the component nor a bar using the type need to exist yet, and a bar that is already mounted picks the type up reactively. A filter whose type is not registered is not rendered, but its value is still read from and written to the URL and sent — the list stays consistent while a module's artifact is missing. For a one-off control on a single page, the bar's `filter-<key>` slot is the simpler tool; it takes precedence over a registered type.
 
 The core modules register three types themselves — core modules' types, hence without a prefix: `user` (the user module's `UserFilterControl`, the control of the ready PHP filter `humhub\modules\user\components\listing\UserFilter` — one person: an author, an assignee —, searching `GET /api/v2/user/picker`), `space` (the space module's `SpaceFilterControl` for `humhub\modules\space\components\listing\SpaceFilter`, searching `GET /api/v2/space?purpose=picker`) and `topic` (the topic module's `TopicFilterControl` for `humhub\modules\topic\components\listing\TopicFilter`, searching `GET /api/v2/topic/picker`). A page using one loads that module's bundle (`UserVueAsset`, `SpaceVueAsset`, `TopicVueAsset` in its asset bundle's `$depends`). All three are built on the core's `PickerFilterControl`, the base for a module's own type whose value is record ids searched by name: the module's control supplies the requests, an item's label and image and passes the rest through; a setting of its own travels in the PHP definition's `props`, read as `filter.props`. See [Components](ui-js-vuejs-components.md#core-component-set).
+
+## Loading the bundle along with the host
+
+The registrations above run when the module's artifact runs — so it has to be loaded on every page showing the host island. The host's module does not know of it (and must not have to), and the module can't add itself to every page the host appears on. Instead it declares its `*VueAsset` bundle an **extension** of the host's bundle in its `config.php`; wherever a view registers the host bundle — directly, through a widget, or as a dependency of another bundle — it registers the extension right after it:
+
+```php
+// @reactions/config.php
+use humhub\modules\comment\assets\CommentVueAsset;
+use johndoe\reactions\assets\ReactionsVueAsset;
+
+return [
+    'id' => 'reactions',
+    'class' => 'johndoe\reactions\Module',
+    'namespace' => 'johndoe\reactions',
+    'vueAssetExtensions' => [
+        // host bundle => the bundles registered along with it
+        CommentVueAsset::class => [ReactionsVueAsset::class],
+    ],
+];
+```
+
+```php
+// johndoe\reactions\assets\ReactionsVueAsset
+class ReactionsVueAsset extends VueAssetBundle
+{
+    // Preloaded before an island of the page mounts - see below.
+    public array $i18nCategories = ['ReactionsModule.base'];
+}
+```
+
+- **Any bundle can be a host** — a core module's (`CommentVueAsset`, `UserVueAsset`, …), another module's, or a plain asset bundle. Only declarations of enabled modules apply (like `events`), and `::class` of another module's bundle does not load the class, so the config also works while that module is not installed. Code that has to decide at runtime calls `Yii::$app->moduleManager->addVueAssetExtension(HostVueAsset::class, MyVueAsset::class)` — before the host is registered, e.g. in an event handler of the request.
+- **Order**: an extension is registered right after its host, so its script runs after the host's and both run before islands mount (on DOM ready) — slot entries, menu entries and filter types are registered by then. An extension that nests the host's components may list the host in its own `$depends`; that is no circular dependency. Extensions of an extension are registered along too, each bundle once per page.
+- **Translations**: the mounter preloads only the `i18nCategories` of an island's **top-level** component (see [Components](ui-js-vuejs-components.md)), and the host's component cannot declare the categories of components it does not know. A `VueAssetBundle` therefore declares the categories of the components it contributes in `$i18nCategories`; for every bundle registered on a page, the view hands them to the mounter (as the `vueBundles` JS config), which preloads them, together with the component's own, before any island of the page mounts. Keep the list to what the contributed components need: every island of the page waits for it on a cold translation cache.
+
+A module whose own widget renders the host island can still simply register the extension bundle itself (`PeopleDirectory` does so for the friendship module's card action); an extension declaration is for the case where the host's module cannot know about the extending module.
 
 ## Module data
 

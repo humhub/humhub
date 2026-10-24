@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8630: A module's Vue asset bundle can be declared an extension of another bundle (`vueAssetExtensions` in `config.php`, `ModuleManager::addVueAssetExtension()`) and is then registered wherever that bundle is; Vue asset bundles can declare `$i18nCategories`, preloaded before the islands of a page mount
 - Enh #8629: Clear message when the API rate limit is reached; admin documentation for API access
 - Enh #8628: Rate limiting for the API by scope; personal access tokens per user are capped
 - Enh #8626: OAuth 2.0 server and personal access tokens for the HumHub app and integrations; the "Sessions" account tab becomes "Devices & Access"
