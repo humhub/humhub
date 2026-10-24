@@ -44,7 +44,7 @@ class RateLimiterTest extends Unit
 
     private function logSpy(): Logger
     {
-        $spy = new class () extends Logger {
+        $spy = new class extends Logger {
             public array $seen = [];
 
             public function log($message, $level, $category = 'application')

@@ -22,7 +22,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
     public const SCOPE_PROFILE = 'profile';
 
     /**
-     * @var array
+     * @var string|null
      */
     public $scope;
 

@@ -41,6 +41,7 @@ nbproject
 .gitmodules
 .vscode
 .php-cs-fixer.cache
+/phpstan.neon
 .php_cs.cache
 .DS_Store
 

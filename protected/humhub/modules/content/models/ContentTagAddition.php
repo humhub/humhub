@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * Class ContentTagAddition
  *
  * @property int $id
- * @perperty integer $tag_id
+ * @property int $tag_id
  *
  * @since 1.2.2
  * @author buddha

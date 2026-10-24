@@ -25,6 +25,9 @@ use yii\db\ActiveQuery;
  * @property string $object_model
  * @property int $object_id
  * @property int $user_id
+ * @property-read User $user
+ *
+ * @mixin PolymorphicRelation
  */
 class Mentioning extends ActiveRecord
 {

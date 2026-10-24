@@ -1,0 +1,89 @@
+includes:
+    - phpstan-baseline.neon
+    - protected/vendor/mspirkov/yii2-phpstan/extension.neon
+
+parameters:
+    level: 1
+    paths:
+        - protected/humhub
+    excludePaths:
+        analyseAndScan:
+            - protected/humhub/config/__autocomplete.php
+            - protected/humhub/*/c3.php
+        analyse:
+            - protected/humhub/*/_generated/*
+            - protected/humhub/*/_support/*Tester.php
+            # TODO: First, correct the `@var` annotations in the views: add the missing ones
+            # and fix the existing ones, such as changing `/** @var $model Model */`
+            # to `/** @var Model $model */` and `/* @var Model $model */`
+            # to `/** @var Model $model */`, then remove these two paths.
+            - protected/humhub/views/*
+            - protected/humhub/*/views/*
+            # TODO: Fix the non-ignorable errors of these files, then remove them
+            - protected/humhub/compat/ArrayObject.php
+            - protected/humhub/libs/StdClass.php
+            - protected/humhub/tests/codeception/unit/libs/UUIDTest.php
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+
+    mspirkovYii2:
+        enableAllRules: false
+        enableValidationRules: true
+        applicationConfigs:
+            -
+                paths:
+                    - protected/humhub
+                files:
+                    - protected/humhub/config/common.php
+                    - protected/humhub/config/web.php
+            -
+                paths:
+                    - protected/humhub
+                files:
+                    - protected/humhub/config/common.php
+                    - protected/humhub/config/console.php
+        yiiAppTypes:
+            -
+                paths:
+                    - protected/humhub
+                type: humhub\components\Application|humhub\components\console\Application
+                nullable: false
+        aliases:
+            '@humhub': protected/humhub
+            '@activity': protected/humhub/modules/activity
+            '@admin': protected/humhub/modules/admin
+            '@comment': protected/humhub/modules/comment
+            '@content': protected/humhub/modules/content
+            '@dashboard': protected/humhub/modules/dashboard
+            '@file': protected/humhub/modules/file
+            '@friendship': protected/humhub/modules/friendship
+            '@installer': protected/humhub/modules/installer
+            '@ldap': protected/humhub/modules/ldap
+            '@like': protected/humhub/modules/like
+            '@live': protected/humhub/modules/live
+            '@marketplace': protected/humhub/modules/marketplace
+            '@notification': protected/humhub/modules/notification
+            '@post': protected/humhub/modules/post
+            '@queue': protected/humhub/modules/queue
+            '@space': protected/humhub/modules/space
+            '@stream': protected/humhub/modules/stream
+            '@topic': protected/humhub/modules/topic
+            '@tour': protected/humhub/modules/tour
+            '@ui': protected/humhub/modules/ui
+            '@user': protected/humhub/modules/user
+            '@web': protected/humhub/modules/web
+
+    dynamicConstantNames!:
+        - YII_TEST_ENTRY_URL
+        - YII_TEST_ENTRY_FILE
+
+    ignoreErrors:
+        - '#Unsafe usage of new static\(\).#'
+
+        # TODO: remove after updating Yii2 to 2.0.56.
+        -
+            message: '#^Object option "(?:pagination|sort)" for yii\\data\\ActiveDataProvider must be #'
+            identifier: mspirkovYii2.baseObjectInstantiationValidation
+        -
+            message: '#^Object option "sort" for yii\\data\\ArrayDataProvider must be #'
+            identifier: mspirkovYii2.baseObjectInstantiationValidation

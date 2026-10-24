@@ -22,6 +22,8 @@ use yii\db\ActiveQuery;
 /**
  * ActiveQuerySpace is used to query Space records.
  *
+ * @extends AbstractActiveQueryContentContainer<Space>
+ *
  * @since 1.4
  */
 class ActiveQuerySpace extends AbstractActiveQueryContentContainer
@@ -35,7 +37,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
      * Only returns spaces which are visible for this user
      *
      * @inheritdoc
-     * @return self
+     * @return static
      */
     public function visible(?User $user = null): ActiveQuery
     {
@@ -94,7 +96,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
      * Exclude blocked spaces for the given $user or for the current User
      *
      * @param User|null $user
-     * @return self
+     * @return static
      */
     public function filterBlockedSpaces(?User $user = null): ActiveQuerySpace
     {
@@ -122,7 +124,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
      * Filter to where the user is admin or owner of spaces
      *
      * @param User|null $user
-     * @return self
+     * @return static
      */
     public function filterAdminOwner(?User $user = null): self
     {

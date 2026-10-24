@@ -30,6 +30,7 @@ use yii\db\Query;
  * @property int $object_id
  * @property int $user_id
  * @property int $send_notifications
+ * @property-read User $user
  */
 class Follow extends ActiveRecord
 {

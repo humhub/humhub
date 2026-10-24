@@ -1,0 +1,62 @@
+name: PHPStan
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - next
+    paths:
+      - '**.php'
+      - 'phpstan.dist.neon'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/phpstan.yml'
+  pull_request:
+    branches:
+      - master
+      - develop
+      - next
+    paths:
+      - '**.php'
+      - 'phpstan.dist.neon'
+      - 'composer.json'
+      - 'composer.lock'
+      - '.github/workflows/phpstan.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
+          ini-values: date.timezone='UTC'
+
+      - name: Determine composer cache directory
+        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: phpstan-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            phpstan-composer-
+
+      - name: Install dependencies with composer
+        run: composer install --prefer-dist --no-interaction --no-progress --ansi
+
+      - name: Build Codeception actors
+        working-directory: protected/humhub/tests
+        run: php ../../vendor/codeception/codeception/codecept build
+
+      - name: Run PHPStan
+        run: composer phpstan -- --no-progress

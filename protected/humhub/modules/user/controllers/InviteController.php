@@ -80,7 +80,7 @@ class InviteController extends Controller
     /**
      * Creates and sends an e-mail invite
      *
-     * @param email $email
+     * @param string $email
      */
     protected function createInvite($email)
     {
