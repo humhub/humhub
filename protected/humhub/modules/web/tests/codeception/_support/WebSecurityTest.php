@@ -11,7 +11,7 @@ use yii\helpers\Json;
 class WebSecurityTest extends HumHubDbTestCase
 {
     /**
-     * @return Module
+     * @return void
      */
     public function _before()
     {
@@ -22,7 +22,7 @@ class WebSecurityTest extends HumHubDbTestCase
 
     protected function setConfigFile($configFile)
     {
-        /** @var $module Module */
+        /** @var Module $module */
         $module = Yii::$app->getModule('web');
         $configFile = realpath(__DIR__ . '/../data/security/' . $configFile);
         $module->security = Json::decode(file_get_contents($configFile));

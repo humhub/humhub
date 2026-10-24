@@ -121,7 +121,7 @@ abstract class ItemDrop extends Model
     protected function run()
     {
 
-        /** @var $transaction Transaction */
+        /** @var Transaction $transaction */
         $transaction = $this->beginTransaction();
 
         try {

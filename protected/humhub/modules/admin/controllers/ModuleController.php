@@ -71,7 +71,7 @@ class ModuleController extends Controller
      */
     public function actionEnable()
     {
-        /** @var $module Module */
+        /** @var Module $module */
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');
@@ -120,7 +120,7 @@ class ModuleController extends Controller
      */
     public function actionFlush()
     {
-        /** @var $module Module */
+        /** @var Module $module */
         $this->forcePostRequest();
 
         $moduleId = Yii::$app->request->get('moduleId');

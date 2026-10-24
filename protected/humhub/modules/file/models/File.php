@@ -44,7 +44,8 @@ use yii\web\UploadedFile;
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
- * @property string $size
+ * @property-read string $size
+ * @property-write int|string $size
  * @property-read Metadata $metadata since 1.15. Note, $metadata is still experimental. Expect changes in v1.16 (ToDo).
  *      This property is read-only in the sense that no new instance be assigned to the model.
  *      Edit data always by working on the object itself.

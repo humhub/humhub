@@ -28,6 +28,8 @@ use yii\db\ActiveQuery;
 /**
  * ActiveQueryUser is used to query User records.
  *
+ * @extends AbstractActiveQueryContentContainer<User>
+ *
  * @author luke
  */
 class ActiveQueryUser extends AbstractActiveQueryContentContainer
@@ -57,7 +59,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
      * Returns only users that should appear in user lists or in the search results.
      * Also only active (enabled) users are returned.
      *
-     * @return self
+     * @return static
      * @since 1.2.3
      * @inheritdoc
      */

@@ -311,7 +311,7 @@ class PermissionManager extends Component
         }
 
         foreach ($this->_groupPermissions[$groupId] as $groupPermission) {
-            /** @var $groupPermission GroupPermission */
+            /** @var GroupPermission $groupPermission */
             if (
                 $groupPermission->permission_id == $permission->getId()
                 && $groupPermission->module_id == $permission->getModuleId()
@@ -480,7 +480,7 @@ class PermissionManager extends Component
     {
         $permissions = [];
         foreach ($this->getPermissions() as $permission) {
-            /** @var $permission BasePermission */
+            /** @var BasePermission $permission */
             if (
                 $returnOnlyChangeable && !$permission->canChangeState($groupId)
                 || (

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\jobs;
 
+use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\user\components\ActiveQueryUser;
 use Yii;
@@ -21,7 +22,7 @@ use Yii;
 class SendBulkNotification extends LongRunningActiveJob
 {
     /**
-     * @var array Basenotification data as array.
+     * @var BaseNotification the notification to send
      */
     public $notification;
 

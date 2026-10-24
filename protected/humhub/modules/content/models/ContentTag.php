@@ -50,16 +50,17 @@ use yii\db\IntegrityException;
  * An instance of this class will automatically be created by calling `$tag->addition`
  *
  * @property int $id
- * @property string name
- * @property string module_id
- * @property int contentcontainer_id
- * @property string type
- * @property int parent_id
- * @property string color
- * @property int sort_order
+ * @property string $name
+ * @property string $module_id
+ * @property int|null $contentcontainer_id
+ * @property string|null $type
+ * @property int|null $parent_id
+ * @property string|null $color
+ * @property int|null $sort_order
  *
  * @property ContentContainerActiveRecord $container
  * @property ContentContainer $contentContainer
+ * @property ContentTagAddition|null $addition
  *
  * @package humhub\modules\content\models
  * @since 1.2.2
@@ -100,7 +101,7 @@ class ContentTag extends ActiveRecord
      * Can be called either with a yii contfig array or with contentcontainer and name.
      *
      * @param array|ContentContainerActiveRecord $contentContainer
-     * @param null $name
+     * @param string|null $name
      * @param array $config
      */
     public function __construct($contentContainer = [], $name = null, $config = [])

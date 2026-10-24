@@ -493,7 +493,7 @@ class Events extends \yii\base\Object
     
     public static function onStreamFilterBeforeRun($event)
     {
-        /** @var $wallFilterNavigation WallStreamFilterNavigation */
+        /** @var WallStreamFilterNavigation $wallFilterNavigation */
         $wallFilterNavigation = $event->sender;
     
         // Add a new filter block to the last filter panel
@@ -517,7 +517,7 @@ class Events extends \yii\base\Object
     
     public static function onStreamFilterBeforeFilter($event)
     {
-        /** @var $streamQuery WallStreamQuery */
+        /** @var WallStreamQuery $streamQuery */
         $streamQuery = $event->sender;
     
         // Add a new filterHandler to WallStreamQuery

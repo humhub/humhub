@@ -163,7 +163,7 @@ class NotificationManager
      * Factory function for receiving a target instance for the given class.
      *
      * @param string $class
-     * @return BaseTarget
+     * @return BaseTarget|null
      * @throws InvalidConfigException
      */
     public function getTarget($class)

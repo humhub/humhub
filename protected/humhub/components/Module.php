@@ -181,8 +181,8 @@ class Module extends \yii\base\Module
      */
     public function publishAssets(bool $all = false): ?array
     {
-        /** @var $assetBundle AssetBundle */
-        /** @var $manager AssetManager */
+        /** @var AssetBundle $assetBundle */
+        /** @var AssetManager $manager */
 
         if ($all) {
             foreach ($this->getAssetClasses() as $assetClass) {

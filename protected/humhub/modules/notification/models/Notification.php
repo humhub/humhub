@@ -27,7 +27,8 @@ use yii\db\Query;
  * @property int $source_pk
  * @property int $space_id
  * @property int $emailed
- * @property string module
+ * @property string $module
+ * @property string|null $group_key
  * @property string $created_at
  * @property int $originator_user_id
  * @property int $send_web_notifications

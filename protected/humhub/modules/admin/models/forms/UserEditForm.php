@@ -77,7 +77,7 @@ class UserEditForm extends User
 
     /**
      * Aligns the given group selection with the db
-     * @return bool
+     * @return void
      */
     public function afterSave($insert, $changedAttributes)
     {

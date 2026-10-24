@@ -23,6 +23,8 @@ use yii\db\ActiveQuery;
  * - updated_by
  * - updated_at
  *
+ * @property int $content_id
+ * @property int $created_by
  * @property-read Content $content
  */
 abstract class ContentAddonActiveRecord extends ActiveRecord implements

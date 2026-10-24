@@ -48,7 +48,7 @@ class Formatter extends \yii\i18n\Formatter
      * @since 1.2.2
      * @param int $dateType
      * @param int $timeType
-     * @param null $locale
+     * @param string|null $locale
      * @return null|string
      */
     public function getDateTimePattern($dateType = IntlDateFormatter::SHORT, $timeType = IntlDateFormatter::SHORT, $locale = null)

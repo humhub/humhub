@@ -166,7 +166,7 @@ abstract class Menu extends JsWidget
     /**
      * Returns the first active menu entry
      *
-     * @return MenuEntry
+     * @return MenuEntry|null
      */
     public function getActiveEntry()
     {

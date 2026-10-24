@@ -110,7 +110,9 @@
         "codeception/specify": "^1.0",
         "codeception/verify": "~0.5.0 || ^1.1.0",
         "friendsofphp/php-cs-fixer": "^3.49",
+        "mspirkov/yii2-phpstan": "^0.16",
         "phpcompatibility/php-compatibility": "^9.0",
+        "phpstan/phpstan": "^2.3",
         "rector/rector": "^2.1",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "^6.4",
@@ -150,7 +152,8 @@
         ],
         "cs:fix": "protected/vendor/bin/php-cs-fixer fix",
         "cs:check": "protected/vendor/bin/php-cs-fixer fix --dry-run --diff",
-        "rector": "protected/vendor/bin/rector process --config=rector.php"
+        "rector": "protected/vendor/bin/rector process --config=rector.php",
+        "phpstan": "protected/vendor/bin/phpstan"
     },
     "extra": {
         "yii\\composer\\Installer::postCreateProject": {

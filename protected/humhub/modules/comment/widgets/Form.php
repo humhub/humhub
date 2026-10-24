@@ -23,7 +23,7 @@ class Form extends Widget
     public ?CommentModel $parentComment = null;
 
     /**
-     * @var Comment|null can be provided if comment validation failed, otherwise a dummy model will be created
+     * @var CommentModel|null can be provided if comment validation failed, otherwise a dummy model will be created
      */
     public $model;
 
