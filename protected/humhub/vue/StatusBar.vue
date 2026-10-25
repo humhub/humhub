@@ -1,15 +1,16 @@
 <template>
-    <div
-        v-if="entry"
-        class="toast-container position-fixed bottom-0 start-50 translate-middle-x"
-        :class="{ 'is-visible': visible }"
-    >
+    <div v-if="entry" class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
         <div
-            class="toast show"
-            :class="toneClass"
+            ref="toast"
+            class="toast fade show"
+            :class="[toneClass, { showing: !visible }]"
             :role="isError ? 'alert' : 'status'"
             :aria-live="isError ? 'assertive' : 'polite'"
             aria-atomic="true"
+            @mouseenter="interact('hovered', true)"
+            @mouseleave="interact('hovered', false)"
+            @focusin="interact('focused', true)"
+            @focusout="onFocusOut"
         >
             <div class="toast-body">
                 <i class="toast-icon" :class="iconClass" aria-hidden="true"></i>
@@ -74,14 +75,15 @@
  *    details — a chevron toggle plus a `.toast-details > pre` block. Clicking
  *    the message text toggles the details too, as it did before.
  *
- * The look is Bootstrap's toast (`_toast.scss`, Bootstrap's `$toast-*`
- * variables): a `.toast-container` fixed at the bottom centre holds one
- * `.toast` with the tone class `toast-<tone>` (`info`, `success`, `warning`,
- * `danger`), icon, message and controls in its `.toast-body` and the details
- * below it. Errors are announced assertively (`role="alert"`), the rest
- * politely. The toast rises in over 220 ms; the animation is a CSS transition,
- * this component only toggles `is-visible` on the container and keeps the
- * element around for the duration of the exit.
+ * It is Bootstrap's toast (`_toast.scss`, Bootstrap's `$toast-*` variables): a
+ * `.toast-container` fixed at the bottom centre holds one `.toast` with the
+ * tone class `toast-<tone>` (`info`, `success`, `warning`, `danger`), icon,
+ * message and controls in its `.toast-body` and the details below it. Errors
+ * are announced assertively (`role="alert"`), the rest politely. It fades in
+ * and out the way Bootstrap's Toast JS does it: `.fade.show` plus `.showing`
+ * while hidden, the element kept around for the duration of the exit. Like
+ * Bootstrap's `autohide`, the timer pauses while the pointer is on the toast or
+ * the focus in it, and starts over once both have left.
  *
  * The labels of the close and details buttons come from
  * `humhub\widgets\StatusBar` (props `closeLabel`, `detailsLabel`).
@@ -100,10 +102,10 @@
  * `[object Object]` in the trace block.
  */
 
-// Matches the transition duration in _toast.scss. Kept in JS as well
+// Bootstrap's `.fade` transition ($transition-fade, 0.15s). Kept in JS as well
 // because the component owns the swap/removal timing (an element must outlive
 // its exit) - the two values have to stay in sync.
-const TRANSITION_MS = 220;
+const TRANSITION_MS = 150;
 
 // Legacy AUTOCLOSE_* values; 0 means "never auto-close" (error only).
 const AUTOCLOSE = {
@@ -174,6 +176,8 @@ export default {
             entry: null,
             visible: false,
             detailsOpen: false,
+            hovered: false,
+            focused: false,
         };
     },
     computed: {
@@ -213,7 +217,7 @@ export default {
             };
 
             if (this.entry) {
-                // Slide the current message out first, then show the new one -
+                // Fade the current message out first, then show the new one -
                 // the legacy hide-then-show chain.
                 this.startHide(() => this.present(entry));
             } else {
@@ -225,8 +229,10 @@ export default {
             this.entry = entry;
             this.detailsOpen = false;
             this.visible = false;
+            this.hovered = false;
+            this.focused = false;
 
-            // The slide-in needs the hidden state to be laid out BEFORE the class that
+            // The fade-in needs the hidden state to be laid out BEFORE the class that
             // transitions out of it is applied - otherwise both land in the same frame and the
             // browser jumps straight to the end state (no animation at all). `$nextTick` alone
             // only guarantees the element exists; reading a layout property forces the browser
@@ -240,11 +246,33 @@ export default {
                 this.visible = true;
             });
 
-            const closeAfter = this.autoCloseDelay(entry);
+            // Legacy started the timer once the slide-in had finished; here: the fade-in.
+            this.scheduleClose(TRANSITION_MS);
+        },
+        scheduleClose(offset = 0) {
+            this.clearCloseTimer();
+            const closeAfter = this.autoCloseDelay(this.entry);
             if (closeAfter > 0) {
-                // Legacy started the timer once the slide-in had finished.
-                this.closeTimer = setTimeout(() => this.startHide(), TRANSITION_MS + closeAfter);
+                this.closeTimer = setTimeout(() => this.startHide(), offset + closeAfter);
             }
+        },
+        /** Pointer or focus on the toast pauses the auto-close; it starts over once both left. */
+        interact(kind, on) {
+            this[kind] = on;
+            if (!this.entry || !this.visible) {
+                return;
+            }
+            if (on) {
+                this.clearCloseTimer();
+            } else if (!this.hovered && !this.focused) {
+                this.scheduleClose();
+            }
+        },
+        onFocusOut(event) {
+            if (this.$refs.toast && this.$refs.toast.contains(event.relatedTarget)) {
+                return;
+            }
+            this.interact('focused', false);
         },
         /**
          * `closeAfter || default` - the legacy expression, quirk included: for
@@ -273,11 +301,14 @@ export default {
                 this.detailsOpen = !this.detailsOpen;
             }
         },
-        clearTimers() {
+        clearCloseTimer() {
             if (this.closeTimer) {
                 clearTimeout(this.closeTimer);
                 this.closeTimer = null;
             }
+        },
+        clearTimers() {
+            this.clearCloseTimer();
             if (this.hideTimer) {
                 clearTimeout(this.hideTimer);
                 this.hideTimer = null;

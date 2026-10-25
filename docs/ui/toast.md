@@ -66,8 +66,8 @@ A toast is Bootstrap's **`.toast`** in a **`.toast-container`**. Grouping will b
 Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 
 ```html
-<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x is-visible">
-    <div class="toast show toast-success" role="status" aria-live="polite" aria-atomic="true">
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div class="toast fade show toast-success" role="status" aria-live="polite" aria-atomic="true">
         <div class="toast-body">
             <i class="toast-icon ti ti-circle-check" aria-hidden="true"></i>
             <span class="toast-message">Plan.pdf has been deleted.</span>
@@ -79,18 +79,20 @@ Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 
 | Class | Element |
 |---|---|
-| `.toast-container.position-fixed` | Bottom centre (Bootstrap's position utilities), clear of the safe area on mobile devices; full width on phones; `.is-visible` while the toast is shown |
-| `.toast` + `.toast-<tone>` | A toast: `info`, `success`, `warning`, `danger`; the tone colours border, outline and icon. Danger has `role="alert"`, the rest `role="status"` |
+| `.toast-container.position-fixed` | Bottom centre (Bootstrap's position and spacing utilities), clear of the safe area on mobile devices |
+| `.toast.fade.show` + `.toast-<tone>` | A toast: `info`, `success`, `warning`, `danger`; the tone colours border (`--bs-<colour>-border-subtle`) and icon. `.showing` while it fades in or out, as with Bootstrap's Toast JS. Danger has `role="alert"`, the rest `role="status"` |
 | `.toast-body` | Icon (`.toast-icon`), text (`.toast-message`), details toggle (`.toast-details-toggle`, a `.btn-ghost.btn-icon-only.btn-sm`), close (`.btn-close.toast-close`) |
 | `.toast-details` | Technical details (an error trace) below the body |
 | `.toast-group` | Planned: a stack of toasts of one source and tone, with "N more" (`.btn.btn-link`) |
 
 - **Files:** `_toast.scss`, behind `$prev-toast`; Bootstrap's `$toast-*` values in
   `variables.scss`.
-- **Sass variables:** Bootstrap's `$toast-max-width` (320px), `$toast-padding-x/y`,
-  `$toast-font-size`, `$toast-color`, `$toast-background-color` (translucent),
-  `$toast-border-color`, `$toast-border-radius`, `$toast-box-shadow`; plus `$toast-tones` (tone →
-  colour), `$toast-icon-size`, `$toast-details-max-height`, `$toast-transition-duration`.
+- **Sass variables:** Bootstrap's `$toast-*`. HumHub sets only `$toast-font-size` (body size)
+  and `$toast-background-color` (solid main background); width, padding, border, radius and
+  shadow are Bootstrap's. Plus `$toast-tones` (tone → colour), `$toast-icon-size`,
+  `$toast-details-max-height`.
+- **Behaviour like Bootstrap's `autohide`:** the timer pauses while the pointer is on the toast or
+  the focus is in it, and starts over once both have left.
 
 ## Implementation in core
 
@@ -106,7 +108,6 @@ auto-close timings of the old jQuery bar, plus the details toggle for error trac
 | One message at a time | Queue and **group** messages (by source and tone), with stacks, "N more", and opening a group |
 | No "notification" tone | Add it for live notifications that are shown as a toast |
 | Position on phones | Above the bottom bar and the keyboard |
-| Auto-hide timer | Pause on hover and keyboard focus |
 
 The public API stays the same: `module.success('…')` keeps working and simply benefits from
 grouping.

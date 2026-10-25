@@ -10,8 +10,8 @@ await import('../../resources/js/humhub/humhub.vue.js');
 const vueModule = globalThis.humhub.modules.vue;
 
 // Mirrors the constants in StatusBar.vue - the duration of the CSS transition in
-// _toast.scss the card enters and exits with, and the legacy AUTOCLOSE_* values.
-const TRANSITION = 220;
+// Bootstrap's `.fade` the toast enters and exits with, and the legacy AUTOCLOSE_* values.
+const TRANSITION = 150;
 const AUTOCLOSE = { info: 6000, success: 2000, warn: 10000, error: 0 };
 
 let wrapper;
@@ -23,6 +23,8 @@ const mountBar = () => {
 
 const body = () => wrapper.find('.toast-container');
 const content = () => wrapper.find('.toast');
+// Bootstrap's toast states: `.show` always, `.showing` while fading in or out.
+const shown = () => content().exists() && content().classes().includes('show') && !content().classes().includes('showing');
 
 beforeEach(() => {
     vi.useFakeTimers();
@@ -92,18 +94,18 @@ describe('StatusBar', () => {
         expect(content().find('.toast-message b').exists()).toBe(false);
     });
 
-    it('slides in by gaining the visible class one tick after the message arrives', async () => {
+    it('fades in by dropping .showing one tick after the message arrives', async () => {
         mountBar();
         vueModule.status('info', 'sliding');
         await wrapper.vm.$nextTick();
 
         expect(body().exists()).toBe(true);
-        expect(body().classes()).not.toContain('is-visible');
+        expect(shown()).toBe(false);
 
         // The component sets `visible` in its own nextTick callback, so the class
         // lands one render flush later - hence flushPromises rather than a tick.
         await flushPromises();
-        expect(body().classes()).toContain('is-visible');
+        expect(shown()).toBe(true);
     });
 
     it.each([
@@ -114,13 +116,13 @@ describe('StatusBar', () => {
         mountBar();
         vueModule.status(level, 'temporary');
         await vi.advanceTimersByTimeAsync(TRANSITION);
-        expect(body().classes()).toContain('is-visible');
+        expect(shown()).toBe(true);
 
         await vi.advanceTimersByTimeAsync(timeout - 1);
-        expect(body().classes()).toContain('is-visible');
+        expect(shown()).toBe(true);
 
         await vi.advanceTimersByTimeAsync(1);
-        expect(body().classes()).not.toContain('is-visible');
+        expect(shown()).toBe(false);
 
         await vi.advanceTimersByTimeAsync(TRANSITION);
         expect(body().exists()).toBe(false);
@@ -131,26 +133,26 @@ describe('StatusBar', () => {
         vueModule.status('error', 'stays');
         await vi.advanceTimersByTimeAsync(TRANSITION + 60000);
 
-        expect(body().classes()).toContain('is-visible');
+        expect(shown()).toBe(true);
     });
 
     it('honours an explicit closeAfter, and falls back to the level default for a falsy one', async () => {
         mountBar();
         vueModule.status('info', 'quick', undefined, 1000);
         await vi.advanceTimersByTimeAsync(TRANSITION + 1000);
-        expect(body().classes()).not.toContain('is-visible');
+        expect(shown()).toBe(false);
         await vi.advanceTimersByTimeAsync(TRANSITION);
 
         // Legacy quirk kept on purpose: `closeAfter || AUTOCLOSE_X` in
         // humhub.ui.status.js means 0 does NOT mean "stay" for these levels.
         vueModule.status('info', 'default', undefined, 0);
         await vi.advanceTimersByTimeAsync(TRANSITION + AUTOCLOSE.info - 1);
-        expect(body().classes()).toContain('is-visible');
+        expect(shown()).toBe(true);
         await vi.advanceTimersByTimeAsync(1);
-        expect(body().classes()).not.toContain('is-visible');
+        expect(shown()).toBe(false);
     });
 
-    it('replaces a visible message: the old one slides out before the new one appears', async () => {
+    it('replaces a visible message: the old one fades out before the new one appears', async () => {
         mountBar();
         vueModule.status('error', 'first');
         await vi.advanceTimersByTimeAsync(TRANSITION);
@@ -161,7 +163,7 @@ describe('StatusBar', () => {
 
         // Still the old message, now sliding out.
         expect(content().find('.toast-message').text()).toBe('first');
-        expect(body().classes()).not.toContain('is-visible');
+        expect(shown()).toBe(false);
 
         await vi.advanceTimersByTimeAsync(TRANSITION);
         expect(content().find('.toast-message').text()).toBe('second');
@@ -174,7 +176,7 @@ describe('StatusBar', () => {
         await vi.advanceTimersByTimeAsync(TRANSITION);
 
         await content().find('button.toast-close').trigger('click');
-        expect(body().classes()).not.toContain('is-visible');
+        expect(shown()).toBe(false);
 
         await vi.advanceTimersByTimeAsync(TRANSITION);
         expect(body().exists()).toBe(false);
@@ -245,5 +247,52 @@ describe('StatusBar', () => {
 
         expect(content().find('.toast-message').text()).toBe('second');
         expect(content().find('.toast-details').exists()).toBe(false);
+    });
+
+    it('is a Bootstrap toast fading in with .fade, .show and .showing', async () => {
+        mountBar();
+        vueModule.status('success', 'faded');
+        await wrapper.vm.$nextTick();
+
+        expect(content().classes()).toEqual(expect.arrayContaining(['toast', 'fade', 'show', 'showing', 'toast-success']));
+
+        await flushPromises();
+        expect(content().classes()).not.toContain('showing');
+    });
+
+    it('pauses the auto-close while the pointer is on the toast and starts over when it leaves', async () => {
+        mountBar();
+        vueModule.status('success', 'hover me');
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+
+        await content().trigger('mouseenter');
+        await vi.advanceTimersByTimeAsync(AUTOCLOSE.success * 3);
+        expect(shown()).toBe(true);
+
+        await content().trigger('mouseleave');
+        await vi.advanceTimersByTimeAsync(AUTOCLOSE.success - 1);
+        expect(shown()).toBe(true);
+        await vi.advanceTimersByTimeAsync(1);
+        expect(shown()).toBe(false);
+    });
+
+    it('pauses the auto-close while the focus is in the toast', async () => {
+        mountBar();
+        vueModule.status('info', 'focus me');
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+
+        await content().trigger('focusin');
+        await vi.advanceTimersByTimeAsync(AUTOCLOSE.info * 2);
+        expect(shown()).toBe(true);
+
+        // Focus moving between the toast's own buttons keeps the pause.
+        const close = content().find('button.toast-close').element;
+        await content().trigger('focusout', { relatedTarget: close });
+        await vi.advanceTimersByTimeAsync(AUTOCLOSE.info * 2);
+        expect(shown()).toBe(true);
+
+        await content().trigger('focusout', { relatedTarget: null });
+        await vi.advanceTimersByTimeAsync(AUTOCLOSE.info);
+        expect(shown()).toBe(false);
     });
 });

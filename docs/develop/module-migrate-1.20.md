@@ -1152,13 +1152,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `.toast-container.position-fixed` at the bottom centre holding one `.toast` with a tone
       class (`toast-info|success|warning|danger`); icon (`.toast-icon`), message
       (`.toast-message`), details toggle (`.toast-details-toggle`) and close (`.btn-close.toast-close`)
-      sit in the `.toast-body`, the details block (`.toast-details`) below it. The look comes from
-      Bootstrap's `$toast-*` variables (set in `variables.scss`) and the new `_toast.scss`
-      (`$prev-toast`); the status bar rules left `_user-feedback.scss`. The full-width dark strip
-      and the `.status-bar-*` classes are gone, and the level classes (`info`, `success`,
-      `warning`, `error`) left the icon. The enter/exit animation is a 220 ms CSS transition
-      (hidden by default, shown via `.is-visible` on the container) instead of jQuery's 500 ms
-      slide. Errors are announced with `role="alert"`. Acceptance tests address a message as
+      sit in the `.toast-body`, the details block (`.toast-details`) below it. The look is
+      Bootstrap's toast (`$toast-*`, in `variables.scss` only font size and a solid background)
+      plus the new `_toast.scss` (`$prev-toast`); the status bar rules left `_user-feedback.scss`.
+      The full-width dark strip and the `.status-bar-*` classes are gone, and the level classes
+      (`info`, `success`, `warning`, `error`) left the icon. It fades in and out with Bootstrap's
+      `.fade` / `.show` / `.showing` instead of jQuery's 500 ms slide, and the auto-close pauses
+      while the pointer or the focus is on the toast. Errors are announced with `role="alert"`. Acceptance tests address a message as
       `#status-bar .toast-<tone>` and its close button as `.toast-close`
       (`AcceptanceTester::seeSuccess()` and friends do).
   - **The space membership button is a Vue island** (`MembershipButton`,
