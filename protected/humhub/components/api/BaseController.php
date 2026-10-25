@@ -160,6 +160,11 @@ abstract class BaseController extends Controller
                 'scopes' => $this->scopes,
                 'allowFull' => $this->allowSessionAuth,
             ],
+            // After scopeFilter, so a refused request is not counted.
+            'rateLimit' => [
+                'class' => ApiRateLimitFilter::class,
+                'scopes' => $this->scopes,
+            ],
         ];
     }
 

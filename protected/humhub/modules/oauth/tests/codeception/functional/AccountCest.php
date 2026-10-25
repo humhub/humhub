@@ -48,6 +48,7 @@ class AccountCest
         Notification::deleteAll(['class' => GrantCreatedNotification::class]);
         Module::instance()->settings->delete('allowPersonalAccessTokens');
         Module::instance()->settings->delete('allowClients');
+        Module::instance()->maxPersonalAccessTokensPerUser = null;
         // Failed password confirmations are throttled via the cache
         Yii::$app->cache->flush();
     }
@@ -211,6 +212,47 @@ class AccountCest
 
         $this->revoke($I, $grant);
         Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
+    }
+
+    public function testTheTokenLimitReplacesTheCreateButtonAndRefusesPosts(FunctionalTester $I)
+    {
+        $this->allowTokens($I);
+        Module::instance()->maxPersonalAccessTokensPerUser = 2;
+        $user = User::findOne(['id' => 2]);
+        $service = new PersonalAccessTokenService();
+        [, $first] = $service->create($user, 'One', ['content:read'], 30);
+        $service->create($user, 'Two', ['content:read'], 30);
+
+        $I->amUser1();
+        $I->amOnRoute('/user/security/sessions');
+        $I->see('You have reached the maximum of 2 personal access tokens. Revoke one to create a new token.');
+        $I->dontSee('Create token');
+
+        $post = [
+            'PersonalAccessTokenForm[name]' => 'Three',
+            'PersonalAccessTokenForm[scopes]' => ['content:read'],
+            'PersonalAccessTokenForm[lifetime]' => '30',
+            'PersonalAccessTokenForm[currentPassword]' => self::PASSWORD,
+        ];
+        // The form is not offered; a direct POST creates nothing either
+        $I->amOnRoute('/oauth/account/create-token');
+        $I->dontSeeElement('form[action*="create-token"]');
+        $I->see('You have reached the maximum of 2 personal access tokens.');
+        $I->sendAjaxPostRequest('/index-test.php?r=oauth%2Faccount%2Fcreate-token', $post);
+        Assert::assertSame(2, (int)Grant::find()->where(['type' => Grant::TYPE_PAT])->count());
+
+        // Revoking frees a slot
+        $this->revoke($I, $first);
+        $I->amOnRoute('/user/security/sessions');
+        $I->see('Create token');
+        $I->dontSee('You have reached the maximum');
+
+        // An expired token does not count
+        $service->create($user, 'Three', ['content:read'], 30)[1]->updateAttributes(['expires_at' => time() - 10]);
+        $I->amOnRoute('/oauth/account/create-token');
+        $I->submitForm('form[action*="create-token"]', $post);
+        $I->see('Copy the token now.');
+        Assert::assertSame(3, (int)Grant::find()->where(['type' => Grant::TYPE_PAT])->count());
     }
 
     public function testFullTokenScopeIsStoredAlone(FunctionalTester $I)

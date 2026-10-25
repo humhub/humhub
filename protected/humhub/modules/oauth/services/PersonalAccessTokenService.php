@@ -12,6 +12,7 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\notifications\GrantCreatedNotification;
 use humhub\modules\oauth\Module;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\base\InvalidArgumentException;
 
 /**
@@ -28,6 +29,26 @@ class PersonalAccessTokenService
     private const RANDOM_LENGTH = 32;
     private const CHECKSUM_LENGTH = 6;
     private const LIFETIMES = [7, 30, 90, 365];
+
+    /**
+     * Whether the user holds as many unexpired tokens as allowed.
+     */
+    public function hasReachedLimit(User $user): bool
+    {
+        $max = Module::instance()->getMaxPersonalAccessTokensPerUser();
+
+        return $max > 0 && Grant::find()
+            ->where(['user_id' => $user->id, 'type' => Grant::TYPE_PAT])
+            ->andWhere(['or', ['expires_at' => null], ['>', 'expires_at', time()]])
+            ->count() >= $max;
+    }
+
+    public static function getLimitMessage(): string
+    {
+        return Yii::t('OauthModule.base', 'You have reached the maximum of {n} personal access tokens. Revoke one to create a new token.', [
+            'n' => Module::instance()->getMaxPersonalAccessTokensPerUser(),
+        ]);
+    }
 
     /**
      * @param string[] $scopeIds

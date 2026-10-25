@@ -178,6 +178,9 @@ hhpat_<32 random base62 characters><6 base62 characters CRC32 of the random part
     impersonations do not count. Otherwise the form asks them to sign out and in again.
 - **Never during an impersonation:** creating a PAT is refused (`403`), like any other
   credential (client secrets).
+- **Limited per user:** at most `maxPersonalAccessTokensPerUser` (default 3, 0 = unlimited)
+  PATs that have not expired. At the limit the form refuses creation; revoking a token frees
+  its slot. See [Rate limiting](concept-rate-limiting.md#personal-access-tokens-per-user).
 
 The CRC32 suffix lets `TokenAuth` reject a mistyped token without a database query, and the
 `hhpat_` prefix makes leaked tokens recognizable to secret scanners.
@@ -341,7 +344,7 @@ existing grants immediately:
 
 - the system client;
 - an admin client the administrator allowed it;
-- a PAT, if the administrator added it to `patScopes`.
+- a PAT, if a system administrator added it to `patScopes`.
 
 `full` covers every other scope, so a scope selection containing it is stored as `full` alone
 (`PersonalAccessTokenForm`, `ClientForm`). In their checkbox lists, checking `full` checks and
@@ -569,8 +572,9 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 | `appIds` | empty | additional app IDs of white-label apps ([White-label apps](#white-label-apps)); system administrators only |
 | `allowClients` | off | admin clients may authorize |
 | `allowPersonalAccessTokens` | off | PATs authenticate; creating them requires `CreatePersonalAccessToken` |
-| `patScopes` | all `*:read` core scopes | upper bound for PATs |
+| `patScopes` | all `*:read` core scopes | upper bound for PATs; `full` only by system administrators |
 | `patMaxLifetimeDays` | 365 | 0 = unlimited, offers *never* |
+| `maxPersonalAccessTokensPerUser` | 3 | 0 = unlimited; counts unexpired PATs of a user |
 | `refreshTokenLifetimeDays` | 90 | |
 | `grantMaxLifetimeDays` | 0 | 0 = unlimited |
 | `revokeOnPasswordChange` | off | a password change deletes all grants of the user except the app session the change was made in |
@@ -578,7 +582,8 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 Each `allow…` switch also takes effect on existing grants: `TokenAuth` and `isAccessTokenRevoked()`
 reject grants of a disallowed kind.
 
-The settings of personal access tokens (`patScopes`, `patMaxLifetimeDays` and the warning about
+The settings of personal access tokens (`patScopes`, `patMaxLifetimeDays`,
+`maxPersonalAccessTokensPerUser` and the warning about
 a missing group permission) are only shown while `allowPersonalAccessTokens` is checked; the
 form toggles them on the client. Hidden fields are still submitted, so their values are kept.
 
@@ -620,6 +625,11 @@ line); the system client then accepts the redirect URI `<app ID>:/oauth/callback
   ```env
   HUMHUB_CONFIG__MODULES__OAUTH__APP_IDS='["com.acme.app","de.example.intranet"]'
   ```
+
+`full` in `patScopes` can only be added or removed by system administrators
+(`User::isSystemAdmin()`), as for clients: other holders of `ManageSettings` are not offered
+it, a submitted `full` is rejected, and a `full` a system administrator set stays when they
+save.
 
 **Clients.** List, create, edit, deactivate, delete, regenerate the secret. Fields:
 

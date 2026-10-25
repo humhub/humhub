@@ -55,6 +55,7 @@ class PersonalAccessTokenForm extends Model
     public function rules()
     {
         return [
+            ['name', 'validateLimit', 'skipOnEmpty' => false],
             [['name', 'scopes'], 'required'],
             ['name', 'string', 'max' => 100],
             ['scopes', 'each', 'rule' => ['in', 'range' => array_keys($this->getScopeOptions())]],
@@ -88,6 +89,13 @@ class PersonalAccessTokenForm extends Model
     public function requiresPassword(): bool
     {
         return $this->getRecentAuthentication()->requiresPassword();
+    }
+
+    public function validateLimit(string $attribute): void
+    {
+        if ((new PersonalAccessTokenService())->hasReachedLimit($this->user)) {
+            $this->addError($attribute, PersonalAccessTokenService::getLimitMessage());
+        }
     }
 
     public function validateReauthentication(string $attribute): void

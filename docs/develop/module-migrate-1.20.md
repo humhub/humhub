@@ -2,6 +2,16 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **`/api/v2` controllers are rate limited by their declared scopes.** The filter
+  `humhub\components\api\ApiRateLimitFilter` is attached in `BaseController::behaviors()`;
+  modules need no change. A module may add policies named `<channel>.<scope>` (`token` or
+  `session`, e.g. `token.calendar:write`) to the `rateLimiter` component, see
+  `docs/develop/concept-rate-limiting.md`. `ScopeFilter::resolveScope()` is new.
+
+- **`humhub.log` skips the status message for a `client.Response` flagged `statusShown`.** The
+  client sets the flag on a `429` after showing the rate limit message itself, so
+  `log.error(response, true)` only logs to the console for it.
+
 - **Font Awesome 4 replaced by Tabler Icons.** `humhub\widgets\Icon` renders
   `<i class="ti ti-<name>">` through the new `humhub\components\icon\TablerIconProvider`, and Tabler
   names (https://tabler.io/icons) are the canonical icon names from now on — `Icon::get('pencil')`,

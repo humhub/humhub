@@ -27,7 +27,7 @@ class AdminCest
 {
     private const SETTINGS = [
         'allowApp', 'appIds', 'allowClients', 'allowPersonalAccessTokens',
-        'patScopes', 'patMaxLifetimeDays', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays', 'revokeOnPasswordChange',
+        'patScopes', 'patMaxLifetimeDays', 'maxPersonalAccessTokensPerUser', 'refreshTokenLifetimeDays', 'grantMaxLifetimeDays', 'revokeOnPasswordChange',
     ];
 
     public function _before(FunctionalTester $I)
@@ -53,6 +53,7 @@ class AdminCest
             Module::instance()->settings->delete($name);
         }
         Module::instance()->appIds = null;
+        Module::instance()->maxPersonalAccessTokensPerUser = null;
     }
 
     public function testMenuEntryAndPageForAdmin(FunctionalTester $I)
@@ -105,6 +106,7 @@ class AdminCest
             'SettingsForm[allowPersonalAccessTokens]' => '1',
             'SettingsForm[patScopes]' => ['content:read', 'full'],
             'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[maxPersonalAccessTokensPerUser]' => '7',
             'SettingsForm[refreshTokenLifetimeDays]' => '14',
             'SettingsForm[grantMaxLifetimeDays]' => '200',
             'SettingsForm[revokeOnPasswordChange]' => '1',
@@ -116,6 +118,7 @@ class AdminCest
         Assert::assertTrue($module->allowsPersonalAccessTokens());
         Assert::assertSame(['content:read', 'full'], $module->getPatScopes());
         Assert::assertSame(30, $module->getPatMaxLifetimeDays());
+        Assert::assertSame(7, $module->getMaxPersonalAccessTokensPerUser());
         Assert::assertSame(14, $module->getRefreshTokenLifetimeDays());
         Assert::assertSame(200, $module->getGrantMaxLifetimeDays());
         Assert::assertTrue($module->revokesOnPasswordChange());
@@ -177,6 +180,73 @@ class AdminCest
         ]]);
         Assert::assertTrue(Module::instance()->allowsClients());
         Assert::assertSame(['com.humhub.app', 'com.acme.app'], Module::instance()->getAppIds());
+    }
+
+    public function testOnlySystemAdminsChangeFullAccessForTokens(FunctionalTester $I)
+    {
+        $settings = Module::instance()->settings;
+        $settings->set('allowPersonalAccessTokens', true);
+        $settings->set('patScopes', json_encode(['content:read', 'full']));
+        $I->setGroupPermission(self::USER1_GROUP, ManageSettings::class);
+
+        $I->amUser1();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->seeResponseCodeIs(200);
+        $I->seeElement('select[name="SettingsForm[patScopes][]"] option[value="content:read"]');
+        $I->dontSeeElement('select[name="SettingsForm[patScopes][]"] option[value="full"]');
+        $I->see('"Full access to your account" is included, set by a system administrator.', '#oauth-pat-settings');
+
+        // Saving keeps the `full` a system administrator set
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[allowPersonalAccessTokens]' => '1',
+            'SettingsForm[patScopes]' => ['users:read'],
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+        Assert::assertSame(['full', 'users:read'], Module::instance()->getPatScopes());
+
+        // A forged request cannot add it
+        $settings->set('patScopes', json_encode(['content:read']));
+        $this->post($I, 'oauth/admin/index', [], ['SettingsForm' => [
+            'allowPersonalAccessTokens' => '1', 'patScopes' => ['content:read', 'full'], 'maxPersonalAccessTokensPerUser' => '3',
+            'patMaxLifetimeDays' => '30', 'refreshTokenLifetimeDays' => '14', 'grantMaxLifetimeDays' => '0',
+        ]]);
+        $I->see('Only system administrators can change this.');
+        Assert::assertSame(['content:read'], Module::instance()->getPatScopes());
+
+        // A system administrator can remove it
+        $settings->set('patScopes', json_encode(['content:read', 'full']));
+        $I->amAdmin(true);
+        $I->amOnRoute('/oauth/admin/index');
+        $I->seeElement('select[name="SettingsForm[patScopes][]"] option[value="full"]');
+        $I->submitForm('#oauth-settings-form', [
+            'SettingsForm[allowPersonalAccessTokens]' => '1',
+            'SettingsForm[patScopes]' => ['content:read'],
+            'SettingsForm[patMaxLifetimeDays]' => '30',
+            'SettingsForm[refreshTokenLifetimeDays]' => '14',
+            'SettingsForm[grantMaxLifetimeDays]' => '0',
+        ]);
+        Assert::assertSame(['content:read'], Module::instance()->getPatScopes());
+    }
+
+    public function testConfiguredTokenLimitIsReadOnly(FunctionalTester $I)
+    {
+        Module::instance()->settings->set('maxPersonalAccessTokensPerUser', 4);
+        Module::instance()->maxPersonalAccessTokensPerUser = 9;
+
+        $I->amAdmin();
+        $I->amOnRoute('/oauth/admin/index');
+        $I->seeInField('SettingsForm[maxPersonalAccessTokensPerUser]', '9');
+        $I->seeElement('input[name="SettingsForm[maxPersonalAccessTokensPerUser]"][readonly]');
+
+        $this->post($I, 'oauth/admin/index', [], ['SettingsForm' => [
+            'maxPersonalAccessTokensPerUser' => '1',
+            'patMaxLifetimeDays' => '30', 'refreshTokenLifetimeDays' => '14', 'grantMaxLifetimeDays' => '0',
+        ]]);
+        $I->see('This is set in the configuration file.');
+        Assert::assertEquals(4, Module::instance()->settings->get('maxPersonalAccessTokensPerUser'));
+        Assert::assertSame(9, Module::instance()->getMaxPersonalAccessTokensPerUser());
     }
 
     public function testConfiguredAppIdsAreReadOnly(FunctionalTester $I)

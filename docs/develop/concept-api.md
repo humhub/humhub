@@ -555,6 +555,14 @@ The `rest` module documents its own `/api/v1` surface the same way, in its own r
 The three list shapes and the per-file batch answer of the upload endpoint are explained in
 the conventions above; the documents assume them.
 
+## Rate limiting
+
+Every `/api/v2` request is rate limited by its channel (OAuth token or PAT, or the platform's
+own session) and the scope its action declares, so controllers need no code of their own. A
+limited response carries the `RateLimit` headers; an exhausted limit answers `429` with
+`Retry-After`. The policies, defaults and configuration are described in
+[Rate limiting](concept-rate-limiting.md).
+
 ## Security invariants
 
 These must hold — each one exists because it was found missing:

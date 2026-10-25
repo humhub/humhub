@@ -13,6 +13,7 @@ use humhub\modules\oauth\components\CredentialActions;
 use humhub\modules\oauth\models\forms\PersonalAccessTokenForm;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
+use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\oauth\widgets\TokensSection;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\widgets\security\SecuritySessionSections;
@@ -81,6 +82,11 @@ class AccountController extends BaseAccountController
     {
         if (!TokensSection::canCreate()) {
             throw new ForbiddenHttpException();
+        }
+
+        if ((new PersonalAccessTokenService())->hasReachedLimit($this->getUser())) {
+            $this->view->warn(PersonalAccessTokenService::getLimitMessage());
+            return $this->redirect(['/user/security/sessions']);
         }
 
         $model = new PersonalAccessTokenForm($this->getUser());
