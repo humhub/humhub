@@ -1,10 +1,10 @@
 <template>
     <section :id="tableId" ref="root" class="card content-card data-table" :aria-labelledby="title ? titleId : null">
-        <div v-if="title || headerActions.length || headerMenu.length || hasChooser" class="card-header">
+        <div v-if="title || headerActions.length || headerMenu.length || hasChooser || hasBulk" class="card-header">
             <h2 v-if="title" :id="titleId" class="card-title">{{ title }}</h2>
             <HeaderActions
                 :actions="headerActions"
-                :menu="headerMenu"
+                :menu="selectedCount ? [] : headerMenu"
                 root-class="card-header-actions"
                 tool-variant="ghost"
             >
@@ -16,7 +16,22 @@
                     :title="texts.columns"
                     @click="openChooser"
                 ><i class="ti ti-layout-columns" aria-hidden="true"></i></button>
+                <template #end>
+                    <!-- While rows are selected, the ⋮ is the selection menu with the count -->
+                    <DropdownMenu
+                        v-if="selectedCount"
+                        :menu-id="`${tableId}.bulk`"
+                        :entries="bulkEntries"
+                        :toggle-aria-label="selectionLabel"
+                        :toggle-title="selectionLabel"
+                        toggle-class="btn btn-secondary data-table-bulk-toggle"
+                        root-class="data-table-bulk list-unstyled m-0"
+                    >
+                        <template #toggle>{{ selectedCount }}<i class="ti ti-dots-vertical" aria-hidden="true"></i></template>
+                    </DropdownMenu>
+                </template>
             </HeaderActions>
+            <span class="visually-hidden" role="status">{{ selectedCount ? selectionLabel : '' }}</span>
         </div>
         <div class="card-body">
             <FilterBar
@@ -37,6 +52,17 @@
                 >
                     <thead>
                         <tr>
+                            <th v-if="hasBulk" class="data-table-col-select">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    :checked="pageSelected === 'all'"
+                                    :indeterminate.prop="pageSelected === 'some'"
+                                    :disabled="!rows.length"
+                                    :aria-label="texts.selectPage"
+                                    @change="selectPage($event.target.checked)"
+                                >
+                            </th>
                             <th
                                 v-for="column in shownColumns"
                                 :key="column.key"
@@ -60,6 +86,7 @@
                     </thead>
                     <tbody v-if="loading && !rows.length && !error">
                         <tr v-for="index in skeletonCount" :key="index" class="data-table-skeleton placeholder-glow" aria-hidden="true">
+                            <td v-if="hasBulk" class="data-table-col-select"></td>
                             <td v-for="column in shownColumns" :key="column.key" :class="`data-table-col-${column.type}`">
                                 <div v-if="column.type === 'main'" class="data-table-main">
                                     <span class="placeholder data-table-main-image"></span>
@@ -89,12 +116,21 @@
                         </tr>
                     </tbody>
                     <tbody v-else>
-                        <template v-for="row in rows" :key="row.id">
+                        <template v-for="(row, index) in rows" :key="row.id">
                             <tr
-                                :class="{ 'is-expanded': isExpanded(row), 'is-busy': busy[row.id], 'data-table-row-link': !!rowUrl(row), 'data-table-row-toggle': !rowUrl(row) && hasDetails }"
+                                :class="{ 'is-expanded': isExpanded(row), 'is-busy': busy[row.id], 'table-active': isSelected(row), 'data-table-row-link': !!rowUrl(row), 'data-table-row-toggle': !rowUrl(row) && hasDetails }"
                                 :data-id="row.id"
                                 @click="onRowClick(row, $event)"
                             >
+                                <td v-if="hasBulk" class="data-table-col-select">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :checked="isSelected(row)"
+                                        :aria-label="rowLabel('Select {name}', row)"
+                                        @click="onSelect(row, index, $event)"
+                                    >
+                                </td>
                                 <component
                                     :is="column.type === 'main' ? 'th' : 'td'"
                                     v-for="column in shownColumns"
@@ -267,6 +303,12 @@ let uid = 0;
  * - States: skeleton rows while the first page loads, the rows dimmed while a later one does,
  *   "No results found." (with "Clear filters" while filters are set), an error with "Retry".
  *
+ * - Selection (for tables with a bulk action, one with a `bulkUrl`): a checkbox per row (with
+ *   Shift a range) and one for the page; while rows are selected, the header's ⋮ is the
+ *   selection menu ("2 ⋮"): each bulk action with the selected rows it applies to, "Select all
+ *   35" (every row of the filters, across pages), "Clear selection". A bulk action POSTs `ids`
+ *   (or `all` with the filters in the query) to its `bulkUrl` and reloads the page. A filter or
+ *   sort change clears the selection.
  * - Columns chooser (▦ in the header, for tables with optional columns — all but the main one):
  *   a dialog with a switch per optional column (at most `maxColumns`, the others then locked; a
  *   chosen column folded away at the current width is marked), Reset while the choice differs
@@ -327,6 +369,11 @@ export default {
             chosenKeys: this.initialChoice(),
             chooserOpen: false,
             draftKeys: [],
+            // The selected rows by id (their rows, for the actions they offer), or every row of
+            // the list's filters (`allSelected`).
+            selected: {},
+            allSelected: false,
+            lastSelectedIndex: null,
         };
     },
     computed: {
@@ -349,7 +396,60 @@ export default {
                 reset: i18n.t('base', 'Reset'),
                 cancel: i18n.t('base', 'Cancel'),
                 save: i18n.t('base', 'Save'),
+                selectPage: i18n.t('base', 'Select all on this page'),
+                clearSelection: i18n.t('base', 'Clear selection'),
             };
+        },
+        bulkActions() {
+            return this.actions.filter((action) => action.bulkUrl);
+        },
+        hasBulk() {
+            return this.bulkActions.length > 0;
+        },
+        selectedCount() {
+            return this.allSelected ? this.total : Object.keys(this.selected).length;
+        },
+        selectionLabel() {
+            return i18n.t('base', '{count} selected', { count: this.selectedCount });
+        },
+        // `all`, `some` or `none` of the rows on this page selected (the header checkbox).
+        pageSelected() {
+            const count = this.rows.filter((row) => this.isSelected(row)).length;
+            if (count === 0) {
+                return 'none';
+            }
+            return count === this.rows.length ? 'all' : 'some';
+        },
+        // The selection menu: each bulk action with the selected rows it applies to, then
+        // "Select all" (across pages) and "Clear selection".
+        bulkEntries() {
+            const entries = [];
+            this.bulkActions.forEach((action, index) => {
+                const count = this.allSelected
+                    ? null
+                    : Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).length;
+                if (count === 0) {
+                    return;
+                }
+                entries.push({
+                    id: `bulk-${action.id}`,
+                    label: count === null ? action.label : `${action.label} (${count})`,
+                    sortOrder: index * 10,
+                    htmlOptions: action.destructive ? { class: 'text-danger' } : {},
+                    onClick: () => this.runBulk(action, count),
+                });
+            });
+            entries.push({ id: 'bulk-divider', divider: true, sortOrder: 900 });
+            if (!this.allSelected && this.total > this.selectedCount) {
+                entries.push({
+                    id: 'bulk-select-all',
+                    label: i18n.t('base', 'Select all {count}', { count: this.total }),
+                    sortOrder: 910,
+                    onClick: () => { this.allSelected = true; },
+                });
+            }
+            entries.push({ id: 'bulk-clear', label: this.texts.clearSelection, sortOrder: 920, onClick: () => this.clearSelection() });
+            return entries;
         },
         optionalColumns() {
             return this.columns.filter((column) => column.type !== 'main');
@@ -386,7 +486,7 @@ export default {
             return this.foldedKeys.length > 0;
         },
         colspan() {
-            return this.shownColumns.length + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
+            return this.shownColumns.length + (this.hasBulk ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
         },
         filtered() {
             return this.filters.some((filter) => !isDefault(filter, this.values[filter.key]));
@@ -456,6 +556,7 @@ export default {
             // The FilterBar's initial emit (while it is created) only seeds the first fetch.
             if (this.started) {
                 this.page = 1;
+                this.clearSelection();
                 this.fetch();
             }
         },
@@ -470,6 +571,7 @@ export default {
                 this.sortDescending = false;
             }
             this.page = 1;
+            this.clearSelection();
             this.fetch();
         },
         ariaSort(column) {
@@ -646,6 +748,72 @@ export default {
                     status('error', (response && response.message) || i18n.t('base', 'An unexpected error occurred.'));
                     log.error(response);
                 });
+        },
+        isSelected(row) {
+            return this.allSelected || this.selected[row.id] !== undefined;
+        },
+        // A row's checkbox; with Shift every row between the last one clicked and this one.
+        onSelect(row, index, event) {
+            const on = event.target.checked;
+            const rows = event.shiftKey && this.lastSelectedIndex !== null
+                ? this.rows.slice(Math.min(this.lastSelectedIndex, index), Math.max(this.lastSelectedIndex, index) + 1)
+                : [row];
+            this.setSelected(rows, on);
+            this.lastSelectedIndex = index;
+        },
+        selectPage(on) {
+            this.setSelected(this.rows, on);
+        },
+        setSelected(rows, on) {
+            // "All" turns into the rows of this page once one is deselected.
+            const selected = this.allSelected ? Object.fromEntries(this.rows.map((row) => [row.id, row])) : { ...this.selected };
+            this.allSelected = false;
+            rows.forEach((row) => {
+                if (on) {
+                    selected[row.id] = row;
+                } else {
+                    delete selected[row.id];
+                }
+            });
+            this.selected = selected;
+        },
+        clearSelection() {
+            this.selected = {};
+            this.allSelected = false;
+            this.lastSelectedIndex = null;
+        },
+        // Applies a bulk action to the selection (its ids, or `all` with the list's filters),
+        // then reloads the page.
+        runBulk(action, count) {
+            this.closeMenus();
+            const body = count === null
+                ? i18n.t('base', 'Apply "{action}" to all {count} entries?', { action: action.label, count: this.total })
+                : i18n.t('base', 'Apply "{action}" to {count} selected entries?', { action: action.label, count });
+
+            return modal.confirm({ body, confirmText: action.label }).then((ok) => {
+                if (!ok) {
+                    return null;
+                }
+                let url = action.bulkUrl;
+                let data;
+                if (this.allSelected) {
+                    const params = new URLSearchParams(requestParams(this.filters, this.values)).toString();
+                    url += params ? (url.includes('?') ? '&' : '?') + params : '';
+                    data = { all: 1 };
+                } else {
+                    data = { ids: Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).map((row) => row.id) };
+                }
+                return client.post(url, { data }).then((response) => {
+                    if (response && response.message) {
+                        status('success', response.message);
+                    }
+                    this.clearSelection();
+                    return this.fetch();
+                }).catch((response) => {
+                    status('error', (response && response.message) || i18n.t('base', 'An unexpected error occurred.'));
+                    log.error(response);
+                });
+            });
         },
         isExpanded(row) {
             return !!this.expanded[row.id];

@@ -157,6 +157,48 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/bulk/enable":
+    post:
+      tags:
+        - Administration
+      summary: Enable several users
+      operationId: bulkEnableAdminUsers
+      description: |
+        Enables the selected users: `ids`, or `all` — every user of the list's filters, given as
+        query parameters exactly as `GET /admin/user` takes them. Each user whose row offers
+        "Enable" (a deactivated account the caller may manage) is changed, the others are skipped.
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/bulk/disable":
+    post:
+      tags:
+        - Administration
+      summary: Deactivate several users
+      operationId: bulkDisableAdminUsers
+      description: |
+        Deactivates the selected users, as `/admin/user/bulk/enable` enables them: each user whose
+        row offers "Disable" (an active account the caller may manage) is changed, the others are
+        skipped.
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
 components:
   parameters:
     userIdPathParam:
@@ -166,7 +208,34 @@ components:
       required: true
       schema:
         type: integer
+  requestBodies:
+    BulkSelection:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/BulkSelection"
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BulkSelection"
   responses:
+    BulkDone:
+      description: How many users were changed and skipped
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              done:
+                type: integer
+              skipped:
+                type: integer
+              message:
+                type: string
+          example:
+            done: 2
+            skipped: 1
+            message: 2 users were changed. 1 user was left out.
     RowChanged:
       description: The user's new row
       content:
@@ -177,6 +246,18 @@ components:
               row:
                 $ref: "#/components/schemas/TableRow"
   schemas:
+    BulkSelection:
+      title: BulkSelection
+      type: object
+      description: The selected users — their `ids`, or `all` the users of the filters in the query
+      properties:
+        ids:
+          type: array
+          maxItems: 1000
+          items:
+            type: integer
+        all:
+          type: boolean
     TableRow:
       title: TableRow
       type: object

@@ -86,6 +86,7 @@ class UserTable extends DataTable
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?'),
                 visible: fn(User $user) => $user->status == User::STATUS_DEACTIVATED && $this->canManage($user),
                 sortOrder: 200,
+                bulkUrl: ['/admin/api/user/bulk', 'action' => 'enable'],
             ),
             new RowAction(
                 'disable',
@@ -95,6 +96,7 @@ class UserTable extends DataTable
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?'),
                 visible: fn(User $user) => $user->status == User::STATUS_ENABLED && $this->canManage($user),
                 sortOrder: 200,
+                bulkUrl: ['/admin/api/user/bulk', 'action' => 'disable'],
             ),
             new RowAction(
                 'impersonate',

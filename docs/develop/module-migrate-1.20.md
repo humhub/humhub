@@ -1682,7 +1682,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$event->sender->addAction(new RowAction(…))` / `removeAction('disable')`. A `RowAction`
     decides per row whether it is offered (`visible`) and has a kind: `link`, `modal`, `post` (a
     form POST to a web route, e.g. one answering with a redirect) or `request` (an API call
-    answering the new row).
+    answering the new row); with a `bulkUrl` it is also offered for the selected rows.
   - **Changed:** the list page no longer uses `humhub\modules\admin\models\UserSearch` (the
     export still does). A module restricting the users an administrator sees narrows
     `AdminUserList` on `FilterableList::EVENT_BUILD` instead of replacing `UserSearch`; the

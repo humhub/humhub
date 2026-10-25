@@ -230,6 +230,8 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.data-table-skeleton`, `.data-table-message`, `.data-table-error` | Skeleton rows (`.placeholder-glow`), the empty or error row, a failed later page (`.alert`) |
 | `.data-table-footer`, `-count`, `-page-size`, `-pager` | The footer; the pager is Bootstrap's `.pagination` |
 | `tr.is-busy` | A row whose action is running |
+| `.data-table-col-select`, `tr.table-active` | The checkboxes; a selected row (Bootstrap's `.table-active`, accent subtle) |
+| `.data-table-bulk`, `.data-table-bulk-toggle` | The selection menu ("2 ⋮") in place of the header's ⋮ |
 
 - **File:** `_data-table.scss`, behind `$prev-data-table`.
 - **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-hover-bg`,
@@ -270,8 +272,19 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   administration's user table offers username and registration (and, for administrators, the
   source) on request, at most 4.
 
-**Not yet (see Behaviour):** selection and bulk actions, the row motion, the red ring of a
-destructive action in progress, "1 of 2" on very narrow pagers. The switches still carry
+- **Selection and bulk actions:** for tables with a bulk action (a `RowAction` with a
+  `bulkUrl`): a checkbox per row (Shift-click for a range), the page's checkbox (none, some,
+  all), and while rows are selected the header's ⋮ becomes the selection menu ("2 ⋮") with each
+  bulk action and the number of selected rows it applies to, "Select all 35" (every row of the
+  filters, across pages) and "Clear selection". A bulk action is confirmed, POSTs `ids` (or `all`
+  with the filters in the query) to its `bulkUrl`, which applies it to every selected row
+  offering it and answers `{done, skipped, message}`; the table then reloads. A filter or sort
+  change clears the selection, a page change keeps it. The administration's user table offers
+  Enable and Disable in bulk (`POST /api/v2/admin/user/bulk/enable|disable`).
+
+**Not yet (see Behaviour):** further bulk actions (deliberately: enable and disable only for
+now), the row motion, the red ring of a destructive action in progress, "1 of 2" on very narrow
+pagers. The switches still carry
 HumHub's checkbox look until the [switch](choice-controls.md) is styled.
 
 **Replaces:** `humhub\widgets\GridView` on the pages that move to the table; the user list's

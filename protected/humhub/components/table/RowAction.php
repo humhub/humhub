@@ -22,6 +22,10 @@ use yii\helpers\Url;
  * - `request`: POSTs to the URL (an API endpoint) and updates the row in place with the answer's
  *   `row`, or removes it when the answer has `removed: true`
  *
+ * An action with a `bulkUrl` is also offered for the selected rows: the table POSTs `ids` (or
+ * `all` with its filters in the query) to that URL, which applies it to every one of them whose
+ * row offers it and answers `{done, skipped, message}`.
+ *
  * @since 1.20
  */
 class RowAction
@@ -41,6 +45,7 @@ class RowAction
      * @param string|null $confirm a question asked before the action runs
      * @param bool $destructive shown last and in red; asks for confirmation when `confirm` is set
      * @param callable|null $visible `fn($model): bool` whether a row offers the action
+     * @param string|array|null $bulkUrl the endpoint applying the action to the selected rows
      */
     public function __construct(
         public readonly string $id,
@@ -52,6 +57,7 @@ class RowAction
         public readonly bool $destructive = false,
         ?callable $visible = null,
         public readonly int $sortOrder = 1000,
+        public readonly string|array|null $bulkUrl = null,
     ) {
         $this->url = Closure::fromCallable($url);
         $this->visible = $visible !== null ? Closure::fromCallable($visible) : null;
@@ -79,6 +85,7 @@ class RowAction
             'icon' => $this->icon,
             'confirm' => $this->confirm,
             'destructive' => $this->destructive ?: null,
+            'bulkUrl' => $this->bulkUrl !== null ? Url::to($this->bulkUrl) : null,
         ], static fn($item) => $item !== null);
     }
 }

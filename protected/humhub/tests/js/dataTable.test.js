@@ -421,4 +421,95 @@ describe('DataTable', () => {
             expect(folded).toEqual(['Groups']);
         });
     });
+
+    describe('the selection', () => {
+        const bulkActions = [
+            { id: 'enable', label: 'Enable', kind: 'request', bulkUrl: '/api/v2/admin/user/bulk/enable' },
+            { id: 'disable', label: 'Disable', kind: 'request', bulkUrl: '/api/v2/admin/user/bulk/disable' },
+            { id: 'edit', label: 'Edit', kind: 'link' },
+        ];
+        const offering = (id, name, ids) => row(id, name, { actions: ids.map((action) => ({ id: action, url: `/x/${id}/${action}` })) });
+        const checkbox = (id) => wrapper.find(`tr[data-id="${id}"] .data-table-col-select input`);
+        const bulkItems = () => wrapper.findAll('.data-table-bulk .dropdown-item').map((item) => item.text());
+
+        beforeEach(() => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope(
+                [offering(1, 'Emma', ['disable', 'edit']), offering(2, 'Noah', ['disable']), offering(3, 'Mia', ['enable'])],
+                { total: 30, pages: 2 },
+            )));
+            globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ done: 2, skipped: 0, message: '2 users were changed.' }));
+        });
+
+        it('offers no checkboxes without a bulk action', async () => {
+            wrapper = mountTable();
+            await flushPromises();
+            expect(wrapper.find('.data-table-col-select').exists()).toBe(false);
+        });
+
+        it('selects rows, a range with Shift and the page, and shows the selection menu instead of the ⋮', async () => {
+            wrapper = mountTable({ actions: bulkActions, headerMenu: [{ id: 'export', label: 'Export', url: '/export' }] });
+            await flushPromises();
+            expect(wrapper.find('.card-header-actions-menu').exists()).toBe(true);
+
+            await checkbox(1).trigger('click');
+            expect(wrapper.find('tr[data-id="1"]').classes()).toContain('table-active');
+            expect(wrapper.find('.data-table-bulk-toggle').text()).toBe('1');
+            expect(wrapper.find('.card-header-actions-menu').exists()).toBe(false);
+            expect(bulkItems()).toEqual(['Disable (1)', 'Select all 30', 'Clear selection']);
+            const header = wrapper.find('thead .data-table-col-select input').element;
+            expect(header.indeterminate).toBe(true);
+
+            await checkbox(3).trigger('click', { shiftKey: true });
+            expect(wrapper.find('.data-table-bulk-toggle').text()).toBe('3');
+            expect(bulkItems()).toEqual(['Enable (1)', 'Disable (2)', 'Select all 30', 'Clear selection']);
+            expect(header.checked).toBe(true);
+
+            await wrapper.find('thead .data-table-col-select input').setValue(false);
+            expect(wrapper.find('.data-table-bulk').exists()).toBe(false);
+        });
+
+        it('applies a bulk action to the selected rows offering it, then reloads', async () => {
+            wrapper = mountTable({ actions: bulkActions });
+            await flushPromises();
+            await wrapper.find('thead .data-table-col-select input').setValue(true);
+
+            await wrapper.findAll('.data-table-bulk .dropdown-item').find((item) => item.text() === 'Disable (2)').trigger('click');
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.modal.confirm).toHaveBeenCalledWith(expect.objectContaining({ body: 'Apply "Disable" to 2 selected entries?' }));
+            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/admin/user/bulk/disable', { data: { ids: [1, 2] } });
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(2);
+            expect(wrapper.find('.data-table-bulk').exists()).toBe(false);
+        });
+
+        it('selects every row of the filters and sends them as "all" with the filters', async () => {
+            window.history.replaceState(null, '', '/admin/user/list?group=2');
+            wrapper = mountTable({ actions: bulkActions });
+            await flushPromises();
+            await checkbox(2).trigger('click');
+
+            await wrapper.findAll('.data-table-bulk .dropdown-item').find((item) => item.text() === 'Select all 30').trigger('click');
+            expect(wrapper.find('.data-table-bulk-toggle').text()).toBe('30');
+            expect(bulkItems()).toEqual(['Enable', 'Disable', 'Clear selection']);
+
+            await wrapper.findAll('.data-table-bulk .dropdown-item').find((item) => item.text() === 'Enable').trigger('click');
+            await flushPromises();
+            expect(globalThis.humhubStubs.modal.confirm).toHaveBeenCalledWith(expect.objectContaining({ body: 'Apply "Enable" to all 30 entries?' }));
+            expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/admin/user/bulk/enable?group=2', { data: { all: 1 } });
+        });
+
+        it('clears the selection with a filter or sort change, and keeps it across pages', async () => {
+            wrapper = mountTable({ actions: bulkActions });
+            await flushPromises();
+            await checkbox(1).trigger('click');
+
+            await wrapper.findAll('.pagination button').at(-1).trigger('click');
+            await flushPromises();
+            expect(wrapper.find('.data-table-bulk-toggle').text()).toBe('1');
+
+            await wrapper.find('.data-table-sort').trigger('click');
+            await flushPromises();
+            expect(wrapper.find('.data-table-bulk').exists()).toBe(false);
+        });
+    });
 });

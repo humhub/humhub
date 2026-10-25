@@ -9,6 +9,8 @@
 $data-table-gap: $spacer * .75 !default;
 $data-table-main-image-size: 2.5rem !default;
 $data-table-hover-bg: var(--hh-background-color-secondary) !default;
+// A selected row (Bootstrap's `.table-active`)
+$data-table-selected-bg: rgba(var(--bs-accent-rgb), .08) !default;
 $data-table-head-color: var(--bs-secondary-color) !default;
 $data-table-head-font-size: $font-size-sm !default;
 
@@ -27,6 +29,7 @@ $data-table-head-font-size: $font-size-sm !default;
     .data-table .table {
         --bs-table-bg: transparent;
         --bs-table-hover-bg: #{$data-table-hover-bg};
+        --bs-table-active-bg: #{$data-table-selected-bg};
         --bs-table-border-color: transparent;
 
         margin-bottom: 0;
@@ -91,6 +94,14 @@ $data-table-head-font-size: $font-size-sm !default;
     .data-table-col-main {
         width: 100%;
         min-width: 0;
+    }
+
+    .data-table-col-select {
+        width: 1%;
+
+        .form-check-input {
+            margin: 0;
+        }
     }
 
     .data-table-col-chip,
@@ -242,6 +253,13 @@ $data-table-head-font-size: $font-size-sm !default;
 
     .data-table-pager .pagination {
         margin: 0;
+    }
+
+    // The selection menu's toggle: the count and ⋮
+    .data-table-bulk-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacer * .25;
     }
 
     // The columns chooser: a switch per optional column

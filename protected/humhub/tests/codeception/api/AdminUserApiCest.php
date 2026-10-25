@@ -170,4 +170,56 @@ class AdminUserApiCest
         $I->seeResponseCodeIs(403);
         Assert::assertEquals(User::STATUS_ENABLED, User::findOne(2)->status);
     }
+
+    public function testDisablesAndEnablesTheSelectedUsers(ApiTester $I)
+    {
+        $I->wantTo('change the status of several users at once');
+        $I->amLoggedInAs(1);
+        $this->withCsrf($I);
+
+        // 5 is deactivated already: its row does not offer "disable".
+        $I->sendPost('admin/user/bulk/disable', ['ids' => [2, 3, 5]]);
+
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['done' => 2, 'skipped' => 1]);
+        Assert::assertEquals(User::STATUS_DEACTIVATED, User::findOne(2)->status);
+        Assert::assertEquals(User::STATUS_DEACTIVATED, User::findOne(3)->status);
+
+        // Every user of the filters: the deactivated ones (2, 3, 5)
+        $I->sendPost('admin/user/bulk/enable?status=deactivated', ['all' => 1]);
+
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['done' => 3, 'skipped' => 0]);
+        Assert::assertEquals(User::STATUS_ENABLED, User::findOne(2)->status);
+        Assert::assertEquals(User::STATUS_ENABLED, User::findOne(5)->status);
+    }
+
+    public function testRefusesAnInvalidBulkRequest(ApiTester $I)
+    {
+        $I->amLoggedInAs(1);
+        $this->withCsrf($I);
+
+        $I->sendPost('admin/user/bulk/disable', ['ids' => []]);
+        $I->seeResponseCodeIs(422);
+
+        $I->sendPost('admin/user/bulk/disable', ['ids' => ['x']]);
+        $I->seeResponseCodeIs(422);
+
+        $I->sendPost('admin/user/bulk/disable?status=everyone', ['all' => 1]);
+        $I->seeResponseCodeIs(422);
+
+        $I->sendPost('admin/user/bulk/delete', ['ids' => [2]]);
+        $I->seeResponseCodeIs(404);
+    }
+
+    public function testTheBulkChangeRequiresTheUserAdministration(ApiTester $I)
+    {
+        $I->amLoggedInAs(2);
+        $this->withCsrf($I);
+
+        $I->sendPost('admin/user/bulk/disable', ['ids' => [3]]);
+
+        $I->seeResponseCodeIs(403);
+        Assert::assertEquals(User::STATUS_ENABLED, User::findOne(3)->status);
+    }
 }

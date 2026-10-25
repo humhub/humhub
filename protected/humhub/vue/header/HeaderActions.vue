@@ -33,6 +33,7 @@
         >
             <template #toggle><i class="ti ti-dots-vertical" aria-hidden="true"></i></template>
         </DropdownMenu>
+        <slot name="end"></slot>
     </div>
 </template>
 
@@ -45,7 +46,7 @@ let uid = 0;
 /**
  * The actions of a header (`PageHeader`, `ContentCard`), whatever their sort order: the tools, the
  * default slot (stateful tools of the page's own), the primary action (accent), then the ⋮
- * `DropdownMenu`. A second primary action is shown as a tool. An internal part of those two
+ * `DropdownMenu` and the `end` slot (what takes the ⋮'s place, e.g. a table's selection menu). A second primary action is shown as a tool. An internal part of those two
  * components; the PHP counterparts are `humhub\widgets\menu\HeaderActions` and a header's ⋮
  * menu.
  *

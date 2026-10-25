@@ -21,6 +21,7 @@ return [
         ['pattern' => 'api/v2/admin/user', 'route' => 'admin/api/user/index', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/admin/user/<id:\d+>/enable', 'route' => 'admin/api/user/enable', 'verb' => 'POST'],
         ['pattern' => 'api/v2/admin/user/<id:\d+>/disable', 'route' => 'admin/api/user/disable', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/admin/user/bulk/<action:enable|disable>', 'route' => 'admin/api/user/bulk', 'verb' => 'POST'],
     ],
     'events' => [
         [

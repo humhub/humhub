@@ -637,7 +637,8 @@
           ])]),
           _: 1
           /* STABLE */
-        }, 8, ["menu-id", "entries", "toggle-aria-label", "toggle-title", "root-class"])) : vue.createCommentVNode("v-if", true)
+        }, 8, ["menu-id", "entries", "toggle-aria-label", "toggle-title", "root-class"])) : vue.createCommentVNode("v-if", true),
+        vue.renderSlot(_ctx.$slots, "end")
       ],
       2
       /* CLASS */
@@ -2824,7 +2825,12 @@
         pageSizes: PAGE_SIZES,
         chosenKeys: this.initialChoice(),
         chooserOpen: false,
-        draftKeys: []
+        draftKeys: [],
+        // The selected rows by id (their rows, for the actions they offer), or every row of
+        // the list's filters (`allSelected`).
+        selected: {},
+        allSelected: false,
+        lastSelectedIndex: null
       };
     },
     computed: {
@@ -2846,8 +2852,61 @@
           hiddenAtWidth: vue$1.i18n.t("base", "Hidden at this width"),
           reset: vue$1.i18n.t("base", "Reset"),
           cancel: vue$1.i18n.t("base", "Cancel"),
-          save: vue$1.i18n.t("base", "Save")
+          save: vue$1.i18n.t("base", "Save"),
+          selectPage: vue$1.i18n.t("base", "Select all on this page"),
+          clearSelection: vue$1.i18n.t("base", "Clear selection")
         };
+      },
+      bulkActions() {
+        return this.actions.filter((action) => action.bulkUrl);
+      },
+      hasBulk() {
+        return this.bulkActions.length > 0;
+      },
+      selectedCount() {
+        return this.allSelected ? this.total : Object.keys(this.selected).length;
+      },
+      selectionLabel() {
+        return vue$1.i18n.t("base", "{count} selected", { count: this.selectedCount });
+      },
+      // `all`, `some` or `none` of the rows on this page selected (the header checkbox).
+      pageSelected() {
+        const count = this.rows.filter((row) => this.isSelected(row)).length;
+        if (count === 0) {
+          return "none";
+        }
+        return count === this.rows.length ? "all" : "some";
+      },
+      // The selection menu: each bulk action with the selected rows it applies to, then
+      // "Select all" (across pages) and "Clear selection".
+      bulkEntries() {
+        const entries = [];
+        this.bulkActions.forEach((action, index) => {
+          const count = this.allSelected ? null : Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).length;
+          if (count === 0) {
+            return;
+          }
+          entries.push({
+            id: `bulk-${action.id}`,
+            label: count === null ? action.label : `${action.label} (${count})`,
+            sortOrder: index * 10,
+            htmlOptions: action.destructive ? { class: "text-danger" } : {},
+            onClick: () => this.runBulk(action, count)
+          });
+        });
+        entries.push({ id: "bulk-divider", divider: true, sortOrder: 900 });
+        if (!this.allSelected && this.total > this.selectedCount) {
+          entries.push({
+            id: "bulk-select-all",
+            label: vue$1.i18n.t("base", "Select all {count}", { count: this.total }),
+            sortOrder: 910,
+            onClick: () => {
+              this.allSelected = true;
+            }
+          });
+        }
+        entries.push({ id: "bulk-clear", label: this.texts.clearSelection, sortOrder: 920, onClick: () => this.clearSelection() });
+        return entries;
       },
       optionalColumns() {
         return this.columns.filter((column) => column.type !== "main");
@@ -2884,7 +2943,7 @@
         return this.foldedKeys.length > 0;
       },
       colspan() {
-        return this.shownColumns.length + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
+        return this.shownColumns.length + (this.hasBulk ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
       },
       filtered() {
         return this.filters.some((filter) => !isDefault(filter, this.values[filter.key]));
@@ -2955,6 +3014,7 @@
         this.values = values;
         if (this.started) {
           this.page = 1;
+          this.clearSelection();
           this.fetch();
         }
       },
@@ -2969,6 +3029,7 @@
           this.sortDescending = false;
         }
         this.page = 1;
+        this.clearSelection();
         this.fetch();
       },
       ariaSort(column) {
@@ -3137,6 +3198,66 @@
           vue$1.log.error(response);
         });
       },
+      isSelected(row) {
+        return this.allSelected || this.selected[row.id] !== void 0;
+      },
+      // A row's checkbox; with Shift every row between the last one clicked and this one.
+      onSelect(row, index, event) {
+        const on = event.target.checked;
+        const rows = event.shiftKey && this.lastSelectedIndex !== null ? this.rows.slice(Math.min(this.lastSelectedIndex, index), Math.max(this.lastSelectedIndex, index) + 1) : [row];
+        this.setSelected(rows, on);
+        this.lastSelectedIndex = index;
+      },
+      selectPage(on) {
+        this.setSelected(this.rows, on);
+      },
+      setSelected(rows, on) {
+        const selected = this.allSelected ? Object.fromEntries(this.rows.map((row) => [row.id, row])) : { ...this.selected };
+        this.allSelected = false;
+        rows.forEach((row) => {
+          if (on) {
+            selected[row.id] = row;
+          } else {
+            delete selected[row.id];
+          }
+        });
+        this.selected = selected;
+      },
+      clearSelection() {
+        this.selected = {};
+        this.allSelected = false;
+        this.lastSelectedIndex = null;
+      },
+      // Applies a bulk action to the selection (its ids, or `all` with the list's filters),
+      // then reloads the page.
+      runBulk(action, count) {
+        this.closeMenus();
+        const body = count === null ? vue$1.i18n.t("base", 'Apply "{action}" to all {count} entries?', { action: action.label, count: this.total }) : vue$1.i18n.t("base", 'Apply "{action}" to {count} selected entries?', { action: action.label, count });
+        return vue$1.modal.confirm({ body, confirmText: action.label }).then((ok) => {
+          if (!ok) {
+            return null;
+          }
+          let url = action.bulkUrl;
+          let data;
+          if (this.allSelected) {
+            const params = new URLSearchParams(requestParams(this.filters, this.values)).toString();
+            url += params ? (url.includes("?") ? "&" : "?") + params : "";
+            data = { all: 1 };
+          } else {
+            data = { ids: Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).map((row) => row.id) };
+          }
+          return vue$1.client.post(url, { data }).then((response) => {
+            if (response && response.message) {
+              vue$1.status("success", response.message);
+            }
+            this.clearSelection();
+            return this.fetch();
+          }).catch((response) => {
+            vue$1.status("error", response && response.message || vue$1.i18n.t("base", "An unexpected error occurred."));
+            vue$1.log.error(response);
+          });
+        });
+      },
       isExpanded(row) {
         return !!this.expanded[row.id];
       },
@@ -3281,97 +3402,115 @@
   };
   const _hoisted_3$c = ["id"];
   const _hoisted_4$b = ["aria-label", "title"];
-  const _hoisted_5$7 = { class: "card-body" };
-  const _hoisted_6$7 = {
+  const _hoisted_5$7 = {
+    class: "visually-hidden",
+    role: "status"
+  };
+  const _hoisted_6$7 = { class: "card-body" };
+  const _hoisted_7$5 = {
     ref: "wrap",
     class: "data-table-wrap"
   };
-  const _hoisted_7$5 = ["aria-label", "aria-busy"];
-  const _hoisted_8$5 = ["aria-sort"];
-  const _hoisted_9$4 = ["aria-label", "onClick"];
-  const _hoisted_10$4 = {
+  const _hoisted_8$5 = ["aria-label", "aria-busy"];
+  const _hoisted_9$4 = {
     key: 0,
+    class: "data-table-col-select"
+  };
+  const _hoisted_10$4 = ["checked", ".indeterminate", "disabled", "aria-label"];
+  const _hoisted_11$3 = ["aria-sort"];
+  const _hoisted_12$3 = ["aria-label", "onClick"];
+  const _hoisted_13$1 = {
+    key: 1,
     class: "data-table-col-details"
   };
-  const _hoisted_11$3 = { class: "visually-hidden" };
-  const _hoisted_12$3 = {
-    key: 1,
+  const _hoisted_14 = { class: "visually-hidden" };
+  const _hoisted_15 = {
+    key: 2,
     class: "data-table-col-actions"
   };
-  const _hoisted_13$1 = { class: "visually-hidden" };
-  const _hoisted_14 = { key: 0 };
-  const _hoisted_15 = {
+  const _hoisted_16 = { class: "visually-hidden" };
+  const _hoisted_17 = { key: 0 };
+  const _hoisted_18 = {
+    key: 0,
+    class: "data-table-col-select"
+  };
+  const _hoisted_19 = {
     key: 0,
     class: "data-table-main"
   };
-  const _hoisted_16 = {
+  const _hoisted_20 = {
     key: 1,
     class: "placeholder col-6"
   };
-  const _hoisted_17 = {
-    key: 0,
+  const _hoisted_21 = {
+    key: 1,
     class: "data-table-col-details"
   };
-  const _hoisted_18 = {
-    key: 1,
+  const _hoisted_22 = {
+    key: 2,
     class: "data-table-col-actions"
   };
-  const _hoisted_19 = { key: 1 };
-  const _hoisted_20 = { class: "data-table-message" };
-  const _hoisted_21 = ["colspan"];
-  const _hoisted_22 = { role: "alert" };
-  const _hoisted_23 = { role: "status" };
-  const _hoisted_24 = { key: 2 };
-  const _hoisted_25 = ["data-id", "onClick"];
-  const _hoisted_26 = {
+  const _hoisted_23 = { key: 1 };
+  const _hoisted_24 = { class: "data-table-message" };
+  const _hoisted_25 = ["colspan"];
+  const _hoisted_26 = { role: "alert" };
+  const _hoisted_27 = { role: "status" };
+  const _hoisted_28 = { key: 2 };
+  const _hoisted_29 = ["data-id", "onClick"];
+  const _hoisted_30 = {
     key: 0,
+    class: "data-table-col-select"
+  };
+  const _hoisted_31 = ["checked", "aria-label", "onClick"];
+  const _hoisted_32 = {
+    key: 1,
     class: "data-table-col-details"
   };
-  const _hoisted_27 = ["aria-expanded", "aria-controls", "aria-label", "onClick"];
-  const _hoisted_28 = ["href", "aria-label", "title", "onClick"];
-  const _hoisted_29 = ["id"];
-  const _hoisted_30 = ["colspan"];
-  const _hoisted_31 = {
+  const _hoisted_33 = ["aria-expanded", "aria-controls", "aria-label", "onClick"];
+  const _hoisted_34 = ["href", "aria-label", "title", "onClick"];
+  const _hoisted_35 = ["id"];
+  const _hoisted_36 = ["colspan"];
+  const _hoisted_37 = {
     key: 1,
     class: "alert alert-danger data-table-error",
     role: "alert"
   };
-  const _hoisted_32 = {
+  const _hoisted_38 = {
     key: 1,
     class: "card-footer data-table-footer"
   };
-  const _hoisted_33 = {
+  const _hoisted_39 = {
     class: "data-table-count",
     role: "status"
   };
-  const _hoisted_34 = { class: "data-table-page-size" };
-  const _hoisted_35 = ["value"];
-  const _hoisted_36 = ["value"];
-  const _hoisted_37 = ["aria-label"];
-  const _hoisted_38 = { class: "pagination pagination-sm" };
-  const _hoisted_39 = ["aria-label", "disabled"];
-  const _hoisted_40 = {
+  const _hoisted_40 = { class: "data-table-page-size" };
+  const _hoisted_41 = ["value"];
+  const _hoisted_42 = ["value"];
+  const _hoisted_43 = ["aria-label"];
+  const _hoisted_44 = { class: "pagination pagination-sm" };
+  const _hoisted_45 = ["aria-label", "disabled"];
+  const _hoisted_46 = {
     key: 0,
     class: "page-link",
     "aria-hidden": "true"
   };
-  const _hoisted_41 = ["aria-current", "aria-label", "onClick"];
-  const _hoisted_42 = ["aria-label", "disabled"];
-  const _hoisted_43 = {
+  const _hoisted_47 = ["aria-current", "aria-label", "onClick"];
+  const _hoisted_48 = ["aria-label", "disabled"];
+  const _hoisted_49 = {
     key: 0,
     class: "form-text data-table-columns-limit"
   };
-  const _hoisted_44 = ["id", "checked", "disabled", "onChange"];
-  const _hoisted_45 = ["for"];
-  const _hoisted_46 = {
+  const _hoisted_50 = ["id", "checked", "disabled", "onChange"];
+  const _hoisted_51 = ["for"];
+  const _hoisted_52 = {
     key: 0,
     class: "form-text data-table-columns-folded"
   };
   function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
     const _component_HeaderActions = vue.resolveComponent("HeaderActions");
     const _component_FilterBar = vue.resolveComponent("FilterBar");
     const _component_TableCell = vue.resolveComponent("TableCell");
-    const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
     const _component_UiModal = vue.resolveComponent("UiModal");
     return vue.openBlock(), vue.createElementBlock("section", {
       id: $props.tableId,
@@ -3379,7 +3518,7 @@
       class: "card content-card data-table",
       "aria-labelledby": $props.title ? $options.titleId : null
     }, [
-      $props.title || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$d, [
+      $props.title || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser || $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$d, [
         $props.title ? (vue.openBlock(), vue.createElementBlock("h2", {
           key: 0,
           id: $options.titleId,
@@ -3387,10 +3526,42 @@
         }, vue.toDisplayString($props.title), 9, _hoisted_3$c)) : vue.createCommentVNode("v-if", true),
         vue.createVNode(_component_HeaderActions, {
           actions: $props.headerActions,
-          menu: $props.headerMenu,
+          menu: $options.selectedCount ? [] : $props.headerMenu,
           "root-class": "card-header-actions",
           "tool-variant": "ghost"
         }, {
+          end: vue.withCtx(() => [
+            vue.createCommentVNode(" While rows are selected, the ⋮ is the selection menu with the count "),
+            $options.selectedCount ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
+              key: 0,
+              "menu-id": `${$props.tableId}.bulk`,
+              entries: $options.bulkEntries,
+              "toggle-aria-label": $options.selectionLabel,
+              "toggle-title": $options.selectionLabel,
+              "toggle-class": "btn btn-secondary data-table-bulk-toggle",
+              "root-class": "data-table-bulk list-unstyled m-0"
+            }, {
+              toggle: vue.withCtx(() => [
+                vue.createTextVNode(
+                  vue.toDisplayString($options.selectedCount),
+                  1
+                  /* TEXT */
+                ),
+                _cache[14] || (_cache[14] = vue.createElementVNode(
+                  "i",
+                  {
+                    class: "ti ti-dots-vertical",
+                    "aria-hidden": "true"
+                  },
+                  null,
+                  -1
+                  /* CACHED */
+                ))
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["menu-id", "entries", "toggle-aria-label", "toggle-title"])) : vue.createCommentVNode("v-if", true)
+          ]),
           default: vue.withCtx(() => [
             $options.hasChooser ? (vue.openBlock(), vue.createElementBlock("button", {
               key: 0,
@@ -3399,7 +3570,7 @@
               "aria-label": $options.texts.columns,
               title: $options.texts.columns,
               onClick: _cache[0] || (_cache[0] = (...args) => $options.openChooser && $options.openChooser(...args))
-            }, [..._cache[12] || (_cache[12] = [
+            }, [..._cache[13] || (_cache[13] = [
               vue.createElementVNode(
                 "i",
                 {
@@ -3414,9 +3585,16 @@
           ]),
           _: 1
           /* STABLE */
-        }, 8, ["actions", "menu"])
+        }, 8, ["actions", "menu"]),
+        vue.createElementVNode(
+          "span",
+          _hoisted_5$7,
+          vue.toDisplayString($options.selectedCount ? $options.selectionLabel : ""),
+          1
+          /* TEXT */
+        )
       ])) : vue.createCommentVNode("v-if", true),
-      vue.createElementVNode("div", _hoisted_5$7, [
+      vue.createElementVNode("div", _hoisted_6$7, [
         $props.filters.length ? (vue.openBlock(), vue.createBlock(_component_FilterBar, {
           key: 0,
           ref: "filterBar",
@@ -3428,7 +3606,7 @@
         }, null, 8, ["model-value", "filters", "sync-url", "id-prefix", "onUpdate:modelValue"])) : vue.createCommentVNode("v-if", true),
         vue.createElementVNode(
           "div",
-          _hoisted_6$7,
+          _hoisted_7$5,
           [
             vue.createElementVNode("table", {
               class: vue.normalizeClass(["table table-hover", { "is-loading": $data.loading && $data.rows.length > 0 }]),
@@ -3437,6 +3615,17 @@
             }, [
               vue.createElementVNode("thead", null, [
                 vue.createElementVNode("tr", null, [
+                  $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_9$4, [
+                    vue.createElementVNode("input", {
+                      class: "form-check-input",
+                      type: "checkbox",
+                      checked: $options.pageSelected === "all",
+                      ".indeterminate": $options.pageSelected === "some",
+                      disabled: !$data.rows.length,
+                      "aria-label": $options.texts.selectPage,
+                      onChange: _cache[1] || (_cache[1] = ($event) => $options.selectPage($event.target.checked))
+                    }, null, 40, _hoisted_10$4)
+                  ])) : vue.createCommentVNode("v-if", true),
                   (vue.openBlock(true), vue.createElementBlock(
                     vue.Fragment,
                     null,
@@ -3469,7 +3658,7 @@
                             2
                             /* CLASS */
                           )
-                        ], 10, _hoisted_9$4)) : (vue.openBlock(), vue.createElementBlock(
+                        ], 10, _hoisted_12$3)) : (vue.openBlock(), vue.createElementBlock(
                           vue.Fragment,
                           { key: 1 },
                           [
@@ -3482,24 +3671,24 @@
                           64
                           /* STABLE_FRAGMENT */
                         ))
-                      ], 10, _hoisted_8$5);
+                      ], 10, _hoisted_11$3);
                     }),
                     128
                     /* KEYED_FRAGMENT */
                   )),
-                  $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_10$4, [
+                  $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_13$1, [
                     vue.createElementVNode(
                       "span",
-                      _hoisted_11$3,
+                      _hoisted_14,
                       vue.toDisplayString($options.texts.details),
                       1
                       /* TEXT */
                     )
                   ])) : vue.createCommentVNode("v-if", true),
-                  $props.actions.length ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_12$3, [
+                  $props.actions.length ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_15, [
                     vue.createElementVNode(
                       "span",
-                      _hoisted_13$1,
+                      _hoisted_16,
                       vue.toDisplayString($options.texts.actions),
                       1
                       /* TEXT */
@@ -3507,7 +3696,7 @@
                   ])) : vue.createCommentVNode("v-if", true)
                 ])
               ]),
-              $data.loading && !$data.rows.length && !$data.error ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_14, [
+              $data.loading && !$data.rows.length && !$data.error ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_17, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
@@ -3517,6 +3706,7 @@
                       class: "data-table-skeleton placeholder-glow",
                       "aria-hidden": "true"
                     }, [
+                      $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_18)) : vue.createCommentVNode("v-if", true),
                       (vue.openBlock(true), vue.createElementBlock(
                         vue.Fragment,
                         null,
@@ -3528,7 +3718,7 @@
                               class: vue.normalizeClass(`data-table-col-${column.type}`)
                             },
                             [
-                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_15, [..._cache[13] || (_cache[13] = [
+                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_19, [..._cache[15] || (_cache[15] = [
                                 vue.createElementVNode(
                                   "span",
                                   { class: "placeholder data-table-main-image" },
@@ -3546,7 +3736,7 @@
                                   -1
                                   /* CACHED */
                                 )
-                              ])])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_16))
+                              ])])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_20))
                             ],
                             2
                             /* CLASS */
@@ -3555,15 +3745,15 @@
                         128
                         /* KEYED_FRAGMENT */
                       )),
-                      $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_17)) : vue.createCommentVNode("v-if", true),
-                      $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_18)) : vue.createCommentVNode("v-if", true)
+                      $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_21)) : vue.createCommentVNode("v-if", true),
+                      $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_22)) : vue.createCommentVNode("v-if", true)
                     ]);
                   }),
                   128
                   /* KEYED_FRAGMENT */
                 ))
-              ])) : !$data.rows.length ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_19, [
-                vue.createElementVNode("tr", _hoisted_20, [
+              ])) : !$data.rows.length ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_23, [
+                vue.createElementVNode("tr", _hoisted_24, [
                   vue.createElementVNode("td", { colspan: $options.colspan }, [
                     $data.error ? (vue.openBlock(), vue.createElementBlock(
                       vue.Fragment,
@@ -3571,7 +3761,7 @@
                       [
                         vue.createElementVNode(
                           "span",
-                          _hoisted_22,
+                          _hoisted_26,
                           vue.toDisplayString($data.error),
                           1
                           /* TEXT */
@@ -3581,7 +3771,7 @@
                           {
                             type: "button",
                             class: "btn btn-link btn-sm",
-                            onClick: _cache[1] || (_cache[1] = (...args) => $options.retry && $options.retry(...args))
+                            onClick: _cache[2] || (_cache[2] = (...args) => $options.retry && $options.retry(...args))
                           },
                           vue.toDisplayString($options.texts.retry),
                           1
@@ -3596,7 +3786,7 @@
                       [
                         vue.createElementVNode(
                           "span",
-                          _hoisted_23,
+                          _hoisted_27,
                           vue.toDisplayString($options.texts.empty),
                           1
                           /* TEXT */
@@ -3607,7 +3797,7 @@
                             key: 0,
                             type: "button",
                             class: "btn btn-link btn-sm",
-                            onClick: _cache[2] || (_cache[2] = (...args) => $options.clearFilters && $options.clearFilters(...args))
+                            onClick: _cache[3] || (_cache[3] = (...args) => $options.clearFilters && $options.clearFilters(...args))
                           },
                           vue.toDisplayString($options.texts.clearFilters),
                           1
@@ -3617,13 +3807,13 @@
                       64
                       /* STABLE_FRAGMENT */
                     ))
-                  ], 8, _hoisted_21)
+                  ], 8, _hoisted_25)
                 ])
-              ])) : (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_24, [
+              ])) : (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_28, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
-                  vue.renderList($data.rows, (row) => {
+                  vue.renderList($data.rows, (row, index) => {
                     return vue.openBlock(), vue.createElementBlock(
                       vue.Fragment,
                       {
@@ -3631,10 +3821,19 @@
                       },
                       [
                         vue.createElementVNode("tr", {
-                          class: vue.normalizeClass({ "is-expanded": $options.isExpanded(row), "is-busy": $data.busy[row.id], "data-table-row-link": !!$options.rowUrl(row), "data-table-row-toggle": !$options.rowUrl(row) && $options.hasDetails }),
+                          class: vue.normalizeClass({ "is-expanded": $options.isExpanded(row), "is-busy": $data.busy[row.id], "table-active": $options.isSelected(row), "data-table-row-link": !!$options.rowUrl(row), "data-table-row-toggle": !$options.rowUrl(row) && $options.hasDetails }),
                           "data-id": row.id,
                           onClick: ($event) => $options.onRowClick(row, $event)
                         }, [
+                          $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_30, [
+                            vue.createElementVNode("input", {
+                              class: "form-check-input",
+                              type: "checkbox",
+                              checked: $options.isSelected(row),
+                              "aria-label": $options.rowLabel("Select {name}", row),
+                              onClick: ($event) => $options.onSelect(row, index, $event)
+                            }, null, 8, _hoisted_31)
+                          ])) : vue.createCommentVNode("v-if", true),
                           (vue.openBlock(true), vue.createElementBlock(
                             vue.Fragment,
                             null,
@@ -3659,7 +3858,7 @@
                             128
                             /* KEYED_FRAGMENT */
                           )),
-                          $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_26, [
+                          $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_32, [
                             vue.createElementVNode("button", {
                               type: "button",
                               class: "btn btn-ghost btn-icon-only btn-sm data-table-details-toggle",
@@ -3678,12 +3877,12 @@
                                 2
                                 /* CLASS */
                               )
-                            ], 8, _hoisted_27)
+                            ], 8, _hoisted_33)
                           ])) : vue.createCommentVNode("v-if", true),
                           $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", {
-                            key: 1,
+                            key: 2,
                             class: "data-table-col-actions",
-                            onClick: _cache[3] || (_cache[3] = vue.withModifiers(() => {
+                            onClick: _cache[4] || (_cache[4] = vue.withModifiers(() => {
                             }, ["stop"]))
                           }, [
                             $options.rowActions(row).length === 1 ? (vue.openBlock(), vue.createElementBlock("a", {
@@ -3717,7 +3916,7 @@
                                 64
                                 /* STABLE_FRAGMENT */
                               ))
-                            ], 10, _hoisted_28)) : $options.rowActions(row).length > 1 ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
+                            ], 10, _hoisted_34)) : $options.rowActions(row).length > 1 ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
                               key: 1,
                               "menu-id": `${$props.tableId}.row`,
                               entries: $options.menuEntries(row),
@@ -3727,7 +3926,7 @@
                               "toggle-class": "btn btn-ghost btn-icon-only btn-sm",
                               "root-class": "data-table-actions-menu list-unstyled m-0"
                             }, {
-                              toggle: vue.withCtx(() => [..._cache[14] || (_cache[14] = [
+                              toggle: vue.withCtx(() => [..._cache[16] || (_cache[16] = [
                                 vue.createElementVNode(
                                   "i",
                                   {
@@ -3743,7 +3942,7 @@
                               /* STABLE */
                             }, 8, ["menu-id", "entries", "context", "toggle-aria-label", "toggle-title"])) : vue.createCommentVNode("v-if", true)
                           ])) : vue.createCommentVNode("v-if", true)
-                        ], 10, _hoisted_25),
+                        ], 10, _hoisted_29),
                         $options.hasDetails && $options.isExpanded(row) ? (vue.openBlock(), vue.createElementBlock("tr", {
                           key: 0,
                           id: $options.detailsId(row),
@@ -3792,8 +3991,8 @@
                                 /* KEYED_FRAGMENT */
                               ))
                             ])
-                          ], 8, _hoisted_30)
-                        ], 8, _hoisted_29)) : vue.createCommentVNode("v-if", true)
+                          ], 8, _hoisted_36)
+                        ], 8, _hoisted_35)) : vue.createCommentVNode("v-if", true)
                       ],
                       64
                       /* STABLE_FRAGMENT */
@@ -3803,12 +4002,12 @@
                   /* KEYED_FRAGMENT */
                 ))
               ]))
-            ], 10, _hoisted_7$5)
+            ], 10, _hoisted_8$5)
           ],
           512
           /* NEED_PATCH */
         ),
-        $data.error && $data.rows.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_31, [
+        $data.error && $data.rows.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_37, [
           vue.createTextVNode(
             vue.toDisplayString($data.error) + " ",
             1
@@ -3819,7 +4018,7 @@
             {
               type: "button",
               class: "btn btn-link btn-sm",
-              onClick: _cache[4] || (_cache[4] = (...args) => $options.retry && $options.retry(...args))
+              onClick: _cache[5] || (_cache[5] = (...args) => $options.retry && $options.retry(...args))
             },
             vue.toDisplayString($options.texts.retry),
             1
@@ -3827,15 +4026,15 @@
           )
         ])) : vue.createCommentVNode("v-if", true)
       ]),
-      $data.total > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_32, [
+      $data.total > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_38, [
         vue.createElementVNode(
           "span",
-          _hoisted_33,
+          _hoisted_39,
           vue.toDisplayString($options.countText),
           1
           /* TEXT */
         ),
-        vue.createElementVNode("label", _hoisted_34, [
+        vue.createElementVNode("label", _hoisted_40, [
           vue.createElementVNode(
             "span",
             null,
@@ -3846,7 +4045,7 @@
           vue.createElementVNode("select", {
             class: "form-select form-select-sm",
             value: $data.pageSize,
-            onChange: _cache[5] || (_cache[5] = ($event) => $options.setPageSize(Number($event.target.value)))
+            onChange: _cache[6] || (_cache[6] = ($event) => $options.setPageSize(Number($event.target.value)))
           }, [
             (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
@@ -3855,19 +4054,19 @@
                 return vue.openBlock(), vue.createElementBlock("option", {
                   key: size,
                   value: size
-                }, vue.toDisplayString(size), 9, _hoisted_36);
+                }, vue.toDisplayString(size), 9, _hoisted_42);
               }),
               128
               /* KEYED_FRAGMENT */
             ))
-          ], 40, _hoisted_35)
+          ], 40, _hoisted_41)
         ]),
         $data.pages > 1 ? (vue.openBlock(), vue.createElementBlock("nav", {
           key: 0,
           class: "data-table-pager",
           "aria-label": $options.texts.pages
         }, [
-          vue.createElementVNode("ul", _hoisted_38, [
+          vue.createElementVNode("ul", _hoisted_44, [
             vue.createElementVNode(
               "li",
               {
@@ -3879,8 +4078,8 @@
                   class: "page-link",
                   "aria-label": $options.texts.previous,
                   disabled: $data.page <= 1,
-                  onClick: _cache[6] || (_cache[6] = ($event) => $options.goTo($data.page - 1))
-                }, [..._cache[15] || (_cache[15] = [
+                  onClick: _cache[7] || (_cache[7] = ($event) => $options.goTo($data.page - 1))
+                }, [..._cache[17] || (_cache[17] = [
                   vue.createElementVNode(
                     "i",
                     {
@@ -3891,7 +4090,7 @@
                     -1
                     /* CACHED */
                   )
-                ])], 8, _hoisted_39)
+                ])], 8, _hoisted_45)
               ],
               2
               /* CLASS */
@@ -3907,14 +4106,14 @@
                     class: vue.normalizeClass(["page-item", { active: slot === $data.page, disabled: slot === null }])
                   },
                   [
-                    slot === null ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_40, "…")) : (vue.openBlock(), vue.createElementBlock("button", {
+                    slot === null ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_46, "…")) : (vue.openBlock(), vue.createElementBlock("button", {
                       key: 1,
                       type: "button",
                       class: "page-link",
                       "aria-current": slot === $data.page ? "page" : null,
                       "aria-label": $options.pageLabel(slot),
                       onClick: ($event) => $options.goTo(slot)
-                    }, vue.toDisplayString(slot), 9, _hoisted_41))
+                    }, vue.toDisplayString(slot), 9, _hoisted_47))
                   ],
                   2
                   /* CLASS */
@@ -3934,8 +4133,8 @@
                   class: "page-link",
                   "aria-label": $options.texts.next,
                   disabled: $data.page >= $data.pages,
-                  onClick: _cache[7] || (_cache[7] = ($event) => $options.goTo($data.page + 1))
-                }, [..._cache[16] || (_cache[16] = [
+                  onClick: _cache[8] || (_cache[8] = ($event) => $options.goTo($data.page + 1))
+                }, [..._cache[18] || (_cache[18] = [
                   vue.createElementVNode(
                     "i",
                     {
@@ -3946,20 +4145,20 @@
                     -1
                     /* CACHED */
                   )
-                ])], 8, _hoisted_42)
+                ])], 8, _hoisted_48)
               ],
               2
               /* CLASS */
             )
           ])
-        ], 8, _hoisted_37)) : vue.createCommentVNode("v-if", true)
+        ], 8, _hoisted_43)) : vue.createCommentVNode("v-if", true)
       ])) : vue.createCommentVNode("v-if", true),
       $options.hasChooser ? (vue.openBlock(), vue.createBlock(_component_UiModal, {
         key: 2,
         show: $data.chooserOpen,
         title: $options.texts.columns,
         "dialog-class": "data-table-columns",
-        "onUpdate:show": _cache[11] || (_cache[11] = ($event) => $data.chooserOpen = $event)
+        "onUpdate:show": _cache[12] || (_cache[12] = ($event) => $data.chooserOpen = $event)
       }, {
         footer: vue.withCtx(() => [
           $options.draftDiffersFromDefault ? (vue.openBlock(), vue.createElementBlock(
@@ -3968,7 +4167,7 @@
               key: 0,
               type: "button",
               class: "btn btn-link me-auto data-table-columns-reset",
-              onClick: _cache[8] || (_cache[8] = (...args) => $options.resetDraft && $options.resetDraft(...args))
+              onClick: _cache[9] || (_cache[9] = (...args) => $options.resetDraft && $options.resetDraft(...args))
             },
             vue.toDisplayString($options.texts.reset),
             1
@@ -3979,7 +4178,7 @@
             {
               type: "button",
               class: "btn btn-light",
-              onClick: _cache[9] || (_cache[9] = ($event) => $data.chooserOpen = false)
+              onClick: _cache[10] || (_cache[10] = ($event) => $data.chooserOpen = false)
             },
             vue.toDisplayString($options.texts.cancel),
             1
@@ -3990,7 +4189,7 @@
             {
               type: "button",
               class: "btn btn-primary data-table-columns-save",
-              onClick: _cache[10] || (_cache[10] = (...args) => $options.saveColumns && $options.saveColumns(...args))
+              onClick: _cache[11] || (_cache[11] = (...args) => $options.saveColumns && $options.saveColumns(...args))
             },
             vue.toDisplayString($options.texts.save),
             1
@@ -4000,7 +4199,7 @@
         default: vue.withCtx(() => [
           $props.maxColumns ? (vue.openBlock(), vue.createElementBlock(
             "p",
-            _hoisted_43,
+            _hoisted_49,
             vue.toDisplayString($options.limitText),
             1
             /* TEXT */
@@ -4021,14 +4220,14 @@
                   checked: $data.draftKeys.includes(column.key),
                   disabled: !$data.draftKeys.includes(column.key) && $options.atLimit,
                   onChange: ($event) => $options.toggleDraft(column.key, $event.target.checked)
-                }, null, 40, _hoisted_44),
+                }, null, 40, _hoisted_50),
                 vue.createElementVNode("label", {
                   class: "form-check-label",
                   for: `${$props.tableId}-column-${column.key}`
-                }, vue.toDisplayString(column.label), 9, _hoisted_45),
+                }, vue.toDisplayString(column.label), 9, _hoisted_51),
                 $data.draftKeys.includes(column.key) && $data.foldedKeys.includes(column.key) ? (vue.openBlock(), vue.createElementBlock(
                   "span",
-                  _hoisted_46,
+                  _hoisted_52,
                   vue.toDisplayString($options.texts.hiddenAtWidth),
                   1
                   /* TEXT */
