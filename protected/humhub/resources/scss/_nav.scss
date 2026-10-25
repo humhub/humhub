@@ -13,6 +13,31 @@
         width: var(--hh-nav-icon-width);
     }
 
+    // Pill tabs (`humhub\widgets\menu\PillTabs`): Bootstrap's nav pills in a strip that scrolls
+    // sideways instead of wrapping. See docs/ui/tabs.md.
+    .nav-scroller {
+        overflow-x: auto;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        > .nav {
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+    }
+
+    .nav-pills-secondary {
+        --bs-nav-pills-link-active-color: var(--hh-text-color-highlight);
+        --bs-nav-pills-link-active-bg: var(--bs-secondary-bg);
+    }
+
+    .panel > .nav-scroller {
+        padding: 0 10px 10px;
+    }
+
     .tab-sub-menu {
         padding-left: 10px;
 

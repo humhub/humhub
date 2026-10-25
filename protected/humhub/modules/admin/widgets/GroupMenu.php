@@ -10,14 +10,19 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\helpers\ControllerHelper;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\SubTabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
  * Group Administration Menu
  */
-class GroupMenu extends SubTabMenu
+class GroupMenu extends PillTabs
 {
+    /**
+     * @inheritdoc
+     */
+    public string $variant = self::VARIANT_SECONDARY;
+
     /**
      * @inheritdoc
      */

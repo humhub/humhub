@@ -16,11 +16,11 @@ class GroupManagerCest
         $I->amOnRoute('/admin/user');
         $I->expectTo('redirect to pending user approvals page');
         $I->see('Pending user approvals');
-        $I->see('Pending approvals', '.tab-menu');
-        $I->dontSee('Overview', '.tab-menu');
-        $I->dontSee('Settings', '.tab-menu');
-        $I->dontSee('Profiles', '.tab-menu');
-        $I->dontSee('People', '.tab-menu');
+        $I->see('Pending approvals', '.nav-pills');
+        $I->dontSee('Overview', '.nav-pills');
+        $I->dontSee('Settings', '.nav-pills');
+        $I->dontSee('Profiles', '.nav-pills');
+        $I->dontSee('People', '.nav-pills');
         $I->dontSee('Add new user');
 
         $unapprovedGroupUser = User::findOne(['username' => 'UnapprovedUser']);
@@ -64,9 +64,9 @@ class GroupManagerCest
 
         $I->amOnRoute('/admin/group/edit', ['id' => $group->id]);
         $I->see('Manage group: ' . $group->name);
-        $I->see('Settings', '.tab-sub-menu');
-        $I->dontSee('Permissions', '.tab-sub-menu');
-        $I->see('Members', '.tab-sub-menu');
+        $I->see('Settings', '.nav-pills-secondary');
+        $I->dontSee('Permissions', '.nav-pills-secondary');
+        $I->see('Members', '.nav-pills-secondary');
 
         $I->see('Name', 'form');
         $I->seeElement('[name="EditGroupForm[name]"][readonly]');

@@ -10,13 +10,13 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\helpers\ControllerHelper;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
  * Group Administration Menu
  */
-class InformationMenu extends TabMenu
+class InformationMenu extends PillTabs
 {
     /**
      * @inheritdoc

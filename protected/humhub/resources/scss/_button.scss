@@ -6,6 +6,9 @@
 // Sizings, paddings, radius etc. are customized through Sass variables, see variables.scss.
 // Only selector-scoped customizations are declared here as `--bs-*` overrides.
 
+// The icon of an icon-only button of the regular size
+$btn-icon-only-icon-size: $font-size-lg !default;
+
 @if not $prev-button {
     .btn {
         --hh-btn-gap: 0.6rem;
@@ -62,6 +65,61 @@
         &.btn-icon-only {
             --bs-btn-padding-x: 0.8rem;
         }
+    }
+
+    // Icon-only button: a square of the button's own height (`Button::icon()` without a label,
+    // `.btn.btn-icon-only` in Vue). A dropdown toggle keeps its padding for the caret.
+    .btn-icon-only:not(.dropdown-toggle) {
+        --bs-btn-padding-x: 0;
+
+        width: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));
+        height: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));
+
+        > .ti {
+            line-height: 1;
+        }
+    }
+
+    .btn-icon-only:not(.btn-sm):not(.dropdown-toggle) > .ti {
+        font-size: $btn-icon-only-icon-size;
+    }
+
+    // Bootstrap's toggle buttons (`.btn-check` + `label.btn`): the input stays hidden. The
+    // platform's own `input[type=checkbox|radio]` look (`_form.scss`, loaded later) would
+    // outweigh `.btn-check`, hence the attribute in the selector.
+    input[type].btn-check {
+        position: absolute;
+        clip: rect(0, 0, 0, 0);
+        padding: 0;
+        border: 0;
+        pointer-events: none;
+    }
+
+    // Ghost: no fill until hovered, for quiet tools (row actions, ⋮, pager); defined the way
+    // Bootstrap defines `.btn-link`, by the class's `--bs-btn-*` variables.
+    .btn-ghost {
+        --bs-btn-color: var(--hh-text-color-default);
+        --bs-btn-bg: transparent;
+        --bs-btn-border-color: transparent;
+        --bs-btn-hover-color: var(--hh-text-color-highlight);
+        --bs-btn-hover-bg: var(--bs-secondary-bg);
+        --bs-btn-hover-border-color: transparent;
+        --bs-btn-active-color: var(--hh-text-color-highlight);
+        --bs-btn-active-bg: var(--bs-secondary-bg);
+        --bs-btn-active-border-color: transparent;
+        --bs-btn-disabled-color: var(--hh-text-color-soft2);
+        --bs-btn-disabled-bg: transparent;
+        --bs-btn-disabled-border-color: transparent;
+        --bs-btn-box-shadow: none;
+        --bs-btn-active-shadow: none;
+    }
+
+    .btn-ghost-danger {
+        --bs-btn-color: var(--bs-danger);
+        --bs-btn-hover-color: var(--bs-danger);
+        --bs-btn-hover-bg: var(--bs-danger-bg-subtle);
+        --bs-btn-active-color: var(--bs-danger);
+        --bs-btn-active-bg: var(--bs-danger-bg-subtle);
     }
 
     // Outline buttons: use black color for texts if insufficient contrast relatively to background color main, as the background color is transparent

@@ -11,7 +11,7 @@ namespace humhub\modules\space\modules\manage\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\space\models\Space;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
@@ -19,7 +19,7 @@ use Yii;
  *
  * @author Luke
  */
-class DefaultMenu extends TabMenu
+class DefaultMenu extends PillTabs
 {
     /**
      * @var Space

@@ -174,7 +174,7 @@ class AccountCest
 
         $I->amOnRoute('/oauth/account/create-token');
         // The page belongs to the tab of its section
-        $I->see('Devices & Access', '.nav-tabs .nav-link.active');
+        $I->see('Devices & Access', '.nav-pills .nav-link.active');
         // Without `full` among the scopes, no lock and no hint
         $I->dontSeeElement('#personalaccesstokenform-scopes-full-hint');
         Assert::assertStringNotContainsString('"#personalaccesstokenform-scopes"', $I->grabPageSource());

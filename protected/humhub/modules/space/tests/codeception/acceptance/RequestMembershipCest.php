@@ -50,7 +50,7 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('Pending Approvals', 10, '.tab-menu .active');
+        $I->waitForText('Pending Approvals', 10, '.nav-pills .active');
         $I->see('Hi, I want to join this space.', '.grid-view');
         $I->click('Accept', '.grid-view');
 
@@ -86,7 +86,7 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
-        $I->waitForText('Pending Approvals', 10, '.tab-menu .active');
+        $I->waitForText('Pending Approvals', 10, '.nav-pills .active');
 
         $I->click('.dropdown', '.controls-header');
         $I->waitForText('Members', 10, '.controls-header');

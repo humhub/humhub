@@ -9,8 +9,12 @@
 namespace humhub\modules\ui\menu\widgets;
 
 /**
- * @deprecated since 1.20, use \humhub\widgets\menu\SubTabMenu instead. Will be removed in 1.21.
+ * @deprecated since 1.20, use \humhub\widgets\menu\PillTabs instead. Will be removed in 1.21.
  */
-abstract class SubTabMenu extends \humhub\widgets\menu\SubTabMenu
+abstract class SubTabMenu extends \humhub\widgets\menu\PillTabs
 {
+    /**
+     * @inheritdoc
+     */
+    public string $variant = self::VARIANT_SECONDARY;
 }

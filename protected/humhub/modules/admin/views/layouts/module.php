@@ -9,8 +9,7 @@ use humhub\helpers\ThemeHelper;
 
 /* @var $content string */
 ?>
-<div
-    class="<?php if (ThemeHelper::isFluid()): ?>container-fluid<?php else: ?>container<?php endif; ?> container-cards container-modules">
+<div class="<?php if (ThemeHelper::isFluid()): ?>container-fluid<?php else: ?>container<?php endif; ?>">
     <div class="row">
         <div class="col-xl-12">
             <?= $content; ?>

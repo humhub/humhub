@@ -14,7 +14,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 
@@ -23,7 +23,7 @@ use Yii;
  *
  * @author Basti
  */
-class MemberMenu extends TabMenu
+class MemberMenu extends PillTabs
 {
     /**
      * @var Space

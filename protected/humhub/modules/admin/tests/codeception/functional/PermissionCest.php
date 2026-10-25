@@ -314,7 +314,7 @@ class PermissionCest
         $I->amOnRoute('/admin/space');
         $I->expectTo('see permission denied message');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Manage spaces');
+        $I->see('Spaces', '.page-header-title');
         $I->dontSee('Users', '#admin-menu');
         $I->see('Spaces', '#admin-menu');
         $I->dontSee('Modules', '#admin-menu');

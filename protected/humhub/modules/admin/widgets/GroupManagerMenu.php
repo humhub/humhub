@@ -12,14 +12,19 @@ use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\SubTabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
  * Group Administration Menu
  */
-class GroupManagerMenu extends SubTabMenu
+class GroupManagerMenu extends PillTabs
 {
+    /**
+     * @inheritdoc
+     */
+    public string $variant = self::VARIANT_SECONDARY;
+
     /**
      * @var Group
      */

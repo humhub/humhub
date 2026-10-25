@@ -14,7 +14,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 
@@ -23,7 +23,7 @@ use Yii;
  *
  * @author Basti
  */
-class UserMenu extends TabMenu
+class UserMenu extends PillTabs
 {
     /**
      * @inheritdoc

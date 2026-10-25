@@ -11,25 +11,20 @@ namespace humhub\modules\space\widgets;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\Menu;
+use humhub\widgets\menu\PageHeaderActions;
 use Yii;
 
 /**
- * SpaceDirectoryHeadingButtons shows buttons on the heading of the Space Directory page
+ * The actions of the Spaces page header.
  *
- * @since 1.19
+ * @since 1.20
  */
-class SpaceDirectoryHeadingButtons extends Menu
+class SpacesHeaderActions extends PageHeaderActions
 {
     /**
      * @inheritdoc
      */
-    public $id = 'space-directory-heading-buttons';
-
-    /**
-     * @inheritdoc
-     */
-    public $template = 'spaceDirectoryHeadingButtons';
+    public $id = 'spaces-header-actions';
 
     /**
      * @inheritdoc
@@ -43,8 +38,8 @@ class SpaceDirectoryHeadingButtons extends Menu
                 'id' => 'create-space-button',
                 'sortOrder' => 100,
                 'icon' => 'plus',
+                'isPrimary' => true,
                 'htmlOptions' => [
-                    'class' => 'btn-accent',
                     'data-action-click' => 'ui.modal.load',
                 ],
             ]));

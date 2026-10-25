@@ -14,7 +14,7 @@ use humhub\widgets\menu\MenuLink;
 use tests\codeception\_support\HumHubDbTestCase;
 
 /**
- * A menu's entries as data for a client-rendered menu (e.g. the `PageToolbar` `actions`) —
+ * A menu's entries as data for a client-rendered menu (e.g. the `PageHeader` `actions`) —
  * {@see Menu::getEntriesData()}.
  *
  * @since 1.20
@@ -93,26 +93,22 @@ class MenuEntriesDataTest extends HumHubDbTestCase
         $this->assertSame('/import', $actions['import']['url']);
     }
 
-    public function testTheVariantComesFromTheButtonClasses()
+    public function testThePrimaryFlagIsPassedOnAndButtonClassesAreDropped()
     {
         $actions = array_column($this->menu([
             new MenuLink(['id' => 'plain', 'label' => 'Plain', 'url' => '/plain']),
-            new MenuLink(['id' => 'accent', 'label' => 'Accent', 'url' => '/accent', 'htmlOptions' => ['class' => 'btn-accent']]),
-            new MenuLink(['id' => 'primary', 'label' => 'Primary', 'url' => '/primary', 'htmlOptions' => ['class' => 'btn btn-primary btn-sm my-hook']]),
-            new MenuLink(['id' => 'unknown', 'label' => 'Unknown', 'url' => '/unknown', 'htmlOptions' => ['class' => 'btn-danger']]),
+            new MenuLink(['id' => 'invite', 'label' => 'Invite', 'url' => '/invite', 'isPrimary' => true, 'htmlOptions' => ['class' => 'btn-accent']]),
+            new MenuLink(['id' => 'export', 'label' => 'Export', 'url' => '/export', 'htmlOptions' => ['class' => 'btn btn-primary btn-sm my-hook']]),
         ])->getEntriesData(), null, 'id');
 
-        $this->assertSame('secondary', $actions['plain']['variant']);
+        $this->assertFalse($actions['plain']['primary']);
         $this->assertArrayNotHasKey('htmlOptions', $actions['plain']);
 
-        $this->assertSame('accent', $actions['accent']['variant']);
-        $this->assertArrayNotHasKey('htmlOptions', $actions['accent'], 'the button classes become the variant');
+        $this->assertTrue($actions['invite']['primary']);
+        $this->assertArrayNotHasKey('htmlOptions', $actions['invite'], 'a button class is not passed on');
 
-        $this->assertSame('primary', $actions['primary']['variant']);
-        $this->assertSame(['class' => 'my-hook'], $actions['primary']['htmlOptions'], 'other classes are passed on');
-
-        $this->assertSame('secondary', $actions['unknown']['variant'], 'only the toolbar variants are recognized');
-        $this->assertSame(['class' => 'btn-danger'], $actions['unknown']['htmlOptions']);
+        $this->assertFalse($actions['export']['primary']);
+        $this->assertSame(['class' => 'my-hook'], $actions['export']['htmlOptions'], 'other classes are passed on');
     }
 
     public function testHiddenAndNonLinkEntriesAreSkipped()

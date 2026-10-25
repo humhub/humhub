@@ -12,7 +12,7 @@ use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 use yii\helpers\Url;
 
@@ -21,7 +21,7 @@ use yii\helpers\Url;
  *
  * @author Luke
  */
-class SpaceMenu extends TabMenu
+class SpaceMenu extends PillTabs
 {
     /**
      * @inheritdoc

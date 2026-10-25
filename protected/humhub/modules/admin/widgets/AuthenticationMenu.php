@@ -11,7 +11,7 @@ namespace humhub\modules\admin\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\SubTabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
@@ -19,8 +19,13 @@ use Yii;
  *
  * @TODO Refactor/Rename to UserSettingsMenu
  */
-class AuthenticationMenu extends SubTabMenu
+class AuthenticationMenu extends PillTabs
 {
+    /**
+     * @inheritdoc
+     */
+    public string $variant = self::VARIANT_SECONDARY;
+
     /**
      * @inheritdoc
      */

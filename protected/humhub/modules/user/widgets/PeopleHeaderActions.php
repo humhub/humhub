@@ -2,39 +2,32 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
 namespace humhub\modules\user\widgets;
 
-use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\Menu;
 use humhub\modules\user\models\forms\Invite;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\PageHeaderActions;
 use Yii;
 
 /**
- * PeopleHeadingButtons shows buttons on the heading of the people page
+ * The actions of the People page header.
  *
- * Since 1.20 the People directory renders its entries as toolbar actions
- * ({@see \humhub\widgets\menu\Menu::getEntriesData()}, see {@see PeopleDirectory}); the
- * template is only used where the menu is still rendered as a widget.
- *
- * @since 1.11
- * @author Funkycram
+ * @since 1.20
  */
-class PeopleHeadingButtons extends Menu
+class PeopleHeaderActions extends PageHeaderActions
 {
     /**
      * @inheritdoc
      */
-    public $id = 'people-heading-buttons';
+    public $id = 'people-header-actions';
 
     /**
      * @inheritdoc
      */
-    public $template = 'peopleHeadingButtonsTemplate';
-
     public function init()
     {
         $invite = new Invite();
@@ -45,8 +38,8 @@ class PeopleHeadingButtons extends Menu
                 'id' => 'invite-people-button',
                 'sortOrder' => 100,
                 'icon' => 'invite',
+                'isPrimary' => true,
                 'htmlOptions' => [
-                    'class' => 'btn-accent',
                     'data-action-click' => 'ui.modal.load',
                 ],
             ]));

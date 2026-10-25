@@ -12,13 +12,13 @@ use humhub\helpers\ControllerHelper;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\user\models\User;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
  * Account Settings Tab Menu
  */
-class ManageMenu extends TabMenu
+class ManageMenu extends PillTabs
 {
     /**
      * @var User

@@ -31,17 +31,6 @@ abstract class Menu extends JsWidget
     public const EVENT_RUN = 'run';
 
     /**
-     * The button variants of {@see self::getEntriesData()}.
-     * @since 1.20
-     */
-    public const ENTRY_VARIANTS = ['secondary', 'accent', 'primary'];
-
-    /**
-     * @since 1.20
-     */
-    public const ENTRY_VARIANT_DEFAULT = 'secondary';
-
-    /**
      * @var string template view file of the navigation
      */
     public $template;
@@ -131,7 +120,7 @@ abstract class Menu extends JsWidget
 
     /**
      * The visible link entries as data for a client-rendered menu — e.g. the `actions` of a
-     * `PageToolbar` (`humhub/vue/PageToolbar.vue`): `[{id, icon, label, url, modal, variant,
+     * `PageHeader` (`humhub/vue/PageHeader.vue`): `[{id, icon, label, url, modal, primary,
      * htmlOptions?}]`, in sort order. Entries other than a {@see MenuLink} are skipped.
      *
      * - `icon` is a Tabler name — a Font Awesome name an entry still carries is resolved to the
@@ -140,11 +129,9 @@ abstract class Menu extends JsWidget
      *   `ui.modal.load`, or `data-bs-target`/`data-target` = `#globalModal`); its `url` is then
      *   the one the modal loads (`data-action-url` if given). The attributes that did this are
      *   not passed on, so the client opens the modal once.
-     * - `variant` is the button variant (one of {@see self::ENTRY_VARIANTS}, default
-     *   `secondary`), taken from a `btn-<variant>` class in the entry's `htmlOptions` — the class
-     *   a server-rendered button of the entry carries, e.g.
-     *   `'htmlOptions' => ['class' => 'btn-accent']`. The Bootstrap button classes (`btn`,
-     *   `btn-sm`, `btn-<variant>`) are not passed on as a class; the client renders the variant.
+     * - `primary` is {@see MenuLink::getIsPrimary()}: whether it is the menu's main action. The
+     *   Bootstrap button classes an entry may carry for a server-rendered button (`btn`,
+     *   `btn-sm`, `btn-<variant>`) are not passed on; the client renders the button.
      * - `htmlOptions` are the entry's further link attributes, if any.
      *
      * @since 1.20
@@ -181,19 +168,13 @@ abstract class Menu extends JsWidget
             // What the rendered anchor carried for the menu itself, not for the action.
             unset($options['href'], $options['data-menu-id'], $options['data-sort-order']);
 
-            // The button variant, from the Bootstrap button classes the entry carries; those
-            // classes become the variant rather than being passed on.
-            $variant = self::ENTRY_VARIANT_DEFAULT;
+            // The Bootstrap button classes of a server-rendered button (`btn`, `btn-sm`,
+            // `btn-accent`, …) are not passed on: the client renders the button.
             if (isset($options['class'])) {
                 $classes = preg_split('/\s+/', trim(is_array($options['class']) ? implode(' ', $options['class']) : (string)$options['class']), -1, PREG_SPLIT_NO_EMPTY);
-                foreach ($classes as $class) {
-                    if (str_starts_with($class, 'btn-') && in_array(substr($class, 4), self::ENTRY_VARIANTS, true)) {
-                        $variant = substr($class, 4);
-                    }
-                }
                 $classes = array_values(array_filter(
                     $classes,
-                    static fn(string $class) => $class !== 'btn' && $class !== 'btn-sm' && !(str_starts_with($class, 'btn-') && in_array(substr($class, 4), self::ENTRY_VARIANTS, true)),
+                    static fn(string $class) => $class !== 'btn' && !str_starts_with($class, 'btn-'),
                 ));
                 if ($classes === []) {
                     unset($options['class']);
@@ -208,7 +189,7 @@ abstract class Menu extends JsWidget
                 'label' => $description['label'],
                 'url' => $url,
                 'modal' => $isModal,
-                'variant' => $variant,
+                'primary' => $entry->getIsPrimary(),
             ];
             if ($options !== []) {
                 $action['htmlOptions'] = $options;

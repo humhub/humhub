@@ -2,17 +2,17 @@
 
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\widgets\PageHeader;
+
+/* @var $content string */
 
 AdminMenu::markAsActive('settings');
 ?>
-
 <?php $this->beginContent('@admin/views/layouts/main.php') ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('AdminModule.user', '<strong>Settings</strong> and Configuration'); ?>
+<div class="d-flex flex-column gap-3">
+    <?= PageHeader::title(Yii::t('AdminModule.base', 'Settings'))->tabs(SettingsMenu::class) ?>
+    <div class="panel panel-default">
+        <?= $content ?>
     </div>
-    <?= SettingsMenu::widget(); ?>
-
-    <?= $content; ?>
 </div>
-<?php $this->endContent(); ?>
+<?php $this->endContent() ?>
