@@ -196,7 +196,7 @@ The class names each component gets. Details are on the component pages.
 | [Tooltip](tooltip.md) | `.tooltip` | — |
 | [Hover Card](hover-card.md) | `.popover` | `.hover-card`, `-cover`, `-image`, `-title`, `-subtitle`, `-actions` |
 | [Loading, Empty & Error](loading-empty-error.md) | `.placeholder`, `.spinner-border` | `.empty-state`, `-error`, `-icon`, `-title`, `-text`; `.is-reloading` |
-| [Filter Bar](filter-bar.md) | fields on `.form-control`, the toggle and clear on `.btn`, the count on `.badge` | `.filter-bar`, `-body`, `-item`, `-toggle`, `-count`, `-panel`, `-clear`; `.search-field`; `.filter-tags`, `.filter-check` |
+| [Filter Bar](filter-bar.md) | fields on `.form-control`, the toggle, clear and tag filters on `.btn`, the count on `.badge`, checkbox filters on `.form-check` | `.filter-bar`, `-body`, `-item`, `-toggle`, `-count`, `-panel`, `-clear`; `.search-field`; `.filter-tags`, `.filter-check` |
 | [Data Table](data-table.md) | `.card`, `.table`, `.table-active`, `.pagination` | `.data-table`, `-main`, `-sort`, `-row-details`, `-bulk`; `.card-header-actions` |
 | [Entity Browser](entity-browser.md) | notice on `.alert`, "Show more" on `.btn` | `.entity-browser`, `-notice`; `.entity-grid`, `-cells`, `-cell`, `-cell-skeleton`, `-message`, `-error`, `-more` |
 | [Entity Card](entity-card.md) | `.card`, stat pill and tags on `.badge`, skeleton on `.placeholder` | `.entity-card`, `-cover`, `-avatar`, `-image`, `-pill`, `-header`, `-title`, `-body`, `-tags`, `-footer`, `-skeleton`; `.people-card`, `.space-card`, `.module-card` |
@@ -223,7 +223,7 @@ content card, the entity card and the item browser.
 | `.c-search-field…` | `.search-field…` |
 | `.c-select…` | `.select-menu…`; listbox on `.dropdown-menu` / `.dropdown-item` (`.is-active` → `.is-focused`, `.is-selected` → `.active`) |
 | `.c-picker…`, `.c-picker-filter…`, `.c-user-filter…` | `.picker…`, `.picker-filter…`, `.user-filter…` |
-| `.c-filter-tags…`, `.c-filter-check` | `.filter-tags…`, `.filter-check`; later `.btn-check` toggles and `.form-check` |
+| `.c-filter-tags…`, `.c-filter-check` | `.filter-tags…` with `.btn` toggle buttons, `.filter-check` on `.form-check` |
 | `.c-entity-card…`, `.c-people-card…`, `.c-space-card…`, `.c-module-card…` | `.card.entity-card` with `.entity-card-…`, `.people-card…`, `.space-card…`, `.module-card…` |
 | `_item-browser.scss` (`.c-path-bar`, `.c-tile-grid`, `.c-view-switch`, …) | `.path-bar` + `.breadcrumb`, `.tile-grid` / `.tile`, `.btn-group` + `.btn-check`, … |
 | Marketplace: `.c-mp-notice…`, `.c-mp-dialog…`, `.c-mp-settings…`, `.c-licence-…`, `.c-install-dialog…` | `.alert.marketplace-alert`, `.nav-pills-secondary`, `.list-group.licence-list`, `.progress`; parts `marketplace-dialog-…`, `marketplace-settings-…`, `install-dialog-…` |

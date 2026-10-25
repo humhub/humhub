@@ -116,8 +116,8 @@ look of [Form Fields](form-fields.md). Class names and SCSS follow [Styling with
 | `.filter-bar-clear` | Clear all |
 | `.search-field`, `-icon`, `-input` | The search field with the magnifier inside |
 | `.select-menu`, `.picker` | Selects and pickers, see [Select & Pickers](select-pickers.md) |
-| `.filter-tags`, `-label`, `-tag` | Tag filters |
-| `.filter-check` | Checkbox filters |
+| `.filter-tags`, `-label`, `-tag` | Tag filters; a tag is Bootstrap's toggle button (`.btn.btn-light.btn-sm.rounded-pill`, `.active` + `aria-pressed`), pressed in the accent colour |
+| `.filter-check` | Checkbox filters (`.form-check`) |
 
 - The fields are Bootstrap's **`.form-control`** (search input, the select's button, the picker's
   field), so they look like every other form field. The empty/filled fill from

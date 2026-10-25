@@ -2178,7 +2178,7 @@
           return vue.openBlock(), vue.createElementBlock("button", {
             key: option.value,
             type: "button",
-            class: vue.normalizeClass(["filter-tags-tag", { active: $options.isTagActive(option.value) }]),
+            class: vue.normalizeClass(["btn btn-light btn-sm rounded-pill filter-tags-tag", { active: $options.isTagActive(option.value) }]),
             "aria-pressed": $options.isTagActive(option.value) ? "true" : "false",
             onClick: ($event) => $options.toggleTag(option.value)
           }, vue.toDisplayString(option.label), 11, _hoisted_5$8);

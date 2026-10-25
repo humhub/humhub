@@ -555,29 +555,12 @@ $picker-chip-font-size: $font-size-sm !default;
         color: $filter-bar-icon-color;
     }
 
+    // A tag: Bootstrap's toggle button (`.btn.btn-light.btn-sm.rounded-pill`, `.active` +
+    // `aria-pressed`), pressed in the accent colour
     .filter-tags-tag {
-        padding: $spacer * .25 $spacer * .75;
-        border: var(--bs-border-width) solid var(--bs-border-color);
-        border-radius: var(--bs-border-radius-pill);
-        background: var(--bs-secondary-bg);
-        color: var(--bs-body-color);
-        font-size: $font-size-sm;
-        cursor: pointer;
-        @include transition(border-color .3s, background-color .3s, color .3s);
-
-        &:hover {
-            border-color: var(--bs-accent);
-        }
-
-        &:focus-visible {
-            outline: 2px solid rgba(var(--bs-accent-rgb), .32);
-        }
-
-        &.active {
-            border-color: var(--bs-accent);
-            background: var(--bs-accent);
-            color: var(--hh-accent-contrast);
-        }
+        --bs-btn-active-color: var(--hh-accent-contrast);
+        --bs-btn-active-bg: var(--bs-accent);
+        --bs-btn-active-border-color: var(--bs-accent);
     }
 
     .filter-check {

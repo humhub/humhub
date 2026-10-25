@@ -41,7 +41,7 @@
             v-for="option in options"
             :key="option.value"
             type="button"
-            class="filter-tags-tag"
+            class="btn btn-light btn-sm rounded-pill filter-tags-tag"
             :class="{ active: isTagActive(option.value) }"
             :aria-pressed="isTagActive(option.value) ? 'true' : 'false'"
             @click="toggleTag(option.value)"
