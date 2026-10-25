@@ -22,7 +22,7 @@ const mountPicker = (props = {}) => {
     return wrapper;
 };
 const input = (wrapper) => wrapper.find('input[role="combobox"]');
-const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.c-picker__option-label').text());
+const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.picker-option-label').text());
 const key = (wrapper, name) => input(wrapper).trigger('keydown', { key: name });
 const type = async (wrapper, text) => {
     input(wrapper).element.value = text;
@@ -62,13 +62,13 @@ describe('FilterPicker', () => {
         expect(field.attributes('placeholder')).toBe('Tags');
         expect(field.attributes('aria-controls')).toBe(wrapper.find('[role="listbox"]').attributes('id'));
         expect(wrapper.classes()).not.toContain('is-open');
-        expect(wrapper.find('.c-select__clear').attributes('disabled')).toBeDefined();
+        expect(wrapper.find('.select-menu-clear').attributes('disabled')).toBeDefined();
     });
 
     it('opens on a click with the static options, without the empty one', async () => {
         const wrapper = mountPicker({ options: staticOptions });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
 
         expect(wrapper.classes()).toContain('is-open');
         expect(input(wrapper).attributes('aria-expanded')).toBe('true');
@@ -84,7 +84,7 @@ describe('FilterPicker', () => {
 
         await type(wrapper, 'rust');
         expect(optionTexts(wrapper)).toEqual([]);
-        expect(wrapper.find('.c-select__feedback').text()).toBe('No results found!');
+        expect(wrapper.find('.select-menu-feedback').text()).toBe('No results found!');
         expect(wrapper.find('[role="status"]').text()).toBe('No results found!');
     });
 
@@ -95,9 +95,9 @@ describe('FilterPicker', () => {
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/user/tags');
         await flushPromises();
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         expect(optionTexts(wrapper)).toEqual(['Berlin', 'Hamburg', 'Bern']);
-        expect(wrapper.findAll('.c-picker__option-count').map((count) => count.text())).toEqual(['3', '2', '1']);
+        expect(wrapper.findAll('.picker-option-count').map((count) => count.text())).toEqual(['3', '2', '1']);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
     });
 
@@ -105,16 +105,16 @@ describe('FilterPicker', () => {
         const pending = deferredClient();
         const wrapper = mountPicker({ optionsUrl: '/api/v2/user/tags' });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         expect(wrapper.classes()).toContain('is-loading');
-        expect(wrapper.find('.c-select__spinner').exists()).toBe(true);
+        expect(wrapper.find('.select-menu-spinner').exists()).toBe(true);
         expect(wrapper.find('[role="listbox"]').attributes('aria-busy')).toBe('true');
-        expect(wrapper.find('.c-select__feedback').text()).toBe('Loading...');
+        expect(wrapper.find('.select-menu-feedback').text()).toBe('Loading...');
 
         pending[0].resolve({ results: [] });
         await flushPromises();
         expect(wrapper.classes()).not.toContain('is-loading');
-        expect(wrapper.find('.c-select__feedback').text()).toBe('No options');
+        expect(wrapper.find('.select-menu-feedback').text()).toBe('No options');
     });
 
     it('searches the optionsUrl with q while typing, debounced', async () => {
@@ -158,7 +158,7 @@ describe('FilterPicker', () => {
     it('answers a text typed before from what it loaded, and reloads after reloadKey changed', async () => {
         const wrapper = mountPicker({ optionsUrl: '/api/v2/user/tags' });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         await flushPromises();
         await type(wrapper, 'x');
         await type(wrapper, '');
@@ -183,9 +183,9 @@ describe('FilterPicker', () => {
         await wrapper.setProps({ modelValue: 'go' });
         expect(input(wrapper).element.value).toBe('Go');
         expect(wrapper.classes()).toContain('has-selection');
-        expect(wrapper.find('.c-picker__chip').exists()).toBe(false);
+        expect(wrapper.find('.picker-chip').exists()).toBe(false);
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         expect(wrapper.find('[aria-selected="true"]').text()).toBe('Go');
     });
 
@@ -204,14 +204,14 @@ describe('FilterPicker', () => {
     it('in multiple mode adds chips, stays open and leaves chosen values out of the suggestions', async () => {
         const wrapper = mountPicker({ multiple: true, modelValue: [], options: staticOptions });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         await wrapper.findAll('[role="option"]')[0].trigger('click');
         expect(emitted(wrapper)).toEqual([['php']]);
         await wrapper.setProps({ modelValue: ['php'] });
 
         expect(wrapper.classes()).toContain('is-open');
         expect(wrapper.find('[role="listbox"]').attributes('aria-multiselectable')).toBe('true');
-        expect(wrapper.findAll('.c-picker__chip-label').map((chip) => chip.text())).toEqual(['PHP']);
+        expect(wrapper.findAll('.picker-chip-label').map((chip) => chip.text())).toEqual(['PHP']);
         expect(optionTexts(wrapper)).toEqual(['JavaScript', 'Go']);
         // The chips replace the placeholder.
         expect(input(wrapper).attributes('placeholder')).toBe('');
@@ -226,9 +226,9 @@ describe('FilterPicker', () => {
         const wrapper = mountPicker({ multiple: true, modelValue: ['php', 'js', 'Rust'], options: staticOptions });
 
         // A value none of the options has shows as is.
-        expect(wrapper.findAll('.c-picker__chip-label').map((chip) => chip.text())).toEqual(['PHP', 'JavaScript', 'Rust']);
+        expect(wrapper.findAll('.picker-chip-label').map((chip) => chip.text())).toEqual(['PHP', 'JavaScript', 'Rust']);
 
-        const remove = wrapper.findAll('.c-picker__chip-remove')[1];
+        const remove = wrapper.findAll('.picker-chip-remove')[1];
         expect(remove.attributes('aria-label')).toBe('Remove JavaScript');
         await remove.trigger('click');
         expect(emitted(wrapper)).toEqual([['php', 'Rust']]);
@@ -293,11 +293,11 @@ describe('FilterPicker', () => {
     it('closes on Tab and on a click outside', async () => {
         const wrapper = mountPicker({ options: staticOptions });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         await key(wrapper, 'Tab');
         expect(wrapper.classes()).not.toContain('is-open');
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         document.body.dispatchEvent(new Event('pointerdown', { bubbles: true }));
         await flushPromises();
         expect(wrapper.classes()).not.toContain('is-open');
@@ -305,7 +305,7 @@ describe('FilterPicker', () => {
 
     it('clears the value with the clear X', async () => {
         const single = mountPicker({ modelValue: 'php', options: staticOptions });
-        const clear = single.find('.c-select__clear');
+        const clear = single.find('.select-menu-clear');
         expect(clear.attributes('disabled')).toBeUndefined();
         expect(clear.attributes('aria-label')).toBe('Clear selection');
         await clear.trigger('click');
@@ -313,14 +313,14 @@ describe('FilterPicker', () => {
         expect(document.activeElement).toBe(input(single).element);
 
         const multiple = mountPicker({ multiple: true, modelValue: ['php', 'go'], options: staticOptions });
-        await multiple.find('.c-select__clear').trigger('click');
+        await multiple.find('.select-menu-clear').trigger('click');
         expect(emitted(multiple)).toEqual([[]]);
     });
 
     it('does nothing while disabled', async () => {
         const wrapper = mountPicker({ options: staticOptions, disabled: true });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         expect(wrapper.classes()).not.toContain('is-open');
         expect(input(wrapper).attributes('disabled')).toBeDefined();
     });
@@ -333,7 +333,7 @@ describe('FilterPicker', () => {
         await flushPromises();
 
         expect(optionTexts(wrapper)).toEqual(['Use “Ber”', 'Berlin', 'Bern']);
-        expect(wrapper.findAll('[role="option"]')[0].classes()).toContain('is-active');
+        expect(wrapper.findAll('[role="option"]')[0].classes()).toContain('is-focused');
 
         await key(wrapper, 'Enter');
         expect(emitted(wrapper)).toEqual(['Ber']);
@@ -389,7 +389,7 @@ describe('FilterPicker', () => {
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.reject(new Error('down')));
         const wrapper = mountPicker({ options: staticOptions, optionsUrl: '/api/v2/user/tags' });
 
-        await wrapper.find('.c-picker__field').trigger('click');
+        await wrapper.find('.picker-field').trigger('click');
         await flushPromises();
 
         expect(optionTexts(wrapper)).toEqual(['PHP', 'JavaScript', 'Go']);

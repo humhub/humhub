@@ -7,7 +7,7 @@
         :resolve="resolve"
         :item-label="itemLabel"
         icon="ti-user"
-        block="c-user-filter"
+        block="user-filter"
         @update:model-value="$emit('update:modelValue', $event)"
     >
         <template #option="{ item }">
@@ -39,7 +39,7 @@ export const SEARCH_DEBOUNCE_MS = 300;
  *
  * The combobox is the core's `PickerFilterControl` (a global component — see there for
  * the keyboard, the resolving of a URL value and the error handling), led by a person icon, with
- * avatars (`.c-user-filter`):
+ * avatars (`.user-filter`):
  *
  * - Props: the filter-type contract — `filter` (the definition: `placeholder`, else `label`, as
  *   placeholder; `label` as accessible name), `modelValue` (the user id as a string, `''` for

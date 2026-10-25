@@ -35,7 +35,7 @@ const mountControl = (props = {}) => {
     return wrapper;
 };
 const input = (wrapper) => wrapper.find('input[role="combobox"]');
-const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.c-user-filter__name').text());
+const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.user-filter-name').text());
 const key = (wrapper, name) => input(wrapper).trigger('keydown', { key: name });
 const type = async (wrapper, text) => {
     input(wrapper).element.value = text;
@@ -90,7 +90,7 @@ describe('UserFilterControl', () => {
         expect(field.attributes('aria-expanded')).toBe('false');
         expect(field.attributes('aria-autocomplete')).toBe('list');
         expect(field.attributes('aria-controls')).toBe(wrapper.find('[role="listbox"]').attributes('id'));
-        expect(wrapper.find('.c-picker__chip').exists()).toBe(false);
+        expect(wrapper.find('.picker-chip').exists()).toBe(false);
     });
 
     it('takes the label as placeholder without one', () => {
@@ -150,7 +150,7 @@ describe('UserFilterControl', () => {
         await typeAndWait(wrapper, 'nobody');
 
         expect(optionTexts(wrapper)).toEqual([]);
-        expect(wrapper.find('.c-select__feedback').text()).toBe('No results found!');
+        expect(wrapper.find('.select-menu-feedback').text()).toBe('No results found!');
         expect(wrapper.find('[role="status"]').text()).toBe('No results found!');
     });
 
@@ -163,13 +163,13 @@ describe('UserFilterControl', () => {
         expect(emitted(wrapper)).toEqual(['3']);
         await wrapper.setProps({ modelValue: '3' });
 
-        const chip = wrapper.find('.c-picker__chip');
-        expect(chip.find('.c-picker__chip-label').text()).toBe('Sara Tester');
+        const chip = wrapper.find('.picker-chip');
+        expect(chip.find('.picker-chip-label').text()).toBe('Sara Tester');
         expect(chip.find('img').attributes('src')).toBe('/img/3.jpg');
         expect(input(wrapper).exists()).toBe(false);
         await flushPromises();
-        expect(document.activeElement).toBe(chip.find('.c-picker__chip-remove').element, 'the focus stays in the control');
-        expect(chip.find('.c-picker__chip-remove').attributes('id')).toBe('filter-userId');
+        expect(document.activeElement).toBe(chip.find('.picker-chip-remove').element, 'the focus stays in the control');
+        expect(chip.find('.picker-chip-remove').attributes('id')).toBe('filter-userId');
         // Known from the suggestions: nothing to resolve.
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
     });
@@ -180,7 +180,7 @@ describe('UserFilterControl', () => {
         await wrapper.find('[role="option"]').trigger('click');
         await wrapper.setProps({ modelValue: '3' });
 
-        const remove = wrapper.find('.c-picker__chip-remove');
+        const remove = wrapper.find('.picker-chip-remove');
         expect(remove.attributes('aria-label')).toBe('Remove Sara Tester');
         await remove.trigger('click');
         expect(emitted(wrapper).at(-1)).toBe('');
@@ -201,13 +201,13 @@ describe('UserFilterControl', () => {
         expect(wrapper.classes()).toContain('is-loading');
         expect(input(wrapper).attributes('disabled')).toBeDefined();
         expect(input(wrapper).attributes('aria-busy')).toBe('true');
-        expect(wrapper.find('.c-select__spinner').exists()).toBe(true);
+        expect(wrapper.find('.select-menu-spinner').exists()).toBe(true);
 
         pending[0].resolve({ results: [people[2]] });
         await flushPromises();
 
         expect(wrapper.classes()).not.toContain('is-loading');
-        expect(wrapper.find('.c-picker__chip-label').text()).toBe('Sam User');
+        expect(wrapper.find('.picker-chip-label').text()).toBe('Sam User');
         expect(emitted(wrapper)).toEqual([]);
     });
 
@@ -240,7 +240,7 @@ describe('UserFilterControl', () => {
         const wrapper = mountControl({ modelValue: '8' });
         await flushPromises();
 
-        const chip = wrapper.find('.c-picker__chip');
+        const chip = wrapper.find('.picker-chip');
         expect(chip.attributes('role')).toBe('group');
         expect(chip.attributes('aria-label')).toBe('Author');
     });
@@ -262,8 +262,8 @@ describe('UserFilterControl', () => {
         expect(globalThis.humhubStubs.logCalls.error).toHaveLength(1);
         expect(wrapper.classes()).not.toContain('is-loading');
         // The value stays, shown as it is, and can be removed.
-        expect(wrapper.find('.c-picker__chip-label').text()).toBe('8');
-        await wrapper.find('.c-picker__chip-remove').trigger('click');
+        expect(wrapper.find('.picker-chip-label').text()).toBe('8');
+        await wrapper.find('.picker-chip-remove').trigger('click');
         expect(emitted(wrapper)).toEqual(['']);
 
         await wrapper.setProps({ modelValue: '' });
@@ -285,7 +285,7 @@ describe('UserFilterControl', () => {
         expect(active()).toBe(options()[0].attributes('id'));
         await key(wrapper, 'ArrowDown');
         expect(active()).toBe(options()[1].attributes('id'));
-        expect(options()[1].classes()).toContain('is-active');
+        expect(options()[1].classes()).toContain('is-focused');
         await key(wrapper, 'ArrowDown');
         expect(active()).toBe(options()[1].attributes('id'), 'stays at the last');
         await key(wrapper, 'Home');
@@ -334,7 +334,7 @@ describe('UserFilterControl', () => {
         });
         mounted.push(wrapper);
 
-        const field = wrapper.find('.c-filter-bar__item--user input[role="combobox"]');
+        const field = wrapper.find('.filter-bar-item-user input[role="combobox"]');
         expect(field.attributes('id')).toBe('filter-userId');
 
         field.element.value = 'peter';
@@ -346,6 +346,6 @@ describe('UserFilterControl', () => {
 
         expect(emitted(wrapper).at(-1)).toEqual({ userId: '2' });
         expect(window.location.search).toBe('?userId=2');
-        expect(wrapper.find('.c-picker__chip-label').text()).toBe('Peter Tester');
+        expect(wrapper.find('.picker-chip-label').text()).toBe('Peter Tester');
     });
 });

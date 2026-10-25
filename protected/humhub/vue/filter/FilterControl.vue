@@ -1,10 +1,10 @@
 <template>
-    <div v-if="filter.type === 'text'" class="c-search-field">
-        <i class="ti ti-search c-search-field__icon" aria-hidden="true"></i>
+    <div v-if="filter.type === 'text'" class="search-field">
+        <i class="ti ti-search search-field-icon" aria-hidden="true"></i>
         <input
             :id="inputId"
             type="text"
-            class="c-search-field__input"
+            class="form-control search-field-input"
             autocomplete="off"
             :value="modelValue"
             :placeholder="filter.placeholder || filter.label || ''"
@@ -35,19 +35,19 @@
         :reload-key="reloadKey"
         @update:model-value="$emit('update:modelValue', $event)"
     />
-    <div v-else-if="filter.type === 'tags'" class="c-filter-tags" role="group" :aria-label="filter.label">
-        <span v-if="filter.label" class="c-filter-tags__label" aria-hidden="true">{{ filter.label }}</span>
+    <div v-else-if="filter.type === 'tags'" class="filter-tags" role="group" :aria-label="filter.label">
+        <span v-if="filter.label" class="filter-tags-label" aria-hidden="true">{{ filter.label }}</span>
         <button
             v-for="option in options"
             :key="option.value"
             type="button"
-            class="c-filter-tags__tag"
+            class="filter-tags-tag"
             :class="{ active: isTagActive(option.value) }"
             :aria-pressed="isTagActive(option.value) ? 'true' : 'false'"
             @click="toggleTag(option.value)"
         >{{ option.label }}</button>
     </div>
-    <div v-else-if="filter.type === 'checkbox'" class="c-filter-check form-check">
+    <div v-else-if="filter.type === 'checkbox'" class="filter-check form-check">
         <input
             :id="inputId"
             class="form-check-input"

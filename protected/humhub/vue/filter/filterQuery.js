@@ -1,5 +1,5 @@
 /**
- * Pure helpers of the filter kit (`FilterBar.vue`, `CardDirectory.vue`): the default value of a
+ * Pure helpers of the filter kit (`FilterBar.vue`, `EntityBrowser.vue`): the default value of a
  * filter definition (see `humhub\components\listing\FilterDefinition`), and the translation
  * between filter values, the page URL's query string and the endpoint's request parameters.
  *

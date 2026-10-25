@@ -9,17 +9,17 @@
         :item-label="itemLabel"
         :item-title="itemTitle"
         icon="ti-star"
-        block="c-topic-filter"
+        block="topic-filter"
         @update:model-value="$emit('update:modelValue', $event)"
     >
         <template #option="{ item }">
-            <span class="c-topic-filter__dot" :style="dotStyle(item)"></span>
+            <span class="topic-filter-dot" :style="dotStyle(item)"></span>
         </template>
         <template #option-detail="{ item }">
-            <span v-if="isForeign(item)" class="c-topic-filter__container">{{ item.container.name }}</span>
+            <span v-if="isForeign(item)" class="topic-filter-container">{{ item.container.name }}</span>
         </template>
         <template #chip="{ item }">
-            <span class="c-topic-filter__dot" :style="dotStyle(item)"></span>
+            <span class="topic-filter-dot" :style="dotStyle(item)"></span>
         </template>
     </PickerFilterControl>
 </template>
@@ -36,7 +36,7 @@ import { apiUrl, client } from '@humhub/vue';
  *
  * The combobox is the core's `PickerFilterControl` (a global component — see there for the
  * keyboard, the resolving of a URL value and the error handling), led by the topic icon (the
- * topic module's `star`), with a colour dot per topic (`.c-topic-filter`):
+ * topic module's `star`), with a colour dot per topic (`.topic-filter`):
  *
  * - Props: the filter-type contract — `filter` (the definition: `placeholder`, else `label`, as
  *   placeholder; `label` as accessible name; always `multiple`, as the PHP filter sets it;

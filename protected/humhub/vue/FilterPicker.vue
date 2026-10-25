@@ -1,15 +1,15 @@
 <template>
     <div
         ref="root"
-        class="c-select c-picker"
+        class="select-menu picker"
         :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': disabled, 'is-loading': loading, 'is-multiple': multiple }"
     >
-        <div class="c-picker__field" @click="onFieldClick">
-            <span v-for="chip in chips" :key="chip.value" class="c-picker__chip">
-                <span class="c-picker__chip-label">{{ chip.label }}</span>
+        <div class="form-control picker-field" @click="onFieldClick">
+            <span v-for="chip in chips" :key="chip.value" class="picker-chip">
+                <span class="picker-chip-label">{{ chip.label }}</span>
                 <button
                     type="button"
-                    class="c-picker__chip-remove"
+                    class="picker-chip-remove"
                     :disabled="disabled"
                     :aria-label="removeLabel(chip.label)"
                     :title="removeLabel(chip.label)"
@@ -20,7 +20,7 @@
                 :id="inputId"
                 ref="input"
                 type="text"
-                class="c-picker__input"
+                class="picker-input"
                 role="combobox"
                 autocomplete="off"
                 aria-autocomplete="list"
@@ -37,11 +37,11 @@
                 @focus="onFocus"
             >
         </div>
-        <span v-if="loading" class="spinner-border spinner-border-sm c-select__spinner" aria-hidden="true"></span>
-        <i v-else class="ti ti-chevron-up c-select__chevron" aria-hidden="true"></i>
+        <span v-if="loading" class="spinner-border spinner-border-sm select-menu-spinner" aria-hidden="true"></span>
+        <i v-else class="ti ti-chevron-up select-menu-chevron" aria-hidden="true"></i>
         <button
             type="button"
-            class="c-select__clear"
+            class="select-menu-clear"
             :disabled="!hasSelection || disabled"
             :aria-hidden="hasSelection ? null : 'true'"
             :aria-label="clearLabel"
@@ -51,8 +51,9 @@
         <ul
             :id="listboxId"
             ref="listbox"
-            class="c-select__drawer"
-            :class="{ 'is-open': open }"
+            class="dropdown-menu select-menu-drawer"
+            :class="{ show: open }"
+            data-bs-popper="static"
             role="listbox"
             :aria-label="accessibleName"
             :aria-multiselectable="multiple ? 'true' : null"
@@ -62,18 +63,18 @@
                 v-for="(option, index) in choices"
                 :id="optionId(index)"
                 :key="option.custom ? `custom:${option.value}` : option.value"
-                class="c-select__option"
-                :class="{ 'is-selected': !option.custom && isChosen(option.value), 'is-active': index === activeIndex, 'is-custom': option.custom }"
+                class="dropdown-item select-menu-option"
+                :class="{ active: !option.custom && isChosen(option.value), 'is-focused': index === activeIndex, 'is-custom': option.custom }"
                 role="option"
                 :aria-selected="!option.custom && isChosen(option.value) ? 'true' : 'false'"
                 @pointerdown.prevent
                 @click="choose(option)"
                 @mousemove="activeIndex = index"
             >
-                <span class="c-picker__option-label">{{ option.custom ? customLabel(option.value) : option.label }}</span>
-                <span v-if="option.count !== null" class="c-picker__option-count">{{ option.count }}</span>
+                <span class="picker-option-label">{{ option.custom ? customLabel(option.value) : option.label }}</span>
+                <span v-if="option.count !== null" class="picker-option-count">{{ option.count }}</span>
             </li>
-            <li v-if="feedback" class="c-select__feedback" role="presentation">{{ feedback }}</li>
+            <li v-if="feedback" class="dropdown-item-text select-menu-feedback" role="presentation">{{ feedback }}</li>
         </ul>
         <span class="visually-hidden" role="status">{{ open ? statusText : '' }}</span>
     </div>
@@ -134,8 +135,8 @@ const contains = (label, term) => term === '' || label.toLocaleLowerCase().inclu
  *   Escape closes the listbox (and, when closed, drops the typed text), Tab closes it and moves
  *   on, Backspace in an empty input removes the last chip (`multiple`). A click outside closes it.
  *   The clear X resets the value (`''` / `[]`).
- * - Styling: `.c-select` (drawer, options, clear X, chevron, spinner) and `.c-picker` (the field
- *   with the chips and the input) in `resources/scss/_page-toolbar.scss`.
+ * - Styling: `.select-menu` (drawer, options, clear X, chevron, spinner) and `.picker` (the field
+ *   with the chips and the input) in `resources/scss/_filter-bar.scss`.
  *
  * @since 1.20
  */
