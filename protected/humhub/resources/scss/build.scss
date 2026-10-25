@@ -145,6 +145,8 @@ $prev-filter-bar: false !default;
 
 $prev-entity-browser: false !default;
 @import "entity-browser";
+$prev-data-table: false !default;
+@import "data-table";
 
 $prev-item-browser: false !default;
 @import "item-browser";

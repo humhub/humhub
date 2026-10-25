@@ -1,7 +1,8 @@
 # Data Table
 
 > Found in the design: Admin › People (Users), Admin › Spaces, Admin › Modules, component demo page (Users / Spaces / Invites)
-> · Core: not yet available
+> · Core: `DataTable.vue` (since 1.20) with `humhub\components\table\DataTable`; first page:
+> Administration › Users
 > · Technology: **Vue only**. It is mounted from PHP through a `VueWidget`.
 
 One component for every table of records: users, spaces, modules, invitations, groups, log
@@ -188,109 +189,84 @@ Reduced motion turns all of this into instant changes.
 The table sits in a content card: Bootstrap's **`.card`** with **`.table`** inside. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 
 ```html
-<section class="card content-card data-table" aria-labelledby="users-title">
+<section class="card content-card data-table">
     <div class="card-header">
-        <h2 id="users-title" class="card-title">Users</h2>
-        <div class="card-header-actions">…</div>      <!-- columns · + · ⋮ (CardHeaderActions) -->
+        <div class="card-header-actions">…</div>      <!-- + · ⋮ (CardHeaderActions, DropdownMenu) -->
     </div>
     <div class="card-body">
         <div class="filter-bar">…</div>
-        <table class="table table-hover">…</table>
+        <div class="data-table-wrap">
+            <table class="table table-hover" aria-label="Users">
+                <thead><tr><th scope="col" aria-sort="ascending"><button class="data-table-sort active">Name …</button></th>…</tr></thead>
+                <tbody>
+                    <tr data-id="7">
+                        <th scope="row" class="data-table-col-main"><div class="data-table-main">…</div></th>
+                        <td class="data-table-col-chip"><button class="badge">Users</button></td>
+                        <td class="data-table-col-date"><time datetime="…" title="…">Oct 25, 2026</time></td>
+                        <td class="data-table-col-actions">…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="card-footer data-table-footer">… <ul class="pagination">…</ul></div>
+    <div class="card-footer data-table-footer">
+        <span class="data-table-count">1–25 of 35 users</span>
+        <label class="data-table-page-size">Rows per page <select class="form-select form-select-sm">…</select></label>
+        <nav class="data-table-pager"><ul class="pagination pagination-sm">…</ul></nav>
+    </div>
 </section>
 ```
 
 | Class | Element |
 |---|---|
-| `.card`, `.card-header`, `.card-title`, `.card-body`, `.card-footer` | The [Content Card](card.md) |
-| `.table.table-hover` | The table; rows without dividers, hover fill |
-| `.table-active` | A selected row (Bootstrap's class, with an accent `--bs-table-active-bg`) |
-| `.data-table-main` | The main column (image, name, subtitle) |
-| `.data-table-sort` | A sortable column header button (`aria-sort` on the `<th>`) |
-| `.data-table-row-details` | The expandable row with folded columns |
-| `.data-table-bulk` | The selection menu ("2 ⋮") |
-| `.pagination` | Bootstrap's pager |
+| `.card.content-card.data-table`, `.card-header`, `.card-header-actions`, `.card-body`, `.card-footer` | The [Content Card](card.md) |
+| `.table.table-hover` | The table; rows without dividers, a hover fill |
+| `.data-table-col-<type>` | A column's cells (`main`, `chip`, `date`, `number`, `text`, `details`, `actions`); all but the main column as narrow as their content |
+| `.data-table-main`, `-main-image`, `-main-text`, `-main-name`, `-main-subtitle` | The main cell (the row's header, `th scope="row"`) |
+| `.data-table-sort` (`.active`) | A sortable column's header button; `aria-sort` on the `<th>` |
+| `.data-table-chips` | The badges of a chip cell (a plain `.badge`, a tone as `.badge-<tone>`); with a column filter each is a `<button>` |
+| `.data-table-row-toggle`, `.data-table-details-toggle`, `.data-table-row-details` | With folded columns: a row toggling its details, the chevron, the details row (a `<dl>`) |
+| `.data-table-skeleton`, `.data-table-message`, `.data-table-error` | Skeleton rows (`.placeholder-glow`), the empty or error row, a failed later page (`.alert`) |
+| `.data-table-footer`, `-count`, `-page-size`, `-pager` | The footer; the pager is Bootstrap's `.pagination` |
+| `tr.is-busy` | A row whose action is running |
 
-- **File:** `_data-table.scss` (new), behind `$prev-data-table`.
-- **Sass variables:** Bootstrap's `$table-cell-padding-x/y`, `$table-hover-bg`,
-  `$table-active-bg` (accent subtle), `$table-border-width` (0 inside `.data-table`),
-  `$pagination-*`; plus `$data-table-main-image-size`.
+- **File:** `_data-table.scss`, behind `$prev-data-table`.
+- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-hover-bg`,
+  `$data-table-head-color`, `$data-table-head-font-size`; the rest is Bootstrap's `.table`,
+  `.pagination` and `.form-select`.
 
 ## Implementation in core
 
-**Technology: Vue only.** A new core component `DataTable.vue` in `protected/humhub/vue/`. Pages
-mount it through a `VueWidget` subclass, which also renders the skeleton placeholder. The
-administration is the first consumer, starting with Users, Spaces and Modules.
+**Exists (1.20):**
 
-**Reuses the existing core kit:**
+- **Vue:** `DataTable` (`protected/humhub/vue/DataTable.vue`, cells in the internal
+  `vue/table/TableCell.vue`). Props: `tableId`, `label`, `title`, `url`, `columns`, `actions`,
+  `filters`, `headerActions`, `headerMenu`, `labels` (`{one, other, range}` count texts),
+  `syncUrl`. It reuses `FilterBar`, `HeaderActions` and `DropdownMenu` (the row menu's
+  `menuId` is `<tableId>.row`, so modules can also register entries client-side).
+- **PHP:** `humhub\components\table\DataTable` — the table's list (a `FilterableList`), its
+  columns (`ColumnDefinition`: `key`, `type`, `label`, `priority`, `sort`, `filter`, and `value`
+  for a column a module adds), its row actions (`RowAction`: `id`, `label`, `kind`, `url` per
+  row, `icon`, `confirm`, `destructive`, `visible` per row) and `row($model)`:
+  `{id, cells: {<column>: cell}, actions: [{id, url}]}`. `definitions()` gives the component's
+  `columns`, `actions` and `filters`. Modules change columns and actions on `EVENT_INIT`.
+- **Row action kinds:** `link` (opens the URL), `modal` (the global modal), `post` (a form POST
+  to a web route, e.g. one answering with a redirect), `request` (an API call answering the new
+  `row`, or `removed: true`). `confirm` asks first.
+- **Sorting:** sort keys of the list, offered by no select (`addSort($key, null)`): `sort=<key>`,
+  descending `sort=-<key>`.
+- **First consumer:** Administration › Users — `admin\widgets\UserTable` (the island and its
+  skeleton placeholder), `admin\components\UserTable` (columns: name, groups, source for
+  administrators, last login, registered; actions: edit, enable / disable, impersonate, view
+  profile, delete), `admin\components\AdminUserList` and `GET /api/v2/admin/user`,
+  `POST /api/v2/admin/user/<id>/enable|disable`.
 
-| Need | Existing building block |
-|---|---|
-| Search and filters | `FilterBar`, `FilterSelect`, `FilterPicker`, user/space/topic filter types |
-| Filter, sort and validation contract on the server | `humhub\components\listing\FilterableList` (`filters()`, `sorts()`), `FilterDefinition`, `ListContext` |
-| Paged data | the API list envelope `{results, total, page, pageSize, pages}` (as used by `EntityBrowser` and `UserList`) |
-| Row and header menus | `DropdownMenu` (with `registerMenuEntry()`, so modules can add row actions) |
-| Bulk actions | `SelectionMenu` |
-| Confirm and form dialogs | `UiModal`, `HumHubForm` |
-| Mounting from PHP | `VueWidget` |
+**Not yet (see Behaviour):** the columns chooser, selection and bulk actions, the row motion,
+the red ring of a destructive action in progress, export following the filters.
 
-**New pieces (proposal):**
-
-- **Column definitions from the server.** Analogous to `FilterDefinition`, a `ColumnDefinition`
-  (`key`, `type`, `label`, `priority`, `default` visible, `sortable`, `filter` key) is delivered as
-  a prop. Modules can add columns to a list through the existing `FilterableList` events.
-- **Row shape.** Each row in `results` carries:
-  - `id` and `url`
-  - a `cells` map keyed by column. Each cell holds what is shown (`text`, `subtitle`, `image`,
-    `tone`, `url`) and, for chips, the value a filter uses.
-  - an `actions` list: the ids of the actions allowed for this row, evaluated on the server.
-- **Action definitions** are delivered once per table, not per row: `id`, `label`, `icon`,
-  `kind` (link, modal, request), `url`, `bulk`, `destructive`, `confirm`. A request answer can
-  update cells, remove the row or return a message, so the client stays generic.
-- **Column sorting.** `FilterableList::sorts()` today offers named orders for a select. Columns
-  need both directions per column. Proposal: `sort=name` / `sort=-name`, with sortable columns
-  mapping to sort keys.
-- **"Select all" across pages.** A bulk request sends either `ids` or `all: true` together with
-  the current filter values. The server re-runs the list query instead of trusting a client id
-  list.
-
-**Sketch:**
-
-```php
-// PHP: the admin page mounts the island
-echo UserTable::widget();   // extends VueWidget: props = endpoint, columns, filters, actions
-
-class UserTable extends VueWidget
-{
-    protected string $component = 'DataTable';
-
-    protected function getProps(): array
-    {
-        $list = new AdminUserList();   // FilterableList: filters(), sorts(), columns()
-        return [
-            'id' => 'admin-users',
-            'label' => Yii::t('AdminModule.user', 'Users'),
-            'noun' => ['one' => Yii::t('AdminModule.user', 'user'), 'other' => Yii::t('AdminModule.user', 'users')],
-            'url' => Url::to(['/api/v2/admin/user']),
-            'columns' => $list->columnDefinitions(),
-            'filters' => $list->definitions(),
-            'actions' => AdminUserActions::definitions(),
-            'maxColumns' => 5,
-        ];
-    }
-}
-```
-
-```html
-<!-- Vue: inside another island -->
-<DataTable id="space-members" :label="t('Members')" :url="membersUrl"
-           :columns="columns" :filters="filters" :actions="actions" />
-```
-
-**Replaces:** `humhub\widgets\GridView` (with `ActionColumn`, `CheckboxColumn`, `ImageColumn`,
-`DisplayNameColumn`, admin `UserActionColumn`, `Space*Column`) on the pages that move to the new
-table. `GridView` stays for everything else until those pages are migrated.
+**Replaces:** `humhub\widgets\GridView` on the pages that move to the table; the user list's
+`UserActionColumn` is deprecated. `GridView` stays for everything else until those pages are
+migrated.
 
 ## Open questions
 

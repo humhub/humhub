@@ -1,0 +1,209 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Administration API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Administration
+    description: |
+      The user administration, for those who may manage users or groups (`ManageUsers`,
+      `ManageGroups`). The rows are those of the administration's user table (Administration ›
+      Users): table rows, not user records — `{id, cells, actions}`, the cells as the table shows
+      them and the actions the caller may take on each user (see `docs/ui/data-table.md`).
+paths:
+  "/admin/user":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the user table
+      operationId: listAdminUsers
+      description: |
+        One page of the platform's accounts, whatever their visibility: the active ones unless
+        `status` says otherwise, searched, narrowed and ordered by the parameters below. An
+        unknown value or parameter answers `422`; modules may add filters of their own, which
+        are then accepted like these, and may narrow the list (e.g. to the groups a manager
+        manages).
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username, or an exact user id
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: |
+            `enabled` (default) · `deactivated` · `deleted` (soft-deleted accounts)
+          schema:
+            type: string
+            enum: [enabled, deactivated, deleted]
+        - name: group
+          in: query
+          required: false
+          description: Only members of this group (its id)
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` (last name, first name) · `email` · `lastLogin` · `createdAt`, each descending
+            with a leading `-` (`-lastLogin`); empty values last in both directions. Without,
+            the newest account first.
+          schema:
+            type: string
+            enum: [name, -name, email, -email, lastLogin, -lastLogin, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/TableRow"
+              example:
+                results:
+                  - id: 7
+                    cells:
+                      name:
+                        text: Jane Doe
+                        subtitle: jane@example.com
+                        image: https://example.com/uploads/profile_image/abc.jpg
+                        url: https://example.com/u/jane/
+                      groups:
+                        - text: Users
+                          value: "2"
+                      lastLogin:
+                        value: "2026-10-25T10:00:00+00:00"
+                        text: Oct 25, 2026
+                        title: Oct 25, 2026, 10:00:00 AM
+                    actions:
+                      - id: edit
+                        url: https://example.com/admin/user/edit?id=7
+                      - id: disable
+                        url: https://example.com/api/v2/admin/user/7/disable
+                total: 1
+                page: 1
+                pageSize: 25
+                pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/{id}/enable":
+    post:
+      tags:
+        - Administration
+      summary: Enable a deactivated user
+      operationId: enableAdminUser
+      description: |
+        Activates the account and answers its new row. Only where the row offers the action
+        (a deactivated account the caller may manage), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/{id}/disable":
+    post:
+      tags:
+        - Administration
+      summary: Deactivate a user
+      operationId: disableAdminUser
+      description: |
+        Deactivates the account and answers its new row. Only where the row offers the action
+        (an active account the caller may manage), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+components:
+  parameters:
+    userIdPathParam:
+      name: id
+      in: path
+      description: Id of the user
+      required: true
+      schema:
+        type: integer
+  responses:
+    RowChanged:
+      description: The user's new row
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              row:
+                $ref: "#/components/schemas/TableRow"
+  schemas:
+    TableRow:
+      title: TableRow
+      type: object
+      description: |
+        A row of a data table: the cells by column key — `{text, subtitle?, image?, url?}` for
+        the main column, `[{text, value?}]` for a chip column, `{value, text, title}` for a
+        date, `{text}` otherwise — and the actions the caller may take on it, each with its URL.
+        The table's definitions (columns, actions) come with the page.
+      properties:
+        id:
+          type: integer
+        cells:
+          type: object
+          additionalProperties: true
+        actions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              url:
+                type: string
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

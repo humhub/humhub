@@ -61,7 +61,9 @@ class PermissionCest
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('not to see permission denied message');
-        $I->see('Add new user');
+        // The user table island, with "Add new user" among its header actions (props)
+        $I->seeElement('data-table');
+        $I->seeInSource('Add new user');
         $I->see('Profiles');
 
         $I->see('Users', '#admin-menu');
@@ -145,7 +147,9 @@ class PermissionCest
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('not to see permission denied message');
-        $I->see('Add new user');
+        // The user table island, with "Add new user" among its header actions (props)
+        $I->seeElement('data-table');
+        $I->seeInSource('Add new user');
         $I->see('Groups');
 
         $I->see('Users', '#admin-menu');

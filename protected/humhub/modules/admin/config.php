@@ -18,6 +18,9 @@ return [
     'isCoreModule' => true,
     'urlManagerRules' => [
         ['pattern' => 'api/v2/module/<id:[\w\-]+>/enable', 'route' => 'admin/api/module/enable', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/admin/user', 'route' => 'admin/api/user/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/admin/user/<id:\d+>/enable', 'route' => 'admin/api/user/enable', 'verb' => 'POST'],
+        ['pattern' => 'api/v2/admin/user/<id:\d+>/disable', 'route' => 'admin/api/user/disable', 'verb' => 'POST'],
     ],
     'events' => [
         [

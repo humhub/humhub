@@ -109,7 +109,7 @@ Showing, filtering and acting on many items.
 | Component | What it is | Status | Technology |
 |---|---|---|---|
 | [Filter Bar](filter-bar.md) | Search and filters that apply live | in progress | Vue (exists) |
-| [Data Table](data-table.md) | Records to compare and act on, with bulk actions | in review | Vue |
+| [Data Table](data-table.md) | Records to compare and act on, with bulk actions | in progress | Vue (exists) |
 | [Entity Browser](entity-browser.md) | Browse people, spaces, modules as cards | in progress | Vue (exists) |
 | [Entity Card](entity-card.md) | The card for a person, space or module | in progress | Vue (exists) |
 | [Item Browser](item-browser.md) | Browse levels of items: folders and files | in progress | Vue (exists) |

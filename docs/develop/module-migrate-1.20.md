@@ -1666,6 +1666,34 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `UserFollowButton` island) and `user:friendship-changed` `{userId, state, isFollowing}`
     (dispatched by the `FriendshipButton` island) of the `events` bridge.
 
+- **Administration › Users is a data table island.** `/admin/user/list` renders
+  `humhub\modules\admin\widgets\UserTable` (the core `DataTable` component, see
+  `docs/ui/data-table.md`) and reads its rows from `GET /api/v2/admin/user`; a user is enabled or
+  disabled in place through `POST /api/v2/admin/user/<id>/enable|disable` (see
+  `docs/api/src/admin.yaml`).
+  - **New:** `humhub\components\table\DataTable` (with `ColumnDefinition` and `RowAction`), the
+    server side of a table — its list (a `FilterableList`), columns, row actions and rows. The
+    user table is `humhub\modules\admin\components\UserTable` on the new list
+    `humhub\modules\admin\components\AdminUserList` (filters `q`, `status`, `group`; sort
+    keys `name`, `email`, `lastLogin`, `createdAt`, descending with `-`).
+  - **Deprecated:** `humhub\modules\admin\grid\UserActionColumn` — the list no longer renders
+    it, so its `EVENT_AFTER_INIT_ACTIONS` no longer fires. A module adding, changing or removing
+    row actions (twofa, limited-user-admin) does so on `UserTable::EVENT_INIT`:
+    `$event->sender->addAction(new RowAction(…))` / `removeAction('disable')`. A `RowAction`
+    decides per row whether it is offered (`visible`) and has a kind: `link`, `modal`, `post` (a
+    form POST to a web route, e.g. one answering with a redirect) or `request` (an API call
+    answering the new row).
+  - **Changed:** the list page no longer uses `humhub\modules\admin\models\UserSearch` (the
+    export still does). A module restricting the users an administrator sees narrows
+    `AdminUserList` on `FilterableList::EVENT_BUILD` instead of replacing `UserSearch`; the
+    page's filter parameters are those of the list (`?q=…&status=…&group=…`), not
+    `UserSearch[freeText]`.
+  - **Changed:** "Add new user" is the primary action of the card's header menu
+    `humhub\modules\admin\widgets\AdminUserCardActions` (entry id `add-user`), the exports and
+    "List pending registrations" are entries of the ⋮ menu `AdminUserCardMenu`. A module hiding
+    the button removes the entry on the menu's `EVENT_INIT` (the `Button::EVENT_BEFORE_RUN`
+    check on its URL no longer applies). The export does not follow the table's filters.
+
 - **A person filter for lists.** New: `user\components\listing\UserFilter`, a ready filter
   (`new UserFilter('authorId', column: 'content.created_by', definition: ['label' => …])`;
   parameter `userId` by default, an `apply` callback instead of `column`): the id of a user the

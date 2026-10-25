@@ -1,0 +1,252 @@
+//
+// Data table: the Vue component DataTable (protected/humhub/vue/DataTable.vue), a content card
+// (`_card.scss`) with the filter bar, Bootstrap's `.table.table-hover` (rows without dividers, a
+// hover fill), typed columns, row details for the folded columns, and a footer with the count,
+// the rows per page and Bootstrap's `.pagination`. See docs/ui/data-table.md.
+// @since 1.20
+// --------------------------------------------------
+
+$data-table-gap: $spacer * .75 !default;
+$data-table-main-image-size: 2.5rem !default;
+$data-table-hover-bg: var(--hh-background-color-secondary) !default;
+$data-table-head-color: var(--bs-secondary-color) !default;
+$data-table-head-font-size: $font-size-sm !default;
+
+@if not $prev-data-table {
+    .data-table > .card-body {
+        display: flex;
+        flex-direction: column;
+        gap: $data-table-gap;
+    }
+
+    // The filter bar sits on the card's own padding
+    .data-table .filter-bar-body {
+        padding: 0;
+    }
+
+    .data-table .table {
+        --bs-table-bg: transparent;
+        --bs-table-hover-bg: #{$data-table-hover-bg};
+        --bs-table-border-color: transparent;
+
+        margin-bottom: 0;
+
+        > :not(caption) > * > * {
+            border-bottom-width: 0;
+            vertical-align: middle;
+        }
+
+        // A reload: the shown rows dimmed until the answer replaces them
+        &.is-loading > tbody {
+            opacity: .5;
+            @include transition(opacity .15s linear);
+        }
+    }
+
+    // Column header: sticky below the fixed top bar
+    .data-table thead th {
+        position: sticky;
+        top: var(--hh-fixed-header-height, 0);
+        z-index: 1;
+        background: var(--bs-card-bg);
+        color: $data-table-head-color;
+        font-size: $data-table-head-font-size;
+        font-weight: $font-weight-semibold;
+        white-space: nowrap;
+    }
+
+    // The main cell is the row's header (`th scope="row"`), in the body's text, not HumHub's
+    // small `table th`
+    .data-table tbody th {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+
+    // A sortable column's header: a plain button with the sort arrow
+    .data-table-sort {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacer * .25;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+
+        .ti {
+            opacity: .5;
+        }
+
+        &:hover,
+        &.active {
+            color: var(--hh-text-color-highlight);
+        }
+
+        &.active .ti {
+            opacity: 1;
+        }
+    }
+
+    // The main column takes the room the others leave
+    .data-table-col-main {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .data-table-col-chip,
+    .data-table-col-date,
+    .data-table-col-number,
+    .data-table-col-text,
+    .data-table-col-details,
+    .data-table-col-actions {
+        width: 1%;
+        white-space: nowrap;
+    }
+
+    .data-table-col-number {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .data-table-col-details,
+    .data-table-col-actions {
+        text-align: end;
+    }
+
+    .data-table-main {
+        display: flex;
+        align-items: center;
+        gap: $data-table-gap;
+        min-width: 0;
+    }
+
+    .data-table-main-image {
+        flex: 0 0 auto;
+        width: $data-table-main-image-size;
+        height: $data-table-main-image-size;
+        border-radius: var(--bs-border-radius);
+        object-fit: cover;
+    }
+
+    .data-table-main-text {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .data-table-main-name,
+    .data-table-main-subtitle {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .data-table-main-name {
+        color: var(--hh-text-color-highlight);
+        font-weight: $font-weight-semibold;
+        text-decoration: none;
+
+        &:is(a):hover,
+        &:is(a):focus-visible {
+            color: var(--bs-accent);
+        }
+    }
+
+    .data-table-main-subtitle {
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+    }
+
+    .data-table-chips {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: $spacer * .25;
+    }
+
+    // With folded columns the whole row toggles its details
+    .data-table-row-toggle {
+        cursor: pointer;
+    }
+
+    .data-table-row-details > td {
+        background: $data-table-hover-bg;
+
+        dl {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: $spacer * .25 $spacer;
+            margin: 0;
+        }
+
+        dt {
+            color: var(--bs-secondary-color);
+            font-weight: $font-weight-semibold;
+        }
+
+        dd {
+            margin: 0;
+        }
+    }
+
+    // A row whose action is running
+    .data-table tr.is-busy {
+        opacity: .6;
+        cursor: progress;
+    }
+
+    .data-table-message > td {
+        padding: $spacer * 2 $spacer;
+        color: var(--bs-secondary-color);
+        text-align: center;
+    }
+
+    .data-table-skeleton .placeholder {
+        display: block;
+    }
+
+    .data-table-skeleton .data-table-main-image {
+        display: block;
+    }
+
+    .data-table-error {
+        margin: 0;
+    }
+
+    .data-table-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $spacer * .5 $spacer;
+    }
+
+    .data-table-count {
+        margin-right: auto;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+    }
+
+    .data-table-page-size {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacer * .5;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+
+        .form-select {
+            width: auto;
+        }
+    }
+
+    .data-table-pager .pagination {
+        margin: 0;
+    }
+
+    // Phones: the pager on a line of its own
+    @include media-breakpoint-down(sm) {
+        .data-table-pager {
+            flex-basis: 100%;
+        }
+    }
+}

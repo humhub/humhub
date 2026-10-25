@@ -16,6 +16,9 @@ use humhub\modules\user\models\User;
  * UserActionColumn
  *
  * @author Luke
+ * @deprecated since 1.20 the user list is the `DataTable` island of
+ * {@see \humhub\modules\admin\widgets\UserTable}; add, replace or remove row actions on
+ * {@see \humhub\modules\admin\components\UserTable::EVENT_INIT} instead
  */
 class UserActionColumn extends ActionColumn
 {
