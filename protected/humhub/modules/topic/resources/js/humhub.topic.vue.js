@@ -54,7 +54,7 @@
   };
   const _hoisted_1 = {
     key: 0,
-    class: "c-topic-filter__container"
+    class: "topic-filter-container"
   };
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PickerFilterControl = vue.resolveComponent("PickerFilterControl");
@@ -68,14 +68,14 @@
       "item-label": $options.itemLabel,
       "item-title": $options.itemTitle,
       icon: "ti-star",
-      block: "c-topic-filter",
+      block: "topic-filter",
       "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
     }, {
       option: vue.withCtx(({ item }) => [
         vue.createElementVNode(
           "span",
           {
-            class: "c-topic-filter__dot",
+            class: "topic-filter-dot",
             style: vue.normalizeStyle($options.dotStyle(item))
           },
           null,
@@ -96,7 +96,7 @@
         vue.createElementVNode(
           "span",
           {
-            class: "c-topic-filter__dot",
+            class: "topic-filter-dot",
             style: vue.normalizeStyle($options.dotStyle(item))
           },
           null,

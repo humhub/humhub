@@ -906,6 +906,7 @@
     }
     return target;
   };
+  let radioUid = 0;
   const _sfc_main = {
     name: "NotificationSettings",
     i18nCategories: ["NotificationModule.base", "base"],
@@ -922,7 +923,8 @@
         expanded: {},
         saveState: "idle",
         resetting: false,
-        spacesInputId: "notificationsettings-spaces"
+        spacesInputId: "notificationsettings-spaces",
+        radioName: `notificationsettings-${++radioUid}`
       };
     },
     created() {
@@ -1004,7 +1006,7 @@
         return { saving: this.labels.saving, saved: this.labels.saved, error: this.labels.notSaved }[this.saveState] || "";
       },
       statusIcon() {
-        return { saving: "ti-loader-2 c-notification-settings__spin", saved: "ti-check", error: "ti-alert-circle" }[this.saveState] || "";
+        return { saving: "ti-loader-2 notification-settings-spin", saved: "ti-check", error: "ti-alert-circle" }[this.saveState] || "";
       },
       spacesFilter() {
         return { key: "spaces", label: this.labels.spaces, placeholder: this.labels.spacesPlaceholder, multiple: true };
@@ -1111,26 +1113,14 @@
         this.privacy.mode = mode;
         this.enqueue({ privacy: mode });
       },
-      // Arrow keys move the choice within the radio group, as with native radio buttons.
-      onProfileKeydown(event, profileId) {
-        this.moveChoice(event, this.profiles, profileId, this.selectProfile, "data-profile");
-      },
-      onPrivacyKeydown(event, mode) {
-        this.moveChoice(event, this.privacyModes, mode, this.selectPrivacy, "data-privacy");
-      },
-      moveChoice(event, options, current, select, attribute) {
-        const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-        if (!steps[event.key]) {
-          return;
-        }
-        event.preventDefault();
-        const ids = options.map((option) => option.id);
-        const next = ids[(ids.indexOf(current) + steps[event.key] + ids.length) % ids.length];
-        select(next);
-        this.$nextTick(() => {
-          var _a;
-          return (_a = this.$el.querySelector(`[${attribute}="${next}"]`)) == null ? void 0 : _a.focus();
-        });
+      // A radio of a group (arrow keys move the choice natively). A choice the state does not
+      // take (Custom) is put back: the group is checked by the state, not by the click.
+      onRadioChange(event, select, current) {
+        select();
+        const group = this.$el.querySelectorAll(`input[name="${event.target.name}"]`);
+        this.$nextTick(() => group.forEach((input) => {
+          input.checked = input.value === current();
+        }));
       },
       enqueue(patch) {
         this.pending = mergePatch(this.pending || {}, patch);
@@ -1275,68 +1265,68 @@
   };
   const _hoisted_1 = {
     key: 0,
-    class: "panel panel-default c-notification-settings__card c-notification-settings__intro"
+    class: "card content-card notification-settings-card notification-settings-intro"
   };
-  const _hoisted_2 = { class: "c-notification-settings__head" };
-  const _hoisted_3 = { class: "c-notification-settings__title" };
-  const _hoisted_4 = { class: "c-notification-settings__lead" };
+  const _hoisted_2 = { class: "notification-settings-head" };
+  const _hoisted_3 = { class: "notification-settings-title" };
+  const _hoisted_4 = { class: "notification-settings-lead" };
   const _hoisted_5 = ["aria-label"];
-  const _hoisted_6 = ["aria-checked", "tabindex", "data-profile", "onClick", "onKeydown"];
-  const _hoisted_7 = { class: "c-notification-settings__profile-text" };
-  const _hoisted_8 = { class: "c-notification-settings__profile-title" };
-  const _hoisted_9 = { class: "c-notification-settings__profile-description" };
-  const _hoisted_10 = { class: "c-notification-settings__head c-notification-settings__categories-head" };
-  const _hoisted_11 = { class: "c-notification-settings__subtitle" };
+  const _hoisted_6 = ["name", "value", "checked", "data-profile", "onChange"];
+  const _hoisted_7 = { class: "form-check-card-body" };
+  const _hoisted_8 = { class: "form-check-card-title" };
+  const _hoisted_9 = { class: "form-check-card-text" };
+  const _hoisted_10 = { class: "notification-settings-head notification-settings-categories-head" };
+  const _hoisted_11 = { class: "notification-settings-subtitle" };
   const _hoisted_12 = {
     key: 0,
-    class: "c-notification-settings__divider"
+    class: "notification-settings-divider"
   };
   const _hoisted_13 = ["data-category"];
   const _hoisted_14 = {
-    class: "c-notification-settings__category-icon",
+    class: "notification-settings-category-icon",
     "aria-hidden": "true"
   };
-  const _hoisted_15 = { class: "c-notification-settings__category-text" };
-  const _hoisted_16 = { class: "c-notification-settings__category-title" };
+  const _hoisted_15 = { class: "notification-settings-category-text" };
+  const _hoisted_16 = { class: "notification-settings-category-title" };
   const _hoisted_17 = {
     key: 0,
-    class: "c-notification-settings__category-description"
+    class: "notification-settings-category-description"
   };
-  const _hoisted_18 = { class: "c-notification-settings__badges" };
+  const _hoisted_18 = { class: "notification-settings-badges" };
   const _hoisted_19 = ["data-channel"];
   const _hoisted_20 = { class: "visually-hidden" };
   const _hoisted_21 = ["title"];
   const _hoisted_22 = { class: "visually-hidden" };
   const _hoisted_23 = {
     key: 1,
-    class: "c-notification-settings__category-state",
+    class: "notification-settings-category-state",
     "aria-hidden": "true"
   };
   const _hoisted_24 = ["id"];
   const _hoisted_25 = ["aria-label"];
   const _hoisted_26 = {
     key: 0,
-    class: "c-notification-settings__spaces"
+    class: "notification-settings-spaces"
   };
   const _hoisted_27 = ["for"];
   const _hoisted_28 = {
     key: 1,
-    class: "c-notification-settings__card c-notification-settings__privacy"
+    class: "notification-settings-card notification-settings-privacy"
   };
-  const _hoisted_29 = { class: "c-notification-settings__subtitle" };
-  const _hoisted_30 = { class: "c-notification-settings__lead" };
+  const _hoisted_29 = { class: "notification-settings-subtitle" };
+  const _hoisted_30 = { class: "notification-settings-lead" };
   const _hoisted_31 = {
     key: 0,
-    class: "c-notification-settings__privacy-fixed"
+    class: "notification-settings-privacy-fixed"
   };
   const _hoisted_32 = ["aria-label", "aria-disabled"];
-  const _hoisted_33 = ["aria-checked", "tabindex", "disabled", "data-privacy", "onClick", "onKeydown"];
-  const _hoisted_34 = { class: "c-notification-settings__profile-text" };
-  const _hoisted_35 = { class: "c-notification-settings__profile-title" };
-  const _hoisted_36 = { class: "c-notification-settings__profile-description" };
-  const _hoisted_37 = { class: "c-notification-settings__privacy-example" };
-  const _hoisted_38 = { class: "c-notification-settings__footer" };
-  const _hoisted_39 = { class: "c-notification-settings__autosave" };
+  const _hoisted_33 = ["name", "value", "checked", "disabled", "data-privacy", "onChange"];
+  const _hoisted_34 = { class: "form-check-card-body" };
+  const _hoisted_35 = { class: "form-check-card-title" };
+  const _hoisted_36 = { class: "form-check-card-text" };
+  const _hoisted_37 = { class: "notification-settings-privacy-example" };
+  const _hoisted_38 = { class: "notification-settings-footer" };
+  const _hoisted_39 = { class: "notification-settings-autosave" };
   const _hoisted_40 = ["disabled"];
   const _hoisted_41 = ["disabled"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -1346,7 +1336,7 @@
     const _component_HumHubForm = vue.resolveComponent("HumHubForm");
     return vue.openBlock(), vue.createBlock(_component_HumHubForm, {
       ref: "form",
-      class: vue.normalizeClass(["c-notification-settings", `c-notification-settings--${$props.scope}`]),
+      class: vue.normalizeClass(["notification-settings", `notification-settings-${$props.scope}`]),
       "model-name": "NotificationSettings"
     }, {
       default: vue.withCtx(() => [
@@ -1362,7 +1352,7 @@
             vue.createElementVNode(
               "span",
               {
-                class: vue.normalizeClass(["c-notification-settings__status", `is-${$data.saveState}`]),
+                class: vue.normalizeClass(["notification-settings-status", `is-${$data.saveState}`]),
                 role: "status",
                 "aria-live": "polite"
               },
@@ -1403,7 +1393,7 @@
             /* TEXT */
           ),
           vue.createElementVNode("div", {
-            class: "c-notification-settings__profiles",
+            class: "form-check-cards",
             role: "radiogroup",
             "aria-label": $options.labels.profile
           }, [
@@ -1411,27 +1401,19 @@
               vue.Fragment,
               null,
               vue.renderList($options.profiles, (option) => {
-                return vue.openBlock(), vue.createElementBlock("button", {
+                return vue.openBlock(), vue.createElementBlock("label", {
                   key: option.id,
-                  type: "button",
-                  role: "radio",
-                  class: vue.normalizeClass(["c-notification-settings__profile", { "is-selected": $options.profile === option.id }]),
-                  "aria-checked": $options.profile === option.id ? "true" : "false",
-                  tabindex: $options.profile === option.id ? 0 : -1,
-                  "data-profile": option.id,
-                  onClick: ($event) => $options.selectProfile(option.id),
-                  onKeydown: ($event) => $options.onProfileKeydown($event, option.id)
+                  class: "form-check-card"
                 }, [
-                  _cache[2] || (_cache[2] = vue.createElementVNode(
-                    "span",
-                    {
-                      class: "c-notification-settings__radio",
-                      "aria-hidden": "true"
-                    },
-                    null,
-                    -1
-                    /* CACHED */
-                  )),
+                  vue.createElementVNode("input", {
+                    class: "form-check-input",
+                    type: "radio",
+                    name: `${$data.radioName}-profile`,
+                    value: option.id,
+                    checked: $options.profile === option.id,
+                    "data-profile": option.id,
+                    onChange: ($event) => $options.onRadioChange($event, () => $options.selectProfile(option.id), () => $options.profile)
+                  }, null, 40, _hoisted_6),
                   vue.createElementVNode("span", _hoisted_7, [
                     vue.createElementVNode(
                       "span",
@@ -1448,7 +1430,7 @@
                       /* TEXT */
                     )
                   ])
-                ], 42, _hoisted_6);
+                ]);
               }),
               128
               /* KEYED_FRAGMENT */
@@ -1458,7 +1440,7 @@
         vue.createElementVNode(
           "section",
           {
-            class: vue.normalizeClass(["c-notification-settings__card c-notification-settings__categories", { "panel panel-default": $options.showProfiles }])
+            class: vue.normalizeClass(["notification-settings-card notification-settings-categories", { "card content-card": $options.showProfiles }])
           },
           [
             vue.createElementVNode("div", _hoisted_10, [
@@ -1473,7 +1455,7 @@
                 "span",
                 {
                   key: 0,
-                  class: vue.normalizeClass(["c-notification-settings__status", `is-${$data.saveState}`]),
+                  class: vue.normalizeClass(["notification-settings-status", `is-${$data.saveState}`]),
                   role: "status",
                   "aria-live": "polite"
                 },
@@ -1524,12 +1506,12 @@
                       /* TEXT */
                     )) : vue.createCommentVNode("v-if", true),
                     vue.createElementVNode("div", {
-                      class: vue.normalizeClass(["c-notification-settings__category", { "is-expanded": $options.isExpanded(category), "is-fixed": category.fixed }]),
+                      class: vue.normalizeClass(["notification-settings-category", { "is-expanded": $options.isExpanded(category), "is-fixed": category.fixed }]),
                       "data-category": category.id
                     }, [
                       (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(category.fixed ? "div" : "button"), {
                         type: category.fixed ? null : "button",
-                        class: "c-notification-settings__category-head",
+                        class: "notification-settings-category-head",
                         "aria-expanded": category.fixed ? null : $options.isExpanded(category) ? "true" : "false",
                         "aria-controls": category.fixed ? null : $options.panelId(category),
                         onClick: ($event) => $options.toggle(category)
@@ -1569,7 +1551,7 @@
                               vue.renderList($options.channelsOf(category), (channel) => {
                                 return vue.openBlock(), vue.createElementBlock("span", {
                                   key: channel.id,
-                                  class: vue.normalizeClass(["c-notification-settings__badge", { "is-on": category.channels[channel.id] }]),
+                                  class: vue.normalizeClass(["notification-settings-badge", { "is-on": category.channels[channel.id] }]),
                                   "data-channel": channel.id
                                 }, [
                                   vue.createTextVNode(
@@ -1592,10 +1574,10 @@
                           ]),
                           category.fixed ? (vue.openBlock(), vue.createElementBlock("span", {
                             key: 0,
-                            class: "c-notification-settings__category-state",
+                            class: "notification-settings-category-state",
                             title: $options.labels.alwaysOn
                           }, [
-                            _cache[3] || (_cache[3] = vue.createElementVNode(
+                            _cache[2] || (_cache[2] = vue.createElementVNode(
                               "i",
                               {
                                 class: "ti ti-lock",
@@ -1630,10 +1612,10 @@
                       !category.fixed && $options.isExpanded(category) ? (vue.openBlock(), vue.createElementBlock("div", {
                         key: 0,
                         id: $options.panelId(category),
-                        class: "c-notification-settings__category-body"
+                        class: "notification-settings-category-body"
                       }, [
                         vue.createElementVNode("div", {
-                          class: "c-notification-settings__channels",
+                          class: "notification-settings-channels",
                           role: "group",
                           "aria-label": category.title
                         }, [
@@ -1656,7 +1638,7 @@
                         category.id === "content" && _ctx.spaces.enabled ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_26, [
                           vue.createElementVNode("label", {
                             for: $data.spacesInputId,
-                            class: "form-label c-notification-settings__spaces-label"
+                            class: "form-label notification-settings-spaces-label"
                           }, vue.toDisplayString($options.labels.spaces), 9, _hoisted_27),
                           vue.createVNode(_component_PickerFilterControl, {
                             "model-value": _ctx.spaceIds,
@@ -1668,7 +1650,7 @@
                             resolve: $options.resolveSpaces,
                             "item-label": $options.spaceLabel,
                             icon: "ti-users-group",
-                            block: "c-space-filter",
+                            block: "space-filter",
                             "onUpdate:modelValue": $options.setSpaces
                           }, {
                             option: vue.withCtx(({ item }) => [
@@ -1729,7 +1711,7 @@
             /* TEXT */
           ),
           _ctx.privacy.fixed ? (vue.openBlock(), vue.createElementBlock("p", _hoisted_31, [
-            _cache[4] || (_cache[4] = vue.createElementVNode(
+            _cache[3] || (_cache[3] = vue.createElementVNode(
               "i",
               {
                 class: "ti ti-lock",
@@ -1746,7 +1728,7 @@
             )
           ])) : vue.createCommentVNode("v-if", true),
           vue.createElementVNode("div", {
-            class: "c-notification-settings__profiles",
+            class: "form-check-cards",
             role: "radiogroup",
             "aria-label": $options.labels.privacy,
             "aria-disabled": _ctx.privacy.fixed ? "true" : null,
@@ -1756,28 +1738,20 @@
               vue.Fragment,
               null,
               vue.renderList($options.privacyModes, (option) => {
-                return vue.openBlock(), vue.createElementBlock("button", {
+                return vue.openBlock(), vue.createElementBlock("label", {
                   key: option.id,
-                  type: "button",
-                  role: "radio",
-                  class: vue.normalizeClass(["c-notification-settings__profile", { "is-selected": _ctx.privacy.mode === option.id }]),
-                  "aria-checked": _ctx.privacy.mode === option.id ? "true" : "false",
-                  tabindex: _ctx.privacy.mode === option.id ? 0 : -1,
-                  disabled: _ctx.privacy.fixed,
-                  "data-privacy": option.id,
-                  onClick: ($event) => $options.selectPrivacy(option.id),
-                  onKeydown: ($event) => $options.onPrivacyKeydown($event, option.id)
+                  class: "form-check-card"
                 }, [
-                  _cache[5] || (_cache[5] = vue.createElementVNode(
-                    "span",
-                    {
-                      class: "c-notification-settings__radio",
-                      "aria-hidden": "true"
-                    },
-                    null,
-                    -1
-                    /* CACHED */
-                  )),
+                  vue.createElementVNode("input", {
+                    class: "form-check-input",
+                    type: "radio",
+                    name: `${$data.radioName}-privacy`,
+                    value: option.id,
+                    checked: _ctx.privacy.mode === option.id,
+                    disabled: _ctx.privacy.fixed,
+                    "data-privacy": option.id,
+                    onChange: ($event) => $options.onRadioChange($event, () => $options.selectPrivacy(option.id), () => _ctx.privacy.mode)
+                  }, null, 40, _hoisted_33),
                   vue.createElementVNode("span", _hoisted_34, [
                     vue.createElementVNode(
                       "span",
@@ -1801,7 +1775,7 @@
                       /* TEXT */
                     )
                   ])
-                ], 42, _hoisted_33);
+                ]);
               }),
               128
               /* KEYED_FRAGMENT */
@@ -1819,14 +1793,14 @@
           $props.scope === "user" && $props.resetUrl ? (vue.openBlock(), vue.createElementBlock("button", {
             key: 0,
             type: "button",
-            class: "btn btn-light c-notification-settings__reset",
+            class: "btn btn-light notification-settings-reset",
             disabled: $data.resetting,
             onClick: _cache[0] || (_cache[0] = (...args) => $options.reset && $options.reset(...args))
           }, vue.toDisplayString($options.labels.reset), 9, _hoisted_40)) : vue.createCommentVNode("v-if", true),
           $props.scope === "global" && $props.resetAllUrl ? (vue.openBlock(), vue.createElementBlock("button", {
             key: 1,
             type: "button",
-            class: "btn btn-danger c-notification-settings__reset-all",
+            class: "btn btn-danger notification-settings-reset-all",
             disabled: $data.resetting,
             onClick: _cache[1] || (_cache[1] = (...args) => $options.resetAll && $options.resetAll(...args))
           }, vue.toDisplayString($options.labels.resetAll), 9, _hoisted_41)) : vue.createCommentVNode("v-if", true)

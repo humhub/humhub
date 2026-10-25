@@ -1492,14 +1492,100 @@
       /* STABLE */
     }, 8, ["href"]);
   }
-  const __vite_glob_0_6 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
-  const MAX_TAGS = 5;
+  const __vite_glob_0_5 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
   const _sfc_main$5 = {
+    name: "SpaceFilterControl",
+    // `PickerFilterControl` is a core component, resolved through the global registry.
+    components: { SpaceImage: __vite_glob_0_5 },
+    props: {
+      filter: { type: Object, required: true },
+      modelValue: { type: [String, Number, Array], default: "" },
+      inputId: { type: String, default: null }
+    },
+    emits: ["update:modelValue"],
+    computed: {
+      multiple() {
+        return this.filter.multiple === true;
+      }
+    },
+    methods: {
+      search(q, pageSize) {
+        var _a;
+        const scope = ((_a = this.filter.props) == null ? void 0 : _a.scope) || "member";
+        return vue.client.get(vue.apiUrl("space", { purpose: "picker", scope, q, pageSize })).then((response) => response.results || []);
+      },
+      // Every id on one page: at most `IdsFilter::MAX_IDS` (100), the endpoint's largest page.
+      resolve(ids) {
+        return vue.client.get(vue.apiUrl("space", { purpose: "picker", scope: "all", ids: ids.join(","), pageSize: ids.length })).then((response) => response.results || []);
+      },
+      itemLabel(space) {
+        return space.name;
+      },
+      // What `SpaceImage` takes of a list item — the item carries more (`description`,
+      // `tags` …), which would otherwise fall through to the DOM as attributes.
+      imageProps(space) {
+        return {
+          id: space.id,
+          name: space.name,
+          url: space.url,
+          color: space.color,
+          imageUrl: space.imageUrl,
+          contentContainerId: space.contentContainerId ?? null
+        };
+      }
+    }
+  };
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_SpaceImage = vue$1.resolveComponent("SpaceImage");
+    const _component_PickerFilterControl = vue$1.resolveComponent("PickerFilterControl");
+    return vue$1.openBlock(), vue$1.createBlock(_component_PickerFilterControl, {
+      filter: $props.filter,
+      "model-value": $props.modelValue,
+      "input-id": $props.inputId,
+      multiple: $options.multiple,
+      search: $options.search,
+      resolve: $options.resolve,
+      "item-label": $options.itemLabel,
+      icon: "ti-users-group",
+      block: "space-filter",
+      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
+    }, {
+      option: vue$1.withCtx(({ item }) => [
+        vue$1.createVNode(
+          _component_SpaceImage,
+          vue$1.mergeProps($options.imageProps(item), {
+            width: 24,
+            link: false
+          }),
+          null,
+          16
+          /* FULL_PROPS */
+        )
+      ]),
+      chip: vue$1.withCtx(({ item }) => [
+        vue$1.createVNode(
+          _component_SpaceImage,
+          vue$1.mergeProps($options.imageProps(item), {
+            width: 18,
+            link: false
+          }),
+          null,
+          16
+          /* FULL_PROPS */
+        )
+      ]),
+      _: 1
+      /* STABLE */
+    }, 8, ["filter", "model-value", "input-id", "multiple", "search", "resolve", "item-label"]);
+  }
+  const __vite_glob_0_4 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+  const MAX_TAGS = 5;
+  const _sfc_main$4 = {
     name: "SpaceCard",
     i18nCategories: ["SpaceModule.base"],
     // `ExtensionSlot` is a core component (CoreVueAsset), the actions are registered into their
     // slot by `vue/index.js` — all resolved through the global registry.
-    components: { SpaceImage: __vite_glob_0_6 },
+    components: { SpaceImage: __vite_glob_0_5 },
     props: {
       space: { type: Object, required: true },
       state: { type: Object, default: void 0 },
@@ -1571,7 +1657,7 @@
   };
   const _hoisted_1$2 = {
     key: 0,
-    class: "c-entity-card__pill"
+    class: "entity-card-pill"
   };
   const _hoisted_2 = ["title", "aria-label"];
   const _hoisted_3 = ["title"];
@@ -1581,44 +1667,44 @@
   const _hoisted_7 = ["title"];
   const _hoisted_8 = { "aria-hidden": "true" };
   const _hoisted_9 = { class: "visually-hidden" };
-  const _hoisted_10 = { class: "c-entity-card__header" };
+  const _hoisted_10 = { class: "entity-card-header" };
   const _hoisted_11 = ["href"];
-  const _hoisted_12 = { class: "c-entity-card__body" };
+  const _hoisted_12 = { class: "entity-card-body" };
   const _hoisted_13 = {
     key: 0,
-    class: "c-entity-card__text"
+    class: "entity-card-text"
   };
   const _hoisted_14 = {
     key: 1,
-    class: "c-space-card__archived"
+    class: "space-card-archived"
   };
   const _hoisted_15 = {
     key: 0,
-    class: "c-entity-card__tags"
+    class: "entity-card-tags"
   };
   const _hoisted_16 = ["title", "aria-label", "onClick"];
   const _hoisted_17 = {
     key: 1,
-    class: "c-entity-card__footer"
+    class: "entity-card-footer"
   };
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_SpaceImage = vue$1.resolveComponent("SpaceImage");
     const _component_ExtensionSlot = vue$1.resolveComponent("ExtensionSlot");
     return vue$1.openBlock(), vue$1.createElementBlock(
       "article",
       {
-        class: vue$1.normalizeClass(["c-entity-card c-space-card", { "is-archived": $props.space.archived }])
+        class: vue$1.normalizeClass(["card entity-card space-card", { "is-archived": $props.space.archived }])
       },
       [
         vue$1.createElementVNode(
           "div",
           {
-            class: "c-entity-card__cover",
+            class: "entity-card-cover",
             style: vue$1.normalizeStyle($options.coverStyle)
           },
           [
             vue$1.createVNode(_component_SpaceImage, {
-              class: "c-entity-card__avatar",
+              class: "entity-card-avatar",
               id: $props.space.id,
               name: $props.space.name,
               url: $props.space.url,
@@ -1638,7 +1724,7 @@
                   $options.canOpenFollowers ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
                     key: 0,
                     type: "button",
-                    class: "c-entity-card__stat c-entity-card__stat--followers",
+                    class: "entity-card-stat entity-card-stat-followers",
                     title: $options.followersLabel,
                     "aria-label": $options.followersLabel,
                     onClick: _cache[0] || (_cache[0] = (...args) => $options.openFollowers && $options.openFollowers(...args))
@@ -1662,7 +1748,7 @@
                     )
                   ], 8, _hoisted_2)) : (vue$1.openBlock(), vue$1.createElementBlock("span", {
                     key: 1,
-                    class: "c-entity-card__stat c-entity-card__stat--followers",
+                    class: "entity-card-stat entity-card-stat-followers",
                     title: $options.followersLabel
                   }, [
                     _cache[3] || (_cache[3] = vue$1.createElementVNode(
@@ -1701,7 +1787,7 @@
                   $options.canOpenMembers ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
                     key: 0,
                     type: "button",
-                    class: "c-entity-card__stat c-entity-card__stat--members",
+                    class: "entity-card-stat entity-card-stat-members",
                     title: $options.membersLabel,
                     "aria-label": $options.membersLabel,
                     onClick: _cache[1] || (_cache[1] = (...args) => $options.openMembers && $options.openMembers(...args))
@@ -1725,7 +1811,7 @@
                     )
                   ], 8, _hoisted_6)) : (vue$1.openBlock(), vue$1.createElementBlock("span", {
                     key: 1,
-                    class: "c-entity-card__stat c-entity-card__stat--members",
+                    class: "entity-card-stat entity-card-stat-members",
                     title: $options.membersLabel
                   }, [
                     _cache[5] || (_cache[5] = vue$1.createElementVNode(
@@ -1764,7 +1850,7 @@
         ),
         vue$1.createElementVNode("div", _hoisted_10, [
           vue$1.createElementVNode("a", {
-            class: "c-entity-card__title",
+            class: "entity-card-title",
             href: $props.space.url
           }, vue$1.toDisplayString($props.space.name), 9, _hoisted_11),
           vue$1.createVNode(_component_ExtensionSlot, {
@@ -1808,7 +1894,7 @@
               return vue$1.openBlock(), vue$1.createElementBlock("button", {
                 key: tag,
                 type: "button",
-                class: "c-entity-card__tag",
+                class: "entity-card-tag",
                 title: $options.filterByLabel(tag),
                 "aria-label": $options.filterByLabel(tag),
                 onClick: ($event) => _ctx.$emit("filter-tag", tag)
@@ -1824,7 +1910,7 @@
             {
               key: 0,
               type: "button",
-              class: vue$1.normalizeClass(["c-entity-card__action c-entity-card__placeholder", $props.buttons.placeholderClass]),
+              class: vue$1.normalizeClass(["entity-card-action entity-card-placeholder", $props.buttons.placeholderClass]),
               disabled: "",
               "aria-hidden": "true",
               tabindex: "-1"
@@ -1843,25 +1929,25 @@
       /* CLASS */
     );
   }
-  const SpaceCard = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
-  const _sfc_main$4 = {
+  const SpaceCard = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const _sfc_main$3 = {
     name: "SpaceCardSkeleton"
   };
   const _hoisted_1$1 = {
-    class: "c-card-skeleton c-entity-card-skeleton c-space-card-skeleton",
+    class: "card entity-card entity-card-skeleton space-card-skeleton placeholder-glow",
     "aria-hidden": "true"
   };
-  function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$1, [..._cache[0] || (_cache[0] = [
-      vue$1.createStaticVNode('<div class="c-entity-card-skeleton__cover"><span class="c-card-skeleton__block c-entity-card-skeleton__avatar"></span></div><div class="c-card-skeleton__header"><span class="c-card-skeleton__block c-card-skeleton__title"></span></div><div class="c-card-skeleton__body"><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span></div><div class="c-entity-card-skeleton__tags"><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span></div><div class="c-card-skeleton__footer"><span class="c-card-skeleton__block c-card-skeleton__action"></span></div>', 5)
+      vue$1.createStaticVNode('<div class="entity-card-cover"><span class="placeholder entity-card-skeleton-avatar"></span></div><div class="entity-card-header"><span class="placeholder entity-card-skeleton-title"></span></div><div class="entity-card-body"><span class="placeholder entity-card-skeleton-line"></span><span class="placeholder entity-card-skeleton-line"></span><span class="placeholder entity-card-skeleton-line entity-card-skeleton-line-short"></span></div><div class="entity-card-tags"><span class="placeholder entity-card-skeleton-tag"></span><span class="placeholder entity-card-skeleton-tag"></span><span class="placeholder entity-card-skeleton-tag"></span></div><div class="entity-card-footer"><span class="placeholder entity-card-skeleton-action"></span></div>', 5)
     ])]);
   }
-  const SpaceCardSkeleton = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const SpaceCardSkeleton = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const MEMBERSHIP_CHANGED = "space:membership-changed";
-  const _sfc_main$3 = {
-    name: "SpaceDirectory",
+  const _sfc_main$2 = {
+    name: "SpacesBrowser",
     i18nCategories: ["SpaceModule.base", "base"],
-    // `CardDirectory` is a core component, resolved through the global registry (CoreVueAsset).
+    // `EntityBrowser` is a core component, resolved through the global registry (CoreVueAsset).
     components: { SpaceCard, SpaceCardSkeleton },
     props: {
       filters: { type: Array, default: () => [] },
@@ -1924,13 +2010,13 @@
       }
     }
   };
-  const _hoisted_1 = { class: "c-space-directory" };
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1 = { class: "spaces-browser" };
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_SpaceCard = vue$1.resolveComponent("SpaceCard");
     const _component_SpaceCardSkeleton = vue$1.resolveComponent("SpaceCardSkeleton");
-    const _component_CardDirectory = vue$1.resolveComponent("CardDirectory");
+    const _component_EntityBrowser = vue$1.resolveComponent("EntityBrowser");
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
-      vue$1.createVNode(_component_CardDirectory, {
+      vue$1.createVNode(_component_EntityBrowser, {
         ref: "directory",
         url: $options.listUrl,
         title: $options.labels.title,
@@ -1958,93 +2044,7 @@
       }, 8, ["url", "title", "filters", "actions", "item-states"])
     ]);
   }
-  const __vite_glob_0_4 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
-  const _sfc_main$2 = {
-    name: "SpaceFilterControl",
-    // `PickerFilterControl` is a core component, resolved through the global registry.
-    components: { SpaceImage: __vite_glob_0_6 },
-    props: {
-      filter: { type: Object, required: true },
-      modelValue: { type: [String, Number, Array], default: "" },
-      inputId: { type: String, default: null }
-    },
-    emits: ["update:modelValue"],
-    computed: {
-      multiple() {
-        return this.filter.multiple === true;
-      }
-    },
-    methods: {
-      search(q, pageSize) {
-        var _a;
-        const scope = ((_a = this.filter.props) == null ? void 0 : _a.scope) || "member";
-        return vue.client.get(vue.apiUrl("space", { purpose: "picker", scope, q, pageSize })).then((response) => response.results || []);
-      },
-      // Every id on one page: at most `IdsFilter::MAX_IDS` (100), the endpoint's largest page.
-      resolve(ids) {
-        return vue.client.get(vue.apiUrl("space", { purpose: "picker", scope: "all", ids: ids.join(","), pageSize: ids.length })).then((response) => response.results || []);
-      },
-      itemLabel(space) {
-        return space.name;
-      },
-      // What `SpaceImage` takes of a list item — the item carries more (`description`,
-      // `tags` …), which would otherwise fall through to the DOM as attributes.
-      imageProps(space) {
-        return {
-          id: space.id,
-          name: space.name,
-          url: space.url,
-          color: space.color,
-          imageUrl: space.imageUrl,
-          contentContainerId: space.contentContainerId ?? null
-        };
-      }
-    }
-  };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_SpaceImage = vue$1.resolveComponent("SpaceImage");
-    const _component_PickerFilterControl = vue$1.resolveComponent("PickerFilterControl");
-    return vue$1.openBlock(), vue$1.createBlock(_component_PickerFilterControl, {
-      filter: $props.filter,
-      "model-value": $props.modelValue,
-      "input-id": $props.inputId,
-      multiple: $options.multiple,
-      search: $options.search,
-      resolve: $options.resolve,
-      "item-label": $options.itemLabel,
-      icon: "ti-users-group",
-      block: "c-space-filter",
-      "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
-    }, {
-      option: vue$1.withCtx(({ item }) => [
-        vue$1.createVNode(
-          _component_SpaceImage,
-          vue$1.mergeProps($options.imageProps(item), {
-            width: 24,
-            link: false
-          }),
-          null,
-          16
-          /* FULL_PROPS */
-        )
-      ]),
-      chip: vue$1.withCtx(({ item }) => [
-        vue$1.createVNode(
-          _component_SpaceImage,
-          vue$1.mergeProps($options.imageProps(item), {
-            width: 18,
-            link: false
-          }),
-          null,
-          16
-          /* FULL_PROPS */
-        )
-      ]),
-      _: 1
-      /* STABLE */
-    }, 8, ["filter", "model-value", "input-id", "multiple", "search", "resolve", "item-label"]);
-  }
-  const __vite_glob_0_5 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const __vite_glob_0_6 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const _sfc_main$1 = {
     name: "SpaceCardFollowAction",
     components: { FollowButton: __vite_glob_0_0 },
@@ -2072,7 +2072,7 @@
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_FollowButton = vue$1.resolveComponent("FollowButton");
     return vue$1.openBlock(), vue$1.createBlock(_component_FollowButton, {
-      class: "c-entity-card__action",
+      class: "entity-card-action",
       "space-id": $props.space.id,
       "space-name": $props.space.name,
       initial: $options.initial,
@@ -2098,7 +2098,7 @@
     },
     methods: {
       actionClass(classes) {
-        return `${classes || ""} c-entity-card__action`.trim();
+        return `${classes || ""} entity-card-action`.trim();
       }
     }
   };
@@ -2121,7 +2121,7 @@
     }, null, 8, ["space-id", "space-name", "space-url", "initial", "button-class", "pending-class", "member-class", "toggler-class", "group-class", "check-icon-html", "clock-icon-html", "user-icon-html"]);
   }
   const SpaceCardMembershipAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  Object.entries(/* @__PURE__ */ Object.assign({ "./FollowButton.vue": __vite_glob_0_0, "./MembershipButton.vue": __vite_glob_0_1, "./SpaceChooser.vue": __vite_glob_0_2, "./SpaceChooserToggle.vue": __vite_glob_0_3, "./SpaceDirectory.vue": __vite_glob_0_4, "./SpaceFilterControl.vue": __vite_glob_0_5, "./SpaceImage.vue": __vite_glob_0_6 })).forEach(([path, component]) => {
+  Object.entries(/* @__PURE__ */ Object.assign({ "./FollowButton.vue": __vite_glob_0_0, "./MembershipButton.vue": __vite_glob_0_1, "./SpaceChooser.vue": __vite_glob_0_2, "./SpaceChooserToggle.vue": __vite_glob_0_3, "./SpaceFilterControl.vue": __vite_glob_0_4, "./SpaceImage.vue": __vite_glob_0_5, "./SpacesBrowser.vue": __vite_glob_0_6 })).forEach(([path, component]) => {
     vue.register(path.slice("./".length, -".vue".length), component);
   });
   vue.register("SpaceCardMembershipAction", SpaceCardMembershipAction);

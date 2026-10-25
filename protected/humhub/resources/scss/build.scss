@@ -111,6 +111,8 @@ $prev-datepicker: false !default;
 
 $prev-user-feedback: false !default;
 @import "user-feedback";
+$prev-toast: false !default;
+@import "toast";
 
 $prev-tags: false !default;
 @import "tags";
@@ -130,11 +132,17 @@ $prev-print: false !default;
 $prev-cards: false !default;
 @import "cards";
 
-$prev-page-toolbar: false !default;
-@import "page-toolbar";
+$prev-page-header: false !default;
+@import "page-header";
 
-$prev-card-directory: false !default;
-@import "card-directory";
+$prev-card: false !default;
+@import "card";
+
+$prev-filter-bar: false !default;
+@import "filter-bar";
+
+$prev-entity-browser: false !default;
+@import "entity-browser";
 
 $prev-item-browser: false !default;
 @import "item-browser";
@@ -145,11 +153,11 @@ $prev-marketplace: false !default;
 $prev-entity-card: false !default;
 @import "entity-card";
 
-$prev-space-directory: false !default;
-@import "space-directory";
+$prev-spaces-browser: false !default;
+@import "spaces-browser";
 
-$prev-people-directory: false !default;
-@import "people-directory";
+$prev-people-browser: false !default;
+@import "people-browser";
 
 $prev-notification-settings: false !default;
 @import "notification-settings";

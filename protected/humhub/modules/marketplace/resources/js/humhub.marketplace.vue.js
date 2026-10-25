@@ -28,17 +28,17 @@
     }
   };
   const _hoisted_1$4 = {
-    class: "c-marketplace-notice",
+    class: "alert alert-warning marketplace-alert",
     role: "status"
   };
-  const _hoisted_2$4 = { class: "c-marketplace-notice__text" };
+  const _hoisted_2$4 = { class: "marketplace-alert-text" };
   const _hoisted_3$4 = ["href"];
   function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$4, [
       _cache[0] || (_cache[0] = vue$1.createElementVNode(
         "i",
         {
-          class: "ti ti-info-circle c-marketplace-notice__icon",
+          class: "ti ti-info-circle marketplace-alert-icon",
           "aria-hidden": "true"
         },
         null,
@@ -55,7 +55,7 @@
       $props.updateUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
         key: 0,
         href: $props.updateUrl,
-        class: "btn btn-sm btn-accent c-marketplace-notice__action"
+        class: "btn btn-sm btn-accent marketplace-alert-action"
       }, vue$1.toDisplayString($options.learnMore), 9, _hoisted_3$4)) : vue$1.createCommentVNode("v-if", true)
     ]);
   }
@@ -452,77 +452,77 @@
   const _hoisted_1$3 = ["id"];
   const _hoisted_2$3 = ["aria-label", "title", "disabled"];
   const _hoisted_3$3 = ["data-step"];
-  const _hoisted_4$3 = { class: "c-install-dialog__step" };
+  const _hoisted_4$3 = { class: "install-dialog-step" };
   const _hoisted_5$3 = {
     key: 0,
-    class: "c-mp-dialog__text"
+    class: "marketplace-dialog-text"
   };
-  const _hoisted_6$2 = { class: "c-mp-dialog__text" };
-  const _hoisted_7$2 = { class: "c-install-dialog__field" };
+  const _hoisted_6$2 = { class: "marketplace-dialog-text" };
+  const _hoisted_7$2 = { class: "install-dialog-field" };
   const _hoisted_8$2 = ["for"];
-  const _hoisted_9$2 = ["id", "placeholder", "readonly", "aria-invalid", "aria-describedby"];
-  const _hoisted_10$2 = {
+  const _hoisted_9$2 = { class: "input-group" };
+  const _hoisted_10$2 = ["id", "placeholder", "readonly", "aria-invalid", "aria-describedby"];
+  const _hoisted_11$2 = {
     key: 0,
-    class: "ti ti-loader c-licence-field__icon c-mp-spin",
-    "aria-hidden": "true"
+    class: "input-group-text"
   };
-  const _hoisted_11$2 = ["id"];
-  const _hoisted_12$2 = {
+  const _hoisted_12$2 = ["id"];
+  const _hoisted_13$2 = {
     key: 2,
-    class: "c-install-dialog__module"
+    class: "install-dialog-module"
   };
-  const _hoisted_13$2 = ["src"];
-  const _hoisted_14$2 = { class: "c-install-dialog__module-text" };
-  const _hoisted_15$2 = { class: "c-install-dialog__name" };
-  const _hoisted_16$2 = {
+  const _hoisted_14$2 = ["src"];
+  const _hoisted_15$2 = { class: "install-dialog-module-text" };
+  const _hoisted_16$2 = { class: "install-dialog-name" };
+  const _hoisted_17$2 = {
     key: 0,
-    class: "c-install-dialog__version"
+    class: "install-dialog-version"
   };
-  const _hoisted_17$2 = { class: "c-mp-dialog__text" };
-  const _hoisted_18$2 = ["aria-label", "aria-valuenow"];
-  const _hoisted_19$2 = {
-    key: 4,
-    class: "c-mp-dialog__text"
-  };
+  const _hoisted_18$2 = { class: "marketplace-dialog-text" };
+  const _hoisted_19$2 = ["aria-label", "aria-valuenow"];
   const _hoisted_20$2 = {
-    key: 5,
-    class: "c-mp-dialog__text"
+    key: 4,
+    class: "marketplace-dialog-text"
   };
   const _hoisted_21$2 = {
-    key: 6,
-    class: "c-mp-dialog__text"
+    key: 5,
+    class: "marketplace-dialog-text"
   };
-  const _hoisted_22$2 = { class: "c-mp-notice__text" };
-  const _hoisted_23$2 = ["innerHTML"];
-  const _hoisted_24$2 = {
+  const _hoisted_22$2 = {
+    key: 6,
+    class: "marketplace-dialog-text"
+  };
+  const _hoisted_23$2 = { class: "marketplace-alert-text" };
+  const _hoisted_24$2 = ["innerHTML"];
+  const _hoisted_25$2 = {
     key: 1,
-    class: "c-mp-dialog__error",
+    class: "marketplace-dialog-error",
     role: "alert"
   };
-  const _hoisted_25$2 = ["href"];
-  const _hoisted_26$2 = { class: "visually-hidden" };
-  const _hoisted_27$2 = ["disabled"];
+  const _hoisted_26$2 = ["href"];
+  const _hoisted_27$2 = { class: "visually-hidden" };
   const _hoisted_28$1 = ["disabled"];
-  const _hoisted_29$1 = {
+  const _hoisted_29$1 = ["disabled"];
+  const _hoisted_30$1 = {
     key: 3,
     type: "button",
-    class: "btn btn-primary c-mp-dialog__busy",
+    class: "btn btn-primary marketplace-dialog-busy",
     disabled: ""
   };
-  const _hoisted_30$1 = ["disabled"];
   const _hoisted_31$1 = ["disabled"];
-  const _hoisted_32$1 = {
+  const _hoisted_32$1 = ["disabled"];
+  const _hoisted_33$1 = {
     key: 0,
-    class: "ti ti-loader c-mp-spin",
+    class: "ti ti-loader marketplace-spin",
     "aria-hidden": "true"
   };
-  const _hoisted_33$1 = ["href"];
+  const _hoisted_34$1 = ["href"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_RichText = vue$1.resolveComponent("RichText");
     const _component_UiModal = vue$1.resolveComponent("UiModal");
     return vue$1.openBlock(), vue$1.createBlock(_component_UiModal, {
       show: true,
-      "dialog-class": "c-mp-dialog c-install-dialog",
+      "dialog-class": "marketplace-dialog install-dialog",
       "backdrop-close": !$options.locked,
       keyboard: !$options.locked,
       "onUpdate:show": $options.onShow
@@ -581,13 +581,13 @@
               class: "btn btn-secondary",
               disabled: $data.checking,
               onClick: _cache[6] || (_cache[6] = ($event) => $options.go("buy"))
-            }, vue$1.toDisplayString($options.labels.back), 9, _hoisted_27$2),
+            }, vue$1.toDisplayString($options.labels.back), 9, _hoisted_28$1),
             vue$1.createElementVNode("button", {
               type: "button",
               class: "btn btn-primary",
               disabled: $data.checking || $data.licenceKey.trim() === "",
               onClick: _cache[7] || (_cache[7] = (...args) => $options.register && $options.register(...args))
-            }, vue$1.toDisplayString($options.labels.install), 9, _hoisted_28$1)
+            }, vue$1.toDisplayString($options.labels.install), 9, _hoisted_29$1)
           ],
           64
           /* STABLE_FRAGMENT */
@@ -621,11 +621,11 @@
           ],
           64
           /* STABLE_FRAGMENT */
-        )) : $data.step === "installing" ? (vue$1.openBlock(), vue$1.createElementBlock("button", _hoisted_29$1, [
-          _cache[15] || (_cache[15] = vue$1.createElementVNode(
+        )) : $data.step === "installing" ? (vue$1.openBlock(), vue$1.createElementBlock("button", _hoisted_30$1, [
+          _cache[16] || (_cache[16] = vue$1.createElementVNode(
             "i",
             {
-              class: "ti ti-loader c-mp-spin",
+              class: "ti ti-loader marketplace-spin",
               "aria-hidden": "true"
             },
             null,
@@ -646,21 +646,21 @@
               class: "btn btn-secondary",
               disabled: $data.activating,
               onClick: _cache[10] || (_cache[10] = (...args) => $options.close && $options.close(...args))
-            }, vue$1.toDisplayString($options.labels.close), 9, _hoisted_30$1),
+            }, vue$1.toDisplayString($options.labels.close), 9, _hoisted_31$1),
             vue$1.createElementVNode("button", {
               ref: "primary",
               type: "button",
-              class: "btn btn-primary c-mp-dialog__busy",
+              class: "btn btn-primary marketplace-dialog-busy",
               disabled: $data.activating,
               onClick: _cache[11] || (_cache[11] = (...args) => $options.activate && $options.activate(...args))
             }, [
-              $data.activating ? (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_32$1)) : vue$1.createCommentVNode("v-if", true),
+              $data.activating ? (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_33$1)) : vue$1.createCommentVNode("v-if", true),
               vue$1.createTextVNode(
                 vue$1.toDisplayString($options.labels.activate),
                 1
                 /* TEXT */
               )
-            ], 8, _hoisted_31$1)
+            ], 8, _hoisted_32$1)
           ],
           64
           /* STABLE_FRAGMENT */
@@ -683,7 +683,7 @@
               ref: "primary",
               class: "btn btn-primary",
               href: $data.current.configUrl
-            }, vue$1.toDisplayString($options.labels.configure), 9, _hoisted_33$1)
+            }, vue$1.toDisplayString($options.labels.configure), 9, _hoisted_34$1)
           ],
           64
           /* STABLE_FRAGMENT */
@@ -704,7 +704,7 @@
       default: vue$1.withCtx(() => [
         vue$1.createElementVNode("div", {
           ref: "root",
-          class: "c-install-dialog__content",
+          class: "install-dialog-content",
           "data-step": $data.step
         }, [
           vue$1.createElementVNode("section", _hoisted_4$3, [
@@ -724,66 +724,69 @@
                 vue$1.createElementVNode("div", _hoisted_7$2, [
                   vue$1.createElementVNode("label", {
                     for: $data.inputId,
-                    class: "c-mp-dialog__label"
+                    class: "form-label"
                   }, vue$1.toDisplayString($options.labels.licenceKey), 9, _hoisted_8$2),
-                  vue$1.createElementVNode(
-                    "div",
-                    {
-                      class: vue$1.normalizeClass(["c-licence-field", { "is-checking": $data.checking }])
-                    },
-                    [
-                      vue$1.withDirectives(vue$1.createElementVNode("input", {
-                        id: $data.inputId,
-                        ref: "input",
-                        "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $data.licenceKey = $event),
-                        type: "text",
-                        class: vue$1.normalizeClass(["form-control c-licence-field__input", { "is-invalid": $data.keyError }]),
-                        placeholder: $options.labels.placeholder,
-                        autocomplete: "off",
-                        spellcheck: "false",
-                        autocapitalize: "characters",
-                        readonly: $data.checking,
-                        "aria-invalid": $data.keyError ? "true" : null,
-                        "aria-describedby": $data.keyError ? `${$data.inputId}-error` : null,
-                        onInput: _cache[2] || (_cache[2] = ($event) => $data.keyError = null),
-                        onKeydown: _cache[3] || (_cache[3] = vue$1.withKeys(vue$1.withModifiers((...args) => $options.register && $options.register(...args), ["prevent"]), ["enter"]))
-                      }, null, 42, _hoisted_9$2), [
-                        [vue$1.vModelText, $data.licenceKey]
-                      ]),
-                      $data.checking ? (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_10$2)) : vue$1.createCommentVNode("v-if", true)
-                    ],
-                    2
-                    /* CLASS */
-                  ),
+                  vue$1.createElementVNode("div", _hoisted_9$2, [
+                    vue$1.withDirectives(vue$1.createElementVNode("input", {
+                      id: $data.inputId,
+                      ref: "input",
+                      "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $data.licenceKey = $event),
+                      type: "text",
+                      class: vue$1.normalizeClass(["form-control licence-key-input", { "is-invalid": $data.keyError }]),
+                      placeholder: $options.labels.placeholder,
+                      autocomplete: "off",
+                      spellcheck: "false",
+                      autocapitalize: "characters",
+                      readonly: $data.checking,
+                      "aria-invalid": $data.keyError ? "true" : null,
+                      "aria-describedby": $data.keyError ? `${$data.inputId}-error` : null,
+                      onInput: _cache[2] || (_cache[2] = ($event) => $data.keyError = null),
+                      onKeydown: _cache[3] || (_cache[3] = vue$1.withKeys(vue$1.withModifiers((...args) => $options.register && $options.register(...args), ["prevent"]), ["enter"]))
+                    }, null, 42, _hoisted_10$2), [
+                      [vue$1.vModelText, $data.licenceKey]
+                    ]),
+                    $data.checking ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_11$2, [..._cache[14] || (_cache[14] = [
+                      vue$1.createElementVNode(
+                        "i",
+                        {
+                          class: "ti ti-loader marketplace-spin",
+                          "aria-hidden": "true"
+                        },
+                        null,
+                        -1
+                        /* CACHED */
+                      )
+                    ])])) : vue$1.createCommentVNode("v-if", true)
+                  ]),
                   $data.keyError ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
                     key: 0,
                     id: `${$data.inputId}-error`,
                     class: "invalid-feedback d-block",
                     role: "alert"
-                  }, vue$1.toDisplayString($data.keyError), 9, _hoisted_11$2)) : vue$1.createCommentVNode("v-if", true)
+                  }, vue$1.toDisplayString($data.keyError), 9, _hoisted_12$2)) : vue$1.createCommentVNode("v-if", true)
                 ])
               ],
               64
               /* STABLE_FRAGMENT */
-            )) : $data.step === "confirm" ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_12$2, [
+            )) : $data.step === "confirm" ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_13$2, [
               vue$1.createElementVNode("img", {
                 src: $props.module.imageUrl,
-                class: "c-install-dialog__image",
+                class: "install-dialog-image",
                 width: "48",
                 height: "48",
                 alt: ""
-              }, null, 8, _hoisted_13$2),
-              vue$1.createElementVNode("div", _hoisted_14$2, [
+              }, null, 8, _hoisted_14$2),
+              vue$1.createElementVNode("div", _hoisted_15$2, [
                 vue$1.createElementVNode(
                   "b",
-                  _hoisted_15$2,
+                  _hoisted_16$2,
                   vue$1.toDisplayString($props.module.name),
                   1
                   /* TEXT */
                 ),
                 $options.version ? (vue$1.openBlock(), vue$1.createElementBlock(
                   "span",
-                  _hoisted_16$2,
+                  _hoisted_17$2,
                   vue$1.toDisplayString($options.version),
                   1
                   /* TEXT */
@@ -793,13 +796,13 @@
               vue$1.Fragment,
               { key: 3 },
               [
-                vue$1.createElementVNode("p", _hoisted_17$2, [
+                vue$1.createElementVNode("p", _hoisted_18$2, [
                   vue$1.createVNode(_component_RichText, {
                     parts: $options.texts.installing
                   }, null, 8, ["parts"])
                 ]),
                 vue$1.createElementVNode("div", {
-                  class: "c-install-dialog__progress",
+                  class: "progress install-dialog-progress",
                   role: "progressbar",
                   "aria-label": $options.labels.installing,
                   "aria-valuemin": "0",
@@ -807,30 +810,30 @@
                   "aria-valuenow": Math.round($data.progress * 100)
                 }, [
                   vue$1.createElementVNode(
-                    "span",
+                    "div",
                     {
-                      class: "c-install-dialog__progress-bar",
-                      style: vue$1.normalizeStyle({ "--mp-progress": $data.progress })
+                      class: "progress-bar",
+                      style: vue$1.normalizeStyle({ width: `${$data.progress * 100}%` })
                     },
                     null,
                     4
                     /* STYLE */
                   )
-                ], 8, _hoisted_18$2)
+                ], 8, _hoisted_19$2)
               ],
               64
               /* STABLE_FRAGMENT */
-            )) : $data.step === "activate" ? (vue$1.openBlock(), vue$1.createElementBlock("p", _hoisted_19$2, [
+            )) : $data.step === "activate" ? (vue$1.openBlock(), vue$1.createElementBlock("p", _hoisted_20$2, [
               vue$1.createVNode(_component_RichText, {
                 parts: $options.texts.activate
               }, null, 8, ["parts"])
-            ])) : $data.step === "configure" ? (vue$1.openBlock(), vue$1.createElementBlock("p", _hoisted_20$2, [
+            ])) : $data.step === "configure" ? (vue$1.openBlock(), vue$1.createElementBlock("p", _hoisted_21$2, [
               vue$1.createVNode(_component_RichText, {
                 parts: $options.texts.configure
               }, null, 8, ["parts"])
             ])) : $data.step === "failed" ? (vue$1.openBlock(), vue$1.createElementBlock(
               "p",
-              _hoisted_21$2,
+              _hoisted_22$2,
               vue$1.toDisplayString($options.labels.reloadBeforeRetry),
               1
               /* TEXT */
@@ -840,21 +843,21 @@
             "div",
             {
               key: 0,
-              class: vue$1.normalizeClass(["c-mp-notice", { "c-mp-notice--warning": $props.module.isCommunity }]),
+              class: vue$1.normalizeClass(["alert marketplace-alert", $props.module.isCommunity ? "alert-warning" : "alert-info"]),
               role: "note"
             },
             [
               vue$1.createElementVNode(
                 "i",
                 {
-                  class: vue$1.normalizeClass(["ti c-mp-notice__icon", $props.module.isCommunity ? "ti-alert-triangle" : "ti-info-circle"]),
+                  class: vue$1.normalizeClass(["ti marketplace-alert-icon", $props.module.isCommunity ? "ti-alert-triangle" : "ti-info-circle"]),
                   "aria-hidden": "true"
                 },
                 null,
                 2
                 /* CLASS */
               ),
-              vue$1.createElementVNode("div", _hoisted_22$2, [
+              vue$1.createElementVNode("div", _hoisted_23$2, [
                 vue$1.createElementVNode(
                   "p",
                   null,
@@ -865,7 +868,7 @@
                 $props.module.isCommunity ? (vue$1.openBlock(), vue$1.createElementBlock("p", {
                   key: 0,
                   innerHTML: $options.labels.community
-                }, null, 8, _hoisted_23$2)) : vue$1.createCommentVNode("v-if", true)
+                }, null, 8, _hoisted_24$2)) : vue$1.createCommentVNode("v-if", true)
               ])
             ],
             2
@@ -873,14 +876,14 @@
           )) : vue$1.createCommentVNode("v-if", true),
           $data.error ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
-            _hoisted_24$2,
+            _hoisted_25$2,
             vue$1.toDisplayString($data.error),
             1
             /* TEXT */
           )) : vue$1.createCommentVNode("v-if", true),
           $data.step === "buy" && $props.module.checkoutUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
             key: 2,
-            class: "btn c-install-dialog__checkout",
+            class: "btn install-dialog-checkout",
             href: $props.module.checkoutUrl,
             target: "_blank",
             rel: "noopener noreferrer"
@@ -890,7 +893,7 @@
               1
               /* TEXT */
             ),
-            _cache[14] || (_cache[14] = vue$1.createElementVNode(
+            _cache[15] || (_cache[15] = vue$1.createElementVNode(
               "i",
               {
                 class: "ti ti-external-link",
@@ -902,12 +905,12 @@
             )),
             vue$1.createElementVNode(
               "span",
-              _hoisted_26$2,
+              _hoisted_27$2,
               vue$1.toDisplayString($options.labels.newTab),
               1
               /* TEXT */
             )
-          ], 8, _hoisted_25$2)) : vue$1.createCommentVNode("v-if", true)
+          ], 8, _hoisted_26$2)) : vue$1.createCommentVNode("v-if", true)
         ], 8, _hoisted_3$3)
       ]),
       _: 1
@@ -1068,45 +1071,45 @@
     }
   };
   const _hoisted_1$2 = ["aria-busy"];
-  const _hoisted_2$2 = { class: "c-module-card__cover" };
+  const _hoisted_2$2 = { class: "entity-card-cover entity-card-cover-plain" };
   const _hoisted_3$2 = ["href"];
   const _hoisted_4$2 = ["src"];
   const _hoisted_5$2 = ["src"];
-  const _hoisted_6$1 = { class: "c-module-card__badges" };
+  const _hoisted_6$1 = { class: "module-card-badges" };
   const _hoisted_7$1 = ["aria-label", "title"];
   const _hoisted_8$1 = ["title"];
   const _hoisted_9$1 = ["title", "aria-label"];
   const _hoisted_10$1 = ["title"];
-  const _hoisted_11$1 = { class: "c-module-card__header" };
+  const _hoisted_11$1 = { class: "entity-card-header" };
   const _hoisted_12$1 = ["href"];
   const _hoisted_13$1 = {
     key: 1,
-    class: "c-module-card__title"
+    class: "entity-card-title"
   };
-  const _hoisted_14$1 = { class: "c-module-card__version" };
-  const _hoisted_15$1 = { class: "c-module-card__body" };
-  const _hoisted_16$1 = { class: "c-module-card__text" };
+  const _hoisted_14$1 = { class: "entity-card-subtitle" };
+  const _hoisted_15$1 = { class: "entity-card-body" };
+  const _hoisted_16$1 = { class: "entity-card-text" };
   const _hoisted_17$1 = {
     key: 0,
-    class: "c-module-card__message text-danger",
+    class: "module-card-message text-danger",
     role: "alert"
   };
   const _hoisted_18$1 = {
     key: 1,
-    class: "c-module-card__message text-danger",
+    class: "module-card-message text-danger",
     role: "alert"
   };
-  const _hoisted_19$1 = { class: "c-module-card__footer" };
+  const _hoisted_19$1 = { class: "entity-card-footer" };
   const _hoisted_20$1 = ["disabled"];
   const _hoisted_21$1 = {
     key: 0,
-    class: "ti ti-refresh c-module-card__spin",
+    class: "ti ti-refresh module-card-spin",
     "aria-hidden": "true"
   };
   const _hoisted_22$1 = {
     key: 1,
     type: "button",
-    class: "btn btn-secondary c-module-card__action",
+    class: "btn btn-secondary entity-card-action",
     disabled: ""
   };
   const _hoisted_23$1 = ["disabled"];
@@ -1115,14 +1118,14 @@
   const _hoisted_26$1 = {
     key: 5,
     type: "button",
-    class: "btn btn-secondary c-module-card__action",
+    class: "btn btn-secondary entity-card-action",
     disabled: ""
   };
   const _hoisted_27$1 = ["href", "aria-label", "title"];
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_RichText = vue$1.resolveComponent("RichText");
     return vue$1.openBlock(), vue$1.createElementBlock("article", {
-      class: vue$1.normalizeClass(["c-module-card", $options.cardClasses]),
+      class: vue$1.normalizeClass(["card entity-card module-card", $options.cardClasses]),
       "aria-busy": $props.updateState === "running" ? "true" : null
     }, [
       vue$1.createElementVNode("div", _hoisted_2$2, [
@@ -1136,7 +1139,7 @@
         }, [
           vue$1.createElementVNode("img", {
             src: $props.module.imageUrl,
-            class: "c-module-card__image",
+            class: "entity-card-image",
             width: "80",
             height: "80",
             alt: ""
@@ -1144,7 +1147,7 @@
         ], 8, _hoisted_3$2)) : (vue$1.openBlock(), vue$1.createElementBlock("img", {
           key: 1,
           src: $props.module.imageUrl,
-          class: "c-module-card__image",
+          class: "entity-card-image",
           width: "80",
           height: "80",
           alt: ""
@@ -1153,7 +1156,7 @@
           $props.module.featured ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
             key: 0,
             type: "button",
-            class: "c-module-card__badge c-module-card__badge--filter c-module-card__badge--featured c-module-card__badge--star",
+            class: "module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star",
             "aria-label": $options.labels.featuredFilter,
             title: $options.labels.featured,
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("filter-type", "featured"))
@@ -1171,7 +1174,7 @@
           ])], 8, _hoisted_7$1)) : vue$1.createCommentVNode("v-if", true),
           $options.showUpdatePill ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
             key: 1,
-            class: "c-module-card__badge c-module-card__badge--update",
+            class: "module-card-badge module-card-badge-update",
             title: $options.labels.updateTo
           }, [
             _cache[6] || (_cache[6] = vue$1.createElementVNode(
@@ -1194,13 +1197,13 @@
           ], 8, _hoisted_8$1)) : $options.filterTag ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
             key: 2,
             type: "button",
-            class: vue$1.normalizeClass(["c-module-card__badge c-module-card__badge--filter", `c-module-card__badge--${$props.module.badge}`]),
+            class: vue$1.normalizeClass(["module-card-badge module-card-badge-filter", `module-card-badge-${$props.module.badge}`]),
             title: $options.badgeTitle,
             "aria-label": $options.badgeFilterLabel,
             onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("filter-type", $options.filterTag))
           }, vue$1.toDisplayString($options.badgeText), 11, _hoisted_9$1)) : $options.badgeText ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
             key: 3,
-            class: vue$1.normalizeClass(["c-module-card__badge", `c-module-card__badge--${$props.module.badge}`]),
+            class: vue$1.normalizeClass(["module-card-badge", `module-card-badge-${$props.module.badge}`]),
             title: $options.badgeTitle
           }, vue$1.toDisplayString($options.badgeText), 11, _hoisted_10$1)) : vue$1.createCommentVNode("v-if", true)
         ])
@@ -1208,7 +1211,7 @@
       vue$1.createElementVNode("div", _hoisted_11$1, [
         $props.module.marketplaceUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
           key: 0,
-          class: "c-module-card__title",
+          class: "entity-card-title",
           href: $props.module.marketplaceUrl,
           target: "_blank",
           rel: "noopener"
@@ -1217,14 +1220,14 @@
             parts: $options.titleParts,
             flag: "mark",
             tag: "mark",
-            "mark-class": "c-module-card__mark"
+            "mark-class": "module-card-mark"
           }, null, 8, ["parts"])
         ], 8, _hoisted_12$1)) : (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_13$1, [
           vue$1.createVNode(_component_RichText, {
             parts: $options.titleParts,
             flag: "mark",
             tag: "mark",
-            "mark-class": "c-module-card__mark"
+            "mark-class": "module-card-mark"
           }, null, 8, ["parts"])
         ])),
         vue$1.createElementVNode(
@@ -1241,7 +1244,7 @@
             parts: $options.descriptionParts,
             flag: "mark",
             tag: "mark",
-            "mark-class": "c-module-card__mark"
+            "mark-class": "module-card-mark"
           }, null, 8, ["parts"])
         ]),
         $props.error ? (vue$1.openBlock(), vue$1.createElementBlock(
@@ -1262,7 +1265,7 @@
         $options.showUpdateAction ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
           key: 0,
           type: "button",
-          class: vue$1.normalizeClass(["btn c-module-card__action", $options.updateButtonClass]),
+          class: vue$1.normalizeClass(["btn entity-card-action", $options.updateButtonClass]),
           disabled: $options.updateBusy,
           onClick: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("update"))
         }, [
@@ -1283,19 +1286,19 @@
         )) : $props.module.availability === "install" ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
           key: 2,
           type: "button",
-          class: "btn btn-primary c-module-card__action",
+          class: "btn btn-primary entity-card-action",
           disabled: $props.locked,
           onClick: _cache[3] || (_cache[3] = ($event) => _ctx.$emit("install"))
         }, vue$1.toDisplayString($options.labels.install), 9, _hoisted_23$1)) : $props.module.availability === "buy" ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
           key: 3,
           type: "button",
-          class: "btn btn-primary c-module-card__action",
+          class: "btn btn-primary entity-card-action",
           disabled: $props.locked,
           onClick: _cache[4] || (_cache[4] = ($event) => _ctx.$emit("buy"))
         }, vue$1.toDisplayString($options.buyLabel), 9, _hoisted_24$1)) : $props.module.availability === "professionalEdition" ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
           key: 4,
           href: $props.professionalEditionUrl,
-          class: "btn btn-primary c-module-card__action",
+          class: "btn btn-primary entity-card-action",
           target: "_blank",
           rel: "noopener"
         }, vue$1.toDisplayString($options.labels.learnMore), 9, _hoisted_25$1)) : (vue$1.openBlock(), vue$1.createElementBlock(
@@ -1308,7 +1311,7 @@
         $options.secondaryLink ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
           key: 6,
           href: $options.secondaryLink.href,
-          class: "btn c-icon-button c-icon-button--ghost c-module-card__secondary",
+          class: "btn btn-ghost btn-icon-only module-card-secondary",
           target: "_blank",
           rel: "noopener",
           "aria-label": $options.secondaryLink.label,
@@ -1563,43 +1566,43 @@
   const _hoisted_1$1 = ["aria-label"];
   const _hoisted_2$1 = ["id", "aria-selected", "aria-controls", "tabindex", "onClick"];
   const _hoisted_3$1 = ["id", "aria-labelledby"];
-  const _hoisted_4$1 = { class: "c-mp-settings__key" };
+  const _hoisted_4$1 = { class: "input-group" };
   const _hoisted_5$1 = ["placeholder", "aria-label", "disabled", "aria-invalid", "aria-describedby"];
   const _hoisted_6 = ["aria-label", "title", "disabled"];
   const _hoisted_7 = ["id"];
   const _hoisted_8 = {
     key: 1,
-    class: "c-mp-settings__loading"
+    class: "marketplace-settings-loading"
   };
   const _hoisted_9 = ["aria-label"];
   const _hoisted_10 = {
     key: 2,
-    class: "c-mp-settings__empty"
+    class: "marketplace-settings-empty"
   };
   const _hoisted_11 = {
     key: 3,
-    class: "c-licence-list"
+    class: "list-group licence-list"
   };
-  const _hoisted_12 = { class: "c-licence-list__clip" };
-  const _hoisted_13 = { class: "c-licence-list__row" };
+  const _hoisted_12 = { class: "licence-list-clip" };
+  const _hoisted_13 = { class: "licence-list-row" };
   const _hoisted_14 = ["src"];
-  const _hoisted_15 = { class: "c-licence-list__text" };
-  const _hoisted_16 = { class: "c-licence-list__name" };
-  const _hoisted_17 = { class: "c-licence-list__key" };
+  const _hoisted_15 = { class: "licence-list-text" };
+  const _hoisted_16 = { class: "licence-list-name" };
+  const _hoisted_17 = { class: "licence-list-key" };
   const _hoisted_18 = {
     key: 0,
     type: "button",
-    class: "btn btn-secondary c-licence-list__action",
+    class: "btn btn-secondary licence-list-action",
     disabled: ""
   };
   const _hoisted_19 = ["aria-label", "disabled", "onClick"];
   const _hoisted_20 = ["href", "aria-label", "title"];
   const _hoisted_21 = {
     key: 4,
-    class: "c-mp-settings__installation"
+    class: "marketplace-settings-installation"
   };
   const _hoisted_22 = ["id", "aria-labelledby"];
-  const _hoisted_23 = { class: "c-setting-row" };
+  const _hoisted_23 = { class: "marketplace-setting" };
   const _hoisted_24 = { class: "form-check" };
   const _hoisted_25 = ["id", "checked", "disabled", "aria-describedby"];
   const _hoisted_26 = ["for"];
@@ -1608,13 +1611,13 @@
   const _hoisted_29 = ["id", "checked", "disabled", "aria-describedby"];
   const _hoisted_30 = ["for"];
   const _hoisted_31 = ["id"];
-  const _hoisted_32 = { class: "c-setting-row__more" };
-  const _hoisted_33 = { class: "c-setting-row__more-inner" };
+  const _hoisted_32 = { class: "marketplace-setting-more" };
+  const _hoisted_33 = { class: "marketplace-setting-more-inner" };
   const _hoisted_34 = {
     key: 0,
-    class: "c-mp-notice c-mp-notice--warning"
+    class: "alert alert-warning marketplace-alert"
   };
-  const _hoisted_35 = { class: "c-mp-notice__text" };
+  const _hoisted_35 = { class: "marketplace-alert-text" };
   const _hoisted_36 = ["innerHTML"];
   const _hoisted_37 = { class: "form-check" };
   const _hoisted_38 = ["id"];
@@ -1622,12 +1625,12 @@
   const _hoisted_40 = ["disabled"];
   const _hoisted_41 = {
     key: 0,
-    class: "ti ti-loader c-mp-spin",
+    class: "ti ti-loader marketplace-spin",
     "aria-hidden": "true"
   };
   const _hoisted_42 = {
     key: 0,
-    class: "c-mp-dialog__error",
+    class: "marketplace-dialog-error",
     role: "alert"
   };
   const _hoisted_43 = ["href"];
@@ -1635,7 +1638,7 @@
     const _component_UiModal = vue$1.resolveComponent("UiModal");
     return vue$1.openBlock(), vue$1.createBlock(_component_UiModal, {
       show: true,
-      "dialog-class": "c-mp-dialog c-mp-settings",
+      "dialog-class": "marketplace-dialog marketplace-settings",
       title: $options.labels.title,
       "onUpdate:show": $options.onShow
     }, {
@@ -1654,7 +1657,7 @@
       ]),
       default: vue$1.withCtx(() => [
         vue$1.createElementVNode("div", {
-          class: "c-mp-settings__tabs",
+          class: "nav nav-pills nav-pills-secondary marketplace-settings-tabs",
           role: "tablist",
           "aria-label": $options.labels.title
         }, [
@@ -1669,7 +1672,7 @@
                 ref: `tab-${item.key}`,
                 type: "button",
                 role: "tab",
-                class: vue$1.normalizeClass(["c-mp-settings__tab", { "is-active": $data.tab === item.key }]),
+                class: vue$1.normalizeClass(["nav-link", { active: $data.tab === item.key }]),
                 "aria-selected": $data.tab === item.key ? "true" : "false",
                 "aria-controls": `${$data.uid}-panel-${item.key}`,
                 tabindex: $data.tab === item.key ? null : -1,
@@ -1699,42 +1702,32 @@
         ], 8, _hoisted_1$1),
         vue$1.withDirectives(vue$1.createElementVNode("section", {
           id: `${$data.uid}-panel-licenses`,
-          class: "c-mp-settings__panel",
+          class: "marketplace-settings-panel",
           role: "tabpanel",
           "aria-labelledby": `${$data.uid}-tab-licenses`
         }, [
           vue$1.createElementVNode("div", _hoisted_4$1, [
-            vue$1.createElementVNode(
-              "div",
-              {
-                class: vue$1.normalizeClass(["c-licence-field", { "is-valid": $data.added }])
-              },
-              [
-                vue$1.withDirectives(vue$1.createElementVNode("input", {
-                  ref: "input",
-                  "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $data.licenceKey = $event),
-                  type: "text",
-                  class: vue$1.normalizeClass(["form-control c-licence-field__input", { "is-invalid": $data.keyError, "is-valid": $data.added }]),
-                  placeholder: $options.labels.placeholder,
-                  "aria-label": $options.labels.licenceKey,
-                  autocomplete: "off",
-                  spellcheck: "false",
-                  autocapitalize: "characters",
-                  disabled: $data.registering || $data.loading,
-                  "aria-invalid": $data.keyError ? "true" : null,
-                  "aria-describedby": $data.keyError ? `${$data.uid}-key-error` : null,
-                  onInput: _cache[2] || (_cache[2] = (...args) => $options.onKeyInput && $options.onKeyInput(...args)),
-                  onKeydown: _cache[3] || (_cache[3] = vue$1.withKeys(vue$1.withModifiers((...args) => $options.register && $options.register(...args), ["prevent"]), ["enter"]))
-                }, null, 42, _hoisted_5$1), [
-                  [vue$1.vModelText, $data.licenceKey]
-                ])
-              ],
-              2
-              /* CLASS */
-            ),
+            vue$1.withDirectives(vue$1.createElementVNode("input", {
+              ref: "input",
+              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $data.licenceKey = $event),
+              type: "text",
+              class: vue$1.normalizeClass(["form-control licence-key-input", { "is-invalid": $data.keyError, "is-valid": $data.added }]),
+              placeholder: $options.labels.placeholder,
+              "aria-label": $options.labels.licenceKey,
+              autocomplete: "off",
+              spellcheck: "false",
+              autocapitalize: "characters",
+              disabled: $data.registering || $data.loading,
+              "aria-invalid": $data.keyError ? "true" : null,
+              "aria-describedby": $data.keyError ? `${$data.uid}-key-error` : null,
+              onInput: _cache[2] || (_cache[2] = (...args) => $options.onKeyInput && $options.onKeyInput(...args)),
+              onKeydown: _cache[3] || (_cache[3] = vue$1.withKeys(vue$1.withModifiers((...args) => $options.register && $options.register(...args), ["prevent"]), ["enter"]))
+            }, null, 42, _hoisted_5$1), [
+              [vue$1.vModelText, $data.licenceKey]
+            ]),
             vue$1.createElementVNode("button", {
               type: "button",
-              class: "btn btn-primary c-icon-button c-mp-settings__add",
+              class: "btn btn-primary btn-icon-only marketplace-settings-add",
               "aria-label": $options.labels.addLicenceKey,
               title: $options.labels.addLicenceKey,
               disabled: $data.registering || $data.loading || $data.licenceKey.trim() === "",
@@ -1743,7 +1736,7 @@
               vue$1.createElementVNode(
                 "i",
                 {
-                  class: vue$1.normalizeClass(["ti", $data.registering ? "ti-loader c-mp-spin" : $data.added ? "ti-check" : "ti-plus"]),
+                  class: vue$1.normalizeClass(["ti", $data.registering ? "ti-loader marketplace-spin" : $data.added ? "ti-check" : "ti-plus"]),
                   "aria-hidden": "true"
                 },
                 null,
@@ -1779,14 +1772,14 @@
                   "li",
                   {
                     key: module.id,
-                    class: vue$1.normalizeClass(["c-licence-list__item", { "is-entering": module.id === $data.enteringId }])
+                    class: vue$1.normalizeClass(["list-group-item licence-list-item", { "is-entering": module.id === $data.enteringId }])
                   },
                   [
                     vue$1.createElementVNode("div", _hoisted_12, [
                       vue$1.createElementVNode("div", _hoisted_13, [
                         vue$1.createElementVNode("img", {
                           src: module.imageUrl,
-                          class: "c-licence-list__image",
+                          class: "licence-list-image",
                           width: "40",
                           height: "40",
                           alt: ""
@@ -1816,7 +1809,7 @@
                         )) : (vue$1.openBlock(), vue$1.createElementBlock("button", {
                           key: 1,
                           type: "button",
-                          class: "btn btn-primary c-licence-list__action",
+                          class: "btn btn-primary licence-list-action",
                           "aria-label": $options.installLabel(module),
                           disabled: $props.installLocked,
                           onClick: ($event) => _ctx.$emit("install", module)
@@ -1824,7 +1817,7 @@
                         module.marketplaceUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
                           key: 2,
                           href: module.marketplaceUrl,
-                          class: "btn c-icon-button c-icon-button--ghost",
+                          class: "btn btn-ghost btn-icon-only",
                           target: "_blank",
                           rel: "noopener",
                           "aria-label": $options.labels.information,
@@ -1864,7 +1857,7 @@
         ]),
         vue$1.withDirectives(vue$1.createElementVNode("section", {
           id: `${$data.uid}-panel-settings`,
-          class: "c-mp-settings__panel c-mp-settings__options",
+          class: "marketplace-settings-panel marketplace-settings-options",
           role: "tabpanel",
           "aria-labelledby": `${$data.uid}-tab-settings`
         }, [
@@ -1881,19 +1874,19 @@
                 onChange: _cache[5] || (_cache[5] = ($event) => $options.toggleBeta($event.target.checked))
               }, null, 40, _hoisted_25),
               vue$1.createElementVNode("label", {
-                class: "form-check-label c-setting-row__title",
+                class: "form-check-label marketplace-setting-title",
                 for: `${$data.uid}-beta`
               }, vue$1.toDisplayString($options.labels.beta), 9, _hoisted_26),
               vue$1.createElementVNode("div", {
                 id: `${$data.uid}-beta-hint`,
-                class: "form-text c-setting-row__hint"
+                class: "form-text marketplace-setting-hint"
               }, vue$1.toDisplayString($options.labels.betaHint), 9, _hoisted_27)
             ])
           ]),
           vue$1.createElementVNode(
             "div",
             {
-              class: vue$1.normalizeClass(["c-setting-row", { "is-expanded": $data.acknowledging }])
+              class: vue$1.normalizeClass(["marketplace-setting", { "is-expanded": $data.acknowledging }])
             },
             [
               vue$1.createElementVNode("div", _hoisted_28, [
@@ -1908,12 +1901,12 @@
                   onChange: _cache[6] || (_cache[6] = ($event) => $options.toggleCommunity($event.target.checked))
                 }, null, 40, _hoisted_29),
                 vue$1.createElementVNode("label", {
-                  class: "form-check-label c-setting-row__title",
+                  class: "form-check-label marketplace-setting-title",
                   for: `${$data.uid}-community`
                 }, vue$1.toDisplayString($options.labels.community), 9, _hoisted_30),
                 vue$1.createElementVNode("div", {
                   id: `${$data.uid}-community-hint`,
-                  class: "form-text c-setting-row__hint"
+                  class: "form-text marketplace-setting-hint"
                 }, vue$1.toDisplayString($options.labels.communityHint), 9, _hoisted_31)
               ]),
               vue$1.createElementVNode("div", _hoisted_32, [
@@ -1922,7 +1915,7 @@
                     _cache[11] || (_cache[11] = vue$1.createElementVNode(
                       "i",
                       {
-                        class: "ti ti-alert-triangle c-mp-notice__icon",
+                        class: "ti ti-alert-triangle marketplace-alert-icon",
                         "aria-hidden": "true"
                       },
                       null,
@@ -1951,7 +1944,7 @@
                       vue$1.createElementVNode("div", null, [
                         vue$1.createElementVNode("button", {
                           type: "button",
-                          class: "btn btn-primary btn-sm c-mp-dialog__busy",
+                          class: "btn btn-primary btn-sm marketplace-dialog-busy",
                           disabled: !$data.acknowledged || $data.saving !== null,
                           onClick: _cache[8] || (_cache[8] = (...args) => $options.confirmCommunity && $options.confirmCommunity(...args))
                         }, [
@@ -1981,7 +1974,7 @@
           $props.moduleAdministrationUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
             key: 1,
             href: $props.moduleAdministrationUrl,
-            class: "c-mp-settings__admin"
+            class: "marketplace-settings-admin"
           }, [
             _cache[12] || (_cache[12] = vue$1.createElementVNode(
               "i",
@@ -2146,7 +2139,7 @@
           if (!cell) {
             return;
           }
-          const target = [".c-module-card__action", "a.c-module-card__title", ".c-module-card__secondary"].map((selector) => cell.querySelector(selector)).find((element) => element && !element.disabled);
+          const target = [".entity-card-action", "a.entity-card-title", ".module-card-secondary"].map((selector) => cell.querySelector(selector)).find((element) => element && !element.disabled);
           if (target) {
             target.focus();
           }
@@ -2322,7 +2315,7 @@
       }
     }
   };
-  const _hoisted_1 = { class: "c-marketplace" };
+  const _hoisted_1 = { class: "marketplace" };
   const _hoisted_2 = ["aria-label", "title"];
   const _hoisted_3 = ["aria-hidden"];
   const _hoisted_4 = ["aria-label", "title", "tabindex", "disabled"];
@@ -2334,11 +2327,11 @@
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CoreVersionInfo = vue$1.resolveComponent("CoreVersionInfo");
     const _component_ModuleCard = vue$1.resolveComponent("ModuleCard");
-    const _component_CardDirectory = vue$1.resolveComponent("CardDirectory");
+    const _component_EntityBrowser = vue$1.resolveComponent("EntityBrowser");
     const _component_InstallDialog = vue$1.resolveComponent("InstallDialog");
     const _component_SettingsDialog = vue$1.resolveComponent("SettingsDialog");
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
-      vue$1.createVNode(_component_CardDirectory, {
+      vue$1.createVNode(_component_EntityBrowser, {
         ref: "directory",
         url: $options.listUrl,
         title: $options.labels.title,
@@ -2351,7 +2344,7 @@
         actions: vue$1.withCtx(() => [
           vue$1.createElementVNode("button", {
             type: "button",
-            class: "btn btn-secondary c-icon-button c-marketplace__settings",
+            class: "btn btn-secondary btn-icon-only marketplace-settings",
             "aria-label": $options.labels.settings,
             title: $options.labels.settings,
             onClick: _cache[0] || (_cache[0] = ($event) => $options.openSettings())
@@ -2368,12 +2361,12 @@
             )
           ])], 8, _hoisted_2),
           vue$1.createElementVNode("span", {
-            class: vue$1.normalizeClass(["c-marketplace__update-all-slot", { "is-collapsed": !$options.showUpdateAll }]),
+            class: vue$1.normalizeClass(["marketplace-update-all-slot", { "is-collapsed": !$options.showUpdateAll }]),
             "aria-hidden": $options.showUpdateAll ? null : "true"
           }, [
             vue$1.createElementVNode("button", {
               type: "button",
-              class: vue$1.normalizeClass(["btn c-icon-button c-marketplace__update-all", $data.updatingAll ? "btn-warning is-running" : "btn-accent"]),
+              class: vue$1.normalizeClass(["btn btn-icon-only marketplace-update-all", $data.updatingAll ? "btn-warning is-running" : "btn-accent"]),
               "aria-label": $data.updatingAll ? $options.labels.cancelAllLabel : $options.labels.updateAllLabel,
               title: $data.updatingAll ? $options.labels.cancelAll : $options.labels.updateAll,
               tabindex: $options.showUpdateAll ? null : -1,
@@ -2383,7 +2376,7 @@
               vue$1.createElementVNode(
                 "i",
                 {
-                  class: "ti ti-refresh c-marketplace__spin",
+                  class: "ti ti-refresh marketplace-spin",
                   "aria-hidden": "true"
                 },
                 null,
