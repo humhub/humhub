@@ -83,6 +83,45 @@ This mechanic is new.
   tab stops.
 - Reduced motion: no height animation; the group opens instantly.
 
+## Markup and styles
+
+Bootstrap's **`.accordion`**. "One open at a time" is Bootstrap's own `data-bs-parent`; the
+changed-tracking and the header actions are added on top. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<div class="accordion" id="settings-groups">
+    <div class="accordion-item">
+        <h3 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#group-links"
+                    aria-expanded="true" aria-controls="group-links">
+                <span class="accordion-icon"><i class="ti ti-link" aria-hidden="true"></i></span>
+                <span class="accordion-title">Links</span>
+                <span class="badge badge-tag">Mobile App</span>
+                <span class="accordion-dot badge-dot badge-dot-unsaved"><span class="visually-hidden">Unsaved changes</span></span>
+            </button>
+            <span class="accordion-header-actions">…</span>
+        </h3>
+        <p class="accordion-subtitle">How links from e-mails and push messages open</p>
+        <div id="group-links" class="accordion-collapse collapse show" data-bs-parent="#settings-groups">
+            <div class="accordion-body">…</div>
+        </div>
+    </div>
+</div>
+```
+
+| Class | Element |
+|---|---|
+| `.accordion`, `.accordion-item`, `.accordion-header`, `.accordion-button`, `.accordion-collapse`, `.accordion-body` | Bootstrap |
+| `.accordion-icon`, `.accordion-title`, `.accordion-subtitle`, `.accordion-footer` | The parts of the header and the optional footer |
+| `.accordion-header-actions` | Reset / Save, **next to** the button (a button inside a button is invalid HTML) |
+| `.accordion-dot` | The unsaved dot (`.badge-dot.badge-dot-unsaved`) |
+| `.accordion-compact` | Modifier on `.accordion`: compact variant |
+
+- **File:** `_accordion.scss` (new), behind `$prev-accordion`.
+- **Sass variables:** Bootstrap's `$accordion-padding-x/y`, `$accordion-bg`,
+  `$accordion-border-color`, `$accordion-border-radius`, `$accordion-button-active-bg`,
+  `$accordion-icon-*`; plus `$accordion-border-style` (dashed) and `$accordion-icon-box-size`.
+
 ## Implementation in core
 
 **Today:** `humhub\widgets\form\ActiveForm::beginCollapsibleFields($title, $isClosed)` /

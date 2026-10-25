@@ -425,8 +425,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | Before | After |
   |---|---|
   | `humhub\modules\ui\menu\widgets\Menu` | `humhub\widgets\menu\Menu` |
-  | `humhub\modules\ui\menu\widgets\TabMenu` | `humhub\widgets\menu\TabMenu` |
-  | `humhub\modules\ui\menu\widgets\SubTabMenu` | `humhub\widgets\menu\SubTabMenu` |
+  | `humhub\modules\ui\menu\widgets\TabMenu` | `humhub\widgets\menu\PillTabs` |
+  | `humhub\modules\ui\menu\widgets\SubTabMenu` | `humhub\widgets\menu\PillTabs` (`$variant = PillTabs::VARIANT_SECONDARY`) |
   | `humhub\modules\ui\menu\widgets\LeftNavigation` | `humhub\widgets\menu\LeftNavigation` |
   | `humhub\modules\ui\menu\widgets\DropdownMenu` | `humhub\widgets\menu\DropdownMenu` |
   | `humhub\modules\ui\menu\MenuEntry` | `humhub\widgets\menu\MenuEntry` |
@@ -434,6 +434,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\menu\DropdownDivider` | `humhub\widgets\menu\DropdownDivider` |
   | `humhub\modules\ui\menu\WidgetMenuEntry` | `humhub\widgets\menu\WidgetMenuEntry` |
 
+  - **Tab menus became `PillTabs`.** `TabMenu` and `SubTabMenu` are not moved but replaced by
+    `humhub\widgets\menu\PillTabs` (Bootstrap's `.nav.nav-pills`, see `docs/ui/tabs.md`); a
+    `SubTabMenu` is a `PillTabs` with `$variant = PillTabs::VARIANT_SECONDARY`. The markup changes:
+    `<nav class="nav-scroller"><ul class="nav nav-pills">` instead of `.tab-menu` / `.nav-tabs`.
+    `$renderSingleTab` stays. A handler registered on the generic `TabMenu` class reaches every
+    tab menu through the redirect below; a handler on a concrete menu class keeps working. The
+    administration's section layouts (`@admin/views/layouts/user`, `space`, `setting`,
+    `information`) render the section's title and tabs as a `humhub\widgets\PageHeader` above
+    the content panel; a view rendered into them still sits inside `.panel`, so it needs no change.
   - **Every old name stays available as a deprecated subclass. The shims are removed in 1.21** —
     migrate during the 1.20 cycle. Checking an object against an old name does not work, see
     *References to a deprecated shim class have to be changed* below.
@@ -1129,17 +1138,19 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     - `humhub\components\View::endBody()` ships the flash message as a JSON string literal
       instead of HTML-encoding it into a JS string. Its former `&quot;` strip — needed to
       keep that literal valid — silently deleted every double quote from a flash message.
-    - **The bar is a toast now.** `_user-feedback.scss` styles `.status-bar-body` as the
-      fixed layer along the bottom and `.status-bar-content` as a translucent card in its
-      centre, border and outline in the level's colour through a new tone class on the card
-      (`status-bar-info|success|warning|error`); icon, message, details chevron and close
-      link sit in a new `.status-bar-header` row, the details block below it. The full-width
-      dark strip is gone. The enter/exit animation is a 220 ms CSS transition (`.status-bar-body`
-      hidden by default, shown via `.status-bar-visible`) instead of jQuery's 500 ms slide,
-      plus `.status-bar-toggle` for the details-toggle cursor. A theme that replaces this block
-      (`$prev-user-feedback: true`) keeps working — the bar element only exists while a
-      message is shown — but its bar appears and disappears without the slide until it
-      adopts those two rules.
+    - **The bar is a Bootstrap toast now.** Inside `#status-bar` the island renders a
+      `.toast-container.position-fixed` at the bottom centre holding one `.toast` with a tone
+      class (`toast-info|success|warning|danger`); icon (`.toast-icon`), message
+      (`.toast-message`), details toggle (`.toast-details-toggle`) and close (`.btn-close.toast-close`)
+      sit in the `.toast-body`, the details block (`.toast-details`) below it. The look comes from
+      Bootstrap's `$toast-*` variables (set in `variables.scss`) and the new `_toast.scss`
+      (`$prev-toast`); the status bar rules left `_user-feedback.scss`. The full-width dark strip
+      and the `.status-bar-*` classes are gone, and the level classes (`info`, `success`,
+      `warning`, `error`) left the icon. The enter/exit animation is a 220 ms CSS transition
+      (hidden by default, shown via `.is-visible` on the container) instead of jQuery's 500 ms
+      slide. Errors are announced with `role="alert"`. Acceptance tests address a message as
+      `#status-bar .toast-<tone>` and its close button as `.toast-close`
+      (`AcceptanceTester::seeSuccess()` and friends do).
   - **The space membership button is a Vue island** (`MembershipButton`,
     `protected/humhub/modules/space/vue/`, `SpaceVueAsset`), fed by the new endpoints
     `GET|PUT|DELETE /api/v2/space/<id>/membership`
@@ -1193,7 +1204,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       with the endpoint as `data-action-url`; it reloads the page afterwards). A module that
       posts to one of these routes calls `PUT`/`DELETE /api/v2/space/<id>/membership` instead;
       module-search found none.
-    - The sibling `FollowButton` (an island too, see the spaces directory below) follows a
+    - The sibling `FollowButton` (an island too, see the spaces browser below) follows a
       membership change through the `space:membership-changed` event of the `events` bridge —
       the server no longer sends `data-show-buttons`/`data-hide-buttons`.
     - **A module restricting who may join a space must guard the API controller too.**
@@ -1230,7 +1241,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `data-button-options` posting and the `data-show-buttons`/`data-hide-buttons`
       convention. It existed for the membership and friendship buttons only, both of which
       are islands now; module-search found no external users of any of the three attributes.
-      `content.container.follow`/`unfollow` are removed too (see the People directory below).
+      `content.container.follow`/`unfollow` are removed too (see the People browser below).
     - Sending or accepting a request makes the caller follow the user; the island dispatches
       `user:friendship-changed` `{userId, state, isFollowing}` on the `events` bridge after
       every transition, and the user's `UserFollowButton` (an island too, see the People
@@ -1442,17 +1453,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `ListContext`, `FilterDefinition`, the builders and the ready filters `SearchFilter`,
     `EnumFilter`, `BoolFilter`, `IdsFilter`, see "Lists" in `docs/develop/concept-api.md`),
     `marketplace\components\ModuleList`, and the core Vue components
-    `PageToolbar`, `FilterBar`, `FilterSelect` (a page's upper box: title, actions, filter bar)
-    and `CardDirectory`, `CardGrid`, `CardSkeleton` for card directory pages (see
+    `PageHeader`, `FilterBar`, `FilterSelect` (a page's upper box: title, actions, filter bar)
+    and `EntityBrowser`, `EntityGrid`, `CardSkeleton` for entity browser pages (see
     `docs/develop/ui-js-vuejs-components.md`); `marketplace\services\MarketplaceListService`
     and `marketplace\serializers\MarketplaceModuleSerializer`; `models\Module::getBadge()`,
     `getAvailability()`, `findInstalledVersion()`, `isUpdateAvailable()`, `getUseCaseList()`
     (humhub.com's `useCases` field, listed with their module counts by the new use-case
     filter); `MarketplaceService::getPublicSettings()`/`updateSettings()`.
 
-- **Spaces directory rebuilt as a Vue island.** `/spaces` renders
-  `humhub\modules\space\widgets\SpaceDirectory` (`vue/SpaceDirectory.vue` on the core
-  `CardDirectory`) and reads everything from `GET /api/v2/space?purpose=directory`,
+- **Spaces browser rebuilt as a Vue island.** `/spaces` renders
+  `humhub\modules\space\widgets\SpacesBrowser` (`vue/SpacesBrowser.vue` on the core
+  `EntityBrowser`) and reads everything from `GET /api/v2/space?purpose=directory`,
   `GET /api/v2/space/states` and `GET|PUT|DELETE /api/v2/space/<id>/follow` (see
   `docs/api/src/space.yaml`).
   - **Removed:** the widgets `SpaceDirectoryCard`, `SpaceDirectoryActionButtons`,
@@ -1501,19 +1512,25 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     with `data-action-click="content.container.follow|unfollow"`; the `MembershipButton` and the
     follow button of a space keep each other in sync through the `space:membership-changed` and
     `space:follow-changed` events of the `events` bridge. `content.container.follow|unfollow`
-    is removed (see the People directory below).
-  - **Changed:** the entries of `space\widgets\SpaceDirectoryHeadingButtons` (still a `Menu`, still
-    extended on its `EVENT_INIT`) are no longer rendered by its view but handed to the island as
-    data (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
-    buttons: the entry's `icon`, its `label` as tooltip and accessible name. Only `MenuLink`
-    entries are shown. A `btn-secondary` (default), `btn-accent` or `btn-primary` class in the
-    entry's `htmlOptions` picks the button variant ("Create Space" is `btn-accent`), an entry
-    with `data-action-click="ui.modal.load"` (or `data-bs-target="#globalModal"`) opens its URL
-    in the global modal, other `htmlOptions` are passed on as link attributes.
+    is removed (see the People browser below).
+  - **Replaced:** `space\widgets\SpaceDirectoryHeadingButtons` by `space\widgets\SpacesHeaderActions`
+    (a `humhub\widgets\menu\PageHeaderActions`, menu id `spaces-header-actions`), without a
+    compatibility class; its view `spaceDirectoryHeadingButtons.php` is removed. A module adding
+    entries on the `EVENT_INIT` of the old class registers on the new one. The entries are handed
+    to the island as data (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by
+    `PageHeader` as icon buttons: the entry's `icon`, its `label` as tooltip and accessible name.
+    Only `MenuLink` entries are shown: secondary tools, and last the entry with
+    `MenuLink::$isPrimary` as the accent action ("Create Space"). The look no longer comes from a
+    button class: `btn-*` classes in the entry's `htmlOptions` are dropped. An entry with `data-action-click="ui.modal.load"` (or
+    `data-bs-target="#globalModal"`) opens its URL in the global modal, other `htmlOptions` are
+    passed on as link attributes.
   - **New:** `space\components\SpaceList`;
     `space\serializers\FollowSerializer`, `SpaceSerializer::counts()`,
     `MembershipSerializer::states()`, `space\models\Membership::preloadForUser()`;
-    `humhub\widgets\menu\Menu::getEntriesData()`; the `SpaceCard` extension slot
+    `humhub\widgets\menu\Menu::getEntriesData()`, `humhub\widgets\menu\PageHeaderActions`,
+    `humhub\widgets\menu\MenuLink::$isPrimary`, the PHP widgets `humhub\widgets\ContentCard`
+    (with `humhub\widgets\menu\CardHeaderActions`, see `docs/ui/card.md`) and `humhub\widgets\PageHeader` (see
+    `docs/ui/page-header.md`); the `SpaceCard` extension slot
     `space.card-subtitle` (`registerSlotComponent`, receives the `space`), where a module shows
     its own line under the space name (e.g. a category) from its own endpoint, and
     `space.card-actions`, the card's footer: the core registers its `membership` (sortOrder
@@ -1521,9 +1538,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     or removes (`removeSlotComponent`) actions by id — see "Card actions" in
     `docs/develop/ui-js-vuejs-extensions.md`.
 
-- **People directory rebuilt as a Vue island.** `/people` renders
-  `humhub\modules\user\widgets\PeopleDirectory` (`vue/PeopleDirectory.vue` on the core
-  `CardDirectory`) and reads everything from `GET /api/v2/user?purpose=directory`,
+- **People browser rebuilt as a Vue island.** `/people` renders
+  `humhub\modules\user\widgets\PeopleBrowser` (`vue/PeopleBrowser.vue` on the core
+  `EntityBrowser`) and reads everything from `GET /api/v2/user?purpose=directory`,
   `GET /api/v2/user/states`, `GET /api/v2/user/field-values`, `GET /api/v2/user/tags` and
   `GET|PUT|DELETE /api/v2/user/<id>/follow` (see `docs/api/src/user.yaml`). The user list, the
   states, the field values and the tags require the permission to access People
@@ -1537,7 +1554,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `humhub\modules\user\components\UserList`, see below) and the widgets `PeopleCard`,
     `PeopleIcons`, `PeopleDetails`, `PeopleTagList`, `PeopleActionButtons`, `PeopleFilters` and
     `PeopleFilterPicker` of `humhub\modules\user\widgets` with the views `peopleCard.php` and
-    `peopleIcons.php` — the directory is the `PeopleDirectory` island, its cards
+    `peopleIcons.php` — the directory is the `PeopleBrowser` island, its cards
     `vue/components/PeopleCard.vue`, which a module extends through the slots
     `user.card-subtitle` (a line under the user's name) and `user.card-actions` (the card's
     footer) instead of the card widgets; the route `user/people/filter-people-json`
@@ -1613,11 +1630,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `.followButton`/`.unfollowButton` links). No core markup used them any more once the user
     and space follow buttons became islands; module-search found no external users. A script
     reacting to a follow listens to `user:follow-changed`/`space:follow-changed` instead.
-  - **Changed:** the entries of `user\widgets\PeopleHeadingButtons` (still a `Menu`, still
-    extended on its `EVENT_INIT`) are handed to the island as data
-    (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
-    buttons, as the spaces directory's `SpaceDirectoryHeadingButtons` are (see there). "Invite
-    new people" is `btn-accent` with the id `invite-people-button`.
+  - **Replaced:** `user\widgets\PeopleHeadingButtons` by `user\widgets\PeopleHeaderActions` (a
+    `humhub\widgets\menu\PageHeaderActions`, menu id `people-header-actions`), without a
+    compatibility class; its view `peopleHeadingButtonsTemplate.php` is removed. A module adding
+    entries on the `EVENT_INIT` of the old class registers on the new one (module search:
+    custom-pages, matchmaking, members-map). The entries are handed to the island as data and
+    rendered by `PageHeader`, as the spaces browser's `SpacesHeaderActions` are (see
+    there). "Invite new people" is the primary action, with the id `invite-people-button`.
   - **Changed:** the meta search's people provider (`user\search\UserSearchProvider`) builds its
     results with `UserList` and `purpose=directory`, so restrictions a module applies to the
     directory apply to it too, as they did through `PeopleQuery`.

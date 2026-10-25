@@ -67,14 +67,35 @@ Controls for on/off and one-of-few choices. Each control has a clear job:
 - Focus rings are drawn on the box or track, never clipped.
 - Reduced motion: no knob or fill animation.
 
+## Markup and styles
+
+All controls are Bootstrap's **`.form-check`** family. The look is set through Bootstrap's
+`$form-check-*` and `$form-switch-*` variables. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Control | Classes |
+|---|---|
+| Checkbox | `.form-check` > `.form-check-input[type=checkbox]` + `.form-check-label` |
+| Switch | `.form-check.form-switch` > `.form-check-input[role=switch]` |
+| Switch row | `.form-switch-row`: text block (`.form-switch-row-title`, `.form-text`, default line) on the left, `.form-switch` on the right |
+| Radio cards | `.form-check-cards` > `label.form-check-card` holding `.form-check-input[type=radio]` and `.form-check-card-body` (`.form-check-card-title`, `.form-check-card-text`); `:has(:checked)` draws the selected card. The radio stays hidden but focusable from `sm` up and shows on phones, where the cards stack |
+| Matrix | `.table` with `.form-check-input` cells; wide matrices scroll in `.table-responsive` |
+
+- Checkboxes in tables and the item browser use the same `.form-check-input`.
+- **File:** `_form.scss`, behind `$prev-form`.
+- **Sass variables:** Bootstrap's `$form-check-input-width`, `$form-check-input-border-radius`,
+  `$form-check-input-checked-bg-color` (accent), `$form-switch-width`, `$form-switch-color`,
+  `$form-switch-checked-color`. Radio cards use `$spacer`, `--bs-border-*` and the accent; no own
+  variables.
+
 ## Implementation in core
 
 **Today:**
 
 - **PHP:** `ActiveField::checkbox()` and `radioList()` render Bootstrap checks. Bootstrap 5's
   `checkbox(['switch' => true])` exists but is not used in core.
-- **Vue:** `CheckboxField` (Bootstrap `form-check-input`). `NotificationSettings.vue` has its own
-  radio cards (profiles) and channel checkboxes.
+- **Vue:** `CheckboxField` (Bootstrap `form-check-input`). `NotificationSettings.vue` renders its
+  profiles as `.form-check-card` radio cards (native radios, one `name` per group) and its channel
+  checkboxes as `.form-check`.
 - **Tables:** the data table and the item browser bring their own row checkboxes.
 
 **Proposal:**
@@ -85,7 +106,7 @@ Controls for on/off and one-of-few choices. Each control has a clear job:
 - **Switch row:** a `SettingsControl::switch()` (see [Settings Page](settings-page.md)) and a Vue
   `SwitchRow`.
 - **Radio cards:** a `radioList(..., ['cards' => true])` option with descriptions, and a Vue
-  `RadioCards`. `NotificationSettings.vue` moves onto it.
+  `RadioCards` on the existing `.form-check-card` markup. `NotificationSettings.vue` moves onto it.
 - **One checkbox style** for forms, tables and the item browser.
 
 ## Open questions

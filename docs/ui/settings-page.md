@@ -18,7 +18,7 @@ they can act**. Its body holds the controls, optionally grouped into
 
 | # | Part | Notes |
 |---|---|---|
-| 1 | **Title** | The card header. Section tabs sit above it in the [Page Toolbar](page-toolbar.md). |
+| 1 | **Title** | The card header. Section tabs sit above it in the [Page Header](page-header.md). |
 | 2 | **Page action** | Optional. A secondary text button for actions that are not saves ("Send test e-mail", "Reset for all users"). If the action depends on unsaved settings, it warns first. |
 | 3 | **Reset and Save** | Icon buttons in the header. **Save** (primary) appears once something changed. **Reset** (secondary) appears while any value differs from its default. |
 | 4 | **Groups** | [Accordions](accordion.md), one open at a time. A group with unsaved changes shows the accent dot and stays open. Pages with few settings have no groups. |
@@ -82,7 +82,7 @@ The design uses an **explicit Save**. Core's new notification settings (`Notific
 - Matrices scroll inside their group, not the page.
 - Header actions stay in the header, because they are icon buttons.
 - The administration menu and the settings page fold into list → page with a back arrow (see
-  [Page Toolbar](page-toolbar.md#mobile)).
+  [Page Header](page-header.md#mobile)).
 
 ## Accessibility
 
@@ -93,6 +93,24 @@ The design uses an **explicit Save**. Core's new notification settings (`Notific
   moves to the group header or the page title, never to nowhere.
 - The save error is announced (`role="alert"`). Field errors are linked to their fields.
 - Reduced motion: conditional controls and header actions appear without animation.
+
+## Markup and styles
+
+A settings page is a [Page Header](page-header.md) (with tabs) and one content card: a
+Bootstrap **`.card`** whose body holds an **`.accordion`**. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.card.settings-page` > `.card-header` | Title (`h2.card-title`), page action, Reset / Save |
+| `.btn-reveal` | The slot of Reset and Save (see [Buttons](buttons.md)) |
+| `.card-body` > `.accordion` | The groups ([Accordion](accordion.md)) |
+| `.settings-control` | A control: label, field, `.form-text`, `.settings-control-default` ("Default: off") |
+| `.form-switch-row` | A switch row ([Switch, Checkbox & Radio](choice-controls.md)) |
+| `.alert.alert-danger` | The save error under the groups |
+
+- **File:** `_settings-page.scss` (new), behind `$prev-settings-page`.
+- **Sass variables:** `$settings-control-gap`; everything else from the accordion and form
+  variables.
 
 ## Implementation in core
 

@@ -1,7 +1,7 @@
 # Loading, Empty & Error States
 
 > Found in the design: directories, tables, the stream, widgets, files, tasks, calendar
-> · Core: `CardSkeleton.vue` and `CardGrid` messages, `TileGrid` skeleton tiles, data table
+> · Core: `CardSkeleton.vue` and `EntityGrid` messages, `TileGrid` skeleton tiles, data table
 > skeleton (planned); `humhub\widgets\LoaderWidget` (spinner)
 > · Technology: **Both**
 
@@ -57,12 +57,30 @@ people stuck.
 - Empty and error messages are real text. Errors that appear after an action use `role="alert"`.
 - "Try again" and the first-step button are real buttons.
 
+## Markup and styles
+
+Skeletons are Bootstrap's **`.placeholder`** blocks, spinners are **`.spinner-border`**. Empty and
+error states are one own component. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.placeholder-glow` (or `-wave`) > `.placeholder` | Skeleton blocks inside a component's own markup (an `.entity-card`, a `.tile`, a table row), so the skeleton has the final geometry. The entity cards do so already (`.entity-card-skeleton`). |
+| `.spinner-border.spinner-border-sm` | Spinner in a button while a request runs |
+| `.is-reloading` | Content that reloads; dims after `$reloading-delay` |
+| `.empty-state` | Empty state: `.empty-state-icon`, `.empty-state-title`, `.empty-state-text`, action `.btn` |
+| `.empty-state.empty-state-error` | Error state with "Try again" |
+
+- **File:** `_empty-state.scss` (new), behind `$prev-empty-state`. No shimmer of its own: the
+  placeholder animation is Bootstrap's.
+- **Sass variables:** Bootstrap's `$placeholder-opacity-max`, `$placeholder-opacity-min`; plus
+  `$empty-state-icon-size`, `$reloading-delay`, `$reloading-opacity`.
+
 ## Implementation in core
 
 **Today:**
 
 - **Vue:** `CardSkeleton` (card directories), skeleton tiles in `TileGrid`, and the messages of
-  `CardGrid` ("No results found!" / "Try other keywords or remove filters." / "Try again").
+  `EntityGrid` ("No results found!" / "Try other keywords or remove filters." / "Try again").
   Directory pages render the skeleton on the server as the island's placeholder.
 - **PHP:** `humhub\widgets\LoaderWidget` (spinner) for legacy loading. Empty texts are written per
   view.

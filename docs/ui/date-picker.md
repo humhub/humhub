@@ -56,6 +56,25 @@ calendar. It shares the [Form Fields](form-fields.md) anatomy and states.
   announced when it changes.
 - The × is a button labelled "Clear due date".
 
+## Markup and styles
+
+The field is a Bootstrap **`.form-control`** (in an `.input-group` with the calendar button); the
+calendar opens in a **`.dropdown-menu`**. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.input-group` > `.form-control` + `.btn.btn-ghost.btn-icon-only` | The field and its calendar button |
+| `.dropdown-menu.datepicker` | The popup |
+| `.datepicker-header` | Month and year, ‹ › as `.btn-ghost.btn-icon-only` |
+| `.datepicker-grid`, `.datepicker-day` | The days; `.active` (chosen), `.is-today`, `.is-in-range`, `.disabled` |
+| `.datepicker-time` | The time part (`.form-select` or `.form-control`) |
+
+- On phones the calendar opens in an `.offcanvas.offcanvas-bottom` instead of the dropdown.
+- **File:** `_datepicker.scss` (today the jQuery UI styles), rewritten for the new markup, behind
+  `$prev-datepicker`.
+- **Sass variables:** `$datepicker-day-size`, `$datepicker-gap`; colours from `$dropdown-*`
+  and the accent.
+
 ## Implementation in core
 
 **Today:**

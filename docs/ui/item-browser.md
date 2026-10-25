@@ -8,10 +8,10 @@
 
 A view for browsing a collection **level by level**: folders and files, albums and pictures,
 pages and sub-pages. People open items, select several, drag them into folders and drop files from
-the desktop to upload them. It sits in the content card below a [Page Toolbar](page-toolbar.md)
+the desktop to upload them. It sits in the content card below a [Page Header](page-header.md)
 with the [Filter Bar](filter-bar.md).
 
-Use a [Card Directory](card-directory.md) for flat collections without levels, and a
+Use a [Entity Browser](entity-browser.md) for flat collections without levels, and a
 [Data Table](data-table.md) for records with many fields to compare.
 
 ![Item browser](images/item-browser.svg)
@@ -65,9 +65,58 @@ Use a [Card Directory](card-directory.md) for flat collections without levels, a
 - The path bar is a `<nav>` with links, and the current level is marked `aria-current`. When the
   focused element disappears (e.g. after a delete), focus moves to the current level.
 - Drag and drop always has a keyboard alternative: "Move to…" in the menu, "Upload" in the
-  toolbar.
+  page header.
 - Upload progress is announced when it finishes or fails.
 - Reduced motion: no slides between levels.
+
+## Markup and styles
+
+The path bar is Bootstrap's **`.breadcrumb`**, the view switch a `.btn-group` of **`.btn-check`**
+toggles, a tile's checkbox a **`.form-check-input`** and the skeleton **`.placeholder`** blocks;
+tiles are an own component. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<div class="path-bar">
+    <button class="btn btn-ghost btn-icon-only path-bar-back" type="button" aria-label="Back">…</button>
+    <nav class="path-bar-nav" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a class="path-bar-root" href="…" aria-label="All files">…</a></li>
+            <li class="breadcrumb-item"><a href="…">Brand</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><span tabindex="-1">Logos</span></li>
+        </ol>
+    </nav>
+    <ul class="nav selection-menu">…</ul>
+</div>
+
+<div class="btn-group view-switch" role="group" aria-label="View">
+    <input type="radio" class="btn-check" name="view-switch-1" id="view-switch-1-tiles" checked>
+    <label class="btn btn-ghost btn-icon-only" for="view-switch-1-tiles" title="Tiles">…<span class="visually-hidden">Tiles</span></label>
+    …
+</div>
+```
+
+| Class | Element |
+|---|---|
+| `.path-bar`, `-back`, `-nav`, `-root` | The bar around the breadcrumb, the back button (768px and below), the root icon link |
+| `.breadcrumb`, `.breadcrumb-item`, `.active` | Bootstrap's breadcrumb as the grey bar (`--bs-breadcrumb-*`); the divider is Tabler's chevron; `.is-drop-target` while something is dragged over an ancestor |
+| `.selection-menu`, `-toggle` | The selection menu ("2 ⋮", a `DropdownMenu`) |
+| `.btn-group.view-switch` > `.btn-check` + `label.btn.btn-ghost.btn-icon-only` | The view switch: radio toggles; the checked one gets the ghost button's active look |
+| `.tile-grid`, `-stage`, `-pane`, `-tiles`, `-empty`, `-more` | The grid |
+| `.tile`, `.tile-thumb`, `.tile-name`, `.tile-meta`, `.tile-actions`, `.tile-progress` | A tile and its parts |
+| `.form-check-input.tile-check` | A tile's checkbox, in the platform's checkbox look |
+| `.is-selected`, `.is-uploading`, `.is-drop-target` | Tile states |
+| `.tile-skeleton`, `-thumb`, `-name` | A skeleton tile of `.placeholder` blocks (`.placeholder-glow`) |
+| `.drop-zone`, `-overlay`, `-label` | The desktop drop overlay |
+| `.progress-frame`, `-track`, `-bar` | Progress drawn along the outline |
+
+- **File:** `_item-browser.scss`, behind `$prev-item-browser`.
+- **Sass variables:** `$item-browser-gap` (`$spacer * .5`), `$item-browser-hover-bg`,
+  `-selected-bg`, `-accent`, `-muted`, `-strong`, `-focus-ring`, `-focus-ring-inset`;
+  `$path-bar-bg`, `$path-bar-root-size`; `$tile-min-width` (136px), `$tile-thumb-height`,
+  `$tile-border-radius`. Transitions use Bootstrap's `transition()` mixin, so they stop under
+  `prefers-reduced-motion`.
+- **`.btn-check` and the platform's inputs:** HumHub styles `input[type=checkbox|radio]` itself
+  (`_form.scss`); `_button.scss` keeps a `.btn-check` input hidden against that.
 
 ## Implementation in core
 
@@ -94,7 +143,7 @@ selection and the current level, so grid and list views stay in step.
 | No list view component | A `ItemList` with the same slots and events as `TileGrid` (rows with icon, name, meta, ⋮), so the view switch only swaps the component |
 | Details pane | A generic `DetailsPane`: a side card at 768px and up, a dialog below; Info / Discussion tabs as slots |
 | Media preview | A shared full-window preview (swipe between items, swipe down to close, details drawer). Today each module brings its own. |
-| View switch placement | The design puts it in the content card next to the path bar. Align the `ViewSwitch` docs, which mention the page toolbar. |
+| View switch placement | The design puts it in the content card next to the path bar. Align the `ViewSwitch` docs, which mention the page toolbar (now page header). |
 
 ## Open questions
 

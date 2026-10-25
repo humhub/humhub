@@ -1,7 +1,8 @@
 # Pill Tabs
 
 > Found in the design: Admin › People (section tabs), space pages (tab strip), Notifications (All / Unread / Read), component demo page
-> · Technology: **Both** (proposed). Link tabs come from PHP menus (`TabMenu`). Panel tabs are also
+> · Core: `humhub\widgets\menu\TabMenu` / `SubTabMenu` (become `PillTabs`), `humhub\widgets\bootstrap\Tabs`
+> · Technology: **Both** (proposed). Link tabs come from PHP menus (`PillTabs`). Panel tabs are also
 > needed inside Vue islands (e.g. Notifications All / Unread / Read).
 
 A single horizontal strip of pill-shaped tabs. It switches between sibling pages or sibling views
@@ -80,26 +81,106 @@ The two dot colours always mean the same thing: **red = waiting/unread, accent =
 - Focus ring: visible on keyboard focus and never clipped by the scroller.
 - Reduced motion: no panel fade, and the centring scroll is instant.
 
+## Markup and styles
+
+Pill Tabs are Bootstrap's **`.nav.nav-pills`**. The design's look is set through Bootstrap's
+`$nav-pills-*` and `$nav-link-*` variables plus the outline of the primary variant. Class names
+and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<!-- link tabs, primary -->
+<nav class="nav-scroller" aria-label="People">
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a class="active nav-link" aria-current="page" href="…">Users</a></li>
+        <li class="nav-item">
+            <a class="nav-link" href="…">Approvals
+                <span class="badge-dot badge-dot-waiting"><span class="visually-hidden">3 waiting</span></span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<!-- panel tabs, secondary -->
+<div class="nav nav-pills nav-pills-secondary" role="group" aria-label="Show">
+    <button class="nav-link active" type="button" aria-pressed="true">All</button>
+    <button class="nav-link" type="button" aria-pressed="false">Unread</button>
+</div>
+```
+
+| Class | Element |
+|---|---|
+| `.nav.nav-pills` | The strip; primary look (outlined pills) |
+| `.nav-pills-secondary` | Modifier: secondary look (no outlines, light hover fill) |
+| `.nav-link` | A pill; `.active` for the current one; a leading `.ti` icon is spaced by the pill |
+| `.nav-scroller` | The `<nav>`: scrolls the strip horizontally instead of wrapping; later also the edge fades (`.has-start-fade`, `.has-end-fade`) |
+| `.badge-dot` | The dot on a pill (see [Badges & Status](badges.md)): `-waiting` red, `-unsaved` accent |
+
+- **File:** `_nav.scss` (pill variants on top of Bootstrap's nav), behind `$prev-nav`.
+- **Sass variables:** Bootstrap's `$nav-pills-border-radius` (`$border-radius-pill`),
+  `$nav-pills-link-active-color`, `$nav-pills-link-active-bg`, `$nav-link-padding-x`,
+  `$nav-link-padding-y`, `$nav-link-font-weight` (height and padding stay Bootstrap's); plus
+  `$nav-pills-gap`, `$nav-pills-border-color`, `$nav-pills-secondary-hover-bg` and
+  `$nav-scroller-fade-width` for what Bootstrap doesn't have.
+
 ## Implementation in core
+
+**In core (1.20):** link tabs are `humhub\widgets\menu\PillTabs`. The 15 core tab menus extend it
+(`admin\widgets\UserMenu`, `SpaceMenu`, `InformationMenu`, `SettingsMenu`, `AuthenticationMenu`,
+`user\widgets\AccountSettingsMenu`, `space\modules\manage\widgets\DefaultMenu`, …), the former
+`SubTabMenu`s with the secondary variant. The administration sections show their tabs in a
+[Page Header](page-header.md).
+
+**Open:**
 
 | Today | Becomes |
 |---|---|
-| `humhub\widgets\menu\TabMenu` / `SubTabMenu`: link tabs, about 16 subclasses (`admin\widgets\UserMenu`, `SpaceMenu`, `AuthenticationMenu`, `user\widgets\AccountSettingsMenu`, `space\modules\manage\widgets\DefaultMenu`, …) | Primary Pill Tabs (link tabs). The entry API stays the same; only the render template changes. |
-| `humhub\widgets\bootstrap\Tabs`, `FormTabs`, `SettingsTabs` | Panel tabs (secondary by default) |
+| `humhub\widgets\bootstrap\Tabs`, `FormTabs`, `SettingsTabs` (Bootstrap `nav-tabs`) | Panel tabs (secondary by default) on `.nav-pills` |
 | Counts as `Badge::danger()` concatenated into the label (`admin\widgets\UserMenu`, `AdminMenu`) | A dot indicator set on the menu entry. The number moves to the parent menu entry. |
+| The strip scrolls, without edge fades and centring | The `humhub.ui.tabs` JS module below |
+| Bootstrap's pill look (filled active pill, no outlines) | The primary variant's outlines, once the design is aligned globally (see [rule 3](bootstrap.md#3-values-come-from-sass-variables)) |
 
-**Proposal: API sketch**
+### Class structure
+
+Link tabs follow the menu pattern of `humhub\widgets\menu`: the base class of a menu decides how
+it is shown. Entries, sorting, visibility and the events modules use to add entries stay in
+`Menu`. This matches how Yii 2 builds its own `Nav` and `Tabs` widgets: items and rendering in
+one widget.
+
+```
+humhub\widgets\menu\Menu
+ ├─ DropdownMenu
+ ├─ LeftNavigation
+ ├─ PillTabs                    ← variant primary | secondary
+ │   └─ admin\widgets\UserMenu, SpaceMenu, InformationMenu, …
+ └─ PageHeaderActions           ← see Page Header
+```
+
+- **`PillTabs`** (`extends Menu`): `$variant` (`VARIANT_PRIMARY` default, `VARIANT_SECONDARY`),
+  `$renderSingleTab` (a strip with one tab is not rendered) and the dot of an entry.
+- **Panel tabs** are not a menu: they switch content on the page. They stay their own widget,
+  `humhub\widgets\bootstrap\Tabs` (as Yii 2 keeps `Nav` and `Tabs` apart), with the same markup.
 
 ```php
-// Link tabs: existing TabMenu subclasses keep working; the new template renders pills
-new MenuLink([
-    'label' => Yii::t('AdminModule.base', 'Approvals'),
-    'url' => ['/admin/approval'],
-    'indicator' => MenuLink::INDICATOR_WAITING,   // red dot
-    'indicatorLabel' => Yii::t('AdminModule.base', '{n} waiting', ['n' => 3]),
-]);
+// a link tab menu
+class UserMenu extends PillTabs
+{
+    public function init()
+    {
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.user', 'Approvals'),
+            'url' => ['/admin/approval'],
+            'indicator' => MenuLink::INDICATOR_WAITING,   // red dot
+            'indicatorLabel' => Yii::t('AdminModule.base', '{n} waiting', ['n' => 3]),
+        ]));
 
-// Panel tabs
+        parent::init();
+    }
+}
+
+// in a page header (see Page Header)
+echo PageHeader::title(…)->tabs(UserMenu::class);
+
+// panel tabs
 Tabs::widget([
     'variant' => Tabs::VARIANT_SECONDARY,
     'items' => [
@@ -109,8 +190,26 @@ Tabs::widget([
 ]);
 ```
 
-JS: one small `humhub.ui.tabs` module for overflow fades, centring and panel switching. It is
-bound by delegation, so tabs loaded later via pjax or into a modal need no init call.
+- **Vue:** a `PillTabs.vue` with the same markup, once a Vue page needs tabs (link tabs as data
+  from `Menu::getEntriesData()`, panel tabs through slots).
+- **JS:** one small `humhub.ui.tabs` module for overflow fades, centring and panel switching,
+  bound by delegation to `[data-ui-tabs]`, so tabs loaded later via pjax or into a modal need no
+  init call.
+
+### Migration
+
+- **`humhub\widgets\menu\TabMenu` and `SubTabMenu`** are new in 1.20 and not released. They are
+  replaced by `PillTabs` directly. No module uses them yet (module search: 0 hits).
+- **The old names** `humhub\modules\ui\menu\widgets\TabMenu` and `SubTabMenu`, which modules
+  still use and which stay available until 1.21, extend `PillTabs` (`SubTabMenu` with the
+  secondary variant). Module tab menus get the new look without changes.
+- **Events:** a handler on a concrete menu (`UserMenu::class`, `AdminTabMenu::class`) keeps
+  working, since only the parent class changes. A handler on one of the old names is redirected
+  to the class that replaced it (`ModuleManager`'s shim redirect), so one on the generic `TabMenu`
+  now runs for every `PillTabs`. Module search: only `cuzy-app/survey-advanced` registers on it,
+  and its handler checks for its own menu class first.
+- **`module-migrate-1.20.md`** lists `TabMenu` / `SubTabMenu` → `PillTabs` with the moved `ui`
+  classes, and the new markup.
 
 ## Open questions
 

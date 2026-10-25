@@ -54,6 +54,27 @@ the space's or profile's pages are [Pill Tabs](tabs.md).
 - Counters that open a list are buttons with the full sentence ("35 members").
 - Relationship buttons follow [Entity Card](entity-card.md#relationship-buttons).
 
+## Markup and styles
+
+The header is its own component; the parts inside it are Bootstrap: buttons, the ⋮ dropdown and
+the tabs (`.nav.nav-pills`). Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.container-header` | The card; `.container-header-compact` for all pages but the home |
+| `.container-header-cover` | Banner image or generated pattern |
+| `.container-header-image` | Space logo or profile picture |
+| `.container-header-counters` | The counter pill on the cover; counters with a list are buttons |
+| `.container-header-title`, `.container-header-subtitle` | Name and subtitle |
+| `.container-header-actions` | Relationship buttons, accent `.btn-icon-only`, ⋮ `.dropdown` |
+| `.container-header-nav` | Holds the primary `.nav.nav-pills` |
+
+- **File:** `_container-header.scss` (new; replaces the header parts of `_space.scss` and
+  `_profile.scss`), behind `$prev-container-header`.
+- **Sass variables:** `$container-header-cover-height`, `$container-header-cover-height-compact`,
+  `$container-header-image-size`, `$container-header-image-size-compact`; radius and shadow as
+  for the [Page Header](page-header.md#markup-and-styles).
+
 ## Implementation in core
 
 **Today:**

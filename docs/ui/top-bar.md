@@ -68,6 +68,24 @@ Drawers take the screen width minus a small margin.
 - The space chooser and the user menu follow the [Context Menu](context-menu.md) rules. The space
   filter is a labelled search field.
 
+## Markup and styles
+
+The top bar is Bootstrap's **`.navbar`** (`.navbar.topbar` today); drawers and menus are
+**`.dropdown-menu`**. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.navbar.topbar` | The bar(s) |
+| `.search-field` | The search ([Filter Bar](filter-bar.md#markup-and-styles)) |
+| `.btn.btn-ghost.btn-icon-only` + `.badge-dot` | Messages and notifications |
+| `.dropdown-menu.topbar-drawer` | A drawer: `.dropdown-header` with "Mark all as read", the list, a footer with "Show all" |
+| `.dropdown` > `.dropdown-menu` | User menu (rows with `.badge-count`) and space chooser |
+| `.navbar-nav` > `.nav-link` | Main navigation; `.active` filled dark; "More" is a `.dropdown` |
+
+- **File:** `_topbar.scss`, behind `$prev-topbar`.
+- **Sass variables:** Bootstrap's `$navbar-padding-y`, `$navbar-nav-link-padding-x`,
+  `$navbar-light-*`; plus `$topbar-height`, `$topbar-drawer-width`.
+
 ## Implementation in core
 
 **Today** (Community theme, `views/layouts/main.php`), two bars:

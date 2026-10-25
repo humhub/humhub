@@ -12,7 +12,7 @@ table in place without a page reload.
 Use it for any paginated, sortable or filterable list of records that share the same fields.
 Don't use it for:
 
-- **Card directories** (People, Spaces, Marketplace): use `CardDirectory`.
+- **Card directories** (People, Spaces, Marketplace): use `EntityBrowser`.
 - **Short lists without columns** (settings lists, a handful of entries): use plain list rows.
 - **File and folder browsing:** use the item browser kit (`TileGrid`, `PathBar`).
 
@@ -22,7 +22,7 @@ Don't use it for:
 
 | # | Part | Notes |
 |---|---|---|
-| 1 | **Header** | Title and up to three icon buttons, in the order defined in [Page Toolbar](page-toolbar.md#header-actions): columns chooser, the one primary action (accent, e.g. "Add user"), overflow ⋮. When the table is the page's main content (admin), the host card can show the title, and the table then has no header of its own. |
+| 1 | **Header** | Title and up to three icon buttons, in the order defined in [Page Header](page-header.md#actions): columns chooser, the one primary action (accent, e.g. "Add user"), overflow ⋮. When the table is the page's main content (admin), the host card can show the title, and the table then has no header of its own. |
 | 2 | **Filter bar** | The core [Filter Bar](filter-bar.md), with search first. |
 | 3 | **Column header** | Sticky. Sortable columns show ⇕, and the sorted column shows ↑ or ↓ in black. |
 | 4 | **Select-all checkbox** | Only for tables with bulk actions. Covers the current page and has three states: none, some, all. |
@@ -183,6 +183,40 @@ Reduced motion turns all of this into instant changes.
 - Live region for "2 selected" and for result counts after filtering.
 - Focus rings are drawn inside the row so they are never clipped.
 
+## Markup and styles
+
+The table sits in a content card: Bootstrap's **`.card`** with **`.table`** inside. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<section class="card content-card data-table" aria-labelledby="users-title">
+    <div class="card-header">
+        <h2 id="users-title" class="card-title">Users</h2>
+        <div class="card-header-actions">…</div>      <!-- columns · + · ⋮ (CardHeaderActions) -->
+    </div>
+    <div class="card-body">
+        <div class="filter-bar">…</div>
+        <table class="table table-hover">…</table>
+    </div>
+    <div class="card-footer data-table-footer">… <ul class="pagination">…</ul></div>
+</section>
+```
+
+| Class | Element |
+|---|---|
+| `.card`, `.card-header`, `.card-title`, `.card-body`, `.card-footer` | The [Content Card](card.md) |
+| `.table.table-hover` | The table; rows without dividers, hover fill |
+| `.table-active` | A selected row (Bootstrap's class, with an accent `--bs-table-active-bg`) |
+| `.data-table-main` | The main column (image, name, subtitle) |
+| `.data-table-sort` | A sortable column header button (`aria-sort` on the `<th>`) |
+| `.data-table-row-details` | The expandable row with folded columns |
+| `.data-table-bulk` | The selection menu ("2 ⋮") |
+| `.pagination` | Bootstrap's pager |
+
+- **File:** `_data-table.scss` (new), behind `$prev-data-table`.
+- **Sass variables:** Bootstrap's `$table-cell-padding-x/y`, `$table-hover-bg`,
+  `$table-active-bg` (accent subtle), `$table-border-width` (0 inside `.data-table`),
+  `$pagination-*`; plus `$data-table-main-image-size`.
+
 ## Implementation in core
 
 **Technology: Vue only.** A new core component `DataTable.vue` in `protected/humhub/vue/`. Pages
@@ -195,7 +229,7 @@ administration is the first consumer, starting with Users, Spaces and Modules.
 |---|---|
 | Search and filters | `FilterBar`, `FilterSelect`, `FilterPicker`, user/space/topic filter types |
 | Filter, sort and validation contract on the server | `humhub\components\listing\FilterableList` (`filters()`, `sorts()`), `FilterDefinition`, `ListContext` |
-| Paged data | the API list envelope `{results, total, page, pageSize, pages}` (as used by `CardDirectory` and `UserList`) |
+| Paged data | the API list envelope `{results, total, page, pageSize, pages}` (as used by `EntityBrowser` and `UserList`) |
 | Row and header menus | `DropdownMenu` (with `registerMenuEntry()`, so modules can add row actions) |
 | Bulk actions | `SelectionMenu` |
 | Confirm and form dialogs | `UiModal`, `HumHubForm` |

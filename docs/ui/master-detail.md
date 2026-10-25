@@ -29,7 +29,7 @@ and the chosen section's page in the main pane.
 - A card with the area's title ("Administration") and one entry per **section**: Overview,
   People, Spaces, Content, Communication, Security, Appearance, Integrations, Modules, System.
 - **Sub-pages are not nested in the menu.** They are [Pill Tabs](tabs.md) in the section's
-  [Page Toolbar](page-toolbar.md).
+  [Page Header](page-header.md).
 - The **active entry** is filled dark.
 - **Count badges** show what waits inside a section, as the **sum** of its sub-pages: People ⑦ =
   4 invitations + 3 approvals. The tabs inside show only dots
@@ -81,6 +81,25 @@ and the chosen section's page in the main pane.
 - After a pane change, focus moves to the arriving pane's title. After an in-place page swap,
   focus stays on the pressed element if it is still there.
 
+## Markup and styles
+
+The layout is its own component; the section menu is a Bootstrap **`.nav`**. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.pane-split` | The layout and the container for its container query |
+| `.pane-split-slim` | Modifier: slim side pane (280px) |
+| `.pane-split-end` | Modifier: side pane at the end |
+| `.pane-split-side`, `.pane-split-main` | The panes |
+| `.is-showing-main` | While folded: the main pane is shown instead of the side pane |
+| `.card` > `.nav.flex-column.nav-section` | The section menu: a vertical nav in a card |
+| `.nav-section .nav-link` | An entry with icon, label and `.badge-count`; `.active` filled dark |
+
+- **Files:** `_pane-split.scss` (new) behind `$prev-pane-split`; `.nav-section` in `_nav.scss`.
+- **Sass variables:** `$pane-split-side-width` (400px), `$pane-split-side-width-slim` (280px),
+  `$pane-split-fold-width` (816px), `$pane-split-gap`; `$nav-section-link-active-bg`,
+  `$nav-section-link-active-color`.
+
 ## Implementation in core
 
 **Today:**
@@ -110,11 +129,7 @@ and the chosen section's page in the main pane.
 PaneSplit::begin(['variant' => PaneSplit::VARIANT_SLIM, 'showMain' => !$isAdminHome]);
     echo AdminMenu::widget();                       // side pane
 PaneSplit::main();
-    echo PageToolbar::widget([
-        'title' => $sectionTitle,
-        'tabs' => $sectionTabMenu,
-        'back' => ['url' => ['/admin'], 'label' => Yii::t('AdminModule.base', 'Administration')],
-    ]);
+    echo PageHeader::title($sectionTitle)->tabs($sectionTabMenu)->backUrl(['/admin']);
     echo $content;                                  // main pane
 PaneSplit::end();
 ```

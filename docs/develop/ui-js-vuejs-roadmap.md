@@ -50,7 +50,7 @@ Web routes an endpoint duplicates, still in place because other consumers depend
 
 ## Directory pages
 
-- **Search page on the card directory kit** — the content search (`content/search`,
+- **Search page on the entity browser kit** — the content search (`content/search`,
   `SearchFilters`) is the last core user of `humhub\widgets\DirectoryFilters` and
   `humhub.cards.js` (`CardsAsset`); both can be deprecated once it moves.
 

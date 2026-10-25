@@ -61,6 +61,40 @@ is visible, and everything else is in the menu.
 - Destructive rows say so in text ("Delete"). Colour is not the only signal.
 - A count on a row is part of its accessible name ("Approvals, 3 waiting").
 
+## Markup and styles
+
+Bootstrap's **`.dropdown-menu`** with its own JS (Popper placement, keyboard handling). The row
+style is set through `$dropdown-*` variables. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<div class="dropdown">
+    <button class="btn btn-ghost btn-icon-only" type="button" data-bs-toggle="dropdown"
+            aria-haspopup="menu" aria-expanded="false" aria-label="More actions for Emma Williams">
+        <i class="ti ti-dots-vertical" aria-hidden="true"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="…"><i class="dropdown-item-icon ti ti-pencil" aria-hidden="true"></i>Edit</a></li>
+        <li><a class="dropdown-item" href="…"><i class="dropdown-item-icon ti ti-user-check" aria-hidden="true"></i>Approvals<span class="badge badge-count ms-auto">3</span></a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item dropdown-item-danger" type="button"><i class="dropdown-item-icon ti ti-trash" aria-hidden="true"></i>Delete</button></li>
+    </ul>
+</div>
+```
+
+| Class | Element |
+|---|---|
+| `.dropdown-menu`, `.dropdown-item`, `.dropdown-divider`, `.dropdown-header` | Bootstrap |
+| `.dropdown-item-icon` | The icon column; rows without an icon keep the column so labels align |
+| `.dropdown-item-danger` | A destructive row (red text and icon, red hover fill) |
+| `.badge-count` | Count on a row ([Badges & Status](badges.md)) |
+
+- The trigger has no `.dropdown-toggle`, so Bootstrap draws no caret. Its `.show` state is the
+  pressed look.
+- **File:** `_dropdown.scss`, behind `$prev-dropdown`.
+- **Sass variables:** Bootstrap's `$dropdown-padding-x/y`, `$dropdown-item-padding-x/y`,
+  `$dropdown-border-radius`, `$dropdown-box-shadow`, `$dropdown-link-hover-bg`,
+  `$dropdown-divider-margin-y`; plus `$dropdown-item-icon-width`.
+
 ## Implementation in core
 
 **Today:**

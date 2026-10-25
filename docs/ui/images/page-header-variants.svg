@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
-  <title id="t">Page toolbar: variants and the order of header actions</title>
+  <title id="t">Page header: variants and the order of header actions</title>
   <defs>
     <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
     <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -84,5 +84,5 @@
   <use href="#i-board" x="694" y="501" width="18" height="18" color="#000"/>
   <use href="#i-list" x="734" y="501" width="18" height="18" color="#555"/>
   <text x="410" y="592" class="note">content navigation left (‹ ›, path bar) · view switch at the</text>
-  <text x="410" y="610" class="note">far right of the content card, never in the page toolbar</text>
+  <text x="410" y="610" class="note">far right of the content card, never in the page header</text>
 </svg>

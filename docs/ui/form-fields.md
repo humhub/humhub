@@ -106,6 +106,34 @@ accessibility setting "show labels", the labels appear and placeholders become g
 - Text and placeholder meet contrast requirements. The field edge meets 3:1 against the
   background.
 
+## Markup and styles
+
+Fields are Bootstrap's form classes. **Most of the new look is set through Bootstrap's `$input-*`
+and `$form-*` variables**, so it reaches every existing form at once. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Part | Classes |
+|---|---|
+| Label, required mark | `.form-label`; the `*` comes from Yii's `.required` on the field wrapper |
+| Field | `.form-control`, `.form-select`, `textarea.form-control` |
+| Hint | `.form-text` |
+| Invalid | `.is-invalid` + `.invalid-feedback`; the warning icon is Bootstrap's validation icon (`$enable-validation-icons`) |
+| Field with an action | `.input-group` with a `.btn.btn-ghost.btn-icon-only` |
+| Paired fields | `.form-pair` (two fields side by side at 240px each or more, by container query) |
+| Error summary | `.alert.alert-danger` |
+
+| Design | Bootstrap variable |
+|---|---|
+| Height 38px | `$input-padding-y`, `$input-line-height` |
+| Radius 6px | `$input-border-radius` |
+| White when filled | `$input-bg` |
+| Grey when empty | `$input-empty-bg` (new), applied with `:placeholder-shown` |
+| Accent edge on hover and focus | `$input-hover-border-color` (new), `$input-focus-border-color` |
+| Soft glow on focus | `$input-focus-box-shadow` |
+| Red edge and icon | `$form-feedback-invalid-color`, `$form-feedback-icon-invalid` |
+
+- **File:** `_form.scss`, behind `$prev-form`. The field styles of the filter bar
+  (`--hh-field-*` in `_filter-bar.scss`) move here as `$input-*` values.
+
 ## Implementation in core
 
 **Today:**

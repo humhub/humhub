@@ -1,6 +1,6 @@
 # Filter Bar
 
-> Found in the design: Tasks, Files, People directory, Admin › People
+> Found in the design: Tasks, Files, People browser, Admin › People
 > · Core: `FilterBar.vue` (since 1.20)
 > · Technology: **Vue** (exists). A PHP variant is only needed if the [Data Table](data-table.md)
 > gets a server-rendered mode.
@@ -10,7 +10,7 @@ date filters. All fields have the same height and look, and they **apply immedia
 no submit button. A clear-all button resets everything. On narrow widths the bar folds behind a
 filter button.
 
-Use it in a [Page Toolbar](page-toolbar.md) or in the header of a [Data Table](data-table.md).
+Use it in a [Page Header](page-header.md) or in the header of a [Data Table](data-table.md).
 Don't use it for forms that are submitted; use normal form fields there.
 
 ![Filter bar anatomy](images/filter-bar-anatomy.svg)
@@ -24,8 +24,8 @@ Don't use it for forms that are submitted; use normal form fields there.
 3. **Set filters** turn white and get their own × to clear only that one.
 4. **Pickers** show the chosen records as chips.
 5. **Clear all** (×): appears after the last filter as soon as a filter is set, and slides in and
-   out. 46px at the end of the last row are always reserved for it, so it never wraps onto a line of
-   its own.
+   out. Room for it (a button and a gap) is always reserved at the end of the last row, so it never
+   wraps onto a line of its own.
 
 ## Filter types
 
@@ -84,11 +84,58 @@ the same way in a narrow content column as it does on a phone.
 - Pickers follow the WAI-ARIA combobox pattern.
 - Reduced motion: no height or slide animations.
 
+## Markup and styles
+
+The filter bar is its own component; the fields inside it are Bootstrap form controls with the
+look of [Form Fields](form-fields.md). Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<div class="filter-bar">
+    <form class="filter-bar-body" role="search">
+        <div class="filter-bar-item filter-bar-item-text" data-filter-bar-keep>
+            <div class="search-field">
+                <i class="search-field-icon ti ti-search" aria-hidden="true"></i>
+                <input class="search-field-input" type="text" placeholder="Search" aria-label="Search">
+            </div>
+        </div>
+        <div class="filter-bar-item">…</div>          <!-- select, picker, date -->
+        <button class="filter-bar-toggle btn btn-ghost btn-icon-only" type="button" aria-expanded="false" aria-label="Filters">…</button>
+        <button class="filter-bar-clear btn btn-ghost btn-icon-only" type="button" aria-label="Clear all filters">…</button>
+    </form>
+</div>
+```
+
+| Class | Element |
+|---|---|
+| `.filter-bar` | The component and the container for the container queries |
+| `.filter-bar-body` | The row of items |
+| `.filter-bar-item` | One cell, with the type as modifier (`.filter-bar-item-text`, `-select`, `-picker`, `-tags`, `-checkbox`); `.filter-bar-item-wide` takes a full row |
+| `.filter-bar-toggle` | The filter button (funnel) when folded, `.filter-bar-toggle-labeled` with a panel; `.is-active` while filters are set |
+| `.filter-bar-count` | The number of set panel filters on the toggle |
+| `.filter-bar-panel` | Extra filters behind a labelled toggle |
+| `.filter-bar-clear` | Clear all |
+| `.search-field`, `-icon`, `-input` | The search field with the magnifier inside |
+| `.select-menu`, `.picker` | Selects and pickers, see [Select & Pickers](select-pickers.md) |
+| `.filter-tags`, `-label`, `-tag` | Tag filters |
+| `.filter-check` | Checkbox filters |
+
+- The fields are Bootstrap's **`.form-control`** (search input, the select's button, the picker's
+  field), so they look like every other form field. The empty/filled fill from
+  [Form Fields](form-fields.md) arrives with that step on `.form-control`; the bar needs no field
+  styles of its own.
+- **File:** `_filter-bar.scss`, behind `$prev-filter-bar`. It holds the filter bar, the search
+  field, the select menu, the picker and the record filters.
+- **Sass variables:** `$filter-bar-gap`, `$filter-bar-padding` (both `$spacer * .5`),
+  `$filter-bar-item-width` (256px, the cell's flex basis), `$filter-bar-collapse-width` (570px),
+  `$filter-bar-icon-size` (`$font-size-lg`). The row height (`$filter-bar-row-height`) is derived
+  from `$input-*` and `$btn-*`, so the folded bar always fits one field or button.
+
 ## Implementation in core
 
 Core has this component for Vue pages: **`FilterBar.vue`** with `FilterSelect`, `FilterPicker`,
 `PickerFilterControl` and the module types `UserFilterControl`, `SpaceFilterControl` and
-`TopicFilterControl`. Styles live in `resources/scss/_page-toolbar.scss`, and the component is
+`TopicFilterControl`. Styles live in `resources/scss/_filter-bar.scss` (see
+[Markup and styles](#markup-and-styles)), and the component is
 documented in [Vue.js Components](../develop/ui-js-vuejs-components.md).
 
 Filter definitions come from the server through `humhub\components\listing\FilterDefinition` and

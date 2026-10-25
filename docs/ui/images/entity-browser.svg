@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="1040" viewBox="0 0 800 1040" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
-  <title id="t">Card directory: page toolbar, filter bar and card grid</title>
+  <title id="t">Entity browser: page header, filter bar and card grid</title>
   <defs>
 <symbol id="i-users" viewBox="0 0 16 16"><circle cx="5.5" cy="5" r="2.5" fill="currentColor"/><circle cx="11" cy="5.5" r="2" fill="currentColor"/><path d="M1 13 Q1 8.5 5.5 8.5 Q10 8.5 10 13 Z M10.5 13 Q10.5 9.5 13 9.5 Q15 9.5 15 13 Z" fill="currentColor"/></symbol>
 <symbol id="i-ucheck" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9 9 10 11" fill="currentColor"/><path d="M10 12 L12 14 L15.5 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
@@ -53,10 +53,10 @@
   <rect width="800" height="1040" fill="#ededed"/>
 <text x="20" y="28" class="sec">CARD DIRECTORY — DESKTOP</text>
 <rect x="20" y="40" width="760" height="120" rx="8" class="card"/>
-<text x="40" y="78" class="title">Spaces Directory</text>
+<text x="40" y="78" class="title">Spaces browser</text>
 <rect x="726" y="56" width="38" height="38" rx="6" fill="#037283"/><use href="#i-plus" x="735" y="65" width="20" height="20" color="#fff"/>
 <rect x="36" y="106" width="174" height="38" rx="6" class="empty"/><use href="#i-search" x="46" y="117" width="16" height="16" color="#757575"/><text x="70" y="130" class="ph">Search spaces</text><rect x="218" y="106" width="174" height="38" rx="6" class="empty"/><text x="228" y="130" class="ph">Status</text><use href="#i-down" x="368" y="117" width="16" height="16" color="#555"/><rect x="400" y="106" width="174" height="38" rx="6" class="empty"/><text x="410" y="130" class="ph">Sort</text><use href="#i-down" x="550" y="117" width="16" height="16" color="#555"/><rect x="582" y="106" width="182" height="38" rx="6" class="empty"/><text x="592" y="130" class="ph">Tags</text><use href="#i-down" x="740" y="117" width="16" height="16" color="#555"/>
-<rect x="20" y="172" width="760" height="40" rx="8" fill="#dfeef8"/><text x="40" y="197" class="txt" style="fill:#00598f">Optional notice between toolbar and grid, e.g. "3 updates available"</text>
+<rect x="20" y="172" width="760" height="40" rx="8" fill="#dfeef8"/><text x="40" y="197" class="txt" style="fill:#00598f">Optional notice between page header and grid, e.g. "3 updates available"</text>
 <rect x="20" y="224" width="178" height="150" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="28" y="232" width="162" height="56" rx="6" fill="#d9dde3"/><rect x="34" y="238" width="44" height="44" rx="5" fill="#8a94a6"/><rect x="34" y="300" width="100" height="12" rx="4" fill="#ccc"/><rect x="34" y="320" width="140" height="8" rx="4" fill="#eee"/><rect x="34" y="342" width="150" height="22" rx="5" fill="#d5d5d5"/>
 <rect x="214" y="224" width="178" height="150" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="222" y="232" width="162" height="56" rx="6" fill="#d9dde3"/><rect x="228" y="238" width="44" height="44" rx="5" fill="#8a94a6"/><rect x="228" y="300" width="100" height="12" rx="4" fill="#ccc"/><rect x="228" y="320" width="140" height="8" rx="4" fill="#eee"/><rect x="228" y="342" width="150" height="22" rx="5" fill="#d5d5d5"/>
 <rect x="408" y="224" width="178" height="150" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="416" y="232" width="162" height="56" rx="6" fill="#d9dde3"/><rect x="422" y="238" width="44" height="44" rx="5" fill="#8a94a6"/><rect x="422" y="300" width="100" height="12" rx="4" fill="#ccc"/><rect x="422" y="320" width="140" height="8" rx="4" fill="#eee"/><rect x="422" y="342" width="150" height="22" rx="5" fill="#d5d5d5"/>
@@ -67,7 +67,7 @@
 <rect x="602" y="390" width="178" height="150" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="610" y="398" width="162" height="56" rx="6" fill="#f0f0f0"/><rect x="616" y="404" width="44" height="44" rx="5" fill="#e5e5e5"/><rect x="616" y="466" width="100" height="12" rx="4" fill="#eee"/><rect x="616" y="486" width="140" height="8" rx="4" fill="#f2f2f2"/><rect x="616" y="508" width="150" height="22" rx="5" fill="#eee"/>
 <rect x="340" y="556" width="120" height="34" rx="6" fill="#d5d5d5"/><text x="400" y="578" class="txt" text-anchor="middle">Show more</text>
 <circle cx="14" cy="50" r="9" fill="#037283"/><text x="14" y="54" class="num" text-anchor="middle">1</text><circle cx="14" cy="125" r="9" fill="#037283"/><text x="14" y="129" class="num" text-anchor="middle">2</text><circle cx="14" cy="192" r="9" fill="#037283"/><text x="14" y="196" class="num" text-anchor="middle">3</text><circle cx="14" cy="234" r="9" fill="#037283"/><text x="14" y="238" class="num" text-anchor="middle">4</text><circle cx="14" cy="400" r="9" fill="#037283"/><text x="14" y="404" class="num" text-anchor="middle">5</text><circle cx="330" cy="562" r="9" fill="#037283"/><text x="330" y="566" class="num" text-anchor="middle">6</text>
-<text x="24" y="626" class="legend">1  page toolbar: title and one primary action</text>
+<text x="24" y="626" class="legend">1  page header: title and one primary action</text>
 <text x="24" y="646" class="legend">2  filter bar; tags on cards set its filters</text>
 <text x="24" y="666" class="legend">3  notice (optional)</text>
 <text x="414" y="626" class="legend">4  grid: cells ≥ 264px, 16px gap, cards pop in staggered</text>
@@ -75,7 +75,7 @@
 <text x="414" y="666" class="legend">6  next page loads on scroll; Show more for keyboard users</text>
 <text x="20" y="710" class="sec">390 PX — ONE COLUMN</text>
 <rect x="20" y="722" width="230" height="300" rx="18" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
-<rect x="28" y="732" width="214" height="84" rx="8" fill="#fff"/><text x="38" y="756" class="name" style="font-weight:600">Spaces Directory</text><rect x="200" y="738" width="32" height="32" rx="6" fill="#037283"/><use href="#i-plus" x="207" y="745" width="18" height="18" color="#fff"/><rect x="36" y="776" width="160" height="30" rx="6" class="empty"/><use href="#i-search" x="42" y="783" width="14" height="14" color="#757575"/><use href="#i-funnel" x="208" y="782" width="18" height="18" color="#333"/>
+<rect x="28" y="732" width="214" height="84" rx="8" fill="#fff"/><text x="38" y="756" class="name" style="font-weight:600">Spaces browser</text><rect x="200" y="738" width="32" height="32" rx="6" fill="#037283"/><use href="#i-plus" x="207" y="745" width="18" height="18" color="#fff"/><rect x="36" y="776" width="160" height="30" rx="6" class="empty"/><use href="#i-search" x="42" y="783" width="14" height="14" color="#757575"/><use href="#i-funnel" x="208" y="782" width="18" height="18" color="#333"/>
 <rect x="28" y="824" width="214" height="188" rx="8" fill="#fff"/><rect x="36" y="832" width="198" height="70" rx="6" fill="#d9dde3"/><rect x="42" y="838" width="58" height="58" rx="5" fill="#5aa832"/><rect x="38" y="914" width="140" height="12" rx="4" fill="#ccc"/><rect x="38" y="936" width="180" height="8" rx="4" fill="#eee"/><rect x="38" y="970" width="194" height="30" rx="6" fill="#d5d5d5"/>
 <text x="280" y="750" class="note">The grid fills its width with as many 264px columns as fit,</text>
 <text x="280" y="770" class="note">down to one column on phones. Filters fold behind the funnel.</text>

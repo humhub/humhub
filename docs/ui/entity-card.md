@@ -1,12 +1,11 @@
 # Entity Card
 
-> Found in the design: People directory (people card), Spaces directory (space card), Marketplace
+> Found in the design: People browser (people card), Spaces browser (space card), Marketplace
 > (module card), Welcome wizard (people suggestions)
-> · Core: `PeopleCard.vue`, `SpaceCard.vue` (shared `c-entity-card`), `ModuleCard.vue`
-> (`c-module-card`), since 1.20
+> · Core: `PeopleCard.vue`, `SpaceCard.vue`, `ModuleCard.vue` on `.card.entity-card`, since 1.20
 > · Technology: **Vue** (exists)
 
-The card for one person, space or module in a [Card Directory](card-directory.md). It always has
+The card for one person, space or module in a [Entity Browser](entity-browser.md). It always has
 the same five parts, so cards of different kinds look and line up the same. It shows enough to
 decide (picture, name, short text, tags) and offers the next step (join, follow, add friend,
 install) directly on the card.
@@ -78,15 +77,60 @@ install) directly on the card.
 - Placeholders while loading are `disabled` and `aria-hidden`.
 - Error messages on a module card use `role="alert"`.
 
+## Markup and styles
+
+The entity card is a Bootstrap **`.card`** with the modifier **`.entity-card`**, which sets the
+card's `--bs-card-*` variables (no border, `$border-radius-lg`, the directory's surface shadow,
+the full height of its grid cell). A plain `.card` keeps Bootstrap's look. Class names and SCSS
+follow [Styling with Bootstrap 5](bootstrap.md).
+
+```html
+<article class="card entity-card people-card">
+    <div class="entity-card-cover">
+        <a class="entity-card-avatar" href="…"><img src="…" alt=""></a>
+        <span class="entity-card-pill"><a class="entity-card-stat entity-card-stat-followers" href="…">…</a></span>
+    </div>
+    <div class="entity-card-header">
+        <a class="entity-card-title" href="…">Emma Williams</a>
+        <p class="entity-card-subtitle">Marketing Manager</p>
+    </div>
+    <div class="entity-card-body"><p class="entity-card-text">…</p></div>
+    <div class="entity-card-tags"><button class="entity-card-tag" type="button">Design</button></div>
+    <div class="entity-card-footer"><button class="entity-card-action btn …">Follow</button></div>
+</article>
+```
+
+| Class | Element |
+|---|---|
+| `.card.entity-card` | The card; body at least 3 lines high, footers aligned |
+| `.entity-card-cover`, `-avatar`, `-pill`, `-stat` | The cover with the image and the stat pill |
+| `.entity-card-cover-plain`, `.entity-card-image` | A cover without banner and an image that is no avatar (the module card) |
+| `.entity-card-header`, `-title`, `-subtitle` | Name and subtitle |
+| `.entity-card-body`, `-text` | Profile fields or description |
+| `.entity-card-tags`, `-tag` | The tag chips |
+| `.entity-card-footer`, `-action`, `-action-icon`, `-placeholder` | The actions (an icon-only one stays square), and the disabled placeholder while the viewer's state loads |
+| `.people-card…`, `.space-card…` | What only the people or the space card has (`.people-card-details`, `.space-card-archived`) |
+| `.module-card` | The module variant (`.card.entity-card.module-card`) on the entity card's parts, plus its own `.module-card-badges`, `-badge`, `-message`, `-mark`, `-secondary` |
+| `.entity-card-skeleton` | The skeleton: an entity card of Bootstrap `.placeholder` blocks (`.placeholder-glow`) in the card's own parts; the blocks are sized by `.entity-card-skeleton-image`, `-avatar`, `-title`, `-subtitle`, `-line`, `-line-short`, `-tag`, `-action`, `-icon` |
+
+- **File:** `_entity-card.scss`, behind `$prev-entity-card`, with `$entity-card-border-radius` and
+  `$entity-card-padding`; the module card's parts in `_marketplace.scss`, the people and space
+  card's own parts in `_people-browser.scss` and `_spaces-browser.scss`.
+- The `.card-body` / `.card-title` parts of Bootstrap are not used: the entity card's parts have a
+  geometry of their own (cover, a body of a fixed number of lines, a footer that fills the width).
+
 ## Implementation in core
 
-**Exists:**
+**In core (1.20):**
 
-- **People and Space cards** share the entity card styles (`resources/scss/_entity-card.scss`,
-  `.c-entity-card__cover/__pill/__header/__body/__tags/__footer`). They are `PeopleCard.vue` with
-  `PeopleCardSkeleton.vue` and `SpaceCard.vue` with `SpaceCardSkeleton.vue`.
-- **Module card:** `ModuleCard.vue` with its own styles (`.c-module-card`,
-  `resources/scss/_marketplace.scss`).
+- **People and Space cards** share the entity card: `PeopleCard.vue` with `PeopleCardSkeleton.vue`
+  and `SpaceCard.vue` with `SpaceCardSkeleton.vue`.
+- **Module card:** `ModuleCard.vue` is an entity card (`.card.entity-card.module-card`) on the
+  entity card's parts, with a plain cover; only its badges, the search marks and the update
+  states are its own. Like the other variants, its description is cut after three lines.
+- **Skeletons:** `CardSkeleton.vue` (the module card's, `EntityGrid`'s default),
+  `PeopleCardSkeleton.vue` and `SpaceCardSkeleton.vue`, and the placeholders the PHP widgets
+  render, are entity cards of Bootstrap placeholders.
 - **Extension slots**, so modules add their own lines and actions without touching the card:
   - `user.card-subtitle` and `user.card-actions` (core entries: `friendship` 100, `follow` 200)
   - `space.card-subtitle` and `space.card-actions` (core entries: `membership` 100, `follow` 200)
@@ -96,11 +140,10 @@ install) directly on the card.
 - **Relationship buttons:** `MembershipButton.vue`, `FollowButton.vue`, `FriendshipButton.vue`
   and `UserFollowButton.vue`. The same components work outside the cards.
 
-**Gaps compared to the design:**
+**Open:**
 
 | Gap | Proposal |
 |---|---|
-| Module card does not use the entity card | Move `ModuleCard` onto `c-entity-card` with a "no banner" cover variant and a `badges` area, so all directory cards share one geometry and one skeleton |
 | Cover fallback is plain grey | The design generates a colour mesh from the space or user colour when there is no banner. Optional; decide if wanted. |
 | Send message on people cards | Not in core. It belongs to the mail module through `user.card-actions`. |
 | Tags vs. topics | Cards show profile and space tags. The design's chips look like topic chips. Keep tags, and confirm that topics are not meant. |

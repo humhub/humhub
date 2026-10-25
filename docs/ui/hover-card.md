@@ -41,6 +41,23 @@ and get to the profile from there.
   follow later.
 - Reduced motion: no fade or slide.
 
+## Markup and styles
+
+The hover card is a Bootstrap **`.popover`**, opened by Bootstrap's Popover JS (Popper
+placement). Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.popover.hover-card` | The card (`customClass: 'hover-card'`) |
+| `.popover-body` | Holds the parts |
+| `.hover-card-cover`, `.hover-card-image`, `.hover-card-title`, `.hover-card-subtitle` | Cover, picture, name, subtitle |
+| `.hover-card-actions` | The relationship button |
+
+- **File:** `_hover-card.scss` (new), behind `$prev-hover-card`.
+- **Sass variables:** Bootstrap's `$popover-max-width`, `$popover-border-radius`,
+  `$popover-box-shadow`, `$popover-body-padding-*`; plus `$hover-card-width`,
+  `$hover-card-cover-height`, `$hover-card-image-size`.
+
 ## Implementation in core
 
 **Today:** not in core. The contrib module **`popover-vcard`** ("Virtual Card Popover") adds a

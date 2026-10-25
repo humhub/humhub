@@ -38,6 +38,23 @@ person or space, use the [Hover Card](hover-card.md).
 - Tooltips are never the only way to get information (they don't exist on touch).
 - Reduced motion: no fade or slide.
 
+## Markup and styles
+
+Bootstrap's **`.tooltip`** and Tooltip JS. The shared behaviour (delay, quick follow-up, keyboard
+focus only, no touch) is Bootstrap's options plus a small delegated binding, not a tooltip of its
+own. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+- **Markup:** `data-bs-toggle="tooltip"` with `data-bs-title` (or `title`), as today. Icon
+  buttons get it from `Button::iconOnly()` and `IconButton.vue`.
+- **Options:** `delay: { show: 500, hide: 0 }` (`$tooltip-delay` as a CSS variable read by the
+  JS), `trigger: 'hover focus'` with a `:focus-visible` check, no tooltip on touch.
+- **Truncated text:** `data-tooltip="overflow"` creates the tooltip only while the text is cut
+  off.
+- **File:** `_tooltip.scss`, behind `$prev-tooltip`.
+- **Sass variables:** Bootstrap's `$tooltip-font-size` (already set), `$tooltip-max-width`,
+  `$tooltip-bg`, `$tooltip-color`, `$tooltip-padding-x/y`, `$tooltip-border-radius`,
+  `$tooltip-opacity`.
+
 ## Implementation in core
 
 **Today:** Bootstrap 5 tooltips, initialised by `humhub.ui.additions` on `.tt` and

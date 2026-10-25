@@ -13,7 +13,7 @@ navigation** and the user's **spaces**, grouped into **space categories**. The t
 carries search, messages, notifications and the user menu.
 
 This page describes the new look for the Enterprise theme's sidebar. All other components (page
-toolbar, tabs, tables, forms, …) are the same in both themes.
+header, tabs, tables, forms, …) are the same in both themes.
 
 ![Sidebar](images/sidebar.svg)
 
@@ -24,7 +24,7 @@ toolbar, tabs, tables, forms, …) are the same in both themes.
 | — | **Logo** | Links to the dashboard |
 | 1 | **Main navigation** | Dashboard, People, Spaces, plus module entries (Tasks, Calendar, Files, …). The active entry is filled dark. |
 | 2 | **Filter** | Narrows the spaces below as you type, with matches highlighted |
-| 3 | **Space categories** | Collapsible groups (START, PRODUCTS, DEPARTMENTS). The label links to the [Card Directory](card-directory.md) of spaces filtered by that category. |
+| 3 | **Space categories** | Collapsible groups (START, PRODUCTS, DEPARTMENTS). The label links to the [Entity Browser](entity-browser.md) of spaces filtered by that category. |
 | 4 | **+ per category** | Creates a space in that category (only for users who may create spaces) |
 
 Each space row shows the space image and name. New content in a space may be marked with a dot
@@ -51,7 +51,7 @@ Space categories are an **Enterprise theme feature** ("space types"). They are n
 - A space belongs to **one** category. Categories are defined by administrators, ordered, and have
   a label.
 - Spaces without a category are listed in a default group.
-- Categories also appear as a **"Category" filter in the Spaces directory**, and as the subtitle on
+- Categories also appear as a **"Category" filter in the Spaces browser**, and as the subtitle on
   space cards (through the `space.card-subtitle` extension slot).
 
 ## Mobile
@@ -67,6 +67,20 @@ Space categories are an **Enterprise theme feature** ("space types"). They are n
 - Category toggles are buttons with `aria-expanded`. The label link and the "+" are separate
   controls with their own names ("Create space in Products").
 - The filter is a labelled search field. Its result count is announced.
+
+## Markup and styles
+
+The theme follows the same rules as core ([Styling with Bootstrap 5](bootstrap.md)). The
+navigation is a Bootstrap **`.nav.flex-column`**; the categories are Bootstrap **`.collapse`**
+groups.
+
+| Class | Element |
+|---|---|
+| `.sidebar` | The sidebar |
+| `.nav.flex-column` > `.nav-link` | Main navigation entries; `.active` filled dark |
+| `.search-field` | The filter |
+| `.sidebar-group` | A category: header with toggle and "+" (`.btn-ghost.btn-icon-only`), `.collapse` body |
+| `.nav-link` with image and `.badge-dot` | A space row |
 
 ## Implementation
 

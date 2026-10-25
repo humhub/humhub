@@ -51,6 +51,25 @@ submits references to them.
 - "Show all" uses `aria-expanded`. Hidden rows are removed from the tab order.
 - Dropping is never the only way: the buttons always work.
 
+## Markup and styles
+
+File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid` /
+`.invalid-feedback`. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `.dropzone` | The dashed area; `.is-dragover` while files are dragged over it, `.is-refused` for a type that is not allowed |
+| `.list-group` > `.list-group-item.file-row` | A file row |
+| `.file-row-icon`, `.file-row-name`, `.file-row-meta` | Icon or thumbnail, name (shortened in the middle), size |
+| `.file-row-progress` | The line running around the row while it uploads |
+| `.file-row.is-invalid` + `.invalid-feedback` | The error state and its reason |
+| `.image-setting` | Preview plus Upload / Delete |
+
+- The trailing action is a `.btn.btn-ghost.btn-icon-only` (`.btn-ghost-danger` for remove).
+- **File:** `_file.scss`, behind `$prev-file`.
+- **Sass variables:** `$dropzone-border-style` (dashed), `$dropzone-padding`, `$dropzone-bg`,
+  `$file-row-progress-width`; rows from Bootstrap's `$list-group-*`.
+
 ## Implementation in core
 
 **Today:**

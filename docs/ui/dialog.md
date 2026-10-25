@@ -83,6 +83,36 @@ margin.
   closes that popup first.
 - Reduced motion: no scale, slide or height animations.
 
+## Markup and styles
+
+Bootstrap's **`.modal`**. Radius and padding come from Bootstrap's `$modal-*` variables, and
+internal scrolling is Bootstrap's `.modal-dialog-scrollable`. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+**Sizes stay Bootstrap's for now.** The design's widths (400 / 600 / 800 / 1000) are an open
+question (see below); until it is decided, the existing classes keep their widths:
+
+| Design | Classes | Width today |
+|---|---|---|
+| Regular | `.modal-dialog.modal-sm` or default | 300px / 500px |
+| Large | `.modal-dialog.modal-lg` | 800px |
+| Extra large | `.modal-dialog.modal-xl` | 1140px |
+| Full | `.modal-dialog.modal-fullscreen` | whole window |
+
+| Class | Element |
+|---|---|
+| `.modal-header`, `.modal-title`, `.btn-close`, `.modal-body`, `.modal-footer` | Bootstrap |
+| `.modal-dialog-scrollable` | The body scrolls inside the dialog |
+| `.modal-body-fades` | Edge fades while the body has more content (`.has-start-fade`, `.has-end-fade`) |
+| `.modal-footer-fill` | Footer buttons share the full width (Cancel · Save) |
+| `.modal-steps` | The segmented progress of a multi-step dialog (Bootstrap's `.progress-stacked`) |
+| `.nav.nav-pills.nav-pills-secondary` | Tabs in the header |
+
+- **File:** `_modal.scss`, behind `$prev-modal`.
+- **Sass variables:** Bootstrap's `$modal-sm`, `$modal-md`, `$modal-lg`, `$modal-xl`,
+  `$modal-inner-padding`, `$modal-content-border-radius`, `$modal-content-box-shadow-*`,
+  `$modal-footer-margin-between`. Adopting the design's widths later only changes these
+  variables (plus one class for a medium size).
+
 ## Implementation in core
 
 **Today:**
@@ -100,7 +130,7 @@ margin.
 
 | Gap | Proposal |
 |---|---|
-| Sizes differ (Bootstrap 300 / 500 / 800 / 1140) | Map to the design's 400 / 600 / 800 / 1000 / full in both PHP and Vue (`size` regular, medium, large, xlarge, full) |
+| Sizes differ (Bootstrap 300 / 500 / 800 / 1140, design 400 / 600 / 800 / 1000) | Keep Bootstrap's sizes for now, see Open questions. Vue `UiModal` and PHP `Modal` use the same size names. |
 | Footer buttons are inline, not full width | Footer renders full-width buttons, with the confirm action on the right |
 | No body edge fades | Add scroll fades to the dialog body (shared with other scroll areas) |
 | No multi-step pattern | A `ModalSteps` helper (PHP view parts plus a JS module) and a `UiModalSteps` Vue component: progress bar, Back/Next, per-step validation |
@@ -111,5 +141,6 @@ margin.
 1. **Click outside:** close (design, `UiModal`) or not (PHP `Modal`, to protect form data)?
    Proposal: close only when the dialog has no unsaved input. Otherwise ask, or ignore the click.
 2. **Sizes:** adopt 400 / 600 / 800 / 1000, and migrate existing `modal-sm` / `modal-lg` usages?
+   This only changes `$modal-*` values; a medium size (600px) would need one extra class.
 3. **Bottom sheets:** the design keeps dialogs centred on phones. Do we want a bottom-sheet variant
    for pickers or menus later?

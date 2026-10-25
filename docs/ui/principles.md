@@ -9,9 +9,9 @@ contradict them. When a new component is designed or built, check it against thi
    a change, Reset while something differs from the default, "Update all" while updates exist,
    and a menu only lists allowed actions. Disabled is only for short moments (a request is
    running, state is still loading) and for values fixed by configuration, which then say why.
-2. **One main action per header.** A page toolbar or card header has at most **one** accent
+2. **One main action per header.** A page header or card header has at most **one** accent
    button (create, add, invite). The order is always secondary tools → the accent action → ⋮
-   overflow. See [Page Toolbar](page-toolbar.md#header-actions).
+   overflow. See [Page Header](page-header.md#actions).
 3. **Buttons have one job each.** Primary confirms, accent creates or marks the chosen option,
    secondary is neutral, and danger is the last step of something destructive. See
    [Buttons](buttons.md).
@@ -84,7 +84,10 @@ contradict them. When a new component is designed or built, check it against thi
 22. **Extend, don't override.** Modules add menu entries, card actions, filter types, columns and
     slots through the extension points (menus, `registerMenuEntry()`, `registerSlotComponent()`,
     list events). They never copy and change a core view.
-23. **Tokens, not values.** Colours, spacing, radii and shadows come from theme variables, so
-    themes and dark mode work without touching components.
+23. **Tokens, not values.** Colours, spacing, radii and shadows come from Sass variables and the
+    component's CSS variables, so themes and dark mode work without touching components.
 24. **Accessibility is part of the component.** Labels, roles, focus handling and hidden texts
     are specified on each page and are not optional.
+25. **Bootstrap first.** A component is built on the Bootstrap 5 component for the job, and named
+    the Bootstrap way (`.page-header`, `.page-header-title`, `.btn-ghost`). The prototype's CSS is
+    translated, never copied. See [Styling with Bootstrap 5](bootstrap.md).

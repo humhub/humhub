@@ -46,7 +46,7 @@ directly after it. It wraps with the title and never gets a line of its own.
 
 ### Chips as filter buttons
 
-In a [Data Table](data-table.md) or [Card Directory](card-directory.md), a category chip or tag can
+In a [Data Table](data-table.md) or [Entity Browser](entity-browser.md), a category chip or tag can
 be a button that filters the list by its value. It then gets a hover edge, a pointer cursor and the
 tooltip "Filter by Marketing". Elsewhere chips are not interactive.
 
@@ -87,6 +87,31 @@ Colour is never the only signal.
   motion shows them at once.
 - Contrast: toned chips use a strong text colour on a light fill of the same tone.
 
+## Markup and styles
+
+All families are Bootstrap's **`.badge`** with one modifier. Tones are generated in a loop over
+`$theme-colors` and its subtle maps, so `accent` and custom brand colours work. The look never
+depends on utilities such as `.text-bg-*`. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Family | Classes | Notes |
+|---|---|---|
+| Status chip, fact chip | `.badge.badge-<tone>` (`success`, `warning`, `danger`, `info`, `neutral`) | Subtle fill and text from `$theme-colors-bg-subtle` / `$theme-colors-text` |
+| Priority | `.badge.badge-<tone>` | low → info, mid → warning, high → danger |
+| Tag | `.badge.badge-tag` | Uppercase, neutral; clickable tags are `<a>` or `<button>` |
+| Count | `.badge.badge-count` (+ tone, default danger) | Pill (`rounded-pill` look built in), never rendered for 0 |
+| Dot | `.badge-dot.badge-dot-waiting` (red) / `.badge-dot-unsaved` (accent) | Empty element with visually hidden text inside |
+
+```html
+<span class="badge badge-success">Enabled</span>
+<span class="badge badge-count">7<span class="visually-hidden"> waiting</span></span>
+<span class="badge-dot badge-dot-waiting"><span class="visually-hidden">3 waiting</span></span>
+```
+
+- **File:** `_badge.scss`, behind `$prev-badge`.
+- **Sass variables:** Bootstrap's `$badge-font-size`, `$badge-font-weight`, `$badge-padding-x/y`,
+  `$badge-border-radius` (HumHub's 2px stays until the open question is decided); plus
+  `$badge-count-min-width`, `$badge-dot-size`.
+
 ## Implementation in core
 
 **Today:** `humhub\widgets\bootstrap\Badge` (`Badge::danger('…')->icon('…')`, Bootstrap 5
@@ -102,12 +127,14 @@ colours) is used for four different jobs with the same look:
 | `space\widgets\views\spaceChooserItem.php`: `Badge::light($tag)` | Tag | **Tag** |
 | `topic\widgets\TopicBadge` | Topic | Stays a topic chip (own spec for the stream) |
 
-Vue already has the card tags (`.c-entity-card__tag`), the filter count (`.c-filter-bar__count`)
-and the marketplace badges (`.c-module-card__badge--*`). Each has its own styles today.
+Vue already has the card tags (`.entity-card-tag`), the filter count (`.filter-bar-count`)
+and the marketplace badges (`.module-card-badge-*`). Each has its own styles today; they move
+onto `.badge-tag`, `.badge-count` and `.badge-<tone>`.
 
 **Proposal:**
 
-- One set of CSS classes for chips, counts and dots in the core SCSS, used by PHP and Vue alike.
+- One set of CSS classes for chips, counts and dots in the core SCSS, used by PHP and Vue alike
+  (see [Markup and styles](#markup-and-styles)).
 - **PHP:** keep `Badge` for backwards compatibility. Add purpose-named factories that render the
   new markup:
 
@@ -133,3 +160,5 @@ Dot::unsaved();
 3. **Priority "none":** should tasks without a priority show nothing, or a neutral chip?
 4. **Marketplace badges:** keep them as their own family, or turn types into neutral chips with a
    brand-coloured edge?
+5. **`$badge-border-radius`:** HumHub sets 2px today, while the design's chips and counts are
+   rounder. Change the global value (affects every `.badge`) or only the new modifiers?

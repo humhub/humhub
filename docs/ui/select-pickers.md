@@ -67,6 +67,36 @@ Both share the [Form Fields](form-fields.md) anatomy and states.
 - Each chip's × is a button labelled "Remove Thomas Bennett".
 - The accessible name is always the field's name, never "Select".
 
+## Markup and styles
+
+A native select is Bootstrap's **`.form-select`**. Where native isn't enough (filters, rich
+options), the custom listbox **`.select-menu`** is used; a picker is a `.select-menu` whose
+button is a field with chips and an input. Class names and SCSS follow
+[Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `select.form-select` | Native select |
+| `.select-menu` | Custom listbox (`FilterSelect`); `.is-open`, `.has-selection`, `.is-loading` |
+| `.form-control.select-menu-button`, `.select-menu-value`, `-chevron`, `-clear`, `-spinner` | The button with the chosen value, the chevron, the × that clears it, the spinner |
+| `.dropdown-menu.select-menu-drawer` | The listbox, open with `.show`, placed below the field with `data-bs-popper="static"` |
+| `.dropdown-item.select-menu-option` | An option: `.active` when chosen (`aria-selected`), `.is-focused` for the option the keyboard is on (`aria-activedescendant`, drawn like hover) |
+| `.dropdown-item-text.select-menu-feedback` | "No results", "Loading…" |
+| `.picker` | A searchable picker (`FilterPicker`, `PickerFilterControl`) on `.select-menu`; `.is-disabled`, `.is-multiple` |
+| `.form-control.picker-field`, `.picker-input` | The field holding chips and the combobox input |
+| `.picker-chip`, `-label`, `-remove` | A chosen value |
+| `.picker-option-label`, `-count` | An option with a count |
+| `.picker-filter`, `-icon`, `-avatar`, `-chip`, `-name`, `-detail` | A record filter (`PickerFilterControl`) |
+| `.user-filter`, `.space-filter`, `.topic-filter` | The module types; a type's own parts are `<block>-icon`, `-chip`, `-avatar`, `-option`, `-name`, `-detail` (e.g. `.topic-filter-dot`) |
+
+- **File:** `_filter-bar.scss`, behind `$prev-filter-bar`.
+- The custom select's button is a `.form-control`, not a `.form-select`: it is no native
+  `<select>`, and it brings its own chevron and clear ×. So filter fields and form fields share
+  one look.
+- **Sass variables:** `$select-menu-max-height` (the listbox's height before it scrolls),
+  `$picker-chip-bg`, `$picker-chip-color`, `$picker-chip-font-size`; the rest is `$input-*` and
+  `$dropdown-*`.
+
 ## Implementation in core
 
 **Today:**

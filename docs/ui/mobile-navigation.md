@@ -16,7 +16,7 @@ is the navigation row of the [Top Bar](top-bar.md), and in the Enterprise theme 
    widgets
 
 There is no hamburger drawer. Hierarchy *within* a page (administration sections, conversation
-list → conversation) is handled by a back arrow in the [Page Toolbar](page-toolbar.md), not by
+list → conversation) is handled by a back arrow in the [Page Header](page-header.md), not by
 this navigation.
 
 ![Bottom bar and menu sheet](images/mobile-navigation.svg)
@@ -94,6 +94,25 @@ On phones, that column is reached through the widget drawer:
 - Notch: a button labelled "Show widgets" / "Show content", with `aria-expanded`.
 - Swipe gestures are always optional. Every action also works with a tap or the keyboard.
 - Reduced motion: the sheet and the swap appear instantly.
+
+## Markup and styles
+
+The menu sheet and the widget drawer are Bootstrap's **`.offcanvas.offcanvas-bottom`**. Its JS
+brings backdrop, Escape, focus trap and focus return. The bottom bar is an own component.
+Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+
+| Class | Element |
+|---|---|
+| `nav.mobile-nav` | The bottom bar, fixed at the bottom below 768px (`media-breakpoint-down(md)`, the only viewport breakpoint besides the top bar) |
+| `.mobile-nav-item` | A destination (icon and label); `.active`; `.badge-dot` for unread |
+| `.offcanvas.offcanvas-bottom.mobile-nav-sheet` | The menu sheet: `.offcanvas-header` with the search, `.offcanvas-body` with the entries and spaces |
+| `.offcanvas.offcanvas-bottom.mobile-widgets` | The widget drawer |
+
+- Swipe-down to close is added on top of the offcanvas.
+- **File:** `_mobile-nav.scss` (new), behind `$prev-mobile-nav`.
+- **Sass variables:** `$mobile-nav-height`, `$mobile-nav-icon-size`; Bootstrap's
+  `$offcanvas-vertical-height`, `$offcanvas-box-shadow`; plus `$mobile-nav-sheet-border-radius`
+  (top corners; Bootstrap has no radius variable for the offcanvas).
 
 ## Implementation in core
 
