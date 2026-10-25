@@ -12,6 +12,8 @@ use humhub\components\listing\FilterableList;
 use humhub\components\table\ColumnDefinition;
 use humhub\components\table\DataTable;
 use humhub\components\table\RowAction;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\User;
 use humhub\modules\user\source\UserSourceCollection;
 use Yii;
@@ -22,7 +24,10 @@ use Yii;
  * and registration, and the actions the viewer may take on each — those the user list's action
  * column offered before (edit, enable / disable, delete, impersonate, view profile).
  *
- * Modules add, replace or remove columns and actions on {@see self::EVENT_INIT}.
+ * Modules add, replace or remove columns and actions on {@see self::EVENT_INIT}. The page and
+ * the endpoint create the table through the DI container (`Yii::createObject()`), so a module
+ * restricting the user administration (who sees it: {@see self::canAccess()}, whom they manage:
+ * {@see self::canManage()}, which users: {@see self::createList()}) may replace the class.
  *
  * @since 1.20
  */
@@ -68,7 +73,7 @@ class UserTable extends DataTable
                 RowAction::KIND_LINK,
                 static fn(User $user) => ['/admin/user/edit', 'id' => $user->id],
                 icon: 'pencil',
-                visible: static fn(User $user) => $user->status != User::STATUS_SOFT_DELETED && self::canManage($user),
+                visible: fn(User $user) => $user->status != User::STATUS_SOFT_DELETED && $this->canManage($user),
                 sortOrder: 100,
             ),
             new RowAction(
@@ -77,7 +82,7 @@ class UserTable extends DataTable
                 RowAction::KIND_REQUEST,
                 static fn(User $user) => ['/admin/api/user/enable', 'id' => $user->id],
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?'),
-                visible: static fn(User $user) => $user->status == User::STATUS_DEACTIVATED && self::canManage($user),
+                visible: fn(User $user) => $user->status == User::STATUS_DEACTIVATED && $this->canManage($user),
                 sortOrder: 200,
             ),
             new RowAction(
@@ -86,7 +91,7 @@ class UserTable extends DataTable
                 RowAction::KIND_REQUEST,
                 static fn(User $user) => ['/admin/api/user/disable', 'id' => $user->id],
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?'),
-                visible: static fn(User $user) => $user->status == User::STATUS_ENABLED && self::canManage($user),
+                visible: fn(User $user) => $user->status == User::STATUS_ENABLED && $this->canManage($user),
                 sortOrder: 200,
             ),
             new RowAction(
@@ -114,8 +119,8 @@ class UserTable extends DataTable
                 RowAction::KIND_LINK,
                 static fn(User $user) => ['/admin/user/delete', 'id' => $user->id],
                 destructive: true,
-                visible: static fn(User $user) => $user->status != User::STATUS_SOFT_DELETED
-                    && self::canManage($user) && !$user->isCurrentUser(),
+                visible: fn(User $user) => $user->status != User::STATUS_SOFT_DELETED
+                    && $this->canManage($user) && !$user->isCurrentUser(),
                 sortOrder: 100,
             ),
             new RowAction(
@@ -153,10 +158,19 @@ class UserTable extends DataTable
     }
 
     /**
-     * A user the viewer may manage: anyone, except a System Administrator for a viewer who is
-     * none (the web actions answer 403 then).
+     * Whether the viewer may see the table (the page and its endpoint): those who may manage users
+     * or groups, as the web user administration.
      */
-    public static function canManage(User $user): bool
+    public function canAccess(): bool
+    {
+        return Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+    }
+
+    /**
+     * A user the viewer may manage — edit, enable / disable, delete: anyone, except a System
+     * Administrator for a viewer who is none (the web actions answer 403 then).
+     */
+    public function canManage(User $user): bool
     {
         return Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
     }

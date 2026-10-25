@@ -12,8 +12,6 @@ use humhub\components\api\BaseController;
 use humhub\components\listing\ListContext;
 use humhub\components\listing\ListValidationException;
 use humhub\modules\admin\components\UserTable;
-use humhub\modules\admin\permissions\ManageGroups;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\filters\VerbFilter;
@@ -27,13 +25,16 @@ use yii\web\NotFoundHttpException;
  * `AdminUserList` (its filters and sorts as query parameters) in the paginated envelope;
  * `POST admin/user/<id>/enable|disable` change a user's status and answer its new row.
  *
- * For those who may manage users or groups, as the web user administration.
+ * For those who may see the table ({@see UserTable::canAccess()}): who may manage users or groups,
+ * as the web user administration.
  *
  * @since 1.20
  */
 class UserController extends BaseController
 {
     public const MAX_PAGE_SIZE = 100;
+
+    private ?UserTable $table = null;
 
     /**
      * @inheritdoc
@@ -66,16 +67,21 @@ class UserController extends BaseController
             return false;
         }
 
-        if (!Yii::$app->user->can([ManageUsers::class, ManageGroups::class])) {
+        if (!$this->getTable()->canAccess()) {
             throw new ForbiddenHttpException();
         }
 
         return true;
     }
 
+    private function getTable(): UserTable
+    {
+        return $this->table ??= Yii::createObject(UserTable::class);
+    }
+
     public function actionIndex()
     {
-        $table = new UserTable();
+        $table = $this->getTable();
 
         try {
             $users = $table->getList()->build($this->listParams(), ListContext::forCurrentUser())->query();
@@ -108,7 +114,7 @@ class UserController extends BaseController
             throw new NotFoundHttpException(Yii::t('AdminModule.user', 'User not found!'));
         }
 
-        $table = new UserTable();
+        $table = $this->getTable();
         $action = $table->getAction($actionId);
         if ($action === null || !$action->isVisibleFor($user)) {
             throw new ForbiddenHttpException();

@@ -31,7 +31,7 @@ class UserTable extends VueWidget
      */
     protected function getProps(): array
     {
-        return array_merge((new UserTableDefinition())->definitions(ListContext::forCurrentUser()), [
+        return array_merge(Yii::createObject(UserTableDefinition::class)->definitions(ListContext::forCurrentUser()), [
             'tableId' => 'admin-users',
             'label' => Yii::t('AdminModule.user', 'Users'),
             'url' => Url::to(['/admin/api/user/index']),

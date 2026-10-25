@@ -1687,7 +1687,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     export still does). A module restricting the users an administrator sees narrows
     `AdminUserList` on `FilterableList::EVENT_BUILD` instead of replacing `UserSearch`; the
     page's filter parameters are those of the list (`?q=…&status=…&group=…`), not
-    `UserSearch[freeText]`.
+    `UserSearch[freeText]`. The page and its endpoint create the table through the DI
+    container, so a module restricting the whole user administration (limited-user-admin)
+    replaces `UserTable` with a subclass: `canAccess()` (who sees the table and may call its
+    endpoint — the endpoint has no `AccessControl` rules to extend), `canManage($user)` (on whom
+    edit, enable / disable and delete are offered), `createList()` and `actions()`.
   - **Changed:** "Add new user" is the primary action of the card's header menu
     `humhub\modules\admin\widgets\AdminUserCardActions` (entry id `add-user`), the exports and
     "List pending registrations" are entries of the ⋮ menu `AdminUserCardMenu`. A module hiding
