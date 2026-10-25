@@ -172,58 +172,58 @@ class AcceptanceTester extends BaseTester
 
     public function seeSuccess($text = null)
     {
-        $this->waitForElementVisible('#status-bar .success', 30);
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-success', 30);
+        $this->waitForElementVisible('#status-bar .toast-close');
 
         if ($text) {
             $this->see($text, '#status-bar');
         }
 
-        $this->jsClick('.status-bar-close');
+        $this->jsClick('.toast-close');
         $this->waitForElementNotVisible('#status-bar');
     }
 
     public function seeWarning($text = null)
     {
-        $this->waitForElementVisible('#status-bar .warning', 20);
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-warning', 20);
+        $this->waitForElementVisible('#status-bar .toast-close');
 
         if ($text) {
             $this->see($text, '#status-bar');
         }
 
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-close');
         $this->wait(1);
-        $this->click('#status-bar .status-bar-close');
+        $this->click('#status-bar .toast-close');
         $this->waitForElementNotVisible('#status-bar');
     }
 
     public function seeError($text = null)
     {
-        $this->waitForElementVisible('#status-bar .error', 20);
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-danger', 20);
+        $this->waitForElementVisible('#status-bar .toast-close');
 
         if ($text) {
             $this->see($text, '#status-bar');
         }
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-close');
         $this->wait(1);
-        $this->click('#status-bar .status-bar-close');
+        $this->click('#status-bar .toast-close');
         $this->waitForElementNotVisible('#status-bar');
     }
 
     public function seeInfo($text = null)
     {
-        $this->waitForElementVisible('#status-bar .info', 20);
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-info', 20);
+        $this->waitForElementVisible('#status-bar .toast-close');
 
         if ($text) {
             $this->see($text, '#status-bar');
         }
 
-        $this->waitForElementVisible('#status-bar .status-bar-close');
+        $this->waitForElementVisible('#status-bar .toast-close');
         $this->wait(1);
-        $this->click('#status-bar .status-bar-close');
+        $this->click('#status-bar .toast-close');
         $this->waitForElementNotVisible('#status-bar');
     }
 

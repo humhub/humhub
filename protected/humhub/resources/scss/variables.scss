@@ -257,6 +257,21 @@ $progress-box-shadow: none !default;
 
 
 //
+// Toasts (the status messages, see _toast.scss)
+// --------------------------------------------------
+
+$toast-max-width: 320px !default;
+$toast-padding-x: .5rem !default;
+$toast-padding-y: .5rem !default;
+$toast-font-size: 1rem !default;
+$toast-color: var(--hh-text-color-main) !default;
+$toast-background-color: color-mix(in srgb, var(--hh-background-color-main) 64%, transparent) !default;
+$toast-border-color: color-mix(in srgb, var(--hh-text-color-soft) 64%, transparent) !default;
+$toast-border-radius: .5rem !default;
+$toast-box-shadow: none !default;
+
+
+//
 // Tables
 // --------------------------------------------------
 

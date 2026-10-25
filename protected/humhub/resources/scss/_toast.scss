@@ -1,0 +1,110 @@
+//
+// Toast: the status messages of StatusBar.vue (protected/humhub/vue/), on Bootstrap's `.toast` in a
+// `.toast-container`. The look comes from Bootstrap's `$toast-*` variables (variables.scss); here
+// are the tones, the parts of the body and the rise-in. See docs/ui/toast.md.
+// @since 1.20
+// --------------------------------------------------
+
+$toast-icon-size: $font-size-lg * 1.125 !default;
+$toast-details-max-height: 200px !default;
+$toast-transition-duration: 220ms !default; // keep in sync with TRANSITION_MS in StatusBar.vue
+$toast-tones: (
+    "info": var(--bs-accent),
+    "success": var(--bs-success),
+    "warning": var(--bs-warning),
+    "danger": var(--bs-danger),
+) !default;
+
+@if not $prev-toast {
+    // The container never catches pointer events itself, so the page beneath stays usable.
+    .toast-container.position-fixed {
+        margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+        padding: $spacer;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            padding: $spacer * .5;
+
+            > .toast {
+                width: 100%;
+                max-width: none;
+            }
+        }
+    }
+
+    // Hidden first: StatusBar.vue adds `is-visible` one frame after rendering the toast and keeps
+    // the element around for the duration of the exit.
+    .toast-container > .toast {
+        outline: 2px solid color-mix(in srgb, var(--hh-text-color-soft) 32%, transparent);
+        backdrop-filter: blur(4px);
+        pointer-events: auto;
+        opacity: 0;
+        transform: translateY($spacer) scale(.96);
+        @include transition(opacity $toast-transition-duration ease, transform $toast-transition-duration ease);
+    }
+
+    .toast-container.is-visible > .toast {
+        opacity: 1;
+        transform: none;
+    }
+
+    // Tone: border, outline and icon in the colour of the message level
+    @each $tone, $color in $toast-tones {
+        .toast-#{$tone} {
+            --bs-toast-border-color: color-mix(in srgb, #{$color} 64%, transparent);
+            outline-color: color-mix(in srgb, #{$color} 48%, transparent);
+
+            .toast-icon {
+                color: $color;
+            }
+        }
+    }
+
+    .toast-body {
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+    }
+
+    .toast-icon {
+        flex: 0 0 auto;
+        font-size: $toast-icon-size;
+    }
+
+    // The message breaks between words, not inside them: the theme hyphenates body text, which
+    // reads oddly in a two-line notice.
+    .toast-message {
+        flex: 1 1 0;
+        min-width: 0;
+        font-weight: $font-weight-medium;
+        overflow-wrap: anywhere;
+        hyphens: manual;
+
+        // With details, the text toggles them too
+        &.is-toggle {
+            cursor: pointer;
+        }
+    }
+
+    .toast-details-toggle,
+    .toast-close {
+        flex: 0 0 auto;
+    }
+
+    .toast-details {
+        max-height: $toast-details-max-height;
+        padding: 0 var(--bs-toast-padding-x) var(--bs-toast-padding-x);
+        overflow: auto;
+        font-size: $font-size-sm;
+
+        pre {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: inherit;
+            white-space: pre-wrap;
+        }
+    }
+}
