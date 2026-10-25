@@ -1676,8 +1676,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     user table is `humhub\modules\admin\components\UserTable` on the new list
     `humhub\modules\admin\components\AdminUserList` (filters `q`, `status`, `group`; sort
     keys `name`, `email`, `lastLogin`, `createdAt`, descending with `-`).
-  - **Deprecated:** `humhub\modules\admin\grid\UserActionColumn` — the list no longer renders
-    it, so its `EVENT_AFTER_INIT_ACTIONS` no longer fires. A module adding, changing or removing
+  - **Deprecated:** `humhub\modules\admin\grid\UserActionColumn` (to be removed in 1.21) — the
+    list no longer renders it, so its `EVENT_AFTER_INIT_ACTIONS` no longer fires. A module still
+    registering on it for older versions does so by class name and event name as strings
+    (`['humhub\modules\admin\grid\UserActionColumn', 'afterInitActions', …]`): the constant
+    `UserActionColumn::EVENT_AFTER_INIT_ACTIONS` loads the class and fails once it is gone. A module adding, changing or removing
     row actions (twofa, limited-user-admin) does so on `UserTable::EVENT_INIT`:
     `$event->sender->addAction(new RowAction(…))` / `removeAction('disable')`. A `RowAction`
     decides per row whether it is offered (`visible`) and has a kind: `link`, `modal`, `post` (a
