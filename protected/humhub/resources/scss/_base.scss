@@ -5,6 +5,25 @@
 @if not $prev-base {
     html {
         scroll-padding-top: var(--hh-fixed-header-height);
+        // Room for the scrollbar on short pages too, so the layout doesn't shift sideways
+        // between pages with and without one
+        scrollbar-gutter: stable;
+    }
+
+    // Bootstrap pads the page by the scrollbar's width while a modal hides it; the gutter
+    // already keeps that room
+    body.modal-open {
+        padding-right: 0 !important;
+
+        .fixed-top,
+        .fixed-bottom,
+        .is-fixed {
+            padding-right: 0 !important;
+        }
+
+        .sticky-top {
+            margin-right: 0 !important;
+        }
     }
 
     body {

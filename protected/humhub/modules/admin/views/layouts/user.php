@@ -1,9 +1,13 @@
 <?php
 
+use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\admin\widgets\UserMenu;
 use humhub\widgets\PageHeader;
 
 /* @var $content string */
+
+// Also on the pages modules add to this section
+AdminMenu::markAsActive('user');
 ?>
 <?php $this->beginContent('@admin/views/layouts/main.php') ?>
 <div class="d-flex flex-column gap-3">

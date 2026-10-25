@@ -14,7 +14,6 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
@@ -31,16 +30,16 @@ use yii\grid\ActionColumn;
 ?>
 
 
+<?php if ($contentContainer instanceof User) : ?>
+    <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
+<?php else : ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?= $title ?></div>
 
-    <?php if ($contentContainer instanceof Space) {
-        echo DefaultMenu::widget(['space' => $contentContainer]);
-    } elseif ($contentContainer instanceof User) {
-        echo AccountSettingsMenu::widget();
-    } ?>
+    <?= DefaultMenu::widget(['space' => $contentContainer]) ?>
 
     <div class="panel-body">
+<?php endif; ?>
         <?php if (Topic::isAllowedToCreate($contentContainer)) : ?>
             <?php $form = ActiveForm::begin(); ?>
             <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
@@ -100,5 +99,9 @@ use yii\grid\ActionColumn;
                     ],
                 ],
             ]]) ?>
+<?php if ($contentContainer instanceof User) : ?>
+    <?php $this->endContent() ?>
+<?php else : ?>
     </div>
 </div>
+<?php endif; ?>

@@ -1701,6 +1701,21 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the button removes the entry on the menu's `EVENT_INIT` (the `Button::EVENT_BEFORE_RUN`
     check on its URL no longer applies). The export does not follow the table's filters.
 
+- **Every core page that is not a space or profile page starts with a page header**
+  (`humhub\widgets\PageHeader`, see `docs/ui/page-header.md`): Administration › Modules, the
+  account section, the notification overview, search and the licence page. The former
+  `.panel-heading` titles of these pages are gone.
+  - The account layouts `@user/views/account/_userProfileLayout.php`, `_userSettingsLayout.php`
+    and `@user/views/security/_layout.php` render the page header (title = the account menu
+    entry, the section's tabs in its body) and a panel with a `.panel-body` around `$content`.
+    Module views rendered into them need no change.
+  - A module page rendered directly into the account layout (`@user/views/account/_layout.php`)
+    still works with its own `.panel-heading`. To match core, it renders
+    `PageHeader::title(…)` itself and sets `$this->params['accountPanel'] = false` to drop the
+    surrounding panel.
+  - New: `admin\widgets\ModulesHeaderActions` (menu id `admin-modules-header-actions`). The
+    "Add more modules" button of the modules page is its primary entry (`add-modules`).
+
 - **Context menus have one look everywhere** (see `docs/ui/context-menu.md`). `.dropdown-menu`
   no longer changes with where it sits: the accent bar on hover (in panels, modals and tabs) and
   the dark menu of `.nav-pills` / `.nav-tabs` / `.account` are gone, as is the unused

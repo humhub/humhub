@@ -194,6 +194,17 @@ $page-header-title-color: var(--hh-text-color-highlight) !default;
   People, Spaces and Marketplace islands render `PageHeader`, and so do the administration's
   section layouts (Users, Spaces, Settings, Information), with their [Pill Tabs](tabs.md) in the
   body and the section's content in a panel below.
+- **Every core page that is not a space or profile page has one:** Administration › Modules
+  (`ModulesHeaderActions`, "Add more modules" as primary), the account section (Profile, General
+  incl. Topics, Security & Privacy, Modules, Notifications, E-Mail Summaries, Friends; the
+  title is the entry of the account menu, the section's tabs sit in the body), the notification
+  overview (`NotificationOverview.vue`), search and the licence page. Not converted: the
+  dashboard (special case, see above), login/registration/installer boxes and error pages.
+- **Account section:** the layouts `@user/views/account/_userProfileLayout.php`,
+  `_userSettingsLayout.php` and `@user/views/security/_layout.php` render the page header and a
+  panel around `$content`; a module view rendered into one of them needs no change. A page
+  rendered directly into the account layout brings its own `PageHeader` and sets
+  `$this->params['accountPanel'] = false`.
 - **Action menus:** `PeopleHeaderActions` and `SpacesHeaderActions` (formerly
   `PeopleHeadingButtons` and `SpaceDirectoryHeadingButtons`).
 - **Styles:** `_page-header.scss`; the icon button and ghost are in `_button.scss`, the filter bar

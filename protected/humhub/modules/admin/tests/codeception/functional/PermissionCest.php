@@ -225,7 +225,7 @@ class PermissionCest
 
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
-        $I->see('Module administration');
+        $I->seeElement('.page-header');
         $I->see('You do not have the permission to manage modules.');
 
         $I->amOnRoute('/admin/setting');
@@ -271,7 +271,7 @@ class PermissionCest
 
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
-        $I->see('Module administration');
+        $I->seeElement('.page-header');
         $I->see('You do not have the permission to configure modules.');
 
         $I->amOnRoute('/marketplace/browse');

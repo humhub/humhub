@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh #8637: UI styleguide; page header, pill tabs, content card, filter bar, entity browser, item browser, toasts, the data table (Administration › Users) and unified context menus on Bootstrap 5
+- Enh #8637: UI styleguide on Bootstrap 5; page header (on every core page), pill tabs, content card, filter bar, entity browser, item browser, toasts, data table (Administration › Users) and unified context menus
 - Enh #8629: Clear message when the API rate limit is reached; admin documentation for API access
 - Enh #8628: Rate limiting for the API by scope; personal access tokens per user are capped
 - Enh #8626: OAuth 2.0 server and personal access tokens for the HumHub app and integrations; the "Sessions" account tab becomes "Devices & Access"

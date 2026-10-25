@@ -45,8 +45,9 @@ class UserMenu extends PillTabs
             'label' => Yii::t('AdminModule.user', 'Settings'),
             'url' => ['/admin/authentication'],
             'sortOrder' => 200,
+            // Also on the pages modules add to the settings tabs (LDAP, Apps & API Access, …)
             'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions'])
-                || ControllerHelper::isActivePath('ldap', 'admin'),
+                || (new AuthenticationMenu())->getActiveEntry() !== null,
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 

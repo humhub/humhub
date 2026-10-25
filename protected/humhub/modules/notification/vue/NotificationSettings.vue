@@ -2,7 +2,7 @@
     <HumHubForm ref="form" class="notification-settings" model-name="NotificationSettings" :class="`notification-settings-${scope}`">
         <section v-if="showProfiles" class="card content-card notification-settings-intro">
             <div class="card-header">
-                <h2 class="card-title notification-settings-title">{{ labels.title }}</h2>
+                <h2 class="card-title notification-settings-title">{{ labels.profile }}</h2>
                 <span
                     class="notification-settings-status"
                     :class="`is-${saveState}`"
@@ -275,7 +275,6 @@ export default {
     computed: {
         labels() {
             return {
-                title: i18n.t('NotificationModule.base', 'Notifications'),
                 intro: i18n.t('NotificationModule.base', 'Pick a profile for where your notifications reach you. Any change below turns it into “Custom”.'),
                 profile: i18n.t('NotificationModule.base', 'Profile'),
                 categories: i18n.t('NotificationModule.base', 'Categories'),

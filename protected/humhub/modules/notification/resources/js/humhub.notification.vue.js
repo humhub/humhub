@@ -479,8 +479,8 @@
   const _hoisted_8$3 = ["innerHTML"];
   const _hoisted_9$3 = ["href", "aria-label", "title"];
   const _hoisted_10$3 = ["innerHTML"];
-  const _hoisted_11$2 = { class: "dropdown-footer" };
-  const _hoisted_12$2 = ["href"];
+  const _hoisted_11$1 = { class: "dropdown-footer" };
+  const _hoisted_12$1 = ["href"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_NotificationList = vue.resolveComponent("NotificationList");
     return vue.openBlock(), vue.createElementBlock(
@@ -556,11 +556,11 @@
             }, null, 8, ["initial", "page-size", "onLoaded"])
           ]),
           vue.createElementVNode("li", null, [
-            vue.createElementVNode("div", _hoisted_11$2, [
+            vue.createElementVNode("div", _hoisted_11$1, [
               vue.createElementVNode("a", {
                 class: "btn btn-light col-lg-12",
                 href: $props.overviewUrl
-              }, vue.toDisplayString($options.showAllLabel), 9, _hoisted_12$2)
+              }, vue.toDisplayString($options.showAllLabel), 9, _hoisted_12$1)
             ])
           ])
         ])
@@ -719,7 +719,7 @@
       initial: { type: Object, default: null },
       // [{id, title}] of every notification category the caller can filter by (localized).
       filters: { type: Array, default: () => [] },
-      // Server-rendered icon markup: {check, cog, all, unseen, seen}.
+      // Server-rendered icon markup of the filter: {all, unseen, seen}.
       icons: { type: Object, default: () => ({}) },
       settingsUrl: { type: String, required: true },
       pageSize: { type: Number, default: 20 }
@@ -738,8 +738,12 @@
       requestCategories() {
         return this.selectedCategories.length === this.filters.length ? null : this.selectedCategories;
       },
-      headingLabel() {
-        return vue$1.i18n.t("NotificationModule.base", "<strong>Notification</strong> Overview");
+      title() {
+        return vue$1.i18n.t("UserModule.base", "Notifications");
+      },
+      // The page header's tool: the user's notification settings
+      actions() {
+        return [{ id: "settings", label: this.settingsLabel, icon: "settings", url: this.settingsUrl }];
       },
       filterLabel() {
         return vue$1.i18n.t("NotificationModule.base", "Filter");
@@ -791,103 +795,101 @@
       }
     }
   };
-  const _hoisted_1$1 = { class: "row" };
-  const _hoisted_2$1 = { class: "col-lg-9 layout-content-container" };
-  const _hoisted_3$1 = { class: "panel panel-default" };
-  const _hoisted_4$1 = { class: "panel-heading" };
-  const _hoisted_5$1 = ["innerHTML"];
-  const _hoisted_6$1 = { class: "float-end" };
-  const _hoisted_7$1 = ["aria-label", "title"];
-  const _hoisted_8$1 = ["innerHTML"];
-  const _hoisted_9$1 = ["href", "aria-label", "title"];
-  const _hoisted_10$1 = ["innerHTML"];
-  const _hoisted_11$1 = { class: "panel-body" };
-  const _hoisted_12$1 = ["aria-label"];
-  const _hoisted_13$1 = { class: "panel panel-default" };
-  const _hoisted_14$1 = { class: "panel-heading" };
-  const _hoisted_15$1 = { class: "panel-body" };
+  const _hoisted_1$1 = { class: "d-flex flex-column gap-3" };
+  const _hoisted_2$1 = ["aria-label", "title"];
+  const _hoisted_3$1 = { class: "row" };
+  const _hoisted_4$1 = { class: "col-lg-9 layout-content-container" };
+  const _hoisted_5$1 = { class: "panel panel-default" };
+  const _hoisted_6$1 = { class: "panel-body" };
+  const _hoisted_7$1 = ["aria-label"];
+  const _hoisted_8$1 = { class: "panel panel-default" };
+  const _hoisted_9$1 = { class: "panel-heading" };
+  const _hoisted_10$1 = { class: "panel-body" };
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_PageHeader = vue.resolveComponent("PageHeader");
     const _component_NotificationList = vue.resolveComponent("NotificationList");
     const _component_NotificationFilter = vue.resolveComponent("NotificationFilter");
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
-      vue.createElementVNode("div", _hoisted_2$1, [
-        vue.createElementVNode("div", _hoisted_3$1, [
-          vue.createElementVNode("div", _hoisted_4$1, [
-            vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- translated heading with markup, as server-side "),
-            vue.createElementVNode("span", { innerHTML: $options.headingLabel }, null, 8, _hoisted_5$1),
-            vue.createElementVNode("div", _hoisted_6$1, [
-              $data.unseenCount > 0 ? (vue.openBlock(), vue.createElementBlock("button", {
-                key: 0,
-                type: "button",
-                id: "notification_overview_markseen",
-                class: "btn-light btn btn-icon-only btn-sm",
-                "aria-label": $options.markSeenLabel,
-                title: $options.markSeenLabel,
-                onClick: _cache[0] || (_cache[0] = (...args) => $options.markAsSeen && $options.markAsSeen(...args))
-              }, [
-                vue.createElementVNode("span", {
-                  innerHTML: $props.icons.check
-                }, null, 8, _hoisted_8$1)
-              ], 8, _hoisted_7$1)) : vue.createCommentVNode("v-if", true),
-              vue.createElementVNode("a", {
-                class: "btn-light btn btn-icon-only btn-sm",
-                href: $props.settingsUrl,
-                "aria-label": $options.settingsLabel,
-                title: $options.settingsLabel
-              }, [
-                vue.createElementVNode("span", {
-                  innerHTML: $props.icons.cog
-                }, null, 8, _hoisted_10$1)
-              ], 8, _hoisted_9$1)
-            ])
-          ]),
-          vue.createElementVNode("div", _hoisted_11$1, [
-            vue.createVNode(_component_NotificationList, {
-              ref: "list",
-              id: "notification_overview_list",
-              initial: $props.initial,
-              "page-size": $props.pageSize,
-              categories: $options.requestCategories,
-              seen: $data.seen || null,
-              "show-more-button": true,
-              "empty-text": $options.emptyLabel,
-              onLoaded: $options.onLoaded
-            }, null, 8, ["initial", "page-size", "categories", "seen", "empty-text", "onLoaded"])
-          ])
-        ])
-      ]),
-      vue.createElementVNode("aside", {
-        class: "col-lg-3 layout-sidebar-container",
-        "aria-label": $options.sidebarLabel
-      }, [
-        vue.createElementVNode("div", _hoisted_13$1, [
-          vue.createElementVNode("div", _hoisted_14$1, [
+      vue.createVNode(_component_PageHeader, {
+        title: $options.title,
+        actions: $options.actions
+      }, {
+        actions: vue.withCtx(() => [
+          $data.unseenCount > 0 ? (vue.openBlock(), vue.createElementBlock("button", {
+            key: 0,
+            type: "button",
+            id: "notification_overview_markseen",
+            class: "btn btn-secondary btn-icon-only",
+            "aria-label": $options.markSeenLabel,
+            title: $options.markSeenLabel,
+            onClick: _cache[0] || (_cache[0] = (...args) => $options.markAsSeen && $options.markAsSeen(...args))
+          }, [..._cache[1] || (_cache[1] = [
             vue.createElementVNode(
-              "strong",
-              null,
-              vue.toDisplayString($options.filterLabel),
-              1
-              /* TEXT */
-            ),
-            _cache[1] || (_cache[1] = vue.createElementVNode(
-              "hr",
-              { style: { "margin-bottom": "0" } },
+              "i",
+              {
+                class: "ti ti-check",
+                "aria-hidden": "true"
+              },
               null,
               -1
               /* CACHED */
-            ))
-          ]),
-          vue.createElementVNode("div", _hoisted_15$1, [
-            vue.createVNode(_component_NotificationFilter, {
-              filters: $props.filters,
-              selected: $data.selectedCategories,
-              seen: $data.seen,
-              icons: $props.icons,
-              onChange: $options.onFilterChange
-            }, null, 8, ["filters", "selected", "seen", "icons", "onChange"])
+            )
+          ])], 8, _hoisted_2$1)) : vue.createCommentVNode("v-if", true)
+        ]),
+        _: 1
+        /* STABLE */
+      }, 8, ["title", "actions"]),
+      vue.createElementVNode("div", _hoisted_3$1, [
+        vue.createElementVNode("div", _hoisted_4$1, [
+          vue.createElementVNode("div", _hoisted_5$1, [
+            vue.createElementVNode("div", _hoisted_6$1, [
+              vue.createVNode(_component_NotificationList, {
+                ref: "list",
+                id: "notification_overview_list",
+                initial: $props.initial,
+                "page-size": $props.pageSize,
+                categories: $options.requestCategories,
+                seen: $data.seen || null,
+                "show-more-button": true,
+                "empty-text": $options.emptyLabel,
+                onLoaded: $options.onLoaded
+              }, null, 8, ["initial", "page-size", "categories", "seen", "empty-text", "onLoaded"])
+            ])
           ])
-        ])
-      ], 8, _hoisted_12$1)
+        ]),
+        vue.createElementVNode("aside", {
+          class: "col-lg-3 layout-sidebar-container",
+          "aria-label": $options.sidebarLabel
+        }, [
+          vue.createElementVNode("div", _hoisted_8$1, [
+            vue.createElementVNode("div", _hoisted_9$1, [
+              vue.createElementVNode(
+                "strong",
+                null,
+                vue.toDisplayString($options.filterLabel),
+                1
+                /* TEXT */
+              ),
+              _cache[2] || (_cache[2] = vue.createElementVNode(
+                "hr",
+                { style: { "margin-bottom": "0" } },
+                null,
+                -1
+                /* CACHED */
+              ))
+            ]),
+            vue.createElementVNode("div", _hoisted_10$1, [
+              vue.createVNode(_component_NotificationFilter, {
+                filters: $props.filters,
+                selected: $data.selectedCategories,
+                seen: $data.seen,
+                icons: $props.icons,
+                onChange: $options.onFilterChange
+              }, null, 8, ["filters", "selected", "seen", "icons", "onChange"])
+            ])
+          ])
+        ], 8, _hoisted_7$1)
+      ])
     ]);
   }
   const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
@@ -940,7 +942,6 @@
     computed: {
       labels() {
         return {
-          title: vue$1.i18n.t("NotificationModule.base", "Notifications"),
           intro: vue$1.i18n.t("NotificationModule.base", "Pick a profile for where your notifications reach you. Any change below turns it into “Custom”."),
           profile: vue$1.i18n.t("NotificationModule.base", "Profile"),
           categories: vue$1.i18n.t("NotificationModule.base", "Categories"),
@@ -1354,7 +1355,7 @@
             vue.createElementVNode(
               "h2",
               _hoisted_3,
-              vue.toDisplayString($options.labels.title),
+              vue.toDisplayString($options.labels.profile),
               1
               /* TEXT */
             ),
