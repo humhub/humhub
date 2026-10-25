@@ -1,7 +1,7 @@
 <template>
     <UiModal
         :show="true"
-        dialog-class="c-mp-dialog c-install-dialog"
+        dialog-class="marketplace-dialog install-dialog"
         :backdrop-close="!locked"
         :keyboard="!locked"
         @update:show="onShow"
@@ -11,21 +11,21 @@
             <button type="button" class="btn-close" :aria-label="labels.close" :title="labels.close" :disabled="locked" @click="close"></button>
         </template>
 
-        <div ref="root" class="c-install-dialog__content" :data-step="step">
-            <section class="c-install-dialog__step">
-                <p v-if="step === 'buy'" class="c-mp-dialog__text"><RichText :parts="texts.buy" /></p>
+        <div ref="root" class="install-dialog-content" :data-step="step">
+            <section class="install-dialog-step">
+                <p v-if="step === 'buy'" class="marketplace-dialog-text"><RichText :parts="texts.buy" /></p>
 
                 <template v-else-if="step === 'license'">
-                    <p class="c-mp-dialog__text"><RichText :parts="texts.license" /></p>
-                    <div class="c-install-dialog__field">
-                        <label :for="inputId" class="c-mp-dialog__label">{{ labels.licenceKey }}</label>
-                        <div class="c-licence-field" :class="{ 'is-checking': checking }">
+                    <p class="marketplace-dialog-text"><RichText :parts="texts.license" /></p>
+                    <div class="install-dialog-field">
+                        <label :for="inputId" class="form-label">{{ labels.licenceKey }}</label>
+                        <div class="input-group">
                             <input
                                 :id="inputId"
                                 ref="input"
                                 v-model="licenceKey"
                                 type="text"
-                                class="form-control c-licence-field__input"
+                                class="form-control licence-key-input"
                                 :class="{ 'is-invalid': keyError }"
                                 :placeholder="labels.placeholder"
                                 autocomplete="off"
@@ -37,52 +37,52 @@
                                 @input="keyError = null"
                                 @keydown.enter.prevent="register"
                             >
-                            <i v-if="checking" class="ti ti-loader c-licence-field__icon c-mp-spin" aria-hidden="true"></i>
+                            <span v-if="checking" class="input-group-text"><i class="ti ti-loader marketplace-spin" aria-hidden="true"></i></span>
                         </div>
                         <div v-if="keyError" :id="`${inputId}-error`" class="invalid-feedback d-block" role="alert">{{ keyError }}</div>
                     </div>
                 </template>
 
-                <div v-else-if="step === 'confirm'" class="c-install-dialog__module">
-                    <img :src="module.imageUrl" class="c-install-dialog__image" width="48" height="48" alt="">
-                    <div class="c-install-dialog__module-text">
-                        <b class="c-install-dialog__name">{{ module.name }}</b>
-                        <span v-if="version" class="c-install-dialog__version">{{ version }}</span>
+                <div v-else-if="step === 'confirm'" class="install-dialog-module">
+                    <img :src="module.imageUrl" class="install-dialog-image" width="48" height="48" alt="">
+                    <div class="install-dialog-module-text">
+                        <b class="install-dialog-name">{{ module.name }}</b>
+                        <span v-if="version" class="install-dialog-version">{{ version }}</span>
                     </div>
                 </div>
 
                 <template v-else-if="step === 'installing'">
-                    <p class="c-mp-dialog__text"><RichText :parts="texts.installing" /></p>
+                    <p class="marketplace-dialog-text"><RichText :parts="texts.installing" /></p>
                     <div
-                        class="c-install-dialog__progress"
+                        class="progress install-dialog-progress"
                         role="progressbar"
                         :aria-label="labels.installing"
                         aria-valuemin="0"
                         aria-valuemax="100"
                         :aria-valuenow="Math.round(progress * 100)"
-                    ><span class="c-install-dialog__progress-bar" :style="{ '--mp-progress': progress }"></span></div>
+                    ><div class="progress-bar" :style="{ width: `${progress * 100}%` }"></div></div>
                 </template>
 
-                <p v-else-if="step === 'activate'" class="c-mp-dialog__text"><RichText :parts="texts.activate" /></p>
+                <p v-else-if="step === 'activate'" class="marketplace-dialog-text"><RichText :parts="texts.activate" /></p>
 
-                <p v-else-if="step === 'configure'" class="c-mp-dialog__text"><RichText :parts="texts.configure" /></p>
+                <p v-else-if="step === 'configure'" class="marketplace-dialog-text"><RichText :parts="texts.configure" /></p>
 
-                <p v-else-if="step === 'failed'" class="c-mp-dialog__text">{{ labels.reloadBeforeRetry }}</p>
+                <p v-else-if="step === 'failed'" class="marketplace-dialog-text">{{ labels.reloadBeforeRetry }}</p>
             </section>
 
-            <div v-if="showNotice" class="c-mp-notice" :class="{ 'c-mp-notice--warning': module.isCommunity }" role="note">
-                <i class="ti c-mp-notice__icon" :class="module.isCommunity ? 'ti-alert-triangle' : 'ti-info-circle'" aria-hidden="true"></i>
-                <div class="c-mp-notice__text">
+            <div v-if="showNotice" class="alert marketplace-alert" :class="module.isCommunity ? 'alert-warning' : 'alert-info'" role="note">
+                <i class="ti marketplace-alert-icon" :class="module.isCommunity ? 'ti-alert-triangle' : 'ti-info-circle'" aria-hidden="true"></i>
+                <div class="marketplace-alert-text">
                     <p>{{ labels.thirdParty.join(' ') }}</p>
                     <p v-if="module.isCommunity" v-html="labels.community"></p>
                 </div>
             </div>
 
-            <p v-if="error" class="c-mp-dialog__error" role="alert">{{ error }}</p>
+            <p v-if="error" class="marketplace-dialog-error" role="alert">{{ error }}</p>
 
             <a
                 v-if="step === 'buy' && module.checkoutUrl"
-                class="btn c-install-dialog__checkout"
+                class="btn install-dialog-checkout"
                 :href="module.checkoutUrl"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -102,13 +102,13 @@
                 <button type="button" class="btn btn-secondary" @click="close">{{ labels.cancel }}</button>
                 <button ref="primary" type="button" class="btn btn-primary" @click="install()">{{ labels.install }}</button>
             </template>
-            <button v-else-if="step === 'installing'" type="button" class="btn btn-primary c-mp-dialog__busy" disabled>
-                <i class="ti ti-loader c-mp-spin" aria-hidden="true"></i>{{ labels.installingButton }}
+            <button v-else-if="step === 'installing'" type="button" class="btn btn-primary marketplace-dialog-busy" disabled>
+                <i class="ti ti-loader marketplace-spin" aria-hidden="true"></i>{{ labels.installingButton }}
             </button>
             <template v-else-if="step === 'activate'">
                 <button type="button" class="btn btn-secondary" :disabled="activating" @click="close">{{ labels.close }}</button>
-                <button ref="primary" type="button" class="btn btn-primary c-mp-dialog__busy" :disabled="activating" @click="activate">
-                    <i v-if="activating" class="ti ti-loader c-mp-spin" aria-hidden="true"></i>{{ labels.activate }}
+                <button ref="primary" type="button" class="btn btn-primary marketplace-dialog-busy" :disabled="activating" @click="activate">
+                    <i v-if="activating" class="ti ti-loader marketplace-spin" aria-hidden="true"></i>{{ labels.activate }}
                 </button>
             </template>
             <template v-else-if="step === 'configure'">

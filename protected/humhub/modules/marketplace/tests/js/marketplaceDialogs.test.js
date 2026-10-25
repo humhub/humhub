@@ -66,7 +66,7 @@ describe('InstallDialog', () => {
         checkoutUrl: 'https://checkout/paid-x',
         ...overrides,
     });
-    const keyInput = () => dialog().querySelector('.c-licence-field__input');
+    const keyInput = () => dialog().querySelector('.licence-key-input');
     const postsTo = (part) => globalThis.humhubStubs.client.post.mock.calls.filter(([url]) => url.includes(part));
 
     describe('the buy step', () => {
@@ -74,12 +74,12 @@ describe('InstallDialog', () => {
             wrapper = mountDialog(InstallDialog, { module: paid(), initialStep: 'buy' });
 
             expect(title()).toBe('Buy Module');
-            const text = dialog().querySelector('.c-mp-dialog__text');
+            const text = dialog().querySelector('.marketplace-dialog-text');
             expect(text.textContent).toBe('To install Paid <b>X</b>, you need a License Key. Buy one with Buy License Key, or choose Add License if you already have one.');
             expect([...text.querySelectorAll('b')].map((b) => b.textContent)).toEqual(['Paid <b>X</b>', 'Buy License Key', 'Add License']);
             expect(text.querySelector('b b')).toBeNull();
 
-            const checkout = dialog().querySelector('a.c-install-dialog__checkout');
+            const checkout = dialog().querySelector('a.install-dialog-checkout');
             expect(checkout.getAttribute('href')).toBe('https://checkout/paid-x');
             expect(checkout.getAttribute('target')).toBe('_blank');
             expect(checkout.getAttribute('rel')).toBe('noopener noreferrer');
@@ -103,12 +103,12 @@ describe('InstallDialog', () => {
             await flushPromises();
 
             expect(title()).toBe('Install Module');
-            expect(dialog().querySelector('.c-mp-dialog__text').textContent).toBe('To install Paid <b>X</b>, enter the License Key you purchased.');
+            expect(dialog().querySelector('.marketplace-dialog-text').textContent).toBe('To install Paid <b>X</b>, enter the License Key you purchased.');
             expect(keyInput().getAttribute('placeholder')).toBe('XXXX-XXXX-XXXX-XXXX');
             expect(dialog().querySelector(`label[for="${keyInput().id}"]`).textContent).toBe('License Key');
             expect(document.activeElement).toBe(keyInput());
             expect(footerButton('Install').disabled).toBe(true);
-            expect(dialog().querySelector('a.c-install-dialog__checkout')).toBeNull();
+            expect(dialog().querySelector('a.install-dialog-checkout')).toBeNull();
 
             click(footerButton('Back'));
             await flushPromises();
@@ -135,9 +135,8 @@ describe('InstallDialog', () => {
             await flushPromises();
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/marketplace/licence-key', { data: { licenceKey: 'wrong' } });
-            expect(dialog().querySelector('.c-licence-field').classList.contains('is-checking')).toBe(true);
-            expect(dialog().querySelector('.c-licence-field__icon')).not.toBeNull();
-            expect(footerButton('Install').disabled).toBe(true);
+            expect(dialog().querySelector('.input-group .input-group-text .marketplace-spin')).not.toBeNull();
+                        expect(footerButton('Install').disabled).toBe(true);
             expect(footerButton('Back').disabled).toBe(true);
 
             pending.reject({ status: 422, errors: { licenceKey: ['Invalid module license key!'] } });
@@ -244,7 +243,7 @@ describe('InstallDialog', () => {
             expect(keyInput()).not.toBeNull();
             expect(keyInput().getAttribute('aria-invalid')).toBe('true');
             expect(dialog().querySelector('.invalid-feedback').textContent).toBe('This License Key does not license Paid <b>X</b>.');
-            expect(dialog().querySelector('.c-mp-dialog__error')).toBeNull();
+            expect(dialog().querySelector('.marketplace-dialog-error')).toBeNull();
             expect(wrapper.emitted('installed')).toBeUndefined();
         });
     });
@@ -254,10 +253,10 @@ describe('InstallDialog', () => {
             wrapper = mountDialog(InstallDialog, { module: marketplaceModule({ name: 'Calendar <X>' }), initialStep: 'confirm' });
 
             expect(title()).toBe('Install Module');
-            expect(dialog().querySelector('.c-install-dialog__name').textContent).toBe('Calendar <X>');
-            expect(dialog().querySelector('.c-install-dialog__version').textContent).toBe('2.0.0');
-            expect(dialog().querySelector('.c-install-dialog__image').getAttribute('src')).toBe('/img/calendar.png');
-            expect(dialog().querySelector('.c-mp-notice')).toBeNull();
+            expect(dialog().querySelector('.install-dialog-name').textContent).toBe('Calendar <X>');
+            expect(dialog().querySelector('.install-dialog-version').textContent).toBe('2.0.0');
+            expect(dialog().querySelector('.install-dialog-image').getAttribute('src')).toBe('/img/calendar.png');
+            expect(dialog().querySelector('.marketplace-alert')).toBeNull();
             expect(footerButtons().map((b) => b.textContent.trim())).toEqual(['Cancel', 'Install']);
             expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
         });
@@ -265,9 +264,9 @@ describe('InstallDialog', () => {
         it('carries the third-party note for a third-party module', () => {
             wrapper = mountDialog(InstallDialog, { module: marketplaceModule({ isThirdParty: true, badge: 'partner' }) });
 
-            const notice = dialog().querySelector('.c-mp-notice');
+            const notice = dialog().querySelector('.marketplace-alert');
             expect(notice.getAttribute('role')).toBe('note');
-            expect(notice.classList.contains('c-mp-notice--warning')).toBe(false);
+            expect(notice.classList.contains('alert-warning')).toBe(false);
             expect(notice.textContent).toContain('This Module was developed by a third-party.');
             expect(notice.textContent).toContain('Third-party Modules are not covered by Professional Edition agreements.');
             expect(notice.textContent).not.toContain('Not curated');
@@ -277,14 +276,14 @@ describe('InstallDialog', () => {
             const community = { isThirdParty: true, isCommunity: true, badge: 'none' };
             wrapper = mountDialog(InstallDialog, { module: marketplaceModule(community) });
 
-            let notice = dialog().querySelector('.c-mp-notice');
-            expect(notice.classList.contains('c-mp-notice--warning')).toBe(true);
+            let notice = dialog().querySelector('.marketplace-alert');
+            expect(notice.classList.contains('alert-warning')).toBe(true);
             expect(notice.querySelector('strong').textContent).toBe('"Not curated"');
             expect(notice.textContent).toContain('not part of our curated selection');
             wrapper.unmount();
 
             wrapper = mountDialog(InstallDialog, { module: paid(community), initialStep: 'buy' });
-            notice = dialog().querySelector('.c-mp-notice');
+            notice = dialog().querySelector('.marketplace-alert');
             expect(notice.textContent).toContain('This Module was developed by a third-party.');
             expect(notice.textContent).toContain('Not curated');
         });
@@ -295,7 +294,7 @@ describe('InstallDialog', () => {
             click(footerButton('Add License'));
             await flushPromises();
 
-            expect(dialog().querySelector('.c-mp-notice')).toBeNull();
+            expect(dialog().querySelector('.marketplace-alert')).toBeNull();
         });
     });
 
@@ -309,7 +308,7 @@ describe('InstallDialog', () => {
             await flushPromises();
 
             expect(title()).toBe('Install Module');
-            const text = dialog().querySelector('.c-mp-dialog__text');
+            const text = dialog().querySelector('.marketplace-dialog-text');
             expect(text.textContent).toBe('Installing Calendar <X>...');
             expect(text.querySelector('b').textContent).toBe('Calendar <X>');
             const bar = dialog().querySelector('[role="progressbar"]');
@@ -367,7 +366,7 @@ describe('InstallDialog', () => {
 
             expect(statuses).toEqual([expect.objectContaining({ level: 'success', message: 'Calendar X installed successfully.' })]);
             expect(title()).toBe('Activate Module');
-            expect(dialog().querySelector('.c-mp-dialog__text').textContent)
+            expect(dialog().querySelector('.marketplace-dialog-text').textContent)
                 .toBe('You are all done! Calendar X was installed. To make it available on your network, activate it now or later in Module Administration.');
             expect(footerButtons().map((b) => b.textContent.trim())).toEqual(['Close', 'Activate']);
         });
@@ -427,7 +426,7 @@ describe('InstallDialog', () => {
 
                 expect(title()).toBe('Install Module');
                 expect(dialog().querySelector('[role="alert"]').textContent).toBe('Internal Server Error');
-                expect(dialog().querySelector('.c-mp-dialog__text').textContent).toBe('The installation did not finish. Please reload the page before trying again.');
+                expect(dialog().querySelector('.marketplace-dialog-text').textContent).toBe('The installation did not finish. Please reload the page before trying again.');
                 expect(footerButtons().map((b) => b.textContent.trim())).toEqual(['Close']);
                 expect(dialog().querySelector('.btn-close').disabled).toBe(false);
                 expect(wrapper.emitted('installed')).toBeUndefined();
@@ -458,7 +457,7 @@ describe('InstallDialog', () => {
                 click(footerButton('Install'));
                 await flushPromises();
 
-                expect(dialog().querySelector('.c-licence-field__input')).toBeNull();
+                expect(dialog().querySelector('.licence-key-input')).toBeNull();
                 expect(dialog().querySelector('[role="alert"]').textContent).toBe('Bad Gateway');
                 expect(footerButtons().map((b) => b.textContent.trim())).toEqual(['Close']);
             });
@@ -514,7 +513,7 @@ describe('InstallDialog', () => {
             await flushPromises();
             expect(globalThis.humhubStubs.client.post).toHaveBeenLastCalledWith('/api/v2/module/calendar-x/enable');
             expect(footerButton('Activate').disabled).toBe(true);
-            expect(footerButton('Activate').querySelector('.c-mp-spin')).not.toBeNull();
+            expect(footerButton('Activate').querySelector('.marketplace-spin')).not.toBeNull();
             expect(footerButton('Close').disabled).toBe(true);
 
             pending.resolve({ id: 'calendar-x', isEnabled: true, configUrl: '/calendar/config' });
@@ -522,7 +521,7 @@ describe('InstallDialog', () => {
 
             expect(wrapper.emitted('activated')).toEqual([[expect.objectContaining({ id: 'calendar-x', installedVersion: '2.0.0', isEnabled: true, configUrl: '/calendar/config' })]]);
             expect(title()).toBe('Configure Module');
-            expect(dialog().querySelector('.c-mp-dialog__text').textContent).toBe('Calendar X was activated! Configure it now or later in Module Administration.');
+            expect(dialog().querySelector('.marketplace-dialog-text').textContent).toBe('Calendar X was activated! Configure it now or later in Module Administration.');
             expect(footerButton('Configure').getAttribute('href')).toBe('/calendar/config');
 
             click(footerButton('Close'));
@@ -588,11 +587,11 @@ describe('SettingsDialog', () => {
     const settings = (overrides = {}) => ({ includeBetaUpdates: false, includeCommunityModules: false, ...overrides });
     const tab = (label) => [...dialog().querySelectorAll('[role="tab"]')].find((t) => t.textContent.trim() === label);
     const panel = (key) => dialog().querySelector(`[role="tabpanel"][id$="-panel-${key}"]`);
-    const rows = () => [...dialog().querySelectorAll('.c-licence-list__item')];
-    const keyInput = () => dialog().querySelector('.c-licence-field__input');
-    const addButton = () => dialog().querySelector('.c-mp-settings__add');
+    const rows = () => [...dialog().querySelectorAll('.licence-list-item')];
+    const keyInput = () => dialog().querySelector('.licence-key-input');
+    const addButton = () => dialog().querySelector('.marketplace-settings-add');
     const settingInput = (label) => {
-        const row = [...dialog().querySelectorAll('.c-setting-row')].find((r) => r.querySelector('.c-setting-row__title').textContent === label);
+        const row = [...dialog().querySelectorAll('.marketplace-setting')].find((r) => r.querySelector('.marketplace-setting-title').textContent === label);
         return row.querySelector('input[data-setting]');
     };
     const toggle = (input, checked) => {
@@ -663,10 +662,10 @@ describe('SettingsDialog', () => {
             await open();
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/marketplace/module?pageSize=100&tag=purchased');
-            expect(rows().map((r) => r.querySelector('.c-licence-list__name').textContent)).toEqual(['Survey', 'Members Map']);
-            expect(rows()[0].querySelector('.c-licence-list__key').textContent).toBe('License: A240-7204');
+            expect(rows().map((r) => r.querySelector('.licence-list-name').textContent)).toEqual(['Survey', 'Members Map']);
+            expect(rows()[0].querySelector('.licence-list-key').textContent).toBe('License: A240-7204');
 
-            const install = rows()[0].querySelector('.c-licence-list__action');
+            const install = rows()[0].querySelector('.licence-list-action');
             expect(install.textContent.trim()).toBe('Install');
             expect(install.getAttribute('aria-label')).toBe('Install Survey');
             expect(install.classList.contains('btn-primary')).toBe(true);
@@ -674,29 +673,29 @@ describe('SettingsDialog', () => {
             expect(info.getAttribute('href')).toBe('https://marketplace.humhub.com/module/calendar-x');
             expect(info.getAttribute('aria-label')).toBe('Module information');
 
-            const installed = rows()[1].querySelector('.c-licence-list__action');
+            const installed = rows()[1].querySelector('.licence-list-action');
             expect(installed.textContent.trim()).toBe('Installed');
             expect(installed.disabled).toBe(true);
             expect(rows()[1].querySelector('a')).toBeNull();
 
-            expect(dialog().querySelector('.c-mp-settings__installation').textContent).toBe('Installation ID: abc123');
+            expect(dialog().querySelector('.marketplace-settings-installation').textContent).toBe('Installation ID: abc123');
         });
 
         it('says so when nothing was purchased', async () => {
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ results: [] }));
             await open();
 
-            expect(dialog().querySelector('.c-mp-settings__empty').textContent).toBe('No purchased modules found!');
+            expect(dialog().querySelector('.marketplace-settings-empty').textContent).toBe('No purchased modules found!');
         });
 
         it('asks for the installation of a licensed module, unless another action runs', async () => {
             await open();
 
-            click(rows()[0].querySelector('.c-licence-list__action'));
+            click(rows()[0].querySelector('.licence-list-action'));
             expect(wrapper.emitted('install')).toEqual([[purchased[0]]]);
 
             await wrapper.setProps({ installLocked: true });
-            expect(rows()[0].querySelector('.c-licence-list__action').disabled).toBe(true);
+            expect(rows()[0].querySelector('.licence-list-action').disabled).toBe(true);
         });
 
         it('registers a key: spinner, the new licence at the top, a status, a cleared field', async () => {
@@ -724,7 +723,7 @@ describe('SettingsDialog', () => {
             await flushPromises();
 
             expect(wrapper.emitted('registered')).toHaveLength(1);
-            expect(rows().map((r) => r.querySelector('.c-licence-list__name').textContent)).toEqual(['Meetings', 'Survey', 'Members Map']);
+            expect(rows().map((r) => r.querySelector('.licence-list-name').textContent)).toEqual(['Meetings', 'Survey', 'Members Map']);
             expect(rows()[0].classList.contains('is-entering')).toBe(true);
             expect(rows()[1].classList.contains('is-entering')).toBe(false);
             expect(statuses).toEqual([expect.objectContaining({ level: 'success', message: 'License added for Meetings.' })]);
@@ -785,8 +784,8 @@ describe('SettingsDialog', () => {
             loads[0].resolve({ results: purchased });
             await flushPromises();
 
-            expect(rows().map((r) => r.querySelector('.c-licence-list__name').textContent)).toEqual(['Members Map']);
-            expect(dialog().querySelector('.c-mp-settings__loading')).toBeNull();
+            expect(rows().map((r) => r.querySelector('.licence-list-name').textContent)).toEqual(['Members Map']);
+            expect(dialog().querySelector('.marketplace-settings-loading')).toBeNull();
         });
 
         it('marks no licence as new when the list could not be loaded before', async () => {
@@ -828,7 +827,7 @@ describe('SettingsDialog', () => {
         it('shows both checkboxes with their hints and the module administration link', async () => {
             await open({ settings: settings({ includeCommunityModules: true }) });
 
-            const texts = [...dialog().querySelectorAll('.c-setting-row')].map((r) => r.querySelector('.form-check').textContent.trim());
+            const texts = [...dialog().querySelectorAll('.marketplace-setting')].map((r) => r.querySelector('.form-check').textContent.trim());
             expect(texts).toEqual([
                 'Beta ModulesAllow modules in Beta to be installed.',
                 'Non-curated ModulesShow modules by independent partners and developers that are not part of our curated selection.',
@@ -836,7 +835,7 @@ describe('SettingsDialog', () => {
             expect(settingInput('Beta Modules').checked).toBe(false);
             expect(settingInput('Non-curated Modules').checked).toBe(true);
             expect(dialog().querySelector(`label[for="${settingInput('Beta Modules').id}"]`)).not.toBeNull();
-            expect(dialog().querySelector('.c-mp-settings__admin').getAttribute('href')).toBe('/admin/module');
+            expect(dialog().querySelector('.marketplace-settings-admin').getAttribute('href')).toBe('/admin/module');
         });
 
         it('saves a checkbox at once', async () => {
@@ -868,13 +867,13 @@ describe('SettingsDialog', () => {
         it('saves non-curated modules only after the risk acknowledgement', async () => {
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ includeBetaUpdates: false, includeCommunityModules: true }));
             await open();
-            const confirm = () => [...dialog().querySelectorAll('.c-setting-row button')].find((b) => b.textContent.trim() === 'Confirm');
+            const confirm = () => [...dialog().querySelectorAll('.marketplace-setting button')].find((b) => b.textContent.trim() === 'Confirm');
 
             toggle(settingInput('Non-curated Modules'), true);
             await flushPromises();
 
             expect(saved()).toHaveLength(0);
-            const row = settingInput('Non-curated Modules').closest('.c-setting-row');
+            const row = settingInput('Non-curated Modules').closest('.marketplace-setting');
             expect(row.classList.contains('is-expanded')).toBe(true);
             expect(settingInput('Non-curated Modules').hasAttribute('aria-expanded')).toBe(false);
             expect(settingInput('Non-curated Modules').hasAttribute('aria-controls')).toBe(false);
@@ -905,7 +904,7 @@ describe('SettingsDialog', () => {
 
             toggle(settingInput('Non-curated Modules'), true);
             await flushPromises();
-            const row = settingInput('Non-curated Modules').closest('.c-setting-row');
+            const row = settingInput('Non-curated Modules').closest('.marketplace-setting');
             const acknowledge = row.querySelector('input[type="checkbox"]:not([data-setting])');
             acknowledge.checked = true;
             acknowledge.dispatchEvent(new Event('change'));
@@ -929,7 +928,7 @@ describe('SettingsDialog', () => {
             toggle(settingInput('Non-curated Modules'), false);
             await flushPromises();
 
-            expect(settingInput('Non-curated Modules').closest('.c-setting-row').classList.contains('is-expanded')).toBe(false);
+            expect(settingInput('Non-curated Modules').closest('.marketplace-setting').classList.contains('is-expanded')).toBe(false);
             expect(settingInput('Non-curated Modules').checked).toBe(false);
             expect(saved()).toHaveLength(0);
         });
