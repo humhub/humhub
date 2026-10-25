@@ -116,11 +116,17 @@ and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 | `.badge-dot` | The dot on a pill (see [Badges & Status](badges.md)): `-waiting` red, `-unsaved` accent |
 
 - **File:** `_nav.scss` (pill variants on top of Bootstrap's nav), behind `$prev-nav`.
-- **Sass variables:** Bootstrap's `$nav-pills-border-radius` (`$border-radius-pill`),
-  `$nav-pills-link-active-color`, `$nav-pills-link-active-bg`, `$nav-link-padding-x`,
-  `$nav-link-padding-y`, `$nav-link-font-weight` (height and padding stay Bootstrap's); plus
-  `$nav-pills-gap`, `$nav-pills-border-color`, `$nav-pills-secondary-hover-bg` and
-  `$nav-scroller-fade-width` for what Bootstrap doesn't have.
+- **Sass variables:** Bootstrap's `$nav-pills-border-radius` (pill, in `variables.scss`),
+  `$nav-link-padding-x/y` (height and padding stay Bootstrap's: 2.5rem); plus, in `_nav.scss`,
+  `$nav-pills-gap`, `$nav-pills-font-weight` (`$font-weight-medium`), `$nav-pills-color`,
+  `$nav-pills-hover-color`, `$nav-pills-hover-bg` (`--bs-tertiary-bg`), `$nav-pills-active-color`,
+  `$nav-pills-active-bg` (`--bs-secondary-bg`), `$nav-pills-border-width`,
+  `$nav-pills-border-color` (`--bs-border-color`), `$nav-pills-active-border-color` (the
+  emphasis colour at 64 %), `$nav-pills-secondary-hover-bg` and `$nav-scroller-fade-width`.
+- **Scope:** the outline and colours apply to the pill tabs (`.nav-scroller > .nav-pills`), not
+  to every `.nav-pills` (the ⋮ of a stream entry is a legacy `.nav-pills.preferences`). The
+  outline is an inset shadow, since the scrolling strip cuts off anything outside the pill;
+  the focus ring is added to it.
 
 ## Implementation in core
 

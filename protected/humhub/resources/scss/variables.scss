@@ -247,6 +247,8 @@ $list-group-active-bg: var(--hh-background-color-secondary) !default;
 
 $nav-link-hover-color: var(--bs-link-color) !default;
 $nav-tabs-link-active-bg: var(--hh-background-color-main) !default;
+// Pill tabs: fully rounded, Bootstrap's $border-radius-pill (not defined yet here); the rest in _nav.scss
+$nav-pills-border-radius: 50rem !default;
 
 
 //

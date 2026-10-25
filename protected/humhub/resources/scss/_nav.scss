@@ -2,6 +2,20 @@
 // Navs
 // --------------------------------------------------
 
+// Pill tabs (`.nav-scroller > .nav-pills`, see docs/ui/tabs.md): outlined pills, the active one
+// filled and with a darker outline; the secondary variant without outlines
+$nav-pills-gap: $spacer * .5 !default;
+$nav-pills-font-weight: $font-weight-medium !default;
+$nav-pills-color: var(--bs-body-color) !default;
+$nav-pills-hover-color: var(--hh-text-color-highlight) !default;
+$nav-pills-hover-bg: var(--bs-tertiary-bg) !default;
+$nav-pills-active-color: var(--hh-text-color-highlight) !default;
+$nav-pills-active-bg: var(--bs-secondary-bg) !default;
+$nav-pills-border-width: 2px !default;
+$nav-pills-border-color: var(--bs-border-color) !default;
+$nav-pills-active-border-color: rgba(var(--bs-emphasis-color-rgb), .64) !default;
+$nav-pills-secondary-hover-bg: $nav-pills-hover-bg !default;
+
 // The ⋮ of a legacy `.nav-pills.preferences` menu
 $preferences-toggle-size: 2rem !default;
 $preferences-toggle-icon-size: $font-size-lg !default;
@@ -33,9 +47,42 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
     }
 
-    .nav-pills-secondary {
-        --bs-nav-pills-link-active-color: var(--hh-text-color-highlight);
-        --bs-nav-pills-link-active-bg: var(--bs-secondary-bg);
+    .nav-scroller > .nav-pills {
+        --bs-nav-link-color: #{$nav-pills-color};
+        --bs-nav-link-hover-color: #{$nav-pills-hover-color};
+        --bs-nav-link-font-weight: #{$nav-pills-font-weight};
+        --bs-nav-pills-link-active-color: #{$nav-pills-active-color};
+        --bs-nav-pills-link-active-bg: #{$nav-pills-active-bg};
+        --hh-nav-pills-border-color: #{$nav-pills-border-color};
+        --hh-nav-pills-active-border-color: #{$nav-pills-active-border-color};
+        --hh-nav-pills-hover-bg: #{$nav-pills-hover-bg};
+        gap: $nav-pills-gap;
+
+        // The outline is an inset shadow: the scrolling strip would cut off anything outside
+        .nav-link {
+            box-shadow: inset 0 0 0 $nav-pills-border-width var(--hh-nav-pills-border-color);
+
+            &:hover:not(.active) {
+                background-color: var(--hh-nav-pills-hover-bg);
+            }
+
+            &.active {
+                box-shadow: inset 0 0 0 $nav-pills-border-width var(--hh-nav-pills-active-border-color);
+            }
+
+            &:focus-visible {
+                box-shadow: inset 0 0 0 $nav-pills-border-width var(--hh-nav-pills-active-border-color), $nav-link-focus-box-shadow;
+            }
+        }
+    }
+
+    // Secondary: pills inside a card, panel or dialog, without outlines
+    .nav-pills.nav-pills-secondary {
+        --bs-nav-pills-link-active-color: #{$nav-pills-active-color};
+        --bs-nav-pills-link-active-bg: #{$nav-pills-active-bg};
+        --hh-nav-pills-border-color: transparent;
+        --hh-nav-pills-active-border-color: transparent;
+        --hh-nav-pills-hover-bg: #{$nav-pills-secondary-hover-bg};
     }
 
     .panel > .nav-scroller {
