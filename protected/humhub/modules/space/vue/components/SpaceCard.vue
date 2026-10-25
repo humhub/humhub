@@ -1,8 +1,8 @@
 <template>
-    <article class="c-entity-card c-space-card" :class="{ 'is-archived': space.archived }">
-        <div class="c-entity-card__cover" :style="coverStyle">
+    <article class="card entity-card space-card" :class="{ 'is-archived': space.archived }">
+        <div class="entity-card-cover" :style="coverStyle">
             <SpaceImage
-                class="c-entity-card__avatar"
+                class="entity-card-avatar"
                 :id="space.id"
                 :name="space.name"
                 :url="space.url"
@@ -14,19 +14,19 @@
                 aria-hidden="true"
                 tabindex="-1"
             />
-            <span v-if="showFollowers || showMembers" class="c-entity-card__pill">
+            <span v-if="showFollowers || showMembers" class="entity-card-pill">
                 <template v-if="showFollowers">
                     <button
                         v-if="canOpenFollowers"
                         type="button"
-                        class="c-entity-card__stat c-entity-card__stat--followers"
+                        class="entity-card-stat entity-card-stat-followers"
                         :title="followersLabel"
                         :aria-label="followersLabel"
                         @click="openFollowers"
                     ><i class="ti ti-user-check" aria-hidden="true"></i><span>{{ followerCount }}</span></button>
                     <span
                         v-else
-                        class="c-entity-card__stat c-entity-card__stat--followers"
+                        class="entity-card-stat entity-card-stat-followers"
                         :title="followersLabel"
                     ><i class="ti ti-user-check" aria-hidden="true"></i><span aria-hidden="true">{{ followerCount }}</span><span class="visually-hidden">{{ followersLabel }}</span></span>
                 </template>
@@ -34,46 +34,46 @@
                     <button
                         v-if="canOpenMembers"
                         type="button"
-                        class="c-entity-card__stat c-entity-card__stat--members"
+                        class="entity-card-stat entity-card-stat-members"
                         :title="membersLabel"
                         :aria-label="membersLabel"
                         @click="openMembers"
                     ><i class="ti ti-users-group" aria-hidden="true"></i><span>{{ memberCount }}</span></button>
                     <span
                         v-else
-                        class="c-entity-card__stat c-entity-card__stat--members"
+                        class="entity-card-stat entity-card-stat-members"
                         :title="membersLabel"
                     ><i class="ti ti-users-group" aria-hidden="true"></i><span aria-hidden="true">{{ memberCount }}</span><span class="visually-hidden">{{ membersLabel }}</span></span>
                 </template>
             </span>
         </div>
 
-        <div class="c-entity-card__header">
-            <a class="c-entity-card__title" :href="space.url">{{ space.name }}</a>
+        <div class="entity-card-header">
+            <a class="entity-card-title" :href="space.url">{{ space.name }}</a>
             <ExtensionSlot name="space.card-subtitle" :context="{ space }" />
         </div>
 
-        <div class="c-entity-card__body">
-            <p v-if="space.description" class="c-entity-card__text">{{ space.description }}</p>
-            <p v-if="space.archived" class="c-space-card__archived">
+        <div class="entity-card-body">
+            <p v-if="space.description" class="entity-card-text">{{ space.description }}</p>
+            <p v-if="space.archived" class="space-card-archived">
                 <i class="ti ti-archive" aria-hidden="true"></i><span>{{ labels.archived }}</span>
             </p>
         </div>
 
-        <div v-if="tags.length" class="c-entity-card__tags">
+        <div v-if="tags.length" class="entity-card-tags">
             <button
                 v-for="tag in tags"
                 :key="tag"
                 type="button"
-                class="c-entity-card__tag"
+                class="entity-card-tag"
                 :title="filterByLabel(tag)"
                 :aria-label="filterByLabel(tag)"
                 @click="$emit('filter-tag', tag)"
             >{{ tag }}</button>
         </div>
 
-        <div v-if="state !== null" class="c-entity-card__footer">
-            <button v-if="state === undefined" type="button" class="c-entity-card__action c-entity-card__placeholder" :class="buttons.placeholderClass" disabled aria-hidden="true" tabindex="-1">&nbsp;</button>
+        <div v-if="state !== null" class="entity-card-footer">
+            <button v-if="state === undefined" type="button" class="entity-card-action entity-card-placeholder" :class="buttons.placeholderClass" disabled aria-hidden="true" tabindex="-1">&nbsp;</button>
             <ExtensionSlot v-else name="space.card-actions" :context="actionContext" />
         </div>
     </article>
@@ -87,7 +87,7 @@ import SpaceImage from '../SpaceImage.vue';
 const MAX_TAGS = 5;
 
 /**
- * A space of the space directory (`SpaceDirectory`), after the HumHub design system v2 space
+ * A space of the spaces browser (`SpacesBrowser`), after the HumHub design system v2 space
  * card: the cover (the space's banner, else its colour) with the avatar linking to the space
  * and the stat pill (followers and members — each shown only where the space shows the count,
  * i.e. the count is not `null`; clicking opens the existing follower list
@@ -106,15 +106,15 @@ const MAX_TAGS = 5;
  * - `buttons`: the button classes (`buttonClass`, `pendingClass`, `memberClass`,
  *   `togglerClass`, `groupClass` of the `MembershipButton`; `followClass`, `followingClass` of
  *   the `FollowButton`; `placeholderClass`), `icons`: the rendered icon markup (`check`,
- *   `clock`, `user`) — both from `space\widgets\SpaceDirectory`.
+ *   `clock`, `user`) — both from `space\widgets\SpacesBrowser`.
  * - Extension slot `space.card-subtitle` (`registerSlotComponent`): a registered component gets
  *   the `space` as prop and renders its own subtitle line (e.g. a category), typically a
- *   `p.c-entity-card__subtitle`.
+ *   `p.entity-card-subtitle`.
  * - Extension slot `space.card-actions`: the footer's actions, the core's own included —
  *   `membership` (sortOrder 100, `SpaceCardMembershipAction`) and `follow` (200,
  *   `SpaceCardFollowAction`) — so a module adds, replaces (its own component under a core id)
  *   or removes (`removeSlotComponent('space.card-actions', 'follow')`) any of them. Each action
- *   gets the context spread as props and renders a `.c-entity-card__action`, or nothing:
+ *   gets the context spread as props and renders a `.entity-card-action`, or nothing:
  *   `{space, state, buttons, icons, followerCount, onFollowChange}` — `state` is always a
  *   loaded entry, `followerCount` the count the card shows (the state's, else the item's), the
  *   callback the card's `follow-change` (an action declaring and emitting `follow-change`

@@ -38,7 +38,7 @@ use yii\db\Query;
 /**
  * The user search of the platform: which users a list shows a user, filtered and in which
  * order. `GET /api/v2/user` is built with it, and so is anything else that lists users (the
- * People directory — whose filter definitions are {@see self::definitions()} —, the meta
+ * People browser — whose filter definitions are {@see self::definitions()} —, the meta
  * search, user pickers and mentioning):
  *
  * ```php
@@ -50,7 +50,7 @@ use yii\db\Query;
  * the friendship scopes while the friendship system is on; without a user every scope but `all`
  * is empty), `groupId` (members of a group shown in the directory and of its sub groups),
  * `tag` (repeated or comma-separated user tags, the users having all of them — as a card's tags
- * narrow the People directory step by step), `spaceId` (members of a space the caller may see the
+ * narrow the People browser step by step), `spaceId` (members of a space the caller may see the
  * members of, {@see SpaceMembersFilter}),
  * `fields[<internal name>]` (one filter per profile field marked as directory filter,
  * {@see ProfileFieldFilter}), `sort` (one of {@see self::SORTS}; `default` — and no sort — is
@@ -117,7 +117,7 @@ class UserList extends FilterableList
     public const SCOPES = [self::SCOPE_ALL, self::SCOPE_FOLLOWING, self::SCOPE_FOLLOWERS, self::SCOPE_FRIENDS, self::SCOPE_PENDING_FRIENDS];
 
     /**
-     * The administrator's order of the People directory (`people.defaultSorting`, see
+     * The administrator's order of the People browser (`people.defaultSorting`, see
      * {@see PeopleSettingsForm}); its "Default" puts the `people.defaultSortingGroup` first.
      */
     public const SORT_DEFAULT = 'default';
@@ -158,7 +158,7 @@ class UserList extends FilterableList
 
     /**
      * The profile field types a list can be filtered by, by their form input type: text fields,
-     * dropdowns (also a country field) and checkbox lists, as the People directory's before 1.20.
+     * dropdowns (also a country field) and checkbox lists, as the People browser's before 1.20.
      */
     public const FILTER_FIELD_INPUT_TYPES = ['text', 'dropdownlist', 'checkboxlist'];
 

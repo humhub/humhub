@@ -48,7 +48,7 @@ const spaceState = (overrides = {}) => ({
     ...overrides,
 });
 
-// `space\widgets\SpaceDirectory::$buttonClasses`
+// `space\widgets\SpacesBrowser::$buttonClasses`
 const buttons = {
     buttonClass: 'btn btn-primary',
     pendingClass: 'btn btn-secondary',
@@ -66,7 +66,7 @@ const mountCard = (props = {}) => mount(SpaceCard, {
     attachTo: document.body,
 });
 
-const stat = (wrapper, kind) => wrapper.find(`.c-entity-card__stat--${kind}`);
+const stat = (wrapper, kind) => wrapper.find(`.entity-card-stat-${kind}`);
 
 describe('SpaceCard', () => {
     beforeEach(() => {
@@ -81,41 +81,41 @@ describe('SpaceCard', () => {
     it('renders cover, avatar, name, description and tags', () => {
         const wrapper = mountCard({ state: spaceState() });
 
-        const title = wrapper.find('a.c-entity-card__title');
+        const title = wrapper.find('a.entity-card-title');
         expect(title.text()).toBe('Product Team');
         expect(title.attributes('href')).toBe('/s/product-team');
-        expect(wrapper.find('.c-entity-card__avatar').attributes('href')).toBe('/s/product-team');
-        expect(wrapper.find('.c-entity-card__avatar').attributes('aria-hidden')).toBe('true');
+        expect(wrapper.find('.entity-card-avatar').attributes('href')).toBe('/s/product-team');
+        expect(wrapper.find('.entity-card-avatar').attributes('aria-hidden')).toBe('true');
         expect(wrapper.find('.space-acronym').text()).toBe('PT');
         // Without a banner the cover is plain grey (from the stylesheet), not the space's colour.
-        expect(wrapper.find('.c-entity-card__cover').attributes('style')).toBeUndefined();
-        expect(wrapper.find('.c-entity-card__text').text()).toBe('Where the product is made.');
-        expect(wrapper.findAll('.c-entity-card__tag').map((tag) => tag.text())).toEqual(['Product', 'Team']);
-        expect(wrapper.find('.c-space-card__archived').exists()).toBe(false);
+        expect(wrapper.find('.entity-card-cover').attributes('style')).toBeUndefined();
+        expect(wrapper.find('.entity-card-text').text()).toBe('Where the product is made.');
+        expect(wrapper.findAll('.entity-card-tag').map((tag) => tag.text())).toEqual(['Product', 'Team']);
+        expect(wrapper.find('.space-card-archived').exists()).toBe(false);
         wrapper.unmount();
     });
 
     it('uses the banner as cover and notes an archived space', () => {
         const wrapper = mountCard({ space: spaceItem({ bannerUrl: '/banner.jpg', archived: true, description: null }), state: null });
 
-        const cover = wrapper.find('.c-entity-card__cover');
+        const cover = wrapper.find('.entity-card-cover');
         expect(cover.attributes('style')).toContain('background-image: url("/banner.jpg")');
-        expect(wrapper.find('.c-space-card__archived').text()).toBe('Archived');
-        expect(wrapper.find('.c-entity-card__text').exists()).toBe(false);
+        expect(wrapper.find('.space-card-archived').text()).toBe('Archived');
+        expect(wrapper.find('.entity-card-text').exists()).toBe(false);
         wrapper.unmount();
     });
 
     it('shows a disabled placeholder while the state loads, nothing without a state', () => {
         const loading = mountCard({ state: undefined });
-        const placeholder = loading.find('.c-entity-card__footer .c-entity-card__placeholder');
+        const placeholder = loading.find('.entity-card-footer .entity-card-placeholder');
         expect(placeholder.exists()).toBe(true);
         expect(placeholder.attributes('disabled')).toBeDefined();
         expect(placeholder.attributes('aria-hidden')).toBe('true');
-        expect(loading.find('.c-entity-card__footer').text()).toBe('');
+        expect(loading.find('.entity-card-footer').text()).toBe('');
         loading.unmount();
 
         const missing = mountCard({ state: null });
-        expect(missing.find('.c-entity-card__footer').exists()).toBe(false);
+        expect(missing.find('.entity-card-footer').exists()).toBe(false);
         missing.unmount();
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
@@ -123,11 +123,11 @@ describe('SpaceCard', () => {
     it('feeds the membership and follow button from the state without a request', () => {
         const wrapper = mountCard({ state: spaceState() });
 
-        const footer = wrapper.find('.c-entity-card__footer');
-        const join = footer.find('a.c-entity-card__action');
+        const footer = wrapper.find('.entity-card-footer');
+        const join = footer.find('a.entity-card-action');
         expect(join.text()).toBe('Join');
         expect(join.classes()).toEqual(expect.arrayContaining(['btn', 'btn-primary']));
-        const follow = footer.find('button.c-entity-card__action');
+        const follow = footer.find('button.entity-card-action');
         expect(follow.text()).toBe('Follow');
         expect(follow.classes()).toEqual(expect.arrayContaining(['btn', 'btn-accent']));
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
@@ -139,7 +139,7 @@ describe('SpaceCard', () => {
             state: spaceState({ isMember: true, canFollow: false, membership: { state: 'member', canLeave: true } }),
         });
 
-        const actions = wrapper.findAll('.c-entity-card__footer .c-entity-card__action');
+        const actions = wrapper.findAll('.entity-card-footer .entity-card-action');
         expect(actions).toHaveLength(1);
         expect(actions[0].text()).toBe('Member');
         expect(actions[0].classes()).toContain('btn-secondary');
@@ -199,7 +199,7 @@ describe('SpaceCard', () => {
                 space: spaceItem({ followerCount: null, memberCount: null }),
                 state: spaceState({ followerCount: null, memberCount: null, canViewFollowers: false }),
             });
-            expect(neither.find('.c-entity-card__pill').exists()).toBe(false);
+            expect(neither.find('.entity-card-pill').exists()).toBe(false);
             neither.unmount();
         });
 
@@ -215,7 +215,7 @@ describe('SpaceCard', () => {
     it('emits filter-tag for a tag', async () => {
         const wrapper = mountCard({ state: null });
 
-        const tag = wrapper.findAll('.c-entity-card__tag')[1];
+        const tag = wrapper.findAll('.entity-card-tag')[1];
         expect(tag.attributes('aria-label')).toBe('Filter by Team');
         await tag.trigger('click');
         expect(wrapper.emitted('filter-tag')).toEqual([['Team']]);
@@ -225,7 +225,7 @@ describe('SpaceCard', () => {
     it('emits the follow button change', async () => {
         const wrapper = mountCard({ state: spaceState() });
 
-        await wrapper.find('.c-entity-card__footer button.c-entity-card__action').trigger('click');
+        await wrapper.find('.entity-card-footer button.entity-card-action').trigger('click');
         await flushPromises();
 
         expect(wrapper.emitted('follow-change')).toEqual([[{ spaceId: 5, isFollowing: true, followerCount: 4, canFollow: true }]]);
@@ -236,7 +236,7 @@ describe('SpaceCard', () => {
         vueModule.register('TestSpaceCardSubtitle', {
             props: { space: { type: Object, required: true } },
             render() {
-                return Vue.h('p', { class: 'c-entity-card__subtitle' }, `Category of ${this.space.name}`);
+                return Vue.h('p', { class: 'entity-card-subtitle' }, `Category of ${this.space.name}`);
             },
         });
         vueModule.registerSlotComponent('space.card-subtitle', 'TestSpaceCardSubtitle');
@@ -254,7 +254,7 @@ describe('SpaceCard', () => {
         await vueModule.mountElement(el);
         await flushPromises();
 
-        expect(el.querySelector('.c-entity-card__header .c-entity-card__subtitle').textContent).toBe('Category of Product Team');
+        expect(el.querySelector('.entity-card-header .entity-card-subtitle').textContent).toBe('Category of Product Team');
     });
 
     describe('card actions (space.card-actions)', () => {
@@ -263,7 +263,7 @@ describe('SpaceCard', () => {
             inheritAttrs: false,
             props: { space: { type: Object, required: true }, followerCount: { type: Number, default: null } },
             render() {
-                return Vue.h('button', { type: 'button', class: 'c-entity-card__action test-share' }, `Share ${this.space.id} ${this.followerCount}`);
+                return Vue.h('button', { type: 'button', class: 'entity-card-action test-share' }, `Share ${this.space.id} ${this.followerCount}`);
             },
         };
         vueModule.register('TestSpaceShareAction', TestSpaceShareAction);
@@ -273,7 +273,7 @@ describe('SpaceCard', () => {
             global: { components: { ExtensionSlot, UiModal, HumHubForm, TextareaField, SpaceCardFollowAction, SpaceCardMembershipAction, TestSpaceShareAction } },
             attachTo: document.body,
         });
-        const actionTexts = (wrapper) => wrapper.findAll('.c-entity-card__footer .c-entity-card__action').map((action) => action.text());
+        const actionTexts = (wrapper) => wrapper.findAll('.entity-card-footer .entity-card-action').map((action) => action.text());
 
         // Removals are permanent, so every test starts from the production registrations.
         const restoreRegistrations = async () => {

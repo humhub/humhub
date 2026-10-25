@@ -7,8 +7,8 @@
  */
 
 use humhub\components\View;
-use humhub\modules\space\widgets\SpaceDirectory;
+use humhub\modules\space\widgets\SpacesBrowser;
 
 /* @var $this View */
 ?>
-<?= SpaceDirectory::widget() ?>
+<?= SpacesBrowser::widget() ?>

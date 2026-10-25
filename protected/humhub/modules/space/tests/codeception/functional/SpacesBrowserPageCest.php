@@ -11,21 +11,21 @@ namespace humhub\modules\space\tests\codeception\functional;
 use FunctionalTester;
 
 /**
- * `/spaces` renders the `SpaceDirectory` island; the cards load from the HTTP API.
+ * `/spaces` renders the `SpacesBrowser` island; the cards load from the HTTP API.
  */
-class SpaceDirectoryPageCest
+class SpacesBrowserPageCest
 {
     public function testRendersTheIsland(FunctionalTester $I)
     {
-        $I->wantTo('see the spaces directory island with its placeholder');
+        $I->wantTo('see the spaces browser island with its placeholder');
         $I->amUser1();
 
         $I->amOnRoute('/space/spaces');
         $I->seeResponseCodeIs(200);
-        $I->seeElement('space-directory');
-        $I->seeElement('space-directory .c-page-toolbar');
-        $I->see('Spaces', 'space-directory .c-page-toolbar__title');
-        $I->seeElement('space-directory .c-space-card-skeleton');
+        $I->seeElement('spaces-browser');
+        $I->seeElement('spaces-browser .page-header');
+        $I->see('Spaces', 'spaces-browser .page-header-title');
+        $I->seeElement('spaces-browser .space-card-skeleton');
         $I->dontSeeElement('.card-panel');
         $I->dontSeeElement('.cards-end');
     }

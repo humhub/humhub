@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { h } from 'vue';
 import { flushPromises, mount } from '@vue/test-utils';
-import CardDirectory from '../../vue/CardDirectory.vue';
+import EntityBrowser from '../../vue/EntityBrowser.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -14,7 +14,7 @@ const filters = [
 const envelope = (results, extra = {}) => ({ results, total: results.length, page: 1, pageSize: 24, pages: 1, ...extra });
 const params = (url) => new URL(url, 'http://localhost').searchParams;
 
-const mountDirectory = (props = {}) => mount(CardDirectory, {
+const mountDirectory = (props = {}) => mount(EntityBrowser, {
     props: { url: '/api/v2/things', filters, ...props },
     slots: { card: ({ item }) => h('span', { class: 'thing' }, item.name) },
 });
@@ -25,7 +25,7 @@ const deferred = () => {
     return { promise, resolve };
 };
 
-describe('CardDirectory', () => {
+describe('EntityBrowser', () => {
     beforeEach(() => {
         window.history.replaceState(null, '', '/directory');
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }])));
@@ -208,7 +208,7 @@ describe('CardDirectory', () => {
             .mockReturnValueOnce(reload.promise);
         const wrapper = mountDirectory();
         await flushPromises();
-        const grid = () => wrapper.find('.c-card-grid');
+        const grid = () => wrapper.find('.entity-grid');
 
         await wrapper.find('.cards-more button').trigger('click');
         expect(grid().classes()).not.toContain('is-loading');
@@ -231,12 +231,12 @@ describe('CardDirectory', () => {
         await flushPromises();
 
         expect(wrapper.find('[role="alert"]').text()).toBe('Down');
-        await wrapper.find('.c-card-grid__message--error button').trigger('click');
+        await wrapper.find('.entity-grid-message-error button').trigger('click');
         await flushPromises();
         expect(wrapper.findAll('.thing')).toHaveLength(1);
     });
 
-    // CardGrid emits `retry` both when the first page has no items and when a failure hits a
+    // EntityGrid emits `retry` both when the first page has no items and when a failure hits a
     // grid that already shows old cards under a filter set that no longer matches them - those
     // stale cards must not linger under the new filter, so a page-1 failure clears `items`
     // (and `page`/`pages`) and the full-grid error/retry replaces them. Retrying then re-fetches
@@ -264,7 +264,7 @@ describe('CardDirectory', () => {
         expect(wrapper.vm.total).toBe(0);
         expect(wrapper.vm.meta).toEqual({});
 
-        await wrapper.find('.c-card-grid__message--error button').trigger('click');
+        await wrapper.find('.entity-grid-message-error button').trigger('click');
         await flushPromises();
 
         expect(params(globalThis.humhubStubs.client.get.mock.calls[2][0]).get('page')).toBe('1');
@@ -272,7 +272,7 @@ describe('CardDirectory', () => {
     });
 
     // A failure while paging (page 2) is a different case: the already-shown first page stays
-    // put (CardGrid renders the error below the grid, not in place of it), and retry re-fetches
+    // put (EntityGrid renders the error below the grid, not in place of it), and retry re-fetches
     // that same failed page rather than restarting at page 1.
     it('keeps cards when paging fails, and retry re-fetches the failed page', async () => {
         globalThis.humhubStubs.client.get = vi.fn()
@@ -326,9 +326,9 @@ describe('CardDirectory', () => {
         expect(wrapper.findAll('[role="option"]').map((o) => o.text())).toEqual(['Tools (2)']);
     });
 
-    it('renders the page toolbar with title, actions and notice slots', async () => {
+    it('renders the page header with title, actions and notice slots', async () => {
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([{ id: 1, name: 'One' }], { updateCount: 3 })));
-        const wrapper = mount(CardDirectory, {
+        const wrapper = mount(EntityBrowser, {
             props: { url: '/api/v2/things', filters, title: 'Things', metaKeys: ['updateCount'] },
             slots: {
                 card: ({ item }) => h('span', { class: 'thing' }, item.name),
@@ -338,26 +338,26 @@ describe('CardDirectory', () => {
         });
         await flushPromises();
 
-        const toolbar = wrapper.find('section.c-page-toolbar');
-        const title = toolbar.find('h1.c-page-toolbar__title');
+        const header = wrapper.find('section.page-header');
+        const title = header.find('h1.page-header-title');
         expect(title.text()).toBe('Things');
-        expect(toolbar.attributes('aria-labelledby')).toBe(title.attributes('id'));
-        expect(toolbar.find('.c-page-toolbar__actions .act').text()).toBe('3/1');
-        expect(toolbar.find('.c-filter-bar').exists()).toBe(true);
-        expect(wrapper.classes()).toContain('c-card-directory');
-        // The notice sits between the toolbar and the grid.
-        const notice = wrapper.find('.c-card-directory__notice');
+        expect(header.attributes('aria-labelledby')).toBe(title.attributes('id'));
+        expect(header.find('.page-header-actions .act').text()).toBe('3/1');
+        expect(header.find('.filter-bar-body').exists()).toBe(true);
+        expect(wrapper.classes()).toContain('entity-browser');
+        // The notice sits between the page header and the grid.
+        const notice = wrapper.find('.entity-browser-notice');
         expect(notice.text()).toBe('Heads up');
-        expect(notice.element.previousElementSibling).toBe(toolbar.element);
-        expect(notice.element.nextElementSibling).toBe(wrapper.find('.c-card-grid').element);
+        expect(notice.element.previousElementSibling).toBe(header.element);
+        expect(notice.element.nextElementSibling).toBe(wrapper.find('.entity-grid').element);
     });
 
     it('renders neither header nor notice without title, actions and notice', async () => {
         const wrapper = mountDirectory();
         await flushPromises();
 
-        expect(wrapper.find('.c-page-toolbar__header').exists()).toBe(false);
-        expect(wrapper.find('.c-card-directory__notice').exists()).toBe(false);
+        expect(wrapper.find('.page-header-bar').exists()).toBe(false);
+        expect(wrapper.find('.entity-browser-notice').exists()).toBe(false);
     });
 
     it('delegates setFilter() to the filter bar, and rejects an unknown key', async () => {
@@ -378,7 +378,7 @@ describe('CardDirectory', () => {
         globalThis.humhubStubs.client.get = vi.fn()
             .mockReturnValueOnce(Promise.resolve(envelope([{ id: 1, name: 'One' }, { id: 2, name: 'Two' }], { total: 3, pages: 2 })))
             .mockReturnValueOnce(Promise.resolve(envelope([{ id: 3, name: 'Three' }], { total: 3, page: 2, pages: 2 })));
-        const wrapper = mount(CardDirectory, {
+        const wrapper = mount(EntityBrowser, {
             props: { url: '/api/v2/things', filters },
             slots: { card: ({ item, index }) => h('span', { class: 'thing' }, `${item.name}${index}`) },
         });
@@ -387,13 +387,13 @@ describe('CardDirectory', () => {
         await flushPromises();
 
         expect(wrapper.findAll('.thing').map((n) => n.text())).toEqual(['One0', 'Two1', 'Three0']);
-        expect(wrapper.findAll('.c-card-grid__cell').map((cell) => cell.element.style.getPropertyValue('--card-stagger-index')))
+        expect(wrapper.findAll('.entity-grid-cell').map((cell) => cell.element.style.getPropertyValue('--card-stagger-index')))
             .toEqual(['0', '1', '0']);
     });
 
     it('resets the visible filters through the clear-all X and forwards filter slots', async () => {
         window.history.replaceState(null, '', '/directory?q=abc&status=installed');
-        const wrapper = mount(CardDirectory, {
+        const wrapper = mount(EntityBrowser, {
             props: { url: '/api/v2/things', filters },
             slots: {
                 card: ({ item }) => h('span', { class: 'thing' }, item.name),
@@ -403,7 +403,7 @@ describe('CardDirectory', () => {
         await flushPromises();
         expect(wrapper.find('.custom-status').text()).toBe('installed');
 
-        await wrapper.find('.c-filter-bar__clear').trigger('click');
+        await wrapper.find('.filter-bar-clear').trigger('click');
         await flushPromises();
 
         const query = params(globalThis.humhubStubs.client.get.mock.calls[1][0]);
@@ -416,7 +416,7 @@ describe('CardDirectory', () => {
         const wrapper = mountDirectory({ filters: [] });
         await flushPromises();
 
-        expect(wrapper.find('.c-filter-bar').exists()).toBe(false);
+        expect(wrapper.find('.filter-bar-body').exists()).toBe(false);
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
         expect(wrapper.findAll('.thing')).toHaveLength(1);
         expect(() => wrapper.vm.reloadFilterOptions()).not.toThrow();
@@ -450,7 +450,7 @@ describe('CardDirectory', () => {
 
     it('forwards the skeleton slot to the grid', () => {
         globalThis.humhubStubs.client.get = vi.fn(() => new Promise(() => {}));
-        const wrapper = mount(CardDirectory, {
+        const wrapper = mount(EntityBrowser, {
             props: { url: '/api/v2/things', filters, skeletonCount: 2 },
             slots: {
                 card: ({ item }) => h('span', { class: 'thing' }, item.name),
@@ -459,24 +459,24 @@ describe('CardDirectory', () => {
         });
 
         expect(wrapper.findAll('.own-skeleton').map((n) => n.text())).toEqual(['0', '1']);
-        expect(wrapper.find('.c-card-skeleton').exists()).toBe(false);
+        expect(wrapper.find('.entity-card-skeleton').exists()).toBe(false);
     });
 
-    it('forwards the actions prop to its page toolbar', async () => {
+    it('forwards the actions prop to its page header', async () => {
         const wrapper = mountDirectory({
             title: 'Spaces',
             actions: [{ id: 'create', icon: 'plus', label: 'Create', url: '/create' }],
         });
         await flushPromises();
 
-        const button = wrapper.find('.c-page-toolbar__actions a.c-icon-button');
+        const button = wrapper.find('.page-header-actions a.btn-icon-only');
         expect(button.attributes('href')).toBe('/create');
         expect(button.attributes('aria-label')).toBe('Create');
     });
 });
 
-describe('CardDirectory item states', () => {
-    const mountWithStates = (itemStates, props = {}) => mount(CardDirectory, {
+describe('EntityBrowser item states', () => {
+    const mountWithStates = (itemStates, props = {}) => mount(EntityBrowser, {
         props: { url: '/api/v2/things', filters, itemStates, ...props },
         slots: {
             card: ({ item, state }) => h('span', { class: 'thing' }, `${item.name}:${state === undefined ? 'pending' : JSON.stringify(state)}`),

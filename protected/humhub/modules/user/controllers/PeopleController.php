@@ -15,7 +15,7 @@ use humhub\modules\user\permissions\PeopleAccess;
 use Yii;
 
 /**
- * PeopleController displays the People directory (the `PeopleDirectory` island)
+ * PeopleController displays the People browser (the `PeopleBrowser` island)
  *
  * @since 1.9
  */

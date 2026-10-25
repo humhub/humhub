@@ -1,6 +1,6 @@
 <template>
     <FollowButton
-        class="c-entity-card__action"
+        class="entity-card-action"
         :space-id="space.id"
         :space-name="space.name"
         :initial="initial"
@@ -16,7 +16,7 @@
 import FollowButton from '../FollowButton.vue';
 
 /**
- * The follow action of a spaces directory card, the core's entry `follow` (sortOrder 200) of
+ * The follow action of a spaces browser card, the core's entry `follow` (sortOrder 200) of
  * the `space.card-actions` slot (registered in `vue/index.js`): the space's `FollowButton`,
  * fed from the card's state without a request of its own.
  *

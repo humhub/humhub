@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
-import PeopleDirectory from '../../vue/PeopleDirectory.vue';
+import PeopleBrowser from '../../vue/PeopleBrowser.vue';
 import FriendshipButton from '../../../../modules/friendship/vue/FriendshipButton.vue';
-import CardDirectory from '../../../../vue/CardDirectory.vue';
+import EntityBrowser from '../../../../vue/EntityBrowser.vue';
 import ExtensionSlot from '../../../../vue/ExtensionSlot.vue';
 import PeopleCardFollowAction from '../../vue/components/PeopleCardFollowAction.vue';
 import PeopleCardFriendshipAction from '../../../../modules/friendship/vue/components/PeopleCardFriendshipAction.vue';
@@ -20,7 +20,7 @@ const filters = [
     { key: 'tag', type: 'picker', multiple: true, label: 'Tags', optionsUrl: '/api/v2/user/tags' },
 ];
 
-const actions = [{ id: 'invite-people-button', icon: 'send', label: 'Invite new people', url: '/user/invite', modal: true, variant: 'accent' }];
+const actions = [{ id: 'invite-people-button', icon: 'send', label: 'Invite new people', url: '/user/invite', modal: true, primary: true }];
 
 const userItem = (id, overrides = {}) => ({
     id,
@@ -54,7 +54,7 @@ const stateCalls = () => globalThis.humhubStubs.client.get.mock.calls.filter(([u
 // PUT/DELETE go through client.ajax(); answered per endpoint.
 let ajax;
 
-describe('PeopleDirectory', () => {
+describe('PeopleBrowser', () => {
     let users;
     let states;
     let wrapper;
@@ -84,23 +84,23 @@ describe('PeopleDirectory', () => {
     });
 
     const mountIt = async (props = {}) => {
-        wrapper = mount(PeopleDirectory, {
+        wrapper = mount(PeopleBrowser, {
             props: { filters, actions, followEnabled: true, friendshipEnabled: true, buttons: { followClass: 'btn btn-accent', friendClass: 'btn btn-primary', friendGroupClass: 'btn-group' }, ...props },
-            global: { components: { CardDirectory, ExtensionSlot, FriendshipButton, PeopleCardFollowAction, PeopleCardFriendshipAction } },
+            global: { components: { EntityBrowser, ExtensionSlot, FriendshipButton, PeopleCardFollowAction, PeopleCardFriendshipAction } },
             attachTo: document.body,
         });
         await flushPromises();
         return wrapper;
     };
 
-    it('renders the toolbar with title, actions and filters', async () => {
+    it('renders the page header with title, actions and filters', async () => {
         await mountIt();
 
-        expect(wrapper.find('.c-page-toolbar__title').text()).toBe('People');
-        const invite = wrapper.find('.c-page-toolbar__actions a[data-action-id="invite-people-button"]');
+        expect(wrapper.find('.page-header-title').text()).toBe('People');
+        const invite = wrapper.find('.page-header-actions a[data-action-id="invite-people-button"]');
         expect(invite.attributes('aria-label')).toBe('Invite new people');
         expect(invite.classes()).toContain('btn-accent');
-        expect(wrapper.find('.c-filter-bar').exists()).toBe(true);
+        expect(wrapper.find('.filter-bar-body').exists()).toBe(true);
     });
 
     it('lists the directory users and loads their states once per page', async () => {
@@ -111,12 +111,12 @@ describe('PeopleDirectory', () => {
         expect(stateCalls()).toHaveLength(1);
         expect(params(stateCalls()[0][0]).getAll('ids[]')).toEqual(['1', '2']);
 
-        expect(wrapper.findAll('.c-entity-card__title').map((n) => n.text())).toEqual(['User 1', 'User 2']);
-        const first = wrapper.find('[data-id="1"] .c-entity-card__footer');
+        expect(wrapper.findAll('.entity-card-title').map((n) => n.text())).toEqual(['User 1', 'User 2']);
+        const first = wrapper.find('[data-id="1"] .entity-card-footer');
         expect(first.text()).toContain('Friends');
         expect(first.text()).toContain('Follow');
         // One's own card has no buttons.
-        expect(wrapper.find('[data-id="2"] .c-entity-card__footer').exists()).toBe(false);
+        expect(wrapper.find('[data-id="2"] .entity-card-footer').exists()).toBe(false);
     });
 
     it('sends a profile field filter as a PHP-style array parameter, from and to the page URL', async () => {
@@ -134,17 +134,17 @@ describe('PeopleDirectory', () => {
     it('shows the people skeletons while the first page loads', async () => {
         let resolve;
         globalThis.humhubStubs.client.get = vi.fn(() => new Promise((done) => { resolve = done; }));
-        wrapper = mount(PeopleDirectory, { props: { filters }, global: { components: { CardDirectory } }, attachTo: document.body });
+        wrapper = mount(PeopleBrowser, { props: { filters }, global: { components: { EntityBrowser } }, attachTo: document.body });
         await flushPromises();
 
-        expect(wrapper.findAll('.c-people-card-skeleton').length).toBeGreaterThan(0);
+        expect(wrapper.findAll('.people-card-skeleton').length).toBeGreaterThan(0);
         resolve(envelope([]));
     });
 
     it('adds a tag clicked on a card to the tag filter', async () => {
         await mountIt();
 
-        await wrapper.find('[data-id="1"] .c-entity-card__tag').trigger('click');
+        await wrapper.find('[data-id="1"] .entity-card-tag').trigger('click');
         await flushPromises();
 
         expect(params(listCalls().at(-1)[0]).get('tag')).toBe('Alpha');
@@ -154,7 +154,7 @@ describe('PeopleDirectory', () => {
     it('searches for a tag clicked on a card without a tag filter', async () => {
         await mountIt({ filters: filters.filter((filter) => filter.key !== 'tag') });
 
-        await wrapper.find('[data-id="1"] .c-entity-card__tag').trigger('click');
+        await wrapper.find('[data-id="1"] .entity-card-tag').trigger('click');
         await flushPromises();
 
         expect(params(listCalls().at(-1)[0]).get('q')).toBe('Alpha');
@@ -164,30 +164,30 @@ describe('PeopleDirectory', () => {
         await mountIt({ friendshipEnabled: false });
         states[1] = userState({ friendship: null });
 
-        const follow = wrapper.find('[data-id="1"] .c-entity-card__footer button.c-entity-card__action');
+        const follow = wrapper.find('[data-id="1"] .entity-card-footer button.entity-card-action');
         expect(follow.text()).toBe('Follow');
-        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--followers').text()).toBe('1');
+        expect(wrapper.find('[data-id="1"] .entity-card-stat-followers').text()).toBe('1');
 
         await follow.trigger('click');
         await flushPromises();
 
-        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--followers').text()).toBe('5');
-        expect(wrapper.find('[data-id="1"] .c-entity-card__footer button.c-entity-card__action').text()).toBe('Following');
+        expect(wrapper.find('[data-id="1"] .entity-card-stat-followers').text()).toBe('5');
+        expect(wrapper.find('[data-id="1"] .entity-card-footer button.entity-card-action').text()).toBe('Following');
     });
 
     it('follows a friendship change: friend count, state and the follow it brought along', async () => {
         states[1] = userState({ friendship: { state: 'requestReceived', isFollowing: false } });
         await mountIt();
-        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--friends').text()).toBe('2');
+        expect(wrapper.find('[data-id="1"] .entity-card-stat-friends').text()).toBe('2');
 
         // Accept the request.
-        await wrapper.find('[data-id="1"] .c-entity-card__footer .btn-group > a').trigger('click');
+        await wrapper.find('[data-id="1"] .entity-card-footer .btn-group > a').trigger('click');
         await flushPromises();
 
-        expect(wrapper.find('[data-id="1"] .c-entity-card__stat--friends').text()).toBe('3');
+        expect(wrapper.find('[data-id="1"] .entity-card-stat-friends').text()).toBe('3');
         expect(wrapper.vm.$refs.directory.states[1].friendship).toEqual({ state: 'friends', isFollowing: true });
         // The follow button refetched its state on `user:friendship-changed`.
-        expect(wrapper.find('[data-id="1"] .c-entity-card__footer button.c-entity-card__action').text()).toBe('Following');
+        expect(wrapper.find('[data-id="1"] .entity-card-footer button.entity-card-action').text()).toBe('Following');
         expect(wrapper.vm.$refs.directory.states[1].isFollowing).toBe(true);
         expect(wrapper.vm.$refs.directory.items[0].followerCount).toBe(6);
     });

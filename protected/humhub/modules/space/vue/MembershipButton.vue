@@ -131,7 +131,7 @@
  *
  * `buttonClass`/`pendingClass`/`memberClass`/`togglerClass`/`groupClass` carry the classes of
  * each state's button, and `showMemberState` whether the member state is rendered at all (the
- * space header hides it — leaving happens through its controls menu — the space directory shows
+ * space header hides it — leaving happens through its controls menu — the spaces browser shows
  * it). They are properties of the widget, which is where a call site or a theme
  * (`MembershipButton::EVENT_INIT`) sets them.
  *

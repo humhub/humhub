@@ -20,7 +20,7 @@
 import MembershipButton from '../MembershipButton.vue';
 
 /**
- * The membership action of a spaces directory card, the core's entry `membership` (sortOrder
+ * The membership action of a spaces browser card, the core's entry `membership` (sortOrder
  * 100) of the `space.card-actions` slot (registered in `vue/index.js`): the
  * `MembershipButton`, fed from the card's state (`state.membership`) without a request of its
  * own. A membership change reaches the directory as `space:membership-changed`.
@@ -43,7 +43,7 @@ export default {
     },
     methods: {
         actionClass(classes) {
-            return `${classes || ''} c-entity-card__action`.trim();
+            return `${classes || ''} entity-card-action`.trim();
         },
     },
 };

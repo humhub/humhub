@@ -10,27 +10,27 @@ const mountCard = (module, props = {}) => mount(ModuleCard, {
     props: { module, professionalEditionUrl: '/pe', ...props },
 });
 
-const action = (wrapper) => wrapper.find('.c-module-card__footer .c-module-card__action');
-const secondary = (wrapper) => wrapper.find('.c-module-card__footer .c-module-card__secondary');
+const action = (wrapper) => wrapper.find('.entity-card-footer .entity-card-action');
+const secondary = (wrapper) => wrapper.find('.entity-card-footer .module-card-secondary');
 const outdated = (overrides = {}) => marketplaceModule({ installedVersion: '1.0.0', updateAvailable: true, ...overrides });
 
 describe('ModuleCard', () => {
     it('shows the image, name, version and description', () => {
         const wrapper = mountCard(marketplaceModule());
 
-        expect(wrapper.find('.c-module-card__image').attributes('src')).toBe('/img/calendar.png');
-        const title = wrapper.find('a.c-module-card__title');
+        expect(wrapper.find('.entity-card-image').attributes('src')).toBe('/img/calendar.png');
+        const title = wrapper.find('a.entity-card-title');
         expect(title.text()).toBe('Calendar X');
         expect(title.attributes('href')).toBe('https://marketplace.humhub.com/module/calendar-x');
-        expect(wrapper.find('.c-module-card__version').text()).toBe('2.0.0');
-        expect(wrapper.find('.c-module-card__text').text()).toBe('Plan events together');
+        expect(wrapper.find('.entity-card-subtitle').text()).toBe('2.0.0');
+        expect(wrapper.find('.entity-card-text').text()).toBe('Plan events together');
     });
 
     describe('the pill', () => {
         it('is the type pill, which filters by its type', async () => {
             const wrapper = mountCard(marketplaceModule());
 
-            const pill = wrapper.find('button.c-module-card__badge--official');
+            const pill = wrapper.find('button.module-card-badge-official');
             expect(pill.text()).toBe('Official');
             expect(pill.attributes('aria-label')).toBe('Filter by Official');
             await pill.trigger('click');
@@ -43,7 +43,7 @@ describe('ModuleCard', () => {
         ])('shows the %s type and filters by it', async (badge, text) => {
             const wrapper = mountCard(marketplaceModule({ badge }));
 
-            const pill = wrapper.find(`button.c-module-card__badge--${badge}`);
+            const pill = wrapper.find(`button.module-card-badge-${badge}`);
             expect(pill.text()).toBe(text);
             await pill.trigger('click');
             expect(wrapper.emitted('filter-type')).toEqual([[badge]]);
@@ -52,44 +52,44 @@ describe('ModuleCard', () => {
         it('shows a featured star, filtering by tag=featured, next to the type pill', async () => {
             const wrapper = mountCard(marketplaceModule({ featured: true }));
 
-            const star = wrapper.find('button.c-module-card__badge--star');
+            const star = wrapper.find('button.module-card-badge-star');
             expect(star.attributes('aria-label')).toBe('Featured: filter by Featured');
             expect(star.attributes('title')).toBe('Featured');
             expect(star.find('.ti-star-filled').exists()).toBe(true);
             await star.trigger('click');
             expect(wrapper.emitted('filter-type')).toEqual([['featured']]);
 
-            expect(wrapper.find('button.c-module-card__badge--official').exists()).toBe(true);
+            expect(wrapper.find('button.module-card-badge-official').exists()).toBe(true);
         });
 
         it('has no featured star when the module is not featured', () => {
-            expect(mountCard(marketplaceModule({ featured: false })).find('.c-module-card__badge--star').exists()).toBe(false);
+            expect(mountCard(marketplaceModule({ featured: false })).find('.module-card-badge-star').exists()).toBe(false);
         });
 
         it('shows the star next to the PRO pill for a professional and featured module', () => {
             const wrapper = mountCard(marketplaceModule({ badge: 'professional', featured: true }));
 
-            expect(wrapper.find('.c-module-card__badge--star').exists()).toBe(true);
-            const pill = wrapper.find('button.c-module-card__badge--professional');
+            expect(wrapper.find('.module-card-badge-star').exists()).toBe(true);
+            const pill = wrapper.find('button.module-card-badge-professional');
             expect(pill.text()).toBe('PRO');
         });
 
         it('shows the star next to the update pill when a featured module has an update', () => {
             const wrapper = mountCard(outdated({ featured: true }));
 
-            expect(wrapper.find('.c-module-card__badge--star').exists()).toBe(true);
-            expect(wrapper.find('.c-module-card__badge--update').exists()).toBe(true);
+            expect(wrapper.find('.module-card-badge-star').exists()).toBe(true);
+            expect(wrapper.find('.module-card-badge-update').exists()).toBe(true);
         });
 
         it('carries the third-party hint on Partner pills', () => {
-            expect(mountCard(marketplaceModule({ badge: 'partner', isThirdParty: true })).find('.c-module-card__badge').attributes('title'))
+            expect(mountCard(marketplaceModule({ badge: 'partner', isThirdParty: true })).find('.module-card-badge').attributes('title'))
                 .toBe('This Module was developed by a third-party.');
         });
 
         it('has no pill without a badge, and a plain one for a deprecated module', () => {
-            expect(mountCard(marketplaceModule({ badge: 'none' })).find('.c-module-card__badge').exists()).toBe(false);
+            expect(mountCard(marketplaceModule({ badge: 'none' })).find('.module-card-badge').exists()).toBe(false);
 
-            const deprecated = mountCard(marketplaceModule({ badge: 'deprecated' })).find('.c-module-card__badge');
+            const deprecated = mountCard(marketplaceModule({ badge: 'deprecated' })).find('.module-card-badge');
             expect(deprecated.element.tagName).toBe('SPAN');
             expect(deprecated.text()).toBe('Deprecated');
         });
@@ -97,12 +97,12 @@ describe('ModuleCard', () => {
         it('names the available version instead of the type, not clickable', () => {
             const wrapper = mountCard(outdated({ latestCompatibleVersion: '2.1.0' }));
 
-            const pill = wrapper.find('.c-module-card__badge');
+            const pill = wrapper.find('.module-card-badge');
             expect(pill.element.tagName).toBe('SPAN');
-            expect(pill.classes()).toContain('c-module-card__badge--update');
+            expect(pill.classes()).toContain('module-card-badge-update');
             expect(pill.text()).toBe('2.1.0');
             expect(pill.find('.ti-arrow-up').exists()).toBe(true);
-            expect(wrapper.find('.c-module-card__version').text()).toBe('1.0.0');
+            expect(wrapper.find('.entity-card-subtitle').text()).toBe('1.0.0');
         });
     });
 
@@ -193,7 +193,7 @@ describe('ModuleCard', () => {
             expect(wrapper.classes()).toContain('is-updating');
             expect(action(wrapper).text()).toBe('Updating');
             expect(action(wrapper).classes()).toEqual(expect.arrayContaining(['btn-warning', 'is-updating']));
-            expect(action(wrapper).find('.ti-refresh.c-module-card__spin').exists()).toBe(true);
+            expect(action(wrapper).find('.ti-refresh.module-card-spin').exists()).toBe(true);
             expect(action(wrapper).attributes('disabled')).toBeDefined();
         });
 
@@ -216,8 +216,8 @@ describe('ModuleCard', () => {
             expect(wrapper.classes()).toEqual(expect.arrayContaining(['is-entering']));
             expect(wrapper.classes()).not.toContain('is-updating');
             expect(action(wrapper).text()).toBe('Installed');
-            expect(wrapper.find('button.c-module-card__badge--official').exists()).toBe(true);
-            expect(wrapper.find('.c-module-card__version').text()).toBe('2.0.0');
+            expect(wrapper.find('button.module-card-badge-official').exists()).toBe(true);
+            expect(wrapper.find('.entity-card-subtitle').text()).toBe('2.0.0');
         });
 
         it('shows an error', () => {
@@ -237,25 +237,25 @@ describe('ModuleCard', () => {
         it('marks the matches in the name and the description, accent- and case-insensitively', () => {
             const wrapper = mountCard(marketplaceModule({ name: 'Meetings', description: 'Plan meetings, meet up. Méet!' }), { query: 'meet' });
 
-            expect(wrapper.find('.c-module-card__title').html()).toContain('<mark class="c-module-card__mark">Meet</mark>ings');
-            expect(wrapper.findAll('.c-module-card__text mark').map((mark) => mark.text())).toEqual(['meet', 'meet', 'Méet']);
-            expect(wrapper.find('.c-module-card__text').text()).toBe('Plan meetings, meet up. Méet!');
+            expect(wrapper.find('.entity-card-title').html()).toContain('<mark class="module-card-mark">Meet</mark>ings');
+            expect(wrapper.findAll('.entity-card-text mark').map((mark) => mark.text())).toEqual(['meet', 'meet', 'Méet']);
+            expect(wrapper.find('.entity-card-text').text()).toBe('Plan meetings, meet up. Méet!');
         });
 
         it('marks nothing without a query or a match', () => {
             expect(mountCard(marketplaceModule()).find('mark').exists()).toBe(false);
             expect(mountCard(marketplaceModule(), { query: 'wiki' }).find('mark').exists()).toBe(false);
-            expect(mountCard(marketplaceModule(), { query: 'wiki' }).find('.c-module-card__title').text()).toBe('Calendar X');
+            expect(mountCard(marketplaceModule(), { query: 'wiki' }).find('.entity-card-title').text()).toBe('Calendar X');
         });
 
         it('renders the name, the description and the query as text', () => {
             const wrapper = mountCard(marketplaceModule({ name: '<b>Bold</b> & <i>co</i>', description: '<img src=x onerror=alert(1)>' }), { query: '<b>' });
 
-            expect(wrapper.find('.c-module-card__title b').exists()).toBe(false);
-            expect(wrapper.find('.c-module-card__title mark').text()).toBe('<b>');
-            expect(wrapper.find('.c-module-card__title').text()).toBe('<b>Bold</b> & <i>co</i>');
-            expect(wrapper.find('.c-module-card__text img').exists()).toBe(false);
-            expect(wrapper.find('.c-module-card__text').text()).toBe('<img src=x onerror=alert(1)>');
+            expect(wrapper.find('.entity-card-title b').exists()).toBe(false);
+            expect(wrapper.find('.entity-card-title mark').text()).toBe('<b>');
+            expect(wrapper.find('.entity-card-title').text()).toBe('<b>Bold</b> & <i>co</i>');
+            expect(wrapper.find('.entity-card-text img').exists()).toBe(false);
+            expect(wrapper.find('.entity-card-text').text()).toBe('<img src=x onerror=alert(1)>');
         });
     });
 });

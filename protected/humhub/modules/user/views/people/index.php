@@ -7,8 +7,8 @@
  */
 
 use humhub\components\View;
-use humhub\modules\user\widgets\PeopleDirectory;
+use humhub\modules\user\widgets\PeopleBrowser;
 
 /* @var $this View */
 ?>
-<?= PeopleDirectory::widget() ?>
+<?= PeopleBrowser::widget() ?>

@@ -13,7 +13,7 @@ use humhub\modules\user\assets\UserVueAsset;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\widgets\HeaderControlsMenu;
-use humhub\modules\user\widgets\PeopleDirectory;
+use humhub\modules\user\widgets\PeopleBrowser;
 use humhub\modules\user\widgets\ProfileHeaderCounterSet;
 use humhub\modules\user\widgets\UserFollowButton;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -21,11 +21,11 @@ use Yii;
 use yii\helpers\Json;
 
 /**
- * The People directory page as a `<people-directory>` island, and the `UserFollowButton` island.
+ * The People browser page as a `<people-browser>` island, and the `UserFollowButton` island.
  *
  * @since 1.20
  */
-class PeopleDirectoryWidgetTest extends HumHubDbTestCase
+class PeopleBrowserWidgetTest extends HumHubDbTestCase
 {
     /**
      * @inheritdoc
@@ -51,14 +51,14 @@ class PeopleDirectoryWidgetTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $html = PeopleDirectory::widget();
+        $html = PeopleBrowser::widget();
 
-        $this->assertStringContainsString('<people-directory', $html);
-        $this->assertStringContainsString('</people-directory>', $html);
-        $this->assertStringContainsString('class="c-page-toolbar"', $html);
-        $this->assertStringContainsString('<h1 id="people-directory-placeholder-title" class="c-page-toolbar__title">People</h1>', $html);
-        $this->assertStringContainsString('title="Invite new people"', $html, 'the toolbar actions stand in the placeholder already');
-        $this->assertSame(12, substr_count($html, 'class="c-card-skeleton c-entity-card-skeleton c-people-card-skeleton"'));
+        $this->assertStringContainsString('<people-browser', $html);
+        $this->assertStringContainsString('</people-browser>', $html);
+        $this->assertStringContainsString('class="page-header"', $html);
+        $this->assertMatchesRegularExpression('#<h1 id="[\w-]+-title" class="page-header-title">People</h1>#', $html);
+        $this->assertStringContainsString('title="Invite new people"', $html, 'the page header actions stand in the placeholder already');
+        $this->assertSame(12, substr_count($html, 'class="card entity-card entity-card-skeleton people-card-skeleton placeholder-glow"'));
         $this->assertStringNotContainsString('card-panel', $html);
 
         $bundles = Yii::$app->view->assetBundles;
@@ -70,14 +70,14 @@ class PeopleDirectoryWidgetTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $html = PeopleDirectory::widget();
+        $html = PeopleBrowser::widget();
         $props = $this->props($html);
 
         $this->assertSame(['q', 'groupId', 'sort', 'scope'], array_column($props['filters'], 'key'));
 
         $this->assertSame(['invite-people-button'], array_column($props['actions'], 'id'));
         $this->assertTrue($props['actions'][0]['modal']);
-        $this->assertSame('accent', $props['actions'][0]['variant']);
+        $this->assertTrue($props['actions'][0]['primary']);
 
         $this->assertSame('btn btn-primary', $props['buttons']['friendClass']);
         $this->assertSame('btn btn-light', $props['buttons']['friendStateClass']);
@@ -102,7 +102,7 @@ class PeopleDirectoryWidgetTest extends HumHubDbTestCase
         $module->disableFollow = true;
 
         try {
-            $html = PeopleDirectory::widget();
+            $html = PeopleBrowser::widget();
         } finally {
             $module->disableFollow = false;
         }
@@ -118,10 +118,10 @@ class PeopleDirectoryWidgetTest extends HumHubDbTestCase
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', 0);
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
 
-        $html = PeopleDirectory::widget();
+        $html = PeopleBrowser::widget();
 
         $this->assertSame([], array_column($this->props($html)['actions'], 'id'));
-        $this->assertStringNotContainsString('c-page-toolbar__actions', $html);
+        $this->assertStringNotContainsString('page-header-actions', $html);
     }
 
     public function testFollowButtonIsland(): void

@@ -15,16 +15,16 @@ use humhub\widgets\Icon;
 use humhub\widgets\VueWidget;
 
 /**
- * The spaces directory (`/spaces`) as a `<space-directory>` island (`vue/SpaceDirectory.vue`).
+ * The spaces browser (`/spaces`) as a `<spaces-browser>` island (`vue/SpacesBrowser.vue`).
  * Only cheap props are rendered — the filter definitions ({@see SpaceList::definitions()}),
- * the toolbar actions ({@see SpaceDirectoryHeadingButtons} as data), the button classes and
+ * the page header actions ({@see SpacesHeaderActions} as data), the button classes and
  * the icon markup; the spaces and the viewer's states load after mounting (see "Initial data:
  * embed or load" in `docs/develop/ui-js-vuejs-components.md`). Until then the placeholder shows
- * the page toolbar and skeleton space cards.
+ * the page header and skeleton space cards.
  *
  * @since 1.20
  */
-class SpaceDirectory extends VueWidget
+class SpacesBrowser extends VueWidget
 {
     /**
      * @var array the classes of the card's buttons — the `MembershipButton` (`buttonClass`,
@@ -45,11 +45,11 @@ class SpaceDirectory extends VueWidget
         'placeholderClass' => 'btn btn-light',
     ];
 
-    protected string $component = 'SpaceDirectory';
+    protected string $component = 'SpacesBrowser';
 
     protected ?string $assetBundle = SpaceVueAsset::class;
 
-    private ?array $actions = null;
+    private ?SpacesHeaderActions $headerActions = null;
 
     /**
      * @inheritdoc
@@ -73,13 +73,18 @@ class SpaceDirectory extends VueWidget
      */
     protected function getPlaceholder(): string
     {
-        return $this->render('spaceDirectoryPlaceholder', [
-            'actions' => $this->getActions(),
+        return $this->render('spacesBrowserPlaceholder', [
+            'headerActions' => $this->getHeaderActions(),
         ]);
     }
 
     private function getActions(): array
     {
-        return $this->actions ??= (new SpaceDirectoryHeadingButtons())->getEntriesData();
+        return $this->getHeaderActions()->getEntriesData();
+    }
+
+    private function getHeaderActions(): SpacesHeaderActions
+    {
+        return $this->headerActions ??= new SpacesHeaderActions();
     }
 }

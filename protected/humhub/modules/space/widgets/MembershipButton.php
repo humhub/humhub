@@ -26,7 +26,7 @@ use Yii;
  * ## Presentation
  *
  * The properties below carry it, replacing the per-button option array of earlier versions.
- * A caller sets what its context needs; the space directory shows the member state, the space
+ * A caller sets what its context needs; the spaces browser shows the member state, the space
  * header hides it (leaving happens through its controls menu) and reloads once the viewer
  * became a member.
  *
@@ -94,7 +94,7 @@ class MembershipButton extends VueWidget
 
     /**
      * @var bool|null whether the member state is rendered at all. The space header hides it
-     * (leaving happens through its controls menu), the space directory shows it.
+     * (leaving happens through its controls menu), the spaces browser shows it.
      * @since 1.20
      */
     public ?bool $showMemberState = null;

@@ -20,7 +20,7 @@
 <script>
 /**
  * The follow button of a space — mounted by `space\widgets\FollowButton` (space header, space
- * directory) or used directly by another island (the space directory's card).
+ * directory) or used directly by another island (the spaces browser's card).
  *
  * ## States
  *

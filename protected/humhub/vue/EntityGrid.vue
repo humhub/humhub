@@ -1,10 +1,10 @@
 <template>
-    <div class="c-card-grid" :class="{ 'is-loading': loading && !loadingMore && items.length > 0 }">
-        <div class="c-card-grid__cells" :aria-busy="loading ? 'true' : 'false'">
+    <div class="entity-grid" :class="{ 'is-loading': loading && !loadingMore && items.length > 0 }">
+        <div class="entity-grid-cells" :aria-busy="loading ? 'true' : 'false'">
             <div
                 v-for="(item, index) in items"
                 :key="item[itemKey]"
-                class="c-card-grid__cell"
+                class="entity-grid-cell"
                 :class="cardClass"
                 :style="{ '--card-stagger-index': staggerIndex(index) }"
                 :data-id="item[itemKey]"
@@ -16,29 +16,29 @@
                     <div
                         v-for="n in skeletonCount"
                         :key="`skeleton-${n}`"
-                        class="c-card-grid__cell c-card-grid__cell--skeleton"
+                        class="entity-grid-cell entity-grid-cell-skeleton"
                         :class="cardClass"
                         :style="{ '--card-stagger-index': n - 1 }"
                     >
                         <slot name="skeleton" :index="n - 1"><CardSkeleton /></slot>
                     </div>
                 </template>
-                <div v-else-if="error" class="c-card-grid__message c-card-grid__message--error">
-                    <p role="alert" class="c-card-grid__message-text">{{ error }}</p>
+                <div v-else-if="error" class="entity-grid-message entity-grid-message-error">
+                    <p role="alert" class="entity-grid-message-text">{{ error }}</p>
                     <button type="button" class="btn btn-light btn-sm" @click="$emit('retry')">{{ retryLabel }}</button>
                 </div>
-                <div v-else class="c-card-grid__message c-card-grid__message--empty">
-                    <p role="status" class="c-card-grid__message-text">
+                <div v-else class="entity-grid-message entity-grid-message-empty">
+                    <p role="status" class="entity-grid-message-text">
                         <slot name="empty"><strong>{{ emptyTitle }}</strong><br>{{ emptyHint }}</slot>
                     </p>
                 </div>
             </template>
         </div>
-        <div v-if="error && items.length" class="c-card-grid__error cards-error">
-            <p role="alert" class="c-card-grid__message-text">{{ error }}</p>
+        <div v-if="error && items.length" class="entity-grid-error cards-error">
+            <p role="alert" class="entity-grid-message-text">{{ error }}</p>
             <button type="button" class="btn btn-light btn-sm" @click="$emit('retry')">{{ retryLabel }}</button>
         </div>
-        <div v-else-if="hasMore" ref="sentinel" class="c-card-grid__more cards-more">
+        <div v-else-if="hasMore" ref="sentinel" class="entity-grid-more cards-more">
             <span v-if="loading" class="spinner-border spinner-border-sm" role="status" :aria-label="loadingLabel"></span>
             <button v-else type="button" class="btn btn-light btn-sm" @click="$emit('load-more')">{{ moreLabel }}</button>
         </div>
@@ -50,12 +50,12 @@ import { i18n } from '@humhub/vue';
 import CardSkeleton from './CardSkeleton.vue';
 
 /**
- * The card grid of a card directory page (`CardDirectory`): a CSS grid of cells at least 264px
+ * The card grid of an entity browser page (`EntityBrowser`): a CSS grid of cells at least 264px
  * wide (`repeat(auto-fill, minmax(264px, 1fr))`, gap 16px), whose cards pop in staggered —
- * `.c-card-grid` in `resources/scss/_card-directory.scss`.
+ * `.entity-grid` in `resources/scss/_entity-browser.scss`.
  *
  * - `card` slot, `{ item, index }`: the directory's own card, rendered inside a
- *   `.c-card-grid__cell` (`data-id` = the item's key). `index` is the item's position within
+ *   `.entity-grid-cell` (`data-id` = the item's key). `index` is the item's position within
  *   the page it was loaded with (see `pageStarts`); the cell carries it as
  *   `--card-stagger-index`, which delays its `pop-in` by index × 32ms.
  * - `cardClass`: an optional extra class on every cell (card and skeleton) — the grid owns the
@@ -69,9 +69,9 @@ import CardSkeleton from './CardSkeleton.vue';
  * - States: skeletons (the `skeleton` slot, default `CardSkeleton`) while the first page loads; while a later request loads
  *   the cards stay and the grid is dimmed (`.is-loading`) — not while `loadingMore` (a further
  *   page is appended, the cards stay valid; the spinner below the grid shows it); an error without cards replaces the
- *   grid (`.c-card-grid__message--error`), an error while paging sits below it
- *   (`.c-card-grid__error`, hook class `cards-error`) — both with a retry.
- * - Paging: a "Show more" button (`.c-card-grid__more`, hook class `cards-more`) while
+ *   grid (`.entity-grid-message-error`), an error while paging sits below it
+ *   (`.entity-grid-error`, hook class `cards-error`) — both with a retry.
+ * - Paging: a "Show more" button (`.entity-grid-more`, hook class `cards-more`) while
  *   `hasMore` is set, which an `IntersectionObserver` presses on its own when it scrolls into
  *   view (the button remains for keyboard users and for browsers without the observer); the
  *   observer is re-armed once a page finishes loading, since a sentinel that never left the
@@ -83,7 +83,7 @@ import CardSkeleton from './CardSkeleton.vue';
  * @since 1.20
  */
 export default {
-    name: 'CardGrid',
+    name: 'EntityGrid',
     components: { CardSkeleton },
     props: {
         items: { type: Array, required: true },

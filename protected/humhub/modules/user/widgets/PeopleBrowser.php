@@ -18,12 +18,12 @@ use humhub\widgets\VueWidget;
 use Yii;
 
 /**
- * The People directory (`/people`) as a `<people-directory>` island (`vue/PeopleDirectory.vue`).
+ * The People browser (`/people`) as a `<people-browser>` island (`vue/PeopleBrowser.vue`).
  * Only cheap props are rendered — the filter definitions ({@see UserList::definitions()}),
- * the toolbar actions ({@see PeopleHeadingButtons} as data), the button classes, which of
+ * the page header actions ({@see PeopleHeaderActions} as data), the button classes, which of
  * following and friendship the platform offers and the icon markup; the users and the viewer's
  * states load after mounting (see "Initial data: embed or load" in
- * `docs/develop/ui-js-vuejs-components.md`). Until then the placeholder shows the page toolbar
+ * `docs/develop/ui-js-vuejs-components.md`). Until then the placeholder shows the page header
  * and skeleton people cards.
  *
  * The friendship module's bundle registers the card's friendship action (the entry
@@ -32,7 +32,7 @@ use Yii;
  *
  * @since 1.20
  */
-class PeopleDirectory extends VueWidget
+class PeopleBrowser extends VueWidget
 {
     /**
      * @var array the classes of the card's buttons — the `FriendshipButton` (`friendClass` of
@@ -53,11 +53,11 @@ class PeopleDirectory extends VueWidget
         'placeholderClass' => 'btn btn-light',
     ];
 
-    protected string $component = 'PeopleDirectory';
+    protected string $component = 'PeopleBrowser';
 
     protected ?string $assetBundle = UserVueAsset::class;
 
-    private ?array $actions = null;
+    private ?PeopleHeaderActions $headerActions = null;
 
     /**
      * @inheritdoc
@@ -97,8 +97,8 @@ class PeopleDirectory extends VueWidget
      */
     protected function getPlaceholder(): string
     {
-        return $this->render('peopleDirectoryPlaceholder', [
-            'actions' => $this->getActions(),
+        return $this->render('peopleBrowserPlaceholder', [
+            'headerActions' => $this->getHeaderActions(),
         ]);
     }
 
@@ -109,6 +109,11 @@ class PeopleDirectory extends VueWidget
 
     private function getActions(): array
     {
-        return $this->actions ??= (new PeopleHeadingButtons())->getEntriesData();
+        return $this->getHeaderActions()->getEntriesData();
+    }
+
+    private function getHeaderActions(): PeopleHeaderActions
+    {
+        return $this->headerActions ??= new PeopleHeaderActions();
     }
 }

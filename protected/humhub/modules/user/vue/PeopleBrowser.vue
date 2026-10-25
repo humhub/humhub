@@ -1,6 +1,6 @@
 <template>
-    <div class="c-people-directory">
-        <CardDirectory
+    <div class="people-browser">
+        <EntityBrowser
             ref="directory"
             :url="listUrl"
             :title="labels.title"
@@ -26,7 +26,7 @@
             <template #skeleton>
                 <PeopleCardSkeleton />
             </template>
-        </CardDirectory>
+        </EntityBrowser>
     </div>
 </template>
 
@@ -39,9 +39,9 @@ import { fetchStates } from './components/userApi.js';
 const STATE_FRIENDS = 'friends';
 
 /**
- * The People directory (`/people`), mounted by `user\widgets\PeopleDirectory`: the core
- * `CardDirectory` titled "People", fed by `GET /api/v2/user?purpose=directory` (the platform's
- * user search, see `UserList`), with the toolbar actions (`PeopleHeadingButtons` as data)
+ * The People browser (`/people`), mounted by `user\widgets\PeopleBrowser`: the core
+ * `EntityBrowser` titled "People", fed by `GET /api/v2/user?purpose=directory` (the platform's
+ * user search, see `UserList`), with the page header actions (`PeopleHeaderActions` as data)
  * and the filters (`UserList::definitions()`). The viewer's states of every loaded page come
  * from one `GET user/states` (`itemStates`) and feed each `PeopleCard`'s friendship and follow
  * buttons.
@@ -62,9 +62,9 @@ const STATE_FRIENDS = 'friends';
  * @since 1.20
  */
 export default {
-    name: 'PeopleDirectory',
+    name: 'PeopleBrowser',
     i18nCategories: ['UserModule.base', 'FriendshipModule.base', 'base'],
-    // `CardDirectory` is a core component, resolved through the global registry (CoreVueAsset).
+    // `EntityBrowser` is a core component, resolved through the global registry (CoreVueAsset).
     components: { PeopleCard, PeopleCardSkeleton },
     props: {
         filters: { type: Array, default: () => [] },

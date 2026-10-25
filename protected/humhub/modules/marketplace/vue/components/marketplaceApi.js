@@ -2,7 +2,7 @@ import { apiUrl, client } from '@humhub/vue';
 
 /**
  * The marketplace endpoints (`docs/api/src/marketplace.yaml`) as the island calls them. The
- * module list itself is read by `CardDirectory`.
+ * module list itself is read by `EntityBrowser`.
  *
  * @since 1.20
  */

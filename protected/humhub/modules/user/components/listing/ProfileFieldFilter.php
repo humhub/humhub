@@ -26,7 +26,7 @@ use Yii;
  * of {@see \humhub\modules\user\components\UserList::filterFields()}, keyed by the bracket key
  * (`FilterableList::build()` reads `fields[city]=x` back from PHP's `['fields' => ['city' => 'x']]`).
  *
- * The matching of the People directory's profile field filters since 1.9: a dropdown matches its
+ * The matching of the People browser's profile field filters since 1.9: a dropdown matches its
  * option key, a checkbox list any of its stored options (or the "Other:" value while that is
  * allowed), any other field a part of its text. The value is the trimmed string; an empty one is
  * absent.

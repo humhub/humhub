@@ -1,6 +1,6 @@
 <template>
-    <div class="c-space-directory">
-        <CardDirectory
+    <div class="spaces-browser">
+        <EntityBrowser
             ref="directory"
             :url="listUrl"
             :title="labels.title"
@@ -23,7 +23,7 @@
             <template #skeleton>
                 <SpaceCardSkeleton />
             </template>
-        </CardDirectory>
+        </EntityBrowser>
     </div>
 </template>
 
@@ -36,10 +36,10 @@ import { fetchStates } from './components/spaceApi.js';
 const MEMBERSHIP_CHANGED = 'space:membership-changed';
 
 /**
- * The spaces directory (`/spaces`), mounted by `space\widgets\SpaceDirectory`: the core
- * `CardDirectory` titled "Spaces", fed by `GET /api/v2/space?purpose=directory` (the platform's
- * space search, see `SpaceList`), with the toolbar actions (`SpaceDirectoryHeadingButtons`
- * as data) and the filter definitions of the `SpaceList`. The viewer's states of every loaded
+ * The spaces browser (`/spaces`), mounted by `space\widgets\SpacesBrowser`: the core
+ * `EntityBrowser` titled "Spaces", fed by `GET /api/v2/space?purpose=directory` (the platform's
+ * space search, see `SpaceList`), with the page header actions (`SpacesHeaderActions` as
+ * data) and the filter definitions of the `SpaceList`. The viewer's states of every loaded
  * page come from one `GET space/states` (`itemStates`) and feed each `SpaceCard`'s membership
  * and follow buttons.
  *
@@ -54,9 +54,9 @@ const MEMBERSHIP_CHANGED = 'space:membership-changed';
  * @since 1.20
  */
 export default {
-    name: 'SpaceDirectory',
+    name: 'SpacesBrowser',
     i18nCategories: ['SpaceModule.base', 'base'],
-    // `CardDirectory` is a core component, resolved through the global registry (CoreVueAsset).
+    // `EntityBrowser` is a core component, resolved through the global registry (CoreVueAsset).
     components: { SpaceCard, SpaceCardSkeleton },
     props: {
         filters: { type: Array, default: () => [] },

@@ -14,7 +14,7 @@ use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use Yii;
 
 /**
- * SpacesController displays the spaces directory (the `SpaceDirectory` island)
+ * SpacesController displays the spaces browser (the `SpacesBrowser` island)
  *
  * @since 1.9
  */

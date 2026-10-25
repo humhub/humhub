@@ -40,7 +40,7 @@ const userState = (overrides = {}) => ({
     ...overrides,
 });
 
-// `user\widgets\PeopleDirectory::$buttonClasses`
+// `user\widgets\PeopleBrowser::$buttonClasses`
 const buttons = {
     friendClass: 'btn btn-primary',
     friendStateClass: 'btn btn-light',
@@ -71,28 +71,28 @@ describe('PeopleCard', () => {
     it('renders cover, avatar, name, title, details and tags', () => {
         const wrapper = mountCard({ state: userState() });
 
-        const title = wrapper.find('a.c-entity-card__title');
+        const title = wrapper.find('a.entity-card-title');
         expect(title.text()).toBe('Sara Schuster');
         expect(title.attributes('href')).toBe('/u/sara');
-        const avatar = wrapper.find('a.c-entity-card__avatar');
+        const avatar = wrapper.find('a.entity-card-avatar');
         expect(avatar.attributes('href')).toBe('/u/sara');
         expect(avatar.attributes('aria-hidden')).toBe('true');
         expect(avatar.find('img').attributes('style')).toContain('width: 80px');
         // Without a banner the cover is plain grey (from the stylesheet).
-        expect(wrapper.find('.c-entity-card__cover').attributes('style')).toBeUndefined();
-        expect(wrapper.find('.c-entity-card__subtitle').text()).toBe('Sales Manager');
-        expect(wrapper.findAll('.c-people-card__detail').map((line) => line.text())).toEqual(['GB Branch', '+44 020 555 5015']);
-        expect(wrapper.findAll('.c-entity-card__tag').map((tag) => tag.text())).toEqual(['Leadership', 'Agile']);
+        expect(wrapper.find('.entity-card-cover').attributes('style')).toBeUndefined();
+        expect(wrapper.find('.entity-card-subtitle').text()).toBe('Sales Manager');
+        expect(wrapper.findAll('.people-card-detail').map((line) => line.text())).toEqual(['GB Branch', '+44 020 555 5015']);
+        expect(wrapper.findAll('.entity-card-tag').map((tag) => tag.text())).toEqual(['Leadership', 'Agile']);
         wrapper.unmount();
     });
 
     it('uses the banner as cover and leaves out an empty title', () => {
         const wrapper = mountCard({ user: userItem({ bannerUrl: '/banner.jpg', title: null, details: [], tags: [] }), state: null });
 
-        expect(wrapper.find('.c-entity-card__cover').attributes('style')).toContain('background-image: url("/banner.jpg")');
-        expect(wrapper.find('.c-entity-card__subtitle').exists()).toBe(false);
-        expect(wrapper.find('.c-entity-card__body').exists()).toBe(true);
-        expect(wrapper.find('.c-entity-card__tags').exists()).toBe(false);
+        expect(wrapper.find('.entity-card-cover').attributes('style')).toContain('background-image: url("/banner.jpg")');
+        expect(wrapper.find('.entity-card-subtitle').exists()).toBe(false);
+        expect(wrapper.find('.entity-card-body').exists()).toBe(true);
+        expect(wrapper.find('.entity-card-tags').exists()).toBe(false);
         wrapper.unmount();
     });
 
@@ -100,10 +100,10 @@ describe('PeopleCard', () => {
         it('shows the friends while friendship is on, opening the friend list', async () => {
             const wrapper = mountCard({ state: userState() });
 
-            const stat = wrapper.find('.c-entity-card__stat--friends');
+            const stat = wrapper.find('.entity-card-stat-friends');
             expect(stat.text()).toBe('2');
             expect(stat.attributes('aria-label')).toBe('2 Friends');
-            expect(wrapper.find('.c-entity-card__stat--followers').exists()).toBe(false);
+            expect(wrapper.find('.entity-card-stat-followers').exists()).toBe(false);
 
             await stat.trigger('click');
             expect(globalThis.humhubStubs.modal.global.load).toHaveBeenCalledWith('/index.php?r=friendship%2Flist%2Fpopup&userId=7');
@@ -113,7 +113,7 @@ describe('PeopleCard', () => {
         it('shows the followers otherwise, opening the follower list', async () => {
             const wrapper = mountCard({ user: userItem({ friendCount: null }), friendshipEnabled: false, state: userState({ friendship: null }) });
 
-            const stat = wrapper.find('.c-entity-card__stat--followers');
+            const stat = wrapper.find('.entity-card-stat-followers');
             expect(stat.text()).toBe('3');
             expect(stat.attributes('aria-label')).toBe('3 Followers');
 
@@ -125,20 +125,20 @@ describe('PeopleCard', () => {
         it('has no pill without either count', () => {
             const wrapper = mountCard({ user: userItem({ friendCount: null, followerCount: null }), state: null });
 
-            expect(wrapper.find('.c-entity-card__pill').exists()).toBe(false);
+            expect(wrapper.find('.entity-card-pill').exists()).toBe(false);
             wrapper.unmount();
         });
     });
 
     it('shows a disabled placeholder while the state loads, nothing without a state', () => {
         const loading = mountCard({ state: undefined });
-        const placeholder = loading.find('.c-entity-card__footer .c-entity-card__placeholder');
+        const placeholder = loading.find('.entity-card-footer .entity-card-placeholder');
         expect(placeholder.attributes('disabled')).toBeDefined();
-        expect(loading.find('.c-entity-card__footer').text()).toBe('');
+        expect(loading.find('.entity-card-footer').text()).toBe('');
         loading.unmount();
 
         const missing = mountCard({ state: null });
-        expect(missing.find('.c-entity-card__footer').exists()).toBe(false);
+        expect(missing.find('.entity-card-footer').exists()).toBe(false);
         missing.unmount();
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
@@ -146,7 +146,7 @@ describe('PeopleCard', () => {
     it('feeds the friendship and follow button from the state without a request', () => {
         const wrapper = mountCard({ state: userState() });
 
-        const actions = wrapper.findAll('.c-entity-card__footer .c-entity-card__action');
+        const actions = wrapper.findAll('.entity-card-footer .entity-card-action');
         expect(actions.map((action) => action.text())).toEqual(['Friends', 'Follow']);
         expect(actions[0].classes()).toEqual(expect.arrayContaining(['btn', 'btn-primary']));
         expect(actions[1].classes()).toEqual(expect.arrayContaining(['btn', 'btn-accent']));
@@ -156,11 +156,11 @@ describe('PeopleCard', () => {
 
     it('renders only the buttons of the features that are on', () => {
         const followOnly = mountCard({ friendshipEnabled: false, state: userState({ friendship: null }) });
-        expect(followOnly.findAll('.c-entity-card__footer .c-entity-card__action').map((action) => action.text())).toEqual(['Follow']);
+        expect(followOnly.findAll('.entity-card-footer .entity-card-action').map((action) => action.text())).toEqual(['Follow']);
         followOnly.unmount();
 
         const friendOnly = mountCard({ followEnabled: false, state: userState({ canFollow: false }) });
-        expect(friendOnly.findAll('.c-entity-card__footer .c-entity-card__action').map((action) => action.text())).toEqual(['Friends']);
+        expect(friendOnly.findAll('.entity-card-footer .entity-card-action').map((action) => action.text())).toEqual(['Friends']);
         friendOnly.unmount();
     });
 
@@ -168,7 +168,7 @@ describe('PeopleCard', () => {
         globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ isFollowing: false, followerCount: 2, canFollow: false }));
         const wrapper = mountCard({ followEnabled: false, friendshipEnabled: false, state: userState({ isFollowing: true, canFollow: false, friendship: null }) });
 
-        const button = wrapper.find('.c-entity-card__footer .c-entity-card__action');
+        const button = wrapper.find('.entity-card-footer .entity-card-action');
         expect(button.text()).toBe('Following');
 
         await button.trigger('click');
@@ -177,20 +177,20 @@ describe('PeopleCard', () => {
         expect(globalThis.humhubStubs.client.ajax.mock.calls[0][1]).toMatchObject({ type: 'DELETE' });
         expect(wrapper.emitted('follow-change')).toEqual([[{ userId: 7, isFollowing: false, followerCount: 2, canFollow: false }]]);
         // Ended, it cannot be started again.
-        expect(wrapper.find('.c-entity-card__footer .c-entity-card__action').exists()).toBe(false);
+        expect(wrapper.find('.entity-card-footer .entity-card-action').exists()).toBe(false);
     });
 
     it('has no buttons on one\'s own card', () => {
         const wrapper = mountCard({ state: userState({ isSelf: true, canFollow: false, friendship: null }) });
 
-        expect(wrapper.find('.c-entity-card__footer').exists()).toBe(false);
+        expect(wrapper.find('.entity-card-footer').exists()).toBe(false);
         wrapper.unmount();
     });
 
     it('emits filter-tag for a tag', async () => {
         const wrapper = mountCard({ state: null });
 
-        const tag = wrapper.findAll('.c-entity-card__tag')[1];
+        const tag = wrapper.findAll('.entity-card-tag')[1];
         expect(tag.attributes('aria-label')).toBe('Filter by Agile');
         await tag.trigger('click');
         expect(wrapper.emitted('filter-tag')).toEqual([['Agile']]);
@@ -200,12 +200,12 @@ describe('PeopleCard', () => {
     it('emits the follow and the friendship button changes', async () => {
         const wrapper = mountCard({ state: userState() });
 
-        await wrapper.find('.c-entity-card__footer button.c-entity-card__action').trigger('click');
+        await wrapper.find('.entity-card-footer button.entity-card-action').trigger('click');
         await flushPromises();
         expect(wrapper.emitted('follow-change')).toEqual([[{ userId: 7, isFollowing: true, followerCount: 4, canFollow: true }]]);
 
         globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ state: 'requestSent', isFollowing: true }));
-        await wrapper.find('.c-entity-card__footer a.c-entity-card__action').trigger('click');
+        await wrapper.find('.entity-card-footer a.entity-card-action').trigger('click');
         await flushPromises();
         expect(wrapper.emitted('friendship-change')).toEqual([[{ userId: 7, state: 'requestSent', isFollowing: true }]]);
         wrapper.unmount();
@@ -215,13 +215,13 @@ describe('PeopleCard', () => {
         vueModule.register('TestPeopleCardSubtitle', {
             props: { user: { type: Object, required: true } },
             render() {
-                return Vue.h('p', { class: 'c-entity-card__subtitle test-subtitle' }, `Branch of ${this.user.displayName}`);
+                return Vue.h('p', { class: 'entity-card-subtitle test-subtitle' }, `Branch of ${this.user.displayName}`);
             },
         });
         vueModule.register('TestPeopleCardAction', {
             props: { user: { type: Object, required: true }, state: { type: Object, default: null } },
             render() {
-                return Vue.h('button', { class: 'c-entity-card__action test-action' }, `Message ${this.user.id} ${this.state.isFollowing}`);
+                return Vue.h('button', { class: 'entity-card-action test-action' }, `Message ${this.user.id} ${this.state.isFollowing}`);
             },
         });
         vueModule.registerSlotComponent('user.card-subtitle', 'TestPeopleCardSubtitle');
@@ -239,16 +239,16 @@ describe('PeopleCard', () => {
         await vueModule.mountElement(el);
         await flushPromises();
 
-        expect(el.querySelector('.c-entity-card__header .test-subtitle').textContent).toBe('Branch of Sara Schuster');
-        expect(el.querySelector('.c-entity-card__footer .test-action').textContent).toBe('Message 7 false');
+        expect(el.querySelector('.entity-card-header .test-subtitle').textContent).toBe('Branch of Sara Schuster');
+        expect(el.querySelector('.entity-card-footer .test-action').textContent).toBe('Message 7 false');
     });
 
     describe('online status', () => {
-        const indicator = (wrapper) => wrapper.find('.c-entity-card__avatar .user-online-status');
+        const indicator = (wrapper) => wrapper.find('.entity-card-avatar .user-online-status');
 
         it('shows the state\'s online status on the avatar, as the Image widget does', () => {
             const online = mountCard({ state: userState({ isOnline: true }) });
-            expect(online.find('a.c-entity-card__avatar').classes()).toEqual(expect.arrayContaining(['has-online-status', 'img-size-large']));
+            expect(online.find('a.entity-card-avatar').classes()).toEqual(expect.arrayContaining(['has-online-status', 'img-size-large']));
             expect(indicator(online).classes()).toEqual(expect.arrayContaining(['tt', 'user-is-online']));
             expect(indicator(online).attributes('aria-label')).toBe('Online');
             online.unmount();
@@ -263,7 +263,7 @@ describe('PeopleCard', () => {
             for (const state of [undefined, null, userState({ isOnline: null }), userState()]) {
                 const wrapper = mountCard({ state });
                 expect(indicator(wrapper).exists()).toBe(false);
-                expect(wrapper.find('a.c-entity-card__avatar').classes()).not.toContain('has-online-status');
+                expect(wrapper.find('a.entity-card-avatar').classes()).not.toContain('has-online-status');
                 wrapper.unmount();
             }
         });
@@ -275,7 +275,7 @@ describe('PeopleCard', () => {
             inheritAttrs: false,
             props: { user: { type: Object, required: true } },
             render() {
-                return Vue.h('button', { type: 'button', class: 'c-entity-card__action test-mail' }, `Message ${this.user.id}`);
+                return Vue.h('button', { type: 'button', class: 'entity-card-action test-mail' }, `Message ${this.user.id}`);
             },
         };
         const TestReplacementFollow = {
@@ -286,7 +286,7 @@ describe('PeopleCard', () => {
             render() {
                 return Vue.h('button', {
                     type: 'button',
-                    class: 'c-entity-card__action test-follow',
+                    class: 'entity-card-action test-follow',
                     onClick: () => this.$emit('follow-change', { userId: this.user.id, isFollowing: !this.state.isFollowing }),
                 }, 'Custom follow');
             },
@@ -299,7 +299,7 @@ describe('PeopleCard', () => {
             global: { components: { ExtensionSlot, FriendshipButton, PeopleCardFollowAction, PeopleCardFriendshipAction, TestMailAction, TestReplacementFollow } },
             attachTo: document.body,
         });
-        const actionTexts = (wrapper) => wrapper.findAll('.c-entity-card__footer .c-entity-card__action').map((action) => action.text());
+        const actionTexts = (wrapper) => wrapper.findAll('.entity-card-footer .entity-card-action').map((action) => action.text());
 
         // Removals are permanent, so every test starts from the production registrations.
         const restoreRegistrations = async () => {
@@ -346,7 +346,7 @@ describe('PeopleCard', () => {
 
             vueModule.removeSlotComponent('user.card-actions', 'friendship');
             await flushPromises();
-            expect(wrapper.find('.c-entity-card__footer .c-entity-card__action').exists()).toBe(false);
+            expect(wrapper.find('.entity-card-footer .entity-card-action').exists()).toBe(false);
             wrapper.unmount();
         });
 
@@ -364,7 +364,7 @@ describe('PeopleCard', () => {
             vueModule.registerSlotComponent('user.card-actions', 'TestMailAction', { id: 'mail', sortOrder: 300 });
             const wrapper = mountWithActions({ state: userState({ isSelf: true, canFollow: false, friendship: null }) });
 
-            expect(wrapper.find('.c-entity-card__footer').exists()).toBe(false);
+            expect(wrapper.find('.entity-card-footer').exists()).toBe(false);
             wrapper.unmount();
         });
     });

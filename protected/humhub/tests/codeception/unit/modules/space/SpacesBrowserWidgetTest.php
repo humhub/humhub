@@ -8,16 +8,16 @@
 
 namespace humhub\tests\codeception\unit\modules\space;
 
-use humhub\modules\space\widgets\SpaceDirectory;
+use humhub\modules\space\widgets\SpacesBrowser;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\helpers\Json;
 
 /**
- * The spaces directory page as a `<space-directory>` island.
+ * The spaces browser page as a `<spaces-browser>` island.
  *
  * @since 1.20
  */
-class SpaceDirectoryWidgetTest extends HumHubDbTestCase
+class SpacesBrowserWidgetTest extends HumHubDbTestCase
 {
     /**
      * @inheritdoc
@@ -36,14 +36,14 @@ class SpaceDirectoryWidgetTest extends HumHubDbTestCase
     {
         $this->becomeUser('Admin');
 
-        $html = SpaceDirectory::widget();
+        $html = SpacesBrowser::widget();
 
-        $this->assertStringContainsString('<space-directory', $html);
-        $this->assertStringContainsString('</space-directory>', $html);
-        $this->assertStringContainsString('class="c-page-toolbar"', $html);
-        $this->assertStringContainsString('<h1 id="space-directory-placeholder-title" class="c-page-toolbar__title">Spaces</h1>', $html);
-        $this->assertStringContainsString('title="Create Space"', $html, 'the toolbar actions stand in the placeholder already');
-        $this->assertSame(12, substr_count($html, 'class="c-card-skeleton c-entity-card-skeleton c-space-card-skeleton"'));
+        $this->assertStringContainsString('<spaces-browser', $html);
+        $this->assertStringContainsString('</spaces-browser>', $html);
+        $this->assertStringContainsString('class="page-header"', $html);
+        $this->assertMatchesRegularExpression('#<h1 id="[\w-]+-title" class="page-header-title">Spaces</h1>#', $html);
+        $this->assertStringContainsString('title="Create Space"', $html, 'the page header actions stand in the placeholder already');
+        $this->assertSame(12, substr_count($html, 'class="card entity-card entity-card-skeleton space-card-skeleton placeholder-glow"'));
         $this->assertStringNotContainsString('card-panel', $html);
     }
 
@@ -51,13 +51,13 @@ class SpaceDirectoryWidgetTest extends HumHubDbTestCase
     {
         $this->becomeUser('Admin');
 
-        $props = $this->props(SpaceDirectory::widget());
+        $props = $this->props(SpacesBrowser::widget());
 
         $this->assertSame(['q', 'sort', 'scope'], array_column($props['filters'], 'key'));
 
         $this->assertSame(['create-space-button'], array_column($props['actions'], 'id'));
         $this->assertTrue($props['actions'][0]['modal']);
-        $this->assertSame('accent', $props['actions'][0]['variant']);
+        $this->assertTrue($props['actions'][0]['primary']);
 
         $this->assertSame('btn btn-primary', $props['buttons']['buttonClass']);
         $this->assertSame('btn btn-light', $props['buttons']['memberClass']);
@@ -73,10 +73,10 @@ class SpaceDirectoryWidgetTest extends HumHubDbTestCase
     {
         $this->becomeUser('User3');
 
-        $html = SpaceDirectory::widget();
+        $html = SpacesBrowser::widget();
 
         $this->assertSame([], array_column($this->props($html)['actions'], 'id'));
         $this->assertStringNotContainsString('title="Create Space"', $html);
-        $this->assertStringNotContainsString('c-page-toolbar__actions', $html);
+        $this->assertStringNotContainsString('page-header-actions', $html);
     }
 }

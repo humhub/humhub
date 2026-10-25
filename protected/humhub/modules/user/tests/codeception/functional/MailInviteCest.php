@@ -26,8 +26,8 @@ class MailInviteCest
         $I->amOnDirectory()->clickMembers();
         $I->amGoingTo('invite a user by mail');
 
-        // The toolbar action of the People directory island (inert in its placeholder).
-        $I->seeElement('people-directory [title="Invite new people"]');
+        // The toolbar action of the People browser island (inert in its placeholder).
+        $I->seeElement('people-browser [title="Invite new people"]');
 
         $I->sendAjaxPostRequest(Url::to(['/user/invite']), ['Invite[emails]' => 'a@test.de,b@test.de']);
         $I->seeEmailIsSent(2);

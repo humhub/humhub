@@ -29,7 +29,7 @@ use yii\web\ForbiddenHttpException;
 /**
  * The user list of the HTTP API (see `docs/develop/concept-api.md`).
  *
- * This is the general list of users, not one endpoint per consumer: the People directory reads
+ * This is the general list of users, not one endpoint per consumer: the People browser reads
  * it, a user picker reads the same list for its purpose through {@see self::actionPicker()}
  * (in the short shape), and mentioning can read it too. What it answers is therefore
  * caller-NEUTRAL ({@see UserSerializer::list()}) — no "do I follow them", no friendship. A
@@ -117,12 +117,12 @@ class UserController extends BaseController
      * An unknown value of one of these, and a parameter the list does not know, answers
      * `422 {errors}`.
      *
-     * The list is the People directory and requires its permission ({@see PeopleAccess}) whatever
+     * The list is the People browser and requires its permission ({@see PeopleAccess}) whatever
      * the `purpose` — a purpose selects defaults and presentation, never a permission. A user
      * picker has an endpoint of its own ({@see self::actionPicker()}); mentioning gets one when
      * it moves to the API.
      *
-     * @throws ForbiddenHttpException without access to the People directory
+     * @throws ForbiddenHttpException without access to the People browser
      */
     public function actionIndex()
     {
@@ -144,7 +144,7 @@ class UserController extends BaseController
      * {@see \humhub\modules\user\components\listing\UserFilter}) — the user list for the
      * picker purpose ({@see UserList::PURPOSE_PICKER}: availability, hidden users and the
      * restrictions modules add for the purpose apply), for every logged-in user, without access
-     * to the People directory.
+     * to the People browser.
      *
      * Parameters, exactly: `q`, `ids`, `exclude`, `spaceId` (as for {@see self::actionIndex()})
      * and `page`/`pageSize` — so a picker reaches none of the directory's filters (`scope`,
@@ -183,7 +183,7 @@ class UserController extends BaseController
     }
 
     /**
-     * What the caller is to the users they name — the states of the People directory's cards.
+     * What the caller is to the users they name — the states of the People browser's cards.
      *
      * Parameter: `ids` (repeated or comma-separated, at most 100) — the users a client
      * currently displays. Answers `{results: {<id>: {...}}}` with per user the caller may see
@@ -203,9 +203,9 @@ class UserController extends BaseController
      *
      * The page is answered with a fixed number of queries, not a number per user.
      *
-     * Requires access to the People directory ({@see PeopleAccess}), as the list does.
+     * Requires access to the People browser ({@see PeopleAccess}), as the list does.
      *
-     * @throws ForbiddenHttpException without access to the People directory
+     * @throws ForbiddenHttpException without access to the People browser
      */
     public function actionStates()
     {
@@ -265,7 +265,7 @@ class UserController extends BaseController
 
     /**
      * The values a directory filter over a profile field offers, `{results: [{id, name, count?}]}`
-     * — the `optionsUrl` of the People directory's field filters.
+     * — the `optionsUrl` of the People browser's field filters.
      *
      * Parameters: `field`, the internal name of a profile field marked as directory filter, and
      * `q`, the text a picker's user typed (optional, at most {@see UserList::MAX_SEARCH_LENGTH}
@@ -275,7 +275,7 @@ class UserController extends BaseController
      * options of a dropdown or checkbox list, else the most frequent values users entered (at
      * most {@see UserList::MAX_FILTER_VALUES}); with `q` only those containing it.
      *
-     * @throws ForbiddenHttpException without access to the People directory
+     * @throws ForbiddenHttpException without access to the People browser
      */
     public function actionFieldValues()
     {
@@ -305,7 +305,7 @@ class UserController extends BaseController
 
     /**
      * The user tags of the users the caller may see, `{results: [{id, name, count}]}` — the
-     * `optionsUrl` of the People directory's tag picker ({@see UserList::tagValues()}): `id` and
+     * `optionsUrl` of the People browser's tag picker ({@see UserList::tagValues()}): `id` and
      * `name` are the tag, what the list's `tag` takes, `count` how many of these users have it.
      * The most frequent first, at most {@see UserList::MAX_FILTER_VALUES}.
      *
@@ -316,7 +316,7 @@ class UserController extends BaseController
      * Both endpoints take their values from the users the directory lists the caller, with the
      * restrictions modules apply to it ({@see UserList::EVENT_BUILD}, purpose `directory`).
      *
-     * @throws ForbiddenHttpException without access to the People directory
+     * @throws ForbiddenHttpException without access to the People browser
      */
     public function actionTags()
     {

@@ -1,9 +1,9 @@
 /**
- * The user islands' endpoint layer — every request the People directory and the follow button
+ * The user islands' endpoint layer — every request the People browser and the follow button
  * make goes through here (the same role `spaceApi.js` has for the space islands).
  *
  * Endpoints: `humhub\modules\user\controllers\api\UserController` and `FollowController`, see
- * `docs/develop/concept-api.md`. The list itself is loaded by the kit's `CardDirectory` from
+ * `docs/develop/concept-api.md`. The list itself is loaded by the kit's `EntityBrowser` from
  * `GET /api/v2/user?purpose=directory`; what the caller is to the listed users comes from here.
  *
  * @since 1.20

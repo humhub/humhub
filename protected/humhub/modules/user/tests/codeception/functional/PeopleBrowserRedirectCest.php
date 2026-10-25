@@ -13,11 +13,11 @@ use user\FunctionalTester;
 use Yii;
 
 /**
- * Links to the People directory with the parameters of its filters before 1.20 (`keyword`,
+ * Links to the People browser with the parameters of its filters before 1.20 (`keyword`,
  * `connection`) land on the same selection under the parameters of `GET /api/v2/user` the
  * directory uses now.
  */
-class PeopleDirectoryRedirectCest
+class PeopleBrowserRedirectCest
 {
     public function _after(): void
     {

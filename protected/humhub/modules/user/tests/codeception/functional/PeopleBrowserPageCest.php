@@ -15,21 +15,21 @@ use PHPUnit\Framework\Assert;
 use user\FunctionalTester;
 
 /**
- * `/people` renders the `PeopleDirectory` island; the cards load from the HTTP API.
+ * `/people` renders the `PeopleBrowser` island; the cards load from the HTTP API.
  */
-class PeopleDirectoryPageCest
+class PeopleBrowserPageCest
 {
     public function testRendersTheIsland(FunctionalTester $I)
     {
-        $I->wantTo('see the People directory island with its placeholder');
+        $I->wantTo('see the People browser island with its placeholder');
         $I->amUser1();
 
         $I->amOnRoute('/user/people');
         $I->seeResponseCodeIs(200);
-        $I->seeElement('people-directory');
-        $I->seeElement('people-directory .c-page-toolbar');
-        $I->see('People', 'people-directory .c-page-toolbar__title');
-        $I->seeElement('people-directory .c-people-card-skeleton');
+        $I->seeElement('people-browser');
+        $I->seeElement('people-browser .page-header');
+        $I->see('People', 'people-browser .page-header-title');
+        $I->seeElement('people-browser .people-card-skeleton');
         $I->dontSeeElement('.card-panel');
         $I->dontSeeElement('.cards-end');
     }

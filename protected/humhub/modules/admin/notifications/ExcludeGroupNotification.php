@@ -43,7 +43,7 @@ final class ExcludeGroupNotification extends BaseNotification
     }
 
     /**
-     * The people directory.
+     * The people browser.
      *
      * @inheritdoc
      */

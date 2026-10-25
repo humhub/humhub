@@ -12,11 +12,11 @@ use FunctionalTester;
 use PHPUnit\Framework\Assert;
 
 /**
- * Links to the space directory with the parameters of its filters before 1.20 (`keyword`,
+ * Links to the spaces browser with the parameters of its filters before 1.20 (`keyword`,
  * `connection`, the old `sort` values) land on the same selection under the parameters of
  * `GET /api/v2/space` the directory uses now.
  */
-class SpaceDirectoryRedirectCest
+class SpacesBrowserRedirectCest
 {
     /**
      * @return array the query parameters of the page the request ended on

@@ -49,7 +49,7 @@ class InvisibleUserCest
         $I->amUser1(true);
         // People
         $I->amOnRoute(['/people']);
-        $I->waitForElementVisible('.c-people-card');
+        $I->waitForElementVisible('.people-card');
         $I->dontSee($userName);
         // Space members
         $I->amOnSpace1();

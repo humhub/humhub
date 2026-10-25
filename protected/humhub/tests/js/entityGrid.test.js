@@ -1,17 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { h } from 'vue';
 import { mount } from '@vue/test-utils';
-import CardGrid from '../../vue/CardGrid.vue';
+import EntityGrid from '../../vue/EntityGrid.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
-const mountGrid = (props = {}, slots = {}) => mount(CardGrid, {
+const mountGrid = (props = {}, slots = {}) => mount(EntityGrid, {
     props: { items: [], ...props },
     slots: { card: ({ item }) => h('span', { class: 'thing' }, item.name), ...slots },
 });
 
-describe('CardGrid', () => {
+describe('EntityGrid', () => {
     beforeEach(() => {
         document.body.replaceChildren();
     });
@@ -19,7 +19,7 @@ describe('CardGrid', () => {
     it('renders one cell per item, with the extra card class', () => {
         const wrapper = mountGrid({ items: [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }], cardClass: 'is-module' });
 
-        const cells = wrapper.findAll('.c-card-grid__cell');
+        const cells = wrapper.findAll('.entity-grid-cell');
         expect(cells).toHaveLength(2);
         expect(cells[0].classes()).toContain('is-module');
         expect(cells[0].attributes('data-id')).toBe('a');
@@ -32,7 +32,7 @@ describe('CardGrid', () => {
             card: ({ item, index }) => h('span', { class: 'thing' }, `${item.name}${index}`),
         });
 
-        expect(wrapper.findAll('.c-card-grid__cell').map((cell) => cell.element.style.getPropertyValue('--card-stagger-index')))
+        expect(wrapper.findAll('.entity-grid-cell').map((cell) => cell.element.style.getPropertyValue('--card-stagger-index')))
             .toEqual(['0', '1', '2', '0', '1']);
         expect(wrapper.findAll('.thing').map((node) => node.text())).toEqual(['a0', 'b1', 'c2', 'd0', 'e1']);
     });
@@ -40,14 +40,14 @@ describe('CardGrid', () => {
     it('shows skeletons while the first page loads', () => {
         const wrapper = mountGrid({ loading: true, skeletonCount: 3 });
 
-        const skeletons = wrapper.findAll('.c-card-skeleton');
+        const skeletons = wrapper.findAll('.entity-card-skeleton');
         expect(skeletons).toHaveLength(3);
         expect(skeletons[0].attributes('aria-hidden')).toBe('true');
-        expect(skeletons[0].find('.c-card-skeleton__image').exists()).toBe(true);
-        expect(skeletons[0].findAll('.c-card-skeleton__line')).toHaveLength(2);
-        expect(skeletons[0].find('.c-card-skeleton__footer .c-card-skeleton__action').exists()).toBe(true);
-        expect(skeletons[0].find('.c-card-skeleton__footer .c-card-skeleton__icon').exists()).toBe(true);
-        expect(wrapper.find('.c-card-grid__cells').attributes('aria-busy')).toBe('true');
+        expect(skeletons[0].find('.entity-card-skeleton-image').exists()).toBe(true);
+        expect(skeletons[0].findAll('.entity-card-skeleton-line')).toHaveLength(2);
+        expect(skeletons[0].find('.entity-card-footer .entity-card-skeleton-action').exists()).toBe(true);
+        expect(skeletons[0].find('.entity-card-footer .entity-card-skeleton-icon').exists()).toBe(true);
+        expect(wrapper.find('.entity-grid-cells').attributes('aria-busy')).toBe('true');
     });
 
     it('renders the skeleton slot per skeleton cell with its index', () => {
@@ -55,8 +55,8 @@ describe('CardGrid', () => {
             skeleton: ({ index }) => h('span', { class: 'own-skeleton' }, String(index)),
         });
 
-        expect(wrapper.findAll('.c-card-skeleton')).toHaveLength(0);
-        const cells = wrapper.findAll('.c-card-grid__cell--skeleton');
+        expect(wrapper.findAll('.entity-card-skeleton')).toHaveLength(0);
+        const cells = wrapper.findAll('.entity-grid-cell-skeleton');
         expect(cells).toHaveLength(3);
         expect(cells.map((cell) => cell.find('.own-skeleton').text())).toEqual(['0', '1', '2']);
     });
@@ -64,7 +64,7 @@ describe('CardGrid', () => {
     it('keeps the cards and marks the grid while a filter change loads', () => {
         const wrapper = mountGrid({ loading: true, items: [{ id: 'a', name: 'A' }] });
 
-        expect(wrapper.findAll('.c-card-skeleton')).toHaveLength(0);
+        expect(wrapper.findAll('.entity-card-skeleton')).toHaveLength(0);
         expect(wrapper.classes()).toContain('is-loading');
     });
 
@@ -76,15 +76,15 @@ describe('CardGrid', () => {
     });
 
     it('renders the empty state, overridable by slot', () => {
-        expect(mountGrid().find('.c-card-grid__message--empty').text()).toContain('No results found!');
-        expect(mountGrid({}, { empty: () => 'Nothing here' }).find('.c-card-grid__message--empty').text()).toBe('Nothing here');
+        expect(mountGrid().find('.entity-grid-message-empty').text()).toContain('No results found!');
+        expect(mountGrid({}, { empty: () => 'Nothing here' }).find('.entity-grid-message-empty').text()).toBe('Nothing here');
     });
 
     it('renders an error with a retry button', async () => {
         const wrapper = mountGrid({ error: 'Down' });
 
         expect(wrapper.find('[role="alert"]').text()).toBe('Down');
-        await wrapper.find('.c-card-grid__message--error button').trigger('click');
+        await wrapper.find('.entity-grid-message-error button').trigger('click');
         expect(wrapper.emitted('retry')).toHaveLength(1);
     });
 
@@ -99,7 +99,7 @@ describe('CardGrid', () => {
     });
 
     // The error sits below the already-rendered grid here (`items` is non-empty) - it must still
-    // emit `retry`, not `load-more`: the owner (CardDirectory) decides what to re-fetch, and a
+    // emit `retry`, not `load-more`: the owner (EntityBrowser) decides what to re-fetch, and a
     // failed page is re-run the same way a failed first page is.
     it('emits retry, not load-more, for an error below an already-populated grid', async () => {
         const wrapper = mountGrid({ items: [{ id: 'a', name: 'A' }], error: 'Down' });
@@ -112,9 +112,9 @@ describe('CardGrid', () => {
 });
 
 // A stubbed global IntersectionObserver: records every observe()/unobserve()/disconnect() call
-// and keeps the callback CardGrid registered, so a test can fire a synthetic intersection entry
+// and keeps the callback EntityGrid registered, so a test can fire a synthetic intersection entry
 // without a real browser layout engine.
-describe('CardGrid auto-paging', () => {
+describe('EntityGrid auto-paging', () => {
     let realIntersectionObserver;
     let instances;
 

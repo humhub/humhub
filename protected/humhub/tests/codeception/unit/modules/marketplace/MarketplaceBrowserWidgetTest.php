@@ -21,10 +21,10 @@ class MarketplaceBrowserWidgetTest extends HumHubDbTestCase
         $this->assertStringContainsString('<marketplace-browser', $html);
         $this->assertStringContainsString('</marketplace-browser>', $html);
         $this->assertStringContainsString('Marketplace', $html);
-        $this->assertStringContainsString('class="c-page-toolbar"', $html);
-        $this->assertStringContainsString('class="c-page-toolbar__title"', $html);
-        $this->assertStringContainsString('c-card-grid__cell c-card-grid__cell--skeleton', $html);
-        $this->assertStringContainsString('class="c-card-skeleton"', $html);
+        $this->assertStringContainsString('class="page-header"', $html);
+        $this->assertStringContainsString('class="page-header-title"', $html);
+        $this->assertStringContainsString('entity-grid-cell entity-grid-cell-skeleton', $html);
+        $this->assertStringContainsString('class="card entity-card entity-card-skeleton placeholder-glow"', $html);
         $this->assertStringNotContainsString('Find all the modules', $html);
 
         $this->assertMatchesRegularExpression('/\sprops="([^"]+)"/', $html, 'the complex props are JSON-encoded into a props attribute');

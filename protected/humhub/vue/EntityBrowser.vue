@@ -1,6 +1,6 @@
 <template>
-    <div class="c-card-directory">
-        <PageToolbar :title="title" :title-tag="titleTag" :actions="actions">
+    <div class="entity-browser">
+        <PageHeader :title="title" :title-tag="titleTag" :actions="actions">
             <template v-if="$slots.actions" #actions>
                 <slot name="actions" :meta="meta" :total="total"></slot>
             </template>
@@ -18,11 +18,11 @@
                     <slot :name="name" v-bind="scope"></slot>
                 </template>
             </FilterBar>
-        </PageToolbar>
-        <div v-if="$slots.notice" class="c-card-directory__notice">
+        </PageHeader>
+        <div v-if="$slots.notice" class="entity-browser-notice">
             <slot name="notice" :meta="meta" :total="total"></slot>
         </div>
-        <CardGrid
+        <EntityGrid
             :items="items"
             :item-key="itemKey"
             :loading="loading"
@@ -38,31 +38,31 @@
             <template #card="{ item, index }"><slot name="card" :item="item" :index="index" :state="states[item[itemKey]]"></slot></template>
             <template v-if="$slots.skeleton" #skeleton="{ index }"><slot name="skeleton" :index="index"></slot></template>
             <template v-if="$slots.empty" #empty><slot name="empty"></slot></template>
-        </CardGrid>
+        </EntityGrid>
     </div>
 </template>
 
 <script>
 import { client, i18n, log } from '@humhub/vue';
-import CardGrid from './CardGrid.vue';
+import EntityGrid from './EntityGrid.vue';
 import FilterBar from './FilterBar.vue';
-import PageToolbar from './PageToolbar.vue';
+import PageHeader from './PageHeader.vue';
 import { defaultValues, fixedSignature, requestParams } from './filter/filterQuery.js';
 
 /**
- * A card directory page (`.c-card-directory`, at most 1440px wide): a `PageToolbar` — the
+ * An entity browser page (`.entity-browser`, at most 1440px wide): a `PageHeader` — the
  * `title` and the `actions` slot — holding the `FilterBar` for the filter definitions of a
- * list, an optional `notice` between the toolbar and the grid, and the card grid
- * (`CardGrid`), fed page by page from an endpoint answering the API's offset-page envelope
+ * list, an optional `notice` between the page header and the grid, and the card grid
+ * (`EntityGrid`), fed page by page from an endpoint answering the API's offset-page envelope
  * (`{results, total, page, pageSize, pages}`, see `docs/develop/concept-api.md`). The data is
  * always loaded after mounting — see "Initial data: embed or load" in
  * `docs/develop/ui-js-vuejs-components.md`.
  *
  * - Props: `url` (the endpoint; it may carry a query string of its own, e.g.
  *   `/api/v2/space?purpose=directory`, which the filter and page parameters are appended to),
- *   `filters` (the definitions), `title` (toolbar heading, rendered as `titleTag`, default
- *   `h1`), `actions` (the toolbar's actions as data, see `PageToolbar`), `pageSize`, `skeletonCount`, `cardClass` (extra class on every
- *   grid cell, see `CardGrid`), `itemKey`, `metaKeys`, `syncUrl`, `idPrefix` and `fixed` (handed to the
+ *   `filters` (the definitions), `title` (page header title, rendered as `titleTag`, default
+ *   `h1`), `actions` (the page header's actions as data, see `PageHeaderActions`), `pageSize`, `skeletonCount`, `cardClass` (extra class on every
+ *   grid cell, see `EntityGrid`), `itemKey`, `metaKeys`, `syncUrl`, `idPrefix` and `fixed` (handed to the
  *   `FilterBar`, which owns the URL sync, the text debounce and the dropping of hidden filters),
  *   `itemStates` (see below).
  * - `fixed` (`{ key: value }`) is sent with every request, overriding a filter of the same key,
@@ -82,7 +82,7 @@ import { defaultValues, fixedSignature, requestParams } from './filter/filterQue
  * - A response that is no longer the latest request's is ignored.
  * - `metaKeys` names envelope fields beyond the standard ones to keep (`meta`, handed to the
  *   `actions` and `notice` slots and the `loaded` event).
- * - Errors: `CardGrid` emits `retry` for both a failed first page (nothing to show yet) and a
+ * - Errors: `EntityGrid` emits `retry` for both a failed first page (nothing to show yet) and a
  *   failure while paging (cards from earlier pages already shown) — it never emits `load-more`
  *   for either. A page-1 failure (initial load, a filter change, `reload()`) clears `items`,
  *   `page`/`pages` and `total`/`meta`, since stale cards (and the counts describing them) from
@@ -100,18 +100,18 @@ import { defaultValues, fixedSignature, requestParams } from './filter/filterQue
  *   for an unknown key), `reloadFilterOptions()` after something outside the bar changed what a
  *   filter's remote options (or their counts) should be.
  * - Slots: `actions` (`{ meta, total }`, right of the title), `notice` (`{ meta, total }`,
- *   between toolbar and grid), `filter-<key>` (`{ filter, value, update }`), `card`
+ *   between page header and grid), `filter-<key>` (`{ filter, value, update }`), `card`
  *   (`{ item, index, state }` — `index` within the loaded page, for the stagger; `state` see
  *   "Item states"), `skeleton` (`{ index }`, the placeholder of one skeleton cell, handed to
- *   `CardGrid`, default `CardSkeleton`), `empty`.
+ *   `EntityGrid`, default `CardSkeleton`), `empty`.
  * - Emits `loaded` (`{ total, meta, values }`) after every successful page — `values` are the
  *   filter values the page was loaded with (e.g. to highlight the search in the cards).
  *
  * @since 1.20
  */
 export default {
-    name: 'CardDirectory',
-    components: { CardGrid, FilterBar, PageToolbar },
+    name: 'EntityBrowser',
+    components: { EntityGrid, FilterBar, PageHeader },
     props: {
         url: { type: String, required: true },
         title: { type: String, default: '' },
@@ -125,7 +125,7 @@ export default {
         syncUrl: { type: Boolean, default: true },
         idPrefix: { type: String, default: 'filter' },
         /**
-         * The toolbar's actions as data, handed to `PageToolbar`.
+         * The page header's actions as data, handed to `PageHeader`.
          * @since 1.20
          */
         actions: { type: Array, default: () => [] },
@@ -288,7 +288,7 @@ export default {
                 if (page === 1) {
                     // Drop stale cards (and the counts/meta that described them) from before the
                     // change that just failed — they belong to a filter set that no longer
-                    // applies, and CardGrid would otherwise keep showing them dimmed forever (its
+                    // applies, and EntityGrid would otherwise keep showing them dimmed forever (its
                     // "is-loading" state only ever clears).
                     this.listSeq++;
                     this.states = {};
