@@ -135,7 +135,7 @@ describe('InstallDialog', () => {
             await flushPromises();
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/marketplace/licence-key', { data: { licenceKey: 'wrong' } });
-            expect(dialog().querySelector('.input-group .input-group-text .marketplace-spin')).not.toBeNull();
+            expect(dialog().querySelector('.input-group .input-group-text .spinner-border')).not.toBeNull();
                         expect(footerButton('Install').disabled).toBe(true);
             expect(footerButton('Back').disabled).toBe(true);
 
@@ -513,7 +513,7 @@ describe('InstallDialog', () => {
             await flushPromises();
             expect(globalThis.humhubStubs.client.post).toHaveBeenLastCalledWith('/api/v2/module/calendar-x/enable');
             expect(footerButton('Activate').disabled).toBe(true);
-            expect(footerButton('Activate').querySelector('.marketplace-spin')).not.toBeNull();
+            expect(footerButton('Activate').querySelector('.spinner-border')).not.toBeNull();
             expect(footerButton('Close').disabled).toBe(true);
 
             pending.resolve({ id: 'calendar-x', isEnabled: true, configUrl: '/calendar/config' });
@@ -717,7 +717,7 @@ describe('SettingsDialog', () => {
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/marketplace/licence-key', { data: { licenceKey: 'MEET-INGS' } });
             expect(keyInput().disabled).toBe(true);
             expect(addButton().disabled).toBe(true);
-            expect(addButton().querySelector('.ti-loader')).not.toBeNull();
+            expect(addButton().querySelector('.spinner-border')).not.toBeNull();
 
             pending.resolve({ message: 'Module license added!' });
             await flushPromises();

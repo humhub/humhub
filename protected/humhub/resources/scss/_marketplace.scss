@@ -1,63 +1,12 @@
 //
 // Marketplace island (protected/humhub/modules/marketplace/vue/): toolbar actions, core version
-// notice, module card with its pills, update states and search marks, the install and the
-// settings dialog — after the HumHub design system v2 marketplace. The toolbar comes from
+// notice, module card with its badges (`.badge`, `_badge.scss`), update states and search marks,
+// the install and the settings dialog — after the HumHub design system v2 marketplace. The toolbar comes from
 // `_page-header.scss`, grid and skeletons from `_entity-browser.scss`.
 // @since 1.20
 // --------------------------------------------------
 
 @if not $prev-marketplace {
-    // Pill tones: text, background and the stronger hover shade. Derived from the theme where a
-    // colour fits (pro = primary, official = accent, featured = danger, update = info); partner
-    // and community have no theme equivalent.
-    .module-card {
-        --mp-pro-fg: var(--bs-primary);
-        --mp-pro-bg: var(--bs-primary-bg-subtle);
-        --mp-pro-strong: var(--bs-primary-text-emphasis);
-        --mp-official-fg: color-mix(in srgb, var(--bs-accent), #000 30%);
-        --mp-official-bg: var(--bs-accent-bg-subtle);
-        --mp-official-strong: var(--bs-accent-text-emphasis);
-        --mp-featured-fg: color-mix(in srgb, var(--bs-danger), #000 25%);
-        --mp-featured-bg: var(--bs-danger-bg-subtle);
-        --mp-featured-strong: var(--bs-danger-text-emphasis);
-        --mp-update-fg: color-mix(in srgb, var(--bs-info), #000 30%);
-        --mp-update-bg: var(--bs-info-bg-subtle);
-        --mp-update-strong: var(--bs-info-text-emphasis);
-        --mp-partner-fg: #5e0099;
-        --mp-partner-bg: #efe6f5;
-        --mp-partner-strong: #400068;
-        --mp-community-fg: #687a00;
-        --mp-community-bg: #f1f3e6;
-        --mp-community-strong: #505f00;
-        --mp-neutral-fg: var(--hh-text-color-secondary);
-        --mp-neutral-bg: var(--bs-secondary-bg);
-        --mp-neutral-strong: var(--hh-text-color-highlight);
-        --mp-updating-from: color-mix(in srgb, var(--bs-accent), #000 30%);
-        --mp-updating-to: var(--bs-accent);
-    }
-
-    @if $enable-dark-mode {
-        @include color-mode(dark) {
-            .module-card {
-                --mp-pro-fg: var(--bs-primary-text-emphasis);
-                --mp-pro-strong: var(--hh-text-color-highlight);
-                --mp-official-fg: var(--bs-accent-text-emphasis);
-                --mp-official-strong: var(--hh-text-color-highlight);
-                --mp-featured-fg: var(--bs-danger-text-emphasis);
-                --mp-featured-strong: var(--hh-text-color-highlight);
-                --mp-update-fg: var(--bs-info-text-emphasis);
-                --mp-update-strong: var(--hh-text-color-highlight);
-                --mp-partner-fg: #c99be8;
-                --mp-partner-bg: #25103a;
-                --mp-partner-strong: #e4cdf4;
-                --mp-community-fg: #b6ca4c;
-                --mp-community-bg: #21260a;
-                --mp-community-strong: #d7e48e;
-                --mp-updating-from: var(--bs-accent-text-emphasis);
-            }
-        }
-    }
-
     // Toolbar actions
     .marketplace-update-all-slot {
         display: grid;
@@ -81,11 +30,6 @@
 
     .marketplace-update-all.is-running:disabled {
         opacity: 1;
-    }
-
-    .marketplace-update-all.is-running .marketplace-spin,
-    .module-card .entity-card-action.is-updating .module-card-spin {
-        animation: hh-marketplace-spin 1s linear infinite;
     }
 
     // Notices (core version, third-party and community modules): Bootstrap alerts with an icon
@@ -128,84 +72,31 @@
     // Module card: an entity card (`_entity-card.scss`) with the module's badges
     .module-card-badges {
         display: flex;
-        flex-direction: row;
         align-items: center;
-        gap: 4px;
+        gap: $spacer * .25;
         min-width: 0;
     }
 
     .module-card-badge {
-        --mp-badge-fg: var(--mp-neutral-fg);
-        --mp-badge-bg: var(--mp-neutral-bg);
-        --mp-badge-strong: var(--mp-neutral-strong);
-
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        margin: 0;
-        padding: 3px 8px;
-        border: 1px solid var(--mp-badge-fg);
-        border-radius: 9999px;
-        background: var(--mp-badge-bg);
-        color: var(--mp-badge-fg);
-        font-family: inherit;
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 18px;
-        text-transform: uppercase;
+        gap: $spacer * .25;
         white-space: nowrap;
-        cursor: default;
-        transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
-
-        > .ti {
-            font-size: 14px;
-        }
     }
 
-    .module-card-badge-filter {
-        cursor: pointer;
-
-        &:hover {
-            border-color: var(--mp-badge-strong);
-            color: var(--mp-badge-strong);
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--bs-accent);
-            outline-offset: 2px;
-        }
-    }
-
-    // Round featured star, 28x28 (like a small icon button), the same tone as the featured badge
+    // The round featured star
     .module-card-badge-star {
-        flex: 0 0 auto;
         justify-content: center;
-        width: 28px;
-        height: 28px;
-        padding: 4px;
-
-        > .ti {
-            font-size: 16px;
-            line-height: 1;
-        }
+        aspect-ratio: 1;
     }
 
-    @each $tone, $token in (professional: pro, official: official, featured: featured, update: update, partner: partner, community: community) {
-        .module-card-badge-#{$tone} {
-            --mp-badge-fg: var(--mp-#{$token}-fg);
-            --mp-badge-bg: var(--mp-#{$token}-bg);
-            --mp-badge-strong: var(--mp-#{$token}-strong);
-        }
-    }
-
+    // A version number, not a word
     .module-card-badge-update {
         text-transform: none;
     }
 
     .module-card-message {
         margin: 0;
-        font-size: 14px;
-        line-height: 22px;
         overflow-wrap: anywhere;
     }
 
@@ -213,28 +104,7 @@
         opacity: 1;
     }
 
-    // Update states: a rotating border while updating, the remove animation, the fade-in
-    @property --mp-border-angle {
-        syntax: '<angle>';
-        inherits: false;
-        initial-value: 0deg;
-    }
-
-    .module-card.is-updating::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        padding: 2px;
-        border-radius: 8px;
-        background: conic-gradient(from var(--mp-border-angle, 0deg), transparent 0deg, transparent 28deg, var(--mp-updating-from) 92deg, var(--mp-updating-to) 176deg, transparent 248deg, transparent 360deg);
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask-composite: exclude;
-        animation: hh-marketplace-border-spin 2.6s linear infinite;
-        pointer-events: none;
-    }
-
+    // Update states: the remove animation, the fade-in
     .module-card.is-removing {
         animation: hh-marketplace-card-remove 360ms ease forwards;
     }
@@ -246,7 +116,7 @@
     // Search matches in a card's name and description
     .module-card-mark {
         padding: 0;
-        border-radius: 2px;
+        border-radius: var(--bs-border-radius-sm);
         background: rgba(var(--bs-accent-rgb), 0.32);
         color: inherit;
     }
@@ -258,10 +128,6 @@
         --bs-modal-header-padding: 0 0 16px;
         --bs-modal-padding: 0;
         --bs-modal-footer-gap: 8px;
-        --mp-field-bg: var(--hh-background-color-secondary);
-        --mp-row-bg: var(--hh-background-color-secondary);
-        --mp-progress-fill: var(--bs-success);
-        --mp-progress-track: color-mix(in srgb, var(--bs-success) 22%, var(--bs-secondary-bg));
 
         .modal-content {
             padding: 16px;
@@ -332,11 +198,6 @@
         &:disabled {
             cursor: progress;
         }
-    }
-
-    .marketplace-spin {
-        display: inline-block;
-        animation: hh-marketplace-spin 0.9s linear infinite;
     }
 
     // Licence key: a `.form-control` in an `.input-group` (with the spinner as `.input-group-text`
@@ -417,8 +278,8 @@
     .install-dialog-progress {
         --bs-progress-height: #{$spacer * .75};
         --bs-progress-border-radius: var(--bs-border-radius-pill);
-        --bs-progress-bg: var(--mp-progress-track);
-        --bs-progress-bar-bg: var(--mp-progress-fill);
+        --bs-progress-bg: var(--bs-success-bg-subtle);
+        --bs-progress-bar-bg: var(--bs-success);
     }
 
     // Settings dialog
@@ -554,7 +415,7 @@
         padding: 8px;
         border: 1px dashed var(--bs-border-color);
         border-radius: 6px;
-        background: var(--mp-row-bg);
+        background: var(--hh-background-color-secondary);
 
         .form-check {
             margin: 0;
@@ -593,21 +454,6 @@
     }
 
     // Motion
-    @keyframes hh-marketplace-spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes hh-marketplace-border-spin {
-        to {
-            --mp-border-angle: 360deg;
-        }
-    }
-
     @keyframes hh-marketplace-card-remove {
         from {
             opacity: 1;
@@ -651,12 +497,8 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .marketplace-update-all.is-running .marketplace-spin,
-        .module-card .entity-card-action.is-updating .module-card-spin,
-        .module-card.is-updating::before,
         .module-card.is-removing,
         .module-card.is-entering,
-        .marketplace-spin,
         .install-dialog-step,
         .marketplace-settings-panel,
         .licence-list-item.is-entering {
@@ -665,7 +507,6 @@
 
         .marketplace-update-all-slot,
         .marketplace-update-all-slot.is-collapsed,
-        .module-card-badge,
         .marketplace-setting-more {
             transition: none !important;
         }

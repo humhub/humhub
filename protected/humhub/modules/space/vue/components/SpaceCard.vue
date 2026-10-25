@@ -14,7 +14,7 @@
                 aria-hidden="true"
                 tabindex="-1"
             />
-            <span v-if="showFollowers || showMembers" class="entity-card-pill">
+            <span v-if="showFollowers || showMembers" class="badge rounded-pill entity-card-pill">
                 <template v-if="showFollowers">
                     <button
                         v-if="canOpenFollowers"
@@ -65,7 +65,7 @@
                 v-for="tag in tags"
                 :key="tag"
                 type="button"
-                class="entity-card-tag"
+                class="badge entity-card-tag"
                 :title="filterByLabel(tag)"
                 :aria-label="filterByLabel(tag)"
                 @click="$emit('filter-tag', tag)"

@@ -28,7 +28,7 @@
                         :tabindex="showUpdateAll ? null : -1"
                         :disabled="updateAllDisabled"
                         @click="updatingAll ? stopUpdateAll() : startUpdateAll()"
-                    ><i class="ti ti-refresh marketplace-spin" aria-hidden="true"></i></button>
+                    ><span v-if="updatingAll" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti ti-refresh" aria-hidden="true"></i></button>
                 </span>
             </template>
 

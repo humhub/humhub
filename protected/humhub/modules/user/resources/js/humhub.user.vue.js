@@ -168,7 +168,7 @@
   const _hoisted_1$4 = { class: "card entity-card people-card" };
   const _hoisted_2$2 = {
     key: 0,
-    class: "entity-card-pill"
+    class: "badge rounded-pill entity-card-pill"
   };
   const _hoisted_3$2 = ["title", "aria-label"];
   const _hoisted_4$2 = { class: "entity-card-header" };
@@ -290,7 +290,7 @@
             return vue.openBlock(), vue.createElementBlock("button", {
               key: tag,
               type: "button",
-              class: "entity-card-tag",
+              class: "badge entity-card-tag",
               title: $options.filterByLabel(tag),
               "aria-label": $options.filterByLabel(tag),
               onClick: ($event) => _ctx.$emit("filter-tag", tag)

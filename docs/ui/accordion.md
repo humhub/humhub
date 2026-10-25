@@ -96,7 +96,7 @@ changed-tracking and the header actions are added on top. Class names and SCSS f
                     aria-expanded="true" aria-controls="group-links">
                 <span class="accordion-icon"><i class="ti ti-link" aria-hidden="true"></i></span>
                 <span class="accordion-title">Links</span>
-                <span class="badge badge-tag">Mobile App</span>
+                <span class="badge">Mobile App</span>
                 <span class="accordion-dot badge-dot badge-dot-unsaved"><span class="visually-hidden">Unsaved changes</span></span>
             </button>
             <span class="accordion-header-actions">…</span>

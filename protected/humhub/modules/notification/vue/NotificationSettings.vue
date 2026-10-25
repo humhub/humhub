@@ -72,7 +72,7 @@
                                         v-for="channel in channelsOf(category)"
                                         :key="channel.id"
                                         class="badge"
-                                        :class="category.channels[channel.id] ? 'badge-accent' : 'badge-neutral'"
+                                        :class="{ 'badge-accent': category.channels[channel.id] }"
                                         :data-channel="channel.id"
                                         :data-on="category.channels[channel.id] ? 'true' : 'false'"
                                     >{{ channel.title }}<span class="visually-hidden">: {{ category.channels[channel.id] ? labels.on : labels.off }}</span></span>
@@ -220,7 +220,7 @@ let radioUid = 0;
  *   Important only they equal, else Custom; choosing Custom changes nothing.
  * - A Bootstrap accordion item per category (core categories, then those of modules under a
  *   heading, each group an `.accordion`): its icon, title, description and a `.badge` per channel
- *   that applies to it (`badge-accent` when on, `badge-neutral` when off). A switchable
+ *   that applies to it (`badge-accent` when on, a plain, neutral `.badge` when off). A switchable
  *   category's header is the accordion button revealing a checkbox per channel — and, for
  *   the `content` category, the spaces whose new content notifies (the core `PickerFilterControl`
  *   searching the spaces the caller may see, with the space module's images); a category that

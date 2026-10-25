@@ -88,14 +88,14 @@ follow [Styling with Bootstrap 5](bootstrap.md).
 <article class="card entity-card people-card">
     <div class="entity-card-cover">
         <a class="entity-card-avatar" href="…"><img src="…" alt=""></a>
-        <span class="entity-card-pill"><a class="entity-card-stat entity-card-stat-followers" href="…">…</a></span>
+        <span class="badge rounded-pill entity-card-pill"><a class="entity-card-stat entity-card-stat-followers" href="…">…</a></span>
     </div>
     <div class="entity-card-header">
         <a class="entity-card-title" href="…">Emma Williams</a>
         <p class="entity-card-subtitle">Marketing Manager</p>
     </div>
     <div class="entity-card-body"><p class="entity-card-text">…</p></div>
-    <div class="entity-card-tags"><button class="entity-card-tag" type="button">Design</button></div>
+    <div class="entity-card-tags"><button class="badge entity-card-tag" type="button">Design</button></div>
     <div class="entity-card-footer"><button class="entity-card-action btn …">Follow</button></div>
 </article>
 ```
@@ -103,19 +103,22 @@ follow [Styling with Bootstrap 5](bootstrap.md).
 | Class | Element |
 |---|---|
 | `.card.entity-card` | The card; body at least 3 lines high, footers aligned |
-| `.entity-card-cover`, `-avatar`, `-pill`, `-stat` | The cover with the image and the stat pill |
+| `.entity-card-cover`, `-avatar`, `-pill`, `-stat` | The cover with the image and the stat pill (a `.badge.rounded-pill`, white on the cover) |
 | `.entity-card-cover-plain`, `.entity-card-image` | A cover without banner and an image that is no avatar (the module card) |
 | `.entity-card-header`, `-title`, `-subtitle` | Name and subtitle |
 | `.entity-card-body`, `-text` | Profile fields or description |
-| `.entity-card-tags`, `-tag` | The tag chips |
+| `.entity-card-tags`, `-tag` | The tags: neutral `.badge` buttons (see [Badges & Status](badges.md)) |
 | `.entity-card-footer`, `-action`, `-action-icon`, `-placeholder` | The actions (an icon-only one stays square), and the disabled placeholder while the viewer's state loads |
 | `.people-card…`, `.space-card…` | What only the people or the space card has (`.people-card-details`, `.space-card-archived`) |
-| `.module-card` | The module variant (`.card.entity-card.module-card`) on the entity card's parts, plus its own `.module-card-badges`, `-badge`, `-message`, `-mark`, `-secondary` |
+| `.module-card` | The module variant (`.card.entity-card.module-card`) on the entity card's parts, plus its own `.module-card-badges`, `-message`, `-mark`; its badges are `.badge`s with a tone (official `badge-accent`, PRO `badge-warning`, partner `badge-success`, update `badge-info`, the featured star a round `badge-danger`) and the hook `.module-card-badge-<type>` |
 | `.entity-card-skeleton` | The skeleton: an entity card of Bootstrap `.placeholder` blocks (`.placeholder-glow`) in the card's own parts; the blocks are sized by `.entity-card-skeleton-image`, `-avatar`, `-title`, `-subtitle`, `-line`, `-line-short`, `-tag`, `-action`, `-icon` |
 
-- **File:** `_entity-card.scss`, behind `$prev-entity-card`, with `$entity-card-border-radius` and
-  `$entity-card-padding`; the module card's parts in `_marketplace.scss`, the people and space
-  card's own parts in `_people-browser.scss` and `_spaces-browser.scss`.
+- **File:** `_entity-card.scss`, behind `$prev-entity-card`, with `$entity-card-border-radius`,
+  `$entity-card-padding`, `$entity-card-gap`, `$entity-card-image-size` (80px),
+  `$entity-card-image-border-radius`, `$entity-card-cover-bg`, `$entity-card-title-font-size` and
+  `$entity-card-action-height` (a button's height); the module card's parts in
+  `_marketplace.scss`, the people and space card's own parts in `_people-browser.scss` and
+  `_spaces-browser.scss`.
 - The `.card-body` / `.card-title` parts of Bootstrap are not used: the entity card's parts have a
   geometry of their own (cover, a body of a fixed number of lines, a footer that fills the width).
 

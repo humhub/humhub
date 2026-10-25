@@ -183,7 +183,7 @@ The class names each component gets. Details are on the component pages.
 | [Mobile Navigation](mobile-navigation.md) | sheet and drawer on `.offcanvas.offcanvas-bottom` | `.mobile-nav`, `-item`, `-sheet`; `.mobile-widgets` |
 | [Sidebar](sidebar.md) (Enterprise theme) | `.nav.flex-column`, `.collapse` | `.sidebar`, `.sidebar-group` |
 | [Buttons](buttons.md) | `.btn`, `.btn-check` | `.btn-icon-only`, `.btn-ghost`, `.btn-ghost-danger`, `.btn-reveal` |
-| [Badges & Status](badges.md) | `.badge` | `.badge-<tone>`, `.badge-tag`, `.badge-count`, `.badge-dot`, `-waiting`, `-unsaved` |
+| [Badges & Status](badges.md) | `.badge` (neutral) | `.badge-<tone>`, `.badge-count`, `.badge-dot`, `-waiting`, `-unsaved` |
 | [Accordion](accordion.md) | `.accordion` | `.accordion-icon`, `-title`, `-subtitle`, `-footer`, `-header-actions`, `-dot`, `-compact` |
 | [Dialog](dialog.md) | `.modal`, `.modal-dialog-scrollable`, `.progress-stacked` | `.modal-body-fades`, `.modal-footer-fill`, `.modal-steps` |
 | [Context Menu](context-menu.md) | `.dropdown-menu` | `.dropdown-item-icon`, `.dropdown-item-danger` |
@@ -199,7 +199,7 @@ The class names each component gets. Details are on the component pages.
 | [Filter Bar](filter-bar.md) | fields on `.form-control`, the toggle and clear on `.btn`, the count on `.badge` | `.filter-bar`, `-body`, `-item`, `-toggle`, `-count`, `-panel`, `-clear`; `.search-field`; `.filter-tags`, `.filter-check` |
 | [Data Table](data-table.md) | `.card`, `.table`, `.table-active`, `.pagination` | `.data-table`, `-main`, `-sort`, `-row-details`, `-bulk`; `.card-header-actions` |
 | [Entity Browser](entity-browser.md) | notice on `.alert`, "Show more" on `.btn` | `.entity-browser`, `-notice`; `.entity-grid`, `-cells`, `-cell`, `-cell-skeleton`, `-message`, `-error`, `-more` |
-| [Entity Card](entity-card.md) | `.card`, skeleton on `.placeholder` | `.entity-card`, `-cover`, `-avatar`, `-image`, `-pill`, `-header`, `-title`, `-body`, `-tags`, `-footer`, `-skeleton`; `.people-card`, `.space-card`, `.module-card` |
+| [Entity Card](entity-card.md) | `.card`, stat pill and tags on `.badge`, skeleton on `.placeholder` | `.entity-card`, `-cover`, `-avatar`, `-image`, `-pill`, `-header`, `-title`, `-body`, `-tags`, `-footer`, `-skeleton`; `.people-card`, `.space-card`, `.module-card` |
 | [Item Browser](item-browser.md) | path bar on `.breadcrumb`, view switch on `.btn-check`, checkbox `.form-check-input`, skeleton `.placeholder` | `.path-bar`, `.selection-menu`, `.tile-grid`, `.tile`, `.drop-zone`, `.progress-frame` |
 | [Settings Page](settings-page.md) | `.card`, `.accordion`, `.alert` | `.settings-page`, `.settings-control` |
 
@@ -227,7 +227,7 @@ content card, the entity card and the item browser.
 | `.c-entity-card…`, `.c-people-card…`, `.c-space-card…`, `.c-module-card…` | `.card.entity-card` with `.entity-card-…`, `.people-card…`, `.space-card…`, `.module-card…` |
 | `_item-browser.scss` (`.c-path-bar`, `.c-tile-grid`, `.c-view-switch`, …) | `.path-bar` + `.breadcrumb`, `.tile-grid` / `.tile`, `.btn-group` + `.btn-check`, … |
 | Marketplace: `.c-mp-notice…`, `.c-mp-dialog…`, `.c-mp-settings…`, `.c-licence-…`, `.c-install-dialog…` | `.alert.marketplace-alert`, `.nav-pills-secondary`, `.list-group.licence-list`, `.progress`; parts `marketplace-dialog-…`, `marketplace-settings-…`, `install-dialog-…` |
-| Notification settings: `.c-notification-settings__…`, own profile radio cards, own category rows and channel pills | `.notification-settings-…` in `.card.content-card`; profiles on `.form-check-cards` / `.form-check-card`; categories on `.accordion` (`.accordion-icon`, `-title`, `-subtitle`, `.accordion-button-static`); channels on `.badge.badge-accent` / `.badge-neutral`; saving on `.spinner-border-sm` |
+| Notification settings: `.c-notification-settings__…`, own profile radio cards, own category rows and channel pills | `.notification-settings-…` in `.card.content-card`; profiles on `.form-check-cards` / `.form-check-card`; categories on `.accordion` (`.accordion-icon`, `-title`, `-subtitle`, `.accordion-button-static`); channels on `.badge.badge-accent` / plain `.badge`; saving on `.spinner-border-sm` |
 | Status bar: `.status-bar-body`, `-content`, `-header`, `-close`, `-details`, `-visible`, `.showMore` (`_user-feedback.scss`) | `.toast-container` > `.toast.toast-<tone>` > `.toast-body`; `.toast-close`, `.toast-details`, `.is-visible` (`_toast.scss`) |
 | `CardDirectory.vue`, `CardGrid.vue`, `.c-card-directory…`, `.c-card-grid…` (`_card-directory.scss`); `PeopleDirectory`, `SpaceDirectory` (widgets and islands) | `EntityBrowser.vue`, `EntityGrid.vue`, `.entity-browser…`, `.entity-grid…` (`_entity-browser.scss`); `PeopleBrowser`, `SpacesBrowser` |
 

@@ -14,7 +14,7 @@
                 aria-hidden="true"
                 tabindex="-1"
             />
-            <span v-if="stat" class="entity-card-pill">
+            <span v-if="stat" class="badge rounded-pill entity-card-pill">
                 <button
                     type="button"
                     class="entity-card-stat"
@@ -43,7 +43,7 @@
                 v-for="tag in tags"
                 :key="tag"
                 type="button"
-                class="entity-card-tag"
+                class="badge entity-card-tag"
                 :title="filterByLabel(tag)"
                 :aria-label="filterByLabel(tag)"
                 @click="$emit('filter-tag', tag)"

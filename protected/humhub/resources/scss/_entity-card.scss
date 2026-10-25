@@ -12,6 +12,14 @@
 
 $entity-card-border-radius: $border-radius-lg !default;
 $entity-card-padding: $spacer * .5 !default;
+$entity-card-gap: $spacer * .5 !default;
+// The cover's image or avatar (the markup renders it at this size)
+$entity-card-image-size: 80px !default;
+$entity-card-image-border-radius: var(--bs-border-radius) !default;
+$entity-card-cover-bg: var(--bs-secondary-bg) !default;
+$entity-card-title-font-size: $font-size-lg !default;
+// The height of a footer button, and of the skeleton's
+$entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-padding-y * 2} + #{$btn-border-width} * 2) !default;
 
 @if not $prev-entity-card {
     .entity-card {
@@ -27,16 +35,16 @@ $entity-card-padding: $spacer * .5 !default;
         box-shadow: var(--bs-card-box-shadow);
     }
 
-    // Cover: the banner, else a plain light grey (lighter than the 1.19 directories')
+    // Cover: the banner, else a plain light grey
     .entity-card-cover {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
-        gap: 8px;
-        min-height: 96px;
-        padding: 8px;
-        border-radius: 6px;
-        background-color: color-mix(in srgb, var(--hh-background3) 80%, var(--hh-background-color-main));
+        gap: $entity-card-gap;
+        min-height: calc(#{$entity-card-image-size} + #{$entity-card-padding * 2});
+        padding: $entity-card-padding;
+        border-radius: var(--bs-border-radius);
+        background-color: $entity-card-cover-bg;
         background-position: 50% 50%;
         background-repeat: no-repeat;
         background-size: cover;
@@ -53,9 +61,9 @@ $entity-card-padding: $spacer * .5 !default;
     .entity-card-image {
         display: block;
         flex: 0 0 auto;
-        width: 80px;
-        height: 80px;
-        border-radius: 6px;
+        width: $entity-card-image-size;
+        height: $entity-card-image-size;
+        border-radius: $entity-card-image-border-radius;
         background: var(--bs-secondary-bg);
         object-fit: cover;
     }
@@ -65,7 +73,7 @@ $entity-card-padding: $spacer * .5 !default;
         flex: 0 0 auto;
         line-height: 0;
 
-        // The border inside the 80px, so the cover is as high as the skeleton's.
+        // The border inside the image size, so the cover is as high as the skeleton's.
         .space-acronym,
         img {
             box-sizing: border-box;
@@ -74,28 +82,28 @@ $entity-card-padding: $spacer * .5 !default;
         }
     }
 
-    // Stat pill: counts such as followers, members or friends
+    // Stat pill (`.badge.rounded-pill`): counts such as followers, members or friends, white on
+    // the cover
     .entity-card-pill {
+        --bs-badge-font-size: #{$font-size-sm};
+        --bs-badge-font-weight: #{$font-weight-normal};
+        --bs-badge-color: var(--bs-secondary-color);
+
         display: inline-flex;
         flex: 0 1 auto;
+        align-items: center;
+        gap: $spacer * .5;
         min-width: 0;
         margin-left: auto;
-        align-items: center;
-        gap: 8px;
-        padding: 4px 8px;
-        border: 1px solid var(--bs-border-color);
-        border-radius: 9999px;
-        background: var(--hh-background-color-main);
-        color: var(--hh-text-color-secondary);
-        font-size: 12px;
-        line-height: 18px;
-        white-space: nowrap;
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        background-color: var(--hh-background-color-main);
     }
 
+    // A count in the pill, a button where it opens the list
     .entity-card-stat {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: $spacer * .25;
         margin: 0;
         padding: 0;
         border: 0;
@@ -104,15 +112,11 @@ $entity-card-padding: $spacer * .5 !default;
         font: inherit;
         line-height: inherit;
         cursor: default;
-
-        > .ti {
-            font-size: 14px;
-        }
     }
 
     button.entity-card-stat {
         cursor: pointer;
-        transition: color 0.3s ease;
+        @include transition(color .15s ease-in-out);
 
         &:hover,
         &:focus-visible {
@@ -120,7 +124,7 @@ $entity-card-padding: $spacer * .5 !default;
         }
 
         &:focus-visible {
-            border-radius: 4px;
+            border-radius: var(--bs-border-radius-sm);
             outline: 2px solid var(--bs-accent);
             outline-offset: 2px;
         }
@@ -130,17 +134,17 @@ $entity-card-padding: $spacer * .5 !default;
     .entity-card-header {
         display: flex;
         flex-direction: column;
-        padding: 8px;
+        padding: $entity-card-padding;
     }
 
     .entity-card-title {
         color: var(--hh-text-color-highlight);
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 28px;
+        font-size: $entity-card-title-font-size;
+        font-weight: $font-weight-bold;
+        line-height: $headings-line-height;
         text-decoration: none;
         overflow-wrap: anywhere;
-        transition: color 0.3s ease;
+        @include transition(color .15s ease-in-out);
     }
 
     a.entity-card-title:hover,
@@ -150,9 +154,7 @@ $entity-card-padding: $spacer * .5 !default;
 
     .entity-card-subtitle {
         margin: 0;
-        color: var(--hh-text-color-secondary);
-        font-size: 14px;
-        line-height: 22px;
+        color: var(--bs-secondary-color);
     }
 
     // Body: it keeps the room of three lines even when empty, so a card without text is not
@@ -161,68 +163,36 @@ $entity-card-padding: $spacer * .5 !default;
         display: flex;
         flex: 1 0 auto;
         flex-direction: column;
-        gap: 8px;
-        min-height: calc(3 * 22px + 16px);
-        padding: 8px;
+        gap: $entity-card-gap;
+        min-height: calc(#{$line-height-base * 3}em + #{$entity-card-padding * 2});
+        padding: $entity-card-padding;
     }
 
     .entity-card-text {
         display: -webkit-box;
         margin: 0;
         overflow: hidden;
-        color: var(--hh-text-color-default);
-        font-size: 14px;
-        line-height: 22px;
         overflow-wrap: anywhere;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 3;
         line-clamp: 3;
     }
 
-    // Tags: chips filtering the directory by the tag
+    // Tags (neutral `.badge` buttons) filtering the entity browser by the tag
     .entity-card-tags {
         display: flex;
         flex-wrap: wrap;
         align-items: flex-start;
-        gap: 4px;
-        padding: 8px;
-    }
-
-    .entity-card-tag {
-        display: inline-flex;
-        align-items: center;
-        margin: 0;
-        padding: 4px 8px;
-        border: 0;
-        border-radius: 9999px;
-        background: var(--bs-tertiary-bg);
-        color: var(--hh-text-color-secondary);
-        font-family: inherit;
-        font-size: 10px;
-        font-weight: 600;
-        line-height: 15px;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease;
-
-        &:hover,
-        &:focus-visible {
-            background: var(--bs-secondary-bg);
-            color: var(--hh-text-color-highlight);
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--bs-accent);
-            outline-offset: 2px;
-        }
+        gap: $spacer * .25;
+        padding: $entity-card-padding;
     }
 
     // Footer: the card's buttons side by side
     .entity-card-footer {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px;
+        gap: $entity-card-gap;
+        padding: $entity-card-padding;
 
         &:empty {
             display: none;
@@ -234,10 +204,10 @@ $entity-card-padding: $spacer * .5 !default;
         flex: 1 1 0;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: $spacer * .5;
         min-width: 0;
         // The height of the skeleton's action bar (`.entity-card-skeleton-action`).
-        min-height: 38px;
+        min-height: $entity-card-action-height;
 
         &.btn-group > .btn:first-child {
             flex: 1 1 auto;
@@ -247,13 +217,13 @@ $entity-card-padding: $spacer * .5 !default;
         // height, leaving the width to the labelled actions beside it.
         &-icon {
             flex: 0 0 auto;
-            width: 38px;
+            width: $entity-card-action-height;
             padding-inline: 0;
         }
     }
 
     .entity-card-placeholder:disabled {
-        opacity: 0.5;
+        opacity: .5;
     }
 
     // Skeleton: an entity card of Bootstrap placeholders in the card's own parts, so it has the
@@ -270,26 +240,25 @@ $entity-card-padding: $spacer * .5 !default;
 
     .entity-card-skeleton-image,
     .entity-card-skeleton-avatar {
-        width: 80px;
-        height: 80px;
-        border-radius: 6px;
+        width: $entity-card-image-size;
+        height: $entity-card-image-size;
+        border-radius: $entity-card-image-border-radius;
     }
 
+    // Bootstrap's placeholder sizes: `1em` of the text it stands in for
     .entity-card-skeleton-title {
         width: 60%;
-        height: 20px;
-        margin: 4px 0;
+        margin: $spacer * .25 0;
+        font-size: $entity-card-title-font-size;
     }
 
     .entity-card-skeleton-subtitle {
         width: 30%;
-        height: 14px;
-        margin: 4px 0;
+        margin: $spacer * .25 0;
     }
 
     .entity-card-skeleton-line {
         width: 100%;
-        height: 12px;
     }
 
     .entity-card-skeleton-line-short {
@@ -297,28 +266,21 @@ $entity-card-padding: $spacer * .5 !default;
     }
 
     .entity-card-skeleton .entity-card-skeleton-tag {
-        width: 56px;
-        height: 23px;
-        border-radius: 9999px;
+        width: 4rem;
+        font-size: $font-size-sm;
     }
 
     .entity-card-skeleton-action {
         flex: 1 1 auto;
-        height: 38px;
+        height: $entity-card-action-height;
     }
 
     .entity-card-skeleton-icon {
-        flex: 0 0 38px;
-        height: 38px;
+        flex: 0 0 $entity-card-action-height;
+        height: $entity-card-action-height;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .entity-card-title,
-        .entity-card-tag,
-        button.entity-card-stat {
-            transition: none !important;
-        }
-
         .entity-card-skeleton .placeholder {
             animation: none;
         }

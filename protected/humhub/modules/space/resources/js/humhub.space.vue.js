@@ -862,7 +862,7 @@
                 "span",
                 {
                   key: tag,
-                  class: "badge badge-tag"
+                  class: "badge"
                 },
                 vue$1.toDisplayString(tag),
                 1
@@ -1657,7 +1657,7 @@
   };
   const _hoisted_1$2 = {
     key: 0,
-    class: "entity-card-pill"
+    class: "badge rounded-pill entity-card-pill"
   };
   const _hoisted_2 = ["title", "aria-label"];
   const _hoisted_3 = ["title"];
@@ -1894,7 +1894,7 @@
               return vue$1.openBlock(), vue$1.createElementBlock("button", {
                 key: tag,
                 type: "button",
-                class: "entity-card-tag",
+                class: "badge entity-card-tag",
                 title: $options.filterByLabel(tag),
                 "aria-label": $options.filterByLabel(tag),
                 onClick: ($event) => _ctx.$emit("filter-tag", tag)

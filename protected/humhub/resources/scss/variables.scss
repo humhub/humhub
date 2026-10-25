@@ -190,6 +190,8 @@ $badge-font-weight: normal !default;
 $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
+// A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`
+$badge-color: var(--bs-secondary-color) !default;
 
 
 //

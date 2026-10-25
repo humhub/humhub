@@ -457,8 +457,8 @@
     key: 0,
     class: "marketplace-dialog-text"
   };
-  const _hoisted_6$2 = { class: "marketplace-dialog-text" };
-  const _hoisted_7$2 = { class: "install-dialog-field" };
+  const _hoisted_6$3 = { class: "marketplace-dialog-text" };
+  const _hoisted_7$3 = { class: "install-dialog-field" };
   const _hoisted_8$2 = ["for"];
   const _hoisted_9$2 = { class: "input-group" };
   const _hoisted_10$2 = ["id", "placeholder", "readonly", "aria-invalid", "aria-describedby"];
@@ -513,7 +513,7 @@
   const _hoisted_32$1 = ["disabled"];
   const _hoisted_33$1 = {
     key: 0,
-    class: "ti ti-loader marketplace-spin",
+    class: "spinner-border spinner-border-sm",
     "aria-hidden": "true"
   };
   const _hoisted_34$1 = ["href"];
@@ -623,9 +623,9 @@
           /* STABLE_FRAGMENT */
         )) : $data.step === "installing" ? (vue$1.openBlock(), vue$1.createElementBlock("button", _hoisted_30$1, [
           _cache[16] || (_cache[16] = vue$1.createElementVNode(
-            "i",
+            "span",
             {
-              class: "ti ti-loader marketplace-spin",
+              class: "spinner-border spinner-border-sm",
               "aria-hidden": "true"
             },
             null,
@@ -654,7 +654,7 @@
               disabled: $data.activating,
               onClick: _cache[11] || (_cache[11] = (...args) => $options.activate && $options.activate(...args))
             }, [
-              $data.activating ? (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_33$1)) : vue$1.createCommentVNode("v-if", true),
+              $data.activating ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_33$1)) : vue$1.createCommentVNode("v-if", true),
               vue$1.createTextVNode(
                 vue$1.toDisplayString($options.labels.activate),
                 1
@@ -716,12 +716,12 @@
               vue$1.Fragment,
               { key: 1 },
               [
-                vue$1.createElementVNode("p", _hoisted_6$2, [
+                vue$1.createElementVNode("p", _hoisted_6$3, [
                   vue$1.createVNode(_component_RichText, {
                     parts: $options.texts.license
                   }, null, 8, ["parts"])
                 ]),
-                vue$1.createElementVNode("div", _hoisted_7$2, [
+                vue$1.createElementVNode("div", _hoisted_7$3, [
                   vue$1.createElementVNode("label", {
                     for: $data.inputId,
                     class: "form-label"
@@ -747,9 +747,9 @@
                     ]),
                     $data.checking ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_11$2, [..._cache[14] || (_cache[14] = [
                       vue$1.createElementVNode(
-                        "i",
+                        "span",
                         {
-                          class: "ti ti-loader marketplace-spin",
+                          class: "spinner-border spinner-border-sm",
                           "aria-hidden": "true"
                         },
                         null,
@@ -963,6 +963,11 @@
     return parts;
   };
   const FILTER_TAGS = ["professional", "official", "partner"];
+  const BADGE_TONES = {
+    official: "badge-accent",
+    professional: "badge-warning",
+    partner: "badge-success"
+  };
   const _sfc_main$2 = {
     name: "ModuleCard",
     components: { RichText },
@@ -1025,6 +1030,9 @@
       badgeText() {
         return this.module.badge === "professional" ? vue.i18n.t("MarketplaceModule.base", "PRO") : badgeLabel(this.module.badge);
       },
+      badgeToneClass() {
+        return BADGE_TONES[this.module.badge] || null;
+      },
       badgeTitle() {
         if (this.module.badge === "partner") {
           return this.labels.thirdParty;
@@ -1075,8 +1083,8 @@
   const _hoisted_3$2 = ["href"];
   const _hoisted_4$2 = ["src"];
   const _hoisted_5$2 = ["src"];
-  const _hoisted_6$1 = { class: "module-card-badges" };
-  const _hoisted_7$1 = ["aria-label", "title"];
+  const _hoisted_6$2 = { class: "module-card-badges" };
+  const _hoisted_7$2 = ["aria-label", "title"];
   const _hoisted_8$1 = ["title"];
   const _hoisted_9$1 = ["title", "aria-label"];
   const _hoisted_10$1 = ["title"];
@@ -1103,7 +1111,7 @@
   const _hoisted_20$1 = ["disabled"];
   const _hoisted_21$1 = {
     key: 0,
-    class: "ti ti-refresh module-card-spin",
+    class: "spinner-border spinner-border-sm",
     "aria-hidden": "true"
   };
   const _hoisted_22$1 = {
@@ -1152,11 +1160,11 @@
           height: "80",
           alt: ""
         }, null, 8, _hoisted_5$2)),
-        vue$1.createElementVNode("div", _hoisted_6$1, [
+        vue$1.createElementVNode("div", _hoisted_6$2, [
           $props.module.featured ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
             key: 0,
             type: "button",
-            class: "module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star",
+            class: "badge badge-danger rounded-pill module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star",
             "aria-label": $options.labels.featuredFilter,
             title: $options.labels.featured,
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("filter-type", "featured"))
@@ -1171,10 +1179,10 @@
               -1
               /* CACHED */
             )
-          ])], 8, _hoisted_7$1)) : vue$1.createCommentVNode("v-if", true),
+          ])], 8, _hoisted_7$2)) : vue$1.createCommentVNode("v-if", true),
           $options.showUpdatePill ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
             key: 1,
-            class: "module-card-badge module-card-badge-update",
+            class: "badge badge-info module-card-badge module-card-badge-update",
             title: $options.labels.updateTo
           }, [
             _cache[6] || (_cache[6] = vue$1.createElementVNode(
@@ -1197,13 +1205,13 @@
           ], 8, _hoisted_8$1)) : $options.filterTag ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
             key: 2,
             type: "button",
-            class: vue$1.normalizeClass(["module-card-badge module-card-badge-filter", `module-card-badge-${$props.module.badge}`]),
+            class: vue$1.normalizeClass(["badge module-card-badge module-card-badge-filter", [`module-card-badge-${$props.module.badge}`, $options.badgeToneClass]]),
             title: $options.badgeTitle,
             "aria-label": $options.badgeFilterLabel,
             onClick: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("filter-type", $options.filterTag))
           }, vue$1.toDisplayString($options.badgeText), 11, _hoisted_9$1)) : $options.badgeText ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
             key: 3,
-            class: vue$1.normalizeClass(["module-card-badge", `module-card-badge-${$props.module.badge}`]),
+            class: vue$1.normalizeClass(["badge module-card-badge", [`module-card-badge-${$props.module.badge}`, $options.badgeToneClass]]),
             title: $options.badgeTitle
           }, vue$1.toDisplayString($options.badgeText), 11, _hoisted_10$1)) : vue$1.createCommentVNode("v-if", true)
         ])
@@ -1269,7 +1277,7 @@
           disabled: $options.updateBusy,
           onClick: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("update"))
         }, [
-          $props.updateState === "running" ? (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_21$1)) : vue$1.createCommentVNode("v-if", true),
+          $props.updateState === "running" ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_21$1)) : vue$1.createCommentVNode("v-if", true),
           vue$1.createElementVNode(
             "span",
             null,
@@ -1568,72 +1576,77 @@
   const _hoisted_3$1 = ["id", "aria-labelledby"];
   const _hoisted_4$1 = { class: "input-group" };
   const _hoisted_5$1 = ["placeholder", "aria-label", "disabled", "aria-invalid", "aria-describedby"];
-  const _hoisted_6 = ["aria-label", "title", "disabled"];
-  const _hoisted_7 = ["id"];
-  const _hoisted_8 = {
+  const _hoisted_6$1 = ["aria-label", "title", "disabled"];
+  const _hoisted_7$1 = {
+    key: 0,
+    class: "spinner-border spinner-border-sm",
+    "aria-hidden": "true"
+  };
+  const _hoisted_8 = ["id"];
+  const _hoisted_9 = {
     key: 1,
     class: "marketplace-settings-loading"
   };
-  const _hoisted_9 = ["aria-label"];
-  const _hoisted_10 = {
+  const _hoisted_10 = ["aria-label"];
+  const _hoisted_11 = {
     key: 2,
     class: "marketplace-settings-empty"
   };
-  const _hoisted_11 = {
+  const _hoisted_12 = {
     key: 3,
     class: "list-group licence-list"
   };
-  const _hoisted_12 = { class: "licence-list-clip" };
-  const _hoisted_13 = { class: "licence-list-row" };
-  const _hoisted_14 = ["src"];
-  const _hoisted_15 = { class: "licence-list-text" };
-  const _hoisted_16 = { class: "licence-list-name" };
-  const _hoisted_17 = { class: "licence-list-key" };
-  const _hoisted_18 = {
+  const _hoisted_13 = { class: "licence-list-clip" };
+  const _hoisted_14 = { class: "licence-list-row" };
+  const _hoisted_15 = ["src"];
+  const _hoisted_16 = { class: "licence-list-text" };
+  const _hoisted_17 = { class: "licence-list-name" };
+  const _hoisted_18 = { class: "licence-list-key" };
+  const _hoisted_19 = {
     key: 0,
     type: "button",
     class: "btn btn-secondary licence-list-action",
     disabled: ""
   };
-  const _hoisted_19 = ["aria-label", "disabled", "onClick"];
-  const _hoisted_20 = ["href", "aria-label", "title"];
-  const _hoisted_21 = {
+  const _hoisted_20 = ["aria-label", "disabled", "onClick"];
+  const _hoisted_21 = ["href", "aria-label", "title"];
+  const _hoisted_22 = {
     key: 4,
     class: "marketplace-settings-installation"
   };
-  const _hoisted_22 = ["id", "aria-labelledby"];
-  const _hoisted_23 = { class: "marketplace-setting" };
-  const _hoisted_24 = { class: "form-check" };
-  const _hoisted_25 = ["id", "checked", "disabled", "aria-describedby"];
-  const _hoisted_26 = ["for"];
-  const _hoisted_27 = ["id"];
-  const _hoisted_28 = { class: "form-check" };
-  const _hoisted_29 = ["id", "checked", "disabled", "aria-describedby"];
-  const _hoisted_30 = ["for"];
-  const _hoisted_31 = ["id"];
-  const _hoisted_32 = { class: "marketplace-setting-more" };
-  const _hoisted_33 = { class: "marketplace-setting-more-inner" };
-  const _hoisted_34 = {
+  const _hoisted_23 = ["id", "aria-labelledby"];
+  const _hoisted_24 = { class: "marketplace-setting" };
+  const _hoisted_25 = { class: "form-check" };
+  const _hoisted_26 = ["id", "checked", "disabled", "aria-describedby"];
+  const _hoisted_27 = ["for"];
+  const _hoisted_28 = ["id"];
+  const _hoisted_29 = { class: "form-check" };
+  const _hoisted_30 = ["id", "checked", "disabled", "aria-describedby"];
+  const _hoisted_31 = ["for"];
+  const _hoisted_32 = ["id"];
+  const _hoisted_33 = { class: "marketplace-setting-more" };
+  const _hoisted_34 = { class: "marketplace-setting-more-inner" };
+  const _hoisted_35 = {
     key: 0,
     class: "alert alert-warning marketplace-alert"
   };
-  const _hoisted_35 = { class: "marketplace-alert-text" };
-  const _hoisted_36 = ["innerHTML"];
-  const _hoisted_37 = { class: "form-check" };
-  const _hoisted_38 = ["id"];
-  const _hoisted_39 = ["for"];
-  const _hoisted_40 = ["disabled"];
-  const _hoisted_41 = {
+  const _hoisted_36 = { class: "marketplace-alert-text" };
+  const _hoisted_37 = ["innerHTML"];
+  const _hoisted_38 = { class: "form-check" };
+  const _hoisted_39 = ["id"];
+  const _hoisted_40 = ["for"];
+  const _hoisted_41 = ["disabled"];
+  const _hoisted_42 = {
     key: 0,
-    class: "ti ti-loader marketplace-spin",
+    class: "spinner-border spinner-border-sm",
     "aria-hidden": "true"
   };
-  const _hoisted_42 = {
+  const _hoisted_43 = {
     key: 0,
     class: "marketplace-dialog-error",
     role: "alert"
   };
-  const _hoisted_43 = ["href"];
+  const _hoisted_44 = ["href"];
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UiModal = vue$1.resolveComponent("UiModal");
     return vue$1.openBlock(), vue$1.createBlock(_component_UiModal, {
@@ -1733,37 +1746,38 @@
               disabled: $data.registering || $data.loading || $data.licenceKey.trim() === "",
               onClick: _cache[4] || (_cache[4] = (...args) => $options.register && $options.register(...args))
             }, [
-              vue$1.createElementVNode(
+              $data.registering ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_7$1)) : (vue$1.openBlock(), vue$1.createElementBlock(
                 "i",
                 {
-                  class: vue$1.normalizeClass(["ti", $data.registering ? "ti-loader marketplace-spin" : $data.added ? "ti-check" : "ti-plus"]),
+                  key: 1,
+                  class: vue$1.normalizeClass(["ti", $data.added ? "ti-check" : "ti-plus"]),
                   "aria-hidden": "true"
                 },
                 null,
                 2
                 /* CLASS */
-              )
-            ], 8, _hoisted_6)
+              ))
+            ], 8, _hoisted_6$1)
           ]),
           $data.keyError ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
             key: 0,
             id: `${$data.uid}-key-error`,
             class: "invalid-feedback d-block",
             role: "alert"
-          }, vue$1.toDisplayString($data.keyError), 9, _hoisted_7)) : vue$1.createCommentVNode("v-if", true),
-          $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_8, [
+          }, vue$1.toDisplayString($data.keyError), 9, _hoisted_8)) : vue$1.createCommentVNode("v-if", true),
+          $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_9, [
             vue$1.createElementVNode("span", {
               class: "spinner-border spinner-border-sm",
               role: "status",
               "aria-label": $options.labels.loading
-            }, null, 8, _hoisted_9)
+            }, null, 8, _hoisted_10)
           ])) : !$data.licences.length ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
-            _hoisted_10,
+            _hoisted_11,
             vue$1.toDisplayString($options.labels.none),
             1
             /* TEXT */
-          )) : (vue$1.openBlock(), vue$1.createElementBlock("ul", _hoisted_11, [
+          )) : (vue$1.openBlock(), vue$1.createElementBlock("ul", _hoisted_12, [
             (vue$1.openBlock(true), vue$1.createElementBlock(
               vue$1.Fragment,
               null,
@@ -1775,26 +1789,26 @@
                     class: vue$1.normalizeClass(["list-group-item licence-list-item", { "is-entering": module.id === $data.enteringId }])
                   },
                   [
-                    vue$1.createElementVNode("div", _hoisted_12, [
-                      vue$1.createElementVNode("div", _hoisted_13, [
+                    vue$1.createElementVNode("div", _hoisted_13, [
+                      vue$1.createElementVNode("div", _hoisted_14, [
                         vue$1.createElementVNode("img", {
                           src: module.imageUrl,
                           class: "licence-list-image",
                           width: "40",
                           height: "40",
                           alt: ""
-                        }, null, 8, _hoisted_14),
-                        vue$1.createElementVNode("div", _hoisted_15, [
+                        }, null, 8, _hoisted_15),
+                        vue$1.createElementVNode("div", _hoisted_16, [
                           vue$1.createElementVNode(
                             "p",
-                            _hoisted_16,
+                            _hoisted_17,
                             vue$1.toDisplayString(module.name),
                             1
                             /* TEXT */
                           ),
                           vue$1.createElementVNode(
                             "p",
-                            _hoisted_17,
+                            _hoisted_18,
                             vue$1.toDisplayString($options.licenceText(module)),
                             1
                             /* TEXT */
@@ -1802,7 +1816,7 @@
                         ]),
                         $options.isInstalled(module) ? (vue$1.openBlock(), vue$1.createElementBlock(
                           "button",
-                          _hoisted_18,
+                          _hoisted_19,
                           vue$1.toDisplayString($options.labels.installed),
                           1
                           /* TEXT */
@@ -1813,7 +1827,7 @@
                           "aria-label": $options.installLabel(module),
                           disabled: $props.installLocked,
                           onClick: ($event) => _ctx.$emit("install", module)
-                        }, vue$1.toDisplayString($options.labels.install), 9, _hoisted_19)),
+                        }, vue$1.toDisplayString($options.labels.install), 9, _hoisted_20)),
                         module.marketplaceUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
                           key: 2,
                           href: module.marketplaceUrl,
@@ -1833,7 +1847,7 @@
                             -1
                             /* CACHED */
                           )
-                        ])], 8, _hoisted_20)) : vue$1.createCommentVNode("v-if", true)
+                        ])], 8, _hoisted_21)) : vue$1.createCommentVNode("v-if", true)
                       ])
                     ])
                   ],
@@ -1847,7 +1861,7 @@
           ])),
           $props.installationId ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
-            _hoisted_21,
+            _hoisted_22,
             vue$1.toDisplayString($options.labels.installationId),
             1
             /* TEXT */
@@ -1861,8 +1875,8 @@
           role: "tabpanel",
           "aria-labelledby": `${$data.uid}-tab-settings`
         }, [
-          vue$1.createElementVNode("div", _hoisted_23, [
-            vue$1.createElementVNode("div", _hoisted_24, [
+          vue$1.createElementVNode("div", _hoisted_24, [
+            vue$1.createElementVNode("div", _hoisted_25, [
               vue$1.createElementVNode("input", {
                 id: `${$data.uid}-beta`,
                 class: "form-check-input",
@@ -1872,15 +1886,15 @@
                 disabled: $data.saving !== null,
                 "aria-describedby": `${$data.uid}-beta-hint`,
                 onChange: _cache[5] || (_cache[5] = ($event) => $options.toggleBeta($event.target.checked))
-              }, null, 40, _hoisted_25),
+              }, null, 40, _hoisted_26),
               vue$1.createElementVNode("label", {
                 class: "form-check-label marketplace-setting-title",
                 for: `${$data.uid}-beta`
-              }, vue$1.toDisplayString($options.labels.beta), 9, _hoisted_26),
+              }, vue$1.toDisplayString($options.labels.beta), 9, _hoisted_27),
               vue$1.createElementVNode("div", {
                 id: `${$data.uid}-beta-hint`,
                 class: "form-text marketplace-setting-hint"
-              }, vue$1.toDisplayString($options.labels.betaHint), 9, _hoisted_27)
+              }, vue$1.toDisplayString($options.labels.betaHint), 9, _hoisted_28)
             ])
           ]),
           vue$1.createElementVNode(
@@ -1889,7 +1903,7 @@
               class: vue$1.normalizeClass(["marketplace-setting", { "is-expanded": $data.acknowledging }])
             },
             [
-              vue$1.createElementVNode("div", _hoisted_28, [
+              vue$1.createElementVNode("div", _hoisted_29, [
                 vue$1.createElementVNode("input", {
                   id: `${$data.uid}-community`,
                   class: "form-check-input",
@@ -1899,19 +1913,19 @@
                   disabled: $data.saving !== null,
                   "aria-describedby": `${$data.uid}-community-hint`,
                   onChange: _cache[6] || (_cache[6] = ($event) => $options.toggleCommunity($event.target.checked))
-                }, null, 40, _hoisted_29),
+                }, null, 40, _hoisted_30),
                 vue$1.createElementVNode("label", {
                   class: "form-check-label marketplace-setting-title",
                   for: `${$data.uid}-community`
-                }, vue$1.toDisplayString($options.labels.community), 9, _hoisted_30),
+                }, vue$1.toDisplayString($options.labels.community), 9, _hoisted_31),
                 vue$1.createElementVNode("div", {
                   id: `${$data.uid}-community-hint`,
                   class: "form-text marketplace-setting-hint"
-                }, vue$1.toDisplayString($options.labels.communityHint), 9, _hoisted_31)
+                }, vue$1.toDisplayString($options.labels.communityHint), 9, _hoisted_32)
               ]),
-              vue$1.createElementVNode("div", _hoisted_32, [
-                vue$1.createElementVNode("div", _hoisted_33, [
-                  $data.acknowledging ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_34, [
+              vue$1.createElementVNode("div", _hoisted_33, [
+                vue$1.createElementVNode("div", _hoisted_34, [
+                  $data.acknowledging ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_35, [
                     _cache[11] || (_cache[11] = vue$1.createElementVNode(
                       "i",
                       {
@@ -1922,24 +1936,24 @@
                       -1
                       /* CACHED */
                     )),
-                    vue$1.createElementVNode("div", _hoisted_35, [
+                    vue$1.createElementVNode("div", _hoisted_36, [
                       vue$1.createElementVNode("div", {
                         innerHTML: $options.labels.warning
-                      }, null, 8, _hoisted_36),
-                      vue$1.createElementVNode("div", _hoisted_37, [
+                      }, null, 8, _hoisted_37),
+                      vue$1.createElementVNode("div", _hoisted_38, [
                         vue$1.withDirectives(vue$1.createElementVNode("input", {
                           id: `${$data.uid}-acknowledged`,
                           ref: "acknowledged",
                           "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => $data.acknowledged = $event),
                           class: "form-check-input",
                           type: "checkbox"
-                        }, null, 8, _hoisted_38), [
+                        }, null, 8, _hoisted_39), [
                           [vue$1.vModelCheckbox, $data.acknowledged]
                         ]),
                         vue$1.createElementVNode("label", {
                           class: "form-check-label",
                           for: `${$data.uid}-acknowledged`
-                        }, vue$1.toDisplayString($options.labels.acknowledge), 9, _hoisted_39)
+                        }, vue$1.toDisplayString($options.labels.acknowledge), 9, _hoisted_40)
                       ]),
                       vue$1.createElementVNode("div", null, [
                         vue$1.createElementVNode("button", {
@@ -1948,13 +1962,13 @@
                           disabled: !$data.acknowledged || $data.saving !== null,
                           onClick: _cache[8] || (_cache[8] = (...args) => $options.confirmCommunity && $options.confirmCommunity(...args))
                         }, [
-                          $data.saving === "includeCommunityModules" ? (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_41)) : vue$1.createCommentVNode("v-if", true),
+                          $data.saving === "includeCommunityModules" ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_42)) : vue$1.createCommentVNode("v-if", true),
                           vue$1.createTextVNode(
                             vue$1.toDisplayString($options.labels.confirm),
                             1
                             /* TEXT */
                           )
-                        ], 8, _hoisted_40)
+                        ], 8, _hoisted_41)
                       ])
                     ])
                   ])) : vue$1.createCommentVNode("v-if", true)
@@ -1966,7 +1980,7 @@
           ),
           $data.settingsError ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
-            _hoisted_42,
+            _hoisted_43,
             vue$1.toDisplayString($data.settingsError),
             1
             /* TEXT */
@@ -1991,8 +2005,8 @@
               1
               /* TEXT */
             )
-          ], 8, _hoisted_43)) : vue$1.createCommentVNode("v-if", true)
-        ], 8, _hoisted_22), [
+          ], 8, _hoisted_44)) : vue$1.createCommentVNode("v-if", true)
+        ], 8, _hoisted_23), [
           [vue$1.vShow, $data.tab === "settings"]
         ])
       ]),
@@ -2320,6 +2334,16 @@
   const _hoisted_3 = ["aria-hidden"];
   const _hoisted_4 = ["aria-label", "title", "tabindex", "disabled"];
   const _hoisted_5 = {
+    key: 0,
+    class: "spinner-border spinner-border-sm",
+    "aria-hidden": "true"
+  };
+  const _hoisted_6 = {
+    key: 1,
+    class: "ti ti-refresh",
+    "aria-hidden": "true"
+  };
+  const _hoisted_7 = {
     class: "visually-hidden",
     role: "status",
     "aria-live": "polite"
@@ -2372,18 +2396,9 @@
               tabindex: $options.showUpdateAll ? null : -1,
               disabled: $options.updateAllDisabled,
               onClick: _cache[1] || (_cache[1] = ($event) => $data.updatingAll ? $options.stopUpdateAll() : $options.startUpdateAll())
-            }, [..._cache[4] || (_cache[4] = [
-              vue$1.createElementVNode(
-                "i",
-                {
-                  class: "ti ti-refresh marketplace-spin",
-                  "aria-hidden": "true"
-                },
-                null,
-                -1
-                /* CACHED */
-              )
-            ])], 10, _hoisted_4)
+            }, [
+              $data.updatingAll ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_5)) : (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_6))
+            ], 10, _hoisted_4)
           ], 10, _hoisted_3)
         ]),
         card: vue$1.withCtx(({ item }) => [
@@ -2416,7 +2431,7 @@
       ]), 1032, ["url", "title", "filters", "onLoaded"]),
       vue$1.createElementVNode(
         "div",
-        _hoisted_5,
+        _hoisted_7,
         vue$1.toDisplayString($data.announcement),
         1
         /* TEXT */

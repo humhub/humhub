@@ -50,7 +50,7 @@
                     :title="labels.addLicenceKey"
                     :disabled="registering || loading || licenceKey.trim() === ''"
                     @click="register"
-                ><i class="ti" :class="registering ? 'ti-loader marketplace-spin' : (added ? 'ti-check' : 'ti-plus')" aria-hidden="true"></i></button>
+                ><span v-if="registering" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti" :class="added ? 'ti-check' : 'ti-plus'" aria-hidden="true"></i></button>
             </div>
             <div v-if="keyError" :id="`${uid}-key-error`" class="invalid-feedback d-block" role="alert">{{ keyError }}</div>
 
@@ -142,7 +142,7 @@
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-primary btn-sm marketplace-dialog-busy" :disabled="!acknowledged || saving !== null" @click="confirmCommunity">
-                                        <i v-if="saving === 'includeCommunityModules'" class="ti ti-loader marketplace-spin" aria-hidden="true"></i>{{ labels.confirm }}
+                                        <span v-if="saving === 'includeCommunityModules'" class="spinner-border spinner-border-sm" aria-hidden="true"></span>{{ labels.confirm }}
                                     </button>
                                 </div>
                             </div>

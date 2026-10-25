@@ -1584,7 +1584,7 @@
                                         vue.renderList($options.channelsOf(category), (channel) => {
                                           return vue.openBlock(), vue.createElementBlock("span", {
                                             key: channel.id,
-                                            class: vue.normalizeClass(["badge", category.channels[channel.id] ? "badge-accent" : "badge-neutral"]),
+                                            class: vue.normalizeClass(["badge", { "badge-accent": category.channels[channel.id] }]),
                                             "data-channel": channel.id,
                                             "data-on": category.channels[channel.id] ? "true" : "false"
                                           }, [

@@ -33,7 +33,7 @@
             <p class="space-description">{{ shortDescription }}</p>
 
             <div v-if="space.tags && space.tags.length" class="space-tags d-none">
-                <span v-for="tag in space.tags" :key="tag" class="badge badge-tag">{{ tag }}</span>
+                <span v-for="tag in space.tags" :key="tag" class="badge">{{ tag }}</span>
             </div>
         </div>
     </a>

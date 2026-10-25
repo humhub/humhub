@@ -37,7 +37,7 @@
                                 @input="keyError = null"
                                 @keydown.enter.prevent="register"
                             >
-                            <span v-if="checking" class="input-group-text"><i class="ti ti-loader marketplace-spin" aria-hidden="true"></i></span>
+                            <span v-if="checking" class="input-group-text"><span class="spinner-border spinner-border-sm" aria-hidden="true"></span></span>
                         </div>
                         <div v-if="keyError" :id="`${inputId}-error`" class="invalid-feedback d-block" role="alert">{{ keyError }}</div>
                     </div>
@@ -103,12 +103,12 @@
                 <button ref="primary" type="button" class="btn btn-primary" @click="install()">{{ labels.install }}</button>
             </template>
             <button v-else-if="step === 'installing'" type="button" class="btn btn-primary marketplace-dialog-busy" disabled>
-                <i class="ti ti-loader marketplace-spin" aria-hidden="true"></i>{{ labels.installingButton }}
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>{{ labels.installingButton }}
             </button>
             <template v-else-if="step === 'activate'">
                 <button type="button" class="btn btn-secondary" :disabled="activating" @click="close">{{ labels.close }}</button>
                 <button ref="primary" type="button" class="btn btn-primary marketplace-dialog-busy" :disabled="activating" @click="activate">
-                    <i v-if="activating" class="ti ti-loader marketplace-spin" aria-hidden="true"></i>{{ labels.activate }}
+                    <span v-if="activating" class="spinner-border spinner-border-sm" aria-hidden="true"></span>{{ labels.activate }}
                 </button>
             </template>
             <template v-else-if="step === 'configure'">

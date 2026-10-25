@@ -89,30 +89,33 @@ Colour is never the only signal.
 
 ## Markup and styles
 
-All families are Bootstrap's **`.badge`** with one modifier. Tones are generated in a loop over
-`$theme-colors` and its subtle maps, so `accent` and custom brand colours work. The look never
-depends on utilities such as `.text-bg-*`. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
+All families are Bootstrap's **`.badge`**. A plain `.badge` is **neutral**; a tone is one
+modifier `.badge-<tone>`, generated in a loop over `$badge-tones` from the theme's subtle colours,
+so `accent` and custom brand colours work. The look never depends on utilities such as
+`.text-bg-*`. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 
 | Family | Classes | Notes |
 |---|---|---|
-| Status chip, fact chip | `.badge.badge-<tone>` (`success`, `warning`, `danger`, `info`, `neutral`) | Subtle fill and text from `$theme-colors-bg-subtle` / `$theme-colors-text` |
+| Status chip, fact chip | `.badge` (neutral) or `.badge.badge-<tone>` (`accent`, `success`, `info`, `warning`, `danger`) | Subtle fill and text from `--bs-<colour>-bg-subtle` / `--bs-<colour>-text-emphasis`; neutral from `--bs-secondary-bg` / `--bs-secondary-color` |
 | Priority | `.badge.badge-<tone>` | low → info, mid → warning, high → danger |
-| Tag | `.badge.badge-tag` | Uppercase, neutral; clickable tags are `<a>` or `<button>` |
+| Tag | `.badge` (neutral) | Clickable tags are `<a>` or `<button>`: an edge in their colour on hover, the focus ring on focus |
 | Count | `.badge.badge-count` (+ tone, default danger) | Pill (`rounded-pill` look built in), never rendered for 0 |
 | Dot | `.badge-dot.badge-dot-waiting` (red) / `.badge-dot-unsaved` (accent) | Empty element with visually hidden text inside |
 
 ```html
 <span class="badge badge-success">Enabled</span>
+<span class="badge">Sales</span>
 <span class="badge badge-count">7<span class="visually-hidden"> waiting</span></span>
 <span class="badge-dot badge-dot-waiting"><span class="visually-hidden">3 waiting</span></span>
 ```
 
-- **File:** `_badge.scss`, behind `$prev-badge`. Implemented so far: the tones `.badge-<tone>`
-  for the colours in `$badge-tones` (`accent`, `success`, `info`, `warning`, `danger`; from
-  `--bs-<colour>-bg-subtle` / `--bs-<colour>-text-emphasis`), `.badge-neutral` and `.badge-tag`
-  (neutral). There is no `.badge-light` / `-dark` / `-primary` / `-secondary`. Users so far: the
-  channel badges of the notification settings (`badge-accent` on, `badge-neutral` off) and the
-  space tags in the space chooser (`badge-tag`).
+- **File:** `_badge.scss`, behind `$prev-badge`. Implemented so far: the neutral plain `.badge`
+  (`$badge-color` and the background), the tones `.badge-<tone>` for the colours in
+  `$badge-tones` (`accent`, `success`, `info`, `warning`, `danger`) and clickable badges. There is
+  no `.badge-light` / `-dark` / `-primary` / `-secondary`. A badge with only a background
+  utility (`badge bg-success`) gets the theme's contrast colour as text. Users so far: the channel
+  badges of the notification settings (`badge-accent` on, plain off), the tags and the stat pill
+  of the entity cards, the space tags in the space chooser.
 - **Sass variables:** Bootstrap's `$badge-font-size`, `$badge-font-weight`, `$badge-padding-x/y`,
   `$badge-border-radius` (HumHub's 2px stays until the open question is decided); plus
   `$badge-count-min-width`, `$badge-dot-size`.
@@ -129,12 +132,12 @@ colours) is used for four different jobs with the same look:
 | `ContentActiveRecord` labels: `Badge::danger('Pinned')`, `Badge::warning('Archived')`, `Badge::info('Public')`, `Badge::light($contentName)` | Facts about content | **Chips**: Pinned and Public are neutral facts with icon, Archived is neutral (a chosen state). See Open questions. |
 | `content\widgets\StateBadge`: `Badge::danger('Draft')`, `Badge::warning('Scheduled for …')`, `Badge::danger('Deleted')` | Content state | **Status chips**: Draft and Scheduled → warning, Deleted → danger |
 | `admin/views/group/index.php`: `Badge::light('Default')`, `Badge::light('Protected')` | Fact | **Neutral chip** |
-| `space/vue/components/SpaceChooserItem.vue`: `.badge.badge-tag` (done) | Tag | **Tag** |
+| `space/vue/components/SpaceChooserItem.vue`: plain `.badge` (done) | Tag | **Tag** |
 | `topic\widgets\TopicBadge` | Topic | Stays a topic chip (own spec for the stream) |
 
-Vue already has the card tags (`.entity-card-tag`), the filter count (`.filter-bar-count`)
-and the marketplace badges (`.module-card-badge-*`). Each has its own styles today; they move
-onto `.badge-tag`, `.badge-count` and `.badge-<tone>`.
+In Vue the card tags (`.entity-card-tag`) and the stat pill are badges now; the filter count
+(`.filter-bar-count`) and the marketplace badges (`.module-card-badge-*`) move onto
+`.badge-count` and `.badge-<tone>`.
 
 **Proposal:**
 
@@ -163,7 +166,8 @@ Dot::unsaved();
    today. Do they become chips, icons only, or something else in the new stream design?
 2. **"9+" or "99+":** where is the cutoff?
 3. **Priority "none":** should tasks without a priority show nothing, or a neutral chip?
-4. **Marketplace badges:** keep them as their own family, or turn types into neutral chips with a
-   brand-coloured edge?
+4. **Marketplace badges:** for now on the tones (official accent, PRO warning, partner success,
+   update info, featured star danger, others neutral). Keep it so, or turn types into neutral
+   chips with a brand-coloured edge?
 5. **`$badge-border-radius`:** HumHub sets 2px today, while the design's chips and counts are
    rounder. Change the global value (affects every `.badge`) or only the new modifiers?

@@ -193,7 +193,7 @@ describe('ModuleCard', () => {
             expect(wrapper.classes()).toContain('is-updating');
             expect(action(wrapper).text()).toBe('Updating');
             expect(action(wrapper).classes()).toEqual(expect.arrayContaining(['btn-warning', 'is-updating']));
-            expect(action(wrapper).find('.ti-refresh.module-card-spin').exists()).toBe(true);
+            expect(action(wrapper).find('.spinner-border').exists()).toBe(true);
             expect(action(wrapper).attributes('disabled')).toBeDefined();
         });
 
