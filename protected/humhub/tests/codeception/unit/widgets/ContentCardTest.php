@@ -1,0 +1,74 @@
+<?php
+
+/*
+ * @link      https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license   https://www.humhub.com/licences
+ */
+
+namespace humhub\tests\codeception\unit\widgets;
+
+use humhub\widgets\ContentCard;
+use humhub\widgets\menu\CardHeaderActions;
+use humhub\widgets\menu\MenuLink;
+use tests\codeception\_support\HumHubDbTestCase;
+
+/**
+ * The content card widget and its actions menu.
+ *
+ * @since 1.20
+ */
+class ContentCardTest extends HumHubDbTestCase
+{
+    private function render(array $config, string $content = '<p class="content">Hello</p>'): string
+    {
+        ob_start();
+        ContentCard::begin($config);
+        echo $content;
+        ContentCard::end();
+
+        return ob_get_clean();
+    }
+
+    public function testRendersASectionLabelledByItsH2Title()
+    {
+        $html = $this->render(['title' => 'Users & groups']);
+
+        $this->assertMatchesRegularExpression('#<section class="card content-card" aria-labelledby="([\w-]+-title)">#', $html);
+        preg_match('#aria-labelledby="([\w-]+-title)"#', $html, $matches);
+        $this->assertStringContainsString('<h2 id="' . $matches[1] . '" class="card-title">Users &amp; groups</h2>', $html);
+        $this->assertMatchesRegularExpression('#<div class="card-body">\s*<p class="content">Hello</p>\s*</div>#', $html);
+        $this->assertStringNotContainsString('card-header-actions', $html);
+        $this->assertStringNotContainsString('card-footer', $html);
+    }
+
+    public function testIsAPlainDivWithoutTitleAndActions()
+    {
+        $html = $this->render(['footer' => '<span class="pager"></span>']);
+
+        $this->assertMatchesRegularExpression('#^\s*<div class="card content-card">#', $html);
+        $this->assertStringNotContainsString('card-header', $html);
+        $this->assertStringContainsString('<div class="card-footer"><span class="pager"></span></div>', $html);
+    }
+
+    public function testRendersTheActionsWithGhostTools()
+    {
+        $actions = new ContentCardTestActions();
+        $actions->addEntry(new MenuLink(['id' => 'add', 'label' => 'Add user', 'icon' => 'plus', 'url' => '/add', 'isPrimary' => true, 'sortOrder' => 10]));
+        $actions->addEntry(new MenuLink(['id' => 'columns', 'label' => 'Columns', 'icon' => 'columns', 'url' => '/columns', 'sortOrder' => 20]));
+
+        $html = $this->render(['title' => 'Users', 'actions' => $actions]);
+
+        $this->assertStringContainsString('<div class="card-header-actions">', $html);
+        $this->assertMatchesRegularExpression('#<a class="btn btn-ghost btn-icon-only"[^>]*href="/columns"#', $html);
+        $this->assertMatchesRegularExpression('#<a class="btn btn-accent btn-icon-only"[^>]*href="/add"#', $html);
+        $this->assertLessThan(strpos($html, 'href="/add"'), strpos($html, 'href="/columns"'));
+    }
+}
+
+/**
+ * A concrete actions menu for {@see ContentCardTest} (the base class is abstract).
+ */
+class ContentCardTestActions extends CardHeaderActions
+{
+}

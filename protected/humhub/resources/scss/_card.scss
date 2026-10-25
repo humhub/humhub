@@ -1,0 +1,61 @@
+//
+// Content card: the card below a page header, on Bootstrap's `.card` with the modifier
+// `.content-card`, which sets the card's `--bs-card-*` variables (a plain `.card` keeps
+// Bootstrap's look). PHP: humhub\widgets\ContentCard; Vue: ContentCard.vue. See docs/ui/card.md.
+// @since 1.20
+// --------------------------------------------------
+
+$content-card-border-radius: $border-radius-lg !default;
+$content-card-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
+$content-card-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
+$content-card-bg: var(--hh-background-color-main) !default;
+$content-card-header-gap: $spacer * .5 !default;
+$content-card-title-font-size: $font-size-lg !default;
+$content-card-title-font-weight: $font-weight-semibold !default;
+
+@if not $prev-card {
+    .content-card {
+        --bs-card-border-width: 0;
+        --bs-card-border-radius: #{$content-card-border-radius};
+        --bs-card-inner-border-radius: #{$content-card-border-radius};
+        --bs-card-box-shadow: #{$content-card-box-shadow};
+        --bs-card-bg: #{$content-card-bg};
+        --bs-card-cap-bg: transparent;
+        --hh-content-card-header-gap: #{$content-card-header-gap};
+
+        // `.card` draws its shadow only with `$enable-shadows`; a content card always has one
+        box-shadow: var(--bs-card-box-shadow);
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .content-card {
+                --bs-card-box-shadow: #{$content-card-box-shadow-dark};
+            }
+        }
+    }
+
+    .content-card > .card-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--hh-content-card-header-gap);
+    }
+
+    .content-card > .card-header > .card-title {
+        flex: 1 0 0;
+        margin: 0;
+        color: var(--hh-text-color-highlight);
+        font-size: $content-card-title-font-size;
+        font-weight: $content-card-title-font-weight;
+        line-height: $headings-line-height;
+        word-break: break-word;
+    }
+
+    .card-header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--hh-content-card-header-gap);
+        margin-left: auto;
+    }
+}
