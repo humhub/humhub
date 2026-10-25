@@ -1,15 +1,15 @@
 <template>
     <svg
-        class="c-progress-frame"
+        class="progress-frame"
         role="progressbar"
         aria-valuemin="0"
         aria-valuemax="100"
         :aria-valuenow="clamped"
         :aria-label="label"
     >
-        <rect class="c-progress-frame__track" width="100%" height="100%" rx="6" pathLength="100" />
+        <rect class="progress-frame-track" width="100%" height="100%" rx="6" pathLength="100" />
         <rect
-            class="c-progress-frame__bar"
+            class="progress-frame-bar"
             width="100%"
             height="100%"
             rx="6"
@@ -23,8 +23,8 @@
 /**
  * A progress bar drawn as the outline of its container (`<progress-frame>`) — the upload state
  * of a `TileGrid` tile. Absolutely positioned over the container by its own CSS
- * (`.c-progress-frame` in `resources/scss/_item-browser.scss`). The frame is drawn in the
- * container's own pixels (the stroke straddles the edge — `.c-progress-frame` keeps
+ * (`.progress-frame` in `resources/scss/_item-browser.scss`). The frame is drawn in the
+ * container's own pixels (the stroke straddles the edge — `.progress-frame` keeps
  * `overflow: visible`), so the stroke width and the 6px corners stay true at any tile size, and
  * `pathLength` makes the dash offset a percentage of the real perimeter.
  *

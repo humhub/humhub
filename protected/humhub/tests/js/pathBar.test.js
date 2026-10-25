@@ -29,33 +29,34 @@ describe('PathBar', () => {
     it('renders the root, the ancestors as links and the current level as text', () => {
         const wrapper = bar();
 
-        const root = wrapper.find('a.c-path-bar__root');
+        const root = wrapper.find('a.path-bar-root');
         expect(root.attributes('href')).toBe('/f');
         expect(root.attributes('aria-label')).toBe('All files');
         expect(root.find('.ti-folders').exists()).toBe(true);
-        expect(wrapper.find('nav.c-path-bar__path').attributes('aria-label')).toBe('Breadcrumb');
-        const link = wrapper.find('a.c-path-bar__link');
-        expect(wrapper.findAll('a.c-path-bar__link').map((a) => a.text())).toEqual(['Brand']);
+        expect(wrapper.find('nav.path-bar-nav').attributes('aria-label')).toBe('Breadcrumb');
+        const link = wrapper.find('.breadcrumb-item + .breadcrumb-item > a');
+        expect(wrapper.findAll('.breadcrumb-item + .breadcrumb-item > a').map((a) => a.text())).toEqual(['Brand']);
         expect(link.attributes('title')).toBe('Brand');
-        const current = wrapper.find('.c-path-bar__current');
+        const current = wrapper.find('.breadcrumb-item.active > span');
         expect(current.text()).toBe('Logos');
-        expect(current.attributes('aria-current')).toBe('page');
+        expect(wrapper.find('.breadcrumb-item.active').attributes('aria-current')).toBe('page');
         expect(current.attributes('title')).toBe('Logos');
-        expect(wrapper.findAll('.ti-chevron-right')).toHaveLength(2);
+        // The dividers are the breadcrumb's own (CSS), one before every item but the root
+        expect(wrapper.findAll('ol.breadcrumb > li.breadcrumb-item')).toHaveLength(3);
     });
 
     it('marks the root as current at the top level, without a back button', () => {
         const wrapper = bar({ path: [] });
 
-        expect(wrapper.find('a.c-path-bar__root').attributes('aria-current')).toBe('page');
-        expect(wrapper.find('.c-path-bar__back').exists()).toBe(false);
+        expect(wrapper.find('a.path-bar-root').attributes('aria-current')).toBe('page');
+        expect(wrapper.find('.path-bar-back').exists()).toBe(false);
     });
 
     it('navigates on a plain click and leaves modified clicks to the browser', async () => {
         const wrapper = bar();
 
-        await wrapper.find('a.c-path-bar__link').trigger('click');
-        await wrapper.find('a.c-path-bar__root').trigger('click');
+        await wrapper.find('.breadcrumb-item + .breadcrumb-item > a').trigger('click');
+        await wrapper.find('a.path-bar-root').trigger('click');
 
         // The component must not call preventDefault() on a modified click, so jsdom tries to
         // follow the real href - block that at the document so it does not log "Not implemented:
@@ -63,7 +64,7 @@ describe('PathBar', () => {
         // unaffected and still asserted below.
         const block = (e) => e.preventDefault();
         document.addEventListener('click', block);
-        await wrapper.find('a.c-path-bar__link').trigger('click', { ctrlKey: true });
+        await wrapper.find('.breadcrumb-item + .breadcrumb-item > a').trigger('click', { ctrlKey: true });
         document.removeEventListener('click', block);
 
         expect(wrapper.emitted('navigate')).toEqual([[3], [null]]);
@@ -72,24 +73,24 @@ describe('PathBar', () => {
     it('goes back to the parent level', async () => {
         const wrapper = bar();
 
-        await wrapper.find('.c-path-bar__back').trigger('click');
+        await wrapper.find('.path-bar-back').trigger('click');
         expect(wrapper.emitted('navigate')).toEqual([[3]]);
 
         const oneDeep = bar({ path: [path[0]] });
-        await oneDeep.find('.c-path-bar__back').trigger('click');
+        await oneDeep.find('.path-bar-back').trigger('click');
         expect(oneDeep.emitted('navigate')).toEqual([[null]]);
     });
 
     it('renders the end slot', () => {
         const wrapper = bar({}, { end: () => h('button', { class: 'selection' }) });
 
-        expect(wrapper.find('.c-path-bar > .selection').exists()).toBe(true);
+        expect(wrapper.find('.path-bar > .selection').exists()).toBe(true);
     });
 
     describe('drop targets', () => {
         it('takes a drop on an ancestor it may drop on', async () => {
             const wrapper = bar({ canDrop: (id) => id === 3 });
-            const brand = wrapper.findAll('.c-path-bar__crumb')[1];
+            const brand = wrapper.findAll('.breadcrumb-item')[1];
 
             await brand.trigger('dragover', drag);
             await brand.trigger('drop', drag);
@@ -102,27 +103,27 @@ describe('PathBar', () => {
 
         it('refuses what canDrop refuses, and never the current level', async () => {
             const wrapper = bar({ canDrop: () => true });
-            const [, , logos] = wrapper.findAll('.c-path-bar__crumb');
+            const [, , logos] = wrapper.findAll('.breadcrumb-item');
 
             await logos.trigger('dragover', drag);
             await logos.trigger('drop', drag);
             expect(wrapper.emitted('drop-on')).toBeUndefined();
 
             const refusing = bar({ canDrop: () => false });
-            await refusing.findAll('.c-path-bar__crumb')[1].trigger('drop', drag);
+            await refusing.findAll('.breadcrumb-item')[1].trigger('drop', drag);
             expect(refusing.emitted('drop-on')).toBeUndefined();
         });
 
         it('offers the root as a target below the top level', async () => {
             const wrapper = bar({ canDrop: () => true });
 
-            await wrapper.findAll('.c-path-bar__crumb')[0].trigger('drop', drag);
+            await wrapper.findAll('.breadcrumb-item')[0].trigger('drop', drag);
             expect(wrapper.emitted('drop-on')[0][0]).toBe(null);
         });
 
         it('emits drag-leave only when the pointer leaves the crumb', async () => {
             const wrapper = bar({ canDrop: () => true });
-            const brand = wrapper.findAll('.c-path-bar__crumb')[1];
+            const brand = wrapper.findAll('.breadcrumb-item')[1];
             const link = brand.find('a').element;
 
             await brand.trigger('dragleave', { relatedTarget: link });
@@ -137,19 +138,19 @@ describe('PathBar', () => {
         it('highlights the target named by dropTargetId', () => {
             const wrapper = bar({ dropTargetId: 3 });
 
-            expect(wrapper.findAll('.c-path-bar__crumb')[1].classes()).toContain('is-drop-target');
+            expect(wrapper.findAll('.breadcrumb-item')[1].classes()).toContain('is-drop-target');
             expect(bar().findAll('.is-drop-target')).toHaveLength(0);
 
             // `null` (the root) must stay distinct from `undefined` (no target, the prop's
             // default) - a Vue prop typed to coerce `null` to the default would break this.
             const rootTargeted = bar({ dropTargetId: null });
-            expect(rootTargeted.findAll('.c-path-bar__crumb')[0].classes()).toContain('is-drop-target');
+            expect(rootTargeted.findAll('.breadcrumb-item')[0].classes()).toContain('is-drop-target');
         });
     });
 
     describe('focusCurrent()', () => {
         it('makes the current level focusable from script, not by Tab', () => {
-            expect(bar().find('.c-path-bar__current').attributes('tabindex')).toBe('-1');
+            expect(bar().find('.breadcrumb-item.active > span').attributes('tabindex')).toBe('-1');
         });
 
         it('moves the focus to the current level', () => {
@@ -157,7 +158,7 @@ describe('PathBar', () => {
 
             wrapper.vm.focusCurrent();
 
-            expect(document.activeElement).toBe(wrapper.find('.c-path-bar__current').element);
+            expect(document.activeElement).toBe(wrapper.find('.breadcrumb-item.active > span').element);
             wrapper.unmount();
         });
 
@@ -166,7 +167,7 @@ describe('PathBar', () => {
 
             wrapper.vm.focusCurrent();
 
-            expect(document.activeElement).toBe(wrapper.find('a.c-path-bar__root').element);
+            expect(document.activeElement).toBe(wrapper.find('a.path-bar-root').element);
             wrapper.unmount();
         });
     });

@@ -1,22 +1,25 @@
 <template>
-    <div class="c-path-bar">
+    <div class="path-bar">
         <button
             v-if="path.length"
             type="button"
-            class="btn c-icon-button c-icon-button--ghost c-path-bar__back"
+            class="btn btn-ghost btn-icon-only path-bar-back"
             :aria-label="backLabel"
             :title="backLabel"
             @click="$emit('navigate', parentId)"
         ><i class="ti ti-arrow-left" aria-hidden="true"></i></button>
 
-        <nav class="c-path-bar__path" :aria-label="navLabel">
-            <ol class="c-path-bar__crumbs">
-                <li class="c-path-bar__crumb" :class="targetClass(null)" v-on="path.length ? dropHandlers(null) : {}">
+        <nav class="path-bar-nav" :aria-label="navLabel">
+            <ol class="breadcrumb">
+                <li
+                    class="breadcrumb-item"
+                    :class="[targetClass(null), { active: !path.length }]"
+                    v-on="path.length ? dropHandlers(null) : {}"
+                >
                     <a
                         ref="root"
                         :href="rootUrl"
-                        class="c-path-bar__root"
-                        :class="{ 'is-current': !path.length }"
+                        class="path-bar-root"
                         :aria-label="rootLabel"
                         :title="rootLabel"
                         :aria-current="path.length ? null : 'page'"
@@ -26,25 +29,22 @@
                 <li
                     v-for="(crumb, index) in path"
                     :key="crumb.id"
-                    class="c-path-bar__crumb"
-                    :class="targetClass(crumb.id)"
+                    class="breadcrumb-item"
+                    :class="[targetClass(crumb.id), { active: index === path.length - 1 }]"
+                    :aria-current="index === path.length - 1 ? 'page' : null"
                     v-on="index < path.length - 1 ? dropHandlers(crumb.id) : {}"
                 >
-                    <i class="ti ti-chevron-right c-path-bar__separator" aria-hidden="true"></i>
                     <a
                         v-if="index < path.length - 1"
                         :href="crumb.url"
-                        class="c-path-bar__link"
                         :title="crumb.title"
                         @click="follow(crumb.id, $event)"
                     >{{ crumb.title }}</a>
                     <span
                         v-else
                         ref="current"
-                        class="c-path-bar__current"
                         tabindex="-1"
                         :title="crumb.title"
-                        aria-current="page"
                     >{{ crumb.title }}</span>
                 </li>
             </ol>
@@ -60,9 +60,9 @@ import { i18n } from '@humhub/vue';
 const plainClick = (event) => !(event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
 
 /**
- * The path of a hierarchical view (`<path-bar>`): a grey bar with the root as an icon link,
- * the ancestors as links and the current level as text, a back button on narrow screens and an
- * `end` slot on the right (e.g. a `SelectionMenu`).
+ * The path of a hierarchical view (`<path-bar>`): Bootstrap's `.breadcrumb` as a grey bar, with
+ * the root as an icon link, the ancestors as links and the current level (`.active`) as text, a
+ * back button on narrow screens and an `end` slot on the right (e.g. a `SelectionMenu`).
  *
  * - `path`: the levels below the root, outermost first — `[{ id, title, url }]`; the last one
  *   is the current level. Empty at the top level, where the root is current.
@@ -82,7 +82,7 @@ const plainClick = (event) => !(event.button > 0 || event.metaKey || event.ctrlK
  * - `focusCurrent()` moves the focus to the current level (the root link at the top level) —
  *   for an owner whose focused control goes away, e.g. a `SelectionMenu` after "Clear
  *   selection" or a delete; the current level is focusable from script only (`tabindex="-1"`).
- * - Styling: `.c-path-bar` in `resources/scss/_item-browser.scss`; the back button shows at
+ * - Styling: `.path-bar` in `resources/scss/_item-browser.scss`; the back button shows at
  *   768px and below.
  *
  * @since 1.20

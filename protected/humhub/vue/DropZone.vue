@@ -1,6 +1,6 @@
 <template>
     <div
-        class="c-drop-zone"
+        class="drop-zone"
         @dragenter.capture="onEnter"
         @dragleave.capture="onLeave"
         @dragover="onOver"
@@ -8,9 +8,9 @@
         @drop="onDrop"
     >
         <slot></slot>
-        <Transition name="c-drop-zone-fade">
-            <div v-if="active" class="c-drop-zone__overlay" :class="{ 'is-refused': !accept }" aria-hidden="true">
-                <span class="c-drop-zone__label">
+        <Transition name="drop-zone-fade">
+            <div v-if="active" class="drop-zone-overlay" :class="{ 'is-refused': !accept }" aria-hidden="true">
+                <span class="drop-zone-label">
                     <i class="ti" :class="accept ? 'ti-upload' : 'ti-ban'"></i>{{ text }}
                 </span>
             </div>
@@ -40,7 +40,7 @@ const carriesFiles = (event) => Array.prototype.includes.call(event.dataTransfer
  *   leave the overlay stuck.
  * - A child accepting file drops (a folder tile) must sit in an accepting zone: the zone's
  *   `dragover` runs after the child's and sets `dropEffect` from `accept`.
- * - Styling: `.c-drop-zone` in `resources/scss/_item-browser.scss`.
+ * - Styling: `.drop-zone` in `resources/scss/_item-browser.scss`.
  *
  * @since 1.20
  */

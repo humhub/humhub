@@ -28,21 +28,21 @@ describe('TileGrid', () => {
     describe('tiles', () => {
         it('renders one tile per item with its slots', () => {
             const wrapper = grid();
-            const tiles = wrapper.findAll('.c-tile-grid__tile');
+            const tiles = wrapper.findAll('.tile');
 
             expect(tiles).toHaveLength(3);
             expect(tiles[0].attributes('data-key')).toBe('f:1');
-            expect(tiles[0].find('.c-tile-grid__thumb .thumb').exists()).toBe(true);
-            expect(tiles[0].find('.c-tile-grid__name .name-link').text()).toBe('Brand');
-            expect(tiles[0].find('.c-tile-grid__meta').text()).toBe('2 items');
+            expect(tiles[0].find('.tile-thumb .thumb').exists()).toBe(true);
+            expect(tiles[0].find('.tile-name .name-link').text()).toBe('Brand');
+            expect(tiles[0].find('.tile-meta').text()).toBe('2 items');
         });
 
         it('shows skeletons while the first items load, and the empty slot without items', () => {
-            expect(grid({ items: [], loading: true, skeletonCount: 4 }).findAll('.c-tile-grid__skeleton')).toHaveLength(4);
+            expect(grid({ items: [], loading: true, skeletonCount: 4 }).findAll('.tile-skeleton')).toHaveLength(4);
 
             const empty = grid({ items: [] }, { empty: () => h('p', { class: 'nothing' }, 'Empty') });
             expect(empty.find('.nothing').exists()).toBe(true);
-            expect(empty.find('.c-tile-grid__skeleton').exists()).toBe(false);
+            expect(empty.find('.tile-skeleton').exists()).toBe(false);
         });
 
         it('marks the grid busy while loading', () => {
@@ -53,12 +53,12 @@ describe('TileGrid', () => {
 
     describe('selection', () => {
         it('offers no checkbox unless selectable', () => {
-            expect(grid().find('.c-tile-grid__check').exists()).toBe(false);
+            expect(grid().find('.tile-check').exists()).toBe(false);
         });
 
         it('reflects the selection and switches the grid into selecting mode', () => {
             const wrapper = grid({ selectable: true, selection: ['a:2'] });
-            const [folder, guide] = wrapper.findAll('.c-tile-grid__tile');
+            const [folder, guide] = wrapper.findAll('.tile');
 
             expect(wrapper.classes()).toContain('is-selecting');
             expect(guide.classes()).toContain('is-selected');
@@ -69,7 +69,7 @@ describe('TileGrid', () => {
 
         it('emits a toggle, as a range with Shift', async () => {
             const wrapper = grid({ selectable: true });
-            const inputs = wrapper.findAll('.c-tile-grid__check input');
+            const inputs = wrapper.findAll('.tile-check');
 
             await inputs[0].trigger('click');
             await inputs[2].trigger('click', { shiftKey: true });
@@ -84,7 +84,7 @@ describe('TileGrid', () => {
 
         it('leaves the checkbox as the selection says when the owner does not change it', async () => {
             const wrapper = grid({ selectable: true });
-            const input = wrapper.find('.c-tile-grid__check input');
+            const input = wrapper.find('.tile-check');
 
             await input.trigger('click');
             await nextTick();
@@ -97,7 +97,7 @@ describe('TileGrid', () => {
     describe('context menu', () => {
         it('emits it on a right-click, and leaves Ctrl+right-click to the browser', async () => {
             const wrapper = grid();
-            const tile = wrapper.findAll('.c-tile-grid__tile')[1];
+            const tile = wrapper.findAll('.tile')[1];
 
             await tile.trigger('contextmenu');
             await tile.trigger('contextmenu', { ctrlKey: true });
@@ -109,7 +109,7 @@ describe('TileGrid', () => {
         it('renders the actions slot per tile', () => {
             const wrapper = grid({}, { actions: ({ item }) => h('button', { class: 'more' }, item.id) });
 
-            expect(wrapper.findAll('.c-tile-grid__actions .more')).toHaveLength(3);
+            expect(wrapper.findAll('.tile-actions .more')).toHaveLength(3);
         });
     });
 
@@ -117,13 +117,13 @@ describe('TileGrid', () => {
         const drag = { dataTransfer: { types: ['text/plain'] } };
 
         it('makes tiles draggable only when asked', () => {
-            expect(grid().find('.c-tile-grid__tile').attributes('draggable')).toBeUndefined();
-            expect(grid({ draggable: true }).find('.c-tile-grid__tile').attributes('draggable')).toBe('true');
+            expect(grid().find('.tile').attributes('draggable')).toBeUndefined();
+            expect(grid({ draggable: true }).find('.tile').attributes('draggable')).toBe('true');
         });
 
         it('reports drag start and end', async () => {
             const wrapper = grid({ draggable: true });
-            const tile = wrapper.findAll('.c-tile-grid__tile')[1];
+            const tile = wrapper.findAll('.tile')[1];
 
             await tile.trigger('dragstart', drag);
             await tile.trigger('dragend', drag);
@@ -153,7 +153,7 @@ describe('TileGrid', () => {
 
         it('ends a drag it started, even if the tile stopped being draggable meanwhile', async () => {
             const wrapper = grid({ draggable: true });
-            const tile = wrapper.findAll('.c-tile-grid__tile')[1];
+            const tile = wrapper.findAll('.tile')[1];
 
             await tile.trigger('dragstart', drag);
             await wrapper.setProps({ draggable: false });
@@ -165,7 +165,7 @@ describe('TileGrid', () => {
 
         it('drags the whole tile when the drag starts on its name link', async () => {
             const wrapper = grid({ draggable: true });
-            const tile = wrapper.findAll('.c-tile-grid__tile')[1];
+            const tile = wrapper.findAll('.tile')[1];
             const setDragImage = vi.fn();
 
             await tile.find('.name-link').trigger('dragstart', { dataTransfer: { types: [], setDragImage } });
@@ -177,7 +177,7 @@ describe('TileGrid', () => {
 
         it('takes a drop only where canDrop allows it', async () => {
             const wrapper = grid({ canDrop: (item) => item.id === 'f:1' });
-            const [folder, file] = wrapper.findAll('.c-tile-grid__tile');
+            const [folder, file] = wrapper.findAll('.tile');
 
             await file.trigger('dragover', drag);
             await file.trigger('drop', drag);
@@ -193,7 +193,7 @@ describe('TileGrid', () => {
 
         it('emits drag-leave only when the pointer leaves the tile', async () => {
             const wrapper = grid({ canDrop: () => true });
-            const tile = wrapper.findAll('.c-tile-grid__tile')[0];
+            const tile = wrapper.findAll('.tile')[0];
             const link = tile.find('.name-link').element;
 
             await tile.trigger('dragleave', { relatedTarget: link });
@@ -207,7 +207,7 @@ describe('TileGrid', () => {
         it('highlights the drop target', () => {
             const wrapper = grid({ dropTargetKey: 'f:1' });
 
-            expect(wrapper.findAll('.c-tile-grid__tile')[0].classes()).toContain('is-drop-target');
+            expect(wrapper.findAll('.tile')[0].classes()).toContain('is-drop-target');
         });
     });
 
@@ -218,11 +218,11 @@ describe('TileGrid', () => {
                 draggable: true,
                 items: [{ id: 'u:1', title: 'new.pdf', uploading: true, progress: 30 }],
             }, { actions: () => h('button', { class: 'more' }) });
-            const tile = wrapper.find('.c-tile-grid__tile');
+            const tile = wrapper.find('.tile');
 
             expect(tile.classes()).toContain('is-uploading');
-            expect(tile.find('.c-progress-frame').attributes('aria-valuenow')).toBe('30');
-            expect(tile.find('.c-tile-grid__check').exists()).toBe(false);
+            expect(tile.find('.progress-frame').attributes('aria-valuenow')).toBe('30');
+            expect(tile.find('.tile-check').exists()).toBe(false);
             expect(tile.find('.more').exists()).toBe(false);
             expect(tile.attributes('draggable')).toBeUndefined();
         });
@@ -230,8 +230,8 @@ describe('TileGrid', () => {
 
     describe('levels', () => {
         it('slides forward by default and back when told', () => {
-            expect(grid().vm.swapName).toBe('c-tile-grid-swap-forward');
-            expect(grid({ direction: 'back' }).vm.swapName).toBe('c-tile-grid-swap-back');
+            expect(grid().vm.swapName).toBe('tile-grid-swap-forward');
+            expect(grid({ direction: 'back' }).vm.swapName).toBe('tile-grid-swap-back');
         });
     });
 
@@ -254,7 +254,7 @@ describe('TileGrid', () => {
 
         it('offers more and loads it when pressed or scrolled into view', async () => {
             const wrapper = grid({ hasMore: true });
-            const more = wrapper.find('.c-tile-grid__more button');
+            const more = wrapper.find('.tile-grid-more button');
 
             await more.trigger('click');
             observers[0].callback([{ isIntersecting: true }]);
@@ -267,7 +267,7 @@ describe('TileGrid', () => {
 
             observers[0].callback([{ isIntersecting: true }]);
             expect(wrapper.emitted('load-more')).toBeUndefined();
-            expect(wrapper.find('.c-tile-grid__more button').attributes('disabled')).toBeDefined();
+            expect(wrapper.find('.tile-grid-more button').attributes('disabled')).toBeDefined();
         });
     });
 });
