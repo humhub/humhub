@@ -218,6 +218,17 @@ $btn-border-radius-lg: $btn-border-radius !default;
 // --------------------------------------------------
 
 $dropdown-bg: var(--hh-background-color-main) !default;
+// One look for every menu, wherever it sits (_dropdown.scss): rows inset with rounded corners,
+// a light accent fill on hover and while pressed
+$dropdown-min-width: 17rem !default;
+$dropdown-padding-x: .25rem !default;
+$dropdown-padding-y: .25rem !default;
+$dropdown-item-padding-x: .5rem !default;
+$dropdown-item-padding-y: .375rem !default;
+$dropdown-link-hover-bg: var(--bs-accent-bg-subtle) !default;
+$dropdown-link-hover-color: var(--hh-text-color-highlight) !default;
+$dropdown-link-active-bg: $dropdown-link-hover-bg !default;
+$dropdown-link-active-color: $dropdown-link-hover-color !default;
 
 
 //

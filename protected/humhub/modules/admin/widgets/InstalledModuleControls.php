@@ -84,6 +84,7 @@ class InstalledModuleControls extends Menu
                 'label' => Yii::t('AdminModule.base', 'Uninstall'),
                 'url' => $this->getActionUrl('/admin/module/remove'),
                 'htmlOptions' => [
+                    'class' => 'dropdown-item-danger',
                     'data-method' => 'POST',
                     'data-action-confirm-header' => Yii::t('AdminModule.modules', 'Uninstall Module'),
                     'data-action-confirm' => Yii::t('AdminModule.modules', 'Uninstalling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.', ['moduleName' => $this->module->getName()]),

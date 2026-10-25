@@ -30,9 +30,9 @@
                             v-else-if="entry.icon"
                             v-bind="entry.htmlOptions"
                             :href="entry.url || '#'"
-                            class="dropdown-item d-flex align-items-center gap-2"
+                            class="dropdown-item"
                             @click="onEntryClick(entry, $event)"
-                        ><i :class="'ti ti-' + entry.icon" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
+                        ><i :class="'ti ti-' + entry.icon + ' dropdown-item-icon'" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
                         <a
                             v-else
                             v-bind="entry.htmlOptions"
@@ -131,8 +131,8 @@
  * component with a single `context` prop (not spread — unlike
  * `ExtensionSlot`'s `v-bind="context"`); otherwise an
  * `<a class="dropdown-item">` calling `@click.prevent="onClick(context)"`,
- * with a leading `<i class="ti ti-<icon>">` (a Tabler name, plus a flex/gap class on the
- * `<a>` for spacing) when `icon` is set — a separate template branch (not a
+ * with a leading `<i class="ti ti-<icon> dropdown-item-icon">` (a Tabler name, in the row's
+ * icon column) when `icon` is set — a separate template branch (not a
  * nested `v-if` on the icon alone), so an entry without an icon renders the
  * exact same `<a class="dropdown-item">{{ label }}</a>` markup as before
  * this mode existed, with no leftover Vue `v-if` comment node.

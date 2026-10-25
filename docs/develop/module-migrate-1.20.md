@@ -1701,6 +1701,16 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the button removes the entry on the menu's `EVENT_INIT` (the `Button::EVENT_BEFORE_RUN`
     check on its URL no longer applies). The export does not follow the table's filters.
 
+- **Context menus have one look everywhere** (see `docs/ui/context-menu.md`). `.dropdown-menu`
+  no longer changes with where it sits: the accent bar on hover (in panels, modals and tabs) and
+  the dark menu of `.nav-pills` / `.nav-tabs` / `.account` are gone, as is the unused
+  `ul.contextMenu` style. The ⋮ toggle of `.nav-pills.preferences` is a ghost icon button with
+  vertical dots. New: `.dropdown-item-icon` (the icon column; a leading `<i>` of a row gets it
+  too) and `.dropdown-item-danger` for a destructive row — a `MenuLink` sets it through
+  `htmlOptions['class']`, a `DropdownMenu.vue` entry through `htmlOptions: { class: … }`. A
+  theme that styled menus through the removed selectors restyles them through the
+  `$dropdown-*` variables.
+
 - **A person filter for lists.** New: `user\components\listing\UserFilter`, a ready filter
   (`new UserFilter('authorId', column: 'content.created_by', definition: ['label' => …])`;
   parameter `userId` by default, an `apply` callback instead of `column`): the id of a user the

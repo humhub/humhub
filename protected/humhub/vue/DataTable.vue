@@ -159,8 +159,8 @@
                                     <template v-if="rowActions(row).length === 1">
                                         <a
                                             :href="rowActions(row)[0].url"
-                                            class="btn btn-ghost btn-sm"
-                                            :class="{ 'btn-icon-only': rowActions(row)[0].icon, 'text-danger': rowActions(row)[0].destructive }"
+                                            class="btn btn-sm"
+                                            :class="[rowActions(row)[0].destructive ? 'btn-ghost-danger' : 'btn-ghost', { 'btn-icon-only': rowActions(row)[0].icon }]"
                                             :aria-label="actionLabel(rowActions(row)[0], row)"
                                             :title="rowActions(row)[0].label"
                                             @click="runAction(row, rowActions(row)[0], $event)"
@@ -294,7 +294,7 @@ let uid = 0;
  *   without one toggles its details while columns are folded.
  * - Row actions (`{id, label, kind, icon?, confirm?, destructive?}`, once per table; each row
  *   names those it offers): one action is a button, several a ⋮ menu with the destructive ones
- *   last in red. `link` opens the URL, `modal` loads it into the global modal, `post` submits a
+ *   last in red (`.dropdown-item-danger`). `link` opens the URL, `modal` loads it into the global modal, `post` submits a
  *   POST form to it (a web route answering with a redirect), `request` POSTs to it and replaces
  *   the row with the answer's `row` (or removes it with `removed: true`). `confirm` asks first.
  * - Paging: 25 / 50 / 100 rows per page, the choice remembered per table (`tableId`) in this
@@ -435,7 +435,7 @@ export default {
                     id: `bulk-${action.id}`,
                     label: count === null ? action.label : `${action.label} (${count})`,
                     sortOrder: index * 10,
-                    htmlOptions: action.destructive ? { class: 'text-danger' } : {},
+                    htmlOptions: action.destructive ? { class: 'dropdown-item-danger' } : {},
                     onClick: () => this.runBulk(action, count),
                 });
             });
@@ -869,7 +869,7 @@ export default {
                     label: action.label,
                     url: action.url,
                     sortOrder: index * 10,
-                    htmlOptions: action.destructive ? { class: 'text-danger' } : {},
+                    htmlOptions: action.destructive ? { class: 'dropdown-item-danger' } : {},
                 };
                 // A plain link stays a link (DropdownMenu lets its click through).
                 if (action.kind !== 'link' || action.confirm) {

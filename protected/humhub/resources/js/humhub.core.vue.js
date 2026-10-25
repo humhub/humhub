@@ -456,13 +456,13 @@
                           ref_for: true
                         }, entry.htmlOptions, {
                           href: entry.url || "#",
-                          class: "dropdown-item d-flex align-items-center gap-2",
+                          class: "dropdown-item",
                           onClick: ($event) => $options.onEntryClick(entry, $event)
                         }), [
                           vue.createElementVNode(
                             "i",
                             {
-                              class: vue.normalizeClass("ti ti-" + entry.icon),
+                              class: vue.normalizeClass("ti ti-" + entry.icon + " dropdown-item-icon"),
                               "aria-hidden": "true"
                             },
                             null,
@@ -2890,7 +2890,7 @@
             id: `bulk-${action.id}`,
             label: count === null ? action.label : `${action.label} (${count})`,
             sortOrder: index * 10,
-            htmlOptions: action.destructive ? { class: "text-danger" } : {},
+            htmlOptions: action.destructive ? { class: "dropdown-item-danger" } : {},
             onClick: () => this.runBulk(action, count)
           });
         });
@@ -3310,7 +3310,7 @@
             label: action.label,
             url: action.url,
             sortOrder: index * 10,
-            htmlOptions: action.destructive ? { class: "text-danger" } : {}
+            htmlOptions: action.destructive ? { class: "dropdown-item-danger" } : {}
           };
           if (action.kind !== "link" || action.confirm) {
             entry.onClick = () => this.runAction(row, action);
@@ -3888,7 +3888,7 @@
                             $options.rowActions(row).length === 1 ? (vue.openBlock(), vue.createElementBlock("a", {
                               key: 0,
                               href: $options.rowActions(row)[0].url,
-                              class: vue.normalizeClass(["btn btn-ghost btn-sm", { "btn-icon-only": $options.rowActions(row)[0].icon, "text-danger": $options.rowActions(row)[0].destructive }]),
+                              class: vue.normalizeClass(["btn btn-sm", [$options.rowActions(row)[0].destructive ? "btn-ghost-danger" : "btn-ghost", { "btn-icon-only": $options.rowActions(row)[0].icon }]]),
                               "aria-label": $options.actionLabel($options.rowActions(row)[0], row),
                               title: $options.rowActions(row)[0].label,
                               onClick: ($event) => $options.runAction(row, $options.rowActions(row)[0], $event)

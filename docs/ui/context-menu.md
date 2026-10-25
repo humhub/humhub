@@ -84,35 +84,49 @@ style is set through `$dropdown-*` variables. Class names and SCSS follow [Styli
 | Class | Element |
 |---|---|
 | `.dropdown-menu`, `.dropdown-item`, `.dropdown-divider`, `.dropdown-header` | Bootstrap |
-| `.dropdown-item-icon` | The icon column; rows without an icon keep the column so labels align |
+| `.dropdown-item-icon` | The icon column (fixed width, so the labels line up). A menu's rows have an icon either all or none. |
 | `.dropdown-item-danger` | A destructive row (red text and icon, red hover fill) |
 | `.badge-count` | Count on a row ([Badges & Status](badges.md)) |
 
 - The trigger has no `.dropdown-toggle`, so Bootstrap draws no caret. Its `.show` state is the
   pressed look.
-- **File:** `_dropdown.scss`, behind `$prev-dropdown`.
+- **Look:** at least 17rem wide, rows inset with rounded corners, a light accent fill on hover
+  and while pressed (red for `.dropdown-item-danger`), a short colour transition.
+- **One look everywhere:** the menu doesn't change with where it sits (panel, modal, tabs, page
+  header). Only the top bar, Select2 and the rich text editor keep menus of their own.
+- **Legacy markup:** a leading `<i>` in a row takes the icon column like `.dropdown-item-icon`,
+  a plain `<a>` in `.dropdown-menu > li` gets the row style, and the ⋮ toggle of
+  `.nav-pills.preferences` (wall entries, panels, comments) looks like the ghost icon button.
+- **File:** `_dropdown.scss`, behind `$prev-dropdown`; the legacy ⋮ toggle in `_nav.scss`.
 - **Sass variables:** Bootstrap's `$dropdown-padding-x/y`, `$dropdown-item-padding-x/y`,
   `$dropdown-border-radius`, `$dropdown-box-shadow`, `$dropdown-link-hover-bg`,
-  `$dropdown-divider-margin-y`; plus `$dropdown-item-icon-width`.
+  `$dropdown-divider-margin-y`, `$dropdown-min-width`, `$dropdown-link-active-bg`; plus
+  `$dropdown-item-icon-width`, `$dropdown-item-icon-gap`, `$dropdown-item-border-radius`,
+  `$dropdown-item-transition`, `$preferences-toggle-size`, `$preferences-toggle-icon-size`.
 
 ## Implementation in core
 
 **Today:**
 
+- **Look (implemented):** one row style for all menus (icon column, neutral hover, red
+  `.dropdown-item-danger`), no accent bar and no dark or context-specific variants. Destructive
+  rows in core: content "Delete" (`DeleteLink`), comment "Delete", module "Uninstall", data
+  table row actions with `destructive`.
 - **PHP:** `humhub\widgets\menu\DropdownMenu` (Bootstrap dropdown with `MenuEntry` / `MenuLink`
-  entries), used e.g. by `WallEntryControls` and `PanelMenu`.
+  entries), used e.g. by `WallEntryControls` and `PanelMenu`. A destructive entry sets
+  `'class' => 'dropdown-item-danger'` in its `htmlOptions`.
 - **Vue:** `DropdownMenu.vue` with a free slot or data-driven entries (`menuId`, `entries`),
   extensible through `registerMenuEntry()` / `removeMenuEntry()`. It opens at the pointer via
   `open(event)` for right-click, and uses Bootstrap's dropdown JS for toggling and keyboard
-  handling.
+  handling. An entry's `icon` renders as `.dropdown-item-icon`, a destructive one passes
+  `htmlOptions: { class: 'dropdown-item-danger' }`.
 
 **Gaps:**
 
 | Gap | Proposal |
 |---|---|
-| Look: Bootstrap dropdown | New row style (icon column, separators, counts, red destructive rows) in both PHP and Vue |
 | No count on rows | `MenuLink` `badge` (shared with the [Badges & Status](badges.md) proposal) |
-| No "destructive" flag | `MenuLink` `destructive` → red, sorted last, confirm required |
+| No "destructive" flag | `MenuLink` `destructive` → `.dropdown-item-danger`, sorted last, confirm required (today the class is set by hand) |
 | Placement | Flip above and scroll inside when there is no room. Check what Bootstrap/Popper already does, and fill the gaps. |
 | Single action as icon button | A helper that renders an icon button instead of a menu when there is exactly one entry |
 

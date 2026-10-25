@@ -51,6 +51,7 @@ class DeleteLink extends MenuLink
         $this->setIcon('delete');
         $this->setUrl('#');
         $this->setHtmlOptions([
+            'class' => 'dropdown-item-danger',
             'data-action-click' => $isAdmin ? 'adminDelete' : 'delete',
             'data-content-delete-url' => $isAdmin
                 ? Url::to(['/content/content/admin-delete'])

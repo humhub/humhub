@@ -215,7 +215,7 @@ describe('DataTable', () => {
 
         const items = wrapper.findAll('tr[data-id="1"] .dropdown-item');
         expect(items.map((item) => item.text())).toEqual(['Edit', 'Disable', 'Impersonate', 'Delete']);
-        expect(items.at(-1).classes()).toContain('text-danger');
+        expect(items.at(-1).classes()).toContain('dropdown-item-danger');
         expect(wrapper.find('tr[data-id="1"] .dropdown-divider').exists()).toBe(true);
         expect(wrapper.find('tr[data-id="1"] [data-bs-toggle="dropdown"]').attributes('aria-label')).toBe('More actions for Emma');
 

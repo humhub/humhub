@@ -54,6 +54,7 @@
           {
             id: "delete",
             label: vue.i18n.t("CommentModule.base", "Delete"),
+            htmlOptions: { class: "dropdown-item-danger" },
             condition: () => this.canDelete,
             onClick: () => this.onDelete()
           }

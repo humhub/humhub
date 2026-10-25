@@ -1,11 +1,19 @@
 //
-// Dropdowns
+// Dropdowns and context menus: Bootstrap's `.dropdown-menu`, one look wherever it sits (the
+// `$dropdown-*` variables, see variables.scss), plus a row's icon column and a destructive row.
+// The ⋮ trigger of the legacy `.nav-pills.preferences` menus looks like a ghost icon button
+// (`_nav.scss`). See docs/ui/context-menu.md.
 // --------------------------------------------------
 
+$dropdown-item-icon-width: 1.25em !default;
+$dropdown-item-icon-gap: $spacer * .5 !default;
+$dropdown-item-border-radius: var(--bs-border-radius-sm) !default;
+$dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in-out !default;
+
 @if not $prev-dropdown {
-    // Bootstrap overwrite
-    // Global dropdown customizations are made through Sass variables, see variables.scss.
     .dropdown-menu {
+        --bs-dropdown-item-border-radius: #{$dropdown-item-border-radius};
+
         // Fix: dropdown flipped upward by Popper (not enough space below,
         // e.g. browser zoom > 100%) can end up hidden behind the fixed
         // topbars (#topbar-first/.fixed-top: 1030, #topbar-second: 1029)
@@ -14,120 +22,38 @@
         }
     }
 
-    .dropdown-menu {
-        li {
-            a {
-                @include media-breakpoint-up(sm) {
-                    white-space: nowrap;
-                }
-
-                @include media-breakpoint-down(md) {
-                    small {
-                        white-space: normal;
-                    }
-                }
-
-                i {
-                    margin-right: 5px;
-                    font-size: 14px;
-                    display: inline-block;
-                    width: 14px;
-                }
-
-                &:not(.btn) {
-                    &:hover,
-                    &:visited,
-                    &:hover,
-                    &:focus {
-                        cursor: pointer;
-                    }
-                }
-            }
-        }
-
-        li:hover,
-        li.selected {
-            color: var(--hh-text-color-highlight);
-        }
-
-        li:first-child {
-            margin-top: 3px;
-        }
-
-        li:last-child {
-            margin-bottom: 3px;
-        }
+    // A legacy menu's plain link is a row like any other
+    .dropdown-menu > li > a:not(.dropdown-item):not(.btn) {
+        @extend .dropdown-item;
     }
 
-    .modal,
-    .panel,
-    .nav-tabs {
-        .dropdown-menu {
-            border: 1px solid var(--hh-background3);
+    .dropdown-item {
+        cursor: pointer;
+        @include transition($dropdown-item-transition);
 
-            li {
-                border-left: 3px solid var(--hh-background-color-main);
+        // A leading icon (`.dropdown-item-icon`, or any `<i>` of a legacy row) in a column of its
+        // own, so the labels line up
+        > .dropdown-item-icon,
+        > i:first-child {
+            display: inline-block;
+            width: $dropdown-item-icon-width;
+            margin-right: $dropdown-item-icon-gap;
+            text-align: center;
+        }
 
-                &:hover,
-                &.selected {
-                    border-left: 3px solid var(--bs-accent);
-                    background-color: var(--hh-background-color-secondary) !important;
-                }
-
-                .dropdown-divider {
-                    background-color: var(--hh-background-color-secondary);
-                    border-bottom: none;
-                    margin: 9px 1px !important;
-                }
-
-                a {
-                    font-size: 13px;
-                    font-weight: 600;
-                    padding: 4px 15px;
-
-                    i {
-                        margin-right: 5px;
-                    }
-                }
-
-                a:hover {
-                    background: none;
-                }
+        @include media-breakpoint-down(md) {
+            small {
+                white-space: normal;
             }
         }
     }
 
-    ul.contextMenu {
-        border: 1px solid var(--hh-background3);
-
-        li {
-            border-left: 3px solid var(--hh-background-color-main);
-
-            &:hover,
-            &.selected {
-                border-left: 3px solid var(--bs-accent);
-                background-color: var(--hh-background-color-secondary) !important;
-            }
-
-            .dropdown-divider {
-                background-color: var(--hh-background-color-secondary);
-                border-bottom: none;
-                margin: 9px 1px !important;
-            }
-
-            a {
-                font-size: 14px;
-                font-weight: 400;
-                padding: 4px 15px;
-
-                i {
-                    margin-right: 5px;
-                }
-            }
-
-            a:hover {
-                background: none;
-            }
-        }
+    // A destructive row: red text and icon, a red hover fill
+    .dropdown-item-danger {
+        --bs-dropdown-link-color: var(--bs-danger);
+        --bs-dropdown-link-hover-color: var(--bs-danger);
+        --bs-dropdown-link-hover-bg: var(--bs-danger-bg-subtle);
+        --bs-dropdown-link-active-color: var(--bs-danger);
+        --bs-dropdown-link-active-bg: var(--bs-danger-bg-subtle);
     }
 }
