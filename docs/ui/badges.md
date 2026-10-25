@@ -107,7 +107,12 @@ depends on utilities such as `.text-bg-*`. Class names and SCSS follow [Styling 
 <span class="badge-dot badge-dot-waiting"><span class="visually-hidden">3 waiting</span></span>
 ```
 
-- **File:** `_badge.scss`, behind `$prev-badge`.
+- **File:** `_badge.scss`, behind `$prev-badge`. Implemented so far: the tones `.badge-<tone>`
+  for the colours in `$badge-tones` (`accent`, `success`, `info`, `warning`, `danger`; from
+  `--bs-<colour>-bg-subtle` / `--bs-<colour>-text-emphasis`), `.badge-neutral` and `.badge-tag`
+  (neutral). There is no `.badge-light` / `-dark` / `-primary` / `-secondary`. Users so far: the
+  channel badges of the notification settings (`badge-accent` on, `badge-neutral` off) and the
+  space tags in the space chooser (`badge-tag`).
 - **Sass variables:** Bootstrap's `$badge-font-size`, `$badge-font-weight`, `$badge-padding-x/y`,
   `$badge-border-radius` (HumHub's 2px stays until the open question is decided); plus
   `$badge-count-min-width`, `$badge-dot-size`.
@@ -124,7 +129,7 @@ colours) is used for four different jobs with the same look:
 | `ContentActiveRecord` labels: `Badge::danger('Pinned')`, `Badge::warning('Archived')`, `Badge::info('Public')`, `Badge::light($contentName)` | Facts about content | **Chips**: Pinned and Public are neutral facts with icon, Archived is neutral (a chosen state). See Open questions. |
 | `content\widgets\StateBadge`: `Badge::danger('Draft')`, `Badge::warning('Scheduled for …')`, `Badge::danger('Deleted')` | Content state | **Status chips**: Draft and Scheduled → warning, Deleted → danger |
 | `admin/views/group/index.php`: `Badge::light('Default')`, `Badge::light('Protected')` | Fact | **Neutral chip** |
-| `space\widgets\views\spaceChooserItem.php`: `Badge::light($tag)` | Tag | **Tag** |
+| `space/vue/components/SpaceChooserItem.vue`: `.badge.badge-tag` (done) | Tag | **Tag** |
 | `topic\widgets\TopicBadge` | Topic | Stays a topic chip (own spec for the stream) |
 
 Vue already has the card tags (`.entity-card-tag`), the filter count (`.filter-bar-count`)

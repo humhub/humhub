@@ -271,7 +271,7 @@
     .form-check-card {
         position: relative;
         display: flex;
-        flex: 1 1 180px;
+        flex: 1 1 10rem;
         align-items: flex-start;
         gap: $spacer * .75;
         min-height: 56px;
@@ -280,6 +280,7 @@
         border: var(--bs-border-width) solid var(--bs-border-color);
         border-radius: var(--bs-border-radius);
         background: var(--hh-background-color-main);
+        font-weight: $font-weight-normal; // not the bold of a HumHub `label`
         cursor: pointer;
 
         &:hover {

@@ -74,8 +74,8 @@ Small building blocks used everywhere.
 | Component | What it is | Status | Technology |
 |---|---|---|---|
 | [Buttons](buttons.md) | Variants, icon buttons, full width, choice rows, header actions | in progress | Both |
-| [Badges & Status](badges.md) | Chips, priority, tags, count badges, dots | in review | Both |
-| [Accordion](accordion.md) | Groups that open in place, with unsaved-changes tracking | in review | Both (proposed) |
+| [Badges & Status](badges.md) | Chips, priority, tags, count badges, dots | in progress | Both |
+| [Accordion](accordion.md) | Groups that open in place, with unsaved-changes tracking | in progress | Both (proposed) |
 | [Dialog](dialog.md) | Confirm, form, tabbed and multi-step dialogs | in review | Both |
 | [Context Menu](context-menu.md) | The ⋮ menu for one item or area | in review | Both |
 

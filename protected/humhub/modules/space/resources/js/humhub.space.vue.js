@@ -862,7 +862,7 @@
                 "span",
                 {
                   key: tag,
-                  class: "badge badge-light"
+                  class: "badge badge-tag"
                 },
                 vue$1.toDisplayString(tag),
                 1

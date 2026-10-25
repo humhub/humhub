@@ -1,125 +1,130 @@
 <template>
     <HumHubForm ref="form" class="notification-settings" model-name="NotificationSettings" :class="`notification-settings-${scope}`">
-        <section v-if="showProfiles" class="card content-card notification-settings-card notification-settings-intro">
-            <div class="notification-settings-head">
-                <h2 class="notification-settings-title">{{ labels.title }}</h2>
+        <section v-if="showProfiles" class="card content-card notification-settings-intro">
+            <div class="card-header">
+                <h2 class="card-title notification-settings-title">{{ labels.title }}</h2>
                 <span
                     class="notification-settings-status"
                     :class="`is-${saveState}`"
                     role="status"
                     aria-live="polite"
-                ><template v-if="statusLabel"><i class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
+                ><template v-if="statusLabel"><span v-if="saveState === 'saving'" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
             </div>
-            <p class="notification-settings-lead">{{ labels.intro }}</p>
-            <div class="form-check-cards" role="radiogroup" :aria-label="labels.profile">
-                <label v-for="option in profiles" :key="option.id" class="form-check-card">
-                    <input
-                        class="form-check-input"
-                        type="radio"
-                        :name="`${radioName}-profile`"
-                        :value="option.id"
-                        :checked="profile === option.id"
-                        :data-profile="option.id"
-                        @change="onRadioChange($event, () => selectProfile(option.id), () => profile)"
-                    >
-                    <span class="form-check-card-body">
-                        <span class="form-check-card-title">{{ option.title }}</span>
-                        <span class="form-check-card-text">{{ option.description }}</span>
-                    </span>
-                </label>
+            <div class="card-body">
+                <p class="notification-settings-lead">{{ labels.intro }}</p>
+                <div class="form-check-cards" role="radiogroup" :aria-label="labels.profile">
+                    <label v-for="option in profiles" :key="option.id" class="form-check-card">
+                        <input
+                            class="form-check-input"
+                            type="radio"
+                            :name="`${radioName}-profile`"
+                            :value="option.id"
+                            :checked="profile === option.id"
+                            :data-profile="option.id"
+                            @change="onRadioChange($event, () => selectProfile(option.id), () => profile)"
+                        >
+                        <span class="form-check-card-body">
+                            <span class="form-check-card-title">{{ option.title }}</span>
+                            <span class="form-check-card-text">{{ option.description }}</span>
+                        </span>
+                    </label>
+                </div>
             </div>
         </section>
 
-        <section class="notification-settings-card notification-settings-categories" :class="{ 'card content-card': showProfiles }">
-            <div class="notification-settings-head notification-settings-categories-head">
-                <h3 class="notification-settings-subtitle">{{ labels.categories }}</h3>
+        <section class="notification-settings-categories" :class="{ 'card content-card': showProfiles }">
+            <div class="notification-settings-head" :class="{ 'card-header': showProfiles }">
+                <h3 class="notification-settings-subtitle" :class="{ 'card-title': showProfiles }">{{ labels.categories }}</h3>
                 <span
                     v-if="!showProfiles"
                     class="notification-settings-status"
                     :class="`is-${saveState}`"
                     role="status"
                     aria-live="polite"
-                ><template v-if="statusLabel"><i class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
+                ><template v-if="statusLabel"><span v-if="saveState === 'saving'" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
             </div>
-            <template v-for="(category, index) in categories" :key="category.id">
-                <h4
-                    v-if="category.module && (index === 0 || !categories[index - 1].module)"
-                    class="notification-settings-divider"
-                >{{ labels.fromModules }}</h4>
-                <div
-                    class="notification-settings-category"
-                    :class="{ 'is-expanded': isExpanded(category), 'is-fixed': category.fixed }"
-                    :data-category="category.id"
-                >
-                    <component
-                        :is="category.fixed ? 'div' : 'button'"
-                        :type="category.fixed ? null : 'button'"
-                        class="notification-settings-category-head"
-                        :aria-expanded="category.fixed ? null : (isExpanded(category) ? 'true' : 'false')"
-                        :aria-controls="category.fixed ? null : panelId(category)"
-                        @click="toggle(category)"
+            <template v-for="group in categoryGroups" :key="group.module ? 'modules' : 'core'">
+                <h4 v-if="group.module" class="notification-settings-divider">{{ labels.fromModules }}</h4>
+                <div class="accordion notification-settings-accordion" :class="{ 'accordion-flush': showProfiles }">
+                    <div
+                        v-for="category in group.items"
+                        :key="category.id"
+                        class="accordion-item notification-settings-category"
+                        :data-category="category.id"
                     >
-                        <span class="notification-settings-category-icon" aria-hidden="true"><i class="ti" :class="category.icon"></i></span>
-                        <span class="notification-settings-category-text">
-                            <span class="notification-settings-category-title">{{ category.title }}</span>
-                            <span v-if="category.description" class="notification-settings-category-description">{{ category.description }}</span>
-                        </span>
-                        <span class="notification-settings-badges">
-                            <span
-                                v-for="channel in channelsOf(category)"
-                                :key="channel.id"
-                                class="notification-settings-badge"
-                                :class="{ 'is-on': category.channels[channel.id] }"
-                                :data-channel="channel.id"
-                            >{{ channel.title }}<span class="visually-hidden">: {{ category.channels[channel.id] ? labels.on : labels.off }}</span></span>
-                        </span>
-                        <span v-if="category.fixed" class="notification-settings-category-state" :title="labels.alwaysOn">
-                            <i class="ti ti-lock" aria-hidden="true"></i><span class="visually-hidden">{{ labels.alwaysOn }}</span>
-                        </span>
-                        <span v-else class="notification-settings-category-state" aria-hidden="true">
-                            <i class="ti" :class="isExpanded(category) ? 'ti-chevron-up' : 'ti-chevron-down'"></i>
-                        </span>
-                    </component>
-                    <div v-if="!category.fixed && isExpanded(category)" :id="panelId(category)" class="notification-settings-category-body">
-                        <div class="notification-settings-channels" role="group" :aria-label="category.title">
-                            <CheckboxField
-                                v-for="channel in channelsOf(category)"
-                                :key="channel.id"
-                                :model-value="category.channels[channel.id]"
-                                :attribute="`categories.${category.id}.${channel.id}`"
-                                :label="channel.title"
-                                @update:model-value="setSwitch(category, channel.id, $event)"
-                            />
-                        </div>
-                        <div v-if="category.id === 'content' && spaces.enabled" class="notification-settings-spaces">
-                            <label :for="spacesInputId" class="form-label notification-settings-spaces-label">{{ labels.spaces }}</label>
-                            <PickerFilterControl
-                                :model-value="spaceIds"
-                                :filter="spacesFilter"
-                                :input-id="spacesInputId"
-                                :multiple="true"
-                                keep-placeholder
-                                :search="searchSpaces"
-                                :resolve="resolveSpaces"
-                                :item-label="spaceLabel"
-                                icon="ti-users-group"
-                                block="space-filter"
-                                @update:model-value="setSpaces"
+                        <h5 class="accordion-header">
+                            <component
+                                :is="category.fixed ? 'div' : 'button'"
+                                :type="category.fixed ? null : 'button'"
+                                class="accordion-button"
+                                :class="{ collapsed: !isExpanded(category), 'accordion-button-static': category.fixed }"
+                                :aria-expanded="category.fixed ? null : (isExpanded(category) ? 'true' : 'false')"
+                                :aria-controls="category.fixed ? null : panelId(category)"
+                                @click="toggle(category)"
                             >
-                                <template #option="{ item }">
-                                    <SpaceImage v-bind="spaceImageProps(item)" :width="24" :link="false" />
-                                </template>
-                                <template #chip="{ item }">
-                                    <SpaceImage v-bind="spaceImageProps(item)" :width="18" :link="false" />
-                                </template>
-                            </PickerFilterControl>
+                                <span class="accordion-icon" aria-hidden="true"><i class="ti" :class="category.icon"></i></span>
+                                <span class="accordion-title">
+                                    {{ category.title }}
+                                    <span v-if="category.description" class="accordion-subtitle">{{ category.description }}</span>
+                                </span>
+                                <span class="notification-settings-badges">
+                                    <span
+                                        v-for="channel in channelsOf(category)"
+                                        :key="channel.id"
+                                        class="badge"
+                                        :class="category.channels[channel.id] ? 'badge-accent' : 'badge-neutral'"
+                                        :data-channel="channel.id"
+                                        :data-on="category.channels[channel.id] ? 'true' : 'false'"
+                                    >{{ channel.title }}<span class="visually-hidden">: {{ category.channels[channel.id] ? labels.on : labels.off }}</span></span>
+                                </span>
+                                <span v-if="category.fixed" class="accordion-static-icon" :title="labels.alwaysOn">
+                                    <i class="ti ti-lock" aria-hidden="true"></i><span class="visually-hidden">{{ labels.alwaysOn }}</span>
+                                </span>
+                            </component>
+                        </h5>
+                        <div v-if="!category.fixed && isExpanded(category)" :id="panelId(category)" class="accordion-collapse collapse show">
+                            <div class="accordion-body notification-settings-category-body">
+                                <div class="notification-settings-channels" role="group" :aria-label="category.title">
+                                    <CheckboxField
+                                        v-for="channel in channelsOf(category)"
+                                        :key="channel.id"
+                                        :model-value="category.channels[channel.id]"
+                                        :attribute="`categories.${category.id}.${channel.id}`"
+                                        :label="channel.title"
+                                        @update:model-value="setSwitch(category, channel.id, $event)"
+                                    />
+                                </div>
+                                <div v-if="category.id === 'content' && spaces.enabled" class="notification-settings-spaces">
+                                    <label :for="spacesInputId" class="form-label">{{ labels.spaces }}</label>
+                                    <PickerFilterControl
+                                        :model-value="spaceIds"
+                                        :filter="spacesFilter"
+                                        :input-id="spacesInputId"
+                                        :multiple="true"
+                                        keep-placeholder
+                                        :search="searchSpaces"
+                                        :resolve="resolveSpaces"
+                                        :item-label="spaceLabel"
+                                        icon="ti-users-group"
+                                        block="space-filter"
+                                        @update:model-value="setSpaces"
+                                    >
+                                        <template #option="{ item }">
+                                            <SpaceImage v-bind="spaceImageProps(item)" :width="24" :link="false" />
+                                        </template>
+                                        <template #chip="{ item }">
+                                            <SpaceImage v-bind="spaceImageProps(item)" :width="18" :link="false" />
+                                        </template>
+                                    </PickerFilterControl>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </template>
         </section>
 
-        <section v-if="privacy" class="notification-settings-card notification-settings-privacy">
+        <section v-if="privacy" class="notification-settings-privacy">
             <h3 class="notification-settings-subtitle">{{ labels.privacy }}</h3>
             <p class="notification-settings-lead">{{ labels.privacyIntro }}</p>
             <p v-if="privacy.fixed" class="notification-settings-privacy-fixed">
@@ -213,12 +218,13 @@ let radioUid = 0;
  *   on, every other channel only for the categories that cannot be switched off) and *Custom*. The
  *   profile shown is computed from the switches: the first of Recommended, Everything,
  *   Important only they equal, else Custom; choosing Custom changes nothing.
- * - A row per category (core categories, then those of modules under a heading): its icon,
- *   title, description and a badge per channel that applies to it, highlighted when on. A
- *   switchable category's row is a disclosure button revealing a checkbox per channel — and, for
+ * - A Bootstrap accordion item per category (core categories, then those of modules under a
+ *   heading, each group an `.accordion`): its icon, title, description and a `.badge` per channel
+ *   that applies to it (`badge-accent` when on, `badge-neutral` when off). A switchable
+ *   category's header is the accordion button revealing a checkbox per channel — and, for
  *   the `content` category, the spaces whose new content notifies (the core `PickerFilterControl`
  *   searching the spaces the caller may see, with the space module's images); a category that
- *   cannot be switched off shows a lock instead.
+ *   cannot be switched off is a static header (`.accordion-button-static`) with a lock.
  * - Global scope: the network's privacy mode of mails and push (`privacy`) — a radio group of
  *   *Full details*, *Hide content* and *Minimal*, each with an example line; disabled with a
  *   note when the configuration file sets it (`privacy.fixed`).
@@ -337,7 +343,13 @@ export default {
             return { saving: this.labels.saving, saved: this.labels.saved, error: this.labels.notSaved }[this.saveState] || '';
         },
         statusIcon() {
-            return { saving: 'ti-loader-2 notification-settings-spin', saved: 'ti-check', error: 'ti-alert-circle' }[this.saveState] || '';
+            return { saved: 'ti-check', error: 'ti-alert-circle' }[this.saveState] || '';
+        },
+        // The core's categories, then those of modules under their own heading; each an accordion.
+        categoryGroups() {
+            return [false, true]
+                .map((module) => ({ module, items: this.categories.filter((category) => !!category.module === module) }))
+                .filter((group) => group.items.length);
         },
         spacesFilter() {
             return { key: 'spaces', label: this.labels.spaces, placeholder: this.labels.spacesPlaceholder, multiple: true };

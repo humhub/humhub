@@ -112,19 +112,26 @@ changed-tracking and the header actions are added on top. Class names and SCSS f
 | Class | Element |
 |---|---|
 | `.accordion`, `.accordion-item`, `.accordion-header`, `.accordion-button`, `.accordion-collapse`, `.accordion-body` | Bootstrap |
-| `.accordion-icon`, `.accordion-title`, `.accordion-subtitle`, `.accordion-footer` | The parts of the header and the optional footer |
+| `.accordion-icon`, `.accordion-title`, `.accordion-subtitle`, `.accordion-footer` | The parts of the header and the optional footer. A short subtitle can also sit inside the button, in `.accordion-title` below the title (as in the notification settings) |
+| `.accordion-button-static` + `.accordion-static-icon` | A header that does not open (nothing to set): no chevron, an icon such as a lock in its place |
 | `.accordion-header-actions` | Reset / Save, **next to** the button (a button inside a button is invalid HTML) |
 | `.accordion-dot` | The unsaved dot (`.badge-dot.badge-dot-unsaved`) |
 | `.accordion-compact` | Modifier on `.accordion`: compact variant |
 
-- **File:** `_accordion.scss` (new), behind `$prev-accordion`.
-- **Sass variables:** Bootstrap's `$accordion-padding-x/y`, `$accordion-bg`,
-  `$accordion-border-color`, `$accordion-border-radius`, `$accordion-button-active-bg`,
-  `$accordion-icon-*`; plus `$accordion-border-style` (dashed) and `$accordion-icon-box-size`.
+- **File:** `_accordion.scss`, behind `$prev-accordion`. Implemented so far: `.accordion-icon`,
+  `.accordion-title`, `.accordion-subtitle`, `.accordion-button-static`, `.accordion-static-icon`.
+- **Sass variables:** Bootstrap's `$accordion-*`; HumHub sets `$accordion-bg` (the main
+  background, not the page grey), `$accordion-button-active-bg` and `-color` (secondary
+  background, highlight text) in `variables.scss`. Plus `$accordion-icon-box-size`,
+  `$accordion-icon-box-font-size`, `$accordion-header-gap`; later `$accordion-border-style`
+  (dashed).
 
 ## Implementation in core
 
-**Today:** `humhub\widgets\form\ActiveForm::beginCollapsibleFields($title, $isClosed)` /
+**Today:** the notification settings (`NotificationSettings.vue`) render their categories as a
+Bootstrap `.accordion` with these parts (icon, title with subtitle, `.badge` per channel, a static
+header with a lock for a category that cannot be switched off).
+`humhub\widgets\form\ActiveForm::beginCollapsibleFields($title, $isClosed)` /
 `endCollapsibleFields()` render a Bootstrap collapse with a +/− label. It is used in the admin
 settings (`setting/basic.php`, `design.php`, `mobile_app.php`). `ActiveForm::$acknowledge` warns
 on leaving with unsaved data. There is no group-level changed state and no group-level save.

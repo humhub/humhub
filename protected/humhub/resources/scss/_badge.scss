@@ -2,6 +2,9 @@
 // Badges
 // --------------------------------------------------
 
+// The theme colours that are badge tones (no `light`, `dark`, `primary`, `secondary`)
+$badge-tones: accent, success, info, warning, danger !default;
+
 @if not $prev-badge {
     .badge-space {
         margin-top: 6px;
@@ -67,5 +70,20 @@
                 display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
             }
         }
+    }
+
+    // Tones (docs/ui/badges.md): the subtle fill and text of a theme colour, e.g. `.badge-success`;
+    // `.badge-neutral` for a plain or inactive one, `.badge-tag` for a tag.
+    @each $tone in $badge-tones {
+        .badge-#{$tone} {
+            --bs-badge-color: var(--bs-#{$tone}-text-emphasis);
+            background-color: var(--bs-#{$tone}-bg-subtle);
+        }
+    }
+
+    .badge-neutral,
+    .badge-tag {
+        --bs-badge-color: var(--bs-secondary-color);
+        background-color: var(--bs-secondary-bg);
     }
 }

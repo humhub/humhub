@@ -257,6 +257,16 @@ $progress-box-shadow: none !default;
 
 
 //
+// Accordion (see _accordion.scss)
+// --------------------------------------------------
+
+// The main background; Bootstrap's body background is the page grey here
+$accordion-bg: var(--hh-background-color-main) !default;
+$accordion-button-active-bg: var(--hh-background-color-secondary) !default;
+$accordion-button-active-color: var(--hh-text-color-highlight) !default;
+
+
+//
 // Toasts (the status messages, see _toast.scss)
 // --------------------------------------------------
 

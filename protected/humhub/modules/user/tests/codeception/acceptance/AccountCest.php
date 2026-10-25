@@ -72,7 +72,7 @@ class AccountCest
         $I->see('Reactions on my content');
 
         $I->amGoingTo('switch off the e-mails about reactions; the change is saved right away');
-        $I->click('[data-category="social"] .notification-settings-category-head');
+        $I->click('[data-category="social"] .accordion-button');
         $I->waitForElementVisible('[name="NotificationSettings[categories.social.email]"]');
         $I->jsClick('[name="NotificationSettings[categories.social.email]"]');
 

@@ -108,7 +108,7 @@ const checkbox = (categoryId, channelId) => wrapper.find(`input[name="Notificati
 const selectedProfile = () => wrapper.findAll('input[data-profile]').find((input) => input.element.checked).attributes('data-profile');
 
 const expand = async (id) => {
-    await row(id).find('button.notification-settings-category-head').trigger('click');
+    await row(id).find('button.accordion-button').trigger('click');
 };
 
 describe('NotificationSettings', () => {
@@ -116,9 +116,9 @@ describe('NotificationSettings', () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
         expect(wrapper.findAll('[data-category]').map((node) => node.attributes('data-category'))).toEqual(['direct', 'social', 'content', 'chat']);
-        const badges = row('social').findAll('.notification-settings-badge');
+        const badges = row('social').findAll('.notification-settings-badges .badge');
         expect(badges.map((badge) => badge.attributes('data-channel'))).toEqual(['web', 'email', 'mobile']);
-        expect(badges.map((badge) => badge.classes().includes('is-on'))).toEqual([true, true, false]);
+        expect(badges.map((badge) => badge.classes().includes('badge-accent'))).toEqual([true, true, false]);
         expect(row('social').text()).toContain('social description');
         expect(row('social').find('.ti-social').exists()).toBe(true);
     });
@@ -129,13 +129,16 @@ describe('NotificationSettings', () => {
         const headings = wrapper.findAll('.notification-settings-divider');
         expect(headings).toHaveLength(1);
         expect(headings[0].text()).toBe('From modules');
-        expect(headings[0].element.nextElementSibling.getAttribute('data-category')).toBe('chat');
+        // The module categories form an accordion of their own after the heading.
+        const modules = headings[0].element.nextElementSibling;
+        expect(modules.classList.contains('accordion')).toBe(true);
+        expect([...modules.querySelectorAll('[data-category]')].map((item) => item.getAttribute('data-category'))).toEqual(['chat']);
     });
 
     it('does not offer the web channel for a category without it', async () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        expect(row('chat').findAll('.notification-settings-badge').map((badge) => badge.attributes('data-channel'))).toEqual(['email', 'mobile']);
+        expect(row('chat').findAll('.notification-settings-badges .badge').map((badge) => badge.attributes('data-channel'))).toEqual(['email', 'mobile']);
         await expand('chat');
         expect(checkbox('chat', 'web').exists()).toBe(false);
         expect(checkbox('chat', 'email').exists()).toBe(true);
@@ -145,7 +148,7 @@ describe('NotificationSettings', () => {
     it('does not expand a fixed category, which shows a lock', async () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        const head = row('direct').find('.notification-settings-category-head');
+        const head = row('direct').find('.accordion-button');
         expect(head.element.tagName).toBe('DIV');
         expect(head.attributes('aria-expanded')).toBeUndefined();
         expect(row('direct').find('.ti-lock').exists()).toBe(true);
@@ -157,7 +160,7 @@ describe('NotificationSettings', () => {
     it('expands a category with a disclosure button, the spaces with the content category', async () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        const head = row('social').find('button.notification-settings-category-head');
+        const head = row('social').find('button.accordion-button');
         expect(head.attributes('aria-expanded')).toBe('false');
         await head.trigger('click');
         expect(head.attributes('aria-expanded')).toBe('true');
@@ -204,7 +207,7 @@ describe('NotificationSettings', () => {
                 chat: { email: false, mobile: false },
             },
         });
-        expect(row('social').findAll('.notification-settings-badge.is-on').map((badge) => badge.attributes('data-channel'))).toEqual(['web']);
+        expect(row('social').findAll('.notification-settings-badges .badge-accent').map((badge) => badge.attributes('data-channel'))).toEqual(['web']);
         expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
         expect(statuses).toHaveLength(0);
     });
@@ -338,7 +341,7 @@ describe('NotificationSettings', () => {
 
         expect(confirms).toEqual([{ body: 'Do you want to reset your notification settings to the defaults?' }]);
         expect(postCalls).toEqual(['/api/v2/notification/settings/reset']);
-        expect(row('social').find('[data-channel="email"]').classes()).not.toContain('is-on');
+        expect(row('social').find('[data-channel="email"]').classes()).not.toContain('badge-accent');
         expect(wrapper.vm.spaceIds).toEqual([]);
         expect(wrapper.find('.notification-settings-reset-all').exists()).toBe(false);
     });

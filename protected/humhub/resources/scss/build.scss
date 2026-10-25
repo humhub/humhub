@@ -113,6 +113,8 @@ $prev-user-feedback: false !default;
 @import "user-feedback";
 $prev-toast: false !default;
 @import "toast";
+$prev-accordion: false !default;
+@import "accordion";
 
 $prev-tags: false !default;
 @import "tags";
