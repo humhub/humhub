@@ -1,45 +1,41 @@
 <template>
-    <HumHubForm ref="form" class="c-notification-settings" model-name="NotificationSettings" :class="`c-notification-settings--${scope}`">
-        <section v-if="showProfiles" class="panel panel-default c-notification-settings__card c-notification-settings__intro">
-            <div class="c-notification-settings__head">
-                <h2 class="c-notification-settings__title">{{ labels.title }}</h2>
+    <HumHubForm ref="form" class="notification-settings" model-name="NotificationSettings" :class="`notification-settings-${scope}`">
+        <section v-if="showProfiles" class="card content-card notification-settings-card notification-settings-intro">
+            <div class="notification-settings-head">
+                <h2 class="notification-settings-title">{{ labels.title }}</h2>
                 <span
-                    class="c-notification-settings__status"
+                    class="notification-settings-status"
                     :class="`is-${saveState}`"
                     role="status"
                     aria-live="polite"
                 ><template v-if="statusLabel"><i class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
             </div>
-            <p class="c-notification-settings__lead">{{ labels.intro }}</p>
-            <div class="c-notification-settings__profiles" role="radiogroup" :aria-label="labels.profile">
-                <button
-                    v-for="option in profiles"
-                    :key="option.id"
-                    type="button"
-                    role="radio"
-                    class="c-notification-settings__profile"
-                    :class="{ 'is-selected': profile === option.id }"
-                    :aria-checked="profile === option.id ? 'true' : 'false'"
-                    :tabindex="profile === option.id ? 0 : -1"
-                    :data-profile="option.id"
-                    @click="selectProfile(option.id)"
-                    @keydown="onProfileKeydown($event, option.id)"
-                >
-                    <span class="c-notification-settings__radio" aria-hidden="true"></span>
-                    <span class="c-notification-settings__profile-text">
-                        <span class="c-notification-settings__profile-title">{{ option.title }}</span>
-                        <span class="c-notification-settings__profile-description">{{ option.description }}</span>
+            <p class="notification-settings-lead">{{ labels.intro }}</p>
+            <div class="form-check-cards" role="radiogroup" :aria-label="labels.profile">
+                <label v-for="option in profiles" :key="option.id" class="form-check-card">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        :name="`${radioName}-profile`"
+                        :value="option.id"
+                        :checked="profile === option.id"
+                        :data-profile="option.id"
+                        @change="onRadioChange($event, () => selectProfile(option.id), () => profile)"
+                    >
+                    <span class="form-check-card-body">
+                        <span class="form-check-card-title">{{ option.title }}</span>
+                        <span class="form-check-card-text">{{ option.description }}</span>
                     </span>
-                </button>
+                </label>
             </div>
         </section>
 
-        <section class="c-notification-settings__card c-notification-settings__categories" :class="{ 'panel panel-default': showProfiles }">
-            <div class="c-notification-settings__head c-notification-settings__categories-head">
-                <h3 class="c-notification-settings__subtitle">{{ labels.categories }}</h3>
+        <section class="notification-settings-card notification-settings-categories" :class="{ 'card content-card': showProfiles }">
+            <div class="notification-settings-head notification-settings-categories-head">
+                <h3 class="notification-settings-subtitle">{{ labels.categories }}</h3>
                 <span
                     v-if="!showProfiles"
-                    class="c-notification-settings__status"
+                    class="notification-settings-status"
                     :class="`is-${saveState}`"
                     role="status"
                     aria-live="polite"
@@ -48,44 +44,44 @@
             <template v-for="(category, index) in categories" :key="category.id">
                 <h4
                     v-if="category.module && (index === 0 || !categories[index - 1].module)"
-                    class="c-notification-settings__divider"
+                    class="notification-settings-divider"
                 >{{ labels.fromModules }}</h4>
                 <div
-                    class="c-notification-settings__category"
+                    class="notification-settings-category"
                     :class="{ 'is-expanded': isExpanded(category), 'is-fixed': category.fixed }"
                     :data-category="category.id"
                 >
                     <component
                         :is="category.fixed ? 'div' : 'button'"
                         :type="category.fixed ? null : 'button'"
-                        class="c-notification-settings__category-head"
+                        class="notification-settings-category-head"
                         :aria-expanded="category.fixed ? null : (isExpanded(category) ? 'true' : 'false')"
                         :aria-controls="category.fixed ? null : panelId(category)"
                         @click="toggle(category)"
                     >
-                        <span class="c-notification-settings__category-icon" aria-hidden="true"><i class="ti" :class="category.icon"></i></span>
-                        <span class="c-notification-settings__category-text">
-                            <span class="c-notification-settings__category-title">{{ category.title }}</span>
-                            <span v-if="category.description" class="c-notification-settings__category-description">{{ category.description }}</span>
+                        <span class="notification-settings-category-icon" aria-hidden="true"><i class="ti" :class="category.icon"></i></span>
+                        <span class="notification-settings-category-text">
+                            <span class="notification-settings-category-title">{{ category.title }}</span>
+                            <span v-if="category.description" class="notification-settings-category-description">{{ category.description }}</span>
                         </span>
-                        <span class="c-notification-settings__badges">
+                        <span class="notification-settings-badges">
                             <span
                                 v-for="channel in channelsOf(category)"
                                 :key="channel.id"
-                                class="c-notification-settings__badge"
+                                class="notification-settings-badge"
                                 :class="{ 'is-on': category.channels[channel.id] }"
                                 :data-channel="channel.id"
                             >{{ channel.title }}<span class="visually-hidden">: {{ category.channels[channel.id] ? labels.on : labels.off }}</span></span>
                         </span>
-                        <span v-if="category.fixed" class="c-notification-settings__category-state" :title="labels.alwaysOn">
+                        <span v-if="category.fixed" class="notification-settings-category-state" :title="labels.alwaysOn">
                             <i class="ti ti-lock" aria-hidden="true"></i><span class="visually-hidden">{{ labels.alwaysOn }}</span>
                         </span>
-                        <span v-else class="c-notification-settings__category-state" aria-hidden="true">
+                        <span v-else class="notification-settings-category-state" aria-hidden="true">
                             <i class="ti" :class="isExpanded(category) ? 'ti-chevron-up' : 'ti-chevron-down'"></i>
                         </span>
                     </component>
-                    <div v-if="!category.fixed && isExpanded(category)" :id="panelId(category)" class="c-notification-settings__category-body">
-                        <div class="c-notification-settings__channels" role="group" :aria-label="category.title">
+                    <div v-if="!category.fixed && isExpanded(category)" :id="panelId(category)" class="notification-settings-category-body">
+                        <div class="notification-settings-channels" role="group" :aria-label="category.title">
                             <CheckboxField
                                 v-for="channel in channelsOf(category)"
                                 :key="channel.id"
@@ -95,8 +91,8 @@
                                 @update:model-value="setSwitch(category, channel.id, $event)"
                             />
                         </div>
-                        <div v-if="category.id === 'content' && spaces.enabled" class="c-notification-settings__spaces">
-                            <label :for="spacesInputId" class="form-label c-notification-settings__spaces-label">{{ labels.spaces }}</label>
+                        <div v-if="category.id === 'content' && spaces.enabled" class="notification-settings-spaces">
+                            <label :for="spacesInputId" class="form-label notification-settings-spaces-label">{{ labels.spaces }}</label>
                             <PickerFilterControl
                                 :model-value="spaceIds"
                                 :filter="spacesFilter"
@@ -107,7 +103,7 @@
                                 :resolve="resolveSpaces"
                                 :item-label="spaceLabel"
                                 icon="ti-users-group"
-                                block="c-space-filter"
+                                block="space-filter"
                                 @update:model-value="setSpaces"
                             >
                                 <template #option="{ item }">
@@ -123,56 +119,52 @@
             </template>
         </section>
 
-        <section v-if="privacy" class="c-notification-settings__card c-notification-settings__privacy">
-            <h3 class="c-notification-settings__subtitle">{{ labels.privacy }}</h3>
-            <p class="c-notification-settings__lead">{{ labels.privacyIntro }}</p>
-            <p v-if="privacy.fixed" class="c-notification-settings__privacy-fixed">
+        <section v-if="privacy" class="notification-settings-card notification-settings-privacy">
+            <h3 class="notification-settings-subtitle">{{ labels.privacy }}</h3>
+            <p class="notification-settings-lead">{{ labels.privacyIntro }}</p>
+            <p v-if="privacy.fixed" class="notification-settings-privacy-fixed">
                 <i class="ti ti-lock" aria-hidden="true"></i>{{ labels.privacyFixed }}
             </p>
             <div
-                class="c-notification-settings__profiles"
+                class="form-check-cards"
                 role="radiogroup"
                 :aria-label="labels.privacy"
                 :aria-disabled="privacy.fixed ? 'true' : null"
                 data-field="privacy"
             >
-                <button
-                    v-for="option in privacyModes"
-                    :key="option.id"
-                    type="button"
-                    role="radio"
-                    class="c-notification-settings__profile"
-                    :class="{ 'is-selected': privacy.mode === option.id }"
-                    :aria-checked="privacy.mode === option.id ? 'true' : 'false'"
-                    :tabindex="privacy.mode === option.id ? 0 : -1"
-                    :disabled="privacy.fixed"
-                    :data-privacy="option.id"
-                    @click="selectPrivacy(option.id)"
-                    @keydown="onPrivacyKeydown($event, option.id)"
-                >
-                    <span class="c-notification-settings__radio" aria-hidden="true"></span>
-                    <span class="c-notification-settings__profile-text">
-                        <span class="c-notification-settings__profile-title">{{ option.title }}</span>
-                        <span class="c-notification-settings__profile-description">{{ option.description }}</span>
-                        <span class="c-notification-settings__privacy-example">{{ option.example }}</span>
+                <label v-for="option in privacyModes" :key="option.id" class="form-check-card">
+                    <input
+                        class="form-check-input"
+                        type="radio"
+                        :name="`${radioName}-privacy`"
+                        :value="option.id"
+                        :checked="privacy.mode === option.id"
+                        :disabled="privacy.fixed"
+                        :data-privacy="option.id"
+                        @change="onRadioChange($event, () => selectPrivacy(option.id), () => privacy.mode)"
+                    >
+                    <span class="form-check-card-body">
+                        <span class="form-check-card-title">{{ option.title }}</span>
+                        <span class="form-check-card-text">{{ option.description }}</span>
+                        <span class="notification-settings-privacy-example">{{ option.example }}</span>
                     </span>
-                </button>
+                </label>
             </div>
         </section>
 
-        <div class="c-notification-settings__footer">
-            <span class="c-notification-settings__autosave">{{ labels.autosave }}</span>
+        <div class="notification-settings-footer">
+            <span class="notification-settings-autosave">{{ labels.autosave }}</span>
             <button
                 v-if="scope === 'user' && resetUrl"
                 type="button"
-                class="btn btn-light c-notification-settings__reset"
+                class="btn btn-light notification-settings-reset"
                 :disabled="resetting"
                 @click="reset"
             >{{ labels.reset }}</button>
             <button
                 v-if="scope === 'global' && resetAllUrl"
                 type="button"
-                class="btn btn-danger c-notification-settings__reset-all"
+                class="btn btn-danger notification-settings-reset-all"
                 :disabled="resetting"
                 @click="resetAll"
             >{{ labels.resetAll }}</button>
@@ -202,6 +194,9 @@ const mergePatch = (target, patch) => {
     }
     return target;
 };
+
+// Names the radio groups of an instance apart from those of another
+let radioUid = 0;
 
 /**
  * The notification settings page — the account page (`scope = user`, the caller's settings) and
@@ -255,6 +250,7 @@ export default {
             saveState: 'idle',
             resetting: false,
             spacesInputId: 'notificationsettings-spaces',
+            radioName: `notificationsettings-${++radioUid}`,
         };
     },
     created() {
@@ -341,7 +337,7 @@ export default {
             return { saving: this.labels.saving, saved: this.labels.saved, error: this.labels.notSaved }[this.saveState] || '';
         },
         statusIcon() {
-            return { saving: 'ti-loader-2 c-notification-settings__spin', saved: 'ti-check', error: 'ti-alert-circle' }[this.saveState] || '';
+            return { saving: 'ti-loader-2 notification-settings-spin', saved: 'ti-check', error: 'ti-alert-circle' }[this.saveState] || '';
         },
         spacesFilter() {
             return { key: 'spaces', label: this.labels.spaces, placeholder: this.labels.spacesPlaceholder, multiple: true };
@@ -445,23 +441,12 @@ export default {
             this.privacy.mode = mode;
             this.enqueue({ privacy: mode });
         },
-        // Arrow keys move the choice within the radio group, as with native radio buttons.
-        onProfileKeydown(event, profileId) {
-            this.moveChoice(event, this.profiles, profileId, this.selectProfile, 'data-profile');
-        },
-        onPrivacyKeydown(event, mode) {
-            this.moveChoice(event, this.privacyModes, mode, this.selectPrivacy, 'data-privacy');
-        },
-        moveChoice(event, options, current, select, attribute) {
-            const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-            if (!steps[event.key]) {
-                return;
-            }
-            event.preventDefault();
-            const ids = options.map((option) => option.id);
-            const next = ids[(ids.indexOf(current) + steps[event.key] + ids.length) % ids.length];
-            select(next);
-            this.$nextTick(() => this.$el.querySelector(`[${attribute}="${next}"]`)?.focus());
+        // A radio of a group (arrow keys move the choice natively). A choice the state does not
+        // take (Custom) is put back: the group is checked by the state, not by the click.
+        onRadioChange(event, select, current) {
+            select();
+            const group = this.$el.querySelectorAll(`input[name="${event.target.name}"]`);
+            this.$nextTick(() => group.forEach((input) => { input.checked = input.value === current(); }));
         },
         enqueue(patch) {
             this.pending = mergePatch(this.pending || {}, patch);

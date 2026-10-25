@@ -2,12 +2,12 @@
 // Notification settings island (protected/humhub/modules/notification/vue/NotificationSettings.vue):
 // the profile cards, the category rows with their channel badges, the privacy mode (global scope) and
 // the autosave state. The space
-// picker comes from `_page-toolbar.scss`, the checkboxes are the form suite's.
+// picker comes from `_filter-bar.scss`, the checkboxes are the form suite's.
 // @since 1.20
 // --------------------------------------------------
 
 @if not $prev-notification-settings {
-    .c-notification-settings {
+    .notification-settings {
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -17,25 +17,25 @@
         }
     }
 
-    .c-notification-settings__intro {
+    .notification-settings-intro {
         padding: 24px;
     }
 
-    .c-notification-settings__head {
+    .notification-settings-head {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: 8px 12px;
     }
 
-    .c-notification-settings__title {
+    .notification-settings-title {
         margin: 0;
         color: var(--hh-text-color-highlight);
         font-size: 20px;
         font-weight: 600;
     }
 
-    .c-notification-settings__subtitle {
+    .notification-settings-subtitle {
         margin: 0;
         color: var(--hh-text-color-highlight);
         font-size: 14px;
@@ -43,7 +43,7 @@
     }
 
     // The autosave state, right of the title
-    .c-notification-settings__status {
+    .notification-settings-status {
         display: inline-flex;
         align-items: center;
         gap: 4px;
@@ -60,106 +60,39 @@
         }
     }
 
-    .c-notification-settings__spin {
-        animation: c-notification-settings-spin 1s linear infinite;
+    .notification-settings-spin {
+        animation: notification-settings-spin 1s linear infinite;
     }
 
-    @keyframes c-notification-settings-spin {
+    @keyframes notification-settings-spin {
         to {
             transform: rotate(360deg);
         }
     }
 
-    .c-notification-settings__lead {
+    .notification-settings-lead {
         margin: 6px 0 18px;
         color: var(--hh-text-color-secondary);
     }
 
-    // Profiles: a wrapping row of selectable cards, stacked radio rows on a phone
-    .c-notification-settings__profiles {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    .c-notification-settings__profile {
-        display: flex;
-        flex: 1 1 180px;
-        align-items: flex-start;
-        gap: 12px;
-        min-height: 56px;
-        padding: 13px 15px;
-        border: 1px solid var(--bs-border-color);
-        border-radius: 6px;
-        background: var(--hh-background-color-main);
-        color: inherit;
-        font: inherit;
-        text-align: left;
-
-        &:hover {
-            border-color: var(--bs-accent);
-        }
-
-        &:focus-visible {
-            outline: 2px solid rgba(var(--bs-accent-rgb), 0.32);
-            outline-offset: 2px;
-        }
-
-        &.is-selected {
-            border-color: var(--bs-accent);
-            box-shadow: inset 0 0 0 1px var(--bs-accent);
-            background: var(--hh-background-color-highlight-soft);
-        }
-    }
-
-    // The radio dot shows on a phone only; the desktop cards are selected by their border
-    .c-notification-settings__radio {
-        display: none;
-        flex: 0 0 auto;
-        width: 18px;
-        height: 18px;
-        margin-top: 1px;
-        border: 1.5px solid var(--hh-background4);
-        border-radius: 50%;
-        background: var(--hh-background-color-main);
-
-        .is-selected > & {
-            border: 5px solid var(--bs-accent);
-        }
-    }
-
-    .c-notification-settings__profile-text {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        min-width: 0;
-    }
-
-    .c-notification-settings__profile-title,
-    .c-notification-settings__category-title {
+    .notification-settings-category-title {
         color: var(--hh-text-color-highlight);
         font-weight: 600;
     }
 
-    .c-notification-settings__profile-description,
-    .c-notification-settings__category-description {
+    .notification-settings-category-description {
         color: var(--hh-text-color-secondary);
         font-size: 12.5px;
     }
 
     // Privacy mode of mails and push (global scope): the profile cards with an example line each
-    .c-notification-settings__privacy {
+    .notification-settings-privacy {
         padding: 14px 18px 18px;
         border: 1px solid var(--bs-border-color);
         border-radius: 6px;
-
-        .c-notification-settings__profile:disabled {
-            opacity: 0.65;
-            pointer-events: none;
-        }
     }
 
-    .c-notification-settings__privacy-fixed {
+    .notification-settings-privacy-fixed {
         display: flex;
         align-items: center;
         gap: 6px;
@@ -168,7 +101,7 @@
         font-size: 12.5px;
     }
 
-    .c-notification-settings__privacy-example {
+    .notification-settings-privacy-example {
         margin-top: 6px;
         padding: 6px 8px;
         border-radius: 4px;
@@ -178,20 +111,20 @@
     }
 
     // Topics
-    .c-notification-settings__categories {
+    .notification-settings-categories {
         overflow: hidden;
     }
 
-    .c-notification-settings--global .c-notification-settings__categories {
+    .notification-settings-global .notification-settings-categories {
         border: 1px solid var(--bs-border-color);
         border-radius: 6px;
     }
 
-    .c-notification-settings__categories-head {
+    .notification-settings-categories-head {
         padding: 14px 18px;
     }
 
-    .c-notification-settings__divider {
+    .notification-settings-divider {
         margin: 0;
         padding: 10px 18px;
         border-top: 1px solid var(--bs-border-color-translucent);
@@ -202,12 +135,12 @@
         letter-spacing: 0.04em;
         text-transform: uppercase;
 
-        + .c-notification-settings__category {
+        + .notification-settings-category {
             border-top: 0;
         }
     }
 
-    .c-notification-settings__category {
+    .notification-settings-category {
         border-top: 1px solid var(--bs-border-color-translucent);
 
         &.is-expanded {
@@ -215,7 +148,7 @@
         }
     }
 
-    .c-notification-settings__category-head {
+    .notification-settings-category-head {
         display: flex;
         align-items: center;
         gap: 14px;
@@ -229,7 +162,7 @@
         text-align: left;
     }
 
-    button.c-notification-settings__category-head {
+    button.notification-settings-category-head {
         cursor: pointer;
 
         &:hover {
@@ -242,7 +175,7 @@
         }
     }
 
-    .c-notification-settings__category-icon {
+    .notification-settings-category-icon {
         display: flex;
         flex: 0 0 auto;
         align-items: center;
@@ -260,7 +193,7 @@
         }
     }
 
-    .c-notification-settings__category-text {
+    .notification-settings-category-text {
         display: flex;
         flex: 1 1 auto;
         flex-direction: column;
@@ -268,7 +201,7 @@
         min-width: 0;
     }
 
-    .c-notification-settings__badges {
+    .notification-settings-badges {
         display: flex;
         flex: 0 1 auto;
         flex-wrap: wrap;
@@ -277,7 +210,7 @@
     }
 
     // A channel of the category: highlighted while the category reaches the user through it
-    .c-notification-settings__badge {
+    .notification-settings-badge {
         display: inline-flex;
         align-items: center;
         padding: 3px 9px;
@@ -295,7 +228,7 @@
         }
     }
 
-    .c-notification-settings__category-state {
+    .notification-settings-category-state {
         display: flex;
         flex: 0 0 auto;
         align-items: center;
@@ -305,7 +238,7 @@
         font-size: 16px;
     }
 
-    .c-notification-settings__category-body {
+    .notification-settings-category-body {
         display: flex;
         flex-direction: column;
         gap: 14px;
@@ -313,7 +246,7 @@
     }
 
     // The channel checkboxes as bordered tiles in a row
-    .c-notification-settings__channels {
+    .notification-settings-channels {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -348,14 +281,14 @@
         }
     }
 
-    .c-notification-settings__spaces-label {
+    .notification-settings-spaces-label {
         margin-bottom: 6px;
         color: var(--hh-text-color-highlight);
         font-size: 13px;
         font-weight: 600;
     }
 
-    .c-notification-settings__footer {
+    .notification-settings-footer {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -363,39 +296,23 @@
         padding: 0 4px;
     }
 
-    .c-notification-settings__autosave {
+    .notification-settings-autosave {
         flex: 1 1 auto;
         color: var(--hh-text-color-secondary);
         font-size: 12.5px;
     }
 
     @include media-breakpoint-down(sm) {
-        .c-notification-settings__intro {
+        .notification-settings-intro {
             padding: 16px 14px;
         }
 
-        .c-notification-settings__title {
+        .notification-settings-title {
             font-size: 18px;
         }
 
-        .c-notification-settings__profiles {
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .c-notification-settings__profile {
-            flex-basis: auto;
-            align-items: center;
-            padding: 9px 13px;
-        }
-
-        .c-notification-settings__radio {
-            display: block;
-            margin-top: 0;
-        }
-
         // The badges move under the title, the description gives way
-        .c-notification-settings__category-head {
+        .notification-settings-category-head {
             display: grid;
             grid-template-columns: auto 1fr auto;
             column-gap: 12px;
@@ -403,49 +320,49 @@
             padding: 10px 14px;
         }
 
-        .c-notification-settings__category-icon {
+        .notification-settings-category-icon {
             grid-row: 1 / span 2;
             width: 32px;
             height: 32px;
         }
 
-        .c-notification-settings__category-text {
+        .notification-settings-category-text {
             grid-row: 1;
             grid-column: 2;
         }
 
-        .c-notification-settings__category-description {
+        .notification-settings-category-description {
             display: none;
         }
 
-        .c-notification-settings__badges {
+        .notification-settings-badges {
             grid-row: 2;
             grid-column: 2;
             justify-content: flex-start;
             gap: 4px;
         }
 
-        .c-notification-settings__badge {
+        .notification-settings-badge {
             padding: 2px 8px;
             font-size: 11.5px;
         }
 
-        .c-notification-settings__category-state {
+        .notification-settings-category-state {
             grid-row: 1 / span 2;
             grid-column: 3;
         }
 
-        .c-notification-settings__category-body {
+        .notification-settings-category-body {
             padding: 0 14px 16px;
         }
 
-        .c-notification-settings__channels .form-check,
-        .c-notification-settings__spaces .c-picker__field,
-        .c-notification-settings__footer .btn {
+        .notification-settings-channels .form-check,
+        .notification-settings-spaces .picker-field,
+        .notification-settings-footer .btn {
             min-height: 44px;
         }
 
-        .c-notification-settings__categories-head {
+        .notification-settings-categories-head {
             padding: 12px 14px;
         }
     }
