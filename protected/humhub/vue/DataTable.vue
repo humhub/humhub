@@ -1,14 +1,22 @@
 <template>
     <section :id="tableId" ref="root" class="card content-card data-table" :aria-labelledby="title ? titleId : null">
-        <div v-if="title || headerActions.length || headerMenu.length" class="card-header">
+        <div v-if="title || headerActions.length || headerMenu.length || hasChooser" class="card-header">
             <h2 v-if="title" :id="titleId" class="card-title">{{ title }}</h2>
             <HeaderActions
-                v-if="headerActions.length || headerMenu.length"
                 :actions="headerActions"
                 :menu="headerMenu"
                 root-class="card-header-actions"
                 tool-variant="ghost"
-            />
+            >
+                <button
+                    v-if="hasChooser"
+                    type="button"
+                    class="btn btn-ghost btn-icon-only data-table-columns-toggle"
+                    :aria-label="texts.columns"
+                    :title="texts.columns"
+                    @click="openChooser"
+                ><i class="ti ti-layout-columns" aria-hidden="true"></i></button>
+            </HeaderActions>
         </div>
         <div class="card-body">
             <FilterBar
@@ -83,7 +91,7 @@
                     <tbody v-else>
                         <template v-for="row in rows" :key="row.id">
                             <tr
-                                :class="{ 'is-expanded': isExpanded(row), 'is-busy': busy[row.id], 'data-table-row-toggle': hasDetails }"
+                                :class="{ 'is-expanded': isExpanded(row), 'is-busy': busy[row.id], 'data-table-row-link': !!rowUrl(row), 'data-table-row-toggle': !rowUrl(row) && hasDetails }"
                                 :data-id="row.id"
                                 @click="onRowClick(row, $event)"
                             >
@@ -187,6 +195,27 @@
                 </ul>
             </nav>
         </div>
+        <UiModal v-if="hasChooser" :show="chooserOpen" :title="texts.columns" dialog-class="data-table-columns" @update:show="chooserOpen = $event">
+            <p v-if="maxColumns" class="form-text data-table-columns-limit">{{ limitText }}</p>
+            <div v-for="column in optionalColumns" :key="column.key" class="form-check form-switch data-table-columns-option">
+                <input
+                    :id="`${tableId}-column-${column.key}`"
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    :checked="draftKeys.includes(column.key)"
+                    :disabled="!draftKeys.includes(column.key) && atLimit"
+                    @change="toggleDraft(column.key, $event.target.checked)"
+                >
+                <label class="form-check-label" :for="`${tableId}-column-${column.key}`">{{ column.label }}</label>
+                <span v-if="draftKeys.includes(column.key) && foldedKeys.includes(column.key)" class="form-text data-table-columns-folded">{{ texts.hiddenAtWidth }}</span>
+            </div>
+            <template #footer>
+                <button v-if="draftDiffersFromDefault" type="button" class="btn btn-link me-auto data-table-columns-reset" @click="resetDraft">{{ texts.reset }}</button>
+                <button type="button" class="btn btn-light" @click="chooserOpen = false">{{ texts.cancel }}</button>
+                <button type="button" class="btn btn-primary data-table-columns-save" @click="saveColumns">{{ texts.save }}</button>
+            </template>
+        </UiModal>
     </section>
 </template>
 
@@ -196,6 +225,7 @@ import DropdownMenu from './DropdownMenu.vue';
 import FilterBar from './FilterBar.vue';
 import HeaderActions from './header/HeaderActions.vue';
 import TableCell from './table/TableCell.vue';
+import UiModal from './UiModal.vue';
 import { defaultValues, isDefault, requestParams } from './filter/filterQuery.js';
 
 // The space a column needs before it folds into the row details (docs/ui/data-table.md,
@@ -222,8 +252,10 @@ let uid = 0;
  *   `date`, `number`, `text`. A column with `sort` sorts by its header: ascending → descending →
  *   the list's default order (`sort=<key>` / `sort=-<key>`), back on page 1.
  * - Folding: when the table gets too narrow (its own width, not the viewport's), columns fold
- *   into the row details, the highest `priority` number first; every row then gets a chevron, and
- *   the whole row toggles its details. The main column never folds.
+ *   into the row details, the highest `priority` number first; every row then gets a chevron
+ *   toggling them. The main column never folds.
+ * - Row click: opens the record (the main cell's `url`; with Ctrl / Cmd in a new tab); a row
+ *   without one toggles its details while columns are folded.
  * - Row actions (`{id, label, kind, icon?, confirm?, destructive?}`, once per table; each row
  *   names those it offers): one action is a button, several a ⋮ menu with the destructive ones
  *   last in red. `link` opens the URL, `modal` loads it into the global modal, `post` submits a
@@ -235,17 +267,25 @@ let uid = 0;
  * - States: skeleton rows while the first page loads, the rows dimmed while a later one does,
  *   "No results found." (with "Clear filters" while filters are set), an error with "Retry".
  *
+ * - Columns chooser (▦ in the header, for tables with optional columns — all but the main one):
+ *   a dialog with a switch per optional column (at most `maxColumns`, the others then locked; a
+ *   chosen column folded away at the current width is marked), Reset while the choice differs
+ *   from the columns' defaults (`visible`), Save. The choice applies at once and is saved for the
+ *   user (`PUT columnsUrl` with `{columns}`, `null` for the defaults); the page hands it back as
+ *   `columnChoice`.
+ *
  * Props: `tableId` (the table's id, also the key of the remembered page size), `label` (the table's
  * accessible name), `title` (an optional card title), `url`, `columns`, `actions`, `filters`,
  * `headerActions` / `headerMenu` (the card's header actions and ⋮ menu, see `HeaderActions`),
  * `labels` (`{one, other, range}`: the count texts with `{count}`, `{from}`, `{to}`, `{total}`),
- * `syncUrl` (the filter values in the page URL, default on).
+ * `syncUrl` (the filter values in the page URL, default on), `columnChoice`, `columnsUrl`,
+ * `maxColumns` (the columns chooser).
  *
  * @since 1.20
  */
 export default {
     name: 'DataTable',
-    components: { DropdownMenu, FilterBar, HeaderActions, TableCell },
+    components: { DropdownMenu, FilterBar, HeaderActions, TableCell, UiModal },
     props: {
         tableId: { type: String, required: true },
         label: { type: String, required: true },
@@ -259,6 +299,14 @@ export default {
         labels: { type: Object, default: () => ({}) },
         syncUrl: { type: Boolean, default: true },
         skeletonCount: { type: Number, default: 5 },
+        /**
+         * The keys of the optional columns the user chose (`null`: the columns' defaults), the
+         * endpoint saving a new choice (`PUT`, `{columns}`) and the most optional columns shown
+         * at once (0: no limit).
+         */
+        columnChoice: { type: Array, default: null },
+        columnsUrl: { type: String, default: '' },
+        maxColumns: { type: Number, default: 0 },
     },
     data() {
         return {
@@ -276,6 +324,9 @@ export default {
             busy: {},
             foldedKeys: [],
             pageSizes: PAGE_SIZES,
+            chosenKeys: this.initialChoice(),
+            chooserOpen: false,
+            draftKeys: [],
         };
     },
     computed: {
@@ -293,16 +344,43 @@ export default {
                 pages: i18n.t('base', 'Pages'),
                 previous: i18n.t('base', 'Previous page'),
                 next: i18n.t('base', 'Next page'),
+                columns: i18n.t('base', 'Columns'),
+                hiddenAtWidth: i18n.t('base', 'Hidden at this width'),
+                reset: i18n.t('base', 'Reset'),
+                cancel: i18n.t('base', 'Cancel'),
+                save: i18n.t('base', 'Save'),
             };
+        },
+        optionalColumns() {
+            return this.columns.filter((column) => column.type !== 'main');
+        },
+        defaultKeys() {
+            return this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
+        },
+        hasChooser() {
+            return this.optionalColumns.length > 0;
+        },
+        // The main column and the chosen optional ones, in the columns' order.
+        activeColumns() {
+            return this.columns.filter((column) => column.type === 'main' || this.chosenKeys.includes(column.key));
+        },
+        atLimit() {
+            return this.maxColumns > 0 && this.draftKeys.length >= this.maxColumns;
+        },
+        draftDiffersFromDefault() {
+            return [...this.draftKeys].sort().join() !== [...this.defaultKeys].sort().join();
+        },
+        limitText() {
+            return i18n.t('base', 'Choose up to {count} columns.', { count: this.maxColumns });
         },
         actionsById() {
             return Object.fromEntries(this.actions.map((action) => [action.id, action]));
         },
         shownColumns() {
-            return this.columns.filter((column) => !this.foldedKeys.includes(column.key));
+            return this.activeColumns.filter((column) => !this.foldedKeys.includes(column.key));
         },
         foldedColumns() {
-            return this.columns.filter((column) => this.foldedKeys.includes(column.key));
+            return this.activeColumns.filter((column) => this.foldedKeys.includes(column.key));
         },
         hasDetails() {
             return this.foldedKeys.length > 0;
@@ -507,14 +585,17 @@ export default {
             if (!wrap || !wrap.clientWidth) {
                 return;
             }
-            const sideWidth = SIDE_COLUMN_WIDTH * (1 + (this.actions.length ? 1 : 0));
-            const foldable = this.columns
+            const foldable = this.activeColumns
                 .filter((column) => column.type !== 'main')
                 .sort((a, b) => (b.priority || 1) - (a.priority || 1));
-            const width = (columns) => columns.reduce((sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150), sideWidth);
+            // The columns, the actions column, and the chevron column once one has folded.
+            const width = (columns) => columns.reduce(
+                (sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150),
+                SIDE_COLUMN_WIDTH * ((this.actions.length ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0)),
+            );
 
             const folded = [];
-            let shown = [...this.columns];
+            let shown = [...this.activeColumns];
             for (const column of foldable) {
                 if (width(shown) <= wrap.clientWidth) {
                     break;
@@ -532,6 +613,40 @@ export default {
                 this.foldedKeys = folded;
             }
         },
+        initialChoice() {
+            const keys = this.columns.filter((column) => column.type !== 'main').map((column) => column.key);
+            if (Array.isArray(this.columnChoice)) {
+                return this.columnChoice.filter((key) => keys.includes(key));
+            }
+            return this.columns.filter((column) => column.type !== 'main' && column.visible !== false).map((column) => column.key);
+        },
+        openChooser() {
+            this.draftKeys = [...this.chosenKeys];
+            this.chooserOpen = true;
+        },
+        toggleDraft(key, on) {
+            const keys = this.draftKeys.filter((candidate) => candidate !== key);
+            this.draftKeys = on ? [...keys, key] : keys;
+        },
+        resetDraft() {
+            this.draftKeys = [...this.defaultKeys];
+        },
+        // Applies the choice at once and saves it for the user (back to the defaults: `null`).
+        saveColumns() {
+            const keys = this.optionalColumns.map((column) => column.key).filter((key) => this.draftKeys.includes(key));
+            this.chosenKeys = keys;
+            this.chooserOpen = false;
+            this.$nextTick(() => this.fold());
+            if (!this.columnsUrl) {
+                return Promise.resolve();
+            }
+            const columns = this.draftDiffersFromDefault ? keys : null;
+            return client.put(this.columnsUrl, { data: JSON.stringify({ columns }), contentType: 'application/json' })
+                .catch((response) => {
+                    status('error', (response && response.message) || i18n.t('base', 'An unexpected error occurred.'));
+                    log.error(response);
+                });
+        },
         isExpanded(row) {
             return !!this.expanded[row.id];
         },
@@ -541,13 +656,33 @@ export default {
         detailsId(row) {
             return `${this.tableId}-details-${this.uid}-${row.id}`;
         },
-        // With folded columns the whole row toggles its details — but not a click on a link or
-        // a button inside it.
+        // The record the row links to: its main cell's URL.
+        rowUrl(row) {
+            const main = this.columns.find((column) => column.type === 'main');
+            return (main && row.cells[main.key] && row.cells[main.key].url) || null;
+        },
+        // A click on the row opens its record (with Ctrl / Cmd in a new tab); a row without one
+        // toggles its details while columns are folded — but never a click on a link or a
+        // button inside it.
         onRowClick(row, event) {
-            if (!this.hasDetails || event.target.closest('a, button, input, select, label')) {
+            if (event.target.closest('a, button, input, select, label')) {
                 return;
             }
-            this.toggleDetails(row);
+            const url = this.rowUrl(row);
+            if (url) {
+                this.open(url, event.ctrlKey || event.metaKey);
+                return;
+            }
+            if (this.hasDetails) {
+                this.toggleDetails(row);
+            }
+        },
+        open(url, newTab = false) {
+            if (newTab) {
+                window.open(url, '_blank', 'noopener');
+            } else {
+                window.location.assign(url);
+            }
         },
         rowActions(row) {
             return (row.actions || [])

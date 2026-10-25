@@ -17,6 +17,7 @@ return [
         // HTTP API (see docs/develop/concept-api.md) — the caller's own account data.
         ['pattern' => 'api/v2/account', 'route' => 'user/api/account/index', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/account/blocked-users', 'route' => 'user/api/account/blocked-users', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/account/table/<id:[a-z0-9][a-z0-9.\-]{0,63}>', 'route' => 'user/api/account/table', 'verb' => 'PUT'],
         // The user list and what hangs off it. The named sub-resources come first, and the
         // `<id:\d+>` patterns match digits only, so `user/states` is never read as a user id —
         // nor are the friendship module's `user/<id>/friendship` rules shadowed.

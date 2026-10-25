@@ -20,7 +20,8 @@ use Closure;
  * - `number`, `date`, `text`: one value (`{text}`; a date also `{value, title}`)
  *
  * The cells come from the table ({@see DataTable::cells()}); a column a module adds brings its own
- * cell with `value` (`fn($model): ?array`).
+ * cell with `value` (`fn($model): ?array`). A column other than the main one is optional: shown
+ * by default (`visible`) or on request, in the table's column chooser.
  *
  * @since 1.20
  */
@@ -41,6 +42,7 @@ class ColumnDefinition
      *        the column is sortable
      * @param string|null $filter the filter key a chip of this column sets when pressed
      * @param callable|null $value `fn($model): ?array` the cell, for a column a module adds
+     * @param bool $visible whether the column is shown until the user chooses the columns
      */
     public function __construct(
         public readonly string $key,
@@ -51,6 +53,7 @@ class ColumnDefinition
         public readonly ?string $filter = null,
         public readonly int $sortOrder = 1000,
         ?callable $value = null,
+        public readonly bool $visible = true,
     ) {
         $this->value = $value !== null ? Closure::fromCallable($value) : null;
     }
@@ -67,6 +70,7 @@ class ColumnDefinition
             'priority' => $this->priority,
             'sort' => $this->sort,
             'filter' => $this->filter,
+            'visible' => $this->visible ? null : false,
         ], static fn($item) => $item !== null);
     }
 }

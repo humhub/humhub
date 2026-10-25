@@ -158,8 +158,8 @@ Reduced motion turns all of this into instant changes.
   columns no longer fit, the column with the lowest priority (highest number) leaves first. The
   main column, the checkbox and the actions never leave. A column comes back only when there is
   clearly enough room, so columns don't flicker at the threshold.
-- **Expandable rows.** As soon as a column has folded away, every row gets a chevron, and the
-  whole row becomes the toggle. An expanded row shows the hidden columns as **label / value
+- **Expandable rows.** As soon as a column has folded away, every row gets a chevron that
+  toggles its details (a row that opens no record toggles them with a click anywhere). An expanded row shows the hidden columns as **label / value
   pairs**, rendered the same way as in the table (chips stay chips, links stay links).
 - **Nothing scrolls sideways.**
 - **Filter bar:** folds behind the filter button ([Filter Bar](filter-bar.md)).
@@ -225,7 +225,8 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.data-table-main`, `-main-image`, `-main-text`, `-main-name`, `-main-subtitle` | The main cell (the row's header, `th scope="row"`) |
 | `.data-table-sort` (`.active`) | A sortable column's header button; `aria-sort` on the `<th>` |
 | `.data-table-chips` | The badges of a chip cell (a plain `.badge`, a tone as `.badge-<tone>`); with a column filter each is a `<button>` |
-| `.data-table-row-toggle`, `.data-table-details-toggle`, `.data-table-row-details` | With folded columns: a row toggling its details, the chevron, the details row (a `<dl>`) |
+| `.data-table-row-link`, `.data-table-row-toggle` | A row opening its record on click; a row without one toggling its details (with folded columns) |
+| `.data-table-details-toggle`, `.data-table-row-details` | With folded columns: the chevron and the details row (a `<dl>`) |
 | `.data-table-skeleton`, `.data-table-message`, `.data-table-error` | Skeleton rows (`.placeholder-glow`), the empty or error row, a failed later page (`.alert`) |
 | `.data-table-footer`, `-count`, `-page-size`, `-pager` | The footer; the pager is Bootstrap's `.pagination` |
 | `tr.is-busy` | A row whose action is running |
@@ -242,7 +243,7 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 - **Vue:** `DataTable` (`protected/humhub/vue/DataTable.vue`, cells in the internal
   `vue/table/TableCell.vue`). Props: `tableId`, `label`, `title`, `url`, `columns`, `actions`,
   `filters`, `headerActions`, `headerMenu`, `labels` (`{one, other, range}` count texts),
-  `syncUrl`. It reuses `FilterBar`, `HeaderActions` and `DropdownMenu` (the row menu's
+  `syncUrl`, and for the columns chooser `columnChoice`, `columnsUrl`, `maxColumns`. It reuses `FilterBar`, `HeaderActions` and `DropdownMenu` (the row menu's
   `menuId` is `<tableId>.row`, so modules can also register entries client-side).
 - **PHP:** `humhub\components\table\DataTable` — the table's list (a `FilterableList`), its
   columns (`ColumnDefinition`: `key`, `type`, `label`, `priority`, `sort`, `filter`, and `value`
@@ -261,27 +262,36 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   profile, delete), `admin\components\AdminUserList` and `GET /api/v2/admin/user`,
   `POST /api/v2/admin/user/<id>/enable|disable`.
 
-**Not yet (see Behaviour):** the columns chooser, selection and bulk actions, the row motion,
-the red ring of a destructive action in progress, export following the filters.
+- **Columns chooser:** ▦ in the header opens a dialog with a switch per optional column (a
+  column's `visible` is its default), at most `maxColumns` (the others then locked), "Hidden at
+  this width" for a chosen column folded away, Reset while the choice differs from the defaults.
+  The choice is saved per user (`humhub\components\table\TableSettings`, a user setting,
+  `PUT /api/v2/account/table/<tableId>`) and handed back by the page as `columnChoice`. The
+  administration's user table offers username and registration (and, for administrators, the
+  source) on request, at most 4.
+
+**Not yet (see Behaviour):** selection and bulk actions, the row motion, the red ring of a
+destructive action in progress, "1 of 2" on very narrow pagers. The switches still carry
+HumHub's checkbox look until the [switch](choice-controls.md) is styled.
 
 **Replaces:** `humhub\widgets\GridView` on the pages that move to the table; the user list's
 `UserActionColumn` is deprecated. `GridView` stays for everything else until those pages are
 migrated.
 
+## Decisions
+
+- **Column choice storage:** per user, the simplest way (a user setting, it follows the user
+  across devices).
+- **Rows per page:** fixed 25 / 50 / 100; the admin setting "Default pagination size" does not
+  apply.
+- **Number alignment:** every column, numbers included, is aligned to the start.
+- **Density:** no compact density, one row height.
+- **Export:** over all records for now (not the table's filters or chosen columns).
+- **Row click:** a click anywhere on a row opens the record (its main cell's link, e.g. the
+  profile; with Ctrl / Cmd in a new tab). A row without one toggles its details while columns
+  are folded; the chevron always does.
+
 ## Open questions
 
-1. **Column choice storage:** per user (setting, follows the user across devices) or per browser
-   (as in the prototype)? The recommendation is per user.
-2. **Rows per page:** fixed 25 / 50 / 100, or should the admin setting "Default pagination size"
-   still apply?
-3. **Number alignment:** the design aligns numbers to the start. The usual convention is to
-   right-align them. Confirm.
-4. **Missing column types:** do we need boolean, relative time or progress columns for the first
+1. **Missing column types:** do we need boolean, relative time or progress columns for the first
    tables? Relative time is used elsewhere in HumHub.
-5. **Density:** the ▦ icon in the prototype is the columns chooser, not a density toggle. Do we
-   want a compact density at all?
-6. **Export:** "Download as CSV / Excel" goes into the ⋮ menu. Does export follow the current
-   filters and the chosen columns?
-7. **Row click:** should a click anywhere on a row open the record (on desktop), or only the name
-   link? In the prototype only the name is a link, except on mobile, where the row toggles its
-   details.

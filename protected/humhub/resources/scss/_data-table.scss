@@ -164,7 +164,8 @@ $data-table-head-font-size: $font-size-sm !default;
         gap: $spacer * .25;
     }
 
-    // With folded columns the whole row toggles its details
+    // A click on the row opens its record, or (without one) toggles its details
+    .data-table-row-link,
     .data-table-row-toggle {
         cursor: pointer;
     }
@@ -241,6 +242,16 @@ $data-table-head-font-size: $font-size-sm !default;
 
     .data-table-pager .pagination {
         margin: 0;
+    }
+
+    // The columns chooser: a switch per optional column
+    .data-table-columns-option + .data-table-columns-option {
+        margin-top: $spacer * .5;
+    }
+
+    .data-table-columns-folded {
+        display: block;
+        margin-top: 0;
     }
 
     // Phones: the pager on a line of its own

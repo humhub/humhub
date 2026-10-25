@@ -283,7 +283,7 @@ describe('DataTable', () => {
         await flushPromises();
         const wrap = wrapper.find('.data-table-wrap').element;
 
-        // main 240 + chip 160 + 2 dates 240 + details/actions 96: 736 do not fit into 520.
+        // main 240 + chip 160 + 2 dates 240 + actions 48: 688 do not fit into 520.
         Object.defineProperty(wrap, 'clientWidth', { configurable: true, value: 520 });
         wrapper.vm.fold();
         await wrapper.vm.$nextTick();
@@ -293,17 +293,14 @@ describe('DataTable', () => {
         expect(toggle.attributes('aria-label')).toBe('Details for Emma');
         expect(toggle.attributes('aria-expanded')).toBe('false');
 
-        // The whole row toggles - but not a click on its link.
-        await wrapper.find('tr[data-id="1"] .data-table-main-name').trigger('click');
-        expect(wrapper.find('.data-table-row-details').exists()).toBe(false);
-        await wrapper.find('tr[data-id="1"] td.data-table-col-date').trigger('click');
+        await toggle.trigger('click');
         const details = wrapper.find('.data-table-row-details');
         expect(details.findAll('dt').map((dt) => dt.text())).toEqual(['Groups', 'Registered']);
         expect(details.find('button.badge').text()).toBe('Admins');
         expect(toggle.attributes('aria-expanded')).toBe('true');
 
         // Back only with room to spare.
-        Object.defineProperty(wrap, 'clientWidth', { configurable: true, value: 740 });
+        Object.defineProperty(wrap, 'clientWidth', { configurable: true, value: 700 });
         wrapper.vm.fold();
         await wrapper.vm.$nextTick();
         expect(wrapper.findAll('thead th')).toHaveLength(4);
@@ -311,5 +308,117 @@ describe('DataTable', () => {
         wrapper.vm.fold();
         await wrapper.vm.$nextTick();
         expect(wrapper.findAll('thead th').map((th) => th.text())).toEqual(['Name', 'Groups', 'Last login', 'Registered', 'Actions']);
+    });
+
+    it('opens the record with a click on the row, and toggles the details of a row without one', async () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([
+            row(1, 'Emma'),
+            row(2, 'Noah', { cells: { ...row(2, 'Noah').cells, name: { text: 'Noah' } } }),
+        ])));
+        wrapper = mountTable();
+        await flushPromises();
+        const open = vi.spyOn(wrapper.vm, 'open').mockImplementation(() => {});
+
+        await wrapper.find('tr[data-id="1"] td.data-table-col-date').trigger('click');
+        expect(open).toHaveBeenCalledWith('/u/1', false);
+        await wrapper.find('tr[data-id="1"] td.data-table-col-date').trigger('click', { ctrlKey: true });
+        expect(open).toHaveBeenLastCalledWith('/u/1', true);
+        // Not a click on a button inside the row.
+        await wrapper.find('tr[data-id="1"] button.badge').trigger('click');
+        expect(open).toHaveBeenCalledTimes(2);
+        expect(wrapper.find('tr[data-id="1"]').classes()).toContain('data-table-row-link');
+
+        // Noah has no URL: nothing without folded columns, the details with them.
+        await wrapper.find('tr[data-id="2"] td.data-table-col-date').trigger('click');
+        expect(open).toHaveBeenCalledTimes(2);
+        Object.defineProperty(wrapper.find('.data-table-wrap').element, 'clientWidth', { configurable: true, value: 520 });
+        wrapper.vm.fold();
+        await wrapper.vm.$nextTick();
+        await wrapper.find('tr[data-id="2"] td.data-table-col-date').trigger('click');
+        expect(wrapper.find('.data-table-row-details').exists()).toBe(true);
+        expect(wrapper.find('tr[data-id="2"]').classes()).toContain('data-table-row-toggle');
+    });
+
+    describe('the columns chooser', () => {
+        const optional = [
+            { key: 'name', type: 'main', label: 'Name' },
+            { key: 'groups', type: 'chip', label: 'Groups', priority: 2 },
+            { key: 'lastLogin', type: 'date', label: 'Last login', priority: 1 },
+            { key: 'createdAt', type: 'date', label: 'Registered', priority: 3, visible: false },
+            { key: 'username', type: 'text', label: 'Username', priority: 3, visible: false },
+        ];
+        const headers = () => wrapper.findAll('thead th').map((th) => th.text()).filter((text) => text !== 'Actions');
+        const options = () => [...document.querySelectorAll('.data-table-columns-option input')];
+
+        beforeEach(() => {
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({}));
+        });
+
+        it('shows the default columns, or the ones the user chose', async () => {
+            wrapper = mountTable({ columns: optional });
+            await flushPromises();
+            expect(headers()).toEqual(['Name', 'Groups', 'Last login']);
+
+            wrapper.unmount();
+            wrapper = mountTable({ columns: optional, columnChoice: ['username', 'unknown'] });
+            await flushPromises();
+            expect(headers()).toEqual(['Name', 'Username']);
+        });
+
+        it('chooses the columns in a dialog, within the limit, and saves the choice for the user', async () => {
+            wrapper = mountTable({ columns: optional, columnsUrl: '/api/v2/account/table/users', maxColumns: 3 });
+            await flushPromises();
+
+            await wrapper.find('.data-table-columns-toggle').trigger('click');
+            await flushPromises();
+            expect(document.querySelector('.data-table-columns-limit').textContent).toBe('Choose up to 3 columns.');
+            expect(options().map((input) => input.checked)).toEqual([true, true, false, false]);
+            expect(document.querySelector('.data-table-columns-reset')).toBeNull();
+
+            options()[2].click();
+            await flushPromises();
+            // At the limit, the switches that are off are locked.
+            expect(options().map((input) => input.disabled)).toEqual([false, false, false, true]);
+            expect(document.querySelector('.data-table-columns-reset')).not.toBeNull();
+
+            document.querySelector('.data-table-columns-save').click();
+            await flushPromises();
+            expect(headers()).toEqual(['Name', 'Groups', 'Last login', 'Registered']);
+            const [url, cfg] = globalThis.humhubStubs.client.ajax.mock.calls[0];
+            expect(url).toBe('/api/v2/account/table/users');
+            expect(cfg.method).toBe('PUT');
+            expect(JSON.parse(cfg.data)).toEqual({ columns: ['groups', 'lastLogin', 'createdAt'] });
+        });
+
+        it('resets to the defaults and saves them as no choice', async () => {
+            wrapper = mountTable({ columns: optional, columnsUrl: '/api/v2/account/table/users', columnChoice: ['username'] });
+            await flushPromises();
+
+            await wrapper.find('.data-table-columns-toggle').trigger('click');
+            await flushPromises();
+            document.querySelector('.data-table-columns-reset').click();
+            await flushPromises();
+            expect(options().map((input) => input.checked)).toEqual([true, true, false, false]);
+            document.querySelector('.data-table-columns-save').click();
+            await flushPromises();
+
+            expect(headers()).toEqual(['Name', 'Groups', 'Last login']);
+            expect(JSON.parse(globalThis.humhubStubs.client.ajax.mock.calls[0][1].data)).toEqual({ columns: null });
+        });
+
+        it('marks a chosen column folded away at this width', async () => {
+            wrapper = mountTable({ columns: optional });
+            await flushPromises();
+            Object.defineProperty(wrapper.find('.data-table-wrap').element, 'clientWidth', { configurable: true, value: 470 });
+            wrapper.vm.fold();
+            await wrapper.vm.$nextTick();
+
+            await wrapper.find('.data-table-columns-toggle').trigger('click');
+            await flushPromises();
+            const folded = [...document.querySelectorAll('.data-table-columns-option')]
+                .filter((option) => option.querySelector('.data-table-columns-folded'))
+                .map((option) => option.querySelector('label').textContent);
+            expect(folded).toEqual(['Groups']);
+        });
     });
 });

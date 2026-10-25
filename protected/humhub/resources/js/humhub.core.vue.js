@@ -2603,14 +2603,187 @@
     ));
   }
   const TableCell = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
+  let uidSeq = 0;
+  const _sfc_main$m = {
+    name: "UiModal",
+    props: {
+      show: { type: Boolean, default: false },
+      title: { type: String, default: null },
+      size: {
+        type: String,
+        default: "normal",
+        validator: (value) => ["small", "normal", "large"].includes(value)
+      },
+      dialogClass: { type: [String, Array, Object], default: null },
+      backdropClose: { type: Boolean, default: true },
+      keyboard: { type: Boolean, default: true }
+    },
+    emits: ["update:show", "opened", "closed"],
+    data() {
+      return {
+        visible: false,
+        titleId: `ui-modal-title-${++uidSeq}`,
+        previouslyFocused: null,
+        // Set by `onBackdropMousedown` on every mousedown targeting the `.modal` root,
+        // cleared on any mousedown that doesn't - see the "Backdrop" docblock section
+        // above and Bootstrap's own `_addEventListeners()` for the mechanism this mirrors.
+        mousedownOnBackdrop: false
+      };
+    },
+    computed: {
+      sizeClass() {
+        return {
+          "modal-sm": this.size === "small",
+          "modal-lg": this.size === "large"
+        };
+      }
+    },
+    watch: {
+      show(isOpen) {
+        if (isOpen) {
+          this.handleOpen();
+        } else {
+          this.handleClose();
+        }
+      }
+    },
+    mounted() {
+      if (this.show) {
+        this.handleOpen();
+      }
+    },
+    beforeUnmount() {
+      document.removeEventListener("keydown", this.onKeydown);
+      if (this.show) {
+        document.body.classList.remove("modal-open");
+        if (this.previouslyFocused && typeof this.previouslyFocused.focus === "function") {
+          this.previouslyFocused.focus();
+        }
+        this.previouslyFocused = null;
+      }
+    },
+    methods: {
+      handleOpen() {
+        this.previouslyFocused = document.activeElement;
+        document.body.classList.add("modal-open");
+        document.addEventListener("keydown", this.onKeydown);
+        this.$nextTick(() => {
+          this.visible = true;
+          this.$nextTick(() => {
+            if (this.$refs.dialog) {
+              this.$refs.dialog.focus();
+            }
+            this.$emit("opened");
+          });
+        });
+      },
+      handleClose() {
+        this.visible = false;
+        document.body.classList.remove("modal-open");
+        document.removeEventListener("keydown", this.onKeydown);
+        if (this.previouslyFocused && typeof this.previouslyFocused.focus === "function") {
+          this.previouslyFocused.focus();
+        }
+        this.previouslyFocused = null;
+        this.$emit("closed");
+      },
+      onKeydown(event) {
+        if (event.key === "Escape" && this.keyboard) {
+          this.requestClose();
+        }
+      },
+      onBackdropMousedown(event) {
+        this.mousedownOnBackdrop = event.target === event.currentTarget;
+      },
+      onBackdropClick() {
+        const mousedownWasOnBackdrop = this.mousedownOnBackdrop;
+        this.mousedownOnBackdrop = false;
+        if (this.backdropClose && mousedownWasOnBackdrop) {
+          this.requestClose();
+        }
+      },
+      requestClose() {
+        this.$emit("update:show", false);
+      }
+    }
+  };
+  const _hoisted_1$k = ["aria-labelledby"];
+  const _hoisted_2$e = { class: "modal-content" };
+  const _hoisted_3$d = { class: "modal-header" };
+  const _hoisted_4$c = ["id"];
+  const _hoisted_5$8 = { class: "modal-body" };
+  const _hoisted_6$8 = {
+    key: 0,
+    class: "modal-footer"
+  };
+  function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock(vue.Teleport, { to: "body" }, [
+      $props.show ? (vue.openBlock(), vue.createElementBlock("div", {
+        key: 0,
+        ref: "dialog",
+        class: vue.normalizeClass(["modal fade", { show: $data.visible }]),
+        style: { "display": "block" },
+        tabindex: "-1",
+        role: "dialog",
+        "aria-modal": "true",
+        "aria-labelledby": $data.titleId,
+        onMousedown: _cache[1] || (_cache[1] = (...args) => $options.onBackdropMousedown && $options.onBackdropMousedown(...args)),
+        onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.onBackdropClick && $options.onBackdropClick(...args), ["self"]))
+      }, [
+        vue.createElementVNode(
+          "div",
+          {
+            class: vue.normalizeClass(["modal-dialog", [$options.sizeClass, $props.dialogClass]])
+          },
+          [
+            vue.createElementVNode("div", _hoisted_2$e, [
+              vue.createElementVNode("div", _hoisted_3$d, [
+                vue.renderSlot(_ctx.$slots, "header", { titleId: $data.titleId }, () => [
+                  vue.createElementVNode("h5", {
+                    class: "modal-title",
+                    id: $data.titleId
+                  }, vue.toDisplayString($props.title), 9, _hoisted_4$c),
+                  vue.createElementVNode("button", {
+                    type: "button",
+                    class: "btn-close",
+                    "aria-label": "Close",
+                    onClick: _cache[0] || (_cache[0] = (...args) => $options.requestClose && $options.requestClose(...args))
+                  })
+                ])
+              ]),
+              vue.createElementVNode("div", _hoisted_5$8, [
+                vue.renderSlot(_ctx.$slots, "default")
+              ]),
+              _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$8, [
+                vue.renderSlot(_ctx.$slots, "footer")
+              ])) : vue.createCommentVNode("v-if", true)
+            ])
+          ],
+          2
+          /* CLASS */
+        )
+      ], 42, _hoisted_1$k)) : vue.createCommentVNode("v-if", true),
+      $props.show ? (vue.openBlock(), vue.createElementBlock(
+        "div",
+        {
+          key: 1,
+          class: vue.normalizeClass(["modal-backdrop fade", { show: $data.visible }])
+        },
+        null,
+        2
+        /* CLASS */
+      )) : vue.createCommentVNode("v-if", true)
+    ]);
+  }
+  const C27 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
   const COLUMN_WIDTHS = { main: 240, chip: 160, date: 120, number: 90, text: 150 };
   const SIDE_COLUMN_WIDTH = 48;
   const FOLD_HYSTERESIS = 32;
   const PAGE_SIZES = [25, 50, 100];
   let uid$3 = 0;
-  const _sfc_main$m = {
+  const _sfc_main$l = {
     name: "DataTable",
-    components: { DropdownMenu: C5, FilterBar: C9, HeaderActions, TableCell },
+    components: { DropdownMenu: C5, FilterBar: C9, HeaderActions, TableCell, UiModal: C27 },
     props: {
       tableId: { type: String, required: true },
       label: { type: String, required: true },
@@ -2623,7 +2796,15 @@
       headerMenu: { type: Array, default: () => [] },
       labels: { type: Object, default: () => ({}) },
       syncUrl: { type: Boolean, default: true },
-      skeletonCount: { type: Number, default: 5 }
+      skeletonCount: { type: Number, default: 5 },
+      /**
+       * The keys of the optional columns the user chose (`null`: the columns' defaults), the
+       * endpoint saving a new choice (`PUT`, `{columns}`) and the most optional columns shown
+       * at once (0: no limit).
+       */
+      columnChoice: { type: Array, default: null },
+      columnsUrl: { type: String, default: "" },
+      maxColumns: { type: Number, default: 0 }
     },
     data() {
       return {
@@ -2640,7 +2821,10 @@
         expanded: {},
         busy: {},
         foldedKeys: [],
-        pageSizes: PAGE_SIZES
+        pageSizes: PAGE_SIZES,
+        chosenKeys: this.initialChoice(),
+        chooserOpen: false,
+        draftKeys: []
       };
     },
     computed: {
@@ -2657,17 +2841,44 @@
           rowsPerPage: vue$1.i18n.t("base", "Rows per page"),
           pages: vue$1.i18n.t("base", "Pages"),
           previous: vue$1.i18n.t("base", "Previous page"),
-          next: vue$1.i18n.t("base", "Next page")
+          next: vue$1.i18n.t("base", "Next page"),
+          columns: vue$1.i18n.t("base", "Columns"),
+          hiddenAtWidth: vue$1.i18n.t("base", "Hidden at this width"),
+          reset: vue$1.i18n.t("base", "Reset"),
+          cancel: vue$1.i18n.t("base", "Cancel"),
+          save: vue$1.i18n.t("base", "Save")
         };
+      },
+      optionalColumns() {
+        return this.columns.filter((column) => column.type !== "main");
+      },
+      defaultKeys() {
+        return this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
+      },
+      hasChooser() {
+        return this.optionalColumns.length > 0;
+      },
+      // The main column and the chosen optional ones, in the columns' order.
+      activeColumns() {
+        return this.columns.filter((column) => column.type === "main" || this.chosenKeys.includes(column.key));
+      },
+      atLimit() {
+        return this.maxColumns > 0 && this.draftKeys.length >= this.maxColumns;
+      },
+      draftDiffersFromDefault() {
+        return [...this.draftKeys].sort().join() !== [...this.defaultKeys].sort().join();
+      },
+      limitText() {
+        return vue$1.i18n.t("base", "Choose up to {count} columns.", { count: this.maxColumns });
       },
       actionsById() {
         return Object.fromEntries(this.actions.map((action) => [action.id, action]));
       },
       shownColumns() {
-        return this.columns.filter((column) => !this.foldedKeys.includes(column.key));
+        return this.activeColumns.filter((column) => !this.foldedKeys.includes(column.key));
       },
       foldedColumns() {
-        return this.columns.filter((column) => this.foldedKeys.includes(column.key));
+        return this.activeColumns.filter((column) => this.foldedKeys.includes(column.key));
       },
       hasDetails() {
         return this.foldedKeys.length > 0;
@@ -2871,11 +3082,13 @@
         if (!wrap || !wrap.clientWidth) {
           return;
         }
-        const sideWidth = SIDE_COLUMN_WIDTH * (1 + (this.actions.length ? 1 : 0));
-        const foldable = this.columns.filter((column) => column.type !== "main").sort((a, b) => (b.priority || 1) - (a.priority || 1));
-        const width = (columns) => columns.reduce((sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150), sideWidth);
+        const foldable = this.activeColumns.filter((column) => column.type !== "main").sort((a, b) => (b.priority || 1) - (a.priority || 1));
+        const width = (columns) => columns.reduce(
+          (sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150),
+          SIDE_COLUMN_WIDTH * ((this.actions.length ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0))
+        );
         const folded = [];
-        let shown = [...this.columns];
+        let shown = [...this.activeColumns];
         for (const column of foldable) {
           if (width(shown) <= wrap.clientWidth) {
             break;
@@ -2891,6 +3104,39 @@
           this.foldedKeys = folded;
         }
       },
+      initialChoice() {
+        const keys = this.columns.filter((column) => column.type !== "main").map((column) => column.key);
+        if (Array.isArray(this.columnChoice)) {
+          return this.columnChoice.filter((key) => keys.includes(key));
+        }
+        return this.columns.filter((column) => column.type !== "main" && column.visible !== false).map((column) => column.key);
+      },
+      openChooser() {
+        this.draftKeys = [...this.chosenKeys];
+        this.chooserOpen = true;
+      },
+      toggleDraft(key, on) {
+        const keys = this.draftKeys.filter((candidate) => candidate !== key);
+        this.draftKeys = on ? [...keys, key] : keys;
+      },
+      resetDraft() {
+        this.draftKeys = [...this.defaultKeys];
+      },
+      // Applies the choice at once and saves it for the user (back to the defaults: `null`).
+      saveColumns() {
+        const keys = this.optionalColumns.map((column) => column.key).filter((key) => this.draftKeys.includes(key));
+        this.chosenKeys = keys;
+        this.chooserOpen = false;
+        this.$nextTick(() => this.fold());
+        if (!this.columnsUrl) {
+          return Promise.resolve();
+        }
+        const columns = this.draftDiffersFromDefault ? keys : null;
+        return vue$1.client.put(this.columnsUrl, { data: JSON.stringify({ columns }), contentType: "application/json" }).catch((response) => {
+          vue$1.status("error", response && response.message || vue$1.i18n.t("base", "An unexpected error occurred."));
+          vue$1.log.error(response);
+        });
+      },
       isExpanded(row) {
         return !!this.expanded[row.id];
       },
@@ -2900,13 +3146,33 @@
       detailsId(row) {
         return `${this.tableId}-details-${this.uid}-${row.id}`;
       },
-      // With folded columns the whole row toggles its details — but not a click on a link or
-      // a button inside it.
+      // The record the row links to: its main cell's URL.
+      rowUrl(row) {
+        const main = this.columns.find((column) => column.type === "main");
+        return main && row.cells[main.key] && row.cells[main.key].url || null;
+      },
+      // A click on the row opens its record (with Ctrl / Cmd in a new tab); a row without one
+      // toggles its details while columns are folded — but never a click on a link or a
+      // button inside it.
       onRowClick(row, event) {
-        if (!this.hasDetails || event.target.closest("a, button, input, select, label")) {
+        if (event.target.closest("a, button, input, select, label")) {
           return;
         }
-        this.toggleDetails(row);
+        const url = this.rowUrl(row);
+        if (url) {
+          this.open(url, event.ctrlKey || event.metaKey);
+          return;
+        }
+        if (this.hasDetails) {
+          this.toggleDetails(row);
+        }
+      },
+      open(url, newTab = false) {
+        if (newTab) {
+          window.open(url, "_blank", "noopener");
+        } else {
+          window.location.assign(url);
+        }
       },
       rowActions(row) {
         return (row.actions || []).map((rowAction) => this.actionsById[rowAction.id] ? { ...this.actionsById[rowAction.id], url: rowAction.url } : null).filter(Boolean);
@@ -3008,114 +3274,149 @@
       }
     }
   };
-  const _hoisted_1$k = ["id", "aria-labelledby"];
-  const _hoisted_2$e = {
+  const _hoisted_1$j = ["id", "aria-labelledby"];
+  const _hoisted_2$d = {
     key: 0,
     class: "card-header"
   };
-  const _hoisted_3$d = ["id"];
-  const _hoisted_4$c = { class: "card-body" };
-  const _hoisted_5$8 = {
+  const _hoisted_3$c = ["id"];
+  const _hoisted_4$b = ["aria-label", "title"];
+  const _hoisted_5$7 = { class: "card-body" };
+  const _hoisted_6$7 = {
     ref: "wrap",
     class: "data-table-wrap"
   };
-  const _hoisted_6$8 = ["aria-label", "aria-busy"];
-  const _hoisted_7$5 = ["aria-sort"];
-  const _hoisted_8$5 = ["aria-label", "onClick"];
-  const _hoisted_9$4 = {
+  const _hoisted_7$5 = ["aria-label", "aria-busy"];
+  const _hoisted_8$5 = ["aria-sort"];
+  const _hoisted_9$4 = ["aria-label", "onClick"];
+  const _hoisted_10$4 = {
     key: 0,
     class: "data-table-col-details"
   };
-  const _hoisted_10$4 = { class: "visually-hidden" };
-  const _hoisted_11$3 = {
+  const _hoisted_11$3 = { class: "visually-hidden" };
+  const _hoisted_12$3 = {
     key: 1,
     class: "data-table-col-actions"
   };
-  const _hoisted_12$3 = { class: "visually-hidden" };
-  const _hoisted_13$1 = { key: 0 };
-  const _hoisted_14 = {
+  const _hoisted_13$1 = { class: "visually-hidden" };
+  const _hoisted_14 = { key: 0 };
+  const _hoisted_15 = {
     key: 0,
     class: "data-table-main"
   };
-  const _hoisted_15 = {
+  const _hoisted_16 = {
     key: 1,
     class: "placeholder col-6"
   };
-  const _hoisted_16 = {
+  const _hoisted_17 = {
     key: 0,
     class: "data-table-col-details"
   };
-  const _hoisted_17 = {
+  const _hoisted_18 = {
     key: 1,
     class: "data-table-col-actions"
   };
-  const _hoisted_18 = { key: 1 };
-  const _hoisted_19 = { class: "data-table-message" };
-  const _hoisted_20 = ["colspan"];
-  const _hoisted_21 = { role: "alert" };
-  const _hoisted_22 = { role: "status" };
-  const _hoisted_23 = { key: 2 };
-  const _hoisted_24 = ["data-id", "onClick"];
-  const _hoisted_25 = {
+  const _hoisted_19 = { key: 1 };
+  const _hoisted_20 = { class: "data-table-message" };
+  const _hoisted_21 = ["colspan"];
+  const _hoisted_22 = { role: "alert" };
+  const _hoisted_23 = { role: "status" };
+  const _hoisted_24 = { key: 2 };
+  const _hoisted_25 = ["data-id", "onClick"];
+  const _hoisted_26 = {
     key: 0,
     class: "data-table-col-details"
   };
-  const _hoisted_26 = ["aria-expanded", "aria-controls", "aria-label", "onClick"];
-  const _hoisted_27 = ["href", "aria-label", "title", "onClick"];
-  const _hoisted_28 = ["id"];
-  const _hoisted_29 = ["colspan"];
-  const _hoisted_30 = {
+  const _hoisted_27 = ["aria-expanded", "aria-controls", "aria-label", "onClick"];
+  const _hoisted_28 = ["href", "aria-label", "title", "onClick"];
+  const _hoisted_29 = ["id"];
+  const _hoisted_30 = ["colspan"];
+  const _hoisted_31 = {
     key: 1,
     class: "alert alert-danger data-table-error",
     role: "alert"
   };
-  const _hoisted_31 = {
+  const _hoisted_32 = {
     key: 1,
     class: "card-footer data-table-footer"
   };
-  const _hoisted_32 = {
+  const _hoisted_33 = {
     class: "data-table-count",
     role: "status"
   };
-  const _hoisted_33 = { class: "data-table-page-size" };
-  const _hoisted_34 = ["value"];
+  const _hoisted_34 = { class: "data-table-page-size" };
   const _hoisted_35 = ["value"];
-  const _hoisted_36 = ["aria-label"];
-  const _hoisted_37 = { class: "pagination pagination-sm" };
-  const _hoisted_38 = ["aria-label", "disabled"];
-  const _hoisted_39 = {
+  const _hoisted_36 = ["value"];
+  const _hoisted_37 = ["aria-label"];
+  const _hoisted_38 = { class: "pagination pagination-sm" };
+  const _hoisted_39 = ["aria-label", "disabled"];
+  const _hoisted_40 = {
     key: 0,
     class: "page-link",
     "aria-hidden": "true"
   };
-  const _hoisted_40 = ["aria-current", "aria-label", "onClick"];
-  const _hoisted_41 = ["aria-label", "disabled"];
-  function _sfc_render$m(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_41 = ["aria-current", "aria-label", "onClick"];
+  const _hoisted_42 = ["aria-label", "disabled"];
+  const _hoisted_43 = {
+    key: 0,
+    class: "form-text data-table-columns-limit"
+  };
+  const _hoisted_44 = ["id", "checked", "disabled", "onChange"];
+  const _hoisted_45 = ["for"];
+  const _hoisted_46 = {
+    key: 0,
+    class: "form-text data-table-columns-folded"
+  };
+  function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_HeaderActions = vue.resolveComponent("HeaderActions");
     const _component_FilterBar = vue.resolveComponent("FilterBar");
     const _component_TableCell = vue.resolveComponent("TableCell");
     const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
+    const _component_UiModal = vue.resolveComponent("UiModal");
     return vue.openBlock(), vue.createElementBlock("section", {
       id: $props.tableId,
       ref: "root",
       class: "card content-card data-table",
       "aria-labelledby": $props.title ? $options.titleId : null
     }, [
-      $props.title || $props.headerActions.length || $props.headerMenu.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$e, [
+      $props.title || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$d, [
         $props.title ? (vue.openBlock(), vue.createElementBlock("h2", {
           key: 0,
           id: $options.titleId,
           class: "card-title"
-        }, vue.toDisplayString($props.title), 9, _hoisted_3$d)) : vue.createCommentVNode("v-if", true),
-        $props.headerActions.length || $props.headerMenu.length ? (vue.openBlock(), vue.createBlock(_component_HeaderActions, {
-          key: 1,
+        }, vue.toDisplayString($props.title), 9, _hoisted_3$c)) : vue.createCommentVNode("v-if", true),
+        vue.createVNode(_component_HeaderActions, {
           actions: $props.headerActions,
           menu: $props.headerMenu,
           "root-class": "card-header-actions",
           "tool-variant": "ghost"
-        }, null, 8, ["actions", "menu"])) : vue.createCommentVNode("v-if", true)
+        }, {
+          default: vue.withCtx(() => [
+            $options.hasChooser ? (vue.openBlock(), vue.createElementBlock("button", {
+              key: 0,
+              type: "button",
+              class: "btn btn-ghost btn-icon-only data-table-columns-toggle",
+              "aria-label": $options.texts.columns,
+              title: $options.texts.columns,
+              onClick: _cache[0] || (_cache[0] = (...args) => $options.openChooser && $options.openChooser(...args))
+            }, [..._cache[12] || (_cache[12] = [
+              vue.createElementVNode(
+                "i",
+                {
+                  class: "ti ti-layout-columns",
+                  "aria-hidden": "true"
+                },
+                null,
+                -1
+                /* CACHED */
+              )
+            ])], 8, _hoisted_4$b)) : vue.createCommentVNode("v-if", true)
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["actions", "menu"])
       ])) : vue.createCommentVNode("v-if", true),
-      vue.createElementVNode("div", _hoisted_4$c, [
+      vue.createElementVNode("div", _hoisted_5$7, [
         $props.filters.length ? (vue.openBlock(), vue.createBlock(_component_FilterBar, {
           key: 0,
           ref: "filterBar",
@@ -3127,7 +3428,7 @@
         }, null, 8, ["model-value", "filters", "sync-url", "id-prefix", "onUpdate:modelValue"])) : vue.createCommentVNode("v-if", true),
         vue.createElementVNode(
           "div",
-          _hoisted_5$8,
+          _hoisted_6$7,
           [
             vue.createElementVNode("table", {
               class: vue.normalizeClass(["table table-hover", { "is-loading": $data.loading && $data.rows.length > 0 }]),
@@ -3168,7 +3469,7 @@
                             2
                             /* CLASS */
                           )
-                        ], 10, _hoisted_8$5)) : (vue.openBlock(), vue.createElementBlock(
+                        ], 10, _hoisted_9$4)) : (vue.openBlock(), vue.createElementBlock(
                           vue.Fragment,
                           { key: 1 },
                           [
@@ -3181,24 +3482,24 @@
                           64
                           /* STABLE_FRAGMENT */
                         ))
-                      ], 10, _hoisted_7$5);
+                      ], 10, _hoisted_8$5);
                     }),
                     128
                     /* KEYED_FRAGMENT */
                   )),
-                  $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_9$4, [
+                  $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_10$4, [
                     vue.createElementVNode(
                       "span",
-                      _hoisted_10$4,
+                      _hoisted_11$3,
                       vue.toDisplayString($options.texts.details),
                       1
                       /* TEXT */
                     )
                   ])) : vue.createCommentVNode("v-if", true),
-                  $props.actions.length ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_11$3, [
+                  $props.actions.length ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_12$3, [
                     vue.createElementVNode(
                       "span",
-                      _hoisted_12$3,
+                      _hoisted_13$1,
                       vue.toDisplayString($options.texts.actions),
                       1
                       /* TEXT */
@@ -3206,7 +3507,7 @@
                   ])) : vue.createCommentVNode("v-if", true)
                 ])
               ]),
-              $data.loading && !$data.rows.length && !$data.error ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_13$1, [
+              $data.loading && !$data.rows.length && !$data.error ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_14, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
@@ -3227,7 +3528,7 @@
                               class: vue.normalizeClass(`data-table-col-${column.type}`)
                             },
                             [
-                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_14, [..._cache[7] || (_cache[7] = [
+                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_15, [..._cache[13] || (_cache[13] = [
                                 vue.createElementVNode(
                                   "span",
                                   { class: "placeholder data-table-main-image" },
@@ -3245,7 +3546,7 @@
                                   -1
                                   /* CACHED */
                                 )
-                              ])])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_15))
+                              ])])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_16))
                             ],
                             2
                             /* CLASS */
@@ -3254,15 +3555,15 @@
                         128
                         /* KEYED_FRAGMENT */
                       )),
-                      $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_16)) : vue.createCommentVNode("v-if", true),
-                      $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_17)) : vue.createCommentVNode("v-if", true)
+                      $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_17)) : vue.createCommentVNode("v-if", true),
+                      $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_18)) : vue.createCommentVNode("v-if", true)
                     ]);
                   }),
                   128
                   /* KEYED_FRAGMENT */
                 ))
-              ])) : !$data.rows.length ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_18, [
-                vue.createElementVNode("tr", _hoisted_19, [
+              ])) : !$data.rows.length ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_19, [
+                vue.createElementVNode("tr", _hoisted_20, [
                   vue.createElementVNode("td", { colspan: $options.colspan }, [
                     $data.error ? (vue.openBlock(), vue.createElementBlock(
                       vue.Fragment,
@@ -3270,7 +3571,7 @@
                       [
                         vue.createElementVNode(
                           "span",
-                          _hoisted_21,
+                          _hoisted_22,
                           vue.toDisplayString($data.error),
                           1
                           /* TEXT */
@@ -3280,7 +3581,7 @@
                           {
                             type: "button",
                             class: "btn btn-link btn-sm",
-                            onClick: _cache[0] || (_cache[0] = (...args) => $options.retry && $options.retry(...args))
+                            onClick: _cache[1] || (_cache[1] = (...args) => $options.retry && $options.retry(...args))
                           },
                           vue.toDisplayString($options.texts.retry),
                           1
@@ -3295,7 +3596,7 @@
                       [
                         vue.createElementVNode(
                           "span",
-                          _hoisted_22,
+                          _hoisted_23,
                           vue.toDisplayString($options.texts.empty),
                           1
                           /* TEXT */
@@ -3306,7 +3607,7 @@
                             key: 0,
                             type: "button",
                             class: "btn btn-link btn-sm",
-                            onClick: _cache[1] || (_cache[1] = (...args) => $options.clearFilters && $options.clearFilters(...args))
+                            onClick: _cache[2] || (_cache[2] = (...args) => $options.clearFilters && $options.clearFilters(...args))
                           },
                           vue.toDisplayString($options.texts.clearFilters),
                           1
@@ -3316,9 +3617,9 @@
                       64
                       /* STABLE_FRAGMENT */
                     ))
-                  ], 8, _hoisted_20)
+                  ], 8, _hoisted_21)
                 ])
-              ])) : (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_23, [
+              ])) : (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_24, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
@@ -3330,7 +3631,7 @@
                       },
                       [
                         vue.createElementVNode("tr", {
-                          class: vue.normalizeClass({ "is-expanded": $options.isExpanded(row), "is-busy": $data.busy[row.id], "data-table-row-toggle": $options.hasDetails }),
+                          class: vue.normalizeClass({ "is-expanded": $options.isExpanded(row), "is-busy": $data.busy[row.id], "data-table-row-link": !!$options.rowUrl(row), "data-table-row-toggle": !$options.rowUrl(row) && $options.hasDetails }),
                           "data-id": row.id,
                           onClick: ($event) => $options.onRowClick(row, $event)
                         }, [
@@ -3358,7 +3659,7 @@
                             128
                             /* KEYED_FRAGMENT */
                           )),
-                          $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_25, [
+                          $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_26, [
                             vue.createElementVNode("button", {
                               type: "button",
                               class: "btn btn-ghost btn-icon-only btn-sm data-table-details-toggle",
@@ -3377,12 +3678,12 @@
                                 2
                                 /* CLASS */
                               )
-                            ], 8, _hoisted_26)
+                            ], 8, _hoisted_27)
                           ])) : vue.createCommentVNode("v-if", true),
                           $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", {
                             key: 1,
                             class: "data-table-col-actions",
-                            onClick: _cache[2] || (_cache[2] = vue.withModifiers(() => {
+                            onClick: _cache[3] || (_cache[3] = vue.withModifiers(() => {
                             }, ["stop"]))
                           }, [
                             $options.rowActions(row).length === 1 ? (vue.openBlock(), vue.createElementBlock("a", {
@@ -3416,7 +3717,7 @@
                                 64
                                 /* STABLE_FRAGMENT */
                               ))
-                            ], 10, _hoisted_27)) : $options.rowActions(row).length > 1 ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
+                            ], 10, _hoisted_28)) : $options.rowActions(row).length > 1 ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
                               key: 1,
                               "menu-id": `${$props.tableId}.row`,
                               entries: $options.menuEntries(row),
@@ -3426,7 +3727,7 @@
                               "toggle-class": "btn btn-ghost btn-icon-only btn-sm",
                               "root-class": "data-table-actions-menu list-unstyled m-0"
                             }, {
-                              toggle: vue.withCtx(() => [..._cache[8] || (_cache[8] = [
+                              toggle: vue.withCtx(() => [..._cache[14] || (_cache[14] = [
                                 vue.createElementVNode(
                                   "i",
                                   {
@@ -3442,7 +3743,7 @@
                               /* STABLE */
                             }, 8, ["menu-id", "entries", "context", "toggle-aria-label", "toggle-title"])) : vue.createCommentVNode("v-if", true)
                           ])) : vue.createCommentVNode("v-if", true)
-                        ], 10, _hoisted_24),
+                        ], 10, _hoisted_25),
                         $options.hasDetails && $options.isExpanded(row) ? (vue.openBlock(), vue.createElementBlock("tr", {
                           key: 0,
                           id: $options.detailsId(row),
@@ -3491,8 +3792,8 @@
                                 /* KEYED_FRAGMENT */
                               ))
                             ])
-                          ], 8, _hoisted_29)
-                        ], 8, _hoisted_28)) : vue.createCommentVNode("v-if", true)
+                          ], 8, _hoisted_30)
+                        ], 8, _hoisted_29)) : vue.createCommentVNode("v-if", true)
                       ],
                       64
                       /* STABLE_FRAGMENT */
@@ -3502,12 +3803,12 @@
                   /* KEYED_FRAGMENT */
                 ))
               ]))
-            ], 10, _hoisted_6$8)
+            ], 10, _hoisted_7$5)
           ],
           512
           /* NEED_PATCH */
         ),
-        $data.error && $data.rows.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_30, [
+        $data.error && $data.rows.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_31, [
           vue.createTextVNode(
             vue.toDisplayString($data.error) + " ",
             1
@@ -3518,7 +3819,7 @@
             {
               type: "button",
               class: "btn btn-link btn-sm",
-              onClick: _cache[3] || (_cache[3] = (...args) => $options.retry && $options.retry(...args))
+              onClick: _cache[4] || (_cache[4] = (...args) => $options.retry && $options.retry(...args))
             },
             vue.toDisplayString($options.texts.retry),
             1
@@ -3526,15 +3827,15 @@
           )
         ])) : vue.createCommentVNode("v-if", true)
       ]),
-      $data.total > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_31, [
+      $data.total > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_32, [
         vue.createElementVNode(
           "span",
-          _hoisted_32,
+          _hoisted_33,
           vue.toDisplayString($options.countText),
           1
           /* TEXT */
         ),
-        vue.createElementVNode("label", _hoisted_33, [
+        vue.createElementVNode("label", _hoisted_34, [
           vue.createElementVNode(
             "span",
             null,
@@ -3545,7 +3846,7 @@
           vue.createElementVNode("select", {
             class: "form-select form-select-sm",
             value: $data.pageSize,
-            onChange: _cache[4] || (_cache[4] = ($event) => $options.setPageSize(Number($event.target.value)))
+            onChange: _cache[5] || (_cache[5] = ($event) => $options.setPageSize(Number($event.target.value)))
           }, [
             (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
@@ -3554,19 +3855,19 @@
                 return vue.openBlock(), vue.createElementBlock("option", {
                   key: size,
                   value: size
-                }, vue.toDisplayString(size), 9, _hoisted_35);
+                }, vue.toDisplayString(size), 9, _hoisted_36);
               }),
               128
               /* KEYED_FRAGMENT */
             ))
-          ], 40, _hoisted_34)
+          ], 40, _hoisted_35)
         ]),
         $data.pages > 1 ? (vue.openBlock(), vue.createElementBlock("nav", {
           key: 0,
           class: "data-table-pager",
           "aria-label": $options.texts.pages
         }, [
-          vue.createElementVNode("ul", _hoisted_37, [
+          vue.createElementVNode("ul", _hoisted_38, [
             vue.createElementVNode(
               "li",
               {
@@ -3578,8 +3879,8 @@
                   class: "page-link",
                   "aria-label": $options.texts.previous,
                   disabled: $data.page <= 1,
-                  onClick: _cache[5] || (_cache[5] = ($event) => $options.goTo($data.page - 1))
-                }, [..._cache[9] || (_cache[9] = [
+                  onClick: _cache[6] || (_cache[6] = ($event) => $options.goTo($data.page - 1))
+                }, [..._cache[15] || (_cache[15] = [
                   vue.createElementVNode(
                     "i",
                     {
@@ -3590,7 +3891,7 @@
                     -1
                     /* CACHED */
                   )
-                ])], 8, _hoisted_38)
+                ])], 8, _hoisted_39)
               ],
               2
               /* CLASS */
@@ -3606,14 +3907,14 @@
                     class: vue.normalizeClass(["page-item", { active: slot === $data.page, disabled: slot === null }])
                   },
                   [
-                    slot === null ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_39, "…")) : (vue.openBlock(), vue.createElementBlock("button", {
+                    slot === null ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_40, "…")) : (vue.openBlock(), vue.createElementBlock("button", {
                       key: 1,
                       type: "button",
                       class: "page-link",
                       "aria-current": slot === $data.page ? "page" : null,
                       "aria-label": $options.pageLabel(slot),
                       onClick: ($event) => $options.goTo(slot)
-                    }, vue.toDisplayString(slot), 9, _hoisted_40))
+                    }, vue.toDisplayString(slot), 9, _hoisted_41))
                   ],
                   2
                   /* CLASS */
@@ -3633,8 +3934,8 @@
                   class: "page-link",
                   "aria-label": $options.texts.next,
                   disabled: $data.page >= $data.pages,
-                  onClick: _cache[6] || (_cache[6] = ($event) => $options.goTo($data.page + 1))
-                }, [..._cache[10] || (_cache[10] = [
+                  onClick: _cache[7] || (_cache[7] = ($event) => $options.goTo($data.page + 1))
+                }, [..._cache[16] || (_cache[16] = [
                   vue.createElementVNode(
                     "i",
                     {
@@ -3645,22 +3946,110 @@
                     -1
                     /* CACHED */
                   )
-                ])], 8, _hoisted_41)
+                ])], 8, _hoisted_42)
               ],
               2
               /* CLASS */
             )
           ])
-        ], 8, _hoisted_36)) : vue.createCommentVNode("v-if", true)
-      ])) : vue.createCommentVNode("v-if", true)
-    ], 8, _hoisted_1$k);
+        ], 8, _hoisted_37)) : vue.createCommentVNode("v-if", true)
+      ])) : vue.createCommentVNode("v-if", true),
+      $options.hasChooser ? (vue.openBlock(), vue.createBlock(_component_UiModal, {
+        key: 2,
+        show: $data.chooserOpen,
+        title: $options.texts.columns,
+        "dialog-class": "data-table-columns",
+        "onUpdate:show": _cache[11] || (_cache[11] = ($event) => $data.chooserOpen = $event)
+      }, {
+        footer: vue.withCtx(() => [
+          $options.draftDiffersFromDefault ? (vue.openBlock(), vue.createElementBlock(
+            "button",
+            {
+              key: 0,
+              type: "button",
+              class: "btn btn-link me-auto data-table-columns-reset",
+              onClick: _cache[8] || (_cache[8] = (...args) => $options.resetDraft && $options.resetDraft(...args))
+            },
+            vue.toDisplayString($options.texts.reset),
+            1
+            /* TEXT */
+          )) : vue.createCommentVNode("v-if", true),
+          vue.createElementVNode(
+            "button",
+            {
+              type: "button",
+              class: "btn btn-light",
+              onClick: _cache[9] || (_cache[9] = ($event) => $data.chooserOpen = false)
+            },
+            vue.toDisplayString($options.texts.cancel),
+            1
+            /* TEXT */
+          ),
+          vue.createElementVNode(
+            "button",
+            {
+              type: "button",
+              class: "btn btn-primary data-table-columns-save",
+              onClick: _cache[10] || (_cache[10] = (...args) => $options.saveColumns && $options.saveColumns(...args))
+            },
+            vue.toDisplayString($options.texts.save),
+            1
+            /* TEXT */
+          )
+        ]),
+        default: vue.withCtx(() => [
+          $props.maxColumns ? (vue.openBlock(), vue.createElementBlock(
+            "p",
+            _hoisted_43,
+            vue.toDisplayString($options.limitText),
+            1
+            /* TEXT */
+          )) : vue.createCommentVNode("v-if", true),
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList($options.optionalColumns, (column) => {
+              return vue.openBlock(), vue.createElementBlock("div", {
+                key: column.key,
+                class: "form-check form-switch data-table-columns-option"
+              }, [
+                vue.createElementVNode("input", {
+                  id: `${$props.tableId}-column-${column.key}`,
+                  class: "form-check-input",
+                  type: "checkbox",
+                  role: "switch",
+                  checked: $data.draftKeys.includes(column.key),
+                  disabled: !$data.draftKeys.includes(column.key) && $options.atLimit,
+                  onChange: ($event) => $options.toggleDraft(column.key, $event.target.checked)
+                }, null, 40, _hoisted_44),
+                vue.createElementVNode("label", {
+                  class: "form-check-label",
+                  for: `${$props.tableId}-column-${column.key}`
+                }, vue.toDisplayString(column.label), 9, _hoisted_45),
+                $data.draftKeys.includes(column.key) && $data.foldedKeys.includes(column.key) ? (vue.openBlock(), vue.createElementBlock(
+                  "span",
+                  _hoisted_46,
+                  vue.toDisplayString($options.texts.hiddenAtWidth),
+                  1
+                  /* TEXT */
+                )) : vue.createCommentVNode("v-if", true)
+              ]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ]),
+        _: 1
+        /* STABLE */
+      }, 8, ["show", "title"])) : vue.createCommentVNode("v-if", true)
+    ], 8, _hoisted_1$j);
   }
-  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
+  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
   const carriesFiles = (event) => {
     var _a;
     return Array.prototype.includes.call(((_a = event.dataTransfer) == null ? void 0 : _a.types) || [], "Files");
   };
-  const _sfc_main$l = {
+  const _sfc_main$k = {
     name: "DropZone",
     props: {
       accept: { type: Boolean, default: true },
@@ -3715,8 +4104,8 @@
       }
     }
   };
-  const _hoisted_1$j = { class: "drop-zone-label" };
-  function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$i = { class: "drop-zone-label" };
+  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
       {
@@ -3739,7 +4128,7 @@
                 "aria-hidden": "true"
               },
               [
-                vue.createElementVNode("span", _hoisted_1$j, [
+                vue.createElementVNode("span", _hoisted_1$i, [
                   vue.createElementVNode(
                     "i",
                     {
@@ -3768,8 +4157,8 @@
       /* NEED_HYDRATION */
     );
   }
-  const C4 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
-  const _sfc_main$k = {
+  const C4 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
+  const _sfc_main$j = {
     name: "EntityGrid",
     components: { CardSkeleton: C0 },
     props: {
@@ -3861,21 +4250,21 @@
       }
     }
   };
-  const _hoisted_1$i = ["aria-busy"];
-  const _hoisted_2$d = ["data-id"];
-  const _hoisted_3$c = {
+  const _hoisted_1$h = ["aria-busy"];
+  const _hoisted_2$c = ["data-id"];
+  const _hoisted_3$b = {
     key: 1,
     class: "entity-grid-message entity-grid-message-error"
   };
-  const _hoisted_4$b = {
+  const _hoisted_4$a = {
     role: "alert",
     class: "entity-grid-message-text"
   };
-  const _hoisted_5$7 = {
+  const _hoisted_5$6 = {
     key: 2,
     class: "entity-grid-message entity-grid-message-empty"
   };
-  const _hoisted_6$7 = {
+  const _hoisted_6$6 = {
     role: "status",
     class: "entity-grid-message-text"
   };
@@ -3893,7 +4282,7 @@
     class: "entity-grid-more cards-more"
   };
   const _hoisted_10$3 = ["aria-label"];
-  function _sfc_render$k(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CardSkeleton = vue.resolveComponent("CardSkeleton");
     return vue.openBlock(), vue.createElementBlock(
       "div",
@@ -3919,7 +4308,7 @@
                   item,
                   index: $options.staggerIndex(index)
                 })
-              ], 14, _hoisted_2$d);
+              ], 14, _hoisted_2$c);
             }),
             128
             /* KEYED_FRAGMENT */
@@ -3952,10 +4341,10 @@
                 }),
                 128
                 /* KEYED_FRAGMENT */
-              )) : $props.error ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$c, [
+              )) : $props.error ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$b, [
                 vue.createElementVNode(
                   "p",
-                  _hoisted_4$b,
+                  _hoisted_4$a,
                   vue.toDisplayString($props.error),
                   1
                   /* TEXT */
@@ -3971,8 +4360,8 @@
                   1
                   /* TEXT */
                 )
-              ])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$7, [
-                vue.createElementVNode("p", _hoisted_6$7, [
+              ])) : (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$6, [
+                vue.createElementVNode("p", _hoisted_6$6, [
                   vue.renderSlot(_ctx.$slots, "empty", {}, () => [
                     vue.createElementVNode(
                       "strong",
@@ -4000,7 +4389,7 @@
             64
             /* STABLE_FRAGMENT */
           )) : vue.createCommentVNode("v-if", true)
-        ], 8, _hoisted_1$i),
+        ], 8, _hoisted_1$h),
         $props.error && $props.items.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$4, [
           vue.createElementVNode(
             "p",
@@ -4050,9 +4439,9 @@
       /* CLASS */
     );
   }
-  const C7 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
+  const C7 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
   let uid$2 = 0;
-  const _sfc_main$j = {
+  const _sfc_main$i = {
     name: "PageHeader",
     components: { HeaderActions },
     props: {
@@ -4073,23 +4462,23 @@
       }
     }
   };
-  const _hoisted_1$h = ["aria-labelledby"];
-  const _hoisted_2$c = {
+  const _hoisted_1$g = ["aria-labelledby"];
+  const _hoisted_2$b = {
     key: 0,
     class: "page-header-bar"
   };
-  const _hoisted_3$b = ["href", "aria-label", "title"];
-  const _hoisted_4$a = {
+  const _hoisted_3$a = ["href", "aria-label", "title"];
+  const _hoisted_4$9 = {
     key: 1,
     class: "page-header-body"
   };
-  function _sfc_render$j(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_HeaderActions = vue.resolveComponent("HeaderActions");
     return vue.openBlock(), vue.createElementBlock("section", {
       class: "page-header",
       "aria-labelledby": $props.title ? $data.titleId : null
     }, [
-      $props.title || $props.actions.length || $props.menu.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$c, [
+      $props.title || $props.actions.length || $props.menu.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$b, [
         $props.backUrl ? (vue.openBlock(), vue.createElementBlock("a", {
           key: 0,
           href: $props.backUrl,
@@ -4107,7 +4496,7 @@
             -1
             /* CACHED */
           )
-        ])], 8, _hoisted_3$b)) : vue.createCommentVNode("v-if", true),
+        ])], 8, _hoisted_3$a)) : vue.createCommentVNode("v-if", true),
         $props.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.titleTag), {
           key: 1,
           id: $data.titleId,
@@ -4136,13 +4525,13 @@
           /* FORWARDED */
         }, 8, ["actions", "menu"])) : vue.createCommentVNode("v-if", true)
       ])) : vue.createCommentVNode("v-if", true),
-      _ctx.$slots.default ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$a, [
+      _ctx.$slots.default ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4$9, [
         vue.renderSlot(_ctx.$slots, "default")
       ])) : vue.createCommentVNode("v-if", true)
-    ], 8, _hoisted_1$h);
+    ], 8, _hoisted_1$g);
   }
-  const C14 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
-  const _sfc_main$i = {
+  const C14 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
+  const _sfc_main$h = {
     name: "EntityBrowser",
     components: { EntityGrid: C7, FilterBar: C9, PageHeader: C14 },
     props: {
@@ -4350,16 +4739,16 @@
       }
     }
   };
-  const _hoisted_1$g = { class: "entity-browser" };
-  const _hoisted_2$b = {
+  const _hoisted_1$f = { class: "entity-browser" };
+  const _hoisted_2$a = {
     key: 0,
     class: "entity-browser-notice"
   };
-  function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_FilterBar = vue.resolveComponent("FilterBar");
     const _component_PageHeader = vue.resolveComponent("PageHeader");
     const _component_EntityGrid = vue.resolveComponent("EntityGrid");
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$g, [
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$f, [
       vue.createVNode(_component_PageHeader, {
         title: $props.title,
         "title-tag": $props.titleTag,
@@ -4403,7 +4792,7 @@
           key: "0"
         } : void 0
       ]), 1032, ["title", "title-tag", "actions"]),
-      _ctx.$slots.notice ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$b, [
+      _ctx.$slots.notice ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$a, [
         vue.renderSlot(_ctx.$slots, "notice", {
           meta: $data.meta,
           total: $data.total
@@ -4449,8 +4838,8 @@
       ]), 1032, ["items", "item-key", "loading", "loading-more", "error", "has-more", "skeleton-count", "card-class", "page-starts", "onLoadMore", "onRetry"])
     ]);
   }
-  const C6 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
-  const _sfc_main$h = {
+  const C6 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
+  const _sfc_main$g = {
     name: "ExtensionSlot",
     props: {
       name: { type: String, required: true },
@@ -4462,7 +4851,7 @@
       }
     }
   };
-  function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(true), vue.createElementBlock(
       vue.Fragment,
       null,
@@ -4481,8 +4870,8 @@
       /* KEYED_FRAGMENT */
     );
   }
-  const C8 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
-  const _sfc_main$g = {
+  const C8 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
+  const _sfc_main$f = {
     props: {
       modelName: { type: String, default: "" },
       busy: { type: Boolean, default: false }
@@ -4593,18 +4982,18 @@
       }
     }
   };
-  const _hoisted_1$f = {
+  const _hoisted_1$e = {
     key: 0,
     class: "alert alert-danger error-summary"
   };
-  function _sfc_render$g(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "form",
       {
         onSubmit: _cache[0] || (_cache[0] = vue.withModifiers((...args) => $options.onSubmit && $options.onSubmit(...args), ["prevent"]))
       },
       [
-        $options.unownedErrorMessages.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$f, [
+        $options.unownedErrorMessages.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$e, [
           vue.createElementVNode("ul", null, [
             (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
@@ -4629,12 +5018,12 @@
       /* NEED_HYDRATION */
     );
   }
-  const C12 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
+  const C12 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
   const FORM_TOKEN = "__VUEFORM__";
   const RICHTEXT_SELECTOR = '[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]';
   const RICHTEXT_COMPONENT_DATA = "humhub-ui-richtexteditor";
   let instanceCounter = 0;
-  const _sfc_main$f = {
+  const _sfc_main$e = {
     props: {
       shellHtml: { type: String, required: true },
       // Deterministic identity for this instance's DOM ids — see the class
@@ -4730,16 +5119,16 @@
       }
     }
   };
-  const _hoisted_1$e = ["innerHTML"];
-  function _sfc_render$f(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$d = ["innerHTML"];
+  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
-    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", { innerHTML: $options.processedShell }, null, 8, _hoisted_1$e)), [
+    return vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", { innerHTML: $options.processedShell }, null, 8, _hoisted_1$d)), [
       [_directive_additions]
     ]);
   }
-  const C13 = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["render", _sfc_render$f]]);
+  const C13 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
   const plainClick = (event) => !(event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
-  const _sfc_main$e = {
+  const _sfc_main$d = {
     name: "PathBar",
     props: {
       path: { type: Array, default: () => [] },
@@ -4805,16 +5194,16 @@
       }
     }
   };
-  const _hoisted_1$d = { class: "path-bar" };
-  const _hoisted_2$a = ["aria-label", "title"];
-  const _hoisted_3$a = ["aria-label"];
-  const _hoisted_4$9 = { class: "breadcrumb" };
-  const _hoisted_5$6 = ["href", "aria-label", "title", "aria-current"];
-  const _hoisted_6$6 = ["aria-current"];
+  const _hoisted_1$c = { class: "path-bar" };
+  const _hoisted_2$9 = ["aria-label", "title"];
+  const _hoisted_3$9 = ["aria-label"];
+  const _hoisted_4$8 = { class: "breadcrumb" };
+  const _hoisted_5$5 = ["href", "aria-label", "title", "aria-current"];
+  const _hoisted_6$5 = ["aria-current"];
   const _hoisted_7$3 = ["href", "title", "onClick"];
   const _hoisted_8$3 = ["title"];
-  function _sfc_render$e(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$d, [
+  function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$c, [
       $props.path.length ? (vue.openBlock(), vue.createElementBlock("button", {
         key: 0,
         type: "button",
@@ -4833,12 +5222,12 @@
           -1
           /* CACHED */
         )
-      ])], 8, _hoisted_2$a)) : vue.createCommentVNode("v-if", true),
+      ])], 8, _hoisted_2$9)) : vue.createCommentVNode("v-if", true),
       vue.createElementVNode("nav", {
         class: "path-bar-nav",
         "aria-label": $options.navLabel
       }, [
-        vue.createElementVNode("ol", _hoisted_4$9, [
+        vue.createElementVNode("ol", _hoisted_4$8, [
           vue.createElementVNode(
             "li",
             vue.mergeProps({
@@ -4864,7 +5253,7 @@
                   -1
                   /* CACHED */
                 )
-              ])], 8, _hoisted_5$6)
+              ])], 8, _hoisted_5$5)
             ],
             16
             /* FULL_PROPS */
@@ -4890,23 +5279,23 @@
                   tabindex: "-1",
                   title: crumb.title
                 }, vue.toDisplayString(crumb.title), 9, _hoisted_8$3))
-              ], 16, _hoisted_6$6);
+              ], 16, _hoisted_6$5);
             }),
             128
             /* KEYED_FRAGMENT */
           ))
         ])
-      ], 8, _hoisted_3$a),
+      ], 8, _hoisted_3$9),
       vue.renderSlot(_ctx.$slots, "end")
     ]);
   }
-  const C15 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
+  const C15 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
   const SEARCH_DEBOUNCE_MS = TEXT_DEBOUNCE_MS;
   const MAX_SUGGESTIONS = 8;
   let uid$1 = 0;
   const idOf = (value) => value === null || value === void 0 ? "" : String(value);
   const ID_PATTERN = /^[1-9]\d*$/;
-  const _sfc_main$d = {
+  const _sfc_main$c = {
     name: "PickerFilterControl",
     props: {
       filter: { type: Object, required: true },
@@ -5219,12 +5608,12 @@
       }
     }
   };
-  const _hoisted_1$c = ["title"];
-  const _hoisted_2$9 = { class: "picker-chip-label" };
-  const _hoisted_3$9 = ["aria-label", "title", "onClick"];
-  const _hoisted_4$8 = ["title", "aria-label"];
-  const _hoisted_5$5 = { class: "picker-chip-label" };
-  const _hoisted_6$5 = ["id", "aria-label", "title"];
+  const _hoisted_1$b = ["title"];
+  const _hoisted_2$8 = { class: "picker-chip-label" };
+  const _hoisted_3$8 = ["aria-label", "title", "onClick"];
+  const _hoisted_4$7 = ["title", "aria-label"];
+  const _hoisted_5$4 = { class: "picker-chip-label" };
+  const _hoisted_6$4 = ["id", "aria-label", "title"];
   const _hoisted_7$2 = ["id", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-label", "aria-busy", "placeholder", "value", "disabled"];
   const _hoisted_8$2 = {
     key: 0,
@@ -5242,7 +5631,7 @@
     class: "visually-hidden",
     role: "status"
   };
-  function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
       {
@@ -5295,7 +5684,7 @@
                     ),
                     vue.createElementVNode(
                       "span",
-                      _hoisted_2$9,
+                      _hoisted_2$8,
                       vue.toDisplayString(chip.label),
                       1
                       /* TEXT */
@@ -5317,8 +5706,8 @@
                         -1
                         /* CACHED */
                       )
-                    ])], 8, _hoisted_3$9)
-                  ], 10, _hoisted_1$c);
+                    ])], 8, _hoisted_3$8)
+                  ], 10, _hoisted_1$b);
                 }),
                 128
                 /* KEYED_FRAGMENT */
@@ -5349,7 +5738,7 @@
             ),
             vue.createElementVNode(
               "span",
-              _hoisted_5$5,
+              _hoisted_5$4,
               vue.toDisplayString($options.chips[0].label),
               1
               /* TEXT */
@@ -5373,8 +5762,8 @@
                 -1
                 /* CACHED */
               )
-            ])], 8, _hoisted_6$5)
-          ], 10, _hoisted_4$8)) : vue.createCommentVNode("v-if", true),
+            ])], 8, _hoisted_6$4)
+          ], 10, _hoisted_4$7)) : vue.createCommentVNode("v-if", true),
           !$props.multiple && !($options.hasValue && !$data.resolving) && $props.icon ? (vue.openBlock(), vue.createElementBlock(
             "i",
             {
@@ -5497,8 +5886,8 @@
       /* CLASS, STYLE */
     );
   }
-  const C16 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
-  const _sfc_main$c = {
+  const C16 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+  const _sfc_main$b = {
     name: "ProgressFrame",
     props: {
       value: { type: Number, default: 0 },
@@ -5510,8 +5899,8 @@
       }
     }
   };
-  const _hoisted_1$b = ["aria-valuenow", "aria-label"];
-  function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$a = ["aria-valuenow", "aria-label"];
+  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("svg", {
       class: "progress-frame",
       role: "progressbar",
@@ -5547,10 +5936,10 @@
         4
         /* STYLE */
       )
-    ], 8, _hoisted_1$b);
+    ], 8, _hoisted_1$a);
   }
-  const C17 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
-  const _sfc_main$b = {
+  const C17 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+  const _sfc_main$a = {
     mixins: [fieldMixin],
     props: {
       shellHtml: { type: String, required: true },
@@ -5588,8 +5977,8 @@
       }
     }
   };
-  const _hoisted_1$a = ["id"];
-  function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$9 = ["id"];
+  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_LegacyFormWrapper = vue.resolveComponent("LegacyFormWrapper");
     return vue.openBlock(), vue.createElementBlock(
       vue.Fragment,
@@ -5620,13 +6009,13 @@
             128
             /* KEYED_FRAGMENT */
           ))
-        ], 8, _hoisted_1$a)) : vue.createCommentVNode("v-if", true)
+        ], 8, _hoisted_1$9)) : vue.createCommentVNode("v-if", true)
       ],
       64
       /* STABLE_FRAGMENT */
     );
   }
-  const C18 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+  const C18 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
   const ENVELOPE_ATTRS = {
     "data-ui-richtext": "",
     "data-ui-widget": "ui.richtext.prosemirror.RichText",
@@ -5646,7 +6035,7 @@
     }
     return urls;
   };
-  const _sfc_main$a = {
+  const _sfc_main$9 = {
     props: {
       message: { type: String, default: null }
     },
@@ -5680,10 +6069,10 @@
       }
     }
   };
-  const _hoisted_1$9 = { key: 0 };
-  function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$8 = { key: 0 };
+  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
-    return $props.message && $data.ready ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$9, [
+    return $props.message && $data.ready ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$8, [
       (vue.openBlock(), vue.createElementBlock(
         "div",
         vue.mergeProps({ key: $props.message }, $data.ENVELOPE_ATTRS),
@@ -5695,8 +6084,8 @@
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);
   }
-  const C19 = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["render", _sfc_render$a]]);
-  const _sfc_main$9 = {
+  const C19 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+  const _sfc_main$8 = {
     mixins: [fieldMixin],
     props: {
       modelValue: { type: [String, Number], default: "" },
@@ -5723,16 +6112,16 @@
       }
     }
   };
-  const _hoisted_1$8 = ["for"];
-  const _hoisted_2$8 = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
-  const _hoisted_3$8 = {
+  const _hoisted_1$7 = ["for"];
+  const _hoisted_2$7 = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_3$7 = {
     key: 0,
     value: ""
   };
-  const _hoisted_4$7 = ["value"];
-  const _hoisted_5$4 = ["id"];
-  const _hoisted_6$4 = ["id"];
-  function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_4$6 = ["value"];
+  const _hoisted_5$3 = ["id"];
+  const _hoisted_6$3 = ["id"];
+  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
       {
@@ -5743,7 +6132,7 @@
           key: 0,
           for: _ctx.fieldId,
           class: "form-label"
-        }, vue.toDisplayString(_ctx.label), 9, _hoisted_1$8)) : vue.createCommentVNode("v-if", true),
+        }, vue.toDisplayString(_ctx.label), 9, _hoisted_1$7)) : vue.createCommentVNode("v-if", true),
         vue.withDirectives(vue.createElementVNode("select", {
           ref: "input",
           id: _ctx.fieldId,
@@ -5757,7 +6146,7 @@
         }, [
           $props.prompt !== null ? (vue.openBlock(), vue.createElementBlock(
             "option",
-            _hoisted_3$8,
+            _hoisted_3$7,
             vue.toDisplayString($props.prompt),
             1
             /* TEXT */
@@ -5769,19 +6158,19 @@
               return vue.openBlock(), vue.createElementBlock("option", {
                 key: option.value,
                 value: option.value
-              }, vue.toDisplayString(option.label), 9, _hoisted_4$7);
+              }, vue.toDisplayString(option.label), 9, _hoisted_4$6);
             }),
             128
             /* KEYED_FRAGMENT */
           ))
-        ], 10, _hoisted_2$8), [
+        ], 10, _hoisted_2$7), [
           [vue.vModelSelect, $options.internalValue]
         ]),
         _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 1,
           id: _ctx.hintId,
           class: "form-text text-muted"
-        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_5$4)) : vue.createCommentVNode("v-if", true),
+        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_5$3)) : vue.createCommentVNode("v-if", true),
         _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 2,
           id: _ctx.errorId,
@@ -5802,14 +6191,14 @@
             128
             /* KEYED_FRAGMENT */
           ))
-        ], 8, _hoisted_6$4)) : vue.createCommentVNode("v-if", true)
+        ], 8, _hoisted_6$3)) : vue.createCommentVNode("v-if", true)
       ],
       2
       /* CLASS */
     );
   }
-  const C20 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
-  const _sfc_main$8 = {
+  const C20 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+  const _sfc_main$7 = {
     name: "SelectionMenu",
     components: { DropdownMenu: C5 },
     props: {
@@ -5824,7 +6213,7 @@
       }
     }
   };
-  function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
     return vue.openBlock(), vue.createBlock(vue.Transition, { name: "selection-menu" }, {
       default: vue.withCtx(() => [
@@ -5858,7 +6247,7 @@
       /* STABLE */
     });
   }
-  const C21 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+  const C21 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
   const TRANSITION_MS = 150;
   const AUTOCLOSE = {
     info: 6e3,
@@ -5898,7 +6287,7 @@
       return String(details);
     }
   };
-  const _sfc_main$7 = {
+  const _sfc_main$6 = {
     props: {
       closeLabel: { type: String, default: "Close" },
       detailsLabel: { type: String, default: "Show more" }
@@ -6033,20 +6422,20 @@
       }
     }
   };
-  const _hoisted_1$7 = {
+  const _hoisted_1$6 = {
     key: 0,
     class: "toast-container position-fixed bottom-0 start-50 translate-middle-x p-3"
   };
-  const _hoisted_2$7 = ["role", "aria-live"];
-  const _hoisted_3$7 = { class: "toast-body" };
-  const _hoisted_4$6 = ["aria-expanded", "aria-label", "title"];
-  const _hoisted_5$3 = ["aria-label"];
-  const _hoisted_6$3 = {
+  const _hoisted_2$6 = ["role", "aria-live"];
+  const _hoisted_3$6 = { class: "toast-body" };
+  const _hoisted_4$5 = ["aria-expanded", "aria-label", "title"];
+  const _hoisted_5$2 = ["aria-label"];
+  const _hoisted_6$2 = {
     key: 0,
     class: "toast-details"
   };
-  function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
-    return $data.entry ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$7, [
+  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+    return $data.entry ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$6, [
       vue.createElementVNode("div", {
         ref: "toast",
         class: vue.normalizeClass(["toast fade show", [$options.toneClass, { showing: !$data.visible }]]),
@@ -6058,7 +6447,7 @@
         onFocusin: _cache[5] || (_cache[5] = ($event) => $options.interact("focused", true)),
         onFocusout: _cache[6] || (_cache[6] = (...args) => $options.onFocusOut && $options.onFocusOut(...args))
       }, [
-        vue.createElementVNode("div", _hoisted_3$7, [
+        vue.createElementVNode("div", _hoisted_3$6, [
           vue.createElementVNode(
             "i",
             {
@@ -6098,15 +6487,15 @@
               2
               /* CLASS */
             )
-          ], 8, _hoisted_4$6)) : vue.createCommentVNode("v-if", true),
+          ], 8, _hoisted_4$5)) : vue.createCommentVNode("v-if", true),
           vue.createElementVNode("button", {
             type: "button",
             class: "btn-close toast-close",
             "aria-label": $props.closeLabel,
             onClick: _cache[2] || (_cache[2] = (...args) => $options.close && $options.close(...args))
-          }, null, 8, _hoisted_5$3)
+          }, null, 8, _hoisted_5$2)
         ]),
-        $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$3, [
+        $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$2, [
           vue.createElementVNode(
             "pre",
             null,
@@ -6115,11 +6504,11 @@
             /* TEXT */
           )
         ])) : vue.createCommentVNode("v-if", true)
-      ], 42, _hoisted_2$7)
+      ], 42, _hoisted_2$6)
     ])) : vue.createCommentVNode("v-if", true);
   }
-  const C22 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
-  const _sfc_main$6 = {
+  const C22 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+  const _sfc_main$5 = {
     inject: {
       humhubForm: { from: FORM_CONTEXT_KEY, default: null }
     },
@@ -6142,21 +6531,21 @@
       }
     }
   };
-  const _hoisted_1$6 = ["disabled"];
-  const _hoisted_2$6 = {
+  const _hoisted_1$5 = ["disabled"];
+  const _hoisted_2$5 = {
     key: 0,
     class: "hh-loader text-center"
   };
-  const _hoisted_3$6 = {
+  const _hoisted_3$5 = {
     role: "status",
     class: "visually-hidden"
   };
-  function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("button", {
       type: "submit",
       disabled: $options.isDisabled
     }, [
-      $options.showLoader ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$6, [
+      $options.showLoader ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$5, [
         _cache[0] || (_cache[0] = vue.createElementVNode(
           "span",
           {
@@ -6169,16 +6558,16 @@
         )),
         vue.createElementVNode(
           "span",
-          _hoisted_3$6,
+          _hoisted_3$5,
           vue.toDisplayString($options.loadingText),
           1
           /* TEXT */
         )
       ])) : vue.renderSlot(_ctx.$slots, "default", {}, void 0, void 0, 1)
-    ], 8, _hoisted_1$6);
+    ], 8, _hoisted_1$5);
   }
-  const C23 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
-  const _sfc_main$5 = {
+  const C23 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+  const _sfc_main$4 = {
     mixins: [fieldMixin],
     props: {
       modelValue: { type: String, default: "" },
@@ -6204,97 +6593,8 @@
       }
     }
   };
-  const _hoisted_1$5 = ["for"];
-  const _hoisted_2$5 = ["id", "name", "type", "placeholder", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
-  const _hoisted_3$5 = ["id"];
-  const _hoisted_4$5 = ["id"];
-  function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock(
-      "div",
-      {
-        class: vue.normalizeClass(["mb-3", [`field-${_ctx.fieldId}`, { required: _ctx.required }]])
-      },
-      [
-        _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
-          key: 0,
-          for: _ctx.fieldId,
-          class: "form-label"
-        }, vue.toDisplayString(_ctx.label), 9, _hoisted_1$5)) : vue.createCommentVNode("v-if", true),
-        vue.withDirectives(vue.createElementVNode("input", {
-          ref: "input",
-          id: _ctx.fieldId,
-          name: _ctx.fieldName,
-          type: $props.type,
-          class: vue.normalizeClass(["form-control", { "is-invalid": _ctx.hasError }]),
-          placeholder: _ctx.placeholder,
-          disabled: _ctx.isDisabled,
-          "aria-required": _ctx.required ? "true" : null,
-          "aria-invalid": _ctx.hasError ? "true" : null,
-          "aria-describedby": _ctx.describedBy,
-          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
-        }, null, 10, _hoisted_2$5), [
-          [vue.vModelDynamic, $options.internalValue]
-        ]),
-        _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
-          key: 1,
-          id: _ctx.hintId,
-          class: "form-text text-muted"
-        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_3$5)) : vue.createCommentVNode("v-if", true),
-        _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
-          key: 2,
-          id: _ctx.errorId,
-          class: "invalid-feedback"
-        }, [
-          (vue.openBlock(true), vue.createElementBlock(
-            vue.Fragment,
-            null,
-            vue.renderList(_ctx.errorMessages, (message, index) => {
-              return vue.openBlock(), vue.createElementBlock(
-                "div",
-                { key: index },
-                vue.toDisplayString(message),
-                1
-                /* TEXT */
-              );
-            }),
-            128
-            /* KEYED_FRAGMENT */
-          ))
-        ], 8, _hoisted_4$5)) : vue.createCommentVNode("v-if", true)
-      ],
-      2
-      /* CLASS */
-    );
-  }
-  const C24 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
-  const _sfc_main$4 = {
-    mixins: [fieldMixin],
-    props: {
-      modelValue: { type: String, default: "" },
-      rows: { type: Number, default: 4 }
-    },
-    emits: ["update:modelValue"],
-    computed: {
-      internalValue: {
-        get() {
-          return this.modelValue;
-        },
-        set(value) {
-          this.$emit("update:modelValue", value);
-          this.clearOwnError();
-        }
-      }
-    },
-    methods: {
-      focus() {
-        if (this.$refs.input) {
-          this.$refs.input.focus();
-        }
-      }
-    }
-  };
   const _hoisted_1$4 = ["for"];
-  const _hoisted_2$4 = ["id", "name", "placeholder", "disabled", "rows", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_2$4 = ["id", "name", "type", "placeholder", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
   const _hoisted_3$4 = ["id"];
   const _hoisted_4$4 = ["id"];
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
@@ -6309,20 +6609,20 @@
           for: _ctx.fieldId,
           class: "form-label"
         }, vue.toDisplayString(_ctx.label), 9, _hoisted_1$4)) : vue.createCommentVNode("v-if", true),
-        vue.withDirectives(vue.createElementVNode("textarea", {
+        vue.withDirectives(vue.createElementVNode("input", {
           ref: "input",
           id: _ctx.fieldId,
           name: _ctx.fieldName,
+          type: $props.type,
           class: vue.normalizeClass(["form-control", { "is-invalid": _ctx.hasError }]),
           placeholder: _ctx.placeholder,
           disabled: _ctx.isDisabled,
-          rows: $props.rows,
           "aria-required": _ctx.required ? "true" : null,
           "aria-invalid": _ctx.hasError ? "true" : null,
           "aria-describedby": _ctx.describedBy,
           "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
         }, null, 10, _hoisted_2$4), [
-          [vue.vModelText, $options.internalValue]
+          [vue.vModelDynamic, $options.internalValue]
         ]),
         _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 1,
@@ -6355,8 +6655,97 @@
       /* CLASS */
     );
   }
-  const C25 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const C24 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
   const _sfc_main$3 = {
+    mixins: [fieldMixin],
+    props: {
+      modelValue: { type: String, default: "" },
+      rows: { type: Number, default: 4 }
+    },
+    emits: ["update:modelValue"],
+    computed: {
+      internalValue: {
+        get() {
+          return this.modelValue;
+        },
+        set(value) {
+          this.$emit("update:modelValue", value);
+          this.clearOwnError();
+        }
+      }
+    },
+    methods: {
+      focus() {
+        if (this.$refs.input) {
+          this.$refs.input.focus();
+        }
+      }
+    }
+  };
+  const _hoisted_1$3 = ["for"];
+  const _hoisted_2$3 = ["id", "name", "placeholder", "disabled", "rows", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_3$3 = ["id"];
+  const _hoisted_4$3 = ["id"];
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      "div",
+      {
+        class: vue.normalizeClass(["mb-3", [`field-${_ctx.fieldId}`, { required: _ctx.required }]])
+      },
+      [
+        _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
+          key: 0,
+          for: _ctx.fieldId,
+          class: "form-label"
+        }, vue.toDisplayString(_ctx.label), 9, _hoisted_1$3)) : vue.createCommentVNode("v-if", true),
+        vue.withDirectives(vue.createElementVNode("textarea", {
+          ref: "input",
+          id: _ctx.fieldId,
+          name: _ctx.fieldName,
+          class: vue.normalizeClass(["form-control", { "is-invalid": _ctx.hasError }]),
+          placeholder: _ctx.placeholder,
+          disabled: _ctx.isDisabled,
+          rows: $props.rows,
+          "aria-required": _ctx.required ? "true" : null,
+          "aria-invalid": _ctx.hasError ? "true" : null,
+          "aria-describedby": _ctx.describedBy,
+          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
+        }, null, 10, _hoisted_2$3), [
+          [vue.vModelText, $options.internalValue]
+        ]),
+        _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 1,
+          id: _ctx.hintId,
+          class: "form-text text-muted"
+        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_3$3)) : vue.createCommentVNode("v-if", true),
+        _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 2,
+          id: _ctx.errorId,
+          class: "invalid-feedback"
+        }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(_ctx.errorMessages, (message, index) => {
+              return vue.openBlock(), vue.createElementBlock(
+                "div",
+                { key: index },
+                vue.toDisplayString(message),
+                1
+                /* TEXT */
+              );
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ], 8, _hoisted_4$3)) : vue.createCommentVNode("v-if", true)
+      ],
+      2
+      /* CLASS */
+    );
+  }
+  const C25 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+  const _sfc_main$2 = {
     name: "TileGrid",
     components: { ProgressFrame: C17 },
     props: {
@@ -6517,19 +6906,19 @@
       }
     }
   };
-  const _hoisted_1$3 = ["aria-busy"];
-  const _hoisted_2$3 = { class: "tile-grid-stage" };
-  const _hoisted_3$3 = {
+  const _hoisted_1$2 = ["aria-busy"];
+  const _hoisted_2$2 = { class: "tile-grid-stage" };
+  const _hoisted_3$2 = {
     key: 0,
     class: "tile-grid-tiles",
     "aria-hidden": "true"
   };
-  const _hoisted_4$3 = ["data-key", "draggable", "onContextmenu", "onDragstart", "onDragend", "onDragover", "onDragleave", "onDrop"];
-  const _hoisted_5$2 = {
+  const _hoisted_4$2 = ["data-key", "draggable", "onContextmenu", "onDragstart", "onDragend", "onDragover", "onDragleave", "onDrop"];
+  const _hoisted_5$1 = {
     class: "tile-thumb",
     "aria-hidden": "true"
   };
-  const _hoisted_6$2 = { class: "tile-name" };
+  const _hoisted_6$1 = { class: "tile-name" };
   const _hoisted_7$1 = { class: "tile-meta" };
   const _hoisted_8$1 = ["checked", "aria-label", "onClick"];
   const _hoisted_9$1 = {
@@ -6545,20 +6934,20 @@
     class: "tile-grid-more"
   };
   const _hoisted_12$1 = ["disabled"];
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ProgressFrame = vue.resolveComponent("ProgressFrame");
     return vue.openBlock(), vue.createElementBlock("div", {
       class: vue.normalizeClass(["tile-grid", { "is-selecting": $props.selection.length > 0 }]),
       "aria-busy": $props.loading ? "true" : null
     }, [
-      vue.createElementVNode("div", _hoisted_2$3, [
+      vue.createElementVNode("div", _hoisted_2$2, [
         vue.createVNode(vue.Transition, { name: $options.swapName }, {
           default: vue.withCtx(() => [
             (vue.openBlock(), vue.createElementBlock("div", {
               key: $props.level,
               class: "tile-grid-pane"
             }, [
-              $options.showSkeleton ? (vue.openBlock(), vue.createElementBlock("ul", _hoisted_3$3, [
+              $options.showSkeleton ? (vue.openBlock(), vue.createElementBlock("ul", _hoisted_3$2, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
@@ -6609,10 +6998,10 @@
                         onDragleave: ($event) => $options.onDragLeave(item, $event),
                         onDrop: ($event) => $options.onDrop(item, $event)
                       }, [
-                        vue.createElementVNode("div", _hoisted_5$2, [
+                        vue.createElementVNode("div", _hoisted_5$1, [
                           vue.renderSlot(_ctx.$slots, "thumb", { item })
                         ]),
-                        vue.createElementVNode("div", _hoisted_6$2, [
+                        vue.createElementVNode("div", _hoisted_6$1, [
                           vue.renderSlot(_ctx.$slots, "name", { item })
                         ]),
                         vue.createElementVNode("span", _hoisted_7$1, [
@@ -6635,7 +7024,7 @@
                         _ctx.$slots.actions && !item.uploading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_9$1, [
                           vue.renderSlot(_ctx.$slots, "actions", { item })
                         ])) : vue.createCommentVNode("v-if", true)
-                      ], 42, _hoisted_4$3);
+                      ], 42, _hoisted_4$2);
                     }),
                     128
                     /* KEYED_FRAGMENT */
@@ -6667,182 +7056,9 @@
           onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("load-more"))
         }, vue.toDisplayString($props.loadingMore ? $options.loadingLabel : $options.moreLabel), 9, _hoisted_12$1)
       ])) : vue.createCommentVNode("v-if", true)
-    ], 10, _hoisted_1$3);
+    ], 10, _hoisted_1$2);
   }
-  const C26 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
-  let uidSeq = 0;
-  const _sfc_main$2 = {
-    name: "UiModal",
-    props: {
-      show: { type: Boolean, default: false },
-      title: { type: String, default: null },
-      size: {
-        type: String,
-        default: "normal",
-        validator: (value) => ["small", "normal", "large"].includes(value)
-      },
-      dialogClass: { type: [String, Array, Object], default: null },
-      backdropClose: { type: Boolean, default: true },
-      keyboard: { type: Boolean, default: true }
-    },
-    emits: ["update:show", "opened", "closed"],
-    data() {
-      return {
-        visible: false,
-        titleId: `ui-modal-title-${++uidSeq}`,
-        previouslyFocused: null,
-        // Set by `onBackdropMousedown` on every mousedown targeting the `.modal` root,
-        // cleared on any mousedown that doesn't - see the "Backdrop" docblock section
-        // above and Bootstrap's own `_addEventListeners()` for the mechanism this mirrors.
-        mousedownOnBackdrop: false
-      };
-    },
-    computed: {
-      sizeClass() {
-        return {
-          "modal-sm": this.size === "small",
-          "modal-lg": this.size === "large"
-        };
-      }
-    },
-    watch: {
-      show(isOpen) {
-        if (isOpen) {
-          this.handleOpen();
-        } else {
-          this.handleClose();
-        }
-      }
-    },
-    mounted() {
-      if (this.show) {
-        this.handleOpen();
-      }
-    },
-    beforeUnmount() {
-      document.removeEventListener("keydown", this.onKeydown);
-      if (this.show) {
-        document.body.classList.remove("modal-open");
-        if (this.previouslyFocused && typeof this.previouslyFocused.focus === "function") {
-          this.previouslyFocused.focus();
-        }
-        this.previouslyFocused = null;
-      }
-    },
-    methods: {
-      handleOpen() {
-        this.previouslyFocused = document.activeElement;
-        document.body.classList.add("modal-open");
-        document.addEventListener("keydown", this.onKeydown);
-        this.$nextTick(() => {
-          this.visible = true;
-          this.$nextTick(() => {
-            if (this.$refs.dialog) {
-              this.$refs.dialog.focus();
-            }
-            this.$emit("opened");
-          });
-        });
-      },
-      handleClose() {
-        this.visible = false;
-        document.body.classList.remove("modal-open");
-        document.removeEventListener("keydown", this.onKeydown);
-        if (this.previouslyFocused && typeof this.previouslyFocused.focus === "function") {
-          this.previouslyFocused.focus();
-        }
-        this.previouslyFocused = null;
-        this.$emit("closed");
-      },
-      onKeydown(event) {
-        if (event.key === "Escape" && this.keyboard) {
-          this.requestClose();
-        }
-      },
-      onBackdropMousedown(event) {
-        this.mousedownOnBackdrop = event.target === event.currentTarget;
-      },
-      onBackdropClick() {
-        const mousedownWasOnBackdrop = this.mousedownOnBackdrop;
-        this.mousedownOnBackdrop = false;
-        if (this.backdropClose && mousedownWasOnBackdrop) {
-          this.requestClose();
-        }
-      },
-      requestClose() {
-        this.$emit("update:show", false);
-      }
-    }
-  };
-  const _hoisted_1$2 = ["aria-labelledby"];
-  const _hoisted_2$2 = { class: "modal-content" };
-  const _hoisted_3$2 = { class: "modal-header" };
-  const _hoisted_4$2 = ["id"];
-  const _hoisted_5$1 = { class: "modal-body" };
-  const _hoisted_6$1 = {
-    key: 0,
-    class: "modal-footer"
-  };
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createBlock(vue.Teleport, { to: "body" }, [
-      $props.show ? (vue.openBlock(), vue.createElementBlock("div", {
-        key: 0,
-        ref: "dialog",
-        class: vue.normalizeClass(["modal fade", { show: $data.visible }]),
-        style: { "display": "block" },
-        tabindex: "-1",
-        role: "dialog",
-        "aria-modal": "true",
-        "aria-labelledby": $data.titleId,
-        onMousedown: _cache[1] || (_cache[1] = (...args) => $options.onBackdropMousedown && $options.onBackdropMousedown(...args)),
-        onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.onBackdropClick && $options.onBackdropClick(...args), ["self"]))
-      }, [
-        vue.createElementVNode(
-          "div",
-          {
-            class: vue.normalizeClass(["modal-dialog", [$options.sizeClass, $props.dialogClass]])
-          },
-          [
-            vue.createElementVNode("div", _hoisted_2$2, [
-              vue.createElementVNode("div", _hoisted_3$2, [
-                vue.renderSlot(_ctx.$slots, "header", { titleId: $data.titleId }, () => [
-                  vue.createElementVNode("h5", {
-                    class: "modal-title",
-                    id: $data.titleId
-                  }, vue.toDisplayString($props.title), 9, _hoisted_4$2),
-                  vue.createElementVNode("button", {
-                    type: "button",
-                    class: "btn-close",
-                    "aria-label": "Close",
-                    onClick: _cache[0] || (_cache[0] = (...args) => $options.requestClose && $options.requestClose(...args))
-                  })
-                ])
-              ]),
-              vue.createElementVNode("div", _hoisted_5$1, [
-                vue.renderSlot(_ctx.$slots, "default")
-              ]),
-              _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$1, [
-                vue.renderSlot(_ctx.$slots, "footer")
-              ])) : vue.createCommentVNode("v-if", true)
-            ])
-          ],
-          2
-          /* CLASS */
-        )
-      ], 42, _hoisted_1$2)) : vue.createCommentVNode("v-if", true),
-      $props.show ? (vue.openBlock(), vue.createElementBlock(
-        "div",
-        {
-          key: 1,
-          class: vue.normalizeClass(["modal-backdrop fade", { show: $data.visible }])
-        },
-        null,
-        2
-        /* CLASS */
-      )) : vue.createCommentVNode("v-if", true)
-    ]);
-  }
-  const C27 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const C26 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   function uploadFiles(files, onProgress) {
     const formData = new FormData();
     files.forEach((file) => formData.append("files[]", file));

@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\listing\ListContext;
+use humhub\components\table\TableSettings;
 use humhub\modules\admin\components\UserTable as UserTableDefinition;
 use humhub\widgets\VueWidget;
 use Yii;
@@ -24,6 +25,8 @@ use yii\helpers\Url;
  */
 class UserTable extends VueWidget
 {
+    public const TABLE_ID = 'admin-users';
+
     protected string $component = 'DataTable';
 
     /**
@@ -32,7 +35,10 @@ class UserTable extends VueWidget
     protected function getProps(): array
     {
         return array_merge(Yii::createObject(UserTableDefinition::class)->definitions(ListContext::forCurrentUser()), [
-            'tableId' => 'admin-users',
+            'tableId' => self::TABLE_ID,
+            'columnChoice' => TableSettings::columns(self::TABLE_ID),
+            'columnsUrl' => Url::to(['/user/api/account/table', 'id' => self::TABLE_ID]),
+            'maxColumns' => 4,
             'label' => Yii::t('AdminModule.user', 'Users'),
             'url' => Url::to(['/admin/api/user/index']),
             'headerActions' => (new AdminUserCardActions())->getEntriesData(),

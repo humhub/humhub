@@ -20,8 +20,9 @@ use Yii;
 
 /**
  * The administration's user table (Administration › Users, `admin\widgets\UserTable`, rows from
- * `GET /api/v2/admin/user`): the users of {@see AdminUserList} with their name, groups, last login
- * and registration, and the actions the viewer may take on each — those the user list's action
+ * `GET /api/v2/admin/user`): the users of {@see AdminUserList} with their name, groups and last
+ * login (on request also the username, the registration and, for administrators, the source),
+ * and the actions the viewer may take on each — those the user list's action
  * column offered before (edit, enable / disable, delete, impersonate, view profile).
  *
  * Modules add, replace or remove columns and actions on {@see self::EVENT_INIT}. The page and
@@ -50,12 +51,13 @@ class UserTable extends DataTable
             new ColumnDefinition('name', ColumnDefinition::TYPE_MAIN, Yii::t('UserModule.base', 'Name'), sort: 'name', sortOrder: 100),
             new ColumnDefinition('groups', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Groups'), priority: 2, filter: 'group', sortOrder: 200),
             new ColumnDefinition('lastLogin', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Last login'), priority: 1, sort: 'lastLogin', sortOrder: 300),
-            new ColumnDefinition('createdAt', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Registered'), priority: 3, sort: 'createdAt', sortOrder: 400),
+            new ColumnDefinition('createdAt', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Registered'), priority: 3, sort: 'createdAt', sortOrder: 400, visible: false),
+            new ColumnDefinition('username', ColumnDefinition::TYPE_TEXT, Yii::t('AdminModule.user', 'Username'), priority: 3, sortOrder: 150, visible: false),
         ];
 
         // The source of an account (e.g. LDAP), as the name column showed it to administrators
         if (Yii::$app->user->isAdmin()) {
-            $columns[] = new ColumnDefinition('source', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Source'), priority: 3, sortOrder: 250);
+            $columns[] = new ColumnDefinition('source', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Source'), priority: 3, sortOrder: 250, visible: false);
         }
 
         return $columns;
@@ -154,6 +156,7 @@ class UserTable extends DataTable
                 : ['text' => Yii::t('AdminModule.user', 'never')],
             'createdAt' => $model->created_at ? self::dateCell($model->created_at) : null,
             'source' => [['text' => self::sourceTitle($model->user_source)]],
+            'username' => ['text' => $model->username],
         ];
     }
 
