@@ -15,7 +15,7 @@ class GroupManagerCest
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('redirect to pending user approvals page');
-        $I->see('Pending user approvals');
+        $I->see('Pending approvals', '.content-card .card-title');
         $I->see('Pending approvals', '.nav-pills');
         $I->dontSee('Overview', '.nav-pills');
         $I->dontSee('Settings', '.nav-pills');
@@ -56,7 +56,7 @@ class GroupManagerCest
         $group = Group::findOne(['name' => 'Moderators']);
 
         $I->amOnRoute('/admin/group');
-        $I->see('Manage groups');
+        $I->see('Groups', '.content-card .card-title');
         $I->see('Moderators', '.table');
         $I->see('Editors', '.table'); // Subgroup can be managed too
         $I->dontSee('Administrator', '.table');

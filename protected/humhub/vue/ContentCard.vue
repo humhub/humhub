@@ -1,7 +1,10 @@
 <template>
     <component :is="title ? 'section' : 'div'" class="card content-card" :aria-labelledby="title ? titleId : null">
         <div v-if="hasHeader" class="card-header">
-            <component :is="titleTag" v-if="title" :id="titleId" class="card-title">{{ title }}</component>
+            <div v-if="title" class="card-heading">
+                <component :is="titleTag" :id="titleId" class="card-title">{{ title }}</component>
+                <p v-if="description" class="card-subtitle">{{ description }}</p>
+            </div>
             <slot name="header"></slot>
             <HeaderActions
                 v-if="actions.length || menu.length || $slots.actions"
@@ -33,7 +36,7 @@ let uid = 0;
  * (`footer` slot). The PHP widget `humhub\widgets\ContentCard` renders the same markup.
  *
  * - `title` prop: the card's title (rendered as `titleTag`, default `h2`); the card is then a
- *   `<section>` labelled by it.
+ *   `<section>` labelled by it. `description`: a short line below the title.
  * - `header` slot: further header content, e.g. the content navigation (‹ ›, a path bar) of a
  *   card without a title.
  * - `actions` and `menu` props, `actions` slot: as for `PageHeader`, but with ghost tools.
@@ -48,6 +51,7 @@ export default {
     props: {
         title: { type: String, default: '' },
         titleTag: { type: String, default: 'h2' },
+        description: { type: String, default: '' },
         actions: { type: Array, default: () => [] },
         menu: { type: Array, default: () => [] },
     },

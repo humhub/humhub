@@ -1707,14 +1707,42 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `.panel-heading` titles of these pages are gone.
   - The account layouts `@user/views/account/_userProfileLayout.php`, `_userSettingsLayout.php`
     and `@user/views/security/_layout.php` render the page header (title = the account menu
-    entry, the section's tabs in its body) and a panel with a `.panel-body` around `$content`.
+    entry, the section's tabs in its body) and a content card around `$content`.
     Module views rendered into them need no change.
   - A module page rendered directly into the account layout (`@user/views/account/_layout.php`)
-    still works with its own `.panel-heading`. To match core, it renders
-    `PageHeader::title(…)` itself and sets `$this->params['accountPanel'] = false` to drop the
-    surrounding panel.
+    still works with its own `.panel-heading`. To match core, it renders `PageHeader::title(…)`
+    and a `ContentCard` itself; the layout then drops its panel.
   - New: `admin\widgets\ModulesHeaderActions` (menu id `admin-modules-header-actions`). The
     "Add more modules" button of the modules page is its primary entry (`add-modules`).
+
+- **The pages below a page header are content cards** (`humhub\widgets\ContentCard`, see
+  `docs/ui/card.md`): administration, account, search, licence. Their `h4` titles inside a
+  `.panel-body` became the card's `h2` title, with a description below it only where it adds
+  something; sections are a plain `<h3>` (and the security sections `h2.h5` → `h3`).
+  - New on `ContentCard`: `description`, `buttons` (HTML in the header, e.g. "Back to
+    overview"), `tabs` (secondary pill tabs below the header), `ContentCard::isRendered()` and
+    `ContentCard::markRendered()`; `PillTabs::getActiveLabel()`.
+  - The section layouts (`@admin/views/layouts/user|space|setting|information`,
+    `@user/views/account/_layout.php`) only wrap a view in their `.panel` when it rendered no
+    content card. A module view without card keeps working as before. To match core, it renders
+    `ContentCard::begin([...])` / `ContentCard::end()` instead of `.panel-body` + `h4`.
+  - `@admin/views/authentication/_authenticationLayout.php`, `@admin/views/setting/_advancedLayout.php`,
+    `@admin/views/group/_manageLayout.php` and the account layouts (`_userProfileLayout`,
+    `_userSettingsLayout`, `@user/views/security/_layout.php`) render the card (title,
+    description, tabs) themselves. A module view rendered into them only brings its content; a
+    `.panel-body` it still wraps the content in adds no padding inside the card (used by
+    email-whitelist, advanced-ldap, asb, softwareallianz-partner).
+  - `_userProfileLayout.php` takes an optional `description` (`beginContent(…, ['description' => …])`).
+  - New: `admin\widgets\AdminGroupCardActions` ("Create new group") and
+    `admin\widgets\AdminSpaceCardActions` ("Add new space").
+
+- **`ActiveForm::beginCollapsibleFields()` renders a Bootstrap accordion** (see
+  `docs/ui/accordion.md`). Signature and behaviour are unchanged, and so are the classes
+  `.form-collapsible-fields`, `.form-collapsible-fields-label` (now also `.accordion-button`, in an
+  `h3.accordion-header`) and its `<label>`, so tests clicking them keep working. The plus/minus
+  icons are gone (the accordion's chevron), the fields sit in `fieldset.accordion-collapse` >
+  `.accordion-body`, consecutive groups join into one accordion with one group open at a time, and a
+  group with unsaved changes shows an accent dot (`.accordion-dot.badge-dot-unsaved`).
 
 - **Context menus have one look everywhere** (see `docs/ui/context-menu.md`). `.dropdown-menu`
   no longer changes with where it sits: the accent bar on hover (in panels, modals and tabs) and

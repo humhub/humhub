@@ -109,7 +109,9 @@ so `accent` and custom brand colours work. The look never depends on utilities s
 <span class="badge-dot badge-dot-waiting"><span class="visually-hidden">3 waiting</span></span>
 ```
 
-- **File:** `_badge.scss`, behind `$prev-badge`. Implemented so far: the neutral plain `.badge`
+- **File:** `_badge.scss`, behind `$prev-badge`. Implemented so far: the dots (`.badge-dot`, red;
+  `.badge-dot-unsaved`, accent; `$badge-dot-size`; first user: the unsaved groups of
+  `ActiveForm::beginCollapsibleFields()`), the neutral plain `.badge`
   (`$badge-color` and the background), the tones `.badge-<tone>` for the colours in
   `$badge-tones` (`accent`, `success`, `info`, `warning`, `danger`) and clickable badges. There is
   no `.badge-light` / `-dark` / `-primary` / `-secondary`. A badge with only a background

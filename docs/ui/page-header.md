@@ -170,6 +170,7 @@ SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 $page-header-max-width: 1440px !default;
 $page-header-padding: $spacer * .5 !default;
 $page-header-gap: $spacer * .5 !default;
+$page-header-tabs-margin-top: $spacer * .5 !default; // tabs 1rem below the title
 $page-header-bg: var(--hh-background-color-main) !default;
 $page-header-border-radius: $border-radius-lg !default;
 $page-header-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
@@ -202,9 +203,9 @@ $page-header-title-color: var(--hh-text-color-highlight) !default;
   dashboard (special case, see above), login/registration/installer boxes and error pages.
 - **Account section:** the layouts `@user/views/account/_userProfileLayout.php`,
   `_userSettingsLayout.php` and `@user/views/security/_layout.php` render the page header and a
-  panel around `$content`; a module view rendered into one of them needs no change. A page
-  rendered directly into the account layout brings its own `PageHeader` and sets
-  `$this->params['accountPanel'] = false`.
+  [content card](card.md) around `$content`; a module view rendered into one of them needs no
+  change. A page rendered directly into the account layout brings its own `PageHeader` and
+  `ContentCard`.
 - **Action menus:** `PeopleHeaderActions` and `SpacesHeaderActions` (formerly
   `PeopleHeadingButtons` and `SpaceDirectoryHeadingButtons`).
 - **Styles:** `_page-header.scss`; the icon button and ghost are in `_button.scss`, the filter bar

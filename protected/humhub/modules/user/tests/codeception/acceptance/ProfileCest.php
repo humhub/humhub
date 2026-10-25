@@ -196,7 +196,7 @@ class ProfileCest
         $I->amGoingTo('remove the test profile fields');
         $I->amOnPage('/admin/user-profile');
         for ($i = 0; $i < 4; $i++) {
-            $I->waitForText('Manage profile attributes');
+            $I->waitForText('Profiles', null, '.content-card .card-title');
             $I->click($category);
             $I->wait(1);
             $I->jsClick('.tab-pane.active tr[data-key=0] td:last-child a');

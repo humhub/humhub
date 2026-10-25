@@ -61,7 +61,7 @@ class AcceptanceTester extends \AcceptanceTester
             'checkboxlist-options' => '',
         ], $options);
 
-        $this->waitForText('Manage profile attributes');
+        $this->waitForText('Profiles', null, '.content-card .card-title');
         $this->waitForText($options['categoryTitle']);
         $this->click($options['categoryTitle']);
         $this->waitForText('Add new field', 10, '.tab-pane.active');

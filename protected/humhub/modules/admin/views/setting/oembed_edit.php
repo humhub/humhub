@@ -72,7 +72,7 @@ JS, View::POS_LOAD);
 
     <div class="clearfix">
         <?= Button::back(Url::to(['setting/oembed']), Yii::t('AdminModule.settings', 'Back to overview')) ?>
-        <h4 class="float-start">
+        <h3 class="float-start">
             <?php
             if (empty($name)) {
                 echo Yii::t('AdminModule.settings', 'Add OEmbed provider');
@@ -80,7 +80,7 @@ JS, View::POS_LOAD);
                 echo Yii::t('AdminModule.settings', 'Edit OEmbed provider');
             }
             ?>
-        </h4>
+        </h3>
     </div>
 
     <br>

@@ -3,58 +3,52 @@
 use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\Icon;
 
 /* @var BasicSettingsForm $model */
 ?>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.base', 'General'),
+    'buttons' => Html::beginForm(['clear-cache'])
+        . Button::secondary(Yii::t('AdminModule.settings', 'Flush Caches'))->submit()->sm()
+        . Html::endForm(),
+]) ?>
+<?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<div class="panel-body">
-    <?= Html::beginForm(['clear-cache']) ?>
-    <?= Button::primary(Yii::t('AdminModule.settings', 'Flush Caches'))->submit()->right() ?>
-    <?= Html::endForm() ?>
+<?= $form->field($model, 'name') ?>
+<?= $form->field($model, 'baseUrl')->textInput(['disabled' => Yii::$app->settings->isFixed('baseUrl')]) ?>
 
-    <h4><?= Yii::t('AdminModule.settings', 'General Settings') ?></h4>
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.settings', 'Here you can configure basic settings of your social network.') ?>
-    </div>
+<?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
+<?php if (count($allowedLanguages) > 1) : ?>
+    <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages) ?>
+<?php endif; ?>
+<?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]) ?>
 
-    <br>
+<?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')) ?>
+<?= $form->field($model, 'tour')->checkbox() ?>
+<?= $form->field($model, 'dashboardShowProfilePostForm')->checkbox() ?>
+<?= $form->field($model, 'dashboardShowTopicSidebar')->checkbox() ?>
+<?= $form->endCollapsibleFields() ?>
 
-    <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+<?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Friendship')) ?>
+<?= $form->field($model, 'enableFriendshipModule')->checkbox() ?>
+<?= $form->endCollapsibleFields() ?>
 
-    <?= $form->field($model, 'name') ?>
-    <?= $form->field($model, 'baseUrl')->textInput(['disabled' => Yii::$app->settings->isFixed('baseUrl')]) ?>
+<?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Maintenance mode'), !$model->maintenanceMode) ?>
+<?= Alert::warning(Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'))
+    ->closeButton(false)
+    ->icon(Icon::get('exclamation-triangle')) ?>
+<?= $form->field($model, 'maintenanceMode')->checkbox() ?>
+<?= $form->field($model, 'maintenanceModeInfo')->textInput(['placeholder' => Yii::t('AdminModule.settings', 'Add individual info text...')]) ?>
+<?= $form->endCollapsibleFields() ?>
 
-    <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
-    <?php if (count($allowedLanguages) > 1) : ?>
-        <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages) ?>
-    <?php endif; ?>
-    <?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]) ?>
+<hr>
 
-    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')) ?>
-    <?= $form->field($model, 'tour')->checkbox() ?>
-    <?= $form->field($model, 'dashboardShowProfilePostForm')->checkbox() ?>
-    <?= $form->field($model, 'dashboardShowTopicSidebar')->checkbox() ?>
-    <?= $form->endCollapsibleFields() ?>
+<?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]) ?>
 
-    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Friendship')) ?>
-    <?= $form->field($model, 'enableFriendshipModule')->checkbox() ?>
-    <?= $form->endCollapsibleFields() ?>
-
-    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Maintenance mode'), !$model->maintenanceMode) ?>
-    <?= Alert::warning(Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'))
-        ->closeButton(false)
-        ->icon(Icon::get('exclamation-triangle')) ?>
-    <?= $form->field($model, 'maintenanceMode')->checkbox() ?>
-    <?= $form->field($model, 'maintenanceModeInfo')->textInput(['placeholder' => Yii::t('AdminModule.settings', 'Add individual info text...')]) ?>
-    <?= $form->endCollapsibleFields() ?>
-
-    <hr>
-
-    <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]) ?>
-
-    <?php ActiveForm::end(); ?>
-</div>
+<?php ActiveForm::end(); ?>
+<?php ContentCard::end() ?>

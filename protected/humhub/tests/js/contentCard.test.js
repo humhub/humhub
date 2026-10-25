@@ -12,11 +12,17 @@ describe('ContentCard', () => {
 
         expect(wrapper.element.tagName).toBe('SECTION');
         expect(wrapper.classes()).toEqual(expect.arrayContaining(['card', 'content-card']));
-        const title = wrapper.find('.card-header > h2.card-title');
+        const title = wrapper.find('.card-header > .card-heading > h2.card-title');
         expect(title.text()).toBe('Users');
         expect(wrapper.attributes('aria-labelledby')).toBe(title.attributes('id'));
         expect(wrapper.find('.card-body > .content').exists()).toBe(true);
         expect(wrapper.find('.card-footer').exists()).toBe(false);
+    });
+
+    it('renders the description below the title', () => {
+        const wrapper = mount(ContentCard, { props: { title: 'General', description: 'Basic settings.' } });
+
+        expect(wrapper.find('.card-heading > .card-subtitle').text()).toBe('Basic settings.');
     });
 
     it('is a plain div without header when it has neither title nor actions', () => {

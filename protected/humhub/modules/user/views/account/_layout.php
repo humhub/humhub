@@ -2,14 +2,14 @@
 
 use humhub\components\View;
 use humhub\modules\user\widgets\AccountMenu;
+use humhub\widgets\ContentCard;
 use humhub\widgets\FooterMenu;
 
 /**
  * @var View $this
  * @var string $content
  *
- * A page that brings its own cards (e.g. the notification settings) sets
- * `$this->params['accountPanel'] = false` to be rendered without the surrounding panel.
+ * A page without a content card of its own (older module pages) gets a panel around it.
  */
 ?>
 <div class="container">
@@ -19,12 +19,12 @@ use humhub\widgets\FooterMenu;
             echo AccountMenu::widget(); ?>
         </div>
         <div class="col-lg-9">
-            <?php if ($this->params['accountPanel'] ?? true): ?>
-                <div class="panel panel-default">
-                    <?php echo $content; ?>
-                </div>
-            <?php else: ?>
+            <?php if (ContentCard::isRendered($this)) : ?>
                 <?= $content ?>
+            <?php else : ?>
+                <div class="panel panel-default">
+                    <?= $content ?>
+                </div>
             <?php endif; ?>
             <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>
         </div>

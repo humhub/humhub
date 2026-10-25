@@ -470,43 +470,48 @@
         }
     }
 
+    // A group of `ActiveForm::beginCollapsibleFields()`: an accordion with one item (see
+    // _accordion.scss); consecutive groups join into one accordion
     .form-collapsible-fields {
-        margin-bottom: 12px;
-        border-left: 3px solid var(--bs-primary);
-        background-color: var(--hh-background-color-secondary);
-    }
+        margin-bottom: $spacer;
 
-    .form-collapsible-fields-label {
-        margin-bottom: 0;
-        padding: 12px;
-        cursor: pointer;
-        &:focus-visible {
-            border-left: 3px solid var(--bs-accent);
-            margin-left: -3px;
+        .accordion-header {
+            margin: 0;
         }
 
-        label {
-            margin-bottom: 0;
+        // Like `.accordion-title` of the notification settings
+        .accordion-button {
+            color: var(--hh-text-color-highlight);
+            font-weight: $font-weight-semibold;
             cursor: pointer;
-        }
-    }
 
-    .form-collapsible-fields fieldset {
-        padding-top: 15px;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .form-collapsible-fields-label {
-        .ti-plus {
-            display: none;
-        }
-        &.collapsed {
-            .ti-minus {
-                display: none;
+            label {
+                margin: 0;
+                color: inherit;
+                font: inherit;
+                cursor: inherit;
             }
-            .ti-plus {
-                display: initial;
+        }
+
+        &:has(+ .form-collapsible-fields) {
+            margin-bottom: 0;
+
+            .accordion-item,
+            .accordion-button.collapsed {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        & + .form-collapsible-fields {
+            .accordion-item {
+                border-top: 0;
+            }
+
+            .accordion-item,
+            .accordion-button {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
             }
         }
     }

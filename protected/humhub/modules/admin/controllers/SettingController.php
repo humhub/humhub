@@ -460,7 +460,7 @@ class SettingController extends Controller
     {
         $form = new OEmbedProviderForm();
 
-        $name = Yii::$app->request->get('name');
+        $name = (string)Yii::$app->request->get('name', '');
         $providers = UrlOembed::getProviders();
 
         if (isset($providers[$name])) {
@@ -494,7 +494,7 @@ class SettingController extends Controller
     public function actionOembedDelete()
     {
         $this->forcePostRequest();
-        $name = Yii::$app->request->get('name');
+        $name = (string)Yii::$app->request->get('name', '');
         $providers = UrlOembed::getProviders();
 
         if (isset($providers[$name])) {

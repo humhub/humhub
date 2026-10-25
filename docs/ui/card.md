@@ -14,10 +14,35 @@ card: boards, grids, tables, lists, forms, key figures.
 
 | # | Part | Notes |
 |---|---|---|
-| 1 | **Header** | Optional. Either a title (`h2`) with actions, or the content navigation (‹ › period navigation, path bar) with the view switch at the far right. |
+| 1 | **Header** | Optional. Either a title (`h2`) with an optional description below it and actions, or the content navigation (‹ › period navigation, path bar) with the view switch at the far right. |
+| 1a | **Secondary tabs** | Optional, below the header: secondary [Pill Tabs](tabs.md) of a section (Users › Settings: General, LDAP, Apps & API Access). |
 | 2 | **Filter Bar** | Optional, below the header, when the page header has tabs and the card's content needs filters (Admin › People › Users). |
 | 3 | **Body** | The content. |
 | 4 | **Footer** | Optional: paging, counts, "Show more". |
+
+## Titles
+
+The page header names the page (`h1`), the card names its part (`h2`), sub-sections inside a card
+are `h3`. All three are short, plain titles without `<strong>`.
+
+- **Sizes:** page title (`h1`) `$font-size-lg`, card title (`h2`) a touch smaller
+  (`$font-size-base * 1.125`), section (`h3`) `$font-size-base`; all semibold, in the highlight
+  colour. A section heading has more space above than below.
+- **Below tabs, the active tab names the card.** Settings › General → card "General",
+  Users › Groups → card "Groups". With secondary tabs in the card, the card title is the section
+  (Users › Settings → card "Settings" with General / LDAP / … below it).
+- **Without tabs, the card has no title** when it would only repeat the page title (Modules,
+  Account › Modules, Search). A short explanation is then the first, muted line of the body.
+- **Sub-pages** (add, edit, delete) take their action as title: "Edit user: Jane Doe", with
+  "Back to overview" as a header button.
+- **Description:** only when it adds something the title doesn't say (e.g. "These settings can be
+  overwritten by users"), never "Here you can configure …". Ordinary text below the title, at
+  most two sentences, never as a separate block in the body.
+- **Sections** inside a card: a plain `<h3>`, styled by the card (`h4` is not used for this). A
+  short explanation below it is ordinary text as well; muted text is for hints under form fields.
+  A settings form with several groups puts them into [accordions](accordion.md)
+  (`ActiveForm::beginCollapsibleFields()`) instead; a section that would only repeat the card's
+  title or tab gets no heading.
 
 ## Header actions
 
@@ -53,9 +78,13 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 ```html
 <section class="card content-card" aria-labelledby="w3-title">
     <div class="card-header">
-        <h2 id="w3-title" class="card-title">Users</h2>
+        <div class="card-heading">
+            <h2 id="w3-title" class="card-title">Settings</h2>
+            <p class="card-subtitle">How people sign up and what they may do.</p>
+        </div>
         <div class="card-header-actions">…</div>
     </div>
+    <div class="card-tabs"><nav class="nav-scroller" aria-label="Settings"><ul class="nav nav-pills nav-pills-secondary">…</ul></nav></div>
     <div class="card-body">…</div>
     <div class="card-footer">…</div>
 </section>
@@ -64,8 +93,11 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 | Class | Element |
 |---|---|
 | `.card`, `.card-header`, `.card-title`, `.card-body`, `.card-footer` | Bootstrap |
+| `.card-subtitle` | Bootstrap; the description below the title |
 | `.content-card` | The content card's look, set as the card's `--bs-card-*` variables |
-| `.card-header-actions` | The actions and the ⋮ menu, right-aligned |
+| `.card-heading` | Title and description, taking the header's free width |
+| `.card-header-actions` | Header buttons, the actions and the ⋮ menu, right-aligned |
+| `.card-tabs` | The secondary tabs between header and body |
 
 - A card without title is a `<div>`; without title, header content and actions it has no header.
 - **Look:** `.content-card` sets the card's `--bs-card-*` variables: no border,
@@ -75,16 +107,34 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 - **Why a modifier, not Bootstrap's `$card-*`:** several modules (survey, ecommerce, matchmaking,
   classified-space, …), themes and the old card grid (`.container-cards .card`) use a plain
   `.card` and expect Bootstrap's look. Changing `$card-*` globally would restyle all of them.
+- **Older views inside a card:** a `.panel-body` directly in the card body (module views rendered
+  into a layout that is now a card) adds no padding of its own; two of them are spaced by `$spacer`.
 - **File:** `_card.scss`, behind `$prev-card`, with `$content-card-header-gap`,
-  `$content-card-title-font-size` and `$content-card-title-font-weight`.
+  `$content-card-title-font-size`, `$content-card-title-font-weight`,
+  `$content-card-header-padding-top` / `-bottom` (1rem above the title as in the page header,
+  1.5rem from title to content), `$content-card-tabs-padding-top`,
+  `$content-card-subtitle-margin-top`, `$content-card-section-title-font-size`, `-font-weight`,
+  `-margin-top`, `-margin-bottom` and
+  `$content-card-margin-bottom` (the last card's distance to the footer, as a panel's).
 
 ## Implementation in core
 
 **In core (1.20):**
 
 - **PHP:** `humhub\widgets\ContentCard` (`begin()` / `end()` around the content; `title`,
-  `titleTag` (default `h2`), `actions`, `menu`, `footer`, `options`).
-- **Vue:** `ContentCard.vue` (`<content-card>`): props `title`, `titleTag`, `actions`, `menu`;
+  `titleTag` (default `h2`), `description` (HTML), `buttons` (HTML, e.g. a secondary text button
+  for an action that is not a save, or "Back to overview"), `actions`, `menu`, `tabs` (secondary
+  `PillTabs`), `footer`, `options`).
+- **Layouts:** a layout that used to wrap its views in a `.panel` (the administration's
+  sections, the account) leaves that out when the view rendered a card:
+  `ContentCard::isRendered($view)`. A view whose card comes from a Vue island calls
+  `ContentCard::markRendered($view)`. The account layouts, `_authenticationLayout`,
+  `_advancedLayout` and the group's `_manageLayout` render the card themselves, so the views
+  inside them only bring the content; the Information layout renders one when the view does not.
+- **Where:** the administration (Users, Spaces, Modules, Settings, Information, LDAP, Apps & API
+  Access, E-Mail Summaries, Notifications), the account section, search and the licence page.
+  Space and profile pages, the stream and module pages such as the wiki are not converted.
+- **Vue:** `ContentCard.vue` (`<content-card>`): props `title`, `titleTag`, `description`, `actions`, `menu`;
   slots `header` (e.g. the content navigation of a card without title), `actions`, default (the
   body) and `footer`.
 - **Actions:** `humhub\widgets\menu\CardHeaderActions` with ghost tools. It shares its base
@@ -114,7 +164,8 @@ The component is called `ContentCard`, not `Card`: a Vue component's tag needs a
 
 | Today | Becomes |
 |---|---|
-| `.panel.panel-default` with `.panel-heading` and `.panel-body`, written by hand in views (about 66 files in core), styled by `_bootstrap3.scss` | `ContentCard`, step by step with the page header. The administration's section layouts keep a `.panel` for now, since module views rendered into them bring their own `.panel-body`. |
+| `.panel.panel-default` with `.panel-heading` and `.panel-body`, written by hand in views, styled by `_bootstrap3.scss` | `ContentCard`. Done for the administration and the account; module pages, the stream, space and profile pages follow. The section layouts still wrap a view without card in a `.panel`. |
+| `h4` page titles inside panels (larger than the page title) | The card title; sections `h3` |
 | `humhub\widgets\PanelMenu`: a ⋮ menu with a collapse option in panel headings | The ⋮ `DropdownMenu` of the card header |
 | Headings with `<strong>` for the emphasised word ("**User** administration") | Plain titles |
 

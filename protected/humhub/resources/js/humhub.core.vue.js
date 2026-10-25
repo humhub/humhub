@@ -139,8 +139,8 @@
   const _hoisted_1$t = { class: "form-check" };
   const _hoisted_2$n = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
   const _hoisted_3$l = ["for"];
-  const _hoisted_4$j = ["id"];
-  const _hoisted_5$f = ["id"];
+  const _hoisted_4$k = ["id"];
+  const _hoisted_5$g = ["id"];
   function _sfc_render$v(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
@@ -189,12 +189,12 @@
               128
               /* KEYED_FRAGMENT */
             ))
-          ], 8, _hoisted_4$j)) : vue.createCommentVNode("v-if", true),
+          ], 8, _hoisted_4$k)) : vue.createCommentVNode("v-if", true),
           _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
             key: 2,
             id: _ctx.hintId,
             class: "form-text text-muted"
-          }, vue.toDisplayString(_ctx.hint), 9, _hoisted_5$f)) : vue.createCommentVNode("v-if", true)
+          }, vue.toDisplayString(_ctx.hint), 9, _hoisted_5$g)) : vue.createCommentVNode("v-if", true)
         ])
       ],
       2
@@ -372,8 +372,8 @@
   const _hoisted_1$s = { class: "nav-item dropdown" };
   const _hoisted_2$m = ["aria-label", "title"];
   const _hoisted_3$k = { key: 0 };
-  const _hoisted_4$i = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
-  const _hoisted_5$e = { role: "status" };
+  const _hoisted_4$j = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
+  const _hoisted_5$f = { role: "status" };
   const _hoisted_6$e = ["innerHTML"];
   const _hoisted_7$b = { key: 1 };
   const _hoisted_8$b = {
@@ -412,7 +412,7 @@
             [
               vue.renderSlot(_ctx.$slots, "default"),
               $props.loading ? (vue.openBlock(), vue.createElementBlock("li", _hoisted_3$k, [
-                vue.createElementVNode("span", _hoisted_4$i, [
+                vue.createElementVNode("span", _hoisted_4$j, [
                   _cache[0] || (_cache[0] = vue.createElementVNode(
                     "span",
                     {
@@ -425,7 +425,7 @@
                   )),
                   vue.createElementVNode(
                     "span",
-                    _hoisted_5$e,
+                    _hoisted_5$f,
                     vue.toDisplayString($options.loadingLabel),
                     1
                     /* TEXT */
@@ -652,6 +652,7 @@
     props: {
       title: { type: String, default: "" },
       titleTag: { type: String, default: "h2" },
+      description: { type: String, default: "" },
       actions: { type: Array, default: () => [] },
       menu: { type: Array, default: () => [] }
     },
@@ -670,8 +671,16 @@
     key: 0,
     class: "card-header"
   };
-  const _hoisted_2$k = { class: "card-body" };
+  const _hoisted_2$k = {
+    key: 0,
+    class: "card-heading"
+  };
   const _hoisted_3$j = {
+    key: 0,
+    class: "card-subtitle"
+  };
+  const _hoisted_4$i = { class: "card-body" };
+  const _hoisted_5$e = {
     key: 1,
     class: "card-footer"
   };
@@ -683,21 +692,29 @@
     }, {
       default: vue.withCtx(() => [
         $options.hasHeader ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$q, [
-          $props.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.titleTag), {
-            key: 0,
-            id: $data.titleId,
-            class: "card-title"
-          }, {
-            default: vue.withCtx(() => [
-              vue.createTextVNode(
-                vue.toDisplayString($props.title),
-                1
-                /* TEXT */
-              )
-            ]),
-            _: 1
-            /* STABLE */
-          }, 8, ["id"])) : vue.createCommentVNode("v-if", true),
+          $props.title ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$k, [
+            (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.titleTag), {
+              id: $data.titleId,
+              class: "card-title"
+            }, {
+              default: vue.withCtx(() => [
+                vue.createTextVNode(
+                  vue.toDisplayString($props.title),
+                  1
+                  /* TEXT */
+                )
+              ]),
+              _: 1
+              /* STABLE */
+            }, 8, ["id"])),
+            $props.description ? (vue.openBlock(), vue.createElementBlock(
+              "p",
+              _hoisted_3$j,
+              vue.toDisplayString($props.description),
+              1
+              /* TEXT */
+            )) : vue.createCommentVNode("v-if", true)
+          ])) : vue.createCommentVNode("v-if", true),
           vue.renderSlot(_ctx.$slots, "header"),
           $props.actions.length || $props.menu.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createBlock(_component_HeaderActions, {
             key: 1,
@@ -713,10 +730,10 @@
             /* FORWARDED */
           }, 8, ["actions", "menu"])) : vue.createCommentVNode("v-if", true)
         ])) : vue.createCommentVNode("v-if", true),
-        vue.createElementVNode("div", _hoisted_2$k, [
+        vue.createElementVNode("div", _hoisted_4$i, [
           vue.renderSlot(_ctx.$slots, "default")
         ]),
-        _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$j, [
+        _ctx.$slots.footer ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$e, [
           vue.renderSlot(_ctx.$slots, "footer")
         ])) : vue.createCommentVNode("v-if", true)
       ]),

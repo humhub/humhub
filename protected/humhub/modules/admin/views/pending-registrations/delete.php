@@ -2,42 +2,40 @@
 
 use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
+use humhub\widgets\ContentCard;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var $model Invite */
 ?>
-<div class="panel-body">
-    <h4><?= Yii::t('AdminModule.user', 'Delete invitation?'); ?></h4>
-    <br>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'email:email',
-            [
-                'label' => 'Invited by',
-                'attribute' => 'originator.username',
-            ],
-            [
-                'label' => 'Invited at',
-                'attribute' => 'created_at',
-                'format' => 'datetime',
-            ],
+<?php ContentCard::begin(['title' => Yii::t('AdminModule.user', 'Delete invitation?')]) ?>
+<?= DetailView::widget([
+    'model' => $model,
+    'attributes' => [
+        'email:email',
+        [
+            'label' => 'Invited by',
+            'attribute' => 'originator.username',
         ],
-    ]); ?>
+        [
+            'label' => 'Invited at',
+            'attribute' => 'created_at',
+            'format' => 'datetime',
+        ],
+    ],
+]); ?>
 
-    <br>
-    <br>
+<br>
+<br>
 
-    <?= Html::a(
-        Yii::t('AdminModule.user', 'Delete invitation'),
-        Url::to(['/admin/pending-registrations/delete', 'id' => $model->id]),
-        ['class' => 'btn btn-danger', 'data-method' => 'POST']
-    ); ?>
-    <?= Html::a(
-        Yii::t('AdminModule.user', 'Cancel'),
-        Url::to(['/admin/pending-registrations']),
-        ['class' => 'btn btn-primary float-end']
-    ); ?>
-</div>
+<?= Html::a(
+    Yii::t('AdminModule.user', 'Delete invitation'),
+    Url::to(['/admin/pending-registrations/delete', 'id' => $model->id]),
+    ['class' => 'btn btn-danger', 'data-method' => 'POST']
+); ?>
+<?= Html::a(
+    Yii::t('AdminModule.user', 'Cancel'),
+    Url::to(['/admin/pending-registrations']),
+    ['class' => 'btn btn-primary float-end']
+); ?>
+<?php ContentCard::end() ?>

@@ -5,6 +5,8 @@
 // The theme colours that are badge tones (no `light`, `dark`, `primary`, `secondary`)
 $badge-tones: accent, success, info, warning, danger !default;
 
+$badge-dot-size: .5rem !default;
+
 @if not $prev-badge {
     .badge-space {
         margin-top: 6px;
@@ -99,5 +101,21 @@ $badge-tones: accent, success, info, warning, danger !default;
         .badge.bg-#{$color} {
             --bs-badge-color: var(--hh-#{$color}-contrast);
         }
+    }
+
+    // A dot: something waits (red) or is unsaved (accent); an empty element with visually hidden
+    // text inside (docs/ui/badges.md)
+    .badge-dot {
+        display: inline-block;
+        flex: 0 0 auto;
+        width: $badge-dot-size;
+        height: $badge-dot-size;
+        border-radius: 50%;
+        background: var(--bs-danger);
+        vertical-align: middle;
+    }
+
+    .badge-dot-unsaved {
+        background: var(--bs-accent);
     }
 }

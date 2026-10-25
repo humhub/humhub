@@ -60,6 +60,16 @@ abstract class PillTabs extends Menu
     }
 
     /**
+     * The label of the active tab as text, e.g. as the title of the card below the tabs.
+     */
+    public function getActiveLabel(): ?string
+    {
+        $entry = $this->getActiveEntry();
+
+        return $entry instanceof MenuLink ? trim(strip_tags((string)$entry->getLabel())) : null;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getAttributes()

@@ -43,6 +43,11 @@ $accordion-header-gap: $spacer * .75 !default;
         font-weight: $font-weight-normal;
     }
 
+    // The dot of a group with unsaved changes, after the title
+    .accordion-dot {
+        margin-left: $spacer * .5;
+    }
+
     // A header that does not open (nothing to set): no chevron, an optional `.accordion-static-icon`
     // (e.g. a lock) in its place
     .accordion-button-static {

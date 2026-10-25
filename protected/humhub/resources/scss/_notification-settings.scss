@@ -15,6 +15,12 @@ $notification-settings-gap: $spacer !default;
         gap: $notification-settings-gap;
     }
 
+    // The account page ends with the island: like the cards above, it keeps its distance to the
+    // footer
+    .notification-settings-user {
+        margin-bottom: $content-card-margin-bottom;
+    }
+
     .notification-settings-head {
         display: flex;
         flex-wrap: wrap;

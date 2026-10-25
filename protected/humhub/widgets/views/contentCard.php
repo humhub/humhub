@@ -13,8 +13,11 @@ use humhub\helpers\Html;
 /* @var $id string */
 /* @var $title string */
 /* @var $titleTag string */
+/* @var $description string */
+/* @var $buttons string */
 /* @var $actions string */
 /* @var $menu string */
+/* @var $tabs string */
 /* @var $content string */
 /* @var $footer string */
 /* @var $options array */
@@ -26,18 +29,27 @@ if ($title !== '') {
 }
 ?>
 <?= Html::beginTag($title !== '' ? 'section' : 'div', $options) ?>
-    <?php if ($title !== '' || $actions !== '' || $menu !== '') : ?>
+    <?php if ($title !== '' || $buttons !== '' || $actions !== '' || $menu !== '') : ?>
         <div class="card-header">
             <?php if ($title !== '') : ?>
-                <?= Html::tag($titleTag, Html::encode($title), ['id' => $titleId, 'class' => 'card-title']) ?>
+                <div class="card-heading">
+                    <?= Html::tag($titleTag, Html::encode($title), ['id' => $titleId, 'class' => 'card-title']) ?>
+                    <?php if ($description !== '') : ?>
+                        <p class="card-subtitle"><?= $description ?></p>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
-            <?php if ($actions !== '' || $menu !== '') : ?>
+            <?php if ($buttons !== '' || $actions !== '' || $menu !== '') : ?>
                 <div class="card-header-actions">
+                    <?= $buttons ?>
                     <?= $actions ?>
                     <?= $menu ?>
                 </div>
             <?php endif; ?>
         </div>
+    <?php endif; ?>
+    <?php if ($tabs !== '') : ?>
+        <div class="card-tabs"><?= $tabs ?></div>
     <?php endif; ?>
     <div class="card-body">
         <?= $content ?>

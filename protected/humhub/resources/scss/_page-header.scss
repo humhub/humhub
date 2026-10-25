@@ -7,6 +7,7 @@
 $page-header-max-width: 1440px !default;
 $page-header-padding: $spacer * .5 !default;
 $page-header-gap: $spacer * .5 !default;
+$page-header-tabs-margin-top: $spacer * .5 !default; // on top of the bar's padding: 1rem below the title
 $page-header-bg: var(--hh-background-color-main) !default;
 $page-header-border-radius: $border-radius-lg !default;
 $page-header-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
@@ -65,6 +66,7 @@ $page-header-title-color: var(--hh-text-color-highlight) !default;
     }
 
     .page-header-body > .nav-scroller {
+        margin-top: $page-header-tabs-margin-top;
         padding: 0 var(--hh-page-header-padding) var(--hh-page-header-padding);
     }
 

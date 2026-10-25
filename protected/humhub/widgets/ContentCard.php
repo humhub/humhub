@@ -8,16 +8,19 @@
 
 namespace humhub\widgets;
 
+use humhub\components\View;
 use humhub\components\Widget;
 use humhub\widgets\menu\CardHeaderActions;
 use humhub\widgets\menu\DropdownMenu;
 use humhub\widgets\menu\Menu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
  * The content card below a page header (Bootstrap's `.card`): an optional header with the
- * card's title (`h2`), actions and ⋮ menu, the content as body, and an optional footer. Vue pages
- * use `ContentCard.vue`, which renders the same markup.
+ * card's title (`h2`), a description, actions and ⋮ menu, optional secondary tabs below it, the
+ * content as body, and an optional footer. Vue pages use `ContentCard.vue`, which renders the
+ * same markup.
  *
  * ```php
  * <?php ContentCard::begin([
@@ -27,6 +30,9 @@ use Yii;
  *     …
  * <?php ContentCard::end() ?>
  * ```
+ *
+ * A layout that wraps its views in a legacy `.panel` leaves that out for a view that rendered a
+ * content card ({@see self::isRendered()}, {@see self::markRendered()} for a Vue island).
  *
  * See `docs/ui/card.md`.
  *
@@ -45,14 +51,30 @@ class ContentCard extends Widget
     public string $titleTag = 'h2';
 
     /**
+     * @var string a short description below the title (HTML)
+     */
+    public string $description = '';
+
+    /**
      * @var string|CardHeaderActions|null the actions, as menu or menu class
      */
     public string|CardHeaderActions|null $actions = null;
 
     /**
+     * @var string buttons (HTML) before the actions, e.g. a secondary text button for an action
+     * that is not a save ("Flush caches", "Send test e-mail")
+     */
+    public string $buttons = '';
+
+    /**
      * @var string|DropdownMenu|null the ⋮ menu after the actions, as menu or menu class
      */
     public string|DropdownMenu|null $menu = null;
+
+    /**
+     * @var string|PillTabs|null secondary tabs below the header, as menu or menu class
+     */
+    public string|PillTabs|null $tabs = null;
 
     /**
      * @var string the footer's content (HTML), none if empty
@@ -70,6 +92,7 @@ class ContentCard extends Widget
     public function init()
     {
         parent::init();
+        self::markRendered($this->view);
         ob_start();
         ob_implicit_flush(false);
     }
@@ -85,12 +108,33 @@ class ContentCard extends Widget
             'id' => $this->getId(),
             'title' => $this->title,
             'titleTag' => $this->titleTag,
+            'description' => $this->description,
+            'buttons' => $this->buttons,
             'actions' => $this->renderMenu($this->actions),
             'menu' => $this->renderMenu($this->menu, ['template' => '@humhub/widgets/menu/views/header-menu']),
+            'tabs' => $this->renderMenu($this->tabs, ['variant' => PillTabs::VARIANT_SECONDARY]
+                + ($this->title !== '' ? ['label' => $this->title] : [])),
             'content' => $content,
             'footer' => $this->footer,
             'options' => $this->options,
         ]);
+    }
+
+    /**
+     * Whether a view rendered a content card, i.e. brings its own card instead of the panel of a
+     * layout around it.
+     */
+    public static function isRendered(View $view): bool
+    {
+        return !empty($view->params[self::class]);
+    }
+
+    /**
+     * Notes that the view brings its own card(s), e.g. a Vue island rendering `ContentCard.vue`.
+     */
+    public static function markRendered(View $view): void
+    {
+        $view->params[self::class] = true;
     }
 
     private function renderMenu(string|Menu|null $menu, array $config = []): string

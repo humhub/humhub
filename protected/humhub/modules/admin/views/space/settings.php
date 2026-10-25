@@ -4,6 +4,7 @@ use humhub\modules\admin\assets\AdminSpaceAsset;
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\SortOrderField;
 
@@ -16,11 +17,10 @@ use humhub\widgets\form\SortOrderField;
 AdminSpaceAsset::register($this);
 ?>
 
-<h4><?= Yii::t('AdminModule.space', 'Space Settings'); ?></h4>
-<div class="text-body-secondary">
-    <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
-</div>
-
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.space', 'Settings'),
+    'description' => Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'),
+]) ?>
 <?php $form = ActiveForm::begin(['id' => 'space-settings-form', 'acknowledge' => true]); ?>
 
 <?= SpacePickerField::widget([
@@ -59,3 +59,4 @@ AdminSpaceAsset::register($this);
 <?= Button::primary(Yii::t('base', 'Save'))->submit(); ?>
 
 <?php ActiveForm::end(); ?>
+<?php ContentCard::end() ?>

@@ -5,6 +5,7 @@ use humhub\modules\admin\assets\AdminPendingRegistrationsAsset;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\GridView;
 
 /** @var $searchModel PendingRegistrationSearch */
@@ -13,38 +14,24 @@ use humhub\widgets\GridView;
 
 AdminPendingRegistrationsAsset::register($this);
 ?>
-<?= Html::beginTag('div', $options); ?>
-    <h4>
-        <?= Html::backButton(
-            ['/admin/user/index'],
-            [
-                'label' => Yii::t('AdminModule.base', 'Back to user overview'),
-                'class' => 'btn-sm float-end',
-            ],
-        ) ?>
-        <?= Yii::t('AdminModule.base', 'Pending user registrations') ?>
-    </h4>
-
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.user', 'The following list contains all pending sign-ups and invites.') ?>
-    </div>
-
-    <div class="float-end">
-        <?php if ($dataProvider->totalCount > 0): ?>
-            <?= Button::primary(Yii::t('AdminModule.user', 'Re-send to all'))
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.base', 'Pending user registrations'),
+    'buttons' => Button::back(['/admin/user/index'], Yii::t('AdminModule.base', 'Back to user overview'))->sm()
+        . ($dataProvider->totalCount > 0
+            ? Button::primary(Yii::t('AdminModule.user', 'Re-send to all'))
                 ->icon('paper-plane')
                 ->action('resendAll', ['/admin/pending-registrations/resend-all'])
                 ->cssClass('resend-all btn-sm')
-                ->confirm(Yii::t('AdminModule.user', 'Resend invitations?'), Yii::t('AdminModule.user', 'Do you really want to re-send the invitations to pending registration users?')) ?>
-            <?= Button::danger(Yii::t('AdminModule.user', 'Delete All'))
+                ->confirm(Yii::t('AdminModule.user', 'Resend invitations?'), Yii::t('AdminModule.user', 'Do you really want to re-send the invitations to pending registration users?'))
+            . Button::danger(Yii::t('AdminModule.user', 'Delete All'))
                 ->icon('trash')
                 ->action('deleteAll', ['/admin/pending-registrations/delete-all'])
                 ->cssClass('delete-all btn-sm')
-                ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'), Yii::t('AdminModule.user', 'Do you really want to delete pending registrations?')) ?>
-        <?php endif; ?>
-        <?= ExportButton::widget(['filter' => 'PendingRegistrationSearch']) ?>
-    </div>
-
+                ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'), Yii::t('AdminModule.user', 'Do you really want to delete pending registrations?'))
+            : '')
+        . ExportButton::widget(['filter' => 'PendingRegistrationSearch']),
+    'options' => $options,
+]) ?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
@@ -96,4 +83,5 @@ AdminPendingRegistrationsAsset::register($this);
 
     ],
 ]) ?>
-<?= Html::endTag('div');
+<?php ContentCard::end() ?>
+

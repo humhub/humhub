@@ -1,11 +1,11 @@
 <?php
 
 use humhub\components\View;
-use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
 use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\modal\ModalButton;
@@ -23,9 +23,10 @@ use yii\widgets\Pjax;
 
 AdminTopicAsset::register($this);
 
-echo Html::beginTag('div', ['class' => 'panel-body']);
-echo Html::tag('h4', Yii::t('AdminModule.settings', 'Topics'));
-echo Html::tag('div', Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'), ['class' => 'text-body-secondary']);
+ContentCard::begin([
+    'title' => Yii::t('AdminModule.base', 'Topics'),
+    'description' => Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'),
+]);
 
 Pjax::begin(['enablePushState' => false, 'id' => 'global-topics']);
 
@@ -99,4 +100,4 @@ echo GridView::widget([
 
 Pjax::end();
 
-echo Html::endTag('div');
+ContentCard::end();

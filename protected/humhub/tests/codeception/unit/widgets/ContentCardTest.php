@@ -11,7 +11,9 @@ namespace humhub\tests\codeception\unit\widgets;
 use humhub\widgets\ContentCard;
 use humhub\widgets\menu\CardHeaderActions;
 use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\PillTabs;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 /**
  * The content card widget and its actions menu.
@@ -42,6 +44,31 @@ class ContentCardTest extends HumHubDbTestCase
         $this->assertStringNotContainsString('card-footer', $html);
     }
 
+    public function testRendersTheDescriptionAndSecondaryTabs()
+    {
+        $tabs = new ContentCardTestTabs();
+        $tabs->addEntry(new MenuLink(['label' => 'General', 'url' => '/general', 'isActive' => true, 'sortOrder' => 10]));
+        $tabs->addEntry(new MenuLink(['label' => 'LDAP', 'url' => '/ldap', 'sortOrder' => 20]));
+
+        $html = $this->render(['title' => 'User Settings', 'description' => 'How people sign up.', 'tabs' => $tabs]);
+
+        $this->assertMatchesRegularExpression('#<div class="card-heading">\s*<h2 [^>]*class="card-title">User Settings</h2>\s*<p class="card-subtitle">How people sign up.</p>#', $html);
+        $this->assertMatchesRegularExpression('#<div class="card-tabs"><nav [^>]*class="nav-scroller" aria-label="User Settings">#', $html);
+        $this->assertSame(PillTabs::VARIANT_SECONDARY, $tabs->variant);
+        $this->assertLessThan(strpos($html, 'card-body'), strpos($html, 'card-tabs'));
+    }
+
+    public function testTellsTheLayoutThatTheViewBringsItsOwnCard()
+    {
+        $view = Yii::$app->view;
+        unset($view->params[ContentCard::class]);
+        $this->assertFalse(ContentCard::isRendered($view));
+
+        $this->render(['title' => 'Users']);
+
+        $this->assertTrue(ContentCard::isRendered($view));
+    }
+
     public function testIsAPlainDivWithoutTitleAndActions()
     {
         $html = $this->render(['footer' => '<span class="pager"></span>']);
@@ -70,5 +97,12 @@ class ContentCardTest extends HumHubDbTestCase
  * A concrete actions menu for {@see ContentCardTest} (the base class is abstract).
  */
 class ContentCardTestActions extends CardHeaderActions
+{
+}
+
+/**
+ * Concrete tabs for {@see ContentCardTest}.
+ */
+class ContentCardTestTabs extends PillTabs
 {
 }

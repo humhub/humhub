@@ -5,30 +5,22 @@ use humhub\modules\admin\grid\SpaceActionColumn;
 use humhub\modules\admin\grid\SpaceImageColumn;
 use humhub\modules\admin\grid\SpaceTitleColumn;
 use humhub\modules\admin\models\SpaceSearch;
+use humhub\modules\admin\widgets\AdminSpaceCardActions;
 use humhub\modules\admin\widgets\SpaceGridView;
-use humhub\modules\space\permissions\CreatePrivateSpace;
-use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\Icon;
-use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
 
 /* @var $searchModel SpaceSearch */
 ?>
 
-<?php if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])) : ?>
-    <?= ModalButton::success(Yii::t('AdminModule.space', 'Add new space'))->load(['/space/create'])
-        ->icon('add')->right()->sm() ?>
-<?php endif; ?>
-
-<h4><?= Yii::t('AdminModule.space', 'Overview') ?></h4>
-<div class="text-body-secondary">
-    <?= Yii::t('AdminModule.space', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
-</div>
-
-<br/>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.space', 'Overview'),
+    'actions' => AdminSpaceCardActions::class,
+]) ?>
 <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/space'])]); ?>
 
 <div class="container gx-0 overflow-x-hidden">
@@ -71,3 +63,4 @@ use yii\helpers\Url;
     ]);
     ?>
 </div>
+<?php ContentCard::end() ?>

@@ -24,7 +24,7 @@ JS, View::POS_READY);
     <?= Html::a(Yii::t('AdminModule.settings', 'Add new provider'), Url::to(['oembed-edit']), ['class' => 'btn btn-success']); ?>
 </p>
 
-<h4><?= Yii::t('AdminModule.settings', 'Enabled OEmbed providers'); ?></h4>
+<h3><?= Yii::t('AdminModule.settings', 'Enabled OEmbed providers'); ?></h3>
 
 <?php if (count($providers) != 0): ?>
     <div id="oembed-providers">

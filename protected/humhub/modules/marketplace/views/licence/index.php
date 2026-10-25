@@ -5,6 +5,7 @@ use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\PageHeader;
 
@@ -13,51 +14,49 @@ use humhub\widgets\PageHeader;
 ?>
 <div class="d-flex flex-column gap-3">
     <?= PageHeader::title(Yii::t('MarketplaceModule.base', 'Professional Edition')) ?>
-    <div class="panel panel-default">
-        <div class="panel-body">
+    <?php ContentCard::begin() ?>
 
-            <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
-                <div class="alert alert-success">
-                    <strong>
-                        <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!') ?>
-                    </strong><br/>
-                    <?= Yii::t(
-                        'MarketplaceModule.base',
-                        'Licensed for max. {number} users.',
-                        ['number' => $model->maxUsers],
-                    ) ?>
-                </div>
-            <?php endif; ?>
-
-            <p>
+        <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
+            <div class="alert alert-success">
+                <strong>
+                    <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!') ?>
+                </strong><br/>
                 <?= Yii::t(
                     'MarketplaceModule.base',
-                    'No license key? Find out more about the {pro} or contact us.',
-                    ['pro' => Link::to('Professional Edition', 'https://www.humhub.com')->blank()->cssClass('link-accent')],
-                ) ?></p>
-            <hr>
+                    'Licensed for max. {number} users.',
+                    ['number' => $model->maxUsers],
+                ) ?>
+            </div>
+        <?php endif; ?>
 
-            <?php $form = ActiveForm::begin([
-                'id' => 'licence-form',
-                'enableAjaxValidation' => false,
-                'enableClientValidation' => false]); ?>
+        <p>
+            <?= Yii::t(
+                'MarketplaceModule.base',
+                'No license key? Find out more about the {pro} or contact us.',
+                ['pro' => Link::to('Professional Edition', 'https://www.humhub.com')->blank()->cssClass('link-accent')],
+            ) ?></p>
+        <hr>
 
-            <?= $form->errorSummary($model); ?>
-            <?= $form->field($model, 'licenceKey')->textInput() ?>
-            <hr>
+        <?php $form = ActiveForm::begin([
+            'id' => 'licence-form',
+            'enableAjaxValidation' => false,
+            'enableClientValidation' => false]); ?>
 
-            <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
-                <?= Link::none(Html::tag('small', Html::encode(Yii::t('MarketplaceModule.base', 'Remove license key'))))
-                    ->encodeLabel(false)
-                    ->post(['/marketplace/licence/remove'])
-                    ->confirm(null, Yii::t('MarketplaceModule.base', 'Are you sure you want to remove the license key?'))
-                    ->right()
-                    ->cssClass('mt-4') ?>
-            <?php endif; ?>
+        <?= $form->errorSummary($model); ?>
+        <?= $form->field($model, 'licenceKey')->textInput() ?>
+        <hr>
 
-            <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>
+        <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
+            <?= Link::none(Html::tag('small', Html::encode(Yii::t('MarketplaceModule.base', 'Remove license key'))))
+                ->encodeLabel(false)
+                ->post(['/marketplace/licence/remove'])
+                ->confirm(null, Yii::t('MarketplaceModule.base', 'Are you sure you want to remove the license key?'))
+                ->right()
+                ->cssClass('mt-4') ?>
+        <?php endif; ?>
 
-            <?php ActiveForm::end(); ?>
-        </div>
-    </div>
+        <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>
+
+        <?php ActiveForm::end(); ?>
+    <?php ContentCard::end() ?>
 </div>

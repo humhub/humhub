@@ -10,12 +10,8 @@ use humhub\modules\admin\widgets\PendingRegistrations;
 
 ?>
 
-<div class="panel-body">
-    <?=
-    PendingRegistrations::widget([
-        'dataProvider' => $dataProvider,
-        'searchModel' => $searchModel,
-        'types' => $types,
-    ]);
-    ?>
-</div>
+<?= PendingRegistrations::widget([
+    'dataProvider' => $dataProvider,
+    'searchModel' => $searchModel,
+    'types' => $types,
+]) ?>

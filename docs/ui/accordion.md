@@ -132,15 +132,19 @@ changed-tracking and the header actions are added on top. Class names and SCSS f
 Bootstrap `.accordion` with these parts (icon, title with subtitle, `.badge` per channel, a static
 header with a lock for a category that cannot be switched off).
 `humhub\widgets\form\ActiveForm::beginCollapsibleFields($title, $isClosed)` /
-`endCollapsibleFields()` render a Bootstrap collapse with a +/− label. It is used in the admin
-settings (`setting/basic.php`, `design.php`, `mobile_app.php`). `ActiveForm::$acknowledge` warns
+`endCollapsibleFields()` render a group of form fields as an accordion with one item
+(`.accordion.form-collapsible-fields`, the header an `h3.accordion-header` with the former
+`.form-collapsible-fields-label` as `.accordion-button`, the fields in `fieldset.accordion-collapse`
+> `.accordion-body`); consecutive groups join into one accordion with one group open at a time,
+a group with a validation error opens, and a group whose fields differ from their values on load
+shows the unsaved dot (`.accordion-dot`) and stays open when another one opens. It is used in the admin settings (General, Appearance, Mobile App, Apps & API Access) and
+in many modules. `ActiveForm::$acknowledge` warns
 on leaving with unsaved data. There is no group-level changed state and no group-level save.
 
 **Proposal:**
 
 1. **`Accordion` PHP widget** with the new markup. Settings forms use it directly.
-2. Re-implement `beginCollapsibleFields()` on top of it, so existing callers get the new look
-   without code changes.
+2. Re-implement `beginCollapsibleFields()` on top of it (its look already is the accordion's).
 3. A small JS module `humhub.ui.accordion`, bound by delegation, for opening and closing, sets and
    changed tracking.
 4. A Vue `Accordion` component with the same markup, once a Vue island needs it.

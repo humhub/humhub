@@ -202,7 +202,7 @@ class PermissionCest
         $I->amOnRoute('/admin/user');
         $I->expectTo('not to see permission denied message');
         $I->dontSee('Groups');
-        $I->see('User Settings');
+        $I->see('Settings', '.content-card .card-title');
 
         $I->see('Users', '#admin-menu');
         $I->see('Spaces', '#admin-menu');
@@ -221,7 +221,7 @@ class PermissionCest
 
         $I->amOnRoute('/admin/space');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Space Settings');
+        $I->see('Settings', '.content-card .card-title');
 
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
@@ -230,7 +230,7 @@ class PermissionCest
 
         $I->amOnRoute('/admin/setting');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('General Settings');
+        $I->see('General', '.content-card .card-title');
         $I->see('Appearance');
         $I->see('E-Mail summaries');
         $I->see('Notifications');
@@ -239,19 +239,19 @@ class PermissionCest
 
         $I->amOnRoute('/admin/setting/design');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Appearance Settings');
+        $I->see('Appearance', '.content-card .card-title');
 
         $I->amOnRoute('/notification/admin/defaults');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Notification Settings');
+        $I->see('Notifications', '.content-card .card-title');
 
         $I->amOnRoute('/activity/admin/defaults');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('E-Mail Summaries');
+        $I->see('E-Mail Summaries', '.content-card .card-title');
 
         $I->amOnRoute('/admin/setting/file');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Advanced Settings');
+        $I->see('Advanced', '.content-card .card-title');
 
         $I->amOnRoute('/admin/information');
         $I->see('You are not permitted to access this section.');

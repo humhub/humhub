@@ -10,8 +10,20 @@ $content-card-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $content-card-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
 $content-card-bg: var(--hh-background-color-main) !default;
 $content-card-header-gap: $spacer * .5 !default;
-$content-card-title-font-size: $font-size-lg !default;
+// The header's padding: as much space above the title as in the page header, and with the body's
+// padding 1.5rem between title and content
+$content-card-header-padding-top: $spacer !default;
+$content-card-header-padding-bottom: $spacer * .5 !default;
+$content-card-tabs-padding-top: $spacer * .5 !default;
+// Headings: the page header's title (`h1`, $font-size-lg) > card title (`h2`) > section (`h3`)
+$content-card-title-font-size: $font-size-base * 1.125 !default;
 $content-card-title-font-weight: $font-weight-semibold !default;
+$content-card-subtitle-margin-top: $spacer * .5 !default;
+$content-card-section-title-font-size: $font-size-base !default;
+$content-card-section-title-font-weight: $font-weight-semibold !default;
+$content-card-section-title-margin-top: $spacer * 1.5 !default;
+$content-card-section-title-margin-bottom: $spacer * .5 !default;
+$content-card-margin-bottom: 15px !default; // the margin of the `.panel` it replaces
 
 @if not $prev-card {
     .content-card {
@@ -27,6 +39,12 @@ $content-card-title-font-weight: $font-weight-semibold !default;
         box-shadow: var(--bs-card-box-shadow);
     }
 
+    // Like a panel, the last card keeps its distance to what follows (the footer); between
+    // cards the stack's gap applies
+    .content-card:last-child {
+        margin-bottom: $content-card-margin-bottom;
+    }
+
     @if $enable-dark-mode {
         @include color-mode(dark) {
             .content-card {
@@ -36,20 +54,63 @@ $content-card-title-font-weight: $font-weight-semibold !default;
     }
 
     .content-card > .card-header {
+        padding-top: $content-card-header-padding-top;
+        padding-bottom: $content-card-header-padding-bottom;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: var(--hh-content-card-header-gap);
     }
 
-    .content-card > .card-header > .card-title {
+    // The title, or the title with its description below
+    .content-card > .card-header > .card-title,
+    .content-card > .card-header > .card-heading {
         flex: 1 0 0;
+        min-width: 0;
+    }
+
+    .content-card > .card-header .card-title {
         margin: 0;
         color: var(--hh-text-color-highlight);
         font-size: $content-card-title-font-size;
         font-weight: $content-card-title-font-weight;
         line-height: $headings-line-height;
         word-break: break-word;
+    }
+
+    // The description: ordinary text below the title
+    .content-card > .card-header .card-subtitle {
+        margin: $content-card-subtitle-margin-top 0 0;
+        color: var(--bs-body-color);
+        font-size: inherit;
+    }
+
+    // A section of the card's content; `:where()` keeps it below the styles of rich text
+    :where(.content-card > .card-body) h3:not(.accordion-header) {
+        margin: 0 0 $content-card-section-title-margin-bottom;
+        color: var(--hh-text-color-highlight);
+        font-size: $content-card-section-title-font-size;
+        font-weight: $content-card-section-title-font-weight;
+        line-height: $headings-line-height;
+
+        &:not(:first-child) {
+            margin-top: $content-card-section-title-margin-top;
+        }
+    }
+
+    // Secondary pill tabs between the header and the body
+    .content-card > .card-tabs {
+        padding: $content-card-tabs-padding-top var(--bs-card-spacer-x) 0;
+    }
+
+    // Older (module) views rendered into a card bring a `.panel-body` of their own: the card body
+    // already pads them
+    .content-card > .card-body > .panel-body {
+        padding: 0;
+
+        & + .panel-body {
+            margin-top: $spacer;
+        }
     }
 
     .card-header-actions {

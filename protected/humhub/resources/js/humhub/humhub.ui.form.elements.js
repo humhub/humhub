@@ -125,6 +125,43 @@ humhub.module('ui.form.elements', function (module, require, $) {
             this.$.find('.form-collapsible-fields-label').removeClass('collapsed');
             this.$.find('fieldset').addClass('show');
         }
+
+        var that = this;
+        var $fieldset = this.$.children('.accordion-item').children('fieldset');
+
+        // A dot on the header while a field of the group differs from its value on load
+        this.initialValues = this.getValues();
+        $fieldset.on('input change', ':input', function () {
+            that.updateChanged();
+        });
+
+        // One open group at a time among consecutive groups (they look like one accordion); a
+        // group with unsaved changes stays open
+        $fieldset.on('show.bs.collapse', function (e) {
+            if (e.target !== this) {
+                return;
+            }
+            that.getSiblingGroups().not('.is-changed').find('> .accordion-item > fieldset.show').each(function () {
+                bootstrap.Collapse.getOrCreateInstance(this, {toggle: false}).hide();
+            });
+        });
+    };
+
+    FormFieldsCollapsible.prototype.getValues = function () {
+        return this.$.find(':input').serialize();
+    };
+
+    FormFieldsCollapsible.prototype.updateChanged = function () {
+        var changed = this.getValues() !== this.initialValues;
+        this.$.toggleClass('is-changed', changed);
+        this.$.find('.accordion-dot').toggleClass('d-none', !changed);
+    };
+
+    /**
+     * The other groups directly before and after this one.
+     */
+    FormFieldsCollapsible.prototype.getSiblingGroups = function () {
+        return this.$.prevUntil(':not(.form-collapsible-fields)').add(this.$.nextUntil(':not(.form-collapsible-fields)'));
     };
 
     const validate = {

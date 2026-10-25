@@ -55,7 +55,7 @@ class ApprovalCest
         $I->amOnDashboard();
         $I->see('New approval requests');
         $I->click('Click here to review');
-        $I->see('Pending user approvals');
+        $I->see('Pending approvals', '.content-card .card-title');
         $I->dontSee('approvalTest@test.de');
 
         // This user was created by fixtures
@@ -121,7 +121,7 @@ class ApprovalCest
         $I->amOnDashboard();
         $I->see('New approval requests');
         $I->click('Click here to review');
-        $I->see('Pending user approvals');
+        $I->see('Pending approvals', '.content-card .card-title');
 
         $I->see('approvalTest@test.de');
         $I->amOnRoute('/admin/approval/approve', ['id' => 9]);

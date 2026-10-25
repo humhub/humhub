@@ -1,8 +1,9 @@
 <?php
 
-use humhub\widgets\Icon;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\bootstrap\Tabs;
+use humhub\widgets\ContentCard;
+use humhub\widgets\Icon;
 use yii\helpers\Url;
 
 $categoryItems = [];
@@ -22,16 +23,12 @@ $categoryItems[] = [
 ];
 ?>
 
-<div class="panel-body">
-
-    <h4><?= Yii::t('AdminModule.user', 'Manage profile attributes') ?></h4>
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.user', 'Here you can create or edit profile categories and fields.'); ?>
-    </div>
-
-    <?= Tabs::widget([
-        'viewPath' => '@admin/views/user-profile/',
-        'isSubMenu' => true,
-        'items' => $categoryItems,
-    ]) ?>
-</div>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.user', 'Profiles'),
+]) ?>
+<?= Tabs::widget([
+    'viewPath' => '@admin/views/user-profile/',
+    'isSubMenu' => true,
+    'items' => $categoryItems,
+]) ?>
+<?php ContentCard::end() ?>

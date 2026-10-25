@@ -4,9 +4,10 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
-use humhub\widgets\form\CodeMirrorInputWidget;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\CodeMirrorInputWidget;
 use humhub\widgets\mails\MailHeaderImage;
 
 /**
@@ -49,331 +50,326 @@ $mailHeaderUrl = Yii::$app->img->mailHeader->getUrl([
 $themeVariables = Yii::$app->view->theme->variables;
 ?>
 
-<div class="panel-body">
-    <h4><?= Yii::t('AdminModule.settings', 'Appearance Settings') ?></h4>
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.settings', 'These settings refer to the appearance of your social network.') ?>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.base', 'Appearance'),
+]) ?>
+<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data'], 'acknowledge' => true]); ?>
+
+<?= $form->field($model, 'theme')->dropDownList($model->getThemes()); ?>
+
+<?= $form->field($model, 'paginationSize') ?>
+
+<div class="container gx-0 overflow-x-hidden">
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'displayNameFormat')->dropDownList(
+                [
+                    '{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'),
+                    '{profile.firstname} {profile.lastname}' => Yii::t(
+                        'AdminModule.settings',
+                        'Firstname Lastname (e.g. John Doe)'
+                    )
+                ]
+            ) ?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()) ?>
+        </div>
+
     </div>
-
-    <br>
-
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data'], 'acknowledge' => true]); ?>
-
-    <?= $form->field($model, 'theme')->dropDownList($model->getThemes()); ?>
-
-    <?= $form->field($model, 'paginationSize') ?>
-
-    <div class="container gx-0 overflow-x-hidden">
-        <div class="row">
-            <div class="col-lg-6">
-                <?= $form->field($model, 'displayNameFormat')->dropDownList(
-                    [
-                        '{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'),
-                        '{profile.firstname} {profile.lastname}' => Yii::t(
-                            'AdminModule.settings',
-                            'Firstname Lastname (e.g. John Doe)'
-                        )
-                    ]
-                ) ?>
-            </div>
-            <div class="col-lg-6">
-                <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()) ?>
-            </div>
-
-        </div>
-    </div>
-
-    <?= $form->field($model, 'spaceOrder')->dropDownList([
-        '0' => Yii::t('AdminModule.settings', 'Custom sort order (alphabetical if not defined)'),
-        '1' => Yii::t('AdminModule.settings', 'Last visit'),
-    ]) ?>
-
-    <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()) ?>
-
-    <?= $form->field($model, 'postTitleMode')->dropDownList($model->getPostTitleModeOptions()) ?>
-
-    <?= $form->field($model, 'dateInputDisplayFormat')->dropDownList([
-        '' => Yii::t(
-            'AdminModule.settings',
-            'Auto format based on user language - Example: {example}',
-            ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]
-        ),
-        'php:d/m/Y' => Yii::t(
-            'AdminModule.settings',
-            'Fixed format (dd/mm/yyyy) - Example: {example}',
-            ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]
-        ),
-    ]) ?>
-
-    <div class="bg-light p-3 mt-2">
-        <?= $form->field($model, 'logo')->fileInput([
-            'id' => 'admin-logo-file-upload',
-            'data-action-change' => 'admin.changeLogo',
-            'class' => 'd-none',
-            'name' => 'logo[]',
-        ]) ?>
-        <div class="image-upload-container" id="logo-upload" style="min-height:40px">
-            <?= Html::tag('img', '', [
-                'src' => $logoUrl ?: null,
-                'alt' => $model->getAttributeLabel('logo'),
-                'id' => 'logo-image',
-                'class' => 'rounded' . ($logoUrl === '' ? ' d-none' : ''),
-                'style' => 'max-height:40px',
-            ]) ?>
-
-            <div class="image-upload-buttons" id="logo-upload-buttons">
-                <?= Button::accent()
-                    ->id('admin-logo-upload-button')
-                    ->icon('cloud-upload')
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
-                    ->sm()
-                    ->loader(false) ?>
-
-                <?= Button::danger()
-                    ->id('admin-delete-logo-image')
-                    ->icon('remove')
-                    ->action('admin.deletePageLogo', ['/admin/setting/delete-logo-image'])
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
-                    ->cssClass(Yii::$app->img->logo->exists() ? '' : 'd-none')
-                    ->sm()
-                    ->loader(false) ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-light p-3 mt-2">
-        <?= $form->field($model, 'icon')->fileInput([
-            'id' => 'admin-icon-file-upload',
-            'data-action-change' => 'admin.changeIcon',
-            'class' => 'd-none',
-            'name' => 'icon[]',
-        ]) ?>
-        <div class="image-upload-container" id="icon-upload" style="min-height:40px">
-            <?= Html::tag('img', '', [
-                'src' => $iconUrl ?: null,
-                'alt' => $model->getAttributeLabel('icon'),
-                'id' => 'icon-image',
-                'class' => 'rounded' . ($iconUrl === '' ? ' d-none' : ''),
-                'style' => 'max-height:40px',
-            ]) ?>
-
-            <div class="image-upload-buttons" id="icon-upload-buttons">
-                <?= Button::accent()
-                    ->id('admin-icon-upload-button')
-                    ->icon('cloud-upload')
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
-                    ->sm()
-                    ->loader(false) ?>
-
-                <?= Button::danger()
-                    ->id('admin-delete-icon-image')
-                    ->icon('remove')
-                    ->action('admin.deletePageIcon', ['/admin/setting/delete-icon-image'])
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
-                    ->cssClass(Yii::$app->img->icon->exists() ? '' : 'd-none')
-                    ->sm()
-                    ->loader(false) ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-light p-3 mt-2">
-        <?= $form->field($model, 'loginBackgroundImage')->fileInput([
-            'id' => 'admin-loginBg-file-upload',
-            'data-action-change' => 'admin.changeLoginBg',
-            'class' => 'd-none',
-            'name' => 'loginBackgroundImage[]',
-        ]) ?>
-        <div class="image-upload-container" id="loginBg-upload" style="min-height:40px">
-            <?= Html::tag('img', '', [
-                'src' => $loginBgUrl ?: null,
-                'alt' => $model->getAttributeLabel('loginBackgroundImage'),
-                'id' => 'loginBg-image',
-                'class' => 'rounded' . ($loginBgUrl === '' ? ' d-none' : ''),
-                'style' => 'max-height:40px',
-            ]) ?>
-
-            <div class="image-upload-buttons" id="loginBg-upload-buttons">
-                <?= Button::accent()
-                    ->id('admin-loginBg-upload-button')
-                    ->icon('cloud-upload')
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
-                    ->sm()
-                    ->loader(false) ?>
-
-                <?= Button::danger()
-                    ->id('admin-delete-loginBg-image')
-                    ->icon('remove')
-                    ->action('admin.deleteLoginBg', ['/admin/setting/delete-login-background-image'])
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
-                    ->cssClass(Yii::$app->img->loginBackground->exists() ? '' : 'd-none')
-                    ->sm()
-                    ->loader(false) ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-light p-3 mt-2">
-        <?= $form->field($model, 'mailHeaderImage')->fileInput([
-            'id' => 'admin-mailHeader-file-upload',
-            'data-action-change' => 'admin.changeMailHeader',
-            'class' => 'd-none',
-            'name' => 'mailHeaderImage[]',
-        ]) ?>
-        <div class="image-upload-container" id="mailHeader-upload" style="min-height:40px">
-            <?= Html::tag('img', '', [
-                'src' => $mailHeaderUrl ?: null,
-                'alt' => $model->getAttributeLabel('mailHeaderImage'),
-                'id' => 'mailHeader-image',
-                'class' => 'rounded' . ($mailHeaderUrl === '' ? ' d-none' : ''),
-                'style' => 'max-height:40px',
-            ]) ?>
-
-            <div class="image-upload-buttons" id="mailHeader-upload-buttons">
-                <?= Button::accent()
-                    ->id('admin-mailHeader-upload-button')
-                    ->icon('cloud-upload')
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
-                    ->sm()
-                    ->loader(false) ?>
-
-                <?= Button::danger()
-                    ->id('admin-delete-mailHeader-image')
-                    ->icon('remove')
-                    ->action('admin.deleteMailHeader', ['/admin/setting/delete-mail-header-image'])
-                    ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
-                    ->cssClass(Yii::$app->img->mailHeader->exists() ? '' : 'd-none')
-                    ->sm()
-                    ->loader(false) ?>
-            </div>
-        </div>
-    </div>
-
-    <br>
-
-    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Theme customization')) ?>
-
-    <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
-
-    <div class="container gx-0 overflow-x-hidden">
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themePrimaryColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themePrimaryColor')->colorInput([
-                        'disabled' => $model->useDefaultThemePrimaryColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeAccentColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeAccentColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeAccentColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeSecondaryColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeSecondaryColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeSuccessColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeSuccessColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeSuccessColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeDangerColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeDangerColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeDangerColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeWarningColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeWarningColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeWarningColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeInfoColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeInfoColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeInfoColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeLightColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeLightColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeLightColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-
-            <div class="col-lg-4 mb-3">
-                <?= Html::activeLabel($model, 'themeDarkColor') ?>
-                <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, 'themeDarkColor')->colorInput([
-                        'disabled' => $model->useDefaultThemeDarkColor,
-                        'class' => 'rounded'
-                    ]) ?>
-                    <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <?= $form->field($model, 'themeCustomScss')->widget(CodeMirrorInputWidget::class, ['mode' => 'text/x-scss']) ?>
-
-    <?= $form->endCollapsibleFields() ?>
-
-    <hr>
-    <?= Html::submitButton(
-        Yii::t('AdminModule.settings', 'Save'),
-        ['class' => 'btn btn-primary', 'data-ui-loader' => ""]
-    ) ?>
-
-    <?php ActiveForm::end(); ?>
 </div>
+
+<?= $form->field($model, 'spaceOrder')->dropDownList([
+    '0' => Yii::t('AdminModule.settings', 'Custom sort order (alphabetical if not defined)'),
+    '1' => Yii::t('AdminModule.settings', 'Last visit'),
+]) ?>
+
+<?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()) ?>
+
+<?= $form->field($model, 'postTitleMode')->dropDownList($model->getPostTitleModeOptions()) ?>
+
+<?= $form->field($model, 'dateInputDisplayFormat')->dropDownList([
+    '' => Yii::t(
+        'AdminModule.settings',
+        'Auto format based on user language - Example: {example}',
+        ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]
+    ),
+    'php:d/m/Y' => Yii::t(
+        'AdminModule.settings',
+        'Fixed format (dd/mm/yyyy) - Example: {example}',
+        ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]
+    ),
+]) ?>
+
+<div class="bg-light p-3 mt-2">
+    <?= $form->field($model, 'logo')->fileInput([
+        'id' => 'admin-logo-file-upload',
+        'data-action-change' => 'admin.changeLogo',
+        'class' => 'd-none',
+        'name' => 'logo[]',
+    ]) ?>
+    <div class="image-upload-container" id="logo-upload" style="min-height:40px">
+        <?= Html::tag('img', '', [
+            'src' => $logoUrl ?: null,
+            'alt' => $model->getAttributeLabel('logo'),
+            'id' => 'logo-image',
+            'class' => 'rounded' . ($logoUrl === '' ? ' d-none' : ''),
+            'style' => 'max-height:40px',
+        ]) ?>
+
+        <div class="image-upload-buttons" id="logo-upload-buttons">
+            <?= Button::accent()
+                ->id('admin-logo-upload-button')
+                ->icon('cloud-upload')
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
+                ->sm()
+                ->loader(false) ?>
+
+            <?= Button::danger()
+                ->id('admin-delete-logo-image')
+                ->icon('remove')
+                ->action('admin.deletePageLogo', ['/admin/setting/delete-logo-image'])
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
+                ->cssClass(Yii::$app->img->logo->exists() ? '' : 'd-none')
+                ->sm()
+                ->loader(false) ?>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light p-3 mt-2">
+    <?= $form->field($model, 'icon')->fileInput([
+        'id' => 'admin-icon-file-upload',
+        'data-action-change' => 'admin.changeIcon',
+        'class' => 'd-none',
+        'name' => 'icon[]',
+    ]) ?>
+    <div class="image-upload-container" id="icon-upload" style="min-height:40px">
+        <?= Html::tag('img', '', [
+            'src' => $iconUrl ?: null,
+            'alt' => $model->getAttributeLabel('icon'),
+            'id' => 'icon-image',
+            'class' => 'rounded' . ($iconUrl === '' ? ' d-none' : ''),
+            'style' => 'max-height:40px',
+        ]) ?>
+
+        <div class="image-upload-buttons" id="icon-upload-buttons">
+            <?= Button::accent()
+                ->id('admin-icon-upload-button')
+                ->icon('cloud-upload')
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
+                ->sm()
+                ->loader(false) ?>
+
+            <?= Button::danger()
+                ->id('admin-delete-icon-image')
+                ->icon('remove')
+                ->action('admin.deletePageIcon', ['/admin/setting/delete-icon-image'])
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
+                ->cssClass(Yii::$app->img->icon->exists() ? '' : 'd-none')
+                ->sm()
+                ->loader(false) ?>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light p-3 mt-2">
+    <?= $form->field($model, 'loginBackgroundImage')->fileInput([
+        'id' => 'admin-loginBg-file-upload',
+        'data-action-change' => 'admin.changeLoginBg',
+        'class' => 'd-none',
+        'name' => 'loginBackgroundImage[]',
+    ]) ?>
+    <div class="image-upload-container" id="loginBg-upload" style="min-height:40px">
+        <?= Html::tag('img', '', [
+            'src' => $loginBgUrl ?: null,
+            'alt' => $model->getAttributeLabel('loginBackgroundImage'),
+            'id' => 'loginBg-image',
+            'class' => 'rounded' . ($loginBgUrl === '' ? ' d-none' : ''),
+            'style' => 'max-height:40px',
+        ]) ?>
+
+        <div class="image-upload-buttons" id="loginBg-upload-buttons">
+            <?= Button::accent()
+                ->id('admin-loginBg-upload-button')
+                ->icon('cloud-upload')
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
+                ->sm()
+                ->loader(false) ?>
+
+            <?= Button::danger()
+                ->id('admin-delete-loginBg-image')
+                ->icon('remove')
+                ->action('admin.deleteLoginBg', ['/admin/setting/delete-login-background-image'])
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
+                ->cssClass(Yii::$app->img->loginBackground->exists() ? '' : 'd-none')
+                ->sm()
+                ->loader(false) ?>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light p-3 mt-2">
+    <?= $form->field($model, 'mailHeaderImage')->fileInput([
+        'id' => 'admin-mailHeader-file-upload',
+        'data-action-change' => 'admin.changeMailHeader',
+        'class' => 'd-none',
+        'name' => 'mailHeaderImage[]',
+    ]) ?>
+    <div class="image-upload-container" id="mailHeader-upload" style="min-height:40px">
+        <?= Html::tag('img', '', [
+            'src' => $mailHeaderUrl ?: null,
+            'alt' => $model->getAttributeLabel('mailHeaderImage'),
+            'id' => 'mailHeader-image',
+            'class' => 'rounded' . ($mailHeaderUrl === '' ? ' d-none' : ''),
+            'style' => 'max-height:40px',
+        ]) ?>
+
+        <div class="image-upload-buttons" id="mailHeader-upload-buttons">
+            <?= Button::accent()
+                ->id('admin-mailHeader-upload-button')
+                ->icon('cloud-upload')
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Upload')])
+                ->sm()
+                ->loader(false) ?>
+
+            <?= Button::danger()
+                ->id('admin-delete-mailHeader-image')
+                ->icon('remove')
+                ->action('admin.deleteMailHeader', ['/admin/setting/delete-mail-header-image'])
+                ->options(['aria-label' => Yii::t('AdminModule.settings', 'Remove')])
+                ->cssClass(Yii::$app->img->mailHeader->exists() ? '' : 'd-none')
+                ->sm()
+                ->loader(false) ?>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Theme customization')) ?>
+
+<?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
+
+<div class="container gx-0 overflow-x-hidden">
+    <div class="row">
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themePrimaryColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themePrimaryColor')->colorInput([
+                    'disabled' => $model->useDefaultThemePrimaryColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeAccentColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeAccentColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeAccentColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeAccentColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeSecondaryColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeSecondaryColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeSuccessColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeSuccessColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeSuccessColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeDangerColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeDangerColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeDangerColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeWarningColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeWarningColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeWarningColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeInfoColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeInfoColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeInfoColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeLightColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeLightColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeLightColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-3">
+            <?= Html::activeLabel($model, 'themeDarkColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeDarkColor')->colorInput([
+                    'disabled' => $model->useDefaultThemeDarkColor,
+                    'class' => 'rounded'
+                ]) ?>
+                <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?= $form->field($model, 'themeCustomScss')->widget(CodeMirrorInputWidget::class, ['mode' => 'text/x-scss']) ?>
+
+<?= $form->endCollapsibleFields() ?>
+
+<hr>
+<?= Html::submitButton(
+    Yii::t('AdminModule.settings', 'Save'),
+    ['class' => 'btn btn-primary', 'data-ui-loader' => ""]
+) ?>
+
+<?php ActiveForm::end(); ?>
+<?php ContentCard::end() ?>
 
 <script <?= Html::nonce() ?>>
     $(function () {
