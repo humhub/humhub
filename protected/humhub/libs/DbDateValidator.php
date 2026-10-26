@@ -70,6 +70,11 @@ class DbDateValidator extends DateValidator
      * retry after normalizing space variants, so genuinely invalid input is still rejected but this
      * whitespace mismatch alone no longer blocks a save.
      *
+     * Since PHP 8.4, IntlDateFormatter::parse() returns the end position of the parsed text in bytes instead
+     * of characters, while yii\validators\DateValidator compares it with mb_strlen(). A value containing
+     * non-ASCII characters (e.g. digits in `fa-IR` or direction marks in `ar`) is therefore rejected although
+     * it was parsed completely. If the raw value fails to parse, retry with the length counted in bytes.
+     *
      * @param mixed $value
      * @return int|false
      */
@@ -78,6 +83,21 @@ class DbDateValidator extends DateValidator
         $result = parent::parseDateValue($value);
         if ($result !== false || !is_string($value)) {
             return $result;
+        }
+
+        // (0) PHP 8.4+: the parse position is returned in bytes, so compare it with the byte length of the value.
+        if (Yii::$app !== null && preg_match('/[^\x00-\x7F]/', $value)) {
+            $charset = Yii::$app->charset;
+            Yii::$app->charset = '8bit';
+            try {
+                $result = parent::parseDateValue($value);
+            } finally {
+                Yii::$app->charset = $charset;
+            }
+
+            if ($result !== false) {
+                return $result;
+            }
         }
 
         // (a) collapse every "special" space-like character to a plain space - covers the case where
