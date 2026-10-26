@@ -97,7 +97,11 @@ final class LinkRegistrationService
 
     public function setNewToken(): string
     {
-        $newToken = Yii::$app->security->generateRandomString(Invite::LINK_TOKEN_LENGTH);
+        do {
+            $newToken = Yii::$app->security->generateRandomString(Invite::LINK_TOKEN_LENGTH);
+            // Avoid a trailing "-" or "_" which is often cut off when the link is auto-detected in texts
+        } while (!ctype_alnum(substr($newToken, -1)));
+
         if ($this->space) {
             $this->space->settings->set(self::SETTING_VAR_SPACE_TOKEN, $newToken);
         } else {
