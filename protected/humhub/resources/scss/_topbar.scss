@@ -220,7 +220,7 @@
             }
         }
 
-        a:not(.btn):not(.dropdown-item) {
+        a:not(.btn, .dropdown-item) {
             color: var(--hh-primary-contrast);
         }
 
