@@ -9,16 +9,14 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\models\ContentContainerPermission;
+use Codeception\Specify;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\tests\codeception\unit\TestContent;
 use humhub\modules\content\tests\codeception\unit\TestContentManagePermission;
-use tests\codeception\_support\HumHubDbTestCase;
-use Codeception\Specify;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\models\Content;
+use tests\codeception\_support\HumHubDbTestCase;
 
 class ContentActiveRecordTest extends HumHubDbTestCase
 {
@@ -52,13 +50,19 @@ class ContentActiveRecordTest extends HumHubDbTestCase
 
         $model->setManagePermission([ManageContent::class]);
 
-        $this->becomeUser('User1');
+        // User2 is a moderator of the space. The "Manage content" state is changed for the moderator group,
+        // as the states of the member group are fixed and cannot be changed.
+        $this->becomeUser('User2');
+
+        $space->getPermissionManager()->setGroupState(Space::USERGROUP_MODERATOR, new ManageContent(), 0);
 
         $this->assertFalse($model->content->canEdit());
 
-        $this->setPermission($space, Space::USERGROUP_MEMBER, new ManageContent(), 1);
+        $space->getPermissionManager()->setGroupState(Space::USERGROUP_MODERATOR, new ManageContent(), 1);
 
         $this->assertTrue($model->content->canEdit());
+
+        $space->getPermissionManager()->setGroupState(Space::USERGROUP_MODERATOR, new TestContentManagePermission(), 0);
 
         $model->setManagePermission(new TestContentManagePermission());
 
@@ -67,18 +71,5 @@ class ContentActiveRecordTest extends HumHubDbTestCase
         $model->setManagePermission([ManageContent::class, TestContentManagePermission::class]);
 
         $this->assertTrue($model->content->canEdit());
-    }
-
-    public function setPermission(ContentContainerActiveRecord $contentContianer, $groupId, $permission, $state = 1)
-    {
-        $groupPermission = new ContentContainerPermission();
-        $groupPermission->permission_id = $permission->id;
-        $groupPermission->group_id = $groupId;
-        $groupPermission->contentcontainer_id = $contentContianer->contentContainerRecord->id;
-        $groupPermission->module_id = $permission->moduleId;
-        $groupPermission->class = $permission::class;
-        $groupPermission->state = $state;
-        $groupPermission->save();
-        $contentContianer->getPermissionManager()->clear();
     }
 }
