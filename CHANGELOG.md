@@ -1,8 +1,11 @@
 HumHub Changelog
 ================
 
-1.19.1 (Unreleased)
--------------------
+1.19.1 (October 26, 2026)
+-------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
 - Enh #8644: "Template" profile fields allow more Twig features (e.g. `for`, `set`, `join`, `split`, `date`, `range`), configurable via `'user' => ['profileFieldTemplateAllowedTags' | 'profileFieldTemplateAllowedFilters' | 'profileFieldTemplateAllowedFunctions' => [...]]`
 - Fix #8641: "New like" emails for a liked comment were not sent ("Getting unknown property: Comment::user" in `MailContentEntry`)
 - Fix #8642: `ItemDrop::save()` always failed (call to the undefined `moveItemIndex()`, undeclared `$id`, broken sort order access, transaction left open when the index did not change); `ProfileHeader` crashed when no `user` was given instead of detecting the profile user from the controller
