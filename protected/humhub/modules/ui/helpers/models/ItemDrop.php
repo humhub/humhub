@@ -46,6 +46,11 @@ abstract class ItemDrop extends Model
     public $modelId;
 
     /**
+     * @var int id of the model to resort
+     */
+    public $id;
+
+    /**
      * @var int new model index
      */
     public $index;
@@ -101,7 +106,7 @@ abstract class ItemDrop extends Model
     public function save()
     {
         try {
-            $this->moveItemIndex();
+            $this->run();
             return true;
         } catch (Throwable $e) {
             Yii::error($e);
@@ -134,7 +139,8 @@ abstract class ItemDrop extends Model
             $newIndex = $this->validateIndex($this->index, $itemsToSort);
 
             if ($this->getSortOrder($model) === $newIndex) {
-                return true;
+                $transaction->commit();
+                return;
             }
 
             $this->updateTarget();
@@ -189,7 +195,7 @@ abstract class ItemDrop extends Model
      */
     protected function getSortOrder(ActiveRecord $model)
     {
-        return $model->${$this->sortOrderField};
+        return $model->{$this->sortOrderField};
     }
 
     /**
