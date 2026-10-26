@@ -191,6 +191,33 @@ class Module extends \humhub\components\Module
     public ?string $peopleCardDetailsTemplate = null;
 
     /**
+     * @var string[] Twig tags allowed in the template of "Template" profile fields, which are rendered in a sandbox
+     * @see \humhub\modules\user\models\fieldtype\Template
+     * @since 1.19.1
+     */
+    public array $profileFieldTemplateAllowedTags = ['apply', 'for', 'if', 'set', 'verbatim', 'with'];
+
+    /**
+     * @var string[] Twig filters allowed in the template of "Template" profile fields.
+     * The `raw` filter is not allowed by default, as the profile field values must stay HTML encoded.
+     * @see \humhub\modules\user\models\fieldtype\Template
+     * @since 1.19.1
+     */
+    public array $profileFieldTemplateAllowedFilters = [
+        'abs', 'batch', 'capitalize', 'column', 'date', 'date_modify', 'default', 'e', 'escape', 'filter',
+        'find', 'first', 'format', 'join', 'json_encode', 'keys', 'last', 'length', 'lower', 'map', 'merge',
+        'nl2br', 'number_format', 'reduce', 'replace', 'reverse', 'round', 'shuffle', 'slice', 'sort',
+        'split', 'striptags', 'title', 'trim', 'upper', 'url_encode',
+    ];
+
+    /**
+     * @var string[] Twig functions allowed in the template of "Template" profile fields
+     * @see \humhub\modules\user\models\fieldtype\Template
+     * @since 1.19.1
+     */
+    public array $profileFieldTemplateAllowedFunctions = ['cycle', 'date', 'max', 'min', 'random', 'range'];
+
+    /**
      * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
      * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
      *

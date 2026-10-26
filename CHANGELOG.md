@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Enh #8644: "Template" profile fields allow more Twig features (e.g. `for`, `set`, `join`, `split`, `date`, `range`), configurable via `'user' => ['profileFieldTemplateAllowedTags' | 'profileFieldTemplateAllowedFilters' | 'profileFieldTemplateAllowedFunctions' => [...]]`
 - Fix #8641: "New like" emails for a liked comment were not sent ("Getting unknown property: Comment::user" in `MailContentEntry`)
 - Fix #8642: `ItemDrop::save()` always failed (call to the undefined `moveItemIndex()`, undeclared `$id`, broken sort order access, transaction left open when the index did not change); `ProfileHeader` crashed when no `user` was given instead of detecting the profile user from the controller
 - Fix #8636: A failed session write printed the database exception into the response, so a login by the "remember me" cookie failed with "headers already sent" and HTTP 500; the exception is now logged (Yii and PHP error log) instead

@@ -8,6 +8,8 @@ use humhub\modules\user\models\fieldtype\Text;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Yii;
 use yii\db\ActiveQuery;
 use yii\helpers\Json;
 
@@ -217,5 +219,41 @@ class ProfileFieldModelTest extends HumHubDbTestCase
         // Empty source fields stay undefined, so a condition can detect them
         $user->profile->lastname = '';
         $this->assertEquals('', ProfileField::findOne($field->id)->getUserValue($user));
+    }
+
+    public function testTemplateFieldSandbox()
+    {
+        $user = User::findOne(['username' => 'Admin']);
+
+        $field = new ProfileField();
+        $field->load([
+            'profile_field_category_id' => 1,
+            'field_type_class' => Template::class,
+            'internal_name' => 'template_test',
+            'title' => 'Template test',
+            'sort_order' => 900,
+            'visible' => 1,
+        ], '');
+        $field->field_type_config = Json::encode(['template' => '{{ range(1, 3)|join(\', \') }}{% for c in firstname|split(\'\') %}{{ c|upper }}{% endfor %}']);
+        $this->assertTrue($field->save());
+        $this->assertEquals('1, 2, 3ADMIN', $field->getUserValue($user));
+
+        // Profile field values must stay HTML encoded
+        $field->field_type_config = Json::encode(['template' => '{{ firstname|raw }}']);
+        $this->assertTrue($field->save());
+        try {
+            ProfileField::findOne($field->id)->getUserValue($user);
+            $this->fail('The raw filter must not be allowed by default');
+        } catch (SecurityNotAllowedFilterError) {
+        }
+
+        $module = Yii::$app->getModule('user');
+        $allowedFilters = $module->profileFieldTemplateAllowedFilters;
+        $module->profileFieldTemplateAllowedFilters = ['raw'];
+        try {
+            $this->assertEquals('Admin', ProfileField::findOne($field->id)->getUserValue($user));
+        } finally {
+            $module->profileFieldTemplateAllowedFilters = $allowedFilters;
+        }
     }
 }

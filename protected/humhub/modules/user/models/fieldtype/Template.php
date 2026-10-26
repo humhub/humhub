@@ -3,6 +3,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\Module;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
@@ -47,9 +48,28 @@ class Template extends BaseType
         }
 
         $twig = new Environment(new ArrayLoader([]));
-        $twig->addExtension(new SandboxExtension(new SecurityPolicy(['if'], ['escape']), true));
+        $twig->addExtension(new SandboxExtension(static::getSecurityPolicy(), true));
 
         return $twig->createTemplate($this->template)->render($variables);
+    }
+
+    /**
+     * @return SecurityPolicy the sandbox policy with the Twig features allowed in templates
+     * @see Module::$profileFieldTemplateAllowedTags
+     * @since 1.19.1
+     */
+    protected static function getSecurityPolicy(): SecurityPolicy
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        return new SecurityPolicy(
+            $module->profileFieldTemplateAllowedTags,
+            $module->profileFieldTemplateAllowedFilters,
+            [],
+            [],
+            $module->profileFieldTemplateAllowedFunctions,
+        );
     }
 
     public function getFormDefinition($definition = [])
