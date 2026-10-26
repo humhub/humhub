@@ -84,6 +84,28 @@ class LikeTest extends HumHubDbTestCase
         $this->assertEquals($comment->getUrl(true), $notification->getUrl());
     }
 
+    public function testNotificationMailOfCommentLike()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'Test post']);
+        $post->silentContentCreation = true;
+        $post->content->setContainer(Space::findOne(['id' => 3]));
+        $this->assertTrue($post->save());
+
+        $this->becomeUser('User1');
+        $comment = new Comment(['message' => 'Test comment', 'content_id' => $post->content->id]);
+        $this->assertTrue($comment->save());
+
+        Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 2]))->set('notification.like_email', 1);
+
+        $this->becomeUser('User2');
+        $this->assertTrue((new LikeService($comment))->like());
+
+        $this->assertEqualsLastEmailTo('user1@example.com');
+        $this->assertEqualsLastEmailSubject('Sara Tester likes your comment "Test comment".');
+    }
+
     public function testDeleteLikesOnContentHardDelete()
     {
         $this->becomeUser('User2');

@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.19.1 (Unreleased)
 -------------------
+- Fix #8641: "New like" emails for a liked comment were not sent ("Getting unknown property: Comment::user" in `MailContentEntry`)
+- Fix #8642: `ItemDrop::save()` always failed (call to the undefined `moveItemIndex()`, undeclared `$id`, broken sort order access, transaction left open when the index did not change); `ProfileHeader` crashed when no `user` was given instead of detecting the profile user from the controller
 - Fix #8636: A failed session write printed the database exception into the response, so a login by the "remember me" cookie failed with "headers already sent" and HTTP 500; the exception is now logged (Yii and PHP error log) instead
 - Fix #8622: Console `module/update`, `module/update-all`, `module/install` and `module/enable` failed the `requirements.php` check of modules depending on another module (e.g. "You must first install and enable the Clean Theme module." for Clean Theme Pro), as other modules are not loaded in these commands since 1.19.0. Module dependencies declared in `module.json` (`humhub.modules`, optionally with a `minVersion`) are now checked from metadata only when a module is installed, updated or enabled (new `ModuleDependencyService`), and registered before `requirements.php` is evaluated; `module/update-all` checks them against the versions installed after all updates, skips updates whose dependencies stay unmet and updates dependencies first
 - Enh #8614: People cards: Twig template for additional card details via `'user' => ['peopleCardDetailsTemplate' => ...]` (one HTML block with the profile fields as variables, e.g. with links and `<br>`), shown below the selected "Information 1-3" fields
@@ -35,6 +37,7 @@ HumHub Changelog
 - Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
 - Fix #8627: The full-size profile image overlay now closes on the browser Back button instead of staying open over the previous page
 - Fix #8638: The default Content-Security-Policy blocked fonts embedded as `data:` URIs (e.g. the icon font of the Calendar module), which logged a violation in the browser console; `data:` is now allowed in `font-src`
+- Fix #8639: Dates containing non-ASCII characters (e.g. the `fa-IR` and `ar` locales) were rejected as invalid on PHP 8.4+, because `IntlDateFormatter::parse()` now returns the position in bytes while Yii compares it with the character count
 
 1.19.0 (October 12, 2026)
 -------------------------
