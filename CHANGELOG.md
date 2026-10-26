@@ -1,8 +1,10 @@
 HumHub Changelog
 ================
 
-1.18.7 (Unreleased)
--------------------
+1.18.7 (October 26, 2026)
+-------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
 
 - Fix #8507: Prevent errors caused by outdated time zone identifiers (e.g. `Europe/Kiev`) which are unknown to systems without legacy tz data
 - Fix #8529: Allow membership requests only for "Invite and request" spaces and non-blocked users; Restore and HTML-encode the request message in approval emails (lost since 1.11)
