@@ -25,6 +25,11 @@ use yii\base\Event;
  */
 class DataTableTest extends HumHubDbTestCase
 {
+    /**
+     * @inheritdoc
+     */
+    protected $fixtureConfig = ['default'];
+
     protected function tearDown(): void
     {
         Event::offAll();

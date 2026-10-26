@@ -77,6 +77,6 @@ class AccountCest
         $I->jsClick('[name="NotificationSettings[categories.social.email]"]');
 
         $I->waitForText('Saved', 10, '.notification-settings-status');
-        $I->see('Custom', '[role="radiogroup"] [aria-checked="true"]');
+        $I->seeCheckboxIsChecked('[role="radiogroup"] [data-profile="custom"]');
     }
 }

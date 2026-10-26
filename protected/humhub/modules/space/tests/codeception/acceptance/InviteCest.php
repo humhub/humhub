@@ -97,10 +97,8 @@ class InviteCest
         $I->waitForText('Pending Invites');
         $I->click('Pending Invites');
 
-        $I->waitForText('Cancel', 10, '.layout-content-container');
-        $I->click('Cancel', '.layout-content-container');
-        $I->acceptPopup();
-        $I->waitForText('Member since', 10, '.layout-content-container');
+        $I->runTableRowAction('Sara Tester', 'Cancel invitation', true);
+        $I->waitForTableRowRemoved('Sara Tester');
 
         $I->amUser2(true);
         $I->seeInNotifications('Peter Tester revoked your invitation for the space Space 2');

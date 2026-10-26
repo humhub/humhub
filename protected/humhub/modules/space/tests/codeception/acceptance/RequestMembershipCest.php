@@ -51,10 +51,9 @@ class RequestMembershipCest
         $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
 
         $I->waitForText('Pending Approvals', 10, '.nav-pills .active');
-        $I->see('Hi, I want to join this space.', '.grid-view');
-        $I->click('Accept', '.grid-view');
-
-        $I->wait(1);
+        $I->waitForText('Hi, I want to join this space.', 10, '.data-table');
+        $I->runTableRowAction('Peter Tester', 'Accept');
+        $I->waitForTableRowRemoved('Peter Tester');
 
         $I->amUser1(true);
 
@@ -96,10 +95,8 @@ class RequestMembershipCest
         $I->see('Pending Approvals');
         $I->click('Pending Approvals');
 
-        $I->waitForText('Decline');
-        $I->click('Decline');
-
-        $I->waitForElementVisible('#wallStream');
+        $I->runTableRowAction('Peter Tester', 'Decline', true);
+        $I->waitForTableRowRemoved('Peter Tester');
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
 
         $I->amUser1(true);
