@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #8623: Secrets from `.env` (e.g. `HUMHUB_CONFIG__*` passwords, keys, tokens, DSNs) were written in plain text to `app.log` and the `logging` table via the `$_SERVER` dump; values are now masked by key name (PASS, SECRET, KEY, TOKEN, DSN, AUTH, COOKIE, ...)
 - Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
 - Fix #8627: The full-size profile image overlay now closes on the browser Back button instead of staying open over the previous page
+- Fix #8638: The default Content-Security-Policy blocked fonts embedded as `data:` URIs (e.g. the icon font of the Calendar module), which logged a violation in the browser console; `data:` is now allowed in `font-src`
 
 1.19.0 (October 12, 2026)
 -------------------------
