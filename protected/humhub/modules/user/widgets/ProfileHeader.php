@@ -8,10 +8,12 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Widget;
 
 /**
@@ -40,8 +42,12 @@ class ProfileHeader extends Widget
         /**
          * Try to autodetect current user by controller
          */
-        if ($this->user === null) {
-            $this->user = $this->getController()->getUser();
+        if ($this->user === null && Yii::$app->controller instanceof ContentContainerController) {
+            $this->user = Yii::$app->controller->contentContainer;
+        }
+
+        if (!$this->user instanceof User) {
+            throw new InvalidConfigException('No user given for the profile header.');
         }
 
         if (!Yii::$app->user->isGuest && Yii::$app->user->id == $this->user->id) {
