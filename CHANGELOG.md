@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.19.1 (October 26, 2026)
+1.19.2 (October 26, 2026)
 -------------------------
 
 > This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
