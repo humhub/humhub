@@ -253,12 +253,6 @@ parameters:
 			path: protected/humhub/modules/notification/tests/codeception/unit/NotificationPrivacyTest.php
 
 		-
-			message: '#^Class yii\\base\\Model referenced with incorrect case\: Yii\\base\\Model\.$#'
-			identifier: class.nameCase
-			count: 1
-			path: protected/humhub/modules/post/models/forms/PostEditForm.php
-
-		-
 			message: '#^Method humhub\\modules\\post\\models\\forms\\PostEditForm\:\:validate\(\) should return bool but return statement is missing\.$#'
 			identifier: return.missing
 			count: 1
@@ -293,12 +287,6 @@ parameters:
 			identifier: mspirkovYii2.activeRecordConditionValidation
 			count: 1
 			path: protected/humhub/modules/space/behaviors/SpaceModelMembership.php
-
-		-
-			message: '#^Class yii\\validators\\StringValidator referenced with incorrect case\: Yii\\validators\\StringValidator\.$#'
-			identifier: class.nameCase
-			count: 1
-			path: protected/humhub/modules/space/components/UrlValidator.php
 
 		-
 			message: '#^Unknown attribute "can_leave" for model humhub\\modules\\space\\models\\Membership\.$#'
@@ -467,12 +455,6 @@ parameters:
 			identifier: method.staticCall
 			count: 2
 			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
-
-		-
-			message: '#^Class yii\\base\\ErrorException referenced with incorrect case\: Yii\\base\\ErrorException\.$#'
-			identifier: class.nameCase
-			count: 1
-			path: protected/humhub/tests/codeception/unit/LogAssertionsSelfTest.php
 
 		-
 			message: '#^Object option "depends" for humhub\\assets\\VueAsset must be array\<class\-string\>, array\<int, string\> given\.$#'

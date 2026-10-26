@@ -18,6 +18,7 @@ use PHPUnit\Framework\Exception;
 use tests\codeception\_support\HumHubDbTestCase;
 use tests\codeception\_support\Logger;
 use Yii;
+use yii\base\ErrorException;
 
 /**
  * Self-test of the Log Assertions available to other tests
@@ -118,7 +119,7 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
 
     public function testInitializationRequired()
     {
-        $this->expectException(yii\base\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('Log has not been initialized');
 
         static::assertLogCount(1);
