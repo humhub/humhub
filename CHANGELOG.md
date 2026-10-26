@@ -36,6 +36,7 @@ HumHub Changelog
 - Fix #8623: Secrets from `.env` (e.g. `HUMHUB_CONFIG__*` passwords, keys, tokens, DSNs) were written in plain text to `app.log` and the `logging` table via the `$_SERVER` dump; values are now masked by key name (PASS, SECRET, KEY, TOKEN, DSN, AUTH, COOKIE, ...)
 - Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
 - Fix #8627: The full-size profile image overlay now closes on the browser Back button instead of staying open over the previous page
+- Fix #8643: Permission states fixed for a group (e.g. "Manage content" for registered users) could be changed by a manually crafted request to the permission settings; Already stored states of such fixed pairs are now ignored
 
 1.19.0 (October 12, 2026)
 -------------------------
