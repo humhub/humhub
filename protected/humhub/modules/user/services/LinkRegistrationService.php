@@ -97,7 +97,7 @@ final class LinkRegistrationService
 
     public function setNewToken(): string
     {
-        $newToken = Yii::$app->security->generateRandomString(Invite::LINK_TOKEN_LENGTH);
+        $newToken = Invite::generateToken(Invite::LINK_TOKEN_LENGTH);
         if ($this->space) {
             $this->space->settings->set(self::SETTING_VAR_SPACE_TOKEN, $newToken);
         } else {
