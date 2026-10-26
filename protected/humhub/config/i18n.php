@@ -23,6 +23,7 @@ return [
         'da',
         'de',
         'el',
+        'eo',
         'es',
         'es-419',
         'et',
