@@ -52,6 +52,29 @@ abstract class DataTableWidget extends VueWidget
     public string $title = '';
 
     /**
+     * @var bool whether the table sits inside another card (e.g. below its tabs) instead of
+     * being a card of its own
+     */
+    public bool $embedded = false;
+
+    /**
+     * @var string|array|null the back arrow before the title, on a sub-page leading back to its
+     * overview
+     */
+    public string|array|null $backUrl = null;
+
+    /**
+     * @var string|null the back arrow's label (tooltip, `aria-label`), e.g. "Back to overview"
+     */
+    public ?string $backLabel = null;
+
+    /**
+     * @var bool whether the checkboxes of the bulk actions are shown until the user chooses
+     * otherwise (lists mostly worked through in bulk, e.g. pending invitations)
+     */
+    public bool $selectByDefault = false;
+
+    /**
      * @var int the most optional columns shown at once (0: no limit)
      */
     public int $maxColumns = 3;
@@ -121,6 +144,10 @@ abstract class DataTableWidget extends VueWidget
             'headerActions' => $this->getHeaderActions()?->getEntriesData() ?? [],
             'headerMenu' => $this->getHeaderMenu()?->getEntriesData() ?? [],
             'labels' => $this->getCountLabels(),
+            'embedded' => $this->embedded,
+            'selectByDefault' => $this->selectByDefault,
+            'backUrl' => $this->backUrl === null ? '' : Url::to($this->backUrl),
+            'backLabel' => (string)$this->backLabel,
         ]);
     }
 
@@ -136,6 +163,9 @@ abstract class DataTableWidget extends VueWidget
 
         return $this->render('@humhub/widgets/views/dataTablePlaceholder', [
             'title' => $this->title,
+            'embedded' => $this->embedded,
+            'backUrl' => $this->backUrl,
+            'backLabel' => $this->backLabel,
             'columns' => array_slice(array_values($shown), 0, $this->maxColumns ?: null),
         ]);
     }

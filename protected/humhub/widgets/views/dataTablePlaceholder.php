@@ -15,15 +15,21 @@ use humhub\helpers\Html;
  * does not jump when the island mounts.
  *
  * @var string $title
+ * @var bool $embedded inside another card
+ * @var string|array|null $backUrl
+ * @var string|null $backLabel
  * @var ColumnDefinition[] $columns the shown optional columns
  */
 $others = count(array_filter($columns, static fn(ColumnDefinition $column) => !$column->narrow));
 $mainWidth = $others > 0 ? round(200 / ($others + 2), 4) . '%' : null;
 ?>
-<section class="card content-card data-table" aria-busy="true">
+<section class="content-card data-table <?= $embedded ? 'data-table-embedded' : 'card' ?>" aria-busy="true">
     <?php if ($title !== '') : ?>
         <div class="card-header">
-            <h2 class="card-title"><?= Html::encode($title) ?></h2>
+            <?php if ($backUrl !== null) : ?>
+                <?= $this->render('_backLink', ['url' => $backUrl, 'label' => $backLabel, 'class' => 'card-back']) ?>
+            <?php endif; ?>
+            <?= Html::tag($embedded ? 'h3' : 'h2', Html::encode($title), ['class' => 'card-title']) ?>
         </div>
     <?php endif; ?>
     <div class="card-body">

@@ -28,7 +28,7 @@
         </template>
     </span>
     <time v-else-if="column.type === 'date' && cell.value" :datetime="cell.value" :title="cell.title">{{ cell.text }}</time>
-    <span v-else>{{ cell.text }}</span>
+    <span v-else :title="cell.title || null">{{ cell.text }}</span>
 </template>
 
 <script>

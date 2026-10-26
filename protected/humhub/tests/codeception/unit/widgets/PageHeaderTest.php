@@ -56,6 +56,9 @@ class PageHeaderTest extends HumHubDbTestCase
 
         $this->assertMatchesRegularExpression('#<a class="page-header-back btn btn-ghost btn-icon-only" href="/admin"[^>]*aria-label="Back"#', $html);
         $this->assertLessThan(strpos($html, 'page-header-title'), strpos($html, 'page-header-back'));
+
+        $html = (string)PageHeader::title('Users')->backUrl('/admin', 'Back to Administration');
+        $this->assertStringContainsString('aria-label="Back to Administration"', $html);
     }
 
     public function testRendersTheToolsThePrimaryActionAndTheMenu()

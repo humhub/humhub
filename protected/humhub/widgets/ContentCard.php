@@ -51,6 +51,26 @@ class ContentCard extends Widget
     public string $titleTag = 'h2';
 
     /**
+     * @var string badges next to the title (HTML), e.g. a status like "Administrative group"
+     * @since 1.20
+     */
+    public string $badges = '';
+
+    /**
+     * @var string|array|null the url of the back arrow before the title, on a sub-page (add,
+     * edit) leading back to its overview
+     * @since 1.20
+     */
+    public string|array|null $backUrl = null;
+
+    /**
+     * @var string|null the back arrow's label (tooltip, `aria-label`), e.g. "Back to overview";
+     * "Back" if not set
+     * @since 1.20
+     */
+    public ?string $backLabel = null;
+
+    /**
      * @var string a short description below the title (HTML)
      */
     public string $description = '';
@@ -109,6 +129,9 @@ class ContentCard extends Widget
             'title' => $this->title,
             'titleTag' => $this->titleTag,
             'description' => $this->description,
+            'badges' => $this->badges,
+            'backUrl' => $this->backUrl,
+            'backLabel' => $this->backLabel,
             'buttons' => $this->buttons,
             'actions' => $this->renderMenu($this->actions),
             'menu' => $this->renderMenu($this->menu, ['template' => '@humhub/widgets/menu/views/header-menu']),

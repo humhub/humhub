@@ -18,6 +18,7 @@ $content-card-tabs-padding-top: $spacer * .5 !default;
 // Headings: the page header's title (`h1`, $font-size-lg) > card title (`h2`) > section (`h3`)
 $content-card-title-font-size: $font-size-base * 1.125 !default;
 $content-card-title-font-weight: $font-weight-semibold !default;
+$content-card-title-badges-gap: $spacer * .5 !default;
 $content-card-subtitle-margin-top: $spacer * .5 !default;
 $content-card-section-title-font-size: $font-size-base !default;
 $content-card-section-title-font-weight: $font-weight-semibold !default;
@@ -76,6 +77,14 @@ $content-card-margin-bottom: 15px !default; // the margin of the `.panel` it rep
         font-weight: $content-card-title-font-weight;
         line-height: $headings-line-height;
         word-break: break-word;
+    }
+
+    // The title with badges next to it
+    .content-card > .card-header .card-title-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $content-card-title-badges-gap;
     }
 
     // The description: ordinary text below the title

@@ -37,6 +37,30 @@ class MenuLink extends MenuEntry
      */
     protected bool $isPrimary = false;
 
+    /**
+     * @var int|null how many things wait behind the entry (e.g. pending approvals); pill tabs
+     * show a dot for it, with the number for screen readers
+     * @since 1.20
+     */
+    protected ?int $count = null;
+
+    /**
+     * @since 1.20
+     */
+    public function setCount(?int $count): static
+    {
+        $this->count = $count;
+        return $this;
+    }
+
+    /**
+     * @since 1.20
+     */
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
+
     public function setEncodeLabel(bool $encodeLabel)
     {
         $this->getLink()->encodeLabel($encodeLabel);

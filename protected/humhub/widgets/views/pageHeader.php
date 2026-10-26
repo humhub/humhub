@@ -8,7 +8,6 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\widgets\Icon;
 
 /* @var $this View */
 /* @var $id string */
@@ -18,17 +17,14 @@ use humhub\widgets\Icon;
 /* @var $menu string */
 /* @var $tabs string */
 /* @var $backUrl string|array|null */
+/* @var $backLabel string|null */
 
 $titleId = $id . '-title';
 ?>
 <section class="page-header" aria-labelledby="<?= $titleId ?>">
     <div class="page-header-bar">
         <?php if ($backUrl !== null) : ?>
-            <?= Html::a(Icon::get('arrow-left'), $backUrl, [
-                'class' => 'page-header-back btn btn-ghost btn-icon-only',
-                'aria-label' => Yii::t('base', 'Back'),
-                'title' => Yii::t('base', 'Back'),
-            ]) ?>
+            <?= $this->render('_backLink', ['url' => $backUrl, 'label' => $backLabel, 'class' => 'page-header-back']) ?>
         <?php endif; ?>
         <?= Html::tag($titleTag, Html::encode($title), ['id' => $titleId, 'class' => 'page-header-title']) ?>
         <?php if ($actions !== '' || $menu !== '') : ?>

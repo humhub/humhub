@@ -1,7 +1,6 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\widgets\bootstrap\Button;
 use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 
@@ -11,7 +10,8 @@ use humhub\widgets\form\ActiveForm;
 
 <?php ContentCard::begin([
     'title' => Yii::t('AdminModule.user', 'Edit user: {name}', ['name' => $user->displayName]),
-    'buttons' => Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))->right(false)->sm()->asString(),
+    'backUrl' => ['index'],
+    'backLabel' => Yii::t('AdminModule.base', 'Back to overview'),
 ]) ?>
 <?php $form = ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '', 'style' => 'display:none']]); ?>
 <?= $hForm->render($form); ?>

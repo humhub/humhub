@@ -1,7 +1,14 @@
 <template>
-    <section :id="tableId" ref="root" class="card content-card data-table" :aria-labelledby="title ? titleId : null">
-        <div v-if="title || headerActions.length || headerMenu.length || hasChooser || hasBulk" class="card-header">
-            <h2 v-if="title" :id="titleId" class="card-title">{{ title }}</h2>
+    <section :id="tableId" ref="root" class="content-card data-table" :class="embedded ? 'data-table-embedded' : 'card'" :aria-labelledby="title ? titleId : null">
+        <div v-if="title || backUrl || headerActions.length || headerMenu.length || hasChooser || hasBulk" class="card-header">
+            <a
+                v-if="backUrl"
+                :href="backUrl"
+                class="card-back btn btn-ghost btn-icon-only"
+                :aria-label="backLabel || texts.back"
+                :title="backLabel || texts.back"
+            ><i class="ti ti-arrow-left" aria-hidden="true"></i></a>
+            <component :is="embedded ? 'h3' : 'h2'" v-if="title" :id="titleId" class="card-title">{{ title }}</component>
             <HeaderActions
                 :actions="headerActions"
                 :menu="selectedCount ? [] : headerMenu"
@@ -272,7 +279,7 @@
 </template>
 
 <script>
-import { client, getMenuEntries, i18n, log, modal, status } from '@humhub/vue';
+import { client, events, getMenuEntries, i18n, log, modal, status } from '@humhub/vue';
 import DropdownMenu from './DropdownMenu.vue';
 import FilterBar from './FilterBar.vue';
 import FilterSelect from './FilterSelect.vue';
@@ -286,6 +293,8 @@ import { resolveMenuEntries } from './menu/resolveMenuEntries.js';
 // "Mobile"), by column type; plus the details and actions columns.
 const COLUMN_WIDTHS = { main: 240, chip: 160, date: 120, number: 90, text: 150 };
 const SIDE_COLUMN_WIDTH = 48;
+// Asks a table to load its rows again, e.g. from the dialog of a bulk action: `{tableId}`
+const REFRESH_EVENT = 'humhub:data-table:refresh';
 // A folded column comes back only with this much room to spare, so columns don't flicker.
 const FOLD_HYSTERESIS = 32;
 const PAGE_SIZES = [25, 50, 100];
@@ -372,6 +381,20 @@ export default {
         columnChoice: { type: Array, default: null },
         columnsUrl: { type: String, default: '' },
         maxColumns: { type: Number, default: 0 },
+        /**
+         * Inside another card (e.g. below its tabs): no card of its own, an `h3` title.
+         */
+        embedded: { type: Boolean, default: false },
+        /**
+         * The checkboxes of the bulk actions shown until the user chooses otherwise (e.g. lists
+         * mostly worked through in bulk, like pending invitations).
+         */
+        selectByDefault: { type: Boolean, default: false },
+        /**
+         * The back arrow before the title of a sub-page, and its label ("Back to overview").
+         */
+        backUrl: { type: String, default: '' },
+        backLabel: { type: String, default: '' },
     },
     data() {
         return {
@@ -411,6 +434,7 @@ export default {
                 empty: i18n.t('base', 'No results found!'),
                 clearFilters: i18n.t('base', 'Clear filters'),
                 rowsPerPage: i18n.t('base', 'Rows per page'),
+                back: i18n.t('base', 'Back'),
                 pages: i18n.t('base', 'Pages'),
                 previous: i18n.t('base', 'Previous page'),
                 next: i18n.t('base', 'Next page'),
@@ -482,7 +506,8 @@ export default {
             return this.columns.filter((column) => column.type !== 'main');
         },
         defaultKeys() {
-            return this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
+            const keys = this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
+            return this.selectByDefault && this.hasBulk ? [SELECT_KEY, ...keys] : keys;
         },
         // What the columns chooser offers: "Bulk select" (the checkbox column), then the optional
         // columns.
@@ -600,10 +625,18 @@ export default {
             this.resizeObserver = new ResizeObserver(() => this.fold());
             this.resizeObserver.observe(this.$refs.wrap);
         }
+        this.onRefresh = (evt, data) => {
+            if (!data || !data.tableId || data.tableId === this.tableId) {
+                this.clearSelection();
+                this.fetch();
+            }
+        };
+        events.on(REFRESH_EVENT, this.onRefresh);
     },
     beforeUnmount() {
         this.requestSeq++;
         this.resizeObserver?.disconnect();
+        events.off(REFRESH_EVENT, this.onRefresh);
     },
     methods: {
         reload() {
@@ -787,7 +820,8 @@ export default {
             if (Array.isArray(this.columnChoice)) {
                 return this.columnChoice.filter((key) => keys.includes(key));
             }
-            return this.columns.filter((column) => column.type !== 'main' && column.visible !== false).map((column) => column.key);
+            const defaults = this.columns.filter((column) => column.type !== 'main' && column.visible !== false).map((column) => column.key);
+            return this.selectByDefault && keys.includes(SELECT_KEY) ? [SELECT_KEY, ...defaults] : defaults;
         },
         openChooser() {
             this.draftKeys = [...this.chosenKeys];
@@ -829,7 +863,7 @@ export default {
             const columns = this.draftDiffersFromDefault ? keys : null;
             return client.put(this.columnsUrl, { data: JSON.stringify({ columns }), contentType: 'application/json' })
                 .catch((response) => {
-                    status('error', (response && response.message) || i18n.t('base', 'An unexpected error occurred.'));
+                    status('error', this.errorText(response));
                     log.error(response);
                 });
         },
@@ -870,6 +904,14 @@ export default {
         // then reloads the page.
         runBulk(action, count) {
             this.closeMenus();
+
+            // A dialog of its own (e.g. a message to write) instead of a confirmation
+            if (action.bulkModal) {
+                const params = this.allSelected
+                    ? new URLSearchParams({ ...requestParams(this.shownFilters, this.values), all: 1 })
+                    : new URLSearchParams(this.bulkIds(action).map((id) => ['ids[]', id]));
+                return modal.load(action.bulkUrl + (action.bulkUrl.includes('?') ? '&' : '?') + params.toString());
+            }
             const body = count === null
                 ? i18n.t('base', 'Apply "{action}" to all {count} entries?', { action: action.label, count: this.total })
                 : i18n.t('base', 'Apply "{action}" to {count} selected entries?', { action: action.label, count });
@@ -885,7 +927,7 @@ export default {
                     url += params ? (url.includes('?') ? '&' : '?') + params : '';
                     data = { all: 1 };
                 } else {
-                    data = { ids: Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).map((row) => row.id) };
+                    data = { ids: this.bulkIds(action) };
                 }
                 return client.post(url, { data }).then((response) => {
                     if (response && response.message) {
@@ -894,10 +936,21 @@ export default {
                     this.clearSelection();
                     return this.fetch();
                 }).catch((response) => {
-                    status('error', (response && response.message) || i18n.t('base', 'An unexpected error occurred.'));
+                    status('error', this.errorText(response));
                     log.error(response);
                 });
             });
+        },
+        // The selected rows offering the bulk action
+        bulkIds(action) {
+            return Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).map((row) => row.id);
+        },
+        // The first message of a failed answer (`422 {errors: {field: [messages]}}`, also inside
+        // the client's error envelope), its `message`, or a general one.
+        errorText(response) {
+            const errors = response?.errors || response?.error?.errors || response?.response?.errors;
+            const first = errors && typeof errors === 'object' ? Object.values(errors).flat()[0] : null;
+            return first || response?.message || i18n.t('base', 'An unexpected error occurred.');
         },
         isExpanded(row) {
             return !!this.expanded[row.id];
@@ -1040,7 +1093,7 @@ export default {
                     status('success', response.message);
                 }
             }).catch((response) => {
-                status('error', (response && response.message) || i18n.t('base', 'An unexpected error occurred.'));
+                status('error', this.errorText(response));
                 log.error(response);
             }).finally(() => {
                 const busy = { ...this.busy };

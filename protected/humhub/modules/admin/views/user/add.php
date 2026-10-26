@@ -16,8 +16,9 @@ use humhub\widgets\modal\ModalButton;
 
 <?php ContentCard::begin([
     'title' => Yii::t('AdminModule.user', 'Add new user'),
-    'buttons' => Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))->right(false)->sm()
-        . ($canInviteByEmail || $canInviteByLink
+    'backUrl' => ['index'],
+    'backLabel' => Yii::t('AdminModule.base', 'Back to overview'),
+    'buttons' => ($canInviteByEmail || $canInviteByLink
             ? ModalButton::success(Yii::t('AdminModule.user', 'Invite new people'))
                 ->load(['/user/invite', 'target' => LinkRegistrationService::TARGET_ADMIN])
                 ->icon('invite')

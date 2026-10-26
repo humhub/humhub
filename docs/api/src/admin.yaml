@@ -266,6 +266,255 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/topic":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the global topic table
+      operationId: listAdminTopics
+      description: |
+        One page of the global topics, for those who may manage the settings (`ManageSettings`).
+        A row's `id` is the topic's id; its cells are `name` (linked to the stream filtered by
+        the topic), `contents` (how many contents have it) and `sortOrder`; its actions edit (a
+        dialog of the web interface), view and delete (`POST`, answering `{removed: true}`).
+        Without `sort`, by sort order, then by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over the name
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `sortOrder` · `contents`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, sortOrder, -sortOrder, contents, -contents]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the pending registration table
+      operationId: listAdminInvites
+      description: |
+        One page of the open invitations and sign-ups, for those who may manage users or groups. A
+        row's `id` is the invitation's; its cells are `email` (with the name of a sign-up),
+        `invitedBy`, `source`, `language` and `createdAt`. Without `sort`, the newest first.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over e-mail and name
+          schema:
+            type: string
+        - name: source
+          in: query
+          required: false
+          description: |
+            `invite` · `invite_by_link` · `self`
+          schema:
+            type: string
+            enum: [invite, invite_by_link, self]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `email` · `source` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [email, -email, source, -source, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/{id}/resend":
+    post:
+      tags:
+        - Administration
+      summary: Send an invitation again
+      operationId: resendAdminInvite
+      description: |
+        Sends the invitation e-mail again and answers the row; `422` if the mail could not be
+        sent.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the invitation
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/{id}/delete":
+    post:
+      tags:
+        - Administration
+      summary: Delete an invitation
+      operationId: deleteAdminInvite
+      description: |
+        Deletes the invitation; its link no longer works.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the invitation
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/bulk/resend":
+    post:
+      tags:
+        - Administration
+      summary: Resend several invitations
+      operationId: bulkAdminInvitesResend
+      description: |
+        Resends the selected invitations (`ids`, or `all` — every one of the list's
+        filters, given as query parameters exactly as `GET /admin/invite` takes them).
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/bulk/delete":
+    post:
+      tags:
+        - Administration
+      summary: Delete several invitations
+      operationId: bulkAdminInvitesDelete
+      description: |
+        Deletes the selected invitations (`ids`, or `all` — every one of the list's
+        filters, given as query parameters exactly as `GET /admin/invite` takes them).
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/approval":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the approval table
+      operationId: listAdminApprovals
+      description: |
+        One page of the registrations awaiting approval the caller may administer (those who may
+        manage users; group managers the users of their groups). A row's `id` is the user's id;
+        its cells are `name`, `groups`, `invitedBy`, `messages` (sent so far), `createdAt` and
+        `profile_<field>` for each profile field asked at the registration. Its actions approve,
+        message and decline in a dialog of the web interface, where the text is written. Without
+        `sort`, the oldest first.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail and username
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/approval/bulk/{action}":
+    post:
+      tags:
+        - Administration
+      summary: Approve or decline several registrations
+      operationId: bulkAdminApprovals
+      description: |
+        Approves or declines (deletes) the selected registrations (`ids`, or `all` of the list's
+        filters in the query) with the default texts; each user is notified by e-mail. An approval
+        or a decline counts even if its notification could not be sent. A message to several is
+        written in a dialog of the web interface.
+      parameters:
+        - name: action
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [approve, decline]
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
   "/admin/user/{id}/enable":
     post:
       tags:
@@ -352,8 +601,165 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member":
+    get:
+      tags:
+        - Administration
+      summary: The rows of a group's member table
+      operationId: listAdminGroupMembers
+      description: |
+        One page of the group's members (without unapproved and deleted accounts), for those who
+        may manage the group: the group administration (`ManageGroups`; the administrators'
+        group only for administrators) and its managers. A row's `id` is the user's id; its
+        cells are `name`, `role` (`manager` · `member`) and `memberSince`. Without `sort`, the
+        managers first, then by name.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username and id
+          schema:
+            type: string
+        - name: role
+          in: query
+          required: false
+          description: |
+            `manager` · `member`
+          schema:
+            type: string
+            enum: [manager, member]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `role` · `memberSince`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, role, -role, memberSince, -memberSince]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/{userId}/manager":
+    post:
+      tags:
+        - Administration
+      summary: Make a member a group manager
+      operationId: makeAdminGroupManager
+      description: |
+        Makes the member a manager of the group and answers the new row. Only where the row offers
+        the action (those who may manage groups, not in the administrators' group), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - $ref: "#/components/parameters/memberUserIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/{userId}/member":
+    post:
+      tags:
+        - Administration
+      summary: Take the group manager role from a member
+      operationId: unmakeAdminGroupManager
+      description: |
+        Makes a group manager a plain member again and answers the new row. Only where the row
+        offers the action, else `403`.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - $ref: "#/components/parameters/memberUserIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/{userId}/remove":
+    post:
+      tags:
+        - Administration
+      summary: Remove a member from a group
+      operationId: removeAdminGroupMember
+      description: |
+        Removes the user from the group. Only where the row offers the action (those who may
+        change the members, while the user is in another group as well), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - $ref: "#/components/parameters/memberUserIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/bulk/remove":
+    post:
+      tags:
+        - Administration
+      summary: Remove several members from a group
+      operationId: bulkRemoveAdminGroupMembers
+      description: |
+        Removes the selected members (user ids in `ids`, or `all` — every member of the list's
+        filters, given as query parameters exactly as `GET /admin/group/{id}/member` takes them).
+        Each member whose row offers "Remove" is removed, the others are skipped.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
 components:
   parameters:
+    groupIdPathParam:
+      name: id
+      in: path
+      description: Id of the group
+      required: true
+      schema:
+        type: integer
+    memberUserIdPathParam:
+      name: userId
+      in: path
+      description: Id of the member (a user)
+      required: true
+      schema:
+        type: integer
     userIdPathParam:
       name: id
       in: path
@@ -386,7 +792,7 @@ components:
                     items:
                       $ref: "#/components/schemas/TableRow"
     BulkDone:
-      description: How many users were changed and skipped
+      description: How many records were changed and skipped
       content:
         application/json:
           schema:
@@ -402,8 +808,18 @@ components:
             done: 2
             skipped: 1
             message: 2 users were changed. 1 user was left out.
+    RowRemoved:
+      description: The row is gone (the table removes it)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              removed:
+                type: boolean
+                const: true
     RowChanged:
-      description: The user's new row
+      description: The record's new row
       content:
         application/json:
           schema:

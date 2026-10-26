@@ -1727,6 +1727,67 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     A module adding an entry to a module's controls adds a `RowAction` on
     `ModuleTable::EVENT_INIT`.
 
+- **The members of a group and of a space are data table islands** (a group's embedded in its
+  card, `DataTableWidget::$embedded`), with their rows from `GET /api/v2/admin/group/<id>/member` and
+  `GET /api/v2/space/<id>/member` (see `docs/api/src/admin.yaml`, `space.yaml`).
+  - **New:** `admin\components\GroupMemberTable` / `GroupMemberList` and
+    `space\modules\manage\components\SpaceMemberTable` / `SpaceMemberList` (a row is a `GroupUser`
+    or a `Membership`, its id the user's), created through the DI container with the group or
+    space; `POST /api/v2/admin/group/<id>/member/<userId>/manager|member|remove`,
+    `POST /api/v2/space/<id>/member/<userId>/role/<role>|remove` and both `…/member/bulk/remove`.
+    A module adds row actions on the tables' `EVENT_INIT`.
+  - **Changed:** the role is no longer a select in the row but a chip, changed through the row's
+    actions; the group manager select likewise. `admin/group/add-members` answers a `GET` with
+    the "Add members" dialog and an AJAX `POST` with an HTML redirect to the member page (a
+    plain `POST` still redirects). The views `@admin/views/group/members.php` and
+    `@space/modules/manage/views/member/index.php` get only the group / space; a theme
+    overriding them renders the table widget. `space/manage/member/index` still accepts the
+    former role change (`POST dropDownColumnSubmit`).
+  - **Removed:** `admin/group/edit-manager-role`, `admin/group/remove-group-user`,
+    `admin\assets\AdminGroupAsset` with `humhub.admin.group.js` (`setManagerRole`,
+    `removeMember`), "Remove all members" of a space (`space/manage/member/remove-all`,
+    `manage\widgets\MemberHeaderControlsMenu`, `manage\jobs\RemoveAllMembersFromSpaceJob`; the
+    table removes members in bulk) — module search found no users.
+- **The pending lists are data table islands**: the pending registrations
+  (`/admin/pending-registrations`), the registrations awaiting approval (`/admin/approval`) and a
+  space's pending invitations and approvals, with their rows from `GET /api/v2/admin/invite`,
+  `/admin/approval`, `/space/<id>/invitation` and `/space/<id>/applicant` (see `admin.yaml`,
+  `space.yaml`); their actions, also in bulk, are `POST` endpoints there.
+  - **New:** `admin\components\PendingRegistrationTable` / `PendingRegistrationList`,
+    `ApprovalTable` / `AdminApprovalList`, `space\modules\manage\components\SpaceInvitationTable`,
+    `SpaceApplicantTable` (`SpaceMemberList` takes a `status`),
+    `space\controllers\api\MembershipTableController`; `DataTableController::bulkAction()`;
+    `DataTableWidget::$selectByDefault`, `$backUrl`, `$backLabel`.
+  - **Changed:** the approval page's own column choice (profile fields as columns, a user
+    setting) is the table's columns chooser; a single registration is approved, declined or
+    messaged in a dialog (`admin/approval/approve|decline|send-message` answer an AJAX request
+    with it and redirect any other to the table); their pages and views (`approve.php`,
+    `decline.php`, `send-message.php`) are removed — module search found no links to them. "Re-send to all" and "Delete All" of the pending registrations are
+    the bulk actions with "Select all". The views get no `dataProvider` / `searchModel` any more.
+  - **Changed:** "Send a message" to several registrations opens a dialog with the subject and
+    text (`admin/approval/bulk-message`, `{displayName}` and `{AdminName}` replaced for each
+    user); `POST /api/v2/admin/approval/bulk/` takes `approve` and `decline` only.
+  - **Changed:** the counts in the tabs "Pending approvals" (`admin\widgets\UserMenu`) and
+    "Pending Invites" / "Pending Approvals" (`space\modules\manage\widgets\MemberMenu`) are the
+    waiting dot of the new `MenuLink::$count` instead of a `Badge` in the label.
+  - **Removed:** `admin/pending-registrations/resend|delete|resend-all|delete-all|resend-all-selected|delete-all-selected`,
+    `admin/approval/bulk-actions` and `ApprovalController::ACTION_*` / `USER_SETTINGS_SCREEN_KEY`,
+    `admin\widgets\PendingRegistrations` with its view, `AdminPendingRegistrationsAsset` and
+    `humhub.admin.PendingRegistrations.js` — module search found no users.
+
+- **The topic lists are a data table island** (`topic\widgets\TopicTable`, embedded): the global
+  topics (Administration › Settings › Topics), a space's and the account's, with their rows from
+  `GET /api/v2/admin/topic`, `/space/<id>/topic` and `/user/<id>/topic`.
+  - **New:** `topic\components\TopicTable` / `TopicTableList`, created through the DI container
+    with the container (`null` for the global topics).
+  - **Changed:** the edit, filter and delete buttons of a row are entries of its ⋮ menu. The
+    topic delete routes (`admin/setting/delete-topic`, `topic/manage/delete`) also answer
+    `removed: true`. The global topic page no longer uses Pjax. The views
+    `@admin/views/setting/topics.php` and `@topic/views/manage/overview.php` no longer get a
+    `dataProvider`.
+  - **Removed:** `admin\assets\AdminTopicAsset` with `humhub.admin.topic.js` and
+    `topic.removeOverviewTopic` of `humhub.topic.js` — module search found no users.
+
 - **Every core page that is not a space or profile page starts with a page header**
   (`humhub\widgets\PageHeader`, see `docs/ui/page-header.md`): Administration › Modules, the
   account section, the notification overview, search and the licence page. The former
@@ -1740,6 +1801,24 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     and a `ContentCard` itself; the layout then drops its panel.
   - New: `admin\widgets\ModulesHeaderActions` (menu id `admin-modules-header-actions`). The
     "Add more modules" button of the modules page is its primary entry (`add-modules`).
+
+- **A space's settings start with a page header** (Settings, Security, Members, Modules, with the
+  section's tabs) and show their content in content cards, the active tab naming the card.
+  - **New:** the section layout `@space/modules/manage/views/layouts/section.php` (`title`,
+    `tabs`), used by every view of the space's settings.
+  - **Changed:** the views of `space/manage` no longer render a `.panel` with
+    `DefaultMenu` / `MemberMenu` / `SecurityTabMenu`; their texts "**Space** settings", "**Manage**
+    members", "**Security** settings" are gone. A module adding a tab to one of these menus
+    (module search: enterprise-theme, spaces-map) still works with its own panel; to match core,
+    its view renders the section layout and a `ContentCard`:
+    ```php
+    <?php $this->beginContent('@space/modules/manage/views/layouts/section.php', [
+        'title' => Yii::t('SpaceModule.manage', 'Settings'),
+        'tabs' => new DefaultMenu(['space' => $space]),
+    ]) ?>
+    <?php ContentCard::begin(['title' => Yii::t('MyModule.base', 'My tab')]) ?> … <?php ContentCard::end() ?>
+    <?php $this->endContent() ?>
+    ```
 
 - **The pages below a page header are content cards** (`humhub\widgets\ContentCard`, see
   `docs/ui/card.md`): administration, account, search, licence. Their `h4` titles inside a

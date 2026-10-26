@@ -2547,7 +2547,7 @@
   };
   const _hoisted_8$6 = ["title", "aria-label", "onClick"];
   const _hoisted_9$5 = ["datetime", "title"];
-  const _hoisted_10$5 = { key: 3 };
+  const _hoisted_10$5 = ["title"];
   function _sfc_render$n(_ctx, _cache, $props, $setup, $data, $options) {
     return $props.column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$l, [
       $props.cell.image ? (vue.openBlock(), vue.createElementBlock("img", {
@@ -2628,13 +2628,10 @@
       key: 2,
       datetime: $props.cell.value,
       title: $props.cell.title
-    }, vue.toDisplayString($props.cell.text), 9, _hoisted_9$5)) : (vue.openBlock(), vue.createElementBlock(
-      "span",
-      _hoisted_10$5,
-      vue.toDisplayString($props.cell.text),
-      1
-      /* TEXT */
-    ));
+    }, vue.toDisplayString($props.cell.text), 9, _hoisted_9$5)) : (vue.openBlock(), vue.createElementBlock("span", {
+      key: 3,
+      title: $props.cell.title || null
+    }, vue.toDisplayString($props.cell.text), 9, _hoisted_10$5));
   }
   const TableCell = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
   let uidSeq = 0;
@@ -2812,6 +2809,7 @@
   const C27 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
   const COLUMN_WIDTHS = { main: 240, chip: 160, date: 120, number: 90, text: 150 };
   const SIDE_COLUMN_WIDTH = 48;
+  const REFRESH_EVENT = "humhub:data-table:refresh";
   const FOLD_HYSTERESIS = 32;
   const PAGE_SIZES = [25, 50, 100];
   const SELECT_KEY = "_select";
@@ -2839,7 +2837,21 @@
        */
       columnChoice: { type: Array, default: null },
       columnsUrl: { type: String, default: "" },
-      maxColumns: { type: Number, default: 0 }
+      maxColumns: { type: Number, default: 0 },
+      /**
+       * Inside another card (e.g. below its tabs): no card of its own, an `h3` title.
+       */
+      embedded: { type: Boolean, default: false },
+      /**
+       * The checkboxes of the bulk actions shown until the user chooses otherwise (e.g. lists
+       * mostly worked through in bulk, like pending invitations).
+       */
+      selectByDefault: { type: Boolean, default: false },
+      /**
+       * The back arrow before the title of a sub-page, and its label ("Back to overview").
+       */
+      backUrl: { type: String, default: "" },
+      backLabel: { type: String, default: "" }
     },
     data() {
       return {
@@ -2879,6 +2891,7 @@
           empty: vue$1.i18n.t("base", "No results found!"),
           clearFilters: vue$1.i18n.t("base", "Clear filters"),
           rowsPerPage: vue$1.i18n.t("base", "Rows per page"),
+          back: vue$1.i18n.t("base", "Back"),
           pages: vue$1.i18n.t("base", "Pages"),
           previous: vue$1.i18n.t("base", "Previous page"),
           next: vue$1.i18n.t("base", "Next page"),
@@ -2950,7 +2963,8 @@
         return this.columns.filter((column) => column.type !== "main");
       },
       defaultKeys() {
-        return this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
+        const keys = this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
+        return this.selectByDefault && this.hasBulk ? [SELECT_KEY, ...keys] : keys;
       },
       // What the columns chooser offers: "Bulk select" (the checkbox column), then the optional
       // columns.
@@ -3066,11 +3080,19 @@
         this.resizeObserver = new ResizeObserver(() => this.fold());
         this.resizeObserver.observe(this.$refs.wrap);
       }
+      this.onRefresh = (evt, data) => {
+        if (!data || !data.tableId || data.tableId === this.tableId) {
+          this.clearSelection();
+          this.fetch();
+        }
+      };
+      vue$1.events.on(REFRESH_EVENT, this.onRefresh);
     },
     beforeUnmount() {
       var _a;
       this.requestSeq++;
       (_a = this.resizeObserver) == null ? void 0 : _a.disconnect();
+      vue$1.events.off(REFRESH_EVENT, this.onRefresh);
     },
     methods: {
       reload() {
@@ -3246,7 +3268,8 @@
         if (Array.isArray(this.columnChoice)) {
           return this.columnChoice.filter((key) => keys.includes(key));
         }
-        return this.columns.filter((column) => column.type !== "main" && column.visible !== false).map((column) => column.key);
+        const defaults = this.columns.filter((column) => column.type !== "main" && column.visible !== false).map((column) => column.key);
+        return this.selectByDefault && keys.includes(SELECT_KEY) ? [SELECT_KEY, ...defaults] : defaults;
       },
       openChooser() {
         this.draftKeys = [...this.chosenKeys];
@@ -3282,7 +3305,7 @@
         }
         const columns = this.draftDiffersFromDefault ? keys : null;
         return vue$1.client.put(this.columnsUrl, { data: JSON.stringify({ columns }), contentType: "application/json" }).catch((response) => {
-          vue$1.status("error", response && response.message || vue$1.i18n.t("base", "An unexpected error occurred."));
+          vue$1.status("error", this.errorText(response));
           vue$1.log.error(response);
         });
       },
@@ -3320,6 +3343,10 @@
       // then reloads the page.
       runBulk(action, count) {
         this.closeMenus();
+        if (action.bulkModal) {
+          const params = this.allSelected ? new URLSearchParams({ ...requestParams(this.shownFilters, this.values), all: 1 }) : new URLSearchParams(this.bulkIds(action).map((id) => ["ids[]", id]));
+          return vue$1.modal.load(action.bulkUrl + (action.bulkUrl.includes("?") ? "&" : "?") + params.toString());
+        }
         const body = count === null ? vue$1.i18n.t("base", 'Apply "{action}" to all {count} entries?', { action: action.label, count: this.total }) : vue$1.i18n.t("base", 'Apply "{action}" to {count} selected entries?', { action: action.label, count });
         return vue$1.modal.confirm({ body, confirmText: action.label }).then((ok) => {
           if (!ok) {
@@ -3332,7 +3359,7 @@
             url += params ? (url.includes("?") ? "&" : "?") + params : "";
             data = { all: 1 };
           } else {
-            data = { ids: Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).map((row) => row.id) };
+            data = { ids: this.bulkIds(action) };
           }
           return vue$1.client.post(url, { data }).then((response) => {
             if (response && response.message) {
@@ -3341,10 +3368,22 @@
             this.clearSelection();
             return this.fetch();
           }).catch((response) => {
-            vue$1.status("error", response && response.message || vue$1.i18n.t("base", "An unexpected error occurred."));
+            vue$1.status("error", this.errorText(response));
             vue$1.log.error(response);
           });
         });
+      },
+      // The selected rows offering the bulk action
+      bulkIds(action) {
+        return Object.values(this.selected).filter((row) => (row.actions || []).some((rowAction) => rowAction.id === action.id)).map((row) => row.id);
+      },
+      // The first message of a failed answer (`422 {errors: {field: [messages]}}`, also inside
+      // the client's error envelope), its `message`, or a general one.
+      errorText(response) {
+        var _a, _b;
+        const errors = (response == null ? void 0 : response.errors) || ((_a = response == null ? void 0 : response.error) == null ? void 0 : _a.errors) || ((_b = response == null ? void 0 : response.response) == null ? void 0 : _b.errors);
+        const first = errors && typeof errors === "object" ? Object.values(errors).flat()[0] : null;
+        return first || (response == null ? void 0 : response.message) || vue$1.i18n.t("base", "An unexpected error occurred.");
       },
       isExpanded(row) {
         return !!this.expanded[row.id];
@@ -3480,7 +3519,7 @@
             vue$1.status("success", response.message);
           }
         }).catch((response) => {
-          vue$1.status("error", response && response.message || vue$1.i18n.t("base", "An unexpected error occurred."));
+          vue$1.status("error", this.errorText(response));
           vue$1.log.error(response);
         }).finally(() => {
           const busy = { ...this.busy };
@@ -3495,7 +3534,7 @@
     key: 0,
     class: "card-header"
   };
-  const _hoisted_3$c = ["id"];
+  const _hoisted_3$c = ["href", "aria-label", "title"];
   const _hoisted_4$b = ["aria-label", "title"];
   const _hoisted_5$7 = {
     class: "visually-hidden",
@@ -3622,15 +3661,43 @@
     return vue.openBlock(), vue.createElementBlock("section", {
       id: $props.tableId,
       ref: "root",
-      class: "card content-card data-table",
+      class: vue.normalizeClass(["content-card data-table", $props.embedded ? "data-table-embedded" : "card"]),
       "aria-labelledby": $props.title ? $options.titleId : null
     }, [
-      $props.title || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser || $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$d, [
-        $props.title ? (vue.openBlock(), vue.createElementBlock("h2", {
+      $props.title || $props.backUrl || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser || $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$d, [
+        $props.backUrl ? (vue.openBlock(), vue.createElementBlock("a", {
           key: 0,
+          href: $props.backUrl,
+          class: "card-back btn btn-ghost btn-icon-only",
+          "aria-label": $props.backLabel || $options.texts.back,
+          title: $props.backLabel || $options.texts.back
+        }, [..._cache[12] || (_cache[12] = [
+          vue.createElementVNode(
+            "i",
+            {
+              class: "ti ti-arrow-left",
+              "aria-hidden": "true"
+            },
+            null,
+            -1
+            /* CACHED */
+          )
+        ])], 8, _hoisted_3$c)) : vue.createCommentVNode("v-if", true),
+        $props.title ? (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.embedded ? "h3" : "h2"), {
+          key: 1,
           id: $options.titleId,
           class: "card-title"
-        }, vue.toDisplayString($props.title), 9, _hoisted_3$c)) : vue.createCommentVNode("v-if", true),
+        }, {
+          default: vue.withCtx(() => [
+            vue.createTextVNode(
+              vue.toDisplayString($props.title),
+              1
+              /* TEXT */
+            )
+          ]),
+          _: 1
+          /* STABLE */
+        }, 8, ["id"])) : vue.createCommentVNode("v-if", true),
         vue.createVNode(_component_HeaderActions, {
           actions: $props.headerActions,
           menu: $options.selectedCount ? [] : $props.headerMenu,
@@ -3654,7 +3721,7 @@
                   1
                   /* TEXT */
                 ),
-                _cache[13] || (_cache[13] = vue.createElementVNode(
+                _cache[14] || (_cache[14] = vue.createElementVNode(
                   "i",
                   {
                     class: "ti ti-dots-vertical",
@@ -3677,7 +3744,7 @@
               "aria-label": $options.texts.columns,
               title: $options.texts.columns,
               onClick: _cache[0] || (_cache[0] = (...args) => $options.openChooser && $options.openChooser(...args))
-            }, [..._cache[12] || (_cache[12] = [
+            }, [..._cache[13] || (_cache[13] = [
               vue.createElementVNode(
                 "i",
                 {
@@ -3849,7 +3916,7 @@
                               class: vue.normalizeClass(`data-table-col-${column.type}`)
                             },
                             [
-                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_22, [..._cache[14] || (_cache[14] = [
+                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_22, [..._cache[15] || (_cache[15] = [
                                 vue.createElementVNode(
                                   "span",
                                   { class: "placeholder data-table-main-image" },
@@ -4026,7 +4093,7 @@
                               "toggle-class": "btn btn-ghost btn-icon-only data-table-actions-toggle",
                               "root-class": "data-table-actions-menu list-unstyled m-0"
                             }, {
-                              toggle: vue.withCtx(() => [..._cache[15] || (_cache[15] = [
+                              toggle: vue.withCtx(() => [..._cache[16] || (_cache[16] = [
                                 vue.createElementVNode(
                                   "i",
                                   {
@@ -4152,7 +4219,7 @@
                   "aria-label": $options.texts.previous,
                   disabled: $data.page <= 1,
                   onClick: _cache[6] || (_cache[6] = ($event) => $options.goTo($data.page - 1))
-                }, [..._cache[16] || (_cache[16] = [
+                }, [..._cache[17] || (_cache[17] = [
                   vue.createElementVNode(
                     "i",
                     {
@@ -4207,7 +4274,7 @@
                   "aria-label": $options.texts.next,
                   disabled: $data.page >= $data.pages,
                   onClick: _cache[7] || (_cache[7] = ($event) => $options.goTo($data.page + 1))
-                }, [..._cache[17] || (_cache[17] = [
+                }, [..._cache[18] || (_cache[18] = [
                   vue.createElementVNode(
                     "i",
                     {
@@ -4321,7 +4388,7 @@
         _: 1
         /* STABLE */
       }, 8, ["show", "title"])) : vue.createCommentVNode("v-if", true)
-    ], 8, _hoisted_1$j);
+    ], 10, _hoisted_1$j);
   }
   const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
   const carriesFiles = (event) => {

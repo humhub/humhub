@@ -14,6 +14,9 @@ use humhub\helpers\Html;
 /* @var $title string */
 /* @var $titleTag string */
 /* @var $description string */
+/* @var $badges string */
+/* @var $backUrl string|array|null */
+/* @var $backLabel string|null */
 /* @var $buttons string */
 /* @var $actions string */
 /* @var $menu string */
@@ -29,11 +32,21 @@ if ($title !== '') {
 }
 ?>
 <?= Html::beginTag($title !== '' ? 'section' : 'div', $options) ?>
-    <?php if ($title !== '' || $buttons !== '' || $actions !== '' || $menu !== '') : ?>
+    <?php if ($title !== '' || $backUrl !== null || $buttons !== '' || $actions !== '' || $menu !== '') : ?>
         <div class="card-header">
+            <?php if ($backUrl !== null) : ?>
+                <?= $this->render('_backLink', ['url' => $backUrl, 'label' => $backLabel, 'class' => 'card-back']) ?>
+            <?php endif; ?>
             <?php if ($title !== '') : ?>
                 <div class="card-heading">
-                    <?= Html::tag($titleTag, Html::encode($title), ['id' => $titleId, 'class' => 'card-title']) ?>
+                    <?php if ($badges !== '') : ?>
+                        <div class="card-title-line">
+                            <?= Html::tag($titleTag, Html::encode($title), ['id' => $titleId, 'class' => 'card-title']) ?>
+                            <?= $badges ?>
+                        </div>
+                    <?php else : ?>
+                        <?= Html::tag($titleTag, Html::encode($title), ['id' => $titleId, 'class' => 'card-title']) ?>
+                    <?php endif; ?>
                     <?php if ($description !== '') : ?>
                         <p class="card-subtitle"><?= $description ?></p>
                     <?php endif; ?>

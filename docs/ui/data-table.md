@@ -304,6 +304,45 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   marketplace nothing: available updates are a hint above it (`AvailableModuleUpdatesInfo`, the
   count the hourly cron stores) linking to the marketplace.
 
+- **Embedded:** inside another card, e.g. below a record's tabs (`DataTableWidget::$embedded`,
+  the component's `embedded`): no card of its own, an `h3` title, on the outer card's padding.
+  Only where the outer card has its own title and tabs (a record's card); below a page header
+  the table is the card itself (as Users), so its title and tools share one header.
+  The members of a group (Administration › Groups › Members, `admin\components\GroupMemberTable`,
+  `GET /api/v2/admin/group/<id>/member`: name, role, member since; make / unmake group manager,
+  remove, also in bulk; "Add members" opens a dialog) are an embedded table; those of a space
+  (Space › Settings › Members, `space\modules\manage\components\SpaceMemberTable`,
+  `GET /api/v2/space/<id>/member`: name, role, member since, last visit; another role, remove,
+  also in bulk) are the card below the members' page header.
+  The topics (Administration › Settings › Topics, a space's and the account's topic settings,
+  `topic\components\TopicTable`, `GET /api/v2/admin/topic`, `/space/<id>/topic`,
+  `/user/<id>/topic`: name, contents, sort order; edit, show contents, delete) are one embedded
+  table, the container its property (none for the global topics).
+  A table bound to a record takes it as a property (`group`, `space`, `container`) and its
+  endpoint reads the record from the route.
+
+- **Pending lists:** the pending registrations (Administration › Users › Pending registrations,
+  a sub-page with a back arrow, `PendingRegistrationTable`, `GET /api/v2/admin/invite`: e-mail,
+  invited by, source, created; resend, delete; exports in the ⋮ menu), the registrations
+  awaiting approval (Users › Pending approvals, `ApprovalTable`, `GET /api/v2/admin/approval`:
+  name, groups, registered, on request invited by, messages sent and each registration profile
+  field; approve, message, decline in a dialog with the mail's text, in bulk too), and a
+  space's open invitations and membership requests (`SpaceInvitationTable`,
+  `SpaceApplicantTable`, `GET /api/v2/space/<id>/invitation|applicant`: cancel; accept,
+  decline). These lists are mostly worked through in bulk: their checkboxes show by default
+  (`DataTableWidget::$selectByDefault`).
+- **Back arrow:** a table that is a sub-page shows the back arrow before its title
+  (`DataTableWidget::$backUrl`, `$backLabel`), as a content card does.
+- **Bulk endpoints:** `DataTableController::bulkAction($actionId, $findByIds, $apply, $message)`
+  applies a row action with a `bulkUrl` to `ids` or `all` (the list's filters), skipping the rows
+  that do not offer it, and answers `{done, skipped, message}`.
+- **Errors:** a failed action shows the first message of its `422 {errors}` answer.
+- **Bulk dialogs:** a bulk action that needs input first (e.g. the message to the selected
+  registrations) is a `RowAction` with `bulkModal: true`: its `bulkUrl` is loaded into the global
+  modal with `ids[]` (or `all` and the filters) in the query. After saving, the dialog asks the
+  table to load its rows again: the event `humhub:data-table:refresh` with `{tableId}` (e.g. as
+  `ModalClose`'s `script`).
+
 - **Columns chooser:** ▦ in the header opens a dialog with a switch per optional column (a
   column's `visible` is its default) and "Bulk select" (key `_select`), as a list group with the
   switch at the end of each row; at most `maxColumns` (the others then locked), "Hidden at this

@@ -69,6 +69,21 @@ class ContentCardTest extends HumHubDbTestCase
         $this->assertTrue(ContentCard::isRendered($view));
     }
 
+    public function testRendersTheBackArrowOfASubPageBeforeTheTitle()
+    {
+        $html = $this->render(['title' => 'Edit user', 'backUrl' => '/admin/user', 'backLabel' => 'Back to overview']);
+
+        $this->assertMatchesRegularExpression('#<a class="card-back btn btn-ghost btn-icon-only" href="/admin/user" title="Back to overview" aria-label="Back to overview">#', $html);
+        $this->assertLessThan(strpos($html, 'card-title'), strpos($html, 'card-back'));
+    }
+
+    public function testRendersBadgesNextToTheTitle()
+    {
+        $html = $this->render(['title' => 'Administrators', 'badges' => '<span class="badge">Admin</span>']);
+
+        $this->assertMatchesRegularExpression('#<div class="card-title-line">\s*<h2 [^>]*>Administrators</h2>\s*<span class="badge">Admin</span>#', $html);
+    }
+
     public function testIsAPlainDivWithoutTitleAndActions()
     {
         $html = $this->render(['footer' => '<span class="pager"></span>']);

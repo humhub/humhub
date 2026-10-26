@@ -10,17 +10,16 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\DelegateAccessValidator;
+use humhub\components\listing\ListContext;
+use humhub\helpers\Html;
+use humhub\modules\admin\components\ApprovalTable;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\ApproveUserBulkMessageForm;
 use humhub\modules\admin\models\forms\ApproveUserForm;
-use humhub\modules\admin\models\UserApprovalSearch;
-use humhub\modules\admin\Module;
-use humhub\modules\user\models\ProfileField;
-use Throwable;
+use humhub\modules\admin\widgets\ApprovalTable as ApprovalTableWidget;
+use humhub\modules\user\models\User;
+use humhub\widgets\modal\ModalClose;
 use Yii;
-use yii\base\InvalidConfigException;
-use yii\db\StaleObjectException;
-use yii\web\HttpException;
-use yii\web\Response;
 
 /**
  * ApprovalController handles new user approvals
@@ -31,12 +30,6 @@ class ApprovalController extends Controller
      * @inheritdoc
      */
     public $adminOnly = false;
-
-    public const ACTION_SEND_MESSAGE = 'send_message';
-    public const ACTION_APPROVE = 'approve';
-    public const ACTION_DECLINE = 'decline';
-
-    public const USER_SETTINGS_SCREEN_KEY = 'admin_approval_screen_profile_fields_id';
 
     /**
      * @inheritdoc
@@ -77,156 +70,155 @@ class ApprovalController extends Controller
     }
 
     /**
-     * @return string
-     * @throws Throwable
-     * @throws InvalidConfigException
+     * The registrations awaiting approval (`admin\widgets\ApprovalTable`, its rows from
+     * `GET /api/v2/admin/approval`)
      */
     public function actionIndex()
     {
-        $searchModel = new UserApprovalSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        // Get available profile fields for screen options
-        $availableProfileFields = ProfileField::find()
-            ->joinWith('category')
-            ->orderBy([
-                'profile_field_category.sort_order' => SORT_ASC,
-                'profile_field.sort_order' => SORT_ASC,
-            ])
-            ->where(['profile_field.show_at_registration' => true])
-            ->andWhere(['not', ['profile_field.internal_name' => ['firstname', 'lastname']]])
-            ->all();
-
-        // Get or set screen options
-        /** @var Module $module */
-        $module = Yii::$app->getModule('admin');
-        $screenProfileFieldsId = $module->settings->user()->getSerialized(self::USER_SETTINGS_SCREEN_KEY, []);
-        if (Yii::$app->request->isPost) {
-            $screenProfileFieldsId = Yii::$app->request->post('screenProfileFieldsId', []);
-            $module->settings->user()->setSerialized(self::USER_SETTINGS_SCREEN_KEY, $screenProfileFieldsId);
-        }
-        $profileFieldsColumns = !$screenProfileFieldsId ? [] : ProfileField::find()
-            ->where(['id' => $screenProfileFieldsId])
-            ->indexBy('id')
-            ->all();
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'availableProfileFields' => $availableProfileFields,
-            'profileFieldsColumns' => $profileFieldsColumns,
-        ]);
+        return $this->render('index');
     }
 
     /**
-     * @param $id
-     * @return string|\yii\console\Response|Response
-     * @throws Throwable
-     * @throws InvalidConfigException
+     * "Send a message" for the selected rows of the approval table: the dialog (GET, the users in
+     * `ids[]`, or `all` with the list's filters), and sending it (POST).
+     */
+    public function actionBulkMessage()
+    {
+        $request = Yii::$app->request;
+        $model = new ApproveUserBulkMessageForm();
+
+        if ($request->isPost) {
+            $model->load($request->post());
+            $users = $this->approvalUsers($model->ids, false, []);
+            if ($model->validate()) {
+                $sent = $model->send($users);
+                // The table loads its rows (the messages sent) again
+                $refresh = self::refreshTableScript();
+                return $sent === count($users)
+                    ? ModalClose::widget(['script' => $refresh, 'success' => Yii::t('AdminModule.user', '{count, plural, =1{1 user was notified by email} other{# users were notified by email}}.', ['count' => $sent])])
+                    : ModalClose::widget(['script' => $refresh, 'error' => Yii::t('AdminModule.user', 'Could not send the message to {count} of {total} users.', ['count' => count($users) - $sent, 'total' => count($users)])]);
+            }
+        } else {
+            $users = $this->approvalUsers((array)$request->get('ids', []), (bool)$request->get('all'), $request->get());
+            $model->setDefaults();
+        }
+
+        $model->ids = array_map(static fn(User $user) => (int)$user->id, $users);
+
+        return $this->renderAjax('bulk-message', ['model' => $model]);
+    }
+
+    /**
+     * The registrations of the approval table a message may be sent to: the given ones, or all of
+     * the list's filters.
+     *
+     * @return User[]
+     */
+    private function approvalUsers(array $ids, bool $all, array $params): array
+    {
+        $table = Yii::createObject(ApprovalTable::class);
+        $params = array_intersect_key($params, array_flip(['q']));
+        $query = $table->getList()->build($params, ListContext::forCurrentUser())->query();
+        if (!$all) {
+            $query->andWhere(['user.id' => array_map('intval', $ids)]);
+        }
+
+        $action = $table->getAction('message');
+
+        return array_values(array_filter($query->all(), static fn(User $user) => $action === null || $action->isVisibleFor($user)));
+    }
+
+    /**
+     * The dialog of a message to a registration awaiting approval.
      */
     public function actionSendMessage($id)
     {
         $model = new ApproveUserForm($id);
         $model->setSendMessageDefaults();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->sendMessage()) {
-                $this->view->success(Yii::t('AdminModule.user', 'The message has been sent by email.'));
-                return $this->redirect(['index']);
-            }
-            $this->view->error(Yii::t('AdminModule.user', 'Could not send the message to the user!'));
-        }
 
-        return $this->render('send-message', [
-            'model' => $model->user,
-            'approveFormModel' => $model,
+        return $this->handleApprovalForm($model, [
+            'run' => static fn() => $model->sendMessage(),
+            'title' => Html::encode(Yii::t('AdminModule.user', 'Send a message to {displayName}', ['displayName' => $model->user->displayName])),
+            'submit' => Yii::t('AdminModule.user', 'Send'),
+            'success' => Yii::t('AdminModule.user', 'The message has been sent by email.'),
+            'failure' => Yii::t('AdminModule.user', 'Could not send the message to the user!'),
         ]);
     }
 
     /**
-     * @param $id
-     * @return string|\yii\console\Response|\yii\web\Response
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * The dialog approving a registration, with the message to the user.
      */
     public function actionApprove($id)
     {
         $model = new ApproveUserForm($id);
         $model->setApprovalDefaults();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->approve()) {
-                $this->view->success(Yii::t('AdminModule.user', 'The registration was approved and the user was notified by email.'));
-                return $this->redirect(['index']);
-            }
-            $this->view->error(Yii::t('AdminModule.user', 'Could not approve the user!'));
-        }
+        $userId = (int)$model->user->id;
 
-        return $this->render('approve', [
-            'model' => $model->user,
-            'approveFormModel' => $model,
+        return $this->handleApprovalForm($model, [
+            // Approved even if the notification could not be sent
+            'run' => static fn() => $model->approve()
+                || (int)User::find()->select('status')->where(['id' => $userId])->scalar() === User::STATUS_ENABLED,
+            'title' => Html::encode(Yii::t('AdminModule.user', 'Accept user: {displayName}', ['displayName' => $model->user->displayName])),
+            'submit' => Yii::t('AdminModule.user', 'Send & save'),
+            'success' => Yii::t('AdminModule.user', 'The registration was approved and the user was notified by email.'),
+            'failure' => Yii::t('AdminModule.user', 'Could not approve the user!'),
         ]);
     }
 
     /**
-     * @param $id
-     * @return string|\yii\console\Response|Response
-     * @throws Throwable
-     * @throws InvalidConfigException
-     * @throws StaleObjectException
+     * The dialog declining a registration (the account is deleted), with the message to the user.
      */
     public function actionDecline($id)
     {
         $model = new ApproveUserForm($id);
         $model->setDeclineDefaults();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->decline()) {
-                $this->view->success(Yii::t('AdminModule.user', 'The registration was declined and the user was notified by email.'));
-                return $this->redirect(['index']);
-            }
-            $this->view->error(Yii::t('AdminModule.user', 'Could not decline the user!'));
-        }
+        $userId = (int)$model->user->id;
 
-        return $this->render('decline', [
-            'model' => $model->user,
-            'approveFormModel' => $model,
+        return $this->handleApprovalForm($model, [
+            // Declined even if the notification could not be sent
+            'run' => static fn() => $model->decline() || !User::find()->where(['id' => $userId])->exists(),
+            'title' => Html::encode(Yii::t('AdminModule.user', 'Decline & delete user: {displayName}', ['displayName' => $model->user->displayName])),
+            'submit' => Yii::t('AdminModule.user', 'Send & decline'),
+            'success' => Yii::t('AdminModule.user', 'The registration was declined and the user was notified by email.'),
+            'failure' => Yii::t('AdminModule.user', 'Could not decline the user!'),
+            'destructive' => true,
         ]);
     }
 
     /**
-     * @return string|\yii\console\Response|Response
-     * @throws HttpException
-     * @throws Throwable
-     * @throws InvalidConfigException
+     * The dialog of a single registration of the approval table, and running it when posted: the
+     * dialog closes and the table loads its rows again. Outside the table (no AJAX), the table.
+     *
+     * @param array $options `run` (`fn(): bool`), `title` (HTML), `submit`, `success`,
+     * `failure`, `destructive`
      */
-    public function actionBulkActions()
+    private function handleApprovalForm(ApproveUserForm $model, array $options)
     {
-        /** @var string $action */
-        $action = Yii::$app->request->post('action');
-        /** @var array $usersId */
-        $usersId = Yii::$app->request->post('ids');
-
-        if (!$usersId) {
-            $this->view->error(Yii::t('AdminModule.user', 'No users were selected.'));
+        if (!Yii::$app->request->isAjax) {
             return $this->redirect(['index']);
         }
 
-        $model = new ApproveUserForm($usersId);
-
-        if ($action === self::ACTION_SEND_MESSAGE && $model->bulkSendMessage()) {
-            $this->view->success(Yii::t('AdminModule.user', 'The users were notified by email.'));
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            $done = ($options['run'])();
+            return ModalClose::widget([
+                'script' => self::refreshTableScript(),
+                $done ? 'success' : 'error' => $done ? $options['success'] : $options['failure'],
+            ]);
         }
 
-        if ($action === self::ACTION_APPROVE && $model->bulkApprove()) {
-            $this->view->success(Yii::t('AdminModule.user', 'The registrations were approved and the users were notified by email.'));
-            return $this->redirect(['index']);
-        }
-
-        if ($action === self::ACTION_DECLINE && $model->bulkDecline()) {
-            $this->view->success(Yii::t('AdminModule.user', 'The registrations were declined and the users were notified by email.'));
-            return $this->redirect(['index']);
-        }
-
-        throw new HttpException(400, 'Invalid action!');
+        return $this->renderAjax('_dialog', [
+            'approveFormModel' => $model,
+            'title' => $options['title'],
+            'submit' => $options['submit'],
+            'destructive' => $options['destructive'] ?? false,
+        ]);
     }
 
+    /**
+     * The script asking the approval table to load its rows again.
+     */
+    private static function refreshTableScript(): string
+    {
+        return 'humhub.require("event").trigger("humhub:data-table:refresh", {tableId: ' . json_encode(ApprovalTableWidget::TABLE_ID) . '});';
+    }
 }

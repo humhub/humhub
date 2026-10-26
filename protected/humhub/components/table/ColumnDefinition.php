@@ -17,7 +17,7 @@ use Closure;
  * - `main`: image, linked name and subtitle; always visible
  * - `chip`: one or several neutral badges (`[{text, value}]`), each a button setting the column's
  *   `filter` when it has one; or a status badge (`{text, tone}`)
- * - `number`, `date`, `text`: one value (`{text}`; a date also `{value, title}`)
+ * - `number`, `date`, `text`: one value (`{text}`, a tooltip `title`; a date also `value`)
  *
  * The cells come from the table ({@see DataTable::cells()}); a column a module adds brings its own
  * cell with `value` (`fn($model): ?array`). A column other than the main one is optional: shown

@@ -44,6 +44,28 @@ $data-table-page-size-width: 5.5rem !default;
         gap: $data-table-gap;
     }
 
+    // Inside another card: no card of its own, on the outer card's padding
+    .data-table-embedded {
+        box-shadow: none;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        > .card-header {
+            padding: 0 0 $spacer * .5;
+        }
+
+        // The outer card's `--bs-card-spacer-*` would apply
+        > .card-body {
+            padding: 0;
+        }
+
+        > .card-footer {
+            padding: $spacer 0 0;
+        }
+    }
+
     // The filter bar sits on the card's own padding
     .data-table .filter-bar-body {
         padding: 0;

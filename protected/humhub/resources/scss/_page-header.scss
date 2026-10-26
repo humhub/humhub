@@ -39,6 +39,13 @@ $page-header-title-color: var(--hh-text-color-highlight) !default;
         box-shadow: var(--hh-page-header-box-shadow);
     }
 
+    // What follows the page header (its content cards, a data table, a hint) is as wide as it
+    .page-header ~ * {
+        width: 100%;
+        max-width: var(--hh-page-header-max-width, #{$page-header-max-width});
+        margin-inline: auto;
+    }
+
     @if $enable-dark-mode {
         @include color-mode(dark) {
             .page-header {

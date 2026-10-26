@@ -3,7 +3,6 @@
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Url;
 use yii\web\View;
 
 /* @var $name string */
@@ -70,20 +69,17 @@ JS, View::POS_LOAD);
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-    <div class="clearfix">
-        <?= Button::back(Url::to(['setting/oembed']), Yii::t('AdminModule.settings', 'Back to overview')) ?>
-        <h3 class="float-start">
-            <?php
-            if (empty($name)) {
-                echo Yii::t('AdminModule.settings', 'Add OEmbed provider');
-            } else {
-                echo Yii::t('AdminModule.settings', 'Edit OEmbed provider');
-            }
-            ?>
+    <div class="d-flex align-items-center gap-2 mb-3">
+        <?= $this->render('@humhub/widgets/views/_backLink', [
+            'url' => ['setting/oembed'],
+            'label' => Yii::t('AdminModule.settings', 'Back to overview'),
+        ]) ?>
+        <h3 class="m-0">
+            <?= empty($name)
+                ? Yii::t('AdminModule.settings', 'Add OEmbed provider')
+                : Yii::t('AdminModule.settings', 'Edit OEmbed provider') ?>
         </h3>
     </div>
-
-    <br>
 
 <?php $form = ActiveForm::begin(['id' => 'oembed-provider-form', 'acknowledge' => true]); ?>
 

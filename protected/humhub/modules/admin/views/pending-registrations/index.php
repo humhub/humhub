@@ -1,17 +1,12 @@
 <?php
 
-use humhub\modules\admin\models\PendingRegistrationSearch;
-use humhub\modules\admin\widgets\PendingRegistrations;
+use humhub\components\View;
+use humhub\modules\admin\widgets\PendingRegistrationTable;
+use humhub\widgets\ContentCard;
 
-/** @var $searchModel PendingRegistrationSearch */
-/** @var $dataProvider yii\data\ActiveDataProvider */
-/** @var $types array */
+/* @var $this View */
 
-
+// The table island is a content card of its own
+ContentCard::markRendered($this);
 ?>
-
-<?= PendingRegistrations::widget([
-    'dataProvider' => $dataProvider,
-    'searchModel' => $searchModel,
-    'types' => $types,
-]) ?>
+<?= PendingRegistrationTable::widget() ?>

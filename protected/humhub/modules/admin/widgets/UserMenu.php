@@ -15,7 +15,6 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\PillTabs;
-use humhub\widgets\bootstrap\Badge;
 use Yii;
 
 /**
@@ -55,11 +54,8 @@ class UserMenu extends PillTabs
 
         if ($approvalCount > 0 || Yii::$app->user->isGroupManager()) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' '
-                    . ($approvalCount > 0
-                        ? Badge::danger((string)$approvalCount)
-                        : Badge::light((string)$approvalCount)),
-                'encodeLabel' => false,
+                'label' => Yii::t('AdminModule.user', 'Pending approvals'),
+                'count' => $approvalCount,
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),

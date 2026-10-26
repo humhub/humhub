@@ -326,7 +326,7 @@ class PermissionCest
         $I->dontSee('Information', '#admin-menu');
 
         $I->amOnRoute('/space/manage', ['sguid' => '5396d499-20d6-4233-800b-c6c86e5fa34c']);
-        $I->see('Space settings');
+        $I->see('Settings', '.page-header-title');
         $I->see('Basic');
         $I->see('Advanced');
 

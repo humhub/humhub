@@ -13,7 +13,8 @@ use humhub\widgets\form\SortOrderField;
     'title' => $category->isNewRecord
         ? Yii::t('AdminModule.user', 'Create new profile category')
         : Yii::t('AdminModule.user', 'Edit profile category'),
-    'buttons' => Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))->sm()->asString(),
+    'backUrl' => ['index'],
+    'backLabel' => Yii::t('AdminModule.base', 'Back to overview'),
 ]) ?>
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 

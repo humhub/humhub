@@ -5,6 +5,7 @@ namespace admin\functional;
 use admin\FunctionalTester;
 use humhub\modules\user\models\Invite;
 use Yii;
+use yii\helpers\Url;
 
 class ApprovalCest
 {
@@ -56,10 +57,8 @@ class ApprovalCest
         $I->see('New approval requests');
         $I->click('Click here to review');
         $I->see('Pending approvals', '.content-card .card-title');
-        $I->dontSee('approvalTest@test.de');
-
-        // This user was created by fixtures
-        $I->see('unapproved@example.com');
+        // The rows of the table (AdminApprovalApiCest)
+        $I->seeElement('.data-table');
 
         // Try to approve the user of another group
         $I->amOnRoute('/admin/approval/approve', ['id' => 8]);
@@ -123,11 +122,12 @@ class ApprovalCest
         $I->click('Click here to review');
         $I->see('Pending approvals', '.content-card .card-title');
 
-        $I->see('approvalTest@test.de');
-        $I->amOnRoute('/admin/approval/approve', ['id' => 9]);
-
-        $I->see('Accept user: approval test');
-        $I->click('Send & save');
+        $I->seeElement('.data-table');
+        // The dialog of the approval table
+        $url = Url::to(['/admin/approval/approve', 'id' => 9]);
+        $I->sendAjaxGetRequest($url);
+        $I->seeInSource('Accept user: approval test');
+        $I->sendAjaxPostRequest($url, ['ApproveUserForm' => ['subject' => 'Welcome', 'message' => 'Welcome on board']]);
 
         $I->logout();
         $I->amUser('approvalTest', 'approval^humhub@PASS%worD!');

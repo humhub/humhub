@@ -9,13 +9,11 @@
 namespace humhub\modules\space\modules\manage\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\helpers\Html;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\PillTabs;
-use humhub\widgets\bootstrap\Badge;
 use Yii;
 
 /**
@@ -45,8 +43,8 @@ class MemberMenu extends PillTabs
 
         if ($this->countPendingInvites() != 0) {
             $this->addEntry(new MenuLink([
-                'label' => Html::encode(Yii::t('SpaceModule.manage', 'Pending Invites')) . '&nbsp;&nbsp;' . Badge::danger($this->countPendingInvites()),
-                'encodeLabel' => false,
+                'label' => Yii::t('SpaceModule.manage', 'Pending Invites'),
+                'count' => (int)$this->countPendingInvites(),
                 'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
                 'sortOrder' => 200,
                 'isActive' => ControllerHelper::isActivePath(null, 'member', 'pending-invitations'),
@@ -54,8 +52,8 @@ class MemberMenu extends PillTabs
         }
         if ($this->countPendingApprovals() != 0) {
             $this->addEntry(new MenuLink([
-                'label' => Html::encode(Yii::t('SpaceModule.manage', 'Pending Approvals')) . '&nbsp;&nbsp;' . Badge::danger($this->countPendingApprovals()),
-                'encodeLabel' => false,
+                'label' => Yii::t('SpaceModule.manage', 'Pending Approvals'),
+                'count' => (int)$this->countPendingApprovals(),
                 'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath(null, 'member', 'pending-approvals'),

@@ -158,6 +158,23 @@ describe('DataTable', () => {
         expect(lastRequest().get('group')).toBeNull();
     });
 
+    it('sits inside another card when embedded, with an h3 title', async () => {
+        wrapper = mountTable({ embedded: true, title: 'Members' });
+        await flushPromises();
+        const root = wrapper.find('.data-table');
+        expect(root.classes()).toContain('data-table-embedded');
+        expect(root.classes()).not.toContain('card');
+        expect(wrapper.find('h3.card-title').text()).toBe('Members');
+    });
+
+    it('shows a back arrow before the title of a sub-page', async () => {
+        wrapper = mountTable({ title: 'Pending registrations', backUrl: '/admin/user', backLabel: 'Back to user overview' });
+        await flushPromises();
+        const back = wrapper.find('.card-header .card-back');
+        expect(back.attributes('href')).toBe('/admin/user');
+        expect(back.attributes('aria-label')).toBe('Back to user overview');
+    });
+
     it('offers no columns chooser with nothing to choose, and shows the default columns', async () => {
         wrapper = mountTable({ columnChoice: ['lastLogin'] });
         await flushPromises();
@@ -515,6 +532,18 @@ describe('DataTable', () => {
                 { total: 30, pages: 2 },
             )));
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ done: 2, skipped: 0, message: '2 users were changed.' }));
+        });
+
+        it('shows the checkboxes by default where asked to', async () => {
+            wrapper = mountTable({ actions: bulkActions, selectByDefault: true });
+            await flushPromises();
+            expect(checkbox(1).exists()).toBe(true);
+
+            // A choice of one's own still wins
+            wrapper.unmount();
+            wrapper = mountTable({ actions: bulkActions, selectByDefault: true, columnChoice: ['groups'] });
+            await flushPromises();
+            expect(checkbox(1).exists()).toBe(false);
         });
 
         it('offers no checkboxes without a bulk action', async () => {

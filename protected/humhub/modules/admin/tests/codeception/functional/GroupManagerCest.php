@@ -24,26 +24,25 @@ class GroupManagerCest
         $I->dontSee('Add new user');
 
         $unapprovedGroupUser = User::findOne(['username' => 'UnapprovedUser']);
-        $I->see($unapprovedGroupUser->displayName);
-        $I->see($unapprovedGroupUser->email);
+        $unapprovedNoGroupUser = User::findOne(['username' => 'UnapprovedNoGroup']);
+        // The rows of the table (AdminApprovalApiCest)
+        $I->seeElement('.data-table');
         // Group manager has only permissions to approve/send message/decline
-        $I->amOnRoute('/admin/approval/send-message', ['id' => $unapprovedGroupUser->id]);
-        $I->see('Send a message to ' . $unapprovedGroupUser->displayName);
-        $I->amOnRoute('/admin/approval/approve', ['id' => $unapprovedGroupUser->id]);
-        $I->see('Accept user: ' . $unapprovedGroupUser->displayName);
-        $I->amOnRoute('/admin/approval/decline', ['id' => $unapprovedGroupUser->id]);
-        $I->see('Decline & delete user: ' . $unapprovedGroupUser->displayName);
+        // The dialogs of the approval table
+        $I->sendAjaxGetRequest(Url::to(['/admin/approval/send-message', 'id' => $unapprovedGroupUser->id]));
+        $I->seeInSource('Send a message to ' . $unapprovedGroupUser->displayName);
+        $I->sendAjaxGetRequest(Url::to(['/admin/approval/approve', 'id' => $unapprovedGroupUser->id]));
+        $I->seeInSource('Accept user: ' . $unapprovedGroupUser->displayName);
+        $I->sendAjaxGetRequest(Url::to(['/admin/approval/decline', 'id' => $unapprovedGroupUser->id]));
+        $I->seeInSource('Decline &amp; delete user: ' . $unapprovedGroupUser->displayName);
         // But cannot edit the user
         $I->amOnRoute('/admin/user/edit', ['id' => $unapprovedGroupUser->id]);
         $I->seeResponseCodeIs(403);
         $I->see('You are not permitted to access this section.');
 
-        $unapprovedNoGroupUser = User::findOne(['username' => 'UnapprovedNoGroup']);
-        $I->dontSee($unapprovedNoGroupUser->displayName);
-        $I->dontSee($unapprovedNoGroupUser->email);
 
-        $I->amOnRoute('/admin/approval/send-message', ['id' => $unapprovedNoGroupUser->id]);
-        $I->dontSee('Send a message to ' . $unapprovedNoGroupUser->displayName);
+        $I->sendAjaxGetRequest(Url::to(['/admin/approval/send-message', 'id' => $unapprovedNoGroupUser->id]));
+        $I->dontSeeInSource('Send a message to ' . $unapprovedNoGroupUser->displayName);
         $I->seeResponseCodeIs(404);
         $I->see('User not found!');
     }
@@ -85,11 +84,6 @@ class GroupManagerCest
 
         $I->amOnRoute('/admin/group/manage-group-users', ['id' => $group->id]);
         $I->see('Manage group: ' . $group->name);
-        $I->sendAjaxPostRequest(Url::toRoute('/admin/group/edit-manager-role'), [
-            'id' => $group->id,
-            'userId' => User::findOne(['username' => 'UnapprovedUser'])->id,
-            'value' => 1,
-        ]);
-        $I->seeResponseCodeIs(403);
+        $I->seeElement('.data-table');
     }
 }

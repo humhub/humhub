@@ -3,7 +3,6 @@
 use humhub\compat\HForm;
 use humhub\helpers\Html;
 use humhub\modules\user\models\ProfileField;
-use humhub\widgets\bootstrap\Button;
 use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 
@@ -15,7 +14,8 @@ use humhub\widgets\form\ActiveForm;
     'title' => $field->isNewRecord
         ? Yii::t('AdminModule.user', 'Create new profile field')
         : Yii::t('AdminModule.user', 'Edit profile field'),
-    'buttons' => Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))->sm()->asString(),
+    'backUrl' => ['index'],
+    'backLabel' => Yii::t('AdminModule.base', 'Back to overview'),
     'options' => ['id' => 'edit-profile-field-root'],
 ]) ?>
 <?php $form = ActiveForm::begin(); ?>

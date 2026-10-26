@@ -64,6 +64,12 @@ class PageHeader extends Widget implements Stringable
      */
     public string|array|null $backUrl = null;
 
+    /**
+     * @var string|null the back arrow's label (tooltip, `aria-label`), e.g. "Back to overview";
+     * "Back" if not set
+     */
+    public ?string $backLabel = null;
+
     public static function title(string $title): static
     {
         return new static(['title' => $title]);
@@ -87,9 +93,10 @@ class PageHeader extends Widget implements Stringable
         return $this;
     }
 
-    public function backUrl(string|array|null $url): static
+    public function backUrl(string|array|null $url, ?string $label = null): static
     {
         $this->backUrl = $url;
+        $this->backLabel = $label;
         return $this;
     }
 
@@ -112,6 +119,7 @@ class PageHeader extends Widget implements Stringable
             'menu' => $this->renderMenu($this->menu, menuConfig: ['template' => '@humhub/widgets/menu/views/header-menu']),
             'tabs' => $this->renderMenu($this->tabs, ['label' => $this->title]),
             'backUrl' => $this->backUrl,
+            'backLabel' => $this->backLabel,
         ]);
     }
 

@@ -33,8 +33,8 @@ are `h3`. All three are short, plain titles without `<strong>`.
   (Users › Settings → card "Settings" with General / LDAP / … below it).
 - **Without tabs, the card has no title** when it would only repeat the page title (Modules,
   Account › Modules, Search). A short explanation is then the first, muted line of the body.
-- **Sub-pages** (add, edit, delete) take their action as title: "Edit user: Jane Doe", with
-  "Back to overview" as a header button.
+- **Sub-pages** (add, edit, delete) take their action as title: "Edit user: Jane Doe", with a
+  back arrow before it leading to the overview (labelled "Back to overview").
 - **Description:** only when it adds something the title doesn't say (e.g. "These settings can be
   overwritten by users"), never "Here you can configure …". Ordinary text below the title, at
   most two sentences, never as a separate block in the body.
@@ -55,7 +55,7 @@ is the look of the tools: **ghost** in a card header, **secondary** in the page 
 | Is a card of its own | yes | no, it is the top of a card |
 | Heading | `h1`, exactly one per page | `h2`, several per page possible |
 | Pill Tabs | yes | no |
-| Back arrow | yes | no |
+| Back arrow | yes | yes, on a sub-page |
 | Content navigation (‹ ›, path bar, view switch) | no | yes |
 | Tools | secondary | ghost |
 
@@ -122,9 +122,12 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 **In core (1.20):**
 
 - **PHP:** `humhub\widgets\ContentCard` (`begin()` / `end()` around the content; `title`,
-  `titleTag` (default `h2`), `description` (HTML), `buttons` (HTML, e.g. a secondary text button
-  for an action that is not a save, or "Back to overview"), `actions`, `menu`, `tabs` (secondary
-  `PillTabs`), `footer`, `options`).
+  `titleTag` (default `h2`), `description` (HTML), `badges` (HTML next to the title, e.g.
+  "Administrative group"), `backUrl` and `backLabel` (the back arrow of
+  a sub-page, e.g. "Back to overview"), `buttons` (HTML, e.g. a secondary text button for an
+  action that is not a save), `actions`, `menu`, `tabs` (secondary `PillTabs`), `footer`,
+  `options`). The arrow is the page header's (`widgets/views/_backLink.php`); a heading inside a
+  card body renders that partial before it. `Button::back()` (a text button) stays for modules.
 - **Layouts:** a layout that used to wrap its views in a `.panel` (the administration's
   sections, the account) leaves that out when the view rendered a card:
   `ContentCard::isRendered($view)`. A view whose card comes from a Vue island calls

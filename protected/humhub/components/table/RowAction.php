@@ -46,6 +46,9 @@ class RowAction
      * @param bool $destructive shown last and in red; asks for confirmation when `confirm` is set
      * @param callable|null $visible `fn($model): bool` whether a row offers the action
      * @param string|array|null $bulkUrl the endpoint applying the action to the selected rows
+     * @param bool $bulkModal whether `bulkUrl` is a dialog (loaded with `ids[]`, or `all` and the
+     *        list's filters, in the query) instead of an endpoint the table POSTs to, e.g. to
+     *        write a message for the selected rows
      */
     public function __construct(
         public readonly string $id,
@@ -58,6 +61,7 @@ class RowAction
         ?callable $visible = null,
         public readonly int $sortOrder = 1000,
         public readonly string|array|null $bulkUrl = null,
+        public readonly bool $bulkModal = false,
     ) {
         $this->url = Closure::fromCallable($url);
         $this->visible = $visible !== null ? Closure::fromCallable($visible) : null;
@@ -86,6 +90,7 @@ class RowAction
             'confirm' => $this->confirm,
             'destructive' => $this->destructive ?: null,
             'bulkUrl' => $this->bulkUrl !== null ? Url::to($this->bulkUrl) : null,
+            'bulkModal' => $this->bulkModal ?: null,
         ], static fn($item) => $item !== null);
     }
 }

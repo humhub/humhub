@@ -15,6 +15,10 @@ $nav-pills-border-width: 2px !default;
 $nav-pills-border-color: var(--bs-border-color) !default;
 $nav-pills-active-border-color: rgba(var(--bs-emphasis-color-rgb), .64) !default;
 $nav-pills-secondary-hover-bg: $nav-pills-hover-bg !default;
+// The dot of a tab behind which something waits (`MenuLink::$count`): smaller than a badge dot,
+// centred on the label
+$nav-link-dot-size: 6px !default;
+$nav-link-dot-gap: $spacer * .5 !default;
 
 // The ⋮ of a legacy `.nav-pills.preferences` menu
 $preferences-toggle-size: 2rem !default;
@@ -74,6 +78,17 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 box-shadow: inset 0 0 0 $nav-pills-border-width var(--hh-nav-pills-active-border-color), $nav-link-focus-box-shadow;
             }
         }
+    }
+
+    .nav-link:has(> .badge-dot) {
+        display: inline-flex;
+        align-items: center;
+        gap: $nav-link-dot-gap;
+    }
+
+    .nav-link > .badge-dot {
+        width: $nav-link-dot-size;
+        height: $nav-link-dot-size;
     }
 
     // Secondary: pills inside a card, panel or dialog, without outlines

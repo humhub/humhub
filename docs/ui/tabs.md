@@ -162,7 +162,10 @@ humhub\widgets\menu\Menu
 ```
 
 - **`PillTabs`** (`extends Menu`): `$variant` (`VARIANT_PRIMARY` default, `VARIANT_SECONDARY`),
-  `$renderSingleTab` (a strip with one tab is not rendered) and the dot of an entry.
+  `$renderSingleTab` (a strip with one tab is not rendered) and the dot of an entry: a
+  `MenuLink` with a `count` above 0 (`'count' => $pendingApprovals`) shows the waiting dot
+  (`.badge-dot.badge-dot-waiting`, "3 waiting" for screen readers) after its label. Users ›
+  Pending approvals and a space's Members › Pending invites / approvals use it.
 - **Panel tabs** are not a menu: they switch content on the page. They stay their own widget,
   `humhub\widgets\bootstrap\Tabs` (as Yii 2 keeps `Nav` and `Tabs` apart), with the same markup.
 
@@ -223,7 +226,5 @@ Tabs::widget([
    the full WAI-ARIA tabs pattern with arrow keys?
 2. **Admin in-place navigation:** the prototype swaps only the page card. Do we do the same via
    pjax, or keep full page loads?
-3. **Indicator API:** should `MenuLink` get a generic `indicator` (dot) next to a `badge` (count),
-   so the same entry can show a count in the section menu and a dot in the tabs?
-4. **Space tabs:** in the prototype the space's tabs switch client-side and keep the state in the
+3. **Space tabs:** in the prototype the space's tabs switch client-side and keep the state in the
    URL hash. In core every tab stays its own route. Confirm.

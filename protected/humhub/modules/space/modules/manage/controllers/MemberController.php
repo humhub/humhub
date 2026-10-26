@@ -9,12 +9,10 @@
 namespace humhub\modules\space\modules\manage\controllers;
 
 use humhub\modules\content\components\ContentContainerControllerAccess;
-use humhub\modules\space\modules\manage\jobs\RemoveAllMembersFromSpaceJob;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\components\Controller;
-use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\space\notifications\SpaceRolesChangedNotification;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Membership;
@@ -41,24 +39,20 @@ class MemberController extends Controller
                 'reject-applicant',
                 'approve-applicant',
                 'remove',
-                'remove-all',
             ]],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_OWNER], 'actions' => ['change-owner']],
         ];
     }
 
     /**
-     * Members Administration Action
+     * The members of the space (`manage\widgets\SpaceMemberTable`, its rows from
+     * `GET /api/v2/space/<id>/member`)
      */
     public function actionIndex()
     {
         $space = $this->getSpace();
-        $searchModel = new MembershipSearch();
-        $searchModel->space_id = $space->id;
-        $searchModel->status = Membership::STATUS_MEMBER;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        // User Group Change
+        // User Group Change (the role select of the former member list)
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
             $membership = Membership::findMembership($space->id, Yii::$app->request->post('user_id'));
@@ -90,11 +84,7 @@ class MemberController extends Controller
             return $membership->getErrors();
         }
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'space' => $space,
-        ]);
+        return $this->render('index', ['space' => $space]);
     }
 
     /**
@@ -102,17 +92,7 @@ class MemberController extends Controller
      */
     public function actionPendingInvitations()
     {
-        $space = $this->getSpace();
-        $searchModel = new MembershipSearch();
-        $searchModel->space_id = $space->id;
-        $searchModel->status = Membership::STATUS_INVITED;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('pending-invitations', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'space' => $space,
-        ]);
+        return $this->render('pending-invitations', ['space' => $this->getSpace()]);
     }
 
     /**
@@ -120,17 +100,7 @@ class MemberController extends Controller
      */
     public function actionPendingApprovals()
     {
-        $space = $this->getSpace();
-        $searchModel = new MembershipSearch();
-        $searchModel->space_id = $space->id;
-        $searchModel->status = Membership::STATUS_APPLICANT;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('pending-approvals', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-            'space' => $space,
-        ]);
+        return $this->render('pending-approvals', ['space' => $this->getSpace()]);
     }
 
     /**
@@ -214,20 +184,5 @@ class MemberController extends Controller
             'space' => $space,
             'model' => $model,
         ]);
-    }
-
-    /**
-     * @return void
-     */
-    public function actionRemoveAll()
-    {
-        $this->forcePostRequest();
-
-        $space = $this->getSpace();
-        Yii::$app->queue->push(new RemoveAllMembersFromSpaceJob([
-            'spaceId' => $space->id,
-        ]));
-        $this->view->success(Yii::t('SpaceModule.manage', 'Removal of members queued'));
-        $this->redirect($space->createUrl('index'));
     }
 }

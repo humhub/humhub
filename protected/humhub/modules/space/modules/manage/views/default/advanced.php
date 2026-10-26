@@ -6,6 +6,7 @@ use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\SortOrderField;
 use yii\helpers\Url;
@@ -15,41 +16,37 @@ use yii\helpers\Url;
 /* @var $space Space */
 ?>
 
-<div class="panel panel-default">
-    <div>
-        <div class="panel-heading">
-            <?= Yii::t('SpaceModule.manage', '<strong>Space</strong> settings'); ?>
-        </div>
-    </div>
+<?php $this->beginContent('@space/modules/manage/views/layouts/section.php', [
+    'title' => Yii::t('SpaceModule.manage', 'Settings'),
+    'tabs' => new DefaultMenu(['space' => $space]),
+]) ?>
+<?php ContentCard::begin(['title' => Yii::t('AdminModule.base', 'Advanced')]) ?>
 
-    <?= DefaultMenu::widget(['space' => $space]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false, 'acknowledge' => true]); ?>
+    <?php if (Yii::$app->urlManager->enablePrettyUrl) : ?>
+        <?= $form->field($model, 'url')->hint(Yii::t('SpaceModule.manage', 'e.g. example for {baseUrl}/s/example', ['baseUrl' => Url::base(true)])); ?>
+    <?php endif; ?>
+    <?= $form->field($model, 'hideMembers')->checkbox(); ?>
+    <?= $form->field($model, 'hideAbout')->checkbox(); ?>
+    <?= $form->field($model, 'hideActivities')->checkbox(); ?>
+    <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
+    <?= $form->field($model, 'showTopicSidebar')->checkbox() ?>
+    <?= $form->field($model, 'topicSidebarSortOrder')->widget(SortOrderField::class) ?>
+    <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
+    <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
+    <?= $form->field($model, 'defaultStreamSort')->dropDownList(SpaceSettingsForm::defaultStreamSortOptions()) ?>
+    <?php if (Yii::$app->user->can(ManageSpaces::class)) : ?>
+        <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
+    <?php else: ?>
+        <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class, [
+            'options' => ['disabled' => 'disabled']
+        ])->hint(Yii::t('SpaceModule.manage', 'Only global administrators can change this value')) ?>
+    <?php endif; ?>
 
-    <div class="panel-body">
+    <?= Button::save()->submit() ?>
+    <?= Button::danger(Yii::t('base', 'Delete'))->right()->link($space->createUrl('delete'))->visible($space->canDelete()) ?>
 
-        <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false, 'acknowledge' => true]); ?>
-        <?php if (Yii::$app->urlManager->enablePrettyUrl) : ?>
-            <?= $form->field($model, 'url')->hint(Yii::t('SpaceModule.manage', 'e.g. example for {baseUrl}/s/example', ['baseUrl' => Url::base(true)])); ?>
-        <?php endif; ?>
-        <?= $form->field($model, 'hideMembers')->checkbox(); ?>
-        <?= $form->field($model, 'hideAbout')->checkbox(); ?>
-        <?= $form->field($model, 'hideActivities')->checkbox(); ?>
-        <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
-        <?= $form->field($model, 'showTopicSidebar')->checkbox() ?>
-        <?= $form->field($model, 'topicSidebarSortOrder')->widget(SortOrderField::class) ?>
-        <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
-        <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
-        <?= $form->field($model, 'defaultStreamSort')->dropDownList(SpaceSettingsForm::defaultStreamSortOptions()) ?>
-        <?php if (Yii::$app->user->can(ManageSpaces::class)) : ?>
-            <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
-        <?php else: ?>
-            <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class, [
-                'options' => ['disabled' => 'disabled']
-            ])->hint(Yii::t('SpaceModule.manage', 'Only global administrators can change this value')) ?>
-        <?php endif; ?>
+    <?php ActiveForm::end(); ?>
 
-        <?= Button::save()->submit() ?>
-        <?= Button::danger(Yii::t('base', 'Delete'))->right()->link($space->createUrl('delete'))->visible($space->canDelete()) ?>
-
-        <?php ActiveForm::end(); ?>
-    </div>
-</div>
+<?php ContentCard::end() ?>
+<?php $this->endContent() ?>

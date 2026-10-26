@@ -116,7 +116,8 @@ A [card](card.md#header-actions) header uses the same action order, but with gho
   page's `h1`.
 - Icon buttons have `aria-label` and a tooltip with the same text. The ⋮ button has
   `aria-haspopup="menu"` and `aria-expanded`.
-- The back arrow is a link labelled "Back".
+- The back arrow is a link labelled "Back", or what it leads back to (`backUrl($url, $label)`,
+  e.g. "Back to Administration").
 - Link tabs in the body are a `<nav>` with its own label ([Pill Tabs](tabs.md#accessibility)).
 
 ## Markup and styles
@@ -180,6 +181,9 @@ $page-header-title-font-weight: $font-weight-semibold !default;
 $page-header-title-color: var(--hh-text-color-highlight) !default;
 ```
 
+- **Width:** at most `$page-header-max-width` (1440px), centred; what follows the page header in
+  the same container (its content cards, a data table, a hint) is limited and centred alike, so
+  in a wide layout (e.g. the Enterprise Theme) header and cards stay aligned.
 - **CSS variables** on `.page-header`: `--hh-page-header-max-width`, `-padding`, `-gap`, `-bg`,
   `-border-radius`, `-box-shadow`, `-title-font-size`, `-title-font-weight`, `-title-color`.
 

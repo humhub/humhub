@@ -40,6 +40,17 @@ class PillTabsTest extends HumHubDbTestCase
         $this->assertDoesNotMatchRegularExpression('#href="/groups"[^>]*aria-current#', $html);
     }
 
+    public function testShowsADotForWhatWaits()
+    {
+        $tabs = $this->tabs();
+        $tabs->addEntry(new MenuLink(['id' => 'approvals', 'label' => 'Approvals & co', 'url' => '/approvals', 'count' => 3, 'sortOrder' => 30]));
+        $tabs->addEntry(new MenuLink(['id' => 'none', 'label' => 'None', 'url' => '/none', 'count' => 0, 'sortOrder' => 40]));
+        $html = $tabs->run();
+
+        $this->assertMatchesRegularExpression('#href="/approvals"[^>]*>Approvals &amp; co<span class="badge-dot badge-dot-waiting"><span class="visually-hidden"> 3 waiting</span></span></a>#', $html);
+        $this->assertMatchesRegularExpression('#href="/none"[^>]*>None</a>#', $html);
+    }
+
     public function testTheSecondaryVariant()
     {
         $html = $this->tabs(['variant' => PillTabs::VARIANT_SECONDARY])->run();
