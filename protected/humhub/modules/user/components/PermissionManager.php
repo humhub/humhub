@@ -24,8 +24,8 @@ use yii\base\Module as BaseModule;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\StaleObjectException;
-use yii\web\HttpException;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 
 /**
  * Description of PermissionManager
@@ -563,6 +563,14 @@ class PermissionManager extends Component
             }
 
             $groupId = DataTypeHelper::filterInt($groupId) ?? DataTypeHelper::filterString($groupId);
+
+            // Reject changing the state of permission/group pairs which are not allowed to be changed (fixed),
+            // e.g. "Manage content" for all registered users. The grid does not offer them, so only a crafted
+            // request could get here.
+            if (!$permission->canChangeState($groupId)) {
+                throw new ForbiddenHttpException('The state of this permission is fixed for the given group.');
+            }
+
             $state = DataTypeHelper::filterInt(Yii::$app->request->post('state'));
             $this->setGroupState($groupId, $permission, $state);
 

@@ -38,6 +38,7 @@ HumHub Changelog
 - Fix #8627: The full-size profile image overlay now closes on the browser Back button instead of staying open over the previous page
 - Fix #8638: The default Content-Security-Policy blocked fonts embedded as `data:` URIs (e.g. the icon font of the Calendar module), which logged a violation in the browser console; `data:` is now allowed in `font-src`
 - Fix #8639: Dates containing non-ASCII characters (e.g. the `fa-IR` and `ar` locales) were rejected as invalid on PHP 8.4+, because `IntlDateFormatter::parse()` now returns the position in bytes while Yii compares it with the character count
+- Fix #8643: Permission states fixed for a group (e.g. "Manage content" for registered users) could be changed by a manually crafted request to the permission settings
 
 1.19.0 (October 12, 2026)
 -------------------------
