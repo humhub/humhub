@@ -61,6 +61,14 @@ class ModuleAutoLoader implements BootstrapInterface
         Yii::$app->moduleManager->registerBulk($coreModules);
 
         if (self::hasWithoutModuleAutoloadAttribute()) {
+            // The application config may carry params for modules that are not loaded in this command. Left as raw
+            // arrays without a class, they break `Yii::$app->getModule()`, which the help and unknown-command
+            // suggestions call for every entry.
+            foreach ($app->getModules(false) as $id => $module) {
+                if (is_array($module) && !isset($module['class']) && !isset($module['__class'])) {
+                    $app->setModule($id, null);
+                }
+            }
             return;
         }
 
