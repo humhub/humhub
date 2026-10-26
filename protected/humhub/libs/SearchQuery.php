@@ -38,6 +38,7 @@ class SearchQuery
      *   '"Apple pie" Banana' => ['Apple pie', 'Banana*']
      * @var string[] $terms
      * @readonly
+     * @phpstan-allow-private-mutation
      */
     public array $terms = [];
 
@@ -54,6 +55,7 @@ class SearchQuery
      *   '-"Apple pie" -Banana' => ['Apple pie', 'Banana*']
      * @var string[] $notTerms
      * @readonly
+     * @phpstan-allow-private-mutation
      */
     public array $notTerms = [];
 

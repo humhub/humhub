@@ -31,20 +31,19 @@ class UploadInput extends JsWidget
     /**
      * javascript widget implementation.
      *
-     * @var type
+     * @var string
      */
     public $jsWidget = 'file.Upload';
 
     /**
      * @inheritdoc
-     * @var type
      */
     public $init = true;
 
     /**
      * Active Model can be set to attach files to this model.
      *
-     * @var \yii\db\ActiveRecord
+     * @var Model|null
      */
     public $model;
 
@@ -86,26 +85,26 @@ class UploadInput extends JsWidget
     /**
      * Can be set if the upload button is not contained in the form itself.
      *
-     * @var type
+     * @var ActiveForm|string|null
      */
     public $form;
 
     /**
      * Can be set to overwrite the default file upload route.
      *
-     * @var type
+     * @var string|null
      */
     public $url;
 
     /**
      * Total number of maximum amount of allowed file uploads.
-     * @var type
+     * @var int|null
      */
     public $max;
 
     /**
      * Selector of dropzone node.
-     * @var type
+     * @var string|null
      */
     public $dropZone;
 
@@ -118,19 +117,19 @@ class UploadInput extends JsWidget
     /**
      * File preview js widget selector.
      *
-     * @var type
+     * @var string|null
      */
     public $preview;
 
     /**
      * Upload progress js widget selector.
-     * @var type
+     * @var string|null
      */
     public $progress;
 
     /**
      * Used to hide/show the actual input element.
-     * @var type
+     * @var bool
      */
     public $visible = false;
 

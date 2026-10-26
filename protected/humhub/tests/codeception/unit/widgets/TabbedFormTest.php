@@ -12,7 +12,6 @@ use humhub\widgets\bootstrap\FormTabs;
 use humhub\widgets\form\ActiveForm;
 use tests\codeception\_support\HumHubDbTestCase;
 
-
 class TabbedFormTest extends HumHubDbTestCase
 {
     public function testTabbedForm()

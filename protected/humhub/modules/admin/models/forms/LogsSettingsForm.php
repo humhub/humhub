@@ -8,6 +8,8 @@ use yii\base\Model;
 /**
  * LogsSettingsForm
  *
+ * @property-read array $options
+ *
  * @since 1.2
  */
 class LogsSettingsForm extends Model

@@ -13,6 +13,7 @@ use Yii;
 use yii\validators\Validator;
 use URLify;
 use humhub\modules\space\models\Space;
+use yii\validators\StringValidator;
 
 /**
  * UrlValidator for space urls
@@ -37,7 +38,7 @@ class UrlValidator extends Validator
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
 
-        $stringValidator = new yii\validators\StringValidator([
+        $stringValidator = new StringValidator([
             'max' => $module->maximumSpaceUrlLength,
             'min' => $module->minimumSpaceUrlLength,
         ]);

@@ -63,6 +63,7 @@ use yii\db\StaleObjectException;
  *
  * Note: If the underlying Content record cannot be saved or validated an Exception will thrown.
  *
+ * @property int $id
  * @property Content $content
  * @mixin Followable
  * @property User $createdBy
@@ -269,7 +270,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         }
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {
-            /** @var $topic Topic */
+            /** @var Topic $topic */
             $labels[] = TopicBadge::forTopic($topic, $this->content);
         }
 

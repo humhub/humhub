@@ -15,8 +15,8 @@ use yii\helpers\ArrayHelper;
 /**
  * This widget is responsible for rendering the context menu for wallentries.
  *
- * The default context menu can be extended by overwriting the getContextMenu function of
- * the WallEntryWidget.
+ * The default context menu can be extended by overwriting the getControlsMenuEntries function of
+ * the WallStreamEntryWidget.
  */
 class WallEntryControls extends Menu
 {
@@ -26,7 +26,7 @@ class WallEntryControls extends Menu
     public $object;
 
     /**
-     * @var WallEntry|WallStreamEntryWidget
+     * @var WallStreamEntryWidget
      */
     public $wallEntryWidget;
 
@@ -76,11 +76,7 @@ class WallEntryControls extends Menu
             return;
         }
 
-        $entries = $this->wallEntryWidget instanceof WallEntry
-            ? $this->wallEntryWidget->getContextMenu()
-            : $this->wallEntryWidget->getControlsMenuEntries();
-
-        foreach ($entries as $menuItem) {
+        foreach ($this->wallEntryWidget->getControlsMenuEntries() as $menuItem) {
             if (empty($menuItem)) {
                 continue;
             }

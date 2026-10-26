@@ -60,7 +60,7 @@ class Html extends \yii\bootstrap5\Html
     }
 
     /**
-     * @return string
+     * @return void
      * @since 1.4
      */
     public static function setNonce(&$options = [])
@@ -174,7 +174,7 @@ class Html extends \yii\bootstrap5\Html
 
     /**
      * @param $options
-     * @return bool
+     * @return void
      * @since 1.3
      */
     public static function addPjaxPrevention(&$options)

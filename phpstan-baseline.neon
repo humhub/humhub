@@ -1,0 +1,547 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Variable \$field might not be defined\.$#'
+			identifier: variable.undefined
+			count: 3
+			path: protected/humhub/compat/HForm.php
+
+		-
+			message: '#^Access to an undefined property humhub\\components\\ActiveRecord\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: protected/humhub/components/ActiveRecord.php
+
+		-
+			message: '#^Access to an undefined property humhub\\components\\ActiveRecord\:\:\$created_by\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/components/ActiveRecord.php
+
+		-
+			message: '#^Access to an undefined property humhub\\components\\ActiveRecord\:\:\$updated_at\.$#'
+			identifier: property.notFound
+			count: 2
+			path: protected/humhub/components/ActiveRecord.php
+
+		-
+			message: '#^Access to an undefined property humhub\\components\\ActiveRecord\:\:\$updated_by\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/components/ActiveRecord.php
+
+		-
+			message: '#^Unknown property "created_by" for current ActiveRecord humhub\\components\\ActiveRecord in hasOne\(\) relation link\.$#'
+			identifier: mspirkovYii2.activeRecordRelationValidation
+			count: 1
+			path: protected/humhub/components/ActiveRecord.php
+
+		-
+			message: '#^Unknown property "updated_by" for current ActiveRecord humhub\\components\\ActiveRecord in hasOne\(\) relation link\.$#'
+			identifier: mspirkovYii2.activeRecordRelationValidation
+			count: 1
+			path: protected/humhub/components/ActiveRecord.php
+
+		-
+			message: '#^Offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\} in isset\(\) does not exist\.$#'
+			identifier: isset.offset
+			count: 1
+			path: protected/humhub/components/SettingsManager.php
+
+		-
+			message: '#^Access to an undefined property humhub\\components\\access\\PermissionAccessValidator\:\:\$action\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/components/access/PermissionAccessValidator.php
+
+		-
+			message: '#^Method humhub\\exceptions\\InvalidArgumentTypeException\:\:setParameter\(\) has invalid return type humhub\\exceptions\\InvalidArgumentExceptionTrait\.$#'
+			identifier: return.trait
+			count: 1
+			path: protected/humhub/exceptions/InvalidArgumentTypeException.php
+
+		-
+			message: '#^Method humhub\\exceptions\\InvalidArgumentValueException\:\:setParameter\(\) has invalid return type humhub\\exceptions\\InvalidArgumentExceptionTrait\.$#'
+			identifier: return.trait
+			count: 1
+			path: protected/humhub/exceptions/InvalidArgumentValueException.php
+
+		-
+			message: '#^Method humhub\\exceptions\\InvalidConfigTypeException\:\:setParameter\(\) has invalid return type humhub\\exceptions\\InvalidArgumentExceptionTrait\.$#'
+			identifier: return.trait
+			count: 1
+			path: protected/humhub/exceptions/InvalidConfigTypeException.php
+
+		-
+			message: '#^Access to undefined constant humhub\\libs\\JSONResponse\:\:STATE_ERROR_APPLICATION\.$#'
+			identifier: classConstant.notFound
+			count: 1
+			path: protected/humhub/libs/JSONResponse.php
+
+		-
+			message: '#^Class humhub\\modules\\fcmPush\\Module not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: protected/humhub/libs/SelfTest.php
+
+		-
+			message: '#^Result of method humhub\\libs\\StdClass\:\:__construct\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 1
+			path: protected/humhub/libs/StdClassConfig.php
+
+		-
+			message: '#^Variable \$config might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: protected/humhub/libs/StdClassConfig.php
+
+		-
+			message: '#^Result of method humhub\\libs\\StdClass\:\:__unset\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 1
+			path: protected/humhub/libs/StdClassConfigurable.php
+
+		-
+			message: '#^Call to an undefined static method humhub\\modules\\activity\\components\\BaseActivity\:\:getTitle\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: protected/humhub/modules/activity/components/BaseActivity.php
+
+		-
+			message: '#^Value for attribute "grouping_key" on ActiveRecord humhub\\modules\\activity\\models\\Activity in updateAll\(\) attributes must be string, int given\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 1
+			path: protected/humhub/modules/activity/services/GroupingService.php
+
+		-
+			message: '#^Unknown attribute "defaultStreamSort" for model humhub\\modules\\admin\\models\\forms\\BasicSettingsForm\.$#'
+			identifier: mspirkovYii2.modelAttributeLabelsValidation
+			count: 1
+			path: protected/humhub/modules/admin/models/forms/BasicSettingsForm.php
+
+		-
+			message: '#^Value for attribute "is_admin_group" on ActiveRecord humhub\\modules\\user\\models\\Group in findAll\(\) condition must be int, false given\.$#'
+			identifier: mspirkovYii2.activeRecordConditionValidation
+			count: 1
+			path: protected/humhub/modules/admin/models/forms/UserEditForm.php
+
+		-
+			message: '#^Anonymous function has an unused use \$groupId\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: protected/humhub/modules/content/components/ContentContainerPermissionManager.php
+
+		-
+			message: '#^Access to an undefined property humhub\\modules\\content\\components\\UserGroupAccessValidator\:\:\$action\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/modules/content/components/UserGroupAccessValidator.php
+
+		-
+			message: '#^Validator option "max" for yii\\validators\\StringValidator must be int\|null, string given\.$#'
+			identifier: mspirkovYii2.modelRulesValidation
+			count: 2
+			path: protected/humhub/modules/content/models/ContentContainerTag.php
+
+		-
+			message: '#^Validator option "max" for yii\\validators\\StringValidator must be int\|null, string given\.$#'
+			identifier: mspirkovYii2.modelRulesValidation
+			count: 2
+			path: protected/humhub/modules/content/models/ContentTag.php
+
+		-
+			message: '#^Variable \$condition in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: protected/humhub/modules/content/models/ContentTag.php
+
+		-
+			message: '#^Method humhub\\modules\\content\\models\\stream\\StreamSuppressQuery\:\:load\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 2
+			path: protected/humhub/modules/content/models/stream/StreamSuppressQuery.php
+
+		-
+			message: '#^Result of method yii\\base\\BaseObject\:\:__construct\(\) \(void\) is used\.$#'
+			identifier: staticMethod.void
+			count: 1
+			path: protected/humhub/modules/content/services/SearchDriverService.php
+
+		-
+			message: '#^Access to an undefined property humhub\\modules\\content\\tests\\codeception\\unit\\widgets\\WallEntryTest\:\:\$contentObject\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/modules/content/tests/codeception/unit/widgets/WallEntryTest.php
+
+		-
+			message: '#^Access to an undefined property humhub\\modules\\content\\widgets\\ContentTagDropDown\:\:\$none\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/modules/content/widgets/ContentTagDropDown.php
+
+		-
+			message: '#^Access to an undefined property humhub\\modules\\content\\widgets\\ContentTagDropDown\:\:\$noneLabel\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/modules/content/widgets/ContentTagDropDown.php
+
+		-
+			message: '#^Value for attribute "id" on ActiveRecord humhub\\modules\\file\\models\\File in findOne\(\) condition must be int, string given\.$#'
+			identifier: mspirkovYii2.activeRecordConditionValidation
+			count: 1
+			path: protected/humhub/modules/content/widgets/richtext/converter/RichTextToEmailHtmlConverter.php
+
+		-
+			message: '#^Variable \$maxResolution in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: protected/humhub/modules/file/libs/ImageHelper.php
+
+		-
+			message: '#^Access to an undefined property humhub\\modules\\file\\widgets\\FileDownload\:\:\$text\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/modules/file/widgets/FileDownload.php
+
+		-
+			message: '#^Variable \$value on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.variable
+			count: 1
+			path: protected/humhub/modules/ldap/authclient/LdapAuth.php
+
+		-
+			message: '#^Method humhub\\modules\\live\\driver\\MercurePushDriver\:\:send\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/modules/live/driver/MercurePushDriver.php
+
+		-
+			message: '#^Method humhub\\modules\\live\\driver\\Push\:\:send\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/modules/live/driver/Push.php
+
+		-
+			message: '#^Object option "entries" for humhub\\modules\\notification\\jobs\\DispatchJob must be array\<array\<string, array\|bool\|class\-string\<humhub\\modules\\notification\\components\\BaseNotification\>\|humhub\\modules\\user\\components\\ActiveQueryUser\|int\|null\>\>, array\<int, array\<string, array\<int\|string, int\>\|string\>\> given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 1
+			path: protected/humhub/modules/notification/tests/codeception/unit/DispatchTest.php
+
+		-
+			message: '#^Object option "targets" for humhub\\modules\\notification\\components\\NotificationManager must be array\<string, array\|string\>, array\<int\|string, array\<string, bool\|int\|list\<int\>\|string\>\> given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 1
+			path: protected/humhub/modules/notification/tests/codeception/unit/DispatchTest.php
+
+		-
+			message: '#^Value for attribute "email" on ActiveRecord humhub\\modules\\user\\models\\User in updateAll\(\) attributes must be string, null given\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 1
+			path: protected/humhub/modules/notification/tests/codeception/unit/MailTargetTest.php
+
+		-
+			message: '#^Cannot unset offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\}\.$#'
+			identifier: unset.offset
+			count: 1
+			path: protected/humhub/modules/notification/tests/codeception/unit/NotificationPrivacyTest.php
+
+		-
+			message: '#^Method humhub\\modules\\post\\models\\forms\\PostEditForm\:\:validate\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/modules/post/models/forms/PostEditForm.php
+
+		-
+			message: '#^Method humhub\\modules\\queue\\driver\\Instant\:\:pushMessage\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/modules/queue/driver/Instant.php
+
+		-
+			message: '#^Value for attribute "originator_user_id" on ActiveRecord humhub\\modules\\space\\models\\Membership in findAll\(\) condition must be string\|null, int given\.$#'
+			identifier: mspirkovYii2.activeRecordConditionValidation
+			count: 1
+			path: protected/humhub/modules/space/Events.php
+
+		-
+			message: '#^Widget option "space" for humhub\\modules\\space\\widgets\\Image must be humhub\\modules\\space\\models\\Space, humhub\\modules\\content\\components\\ContentContainerActiveRecord given\.$#'
+			identifier: mspirkovYii2.widgetPropertiesValidation
+			count: 1
+			path: protected/humhub/modules/space/behaviors/SpaceController.php
+
+		-
+			message: '#^Object option "show_at_dashboard" for humhub\\modules\\space\\models\\Membership must be int, bool given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 1
+			path: protected/humhub/modules/space/behaviors/SpaceModelMembership.php
+
+		-
+			message: '#^Value for attribute "id" on ActiveRecord humhub\\modules\\user\\models\\User in findOne\(\) condition must be int, string\|null given\.$#'
+			identifier: mspirkovYii2.activeRecordConditionValidation
+			count: 1
+			path: protected/humhub/modules/space/behaviors/SpaceModelMembership.php
+
+		-
+			message: '#^Unknown attribute "can_leave" for model humhub\\modules\\space\\models\\Membership\.$#'
+			identifier: mspirkovYii2.modelAttributeLabelsValidation
+			count: 1
+			path: protected/humhub/modules/space/models/Membership.php
+
+		-
+			message: '#^Unknown attribute "ownerUsernameSearch" for model humhub\\modules\\space\\models\\Space\.$#'
+			identifier: mspirkovYii2.modelAttributeLabelsValidation
+			count: 1
+			path: protected/humhub/modules/space/models/Space.php
+
+		-
+			message: '#^Widget option "space" for humhub\\modules\\space\\widgets\\Image must be humhub\\modules\\space\\models\\Space, yii\\db\\ActiveRecord given\.$#'
+			identifier: mspirkovYii2.widgetPropertiesValidation
+			count: 1
+			path: protected/humhub/modules/space/widgets/SpacePickerField.php
+
+		-
+			message: '#^Method humhub\\modules\\user\\authclient\\BaseFormClient\:\:initUserAttributes\(\) should return array but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/modules/user/authclient/BaseFormClient.php
+
+		-
+			message: '#^Object option "user" for humhub\\modules\\user\\events\\UserEvent must be humhub\\modules\\user\\models\\User, yii\\web\\IdentityInterface\|null given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 1
+			path: protected/humhub/modules/user/components/User.php
+
+		-
+			message: '#^Array has 2 duplicate keys with value ''name'' \(''name'', ''name''\)\.$#'
+			identifier: array.duplicateKey
+			count: 2
+			path: protected/humhub/modules/user/migrations/m140705_065525_emailing_settings.php
+
+		-
+			message: '#^Unknown attribute "defaultSpaceGuid" for model humhub\\modules\\user\\models\\Group\.$#'
+			identifier: mspirkovYii2.modelAttributeLabelsValidation
+			count: 1
+			path: protected/humhub/modules/user/models/Group.php
+
+		-
+			message: '#^Unknown attribute "managerGuids" for model humhub\\modules\\user\\models\\Group\.$#'
+			identifier: mspirkovYii2.modelAttributeHintsValidation
+			count: 1
+			path: protected/humhub/modules/user/models/Group.php
+
+		-
+			message: '#^Unknown attribute "managerGuids" for model humhub\\modules\\user\\models\\Group\.$#'
+			identifier: mspirkovYii2.modelAttributeLabelsValidation
+			count: 1
+			path: protected/humhub/modules/user/models/Group.php
+
+		-
+			message: '#^Value for attribute "id" on ActiveRecord humhub\\modules\\user\\models\\User in findOne\(\) condition must be int, string given\.$#'
+			identifier: mspirkovYii2.activeRecordConditionValidation
+			count: 1
+			path: protected/humhub/modules/user/models/Group.php
+
+		-
+			message: '#^Value for attribute "is_admin_group" on ActiveRecord humhub\\modules\\user\\models\\Group in findOne\(\) condition must be int, string given\.$#'
+			identifier: mspirkovYii2.activeRecordConditionValidation
+			count: 1
+			path: protected/humhub/modules/user/models/Group.php
+
+		-
+			message: '#^Value for attribute "is_default_group" on ActiveRecord humhub\\modules\\user\\models\\Group in updateAll\(\) attributes must be int, string given\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 1
+			path: protected/humhub/modules/user/models/Group.php
+
+		-
+			message: '#^Call to an undefined method humhub\\modules\\user\\widgets\\ProfileHeader\:\:getController\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: protected/humhub/modules/user/widgets/ProfileHeader.php
+
+		-
+			message: '#^Object option "levels" for tests\\codeception\\_support\\ArrayTarget must be int, array\<int, string\> given\.$#'
+			identifier: mspirkovYii2.yiiCreateObjectValidation
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubDbTestCase.php
+
+		-
+			message: '#^Call to an undefined method tests\\codeception\\_support\\HumHubHelper\:\:expectException\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Call to an undefined method tests\\codeception\\_support\\HumHubHelper\:\:expectExceptionMessageRegExp\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Call to an undefined static method Codeception\\Module\:\:tearDown\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Object option "levels" for tests\\codeception\\_support\\ArrayTarget must be int, array\<int, string\> given\.$#'
+			identifier: mspirkovYii2.yiiCreateObjectValidation
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertContains\(\)\.$#'
+			identifier: method.staticCall
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertCount\(\)\.$#'
+			identifier: method.staticCall
+			count: 2
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertEmpty\(\)\.$#'
+			identifier: method.staticCall
+			count: 2
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertEquals\(\)\.$#'
+			identifier: method.staticCall
+			count: 4
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertGreaterThan\(\)\.$#'
+			identifier: method.staticCall
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertNotContains\(\)\.$#'
+			identifier: method.staticCall
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertNotEmpty\(\)\.$#'
+			identifier: method.staticCall
+			count: 2
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertNotNull\(\)\.$#'
+			identifier: method.staticCall
+			count: 2
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertNull\(\)\.$#'
+			identifier: method.staticCall
+			count: 1
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Static call to instance method Codeception\\Module\:\:assertThat\(\)\.$#'
+			identifier: method.staticCall
+			count: 2
+			path: protected/humhub/tests/codeception/_support/HumHubHelper.php
+
+		-
+			message: '#^Object option "depends" for humhub\\assets\\VueAsset must be array\<class\-string\>, array\<int, string\> given\.$#'
+			identifier: mspirkovYii2.yiiCreateObjectValidation
+			count: 1
+			path: protected/humhub/tests/codeception/unit/assets/VueAssetTest.php
+
+		-
+			message: '#^Object option "job_message_id" for humhub\\modules\\queue\\models\\QueueExclusive must be string, int given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/ModuleIsEnabledTest.php
+
+		-
+			message: '#^Variable \$rules might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/ModuleManagerTest.php
+
+		-
+			message: '#^Variable \$urlManager might not be defined\.$#'
+			identifier: variable.undefined
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/ModuleManagerTest.php
+
+		-
+			message: '#^Access to an undefined property humhub\\tests\\codeception\\unit\\components\\SettingsManagerTest\:\:\$s\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/SettingsManagerTest.php
+
+		-
+			message: '#^Object option "owner" for humhub\\components\\access\\ControllerAccess must be yii\\web\\Controller, \$this\(humhub\\tests\\codeception\\unit\\components\\access\\TestControllerAccess\) given\.$#'
+			identifier: mspirkovYii2.baseObjectInstantiationValidation
+			count: 4
+			path: protected/humhub/tests/codeception/unit/components/access/TestControllerAccess.php
+
+		-
+			message: '#^Unknown parameter \$scope in call to humhub\\components\\listing\\FilterDefinition constructor\.$#'
+			identifier: argument.unknown
+			count: 1
+			path: protected/humhub/tests/codeception/unit/components/listing/FilterableListTest.php
+
+		-
+			message: '#^Method humhub\\tests\\codeception\\unit\\components\\listing\\ListFiltersTest\:\:assertValue\(\) invoked with 3 parameters, 2 required\.$#'
+			identifier: arguments.count
+			count: 6
+			path: protected/humhub/tests/codeception/unit/components/listing/ListFiltersTest.php
+
+		-
+			message: '#^Class humhub\\tests\\codeception\\unit\\helpers\\NonExistingClassName not found\.$#'
+			identifier: class.notFound
+			count: 4
+			path: protected/humhub/tests/codeception/unit/helpers/DataTypeHelperTest.php
+
+		-
+			message: '#^Unknown attribute "test_skills" for ActiveRecord humhub\\modules\\user\\models\\Profile in updateAll\(\) attributes\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 5
+			path: protected/humhub/tests/codeception/unit/modules/user/UserListTest.php
+
+		-
+			message: '#^Unknown attribute "test_skills_other_selection" for ActiveRecord humhub\\modules\\user\\models\\Profile in updateAll\(\) attributes\.$#'
+			identifier: mspirkovYii2.activeRecordUpdateValuesValidation
+			count: 3
+			path: protected/humhub/tests/codeception/unit/modules/user/UserListTest.php
+
+		-
+			message: '#^Cannot unset offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\}\.$#'
+			identifier: unset.offset
+			count: 1
+			path: protected/humhub/tests/codeception/unit/services/DocumentRootProbeServiceTest.php
+
+		-
+			message: '#^Offset ''fixed\-settings'' on array\{installed\: bool, databaseDefaultStorageEngine\: string, dynamicConfigFile\: string, moduleAutoloadPaths\: non\-empty\-list\<string\>, bsVersion\: int, availableLanguages\: array\{en\-US\: string, en\-GB\: string, de\: string, fr\: string, nl\: string, pl\: string, pt\: string, pt\-BR\: string, \.\.\.\}, ldap\: array\{dateFields\: array\}, formatter\: array\{defaultDateFormat\: string, timeAgoBefore\: int, timeAgoStatic\: bool, timeAgoHideTimeAfter\: int\}, \.\.\.\} on left side of \?\? does not exist\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: protected/humhub/tests/codeception/unit/services/DocumentRootProbeServiceTest.php
+
+		-
+			message: '#^Widget option "content" for humhub\\widgets\\VueFormShell must be Closure, string given\.$#'
+			identifier: mspirkovYii2.widgetPropertiesValidation
+			count: 1
+			path: protected/humhub/tests/codeception/unit/widgets/VueFormShellTest.php
+
+		-
+			message: '#^Access to an undefined property humhub\\widgets\\bootstrap\\Alert\:\:\$label\.$#'
+			identifier: property.notFound
+			count: 1
+			path: protected/humhub/widgets/bootstrap/Alert.php
+
+		-
+			message: '#^Method humhub\\widgets\\menu\\WidgetMenuEntry\:\:renderEntry\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: protected/humhub/widgets/menu/WidgetMenuEntry.php

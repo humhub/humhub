@@ -10,6 +10,7 @@ namespace humhub\modules\post\models\forms;
 
 use humhub\modules\post\models\Post;
 use Yii;
+use yii\base\Model;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -18,7 +19,7 @@ use yii\web\ServerErrorHttpException;
  *
  * @since 1.11
  */
-class PostEditForm extends yii\base\Model
+class PostEditForm extends Model
 {
     /**
      * The list of files attached to a Post

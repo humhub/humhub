@@ -31,7 +31,7 @@ class CounterSetItem extends BaseObject
     public $label;
 
     /**
-     * @var array the URL
+     * @var string|null the URL
      */
     public $url;
 

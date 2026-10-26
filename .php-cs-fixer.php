@@ -16,5 +16,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_scalar' => true,
         'cast_spaces' => false,
         'single_line_empty_body' => false,
+        'phpdoc_var_annotation_correct_order' => true,
     ])
     ->setFinder($finder);

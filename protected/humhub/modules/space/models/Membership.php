@@ -441,7 +441,7 @@ class Membership extends ActiveRecord
      * Find and cache Membership by space and user
      *
      * @param Space|int $space
-     * @param User|int $user
+     * @param User|int|string|null $user
      *
      * @return self|null
      */

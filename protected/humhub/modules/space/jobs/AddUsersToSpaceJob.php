@@ -38,7 +38,7 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
     private $originator;
 
     /**
-     * @var User originator user id
+     * @var int originator user id
      */
     public $originatorId;
 

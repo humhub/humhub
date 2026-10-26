@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8633: Added PHPStan static analysis
 - Enh #8645: Added Esperanto (eo) as available language
 - Fix #8640: A mistyped `settings`, `migrate`, `cache` or `marketplace` console command ended in "An Error occurred while handling another error" instead of the command suggestions when the configuration carried parameters for a third-party module
 - Enh #8629: Clear message when the API rate limit is reached; admin documentation for API access

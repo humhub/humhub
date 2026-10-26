@@ -10,6 +10,7 @@ namespace humhub\models\forms;
 
 use Yii;
 use yii\base\Model;
+use yii\web\UploadedFile;
 
 /**
  * UploadProfileImageForm allows uploads of profile images.
@@ -22,7 +23,7 @@ use yii\base\Model;
 class UploadProfileImage extends Model
 {
     /**
-     * @var String uploaded image
+     * @var UploadedFile|null uploaded image
      */
     public $image;
 

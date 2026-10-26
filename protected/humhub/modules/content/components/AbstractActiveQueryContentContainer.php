@@ -8,6 +8,9 @@ use yii\db\ActiveQuery;
 /**
  * AbstractActiveQueryContentContainer is used for Active Query of the ContentContainerActiveRecord (Space, User)
  *
+ * @template T of ContentContainerActiveRecord
+ * @extends ActiveQuery<T>
+ *
  * @since 1.13.1
  */
 abstract class AbstractActiveQueryContentContainer extends ActiveQuery
@@ -59,7 +62,7 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
      *
      * @param string|array|null $keywords
      * @param array|null $fields if empty the fields will be used from the method getSearchableFields()
-     * @return self
+     * @return static
      */
     public function search(string|array|null $keywords, ?array $fields = null): ActiveQuery
     {
@@ -88,7 +91,7 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
     }
 
     /**
-     * @return self
+     * @return static
      */
     private function searchKeyword(string $keyword, ?array $fields = null): ActiveQuery
     {
