@@ -4,7 +4,7 @@ HumHub Changelog
 1.19.3 (Unreleased)
 -------------------
 
-- Fix #8646: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
+- Fix #8647: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
 
 1.19.2 (October 26, 2026)
 -------------------------
