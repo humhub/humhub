@@ -2,7 +2,7 @@
     <div
         ref="root"
         class="select-menu"
-        :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': isDisabled, 'is-loading': loading }"
+        :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': isDisabled, 'is-loading': loading, 'is-required': !clearable, 'is-drop-up': dropUp }"
     >
         <button
             :id="buttonId"
@@ -23,6 +23,7 @@
         <span v-if="loading" class="spinner-border spinner-border-sm select-menu-spinner" role="status" :aria-label="loadingLabel"></span>
         <i v-else class="ti ti-chevron-up select-menu-chevron" aria-hidden="true"></i>
         <button
+            v-if="clearable"
             type="button"
             class="select-menu-clear"
             :disabled="!hasSelection || isDisabled"
@@ -76,7 +77,9 @@ let uid = 0;
  *   `placeholder` (else the empty option's label, else `label` — the field's name in the
  *   placeholder colour reads as "no choice"), `label` (accessible name, defaults to the
  *   placeholder), `disabled`, `loading` (disabled, with a spinner in place of the chevron),
- *   `id` (of the toggle button, for an external `<label for>`).
+ *   `id` (of the toggle button, for an external `<label for>`), `clearable` (default on: a chosen
+ *   value can be cleared with the X; off for a value that is always set, e.g. the rows per page),
+ *   `dropUp` (opens above the field, e.g. at the bottom of a card).
  * - Emits `update:modelValue` with the chosen value, or `''` when cleared.
  * - Keyboard and ARIA: the toggle is a button with `aria-haspopup="listbox"`/`aria-expanded`;
  *   Enter, Space, ArrowDown and ArrowUp open it and move focus into the listbox, where the arrow
@@ -98,6 +101,8 @@ export default {
         disabled: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
         id: { type: String, default: null },
+        clearable: { type: Boolean, default: true },
+        dropUp: { type: Boolean, default: false },
     },
     emits: ['update:modelValue'],
     data() {

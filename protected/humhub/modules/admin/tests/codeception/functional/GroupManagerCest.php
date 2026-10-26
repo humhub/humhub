@@ -57,10 +57,8 @@ class GroupManagerCest
 
         $I->amOnRoute('/admin/group');
         $I->see('Groups', '.content-card .card-title');
-        $I->see('Moderators', '.table');
-        $I->see('Editors', '.table'); // Subgroup can be managed too
-        $I->dontSee('Administrator', '.table');
-        $I->dontSee('Users', '.table');
+        // The rows come from GET /api/v2/admin/group, see AdminGroupApiCest
+        $I->seeElement('.data-table');
 
         $I->amOnRoute('/admin/group/edit', ['id' => $group->id]);
         $I->see('Manage group: ' . $group->name);

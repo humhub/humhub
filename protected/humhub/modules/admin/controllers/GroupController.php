@@ -13,7 +13,6 @@ use humhub\components\access\DelegateAccessValidator;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\jobs\ReassignGroupDefaultSpaces;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
-use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\queue\helpers\QueueHelper;
@@ -88,17 +87,11 @@ class GroupController extends Controller
     }
 
     /**
-     * List all available user groups
+     * The group table (`admin\widgets\GroupTable`, its rows from `GET /api/v2/admin/group`)
      */
     public function actionIndex()
     {
-        $searchModel = new GroupSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+        return $this->render('index');
     }
 
     /**

@@ -37,15 +37,15 @@ class DataTableTest extends HumHubDbTestCase
 
         $definitions = (new UserTable())->definitions(ListContext::forCurrentUser());
 
-        $this->assertSame(['name', 'username', 'groups', 'source', 'lastLogin', 'createdAt'], array_column($definitions['columns'], 'key'));
+        $this->assertSame(['name', 'username', 'groups', 'source', 'status', 'lastLogin', 'createdAt'], array_column($definitions['columns'], 'key'));
         // Shown until the user chooses: groups and last login
-        $this->assertSame(['username', 'source', 'createdAt'], array_keys(array_filter(array_column($definitions['columns'], 'visible', 'key'), static fn($visible) => $visible === false)));
+        $this->assertSame(['username', 'groups', 'createdAt'], array_keys(array_filter(array_column($definitions['columns'], 'visible', 'key'), static fn($visible) => $visible === false)));
         $this->assertSame(['key' => 'name', 'type' => 'main', 'label' => 'Name', 'priority' => 1, 'sort' => 'name'], $definitions['columns'][0]);
         $this->assertSame('group', $definitions['columns'][2]['filter']);
         // The destructive actions last.
         $this->assertSame(['edit', 'enable', 'disable', 'impersonate', 'profile', 'delete', 'delete-permanently'], array_column($definitions['actions'], 'id'));
         $this->assertTrue($definitions['actions'][5]['destructive']);
-        $this->assertSame(['q', 'status', 'group'], array_column($definitions['filters'], 'key'));
+        $this->assertSame(['q', 'status', 'group', 'source'], array_column($definitions['filters'], 'key'));
     }
 
     public function testTheSourceColumnIsForAdministratorsOnly()
@@ -85,7 +85,7 @@ class DataTableTest extends HumHubDbTestCase
         });
 
         $table = new UserTable();
-        $this->assertSame(['name', 'username', 'groups', 'source', 'lastLogin', 'language', 'createdAt'], array_map(static fn($column) => $column->key, $table->getColumns()));
+        $this->assertSame(['name', 'username', 'groups', 'source', 'status', 'lastLogin', 'language', 'createdAt'], array_map(static fn($column) => $column->key, $table->getColumns()));
 
         $row = $table->row(User::findOne(2));
         $this->assertSame(['text' => 'en-US'], $row['cells']->language);

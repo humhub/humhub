@@ -8,13 +8,13 @@
 
 namespace humhub\modules\admin\controllers\api;
 
-use humhub\components\api\BaseController;
+use humhub\components\api\DataTableController;
 use humhub\components\listing\ListContext;
 use humhub\components\listing\ListValidationException;
+use humhub\components\table\DataTable;
 use humhub\modules\admin\components\UserTable;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -32,19 +32,19 @@ use yii\web\NotFoundHttpException;
  *
  * @since 1.20
  */
-class UserController extends BaseController
+class UserController extends DataTableController
 {
-    public const MAX_PAGE_SIZE = 100;
     public const MAX_BULK_IDS = 1000;
 
     private const STATUSES = ['enable' => User::STATUS_ENABLED, 'disable' => User::STATUS_DEACTIVATED];
 
-    private ?UserTable $table = null;
-
     /**
      * @inheritdoc
      */
-    protected bool $allowSessionAuth = true;
+    protected function createTable(): DataTable
+    {
+        return Yii::createObject(UserTable::class);
+    }
 
     /**
      * @inheritdoc
@@ -53,51 +53,13 @@ class UserController extends BaseController
     {
         return ArrayHelper::merge(parent::behaviors(), [
             'verbs' => [
-                'class' => VerbFilter::class,
                 'actions' => [
-                    'index' => ['GET', 'HEAD'],
                     'enable' => ['POST'],
                     'disable' => ['POST'],
                     'bulk' => ['POST'],
                 ],
             ],
         ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeAction($action)
-    {
-        if (!parent::beforeAction($action)) {
-            return false;
-        }
-
-        if (!$this->getTable()->canAccess()) {
-            throw new ForbiddenHttpException();
-        }
-
-        return true;
-    }
-
-    private function getTable(): UserTable
-    {
-        return $this->table ??= Yii::createObject(UserTable::class);
-    }
-
-    public function actionIndex()
-    {
-        $table = $this->getTable();
-
-        try {
-            $users = $table->getList()->build($this->listParams(), ListContext::forCurrentUser())->query();
-        } catch (ListValidationException $e) {
-            return $this->validationErrors($e->errors);
-        }
-
-        $pagination = $this->handlePagination($users, 25, self::MAX_PAGE_SIZE);
-
-        return $this->returnPagination($pagination, array_map($table->row(...), $users->all()));
     }
 
     public function actionEnable($id)

@@ -27,7 +27,7 @@ Don't use it for:
 | 2 | **Filter bar** | The core [Filter Bar](filter-bar.md), with search first. |
 | 3 | **Column header** | Sticky. Sortable columns show ⇕, and the sorted column shows ↑ or ↓ in black. |
 | 4 | **Select-all checkbox** | Only for tables with bulk actions. Covers the current page and has three states: none, some, all. |
-| 5 | **Main column** | Image or glyph, name (link to the record) and a subtitle (e-mail, job title, description). Always visible. |
+| 5 | **Main column** | Image (or, without one, the initials on the record's colour), name (link to the record) and a subtitle (e-mail, job title, description). Always visible. |
 | 6–7 | **Typed columns** | See [Column types](#column-types). |
 | 8 | **Row actions** | One icon button when a row has a single action, ⋮ when it has several, nothing when it has none. |
 | 9 | **Selection menu** | While rows are selected, the overflow ⋮ becomes a button showing the count ("2 ⋮"). It opens the bulk actions. |
@@ -73,6 +73,10 @@ inline editing. See Open questions.
   returns to page 1, and the state is reflected in the URL.
 - **Chips as filters:** a category chip whose column has a select filter sets that filter when
   pressed. The tooltip reads "Filter by Marketing".
+- **Filters follow the columns:** a filter that belongs to a column (the column's `filter`) is
+  shown only while its column is chosen; filters of no column (the search) always. A hidden
+  filter is not applied, even with a value left in the URL; hiding a column with a set filter
+  reloads the list without it.
 
 ### Columns chooser
 
@@ -84,12 +88,14 @@ inline editing. See Open questions.
   are off are locked.
 - A chosen column that has currently folded away because of the width is marked "Hidden at this
   width".
-- **Save** applies the choice. **Reset** appears only while the choice differs from the default.
+- **Reset** (back to the default columns, disabled while they are chosen) and **Save** (applies
+  the choice); the × closes without saving.
 - The choice is remembered per table and user.
 
 ### Selection and bulk actions
 
-- The checkbox column appears only for tables with bulk actions.
+- The checkbox column appears only for tables with bulk actions, and only while "Bulk select" is
+  on in the columns chooser (off by default; it counts towards the column limit).
 - **Shift-click** selects a range.
 - The header checkbox selects the current page. **"Select all 35"** in the selection menu selects
   every row that matches the current filters, across all pages.
@@ -124,7 +130,8 @@ inline editing. See Open questions.
 
 ### Paging
 
-- Rows per page is fixed to **25 / 50 / 100**. The viewer's choice is remembered.
+- Rows per page is fixed to **25 / 50 / 100**. The viewer's choice is remembered. It is hidden
+  while there are no more than 25 rows, where it would change nothing.
 - The pager shows at most 5 slots: `1 2 3 … 12`, `1 … 6 … 12` or `1 … 10 11 12`. Previous and
   next keep their place even when they can't act, so the numbers never jump. The pager is hidden
   when there is only one page.
@@ -222,7 +229,7 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.card.content-card.data-table`, `.card-header`, `.card-header-actions`, `.card-body`, `.card-footer` | The [Content Card](card.md) |
 | `.table.table-hover` | The table; rows without dividers, a hover fill |
 | `.data-table-col-<type>` | A column's cells (`main`, `chip`, `date`, `number`, `text`, `details`, `actions`); all but the main column as narrow as their content |
-| `.data-table-main`, `-main-image`, `-main-text`, `-main-name`, `-main-subtitle` | The main cell (the row's header, `th scope="row"`) |
+| `.data-table-main`, `-main-image`, `-main-initials`, `-main-text`, `-main-name`, `-main-subtitle` | The main cell (the row's header, `th scope="row"`) |
 | `.data-table-sort` (`.active`) | A sortable column's header button; `aria-sort` on the `<th>` |
 | `.data-table-chips` | The badges of a chip cell (a plain `.badge`, a tone as `.badge-<tone>`); with a column filter each is a `<button>` |
 | `.data-table-row-link`, `.data-table-row-toggle` | A row opening its record on click; a row without one toggling its details (with folded columns) |
@@ -234,7 +241,7 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.data-table-bulk`, `.data-table-bulk-toggle` | The selection menu ("2 ⋮") in place of the header's ⋮ |
 
 - **File:** `_data-table.scss`, behind `$prev-data-table`.
-- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-hover-bg`,
+- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-main-initials-bg|color|font-size`, `$data-table-hover-bg`,
   `$data-table-head-color`, `$data-table-head-font-size`; the rest is Bootstrap's `.table`,
   `.pagination` and `.form-select`.
 
@@ -255,22 +262,41 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   `columns`, `actions` and `filters`. Modules change columns and actions on `EVENT_INIT`.
 - **Row action kinds:** `link` (opens the URL), `modal` (the global modal), `post` (a form POST
   to a web route, e.g. one answering with a redirect), `request` (an API call answering the new
-  `row`, or `removed: true`). `confirm` asks first.
+  `row`, or `removed: true`; with neither — e.g. an action of another endpoint — the table
+  reloads its page). `confirm` asks first.
+- **Page and endpoint:** `humhub\widgets\DataTableWidget` (the island, its skeleton placeholder
+  and the columns choice; a table implements `createTable()`, `getUrl()`, `getLabel()` and
+  optionally `getCountLabels()`, `getHeaderActions()`, `getHeaderMenu()`) and
+  `humhub\components\api\DataTableController` (`GET` index: one page of rows, `page` /
+  `pageSize` up to 100; `403` unless `DataTable::canAccess()`). Both create the table, so a
+  module replacing it through the DI container changes page and endpoint alike.
 - **Sorting:** sort keys of the list, offered by no select (`addSort($key, null)`): `sort=<key>`,
   descending `sort=-<key>`.
 - **First consumer:** Administration › Users — `admin\widgets\UserTable` (the island and its
-  skeleton placeholder), `admin\components\UserTable` (columns: name, groups, source for
-  administrators, last login, registered; actions: edit, enable / disable, impersonate, view
-  profile, delete), `admin\components\AdminUserList` and `GET /api/v2/admin/user`,
+  skeleton placeholder, card title "Overview"), `admin\components\UserTable` (columns: name,
+  source for administrators, status — a chip in the status's tone —, last login, and on request
+  username, groups, registered; source and status sort and their chips set their filter; the
+  status filter is optional — without it the enabled and deactivated accounts, the deleted ones
+  only on request;
+  actions with icons: edit, enable / disable, impersonate, view profile, delete), `admin\components\AdminUserList` and `GET /api/v2/admin/user`,
   `POST /api/v2/admin/user/<id>/enable|disable`.
+- **Further consumers:** Administration › Groups (`admin\components\GroupTable`,
+  `AdminGroupList`, `GET /api/v2/admin/group`: name with description, members, managers, type
+  chips with Default / Protected; a group manager sees the groups they manage), Spaces
+  (`SpaceTable`, `AdminSpaceList`, `GET /api/v2/admin/space`: name, members, visibility, status,
+  and on request owner and created; modules add columns and filters on `EVENT_INIT`, e.g. the
+  Enterprise Theme's category) and Modules (`ModuleTable`, `AdminModuleList` over the installed
+  modules, `GET /api/v2/admin/module`: name, version, update, status; a row's id is the module
+  id; enable is a `request` to `POST /api/v2/module/<id>/enable`).
 
 - **Columns chooser:** ▦ in the header opens a dialog with a switch per optional column (a
-  column's `visible` is its default), at most `maxColumns` (the others then locked), "Hidden at
-  this width" for a chosen column folded away, Reset while the choice differs from the defaults.
+  column's `visible` is its default) and "Bulk select" (key `_select`), as a list group with the
+  switch at the end of each row; at most `maxColumns` (the others then locked), "Hidden at this
+  width" for a chosen column folded away; Reset (disabled at the defaults) and Save.
   The choice is saved per user (`humhub\components\table\TableSettings`, a user setting,
   `PUT /api/v2/account/table/<tableId>`) and handed back by the page as `columnChoice`. The
-  administration's user table offers username and registration (and, for administrators, the
-  source) on request, at most 4.
+  administration's user table shows source, status and last login by default and offers
+  username, groups and registration on request, at most 3.
 
 - **Selection and bulk actions:** for tables with a bulk action (a `RowAction` with a
   `bulkUrl`): a checkbox per row (Shift-click for a range), the page's checkbox (none, some,
@@ -284,11 +310,28 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 
 **Not yet (see Behaviour):** further bulk actions (deliberately: enable and disable only for
 now), the row motion, the red ring of a destructive action in progress, "1 of 2" on very narrow
-pagers. The switches still carry
-HumHub's checkbox look until the [switch](choice-controls.md) is styled.
+pagers.
+
+- **Footer:** a grid: the count at the start, the pager in the middle, the rows per page at the
+  end — the filter bar's `FilterSelect` (`.select-menu`) without clear X (`clearable: false`),
+  opening upwards (`dropUp`), named "Rows per page" by `aria-label` and tooltip; on phones the
+  pager below.
+- **Hover:** a light accent fill (`--bs-accent-bg-subtle`) with a 1px accent outline and rounded
+  ends (`$data-table-hover-bg`, `$data-table-hover-border-color`, `$data-table-hover-transition`;
+  the outline joins Bootstrap's inset cell fill). The pager is Bootstrap's `.pagination` as square ghost buttons (`--bs-pagination-*`,
+  `$data-table-pager-size`, `$data-table-pager-gap`), the current page filled; ‹ / › are hidden
+  (`.invisible`, keeping their place) on the first / last page.
+- **Layout:** `table-layout: fixed` with a `<colgroup>`: checkbox and details 2.5rem, actions
+  3rem, the main column twice as wide as each other column, which share the rest; cells have
+  `.5rem` padding (1rem between columns), cut long text with "…", and a hovered or selected row
+  has rounded ends. Variables: `$data-table-cell-padding-x/y`, `$data-table-side-column-width`,
+  `$data-table-actions-column-width`, `$data-table-row-border-radius`.
+- **Switches:** Bootstrap's `.form-switch` (restored in `_form.scss` over HumHub's checkbox look,
+  on in the accent colour) — for every switch, not only the chooser's.
 
 **Replaces:** `humhub\widgets\GridView` on the pages that move to the table; the user list's
-`UserActionColumn` is deprecated. `GridView` stays for everything else until those pages are
+`UserActionColumn` and the space list's `SpaceSearch`, `SpaceGridView` and space grid columns
+are deprecated, the module list's `InstalledModuleList` is removed. `GridView` stays for everything else until those pages are
 migrated.
 
 ## Decisions

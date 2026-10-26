@@ -101,6 +101,15 @@ abstract class DataTable extends Component
     abstract protected function cells($model): array;
 
     /**
+     * Whether the viewer may see the table, its page and its endpoint. A table restricted to some
+     * viewers overrides it (the endpoint has no access rules of its own to extend).
+     */
+    public function canAccess(): bool
+    {
+        return true;
+    }
+
+    /**
      * The key of a record's row.
      */
     protected function rowId($model): int|string

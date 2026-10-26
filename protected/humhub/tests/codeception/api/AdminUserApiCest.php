@@ -40,7 +40,12 @@ class AdminUserApiCest
         $I->wantTo('list the active users, the newest account first');
         $I->amLoggedInAs(1);
 
+        // Without a status, the deactivated account (5) is listed too
         $I->sendGet('admin/user');
+        $I->seeResponseContainsJson(['total' => 6]);
+        Assert::assertSame([8, 5, 4, 3, 2, 1], $this->ids($I));
+
+        $I->sendGet('admin/user', ['status' => 'enabled']);
 
         $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson(['total' => 5, 'page' => 1, 'pages' => 1]);
@@ -78,18 +83,37 @@ class AdminUserApiCest
         $I->sendGet('admin/user', ['group' => '3']);
         Assert::assertSame([3], $this->ids($I));
 
-        $I->sendGet('admin/user', ['sort' => 'name']);
+        $I->sendGet('admin/user', ['status' => 'enabled', 'sort' => 'name']);
         Assert::assertSame([1, 4, 2, 3, 8], $this->ids($I));
 
-        $I->sendGet('admin/user', ['sort' => '-name']);
+        $I->sendGet('admin/user', ['status' => 'enabled', 'sort' => '-name']);
         Assert::assertSame([8, 3, 2, 4, 1], $this->ids($I));
+
+        // Deactivated (0) before enabled (1)
+        $I->sendGet('admin/user', ['sort' => 'status']);
+        Assert::assertSame(5, $this->ids($I)[0]);
+        $I->sendGet('admin/user', ['sort' => '-status']);
+        Assert::assertSame(5, $this->ids($I)[5]);
+    }
+
+    public function testFiltersBySourceForAdministrators(ApiTester $I)
+    {
+        $I->amLoggedInAs(1);
+
+        // Not a source of the platform
+        $I->sendGet('admin/user', ['source' => 'unknown-source']);
+        $I->seeResponseCodeIs(422);
+
+        $I->sendGet('admin/user', ['source' => 'local', 'sort' => '-source']);
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseContainsJson(['total' => 6]);
     }
 
     public function testPagesTheList(ApiTester $I)
     {
         $I->amLoggedInAs(1);
 
-        $I->sendGet('admin/user', ['pageSize' => 2, 'page' => 2]);
+        $I->sendGet('admin/user', ['status' => 'enabled', 'pageSize' => 2, 'page' => 2]);
 
         $I->seeResponseContainsJson(['total' => 5, 'page' => 2, 'pageSize' => 2, 'pages' => 3]);
         Assert::assertSame([3, 2], $this->ids($I));

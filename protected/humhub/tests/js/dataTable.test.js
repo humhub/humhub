@@ -128,6 +128,35 @@ describe('DataTable', () => {
         expect(window.location.search).toBe('?group=1');
     });
 
+    it('shows the filters of the chosen columns, and resets the filter of a column that goes', async () => {
+        globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({}));
+        const filterKeys = () => wrapper.findAll('.filter-bar [data-filter-key], .filter-bar input, .filter-bar .select-menu-button')
+            .map((element) => element.attributes('aria-label') || element.attributes('placeholder'));
+        wrapper = mountTable({ columnChoice: ['lastLogin'] });
+        await flushPromises();
+        // Search has no column; the group filter belongs to the hidden groups column.
+        expect(filterKeys()).toEqual(['Search']);
+
+        wrapper.unmount();
+        wrapper = mountTable({ columnsUrl: '/api/v2/account/table/users' });
+        await flushPromises();
+        expect(filterKeys()).toEqual(['Search', 'Group']);
+        await wrapper.find('tr[data-id="1"] button.badge').trigger('click');
+        await flushPromises();
+        expect(lastRequest().get('group')).toBe('1');
+
+        await wrapper.find('.data-table-columns-toggle').trigger('click');
+        await flushPromises();
+        [...document.querySelectorAll('.data-table-columns-option')]
+            .find((option) => option.textContent.trim() === 'Groups').querySelector('input').click();
+        await flushPromises();
+        document.querySelector('.data-table-columns-save').click();
+        await flushPromises();
+
+        expect(filterKeys()).toEqual(['Search']);
+        expect(lastRequest().get('group')).toBeNull();
+    });
+
     it('shows an empty state, with "Clear filters" while filters are set', async () => {
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([])));
         wrapper = mountTable();
@@ -172,7 +201,7 @@ describe('DataTable', () => {
         expect(wrapper.find('.data-table-count').text()).toBe('1–25 of 300 users');
         expect(slots()).toEqual(['1', '2', '3', '…', '12']);
         expect(wrapper.find('.pagination [aria-current="page"]').text()).toBe('1');
-        expect(wrapper.find('.pagination .page-item').classes()).toContain('disabled');
+        expect(wrapper.find('.pagination .page-item').classes()).toContain('invisible');
 
         await wrapper.findAll('.pagination button').find((button) => button.text() === '3').trigger('click');
         await flushPromises();
@@ -188,11 +217,23 @@ describe('DataTable', () => {
         expect(slots()).toEqual(['1', '…', '10', '11', '12']);
     });
 
+    it('hides the rows per page while all rows fit on the smallest page', async () => {
+        wrapper = mountTable();
+        await flushPromises();
+        expect(wrapper.find('.data-table-page-size').exists()).toBe(false);
+    });
+
     it('remembers the rows per page and starts again on page 1', async () => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([row(1, 'Emma')], { total: 30, pages: 2 })));
         wrapper = mountTable();
         await flushPromises();
 
-        await wrapper.find('.data-table-page-size select').setValue('50');
+        // A select menu without clear X, opening upwards
+        const pageSize = wrapper.find('.data-table-page-size');
+        expect(pageSize.classes()).toEqual(expect.arrayContaining(['select-menu', 'is-required', 'is-drop-up']));
+        expect(pageSize.find('.select-menu-clear').exists()).toBe(false);
+        await pageSize.find('.select-menu-button').trigger('click');
+        await pageSize.findAll('.select-menu-option').find((option) => option.text() === '50').trigger('click');
         await flushPromises();
         expect(lastRequest().get('pageSize')).toBe('50');
         expect(lastRequest().get('page')).toBe('1');
@@ -373,13 +414,13 @@ describe('DataTable', () => {
             await flushPromises();
             expect(document.querySelector('.data-table-columns-limit').textContent).toBe('Choose up to 3 columns.');
             expect(options().map((input) => input.checked)).toEqual([true, true, false, false]);
-            expect(document.querySelector('.data-table-columns-reset')).toBeNull();
+            expect(document.querySelector('.data-table-columns-reset').disabled).toBe(true);
 
             options()[2].click();
             await flushPromises();
             // At the limit, the switches that are off are locked.
             expect(options().map((input) => input.disabled)).toEqual([false, false, false, true]);
-            expect(document.querySelector('.data-table-columns-reset')).not.toBeNull();
+            expect(document.querySelector('.data-table-columns-reset').disabled).toBe(false);
 
             document.querySelector('.data-table-columns-save').click();
             await flushPromises();
@@ -417,7 +458,7 @@ describe('DataTable', () => {
             await flushPromises();
             const folded = [...document.querySelectorAll('.data-table-columns-option')]
                 .filter((option) => option.querySelector('.data-table-columns-folded'))
-                .map((option) => option.querySelector('label').textContent);
+                .map((option) => option.querySelector('.data-table-columns-label').firstChild.textContent.trim());
             expect(folded).toEqual(['Groups']);
         });
     });
@@ -431,6 +472,8 @@ describe('DataTable', () => {
         const offering = (id, name, ids) => row(id, name, { actions: ids.map((action) => ({ id: action, url: `/x/${id}/${action}` })) });
         const checkbox = (id) => wrapper.find(`tr[data-id="${id}"] .data-table-col-select input`);
         const bulkItems = () => wrapper.findAll('.data-table-bulk .dropdown-item').map((item) => item.text());
+        // The checkbox column is chosen in the columns chooser ("Bulk select")
+        const withSelect = ['groups', 'lastLogin', 'createdAt', '_select'];
 
         beforeEach(() => {
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope(
@@ -446,8 +489,27 @@ describe('DataTable', () => {
             expect(wrapper.find('.data-table-col-select').exists()).toBe(false);
         });
 
+        it('shows the checkboxes only while "Bulk select" is chosen', async () => {
+            globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({}));
+            wrapper = mountTable({ actions: bulkActions, columnsUrl: '/api/v2/account/table/users' });
+            await flushPromises();
+            expect(wrapper.find('.data-table-col-select').exists()).toBe(false);
+
+            await wrapper.find('.data-table-columns-toggle').trigger('click');
+            await flushPromises();
+            const option = [...document.querySelectorAll('.data-table-columns-option')][0];
+            expect(option.textContent.trim()).toBe('Bulk select');
+            option.querySelector('input').click();
+            await flushPromises();
+            document.querySelector('.data-table-columns-save').click();
+            await flushPromises();
+
+            expect(wrapper.find('tr[data-id="1"] .data-table-col-select input').exists()).toBe(true);
+            expect(JSON.parse(globalThis.humhubStubs.client.ajax.mock.calls[0][1].data)).toEqual({ columns: ['_select', 'groups', 'lastLogin', 'createdAt'] });
+        });
+
         it('selects rows, a range with Shift and the page, and shows the selection menu instead of the ⋮', async () => {
-            wrapper = mountTable({ actions: bulkActions, headerMenu: [{ id: 'export', label: 'Export', url: '/export' }] });
+            wrapper = mountTable({ actions: bulkActions, columnChoice: withSelect, headerMenu: [{ id: 'export', label: 'Export', url: '/export' }] });
             await flushPromises();
             expect(wrapper.find('.card-header-actions-menu').exists()).toBe(true);
 
@@ -469,7 +531,7 @@ describe('DataTable', () => {
         });
 
         it('applies a bulk action to the selected rows offering it, then reloads', async () => {
-            wrapper = mountTable({ actions: bulkActions });
+            wrapper = mountTable({ actions: bulkActions, columnChoice: withSelect });
             await flushPromises();
             await wrapper.find('thead .data-table-col-select input').setValue(true);
 
@@ -484,7 +546,7 @@ describe('DataTable', () => {
 
         it('selects every row of the filters and sends them as "all" with the filters', async () => {
             window.history.replaceState(null, '', '/admin/user/list?group=2');
-            wrapper = mountTable({ actions: bulkActions });
+            wrapper = mountTable({ actions: bulkActions, columnChoice: withSelect });
             await flushPromises();
             await checkbox(2).trigger('click');
 
@@ -499,7 +561,7 @@ describe('DataTable', () => {
         });
 
         it('clears the selection with a filter or sort change, and keeps it across pages', async () => {
-            wrapper = mountTable({ actions: bulkActions });
+            wrapper = mountTable({ actions: bulkActions, columnChoice: withSelect });
             await flushPromises();
             await checkbox(1).trigger('click');
 

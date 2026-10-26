@@ -17,6 +17,8 @@ use yii\grid\DataColumn;
  *
  * @since 1.3
  * @author Luke
+ * @deprecated since 1.20 the administration's space list is the `DataTable` island of
+ * {@see \humhub\modules\admin\widgets\SpaceTable}, on {@see \humhub\modules\admin\components\AdminSpaceList}
  */
 abstract class SpaceBaseColumn extends DataColumn
 {

@@ -8,11 +8,29 @@
 
 $data-table-gap: $spacer * .75 !default;
 $data-table-main-image-size: 2.5rem !default;
-$data-table-hover-bg: var(--hh-background-color-secondary) !default;
+$data-table-main-initials-bg: var(--bs-secondary-bg) !default;
+$data-table-main-initials-color: #fff !default;
+$data-table-main-initials-font-size: .875rem !default;
+// A hovered row: a light accent fill with an accent outline
+$data-table-hover-bg: var(--bs-accent-bg-subtle) !default;
+$data-table-hover-border-color: var(--bs-accent) !default;
+$data-table-hover-transition: box-shadow .15s ease-in-out !default;
+$data-table-details-bg: var(--hh-background-color-secondary) !default;
 // A selected row (Bootstrap's `.table-active`)
 $data-table-selected-bg: rgba(var(--bs-accent-rgb), .08) !default;
 $data-table-head-color: var(--bs-secondary-color) !default;
 $data-table-head-font-size: $font-size-sm !default;
+// Cells: .5rem around each (1rem between columns), the side columns (checkbox, details, actions)
+// fixed, the main column twice as wide as each of the others (DataTable.vue `mainColumnStyle`)
+$data-table-cell-padding-y: $spacer * .5 !default;
+$data-table-cell-padding-x: $spacer * .5 !default;
+$data-table-side-column-width: 2.5rem !default;
+$data-table-actions-column-width: 3rem !default;
+$data-table-row-border-radius: var(--bs-border-radius) !default;
+// Footer: the pager's pages as square ghost buttons, the current one filled
+$data-table-pager-size: 2.5rem !default;
+$data-table-pager-gap: $spacer * .25 !default;
+$data-table-page-size-width: 5.5rem !default;
 
 @if not $prev-data-table {
     .data-table > .card-body {
@@ -33,10 +51,58 @@ $data-table-head-font-size: $font-size-sm !default;
         --bs-table-border-color: transparent;
 
         margin-bottom: 0;
+        table-layout: fixed;
 
         > :not(caption) > * > * {
+            padding: $data-table-cell-padding-y $data-table-cell-padding-x;
+            overflow: hidden;
             border-bottom-width: 0;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             vertical-align: middle;
+        }
+
+        // Every cell carries the same shadows (Bootstrap fills a cell with an inset shadow, the
+        // outline joins it: top and bottom on every cell, the sides on the first and last), only
+        // their colours change on hover — so the transition blends instead of flickering
+        > tbody > tr > * {
+            --hh-data-table-ring: transparent;
+            box-shadow:
+                inset 0 1px 0 var(--hh-data-table-ring),
+                inset 0 -1px 0 var(--hh-data-table-ring),
+                inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+            @include transition($data-table-hover-transition);
+
+            &:first-child {
+                box-shadow:
+                    inset 1px 0 0 var(--hh-data-table-ring),
+                    inset 0 1px 0 var(--hh-data-table-ring),
+                    inset 0 -1px 0 var(--hh-data-table-ring),
+                    inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+            }
+
+            &:last-child {
+                box-shadow:
+                    inset -1px 0 0 var(--hh-data-table-ring),
+                    inset 0 1px 0 var(--hh-data-table-ring),
+                    inset 0 -1px 0 var(--hh-data-table-ring),
+                    inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
+            }
+        }
+
+        &.table-hover > tbody > tr:not(.data-table-row-details):hover > * {
+            --hh-data-table-ring: #{$data-table-hover-border-color};
+        }
+
+        // The hover and selection fill as a rounded row
+        > tbody > tr > :first-child {
+            border-top-left-radius: $data-table-row-border-radius;
+            border-bottom-left-radius: $data-table-row-border-radius;
+        }
+
+        > tbody > tr > :last-child {
+            border-top-right-radius: $data-table-row-border-radius;
+            border-bottom-right-radius: $data-table-row-border-radius;
         }
 
         // A reload: the shown rows dimmed until the answer replaces them
@@ -90,28 +156,23 @@ $data-table-head-font-size: $font-size-sm !default;
         }
     }
 
-    // The main column takes the room the others leave
-    .data-table-col-main {
-        width: 100%;
-        min-width: 0;
+    // Column widths (`<col>`); the other columns share the rest equally
+    .data-table col.data-table-col-select,
+    .data-table col.data-table-col-details {
+        width: $data-table-side-column-width;
     }
 
-    .data-table-col-select {
-        width: 1%;
-
-        .form-check-input {
-            margin: 0;
-        }
+    .data-table col.data-table-col-actions {
+        width: $data-table-actions-column-width;
     }
 
-    .data-table-col-chip,
-    .data-table-col-date,
-    .data-table-col-number,
-    .data-table-col-text,
-    .data-table-col-details,
-    .data-table-col-actions {
-        width: 1%;
-        white-space: nowrap;
+    .data-table-col-select .form-check-input {
+        margin: 0;
+    }
+
+    // The actions' dropdown must not be cut off by the cell
+    .data-table td.data-table-col-actions {
+        overflow: visible;
     }
 
     .data-table-col-number {
@@ -136,6 +197,18 @@ $data-table-head-font-size: $font-size-sm !default;
         height: $data-table-main-image-size;
         border-radius: var(--bs-border-radius);
         object-fit: cover;
+    }
+
+    // A record without an image of its own, e.g. a space: its initials on its colour
+    .data-table-main-initials {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $data-table-main-initials-bg;
+        color: $data-table-main-initials-color;
+        font-size: $data-table-main-initials-font-size;
+        font-weight: $font-weight-bold;
+        line-height: 1;
     }
 
     .data-table-main-text {
@@ -172,7 +245,14 @@ $data-table-head-font-size: $font-size-sm !default;
     .data-table-chips {
         display: inline-flex;
         flex-wrap: wrap;
+        max-width: 100%;
         gap: $spacer * .25;
+
+        .badge {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     // A click on the row opens its record, or (without one) toggles its details
@@ -182,7 +262,7 @@ $data-table-head-font-size: $font-size-sm !default;
     }
 
     .data-table-row-details > td {
-        background: $data-table-hover-bg;
+        background: $data-table-details-bg;
 
         dl {
             display: grid;
@@ -225,34 +305,57 @@ $data-table-head-font-size: $font-size-sm !default;
         margin: 0;
     }
 
+    // The count, the pager in the middle and the rows per page at the end
     .data-table-footer {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
         gap: $spacer * .5 $spacer;
     }
 
     .data-table-count {
-        margin-right: auto;
+        grid-column: 1;
         color: var(--bs-secondary-color);
         font-size: $font-size-sm;
+    }
+
+    .data-table-pager {
+        grid-column: 2;
     }
 
     .data-table-page-size {
-        display: inline-flex;
-        align-items: center;
-        gap: $spacer * .5;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
-
-        .form-select {
-            width: auto;
-        }
+        grid-column: 3;
+        justify-self: end;
+        width: $data-table-page-size-width;
     }
 
     .data-table-pager .pagination {
+        --bs-pagination-padding-x: 0;
+        --bs-pagination-padding-y: 0;
+        --bs-pagination-color: var(--bs-body-color);
+        --bs-pagination-bg: transparent;
+        --bs-pagination-border-width: 0;
+        --bs-pagination-border-radius: var(--bs-border-radius);
+        --bs-pagination-hover-color: var(--hh-text-color-highlight);
+        --bs-pagination-hover-bg: var(--bs-tertiary-bg);
+        --bs-pagination-focus-color: var(--hh-text-color-highlight);
+        --bs-pagination-focus-bg: var(--bs-tertiary-bg);
+        --bs-pagination-active-color: var(--hh-text-color-highlight);
+        --bs-pagination-active-bg: var(--bs-secondary-bg);
+        --bs-pagination-disabled-color: var(--bs-secondary-color);
+        --bs-pagination-disabled-bg: transparent;
+        gap: $data-table-pager-gap;
         margin: 0;
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: $data-table-pager-size;
+            height: $data-table-pager-size;
+            border-radius: var(--bs-pagination-border-radius);
+            font-weight: $font-weight-medium;
+        }
     }
 
     // The selection menu's toggle: the count and ⋮
@@ -262,20 +365,66 @@ $data-table-head-font-size: $font-size-sm !default;
         gap: $spacer * .25;
     }
 
-    // The columns chooser: a switch per optional column
-    .data-table-columns-option + .data-table-columns-option {
-        margin-top: $spacer * .5;
+    // The columns chooser: a list group, a row per column with its switch at the end. HumHub's
+    // `$list-group-*` serve the side menus (no borders, small text); here Bootstrap's look.
+    .data-table-columns-list {
+        --bs-list-group-border-width: var(--bs-border-width);
+        --bs-list-group-border-color: var(--bs-border-color);
+        --bs-list-group-item-padding-x: #{$spacer};
+        --bs-list-group-item-padding-y: #{$spacer * .75};
+        font-size: $font-size-base;
+    }
+
+    .data-table-columns-option {
+        display: flex;
+        align-items: center;
+        gap: $spacer;
+        cursor: pointer;
+
+        &.disabled {
+            cursor: default;
+        }
+
+        .form-check {
+            margin: 0;
+            padding: 0;
+            min-height: 0;
+            font-size: $font-size-lg;
+            line-height: 1;
+        }
+
+        .form-check-input {
+            float: none;
+            margin: 0;
+        }
+    }
+
+    .data-table-columns-label {
+        flex: 1 1 auto;
+        color: var(--hh-text-color-highlight);
+        font-weight: $font-weight-semibold;
     }
 
     .data-table-columns-folded {
         display: block;
         margin-top: 0;
+        font-weight: $font-weight-normal;
     }
 
-    // Phones: the pager on a line of its own
+    // Phones: the count and the rows per page on one line, the pager centred below
     @include media-breakpoint-down(sm) {
+        .data-table-footer {
+            grid-template-columns: 1fr auto;
+        }
+
+        .data-table-page-size {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
         .data-table-pager {
-            flex-basis: 100%;
+            grid-column: 1 / -1;
+            justify-self: center;
         }
     }
 }

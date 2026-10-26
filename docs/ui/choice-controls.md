@@ -2,8 +2,9 @@
 
 > Found in the design: settings pages (switch rows), notification matrix, the Columns chooser,
 > Reset to defaults (checkbox list), notification profiles (radio cards), table selection
-> · Core: `ActiveField::checkbox()`, `radioList()` (PHP), `CheckboxField` (Vue); no switch yet
-> (Bootstrap 5 supports `checkbox(['switch' => true])`)
+> · Core: `ActiveField::checkbox()`, `radioList()` (PHP), `CheckboxField` (Vue); switches are
+> Bootstrap's `.form-switch` (`checkbox(['switch' => true])`), whose look `_form.scss` restores over
+> HumHub's checkbox style (first user: the data table's columns chooser)
 > · Technology: **Both**
 
 Controls for on/off and one-of-few choices. Each control has a clear job:

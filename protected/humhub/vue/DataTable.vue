@@ -35,10 +35,10 @@
         </div>
         <div class="card-body">
             <FilterBar
-                v-if="filters.length"
+                v-if="shownFilters.length"
                 ref="filterBar"
                 :model-value="values"
-                :filters="filters"
+                :filters="shownFilters"
                 :sync-url="syncUrl"
                 :id-prefix="`${tableId}-filter`"
                 @update:model-value="onFilterChange"
@@ -50,9 +50,20 @@
                     :aria-label="label"
                     :aria-busy="loading ? 'true' : 'false'"
                 >
+                    <colgroup>
+                        <col v-if="showSelect" class="data-table-col-select">
+                        <col
+                            v-for="column in shownColumns"
+                            :key="column.key"
+                            :class="`data-table-col-${column.type}`"
+                            :style="column.type === 'main' ? mainColumnStyle : null"
+                        >
+                        <col v-if="hasDetails" class="data-table-col-details">
+                        <col v-if="actions.length" class="data-table-col-actions">
+                    </colgroup>
                     <thead>
                         <tr>
-                            <th v-if="hasBulk" class="data-table-col-select">
+                            <th v-if="showSelect" class="data-table-col-select">
                                 <input
                                     class="form-check-input"
                                     type="checkbox"
@@ -86,7 +97,7 @@
                     </thead>
                     <tbody v-if="loading && !rows.length && !error">
                         <tr v-for="index in skeletonCount" :key="index" class="data-table-skeleton placeholder-glow" aria-hidden="true">
-                            <td v-if="hasBulk" class="data-table-col-select"></td>
+                            <td v-if="showSelect" class="data-table-col-select"></td>
                             <td v-for="column in shownColumns" :key="column.key" :class="`data-table-col-${column.type}`">
                                 <div v-if="column.type === 'main'" class="data-table-main">
                                     <span class="placeholder data-table-main-image"></span>
@@ -122,7 +133,7 @@
                                 :data-id="row.id"
                                 @click="onRowClick(row, $event)"
                             >
-                                <td v-if="hasBulk" class="data-table-col-select">
+                                <td v-if="showSelect" class="data-table-col-select">
                                     <input
                                         class="form-check-input"
                                         type="checkbox"
@@ -203,15 +214,9 @@
         </div>
         <div v-if="total > 0" class="card-footer data-table-footer">
             <span class="data-table-count" role="status">{{ countText }}</span>
-            <label class="data-table-page-size">
-                <span>{{ texts.rowsPerPage }}</span>
-                <select class="form-select form-select-sm" :value="pageSize" @change="setPageSize(Number($event.target.value))">
-                    <option v-for="size in pageSizes" :key="size" :value="size">{{ size }}</option>
-                </select>
-            </label>
             <nav v-if="pages > 1" class="data-table-pager" :aria-label="texts.pages">
-                <ul class="pagination pagination-sm">
-                    <li class="page-item" :class="{ disabled: page <= 1 }">
+                <ul class="pagination">
+                    <li class="page-item" :class="{ invisible: page <= 1 }">
                         <button type="button" class="page-link" :aria-label="texts.previous" :disabled="page <= 1" @click="goTo(page - 1)"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
                     </li>
                     <li v-for="(slot, index) in pagerSlots" :key="index" class="page-item" :class="{ active: slot === page, disabled: slot === null }">
@@ -225,30 +230,51 @@
                             @click="goTo(slot)"
                         >{{ slot }}</button>
                     </li>
-                    <li class="page-item" :class="{ disabled: page >= pages }">
+                    <li class="page-item" :class="{ invisible: page >= pages }">
                         <button type="button" class="page-link" :aria-label="texts.next" :disabled="page >= pages" @click="goTo(page + 1)"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
                     </li>
                 </ul>
             </nav>
+            <FilterSelect
+                v-if="total > pageSizes[0]"
+                class="data-table-page-size"
+                :model-value="String(pageSize)"
+                :options="pageSizeOptions"
+                :label="texts.rowsPerPage"
+                :title="texts.rowsPerPage"
+                :clearable="false"
+                drop-up
+                @update:model-value="setPageSize(Number($event))"
+            />
         </div>
         <UiModal v-if="hasChooser" :show="chooserOpen" :title="texts.columns" dialog-class="data-table-columns" @update:show="chooserOpen = $event">
-            <p v-if="maxColumns" class="form-text data-table-columns-limit">{{ limitText }}</p>
-            <div v-for="column in optionalColumns" :key="column.key" class="form-check form-switch data-table-columns-option">
-                <input
-                    :id="`${tableId}-column-${column.key}`"
-                    class="form-check-input"
-                    type="checkbox"
-                    role="switch"
-                    :checked="draftKeys.includes(column.key)"
-                    :disabled="!draftKeys.includes(column.key) && atLimit"
-                    @change="toggleDraft(column.key, $event.target.checked)"
+            <p v-if="maxColumns" class="data-table-columns-limit">{{ limitText }}</p>
+            <div class="list-group data-table-columns-list">
+                <label
+                    v-for="column in choosableColumns"
+                    :key="column.key"
+                    class="list-group-item data-table-columns-option"
+                    :class="{ disabled: isLocked(column.key) }"
                 >
-                <label class="form-check-label" :for="`${tableId}-column-${column.key}`">{{ column.label }}</label>
-                <span v-if="draftKeys.includes(column.key) && foldedKeys.includes(column.key)" class="form-text data-table-columns-folded">{{ texts.hiddenAtWidth }}</span>
+                    <span class="data-table-columns-label">
+                        {{ column.label }}
+                        <span v-if="draftKeys.includes(column.key) && foldedKeys.includes(column.key)" class="form-text data-table-columns-folded">{{ texts.hiddenAtWidth }}</span>
+                    </span>
+                    <span class="form-check form-switch">
+                        <input
+                            :id="`${tableId}-column-${column.key}`"
+                            class="form-check-input"
+                            type="checkbox"
+                            role="switch"
+                            :checked="draftKeys.includes(column.key)"
+                            :disabled="isLocked(column.key)"
+                            @change="toggleDraft(column.key, $event.target.checked)"
+                        >
+                    </span>
+                </label>
             </div>
             <template #footer>
-                <button v-if="draftDiffersFromDefault" type="button" class="btn btn-link me-auto data-table-columns-reset" @click="resetDraft">{{ texts.reset }}</button>
-                <button type="button" class="btn btn-light" @click="chooserOpen = false">{{ texts.cancel }}</button>
+                <button type="button" class="btn btn-light data-table-columns-reset" :disabled="!draftDiffersFromDefault" @click="resetDraft">{{ texts.reset }}</button>
                 <button type="button" class="btn btn-primary data-table-columns-save" @click="saveColumns">{{ texts.save }}</button>
             </template>
         </UiModal>
@@ -259,6 +285,7 @@
 import { client, i18n, log, modal, status } from '@humhub/vue';
 import DropdownMenu from './DropdownMenu.vue';
 import FilterBar from './FilterBar.vue';
+import FilterSelect from './FilterSelect.vue';
 import HeaderActions from './header/HeaderActions.vue';
 import TableCell from './table/TableCell.vue';
 import UiModal from './UiModal.vue';
@@ -271,6 +298,8 @@ const SIDE_COLUMN_WIDTH = 48;
 // A folded column comes back only with this much room to spare, so columns don't flicker.
 const FOLD_HYSTERESIS = 32;
 const PAGE_SIZES = [25, 50, 100];
+// The key of the checkbox column in a column choice
+const SELECT_KEY = '_select';
 
 let uid = 0;
 
@@ -296,23 +325,26 @@ let uid = 0;
  *   names those it offers): one action is a button, several a ⋮ menu with the destructive ones
  *   last in red (`.dropdown-item-danger`). `link` opens the URL, `modal` loads it into the global modal, `post` submits a
  *   POST form to it (a web route answering with a redirect), `request` POSTs to it and replaces
- *   the row with the answer's `row` (or removes it with `removed: true`). `confirm` asks first.
+ *   the row with the answer's `row` (or removes it with `removed: true`; any other answer reloads
+ *   the page). `confirm` asks first.
  * - Paging: 25 / 50 / 100 rows per page, the choice remembered per table (`tableId`) in this
- *   browser;
+ *   browser, offered only when there are more rows than the smallest size;
  *   the pager shows at most five slots.
  * - States: skeleton rows while the first page loads, the rows dimmed while a later one does,
  *   "No results found." (with "Clear filters" while filters are set), an error with "Retry".
  *
- * - Selection (for tables with a bulk action, one with a `bulkUrl`): a checkbox per row (with
+ * - Selection (for tables with a bulk action, one with a `bulkUrl`, while "Bulk select" is on in
+ *   the columns chooser; off by default): a checkbox per row (with
  *   Shift a range) and one for the page; while rows are selected, the header's ⋮ is the
  *   selection menu ("2 ⋮"): each bulk action with the selected rows it applies to, "Select all
  *   35" (every row of the filters, across pages), "Clear selection". A bulk action POSTs `ids`
  *   (or `all` with the filters in the query) to its `bulkUrl` and reloads the page. A filter or
  *   sort change clears the selection.
- * - Columns chooser (▦ in the header, for tables with optional columns — all but the main one):
- *   a dialog with a switch per optional column (at most `maxColumns`, the others then locked; a
- *   chosen column folded away at the current width is marked), Reset while the choice differs
- *   from the columns' defaults (`visible`), Save. The choice applies at once and is saved for the
+ * - Columns chooser (▦ in the header, for tables with optional columns — all but the main one —
+ *   or a bulk action): a dialog with a switch per optional column and "Bulk select" (the
+ *   checkbox column, key `_select`; at most `maxColumns` of them, the others then locked; a
+ *   chosen column folded away at the current width is marked), Reset (to the columns' defaults,
+ *   `visible`) and Save. The choice applies at once and is saved for the
  *   user (`PUT columnsUrl` with `{columns}`, `null` for the defaults); the page hands it back as
  *   `columnChoice`.
  *
@@ -327,7 +359,7 @@ let uid = 0;
  */
 export default {
     name: 'DataTable',
-    components: { DropdownMenu, FilterBar, HeaderActions, TableCell, UiModal },
+    components: { DropdownMenu, FilterBar, FilterSelect, HeaderActions, TableCell, UiModal },
     props: {
         tableId: { type: String, required: true },
         label: { type: String, required: true },
@@ -394,8 +426,8 @@ export default {
                 columns: i18n.t('base', 'Columns'),
                 hiddenAtWidth: i18n.t('base', 'Hidden at this width'),
                 reset: i18n.t('base', 'Reset'),
-                cancel: i18n.t('base', 'Cancel'),
                 save: i18n.t('base', 'Save'),
+                bulkSelect: i18n.t('base', 'Bulk select'),
                 selectPage: i18n.t('base', 'Select all on this page'),
                 clearSelection: i18n.t('base', 'Clear selection'),
             };
@@ -405,6 +437,10 @@ export default {
         },
         hasBulk() {
             return this.bulkActions.length > 0;
+        },
+        // The checkbox column: for tables with a bulk action, while chosen in the columns chooser.
+        showSelect() {
+            return this.hasBulk && this.chosenKeys.includes(SELECT_KEY);
         },
         selectedCount() {
             return this.allSelected ? this.total : Object.keys(this.selected).length;
@@ -457,8 +493,16 @@ export default {
         defaultKeys() {
             return this.optionalColumns.filter((column) => column.visible !== false).map((column) => column.key);
         },
+        // What the columns chooser offers: "Bulk select" (the checkbox column), then the optional
+        // columns.
+        choosableColumns() {
+            return [
+                ...(this.hasBulk ? [{ key: SELECT_KEY, label: this.texts.bulkSelect }] : []),
+                ...this.optionalColumns,
+            ];
+        },
         hasChooser() {
-            return this.optionalColumns.length > 0;
+            return this.choosableColumns.length > 0;
         },
         // The main column and the chosen optional ones, in the columns' order.
         activeColumns() {
@@ -473,6 +517,22 @@ export default {
         limitText() {
             return i18n.t('base', 'Choose up to {count} columns.', { count: this.maxColumns });
         },
+        // The main column twice as wide as each of the others (`table-layout: fixed`); alone, it
+        // takes the table's width.
+        mainColumnStyle() {
+            const others = this.shownColumns.length - 1;
+            return others > 0 ? { width: `${(200 / (others + 2)).toFixed(4)}%` } : null;
+        },
+        pageSizeOptions() {
+            return this.pageSizes.map((size) => ({ value: String(size), label: String(size) }));
+        },
+        // The filters of the chosen columns (a column's `filter`), and those of no column (e.g. the
+        // search): a hidden column's filter goes with it.
+        shownFilters() {
+            const columnFilters = this.columns.map((column) => column.filter).filter(Boolean);
+            const chosenFilters = this.activeColumns.map((column) => column.filter).filter(Boolean);
+            return this.filters.filter((filter) => !columnFilters.includes(filter.key) || chosenFilters.includes(filter.key));
+        },
         actionsById() {
             return Object.fromEntries(this.actions.map((action) => [action.id, action]));
         },
@@ -486,7 +546,7 @@ export default {
             return this.foldedKeys.length > 0;
         },
         colspan() {
-            return this.shownColumns.length + (this.hasBulk ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
+            return this.shownColumns.length + (this.showSelect ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
         },
         filtered() {
             return this.filters.some((filter) => !isDefault(filter, this.values[filter.key]));
@@ -650,7 +710,7 @@ export default {
             this.error = null;
 
             const params = {
-                ...requestParams(this.filters, this.values),
+                ...requestParams(this.shownFilters, this.values),
                 page: String(this.page),
                 pageSize: String(this.pageSize),
             };
@@ -693,7 +753,7 @@ export default {
             // The columns, the actions column, and the chevron column once one has folded.
             const width = (columns) => columns.reduce(
                 (sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150),
-                SIDE_COLUMN_WIDTH * ((this.actions.length ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0)),
+                SIDE_COLUMN_WIDTH * ((this.actions.length ? 1 : 0) + (this.showSelect ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0)),
             );
 
             const folded = [];
@@ -717,6 +777,9 @@ export default {
         },
         initialChoice() {
             const keys = this.columns.filter((column) => column.type !== 'main').map((column) => column.key);
+            if (this.actions.some((action) => action.bulkUrl)) {
+                keys.push(SELECT_KEY);
+            }
             if (Array.isArray(this.columnChoice)) {
                 return this.columnChoice.filter((key) => keys.includes(key));
             }
@@ -725,6 +788,10 @@ export default {
         openChooser() {
             this.draftKeys = [...this.chosenKeys];
             this.chooserOpen = true;
+        },
+        // A switch that can't be turned on: the most columns are chosen.
+        isLocked(key) {
+            return !this.draftKeys.includes(key) && this.atLimit;
         },
         toggleDraft(key, on) {
             const keys = this.draftKeys.filter((candidate) => candidate !== key);
@@ -735,9 +802,22 @@ export default {
         },
         // Applies the choice at once and saves it for the user (back to the defaults: `null`).
         saveColumns() {
-            const keys = this.optionalColumns.map((column) => column.key).filter((key) => this.draftKeys.includes(key));
+            const keys = this.choosableColumns.map((column) => column.key).filter((key) => this.draftKeys.includes(key));
+            // A column that goes takes its filter along (only shown filters are sent): reload when
+            // it was set.
+            const narrowed = this.columns
+                .filter((column) => column.filter && this.chosenKeys.includes(column.key) && !keys.includes(column.key))
+                .map((column) => this.filters.find((filter) => filter.key === column.filter))
+                .some((filter) => filter && !isDefault(filter, this.values[filter.key]));
             this.chosenKeys = keys;
+            if (narrowed) {
+                this.page = 1;
+                this.fetch();
+            }
             this.chooserOpen = false;
+            if (!this.showSelect) {
+                this.clearSelection();
+            }
             this.$nextTick(() => this.fold());
             if (!this.columnsUrl) {
                 return Promise.resolve();
@@ -797,7 +877,7 @@ export default {
                 let url = action.bulkUrl;
                 let data;
                 if (this.allSelected) {
-                    const params = new URLSearchParams(requestParams(this.filters, this.values)).toString();
+                    const params = new URLSearchParams(requestParams(this.shownFilters, this.values)).toString();
                     url += params ? (url.includes('?') ? '&' : '?') + params : '';
                     data = { all: 1 };
                 } else {
@@ -867,6 +947,7 @@ export default {
                 const entry = {
                     id: action.id,
                     label: action.label,
+                    icon: action.icon,
                     url: action.url,
                     sortOrder: index * 10,
                     htmlOptions: action.destructive ? { class: 'dropdown-item-danger' } : {},
@@ -943,6 +1024,9 @@ export default {
                     if (index !== -1) {
                         this.rows.splice(index, 1, response.row);
                     }
+                } else {
+                    // An answer without the new row (e.g. another API's own shape): reload the page
+                    this.fetch();
                 }
                 if (response && response.message) {
                     status('success', response.message);

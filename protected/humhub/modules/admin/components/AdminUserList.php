@@ -16,15 +16,16 @@ use humhub\components\listing\ListContext;
 use humhub\components\listing\QueryListBuilder;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
+use humhub\modules\user\source\UserSourceCollection;
 use Yii;
-use yii\db\Expression;
 use yii\db\Query;
 
 /**
  * The users of the administration's user table ({@see UserTable}, `GET /api/v2/admin/user`):
  * every account, whatever its visibility, narrowed by a search (`q`: name, e-mail, username or
- * exact id), the `status` (active by default, deactivated or deleted) and a `group`, in the
- * order of a column (`sort`: `name`, `email`, `lastLogin`, `createdAt`, each also descending
+ * exact id), the `status` (enabled, deactivated or deleted; without, the enabled and
+ * deactivated accounts), a `group` and, for System Administrators, a `source`, in the
+ * order of a column (`sort`: `name`, `email`, `lastLogin`, `createdAt`, `source`, `status`, each also descending
  * with a leading `-`; without, the newest account first).
  *
  * A module restricting the users an administrator sees (e.g. to the groups they manage) narrows
@@ -52,6 +53,8 @@ class AdminUserList extends FilterableList
         'email' => ['user.email'],
         'lastLogin' => ['user.last_login'],
         'createdAt' => ['user.created_at'],
+        'source' => ['user.user_source'],
+        'status' => ['user.status'],
     ];
 
     /**
@@ -65,21 +68,20 @@ class AdminUserList extends FilterableList
                 apply: static fn(QueryListBuilder $list, string $keywords) => self::search($list, $keywords),
                 definition: [
                     'label' => Yii::t('AdminModule.user', 'Search'),
-                    'placeholder' => Yii::t('AdminModule.user', 'Search by name, email, username or exact id.'),
+                    'placeholder' => Yii::t('AdminModule.user', 'Name, email or username'),
                     'sortOrder' => 100,
                 ],
             ),
             new EnumFilter(
                 'status',
                 values: [
-                    self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Active users'),
-                    self::STATUS_DEACTIVATED => Yii::t('AdminModule.user', 'Deactivated users'),
-                    self::STATUS_DELETED => Yii::t('AdminModule.user', 'Deleted users'),
+                    self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
+                    self::STATUS_DEACTIVATED => Yii::t('AdminModule.user', 'Deactivated'),
+                    self::STATUS_DELETED => Yii::t('AdminModule.user', 'Deleted'),
                 ],
-                // Applied by finalize(): without a value, the active users.
+                // Applied by finalize(): without a value, the active and the deactivated accounts.
                 definition: [
                     'label' => Yii::t('AdminModule.user', 'Status'),
-                    'default' => self::STATUS_ENABLED,
                     'sortOrder' => 200,
                 ],
             ),
@@ -96,6 +98,17 @@ class AdminUserList extends FilterableList
                     'sortOrder' => 300,
                 ],
             ),
+            // The source of an account (e.g. LDAP), shown to administrators only like its column
+            ...(Yii::$app->user->isAdmin() ? [new EnumFilter(
+                'source',
+                values: $this->sourceOptions(),
+                apply: static fn(QueryListBuilder $list, string $source) => $list->query()
+                    ->andWhere(['user.user_source' => $source]),
+                definition: [
+                    'label' => Yii::t('AdminModule.user', 'Source'),
+                    'sortOrder' => 400,
+                ],
+            )] : []),
         ];
     }
 
@@ -128,8 +141,11 @@ class AdminUserList extends FilterableList
     protected function finalize(ListBuilder $builder, array $values, ListContext $context): void
     {
         /** @var QueryListBuilder $builder */
-        $status = $this->value($values, 'status') ?? self::STATUS_ENABLED;
-        $builder->query()->andWhere(['user.status' => self::STATUS_VALUES[$status]]);
+        // The deleted accounts only on request
+        $status = $this->value($values, 'status');
+        $builder->query()->andWhere(['user.status' => $status !== null
+            ? self::STATUS_VALUES[$status]
+            : [User::STATUS_ENABLED, User::STATUS_DEACTIVATED]]);
 
         $sort = $this->value($values, self::SORT_PARAM);
         if ($sort !== null && $this->applySortCallback($builder, $sort, $context)) {
@@ -144,15 +160,7 @@ class AdminUserList extends FilterableList
             return;
         }
 
-        $direction = $descending ? SORT_DESC : SORT_ASC;
-        $order = [];
-        foreach ($columns as $column) {
-            // Empty values last in both directions (docs/ui/data-table.md, "Sorting").
-            $order[] = new Expression($column . ' IS NULL');
-            $order[$column] = $direction;
-        }
-        $order['user.id'] = $direction;
-        $builder->query()->orderBy($order);
+        $builder->sortBy($columns, $descending, 'user.id');
     }
 
     private static function search(QueryListBuilder $list, string $keywords): void
@@ -172,6 +180,27 @@ class AdminUserList extends FilterableList
     /**
      * @return array<int, string> the group names by id
      */
+    /**
+     * The configured user sources and those accounts still name, by id.
+     */
+    private function sourceOptions(): array
+    {
+        /** @var UserSourceCollection $collection */
+        $collection = Yii::$app->userSourceCollection;
+
+        $options = [];
+        foreach ($collection->getUserSources() as $id => $source) {
+            $options[$id] = $source->getTitle();
+        }
+        foreach (User::find()->select('user_source')->distinct()->column() as $id) {
+            if ($id !== null && $id !== '' && !isset($options[$id])) {
+                $options[$id] = $id;
+            }
+        }
+
+        return $options;
+    }
+
     private function groupOptions(): array
     {
         $options = [];

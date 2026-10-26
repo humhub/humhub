@@ -49,15 +49,16 @@ class UserTable extends DataTable
     {
         $columns = [
             new ColumnDefinition('name', ColumnDefinition::TYPE_MAIN, Yii::t('UserModule.base', 'Name'), sort: 'name', sortOrder: 100),
-            new ColumnDefinition('groups', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Groups'), priority: 2, filter: 'group', sortOrder: 200),
-            new ColumnDefinition('lastLogin', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Last login'), priority: 1, sort: 'lastLogin', sortOrder: 300),
+            new ColumnDefinition('groups', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Groups'), priority: 3, filter: 'group', sortOrder: 200, visible: false),
+            new ColumnDefinition('status', ColumnDefinition::TYPE_CHIP, Yii::t('UserModule.base', 'Status'), priority: 1, sort: 'status', filter: 'status', sortOrder: 260),
+            new ColumnDefinition('lastLogin', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Last login'), priority: 2, sort: 'lastLogin', sortOrder: 300),
             new ColumnDefinition('createdAt', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Registered'), priority: 3, sort: 'createdAt', sortOrder: 400, visible: false),
             new ColumnDefinition('username', ColumnDefinition::TYPE_TEXT, Yii::t('AdminModule.user', 'Username'), priority: 3, sortOrder: 150, visible: false),
         ];
 
         // The source of an account (e.g. LDAP), as the name column showed it to administrators
         if (Yii::$app->user->isAdmin()) {
-            $columns[] = new ColumnDefinition('source', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Source'), priority: 3, sortOrder: 250, visible: false);
+            $columns[] = new ColumnDefinition('source', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Source'), priority: 3, sort: 'source', filter: 'source', sortOrder: 250);
         }
 
         return $columns;
@@ -83,6 +84,7 @@ class UserTable extends DataTable
                 Yii::t('AdminModule.user', 'Enable'),
                 RowAction::KIND_REQUEST,
                 static fn(User $user) => ['/admin/api/user/enable', 'id' => $user->id],
+                icon: 'user-check',
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?'),
                 visible: fn(User $user) => $user->status == User::STATUS_DEACTIVATED && $this->canManage($user),
                 sortOrder: 200,
@@ -93,6 +95,7 @@ class UserTable extends DataTable
                 Yii::t('AdminModule.user', 'Disable'),
                 RowAction::KIND_REQUEST,
                 static fn(User $user) => ['/admin/api/user/disable', 'id' => $user->id],
+                icon: 'ban',
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?'),
                 visible: fn(User $user) => $user->status == User::STATUS_ENABLED && $this->canManage($user),
                 sortOrder: 200,
@@ -103,6 +106,7 @@ class UserTable extends DataTable
                 Yii::t('AdminModule.user', 'Impersonate'),
                 RowAction::KIND_POST,
                 static fn(User $user) => ['/admin/user/impersonate', 'id' => $user->id],
+                icon: 'spy',
                 confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to impersonate this user?'),
                 visible: static fn(User $user) => $user->status == User::STATUS_ENABLED
                     && Yii::$app->user->impersonation->canStart($user),
@@ -113,6 +117,7 @@ class UserTable extends DataTable
                 Yii::t('AdminModule.user', 'View profile'),
                 RowAction::KIND_LINK,
                 static fn(User $user) => $user->getUrl(),
+                icon: 'eye',
                 visible: static fn(User $user) => $user->status == User::STATUS_ENABLED,
                 sortOrder: 400,
             ),
@@ -122,6 +127,7 @@ class UserTable extends DataTable
                 Yii::t('base', 'Delete'),
                 RowAction::KIND_LINK,
                 static fn(User $user) => ['/admin/user/delete', 'id' => $user->id],
+                icon: 'trash',
                 destructive: true,
                 visible: fn(User $user) => $user->status != User::STATUS_SOFT_DELETED
                     && $this->canManage($user) && !$user->isCurrentUser(),
@@ -132,6 +138,7 @@ class UserTable extends DataTable
                 Yii::t('AdminModule.user', 'Permanently delete'),
                 RowAction::KIND_LINK,
                 static fn(User $user) => ['/admin/user/delete', 'id' => $user->id],
+                icon: 'trash-x',
                 destructive: true,
                 visible: static fn(User $user) => $user->status == User::STATUS_SOFT_DELETED,
                 sortOrder: 100,
@@ -157,7 +164,8 @@ class UserTable extends DataTable
                 ? self::dateCell($model->last_login)
                 : ['text' => Yii::t('AdminModule.user', 'never')],
             'createdAt' => $model->created_at ? self::dateCell($model->created_at) : null,
-            'source' => [['text' => self::sourceTitle($model->user_source)]],
+            'source' => [['text' => self::sourceTitle($model->user_source), 'value' => (string)$model->user_source]],
+            'status' => self::statusCell((int)$model->status),
             'username' => ['text' => $model->username],
         ];
     }
@@ -187,6 +195,19 @@ class UserTable extends DataTable
             'text' => Yii::$app->formatter->asDate($value),
             'title' => Yii::$app->formatter->asDatetime($value),
         ];
+    }
+
+    /**
+     * The account's status as a chip setting the list's `status` filter.
+     */
+    private static function statusCell(int $status): ?array
+    {
+        return match ($status) {
+            User::STATUS_ENABLED => [['text' => Yii::t('AdminModule.user', 'Enabled'), 'value' => AdminUserList::STATUS_ENABLED, 'tone' => 'success']],
+            User::STATUS_DEACTIVATED => [['text' => Yii::t('AdminModule.user', 'Deactivated'), 'value' => AdminUserList::STATUS_DEACTIVATED, 'tone' => 'warning']],
+            User::STATUS_SOFT_DELETED => [['text' => Yii::t('AdminModule.user', 'Deleted'), 'value' => AdminUserList::STATUS_DELETED, 'tone' => 'danger']],
+            default => null,
+        };
     }
 
     private static function sourceTitle(?string $source): string

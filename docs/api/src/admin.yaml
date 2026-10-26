@@ -18,10 +18,13 @@ security:
 tags:
   - name: Administration
     description: |
-      The user administration, for those who may manage users or groups (`ManageUsers`,
-      `ManageGroups`). The rows are those of the administration's user table (Administration ›
-      Users): table rows, not user records — `{id, cells, actions}`, the cells as the table shows
-      them and the actions the caller may take on each user (see `docs/ui/data-table.md`).
+      The administration's tables: users, groups, spaces and installed modules. The rows are
+      those of the tables (Administration › Users, Groups, Spaces, Modules): table rows, not
+      records — `{id, cells, actions}`, the cells as the table shows them and the actions the
+      caller may take on each record (see `docs/ui/data-table.md`). Each list takes a search,
+      its filters and a `sort` (a column's key, descending with a leading `-`) as query
+      parameters; an unknown value or parameter answers `422`, and modules may add filters and
+      columns of their own.
 paths:
   "/admin/user":
     get:
@@ -56,16 +59,25 @@ paths:
           description: Only members of this group (its id)
           schema:
             type: string
+        - name: source
+          in: query
+          required: false
+          description: |
+            Only accounts of this user source (its id, e.g. `local`, `ldap`); for System
+            Administrators only, like the source column
+          schema:
+            type: string
         - name: sort
           in: query
           required: false
           description: |
-            `name` (last name, first name) · `email` · `lastLogin` · `createdAt`, each descending
+            `name` (last name, first name) · `email` · `lastLogin` · `createdAt` · `source` ·
+            `status`, each descending
             with a leading `-` (`-lastLogin`); empty values last in both directions. Without,
             the newest account first.
           schema:
             type: string
-            enum: [name, -name, email, -email, lastLogin, -lastLogin, createdAt, -createdAt]
+            enum: [name, -name, email, -email, lastLogin, -lastLogin, createdAt, -createdAt, source, -source, status, -status]
         - $ref: "common.yaml#/components/parameters/pageParam"
         - $ref: "common.yaml#/components/parameters/pageSizeParam"
       responses:
@@ -107,6 +119,156 @@ paths:
                 page: 1
                 pageSize: 25
                 pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the group table
+      operationId: listAdminGroups
+      description: |
+        One page of the groups, for those who may manage groups (`ManageGroups`), and for group
+        managers the groups they manage. Without `sort`, the normal groups before the
+        subgroups, each by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name and description
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          description: |
+            `normal` · `subgroup`
+          schema:
+            type: string
+            enum: [normal, subgroup]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `members` · `managers` · `type`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, members, -members, managers, -managers, type, -type]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/space":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the space table
+      operationId: listAdminSpaces
+      description: |
+        One page of the spaces, whatever their visibility, for those who may manage spaces
+        (`ManageSpaces`). Without `sort`, the spaces' own sort order, then by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and the owner's name, username and e-mail
+          schema:
+            type: string
+        - name: visibility
+          in: query
+          required: false
+          description: |
+            `public` (registered users or everyone) · `private`
+          schema:
+            type: string
+            enum: [public, private]
+        - name: status
+          in: query
+          required: false
+          description: |
+            `active` · `archived`
+          schema:
+            type: string
+            enum: [active, archived]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `members` · `owner` · `visibility` · `status` · `createdAt`, each
+            descending with a leading `-`; empty values last in both directions
+          schema:
+            type: string
+            enum: [name, -name, members, -members, owner, -owner, visibility, -visibility, status, -status, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/module":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the module table
+      operationId: listAdminModules
+      description: |
+        One page of the installed modules (core modules left out), for those who may manage
+        modules or settings (`ManageModules`, `ManageSettings`). A row's `id` is the module's
+        id. An available update comes from the marketplace's cached module list. Without
+        `sort`, the modules with an update first, then the enabled and the disabled ones, each
+        by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and id
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: |
+            `enabled` · `disabled`
+          schema:
+            type: string
+            enum: [enabled, disabled]
+        - name: update
+          in: query
+          required: false
+          description: |
+            `available`: a newer compatible version in the marketplace
+          schema:
+            type: string
+            enum: [available]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `version` · `update` · `status`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, version, -version, update, -update, status, -status]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
         "403":
@@ -219,6 +381,19 @@ components:
           schema:
             $ref: "#/components/schemas/BulkSelection"
   responses:
+    TableRows:
+      description: One page of the table's rows
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "common.yaml#/components/schemas/ListEnvelope"
+              - type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TableRow"
     BulkDone:
       description: How many users were changed and skipped
       content:
@@ -263,12 +438,16 @@ components:
       type: object
       description: |
         A row of a data table: the cells by column key — `{text, subtitle?, image?, url?}` for
-        the main column, `[{text, value?}]` for a chip column, `{value, text, title}` for a
-        date, `{text}` otherwise — and the actions the caller may take on it, each with its URL.
+        the main column (without an image, `initials` and `color` for a coloured tile instead),
+        `[{text, value?}]` for a chip column, `{value, text, title}` for a date, `{text}`
+        otherwise — and the actions the caller may take on it, each with its URL.
         The table's definitions (columns, actions) come with the page.
       properties:
         id:
-          type: integer
+          oneOf:
+            - type: integer
+            - type: string
+          description: The record's id; a module's id for the module table
         cells:
           type: object
           additionalProperties: true

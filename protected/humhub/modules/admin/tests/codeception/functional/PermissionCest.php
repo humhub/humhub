@@ -226,7 +226,7 @@ class PermissionCest
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
         $I->seeElement('.page-header');
-        $I->see('You do not have the permission to manage modules.');
+        $I->seeElement('.data-table');
 
         $I->amOnRoute('/admin/setting');
         $I->dontSee('You are not permitted to access this section.');
@@ -272,7 +272,7 @@ class PermissionCest
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
         $I->seeElement('.page-header');
-        $I->see('You do not have the permission to configure modules.');
+        $I->seeElement('.data-table');
 
         $I->amOnRoute('/marketplace/browse');
         $I->see('Marketplace');

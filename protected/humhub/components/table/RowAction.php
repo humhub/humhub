@@ -20,7 +20,7 @@ use yii\helpers\Url;
  * - `modal`: opens the URL in the global modal
  * - `post`: submits a POST to the URL (a web route answering with a redirect, e.g. impersonate)
  * - `request`: POSTs to the URL (an API endpoint) and updates the row in place with the answer's
- *   `row`, or removes it when the answer has `removed: true`
+ *   `row`, or removes it when the answer has `removed: true`; any other answer reloads the page
  *
  * An action with a `bulkUrl` is also offered for the selected rows: the table POSTs `ids` (or
  * `all` with its filters in the query) to that URL, which applies it to every one of them whose

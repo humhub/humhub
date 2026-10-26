@@ -1701,6 +1701,32 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the button removes the entry on the menu's `EVENT_INIT` (the `Button::EVENT_BEFORE_RUN`
     check on its URL no longer applies). The export does not follow the table's filters.
 
+- **Administration › Groups, Spaces and Modules are data table islands** like the users (see
+  above and `docs/ui/data-table.md`), with their rows from `GET /api/v2/admin/group`,
+  `/admin/space` and `/admin/module` (see `docs/api/src/admin.yaml`).
+  - **New:** `humhub\widgets\DataTableWidget` and `humhub\components\api\DataTableController`,
+    the page and the endpoint of a table (`admin\widgets\UserTable` and the user endpoint now
+    build on them); `DataTable::canAccess()`; `QueryListBuilder::sortBy()`. The tables
+    `admin\components\GroupTable`, `SpaceTable`, `ModuleTable` on the lists `AdminGroupList`
+    (filters `q`, `type`), `AdminSpaceList` (`q`, `visibility`, `status`) and `AdminModuleList`
+    (`q`, `update`, `status`), each created through the DI container and changed on
+    `EVENT_INIT` (columns, actions) and `FilterableList::EVENT_INIT` / `EVENT_BUILD` (filters,
+    restrictions). A module adding a space column and filter (e.g. a category) registers on
+    `SpaceTable::EVENT_INIT` and `AdminSpaceList::EVENT_INIT`.
+  - **Changed:** `admin/group/index` and `admin/space/index` no longer use
+    `admin\models\GroupSearch` / `SpaceSearch`; their filter parameters are those of the lists
+    (`?q=…&type=…`), not `GroupSearch[…]` / `SpaceSearch[…]`. A row action of the request kind
+    answering neither `row` nor `removed` (e.g. the marketplace's module update) reloads the
+    table's page.
+  - **Deprecated** (to be removed in 1.21): `admin\models\SpaceSearch`,
+    `admin\widgets\SpaceGridView`, `admin\grid\SpaceBaseColumn`, `SpaceImageColumn`,
+    `SpaceTitleColumn` — no core page uses them any more (module search: classified-space).
+  - **Removed:** `admin\widgets\InstalledModuleList`, `InstalledModuleControls`,
+    `InstalledModuleActionButtons`, `AvailableModuleUpdatesInfo` and their views,
+    `admin\widgets\GroupMenu`, `admin\grid\SpaceActionColumn` — module search found no users.
+    A module adding an entry to a module's controls adds a `RowAction` on
+    `ModuleTable::EVENT_INIT`.
+
 - **Every core page that is not a space or profile page starts with a page header**
   (`humhub\widgets\PageHeader`, see `docs/ui/page-header.md`): Administration › Modules, the
   account section, the notification overview, search and the licence page. The former

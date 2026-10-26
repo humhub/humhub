@@ -269,7 +269,7 @@ $picker-chip-font-size: $font-size-sm !default;
         transform: translateY(-50%) rotate(180deg);
     }
 
-    .select-menu.has-selection .select-menu-chevron {
+    .select-menu.has-selection:not(.is-required) .select-menu-chevron {
         opacity: 0;
         transition-delay: 0s;
     }
@@ -322,6 +322,14 @@ $picker-chip-font-size: $font-size-sm !default;
     }
 
     // The listbox: a `.dropdown-menu` below the field (`data-bs-popper="static"`), as wide as it
+    // Opening above the field (`dropUp`)
+    .select-menu.is-drop-up .select-menu-drawer[data-bs-popper] {
+        top: auto;
+        bottom: 100%;
+        margin-top: 0;
+        margin-bottom: var(--bs-dropdown-spacer);
+    }
+
     .select-menu-drawer {
         width: 100%;
         max-height: $select-menu-max-height;

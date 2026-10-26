@@ -8,54 +8,88 @@
 
 namespace humhub\modules\admin\widgets;
 
-use humhub\components\listing\ListContext;
-use humhub\components\table\TableSettings;
+use humhub\components\table\DataTable;
 use humhub\modules\admin\components\UserTable as UserTableDefinition;
-use humhub\widgets\VueWidget;
+use humhub\widgets\DataTableWidget;
+use humhub\widgets\menu\CardHeaderActions;
+use humhub\widgets\menu\DropdownMenu;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * The administration's user table (Administration › Users) as a `<data-table>` island: the
  * definitions of {@see UserTableDefinition} (columns, row actions, filters), the card's actions
  * ({@see AdminUserCardActions}, {@see AdminUserCardMenu}) and the rows' endpoint,
- * `GET /api/v2/admin/user`. Until the island mounts, the placeholder shows skeleton rows.
+ * `GET /api/v2/admin/user`.
  *
  * @since 1.20
  */
-class UserTable extends VueWidget
+class UserTable extends DataTableWidget
 {
     public const TABLE_ID = 'admin-users';
-
-    protected string $component = 'DataTable';
 
     /**
      * @inheritdoc
      */
-    protected function getProps(): array
+    public string $tableId = self::TABLE_ID;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
     {
-        return array_merge(Yii::createObject(UserTableDefinition::class)->definitions(ListContext::forCurrentUser()), [
-            'tableId' => self::TABLE_ID,
-            'columnChoice' => TableSettings::columns(self::TABLE_ID),
-            'columnsUrl' => Url::to(['/user/api/account/table', 'id' => self::TABLE_ID]),
-            'maxColumns' => 4,
-            'label' => Yii::t('AdminModule.user', 'Users'),
-            'url' => Url::to(['/admin/api/user/index']),
-            'headerActions' => (new AdminUserCardActions())->getEntriesData(),
-            'headerMenu' => (new AdminUserCardMenu())->getEntriesData(),
-            'labels' => [
-                'one' => Yii::t('AdminModule.user', '{count} user'),
-                'other' => Yii::t('AdminModule.user', '{count} users'),
-                'range' => Yii::t('AdminModule.user', '{from}–{to} of {total} users'),
-            ],
-        ]);
+        parent::init();
+        $this->title = Yii::t('AdminModule.user', 'Overview');
     }
 
     /**
      * @inheritdoc
      */
-    protected function getPlaceholder(): string
+    protected function createTable(): DataTable
     {
-        return $this->render('userTablePlaceholder');
+        return Yii::createObject(UserTableDefinition::class);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getUrl(): string|array
+    {
+        return ['/admin/api/user/index'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getLabel(): string
+    {
+        return Yii::t('AdminModule.user', 'Users');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getCountLabels(): array
+    {
+        return [
+            'one' => Yii::t('AdminModule.user', '{count} user'),
+            'other' => Yii::t('AdminModule.user', '{count} users'),
+            'range' => Yii::t('AdminModule.user', '{from}–{to} of {total} users'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getHeaderActions(): ?CardHeaderActions
+    {
+        return new AdminUserCardActions();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getHeaderMenu(): ?DropdownMenu
+    {
+        return new AdminUserCardMenu();
     }
 }

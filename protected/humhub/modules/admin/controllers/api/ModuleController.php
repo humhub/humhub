@@ -8,32 +8,39 @@
 
 namespace humhub\modules\admin\controllers\api;
 
-use humhub\components\api\BaseController;
+use humhub\components\api\DataTableController;
+use humhub\components\table\DataTable;
+use humhub\modules\admin\components\ModuleTable;
 use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\admin\jobs\RemoveModuleJob;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
 
 /**
- * Enabling an installed module, `POST module/<id>/enable` (see `docs/api/src/module.yaml`) -
- * an operation the caller triggers, hence a verb sub-path. Not marketplace-specific, hence
- * here; the marketplace island is its first consumer. The web routes `admin/module/enable|disable`
- * remain until the module administration becomes an island.
+ * The installed modules (see `docs/api/src/admin.yaml` and `docs/api/src/module.yaml`):
+ * `GET admin/module` answers the rows of the administration's module table ({@see ModuleTable},
+ * the modules of `AdminModuleList`, its filters and sorts as query parameters) in the paginated
+ * envelope, for those who may manage modules or settings; `POST module/<id>/enable` enables a
+ * module (an operation the caller triggers, hence a verb sub-path), for those who may manage
+ * modules. The marketplace island and the module table use it; disabling and uninstalling remain
+ * the web routes `admin/module/disable|remove`, which queue a job.
  *
  * @since 1.20
  */
-class ModuleController extends BaseController
+class ModuleController extends DataTableController
 {
     /**
      * @inheritdoc
      */
-    protected bool $allowSessionAuth = true;
+    protected function createTable(): DataTable
+    {
+        return Yii::createObject(ModuleTable::class);
+    }
 
     /**
      * @inheritdoc
@@ -42,7 +49,6 @@ class ModuleController extends BaseController
     {
         return ArrayHelper::merge(parent::behaviors(), [
             'verbs' => [
-                'class' => VerbFilter::class,
                 'actions' => [
                     'enable' => ['POST'],
                 ],
@@ -59,7 +65,7 @@ class ModuleController extends BaseController
             return false;
         }
 
-        if (!Yii::$app->user->can(ManageModules::class)) {
+        if ($action->id === 'enable' && !Yii::$app->user->can(ManageModules::class)) {
             throw new ForbiddenHttpException();
         }
 

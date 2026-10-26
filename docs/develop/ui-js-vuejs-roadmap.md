@@ -31,9 +31,9 @@ Web routes an endpoint duplicates, still in place because other consumers depend
   which then search with an endpoint of their own, `GET /api/v2/space/picker`, after the user
   picker's (`ids`/`exclude` for the chosen spaces; see "Lists" in `concept-api.md`).
 - **Module enabling** — `admin/module/enable|disable` next to
-  `POST /api/v2/module/<id>/enable`: the module administration (`admin/module/list`,
-  `InstalledModuleList`) is still server-rendered. Moves when it becomes an island;
-  `POST …/disable` joins then.
+  `POST /api/v2/module/<id>/enable`: the module administration (`admin/module/list`) is the
+  `ModuleTable` island and enables through the API, but disables and uninstalls by form POST to
+  the web routes (they answer with a redirect). Moves with `POST …/disable` and `…/remove`.
 
 ## Islands & extension APIs
 

@@ -258,6 +258,43 @@
         cursor: pointer;
     }
 
+    // Bootstrap's switch (`.form-switch` > `input.form-check-input[role=switch]`), restored over the
+    // checkbox look above: a track with a knob, on in the accent colour like a ticked checkbox
+    .form-switch input.form-check-input[type=checkbox] {
+        width: $form-switch-width;
+        height: $form-check-input-width;
+        min-height: 0;
+        padding: 0;
+        border: $form-check-input-border;
+        border-radius: $form-switch-border-radius;
+        background: var(--bs-body-bg) var(--bs-form-switch-bg) left center / contain no-repeat;
+        @include transition($form-switch-transition);
+
+        &:focus {
+            --bs-form-switch-bg: #{escape-svg($form-switch-focus-bg-image)};
+            border: $form-check-input-border !important;
+            border-color: $form-check-input-focus-border !important;
+            box-shadow: $form-check-input-focus-box-shadow;
+        }
+
+        &:checked {
+            --bs-form-switch-bg: #{escape-svg($form-switch-checked-bg-image)};
+            border-color: var(--bs-accent);
+            background-color: var(--bs-accent);
+            background-position: right center;
+
+            &::after {
+                content: none;
+            }
+        }
+
+        &:disabled {
+            border: $form-check-input-border !important;
+            background-color: var(--bs-body-bg) !important;
+            opacity: $form-check-input-disabled-opacity;
+        }
+    }
+
     // Radio cards (`.form-check-cards` > `label.form-check-card`): a choice with a title and a
     // description, e.g. a notification profile. On wider screens the card's border shows the
     // choice and the radio stays hidden (focusable); on a phone the cards stack and show it.
