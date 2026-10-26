@@ -36,6 +36,7 @@ HumHub Changelog
 - Fix #8623: Secrets from `.env` (e.g. `HUMHUB_CONFIG__*` passwords, keys, tokens, DSNs) were written in plain text to `app.log` and the `logging` table via the `$_SERVER` dump; values are now masked by key name (PASS, SECRET, KEY, TOKEN, DSN, AUTH, COOKIE, ...)
 - Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
 - Fix #8627: The full-size profile image overlay now closes on the browser Back button instead of staying open over the previous page
+- Fix #8639: Dates containing non-ASCII characters (e.g. the `fa-IR` and `ar` locales) were rejected as invalid on PHP 8.4+, because `IntlDateFormatter::parse()` now returns the position in bytes while Yii compares it with the character count
 
 1.19.0 (October 12, 2026)
 -------------------------
