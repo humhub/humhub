@@ -187,12 +187,6 @@ parameters:
 			path: protected/humhub/modules/content/widgets/ContentTagDropDown.php
 
 		-
-			message: '#^Class humhub\\modules\\content\\widgets\\WallEntry not found\.$#'
-			identifier: class.notFound
-			count: 1
-			path: protected/humhub/modules/content/widgets/WallEntryControls.php
-
-		-
 			message: '#^Value for attribute "id" on ActiveRecord humhub\\modules\\file\\models\\File in findOne\(\) condition must be int, string given\.$#'
 			identifier: mspirkovYii2.activeRecordConditionValidation
 			count: 1
