@@ -534,6 +534,25 @@ describe('DataTable', () => {
             globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ done: 2, skipped: 0, message: '2 users were changed.' }));
         });
 
+        it('selects the row on a click beside the checkbox instead of opening it', async () => {
+            const assign = vi.fn();
+            const location = window.location;
+            delete window.location;
+            window.location = { ...location, assign };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([
+                row(1, 'Emma', { cells: { name: { text: 'Emma', url: '/u/emma' } } }),
+            ])));
+            wrapper = mountTable({ actions: bulkActions, columnChoice: withSelect });
+            await flushPromises();
+
+            await wrapper.find('tr[data-id="1"] td.data-table-col-select').trigger('click');
+            await flushPromises();
+
+            expect(checkbox(1).element.checked).toBe(true);
+            expect(assign).not.toHaveBeenCalled();
+            window.location = location;
+        });
+
         it('shows the checkboxes by default where asked to', async () => {
             wrapper = mountTable({ actions: bulkActions, selectByDefault: true });
             await flushPromises();

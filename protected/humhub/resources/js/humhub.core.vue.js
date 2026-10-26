@@ -3420,9 +3420,15 @@
       },
       // A click on the row opens its record (with Ctrl / Cmd in a new tab); a row without one
       // toggles its details while columns are folded — but never a click on a link or a
-      // button inside it.
+      // button inside it. A click beside the checkbox, in its cell, selects the row instead.
       onRowClick(row, event) {
+        var _a;
         if (event.target.closest("a, button, input, select, label")) {
+          return;
+        }
+        const selectCell = event.target.closest(".data-table-col-select");
+        if (selectCell) {
+          (_a = selectCell.querySelector("input")) == null ? void 0 : _a.dispatchEvent(new MouseEvent("click", { bubbles: true, shiftKey: event.shiftKey }));
           return;
         }
         const url = this.rowUrl(row);
