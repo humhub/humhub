@@ -5,7 +5,9 @@
 // (`_nav.scss`). See docs/ui/context-menu.md.
 // --------------------------------------------------
 
-$dropdown-item-icon-width: 1.25em !default;
+// A leading icon, a little larger than the label (in the label's em)
+$dropdown-item-icon-size: 1.25em !default;
+$dropdown-item-icon-width: 1em !default;
 $dropdown-item-icon-gap: $spacer * .5 !default;
 $dropdown-item-border-radius: var(--bs-border-radius-sm) !default;
 $dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in-out !default;
@@ -36,7 +38,9 @@ $dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in
         > .dropdown-item-icon,
         > i:first-child {
             display: inline-block;
+            font-size: $dropdown-item-icon-size;
             width: $dropdown-item-icon-width;
+            vertical-align: -.125em;
             margin-right: $dropdown-item-icon-gap;
             text-align: center;
         }

@@ -202,6 +202,30 @@
     );
   }
   const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$v]]);
+  function resolveMenuEntries(menuId, entries = [], context = {}) {
+    if (!menuId) {
+      return [];
+    }
+    const registry = vue$1.getMenuEntries(menuId);
+    const registryById = new Map(registry.entries.map((entry) => [entry.id, entry]));
+    const usedRegistryIds = /* @__PURE__ */ new Set();
+    const merged = entries.map((entry) => {
+      const override = registryById.get(entry.id);
+      if (override) {
+        usedRegistryIds.add(entry.id);
+        return override;
+      }
+      return entry;
+    });
+    registry.entries.forEach((entry) => {
+      if (!usedRegistryIds.has(entry.id)) {
+        merged.push(entry);
+      }
+    });
+    const removed = registry.removed;
+    const sortOrderOf = (entry) => typeof entry.sortOrder === "number" ? entry.sortOrder : 1e3;
+    return merged.filter((entry) => removed.indexOf(entry.id) === -1 && (!entry.condition || entry.condition(context)) && (!entry.component || vue$1.isRegistered(entry.component))).map((entry, index) => ({ entry, index })).sort((a, b) => sortOrderOf(a.entry) - sortOrderOf(b.entry) || a.index - b.index).map((wrapped) => wrapped.entry);
+  }
   const _sfc_main$u = {
     props: {
       toggleAriaLabel: { type: String, required: true },
@@ -243,29 +267,7 @@
         return vue$1.i18n.t("base", "Loading...");
       },
       resolvedEntries() {
-        if (!this.menuId) {
-          return [];
-        }
-        const registry = vue$1.getMenuEntries(this.menuId);
-        const registryById = new Map(registry.entries.map((entry) => [entry.id, entry]));
-        const usedRegistryIds = /* @__PURE__ */ new Set();
-        const merged = this.entries.map((entry) => {
-          const override = registryById.get(entry.id);
-          if (override) {
-            usedRegistryIds.add(entry.id);
-            return override;
-          }
-          return entry;
-        });
-        registry.entries.forEach((entry) => {
-          if (!usedRegistryIds.has(entry.id)) {
-            merged.push(entry);
-          }
-        });
-        const removed = registry.removed;
-        const context = this.context;
-        const sortOrderOf = (entry) => typeof entry.sortOrder === "number" ? entry.sortOrder : 1e3;
-        return merged.filter((entry) => removed.indexOf(entry.id) === -1 && (!entry.condition || entry.condition(context)) && (!entry.component || vue$1.isRegistered(entry.component))).map((entry, index) => ({ entry, index })).sort((a, b) => sortOrderOf(a.entry) - sortOrderOf(b.entry) || a.index - b.index).map((wrapped) => wrapped.entry);
+        return resolveMenuEntries(this.menuId, this.entries, this.context);
       }
     },
     methods: {
@@ -2958,12 +2960,16 @@
           ...this.optionalColumns
         ];
       },
+      // A chooser only with something to choose: "Bulk select", a column hidden by default, or
+      // more columns than may be shown at once.
       hasChooser() {
-        return this.choosableColumns.length > 0;
+        return this.hasBulk || this.optionalColumns.some((column) => column.visible === false) || this.maxColumns > 0 && this.optionalColumns.length > this.maxColumns;
       },
-      // The main column and the chosen optional ones, in the columns' order.
+      // The main column and the chosen optional ones (without a chooser: the defaults), in the
+      // columns' order.
       activeColumns() {
-        return this.columns.filter((column) => column.type === "main" || this.chosenKeys.includes(column.key));
+        const keys = this.hasChooser ? this.chosenKeys : this.defaultKeys;
+        return this.columns.filter((column) => column.type === "main" || keys.includes(column.key));
       },
       atLimit() {
         return this.maxColumns > 0 && this.draftKeys.length >= this.maxColumns;
@@ -2976,9 +2982,19 @@
       },
       // The main column twice as wide as each of the others (`table-layout: fixed`); alone, it
       // takes the table's width.
+      // Narrow columns (`narrow`) have a fixed width; with only those, the main column takes the
+      // rest.
       mainColumnStyle() {
-        const others = this.shownColumns.length - 1;
+        const others = this.shownColumns.filter((column) => column.type !== "main" && !column.narrow).length;
         return others > 0 ? { width: `${(200 / (others + 2)).toFixed(4)}%` } : null;
+      },
+      // The row menu's id: modules add entries to it client-side (`registerMenuEntry()`)
+      rowMenuId() {
+        return `${this.tableId}.row`;
+      },
+      // A column for the row menus: the table has row actions, or a module registered entries
+      hasActionsColumn() {
+        return this.actions.length > 0 || vue$1.getMenuEntries(this.rowMenuId).entries.length > 0;
       },
       pageSizeOptions() {
         return this.pageSizes.map((size) => ({ value: String(size), label: String(size) }));
@@ -3003,7 +3019,7 @@
         return this.foldedKeys.length > 0;
       },
       colspan() {
-        return this.shownColumns.length + (this.showSelect ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
+        return this.shownColumns.length + (this.showSelect ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.hasActionsColumn ? 1 : 0);
       },
       filtered() {
         return this.filters.some((filter) => !isDefault(filter, this.values[filter.key]));
@@ -3158,9 +3174,6 @@
       rowLabel(message, row) {
         return vue$1.i18n.t("base", message, { name: this.rowName(row) });
       },
-      actionLabel(action, row) {
-        return `${action.label}: ${this.rowName(row)}`;
-      },
       format(template, params) {
         return String(template).replace(/\{(\w+)\}/g, (match, key) => params[key] !== void 0 ? params[key] : match);
       },
@@ -3206,7 +3219,7 @@
         const foldable = this.activeColumns.filter((column) => column.type !== "main").sort((a, b) => (b.priority || 1) - (a.priority || 1));
         const width = (columns) => columns.reduce(
           (sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150),
-          SIDE_COLUMN_WIDTH * ((this.actions.length ? 1 : 0) + (this.showSelect ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0))
+          SIDE_COLUMN_WIDTH * ((this.hasActionsColumn ? 1 : 0) + (this.showSelect ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0))
         );
         const folded = [];
         let shown = [...this.activeColumns];
@@ -3372,6 +3385,10 @@
       },
       rowActions(row) {
         return (row.actions || []).map((rowAction) => this.actionsById[rowAction.id] ? { ...this.actionsById[rowAction.id], url: rowAction.url } : null).filter(Boolean);
+      },
+      // Whether the row's menu has an entry: its actions or a module's entries for it
+      hasRowMenu(row) {
+        return resolveMenuEntries(this.rowMenuId, this.menuEntries(row), { row }).length > 0;
       },
       menuEntries(row) {
         const entries = [];
@@ -3557,45 +3574,44 @@
     class: "data-table-col-details"
   };
   const _hoisted_36 = ["aria-expanded", "aria-controls", "aria-label", "onClick"];
-  const _hoisted_37 = ["href", "aria-label", "title", "onClick"];
-  const _hoisted_38 = ["id"];
-  const _hoisted_39 = ["colspan"];
-  const _hoisted_40 = {
+  const _hoisted_37 = ["id"];
+  const _hoisted_38 = ["colspan"];
+  const _hoisted_39 = {
     key: 1,
     class: "alert alert-danger data-table-error",
     role: "alert"
   };
-  const _hoisted_41 = {
+  const _hoisted_40 = {
     key: 1,
     class: "card-footer data-table-footer"
   };
-  const _hoisted_42 = {
+  const _hoisted_41 = {
     class: "data-table-count",
     role: "status"
   };
-  const _hoisted_43 = ["aria-label"];
-  const _hoisted_44 = { class: "pagination" };
-  const _hoisted_45 = ["aria-label", "disabled"];
-  const _hoisted_46 = {
+  const _hoisted_42 = ["aria-label"];
+  const _hoisted_43 = { class: "pagination" };
+  const _hoisted_44 = ["aria-label", "disabled"];
+  const _hoisted_45 = {
     key: 0,
     class: "page-link",
     "aria-hidden": "true"
   };
-  const _hoisted_47 = ["aria-current", "aria-label", "onClick"];
-  const _hoisted_48 = ["aria-label", "disabled"];
-  const _hoisted_49 = {
+  const _hoisted_46 = ["aria-current", "aria-label", "onClick"];
+  const _hoisted_47 = ["aria-label", "disabled"];
+  const _hoisted_48 = {
     key: 0,
     class: "data-table-columns-limit"
   };
-  const _hoisted_50 = { class: "list-group data-table-columns-list" };
-  const _hoisted_51 = { class: "data-table-columns-label" };
-  const _hoisted_52 = {
+  const _hoisted_49 = { class: "list-group data-table-columns-list" };
+  const _hoisted_50 = { class: "data-table-columns-label" };
+  const _hoisted_51 = {
     key: 0,
     class: "form-text data-table-columns-folded"
   };
-  const _hoisted_53 = { class: "form-check form-switch" };
-  const _hoisted_54 = ["id", "checked", "disabled", "onChange"];
-  const _hoisted_55 = ["disabled"];
+  const _hoisted_52 = { class: "form-check form-switch" };
+  const _hoisted_53 = ["id", "checked", "disabled", "onChange"];
+  const _hoisted_54 = ["disabled"];
   function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
     const _component_HeaderActions = vue.resolveComponent("HeaderActions");
@@ -3714,7 +3730,7 @@
                       "col",
                       {
                         key: column.key,
-                        class: vue.normalizeClass(`data-table-col-${column.type}`),
+                        class: vue.normalizeClass([`data-table-col-${column.type}`, { "data-table-col-narrow": column.narrow }]),
                         style: vue.normalizeStyle(column.type === "main" ? $options.mainColumnStyle : null)
                       },
                       null,
@@ -3726,7 +3742,7 @@
                   /* KEYED_FRAGMENT */
                 )),
                 $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("col", _hoisted_10$4)) : vue.createCommentVNode("v-if", true),
-                $props.actions.length ? (vue.openBlock(), vue.createElementBlock("col", _hoisted_11$3)) : vue.createCommentVNode("v-if", true)
+                $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("col", _hoisted_11$3)) : vue.createCommentVNode("v-if", true)
               ]),
               vue.createElementVNode("thead", null, [
                 vue.createElementVNode("tr", null, [
@@ -3748,7 +3764,7 @@
                       return vue.openBlock(), vue.createElementBlock("th", {
                         key: column.key,
                         scope: "col",
-                        class: vue.normalizeClass(`data-table-col-${column.type}`),
+                        class: vue.normalizeClass([`data-table-col-${column.type}`, { "data-table-col-narrow": column.narrow }]),
                         "aria-sort": $options.ariaSort(column)
                       }, [
                         column.sort ? (vue.openBlock(), vue.createElementBlock("button", {
@@ -3800,7 +3816,7 @@
                       /* TEXT */
                     )
                   ])) : vue.createCommentVNode("v-if", true),
-                  $props.actions.length ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_18, [
+                  $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_18, [
                     vue.createElementVNode(
                       "span",
                       _hoisted_19,
@@ -3861,7 +3877,7 @@
                         /* KEYED_FRAGMENT */
                       )),
                       $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_24)) : vue.createCommentVNode("v-if", true),
-                      $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_25)) : vue.createCommentVNode("v-if", true)
+                      $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_25)) : vue.createCommentVNode("v-if", true)
                     ]);
                   }),
                   128
@@ -3956,7 +3972,7 @@
                               return vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent(column.type === "main" ? "th" : "td"), {
                                 key: column.key,
                                 scope: column.type === "main" ? "row" : null,
-                                class: vue.normalizeClass(`data-table-col-${column.type}`)
+                                class: vue.normalizeClass([`data-table-col-${column.type}`, { "data-table-col-narrow": column.narrow }])
                               }, {
                                 default: vue.withCtx(() => [
                                   row.cells[column.key] !== void 0 ? (vue.openBlock(), vue.createBlock(_component_TableCell, {
@@ -3994,51 +4010,20 @@
                               )
                             ], 8, _hoisted_36)
                           ])) : vue.createCommentVNode("v-if", true),
-                          $props.actions.length ? (vue.openBlock(), vue.createElementBlock("td", {
+                          $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("td", {
                             key: 2,
                             class: "data-table-col-actions",
                             onClick: _cache[4] || (_cache[4] = vue.withModifiers(() => {
                             }, ["stop"]))
                           }, [
-                            $options.rowActions(row).length === 1 ? (vue.openBlock(), vue.createElementBlock("a", {
+                            $options.hasRowMenu(row) ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
                               key: 0,
-                              href: $options.rowActions(row)[0].url,
-                              class: vue.normalizeClass(["btn btn-sm", [$options.rowActions(row)[0].destructive ? "btn-ghost-danger" : "btn-ghost", { "btn-icon-only": $options.rowActions(row)[0].icon }]]),
-                              "aria-label": $options.actionLabel($options.rowActions(row)[0], row),
-                              title: $options.rowActions(row)[0].label,
-                              onClick: ($event) => $options.runAction(row, $options.rowActions(row)[0], $event)
-                            }, [
-                              $options.rowActions(row)[0].icon ? (vue.openBlock(), vue.createElementBlock(
-                                "i",
-                                {
-                                  key: 0,
-                                  class: vue.normalizeClass(["ti", `ti-${$options.rowActions(row)[0].icon}`]),
-                                  "aria-hidden": "true"
-                                },
-                                null,
-                                2
-                                /* CLASS */
-                              )) : (vue.openBlock(), vue.createElementBlock(
-                                vue.Fragment,
-                                { key: 1 },
-                                [
-                                  vue.createTextVNode(
-                                    vue.toDisplayString($options.rowActions(row)[0].label),
-                                    1
-                                    /* TEXT */
-                                  )
-                                ],
-                                64
-                                /* STABLE_FRAGMENT */
-                              ))
-                            ], 10, _hoisted_37)) : $options.rowActions(row).length > 1 ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
-                              key: 1,
-                              "menu-id": `${$props.tableId}.row`,
+                              "menu-id": $options.rowMenuId,
                               entries: $options.menuEntries(row),
                               context: { row },
                               "toggle-aria-label": $options.rowLabel("More actions for {name}", row),
                               "toggle-title": $options.texts.actions,
-                              "toggle-class": "btn btn-ghost btn-icon-only btn-sm",
+                              "toggle-class": "btn btn-ghost btn-icon-only data-table-actions-toggle",
                               "root-class": "data-table-actions-menu list-unstyled m-0"
                             }, {
                               toggle: vue.withCtx(() => [..._cache[15] || (_cache[15] = [
@@ -4106,8 +4091,8 @@
                                 /* KEYED_FRAGMENT */
                               ))
                             ])
-                          ], 8, _hoisted_39)
-                        ], 8, _hoisted_38)) : vue.createCommentVNode("v-if", true)
+                          ], 8, _hoisted_38)
+                        ], 8, _hoisted_37)) : vue.createCommentVNode("v-if", true)
                       ],
                       64
                       /* STABLE_FRAGMENT */
@@ -4122,7 +4107,7 @@
           512
           /* NEED_PATCH */
         ),
-        $data.error && $data.rows.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_40, [
+        $data.error && $data.rows.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_39, [
           vue.createTextVNode(
             vue.toDisplayString($data.error) + " ",
             1
@@ -4141,10 +4126,10 @@
           )
         ])) : vue.createCommentVNode("v-if", true)
       ]),
-      $data.total > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_41, [
+      $data.total > 0 ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_40, [
         vue.createElementVNode(
           "span",
-          _hoisted_42,
+          _hoisted_41,
           vue.toDisplayString($options.countText),
           1
           /* TEXT */
@@ -4154,7 +4139,7 @@
           class: "data-table-pager",
           "aria-label": $options.texts.pages
         }, [
-          vue.createElementVNode("ul", _hoisted_44, [
+          vue.createElementVNode("ul", _hoisted_43, [
             vue.createElementVNode(
               "li",
               {
@@ -4178,7 +4163,7 @@
                     -1
                     /* CACHED */
                   )
-                ])], 8, _hoisted_45)
+                ])], 8, _hoisted_44)
               ],
               2
               /* CLASS */
@@ -4194,14 +4179,14 @@
                     class: vue.normalizeClass(["page-item", { active: slot === $data.page, disabled: slot === null }])
                   },
                   [
-                    slot === null ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_46, "…")) : (vue.openBlock(), vue.createElementBlock("button", {
+                    slot === null ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_45, "…")) : (vue.openBlock(), vue.createElementBlock("button", {
                       key: 1,
                       type: "button",
                       class: "page-link",
                       "aria-current": slot === $data.page ? "page" : null,
                       "aria-label": $options.pageLabel(slot),
                       onClick: ($event) => $options.goTo(slot)
-                    }, vue.toDisplayString(slot), 9, _hoisted_47))
+                    }, vue.toDisplayString(slot), 9, _hoisted_46))
                   ],
                   2
                   /* CLASS */
@@ -4233,13 +4218,13 @@
                     -1
                     /* CACHED */
                   )
-                ])], 8, _hoisted_48)
+                ])], 8, _hoisted_47)
               ],
               2
               /* CLASS */
             )
           ])
-        ], 8, _hoisted_43)) : vue.createCommentVNode("v-if", true),
+        ], 8, _hoisted_42)) : vue.createCommentVNode("v-if", true),
         $data.total > $data.pageSizes[0] ? (vue.openBlock(), vue.createBlock(_component_FilterSelect, {
           key: 1,
           class: "data-table-page-size",
@@ -4265,7 +4250,7 @@
             class: "btn btn-light data-table-columns-reset",
             disabled: !$options.draftDiffersFromDefault,
             onClick: _cache[9] || (_cache[9] = (...args) => $options.resetDraft && $options.resetDraft(...args))
-          }, vue.toDisplayString($options.texts.reset), 9, _hoisted_55),
+          }, vue.toDisplayString($options.texts.reset), 9, _hoisted_54),
           vue.createElementVNode(
             "button",
             {
@@ -4281,12 +4266,12 @@
         default: vue.withCtx(() => [
           $props.maxColumns ? (vue.openBlock(), vue.createElementBlock(
             "p",
-            _hoisted_49,
+            _hoisted_48,
             vue.toDisplayString($options.limitText),
             1
             /* TEXT */
           )) : vue.createCommentVNode("v-if", true),
-          vue.createElementVNode("div", _hoisted_50, [
+          vue.createElementVNode("div", _hoisted_49, [
             (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
               null,
@@ -4298,7 +4283,7 @@
                     class: vue.normalizeClass(["list-group-item data-table-columns-option", { disabled: $options.isLocked(column.key) }])
                   },
                   [
-                    vue.createElementVNode("span", _hoisted_51, [
+                    vue.createElementVNode("span", _hoisted_50, [
                       vue.createTextVNode(
                         vue.toDisplayString(column.label) + " ",
                         1
@@ -4306,13 +4291,13 @@
                       ),
                       $data.draftKeys.includes(column.key) && $data.foldedKeys.includes(column.key) ? (vue.openBlock(), vue.createElementBlock(
                         "span",
-                        _hoisted_52,
+                        _hoisted_51,
                         vue.toDisplayString($options.texts.hiddenAtWidth),
                         1
                         /* TEXT */
                       )) : vue.createCommentVNode("v-if", true)
                     ]),
-                    vue.createElementVNode("span", _hoisted_53, [
+                    vue.createElementVNode("span", _hoisted_52, [
                       vue.createElementVNode("input", {
                         id: `${$props.tableId}-column-${column.key}`,
                         class: "form-check-input",
@@ -4321,7 +4306,7 @@
                         checked: $data.draftKeys.includes(column.key),
                         disabled: $options.isLocked(column.key),
                         onChange: ($event) => $options.toggleDraft(column.key, $event.target.checked)
-                      }, null, 40, _hoisted_54)
+                      }, null, 40, _hoisted_53)
                     ])
                   ],
                   2

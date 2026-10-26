@@ -210,7 +210,8 @@
  *
  * @since 1.20
  */
-import { getMenuEntries, i18n, isRegistered } from '@humhub/vue';
+import { i18n } from '@humhub/vue';
+import { resolveMenuEntries } from './menu/resolveMenuEntries.js';
 
 export default {
     props: {
@@ -263,44 +264,7 @@ export default {
             return i18n.t('base', 'Loading...');
         },
         resolvedEntries() {
-            if (!this.menuId) {
-                return [];
-            }
-
-            const registry = getMenuEntries(this.menuId);
-            const registryById = new Map(registry.entries.map((entry) => [entry.id, entry]));
-
-            // Step 1 + 2: built-ins in prop order, overridden in place by a same-id registry
-            // entry, followed by the registry's own non-overriding entries in their own order.
-            const usedRegistryIds = new Set();
-            const merged = this.entries.map((entry) => {
-                const override = registryById.get(entry.id);
-                if (override) {
-                    usedRegistryIds.add(entry.id);
-                    return override;
-                }
-                return entry;
-            });
-            registry.entries.forEach((entry) => {
-                if (!usedRegistryIds.has(entry.id)) {
-                    merged.push(entry);
-                }
-            });
-
-            const removed = registry.removed;
-            const context = this.context;
-            const sortOrderOf = (entry) => (typeof entry.sortOrder === 'number' ? entry.sortOrder : 1000);
-
-            // Step 3-5, then a stable sort (step 6) keyed on the pre-sort array position so
-            // ties keep the step-1/2 order (built-ins first) rather than whatever order a
-            // given JS engine's Array#sort happens to leave equal-key entries in.
-            return merged
-                .filter((entry) => removed.indexOf(entry.id) === -1
-                    && (!entry.condition || entry.condition(context))
-                    && (!entry.component || isRegistered(entry.component)))
-                .map((entry, index) => ({ entry, index }))
-                .sort((a, b) => (sortOrderOf(a.entry) - sortOrderOf(b.entry)) || (a.index - b.index))
-                .map((wrapped) => wrapped.entry);
+            return resolveMenuEntries(this.menuId, this.entries, this.context);
         },
     },
     methods: {

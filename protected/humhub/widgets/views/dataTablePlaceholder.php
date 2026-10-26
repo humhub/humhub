@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\table\ColumnDefinition;
 use humhub\helpers\Html;
 
 /**
@@ -14,9 +15,10 @@ use humhub\helpers\Html;
  * does not jump when the island mounts.
  *
  * @var string $title
- * @var int $columns the shown optional columns
+ * @var ColumnDefinition[] $columns the shown optional columns
  */
-$mainWidth = $columns > 0 ? round(200 / ($columns + 2), 4) . '%' : null;
+$others = count(array_filter($columns, static fn(ColumnDefinition $column) => !$column->narrow));
+$mainWidth = $others > 0 ? round(200 / ($others + 2), 4) . '%' : null;
 ?>
 <section class="card content-card data-table" aria-busy="true">
     <?php if ($title !== '') : ?>
@@ -29,9 +31,9 @@ $mainWidth = $columns > 0 ? round(200 / ($columns + 2), 4) . '%' : null;
             <table class="table" aria-hidden="true">
                 <colgroup>
                     <col class="data-table-col-main"<?= $mainWidth ? ' style="width: ' . $mainWidth . '"' : '' ?>>
-                    <?php for ($c = 0; $c < $columns; $c++) : ?>
-                        <col>
-                    <?php endfor; ?>
+                    <?php foreach ($columns as $column) : ?>
+                        <col<?= $column->narrow ? ' class="data-table-col-narrow"' : '' ?>>
+                    <?php endforeach; ?>
                 </colgroup>
                 <tbody>
                 <?php for ($i = 0; $i < 5; $i++) : ?>
@@ -45,7 +47,7 @@ $mainWidth = $columns > 0 ? round(200 / ($columns + 2), 4) . '%' : null;
                                 </span>
                             </div>
                         </td>
-                        <?php for ($c = 0; $c < $columns; $c++) : ?>
+                        <?php for ($c = 0; $c < count($columns); $c++) : ?>
                             <td><span class="placeholder col-6"></span></td>
                         <?php endfor; ?>
                     </tr>

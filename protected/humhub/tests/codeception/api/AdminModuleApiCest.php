@@ -51,6 +51,10 @@ class AdminModuleApiCest
 
         $I->sendGet('admin/module', ['status' => 'unknown']);
         $I->seeResponseCodeIs(422);
+
+        // No update check: the page asks the marketplace nothing
+        $I->sendGet('admin/module', ['update' => 'available']);
+        $I->seeResponseCodeIs(422);
     }
 
     public function testRequiresTheModuleAdministration(ApiTester $I)

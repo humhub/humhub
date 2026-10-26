@@ -136,7 +136,7 @@ abstract class DataTableWidget extends VueWidget
 
         return $this->render('@humhub/widgets/views/dataTablePlaceholder', [
             'title' => $this->title,
-            'columns' => min(count($shown), $this->maxColumns ?: count($shown)),
+            'columns' => array_slice(array_values($shown), 0, $this->maxColumns ?: null),
         ]);
     }
 }

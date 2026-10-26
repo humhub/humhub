@@ -55,11 +55,11 @@
                         <col
                             v-for="column in shownColumns"
                             :key="column.key"
-                            :class="`data-table-col-${column.type}`"
+                            :class="[`data-table-col-${column.type}`, { 'data-table-col-narrow': column.narrow }]"
                             :style="column.type === 'main' ? mainColumnStyle : null"
                         >
                         <col v-if="hasDetails" class="data-table-col-details">
-                        <col v-if="actions.length" class="data-table-col-actions">
+                        <col v-if="hasActionsColumn" class="data-table-col-actions">
                     </colgroup>
                     <thead>
                         <tr>
@@ -78,7 +78,7 @@
                                 v-for="column in shownColumns"
                                 :key="column.key"
                                 scope="col"
-                                :class="`data-table-col-${column.type}`"
+                                :class="[`data-table-col-${column.type}`, { 'data-table-col-narrow': column.narrow }]"
                                 :aria-sort="ariaSort(column)"
                             >
                                 <button
@@ -92,7 +92,7 @@
                                 <template v-else>{{ column.label }}</template>
                             </th>
                             <th v-if="hasDetails" class="data-table-col-details"><span class="visually-hidden">{{ texts.details }}</span></th>
-                            <th v-if="actions.length" class="data-table-col-actions"><span class="visually-hidden">{{ texts.actions }}</span></th>
+                            <th v-if="hasActionsColumn" class="data-table-col-actions"><span class="visually-hidden">{{ texts.actions }}</span></th>
                         </tr>
                     </thead>
                     <tbody v-if="loading && !rows.length && !error">
@@ -109,7 +109,7 @@
                                 <span v-else class="placeholder col-6"></span>
                             </td>
                             <td v-if="hasDetails" class="data-table-col-details"></td>
-                            <td v-if="actions.length" class="data-table-col-actions"></td>
+                            <td v-if="hasActionsColumn" class="data-table-col-actions"></td>
                         </tr>
                     </tbody>
                     <tbody v-else-if="!rows.length">
@@ -147,7 +147,7 @@
                                     v-for="column in shownColumns"
                                     :key="column.key"
                                     :scope="column.type === 'main' ? 'row' : null"
-                                    :class="`data-table-col-${column.type}`"
+                                    :class="[`data-table-col-${column.type}`, { 'data-table-col-narrow': column.narrow }]"
                                 >
                                     <TableCell
                                         v-if="row.cells[column.key] !== undefined"
@@ -166,25 +166,15 @@
                                         @click.stop="toggleDetails(row)"
                                     ><i class="ti" :class="isExpanded(row) ? 'ti-chevron-up' : 'ti-chevron-down'" aria-hidden="true"></i></button>
                                 </td>
-                                <td v-if="actions.length" class="data-table-col-actions" @click.stop>
-                                    <template v-if="rowActions(row).length === 1">
-                                        <a
-                                            :href="rowActions(row)[0].url"
-                                            class="btn btn-sm"
-                                            :class="[rowActions(row)[0].destructive ? 'btn-ghost-danger' : 'btn-ghost', { 'btn-icon-only': rowActions(row)[0].icon }]"
-                                            :aria-label="actionLabel(rowActions(row)[0], row)"
-                                            :title="rowActions(row)[0].label"
-                                            @click="runAction(row, rowActions(row)[0], $event)"
-                                        ><i v-if="rowActions(row)[0].icon" class="ti" :class="`ti-${rowActions(row)[0].icon}`" aria-hidden="true"></i><template v-else>{{ rowActions(row)[0].label }}</template></a>
-                                    </template>
+                                <td v-if="hasActionsColumn" class="data-table-col-actions" @click.stop>
                                     <DropdownMenu
-                                        v-else-if="rowActions(row).length > 1"
-                                        :menu-id="`${tableId}.row`"
+                                        v-if="hasRowMenu(row)"
+                                        :menu-id="rowMenuId"
                                         :entries="menuEntries(row)"
                                         :context="{ row }"
                                         :toggle-aria-label="rowLabel('More actions for {name}', row)"
                                         :toggle-title="texts.actions"
-                                        toggle-class="btn btn-ghost btn-icon-only btn-sm"
+                                        toggle-class="btn btn-ghost btn-icon-only data-table-actions-toggle"
                                         root-class="data-table-actions-menu list-unstyled m-0"
                                     >
                                         <template #toggle><i class="ti ti-dots-vertical" aria-hidden="true"></i></template>
@@ -282,7 +272,7 @@
 </template>
 
 <script>
-import { client, i18n, log, modal, status } from '@humhub/vue';
+import { client, getMenuEntries, i18n, log, modal, status } from '@humhub/vue';
 import DropdownMenu from './DropdownMenu.vue';
 import FilterBar from './FilterBar.vue';
 import FilterSelect from './FilterSelect.vue';
@@ -290,6 +280,7 @@ import HeaderActions from './header/HeaderActions.vue';
 import TableCell from './table/TableCell.vue';
 import UiModal from './UiModal.vue';
 import { defaultValues, isDefault, requestParams } from './filter/filterQuery.js';
+import { resolveMenuEntries } from './menu/resolveMenuEntries.js';
 
 // The space a column needs before it folds into the row details (docs/ui/data-table.md,
 // "Mobile"), by column type; plus the details and actions columns.
@@ -322,8 +313,8 @@ let uid = 0;
  * - Row click: opens the record (the main cell's `url`; with Ctrl / Cmd in a new tab); a row
  *   without one toggles its details while columns are folded.
  * - Row actions (`{id, label, kind, icon?, confirm?, destructive?}`, once per table; each row
- *   names those it offers): one action is a button, several a ⋮ menu with the destructive ones
- *   last in red (`.dropdown-item-danger`). `link` opens the URL, `modal` loads it into the global modal, `post` submits a
+ *   names those it offers): a ⋮ menu (`<tableId>.row`, also with the entries modules register
+ *   for it) with the destructive ones last in red (`.dropdown-item-danger`). `link` opens the URL, `modal` loads it into the global modal, `post` submits a
  *   POST form to it (a web route answering with a redirect), `request` POSTs to it and replaces
  *   the row with the answer's `row` (or removes it with `removed: true`; any other answer reloads
  *   the page). `confirm` asks first.
@@ -501,12 +492,18 @@ export default {
                 ...this.optionalColumns,
             ];
         },
+        // A chooser only with something to choose: "Bulk select", a column hidden by default, or
+        // more columns than may be shown at once.
         hasChooser() {
-            return this.choosableColumns.length > 0;
+            return this.hasBulk
+                || this.optionalColumns.some((column) => column.visible === false)
+                || (this.maxColumns > 0 && this.optionalColumns.length > this.maxColumns);
         },
-        // The main column and the chosen optional ones, in the columns' order.
+        // The main column and the chosen optional ones (without a chooser: the defaults), in the
+        // columns' order.
         activeColumns() {
-            return this.columns.filter((column) => column.type === 'main' || this.chosenKeys.includes(column.key));
+            const keys = this.hasChooser ? this.chosenKeys : this.defaultKeys;
+            return this.columns.filter((column) => column.type === 'main' || keys.includes(column.key));
         },
         atLimit() {
             return this.maxColumns > 0 && this.draftKeys.length >= this.maxColumns;
@@ -519,9 +516,19 @@ export default {
         },
         // The main column twice as wide as each of the others (`table-layout: fixed`); alone, it
         // takes the table's width.
+        // Narrow columns (`narrow`) have a fixed width; with only those, the main column takes the
+        // rest.
         mainColumnStyle() {
-            const others = this.shownColumns.length - 1;
+            const others = this.shownColumns.filter((column) => column.type !== 'main' && !column.narrow).length;
             return others > 0 ? { width: `${(200 / (others + 2)).toFixed(4)}%` } : null;
+        },
+        // The row menu's id: modules add entries to it client-side (`registerMenuEntry()`)
+        rowMenuId() {
+            return `${this.tableId}.row`;
+        },
+        // A column for the row menus: the table has row actions, or a module registered entries
+        hasActionsColumn() {
+            return this.actions.length > 0 || getMenuEntries(this.rowMenuId).entries.length > 0;
         },
         pageSizeOptions() {
             return this.pageSizes.map((size) => ({ value: String(size), label: String(size) }));
@@ -546,7 +553,7 @@ export default {
             return this.foldedKeys.length > 0;
         },
         colspan() {
-            return this.shownColumns.length + (this.showSelect ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.actions.length ? 1 : 0);
+            return this.shownColumns.length + (this.showSelect ? 1 : 0) + (this.hasDetails ? 1 : 0) + (this.hasActionsColumn ? 1 : 0);
         },
         filtered() {
             return this.filters.some((filter) => !isDefault(filter, this.values[filter.key]));
@@ -698,9 +705,6 @@ export default {
         rowLabel(message, row) {
             return i18n.t('base', message, { name: this.rowName(row) });
         },
-        actionLabel(action, row) {
-            return `${action.label}: ${this.rowName(row)}`;
-        },
         format(template, params) {
             return String(template).replace(/\{(\w+)\}/g, (match, key) => (params[key] !== undefined ? params[key] : match));
         },
@@ -753,7 +757,7 @@ export default {
             // The columns, the actions column, and the chevron column once one has folded.
             const width = (columns) => columns.reduce(
                 (sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150),
-                SIDE_COLUMN_WIDTH * ((this.actions.length ? 1 : 0) + (this.showSelect ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0)),
+                SIDE_COLUMN_WIDTH * ((this.hasActionsColumn ? 1 : 0) + (this.showSelect ? 1 : 0) + (columns.length < this.activeColumns.length ? 1 : 0)),
             );
 
             const folded = [];
@@ -936,6 +940,10 @@ export default {
             return (row.actions || [])
                 .map((rowAction) => this.actionsById[rowAction.id] ? { ...this.actionsById[rowAction.id], url: rowAction.url } : null)
                 .filter(Boolean);
+        },
+        // Whether the row's menu has an entry: its actions or a module's entries for it
+        hasRowMenu(row) {
+            return resolveMenuEntries(this.rowMenuId, this.menuEntries(row), { row }).length > 0;
         },
         menuEntries(row) {
             const entries = [];

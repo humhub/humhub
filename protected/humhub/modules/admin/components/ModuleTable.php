@@ -43,9 +43,8 @@ class ModuleTable extends DataTable
     {
         return [
             new ColumnDefinition('name', ColumnDefinition::TYPE_MAIN, Yii::t('AdminModule.modules', 'Name'), sort: 'name', sortOrder: 100),
-            new ColumnDefinition('version', ColumnDefinition::TYPE_TEXT, Yii::t('AdminModule.modules', 'Version'), priority: 2, sort: 'version', sortOrder: 200),
-            new ColumnDefinition('update', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.modules', 'Update'), priority: 1, sort: 'update', filter: 'update', sortOrder: 300),
-            new ColumnDefinition('status', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.modules', 'Status'), priority: 1, sort: 'status', filter: 'status', sortOrder: 400),
+            new ColumnDefinition('version', ColumnDefinition::TYPE_TEXT, Yii::t('AdminModule.modules', 'Version'), priority: 2, sort: 'version', sortOrder: 200, narrow: true),
+            new ColumnDefinition('status', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.modules', 'Status'), priority: 1, sort: 'status', filter: 'status', sortOrder: 400, narrow: true),
         ];
     }
 
@@ -76,15 +75,6 @@ class ModuleTable extends DataTable
                 icon: 'star',
                 visible: static fn(Module $module) => $module->getIsEnabled() && $module instanceof ContentContainerModule && $canManage(),
                 sortOrder: 200,
-            ),
-            new RowAction(
-                'update',
-                Yii::t('AdminModule.modules', 'Update'),
-                RowAction::KIND_REQUEST,
-                static fn(Module $module) => ['/marketplace/api/module/update', 'id' => $module->id],
-                icon: 'refresh',
-                visible: static fn(Module $module) => isset(AdminModuleList::availableUpdates()[$module->id]),
-                sortOrder: 300,
             ),
             new RowAction(
                 'enable',
@@ -134,8 +124,6 @@ class ModuleTable extends DataTable
     protected function cells($model): array
     {
         /** @var Module $model */
-        $update = AdminModuleList::availableUpdates()[$model->id] ?? null;
-
         return [
             'name' => [
                 'text' => $model->getName(),
@@ -146,11 +134,6 @@ class ModuleTable extends DataTable
                     : null,
             ],
             'version' => ['text' => (string)$model->getVersion()],
-            'update' => $update !== null ? [[
-                'text' => Yii::t('AdminModule.modules', '{version} available', ['version' => $update]),
-                'value' => AdminModuleList::UPDATE_AVAILABLE,
-                'tone' => 'warning',
-            ]] : null,
             'status' => [$model->getIsEnabled()
                 ? ['text' => Yii::t('AdminModule.modules', 'Enabled'), 'value' => AdminModuleList::STATUS_ENABLED, 'tone' => 'success']
                 : ['text' => Yii::t('AdminModule.modules', 'Disabled'), 'value' => AdminModuleList::STATUS_DISABLED]],

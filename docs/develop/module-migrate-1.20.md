@@ -1709,7 +1709,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     build on them); `DataTable::canAccess()`; `QueryListBuilder::sortBy()`. The tables
     `admin\components\GroupTable`, `SpaceTable`, `ModuleTable` on the lists `AdminGroupList`
     (filters `q`, `type`), `AdminSpaceList` (`q`, `visibility`, `status`) and `AdminModuleList`
-    (`q`, `update`, `status`), each created through the DI container and changed on
+    (`q`, `status`), each created through the DI container and changed on
     `EVENT_INIT` (columns, actions) and `FilterableList::EVENT_INIT` / `EVENT_BUILD` (filters,
     restrictions). A module adding a space column and filter (e.g. a category) registers on
     `SpaceTable::EVENT_INIT` and `AdminSpaceList::EVENT_INIT`.
@@ -1722,7 +1722,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `admin\widgets\SpaceGridView`, `admin\grid\SpaceBaseColumn`, `SpaceImageColumn`,
     `SpaceTitleColumn` — no core page uses them any more (module search: classified-space).
   - **Removed:** `admin\widgets\InstalledModuleList`, `InstalledModuleControls`,
-    `InstalledModuleActionButtons`, `AvailableModuleUpdatesInfo` and their views,
+    `InstalledModuleActionButtons` and their views,
     `admin\widgets\GroupMenu`, `admin\grid\SpaceActionColumn` — module search found no users.
     A module adding an entry to a module's controls adds a `RowAction` on
     `ModuleTable::EVENT_INIT`.

@@ -43,6 +43,8 @@ class ColumnDefinition
      * @param string|null $filter the filter key a chip of this column sets when pressed
      * @param callable|null $value `fn($model): ?array` the cell, for a column a module adds
      * @param bool $visible whether the column is shown until the user chooses the columns
+     * @param bool $narrow a column of short values (e.g. a version or a status) with a fixed narrow
+     *        width, leaving the main column more room
      */
     public function __construct(
         public readonly string $key,
@@ -54,6 +56,7 @@ class ColumnDefinition
         public readonly int $sortOrder = 1000,
         ?callable $value = null,
         public readonly bool $visible = true,
+        public readonly bool $narrow = false,
     ) {
         $this->value = $value !== null ? Closure::fromCallable($value) : null;
     }
@@ -71,6 +74,7 @@ class ColumnDefinition
             'sort' => $this->sort,
             'filter' => $this->filter,
             'visible' => $this->visible ? null : false,
+            'narrow' => $this->narrow ?: null,
         ], static fn($item) => $item !== null);
     }
 }

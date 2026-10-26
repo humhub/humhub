@@ -132,13 +132,14 @@ describe('DataTable', () => {
         globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({}));
         const filterKeys = () => wrapper.findAll('.filter-bar [data-filter-key], .filter-bar input, .filter-bar .select-menu-button')
             .map((element) => element.attributes('aria-label') || element.attributes('placeholder'));
-        wrapper = mountTable({ columnChoice: ['lastLogin'] });
+        const withHidden = columns.map((column) => (column.key === 'createdAt' ? { ...column, visible: false } : column));
+        wrapper = mountTable({ columns: withHidden, columnChoice: ['lastLogin'] });
         await flushPromises();
         // Search has no column; the group filter belongs to the hidden groups column.
         expect(filterKeys()).toEqual(['Search']);
 
         wrapper.unmount();
-        wrapper = mountTable({ columnsUrl: '/api/v2/account/table/users' });
+        wrapper = mountTable({ columns: withHidden, columnsUrl: '/api/v2/account/table/users' });
         await flushPromises();
         expect(filterKeys()).toEqual(['Search', 'Group']);
         await wrapper.find('tr[data-id="1"] button.badge').trigger('click');
@@ -155,6 +156,22 @@ describe('DataTable', () => {
 
         expect(filterKeys()).toEqual(['Search']);
         expect(lastRequest().get('group')).toBeNull();
+    });
+
+    it('offers no columns chooser with nothing to choose, and shows the default columns', async () => {
+        wrapper = mountTable({ columnChoice: ['lastLogin'] });
+        await flushPromises();
+        expect(wrapper.find('.data-table-columns-toggle').exists()).toBe(false);
+        expect(wrapper.findAll('thead th').map((th) => th.text())).toEqual(expect.arrayContaining(['Groups', 'Last login', 'Registered']));
+    });
+
+    it('gives narrow columns a fixed width and the main column the rest', async () => {
+        const narrow = [columns[0], { ...columns[2], narrow: true }];
+        wrapper = mountTable({ columns: narrow });
+        await flushPromises();
+        const cols = wrapper.findAll('colgroup col');
+        expect(cols[0].attributes('style')).toBeUndefined();
+        expect(cols[1].classes()).toContain('data-table-col-narrow');
     });
 
     it('shows an empty state, with "Clear filters" while filters are set', async () => {
@@ -245,7 +262,7 @@ describe('DataTable', () => {
         expect(lastRequest().get('pageSize')).toBe('50');
     });
 
-    it('offers one action as a button and several in a menu, the destructive ones last in red', async () => {
+    it('offers the row actions in a menu, a single one too, the destructive ones last in red', async () => {
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([
             row(1, 'Emma'),
             row(2, 'Noah', { actions: [{ id: 'edit', url: '/admin/user/edit?id=2' }] }),
@@ -260,13 +277,30 @@ describe('DataTable', () => {
         expect(wrapper.find('tr[data-id="1"] .dropdown-divider').exists()).toBe(true);
         expect(wrapper.find('tr[data-id="1"] [data-bs-toggle="dropdown"]').attributes('aria-label')).toBe('More actions for Emma');
 
-        const single = wrapper.find('tr[data-id="2"] .data-table-col-actions a');
-        expect(single.attributes('href')).toBe('/admin/user/edit?id=2');
-        expect(single.classes()).toContain('btn-icon-only');
-        expect(single.find('.ti-pencil').exists()).toBe(true);
-        expect(single.attributes('aria-label')).toBe('Edit: Noah');
+        const single = wrapper.findAll('tr[data-id="2"] .dropdown-item');
+        expect(single.map((item) => item.text())).toEqual(['Edit']);
+        expect(single[0].attributes('href')).toBe('/admin/user/edit?id=2');
 
         expect(wrapper.find('tr[data-id="3"] .data-table-col-actions').text()).toBe('');
+    });
+
+    it('shows the entries a module registers for the row menu, also on a row without actions', async () => {
+        globalThis.humhub.modules.vue.registerMenuEntry('users.row', {
+            id: 'message',
+            label: 'Send message',
+            sortOrder: 1500,
+            condition: ({ row }) => row.id !== 1,
+        });
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([
+            row(1, 'Emma', { actions: [] }),
+            row(3, 'Mia', { actions: [] }),
+        ])));
+        wrapper = mountTable();
+        await flushPromises();
+
+        expect(wrapper.find('tr[data-id="1"] .data-table-col-actions').text()).toBe('');
+        expect(wrapper.findAll('tr[data-id="3"] .dropdown-item').map((item) => item.text())).toEqual(['Send message']);
+        globalThis.humhub.modules.vue.removeMenuEntry('users.row', 'message');
     });
 
     it('runs a request action after confirmation and replaces the row with the answer', async () => {

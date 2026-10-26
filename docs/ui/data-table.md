@@ -29,7 +29,7 @@ Don't use it for:
 | 4 | **Select-all checkbox** | Only for tables with bulk actions. Covers the current page and has three states: none, some, all. |
 | 5 | **Main column** | Image (or, without one, the initials on the record's colour), name (link to the record) and a subtitle (e-mail, job title, description). Always visible. |
 | 6–7 | **Typed columns** | See [Column types](#column-types). |
-| 8 | **Row actions** | One icon button when a row has a single action, ⋮ when it has several, nothing when it has none. |
+| 8 | **Row actions** | ⋮ when a row has an action (a single one too), nothing when it has none. |
 | 9 | **Selection menu** | While rows are selected, the overflow ⋮ becomes a button showing the count ("2 ⋮"). It opens the bulk actions. |
 | 10 | **Footer** | Count ("1–25 of 35 users"), pager, rows per page. |
 
@@ -91,6 +91,9 @@ inline editing. See Open questions.
 - **Reset** (back to the default columns, disabled while they are chosen) and **Save** (applies
   the choice); the × closes without saving.
 - The choice is remembered per table and user.
+- Only with something to choose: bulk actions, a column hidden by default, or more columns than
+  the limit. Otherwise there is no ▦ and the table shows its default columns (e.g. the groups
+  and modules tables).
 
 ### Selection and bulk actions
 
@@ -112,8 +115,12 @@ inline editing. See Open questions.
 
 - Each row only offers the actions allowed **for that row**. For example, "Disable" only on an
   enabled user, and no "Delete" on yourself.
-- With exactly one action, the row shows it as an icon button. With several, it shows ⋮, and the
-  menu groups related actions with separators and puts destructive actions last in red.
+- A row with actions shows ⋮, also for a single one, so the place and the look of the menu
+  never change. The menu groups related actions with separators and puts destructive actions
+  last in red.
+- Offering is not authorising: the server lists only the actions it would allow, and the target
+  of each action (its web route or endpoint) checks again when it is called. There is no
+  generic row action endpoint.
 - **Action kinds:**
   - link: open the record or an edit page
   - modal: open a form in a dialog
@@ -254,6 +261,12 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   `filters`, `headerActions`, `headerMenu`, `labels` (`{one, other, range}` count texts),
   `syncUrl`, and for the columns chooser `columnChoice`, `columnsUrl`, `maxColumns`. It reuses `FilterBar`, `HeaderActions` and `DropdownMenu` (the row menu's
   `menuId` is `<tableId>.row`, so modules can also register entries client-side).
+- **Client-side row entries:** a module registers an entry for a table's row menu with
+  `registerMenuEntry('<tableId>.row', {id, label, icon, sortOrder, condition, onClick})`;
+  `condition` and `onClick` receive `{row}` (the row as the endpoint answered it). The row gets
+  ⋮ as soon as an entry applies, also without server actions. Such an entry knows only what the
+  row carries, so its endpoint checks the permission itself; actions the server decides on per
+  row are `RowAction`s (`EVENT_INIT`).
 - **PHP:** `humhub\components\table\DataTable` — the table's list (a `FilterableList`), its
   columns (`ColumnDefinition`: `key`, `type`, `label`, `priority`, `sort`, `filter`, and `value`
   for a column a module adds), its row actions (`RowAction`: `id`, `label`, `kind`, `url` per
@@ -286,8 +299,10 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   (`SpaceTable`, `AdminSpaceList`, `GET /api/v2/admin/space`: name, members, visibility, status,
   and on request owner and created; modules add columns and filters on `EVENT_INIT`, e.g. the
   Enterprise Theme's category) and Modules (`ModuleTable`, `AdminModuleList` over the installed
-  modules, `GET /api/v2/admin/module`: name, version, update, status; a row's id is the module
-  id; enable is a `request` to `POST /api/v2/module/<id>/enable`).
+  modules, `GET /api/v2/admin/module`: name, version, status; a row's id is the module id;
+  enable is a `request` to `POST /api/v2/module/<id>/enable`). The module table asks the
+  marketplace nothing: available updates are a hint above it (`AvailableModuleUpdatesInfo`, the
+  count the hourly cron stores) linking to the marketplace.
 
 - **Columns chooser:** ▦ in the header opens a dialog with a switch per optional column (a
   column's `visible` is its default) and "Bulk select" (key `_select`), as a list group with the
@@ -322,7 +337,9 @@ pagers.
   `$data-table-pager-size`, `$data-table-pager-gap`), the current page filled; ‹ / › are hidden
   (`.invisible`, keeping their place) on the first / last page.
 - **Layout:** `table-layout: fixed` with a `<colgroup>`: checkbox and details 2.5rem, actions
-  3rem, the main column twice as wide as each other column, which share the rest; cells have
+  3rem, a narrow column (`ColumnDefinition::$narrow`, short values like a version)
+  `$data-table-narrow-column-width` (8rem), the main column twice as wide as each other column,
+  which share the rest (with only narrow ones, the main column takes the rest); cells have
   `.5rem` padding (1rem between columns), cut long text with "…", and a hovered or selected row
   has rounded ends. Variables: `$data-table-cell-padding-x/y`, `$data-table-side-column-width`,
   `$data-table-actions-column-width`, `$data-table-row-border-radius`.

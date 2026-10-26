@@ -47,7 +47,7 @@ class LockCommentsLink extends MenuLink
         $this->setLabel($locked
             ? Yii::t('ContentModule.base', 'Unlock comments')
             : Yii::t('ContentModule.base', 'Lock comments'));
-        $this->setIcon($locked ? 'message-circle' : 'message-circle-filled');
+        $this->setIcon($locked ? 'message-circle' : 'message-circle-off');
         $this->setUrl('#');
         $this->setHtmlOptions([
             'data-action-click' => $locked ? 'unlockComments' : 'lockComments',

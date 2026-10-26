@@ -101,7 +101,7 @@ style is set through `$dropdown-*` variables. Class names and SCSS follow [Styli
 - **Sass variables:** Bootstrap's `$dropdown-padding-x/y`, `$dropdown-item-padding-x/y`,
   `$dropdown-border-radius`, `$dropdown-box-shadow`, `$dropdown-link-hover-bg`,
   `$dropdown-divider-margin-y`, `$dropdown-min-width`, `$dropdown-link-active-bg`; plus
-  `$dropdown-item-icon-width`, `$dropdown-item-icon-gap`, `$dropdown-item-border-radius`,
+  `$dropdown-item-icon-size` (1.25em of the label), `$dropdown-item-icon-width`, `$dropdown-item-icon-gap`, `$dropdown-item-border-radius`,
   `$dropdown-item-transition`, `$preferences-toggle-size`, `$preferences-toggle-icon-size`.
 
 ## Implementation in core

@@ -230,9 +230,8 @@ paths:
       description: |
         One page of the installed modules (core modules left out), for those who may manage
         modules or settings (`ManageModules`, `ManageSettings`). A row's `id` is the module's
-        id. An available update comes from the marketplace's cached module list. Without
-        `sort`, the modules with an update first, then the enabled and the disabled ones, each
-        by name.
+        id. Without `sort`, the enabled and then the disabled modules, each by name. The
+        marketplace is not asked (no update check).
       parameters:
         - name: q
           in: query
@@ -248,22 +247,14 @@ paths:
           schema:
             type: string
             enum: [enabled, disabled]
-        - name: update
-          in: query
-          required: false
-          description: |
-            `available`: a newer compatible version in the marketplace
-          schema:
-            type: string
-            enum: [available]
         - name: sort
           in: query
           required: false
           description: |
-            `name` · `version` · `update` · `status`, each descending with a leading `-`
+            `name` · `version` · `status`, each descending with a leading `-`
           schema:
             type: string
-            enum: [name, -name, version, -version, update, -update, status, -status]
+            enum: [name, -name, version, -version, status, -status]
         - $ref: "common.yaml#/components/parameters/pageParam"
         - $ref: "common.yaml#/components/parameters/pageSizeParam"
       responses:
