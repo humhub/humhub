@@ -304,6 +304,11 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
   marketplace nothing: available updates are a hint above it (`AvailableModuleUpdatesInfo`, the
   count the hourly cron stores) linking to the marketplace.
 
+- **API Access:** the OAuth clients and the grants of all users (Administration › Users ›
+  Settings › Apps & API Access, `oauth\components\table\AdminClientTable`, `AdminGrantTable`,
+  `GET /api/v2/admin/oauth-client|oauth-grant`) are embedded tables below the section's tabs; the
+  grants are filtered by user, client, scope (full access counting for each) and type, and
+  revoking all grants of the list (`all`) needs a filter.
 - **Embedded:** inside another card, e.g. below a record's tabs (`DataTableWidget::$embedded`,
   the component's `embedded`): no card of its own, an `h3` title, on the outer card's padding.
   Only where the outer card has its own title and tabs (a record's card); below a page header
@@ -377,10 +382,13 @@ pagers.
   (`.invisible`, keeping their place) on the first / last page.
 - **Layout:** `table-layout: fixed` with a `<colgroup>`: checkbox and details 2.5rem, actions
   3rem, a narrow column (`ColumnDefinition::$narrow`, short values like a version)
-  `$data-table-narrow-column-width` (8rem), the main column twice as wide as each other column,
-  which share the rest (with only narrow ones, the main column takes the rest); cells have
-  `.5rem` padding (1rem between columns), cut long text with "…", and a hovered or selected row
-  has rounded ends. Variables: `$data-table-cell-padding-x/y`, `$data-table-side-column-width`,
+  `$data-table-narrow-column-width` (8rem); of what these fixed columns leave, the main column
+  gets twice as much as each other column (computed in pixels from the measured table and the
+  `--hh-data-table-*-column-width` variables, as a table column ignores a `calc()` with
+  percentages; with only narrow columns, the main column takes the rest); cells have `.5rem`
+  padding (1rem between columns, none beside the checkbox and the chevron), cut long text with
+  "…", and a hovered or selected row has rounded ends. The main column's name is a link only as
+  wide as its text, coloured when the pointer is on it. Variables: `$data-table-cell-padding-x/y`, `$data-table-side-column-width`,
   `$data-table-actions-column-width`, `$data-table-row-border-radius`.
 - **Switches:** Bootstrap's `.form-switch` (restored in `_form.scss` over HumHub's checkbox look,
   on in the accent colour) — for every switch, not only the chooser's.

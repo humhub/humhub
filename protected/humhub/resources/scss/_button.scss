@@ -68,8 +68,9 @@ $btn-icon-only-icon-size: $font-size-lg !default;
     }
 
     // Icon-only button: a square of the button's own height (`Button::icon()` without a label,
-    // `.btn.btn-icon-only` in Vue). A dropdown toggle keeps its padding for the caret.
-    .btn-icon-only:not(.dropdown-toggle) {
+    // `.btn.btn-icon-only` in Vue). A dropdown toggle keeps its padding for the caret, a button
+    // with more than its icon (e.g. a label shown from a breakpoint on) its width.
+    .btn-icon-only:not(.dropdown-toggle):not(:has(> :not(i, svg))) {
         --bs-btn-padding-x: 0;
 
         width: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));

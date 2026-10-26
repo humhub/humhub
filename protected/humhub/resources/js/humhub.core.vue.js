@@ -2868,6 +2868,8 @@
         expanded: {},
         busy: {},
         foldedKeys: [],
+        // The table's width, measured with the folding, for the main column's width
+        tableWidth: 0,
         pageSizes: PAGE_SIZES,
         chosenKeys: this.initialChoice(),
         chooserOpen: false,
@@ -3000,7 +3002,14 @@
       // rest.
       mainColumnStyle() {
         const others = this.shownColumns.filter((column) => column.type !== "main" && !column.narrow).length;
-        return others > 0 ? { width: `${(200 / (others + 2)).toFixed(4)}%` } : null;
+        if (others === 0) {
+          return null;
+        }
+        const fixed = this.shownColumns.filter((column) => column.narrow).length * this.cssWidth("--hh-data-table-narrow-column-width") + ((this.showSelect ? 1 : 0) + (this.hasDetails ? 1 : 0)) * this.cssWidth("--hh-data-table-side-column-width") + (this.hasActionsColumn ? this.cssWidth("--hh-data-table-actions-column-width") : 0);
+        if (!this.tableWidth || this.tableWidth <= fixed) {
+          return { width: `${(200 / (others + 2)).toFixed(4)}%` };
+        }
+        return { width: `${Math.floor((this.tableWidth - fixed) * 2 / (others + 2))}px` };
       },
       // The row menu's id: modules add entries to it client-side (`registerMenuEntry()`)
       rowMenuId() {
@@ -3238,6 +3247,7 @@
         if (!wrap || !wrap.clientWidth) {
           return;
         }
+        this.tableWidth = wrap.clientWidth;
         const foldable = this.activeColumns.filter((column) => column.type !== "main").sort((a, b) => (b.priority || 1) - (a.priority || 1));
         const width = (columns) => columns.reduce(
           (sum, column) => sum + (COLUMN_WIDTHS[column.type] || 150),
@@ -3372,6 +3382,15 @@
             vue$1.log.error(response);
           });
         });
+      },
+      // A width of `_data-table.scss` (a CSS variable in px or rem) in pixels
+      cssWidth(name) {
+        if (!this.$el || typeof getComputedStyle === "undefined") {
+          return 0;
+        }
+        const value = getComputedStyle(this.$el).getPropertyValue(name).trim();
+        const number = parseFloat(value) || 0;
+        return value.endsWith("rem") ? number * (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) : number;
       },
       // The selected rows offering the bulk action
       bulkIds(action) {

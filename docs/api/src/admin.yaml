@@ -515,6 +515,156 @@ paths:
           $ref: "common.yaml#/components/responses/NotFound"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-client":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the OAuth client table
+      operationId: listAdminOauthClients
+      description: |
+        One page of the OAuth clients, for those who may manage the settings. A row's `id` is the
+        client's; its cells are `name` (with the client id), `type`, `status` and `createdAt`; the
+        HumHub app offers no actions. Without `sort`, the HumHub app first, then by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name and client id
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: |
+            `active` · `inactive`
+          schema:
+            type: string
+            enum: [active, inactive]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `type` · `status` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, type, -type, status, -status, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-grant":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the OAuth grant table
+      operationId: listAdminOauthGrants
+      description: |
+        One page of the grants of all users — connected apps, devices and personal access tokens
+        — for those who may manage the settings. A row's `id` is the grant's; its cells are
+        `user`, `type`, `name` (the client or token), `scopes`, `lastUsed`, `expires` and
+        `createdAt`. Without `sort`, the newest first.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over the user's name, username and e-mail
+          schema:
+            type: string
+        - name: client
+          in: query
+          required: false
+          description: The id of a client
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: false
+          description: |
+            A scope's id (e.g. `content:read`): the grants with it, and those with full access
+            (`full`), which includes every scope
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          description: |
+            `oauth` (connected app or device) · `pat` (personal access token)
+          schema:
+            type: string
+            enum: [oauth, pat]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `user` · `type` · `lastUsed` · `expires` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [user, -user, type, -type, lastUsed, -lastUsed, expires, -expires, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-grant/{id}/revoke":
+    post:
+      tags:
+        - Administration
+      summary: Revoke a grant
+      operationId: revokeAdminOauthGrant
+      description: |
+        Revokes the grant: its tokens stop working.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the grant
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-grant/bulk/revoke":
+    post:
+      tags:
+        - Administration
+      summary: Revoke several grants
+      operationId: bulkRevokeAdminOauthGrants
+      description: |
+        Revokes the selected grants (`ids`), or `all` of the list's filters given as query
+        parameters exactly as `GET /admin/oauth-grant` takes them — `422` without a filter, so all
+        grants of all users are never revoked by accident.
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
   "/admin/user/{id}/enable":
     post:
       tags:

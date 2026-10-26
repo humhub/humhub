@@ -183,18 +183,32 @@ $data-table-page-size-width: 5.5rem !default;
         }
     }
 
-    // Column widths (`<col>`); the other columns share the rest equally
+    // Column widths (`<col>`): the fixed ones (also as variables, for the main column's width the
+    // component computes), the main column twice as wide as each other one of the rest
+    .data-table {
+        --hh-data-table-side-column-width: #{$data-table-side-column-width};
+        --hh-data-table-narrow-column-width: #{$data-table-narrow-column-width};
+        --hh-data-table-actions-column-width: #{$data-table-actions-column-width};
+    }
+
     .data-table col.data-table-col-select,
     .data-table col.data-table-col-details {
-        width: $data-table-side-column-width;
+        width: var(--hh-data-table-side-column-width);
     }
 
     .data-table col.data-table-col-narrow {
-        width: $data-table-narrow-column-width;
+        width: var(--hh-data-table-narrow-column-width);
     }
 
     .data-table col.data-table-col-actions {
-        width: $data-table-actions-column-width;
+        width: var(--hh-data-table-actions-column-width);
+    }
+
+    // The checkbox and the chevron fill their narrow column
+    .data-table :is(td, th).data-table-col-select,
+    .data-table td.data-table-col-details {
+        padding-inline: 0;
+        text-align: center;
     }
 
     .data-table-col-select .form-check-input {
@@ -222,7 +236,6 @@ $data-table-page-size-width: 5.5rem !default;
         font-variant-numeric: tabular-nums;
     }
 
-    .data-table-col-details,
     .data-table-col-actions {
         text-align: end;
     }
@@ -269,6 +282,9 @@ $data-table-page-size-width: 5.5rem !default;
     }
 
     .data-table-main-name {
+        // As wide as its text, not the cell: the link colours only under the pointer on the name
+        align-self: flex-start;
+        max-width: 100%;
         color: var(--hh-text-color-highlight);
         font-weight: $font-weight-semibold;
         text-decoration: none;

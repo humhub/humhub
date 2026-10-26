@@ -17,7 +17,6 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\GrantService;
-use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
@@ -366,8 +365,8 @@ class AdminCest
         $I->amAdmin();
         $I->amOnRoute('/oauth/admin/clients');
         $I->seeResponseCodeIs(200);
-        $I->see('Research Agent');
-        $I->see(Client::SYSTEM_CLIENT_ID);
+        // The rows of the table (AdminOauthApiCest)
+        $I->seeElement('.data-table');
 
         $I->amOnRoute('/oauth/admin/client', ['id' => $system->id]);
         $I->seeResponseCodeIs(403);
@@ -405,7 +404,6 @@ class AdminCest
         Assert::assertSame(['full'], $client->getAllowedScopes());
 
         $I->amOnRoute('/oauth/admin/clients');
-        $I->see('Server app');
         $I->dontSee($secret);
         $I->amOnRoute('/oauth/admin/client', ['id' => $client->id]);
         $I->dontSee($secret);
@@ -477,67 +475,13 @@ class AdminCest
         Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
     }
 
-    public function testGrantsAreFilteredAndRevoked(FunctionalTester $I)
+    public function testGrantsPageShowsTheTable(FunctionalTester $I)
     {
-        $agent = $this->adminClient();
-        $other = $this->adminClient(['client_id' => 'other', 'name' => 'Other Tool']);
-        $user1 = $this->grant(2, $agent);
-        $user2 = $this->grant(3, $agent);
-        $otherGrant = $this->grant(2, $other);
-
         $I->amAdmin();
         $I->amOnRoute('/oauth/admin/grants');
         $I->seeResponseCodeIs(200);
-        $I->see('Research Agent', 'table');
-        $I->see('Other Tool', 'table');
-
-        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['user' => User::findOne(['id' => 3])->username]]);
-        $I->see('Research Agent', 'table');
-        $I->dontSee('Other Tool', 'table');
-        Assert::assertSame(1, substr_count($I->grabPageSource(), 'data-action-confirm-header="Revoke this grant?"'));
-
-        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['client_id' => $other->id]]);
-        $I->see('Other Tool', 'table');
-        $I->dontSee('Research Agent', 'table');
-
-        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['type' => Grant::TYPE_PAT]]);
-        $I->dontSee('Research Agent', 'table');
-        $I->dontSee('Other Tool', 'table');
-
-        $this->post($I, 'oauth/admin/revoke-grant', ['id' => $user1->id]);
-        Assert::assertFalse(Grant::find()->where(['id' => $user1->id])->exists());
-        Assert::assertTrue(Grant::find()->where(['id' => $user2->id])->exists());
-    }
-
-    public function testRevokeAllUsesTheCurrentFilter(FunctionalTester $I)
-    {
-        $agent = $this->adminClient();
-        $other = $this->adminClient(['client_id' => 'other', 'name' => 'Other Tool']);
-        $this->grant(2, $agent);
-        $this->grant(3, $agent);
-        $keep = $this->grant(2, $other);
-
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['client_id' => $agent->id]]);
-        // The button posts exactly the filter of the list
-        $source = $I->grabPageSource();
-        Assert::assertStringContainsString('GrantSearch%5Bclient_id%5D=' . $agent->id, html_entity_decode($source));
-
-        // A GET does nothing
-        $I->amOnRoute('/oauth/admin/revoke-grants', ['GrantSearch' => ['client_id' => $agent->id]]);
-        Assert::assertSame(3, (int)Grant::find()->count());
-
-        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['client_id' => $agent->id]]);
-        Assert::assertSame([$keep->id], array_map('intval', Grant::find()->select('id')->column()));
-    }
-
-    public function testInvalidFilterRevokesNothing(FunctionalTester $I)
-    {
-        $this->grant(2, $this->adminClient());
-
-        $I->amAdmin();
-        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['type' => 'bogus']]);
-        Assert::assertSame(1, (int)Grant::find()->count());
+        // The rows of the table, filtered and revoked (AdminOauthApiCest)
+        $I->seeElement('.data-table');
     }
 
     public function testClientAndGrantPagesAreForbiddenForUsers(FunctionalTester $I)
@@ -549,47 +493,12 @@ class AdminCest
         }
     }
 
-    public function testRevokeAllNeedsAFilter(FunctionalTester $I)
-    {
-        $this->grant(2, $this->adminClient());
-
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/grants');
-        $I->dontSee('Revoke all');
-
-        $this->post($I, 'oauth/admin/revoke-grants');
-        $I->seeResponseCodeIs(400);
-        Assert::assertSame(1, (int)Grant::find()->count());
-    }
-
-    public function testRevokeAllByTypeKeepsOtherTypes(FunctionalTester $I)
-    {
-        $oauth = $this->grant(2, $this->adminClient());
-        [, $pat] = (new PersonalAccessTokenService())->create(User::findOne(['id' => 2]), 'Script', ['content:read'], 30);
-
-        $I->amAdmin();
-        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['type' => Grant::TYPE_PAT]]);
-        Assert::assertTrue(Grant::find()->where(['id' => $oauth->id])->exists());
-        Assert::assertFalse(Grant::find()->where(['id' => $pat->id])->exists());
-    }
-
-    public function testSingleRevokeKeepsTheFilter(FunctionalTester $I)
-    {
-        $grant = $this->grant(2, $this->adminClient());
-
-        $I->amAdmin();
-        $this->post($I, 'oauth/admin/revoke-grant', ['id' => $grant->id, 'GrantSearch' => ['type' => 'oauth']]);
-        $I->seeResponseCodeIs(302);
-        Assert::assertStringContainsString('GrantSearch%5Btype%5D=oauth', (string)$I->grabHttpHeader('X-Redirect'));
-    }
-
     public function testPostOnlyActionsDoNotMutateOnGet(FunctionalTester $I)
     {
         $client = $this->adminClient();
         $grant = $this->grant(2, $client);
 
         $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/revoke-grant', ['id' => $grant->id]);
         $I->amOnRoute('/oauth/admin/regenerate-secret', ['id' => $client->id]);
         Assert::assertTrue(Grant::find()->where(['id' => $grant->id])->exists());
         Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
@@ -658,29 +567,5 @@ class AdminCest
 
         Assert::assertTrue(Client::findOne(['id' => $client->id])->validateSecret('old-secret'));
         Assert::assertFalse(Client::find()->where(['name' => 'Backdoor'])->exists());
-    }
-
-    public function testArrayFilterValuesAreIgnored(FunctionalTester $I)
-    {
-        $this->grant(2, $this->adminClient());
-
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/grants', ['GrantSearch' => ['user' => ['x'], 'type' => ['oauth']]]);
-        $I->seeResponseCodeIs(200);
-        $I->dontSee('Revoke all');
-
-        $this->post($I, 'oauth/admin/revoke-grants', ['GrantSearch' => ['user' => ['x'], 'client_id' => ['1']]]);
-        $I->seeResponseCodeIs(400);
-        Assert::assertSame(1, (int)Grant::find()->count());
-    }
-
-    public function testGrantsShowScopeLabels(FunctionalTester $I)
-    {
-        $this->grant(2, $this->adminClient());
-
-        $I->amAdmin();
-        $I->amOnRoute('/oauth/admin/grants');
-        $I->see('Read content, comments and likes', 'table');
-        $I->dontSee('content:read', 'table');
     }
 }

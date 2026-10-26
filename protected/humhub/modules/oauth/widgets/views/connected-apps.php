@@ -17,6 +17,7 @@ use humhub\modules\oauth\models\Grant;
                 ...array_map([Html::class, 'encode'], $scopeLabels[$grant->id] ?? []),
                 Html::encode(Yii::t('OauthModule.base', 'Connected {date}', ['date' => Yii::$app->formatter->asDate($grant->created_at)])),
             ],
+            'actionIcon' => 'plug-connected-x',
             'actionLabel' => Yii::t('OauthModule.base', 'Disconnect'),
             'confirmTitle' => Yii::t('OauthModule.base', 'Disconnect this app?'),
             'confirm' => Yii::t('OauthModule.base', 'The app loses access to your account. You can connect it again later.'),

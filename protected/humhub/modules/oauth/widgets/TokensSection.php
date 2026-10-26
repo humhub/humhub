@@ -12,6 +12,7 @@ use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\permissions\CreatePersonalAccessToken;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -30,6 +31,21 @@ class TokensSection extends GrantSection
     public function getDescription(): string
     {
         return Yii::t('OauthModule.base', 'Tokens for scripts and agents that access your account via the API.');
+    }
+
+    /**
+     * "Create token", while the limit is not reached.
+     */
+    public function getActions(): string
+    {
+        if (!self::canCreate() || (new PersonalAccessTokenService())->hasReachedLimit(Yii::$app->user->getIdentity())) {
+            return '';
+        }
+
+        return (string)Button::primary(Yii::t('OauthModule.base', 'Create token'))
+            ->link(['/oauth/account/create-token'])
+            ->icon('plus')
+            ->sm();
     }
 
     public function isVisible(): bool
@@ -62,7 +78,6 @@ class TokensSection extends GrantSection
         return $this->render('tokens', [
             'grants' => $this->getGrants(),
             'scopeLabels' => $scopeLabels,
-            'canCreate' => $canCreate,
             'limitReached' => $canCreate && (new PersonalAccessTokenService())->hasReachedLimit(Yii::$app->user->getIdentity()),
         ]);
     }

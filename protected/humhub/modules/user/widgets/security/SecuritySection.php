@@ -28,6 +28,15 @@ abstract class SecuritySection extends Widget
     }
 
     /**
+     * @return string the section's actions next to its title (HTML), e.g. a small button adding an
+     * entry or acting on all of them
+     */
+    public function getActions(): string
+    {
+        return '';
+    }
+
+    /**
      * @return bool whether the section is shown for the current user - a tab without visible sections is hidden
      */
     public function isVisible(): bool
@@ -46,6 +55,7 @@ abstract class SecuritySection extends Widget
         return $this->render('@user/widgets/security/views/section', [
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
+            'actions' => $this->getActions(),
             'content' => $this->renderContent(),
         ]);
     }

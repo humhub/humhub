@@ -20,6 +20,8 @@ use humhub\helpers\Html;
  * @var string|null $backLabel
  * @var ColumnDefinition[] $columns the shown optional columns
  */
+// About as the component (which measures the table): the main column twice as wide as each
+// other one that is not narrow; a table column ignores a `calc()` with percentages
 $others = count(array_filter($columns, static fn(ColumnDefinition $column) => !$column->narrow));
 $mainWidth = $others > 0 ? round(200 / ($others + 2), 4) . '%' : null;
 ?>

@@ -1775,6 +1775,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `admin\widgets\PendingRegistrations` with its view, `AdminPendingRegistrationsAsset` and
     `humhub.admin.PendingRegistrations.js` — module search found no users.
 
+- **The OAuth clients and grants of the administration are data table islands**
+  (`oauth\widgets\AdminClientTable`, `AdminGrantTable`, rows from `GET /api/v2/admin/oauth-client`
+  and `/admin/oauth-grant`; a grant is revoked with `POST /api/v2/admin/oauth-grant/<id>/revoke`
+  or `…/bulk/revoke`, all of a filter only with a filter set).
+  - **Removed:** `oauth/admin/revoke-grant`, `oauth/admin/revoke-grants` and
+    `oauth\models\GrantSearch` (the grant filter is `oauth\components\table\AdminGrantList`:
+    `q`, `client`, `scope`, `type`).
+
 - **The topic lists are a data table island** (`topic\widgets\TopicTable`, embedded): the global
   topics (Administration › Settings › Topics), a space's and the account's, with their rows from
   `GET /api/v2/admin/topic`, `/space/<id>/topic` and `/user/<id>/topic`.
@@ -2314,6 +2322,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `SecuritySessionSections` (browser sessions and other access, e.g. app devices and tokens),
     `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section
     extends `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
+    `SecuritySection::getActions()` puts small buttons next to the section's title (e.g. "Create
+    token", "Log out all other sessions"); a row's single action is a ghost icon button with its
+    label as tooltip and `aria-label`, as in the core sections.
   - Modules that add security or privacy related entries to `AccountSettingsMenu`, e.g. two-factor
     authentication or a personal data export, should move them to `SecuritySettingsMenu` or
     `SecurityDataSections`.
