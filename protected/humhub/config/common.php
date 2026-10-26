@@ -315,6 +315,7 @@ $config = [
             'sw' => 'Kiswahili',
             'sr' => 'Сербисцх',
             'eu' => 'Basque',
+            'eo' => 'Esperanto',
         ],
         'ldap' => [
             // LDAP date field formats
