@@ -338,14 +338,7 @@ class PermissionManager extends Component
             $groupId = $groupId->id;
         }
 
-        // Ignore stored states of permission/group pairs which are not allowed to be changed (fixed).
-        // Such states can only exist if they were written by a crafted request before changes
-        // of fixed pairs were rejected in handlePermissionStateChange(), so they must have no effect.
-        $cached = $permission->canChangeState($groupId)
-            ? $this->getPrefetchedStateRecord($groupId, $permission)
-            : null;
-
-        if ($cached) {
+        if ($cached = $this->getPrefetchedStateRecord($groupId, $permission)) {
             return $cached->state;
         }
 

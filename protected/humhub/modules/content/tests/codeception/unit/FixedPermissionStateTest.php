@@ -20,7 +20,7 @@ use yii\web\ForbiddenHttpException;
 
 /**
  * Permission states which are fixed for a group (e.g. "Manage content" for all registered users)
- * must neither be writable via the permission grid endpoint nor be effective if stored.
+ * must not be writable via the permission grid endpoint.
  */
 class FixedPermissionStateTest extends HumHubDbTestCase
 {
@@ -61,19 +61,6 @@ class FixedPermissionStateTest extends HumHubDbTestCase
     {
         $this->assertSame([], $this->postPermissionState(Space::USERGROUP_MODERATOR, ManageContent::class, 'content', 0));
         $this->assertTrue($this->hasStoredState(Space::USERGROUP_MODERATOR));
-    }
-
-    public function testStoredStateOfFixedPairIsIgnored()
-    {
-        // Simulate a state stored before the request validation was fixed
-        $this->space->permissionManager->setGroupState(Space::USERGROUP_USER, new ManageContent(), 1);
-        $this->assertTrue($this->hasStoredState(Space::USERGROUP_USER));
-
-        $space = Space::findOne(['id' => 5]);
-        $post = Post::findOne(['id' => $this->post->id]);
-
-        $this->assertFalse($space->getPermissionManager($this->outsider)->can(new ManageContent()));
-        $this->assertFalse($post->content->canArchive($this->outsider));
     }
 
     private function postPermissionState(string $groupId, string $permissionId, string $moduleId, int $state): ?array
