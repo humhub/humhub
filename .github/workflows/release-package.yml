@@ -1,0 +1,106 @@
+name: Release Package
+
+# Builds the HumHub release packages (zip, tar.gz) for a tag and uploads them to the
+# humhub.com web server (temp directory for now). See docs/develop/internals-release-package.md
+#
+# Prerequisites in humhub/humhub:
+#   Secret   HUMHUB_RELEASE_UPLOAD_TOKEN — Bearer token of the web API (params['releaseUploadToken'])
+#   Variable HUMHUB_RELEASE_UPLOAD_URL   — e.g. https://api.humhub.com/v1/release/upload
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build, e.g. v1.19.2'
+        required: true
+        type: string
+      upload_web:
+        description: 'Upload the packages to the web server'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-package-${{ github.event.release.tag_name || inputs.tag }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - name: Checkout build tools
+        uses: actions/checkout@v7
+        with:
+          path: tools
+          persist-credentials: false
+
+      - name: Checkout release tag
+        uses: actions/checkout@v7
+        with:
+          ref: refs/tags/${{ env.TAG }}
+          path: src
+          persist-credentials: false
+
+      - name: Determine PHP version
+        id: php
+        run: |
+          version=$(grep -oP "'minSupportedPhpVersion'\s*=>\s*'\K[0-9.]+" src/protected/humhub/config/common.php || true)
+          if [ -z "$version" ]; then
+            echo "::error::minSupportedPhpVersion not found in protected/humhub/config/common.php"
+            exit 1
+          fi
+          platform=$(jq -r '.config.platform.php // empty' src/composer.json)
+          if [ -z "$platform" ]; then
+            echo "::warning::composer.json has no config.platform.php, using minSupportedPhpVersion ($version)"
+          elif [ "$platform" != "$version" ]; then
+            echo "::error::composer.json config.platform.php ($platform) differs from minSupportedPhpVersion ($version)"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ steps.php.outputs.version }}
+          extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
+          ini-values: date.timezone='UTC'
+          tools: composer:v2
+
+      - name: Install Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Build packages
+        run: bash tools/.github/release/build-package.sh "$TAG" src dist
+
+      - name: Keep packages as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-package-${{ env.TAG }}
+          path: dist/*
+          retention-days: 14
+
+      - name: Upload packages to web server
+        if: github.event_name == 'release' || inputs.upload_web
+        env:
+          UPLOAD_URL: ${{ vars.HUMHUB_RELEASE_UPLOAD_URL }}
+          UPLOAD_TOKEN: ${{ secrets.HUMHUB_RELEASE_UPLOAD_TOKEN }}
+        run: |
+          if [ -z "$UPLOAD_URL" ] || [ -z "$UPLOAD_TOKEN" ]; then
+            echo "::error::Variable HUMHUB_RELEASE_UPLOAD_URL and secret HUMHUB_RELEASE_UPLOAD_TOKEN must be set"
+            exit 1
+          fi
+          json=$(ls dist/humhub-*.json)
+          name=$(basename "$json" .json)
+          curl --fail-with-body --show-error --silent --max-time 900 -X POST "$UPLOAD_URL" \
+            -H "Authorization: Bearer $UPLOAD_TOKEN" \
+            -F "zip=@dist/$name.zip" \
+            -F "targz=@dist/$name.tar.gz" \
+            -F "json=@$json"

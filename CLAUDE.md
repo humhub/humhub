@@ -93,6 +93,10 @@ New features belong to the release line of the branch they are developed on, not
 
 Every PR must include a changelog entry. In this core repo the changelog is `CHANGELOG.md` at the repository **root** (external modules use `docs/CHANGELOG.md`). Add a bullet under the `X.Y.Z (Unreleased)` section of the branch's own release line (open one at the top if the branch has no section of its own yet — `next` must not add entries to the `develop` section) in the form `- <Tag> #<PR>: <description>`, where `<Tag>` is `Enh`, `Fix`, etc. — match the existing entries. Do not bump the version for unreleased changes; the version is only bumped when a release is cut.
 
+## Release packages
+
+Release packages are built by `.github/workflows/release-package.yml`. When a change adds, moves or removes files or directories outside `protected/humhub`, check whether `.github/release/exclude.txt` needs to be adjusted — see `docs/develop/internals-release-package.md`.
+
 ## Running Tests
 
 ### Core Tests
