@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #8648: Invite tokens (link and email) could end with `-` or `_`, which is often cut off when the link is auto-detected in texts
 - Fix #8647: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
 - Fix #8652: Concurrent requests with the same new or expired session ID (e.g. several AJAX requests after the session expired) failed with "Duplicate entry" in `user_http_session`
+- Fix #8654: Activity types excluded from e-mail summaries reappeared after the update to 1.19 (renamed activity classes were not migrated in settings)
 
 1.19.2 (October 26, 2026)
 -------------------------
