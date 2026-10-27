@@ -328,6 +328,374 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
+  "/space/{id}/member":
+    get:
+      tags:
+        - Space
+      summary: The rows of a space's member table
+      operationId: listSpaceMembers
+      description: |
+        One page of the space's members (without invitations, requests and deleted accounts), for
+        the space's administrators. A row's `id` is the user's id; its cells are `name`, `role`
+        (`admin` · `moderator` · `member`, the owner without value), `memberSince` and
+        `lastVisit`. Without `sort`, the administrators first, then the moderators and the
+        members, each by name.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username and id
+          schema:
+            type: string
+        - name: role
+          in: query
+          required: false
+          description: |
+            `admin` · `moderator` · `member`
+          schema:
+            type: string
+            enum: [admin, moderator, member]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `role` · `memberSince` · `lastVisit`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, role, -role, memberSince, -memberSince, lastVisit, -lastVisit]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/member/{userId}/role/{role}":
+    post:
+      tags:
+        - Space
+      summary: Give a member another role
+      operationId: setSpaceMemberRole
+      description: |
+        Gives the member the role, notifies them and answers the new row. Only where the row offers
+        it (not the owner, whose role follows the ownership), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - $ref: "#/components/parameters/memberUserIdParam"
+        - name: role
+          in: path
+          required: true
+          description: The new role
+          schema:
+            type: string
+            enum: [admin, moderator, member]
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/member/{userId}/remove":
+    post:
+      tags:
+        - Space
+      summary: Remove a member from a space
+      operationId: removeSpaceMember
+      description: |
+        Removes the member from the space. Only where the row offers it (not the owner), else
+        `403`.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - $ref: "#/components/parameters/memberUserIdParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/member/bulk/remove":
+    post:
+      tags:
+        - Space
+      summary: Remove several members from a space
+      operationId: bulkRemoveSpaceMembers
+      description: |
+        Removes the selected members (user ids in `ids`, or `all` — every member of the list's
+        filters, given as query parameters exactly as `GET /space/{id}/member` takes them). Each
+        member whose row offers "Remove" is removed, the others (the owner) are skipped.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      requestBody:
+        $ref: "admin.yaml#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/topic":
+    get:
+      tags:
+        - Space
+      summary: The rows of a space's topic table
+      operationId: listSpaceTopics
+      description: |
+        One page of the space's own topics, for those who may manage them (`ManageTopics`, while
+        topics may be created in the space).
+        A row's `id` is the topic's id; its cells are `name` (linked to the stream filtered by
+        the topic), `contents` (how many contents have it) and `sortOrder`; its actions edit (a
+        dialog of the web interface), view and delete (`POST`, answering `{removed: true}`).
+        Without `sort`, by sort order, then by name.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over the name
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `sortOrder` · `contents`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, sortOrder, -sortOrder, contents, -contents]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/invitation":
+    get:
+      tags:
+        - Space
+      summary: The rows of a space's invitation table
+      operationId: listSpaceInvitations
+      description: |
+        One page of the space's open invitations, for its administrators. A row's `id` is the
+        invited user's id; its cells are `name`, `invitedBy` and `invitedAt`. Without `sort`, by
+        name.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username and id
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `memberSince`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, memberSince, -memberSince]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/invitation/{userId}/cancel":
+    post:
+      tags:
+        - Space
+      summary: Cancel an invitation
+      operationId: cancelSpaceInvitation
+      description: |
+        Withdraws the invitation.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - $ref: "#/components/parameters/memberUserIdParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/invitation/bulk/cancel":
+    post:
+      tags:
+        - Space
+      summary: Cancel several invitations
+      operationId: bulkCancelSpaceInvitations
+      description: |
+        Withdraws the selected invitations (`ids`, or `all` of the list's filters in the query).
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      requestBody:
+        $ref: "admin.yaml#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/applicant":
+    get:
+      tags:
+        - Space
+      summary: The rows of a space's membership request table
+      operationId: listSpaceApplicants
+      description: |
+        One page of the space's membership requests, for its administrators. A row's `id` is the
+        applicant's id; its cells are `name`, `message` and `requestedAt`. Without `sort`, by
+        name.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username and id
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `memberSince`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, memberSince, -memberSince]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/applicant/{userId}/{action}":
+    post:
+      tags:
+        - Space
+      summary: Accept or decline a membership request
+      operationId: decideSpaceApplicant
+      description: |
+        Accepts (the user becomes a member) or declines the request; the row is gone either way.
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+        - $ref: "#/components/parameters/memberUserIdParam"
+        - name: action
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [accept, decline]
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/applicant/bulk/accept":
+    post:
+      tags:
+        - Space
+      summary: Accept several membership requests
+      operationId: bulkDecideSpaceApplicantsAccept
+      description: |
+        Accepts the selected requests (`ids`, or `all` of the list's filters in the
+        query).
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      requestBody:
+        $ref: "admin.yaml#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/space/{id}/applicant/bulk/decline":
+    post:
+      tags:
+        - Space
+      summary: Decline several membership requests
+      operationId: bulkDecideSpaceApplicantsDecline
+      description: |
+        Declines the selected requests (`ids`, or `all` of the list's filters in the
+        query).
+      parameters:
+        - $ref: "#/components/parameters/spaceIdParam"
+      requestBody:
+        $ref: "admin.yaml#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
   "/space/{id}/follow":
     get:
       tags:
@@ -410,6 +778,13 @@ components:
       name: id
       in: path
       description: Id of the space
+      required: true
+      schema:
+        type: integer
+    memberUserIdParam:
+      name: userId
+      in: path
+      description: Id of the member (a user)
       required: true
       schema:
         type: integer

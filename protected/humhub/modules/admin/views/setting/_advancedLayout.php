@@ -1,15 +1,18 @@
 <?php
-humhub\modules\admin\widgets\SettingsMenu::markAsActive(['/admin/setting/advanced']);
+
+use humhub\components\View;
+use humhub\modules\admin\widgets\AdvancedSettingMenu;
+use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\widgets\ContentCard;
+
+/* @var View $this */
+/* @var string $content */
+
+SettingsMenu::markAsActive(['/admin/setting/advanced']);
 ?>
-<div class="panel-body">
-    <h4><?= Yii::t('AdminModule.settings', 'Advanced Settings'); ?></h4>
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.settings', 'These settings refer to advanced topics of your social network.'); ?>
-    </div>
-</div>
-
-<?= humhub\modules\admin\widgets\AdvancedSettingMenu::widget(); ?>
-
-<div class="panel-body">
-    <?= $content; ?>
-</div>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.base', 'Advanced'),
+    'tabs' => AdvancedSettingMenu::class,
+]) ?>
+<?= $content ?>
+<?php ContentCard::end() ?>

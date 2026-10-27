@@ -8,7 +8,7 @@
         :resolve="resolve"
         :item-label="itemLabel"
         icon="ti-users-group"
-        block="c-space-filter"
+        block="space-filter"
         @update:model-value="$emit('update:modelValue', $event)"
     >
         <template #option="{ item }">
@@ -33,7 +33,7 @@ import SpaceImage from './SpaceImage.vue';
  *
  * The combobox is the core's `PickerFilterControl` (a global component — see there for
  * the keyboard, the resolving of a URL value and the error handling), led by a spaces icon, with
- * space images (`.c-space-filter`):
+ * space images (`.space-filter`):
  *
  * - Props: the filter-type contract — `filter` (the definition: `placeholder`, else `label`, as
  *   placeholder; `label` as accessible name; `multiple` — `true` as `FilterBar` reads it, the

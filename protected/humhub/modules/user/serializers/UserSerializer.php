@@ -78,7 +78,7 @@ class UserSerializer
 
     /**
      * The list representation: the short one plus what a list of users is browsed by — the
-     * People directory's card.
+     * People browser's card.
      *
      * - `bannerUrl` is `null` without a banner of the user's own (like a space's).
      * - `title` is the line under the name the platform shows everywhere (the profile's

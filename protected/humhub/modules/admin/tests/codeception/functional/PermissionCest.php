@@ -61,7 +61,9 @@ class PermissionCest
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('not to see permission denied message');
-        $I->see('Add new user');
+        // The user table island, with "Add new user" among its header actions (props)
+        $I->seeElement('data-table');
+        $I->seeInSource('Add new user');
         $I->see('Profiles');
 
         $I->see('Users', '#admin-menu');
@@ -145,7 +147,9 @@ class PermissionCest
 
         $I->amOnRoute('/admin/user');
         $I->expectTo('not to see permission denied message');
-        $I->see('Add new user');
+        // The user table island, with "Add new user" among its header actions (props)
+        $I->seeElement('data-table');
+        $I->seeInSource('Add new user');
         $I->see('Groups');
 
         $I->see('Users', '#admin-menu');
@@ -198,7 +202,7 @@ class PermissionCest
         $I->amOnRoute('/admin/user');
         $I->expectTo('not to see permission denied message');
         $I->dontSee('Groups');
-        $I->see('User Settings');
+        $I->see('Settings', '.content-card .card-title');
 
         $I->see('Users', '#admin-menu');
         $I->see('Spaces', '#admin-menu');
@@ -217,16 +221,16 @@ class PermissionCest
 
         $I->amOnRoute('/admin/space');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Space Settings');
+        $I->see('Settings', '.content-card .card-title');
 
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
-        $I->see('Module administration');
-        $I->see('You do not have the permission to manage modules.');
+        $I->seeElement('.page-header');
+        $I->seeElement('.data-table');
 
         $I->amOnRoute('/admin/setting');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('General Settings');
+        $I->see('General', '.content-card .card-title');
         $I->see('Appearance');
         $I->see('E-Mail summaries');
         $I->see('Notifications');
@@ -235,19 +239,19 @@ class PermissionCest
 
         $I->amOnRoute('/admin/setting/design');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Appearance Settings');
+        $I->see('Appearance', '.content-card .card-title');
 
         $I->amOnRoute('/notification/admin/defaults');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Notification Settings');
+        $I->see('Notifications', '.content-card .card-title');
 
         $I->amOnRoute('/activity/admin/defaults');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('E-Mail Summaries');
+        $I->see('E-Mail Summaries', '.content-card .card-title');
 
         $I->amOnRoute('/admin/setting/file');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Advanced Settings');
+        $I->see('Advanced', '.content-card .card-title');
 
         $I->amOnRoute('/admin/information');
         $I->see('You are not permitted to access this section.');
@@ -267,8 +271,8 @@ class PermissionCest
 
         $I->amOnRoute('/admin/module');
         $I->expectTo('not to see permission denied message');
-        $I->see('Module administration');
-        $I->see('You do not have the permission to configure modules.');
+        $I->seeElement('.page-header');
+        $I->seeElement('.data-table');
 
         $I->amOnRoute('/marketplace/browse');
         $I->see('Marketplace');
@@ -314,7 +318,7 @@ class PermissionCest
         $I->amOnRoute('/admin/space');
         $I->expectTo('see permission denied message');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Manage spaces');
+        $I->see('Spaces', '.page-header-title');
         $I->dontSee('Users', '#admin-menu');
         $I->see('Spaces', '#admin-menu');
         $I->dontSee('Modules', '#admin-menu');
@@ -322,7 +326,7 @@ class PermissionCest
         $I->dontSee('Information', '#admin-menu');
 
         $I->amOnRoute('/space/manage', ['sguid' => '5396d499-20d6-4233-800b-c6c86e5fa34c']);
-        $I->see('Space settings');
+        $I->see('Settings', '.page-header-title');
         $I->see('Basic');
         $I->see('Advanced');
 

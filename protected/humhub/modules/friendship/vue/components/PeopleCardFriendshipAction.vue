@@ -20,7 +20,7 @@
 import FriendshipButton from '../FriendshipButton.vue';
 
 /**
- * The friendship action of a People directory card, the friendship module's entry
+ * The friendship action of a People browser card, the friendship module's entry
  * `friendship` (sortOrder 100) of the `user.card-actions` slot (registered in `vue/index.js`):
  * the `FriendshipButton`, fed from the card's state (`state.friendship`) without a request of
  * its own. Rendered while the friendship system is on.
@@ -46,7 +46,7 @@ export default {
     emits: ['friendship-change'],
     methods: {
         actionClass(classes) {
-            return `${classes || ''} c-entity-card__action`.trim();
+            return `${classes || ''} entity-card-action`.trim();
         },
     },
 };

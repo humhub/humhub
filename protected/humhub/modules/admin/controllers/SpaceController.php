@@ -8,7 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\admin\models\SpaceSearch;
+use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
@@ -17,7 +17,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
-use humhub\modules\admin\components\Controller;
 use yii\web\HttpException;
 
 /**
@@ -62,13 +61,7 @@ class SpaceController extends Controller
             return $this->redirect(['settings']);
         }
 
-        $searchModel = new SpaceSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+        return $this->render('index');
     }
 
     /**

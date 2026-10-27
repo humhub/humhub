@@ -15,11 +15,7 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\models\forms\ClientForm;
 use humhub\modules\oauth\models\forms\SettingsForm;
-use humhub\modules\oauth\models\Grant;
-use humhub\modules\oauth\models\GrantSearch;
-use humhub\modules\oauth\services\GrantService;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -40,7 +36,7 @@ class AdminController extends Controller
     {
         return [
             ['permissions' => [ManageSettings::class]],
-            [ControllerAccess::RULE_POST => ['delete-client', 'regenerate-secret', 'revoke-grant', 'revoke-grants']],
+            [ControllerAccess::RULE_POST => ['delete-client', 'regenerate-secret']],
         ];
     }
 
@@ -81,15 +77,12 @@ class AdminController extends Controller
         return $this->render('index', ['model' => $model]);
     }
 
+    /**
+     * The clients (`oauth\widgets\AdminClientTable`, its rows from `GET /api/v2/admin/oauth-client`)
+     */
     public function actionClients()
     {
-        return $this->render('clients', [
-            'dataProvider' => new ActiveDataProvider([
-                'query' => Client::find(),
-                'sort' => ['defaultOrder' => ['id' => SORT_ASC], 'attributes' => ['name', 'type', 'is_active', 'created_at', 'id']],
-                'pagination' => ['pageSize' => 50],
-            ]),
-        ]);
+        return $this->render('clients');
     }
 
     public function actionClient(?int $id = null)
@@ -131,58 +124,13 @@ class AdminController extends Controller
         return $this->renderSecret($client, $secret);
     }
 
+    /**
+     * The grants of all users (`oauth\widgets\AdminGrantTable`, its rows from
+     * `GET /api/v2/admin/oauth-grant`, which also revokes them)
+     */
     public function actionGrants()
     {
-        $searchModel = new GrantSearch();
-
-        return $this->render('grants', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $searchModel->search(Yii::$app->request->queryParams),
-        ]);
-    }
-
-    public function actionRevokeGrant(int $id)
-    {
-        $grant = Grant::findOne(['id' => $id]);
-        if ($grant === null) {
-            throw new NotFoundHttpException();
-        }
-
-        (new GrantService())->revoke($grant);
-        $this->view->success(Yii::t('OauthModule.base', 'Access revoked.'));
-
-        // Back to the list with the filter it was shown with
-        $filter = Yii::$app->request->get('GrantSearch');
-        return $this->redirect(['grants'] + (is_array($filter) ? ['GrantSearch' => $filter] : []));
-    }
-
-    public function actionRevokeGrants()
-    {
-        // The filter travels in the URL of the button, the same parameters the list was filtered by
-        $searchModel = new GrantSearch();
-        $searchModel->load(Yii::$app->request->queryParams);
-        if (!$searchModel->hasFilter()) {
-            throw new BadRequestHttpException();
-        }
-
-        // Ids first: deleting while iterating a query skips rows
-        $ids = $searchModel->query()->select('g.id')->column();
-        $service = new GrantService();
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            foreach ($ids as $id) {
-                if ($grant = Grant::findOne(['id' => $id])) {
-                    $service->revoke($grant);
-                }
-            }
-            $transaction->commit();
-        } catch (\Throwable $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-        $this->view->success(Yii::t('OauthModule.base', '{count} grants revoked.', ['count' => count($ids)]));
-
-        return $this->redirect(['grants']);
+        return $this->render('grants');
     }
 
     /**

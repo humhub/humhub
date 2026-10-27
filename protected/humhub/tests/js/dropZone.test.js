@@ -24,12 +24,12 @@ describe('DropZone', () => {
         const wrapper = zone({ label: 'Drop to upload' });
 
         await wrapper.trigger('dragenter', fileDrag);
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(true);
-        expect(wrapper.find('.c-drop-zone__label').text()).toBe('Drop to upload');
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(true);
+        expect(wrapper.find('.drop-zone-label').text()).toBe('Drop to upload');
         expect(wrapper.find('.ti-upload').exists()).toBe(true);
 
         await wrapper.trigger('dragleave', fileDrag);
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(false);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(false);
     });
 
     it('keeps the overlay while the drag moves between its children', async () => {
@@ -38,10 +38,10 @@ describe('DropZone', () => {
         await wrapper.trigger('dragenter', fileDrag);
         await wrapper.find('.child').trigger('dragenter', fileDrag);
         await wrapper.trigger('dragleave', fileDrag);
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(true);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(true);
 
         await wrapper.find('.child').trigger('dragleave', fileDrag);
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(false);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(false);
     });
 
     it('resets when the drag leaves the zone, even if a child never reported leaving', async () => {
@@ -51,14 +51,14 @@ describe('DropZone', () => {
         await wrapper.find('.child').trigger('dragenter', fileDrag);
         await wrapper.trigger('dragleave', { ...fileDrag, relatedTarget: document.body });
 
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(false);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(false);
     });
 
     it('ignores drags that carry no files', async () => {
         const wrapper = zone();
 
         await wrapper.trigger('dragenter', textDrag);
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(false);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(false);
     });
 
     it('emits the dropped files and clears the overlay', async () => {
@@ -68,16 +68,16 @@ describe('DropZone', () => {
         await wrapper.trigger('drop', fileDrag);
 
         expect(wrapper.emitted('drop')[0][0]).toBe(files);
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(false);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(false);
     });
 
     it('refuses a drop it does not accept, visibly', async () => {
         const wrapper = zone({ accept: false, refusedLabel: 'Not allowed here' });
 
         await wrapper.trigger('dragenter', fileDrag);
-        expect(wrapper.find('.c-drop-zone__overlay').classes()).toContain('is-refused');
+        expect(wrapper.find('.drop-zone-overlay').classes()).toContain('is-refused');
         expect(wrapper.find('.ti-ban').exists()).toBe(true);
-        expect(wrapper.find('.c-drop-zone__label').text()).toBe('Not allowed here');
+        expect(wrapper.find('.drop-zone-label').text()).toBe('Not allowed here');
 
         await wrapper.trigger('drop', fileDrag);
         expect(wrapper.emitted('drop')).toBeUndefined();
@@ -91,7 +91,7 @@ describe('DropZone', () => {
         await wrapper.trigger('dragenter', fileDrag);
         await wrapper.find('.child').trigger('drop', fileDrag);
 
-        expect(wrapper.find('.c-drop-zone__overlay').exists()).toBe(false);
+        expect(wrapper.find('.drop-zone-overlay').exists()).toBe(false);
         expect(wrapper.emitted('drop')).toBeUndefined();
     });
 });

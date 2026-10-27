@@ -5,11 +5,12 @@ import NotificationOverview from '../../vue/NotificationOverview.vue';
 import { markAsSeen } from '../../vue/components/notificationApi.js';
 import UserImage from '../../../../modules/user/vue/UserImage.vue';
 import SpaceImage from '../../../../modules/space/vue/SpaceImage.vue';
+import PageHeader from '../../../../vue/PageHeader.vue';
 
 await import('../../../../resources/js/humhub/humhub.url.js');
 await import('../../../../resources/js/humhub/humhub.vue.js');
 
-const mountOptions = () => ({ global: { components: { UserImage, SpaceImage } } });
+const mountOptions = () => ({ global: { components: { UserImage, SpaceImage, PageHeader } } });
 
 // The opaque group key the server sends (`NotificationListService::encodeCursor()`) - the
 // value the live event carries as `notificationGroup`.
@@ -253,7 +254,7 @@ const overviewProps = (overrides = {}) => ({
         { id: 'social', title: 'Reactions on my content' },
         { id: 'content', title: 'New content in my Spaces' },
     ],
-    icons: { check: '<i class="ti ti-check"></i>', cog: '<i class="ti ti-settings"></i>' },
+    icons: {},
     settingsUrl: '/notification/user',
     ...overrides,
 });
@@ -264,6 +265,8 @@ describe('NotificationOverview', () => {
 
         expect(wrapper.find('#notification_overview_list').exists()).toBe(true);
         expect(wrapper.find('#notification_overview_markseen').exists()).toBe(true);
+        expect(wrapper.find('.page-header-title').text()).toBe('Notifications');
+        expect(wrapper.find('.page-header-actions a[data-action-id="settings"]').attributes('href')).toBe('/notification/user');
         expect(wrapper.findAll('.form-check')).toHaveLength(3); // "all" + two categories
         expect(getCalls).toHaveLength(0);
     });

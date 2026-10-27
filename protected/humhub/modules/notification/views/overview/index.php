@@ -13,9 +13,8 @@ use yii\helpers\Url;
 /* @var array $initial the first page of notifications, see NotificationListService */
 /* @var array $filters [{id, title}] the notification categories that can be filtered by */
 
-// The page content is one island (NotificationOverview): the filter in the sidebar and the list
-// in the main panel are one piece of state, so they share an owner. It renders the panel/column
-// markup this view used to hold - see the component's own docblock.
+// The page content is one island (NotificationOverview): the page header, the filter in the
+// sidebar and the list in the main panel - see the component's own docblock.
 ?>
 <div class="container">
     <?= VueComponent::widget([
@@ -27,8 +26,6 @@ use yii\helpers\Url;
             'pageSize' => humhub\modules\notification\services\NotificationListService::OVERVIEW_PAGE_SIZE,
             'settingsUrl' => Url::to(['/notification/user']),
             'icons' => [
-                'check' => Icon::get('check')->asString(),
-                'cog' => Icon::get('settings')->asString(),
                 'all' => Icon::get('menu-2')->asString(),
                 'unseen' => Icon::get('eye-off')->asString(),
                 'seen' => Icon::get('eye')->asString(),

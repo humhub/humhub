@@ -9,7 +9,7 @@
 namespace humhub\widgets\form;
 
 use humhub\helpers\Html;
-use humhub\widgets\Icon;
+use Yii;
 use yii\base\Widget;
 
 /**
@@ -67,30 +67,49 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
      */
     public function beginCollapsibleFields($title, $isClosed = true)
     {
+        $id = 'collapsibleFields-' . (new Widget())->id;
+
+        // A Bootstrap accordion with one item; consecutive groups look like one accordion
         return
             Html::beginTag('div', [
-                'class' => 'form-collapsible-fields',
+                'class' => 'accordion form-collapsible-fields',
                 'data-ui-widget' => 'ui.form.elements.FormFieldsCollapsible',
                 'data-ui-init' => 1,
             ])
+            . Html::beginTag('div', ['class' => 'accordion-item'])
+            // The header keeps the former `.form-collapsible-fields-label` with a `<label>` inside,
+            // which module tests click; keyboard handling is in `FormFieldsCollapsible`
             . Html::tag(
-                'div',
-                Icon::get('plus') . Icon::get('minus') . ' &nbsp;'
-                . Html::label($title, null, ['class' => 'control-label']),
-                [
-                    'class' => 'form-collapsible-fields-label' . ($isClosed ? ' collapsed' : ''),
+                'h3',
+                Html::tag('div', Html::label($title) . self::renderUnsavedDot(), [
+                    'class' => 'accordion-button form-collapsible-fields-label' . ($isClosed ? ' collapsed' : ''),
                     'data-bs-toggle' => 'collapse',
-                    'data-bs-target' => '#collapsibleFields-' . ($fieldsetId = (new Widget())->id),
+                    'data-bs-target' => '#' . $id,
                     'tabindex' => '0',
                     'role' => 'button',
                     'aria-expanded' => $isClosed ? 'false' : 'true',
-                    'aria-controls' => 'collapsibleFields-' . $fieldsetId,
-                ],
+                    'aria-controls' => $id,
+                ]),
+                ['class' => 'accordion-header'],
             )
             . Html::beginTag('fieldset', [
-                'id' => 'collapsibleFields-' . $fieldsetId,
-                'class' => 'collapse' . ($isClosed ? '' : ' show'),
-            ]);
+                'id' => $id,
+                'class' => 'accordion-collapse collapse' . ($isClosed ? '' : ' show'),
+            ])
+            . Html::beginTag('div', ['class' => 'accordion-body']);
+    }
+
+    /**
+     * The dot of a group with unsaved changes, shown by `FormFieldsCollapsible`
+     */
+    private static function renderUnsavedDot(): string
+    {
+        $label = Yii::t('base', 'Unsaved changes');
+
+        return Html::tag('span', Html::tag('span', $label, ['class' => 'visually-hidden']), [
+            'class' => 'accordion-dot badge-dot badge-dot-unsaved d-none',
+            'title' => $label,
+        ]);
     }
 
     /**
@@ -101,7 +120,9 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
      */
     public function endCollapsibleFields()
     {
-        return Html::endTag('fieldset')
+        return Html::endTag('div')
+            . Html::endTag('fieldset')
+            . Html::endTag('div')
             . Html::endTag('div');
     }
 }

@@ -31,6 +31,35 @@ class MenuLink extends MenuEntry
      * @var Button
      */
     protected $link;
+    /**
+     * @var bool whether this is the main action of its menu, e.g. "Invite" among the actions of
+     * a page header ({@see PageHeaderActions})
+     */
+    protected bool $isPrimary = false;
+
+    /**
+     * @var int|null how many things wait behind the entry (e.g. pending approvals); pill tabs
+     * show a dot for it, with the number for screen readers
+     * @since 1.20
+     */
+    protected ?int $count = null;
+
+    /**
+     * @since 1.20
+     */
+    public function setCount(?int $count): static
+    {
+        $this->count = $count;
+        return $this;
+    }
+
+    /**
+     * @since 1.20
+     */
+    public function getCount(): ?int
+    {
+        return $this->count;
+    }
 
     public function setEncodeLabel(bool $encodeLabel)
     {
@@ -190,6 +219,24 @@ class MenuLink extends MenuEntry
     {
         $this->getLink()->options($htmlOptions);
         return $this;
+    }
+
+    /**
+     * @return static
+     * @since 1.20
+     */
+    public function setIsPrimary(bool $isPrimary)
+    {
+        $this->isPrimary = $isPrimary;
+        return $this;
+    }
+
+    /**
+     * @since 1.20
+     */
+    public function getIsPrimary(): bool
+    {
+        return $this->isPrimary;
     }
 
     /**

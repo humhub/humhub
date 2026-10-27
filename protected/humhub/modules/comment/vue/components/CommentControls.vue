@@ -127,6 +127,7 @@ export default {
                 {
                     id: 'delete',
                     label: i18n.t('CommentModule.base', 'Delete'),
+                    htmlOptions: { class: 'dropdown-item-danger' },
                     condition: () => this.canDelete,
                     onClick: () => this.onDelete(),
                 },

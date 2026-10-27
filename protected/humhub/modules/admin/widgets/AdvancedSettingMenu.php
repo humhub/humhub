@@ -10,15 +10,20 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\helpers\ControllerHelper;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\SubTabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * Authentication Settings Menu
  */
-class AdvancedSettingMenu extends SubTabMenu
+class AdvancedSettingMenu extends PillTabs
 {
+    /**
+     * @inheritdoc
+     */
+    public string $variant = self::VARIANT_SECONDARY;
+
     /**
      * @inheritdoc
      */

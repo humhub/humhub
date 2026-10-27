@@ -1,27 +1,27 @@
 <template>
     <div
         ref="root"
-        class="c-select c-picker c-picker-filter"
+        class="select-menu picker picker-filter"
         :class="[block, { 'is-open': open, 'has-selection': hasValue, 'is-disabled': resolving, 'is-loading': resolving, 'is-multiple': multiple, 'keeps-placeholder': keepsPlaceholder }]"
-        :style="keepsPlaceholder ? { '--c-picker-placeholder-chars': placeholder.length } : null"
+        :style="keepsPlaceholder ? { '--hh-picker-placeholder-chars': placeholder.length } : null"
     >
-        <div class="c-picker__field" @click="onFieldClick">
+        <div class="form-control picker-field" @click="onFieldClick">
             <template v-if="multiple">
-                <i v-if="icon" class="ti c-picker-filter__icon" :class="[icon, `${block}__icon`]" aria-hidden="true"></i>
+                <i v-if="icon" class="ti picker-filter-icon" :class="[icon, `${block}-icon`]" aria-hidden="true"></i>
                 <span
                     v-for="chip in chips"
                     :key="chip.id"
-                    class="c-picker__chip c-picker-filter__chip"
-                    :class="`${block}__chip`"
+                    class="picker-chip picker-filter-chip"
+                    :class="`${block}-chip`"
                     :title="chipTitle(chip)"
                 >
-                    <span class="c-picker-filter__avatar" :class="`${block}__avatar`" aria-hidden="true">
+                    <span class="picker-filter-avatar" :class="`${block}-avatar`" aria-hidden="true">
                         <slot v-if="chip.item" name="chip" :item="chip.item"></slot>
                     </span>
-                    <span class="c-picker__chip-label">{{ chip.label }}</span>
+                    <span class="picker-chip-label">{{ chip.label }}</span>
                     <button
                         type="button"
-                        class="c-picker__chip-remove"
+                        class="picker-chip-remove"
                         :aria-label="removeLabel(chip.label)"
                         :title="removeLabel(chip.label)"
                         @click.stop="remove(chip.id)"
@@ -30,33 +30,33 @@
             </template>
             <span
                 v-else-if="hasValue && !resolving"
-                class="c-picker__chip c-picker-filter__chip"
-                :class="`${block}__chip`"
+                class="picker-chip picker-filter-chip"
+                :class="`${block}-chip`"
                 :title="chipTitle(chips[0])"
                 role="group"
                 :aria-label="accessibleName"
             >
-                <span class="c-picker-filter__avatar" :class="`${block}__avatar`" aria-hidden="true">
+                <span class="picker-filter-avatar" :class="`${block}-avatar`" aria-hidden="true">
                     <slot v-if="chips[0].item" name="chip" :item="chips[0].item"></slot>
                 </span>
-                <span class="c-picker__chip-label">{{ chips[0].label }}</span>
+                <span class="picker-chip-label">{{ chips[0].label }}</span>
                 <button
                     :id="inputId"
                     ref="remove"
                     type="button"
-                    class="c-picker__chip-remove"
+                    class="picker-chip-remove"
                     :aria-label="removeLabel(chips[0].label)"
                     :title="removeLabel(chips[0].label)"
                     @click.stop="remove(chips[0].id)"
                 ><i class="ti ti-x" aria-hidden="true"></i></button>
             </span>
-            <i v-if="!multiple && !(hasValue && !resolving) && icon" class="ti c-picker-filter__icon" :class="[icon, `${block}__icon`]" aria-hidden="true"></i>
+            <i v-if="!multiple && !(hasValue && !resolving) && icon" class="ti picker-filter-icon" :class="[icon, `${block}-icon`]" aria-hidden="true"></i>
             <input
                 v-if="multiple || !(hasValue && !resolving)"
                 :id="inputId"
                 ref="input"
                 type="text"
-                class="c-picker__input"
+                class="picker-input"
                 role="combobox"
                 autocomplete="off"
                 aria-autocomplete="list"
@@ -72,12 +72,13 @@
                 @keydown="onKeydown"
             >
         </div>
-        <span v-if="resolving" class="spinner-border spinner-border-sm c-select__spinner" aria-hidden="true"></span>
+        <span v-if="resolving" class="spinner-border spinner-border-sm select-menu-spinner" aria-hidden="true"></span>
         <ul
             :id="listboxId"
             ref="listbox"
-            class="c-select__drawer"
-            :class="{ 'is-open': open }"
+            class="dropdown-menu select-menu-drawer"
+            :class="{ show: open }"
+            data-bs-popper="static"
             role="listbox"
             :aria-label="accessibleName"
             :aria-busy="searching ? 'true' : null"
@@ -86,24 +87,24 @@
                 v-for="(result, index) in results"
                 :id="optionId(index)"
                 :key="idOf(result.id)"
-                class="c-select__option c-picker-filter__option"
-                :class="[`${block}__option`, { 'is-active': index === activeIndex }]"
+                class="dropdown-item select-menu-option picker-filter-option"
+                :class="[`${block}-option`, { 'is-focused': index === activeIndex }]"
                 role="option"
                 :aria-selected="index === activeIndex ? 'true' : 'false'"
                 @pointerdown.prevent
                 @click="choose(result)"
                 @mousemove="activeIndex = index"
             >
-                <span class="c-picker-filter__avatar" :class="`${block}__avatar`" aria-hidden="true">
+                <span class="picker-filter-avatar" :class="`${block}-avatar`" aria-hidden="true">
                     <slot name="option" :item="result"></slot>
                 </span>
-                <span class="c-picker-filter__name" :class="`${block}__name`">{{ itemLabel(result) }}</span>
-                <span v-if="$slots['option-detail']" class="c-picker-filter__detail" :class="`${block}__detail`">
+                <span class="picker-filter-name" :class="`${block}-name`">{{ itemLabel(result) }}</span>
+                <span v-if="$slots['option-detail']" class="picker-filter-detail" :class="`${block}-detail`">
                     <span class="visually-hidden">, </span>
                     <slot name="option-detail" :item="result"></slot>
                 </span>
             </li>
-            <li v-if="feedback" class="c-select__feedback" role="presentation">{{ feedback }}</li>
+            <li v-if="feedback" class="dropdown-item-text select-menu-feedback" role="presentation">{{ feedback }}</li>
         </ul>
         <span class="visually-hidden" role="status">{{ open ? (feedback || '') : '' }}</span>
     </div>
@@ -149,9 +150,9 @@ const ID_PATTERN = /^[1-9]\d*$/;
  * (`registerFilterType('topic', 'TopicFilterControl')`); the PHP side is a filter whose
  * definition has that `type`.
  *
- * After the WAI-ARIA combobox pattern, styled as a `FilterPicker` (`.c-select`, `.c-picker`,
- * `.c-picker-filter` in `_page-toolbar.scss`, plus the control's own `block` class and its
- * `<block>__icon|chip|avatar|option|name|detail` element classes):
+ * After the WAI-ARIA combobox pattern, styled as a `FilterPicker` (`.select-menu`, `.picker`,
+ * `.picker-filter` in `_filter-bar.scss`, plus the control's own `block` class and its
+ * `<block>-icon|chip|avatar|option|name|detail` element classes):
  *
  * - Props: `filter` (the definition: `placeholder`, else `label`, as placeholder; `label` as
  *   accessible name), `modelValue` (an id as a string, `''` for none; with `multiple` an array
@@ -167,7 +168,7 @@ const ID_PATTERN = /^[1-9]\d*$/;
  * - Search: a typed text (trimmed, not empty) is searched after `SEARCH_DEBOUNCE_MS`; only the
  *   answer to the latest text is shown, its first suggestion active; with `multiple` the chosen
  *   items are not suggested again. A suggestion is the `option` slot (an image), the label and
- *   the `option-detail` slot (after the label in a `.c-picker-filter__detail`, behind a
+ *   the `option-detail` slot (after the label in a `.picker-filter-detail`, behind a
  *   visually hidden comma, so part of the option's accessible name — the container of a
  *   topic, say).
  * - Without `multiple`: a search field without a value, a chip (the `chip` slot, the label, a

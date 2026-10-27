@@ -152,7 +152,7 @@ class SecuritySettingsCest
         ])->execute();
 
         $I->amOnRoute('/user/security/sessions');
-        $I->see('Devices & Access', '.nav-tabs .nav-link.active');
+        $I->see('Devices & Access', '.nav-pills .nav-link.active');
         $I->see('Browser sessions');
         $I->see('Chrome · Android');
 

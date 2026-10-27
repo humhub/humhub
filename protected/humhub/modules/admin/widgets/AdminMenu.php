@@ -71,8 +71,7 @@ class AdminMenu extends LeftNavigation
             'url' => ['/admin/user'],
             'icon' => 'user',
             'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people'])
-                || ControllerHelper::isActivePath('ldap', 'admin'),
+            'isActive' => ControllerHelper::isActivePath('admin', ['user', 'group', 'approval', 'authentication', 'user-profile', 'pending-registrations', 'user-permissions', 'user-people']),
             'isVisible' => Yii::$app->user->can([
                 ManageUsers::class,
                 ManageSettings::class,

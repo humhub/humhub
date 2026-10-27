@@ -1,19 +1,32 @@
 <template>
-    <div
-        v-if="entry"
-        class="status-bar-body"
-        :class="{ 'status-bar-visible': visible }"
-    >
-        <div class="status-bar-content" :class="toneClass" role="status" aria-live="polite">
-            <div class="status-bar-header">
-                <i :class="iconClass"></i>
-                <span :class="{ 'status-bar-toggle': hasDetails }" @click="toggleDetails">{{ entry.message }}</span>
-                <a v-if="hasDetails" class="showMore" @click="toggleDetails">
-                    <i :class="detailsOpen ? 'ti ti-chevron-down' : 'ti ti-chevron-up'"></i>
-                </a>
-                <a class="status-bar-close" @click="close">&times;</a>
+    <div v-if="entry" class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+        <div
+            ref="toast"
+            class="toast fade show"
+            :class="[toneClass, { showing: !visible }]"
+            :role="isError ? 'alert' : 'status'"
+            :aria-live="isError ? 'assertive' : 'polite'"
+            aria-atomic="true"
+            @mouseenter="interact('hovered', true)"
+            @mouseleave="interact('hovered', false)"
+            @focusin="interact('focused', true)"
+            @focusout="onFocusOut"
+        >
+            <div class="toast-body">
+                <i class="toast-icon" :class="iconClass" aria-hidden="true"></i>
+                <span class="toast-message" :class="{ 'is-toggle': hasDetails }" @click="toggleDetails">{{ entry.message }}</span>
+                <button
+                    v-if="hasDetails"
+                    type="button"
+                    class="btn btn-ghost btn-icon-only btn-sm toast-details-toggle"
+                    :aria-expanded="detailsOpen ? 'true' : 'false'"
+                    :aria-label="detailsLabel"
+                    :title="detailsLabel"
+                    @click="toggleDetails"
+                ><i class="ti" :class="detailsOpen ? 'ti-chevron-down' : 'ti-chevron-up'" aria-hidden="true"></i></button>
+                <button type="button" class="btn-close toast-close" :aria-label="closeLabel" @click="close"></button>
             </div>
-            <div v-if="detailsOpen" class="status-bar-details">
+            <div v-if="detailsOpen" class="toast-details">
                 <pre>{{ detailsText }}</pre>
             </div>
         </div>
@@ -25,8 +38,8 @@
  * The platform's user-feedback bar ("status bar") — the toast that rises at the
  * bottom of the window for flash messages, AJAX errors and the like.
  *
- * It is an infrastructure island: nothing renders it with props, and no caller
- * ever imports it. It is mounted once per page by `humhub\widgets\StatusBar`
+ * It is an infrastructure island: it gets nothing but its button labels as
+ * props, and no caller ever imports it. It is mounted once per page by `humhub\widgets\StatusBar`
  * (a `LayoutAddons` widget, so it exists on every full page) and driven purely
  * through the bridge — `humhub.vue.js`'s `status()`/`setStatusHandler()` pair,
  * see their docblock there for why messages need a queue in front of this
@@ -44,8 +57,8 @@
  *    `humhub\components\View::endBody()` registers for a session flash message
  *    (`$this->view->success(...)`).
  *
- * That is also why this component has no i18n: every string it shows was
- * produced by its caller.
+ * That is also why the messages need no i18n here: every message it shows
+ * was produced by its caller.
  *
  * ## Behaviour of the jQuery bar it replaces, look of a toast
  *
@@ -58,19 +71,22 @@
  *  - the same auto-close timings (`AUTOCLOSE_*`), including the legacy quirk
  *    that a falsy `closeAfter` falls back to the level default rather than
  *    meaning "stay" — only `error` stays by default.
- *  - a level icon carrying the level class (`info`/`success`/`warning`/`error`),
- *    the message in a `<span>`, an `a.status-bar-close`, and — for a message
- *    with details — an `a.showMore` chevron plus a `.status-bar-details > pre`
- *    block. Clicking the message text toggles the details too, as it did before.
+ *  - a level icon, the message, a close button and — for a message with
+ *    details — a chevron toggle plus a `.toast-details > pre` block. Clicking
+ *    the message text toggles the details too, as it did before.
  *
- * The look is the platform's toast: `.status-bar-body` is the fixed layer along
- * the bottom, `.status-bar-content` the card in its centre — translucent over
- * the page, border and outline in the level's colour via the tone class
- * `status-bar-<level>` — with the icon, message and controls in one
- * `.status-bar-header` row and the details below it. The card rises in over
- * 220 ms; the animation is a CSS transition (see `_user-feedback.scss`), this
- * component only toggles `status-bar-visible` and keeps the element around for
- * the duration of the exit.
+ * It is Bootstrap's toast (`_toast.scss`, Bootstrap's `$toast-*` variables): a
+ * `.toast-container` fixed at the bottom centre holds one `.toast` with the
+ * tone class `toast-<tone>` (`info`, `success`, `warning`, `danger`), icon,
+ * message and controls in its `.toast-body` and the details below it. Errors
+ * are announced assertively (`role="alert"`), the rest politely. It fades in
+ * and out the way Bootstrap's Toast JS does it: `.fade.show` plus `.showing`
+ * while hidden, the element kept around for the duration of the exit. Like
+ * Bootstrap's `autohide`, the timer pauses while the pointer is on the toast or
+ * the focus in it, and starts over once both have left.
+ *
+ * The labels of the close and details buttons come from
+ * `humhub\widgets\StatusBar` (props `closeLabel`, `detailsLabel`).
  *
  * One intentional difference: the message renders as TEXT (`{{ }}`), not HTML.
  * The server path was HTML-encoded anyway (and no longer needs
@@ -86,10 +102,10 @@
  * `[object Object]` in the trace block.
  */
 
-// Matches the transition duration in _user-feedback.scss. Kept in JS as well
+// Bootstrap's `.fade` transition ($transition-fade, 0.15s). Kept in JS as well
 // because the component owns the swap/removal timing (an element must outlive
 // its exit) - the two values have to stay in sync.
-const TRANSITION_MS = 220;
+const TRANSITION_MS = 150;
 
 // Legacy AUTOCLOSE_* values; 0 means "never auto-close" (error only).
 const AUTOCLOSE = {
@@ -101,19 +117,18 @@ const AUTOCLOSE = {
 
 // Tabler names, the same four `humhub.ui.status.js` rendered before it forwarded to this island.
 const ICONS = {
-    info: 'ti ti-info-circle info',
-    success: 'ti ti-circle-check success',
-    warn: 'ti ti-alert-triangle warning',
-    error: 'ti ti-alert-circle error',
+    info: 'ti ti-info-circle',
+    success: 'ti ti-circle-check',
+    warn: 'ti ti-alert-triangle',
+    error: 'ti ti-alert-circle',
 };
 
-// The card's tone class per level - what colours its border and outline (see
-// _user-feedback.scss). Same level names as the icon classes above.
+// The toast's tone class per level - what colours its border, outline and icon (see _toast.scss).
 const TONES = {
-    info: 'status-bar-info',
-    success: 'status-bar-success',
-    warn: 'status-bar-warning',
-    error: 'status-bar-error',
+    info: 'toast-info',
+    success: 'toast-success',
+    warn: 'toast-warning',
+    error: 'toast-danger',
 };
 
 /**
@@ -152,11 +167,17 @@ const normalizeDetails = (details) => {
 import { setStatusHandler } from '@humhub/vue';
 
 export default {
+    props: {
+        closeLabel: { type: String, default: 'Close' },
+        detailsLabel: { type: String, default: 'Show more' },
+    },
     data() {
         return {
             entry: null,
             visible: false,
             detailsOpen: false,
+            hovered: false,
+            focused: false,
         };
     },
     computed: {
@@ -165,6 +186,9 @@ export default {
         },
         toneClass() {
             return TONES[this.entry.level] || TONES.info;
+        },
+        isError() {
+            return this.entry.level === 'error';
         },
         detailsText() {
             return this.entry ? this.entry.details : null;
@@ -193,7 +217,7 @@ export default {
             };
 
             if (this.entry) {
-                // Slide the current message out first, then show the new one -
+                // Fade the current message out first, then show the new one -
                 // the legacy hide-then-show chain.
                 this.startHide(() => this.present(entry));
             } else {
@@ -205,8 +229,10 @@ export default {
             this.entry = entry;
             this.detailsOpen = false;
             this.visible = false;
+            this.hovered = false;
+            this.focused = false;
 
-            // The slide-in needs the hidden state to be laid out BEFORE the class that
+            // The fade-in needs the hidden state to be laid out BEFORE the class that
             // transitions out of it is applied - otherwise both land in the same frame and the
             // browser jumps straight to the end state (no animation at all). `$nextTick` alone
             // only guarantees the element exists; reading a layout property forces the browser
@@ -220,11 +246,33 @@ export default {
                 this.visible = true;
             });
 
-            const closeAfter = this.autoCloseDelay(entry);
+            // Legacy started the timer once the slide-in had finished; here: the fade-in.
+            this.scheduleClose(TRANSITION_MS);
+        },
+        scheduleClose(offset = 0) {
+            this.clearCloseTimer();
+            const closeAfter = this.autoCloseDelay(this.entry);
             if (closeAfter > 0) {
-                // Legacy started the timer once the slide-in had finished.
-                this.closeTimer = setTimeout(() => this.startHide(), TRANSITION_MS + closeAfter);
+                this.closeTimer = setTimeout(() => this.startHide(), offset + closeAfter);
             }
+        },
+        /** Pointer or focus on the toast pauses the auto-close; it starts over once both left. */
+        interact(kind, on) {
+            this[kind] = on;
+            if (!this.entry || !this.visible) {
+                return;
+            }
+            if (on) {
+                this.clearCloseTimer();
+            } else if (!this.hovered && !this.focused) {
+                this.scheduleClose();
+            }
+        },
+        onFocusOut(event) {
+            if (this.$refs.toast && this.$refs.toast.contains(event.relatedTarget)) {
+                return;
+            }
+            this.interact('focused', false);
         },
         /**
          * `closeAfter || default` - the legacy expression, quirk included: for
@@ -253,11 +301,14 @@ export default {
                 this.detailsOpen = !this.detailsOpen;
             }
         },
-        clearTimers() {
+        clearCloseTimer() {
             if (this.closeTimer) {
                 clearTimeout(this.closeTimer);
                 this.closeTimer = null;
             }
+        },
+        clearTimers() {
+            this.clearCloseTimer();
             if (this.hideTimer) {
                 clearTimeout(this.hideTimer);
                 this.hideTimer = null;

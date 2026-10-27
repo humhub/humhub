@@ -33,8 +33,8 @@ const mountControl = (props = {}) => {
     return wrapper;
 };
 const input = (wrapper) => wrapper.find('input[role="combobox"]');
-const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.c-topic-filter__name').text());
-const chipLabels = (wrapper) => wrapper.findAll('.c-picker__chip-label').map((label) => label.text());
+const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.topic-filter-name').text());
+const chipLabels = (wrapper) => wrapper.findAll('.picker-chip-label').map((label) => label.text());
 const type = async (wrapper, text) => {
     input(wrapper).element.value = text;
     await input(wrapper).trigger('input');
@@ -86,7 +86,7 @@ describe('TopicFilterControl', () => {
         const wrapper = mountControl();
 
         expect(wrapper.find('.ti-star').exists()).toBe(true);
-        expect(wrapper.classes()).toContain('c-topic-filter');
+        expect(wrapper.classes()).toContain('topic-filter');
         expect(input(wrapper).attributes('id')).toBe('filter-topicId');
         expect(input(wrapper).attributes('placeholder')).toBe('Any topic');
         expect(input(wrapper).attributes('aria-label')).toBe('Topic');
@@ -116,7 +116,7 @@ describe('TopicFilterControl', () => {
 
         await typeAndWait(wrapper, 'n');
 
-        const dots = wrapper.findAll('[role="option"] .c-topic-filter__dot');
+        const dots = wrapper.findAll('[role="option"] .topic-filter-dot');
         expect(dots).toHaveLength(3);
         expect(dots[0].attributes('style')).toContain('background-color: rgb(255, 0, 0)');
         expect(dots[2].attributes('style')).toBeUndefined();
@@ -128,12 +128,12 @@ describe('TopicFilterControl', () => {
         await typeAndWait(wrapper, 'n');
 
         const containers = wrapper.findAll('[role="option"]').map((option) => {
-            const container = option.find('.c-topic-filter__container');
+            const container = option.find('.topic-filter-container');
             return container.exists() ? container.text() : null;
         });
         // In the picker's detail, behind a comma only a screen reader hears.
-        const detail = wrapper.findAll('[role="option"]')[2].find('.c-picker-filter__detail');
-        expect(detail.classes()).toContain('c-topic-filter__detail');
+        const detail = wrapper.findAll('[role="option"]')[2].find('.picker-filter-detail');
+        expect(detail.classes()).toContain('topic-filter-detail');
         expect(detail.find('.visually-hidden').text()).toBe(',');
         expect(wrapper.findAll('[role="option"]')[2].text()).toBe('Numbers, Sales Team');
 
@@ -141,7 +141,7 @@ describe('TopicFilterControl', () => {
 
         const global = mountControl();
         await typeAndWait(global, 'newsl');
-        expect(global.find('[role="option"] .c-topic-filter__container').text(), 'without a container every container is foreign').toBe('Team Alpha');
+        expect(global.find('[role="option"] .topic-filter-container').text(), 'without a container every container is foreign').toBe('Team Alpha');
     });
 
     it('emits the chosen topic\'s id and shows it as a chip with dot and name', async () => {
@@ -152,11 +152,11 @@ describe('TopicFilterControl', () => {
         expect(emitted(wrapper)).toEqual([['3']]);
         await wrapper.setProps({ modelValue: ['3'] });
 
-        const chip = wrapper.find('.c-picker__chip');
-        expect(chip.find('.c-picker__chip-label').text()).toBe('Newsletter');
-        expect(chip.find('.c-topic-filter__dot').attributes('style')).toContain('background-color: rgb(0, 255, 0)');
-        expect(chip.find('.c-topic-filter__container').exists()).toBe(false);
-        expect(chip.find('.c-picker__chip-remove').attributes('aria-label')).toBe('Remove Newsletter');
+        const chip = wrapper.find('.picker-chip');
+        expect(chip.find('.picker-chip-label').text()).toBe('Newsletter');
+        expect(chip.find('.topic-filter-dot').attributes('style')).toContain('background-color: rgb(0, 255, 0)');
+        expect(chip.find('.topic-filter-container').exists()).toBe(false);
+        expect(chip.find('.picker-chip-remove').attributes('aria-label')).toBe('Remove Newsletter');
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
     });
 
@@ -164,9 +164,9 @@ describe('TopicFilterControl', () => {
         const wrapper = mountControl({ filter: { ...filter, props: { containerId: 5 } }, modelValue: ['3', '8', '2'] });
         await flushPromises();
 
-        const titles = wrapper.findAll('.c-picker__chip').map((chip) => chip.attributes('title') ?? null);
+        const titles = wrapper.findAll('.picker-chip').map((chip) => chip.attributes('title') ?? null);
         expect(titles, 'own container: none; foreign: its name; global: none').toEqual([null, 'Numbers (Sales Team)', null]);
-        expect(wrapper.find('.c-picker__chip .c-topic-filter__container').exists()).toBe(false);
+        expect(wrapper.find('.picker-chip .topic-filter-container').exists()).toBe(false);
     });
 
     it('appends a second choice and removes one with its X', async () => {
@@ -179,7 +179,7 @@ describe('TopicFilterControl', () => {
         await wrapper.setProps({ modelValue: ['3', '8'] });
         expect(chipLabels(wrapper)).toEqual(['Newsletter', 'Numbers']);
 
-        await wrapper.findAll('.c-picker__chip-remove')[0].trigger('click');
+        await wrapper.findAll('.picker-chip-remove')[0].trigger('click');
         expect(emitted(wrapper).at(-1)).toEqual(['8']);
         await wrapper.setProps({ modelValue: ['8'] });
         expect(chipLabels(wrapper)).toEqual(['Numbers']);
@@ -234,7 +234,7 @@ describe('TopicFilterControl', () => {
 
         expect(globalThis.humhubStubs.logCalls.error).toHaveLength(1);
         expect(chipLabels(wrapper)).toEqual(['8']);
-        await wrapper.find('.c-picker__chip-remove').trigger('click');
+        await wrapper.find('.picker-chip-remove').trigger('click');
         expect(emitted(wrapper)).toEqual([[]]);
 
         await wrapper.setProps({ modelValue: [] });
@@ -259,7 +259,7 @@ describe('TopicFilterControl', () => {
         });
         mounted.push(wrapper);
 
-        const field = () => wrapper.find('.c-filter-bar__item--topic input[role="combobox"]');
+        const field = () => wrapper.find('.filter-bar-item-topic input[role="combobox"]');
         expect(field().attributes('id')).toBe('filter-topicId');
 
         for (const text of ['newsl', 'numb']) {

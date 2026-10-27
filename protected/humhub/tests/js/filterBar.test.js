@@ -35,11 +35,11 @@ describe('FilterBar', () => {
     it('renders every visible filter and no hidden one', () => {
         const wrapper = mountBar();
 
-        const search = wrapper.find('.c-search-field input[type="text"]');
+        const search = wrapper.find('.search-field input[type="text"]');
         expect(search.attributes('placeholder')).toBe('Name…');
         expect(search.attributes('aria-label')).toBe('Search');
-        expect(wrapper.find('.c-search-field .ti-search').exists()).toBe(true);
-        expect(wrapper.find('.c-select [aria-haspopup="listbox"]').exists()).toBe(true);
+        expect(wrapper.find('.search-field .ti-search').exists()).toBe(true);
+        expect(wrapper.find('.select-menu [aria-haspopup="listbox"]').exists()).toBe(true);
         expect(wrapper.find('#filter-categoryId').attributes('aria-label')).toBe('Category');
         expect(wrapper.findAll('[role="group"] button').map((b) => b.text())).toEqual(['All', 'A', 'B']);
         expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true);
@@ -70,12 +70,12 @@ describe('FilterBar', () => {
     it('loads remote options and disables the select meanwhile', async () => {
         const wrapper = mountBar();
 
-        expect(wrapper.find('.c-select__button').attributes('disabled')).toBeDefined();
+        expect(wrapper.find('.select-menu-button').attributes('disabled')).toBeDefined();
         await flushPromises();
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/cats');
-        expect(wrapper.find('.c-select__button').attributes('disabled')).toBeUndefined();
+        expect(wrapper.find('.select-menu-button').attributes('disabled')).toBeUndefined();
         // The static empty option is the placeholder ("all" state), not a listed option.
-        expect(wrapper.find('.c-select__button').text()).toBe('All');
+        expect(wrapper.find('.select-menu-button').text()).toBe('All');
         expect(wrapper.findAll('[role="option"]').map((o) => o.text())).toEqual(['Tools (3)']);
     });
 
@@ -92,7 +92,7 @@ describe('FilterBar', () => {
         const wrapper = mountBar();
 
         expect(emitted(wrapper)).toEqual([{ ...values(), q: 'abc', status: ['a', 'b'] }]);
-        expect(wrapper.find('.c-search-field input').element.value).toBe('abc');
+        expect(wrapper.find('.search-field input').element.value).toBe('abc');
     });
 
     it('drops a URL value none of the static options offers, and emits without it', () => {
@@ -129,7 +129,7 @@ describe('FilterBar', () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
         const wrapper = mountBar();
 
-        await wrapper.find('.c-search-field input').setValue('cal');
+        await wrapper.find('.search-field input').setValue('cal');
         expect(emitted(wrapper)).toEqual([]);
         expect(window.location.search).toBe('');
         vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
@@ -145,8 +145,8 @@ describe('FilterBar', () => {
         vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
         const wrapper = mountBar();
 
-        await wrapper.find('.c-search-field input').setValue('cal');
-        await wrapper.find('.c-search-field input').setValue('');
+        await wrapper.find('.search-field input').setValue('cal');
+        await wrapper.find('.search-field input').setValue('');
         vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
         await flushPromises();
 
@@ -197,13 +197,13 @@ describe('FilterBar', () => {
         const wrapper = mountBar({ ...values(), categoryId: '1' });
         await flushPromises();
 
-        expect(wrapper.find('.c-select__button').text()).toBe('Tools (3)');
-        await wrapper.find('.c-select__clear').trigger('click');
+        expect(wrapper.find('.select-menu-button').text()).toBe('Tools (3)');
+        await wrapper.find('.select-menu-clear').trigger('click');
         await flushPromises();
         expect(emitted(wrapper)[0]).toEqual(values());
 
         await wrapper.setProps({ modelValue: values() });
-        await wrapper.find('.c-select__button').trigger('click');
+        await wrapper.find('.select-menu-button').trigger('click');
         await wrapper.find('[role="option"]').trigger('click');
         await flushPromises();
         expect(emitted(wrapper)[1]).toEqual({ ...values(), categoryId: '1' });
@@ -239,12 +239,12 @@ describe('FilterBar', () => {
     });
 
     it('offers a clear-all X while a visible filter differs from its default, and resets them', async () => {
-        expect(mountBar().find('.c-filter-bar__clear').exists()).toBe(false);
+        expect(mountBar().find('.filter-bar-clear').exists()).toBe(false);
         // A hidden filter set from outside (a link's context) does not count.
-        expect(mountBar({ ...values(), id: 'calendar' }).find('.c-filter-bar__clear').exists()).toBe(false);
+        expect(mountBar({ ...values(), id: 'calendar' }).find('.filter-bar-clear').exists()).toBe(false);
 
         const wrapper = mountBar({ ...values(), q: 'x', status: ['a'] });
-        const clear = wrapper.find('.c-filter-bar__clear');
+        const clear = wrapper.find('.filter-bar-clear');
         expect(clear.attributes('aria-label')).toBe('Clear all filters');
         expect(clear.attributes('title')).toBe('Clear all filters');
         expect(clear.attributes('data-filter-bar-keep')).toBeDefined();
@@ -252,7 +252,7 @@ describe('FilterBar', () => {
         await flushPromises();
 
         expect(emitted(wrapper)).toEqual([values()]);
-        expect(wrapper.find('.c-filter-bar__clear').exists()).toBe(false);
+        expect(wrapper.find('.filter-bar-clear').exists()).toBe(false);
     });
 
     it('applies setFilter() like a change in the bar, and rejects an unknown key', async () => {
@@ -277,7 +277,7 @@ describe('FilterBar', () => {
         const wrapper = mountBar();
 
         // Typing starts a debounce ...
-        await wrapper.find('.c-search-field input[type="text"]').setValue('typ');
+        await wrapper.find('.search-field input[type="text"]').setValue('typ');
         await flushPromises();
         expect(emitted(wrapper)).toEqual([]);
 
@@ -285,14 +285,14 @@ describe('FilterBar', () => {
         expect(wrapper.vm.setFilter('q', 'Alpha')).toBe(true);
         await flushPromises();
         expect(emitted(wrapper)).toEqual([{ ...values(), q: 'Alpha' }]);
-        expect(wrapper.find('.c-search-field input[type="text"]').element.value).toBe('Alpha');
+        expect(wrapper.find('.search-field input[type="text"]').element.value).toBe('Alpha');
 
         vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
         await flushPromises();
         expect(emitted(wrapper)).toHaveLength(1);
 
         // Typing afterwards is debounced again.
-        await wrapper.find('.c-search-field input[type="text"]').setValue('Alphab');
+        await wrapper.find('.search-field input[type="text"]').setValue('Alphab');
         await flushPromises();
         expect(emitted(wrapper)).toHaveLength(1);
         vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
@@ -305,25 +305,25 @@ describe('FilterBar', () => {
         const wrapper = mountBar();
 
         // A pending debounce is dropped, it belongs to the values being replaced.
-        await wrapper.find('.c-search-field input').setValue('typed');
+        await wrapper.find('.search-field input').setValue('typed');
         await wrapper.setProps({ modelValue: { ...values(), q: 'outside' } });
         vi.advanceTimersByTime(TEXT_DEBOUNCE_MS);
         await flushPromises();
 
         expect(emitted(wrapper)).toEqual([]);
-        expect(wrapper.find('.c-search-field input').element.value).toBe('outside');
+        expect(wrapper.find('.search-field input').element.value).toBe('outside');
         expect(window.location.search).toBe('?q=outside');
     });
 
     it('keeps the search field and collapses the other filters behind a funnel toggle', async () => {
         const wrapper = mountBar();
-        const items = wrapper.findAll('.c-filter-bar__item');
+        const items = wrapper.findAll('.filter-bar-item');
 
         expect(items[0].attributes('data-filter-bar-keep')).toBeDefined();
         expect(items.slice(1).every((item) => item.attributes('data-filter-bar-keep') === undefined)).toBe(true);
 
         // The toggle follows the kept search field.
-        const toggle = wrapper.find('.c-filter-bar__toggle');
+        const toggle = wrapper.find('.filter-bar-toggle');
         expect(toggle.element.previousElementSibling).toBe(items[0].element);
         expect(toggle.attributes('aria-expanded')).toBe('false');
         expect(toggle.attributes('aria-controls')).toBe(wrapper.find('form').attributes('id'));
@@ -342,7 +342,7 @@ describe('FilterBar', () => {
 
     it('ignores the toggle while the bar does not collapse', async () => {
         const wrapper = mountBar();
-        const toggle = wrapper.find('.c-filter-bar__toggle');
+        const toggle = wrapper.find('.filter-bar-toggle');
         toggle.element.style.display = 'none';
 
         await toggle.trigger('click');
@@ -352,7 +352,7 @@ describe('FilterBar', () => {
     it('renders no toggle when there is nothing to collapse', () => {
         const wrapper = mountBar({ q: '' }, { props: { filters: [filters[0]] } });
 
-        expect(wrapper.find('.c-filter-bar__toggle').exists()).toBe(false);
+        expect(wrapper.find('.filter-bar-toggle').exists()).toBe(false);
     });
 
     it('reloads every filter with an optionsUrl through reloadOptions()', async () => {
@@ -363,7 +363,7 @@ describe('FilterBar', () => {
         globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ results: [{ id: 1, name: 'Tools', count: 5 }] }));
         wrapper.vm.reloadOptions();
         await wrapper.vm.$nextTick();
-        expect(wrapper.find('.c-select__button').attributes('disabled')).toBeDefined();
+        expect(wrapper.find('.select-menu-button').attributes('disabled')).toBeDefined();
         await flushPromises();
 
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith('/api/v2/cats');
@@ -399,7 +399,7 @@ describe('FilterBar', () => {
             window.history.replaceState(null, '', '/directory?state=open');
             const wrapper = mountTyped('test.filterbar.status');
 
-            const control = wrapper.find('.c-filter-bar__item--test\\.filterbar\\.status .status-filter');
+            const control = wrapper.find('.filter-bar-item-test\\.filterbar\\.status .status-filter');
             expect(control.text()).toBe('State: open');
             expect(control.attributes('id')).toBe('filter-state');
 
@@ -426,11 +426,11 @@ describe('FilterBar', () => {
             window.history.replaceState(null, '', '/directory?state=x');
             const wrapper = mountTyped('test.filterbar.unknown');
 
-            expect(wrapper.findAll('.c-filter-bar__item')).toHaveLength(1);
+            expect(wrapper.findAll('.filter-bar-item')).toHaveLength(1);
             expect(emitted(wrapper)).toEqual([{ q: '', state: 'x' }]);
             expect(globalThis.humhubStubs.logCalls.debug.some((args) => String(args[0]).includes('test.filterbar.unknown'))).toBe(true);
 
-            await wrapper.find('.c-search-field input').setValue('a');
+            await wrapper.find('.search-field input').setValue('a');
             await wrapper.vm.setFilter('q', 'a');
             await flushPromises();
             expect(window.location.search).toBe('?state=x&q=a');
@@ -463,28 +463,28 @@ describe('FilterBar', () => {
 
         it('renders the panel filters in a closed panel behind a "Filters" toggle', () => {
             const wrapper = mountPanel();
-            const panel = wrapper.find('.c-filter-bar__panel');
-            const toggle = wrapper.find('.c-filter-bar__toggle');
+            const panel = wrapper.find('.filter-bar-panel');
+            const toggle = wrapper.find('.filter-bar-toggle');
 
-            expect(panel.findAll('.c-filter-bar__item').map((item) => item.classes()).map((c) => c[1])).toEqual(['c-filter-bar__item--checkbox', 'c-filter-bar__item--tags']);
+            expect(panel.findAll('.filter-bar-item').map((item) => item.classes()).map((c) => c[1])).toEqual(['filter-bar-item-checkbox', 'filter-bar-item-tags']);
             expect(panel.attributes('role')).toBe('group');
             expect(panel.attributes('aria-label')).toBe('Filters');
             expect(wrapper.find('form').classes()).toContain('has-panel');
             expect(wrapper.find('form').classes()).not.toContain('is-open');
 
-            expect(toggle.classes()).toContain('c-filter-bar__toggle--labeled');
+            expect(toggle.classes()).toContain('filter-bar-toggle-labeled');
             expect(toggle.text()).toBe('Filters');
             expect(toggle.attributes('aria-controls')).toBe(panel.attributes('id'));
             expect(toggle.attributes('aria-expanded')).toBe('false');
             expect(toggle.attributes('aria-label')).toBeUndefined();
             // The toggle follows the search field, as without a panel.
-            expect(toggle.element.previousElementSibling.classList.contains('c-filter-bar__item--text')).toBe(true);
+            expect(toggle.element.previousElementSibling.classList.contains('filter-bar-item-text')).toBe(true);
             wrapper.unmount();
         });
 
         it('opens and closes the panel with the toggle, whatever the width', async () => {
             const wrapper = mountPanel();
-            const toggle = wrapper.find('.c-filter-bar__toggle');
+            const toggle = wrapper.find('.filter-bar-toggle');
             // No funnel breakpoint involved: the toggle is always usable with a panel.
             toggle.element.style.display = 'none';
 
@@ -500,15 +500,15 @@ describe('FilterBar', () => {
 
         it('counts the set panel filters on the toggle', async () => {
             const wrapper = mountPanel();
-            expect(wrapper.find('.c-filter-bar__count').exists()).toBe(false);
+            expect(wrapper.find('.filter-bar-count').exists()).toBe(false);
 
-            await wrapper.find('.c-filter-bar__panel input[type="checkbox"]').setValue(true);
-            await wrapper.findAll('.c-filter-bar__panel [role="group"] button')[1].trigger('click');
+            await wrapper.find('.filter-bar-panel input[type="checkbox"]').setValue(true);
+            await wrapper.findAll('.filter-bar-panel [role="group"] button')[1].trigger('click');
             // A row filter does not count.
-            await wrapper.find('.c-search-field input').setValue('x');
+            await wrapper.find('.search-field input').setValue('x');
 
-            expect(wrapper.find('.c-filter-bar__count').text()).toBe('2');
-            expect(wrapper.find('.c-filter-bar__toggle .visually-hidden').text()).toBe('2 active');
+            expect(wrapper.find('.filter-bar-count').text()).toBe('2');
+            expect(wrapper.find('.filter-bar-toggle .visually-hidden').text()).toBe('2 active');
             wrapper.unmount();
         });
 
@@ -526,32 +526,32 @@ describe('FilterBar', () => {
         it('clears the row and the panel filters with the clear X', async () => {
             const wrapper = mountPanel({ ...panelValues(), q: 'x', sort: 'new', mine: true, status: ['a'] });
 
-            await wrapper.find('.c-filter-bar__clear').trigger('click');
+            await wrapper.find('.filter-bar-clear').trigger('click');
             await flushPromises();
 
             expect(emitted(wrapper)).toEqual([panelValues()]);
-            expect(wrapper.find('.c-filter-bar__count').exists()).toBe(false);
+            expect(wrapper.find('.filter-bar-count').exists()).toBe(false);
             wrapper.unmount();
         });
 
         it('closes on Escape inside the panel and returns the focus to the toggle', async () => {
             const wrapper = mountPanel({ ...panelValues(), mine: true });
-            const checkbox = wrapper.find('.c-filter-bar__panel input[type="checkbox"]');
+            const checkbox = wrapper.find('.filter-bar-panel input[type="checkbox"]');
             checkbox.element.focus();
 
             await checkbox.trigger('keydown', { key: 'Escape' });
 
             expect(wrapper.find('form').classes()).not.toContain('is-open');
-            expect(document.activeElement).toBe(wrapper.find('.c-filter-bar__toggle').element);
+            expect(document.activeElement).toBe(wrapper.find('.filter-bar-toggle').element);
             wrapper.unmount();
         });
 
         it('keeps the icon-only funnel toggle without a panel', () => {
             const wrapper = mountBar();
 
-            expect(wrapper.find('.c-filter-bar__panel').exists()).toBe(false);
-            expect(wrapper.find('.c-filter-bar__toggle').classes()).not.toContain('c-filter-bar__toggle--labeled');
-            expect(wrapper.find('.c-filter-bar__toggle').attributes('aria-label')).toBe('Show filters');
+            expect(wrapper.find('.filter-bar-panel').exists()).toBe(false);
+            expect(wrapper.find('.filter-bar-toggle').classes()).not.toContain('filter-bar-toggle-labeled');
+            expect(wrapper.find('.filter-bar-toggle').attributes('aria-label')).toBe('Show filters');
         });
     });
 
@@ -563,7 +563,7 @@ describe('FilterBar', () => {
             // A definition whose key is fixed is not rendered, nor read from the URL.
             expect(wrapper.find('#filter-categoryId').exists()).toBe(false);
             expect(emitted(wrapper)).toEqual([{ ...values(), categoryId: '4', spaceId: 5 }]);
-            expect(wrapper.find('.c-filter-bar__clear').exists()).toBe(false);
+            expect(wrapper.find('.filter-bar-clear').exists()).toBe(false);
 
             await wrapper.findAll('[role="group"] button')[1].trigger('click');
             await flushPromises();
@@ -577,7 +577,7 @@ describe('FilterBar', () => {
         it('keeps fixed values when clearing all filters', async () => {
             const wrapper = mountBar({ ...values(), q: 'x' }, { props: { fixed: { spaceId: 5 } } });
 
-            await wrapper.find('.c-filter-bar__clear').trigger('click');
+            await wrapper.find('.filter-bar-clear').trigger('click');
             await flushPromises();
 
             expect(emitted(wrapper).at(-1)).toEqual({ ...values(), spaceId: 5 });
@@ -607,7 +607,7 @@ describe('FilterBar', () => {
             expect(emitted(wrapper).at(-1)).toEqual({ ...values(), spaceId: 5 });
             // The bar owns the filter now - rendered with its default, not the old fixed value.
             expect(wrapper.find('#filter-categoryId').exists()).toBe(true);
-            expect(wrapper.find('.c-filter-bar__clear').exists()).toBe(false);
+            expect(wrapper.find('.filter-bar-clear').exists()).toBe(false);
             expect(window.location.search).toBe('');
 
             await wrapper.setProps({ fixed: {} });
@@ -621,7 +621,7 @@ describe('FilterBar', () => {
             const wrapper = mountBar(values(), { props: { fixed: { spaceId: 5, status: ['a'] } } });
             const initial = emitted(wrapper).length;
 
-            await wrapper.find('.c-search-field input').setValue('ca');
+            await wrapper.find('.search-field input').setValue('ca');
             await wrapper.setProps({ fixed: { status: ['a'], spaceId: '5' } });
             await flushPromises();
             expect(emitted(wrapper)).toHaveLength(initial);
@@ -648,7 +648,7 @@ describe('FilterBar', () => {
             await flushPromises();
 
             expect(wrapper.findAll('input[role="combobox"]').map((input) => input.attributes('id'))).toEqual(['filter-tag', 'filter-fields-city', 'filter-level']);
-            expect(wrapper.find('.c-filter-bar__item--picker').exists()).toBe(true);
+            expect(wrapper.find('.filter-bar-item-picker').exists()).toBe(true);
             expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
 
             await wrapper.find('#filter-tag').trigger('focus');
@@ -661,14 +661,14 @@ describe('FilterBar', () => {
             const wrapper = mountPickers();
 
             expect(emitted(wrapper)[0]).toEqual({ q: '', tag: ['php', 'go', 'rust'], 'fields[city]': 'Berlin', level: '' });
-            expect(wrapper.findAll('.c-picker__chip-label').map((chip) => chip.text())).toEqual(['php', 'go', 'rust']);
+            expect(wrapper.findAll('.picker-chip-label').map((chip) => chip.text())).toEqual(['php', 'go', 'rust']);
             expect(wrapper.find('#filter-fields-city').element.value).toBe('Berlin');
 
-            await wrapper.findAll('.c-picker__chip-remove')[0].trigger('click');
+            await wrapper.findAll('.picker-chip-remove')[0].trigger('click');
             expect(emitted(wrapper).at(-1).tag).toEqual(['go', 'rust']);
             expect(new URLSearchParams(window.location.search).get('tag')).toBe('go,rust');
 
-            await wrapper.find('.c-select__clear').trigger('click');
+            await wrapper.find('.select-menu-clear').trigger('click');
             expect(emitted(wrapper).at(-1).tag).toEqual([]);
             expect(new URLSearchParams(window.location.search).has('tag')).toBe(false);
             wrapper.unmount();

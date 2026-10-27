@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="716" viewBox="0 0 800 716" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Entity card: relationship buttons and card states</title>
+  <defs>
+<symbol id="i-users" viewBox="0 0 16 16"><circle cx="5.5" cy="5" r="2.5" fill="currentColor"/><circle cx="11" cy="5.5" r="2" fill="currentColor"/><path d="M1 13 Q1 8.5 5.5 8.5 Q10 8.5 10 13 Z M10.5 13 Q10.5 9.5 13 9.5 Q15 9.5 15 13 Z" fill="currentColor"/></symbol>
+<symbol id="i-ucheck" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9 9 10 11" fill="currentColor"/><path d="M10 12 L12 14 L15.5 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-arrowup" viewBox="0 0 16 16"><path d="M8 13 V3 M4 7 L8 3 L12 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-doc" viewBox="0 0 16 16"><path d="M3.5 1.5 H10 L13 4.5 V14.5 H3.5 Z M6 8 H10.5 M6 11 H10.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 16 16"><path d="M8 1.5 L10 6 L14.8 6.3 L11.1 9.4 L12.3 14.2 L8 11.6 L3.7 14.2 L4.9 9.4 L1.2 6.3 L6 6 Z" fill="currentColor"/></symbol>
+<symbol id="i-msg" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 4 L8 9 L14 4" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-hour" viewBox="0 0 16 16"><path d="M4 1.5 H12 M4 14.5 H12 M5 1.5 Q5 6 8 8 Q11 10 11 14.5 M11 1.5 Q11 6 8 8 Q5 10 5 14.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-useradd" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9.5 9 10.5 11.5 L10.5 14 Z" fill="currentColor"/><path d="M13 9 V14 M10.5 11.5 H15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-gear2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 16 16"><path d="M13 6 A5.5 5.5 0 0 0 3 5 M3 10 A5.5 5.5 0 0 0 13 11 M3 2 V5 H6 M13 14 V11 H10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#9a9ea6"/></marker>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="716" fill="#ededed"/>
+<text x="20" y="28" class="sec">RELATIONSHIP BUTTONS — EACH CHANGE CONFIRMS IN A DIALOG WHERE IT CAN'T BE UNDONE IN ONE CLICK</text>
+<rect x="20" y="46" width="760" height="76" rx="8" class="card"/>
+<text x="36" y="76" class="name" style="font-weight:600">Space membership</text>
+<rect x="200" y="58" width="140" height="34" rx="6" fill="#2d3340"/><text x="270.0" y="80.0" font-size="13" style="fill:#fff" text-anchor="middle">Join</text>
+<text x="200" y="110" class="sub">asks for a reason if required</text>
+<path d="M346 75 H374" stroke="#9a9ea6" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="390" y="58" width="140" height="34" rx="6" fill="#d5d5d5"/><use href="#i-hour" x="422.8" y="67.0" width="16" height="16" color="#333"/><text x="470.0" y="80.0" font-size="13" style="fill:#333" text-anchor="middle">Pending</text>
+<text x="390" y="110" class="sub">cancel request?</text>
+<path d="M536 75 H564" stroke="#9a9ea6" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="580" y="58" width="140" height="34" rx="6" fill="#d5d5d5"/><text x="650.0" y="80.0" font-size="13" style="fill:#333" text-anchor="middle">Member</text>
+<text x="580" y="110" class="sub">leave space?</text>
+<rect x="20" y="132" width="760" height="76" rx="8" class="card"/>
+<text x="36" y="162" class="name" style="font-weight:600">Following</text>
+<rect x="200" y="144" width="140" height="34" rx="6" fill="#037283"/><text x="270.0" y="166.0" font-size="13" style="fill:#fff" text-anchor="middle">Follow</text>
+<text x="200" y="196" class="sub">toggles at once</text>
+<path d="M346 161 H374" stroke="#9a9ea6" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="390" y="144" width="140" height="34" rx="6" fill="#d5d5d5"/><text x="460.0" y="166.0" font-size="13" style="fill:#333" text-anchor="middle">Following</text>
+<text x="390" y="196" class="sub">toggles back</text>
+<rect x="20" y="218" width="760" height="76" rx="8" class="card"/>
+<text x="36" y="248" class="name" style="font-weight:600">Friendship</text>
+<rect x="200" y="230" width="140" height="34" rx="6" fill="#2d3340"/><text x="270.0" y="252.0" font-size="13" style="fill:#fff" text-anchor="middle">Add friend</text>
+<text x="200" y="282" class="sub">sends a request</text>
+<path d="M346 247 H374" stroke="#9a9ea6" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="390" y="230" width="140" height="34" rx="6" fill="#d5d5d5"/><use href="#i-hour" x="422.8" y="239.0" width="16" height="16" color="#333"/><text x="470.0" y="252.0" font-size="13" style="fill:#333" text-anchor="middle">Pending</text>
+<text x="390" y="282" class="sub">cancel request?</text>
+<path d="M536 247 H564" stroke="#9a9ea6" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="580" y="230" width="140" height="34" rx="6" fill="#d5d5d5"/><text x="650.0" y="252.0" font-size="13" style="fill:#333" text-anchor="middle">Friends</text>
+<text x="580" y="282" class="sub">remove friend?</text>
+<text x="20" y="310" class="note">Pending shows a turning hourglass. Labels say the current state; the dialog says what a click would do.</text>
+<text x="20" y="344" class="sec">CARD STATES</text>
+<rect x="20" y="356" width="240" height="300" rx="8" fill="#fff" stroke="#e5e5e5"/>
+<rect x="28" y="364" width="224" height="96" rx="6" fill="#efefef"/><rect x="36" y="372" width="80" height="80" rx="6" fill="#e2e2e2"/>
+<rect x="36" y="474" width="130" height="18" rx="4" fill="#e5e5e5"/><rect x="36" y="500" width="70" height="12" rx="4" fill="#efefef"/>
+<rect x="36" y="528" width="200" height="10" rx="4" fill="#efefef"/><rect x="36" y="546" width="150" height="10" rx="4" fill="#efefef"/>
+<rect x="36" y="606" width="208" height="34" rx="6" fill="#e5e5e5"/>
+<text x="20" y="678" class="sub">loading: skeleton with the card's geometry</text>
+<rect x="280" y="356" width="240" height="300" rx="8" fill="#fff" stroke="#e5e5e5"/>
+<rect x="288" y="364" width="224" height="96" rx="6" fill="#d9dde3"/><rect x="296" y="372" width="80" height="80" rx="4" fill="#e3e4e6"/><use href="#i-person" x="310.4" y="388.0" width="51.2" height="51.2" color="#c9ccd1"/>
+<text x="296" y="488" font-size="17" font-weight="700" fill="#000">Emma Williams</text><text x="296" y="508" class="sub" font-size="13">Marketing Director</text>
+<rect x="296" y="606" width="208" height="34" rx="6" fill="#ececec"/>
+<text x="280" y="678" class="sub">actions loading: disabled placeholder;</text>
+<text x="280" y="696" class="sub">own card or no actions: no footer</text>
+<rect x="540" y="356" width="240" height="300" rx="8" fill="#fff" stroke="#e5e5e5"/><path d="M548 356 H640" stroke="#037283" stroke-width="3" stroke-linecap="round"/>
+<rect x="556" y="372" width="64" height="64" rx="10" fill="#e8730c"/>
+<text x="556" y="468" font-size="17" font-weight="700" fill="#000">Push Notifications</text><text x="556" y="488" class="sub" font-size="13">2.2.1</text>
+<rect x="556" y="606" width="166" height="34" rx="6" fill="#037283"/><use href="#i-refresh" x="594.6" y="615.0" width="16" height="16" color="#fff"/><text x="649.0" y="628.0" font-size="13" style="fill:#fff" text-anchor="middle">Updating…</text><rect x="728" y="606" width="36" height="34" rx="6" fill="none"/><use href="#i-doc" x="737.0" y="614.0" width="18" height="18" color="#333"/>
+<text x="540" y="678" class="sub">module update: an arc travels round the card;</text>
+<text x="540" y="696" class="sub">Update → Updating… → Updated!</text>
+</svg>

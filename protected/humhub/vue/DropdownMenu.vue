@@ -30,9 +30,9 @@
                             v-else-if="entry.icon"
                             v-bind="entry.htmlOptions"
                             :href="entry.url || '#'"
-                            class="dropdown-item d-flex align-items-center gap-2"
+                            class="dropdown-item"
                             @click="onEntryClick(entry, $event)"
-                        ><i :class="'ti ti-' + entry.icon" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
+                        ><i :class="'ti ti-' + entry.icon + ' dropdown-item-icon'" aria-hidden="true"></i>{{ resolveLabel(entry) }}</a>
                         <a
                             v-else
                             v-bind="entry.htmlOptions"
@@ -131,8 +131,8 @@
  * component with a single `context` prop (not spread — unlike
  * `ExtensionSlot`'s `v-bind="context"`); otherwise an
  * `<a class="dropdown-item">` calling `@click.prevent="onClick(context)"`,
- * with a leading `<i class="ti ti-<icon>">` (a Tabler name, plus a flex/gap class on the
- * `<a>` for spacing) when `icon` is set — a separate template branch (not a
+ * with a leading `<i class="ti ti-<icon> dropdown-item-icon">` (a Tabler name, in the row's
+ * icon column) when `icon` is set — a separate template branch (not a
  * nested `v-if` on the icon alone), so an entry without an icon renders the
  * exact same `<a class="dropdown-item">{{ label }}</a>` markup as before
  * this mode existed, with no leftover Vue `v-if` comment node.
@@ -210,7 +210,8 @@
  *
  * @since 1.20
  */
-import { getMenuEntries, i18n, isRegistered } from '@humhub/vue';
+import { i18n } from '@humhub/vue';
+import { resolveMenuEntries } from './menu/resolveMenuEntries.js';
 
 export default {
     props: {
@@ -263,44 +264,7 @@ export default {
             return i18n.t('base', 'Loading...');
         },
         resolvedEntries() {
-            if (!this.menuId) {
-                return [];
-            }
-
-            const registry = getMenuEntries(this.menuId);
-            const registryById = new Map(registry.entries.map((entry) => [entry.id, entry]));
-
-            // Step 1 + 2: built-ins in prop order, overridden in place by a same-id registry
-            // entry, followed by the registry's own non-overriding entries in their own order.
-            const usedRegistryIds = new Set();
-            const merged = this.entries.map((entry) => {
-                const override = registryById.get(entry.id);
-                if (override) {
-                    usedRegistryIds.add(entry.id);
-                    return override;
-                }
-                return entry;
-            });
-            registry.entries.forEach((entry) => {
-                if (!usedRegistryIds.has(entry.id)) {
-                    merged.push(entry);
-                }
-            });
-
-            const removed = registry.removed;
-            const context = this.context;
-            const sortOrderOf = (entry) => (typeof entry.sortOrder === 'number' ? entry.sortOrder : 1000);
-
-            // Step 3-5, then a stable sort (step 6) keyed on the pre-sort array position so
-            // ties keep the step-1/2 order (built-ins first) rather than whatever order a
-            // given JS engine's Array#sort happens to leave equal-key entries in.
-            return merged
-                .filter((entry) => removed.indexOf(entry.id) === -1
-                    && (!entry.condition || entry.condition(context))
-                    && (!entry.component || isRegistered(entry.component)))
-                .map((entry, index) => ({ entry, index }))
-                .sort((a, b) => (sortOrderOf(a.entry) - sortOrderOf(b.entry)) || (a.index - b.index))
-                .map((wrapped) => wrapped.entry);
+            return resolveMenuEntries(this.menuId, this.entries, this.context);
         },
     },
     methods: {

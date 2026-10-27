@@ -21,7 +21,7 @@ const mountSelect = (props = {}) => {
     mounted.push(wrapper);
     return wrapper;
 };
-const button = (wrapper) => wrapper.find('.c-select__button');
+const button = (wrapper) => wrapper.find('.select-menu-button');
 const listbox = (wrapper) => wrapper.find('[role="listbox"]');
 const key = (target, name) => target.trigger('keydown', { key: name });
 
@@ -39,7 +39,7 @@ describe('FilterSelect', () => {
         expect(button(wrapper).attributes('aria-label')).toBe('Status');
         expect(wrapper.findAll('[role="option"]').map((o) => o.text())).toEqual(['Installed', 'Not Installed', 'Update Available']);
         expect(wrapper.classes()).not.toContain('has-selection');
-        expect(wrapper.find('.c-select__clear').attributes('disabled')).toBeDefined();
+        expect(wrapper.find('.select-menu-clear').attributes('disabled')).toBeDefined();
     });
 
     it('falls back to the empty option\'s label as placeholder', () => {
@@ -75,7 +75,7 @@ describe('FilterSelect', () => {
         expect(wrapper.classes()).toContain('has-selection');
         expect(wrapper.find('[aria-selected="true"]').text()).toBe('Installed');
 
-        const clear = wrapper.find('.c-select__clear');
+        const clear = wrapper.find('.select-menu-clear');
         expect(clear.attributes('disabled')).toBeUndefined();
         expect(clear.attributes('aria-label')).toBe('Clear selection');
         await clear.trigger('click');
@@ -101,10 +101,10 @@ describe('FilterSelect', () => {
         await key(listbox(wrapper), 'ArrowDown'); // stays on the last one
         expect(listbox(wrapper).attributes('aria-activedescendant')).toBe(options()[2].attributes('id'));
         await key(listbox(wrapper), 'Home');
-        expect(options()[0].classes()).toContain('is-active');
+        expect(options()[0].classes()).toContain('is-focused');
         await key(listbox(wrapper), 'End');
         await key(listbox(wrapper), 'ArrowUp');
-        expect(options()[1].classes()).toContain('is-active');
+        expect(options()[1].classes()).toContain('is-focused');
 
         await key(listbox(wrapper), 'Enter');
         expect(wrapper.emitted('update:modelValue')).toEqual([['not-installed']]);
@@ -124,7 +124,7 @@ describe('FilterSelect', () => {
 
         await key(button(wrapper), ' ');
         await key(listbox(wrapper), 'u');
-        expect(wrapper.findAll('[role="option"]')[2].classes()).toContain('is-active');
+        expect(wrapper.findAll('[role="option"]')[2].classes()).toContain('is-focused');
         await key(listbox(wrapper), 'i');
         await key(listbox(wrapper), ' ');
         expect(wrapper.emitted('update:modelValue')).toBeUndefined();
@@ -151,14 +151,14 @@ describe('FilterSelect', () => {
 
         expect(button(wrapper).attributes('disabled')).toBeDefined();
         expect(button(wrapper).attributes('aria-busy')).toBe('true');
-        expect(wrapper.find('.c-select__spinner').exists()).toBe(true);
-        expect(wrapper.find('.c-select__chevron').exists()).toBe(false);
+        expect(wrapper.find('.select-menu-spinner').exists()).toBe(true);
+        expect(wrapper.find('.select-menu-chevron').exists()).toBe(false);
         await button(wrapper).trigger('click');
         expect(wrapper.classes()).not.toContain('is-open');
 
         await wrapper.setProps({ loading: false });
         expect(button(wrapper).attributes('disabled')).toBeUndefined();
-        expect(wrapper.find('.c-select__chevron').exists()).toBe(true);
+        expect(wrapper.find('.select-menu-chevron').exists()).toBe(true);
     });
 
     it('closes when it becomes disabled while open', async () => {

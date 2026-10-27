@@ -1,0 +1,1026 @@
+openapi: 3.1.0
+info:
+  description: Joined into index.html by build.sh; this module's introduction is the
+    description of its tag below.
+  version: 2.0.0
+  title: HumHub - Administration API (v2)
+  contact:
+    email: info@humhub.com
+  license:
+    name: AGPLv2
+    url: https://www.humhub.org/en/licences
+servers:
+  - url: /api/v2
+security:
+  - Bearer: []
+  - BasicAuth: []
+  - SessionCookie: []
+tags:
+  - name: Administration
+    description: |
+      The administration's tables: users, groups, spaces and installed modules. The rows are
+      those of the tables (Administration › Users, Groups, Spaces, Modules): table rows, not
+      records — `{id, cells, actions}`, the cells as the table shows them and the actions the
+      caller may take on each record (see `docs/ui/data-table.md`). Each list takes a search,
+      its filters and a `sort` (a column's key, descending with a leading `-`) as query
+      parameters; an unknown value or parameter answers `422`, and modules may add filters and
+      columns of their own.
+paths:
+  "/admin/user":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the user table
+      operationId: listAdminUsers
+      description: |
+        One page of the platform's accounts, whatever their visibility: the active ones unless
+        `status` says otherwise, searched, narrowed and ordered by the parameters below. An
+        unknown value or parameter answers `422`; modules may add filters of their own, which
+        are then accepted like these, and may narrow the list (e.g. to the groups a manager
+        manages).
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username, or an exact user id
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: |
+            `enabled` (default) · `deactivated` · `deleted` (soft-deleted accounts)
+          schema:
+            type: string
+            enum: [enabled, deactivated, deleted]
+        - name: group
+          in: query
+          required: false
+          description: Only members of this group (its id)
+          schema:
+            type: string
+        - name: source
+          in: query
+          required: false
+          description: |
+            Only accounts of this user source (its id, e.g. `local`, `ldap`); for System
+            Administrators only, like the source column
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` (last name, first name) · `email` · `lastLogin` · `createdAt` · `source` ·
+            `status`, each descending
+            with a leading `-` (`-lastLogin`); empty values last in both directions. Without,
+            the newest account first.
+          schema:
+            type: string
+            enum: [name, -name, email, -email, lastLogin, -lastLogin, createdAt, -createdAt, source, -source, status, -status]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "common.yaml#/components/schemas/ListEnvelope"
+                  - type: object
+                    properties:
+                      results:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/TableRow"
+              example:
+                results:
+                  - id: 7
+                    cells:
+                      name:
+                        text: Jane Doe
+                        subtitle: jane@example.com
+                        image: https://example.com/uploads/profile_image/abc.jpg
+                        url: https://example.com/u/jane/
+                      groups:
+                        - text: Users
+                          value: "2"
+                      lastLogin:
+                        value: "2026-10-25T10:00:00+00:00"
+                        text: Oct 25, 2026
+                        title: Oct 25, 2026, 10:00:00 AM
+                    actions:
+                      - id: edit
+                        url: https://example.com/admin/user/edit?id=7
+                      - id: disable
+                        url: https://example.com/api/v2/admin/user/7/disable
+                total: 1
+                page: 1
+                pageSize: 25
+                pages: 1
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the group table
+      operationId: listAdminGroups
+      description: |
+        One page of the groups, for those who may manage groups (`ManageGroups`), and for group
+        managers the groups they manage. Without `sort`, the normal groups before the
+        subgroups, each by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name and description
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          description: |
+            `normal` · `subgroup`
+          schema:
+            type: string
+            enum: [normal, subgroup]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `members` · `managers` · `type`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, members, -members, managers, -managers, type, -type]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/space":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the space table
+      operationId: listAdminSpaces
+      description: |
+        One page of the spaces, whatever their visibility, for those who may manage spaces
+        (`ManageSpaces`). Without `sort`, the spaces' own sort order, then by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and the owner's name, username and e-mail
+          schema:
+            type: string
+        - name: visibility
+          in: query
+          required: false
+          description: |
+            `public` (registered users or everyone) · `private`
+          schema:
+            type: string
+            enum: [public, private]
+        - name: status
+          in: query
+          required: false
+          description: |
+            `active` · `archived`
+          schema:
+            type: string
+            enum: [active, archived]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `members` · `owner` · `visibility` · `status` · `createdAt`, each
+            descending with a leading `-`; empty values last in both directions
+          schema:
+            type: string
+            enum: [name, -name, members, -members, owner, -owner, visibility, -visibility, status, -status, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/module":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the module table
+      operationId: listAdminModules
+      description: |
+        One page of the installed modules (core modules left out), for those who may manage
+        modules or settings (`ManageModules`, `ManageSettings`). A row's `id` is the module's
+        id. Without `sort`, the enabled and then the disabled modules, each by name. The
+        marketplace is not asked (no update check).
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, description and id
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: |
+            `enabled` · `disabled`
+          schema:
+            type: string
+            enum: [enabled, disabled]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `version` · `status`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, version, -version, status, -status]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/topic":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the global topic table
+      operationId: listAdminTopics
+      description: |
+        One page of the global topics, for those who may manage the settings (`ManageSettings`).
+        A row's `id` is the topic's id; its cells are `name` (linked to the stream filtered by
+        the topic), `contents` (how many contents have it) and `sortOrder`; its actions edit (a
+        dialog of the web interface), view and delete (`POST`, answering `{removed: true}`).
+        Without `sort`, by sort order, then by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over the name
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `sortOrder` · `contents`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, sortOrder, -sortOrder, contents, -contents]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the pending registration table
+      operationId: listAdminInvites
+      description: |
+        One page of the open invitations and sign-ups, for those who may manage users or groups. A
+        row's `id` is the invitation's; its cells are `email` (with the name of a sign-up),
+        `invitedBy`, `source`, `language` and `createdAt`. Without `sort`, the newest first.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over e-mail and name
+          schema:
+            type: string
+        - name: source
+          in: query
+          required: false
+          description: |
+            `invite` · `invite_by_link` · `self`
+          schema:
+            type: string
+            enum: [invite, invite_by_link, self]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `email` · `source` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [email, -email, source, -source, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/{id}/resend":
+    post:
+      tags:
+        - Administration
+      summary: Send an invitation again
+      operationId: resendAdminInvite
+      description: |
+        Sends the invitation e-mail again and answers the row; `422` if the mail could not be
+        sent.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the invitation
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/{id}/delete":
+    post:
+      tags:
+        - Administration
+      summary: Delete an invitation
+      operationId: deleteAdminInvite
+      description: |
+        Deletes the invitation; its link no longer works.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the invitation
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/bulk/resend":
+    post:
+      tags:
+        - Administration
+      summary: Resend several invitations
+      operationId: bulkAdminInvitesResend
+      description: |
+        Resends the selected invitations (`ids`, or `all` — every one of the list's
+        filters, given as query parameters exactly as `GET /admin/invite` takes them).
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/invite/bulk/delete":
+    post:
+      tags:
+        - Administration
+      summary: Delete several invitations
+      operationId: bulkAdminInvitesDelete
+      description: |
+        Deletes the selected invitations (`ids`, or `all` — every one of the list's
+        filters, given as query parameters exactly as `GET /admin/invite` takes them).
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/approval":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the approval table
+      operationId: listAdminApprovals
+      description: |
+        One page of the registrations awaiting approval the caller may administer (those who may
+        manage users; group managers the users of their groups). A row's `id` is the user's id;
+        its cells are `name`, `groups`, `invitedBy`, `messages` (sent so far), `createdAt` and
+        `profile_<field>` for each profile field asked at the registration. Its actions approve,
+        message and decline in a dialog of the web interface, where the text is written. Without
+        `sort`, the oldest first.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail and username
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/approval/bulk/{action}":
+    post:
+      tags:
+        - Administration
+      summary: Approve or decline several registrations
+      operationId: bulkAdminApprovals
+      description: |
+        Approves or declines (deletes) the selected registrations (`ids`, or `all` of the list's
+        filters in the query) with the default texts; each user is notified by e-mail. An approval
+        or a decline counts even if its notification could not be sent. A message to several is
+        written in a dialog of the web interface.
+      parameters:
+        - name: action
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [approve, decline]
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-client":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the OAuth client table
+      operationId: listAdminOauthClients
+      description: |
+        One page of the OAuth clients, for those who may manage the settings. A row's `id` is the
+        client's; its cells are `name` (with the client id), `type`, `status` and `createdAt`; the
+        HumHub app offers no actions. Without `sort`, the HumHub app first, then by name.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over name and client id
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          description: |
+            `active` · `inactive`
+          schema:
+            type: string
+            enum: [active, inactive]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `type` · `status` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, type, -type, status, -status, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-grant":
+    get:
+      tags:
+        - Administration
+      summary: The rows of the OAuth grant table
+      operationId: listAdminOauthGrants
+      description: |
+        One page of the grants of all users — connected apps, devices and personal access tokens
+        — for those who may manage the settings. A row's `id` is the grant's; its cells are
+        `user`, `type`, `name` (the client or token), `scopes`, `lastUsed`, `expires` and
+        `createdAt`. Without `sort`, the newest first.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: Search over the user's name, username and e-mail
+          schema:
+            type: string
+        - name: client
+          in: query
+          required: false
+          description: The id of a client
+          schema:
+            type: string
+        - name: scope
+          in: query
+          required: false
+          description: |
+            A scope's id (e.g. `content:read`): the grants with it, and those with full access
+            (`full`), which includes every scope
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          description: |
+            `oauth` (connected app or device) · `pat` (personal access token)
+          schema:
+            type: string
+            enum: [oauth, pat]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `user` · `type` · `lastUsed` · `expires` · `createdAt`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [user, -user, type, -type, lastUsed, -lastUsed, expires, -expires, createdAt, -createdAt]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-grant/{id}/revoke":
+    post:
+      tags:
+        - Administration
+      summary: Revoke a grant
+      operationId: revokeAdminOauthGrant
+      description: |
+        Revokes the grant: its tokens stop working.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the grant
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/oauth-grant/bulk/revoke":
+    post:
+      tags:
+        - Administration
+      summary: Revoke several grants
+      operationId: bulkRevokeAdminOauthGrants
+      description: |
+        Revokes the selected grants (`ids`), or `all` of the list's filters given as query
+        parameters exactly as `GET /admin/oauth-grant` takes them — `422` without a filter, so all
+        grants of all users are never revoked by accident.
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/{id}/enable":
+    post:
+      tags:
+        - Administration
+      summary: Enable a deactivated user
+      operationId: enableAdminUser
+      description: |
+        Activates the account and answers its new row. Only where the row offers the action
+        (a deactivated account the caller may manage), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/{id}/disable":
+    post:
+      tags:
+        - Administration
+      summary: Deactivate a user
+      operationId: disableAdminUser
+      description: |
+        Deactivates the account and answers its new row. Only where the row offers the action
+        (an active account the caller may manage), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/bulk/enable":
+    post:
+      tags:
+        - Administration
+      summary: Enable several users
+      operationId: bulkEnableAdminUsers
+      description: |
+        Enables the selected users: `ids`, or `all` — every user of the list's filters, given as
+        query parameters exactly as `GET /admin/user` takes them. Each user whose row offers
+        "Enable" (a deactivated account the caller may manage) is changed, the others are skipped.
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/user/bulk/disable":
+    post:
+      tags:
+        - Administration
+      summary: Deactivate several users
+      operationId: bulkDisableAdminUsers
+      description: |
+        Deactivates the selected users, as `/admin/user/bulk/enable` enables them: each user whose
+        row offers "Disable" (an active account the caller may manage) is changed, the others are
+        skipped.
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member":
+    get:
+      tags:
+        - Administration
+      summary: The rows of a group's member table
+      operationId: listAdminGroupMembers
+      description: |
+        One page of the group's members (without unapproved and deleted accounts), for those who
+        may manage the group: the group administration (`ManageGroups`; the administrators'
+        group only for administrators) and its managers. A row's `id` is the user's id; its
+        cells are `name`, `role` (`manager` · `member`) and `memberSince`. Without `sort`, the
+        managers first, then by name.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over name, e-mail, username and id
+          schema:
+            type: string
+        - name: role
+          in: query
+          required: false
+          description: |
+            `manager` · `member`
+          schema:
+            type: string
+            enum: [manager, member]
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `role` · `memberSince`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, role, -role, memberSince, -memberSince]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/{userId}/manager":
+    post:
+      tags:
+        - Administration
+      summary: Make a member a group manager
+      operationId: makeAdminGroupManager
+      description: |
+        Makes the member a manager of the group and answers the new row. Only where the row offers
+        the action (those who may manage groups, not in the administrators' group), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - $ref: "#/components/parameters/memberUserIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/{userId}/member":
+    post:
+      tags:
+        - Administration
+      summary: Take the group manager role from a member
+      operationId: unmakeAdminGroupManager
+      description: |
+        Makes a group manager a plain member again and answers the new row. Only where the row
+        offers the action, else `403`.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - $ref: "#/components/parameters/memberUserIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowChanged"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/{userId}/remove":
+    post:
+      tags:
+        - Administration
+      summary: Remove a member from a group
+      operationId: removeAdminGroupMember
+      description: |
+        Removes the user from the group. Only where the row offers the action (those who may
+        change the members, while the user is in another group as well), else `403`.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+        - $ref: "#/components/parameters/memberUserIdPathParam"
+      responses:
+        "200":
+          $ref: "#/components/responses/RowRemoved"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/admin/group/{id}/member/bulk/remove":
+    post:
+      tags:
+        - Administration
+      summary: Remove several members from a group
+      operationId: bulkRemoveAdminGroupMembers
+      description: |
+        Removes the selected members (user ids in `ids`, or `all` — every member of the list's
+        filters, given as query parameters exactly as `GET /admin/group/{id}/member` takes them).
+        Each member whose row offers "Remove" is removed, the others are skipped.
+      parameters:
+        - $ref: "#/components/parameters/groupIdPathParam"
+      requestBody:
+        $ref: "#/components/requestBodies/BulkSelection"
+      responses:
+        "200":
+          $ref: "#/components/responses/BulkDone"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
+components:
+  parameters:
+    groupIdPathParam:
+      name: id
+      in: path
+      description: Id of the group
+      required: true
+      schema:
+        type: integer
+    memberUserIdPathParam:
+      name: userId
+      in: path
+      description: Id of the member (a user)
+      required: true
+      schema:
+        type: integer
+    userIdPathParam:
+      name: id
+      in: path
+      description: Id of the user
+      required: true
+      schema:
+        type: integer
+  requestBodies:
+    BulkSelection:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "#/components/schemas/BulkSelection"
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BulkSelection"
+  responses:
+    TableRows:
+      description: One page of the table's rows
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "common.yaml#/components/schemas/ListEnvelope"
+              - type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TableRow"
+    BulkDone:
+      description: How many records were changed and skipped
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              done:
+                type: integer
+              skipped:
+                type: integer
+              message:
+                type: string
+          example:
+            done: 2
+            skipped: 1
+            message: 2 users were changed. 1 user was left out.
+    RowRemoved:
+      description: The row is gone (the table removes it)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              removed:
+                type: boolean
+                const: true
+    RowChanged:
+      description: The record's new row
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              row:
+                $ref: "#/components/schemas/TableRow"
+  schemas:
+    BulkSelection:
+      title: BulkSelection
+      type: object
+      description: The selected users — their `ids`, or `all` the users of the filters in the query
+      properties:
+        ids:
+          type: array
+          maxItems: 1000
+          items:
+            type: integer
+        all:
+          type: boolean
+    TableRow:
+      title: TableRow
+      type: object
+      description: |
+        A row of a data table: the cells by column key — `{text, subtitle?, image?, url?}` for
+        the main column (without an image, `initials` and `color` for a coloured tile instead),
+        `[{text, value?}]` for a chip column, `{value, text, title}` for a date, `{text}`
+        otherwise — and the actions the caller may take on it, each with its URL.
+        The table's definitions (columns, actions) come with the page.
+      properties:
+        id:
+          oneOf:
+            - type: integer
+            - type: string
+          description: The record's id; a module's id for the module table
+        cells:
+          type: object
+          additionalProperties: true
+        actions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              url:
+                type: string
+  securitySchemes:
+    Bearer:
+      $ref: "common.yaml#/components/securitySchemes/Bearer"
+    BasicAuth:
+      $ref: "common.yaml#/components/securitySchemes/BasicAuth"
+    SessionCookie:
+      $ref: "common.yaml#/components/securitySchemes/SessionCookie"

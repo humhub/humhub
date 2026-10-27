@@ -435,8 +435,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | Before | After |
   |---|---|
   | `humhub\modules\ui\menu\widgets\Menu` | `humhub\widgets\menu\Menu` |
-  | `humhub\modules\ui\menu\widgets\TabMenu` | `humhub\widgets\menu\TabMenu` |
-  | `humhub\modules\ui\menu\widgets\SubTabMenu` | `humhub\widgets\menu\SubTabMenu` |
+  | `humhub\modules\ui\menu\widgets\TabMenu` | `humhub\widgets\menu\PillTabs` |
+  | `humhub\modules\ui\menu\widgets\SubTabMenu` | `humhub\widgets\menu\PillTabs` (`$variant = PillTabs::VARIANT_SECONDARY`) |
   | `humhub\modules\ui\menu\widgets\LeftNavigation` | `humhub\widgets\menu\LeftNavigation` |
   | `humhub\modules\ui\menu\widgets\DropdownMenu` | `humhub\widgets\menu\DropdownMenu` |
   | `humhub\modules\ui\menu\MenuEntry` | `humhub\widgets\menu\MenuEntry` |
@@ -444,6 +444,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\ui\menu\DropdownDivider` | `humhub\widgets\menu\DropdownDivider` |
   | `humhub\modules\ui\menu\WidgetMenuEntry` | `humhub\widgets\menu\WidgetMenuEntry` |
 
+  - **Tab menus became `PillTabs`.** `TabMenu` and `SubTabMenu` are not moved but replaced by
+    `humhub\widgets\menu\PillTabs` (Bootstrap's `.nav.nav-pills`, see `docs/ui/tabs.md`); a
+    `SubTabMenu` is a `PillTabs` with `$variant = PillTabs::VARIANT_SECONDARY`. The markup changes:
+    `<nav class="nav-scroller"><ul class="nav nav-pills">` instead of `.tab-menu` / `.nav-tabs`.
+    `$renderSingleTab` stays. A handler registered on the generic `TabMenu` class reaches every
+    tab menu through the redirect below; a handler on a concrete menu class keeps working. The
+    administration's section layouts (`@admin/views/layouts/user`, `space`, `setting`,
+    `information`) render the section's title and tabs as a `humhub\widgets\PageHeader` above
+    the content panel; a view rendered into them still sits inside `.panel`, so it needs no change.
   - **Every old name stays available as a deprecated subclass. The shims are removed in 1.21** —
     migrate during the 1.20 cycle. Checking an object against an old name does not work, see
     *References to a deprecated shim class have to be changed* below.
@@ -1139,17 +1148,19 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     - `humhub\components\View::endBody()` ships the flash message as a JSON string literal
       instead of HTML-encoding it into a JS string. Its former `&quot;` strip — needed to
       keep that literal valid — silently deleted every double quote from a flash message.
-    - **The bar is a toast now.** `_user-feedback.scss` styles `.status-bar-body` as the
-      fixed layer along the bottom and `.status-bar-content` as a translucent card in its
-      centre, border and outline in the level's colour through a new tone class on the card
-      (`status-bar-info|success|warning|error`); icon, message, details chevron and close
-      link sit in a new `.status-bar-header` row, the details block below it. The full-width
-      dark strip is gone. The enter/exit animation is a 220 ms CSS transition (`.status-bar-body`
-      hidden by default, shown via `.status-bar-visible`) instead of jQuery's 500 ms slide,
-      plus `.status-bar-toggle` for the details-toggle cursor. A theme that replaces this block
-      (`$prev-user-feedback: true`) keeps working — the bar element only exists while a
-      message is shown — but its bar appears and disappears without the slide until it
-      adopts those two rules.
+    - **The bar is a Bootstrap toast now.** Inside `#status-bar` the island renders a
+      `.toast-container.position-fixed` at the bottom centre holding one `.toast` with a tone
+      class (`toast-info|success|warning|danger`); icon (`.toast-icon`), message
+      (`.toast-message`), details toggle (`.toast-details-toggle`) and close (`.btn-close.toast-close`)
+      sit in the `.toast-body`, the details block (`.toast-details`) below it. The look is
+      Bootstrap's toast (`$toast-*`, in `variables.scss` only font size and a solid background)
+      plus the new `_toast.scss` (`$prev-toast`); the status bar rules left `_user-feedback.scss`.
+      The full-width dark strip and the `.status-bar-*` classes are gone, and the level classes
+      (`info`, `success`, `warning`, `error`) left the icon. It fades in and out with Bootstrap's
+      `.fade` / `.show` / `.showing` instead of jQuery's 500 ms slide, and the auto-close pauses
+      while the pointer or the focus is on the toast. Errors are announced with `role="alert"`. Acceptance tests address a message as
+      `#status-bar .toast-<tone>` and its close button as `.toast-close`
+      (`AcceptanceTester::seeSuccess()` and friends do).
   - **The space membership button is a Vue island** (`MembershipButton`,
     `protected/humhub/modules/space/vue/`, `SpaceVueAsset`), fed by the new endpoints
     `GET|PUT|DELETE /api/v2/space/<id>/membership`
@@ -1203,7 +1214,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       with the endpoint as `data-action-url`; it reloads the page afterwards). A module that
       posts to one of these routes calls `PUT`/`DELETE /api/v2/space/<id>/membership` instead;
       module-search found none.
-    - The sibling `FollowButton` (an island too, see the spaces directory below) follows a
+    - The sibling `FollowButton` (an island too, see the spaces browser below) follows a
       membership change through the `space:membership-changed` event of the `events` bridge —
       the server no longer sends `data-show-buttons`/`data-hide-buttons`.
     - **A module restricting who may join a space must guard the API controller too.**
@@ -1240,7 +1251,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       `data-button-options` posting and the `data-show-buttons`/`data-hide-buttons`
       convention. It existed for the membership and friendship buttons only, both of which
       are islands now; module-search found no external users of any of the three attributes.
-      `content.container.follow`/`unfollow` are removed too (see the People directory below).
+      `content.container.follow`/`unfollow` are removed too (see the People browser below).
     - Sending or accepting a request makes the caller follow the user; the island dispatches
       `user:friendship-changed` `{userId, state, isFollowing}` on the `events` bridge after
       every transition, and the user's `UserFollowButton` (an island too, see the People
@@ -1452,17 +1463,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `ListContext`, `FilterDefinition`, the builders and the ready filters `SearchFilter`,
     `EnumFilter`, `BoolFilter`, `IdsFilter`, see "Lists" in `docs/develop/concept-api.md`),
     `marketplace\components\ModuleList`, and the core Vue components
-    `PageToolbar`, `FilterBar`, `FilterSelect` (a page's upper box: title, actions, filter bar)
-    and `CardDirectory`, `CardGrid`, `CardSkeleton` for card directory pages (see
+    `PageHeader`, `FilterBar`, `FilterSelect` (a page's upper box: title, actions, filter bar)
+    and `EntityBrowser`, `EntityGrid`, `CardSkeleton` for entity browser pages (see
     `docs/develop/ui-js-vuejs-components.md`); `marketplace\services\MarketplaceListService`
     and `marketplace\serializers\MarketplaceModuleSerializer`; `models\Module::getBadge()`,
     `getAvailability()`, `findInstalledVersion()`, `isUpdateAvailable()`, `getUseCaseList()`
     (humhub.com's `useCases` field, listed with their module counts by the new use-case
     filter); `MarketplaceService::getPublicSettings()`/`updateSettings()`.
 
-- **Spaces directory rebuilt as a Vue island.** `/spaces` renders
-  `humhub\modules\space\widgets\SpaceDirectory` (`vue/SpaceDirectory.vue` on the core
-  `CardDirectory`) and reads everything from `GET /api/v2/space?purpose=directory`,
+- **Spaces browser rebuilt as a Vue island.** `/spaces` renders
+  `humhub\modules\space\widgets\SpacesBrowser` (`vue/SpacesBrowser.vue` on the core
+  `EntityBrowser`) and reads everything from `GET /api/v2/space?purpose=directory`,
   `GET /api/v2/space/states` and `GET|PUT|DELETE /api/v2/space/<id>/follow` (see
   `docs/api/src/space.yaml`).
   - **Removed:** the widgets `SpaceDirectoryCard`, `SpaceDirectoryActionButtons`,
@@ -1511,19 +1522,25 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     with `data-action-click="content.container.follow|unfollow"`; the `MembershipButton` and the
     follow button of a space keep each other in sync through the `space:membership-changed` and
     `space:follow-changed` events of the `events` bridge. `content.container.follow|unfollow`
-    is removed (see the People directory below).
-  - **Changed:** the entries of `space\widgets\SpaceDirectoryHeadingButtons` (still a `Menu`, still
-    extended on its `EVENT_INIT`) are no longer rendered by its view but handed to the island as
-    data (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
-    buttons: the entry's `icon`, its `label` as tooltip and accessible name. Only `MenuLink`
-    entries are shown. A `btn-secondary` (default), `btn-accent` or `btn-primary` class in the
-    entry's `htmlOptions` picks the button variant ("Create Space" is `btn-accent`), an entry
-    with `data-action-click="ui.modal.load"` (or `data-bs-target="#globalModal"`) opens its URL
-    in the global modal, other `htmlOptions` are passed on as link attributes.
+    is removed (see the People browser below).
+  - **Replaced:** `space\widgets\SpaceDirectoryHeadingButtons` by `space\widgets\SpacesHeaderActions`
+    (a `humhub\widgets\menu\PageHeaderActions`, menu id `spaces-header-actions`), without a
+    compatibility class; its view `spaceDirectoryHeadingButtons.php` is removed. A module adding
+    entries on the `EVENT_INIT` of the old class registers on the new one. The entries are handed
+    to the island as data (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by
+    `PageHeader` as icon buttons: the entry's `icon`, its `label` as tooltip and accessible name.
+    Only `MenuLink` entries are shown: secondary tools, and last the entry with
+    `MenuLink::$isPrimary` as the accent action ("Create Space"). The look no longer comes from a
+    button class: `btn-*` classes in the entry's `htmlOptions` are dropped. An entry with `data-action-click="ui.modal.load"` (or
+    `data-bs-target="#globalModal"`) opens its URL in the global modal, other `htmlOptions` are
+    passed on as link attributes.
   - **New:** `space\components\SpaceList`;
     `space\serializers\FollowSerializer`, `SpaceSerializer::counts()`,
     `MembershipSerializer::states()`, `space\models\Membership::preloadForUser()`;
-    `humhub\widgets\menu\Menu::getEntriesData()`; the `SpaceCard` extension slot
+    `humhub\widgets\menu\Menu::getEntriesData()`, `humhub\widgets\menu\PageHeaderActions`,
+    `humhub\widgets\menu\MenuLink::$isPrimary`, the PHP widgets `humhub\widgets\ContentCard`
+    (with `humhub\widgets\menu\CardHeaderActions`, see `docs/ui/card.md`) and `humhub\widgets\PageHeader` (see
+    `docs/ui/page-header.md`); the `SpaceCard` extension slot
     `space.card-subtitle` (`registerSlotComponent`, receives the `space`), where a module shows
     its own line under the space name (e.g. a category) from its own endpoint, and
     `space.card-actions`, the card's footer: the core registers its `membership` (sortOrder
@@ -1531,9 +1548,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     or removes (`removeSlotComponent`) actions by id — see "Card actions" in
     `docs/develop/ui-js-vuejs-extensions.md`.
 
-- **People directory rebuilt as a Vue island.** `/people` renders
-  `humhub\modules\user\widgets\PeopleDirectory` (`vue/PeopleDirectory.vue` on the core
-  `CardDirectory`) and reads everything from `GET /api/v2/user?purpose=directory`,
+- **People browser rebuilt as a Vue island.** `/people` renders
+  `humhub\modules\user\widgets\PeopleBrowser` (`vue/PeopleBrowser.vue` on the core
+  `EntityBrowser`) and reads everything from `GET /api/v2/user?purpose=directory`,
   `GET /api/v2/user/states`, `GET /api/v2/user/field-values`, `GET /api/v2/user/tags` and
   `GET|PUT|DELETE /api/v2/user/<id>/follow` (see `docs/api/src/user.yaml`). The user list, the
   states, the field values and the tags require the permission to access People
@@ -1547,7 +1564,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `humhub\modules\user\components\UserList`, see below) and the widgets `PeopleCard`,
     `PeopleIcons`, `PeopleDetails`, `PeopleTagList`, `PeopleActionButtons`, `PeopleFilters` and
     `PeopleFilterPicker` of `humhub\modules\user\widgets` with the views `peopleCard.php` and
-    `peopleIcons.php` — the directory is the `PeopleDirectory` island, its cards
+    `peopleIcons.php` — the directory is the `PeopleBrowser` island, its cards
     `vue/components/PeopleCard.vue`, which a module extends through the slots
     `user.card-subtitle` (a line under the user's name) and `user.card-actions` (the card's
     footer) instead of the card widgets; the route `user/people/filter-people-json`
@@ -1623,11 +1640,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `.followButton`/`.unfollowButton` links). No core markup used them any more once the user
     and space follow buttons became islands; module-search found no external users. A script
     reacting to a follow listens to `user:follow-changed`/`space:follow-changed` instead.
-  - **Changed:** the entries of `user\widgets\PeopleHeadingButtons` (still a `Menu`, still
-    extended on its `EVENT_INIT`) are handed to the island as data
-    (`humhub\widgets\menu\Menu::getEntriesData()`) and rendered by `PageToolbar` as icon
-    buttons, as the spaces directory's `SpaceDirectoryHeadingButtons` are (see there). "Invite
-    new people" is `btn-accent` with the id `invite-people-button`.
+  - **Replaced:** `user\widgets\PeopleHeadingButtons` by `user\widgets\PeopleHeaderActions` (a
+    `humhub\widgets\menu\PageHeaderActions`, menu id `people-header-actions`), without a
+    compatibility class; its view `peopleHeadingButtonsTemplate.php` is removed. A module adding
+    entries on the `EVENT_INIT` of the old class registers on the new one (module search:
+    custom-pages, matchmaking, members-map). The entries are handed to the island as data and
+    rendered by `PageHeader`, as the spaces browser's `SpacesHeaderActions` are (see
+    there). "Invite new people" is the primary action, with the id `invite-people-button`.
   - **Changed:** the meta search's people provider (`user\search\UserSearchProvider`) builds its
     results with `UserList` and `purpose=directory`, so restrictions a module applies to the
     directory apply to it too, as they did through `PeopleQuery`.
@@ -1646,6 +1665,207 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `user:follow-changed` `{userId, isFollowing, followerCount, canFollow}` (dispatched by the
     `UserFollowButton` island) and `user:friendship-changed` `{userId, state, isFollowing}`
     (dispatched by the `FriendshipButton` island) of the `events` bridge.
+
+- **Administration › Users is a data table island.** `/admin/user/list` renders
+  `humhub\modules\admin\widgets\UserTable` (the core `DataTable` component, see
+  `docs/ui/data-table.md`) and reads its rows from `GET /api/v2/admin/user`; a user is enabled or
+  disabled in place through `POST /api/v2/admin/user/<id>/enable|disable` (see
+  `docs/api/src/admin.yaml`).
+  - **New:** `humhub\components\table\DataTable` (with `ColumnDefinition` and `RowAction`), the
+    server side of a table — its list (a `FilterableList`), columns, row actions and rows. The
+    user table is `humhub\modules\admin\components\UserTable` on the new list
+    `humhub\modules\admin\components\AdminUserList` (filters `q`, `status`, `group`; sort
+    keys `name`, `email`, `lastLogin`, `createdAt`, descending with `-`).
+  - **Deprecated:** `humhub\modules\admin\grid\UserActionColumn` (to be removed in 1.21) — the
+    list no longer renders it, so its `EVENT_AFTER_INIT_ACTIONS` no longer fires. A module still
+    registering on it for older versions does so by class name and event name as strings
+    (`['humhub\modules\admin\grid\UserActionColumn', 'afterInitActions', …]`): the constant
+    `UserActionColumn::EVENT_AFTER_INIT_ACTIONS` loads the class and fails once it is gone. A module adding, changing or removing
+    row actions (twofa, limited-user-admin) does so on `UserTable::EVENT_INIT`:
+    `$event->sender->addAction(new RowAction(…))` / `removeAction('disable')`. A `RowAction`
+    decides per row whether it is offered (`visible`) and has a kind: `link`, `modal`, `post` (a
+    form POST to a web route, e.g. one answering with a redirect) or `request` (an API call
+    answering the new row); with a `bulkUrl` it is also offered for the selected rows.
+  - **Changed:** the list page no longer uses `humhub\modules\admin\models\UserSearch` (the
+    export still does). A module restricting the users an administrator sees narrows
+    `AdminUserList` on `FilterableList::EVENT_BUILD` instead of replacing `UserSearch`; the
+    page's filter parameters are those of the list (`?q=…&status=…&group=…`), not
+    `UserSearch[freeText]`. The page and its endpoint create the table through the DI
+    container, so a module restricting the whole user administration (limited-user-admin)
+    replaces `UserTable` with a subclass: `canAccess()` (who sees the table and may call its
+    endpoint — the endpoint has no `AccessControl` rules to extend), `canManage($user)` (on whom
+    edit, enable / disable and delete are offered), `createList()` and `actions()`.
+  - **Changed:** "Add new user" is the primary action of the card's header menu
+    `humhub\modules\admin\widgets\AdminUserCardActions` (entry id `add-user`), the exports and
+    "List pending registrations" are entries of the ⋮ menu `AdminUserCardMenu`. A module hiding
+    the button removes the entry on the menu's `EVENT_INIT` (the `Button::EVENT_BEFORE_RUN`
+    check on its URL no longer applies). The export does not follow the table's filters.
+
+- **Administration › Groups, Spaces and Modules are data table islands** like the users (see
+  above and `docs/ui/data-table.md`), with their rows from `GET /api/v2/admin/group`,
+  `/admin/space` and `/admin/module` (see `docs/api/src/admin.yaml`).
+  - **New:** `humhub\widgets\DataTableWidget` and `humhub\components\api\DataTableController`,
+    the page and the endpoint of a table (`admin\widgets\UserTable` and the user endpoint now
+    build on them); `DataTable::canAccess()`; `QueryListBuilder::sortBy()`. The tables
+    `admin\components\GroupTable`, `SpaceTable`, `ModuleTable` on the lists `AdminGroupList`
+    (filters `q`, `type`), `AdminSpaceList` (`q`, `visibility`, `status`) and `AdminModuleList`
+    (`q`, `status`), each created through the DI container and changed on
+    `EVENT_INIT` (columns, actions) and `FilterableList::EVENT_INIT` / `EVENT_BUILD` (filters,
+    restrictions). A module adding a space column and filter (e.g. a category) registers on
+    `SpaceTable::EVENT_INIT` and `AdminSpaceList::EVENT_INIT`.
+  - **Changed:** `admin/group/index` and `admin/space/index` no longer use
+    `admin\models\GroupSearch` / `SpaceSearch`; their filter parameters are those of the lists
+    (`?q=…&type=…`), not `GroupSearch[…]` / `SpaceSearch[…]`. A row action of the request kind
+    answering neither `row` nor `removed` (e.g. the marketplace's module update) reloads the
+    table's page.
+  - **Deprecated** (to be removed in 1.21): `admin\models\SpaceSearch`,
+    `admin\widgets\SpaceGridView`, `admin\grid\SpaceBaseColumn`, `SpaceImageColumn`,
+    `SpaceTitleColumn` — no core page uses them any more (module search: classified-space).
+  - **Removed:** `admin\widgets\InstalledModuleList`, `InstalledModuleControls`,
+    `InstalledModuleActionButtons` and their views,
+    `admin\widgets\GroupMenu`, `admin\grid\SpaceActionColumn` — module search found no users.
+    A module adding an entry to a module's controls adds a `RowAction` on
+    `ModuleTable::EVENT_INIT`.
+
+- **The members of a group and of a space are data table islands** (a group's embedded in its
+  card, `DataTableWidget::$embedded`), with their rows from `GET /api/v2/admin/group/<id>/member` and
+  `GET /api/v2/space/<id>/member` (see `docs/api/src/admin.yaml`, `space.yaml`).
+  - **New:** `admin\components\GroupMemberTable` / `GroupMemberList` and
+    `space\modules\manage\components\SpaceMemberTable` / `SpaceMemberList` (a row is a `GroupUser`
+    or a `Membership`, its id the user's), created through the DI container with the group or
+    space; `POST /api/v2/admin/group/<id>/member/<userId>/manager|member|remove`,
+    `POST /api/v2/space/<id>/member/<userId>/role/<role>|remove` and both `…/member/bulk/remove`.
+    A module adds row actions on the tables' `EVENT_INIT`.
+  - **Changed:** the role is no longer a select in the row but a chip, changed through the row's
+    actions; the group manager select likewise. `admin/group/add-members` answers a `GET` with
+    the "Add members" dialog and an AJAX `POST` with an HTML redirect to the member page (a
+    plain `POST` still redirects). The views `@admin/views/group/members.php` and
+    `@space/modules/manage/views/member/index.php` get only the group / space; a theme
+    overriding them renders the table widget. `space/manage/member/index` still accepts the
+    former role change (`POST dropDownColumnSubmit`).
+  - **Removed:** `admin/group/edit-manager-role`, `admin/group/remove-group-user`,
+    `admin\assets\AdminGroupAsset` with `humhub.admin.group.js` (`setManagerRole`,
+    `removeMember`), "Remove all members" of a space (`space/manage/member/remove-all`,
+    `manage\widgets\MemberHeaderControlsMenu`, `manage\jobs\RemoveAllMembersFromSpaceJob`; the
+    table removes members in bulk) — module search found no users.
+- **The pending lists are data table islands**: the pending registrations
+  (`/admin/pending-registrations`), the registrations awaiting approval (`/admin/approval`) and a
+  space's pending invitations and approvals, with their rows from `GET /api/v2/admin/invite`,
+  `/admin/approval`, `/space/<id>/invitation` and `/space/<id>/applicant` (see `admin.yaml`,
+  `space.yaml`); their actions, also in bulk, are `POST` endpoints there.
+  - **New:** `admin\components\PendingRegistrationTable` / `PendingRegistrationList`,
+    `ApprovalTable` / `AdminApprovalList`, `space\modules\manage\components\SpaceInvitationTable`,
+    `SpaceApplicantTable` (`SpaceMemberList` takes a `status`),
+    `space\controllers\api\MembershipTableController`; `DataTableController::bulkAction()`;
+    `DataTableWidget::$selectByDefault`, `$backUrl`, `$backLabel`.
+  - **Changed:** the approval page's own column choice (profile fields as columns, a user
+    setting) is the table's columns chooser; a single registration is approved, declined or
+    messaged in a dialog (`admin/approval/approve|decline|send-message` answer an AJAX request
+    with it and redirect any other to the table); their pages and views (`approve.php`,
+    `decline.php`, `send-message.php`) are removed — module search found no links to them. "Re-send to all" and "Delete All" of the pending registrations are
+    the bulk actions with "Select all". The views get no `dataProvider` / `searchModel` any more.
+  - **Changed:** "Send a message" to several registrations opens a dialog with the subject and
+    text (`admin/approval/bulk-message`, `{displayName}` and `{AdminName}` replaced for each
+    user); `POST /api/v2/admin/approval/bulk/` takes `approve` and `decline` only.
+  - **Changed:** the counts in the tabs "Pending approvals" (`admin\widgets\UserMenu`) and
+    "Pending Invites" / "Pending Approvals" (`space\modules\manage\widgets\MemberMenu`) are the
+    waiting dot of the new `MenuLink::$count` instead of a `Badge` in the label.
+  - **Removed:** `admin/pending-registrations/resend|delete|resend-all|delete-all|resend-all-selected|delete-all-selected`,
+    `admin/approval/bulk-actions` and `ApprovalController::ACTION_*` / `USER_SETTINGS_SCREEN_KEY`,
+    `admin\widgets\PendingRegistrations` with its view, `AdminPendingRegistrationsAsset` and
+    `humhub.admin.PendingRegistrations.js` — module search found no users.
+
+- **The OAuth clients and grants of the administration are data table islands**
+  (`oauth\widgets\AdminClientTable`, `AdminGrantTable`, rows from `GET /api/v2/admin/oauth-client`
+  and `/admin/oauth-grant`; a grant is revoked with `POST /api/v2/admin/oauth-grant/<id>/revoke`
+  or `…/bulk/revoke`, all of a filter only with a filter set).
+  - **Removed:** `oauth/admin/revoke-grant`, `oauth/admin/revoke-grants` and
+    `oauth\models\GrantSearch` (the grant filter is `oauth\components\table\AdminGrantList`:
+    `q`, `client`, `scope`, `type`).
+
+- **The topic lists are a data table island** (`topic\widgets\TopicTable`, embedded): the global
+  topics (Administration › Settings › Topics), a space's and the account's, with their rows from
+  `GET /api/v2/admin/topic`, `/space/<id>/topic` and `/user/<id>/topic`.
+  - **New:** `topic\components\TopicTable` / `TopicTableList`, created through the DI container
+    with the container (`null` for the global topics).
+  - **Changed:** the edit, filter and delete buttons of a row are entries of its ⋮ menu. The
+    topic delete routes (`admin/setting/delete-topic`, `topic/manage/delete`) also answer
+    `removed: true`. The global topic page no longer uses Pjax. The views
+    `@admin/views/setting/topics.php` and `@topic/views/manage/overview.php` no longer get a
+    `dataProvider`.
+  - **Removed:** `admin\assets\AdminTopicAsset` with `humhub.admin.topic.js` and
+    `topic.removeOverviewTopic` of `humhub.topic.js` — module search found no users.
+
+- **Every core page that is not a space or profile page starts with a page header**
+  (`humhub\widgets\PageHeader`, see `docs/ui/page-header.md`): Administration › Modules, the
+  account section, the notification overview, search and the licence page. The former
+  `.panel-heading` titles of these pages are gone.
+  - The account layouts `@user/views/account/_userProfileLayout.php`, `_userSettingsLayout.php`
+    and `@user/views/security/_layout.php` render the page header (title = the account menu
+    entry, the section's tabs in its body) and a content card around `$content`.
+    Module views rendered into them need no change.
+  - A module page rendered directly into the account layout (`@user/views/account/_layout.php`)
+    still works with its own `.panel-heading`. To match core, it renders `PageHeader::title(…)`
+    and a `ContentCard` itself; the layout then drops its panel.
+  - New: `admin\widgets\ModulesHeaderActions` (menu id `admin-modules-header-actions`). The
+    "Add more modules" button of the modules page is its primary entry (`add-modules`).
+
+- **A space's settings start with a page header** (Settings, Security, Members, Modules, with the
+  section's tabs) and show their content in content cards, the active tab naming the card.
+  - **New:** the section layout `@space/modules/manage/views/layouts/section.php` (`title`,
+    `tabs`), used by every view of the space's settings.
+  - **Changed:** the views of `space/manage` no longer render a `.panel` with
+    `DefaultMenu` / `MemberMenu` / `SecurityTabMenu`; their texts "**Space** settings", "**Manage**
+    members", "**Security** settings" are gone. A module adding a tab to one of these menus
+    (module search: enterprise-theme, spaces-map) still works with its own panel; to match core,
+    its view renders the section layout and a `ContentCard`:
+    ```php
+    <?php $this->beginContent('@space/modules/manage/views/layouts/section.php', [
+        'title' => Yii::t('SpaceModule.manage', 'Settings'),
+        'tabs' => new DefaultMenu(['space' => $space]),
+    ]) ?>
+    <?php ContentCard::begin(['title' => Yii::t('MyModule.base', 'My tab')]) ?> … <?php ContentCard::end() ?>
+    <?php $this->endContent() ?>
+    ```
+
+- **The pages below a page header are content cards** (`humhub\widgets\ContentCard`, see
+  `docs/ui/card.md`): administration, account, search, licence. Their `h4` titles inside a
+  `.panel-body` became the card's `h2` title, with a description below it only where it adds
+  something; sections are a plain `<h3>` (and the security sections `h2.h5` → `h3`).
+  - New on `ContentCard`: `description`, `buttons` (HTML in the header, e.g. "Back to
+    overview"), `tabs` (secondary pill tabs below the header), `ContentCard::isRendered()` and
+    `ContentCard::markRendered()`; `PillTabs::getActiveLabel()`.
+  - The section layouts (`@admin/views/layouts/user|space|setting|information`,
+    `@user/views/account/_layout.php`) only wrap a view in their `.panel` when it rendered no
+    content card. A module view without card keeps working as before. To match core, it renders
+    `ContentCard::begin([...])` / `ContentCard::end()` instead of `.panel-body` + `h4`.
+  - `@admin/views/authentication/_authenticationLayout.php`, `@admin/views/setting/_advancedLayout.php`,
+    `@admin/views/group/_manageLayout.php` and the account layouts (`_userProfileLayout`,
+    `_userSettingsLayout`, `@user/views/security/_layout.php`) render the card (title,
+    description, tabs) themselves. A module view rendered into them only brings its content; a
+    `.panel-body` it still wraps the content in adds no padding inside the card (used by
+    email-whitelist, advanced-ldap, asb, softwareallianz-partner).
+  - `_userProfileLayout.php` takes an optional `description` (`beginContent(…, ['description' => …])`).
+  - New: `admin\widgets\AdminGroupCardActions` ("Create new group") and
+    `admin\widgets\AdminSpaceCardActions` ("Add new space").
+
+- **`ActiveForm::beginCollapsibleFields()` renders a Bootstrap accordion** (see
+  `docs/ui/accordion.md`). Signature and behaviour are unchanged, and so are the classes
+  `.form-collapsible-fields`, `.form-collapsible-fields-label` (now also `.accordion-button`, in an
+  `h3.accordion-header`) and its `<label>`, so tests clicking them keep working. The plus/minus
+  icons are gone (the accordion's chevron), the fields sit in `fieldset.accordion-collapse` >
+  `.accordion-body`, consecutive groups join into one accordion with one group open at a time, and a
+  group with unsaved changes shows an accent dot (`.accordion-dot.badge-dot-unsaved`).
+
+- **Context menus have one look everywhere** (see `docs/ui/context-menu.md`). `.dropdown-menu`
+  no longer changes with where it sits: the accent bar on hover (in panels, modals and tabs) and
+  the dark menu of `.nav-pills` / `.nav-tabs` / `.account` are gone, as is the unused
+  `ul.contextMenu` style. The ⋮ toggle of `.nav-pills.preferences` is a ghost icon button with
+  vertical dots. New: `.dropdown-item-icon` (the icon column; a leading `<i>` of a row gets it
+  too) and `.dropdown-item-danger` for a destructive row — a `MenuLink` sets it through
+  `htmlOptions['class']`, a `DropdownMenu.vue` entry through `htmlOptions: { class: … }`. A
+  theme that styled menus through the removed selectors restyles them through the
+  `$dropdown-*` variables.
 
 - **A person filter for lists.** New: `user\components\listing\UserFilter`, a ready filter
   (`new UserFilter('authorId', column: 'content.created_by', definition: ['label' => …])`;
@@ -2102,6 +2322,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `SecuritySessionSections` (browser sessions and other access, e.g. app devices and tokens),
     `SecurityPrivacySections` and `SecurityDataSections` (`EVENT_INIT`, `addWidget()`); a section
     extends `humhub\modules\user\widgets\security\SecuritySection`. A tab without visible sections is hidden.
+    `SecuritySection::getActions()` puts small buttons next to the section's title (e.g. "Create
+    token", "Log out all other sessions"); a row's single action is a ghost icon button with its
+    label as tooltip and `aria-label`, as in the core sections.
   - Modules that add security or privacy related entries to `AccountSettingsMenu`, e.g. two-factor
     authentication or a personal data export, should move them to `SecuritySettingsMenu` or
     `SecurityDataSections`.

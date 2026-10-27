@@ -14,8 +14,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
-use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
@@ -23,7 +22,7 @@ use Yii;
  *
  * @author Basti
  */
-class UserMenu extends TabMenu
+class UserMenu extends PillTabs
 {
     /**
      * @inheritdoc
@@ -45,8 +44,9 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Settings'),
             'url' => ['/admin/authentication'],
             'sortOrder' => 200,
+            // Also on the pages modules add to the settings tabs (LDAP, Apps & API Access, …)
             'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions'])
-                || ControllerHelper::isActivePath('ldap', 'admin'),
+                || (new AuthenticationMenu())->getActiveEntry() !== null,
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
@@ -54,11 +54,8 @@ class UserMenu extends TabMenu
 
         if ($approvalCount > 0 || Yii::$app->user->isGroupManager()) {
             $this->addEntry(new MenuLink([
-                'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' '
-                    . ($approvalCount > 0
-                        ? Badge::danger((string)$approvalCount)
-                        : Badge::light((string)$approvalCount)),
-                'encodeLabel' => false,
+                'label' => Yii::t('AdminModule.user', 'Pending approvals'),
+                'count' => $approvalCount,
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
                 'isActive' => ControllerHelper::isActivePath('admin', 'approval'),

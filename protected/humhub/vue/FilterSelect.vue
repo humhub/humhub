@@ -1,14 +1,14 @@
 <template>
     <div
         ref="root"
-        class="c-select"
-        :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': isDisabled, 'is-loading': loading }"
+        class="select-menu"
+        :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': isDisabled, 'is-loading': loading, 'is-required': !clearable, 'is-drop-up': dropUp }"
     >
         <button
             :id="buttonId"
             ref="button"
             type="button"
-            class="c-select__button"
+            class="form-control select-menu-button"
             aria-haspopup="listbox"
             :aria-expanded="open ? 'true' : 'false'"
             :aria-controls="listboxId"
@@ -18,13 +18,14 @@
             @click="toggle"
             @keydown="onButtonKeydown"
         >
-            <span class="c-select__value">{{ displayLabel }}</span>
+            <span class="select-menu-value">{{ displayLabel }}</span>
         </button>
-        <span v-if="loading" class="spinner-border spinner-border-sm c-select__spinner" role="status" :aria-label="loadingLabel"></span>
-        <i v-else class="ti ti-chevron-up c-select__chevron" aria-hidden="true"></i>
+        <span v-if="loading" class="spinner-border spinner-border-sm select-menu-spinner" role="status" :aria-label="loadingLabel"></span>
+        <i v-else class="ti ti-chevron-up select-menu-chevron" aria-hidden="true"></i>
         <button
+            v-if="clearable"
             type="button"
-            class="c-select__clear"
+            class="select-menu-clear"
             :disabled="!hasSelection || isDisabled"
             :aria-hidden="hasSelection ? null : 'true'"
             :aria-label="clearLabel"
@@ -34,8 +35,9 @@
         <ul
             :id="listboxId"
             ref="listbox"
-            class="c-select__drawer"
-            :class="{ 'is-open': open }"
+            class="dropdown-menu select-menu-drawer"
+            :class="{ show: open }"
+            data-bs-popper="static"
             role="listbox"
             tabindex="-1"
             :aria-label="accessibleName"
@@ -46,14 +48,14 @@
                 v-for="(option, index) in choices"
                 :id="optionId(index)"
                 :key="option.value"
-                class="c-select__option"
-                :class="{ 'is-selected': option.value === modelValue, 'is-active': index === activeIndex }"
+                class="dropdown-item select-menu-option"
+                :class="{ active: option.value === modelValue, 'is-focused': index === activeIndex }"
                 role="option"
                 :aria-selected="option.value === modelValue ? 'true' : 'false'"
                 @click="select(option)"
                 @mousemove="activeIndex = index"
             >{{ option.label }}</li>
-            <li v-if="!choices.length" class="c-select__feedback" role="presentation">{{ emptyLabel }}</li>
+            <li v-if="!choices.length" class="dropdown-item-text select-menu-feedback" role="presentation">{{ emptyLabel }}</li>
         </ul>
     </div>
 </template>
@@ -65,7 +67,7 @@ let uid = 0;
 
 /**
  * A single-choice dropdown for filter toolbars (`<filter-select>`), after the design system's
- * `c-select`: the placeholder is the "nothing chosen" (all) state; choosing an option shows its
+ * `select-menu`: the placeholder is the "nothing chosen" (all) state; choosing an option shows its
  * label and swaps the chevron for a clear X, which resets the value to `''`.
  *
  * - `v-model` (`modelValue`): the chosen option's `value`, `''` for none. A value that is not
@@ -75,14 +77,16 @@ let uid = 0;
  *   `placeholder` (else the empty option's label, else `label` — the field's name in the
  *   placeholder colour reads as "no choice"), `label` (accessible name, defaults to the
  *   placeholder), `disabled`, `loading` (disabled, with a spinner in place of the chevron),
- *   `id` (of the toggle button, for an external `<label for>`).
+ *   `id` (of the toggle button, for an external `<label for>`), `clearable` (default on: a chosen
+ *   value can be cleared with the X; off for a value that is always set, e.g. the rows per page),
+ *   `dropUp` (opens above the field, e.g. at the bottom of a card).
  * - Emits `update:modelValue` with the chosen value, or `''` when cleared.
  * - Keyboard and ARIA: the toggle is a button with `aria-haspopup="listbox"`/`aria-expanded`;
  *   Enter, Space, ArrowDown and ArrowUp open it and move focus into the listbox, where the arrow
  *   keys, Home/End and the first letter of a label move the active option
  *   (`aria-activedescendant`), Enter/Space choose it, Escape closes it — focus returns to the
  *   toggle either way — and Tab closes it and moves on. A click outside closes it too.
- * - Styling: `.c-select` in `resources/scss/_page-toolbar.scss` (states `is-open`,
+ * - Styling: `.select-menu` in `resources/scss/_filter-bar.scss` (states `is-open`,
  *   `has-selection`, `is-disabled`).
  *
  * @since 1.20
@@ -97,6 +101,8 @@ export default {
         disabled: { type: Boolean, default: false },
         loading: { type: Boolean, default: false },
         id: { type: String, default: null },
+        clearable: { type: Boolean, default: true },
+        dropUp: { type: Boolean, default: false },
     },
     emits: ['update:modelValue'],
     data() {

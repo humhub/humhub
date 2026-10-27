@@ -1,0 +1,81 @@
+//
+// Toast: the status messages of StatusBar.vue (protected/humhub/vue/), Bootstrap's `.toast` in a
+// `.toast-container`, shown and hidden with Bootstrap's `.fade` / `.show` / `.showing`. The look
+// comes from Bootstrap's `$toast-*` variables (variables.scss); here are the tones and the parts
+// of the body. See docs/ui/toast.md.
+// @since 1.20
+// --------------------------------------------------
+
+$toast-icon-size: $font-size-lg !default;
+$toast-details-max-height: 200px !default;
+// Tone => the colour whose `--bs-<colour>` and `--bs-<colour>-border-subtle` it uses
+$toast-tones: (
+    "info": "accent",
+    "success": "success",
+    "warning": "warning",
+    "danger": "danger",
+) !default;
+
+@if not $prev-toast {
+    // Clear of the safe area of mobile devices
+    .toast-container.position-fixed {
+        margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+    }
+
+    // Tone: border and icon in the colour of the message level
+    @each $tone, $color in $toast-tones {
+        .toast-#{$tone} {
+            --bs-toast-border-color: var(--bs-#{$color}-border-subtle);
+
+            .toast-icon {
+                color: var(--bs-#{$color});
+            }
+        }
+    }
+
+    .toast-body {
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+    }
+
+    .toast-icon {
+        flex: 0 0 auto;
+        font-size: $toast-icon-size;
+    }
+
+    // The message breaks between words, not inside them: the theme hyphenates body text, which
+    // reads oddly in a two-line notice.
+    .toast-message {
+        flex: 1 1 0;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        hyphens: manual;
+
+        // With details, the text toggles them too
+        &.is-toggle {
+            cursor: pointer;
+        }
+    }
+
+    .toast-details-toggle,
+    .toast-close {
+        flex: 0 0 auto;
+    }
+
+    .toast-details {
+        max-height: $toast-details-max-height;
+        padding: 0 var(--bs-toast-padding-x) var(--bs-toast-padding-x);
+        overflow: auto;
+        font-size: $font-size-sm;
+
+        pre {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: inherit;
+            white-space: pre-wrap;
+        }
+    }
+}

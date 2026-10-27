@@ -5,12 +5,12 @@
   these compositions changes. Colours: toolbar = indigo, filters = teal,
   content / item browser = orange, forms and overlays = magenta, feedback = green.
   Each component is named by a monospace tag attached to the region it renders.
-  Panels are <g> elements: #toolbar-filterbar, #card-directory, #item-browser,
+  Panels are <g> elements: #toolbar-filterbar, #entity-browser, #item-browser,
   #dialog, #feedback. Shared icons live in <defs> as <symbol id="i-*">.
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1274" width="1200" height="1274" role="img" aria-labelledby="title desc">
 <title id="title">Core Vue page components</title>
-<desc id="desc">Five panels. 1: PageToolbar with title, .c-icon-button actions and ViewSwitch, holding a FilterBar with a text search, an open FilterSelect, a FilterPicker with two chips, a UserFilterControl chip, the filter panel toggle and clear all. 2: CardDirectory composes PageToolbar, FilterBar and a CardGrid of entity cards with a CardSkeleton. 3: an item browser built from DropZone, PathBar with SelectionMenu, and TileGrid with folder tiles, a selected tile, an uploading tile in a ProgressFrame and a tile with an open DropdownMenu. 4: a UiModal holding a HumHubForm with TextField, SelectField, SubmitButton and a field showing a validation error. 5: a StatusBar toast and module buttons added through an ExtensionSlot.</desc>
+<desc id="desc">Five panels. 1: PageHeader with title, .c-icon-button actions and ViewSwitch, holding a FilterBar with a text search, an open FilterSelect, a FilterPicker with two chips, a UserFilterControl chip, the filter panel toggle and clear all. 2: EntityBrowser composes PageHeader, FilterBar and a EntityGrid of entity cards with a CardSkeleton. 3: an item browser built from DropZone, PathBar with SelectionMenu, and TileGrid with folder tiles, a selected tile, an uploading tile in a ProgressFrame and a tile with an open DropdownMenu. 4: a UiModal holding a HumHubForm with TextField, SelectField, SubmitButton and a field showing a validation error. 5: a StatusBar toast and module buttons added through an ExtensionSlot.</desc>
 <defs>
 <style>
   .t     { font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; fill: #334155; }
@@ -88,7 +88,7 @@
 <g id="toolbar-filterbar">
 <rect x="24" y="100" width="1152" height="326" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
 <rect x="44" y="118" width="4" height="18" rx="2" fill="#4f46e5"/>
-<text class="ptitle" x="56" y="133">PageToolbar + FilterBar<tspan class="psub" dx="10">the head of every list page</tspan></text>
+<text class="ptitle" x="56" y="133">PageHeader + FilterBar<tspan class="psub" dx="10">the head of every list page</tspan></text>
 <text class="note" x="1156" y="132" text-anchor="end">used by People, Spaces, Marketplace, cfiles</text>
 <g id="page-toolbar">
 <rect x="48" y="156" width="1104" height="196" rx="12" fill="#fff" stroke="#c7d2fe" stroke-width="1.5" filter="url(#soft)"/>
@@ -111,7 +111,7 @@
 <rect x="1010.9" y="217.0" width="115.1" height="18" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1"/>
 <text class="tag" x="1068.4" y="230.2" text-anchor="middle" fill="#4f46e5">.c-icon-button</text>
 <rect x="66.0" y="147.0" width="93.5" height="18" rx="5" fill="#4f46e5"/>
-<text class="tag" x="112.7" y="160.2" text-anchor="middle" fill="#fff">PageToolbar</text>
+<text class="tag" x="112.7" y="160.2" text-anchor="middle" fill="#fff">PageHeader</text>
 </g>
 <g id="filter-bar">
 <rect x="72" y="244" width="1056" height="88" rx="10" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
@@ -169,13 +169,13 @@
 <text class="t" x="564" y="384"><tspan class="code" fill="#0f766e">FilterBar</tspan> renders a list’s filter definitions and syncs their values to the URL;</text>
 <text class="t" x="564" y="404">registered types (user, space, topic) build on <tspan class="code" fill="#0f766e">PickerFilterControl</tspan>.</text>
 </g>
-<g id="card-directory">
+<g id="entity-browser">
 <rect x="24" y="448" width="564" height="398" rx="14" fill="#fff" stroke="#e5e7eb" filter="url(#shadow)"/>
 <rect x="44" y="466" width="4" height="18" rx="2" fill="#c2410c"/>
-<text class="ptitle" x="56" y="481">CardDirectory<tspan class="psub" dx="10">= a composition, ready to use</tspan></text>
+<text class="ptitle" x="56" y="481">EntityBrowser<tspan class="psub" dx="10">= a composition, ready to use</tspan></text>
 <rect x="44" y="506" width="524" height="288" rx="12" fill="#fffaf5" stroke="#c2410c" stroke-width="1.5"/>
 <rect x="60.0" y="497.0" width="107.9" height="18" rx="5" fill="#c2410c"/>
-<text class="tag" x="114.0" y="510.2" text-anchor="middle" fill="#fff">CardDirectory</text>
+<text class="tag" x="114.0" y="510.2" text-anchor="middle" fill="#fff">EntityBrowser</text>
 <rect x="60" y="528" width="492" height="82" rx="9" fill="#fff" stroke="#c7d2fe" stroke-width="1.2"/>
 <text class="ui-h" x="74" y="554" font-size="15">People</text>
 <rect x="516" y="537" width="26" height="24" rx="6" fill="#4f46e5"/>
@@ -183,7 +183,7 @@
 <rect x="484" y="537" width="26" height="24" rx="6" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
 <use href="#i-grid" x="489" y="541" width="16" height="16" color="#334155"/>
 <rect x="142.0" y="519.5" width="91.5" height="17" rx="5" fill="#eef2ff" stroke="#4f46e5" stroke-width="1"/>
-<text class="tag" x="187.7" y="532.2" text-anchor="middle" fill="#4f46e5">PageToolbar</text>
+<text class="tag" x="187.7" y="532.2" text-anchor="middle" fill="#4f46e5">PageHeader</text>
 <rect x="70" y="572" width="472" height="30" rx="7" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1"/>
 <rect x="76" y="577" width="170" height="20" rx="5" fill="#fff" stroke="#cbd5e1" stroke-width="1"/>
 <use href="#i-search" x="82" y="580" width="14" height="14" color="#94a3b8"/>
@@ -198,7 +198,7 @@
 <text class="tag" x="501.5" y="576.2" text-anchor="middle" fill="#0f766e">FilterBar</text>
 <rect x="60" y="632" width="492" height="152" rx="9" fill="none" stroke="#fdba74" stroke-width="1.2" stroke-dasharray="5 4"/>
 <rect x="72.0" y="623.0" width="71.8" height="18" rx="5" fill="#c2410c"/>
-<text class="tag" x="107.9" y="636.2" text-anchor="middle" fill="#fff">CardGrid</text>
+<text class="tag" x="107.9" y="636.2" text-anchor="middle" fill="#fff">EntityGrid</text>
 <rect x="70" y="648" width="112" height="124" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1" filter="url(#soft)"/>
 <path d="M70.0 656 a8 8 0 0 1 8 -8 h96.0 a8 8 0 0 1 8 8 v26 h-112.0z" fill="url(#cov1)"/>
 <circle cx="92" cy="682" r="15" fill="#fff"/>

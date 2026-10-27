@@ -2,7 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\user\models\UserSession;
-use humhub\widgets\bootstrap\Link;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\Icon;
 use humhub\widgets\TimeAgo;
 
@@ -22,10 +22,15 @@ use humhub\widgets\TimeAgo;
                 </div>
             </div>
             <?php if ($session->isCurrent): ?>
-                <span class="badge text-bg-success"><?= Yii::t('UserModule.account', 'This session') ?></span>
+                <span class="badge badge-success"><?= Yii::t('UserModule.account', 'This session') ?></span>
             <?php else: ?>
-                <?= Link::danger(Yii::t('UserModule.account', 'Log out'))
-                    ->post(['/user/security/terminate-session', 'key' => $session->key])
+                <?php $label = Yii::t('UserModule.account', 'Log out') ?>
+                <?= Button::none()
+                    ->icon('logout')
+                    ->cssClass(['btn-ghost-danger', 'btn-icon-only'])
+                    ->link(['/user/security/terminate-session', 'key' => $session->key])
+                    ->options(['data-method' => 'POST', 'aria-label' => $label . ': ' . $session->device])
+                    ->tooltip($label)
                     ->confirm(
                         Yii::t('UserModule.account', 'Log out this session?'),
                         Html::encode(Yii::t('UserModule.account', 'Devices with “Remember me” enabled can sign in again. Use “Log out all other sessions” to sign them out for good.')),
@@ -35,13 +40,3 @@ use humhub\widgets\TimeAgo;
         </li>
     <?php endforeach ?>
 </ul>
-
-<?php if (count($sessions) > 1): ?>
-    <?= Link::danger(Yii::t('UserModule.account', 'Log out all other sessions'))
-        ->post(['/user/security/terminate-other-sessions'])
-        ->confirm(
-            Yii::t('UserModule.account', 'Log out all other sessions?'),
-            Yii::t('UserModule.account', 'You will stay logged in on this device only.'),
-        )
-        ->sm() ?>
-<?php endif ?>

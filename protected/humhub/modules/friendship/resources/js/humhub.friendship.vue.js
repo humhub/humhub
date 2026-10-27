@@ -331,7 +331,7 @@
     emits: ["friendship-change"],
     methods: {
       actionClass(classes) {
-        return `${classes || ""} c-entity-card__action`.trim();
+        return `${classes || ""} entity-card-action`.trim();
       }
     }
   };

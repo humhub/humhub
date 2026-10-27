@@ -1,23 +1,23 @@
 <template>
-    <div class="c-card-skeleton c-entity-card-skeleton c-space-card-skeleton" aria-hidden="true">
-        <div class="c-entity-card-skeleton__cover">
-            <span class="c-card-skeleton__block c-entity-card-skeleton__avatar"></span>
+    <div class="card entity-card entity-card-skeleton space-card-skeleton placeholder-glow" aria-hidden="true">
+        <div class="entity-card-cover">
+            <span class="placeholder entity-card-skeleton-avatar"></span>
         </div>
-        <div class="c-card-skeleton__header">
-            <span class="c-card-skeleton__block c-card-skeleton__title"></span>
+        <div class="entity-card-header">
+            <span class="placeholder entity-card-skeleton-title"></span>
         </div>
-        <div class="c-card-skeleton__body">
-            <span class="c-card-skeleton__block c-card-skeleton__line"></span>
-            <span class="c-card-skeleton__block c-card-skeleton__line"></span>
-            <span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span>
+        <div class="entity-card-body">
+            <span class="placeholder entity-card-skeleton-line"></span>
+            <span class="placeholder entity-card-skeleton-line"></span>
+            <span class="placeholder entity-card-skeleton-line entity-card-skeleton-line-short"></span>
         </div>
-        <div class="c-entity-card-skeleton__tags">
-            <span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span>
-            <span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span>
-            <span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span>
+        <div class="entity-card-tags">
+            <span class="placeholder entity-card-skeleton-tag"></span>
+            <span class="placeholder entity-card-skeleton-tag"></span>
+            <span class="placeholder entity-card-skeleton-tag"></span>
         </div>
-        <div class="c-card-skeleton__footer">
-            <span class="c-card-skeleton__block c-card-skeleton__action"></span>
+        <div class="entity-card-footer">
+            <span class="placeholder entity-card-skeleton-action"></span>
         </div>
     </div>
 </template>
@@ -25,9 +25,9 @@
 <script>
 /**
  * The placeholder of a `SpaceCard` while the directory's first page loads (the `skeleton`
- * slot of `CardDirectory`): the kit's `CardSkeleton` blocks in the space card's geometry — the
+ * slot of `EntityBrowser`): an entity card skeleton (Bootstrap placeholders) — the
  * full-width cover with the 80px avatar, the name, three description lines, a row of tags and
- * the full-width button. `space\widgets\SpaceDirectory`'s placeholder renders the same markup.
+ * the full-width button. `space\widgets\SpacesBrowser`'s placeholder renders the same markup.
  *
  * @since 1.20
  */

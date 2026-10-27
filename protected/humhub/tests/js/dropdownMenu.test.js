@@ -173,7 +173,7 @@ describe('DropdownMenu', () => {
             const link = wrapper.find('.dropdown-item');
             const icon = link.find('i');
             expect(icon.exists()).toBe(true);
-            expect(icon.classes()).toEqual(['ti', 'ti-pencil']);
+            expect(icon.classes()).toEqual(['ti', 'ti-pencil', 'dropdown-item-icon']);
             expect(icon.attributes('aria-hidden')).toBe('true');
             expect(link.text()).toBe('Edit');
         });

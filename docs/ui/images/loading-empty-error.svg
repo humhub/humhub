@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="580" viewBox="0 0 800 580" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Loading, empty and error states</title>
+  <defs>
+<symbol id="i-trash" viewBox="0 0 16 16"><path d="M2.5 4 H13.5 M6 4 V2.5 H10 V4 M4 4 L4.8 14 H11.2 L12 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-gear2" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-dasharray="2.4 1.6"/></symbol>
+<symbol id="i-reset" viewBox="0 0 16 16"><path d="M3 8 A5 5 0 1 0 5 4 M3 2 V5.5 H6.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-checkc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 L7.2 10.4 L11 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="i-spin" viewBox="0 0 16 16"><path d="M8 2 A6 6 0 1 1 2.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+
+<symbol id="i-bell" viewBox="0 0 16 16"><path d="M4 11 V7 A4 4 0 0 1 12 7 V11 L13.5 12.5 H2.5 Z M6.5 14 H9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-mail" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 4 L8 9 L14 4" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-people2" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 14 Q1.5 9 6 9 Q10.5 9 10.5 14" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="11.5" cy="5.5" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-puzzle" viewBox="0 0 16 16"><path d="M3 5 H6 A1.5 1.5 0 1 1 9 5 H12 V8 A1.5 1.5 0 1 1 12 11 V14 H3 Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 16 16"><path d="M8 1.5 L10 6 L14.8 6.3 L11.1 9.4 L12.3 14.2 L8 11.6 L3.7 14.2 L4.9 9.4 L1.2 6.3 L6 6 Z" fill="currentColor"/></symbol>
+<symbol id="i-arrowup" viewBox="0 0 16 16"><path d="M8 13 V3 M4 7 L8 3 L12 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+
+<symbol id="i-ok" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M4.8 8.2 L7 10.4 L11.2 6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-info" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M8 7.2 V11.5 M8 4.6 V4.7" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></symbol>
+<symbol id="i-wtri" viewBox="0 0 16 16"><path d="M8 1.5 L15 14 H1 Z" fill="currentColor"/><path d="M8 6.2 V9.6 M8 11.6 V11.7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-xc" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="currentColor"/><path d="M5.5 5.5 L10.5 10.5 M10.5 5.5 L5.5 10.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-collapse" viewBox="0 0 16 16"><path d="M3 8 H13 M8 2 V6 M6 4 L8 6 L10 4 M8 14 V10 M6 12 L8 10 L10 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 16 16"><path d="M1.5 9 L3.5 3 H12.5 L14.5 9 V13 H1.5 Z M1.5 9 H5.5 L6.5 10.5 H9.5 L10.5 9 H14.5" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-cloudx" viewBox="0 0 16 16"><path d="M4.5 12 H4 A3 3 0 0 1 4 6 A4 4 0 0 1 12 6 A3 3 0 0 1 12 12 H11.5 M6.5 8.5 L9.5 11.5 M9.5 8.5 L6.5 11.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-dash" viewBox="0 0 16 16"><path d="M2 12 A6 6 0 0 1 14 12 M8 12 L11 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+<symbol id="i-p1" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 14.5 Q2.5 9 8 9 Q13.5 9 13.5 14.5" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-sp" viewBox="0 0 16 16"><circle cx="8" cy="4" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4" cy="11" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="12" cy="11" r="2.4" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-ucheck" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9 9 10 11" fill="currentColor"/><path d="M10 12 L12 14 L15.5 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+<symbol id="i-users" viewBox="0 0 16 16"><circle cx="5.5" cy="5" r="2.5" fill="currentColor"/><circle cx="11" cy="5.5" r="2" fill="currentColor"/><path d="M1 13 Q1 8.5 5.5 8.5 Q10 8.5 10 13 Z M10.5 13 Q10.5 9.5 13 9.5 Q15 9.5 15 13 Z" fill="currentColor"/></symbol>
+<symbol id="i-useradd" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.7" fill="currentColor"/><path d="M1 14 Q1 9 6 9 Q9.5 9 10.5 11.5 L10.5 14 Z" fill="currentColor"/><path d="M13 9 V14 M10.5 11.5 H15.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="580" fill="#ededed"/>
+<text x="20" y="28" class="sec">LOADING — SKELETONS IN THE SHAPE OF THE CONTENT</text>
+<rect x="20" y="40" width="240" height="190" rx="8" fill="#fff" stroke="#e5e5e5"/><rect x="28" y="48" width="224" height="70" rx="6" fill="#efefef"/><rect x="36" y="56" width="54" height="54" rx="5" fill="#e2e2e2"/><rect x="36" y="130" width="130" height="14" rx="4" fill="#e5e5e5"/><rect x="36" y="154" width="190" height="9" rx="4" fill="#efefef"/><rect x="36" y="170" width="150" height="9" rx="4" fill="#efefef"/><rect x="36" y="196" width="208" height="24" rx="6" fill="#e9e9e9"/>
+<rect x="280" y="40" width="500" height="190" rx="8" fill="#fff" stroke="#e5e5e5"/>
+<rect x="296" y="58" width="26" height="26" rx="4" fill="#e5e5e5"/><rect x="332" y="62" width="160" height="9" rx="4" fill="#e5e5e5"/><rect x="332" y="75" width="110" height="7" rx="3" fill="#efefef"/><rect x="560" y="65" width="60" height="12" rx="6" fill="#efefef"/><rect x="680" y="65" width="60" height="12" rx="6" fill="#efefef"/>
+<rect x="296" y="92" width="26" height="26" rx="4" fill="#e5e5e5"/><rect x="332" y="96" width="120" height="9" rx="4" fill="#e5e5e5"/><rect x="332" y="109" width="110" height="7" rx="3" fill="#efefef"/><rect x="560" y="99" width="60" height="12" rx="6" fill="#efefef"/><rect x="680" y="99" width="60" height="12" rx="6" fill="#efefef"/>
+<rect x="296" y="126" width="26" height="26" rx="4" fill="#e5e5e5"/><rect x="332" y="130" width="160" height="9" rx="4" fill="#e5e5e5"/><rect x="332" y="143" width="110" height="7" rx="3" fill="#efefef"/><rect x="560" y="133" width="60" height="12" rx="6" fill="#efefef"/><rect x="680" y="133" width="60" height="12" rx="6" fill="#efefef"/>
+<rect x="296" y="160" width="26" height="26" rx="4" fill="#e5e5e5"/><rect x="332" y="164" width="120" height="9" rx="4" fill="#e5e5e5"/><rect x="332" y="177" width="110" height="7" rx="3" fill="#efefef"/><rect x="560" y="167" width="60" height="12" rx="6" fill="#efefef"/><rect x="680" y="167" width="60" height="12" rx="6" fill="#efefef"/>
+<rect x="296" y="194" width="26" height="26" rx="4" fill="#e5e5e5"/><rect x="332" y="198" width="160" height="9" rx="4" fill="#e5e5e5"/><rect x="332" y="211" width="110" height="7" rx="3" fill="#efefef"/><rect x="560" y="201" width="60" height="12" rx="6" fill="#efefef"/><rect x="680" y="201" width="60" height="12" rx="6" fill="#efefef"/>
+<text x="20" y="250" class="sub" font-size="11.5">A soft shimmer runs across. Shown at least briefly so it never flickers, then the content fades in at the same place.</text>
+<text x="20" y="292" class="sec">EMPTY</text>
+<rect x="20" y="304" width="370" height="170" rx="8" class="card"/><use href="#i-inbox" x="189" y="324" width="32" height="32" color="#9a9ea6"/>
+<text x="205" y="378" class="name" text-anchor="middle" style="font-weight:600">No tasks yet</text><text x="205" y="398" class="sub" text-anchor="middle">Tasks you create or are assigned to appear here.</text>
+<rect x="145" y="414" width="120" height="38" rx="6" fill="#037283"/><text x="205.0" y="438.0" font-size="14" font-weight="500" style="fill:#fff" text-anchor="middle">Create task</text>
+<text x="20" y="494" class="sub" font-size="11.5">says what would be here, and offers the first step</text>
+<rect x="410" y="304" width="370" height="80" rx="8" class="card"/><text x="595" y="338" class="name" text-anchor="middle" style="font-weight:600">No results found</text><text x="595" y="360" class="sub" text-anchor="middle">Try other keywords or <tspan style="fill:#037283;font-weight:600">clear the filters</tspan>.</text>
+<text x="410" y="402" class="sub" font-size="11.5">filtered empty: offers to clear the filters</text>
+<text x="410" y="436" class="sec">ERROR</text>
+<rect x="410" y="448" width="370" height="96" rx="8" class="card"/><use href="#i-cloudx" x="427" y="464" width="24" height="24" color="#cc2629"/>
+<text x="460" y="478" class="name" style="font-weight:600">Could not load the files.</text><text x="460" y="496" class="sub">Check your connection and try again.</text>
+<rect x="460" y="506" width="110" height="30" rx="6" fill="#d5d5d5"/><text x="515.0" y="526.0" font-size="14" font-weight="500" style="fill:#222" text-anchor="middle">Try again</text>
+<text x="410" y="562" class="sub" font-size="11.5">in place of the content; a failed next page sits below the loaded items</text>
+</svg>

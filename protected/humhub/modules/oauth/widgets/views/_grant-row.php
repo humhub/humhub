@@ -2,7 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\oauth\models\Grant;
-use humhub\widgets\bootstrap\Link;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\Icon;
 use humhub\widgets\TimeAgo;
 
@@ -12,6 +12,7 @@ use humhub\widgets\TimeAgo;
 /* @var string|null $titleHint */
 /* @var string[] $details already encoded detail lines */
 /* @var string $actionLabel */
+/* @var string|null $actionIcon the icon of the action's button, `trash` without */
 /* @var string $confirmTitle */
 /* @var string $confirm */
 ?>
@@ -26,8 +27,12 @@ use humhub\widgets\TimeAgo;
             <?php endif ?>
         </div>
     </div>
-    <?= Link::danger($actionLabel)
-        ->post(['/oauth/account/revoke', 'id' => $grant->id])
+    <?= Button::none()
+        ->icon($actionIcon ?? 'trash')
+        ->cssClass(['btn-ghost-danger', 'btn-icon-only'])
+        ->link(['/oauth/account/revoke', 'id' => $grant->id])
+        ->options(['data-method' => 'POST', 'aria-label' => $actionLabel . ': ' . $title])
+        ->tooltip($actionLabel)
         ->confirm($confirmTitle, Html::encode($confirm))
         ->sm() ?>
 </li>

@@ -10,12 +10,11 @@ use humhub\widgets\form\ActiveForm;
 /* @var View $this */
 ?>
 
-<?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
-<div class="text-body-secondary">
-    <?= Yii::t('UserModule.account', 'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.', [
+<?php $this->beginContent('@user/views/account/_userProfileLayout.php', [
+    'description' => Yii::t('UserModule.account', 'Your current E-mail address is <b>{email}</b>. You can change your current E-mail address here.', [
         'email' => Html::encode(Yii::$app->user->getIdentity()->email),
-    ]) ?>
-</div>
+    ]),
+]) ?>
 <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
 
 <?php if ($model->isAttributeRequired('currentPassword')): ?>

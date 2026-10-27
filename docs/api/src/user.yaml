@@ -442,6 +442,47 @@ paths:
           $ref: "common.yaml#/components/responses/Unauthorized"
         "422":
           $ref: "common.yaml#/components/responses/ValidationFailed"
+  "/user/{id}/topic":
+    get:
+      tags:
+        - User
+      summary: The rows of a user's topic table
+      operationId: listUserTopics
+      description: |
+        One page of the user's own topics, for the user and those who may manage all content.
+        A row's `id` is the topic's id; its cells are `name` (linked to the stream filtered by
+        the topic), `contents` (how many contents have it) and `sortOrder`; its actions edit (a
+        dialog of the web interface), view and delete (`POST`, answering `{removed: true}`).
+        Without `sort`, by sort order, then by name.
+      parameters:
+        - $ref: "#/components/parameters/userIdPathParam"
+        - name: q
+          in: query
+          required: false
+          description: Search over the name
+          schema:
+            type: string
+        - name: sort
+          in: query
+          required: false
+          description: |
+            `name` · `sortOrder` · `contents`, each descending with a leading `-`
+          schema:
+            type: string
+            enum: [name, -name, sortOrder, -sortOrder, contents, -contents]
+        - $ref: "common.yaml#/components/parameters/pageParam"
+        - $ref: "common.yaml#/components/parameters/pageSizeParam"
+      responses:
+        "200":
+          $ref: "admin.yaml#/components/responses/TableRows"
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
   "/user/{id}/follow":
     get:
       tags:

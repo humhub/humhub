@@ -22,7 +22,7 @@
 /**
  * The follow button of a user — mounted by `user\widgets\UserFollowButton` (profile header,
  * as a button or as the entry of its controls menu, `HeaderControlsMenu`) or used directly by
- * another island (the People directory's card). The user counterpart of the space's
+ * another island (the People browser's card). The user counterpart of the space's
  * `FollowButton`.
  *
  * ## States

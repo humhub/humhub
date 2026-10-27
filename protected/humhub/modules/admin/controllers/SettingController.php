@@ -394,15 +394,6 @@ class SettingController extends Controller
 
         return $this->render('topics', [
             'contentContainer' => null,
-            'dataProvider' => new ActiveDataProvider([
-                'query' => Topic::find()
-                    ->orderBy('sort_order, name')
-                    ->where(['is', 'contentcontainer_id', new Expression('NULL')])
-                    ->andWhere(['module_id' => (new Topic())->moduleId, 'type' => Topic::class]),
-                'pagination' => [
-                    'pageSize' => 20,
-                ],
-            ]),
             'addModel' => $model,
             'suggestGlobalConversion' => $suggestGlobalConversion,
             'topicSettings' => $topicSettings,
@@ -426,6 +417,7 @@ class SettingController extends Controller
 
         return $this->asJson([
             'success' => true,
+            'removed' => true,
             'message' => Yii::t('AdminModule.settings', 'Topic has been deleted!'),
         ]);
     }
@@ -460,7 +452,7 @@ class SettingController extends Controller
     {
         $form = new OEmbedProviderForm();
 
-        $name = Yii::$app->request->get('name');
+        $name = (string)Yii::$app->request->get('name', '');
         $providers = UrlOembed::getProviders();
 
         if (isset($providers[$name])) {
@@ -494,7 +486,7 @@ class SettingController extends Controller
     public function actionOembedDelete()
     {
         $this->forcePostRequest();
-        $name = Yii::$app->request->get('name');
+        $name = (string)Yii::$app->request->get('name', '');
         $providers = UrlOembed::getProviders();
 
         if (isset($providers[$name])) {

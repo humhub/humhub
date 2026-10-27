@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif">
+  <title>Pill tabs on narrow screens: horizontal scroll with fading edges</title>
+  <defs>
+    <linearGradient id="fr" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <linearGradient id="fl" x1="1" x2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <clipPath id="c1"><rect x="44" y="104" width="292" height="56"/></clipPath>
+    <clipPath id="c2"><rect x="464" y="104" width="292" height="56"/></clipPath>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .phone { fill: #ededed; stroke: #bdbdbd; stroke-width: 2; }
+    .card { fill: #fff; }
+    .pill { fill: #fff; stroke: #e2e2e2; stroke-width: 2; }
+    .pill-on { fill: #e9eaed; stroke: #9a9ea6; stroke-width: 2; }
+    .t { font-size: 15px; fill: #555; }
+    .t-on { font-size: 15px; fill: #000; }
+    .h { font-size: 17px; fill: #000; font-weight: 600; }
+    .note { font-size: 12px; fill: #037283; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="300" fill="#fff"/>
+
+  <text x="30" y="24" class="sec">390 px · AT START</text>
+  <rect x="30" y="36" width="320" height="150" rx="16" class="phone"/>
+  <rect x="38" y="48" width="304" height="118" rx="8" class="card"/>
+  <path d="M56 76 L50 70 L56 64 M50 70 H64" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <text x="78" y="76" class="h">People</text>
+  <g clip-path="url(#c1)">
+    <rect x="46" y="112" width="80" height="40" rx="20" class="pill-on"/><text x="86" y="137" class="t-on" text-anchor="middle">Users</text>
+    <rect x="134" y="112" width="122" height="40" rx="20" class="pill"/><text x="152" y="137" class="t">Invitations</text><circle cx="240" cy="132" r="3.5" fill="#cc2629"/>
+    <rect x="264" y="112" width="116" height="40" rx="20" class="pill"/><text x="282" y="137" class="t">Approvals</text><circle cx="364" cy="132" r="3.5" fill="#cc2629"/>
+  </g>
+  <rect x="304" y="104" width="32" height="56" fill="url(#fr)"/>
+
+  <text x="450" y="24" class="sec">390 px · SCROLLED / "GROUPS" PRESSED</text>
+  <rect x="450" y="36" width="320" height="150" rx="16" class="phone"/>
+  <rect x="458" y="48" width="304" height="118" rx="8" class="card"/>
+  <path d="M476 76 L470 70 L476 64 M470 70 H484" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <text x="498" y="76" class="h">People</text>
+  <g clip-path="url(#c2)">
+    <rect x="404" y="112" width="116" height="40" rx="20" class="pill"/><text x="422" y="137" class="t">Approvals</text><circle cx="504" cy="132" r="3.5" fill="#cc2629"/>
+    <rect x="528" y="112" width="88" height="40" rx="20" class="pill-on"/><text x="572" y="137" class="t-on" text-anchor="middle">Groups</text>
+    <rect x="624" y="112" width="112" height="40" rx="20" class="pill"/><text x="680" y="137" class="t" text-anchor="middle">Onboarding</text>
+    <rect x="744" y="112" width="90" height="40" rx="20" class="pill"/>
+  </g>
+  <rect x="464" y="104" width="32" height="56" fill="url(#fl)"/>
+  <rect x="724" y="104" width="32" height="56" fill="url(#fr)"/>
+
+  <path d="M320 132 V214" class="lead"/>
+  <text x="30" y="228" class="note">32 px fade only on the side that has more pills</text>
+  <path d="M572 152 V214" class="lead"/>
+  <text x="450" y="228" class="note">a pressed pill scrolls to the centre of the strip</text>
+  <text x="450" y="246" class="note">so its neighbours become visible</text>
+</svg>

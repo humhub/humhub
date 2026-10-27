@@ -1,7 +1,7 @@
 <template>
     <UserFollowButton
         v-if="followEnabled || state.isFollowing"
-        class="c-entity-card__action"
+        class="entity-card-action"
         :user-id="user.id"
         :user-name="user.displayName"
         :initial="initial"
@@ -16,7 +16,7 @@
 import UserFollowButton from '../UserFollowButton.vue';
 
 /**
- * The follow action of a People directory card, the core's entry `follow` (sortOrder 200) of
+ * The follow action of a People browser card, the core's entry `follow` (sortOrder 200) of
  * the `user.card-actions` slot (registered in `vue/index.js`): the `UserFollowButton`, fed from
  * the card's state without a request of its own. Rendered while following is enabled, and
  * while the viewer follows the user after following was disabled, so that follow can still be

@@ -21,6 +21,9 @@ return [
     'isCoreModule' => true,
     'urlManagerRules' => [
         ['pattern' => 'api/v2/topic/picker', 'route' => 'topic/api/topic/picker', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/admin/topic', 'route' => 'topic/api/topic-table/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/space/<spaceId:\d+>/topic', 'route' => 'topic/api/topic-table/index', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/user/<userId:\d+>/topic', 'route' => 'topic/api/topic-table/index', 'verb' => ['GET', 'HEAD']],
     ],
     'events' => [
         ['class' => WallEntryControls::class, 'event' => WallEntryControls::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryControlsInit']],

@@ -16,6 +16,7 @@ use humhub\modules\user\helpers\UserAgentHelper;
             'details' => [
                 Html::encode(Yii::t('OauthModule.base', 'Signed in {date}', ['date' => Yii::$app->formatter->asDate($grant->created_at)])),
             ],
+            'actionIcon' => 'logout',
             'actionLabel' => Yii::t('OauthModule.base', 'Sign out'),
             'confirmTitle' => Yii::t('OauthModule.base', 'Sign out this device?'),
             'confirm' => Yii::t('OauthModule.base', 'The HumHub app on this device is signed out and has to sign in again.'),

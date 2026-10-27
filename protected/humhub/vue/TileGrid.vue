@@ -1,24 +1,24 @@
 <template>
-    <div class="c-tile-grid" :class="{ 'is-selecting': selection.length > 0 }" :aria-busy="loading ? 'true' : null">
-        <div class="c-tile-grid__stage">
+    <div class="tile-grid" :class="{ 'is-selecting': selection.length > 0 }" :aria-busy="loading ? 'true' : null">
+        <div class="tile-grid-stage">
             <Transition :name="swapName">
-                <div :key="level" class="c-tile-grid__pane">
-                    <ul v-if="showSkeleton" class="c-tile-grid__tiles" aria-hidden="true">
-                        <li v-for="n in skeletonCount" :key="'skeleton-' + n" class="c-tile-grid__skeleton">
-                            <span class="c-tile-grid__skeleton-block c-tile-grid__skeleton-thumb"></span>
-                            <span class="c-tile-grid__skeleton-block c-tile-grid__skeleton-name"></span>
+                <div :key="level" class="tile-grid-pane">
+                    <ul v-if="showSkeleton" class="tile-grid-tiles" aria-hidden="true">
+                        <li v-for="n in skeletonCount" :key="'skeleton-' + n" class="tile tile-skeleton placeholder-glow">
+                            <span class="placeholder tile-skeleton-thumb"></span>
+                            <span class="placeholder tile-skeleton-name"></span>
                         </li>
                     </ul>
                     <TransitionGroup
                         v-else-if="items.length"
                         tag="ul"
-                        name="c-tile-grid-fade"
-                        class="c-tile-grid__tiles"
+                        name="tile-grid-fade"
+                        class="tile-grid-tiles"
                     >
                         <li
                             v-for="item in items"
                             :key="item[itemKey]"
-                            class="c-tile-grid__tile"
+                            class="tile"
                             :class="tileClass(item)"
                             :data-key="item[itemKey]"
                             :draggable="isDraggable(item) ? 'true' : null"
@@ -29,38 +29,36 @@
                             @dragleave="onDragLeave(item, $event)"
                             @drop="onDrop(item, $event)"
                         >
-                            <div class="c-tile-grid__thumb" aria-hidden="true"><slot name="thumb" :item="item"></slot></div>
-                            <div class="c-tile-grid__name"><slot name="name" :item="item"></slot></div>
-                            <span class="c-tile-grid__meta"><slot name="meta" :item="item"></slot></span>
+                            <div class="tile-thumb" aria-hidden="true"><slot name="thumb" :item="item"></slot></div>
+                            <div class="tile-name"><slot name="name" :item="item"></slot></div>
+                            <span class="tile-meta"><slot name="meta" :item="item"></slot></span>
                             <ProgressFrame
                                 v-if="item.uploading"
-                                class="c-tile-grid__progress"
+                                class="tile-progress"
                                 :value="item.progress || 0"
                                 :label="uploadingLabel"
                             />
-                            <label v-if="selectable && !item.uploading" class="c-tile-grid__check">
-                                <input
-                                    type="checkbox"
-                                    class="c-tile-grid__check-input"
-                                    :checked="isSelected(item)"
-                                    :aria-label="selectLabel(item)"
-                                    @click="onCheck(item, $event)"
-                                />
-                                <i class="ti ti-check c-tile-grid__check-mark" aria-hidden="true"></i>
-                            </label>
-                            <div v-if="$slots.actions && !item.uploading" class="c-tile-grid__actions">
+                            <input
+                                v-if="selectable && !item.uploading"
+                                type="checkbox"
+                                class="form-check-input tile-check"
+                                :checked="isSelected(item)"
+                                :aria-label="selectLabel(item)"
+                                @click="onCheck(item, $event)"
+                            />
+                            <div v-if="$slots.actions && !item.uploading" class="tile-actions">
                                 <slot name="actions" :item="item"></slot>
                             </div>
                         </li>
                     </TransitionGroup>
-                    <div v-else class="c-tile-grid__empty">
+                    <div v-else class="tile-grid-empty">
                         <slot name="empty">{{ emptyLabel }}</slot>
                     </div>
                 </div>
             </Transition>
         </div>
 
-        <div v-if="hasMore" class="c-tile-grid__more">
+        <div v-if="hasMore" class="tile-grid-more">
             <button
                 ref="sentinel"
                 type="button"
@@ -120,8 +118,8 @@ import ProgressFrame from './ProgressFrame.vue';
  *   (`direction` `forward`, deeper) or from the left (`back`). Set `items: []` and
  *   `loading: true` together with the new `level`, or the new pane slides in with the old items.
  * - Paging: a "Show more" button while `hasMore`, pressed by an `IntersectionObserver` as it
- *   scrolls into view (like `CardGrid`); emits `load-more`, not while `loadingMore`.
- * - Styling: `.c-tile-grid` in `resources/scss/_item-browser.scss`.
+ *   scrolls into view (like `EntityGrid`); emits `load-more`, not while `loadingMore`.
+ * - Styling: `.tile-grid` in `resources/scss/_item-browser.scss`.
  *
  * @since 1.20
  */
@@ -150,7 +148,7 @@ export default {
             return this.loading && !this.items.length;
         },
         swapName() {
-            return this.direction === 'back' ? 'c-tile-grid-swap-back' : 'c-tile-grid-swap-forward';
+            return this.direction === 'back' ? 'tile-grid-swap-back' : 'tile-grid-swap-forward';
         },
         emptyLabel() {
             return i18n.t('base', 'No results found!');
@@ -262,7 +260,7 @@ export default {
             event.stopPropagation();
             this.$emit('drop-on', item, event);
         },
-        // Same auto-paging as CardGrid: observe the "Show more" button, re-arm after a page.
+        // Same auto-paging as EntityGrid: observe the "Show more" button, re-arm after a page.
         observe() {
             if (typeof IntersectionObserver === 'undefined') {
                 return;

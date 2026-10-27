@@ -1,66 +1,66 @@
 <template>
-    <article class="c-module-card" :class="cardClasses" :aria-busy="updateState === 'running' ? 'true' : null">
-        <div class="c-module-card__cover">
+    <article class="card entity-card module-card" :class="cardClasses" :aria-busy="updateState === 'running' ? 'true' : null">
+        <div class="entity-card-cover entity-card-cover-plain">
             <a v-if="module.marketplaceUrl" :href="module.marketplaceUrl" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-                <img :src="module.imageUrl" class="c-module-card__image" width="80" height="80" alt="">
+                <img :src="module.imageUrl" class="entity-card-image" width="80" height="80" alt="">
             </a>
-            <img v-else :src="module.imageUrl" class="c-module-card__image" width="80" height="80" alt="">
-            <div class="c-module-card__badges">
+            <img v-else :src="module.imageUrl" class="entity-card-image" width="80" height="80" alt="">
+            <div class="module-card-badges">
                 <button
                     v-if="module.featured"
                     type="button"
-                    class="c-module-card__badge c-module-card__badge--filter c-module-card__badge--featured c-module-card__badge--star"
+                    class="badge badge-danger rounded-pill module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star"
                     :aria-label="labels.featuredFilter"
                     :title="labels.featured"
                     @click="$emit('filter-type', 'featured')"
                 ><i class="ti ti-star-filled" aria-hidden="true"></i></button>
-                <span v-if="showUpdatePill" class="c-module-card__badge c-module-card__badge--update" :title="labels.updateTo">
+                <span v-if="showUpdatePill" class="badge badge-info module-card-badge module-card-badge-update" :title="labels.updateTo">
                     <i class="ti ti-arrow-up" aria-hidden="true"></i><span>{{ module.latestCompatibleVersion }}</span>
                 </span>
                 <button
                     v-else-if="filterTag"
                     type="button"
-                    class="c-module-card__badge c-module-card__badge--filter"
-                    :class="`c-module-card__badge--${module.badge}`"
+                    class="badge module-card-badge module-card-badge-filter"
+                    :class="[`module-card-badge-${module.badge}`, badgeToneClass]"
                     :title="badgeTitle"
                     :aria-label="badgeFilterLabel"
                     @click="$emit('filter-type', filterTag)"
                 >{{ badgeText }}</button>
-                <span v-else-if="badgeText" class="c-module-card__badge" :class="`c-module-card__badge--${module.badge}`" :title="badgeTitle">{{ badgeText }}</span>
+                <span v-else-if="badgeText" class="badge module-card-badge" :class="[`module-card-badge-${module.badge}`, badgeToneClass]" :title="badgeTitle">{{ badgeText }}</span>
             </div>
         </div>
-        <div class="c-module-card__header">
-            <a v-if="module.marketplaceUrl" class="c-module-card__title" :href="module.marketplaceUrl" target="_blank" rel="noopener"><RichText :parts="titleParts" flag="mark" tag="mark" mark-class="c-module-card__mark" /></a>
-            <span v-else class="c-module-card__title"><RichText :parts="titleParts" flag="mark" tag="mark" mark-class="c-module-card__mark" /></span>
-            <p class="c-module-card__version">{{ versionText }}</p>
+        <div class="entity-card-header">
+            <a v-if="module.marketplaceUrl" class="entity-card-title" :href="module.marketplaceUrl" target="_blank" rel="noopener"><RichText :parts="titleParts" flag="mark" tag="mark" mark-class="module-card-mark" /></a>
+            <span v-else class="entity-card-title"><RichText :parts="titleParts" flag="mark" tag="mark" mark-class="module-card-mark" /></span>
+            <p class="entity-card-subtitle">{{ versionText }}</p>
         </div>
-        <div class="c-module-card__body">
-            <p class="c-module-card__text"><RichText :parts="descriptionParts" flag="mark" tag="mark" mark-class="c-module-card__mark" /></p>
-            <p v-if="error" class="c-module-card__message text-danger" role="alert">{{ error }}</p>
-            <p v-else-if="updateState === 'failed'" class="c-module-card__message text-danger" role="alert">{{ labels.updateFailed }}</p>
+        <div class="entity-card-body">
+            <p class="entity-card-text"><RichText :parts="descriptionParts" flag="mark" tag="mark" mark-class="module-card-mark" /></p>
+            <p v-if="error" class="module-card-message text-danger" role="alert">{{ error }}</p>
+            <p v-else-if="updateState === 'failed'" class="module-card-message text-danger" role="alert">{{ labels.updateFailed }}</p>
         </div>
-        <div class="c-module-card__footer">
+        <div class="entity-card-footer">
             <button
                 v-if="showUpdateAction"
                 type="button"
-                class="btn c-module-card__action"
+                class="btn entity-card-action"
                 :class="updateButtonClass"
                 :disabled="updateBusy"
                 @click="$emit('update')"
             >
-                <i v-if="updateState === 'running'" class="ti ti-refresh c-module-card__spin" aria-hidden="true"></i>
+                <span v-if="updateState === 'running'" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 <span>{{ updateLabel }}</span>
             </button>
-            <button v-else-if="isInstalled" type="button" class="btn btn-secondary c-module-card__action" disabled>{{ labels.installed }}</button>
-            <button v-else-if="module.availability === 'install'" type="button" class="btn btn-primary c-module-card__action" :disabled="locked" @click="$emit('install')">{{ labels.install }}</button>
-            <button v-else-if="module.availability === 'buy'" type="button" class="btn btn-primary c-module-card__action" :disabled="locked" @click="$emit('buy')">{{ buyLabel }}</button>
-            <a v-else-if="module.availability === 'professionalEdition'" :href="professionalEditionUrl" class="btn btn-primary c-module-card__action" target="_blank" rel="noopener">{{ labels.learnMore }}</a>
-            <button v-else type="button" class="btn btn-secondary c-module-card__action" disabled>{{ labels.notCompatible }}</button>
+            <button v-else-if="isInstalled" type="button" class="btn btn-secondary entity-card-action" disabled>{{ labels.installed }}</button>
+            <button v-else-if="module.availability === 'install'" type="button" class="btn btn-primary entity-card-action" :disabled="locked" @click="$emit('install')">{{ labels.install }}</button>
+            <button v-else-if="module.availability === 'buy'" type="button" class="btn btn-primary entity-card-action" :disabled="locked" @click="$emit('buy')">{{ buyLabel }}</button>
+            <a v-else-if="module.availability === 'professionalEdition'" :href="professionalEditionUrl" class="btn btn-primary entity-card-action" target="_blank" rel="noopener">{{ labels.learnMore }}</a>
+            <button v-else type="button" class="btn btn-secondary entity-card-action" disabled>{{ labels.notCompatible }}</button>
 
             <a
                 v-if="secondaryLink"
                 :href="secondaryLink.href"
-                class="btn c-icon-button c-icon-button--ghost c-module-card__secondary"
+                class="btn btn-ghost btn-icon-only module-card-secondary"
                 target="_blank"
                 rel="noopener"
                 :aria-label="secondaryLink.label"
@@ -79,21 +79,30 @@ import { badgeLabel, buyLabel } from './messages.js';
 // The badges a type pill can filter by — the values of the `tag` filter.
 const FILTER_TAGS = ['professional', 'official', 'partner'];
 
+// The badge tone (docs/ui/badges.md) of a module type; others (deprecated) are a plain, neutral badge.
+const BADGE_TONES = {
+    official: 'badge-accent',
+    professional: 'badge-warning',
+    partner: 'badge-success',
+};
+
 /**
- * One card of the marketplace grid (`.c-module-card`, `resources/scss/_marketplace.scss`) —
+ * One card of the marketplace grid (`.module-card`, `resources/scss/_marketplace.scss`) —
  * presentational: it shows the module (`MarketplaceModuleSerializer::module()`) and the state
  * of an action running on it, and emits what the user asks for (`install`, `buy`, `update`,
  * `filter-type` with the `tag` filter value of its type pill). `MarketplaceBrowser` performs
  * the actions.
  *
- * - Badges: a round featured star (filters by `tag=featured`) when `module.featured`, next to
- *   either `↑ <latestCompatibleVersion>` while an update is available, or else the type pill of
- *   `badge` (a button filtering by that type; Partner carries the third-party hint as
- *   tooltip).
+ * - Badges (`.badge`, docs/ui/badges.md): a round featured star (`badge-danger`, filters by
+ *   `tag=featured`) when `module.featured`, next to either `↑ <latestCompatibleVersion>`
+ *   (`badge-info`) while an update is available, or else the type badge of `badge` (a button
+ *   filtering by that type; official `badge-accent`, professional `badge-warning`, partner
+ *   `badge-success` with the third-party hint as tooltip, others neutral).
  * - Primary action: Update (accent), Install / Buy / Learn more (primary), or a disabled
  *   "Installed" / "Not compatible". The ghost icon button links the changelog (update
  *   available) or the marketplace page.
- * - `updateState`: `pending` (queued by "Update all"), `running`, `success` ("Updated!"),
+ * - `updateState`: `pending` (queued by "Update all"), `running` (a spinner in the button),
+ *   `success` ("Updated!"),
  *   `removing` (the card fades out), `done` (it fades in with the updated module), `failed`.
  *   `locked` disables installing and buying while another action runs.
  * - `query`: the search the list was loaded with; its matches in the name and the description
@@ -164,6 +173,9 @@ export default {
             return this.module.badge === 'professional'
                 ? i18n.t('MarketplaceModule.base', 'PRO')
                 : badgeLabel(this.module.badge);
+        },
+        badgeToneClass() {
+            return BADGE_TONES[this.module.badge] || null;
         },
         badgeTitle() {
             if (this.module.badge === 'partner') {

@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use Yii;
+
 /**
  * StatusBar for user feedback (error/warning/info) — the `StatusBar` island of the core
  * component set, mounted once per page by {@see LayoutAddons}.
@@ -27,8 +29,19 @@ class StatusBar extends VueWidget
     /**
      * @inheritdoc
      */
+    protected function getProps(): array
+    {
+        return [
+            'closeLabel' => Yii::t('base', 'Close'),
+            'detailsLabel' => Yii::t('base', 'Show more'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function getOptions(): array
     {
-        return ['id' => 'status-bar', 'class' => 'clearfix'];
+        return ['id' => 'status-bar'];
     }
 }

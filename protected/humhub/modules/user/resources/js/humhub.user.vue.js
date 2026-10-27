@@ -165,29 +165,29 @@
       }
     }
   };
-  const _hoisted_1$4 = { class: "c-entity-card c-people-card" };
+  const _hoisted_1$4 = { class: "card entity-card people-card" };
   const _hoisted_2$2 = {
     key: 0,
-    class: "c-entity-card__pill"
+    class: "badge rounded-pill entity-card-pill"
   };
   const _hoisted_3$2 = ["title", "aria-label"];
-  const _hoisted_4$2 = { class: "c-entity-card__header" };
+  const _hoisted_4$2 = { class: "entity-card-header" };
   const _hoisted_5$1 = ["href"];
   const _hoisted_6$1 = {
     key: 0,
-    class: "c-entity-card__subtitle"
+    class: "entity-card-subtitle"
   };
-  const _hoisted_7$1 = { class: "c-entity-card__body" };
+  const _hoisted_7$1 = { class: "entity-card-body" };
   const _hoisted_8$1 = ["title"];
   const _hoisted_9$1 = ["innerHTML"];
   const _hoisted_10 = {
     key: 0,
-    class: "c-entity-card__tags"
+    class: "entity-card-tags"
   };
   const _hoisted_11 = ["title", "aria-label", "onClick"];
   const _hoisted_12 = {
     key: 1,
-    class: "c-entity-card__footer"
+    class: "entity-card-footer"
   };
   function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserImage = vue.resolveComponent("UserImage");
@@ -196,12 +196,12 @@
       vue.createElementVNode(
         "div",
         {
-          class: "c-entity-card__cover",
+          class: "entity-card-cover",
           style: vue.normalizeStyle($options.coverStyle)
         },
         [
           vue.createVNode(_component_UserImage, {
-            class: "c-entity-card__avatar",
+            class: "entity-card-avatar",
             guid: $props.user.guid,
             "display-name": $props.user.displayName,
             url: $props.user.url,
@@ -216,7 +216,7 @@
           $options.stat ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_2$2, [
             vue.createElementVNode("button", {
               type: "button",
-              class: vue.normalizeClass(["c-entity-card__stat", `c-entity-card__stat--${$options.stat.kind}`]),
+              class: vue.normalizeClass(["entity-card-stat", `entity-card-stat-${$options.stat.kind}`]),
               title: $options.stat.label,
               "aria-label": $options.stat.label,
               onClick: _cache[0] || (_cache[0] = (...args) => $options.openStat && $options.openStat(...args))
@@ -246,7 +246,7 @@
       ),
       vue.createElementVNode("div", _hoisted_4$2, [
         vue.createElementVNode("a", {
-          class: "c-entity-card__title",
+          class: "entity-card-title",
           href: $props.user.url
         }, vue.toDisplayString($props.user.displayName), 9, _hoisted_5$1),
         $props.user.title ? (vue.openBlock(), vue.createElementBlock(
@@ -268,7 +268,7 @@
           vue.renderList($options.details, (detail, index) => {
             return vue.openBlock(), vue.createElementBlock("p", {
               key: index,
-              class: "c-people-card__detail",
+              class: "people-card-detail",
               title: detail
             }, vue.toDisplayString(detail), 9, _hoisted_8$1);
           }),
@@ -278,7 +278,7 @@
         vue.createCommentVNode(" Rendered by the server from the administrator's details template, values encoded "),
         $props.user.detailsHtml ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 0,
-          class: "c-people-card__details",
+          class: "people-card-details",
           innerHTML: $props.user.detailsHtml
         }, null, 8, _hoisted_9$1)) : vue.createCommentVNode("v-if", true)
       ]),
@@ -290,7 +290,7 @@
             return vue.openBlock(), vue.createElementBlock("button", {
               key: tag,
               type: "button",
-              class: "c-entity-card__tag",
+              class: "badge entity-card-tag",
               title: $options.filterByLabel(tag),
               "aria-label": $options.filterByLabel(tag),
               onClick: ($event) => _ctx.$emit("filter-tag", tag)
@@ -306,7 +306,7 @@
           {
             key: 0,
             type: "button",
-            class: vue.normalizeClass(["c-entity-card__action c-entity-card__placeholder", $props.buttons.placeholderClass]),
+            class: vue.normalizeClass(["entity-card-action entity-card-placeholder", $props.buttons.placeholderClass]),
             disabled: "",
             "aria-hidden": "true",
             tabindex: "-1"
@@ -327,12 +327,12 @@
     name: "PeopleCardSkeleton"
   };
   const _hoisted_1$3 = {
-    class: "c-card-skeleton c-entity-card-skeleton c-people-card-skeleton",
+    class: "card entity-card entity-card-skeleton people-card-skeleton placeholder-glow",
     "aria-hidden": "true"
   };
   function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$3, [..._cache[0] || (_cache[0] = [
-      vue.createStaticVNode('<div class="c-entity-card-skeleton__cover"><span class="c-card-skeleton__block c-entity-card-skeleton__avatar"></span></div><div class="c-card-skeleton__header"><span class="c-card-skeleton__block c-card-skeleton__title"></span><span class="c-card-skeleton__block c-card-skeleton__version"></span></div><div class="c-card-skeleton__body"><span class="c-card-skeleton__block c-card-skeleton__line"></span><span class="c-card-skeleton__block c-card-skeleton__line c-card-skeleton__line--short"></span></div><div class="c-entity-card-skeleton__tags"><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span><span class="c-card-skeleton__block c-entity-card-skeleton__tag"></span></div><div class="c-card-skeleton__footer"><span class="c-card-skeleton__block c-card-skeleton__action"></span></div>', 5)
+      vue.createStaticVNode('<div class="entity-card-cover"><span class="placeholder entity-card-skeleton-avatar"></span></div><div class="entity-card-header"><span class="placeholder entity-card-skeleton-title"></span><span class="placeholder entity-card-skeleton-subtitle"></span></div><div class="entity-card-body"><span class="placeholder entity-card-skeleton-line"></span><span class="placeholder entity-card-skeleton-line entity-card-skeleton-line-short"></span></div><div class="entity-card-tags"><span class="placeholder entity-card-skeleton-tag"></span><span class="placeholder entity-card-skeleton-tag"></span><span class="placeholder entity-card-skeleton-tag"></span></div><div class="entity-card-footer"><span class="placeholder entity-card-skeleton-action"></span></div>', 5)
     ])]);
   }
   const PeopleCardSkeleton = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
@@ -353,9 +353,9 @@
   });
   const STATE_FRIENDS = "friends";
   const _sfc_main$4 = {
-    name: "PeopleDirectory",
+    name: "PeopleBrowser",
     i18nCategories: ["UserModule.base", "FriendshipModule.base", "base"],
-    // `CardDirectory` is a core component, resolved through the global registry (CoreVueAsset).
+    // `EntityBrowser` is a core component, resolved through the global registry (CoreVueAsset).
     components: { PeopleCard, PeopleCardSkeleton },
     props: {
       filters: { type: Array, default: () => [] },
@@ -417,13 +417,13 @@
       }
     }
   };
-  const _hoisted_1$2 = { class: "c-people-directory" };
+  const _hoisted_1$2 = { class: "people-browser" };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PeopleCard = vue.resolveComponent("PeopleCard");
     const _component_PeopleCardSkeleton = vue.resolveComponent("PeopleCardSkeleton");
-    const _component_CardDirectory = vue.resolveComponent("CardDirectory");
+    const _component_EntityBrowser = vue.resolveComponent("EntityBrowser");
     return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
-      vue.createVNode(_component_CardDirectory, {
+      vue.createVNode(_component_EntityBrowser, {
         ref: "directory",
         url: $options.listUrl,
         title: $options.labels.title,
@@ -500,7 +500,7 @@
       resolve: $options.resolve,
       "item-label": $options.itemLabel,
       icon: "ti-user",
-      block: "c-user-filter",
+      block: "user-filter",
       "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
     }, {
       option: vue.withCtx(({ item }) => [
@@ -937,7 +937,7 @@
     const _component_UserFollowButton = vue.resolveComponent("UserFollowButton");
     return $props.followEnabled || $props.state.isFollowing ? (vue.openBlock(), vue.createBlock(_component_UserFollowButton, {
       key: 0,
-      class: "c-entity-card__action",
+      class: "entity-card-action",
       "user-id": $props.user.id,
       "user-name": $props.user.displayName,
       initial: $options.initial,
@@ -948,7 +948,7 @@
     }, null, 8, ["user-id", "user-name", "initial", "follow-class", "following-class", "check-icon-html"])) : vue.createCommentVNode("v-if", true);
   }
   const PeopleCardFollowAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-  Object.entries(/* @__PURE__ */ Object.assign({ "./PeopleDirectory.vue": __vite_glob_0_0, "./UserFilterControl.vue": __vite_glob_0_1, "./UserFollowButton.vue": __vite_glob_0_2, "./UserImage.vue": __vite_glob_0_3, "./UserList.vue": __vite_glob_0_4 })).forEach(([path, component]) => {
+  Object.entries(/* @__PURE__ */ Object.assign({ "./PeopleBrowser.vue": __vite_glob_0_0, "./UserFilterControl.vue": __vite_glob_0_1, "./UserFollowButton.vue": __vite_glob_0_2, "./UserImage.vue": __vite_glob_0_3, "./UserList.vue": __vite_glob_0_4 })).forEach(([path, component]) => {
     vue$1.register(path.slice("./".length, -".vue".length), component);
   });
   vue$1.register("PeopleCardFollowAction", PeopleCardFollowAction);

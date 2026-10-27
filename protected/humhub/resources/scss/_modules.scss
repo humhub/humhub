@@ -281,22 +281,4 @@
         }
     }
 
-    .modules-updates-info {
-        border-radius: 3px;
-        border: 1px solid var(--hh-border-color-warning);
-        background: var(--hh-background-color-warning);
-        color: var(--hh-text-color-warning);
-        padding: 14px 20px 14px 25px;
-        margin: 20px 10px 10px;
-        font-size: 11px;
-        line-height: 20px;
-
-        strong {
-            font-size: 13px;
-        }
-
-        .btn {
-            margin-top: 8px;
-        }
-    }
 }

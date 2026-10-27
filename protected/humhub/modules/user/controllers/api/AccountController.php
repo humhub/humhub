@@ -9,6 +9,7 @@
 namespace humhub\modules\user\controllers\api;
 
 use humhub\components\api\BaseController;
+use humhub\components\table\TableSettings;
 use humhub\modules\user\serializers\UserSerializer;
 use Yii;
 use yii\filters\VerbFilter;
@@ -32,7 +33,7 @@ class AccountController extends BaseController
     /**
      * @inheritdoc
      */
-    protected array $scopes = ['*' => 'account:read'];
+    protected array $scopes = ['index' => 'account:read', 'blocked-users' => 'account:read', '*' => 'account:write'];
 
     /**
      * @inheritdoc
@@ -45,6 +46,7 @@ class AccountController extends BaseController
                 'actions' => [
                     'index' => ['GET', 'HEAD'],
                     'blocked-users' => ['GET', 'HEAD'],
+                    'table' => ['PUT'],
                 ],
             ],
         ]);
@@ -70,6 +72,32 @@ class AccountController extends BaseController
     public function actionBlockedUsers()
     {
         return ['results' => array_map('intval', $this->getIdentity()->getBlockedUserIds())];
+    }
+
+    /**
+     * Saves what the caller chose for a data table (`PUT account/table/<id>`, see
+     * {@see TableSettings}): `{columns: [<key>, …]}` the shown optional columns, `null` (or no
+     * `columns`) back to the table's defaults. Answers the stored choice.
+     *
+     * @since 1.20
+     */
+    public function actionTable($id)
+    {
+        $identity = $this->getIdentity();
+        $id = (string)$id;
+        $columns = Yii::$app->request->getBodyParam('columns');
+
+        if (!preg_match(TableSettings::TABLE_ID_PATTERN, $id)) {
+            return $this->validationErrors(['id' => [Yii::t('base', 'Invalid value.')]]);
+        }
+        if ($columns !== null && (!is_array($columns) || count($columns) > TableSettings::MAX_COLUMNS
+            || array_filter($columns, static fn($column) => !is_string($column) || !preg_match(TableSettings::COLUMN_PATTERN, $column)) !== [])) {
+            return $this->validationErrors(['columns' => [Yii::t('base', 'Invalid value.')]]);
+        }
+
+        TableSettings::setColumns($id, $columns, $identity);
+
+        return ['columns' => TableSettings::columns($id, $identity)];
     }
 
     /**

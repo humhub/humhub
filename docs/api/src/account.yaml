@@ -60,6 +60,56 @@ paths:
                       type: integer
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
+  "/account/table/{id}":
+    put:
+      tags:
+        - Account
+      summary: Save the columns chosen for a data table
+      operationId: saveTableColumns
+      description: |
+        What the caller chose in a data table's column chooser (e.g. the administration's user
+        table, `admin-users`): the keys of the optional columns shown. A user setting, so the
+        choice follows the caller across devices; the page mounting the table reads it back.
+        `null` returns to the table's defaults. Keys the table does not have are ignored by it.
+      parameters:
+        - name: id
+          in: path
+          description: The table's id (lowercase letters, digits, `.` and `-`)
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                columns:
+                  type: [array, 'null']
+                  maxItems: 50
+                  items:
+                    type: string
+            example:
+              columns: [username, createdAt]
+      responses:
+        "200":
+          description: The stored choice
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  columns:
+                    type: [array, 'null']
+                    items:
+                      type: string
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "422":
+          $ref: "common.yaml#/components/responses/ValidationFailed"
 components:
   securitySchemes:
     Bearer:

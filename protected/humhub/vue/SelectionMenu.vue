@@ -1,9 +1,9 @@
 <template>
-    <Transition name="c-selection-menu">
+    <Transition name="selection-menu">
         <DropdownMenu
             v-if="count > 0"
-            root-class="nav c-selection-menu"
-            toggle-class="btn c-icon-button c-icon-button--ghost c-selection-menu__toggle"
+            root-class="nav selection-menu"
+            toggle-class="btn btn-ghost btn-icon-only selection-menu-toggle"
             :toggle-aria-label="toggleLabel"
             :toggle-title="toggleLabel"
             :menu-id="menuId"
@@ -32,7 +32,7 @@ import DropdownMenu from './DropdownMenu.vue';
  * - `menuId` (required): names this menu's entries in the `registerMenuEntry()`/
  *   `removeMenuEntry()` registry — namespace it by the owning view (e.g. `cfiles.selection`),
  *   since `context` differs per consumer; `DropdownMenu` renders no `entries` without one.
- * - Styling: `.c-selection-menu` in `resources/scss/_item-browser.scss`.
+ * - Styling: `.selection-menu` in `resources/scss/_item-browser.scss`.
  *
  * @since 1.20
  */

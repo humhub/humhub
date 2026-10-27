@@ -1,55 +1,48 @@
 //
 // Notification settings island (protected/humhub/modules/notification/vue/NotificationSettings.vue):
-// the profile cards, the category rows with their channel badges, the privacy mode (global scope) and
-// the autosave state. The space
-// picker comes from `_page-toolbar.scss`, the checkboxes are the form suite's.
+// the profile radio cards (`.form-check-card`, `_form.scss`) and the categories (a Bootstrap
+// `.accordion`, `_accordion.scss`, with `.badge` channels) in content cards, the privacy mode
+// (global scope) and the autosave state. The space picker comes from `_filter-bar.scss`.
 // @since 1.20
 // --------------------------------------------------
 
+$notification-settings-gap: $spacer !default;
+
 @if not $prev-notification-settings {
-    .c-notification-settings {
+    .notification-settings {
         display: flex;
         flex-direction: column;
-        gap: 16px;
-
-        > .panel {
-            margin-bottom: 0;
-        }
+        gap: $notification-settings-gap;
     }
 
-    .c-notification-settings__intro {
-        padding: 24px;
+    // The account page ends with the island: like the cards above, it keeps its distance to the
+    // footer
+    .notification-settings-user {
+        margin-bottom: $content-card-margin-bottom;
     }
 
-    .c-notification-settings__head {
+    .notification-settings-head {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 8px 12px;
+        gap: $spacer * .5 $spacer * .75;
     }
 
-    .c-notification-settings__title {
+    .notification-settings-subtitle {
         margin: 0;
         color: var(--hh-text-color-highlight);
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .c-notification-settings__subtitle {
-        margin: 0;
-        color: var(--hh-text-color-highlight);
-        font-size: 14px;
-        font-weight: 600;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
     }
 
     // The autosave state, right of the title
-    .c-notification-settings__status {
+    .notification-settings-status {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: $spacer * .25;
         margin-left: auto;
-        color: var(--hh-text-color-secondary);
-        font-size: 12.5px;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
 
         &.is-saved {
             color: var(--bs-success);
@@ -60,393 +53,106 @@
         }
     }
 
-    .c-notification-settings__spin {
-        animation: c-notification-settings-spin 1s linear infinite;
+    .notification-settings-lead {
+        color: var(--bs-secondary-color);
     }
 
-    @keyframes c-notification-settings-spin {
-        to {
-            transform: rotate(360deg);
-        }
+    // Global scope (no cards): the head above a bordered accordion
+    .notification-settings-global .notification-settings-head {
+        margin-bottom: $spacer * .75;
     }
 
-    .c-notification-settings__lead {
-        margin: 6px 0 18px;
-        color: var(--hh-text-color-secondary);
-    }
-
-    // Profiles: a wrapping row of selectable cards, stacked radio rows on a phone
-    .c-notification-settings__profiles {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    .c-notification-settings__profile {
-        display: flex;
-        flex: 1 1 180px;
-        align-items: flex-start;
-        gap: 12px;
-        min-height: 56px;
-        padding: 13px 15px;
-        border: 1px solid var(--bs-border-color);
-        border-radius: 6px;
-        background: var(--hh-background-color-main);
-        color: inherit;
-        font: inherit;
-        text-align: left;
-
-        &:hover {
-            border-color: var(--bs-accent);
-        }
-
-        &:focus-visible {
-            outline: 2px solid rgba(var(--bs-accent-rgb), 0.32);
-            outline-offset: 2px;
-        }
-
-        &.is-selected {
-            border-color: var(--bs-accent);
-            box-shadow: inset 0 0 0 1px var(--bs-accent);
-            background: var(--hh-background-color-highlight-soft);
-        }
-    }
-
-    // The radio dot shows on a phone only; the desktop cards are selected by their border
-    .c-notification-settings__radio {
-        display: none;
-        flex: 0 0 auto;
-        width: 18px;
-        height: 18px;
-        margin-top: 1px;
-        border: 1.5px solid var(--hh-background4);
-        border-radius: 50%;
-        background: var(--hh-background-color-main);
-
-        .is-selected > & {
-            border: 5px solid var(--bs-accent);
-        }
-    }
-
-    .c-notification-settings__profile-text {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        min-width: 0;
-    }
-
-    .c-notification-settings__profile-title,
-    .c-notification-settings__category-title {
-        color: var(--hh-text-color-highlight);
-        font-weight: 600;
-    }
-
-    .c-notification-settings__profile-description,
-    .c-notification-settings__category-description {
-        color: var(--hh-text-color-secondary);
-        font-size: 12.5px;
-    }
-
-    // Privacy mode of mails and push (global scope): the profile cards with an example line each
-    .c-notification-settings__privacy {
-        padding: 14px 18px 18px;
-        border: 1px solid var(--bs-border-color);
-        border-radius: 6px;
-
-        .c-notification-settings__profile:disabled {
-            opacity: 0.65;
-            pointer-events: none;
-        }
-    }
-
-    .c-notification-settings__privacy-fixed {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin: -8px 0 14px;
-        color: var(--hh-text-color-secondary);
-        font-size: 12.5px;
-    }
-
-    .c-notification-settings__privacy-example {
-        margin-top: 6px;
-        padding: 6px 8px;
-        border-radius: 4px;
-        background: var(--hh-background-color-secondary);
-        color: var(--hh-text-color-main);
-        font-size: 12.5px;
-    }
-
-    // Topics
-    .c-notification-settings__categories {
-        overflow: hidden;
-    }
-
-    .c-notification-settings--global .c-notification-settings__categories {
-        border: 1px solid var(--bs-border-color);
-        border-radius: 6px;
-    }
-
-    .c-notification-settings__categories-head {
-        padding: 14px 18px;
-    }
-
-    .c-notification-settings__divider {
+    // "From modules": the heading between the core's and the modules' accordion
+    .notification-settings-divider {
         margin: 0;
-        padding: 10px 18px;
-        border-top: 1px solid var(--bs-border-color-translucent);
-        background: var(--hh-background-color-secondary);
-        color: var(--hh-text-color-secondary);
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.04em;
+        padding: $spacer * .5 var(--bs-accordion-btn-padding-x, #{$accordion-button-padding-x});
+        border-top: var(--bs-border-width) solid var(--bs-border-color);
+        background: var(--bs-secondary-bg);
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
         text-transform: uppercase;
-
-        + .c-notification-settings__category {
-            border-top: 0;
-        }
     }
 
-    .c-notification-settings__category {
-        border-top: 1px solid var(--bs-border-color-translucent);
-
-        &.is-expanded {
-            background: var(--hh-background-color-secondary);
-        }
-    }
-
-    .c-notification-settings__category-head {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        width: 100%;
-        min-height: 60px;
-        padding: 14px 18px;
+    .notification-settings-global .notification-settings-divider {
+        margin-top: $spacer;
+        padding-inline: 0;
         border: 0;
         background: none;
-        color: inherit;
-        font: inherit;
-        text-align: left;
     }
 
-    button.c-notification-settings__category-head {
-        cursor: pointer;
-
-        &:hover {
-            background: var(--hh-background-color-secondary);
-        }
-
-        &:focus-visible {
-            outline: 2px solid rgba(var(--bs-accent-rgb), 0.32);
-            outline-offset: -2px;
-        }
-    }
-
-    .c-notification-settings__category-icon {
-        display: flex;
-        flex: 0 0 auto;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        background: var(--hh-background-color-secondary);
-        color: var(--hh-text-color-main);
-        font-size: 18px;
-
-        .is-expanded & {
-            background: var(--bs-accent-bg-subtle);
-            color: var(--bs-accent-text-emphasis);
-        }
-    }
-
-    .c-notification-settings__category-text {
-        display: flex;
-        flex: 1 1 auto;
-        flex-direction: column;
-        gap: 2px;
-        min-width: 0;
-    }
-
-    .c-notification-settings__badges {
+    .notification-settings-badges {
         display: flex;
         flex: 0 1 auto;
         flex-wrap: wrap;
         justify-content: flex-end;
-        gap: 6px;
+        gap: $spacer * .25;
+        margin: 0 $spacer * .75;
     }
 
-    // A channel of the category: highlighted while the category reaches the user through it
-    .c-notification-settings__badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 3px 9px;
-        border-radius: 9999px;
-        background: var(--hh-background-color-secondary);
-        color: var(--hh-text-color-secondary);
-        font-size: 12px;
-        line-height: 1.4;
-        white-space: nowrap;
-
-        &.is-on {
-            background: var(--bs-accent-bg-subtle);
-            color: var(--bs-accent-text-emphasis);
-            font-weight: 600;
-        }
-    }
-
-    .c-notification-settings__category-state {
-        display: flex;
-        flex: 0 0 auto;
-        align-items: center;
-        justify-content: center;
-        width: 20px;
-        color: var(--hh-text-color-soft);
-        font-size: 16px;
-    }
-
-    .c-notification-settings__category-body {
+    .notification-settings-category-body {
         display: flex;
         flex-direction: column;
-        gap: 14px;
-        padding: 0 18px 18px 66px;
+        gap: $spacer;
     }
 
-    // The channel checkboxes as bordered tiles in a row
-    .c-notification-settings__channels {
+    // The channel checkboxes in a row
+    .notification-settings-channels {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: $spacer * .5 $spacer * 1.5;
 
         > .mb-3 {
             margin-bottom: 0 !important;
         }
-
-        .form-check {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-height: 38px;
-            margin: 0;
-            padding: 0 12px;
-            border: 1px solid var(--bs-border-color);
-            border-radius: 6px;
-            background: var(--hh-background-color-main);
-        }
-
-        .form-check-input {
-            float: none;
-            margin: 0;
-        }
-
-        .form-check-label {
-            cursor: pointer;
-        }
-
-        .invalid-feedback {
-            flex-basis: 100%;
-        }
     }
 
-    .c-notification-settings__spaces-label {
-        margin-bottom: 6px;
-        color: var(--hh-text-color-highlight);
-        font-size: 13px;
-        font-weight: 600;
+    // Privacy mode of mails and push (global scope): an example line under each mode
+    .notification-settings-privacy-fixed {
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
     }
 
-    .c-notification-settings__footer {
+    .notification-settings-privacy-example {
+        margin-top: $spacer * .5;
+        padding: $spacer * .25 $spacer * .5;
+        border-radius: var(--bs-border-radius-sm);
+        background: var(--bs-secondary-bg);
+        color: var(--bs-body-color);
+        font-size: $font-size-sm;
+    }
+
+    .notification-settings-footer {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 12px 16px;
-        padding: 0 4px;
+        gap: $spacer * .75 $spacer;
     }
 
-    .c-notification-settings__autosave {
+    .notification-settings-autosave {
         flex: 1 1 auto;
-        color: var(--hh-text-color-secondary);
-        font-size: 12.5px;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
     }
 
+    // Phones: the badges move under the title, the description gives way
     @include media-breakpoint-down(sm) {
-        .c-notification-settings__intro {
-            padding: 16px 14px;
+        .notification-settings .accordion-button {
+            flex-wrap: wrap;
         }
 
-        .c-notification-settings__title {
-            font-size: 18px;
-        }
-
-        .c-notification-settings__profiles {
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .c-notification-settings__profile {
-            flex-basis: auto;
-            align-items: center;
-            padding: 9px 13px;
-        }
-
-        .c-notification-settings__radio {
-            display: block;
-            margin-top: 0;
-        }
-
-        // The badges move under the title, the description gives way
-        .c-notification-settings__category-head {
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            column-gap: 12px;
-            row-gap: 4px;
-            padding: 10px 14px;
-        }
-
-        .c-notification-settings__category-icon {
-            grid-row: 1 / span 2;
-            width: 32px;
-            height: 32px;
-        }
-
-        .c-notification-settings__category-text {
-            grid-row: 1;
-            grid-column: 2;
-        }
-
-        .c-notification-settings__category-description {
+        .notification-settings .accordion-subtitle {
             display: none;
         }
 
-        .c-notification-settings__badges {
-            grid-row: 2;
-            grid-column: 2;
+        .notification-settings-badges {
+            order: 1;
+            flex-basis: 100%;
             justify-content: flex-start;
-            gap: 4px;
-        }
-
-        .c-notification-settings__badge {
-            padding: 2px 8px;
-            font-size: 11.5px;
-        }
-
-        .c-notification-settings__category-state {
-            grid-row: 1 / span 2;
-            grid-column: 3;
-        }
-
-        .c-notification-settings__category-body {
-            padding: 0 14px 16px;
-        }
-
-        .c-notification-settings__channels .form-check,
-        .c-notification-settings__spaces .c-picker__field,
-        .c-notification-settings__footer .btn {
-            min-height: 44px;
-        }
-
-        .c-notification-settings__categories-head {
-            padding: 12px 14px;
+            margin: $spacer * .25 0 0 calc(#{$accordion-icon-box-size} + #{$accordion-header-gap});
         }
     }
 }

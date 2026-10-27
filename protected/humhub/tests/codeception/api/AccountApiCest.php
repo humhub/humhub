@@ -77,4 +77,46 @@ class AccountApiCest
         $I->sendGet('account/blocked-users');
         $I->seeResponseCodeIs(401);
     }
+
+    private function withCsrf(ApiTester $I): void
+    {
+        $rawToken = Yii::$app->security->generateRandomString();
+        $I->setCookie('_csrf', $rawToken);
+        $I->haveHttpHeader('X-CSRF-Token', Yii::$app->security->maskToken($rawToken));
+    }
+
+    public function testSavesTheColumnsChosenForATable(ApiTester $I)
+    {
+        $I->wantTo('save and reset the columns a user chose for a data table');
+        $I->amLoggedInAs(2);
+        $this->withCsrf($I);
+        $I->haveHttpHeader('Content-Type', 'application/json');
+
+        $I->sendPut('account/table/admin-users', json_encode(['columns' => ['username', 'createdAt']]));
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseEquals(json_encode(['columns' => ['username', 'createdAt']]));
+        Assert::assertSame(['username', 'createdAt'], \humhub\components\table\TableSettings::columns('admin-users', User::findOne(2)));
+        // Another user's choice is their own.
+        Assert::assertNull(\humhub\components\table\TableSettings::columns('admin-users', User::findOne(1)));
+
+        $I->sendPut('account/table/admin-users', json_encode(['columns' => null]));
+        $I->seeResponseCodeIs(200);
+        $I->seeResponseEquals(json_encode(['columns' => null]));
+    }
+
+    public function testRejectsAnInvalidColumnChoice(ApiTester $I)
+    {
+        $I->amLoggedInAs(2);
+        $this->withCsrf($I);
+        $I->haveHttpHeader('Content-Type', 'application/json');
+
+        $I->sendPut('account/table/admin-users', json_encode(['columns' => 'username']));
+        $I->seeResponseCodeIs(422);
+
+        $I->sendPut('account/table/admin-users', json_encode(['columns' => ['user name']]));
+        $I->seeResponseCodeIs(422);
+
+        $I->sendPut('account/table/Admin_Users', json_encode(['columns' => []]));
+        $I->seeResponseCodeIs(404);
+    }
 }

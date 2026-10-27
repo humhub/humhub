@@ -17,7 +17,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\permissions\ManageTopics;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -89,20 +88,9 @@ class ManageController extends ContentContainerController
 
         return $this->render('overview', [
             'contentContainer' => $this->contentContainer,
-            'dataProvider' => $this->getTopicProvider(),
             'addModel' => new Topic(),
             'topicSettings' => $topicSettings ?? null,
             'title' => $title,
-        ]);
-    }
-
-    private function getTopicProvider()
-    {
-        return new ActiveDataProvider([
-            'query' => Topic::findByContainer($this->contentContainer)->orderBy('sort_order, name'),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
         ]);
     }
 
@@ -120,7 +108,7 @@ class ManageController extends ContentContainerController
 
         $topic->delete();
 
-        return ['success' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
+        return ['success' => true, 'removed' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
     }
 
     public function actionEdit($id)

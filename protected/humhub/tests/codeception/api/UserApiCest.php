@@ -32,7 +32,7 @@ use yii\base\Event;
 
 /**
  * The user list (`humhub\modules\user\controllers\api\UserController`) — the user search of the
- * platform, read by the People directory and requiring access to it — and its picker
+ * platform, read by the People browser and requiring access to it — and its picker
  * (`user/picker`), which does not.
  *
  * Fixture ground truth used here: the enabled users are 1 (`Admin`), 2 (`User1`, Peter), 3

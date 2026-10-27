@@ -3,52 +3,48 @@
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $model Space */
 /* @var $visibilities array */
 ?>
 
-<div class="panel panel-default">
-    <div>
-        <div class="panel-heading">
-            <?= Yii::t('SpaceModule.manage', '<strong>Security</strong> settings'); ?>
-        </div>
-    </div>
+<?php $this->beginContent('@space/modules/manage/views/layouts/section.php', [
+    'title' => Yii::t('SpaceModule.manage', 'Security'),
+    'tabs' => new SecurityTabMenu(['space' => $model]),
+]) ?>
+<?php ContentCard::begin(['title' => Yii::t('AdminModule.base', 'General')]) ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-    <?= SecurityTabMenu::widget(['space' => $model]); ?>
+    <?= $form->field($model, 'visibility')->dropDownList($visibilities, [
+        'data' => [
+            'action-change' => 'space.changeVisibilityOption',
+        ]
+    ]); ?>
 
-    <div class="panel-body">
-        <?php $form = ActiveForm::begin(); ?>
+    <?php $joinPolicies = [0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')]; ?>
+    <?= $form->field($model, 'join_policy')->dropDownList($joinPolicies, ['disabled' => $model->visibility == Space::VISIBILITY_NONE]); ?>
 
-        <?= $form->field($model, 'visibility')->dropDownList($visibilities, [
+    <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((Yii::$app->getModule('space')->settings->get('defaultContentVisibility') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
+    <?php $contentVisibilities = ['' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')]; ?>
+    <?= $form->field($model, 'default_content_visibility')->dropDownList($contentVisibilities, ['disabled' => $model->visibility == Space::VISIBILITY_NONE]); ?>
+
+    <?= Html::submitButton(
+        Yii::t('base', 'Save'),
+        [
+            'class' => 'btn btn-primary',
             'data' => [
-                'action-change' => 'space.changeVisibilityOption',
-            ]
-        ]); ?>
+                'ui-loader' => '',
+                'action-confirm-header' => Yii::t('SpaceModule.base', 'Change visibility'),
+                'confirm-text' => Yii::t('SpaceModule.base', 'Warning: If you change the visibility settings of a Space from public to private, all content within that Space, including posts, comments, attachments etc. will also be set to private. This means that non-members will no longer be able to see, access, or interact with any of the content within that Space. Also all followers will be removed from this Space.'),
+            ],
+        ]
+    ) ?>
 
-        <?php $joinPolicies = [0 => Yii::t('SpaceModule.base', 'Only by invite'), 1 => Yii::t('SpaceModule.base', 'Invite and request'), 2 => Yii::t('SpaceModule.base', 'Everyone can enter')]; ?>
-        <?= $form->field($model, 'join_policy')->dropDownList($joinPolicies, ['disabled' => $model->visibility == Space::VISIBILITY_NONE]); ?>
-
-        <?php $defaultVisibilityLabel = Yii::t('SpaceModule.base', 'Default') . ' (' . ((Yii::$app->getModule('space')->settings->get('defaultContentVisibility') == 1) ? Yii::t('SpaceModule.base', 'Public') : Yii::t('SpaceModule.base', 'Private')) . ')'; ?>
-        <?php $contentVisibilities = ['' => $defaultVisibilityLabel, 0 => Yii::t('SpaceModule.base', 'Private'), 1 => Yii::t('SpaceModule.base', 'Public')]; ?>
-        <?= $form->field($model, 'default_content_visibility')->dropDownList($contentVisibilities, ['disabled' => $model->visibility == Space::VISIBILITY_NONE]); ?>
-
-        <?= Html::submitButton(
-            Yii::t('base', 'Save'),
-            [
-                'class' => 'btn btn-primary',
-                'data' => [
-                    'ui-loader' => '',
-                    'action-confirm-header' => Yii::t('SpaceModule.base', 'Change visibility'),
-                    'confirm-text' => Yii::t('SpaceModule.base', 'Warning: If you change the visibility settings of a Space from public to private, all content within that Space, including posts, comments, attachments etc. will also be set to private. This means that non-members will no longer be able to see, access, or interact with any of the content within that Space. Also all followers will be removed from this Space.'),
-                ],
-            ]
-        ) ?>
-
-        <?php ActiveForm::end(); ?>
-    </div>
-</div>
+    <?php ActiveForm::end(); ?>
+<?php ContentCard::end() ?>
+<?php $this->endContent() ?>
 
 <script <?= Html::nonce() ?>>
     $('#space-visibility').on('change', function () {

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="420" viewBox="0 0 820 420" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Master/detail on a phone: one pane at a time with a back arrow</title>
+  <defs>
+<symbol id="i-bell" viewBox="0 0 16 16"><path d="M4 11 V7 A4 4 0 0 1 12 7 V11 L13.5 12.5 H2.5 Z M6.5 14 H9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-mail" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 4 L8 9 L14 4" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-people2" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 14 Q1.5 9 6 9 Q10.5 9 10.5 14" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="11.5" cy="5.5" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-puzzle" viewBox="0 0 16 16"><path d="M3 5 H6 A1.5 1.5 0 1 1 9 5 H12 V8 A1.5 1.5 0 1 1 12 11 V14 H3 Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 16 16"><path d="M8 1.5 L10 6 L14.8 6.3 L11.1 9.4 L12.3 14.2 L8 11.6 L3.7 14.2 L4.9 9.4 L1.2 6.3 L6 6 Z" fill="currentColor"/></symbol>
+<symbol id="i-arrowup" viewBox="0 0 16 16"><path d="M8 13 V3 M4 7 L8 3 L12 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#037283"/></marker>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="820" height="420" fill="#fff"/>
+<text x="20" y="24" class="sec">/admin</text>
+<rect x="20" y="36" width="170" height="300" rx="16" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="28" y="46" width="154" height="210" rx="8" class="card"/><text x="42" y="74" class="name" style="font-weight:600">Administration</text><rect x="44" y="96" width="10" height="10" rx="2" fill="none" stroke="#333" stroke-width="1.3"/><text x="62" y="106" class="txt" style="fill:#333">Overview</text><rect x="36" y="118" width="138" height="26" rx="5" fill="#2d3340"/><rect x="44" y="126" width="10" height="10" rx="2" fill="none" stroke="#fff" stroke-width="1.3"/><text x="62" y="136" class="txt" style="fill:#fff">People</text><rect x="144" y="120" width="22" height="22" rx="11" fill="#fbe4e4" stroke="#cc2629"/><text x="155.0" y="135" font-size="11.5" font-weight="700" style="fill:#a31f22" text-anchor="middle">7</text><rect x="44" y="156" width="10" height="10" rx="2" fill="none" stroke="#333" stroke-width="1.3"/><text x="62" y="166" class="txt" style="fill:#333">Spaces</text><rect x="44" y="186" width="10" height="10" rx="2" fill="none" stroke="#333" stroke-width="1.3"/><text x="62" y="196" class="txt" style="fill:#333">Content</text><rect x="44" y="216" width="10" height="10" rx="2" fill="none" stroke="#333" stroke-width="1.3"/><text x="62" y="226" class="txt" style="fill:#333">Modules</text><rect x="144" y="210" width="22" height="22" rx="11" fill="#fbe4e4" stroke="#cc2629"/><text x="155.0" y="225" font-size="11.5" font-weight="700" style="fill:#a31f22" text-anchor="middle">3</text>
+<text x="220" y="24" class="sec">/admin/people</text>
+<rect x="220" y="36" width="170" height="300" rx="16" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="228" y="46" width="154" height="64" rx="8" class="card"/>
+<path d="M244 70 L238 64 L244 58 M238 64 H252" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/><text x="260" y="69" class="name" style="font-weight:600">People</text>
+<rect x="236" y="82" width="56" height="22" rx="11" fill="#e9eaed" stroke="#9a9ea6" stroke-width="1.5"/><text x="248" y="97" class="txt" font-size="12">Users</text><rect x="298" y="82" width="84" height="22" rx="11" fill="#fff" stroke="#e2e2e2" stroke-width="1.5"/><text x="308" y="97" class="txt" font-size="12">Invitati</text>
+<rect x="228" y="118" width="154" height="138" rx="8" class="card"/><rect x="238" y="132" width="130" height="10" rx="4" fill="#eee"/><rect x="238" y="148" width="100" height="10" rx="4" fill="#eee"/><rect x="238" y="164" width="70" height="10" rx="4" fill="#eee"/><rect x="238" y="180" width="130" height="10" rx="4" fill="#eee"/><rect x="238" y="196" width="100" height="10" rx="4" fill="#eee"/><rect x="238" y="212" width="70" height="10" rx="4" fill="#eee"/><rect x="238" y="228" width="130" height="10" rx="4" fill="#eee"/>
+<path d="M190 120 C 205 120, 205 120, 216 120" stroke="#037283" stroke-width="1.5" marker-end="url(#arr)"/>
+<path d="M226 64 C 205 40, 160 40, 150 60" stroke="#037283" stroke-width="1.5" fill="none" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<text x="430" y="24" class="sec">MESSAGES · LIST</text>
+<rect x="430" y="36" width="170" height="300" rx="16" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="438" y="52" width="154" height="38" rx="6" fill="#fff"/><circle cx="454" cy="71" r="10" fill="#d9dde3"/><rect x="470" y="62" width="90" height="8" rx="4" fill="#ccc"/><rect x="470" y="75" width="110" height="6" rx="3" fill="#eee"/>
+<rect x="438" y="96" width="154" height="38" rx="6" fill="#fff"/><circle cx="454" cy="115" r="10" fill="#d9dde3"/><rect x="470" y="106" width="90" height="8" rx="4" fill="#ccc"/><rect x="470" y="119" width="110" height="6" rx="3" fill="#eee"/>
+<rect x="438" y="140" width="154" height="38" rx="6" fill="#fff"/><circle cx="454" cy="159" r="10" fill="#d9dde3"/><rect x="470" y="150" width="90" height="8" rx="4" fill="#ccc"/><rect x="470" y="163" width="110" height="6" rx="3" fill="#eee"/>
+<rect x="438" y="184" width="154" height="38" rx="6" fill="#fff"/><circle cx="454" cy="203" r="10" fill="#d9dde3"/><rect x="470" y="194" width="90" height="8" rx="4" fill="#ccc"/><rect x="470" y="207" width="110" height="6" rx="3" fill="#eee"/>
+<rect x="438" y="228" width="154" height="38" rx="6" fill="#fff"/><circle cx="454" cy="247" r="10" fill="#d9dde3"/><rect x="470" y="238" width="90" height="8" rx="4" fill="#ccc"/><rect x="470" y="251" width="110" height="6" rx="3" fill="#eee"/>
+<text x="630" y="24" class="sec">MESSAGES · THREAD</text>
+<rect x="630" y="36" width="170" height="300" rx="16" fill="#ededed" stroke="#bdbdbd" stroke-width="2"/>
+<rect x="638" y="46" width="154" height="40" rx="8" class="card"/><path d="M654 66 L648 60 L654 54 M648 60 H662" stroke="#000" stroke-width="1.8" fill="none" stroke-linecap="round"/><text x="668" y="65" class="name" font-size="13" style="font-weight:600">Kickoff</text>
+<rect x="646" y="98" width="110" height="26" rx="9" fill="#fff"/><rect x="676" y="134" width="110" height="26" rx="9" fill="#e6f1f3"/><rect x="646" y="170" width="90" height="26" rx="9" fill="#fff"/>
+<path d="M600 120 C 612 120, 612 120, 626 120" stroke="#037283" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="20" y="366" class="note">Below 816 px of its own width, the split folds to one pane. The list (or menu) is the start;</text>
+<text x="20" y="384" class="note">opening an entry shows the detail with a back arrow. Wide, the back arrow is hidden.</text>
+<text x="20" y="402" class="note">Administration uses real URLs for both panes, so the browser's back button works too.</text>
+</svg>

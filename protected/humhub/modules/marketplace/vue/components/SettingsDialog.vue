@@ -1,6 +1,6 @@
 <template>
-    <UiModal :show="true" dialog-class="c-mp-dialog c-mp-settings" :title="labels.title" @update:show="onShow">
-        <div class="c-mp-settings__tabs" role="tablist" :aria-label="labels.title">
+    <UiModal :show="true" dialog-class="marketplace-dialog marketplace-settings" :title="labels.title" @update:show="onShow">
+        <div class="nav nav-pills nav-pills-secondary marketplace-settings-tabs" role="tablist" :aria-label="labels.title">
             <button
                 v-for="item in tabs"
                 :id="`${uid}-tab-${item.key}`"
@@ -8,8 +8,8 @@
                 :ref="`tab-${item.key}`"
                 type="button"
                 role="tab"
-                class="c-mp-settings__tab"
-                :class="{ 'is-active': tab === item.key }"
+                class="nav-link"
+                :class="{ active: tab === item.key }"
                 :aria-selected="tab === item.key ? 'true' : 'false'"
                 :aria-controls="`${uid}-panel-${item.key}`"
                 :tabindex="tab === item.key ? null : -1"
@@ -21,59 +21,57 @@
         <section
             v-show="tab === 'licenses'"
             :id="`${uid}-panel-licenses`"
-            class="c-mp-settings__panel"
+            class="marketplace-settings-panel"
             role="tabpanel"
             :aria-labelledby="`${uid}-tab-licenses`"
         >
-            <div class="c-mp-settings__key">
-                <div class="c-licence-field" :class="{ 'is-valid': added }">
-                    <input
-                        ref="input"
-                        v-model="licenceKey"
-                        type="text"
-                        class="form-control c-licence-field__input"
-                        :class="{ 'is-invalid': keyError, 'is-valid': added }"
-                        :placeholder="labels.placeholder"
-                        :aria-label="labels.licenceKey"
-                        autocomplete="off"
-                        spellcheck="false"
-                        autocapitalize="characters"
-                        :disabled="registering || loading"
-                        :aria-invalid="keyError ? 'true' : null"
-                        :aria-describedby="keyError ? `${uid}-key-error` : null"
-                        @input="onKeyInput"
-                        @keydown.enter.prevent="register"
-                    >
-                </div>
+            <div class="input-group">
+                <input
+                    ref="input"
+                    v-model="licenceKey"
+                    type="text"
+                    class="form-control licence-key-input"
+                    :class="{ 'is-invalid': keyError, 'is-valid': added }"
+                    :placeholder="labels.placeholder"
+                    :aria-label="labels.licenceKey"
+                    autocomplete="off"
+                    spellcheck="false"
+                    autocapitalize="characters"
+                    :disabled="registering || loading"
+                    :aria-invalid="keyError ? 'true' : null"
+                    :aria-describedby="keyError ? `${uid}-key-error` : null"
+                    @input="onKeyInput"
+                    @keydown.enter.prevent="register"
+                >
                 <button
                     type="button"
-                    class="btn btn-primary c-icon-button c-mp-settings__add"
+                    class="btn btn-primary btn-icon-only marketplace-settings-add"
                     :aria-label="labels.addLicenceKey"
                     :title="labels.addLicenceKey"
                     :disabled="registering || loading || licenceKey.trim() === ''"
                     @click="register"
-                ><i class="ti" :class="registering ? 'ti-loader c-mp-spin' : (added ? 'ti-check' : 'ti-plus')" aria-hidden="true"></i></button>
+                ><span v-if="registering" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti" :class="added ? 'ti-check' : 'ti-plus'" aria-hidden="true"></i></button>
             </div>
             <div v-if="keyError" :id="`${uid}-key-error`" class="invalid-feedback d-block" role="alert">{{ keyError }}</div>
 
-            <div v-if="loading" class="c-mp-settings__loading">
+            <div v-if="loading" class="marketplace-settings-loading">
                 <span class="spinner-border spinner-border-sm" role="status" :aria-label="labels.loading"></span>
             </div>
-            <p v-else-if="!licences.length" class="c-mp-settings__empty">{{ labels.none }}</p>
-            <ul v-else class="c-licence-list">
-                <li v-for="module in licences" :key="module.id" class="c-licence-list__item" :class="{ 'is-entering': module.id === enteringId }">
-                    <div class="c-licence-list__clip">
-                        <div class="c-licence-list__row">
-                            <img :src="module.imageUrl" class="c-licence-list__image" width="40" height="40" alt="">
-                            <div class="c-licence-list__text">
-                                <p class="c-licence-list__name">{{ module.name }}</p>
-                                <p class="c-licence-list__key">{{ licenceText(module) }}</p>
+            <p v-else-if="!licences.length" class="marketplace-settings-empty">{{ labels.none }}</p>
+            <ul v-else class="list-group licence-list">
+                <li v-for="module in licences" :key="module.id" class="list-group-item licence-list-item" :class="{ 'is-entering': module.id === enteringId }">
+                    <div class="licence-list-clip">
+                        <div class="licence-list-row">
+                            <img :src="module.imageUrl" class="licence-list-image" width="40" height="40" alt="">
+                            <div class="licence-list-text">
+                                <p class="licence-list-name">{{ module.name }}</p>
+                                <p class="licence-list-key">{{ licenceText(module) }}</p>
                             </div>
-                            <button v-if="isInstalled(module)" type="button" class="btn btn-secondary c-licence-list__action" disabled>{{ labels.installed }}</button>
+                            <button v-if="isInstalled(module)" type="button" class="btn btn-secondary licence-list-action" disabled>{{ labels.installed }}</button>
                             <button
                                 v-else
                                 type="button"
-                                class="btn btn-primary c-licence-list__action"
+                                class="btn btn-primary licence-list-action"
                                 :aria-label="installLabel(module)"
                                 :disabled="installLocked"
                                 @click="$emit('install', module)"
@@ -81,7 +79,7 @@
                             <a
                                 v-if="module.marketplaceUrl"
                                 :href="module.marketplaceUrl"
-                                class="btn c-icon-button c-icon-button--ghost"
+                                class="btn btn-ghost btn-icon-only"
                                 target="_blank"
                                 rel="noopener"
                                 :aria-label="labels.information"
@@ -91,17 +89,17 @@
                     </div>
                 </li>
             </ul>
-            <p v-if="installationId" class="c-mp-settings__installation">{{ labels.installationId }}</p>
+            <p v-if="installationId" class="marketplace-settings-installation">{{ labels.installationId }}</p>
         </section>
 
         <section
             v-show="tab === 'settings'"
             :id="`${uid}-panel-settings`"
-            class="c-mp-settings__panel c-mp-settings__options"
+            class="marketplace-settings-panel marketplace-settings-options"
             role="tabpanel"
             :aria-labelledby="`${uid}-tab-settings`"
         >
-            <div class="c-setting-row">
+            <div class="marketplace-setting">
                 <div class="form-check">
                     <input
                         :id="`${uid}-beta`"
@@ -113,11 +111,11 @@
                         :aria-describedby="`${uid}-beta-hint`"
                         @change="toggleBeta($event.target.checked)"
                     >
-                    <label class="form-check-label c-setting-row__title" :for="`${uid}-beta`">{{ labels.beta }}</label>
-                    <div :id="`${uid}-beta-hint`" class="form-text c-setting-row__hint">{{ labels.betaHint }}</div>
+                    <label class="form-check-label marketplace-setting-title" :for="`${uid}-beta`">{{ labels.beta }}</label>
+                    <div :id="`${uid}-beta-hint`" class="form-text marketplace-setting-hint">{{ labels.betaHint }}</div>
                 </div>
             </div>
-            <div class="c-setting-row" :class="{ 'is-expanded': acknowledging }">
+            <div class="marketplace-setting" :class="{ 'is-expanded': acknowledging }">
                 <div class="form-check">
                     <input
                         :id="`${uid}-community`"
@@ -129,22 +127,22 @@
                         :aria-describedby="`${uid}-community-hint`"
                         @change="toggleCommunity($event.target.checked)"
                     >
-                    <label class="form-check-label c-setting-row__title" :for="`${uid}-community`">{{ labels.community }}</label>
-                    <div :id="`${uid}-community-hint`" class="form-text c-setting-row__hint">{{ labels.communityHint }}</div>
+                    <label class="form-check-label marketplace-setting-title" :for="`${uid}-community`">{{ labels.community }}</label>
+                    <div :id="`${uid}-community-hint`" class="form-text marketplace-setting-hint">{{ labels.communityHint }}</div>
                 </div>
-                <div class="c-setting-row__more">
-                    <div class="c-setting-row__more-inner">
-                        <div v-if="acknowledging" class="c-mp-notice c-mp-notice--warning">
-                            <i class="ti ti-alert-triangle c-mp-notice__icon" aria-hidden="true"></i>
-                            <div class="c-mp-notice__text">
+                <div class="marketplace-setting-more">
+                    <div class="marketplace-setting-more-inner">
+                        <div v-if="acknowledging" class="alert alert-warning marketplace-alert">
+                            <i class="ti ti-alert-triangle marketplace-alert-icon" aria-hidden="true"></i>
+                            <div class="marketplace-alert-text">
                                 <div v-html="labels.warning"></div>
                                 <div class="form-check">
                                     <input :id="`${uid}-acknowledged`" ref="acknowledged" v-model="acknowledged" class="form-check-input" type="checkbox">
                                     <label class="form-check-label" :for="`${uid}-acknowledged`">{{ labels.acknowledge }}</label>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-primary btn-sm c-mp-dialog__busy" :disabled="!acknowledged || saving !== null" @click="confirmCommunity">
-                                        <i v-if="saving === 'includeCommunityModules'" class="ti ti-loader c-mp-spin" aria-hidden="true"></i>{{ labels.confirm }}
+                                    <button type="button" class="btn btn-primary btn-sm marketplace-dialog-busy" :disabled="!acknowledged || saving !== null" @click="confirmCommunity">
+                                        <span v-if="saving === 'includeCommunityModules'" class="spinner-border spinner-border-sm" aria-hidden="true"></span>{{ labels.confirm }}
                                     </button>
                                 </div>
                             </div>
@@ -152,8 +150,8 @@
                     </div>
                 </div>
             </div>
-            <p v-if="settingsError" class="c-mp-dialog__error" role="alert">{{ settingsError }}</p>
-            <a v-if="moduleAdministrationUrl" :href="moduleAdministrationUrl" class="c-mp-settings__admin">
+            <p v-if="settingsError" class="marketplace-dialog-error" role="alert">{{ settingsError }}</p>
+            <a v-if="moduleAdministrationUrl" :href="moduleAdministrationUrl" class="marketplace-settings-admin">
                 <i class="ti ti-apps" aria-hidden="true"></i>{{ labels.moduleAdministration }}
             </a>
         </section>

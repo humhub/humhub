@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Filter bar: anatomy, field states and the optional filter panel</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .chip { fill: #e6f1f3; }
+    .chipt { font-size: 13px; fill: #037283; }
+    .note { font-size: 12px; fill: #037283; }
+    .small { font-size: 12px; fill: #555; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="600" fill="#ededed"/>
+
+  <!-- A: anatomy -->
+  <text x="20" y="28" class="sec">ANATOMY</text>
+  <rect x="20" y="40" width="760" height="108" rx="8" class="card"/>
+  <!-- row 1: 4 equal cells + 46px reserve -->
+  <rect x="36" y="56" width="164" height="38" rx="6" class="filled"/>
+  <use href="#i-search" x="46" y="67" width="16" height="16" color="#555"/><text x="70" y="80" class="val">anna</text>
+  <use href="#i-x" x="176" y="67" width="16" height="16" color="#555"/>
+  <rect x="208" y="56" width="164" height="38" rx="6" class="empty"/>
+  <text x="218" y="80" class="ph">Group</text><use href="#i-down" x="348" y="67" width="16" height="16" color="#555"/>
+  <rect x="380" y="56" width="164" height="38" rx="6" class="filled"/>
+  <text x="390" y="80" class="val">Enabled</text><use href="#i-x" x="520" y="67" width="16" height="16" color="#555"/>
+  <rect x="552" y="56" width="164" height="38" rx="6" class="filled"/>
+  <rect x="558" y="63" width="96" height="24" rx="12" class="chip"/><text x="568" y="80" class="chipt">Marketing</text>
+  <use href="#i-x" x="636" y="67" width="14" height="14" color="#037283"/>
+  <!-- row 2 -->
+  <rect x="36" y="102" width="164" height="38" rx="6" class="empty"/>
+  <text x="46" y="126" class="ph">Last Sign-In</text><use href="#i-cal" x="176" y="113" width="16" height="16" color="#555"/>
+  <rect x="208" y="102" width="38" height="38" rx="6" fill="#fff"/>
+  <use href="#i-x" x="217" y="111" width="20" height="20" color="#333"/>
+  <rect x="724" y="56" width="40" height="38" rx="4" fill="none" stroke="#037283" stroke-dasharray="2 2"/>
+
+  <path d="M90 94 V170" class="lead"/><text x="36" y="184" class="note">1 search · always visible</text>
+  <path d="M290 94 V170" class="lead"/>
+  <text x="210" y="184" class="note">2 select · placeholder = filter name</text>
+  <path d="M460 94 V170" class="lead"/><text x="420" y="202" class="note">3 a set filter is white and gets its own ×</text>
+  <path d="M606 94 V170" class="lead"/><text x="560" y="184" class="note">4 picker · chips</text>
+  <path d="M227 140 V160 H250 V214" class="lead"/><text x="36" y="228" class="note">5 clear all · after the last filter, only while something is set</text>
+  <path d="M744 94 V240" class="lead"/><text x="560" y="254" class="note">46 px reserved so ✕ never wraps alone</text>
+
+  <!-- B: field states -->
+  <text x="20" y="296" class="sec">FIELD STATES — SAME FOR EVERY FILTER TYPE</text>
+  <rect x="20" y="308" width="760" height="92" rx="8" class="card"/>
+  <rect x="36" y="324" width="170" height="38" rx="6" class="empty"/><text x="46" y="348" class="ph">Group</text><use href="#i-down" x="182" y="335" width="16" height="16" color="#555"/>
+  <rect x="222" y="324" width="170" height="38" rx="6" fill="#f5f5f5" stroke="#037283"/><text x="232" y="348" class="ph">Group</text><use href="#i-down" x="368" y="335" width="16" height="16" color="#555"/>
+  <rect x="404" y="320" width="178" height="46" rx="9" fill="#037283" opacity=".18"/>
+  <rect x="408" y="324" width="170" height="38" rx="6" fill="#fff" stroke="#037283"/><text x="418" y="348" class="ph">Group</text><use href="#i-down" x="554" y="335" width="16" height="16" color="#555"/>
+  <rect x="594" y="324" width="170" height="38" rx="6" class="filled"/><text x="604" y="348" class="val">Sales</text><use href="#i-x" x="740" y="335" width="16" height="16" color="#555"/>
+  <text x="36" y="386" class="small">empty · grey</text>
+  <text x="222" y="386" class="small">hover · accent border</text>
+  <text x="408" y="386" class="small">focus · accent border + glow</text>
+  <text x="594" y="386" class="small">set · white, value, ×</text>
+
+  <!-- C: panel -->
+  <text x="20" y="440" class="sec">WITH A FILTER PANEL — CORE EXTENSION, NOT IN THE PROTOTYPE</text>
+  <rect x="20" y="452" width="760" height="128" rx="8" class="card"/>
+  <rect x="36" y="468" width="300" height="38" rx="6" class="empty"/><use href="#i-search" x="46" y="479" width="16" height="16" color="#757575"/><text x="70" y="492" class="ph">Search modules</text>
+  <rect x="344" y="468" width="116" height="38" rx="6" fill="#e6f1f3"/>
+  <use href="#i-funnel" x="354" y="478" width="18" height="18" color="#037283"/>
+  <text x="378" y="492" class="chipt" font-weight="600">Filters</text>
+  <rect x="428" y="477" width="22" height="20" rx="10" fill="#037283"/><text x="439" y="491" font-size="12" fill="#fff" text-anchor="middle">2</text>
+  <path d="M36 518 H764" stroke="#e5e5e5"/>
+  <rect x="36" y="528" width="230" height="38" rx="6" class="filled"/><text x="46" y="552" class="val">Official</text><use href="#i-x" x="242" y="539" width="16" height="16" color="#555"/>
+  <rect x="274" y="528" width="230" height="38" rx="6" class="filled"/><text x="284" y="552" class="val">Installed</text><use href="#i-x" x="480" y="539" width="16" height="16" color="#555"/>
+  <rect x="512" y="528" width="252" height="38" rx="6" class="empty"/><text x="522" y="552" class="ph">Category</text><use href="#i-down" x="740" y="539" width="16" height="16" color="#555"/>
+  <text x="480" y="492" class="note">labelled toggle with the count of set</text>
+  <text x="480" y="508" class="note">panel filters; panel opens below the row</text>
+</svg>

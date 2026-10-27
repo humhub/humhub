@@ -12,6 +12,7 @@
  */
 
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 
 if (empty($lastRunHourly)) {
     $lastRunHourly = "<span style='color:red'>" . Yii::t('AdminModule.information', 'Never') . "</span>";
@@ -24,60 +25,46 @@ if (empty($lastRunDaily)) {
     $lastRunDaily = Yii::$app->formatter->asRelativeTime($lastRunDaily);
 }
 ?>
-<div class="container g-0 p-1 overflow-x-hidden"> <?php // p-1 is required for the panel-body box-shadow to be visible despite the overflow-x-hidden ?>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="panel">
-                <div class="panel-heading">
-                    <?= Yii::t('AdminModule.information', '<strong>CronJob</strong> Status'); ?>
-                </div>
-                <div class="panel-body">
-                    <strong><?= Yii::t('AdminModule.information', 'Last run (hourly):'); ?></strong><br> <?= $lastRunHourly; ?>
-                    <br/><br/>
-                    <strong><?= Yii::t('AdminModule.information', 'Last run (daily):'); ?></strong><br> <?= $lastRunDaily; ?>
-                    <br/><br/>
-                </div>
-            </div>
-        </div>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.information', 'Background Jobs'),
+    'description' => Yii::t('AdminModule.information', 'Please refer to the documentation to setup the cronjobs and queue workers.'),
+]) ?>
+<div class="row gy-3">
+    <section class="col-lg-6">
+        <h3><?= strip_tags(Yii::t('AdminModule.information', '<strong>CronJob</strong> Status')) ?></h3>
+        <strong><?= Yii::t('AdminModule.information', 'Last run (hourly):') ?></strong><br> <?= $lastRunHourly ?>
+        <br/><br/>
+        <strong><?= Yii::t('AdminModule.information', 'Last run (daily):') ?></strong><br> <?= $lastRunDaily ?>
+    </section>
 
-        <div class="col-lg-6">
-            <div class="panel">
-                <div class="panel-heading">
-                    <?php if ($canClearQueue): ?>
-                        <?= Button::danger('Clear queue')
-                            ->link(['background-jobs', 'clearQueue' => 1])
-                            ->options(['data-method' => 'POST'])
-                            ->sm()->right();
-                        ?>
-                    <?php endif; ?>
-                    <?= Yii::t('AdminModule.information', '<strong>Queue</strong> Status'); ?>
-                </div>
-                <div class="panel-body">
-                    <strong><?= Yii::t('AdminModule.information', 'Driver'); ?></strong><br/>
-                    <?= $driverName; ?><br/>
-                    <br/>
+    <section class="col-lg-6">
+        <h3>
+            <?= strip_tags(Yii::t('AdminModule.information', '<strong>Queue</strong> Status')) ?>
+            <?php if ($canClearQueue): ?>
+                <?= Button::danger('Clear queue')
+                    ->link(['background-jobs', 'clearQueue' => 1])
+                    ->options(['data-method' => 'POST'])
+                    ->sm()->right() ?>
+            <?php endif; ?>
+        </h3>
+        <strong><?= Yii::t('AdminModule.information', 'Driver') ?></strong><br/>
+        <?= $driverName ?><br/>
+        <br/>
 
-                    <strong><?= Yii::t('AdminModule.information', 'Waiting'); ?></strong><br/>
-                    <?= $waitingJobs ?><br/>
-                    <br/>
+        <strong><?= Yii::t('AdminModule.information', 'Waiting') ?></strong><br/>
+        <?= $waitingJobs ?><br/>
+        <br/>
 
-                    <strong><?= Yii::t('AdminModule.information', 'Delayed'); ?></strong><br/>
-                    <?= $delayedJobs ?><br/>
-                    <br/>
+        <strong><?= Yii::t('AdminModule.information', 'Delayed') ?></strong><br/>
+        <?= $delayedJobs ?><br/>
+        <br/>
 
-                    <strong><?= Yii::t('AdminModule.information', 'Reserved'); ?></strong><br/>
-                    <?= $reservedJobs ?><br/>
-                    <br/>
+        <strong><?= Yii::t('AdminModule.information', 'Reserved') ?></strong><br/>
+        <?= $reservedJobs ?><br/>
+        <br/>
 
-                    <strong><?= Yii::t('AdminModule.information', 'Done'); ?></strong><br/>
-                    <?= $doneJobs ?><br/>
-                    <br/>
-
-                </div>
-            </div>
-        </div>
-    </div>
+        <strong><?= Yii::t('AdminModule.information', 'Done') ?></strong><br/>
+        <?= $doneJobs ?>
+    </section>
 </div>
-
-
-<p><?= Yii::t('AdminModule.information', 'Please refer to the documentation to setup the cronjobs and queue workers.'); ?></p>
+<?php ContentCard::end() ?>

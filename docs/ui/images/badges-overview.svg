@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="670" viewBox="0 0 800 670" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Badges and status: chips, priority, tags, count badges, dots, marketplace badges</title>
+  <defs>
+<symbol id="i-bell" viewBox="0 0 16 16"><path d="M4 11 V7 A4 4 0 0 1 12 7 V11 L13.5 12.5 H2.5 Z M6.5 14 H9.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+<symbol id="i-mail" viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2 4 L8 9 L14 4" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+<symbol id="i-people2" viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 14 Q1.5 9 6 9 Q10.5 9 10.5 14" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="11.5" cy="5.5" r="2" fill="none" stroke="currentColor" stroke-width="1.3"/></symbol>
+<symbol id="i-puzzle" viewBox="0 0 16 16"><path d="M3 5 H6 A1.5 1.5 0 1 1 9 5 H12 V8 A1.5 1.5 0 1 1 12 11 V14 H3 Z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></symbol>
+<symbol id="i-star" viewBox="0 0 16 16"><path d="M8 1.5 L10 6 L14.8 6.3 L11.1 9.4 L12.3 14.2 L8 11.6 L3.7 14.2 L4.9 9.4 L1.2 6.3 L6 6 Z" fill="currentColor"/></symbol>
+<symbol id="i-arrowup" viewBox="0 0 16 16"><path d="M8 13 V3 M4 7 L8 3 L12 7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="670" fill="#ededed"/>
+<text x="20" y="28" class="sec">1 · CHIPS — A STATE OR A FACT, ALWAYS A WORD</text>
+<rect x="20" y="40" width="760" height="150" rx="8" class="card"/>
+<text x="36" y="70" class="sub">Status (toned)</text>
+<rect x="170" y="56" width="65" height="20" rx="10" fill="#e3f1e5"/><text x="202.5" y="70" class="chipt" fill="#1c822a" text-anchor="middle">ENABLED</text><text x="170" y="92" class="sub" font-size="11">healthy</text>
+<rect x="268" y="56" width="65" height="20" rx="10" fill="#f6ecd9"/><text x="300.5" y="70" class="chipt" fill="#8a5600" text-anchor="middle">PENDING</text><text x="268" y="92" class="sub" font-size="11">needs action</text>
+<rect x="366" y="56" width="58" height="20" rx="10" fill="#f8e1e1"/><text x="395.0" y="70" class="chipt" fill="#b42225" text-anchor="middle">FAILED</text><text x="366" y="92" class="sub" font-size="11">error</text>
+<rect x="464" y="56" width="58" height="20" rx="10" fill="#dfeef8"/><text x="493.0" y="70" class="chipt" fill="#00598f" text-anchor="middle">UPDATE</text><text x="464" y="92" class="sub" font-size="11">information</text>
+<rect x="562" y="56" width="72" height="20" rx="10" fill="#efefef"/><text x="598.0" y="70" class="chipt" fill="#555" text-anchor="middle">DISABLED</text><text x="562" y="92" class="sub" font-size="11">off by choice</text>
+<text x="36" y="132" class="sub">Fact (neutral)</text>
+<rect x="170" y="118" width="51" height="20" rx="10" fill="#efefef"/><text x="195.5" y="132" class="chipt" fill="#555" text-anchor="middle">SALES</text>
+<rect x="229" y="118" width="44" height="20" rx="10" fill="#efefef"/><text x="251.0" y="132" class="chipt" fill="#555" text-anchor="middle">OKTA</text>
+<rect x="281" y="118" width="44" height="20" rx="10" fill="#efefef"/><text x="303.0" y="132" class="chipt" fill="#555" text-anchor="middle">CORE</text>
+<rect x="333" y="118" width="72" height="20" rx="10" fill="#efefef"/><text x="369.0" y="132" class="chipt" fill="#555" text-anchor="middle">CALENDAR</text>
+<rect x="443" y="118" width="79" height="20" rx="10" fill="#efefef" stroke="#555" stroke-opacity=".35" stroke-dasharray="2 2"/><text x="482.5" y="132" class="chipt" fill="#555" text-anchor="middle">MARKETING</text><text x="443" y="154" class="sub" font-size="11">as a filter button</text>
+<text x="562" y="132" class="name">Comments</text>
+<rect x="640" y="118" width="44" height="20" rx="10" fill="#efefef"/><text x="662.0" y="132" class="chipt" fill="#555" text-anchor="middle">CORE</text><text x="562" y="154" class="sub" font-size="11">after a title, same line</text>
+<text x="36" y="176" class="note">Uppercase, 10–11px semibold, fully rounded. The tone set is closed: success · warning · danger · info · neutral.</text>
+<text x="20" y="220" class="sec">2 · PRIORITY AND TAGS</text>
+<rect x="20" y="232" width="760" height="64" rx="8" class="card"/>
+<text x="36" y="268" class="sub">Priority</text>
+<rect x="120" y="254" width="37" height="20" rx="10" fill="#dfeef8"/><text x="138.5" y="268" class="chipt" fill="#00598f" text-anchor="middle">LOW</text>
+<rect x="165" y="254" width="37" height="20" rx="10" fill="#f6ecd9"/><text x="183.5" y="268" class="chipt" fill="#8a5600" text-anchor="middle">MID</text>
+<rect x="210" y="254" width="44" height="20" rx="10" fill="#f8e1e1"/><text x="232.0" y="268" class="chipt" fill="#b42225" text-anchor="middle">HIGH</text>
+<text x="330" y="268" class="sub">Tags (cards)</text>
+<rect x="420" y="254" width="86" height="20" rx="10" fill="#efefef"/><text x="463.0" y="268" class="chipt" fill="#555" text-anchor="middle">LEADERSHIP</text>
+<rect x="510" y="254" width="51" height="20" rx="10" fill="#efefef"/><text x="535.5" y="268" class="chipt" fill="#555" text-anchor="middle">AGILE</text>
+<rect x="565" y="254" width="44" height="20" rx="10" fill="#efefef"/><text x="587.0" y="268" class="chipt" fill="#555" text-anchor="middle">TEAM</text>
+<text x="640" y="268" class="sub" font-size="11">each filters its list</text>
+<text x="20" y="318" class="sec">3 · COUNT BADGES — HOW MANY ARE WAITING, NEVER 0</text>
+<rect x="20" y="330" width="760" height="100" rx="8" class="card"/>
+<rect x="36" y="344" width="220" height="36" rx="6" fill="#2d3340"/><use href="#i-people2" x="48" y="354" width="16" height="16" color="#fff"/><text x="72" y="367" class="txt" style="fill:#fff">People</text><rect x="222" y="351" width="22" height="22" rx="11" fill="#fbe4e4" stroke="#cc2629"/><text x="233.0" y="366" font-size="11.5" font-weight="700" style="fill:#a31f22" text-anchor="middle">7</text>
+<rect x="36" y="384" width="220" height="36" rx="6" fill="#fff"/><use href="#i-puzzle" x="48" y="394" width="16" height="16" color="#333"/><text x="72" y="407" class="txt">Modules</text><rect x="222" y="391" width="22" height="22" rx="11" fill="#fbe4e4" stroke="#cc2629"/><text x="233.0" y="406" font-size="11.5" font-weight="700" style="fill:#a31f22" text-anchor="middle">3</text>
+<text x="280" y="367" class="sub">Menu entry: red ring, red text, at the end of the row.</text>
+<text x="280" y="385" class="sub">Large numbers shorten: </text><rect x="430" y="371" width="26" height="22" rx="11" fill="#fbe4e4" stroke="#cc2629"/><text x="443.0" y="386" font-size="11.5" font-weight="700" style="fill:#a31f22" text-anchor="middle">9+</text>
+<rect x="510" y="390" width="104" height="32" rx="6" fill="#e6f1f3"/><use href="#i-funnel" x="518" y="398" width="16" height="16" color="#037283"/><text x="540" y="411" font-size="13" font-weight="600" style="fill:#037283">Filters</text><rect x="590" y="396" width="20" height="20" rx="10" fill="#037283"/><text x="600" y="410" font-size="11" fill="#fff" text-anchor="middle">2</text>
+<text x="620" y="405" class="sub" font-size="11">count of a selection:</text><text x="620" y="419" class="sub" font-size="11">accent, not red</text>
+<text x="20" y="452" class="sec">4 · DOTS — SOMETHING IS THERE, NO NUMBER</text>
+<rect x="20" y="464" width="760" height="92" rx="8" class="card"/>
+<rect x="36" y="482" width="122" height="40" rx="20" fill="#fff" stroke="#e2e2e2" stroke-width="2"/><text x="54" y="507" class="txt" font-size="14">Invitations</text><circle cx="142" cy="502" r="3.5" fill="#cc2629"/>
+<text x="36" y="544" class="sub" font-size="11">waiting (red) · on tabs</text>
+<use href="#i-mail" x="220" y="490" width="22" height="22" color="#333"/><circle cx="240" cy="491" r="5" fill="#cc2629" stroke="#fff" stroke-width="2"/>
+<use href="#i-bell" x="266" y="490" width="22" height="22" color="#333"/><circle cx="286" cy="491" r="5" fill="#cc2629" stroke="#fff" stroke-width="2"/>
+<text x="220" y="544" class="sub" font-size="11">unread (red) · icon buttons</text>
+<text x="400" y="507" class="name" style="font-weight:600">Notification Kinds</text><circle cx="540" cy="503" r="3.5" fill="#037283"/>
+<text x="400" y="544" class="sub" font-size="11">unsaved (accent) · groups, tabs</text>
+<text x="620" y="504" class="sub" font-size="11">Every dot has</text><text x="620" y="518" class="sub" font-size="11">hidden text for</text><text x="620" y="532" class="sub" font-size="11">screen readers.</text>
+<text x="20" y="578" class="sec">5 · MARKETPLACE BADGES — MODULE CARDS ONLY</text>
+<rect x="20" y="590" width="760" height="64" rx="8" class="card"/>
+<rect x="36" y="610" width="79.2" height="24" rx="12" fill="#fff" stroke="#037283"/><text x="75.6" y="626" font-size="11.5" font-weight="600" style="fill:#037283" text-anchor="middle">OFFICIAL</text>
+<rect x="123.2" y="610" width="71.80000000000001" height="24" rx="12" fill="#fff" stroke="#5e0099"/><text x="159.10000000000002" y="626" font-size="11.5" font-weight="600" style="fill:#5e0099" text-anchor="middle">PARTNER</text>
+<rect x="203.0" y="610" width="86.60000000000001" height="24" rx="12" fill="#fff" stroke="#768b00"/><text x="246.3" y="626" font-size="11.5" font-weight="600" style="fill:#768b00" text-anchor="middle">COMMUNITY</text>
+<rect x="297.6" y="610" width="108.80000000000001" height="24" rx="12" fill="#fff" stroke="#2d3340"/><text x="352.0" y="626" font-size="11.5" font-weight="600" style="fill:#2d3340" text-anchor="middle">PROFESSIONAL</text>
+<circle cx="428.40000000000003" cy="622" r="12" fill="#fde7e7" stroke="#d5d5d5"/><use href="#i-star" x="420.40000000000003" y="614" width="16" height="16" color="#cd1c18"/>
+<rect x="454.40000000000003" y="610" width="70" height="24" rx="12" fill="#fff" stroke="#366899"/><use href="#i-arrowup" x="462.40000000000003" y="615" width="14" height="14" color="#366899"/><text x="480.40000000000003" y="626" font-size="11.5" font-weight="600" style="fill:#366899">1.4.2</text>
+<text x="540.4000000000001" y="620" class="sub" font-size="11">type · featured ·</text><text x="540.4000000000001" y="634" class="sub" font-size="11">update available</text>
+</svg>

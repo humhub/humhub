@@ -1,9 +1,9 @@
 <template>
-    <div class="c-filter-bar-container">
+    <div class="filter-bar">
         <form
             :id="barId"
             ref="bar"
-            class="c-filter-bar"
+            class="filter-bar-body"
             :class="{ 'is-open': open, 'is-collapsing': collapsing, 'is-animating': animating, 'has-panel': hasPanel }"
             role="search"
             @submit.prevent
@@ -31,8 +31,8 @@
                     v-else-if="!entry.filter"
                     ref="toggle"
                     type="button"
-                    class="btn c-icon-button c-icon-button--ghost c-filter-bar__toggle"
-                    :class="{ 'is-active': open, 'c-filter-bar__toggle--labeled': hasPanel }"
+                    class="btn btn-ghost btn-icon-only filter-bar-toggle"
+                    :class="{ 'is-active': open, 'filter-bar-toggle-labeled': hasPanel }"
                     data-filter-bar-toggle
                     :aria-expanded="open ? 'true' : 'false'"
                     :aria-controls="hasPanel ? panelId : barId"
@@ -42,18 +42,18 @@
                 >
                     <i class="ti ti-filter" aria-hidden="true"></i>
                     <template v-if="hasPanel">
-                        <span class="c-filter-bar__toggle-label">{{ panelLabel }}</span>
-                        <span v-if="activePanelCount" class="c-filter-bar__count" aria-hidden="true">{{ activePanelCount }}</span>
+                        <span class="filter-bar-toggle-label">{{ panelLabel }}</span>
+                        <span v-if="activePanelCount" class="badge rounded-pill filter-bar-count" aria-hidden="true">{{ activePanelCount }}</span>
                         <span v-if="activePanelCount" class="visually-hidden">{{ activePanelCountLabel }}</span>
                     </template>
                 </button>
             </template>
-            <Transition name="c-filter-bar-clear">
+            <Transition name="filter-bar-clear">
                 <button
                     v-if="resettable"
                     ref="clear"
                     type="button"
-                    class="btn c-icon-button c-icon-button--ghost c-filter-bar__clear"
+                    class="btn btn-ghost btn-icon-only filter-bar-clear"
                     data-filter-bar-keep
                     data-filter-bar-clear
                     :aria-label="resetLabel"
@@ -65,7 +65,7 @@
                 v-if="hasPanel"
                 :id="panelId"
                 ref="panel"
-                class="c-filter-bar__panel"
+                class="filter-bar-panel"
                 role="group"
                 :aria-label="panelLabel"
                 @keydown.esc="onPanelEscape"
@@ -121,12 +121,12 @@ const isPanel = (filter) => filter.placement === 'panel';
 const keySlug = (filter) => String(filter.key).replace(/[^A-Za-z0-9_-]+/g, '-').replace(/^-+|-+$/g, '');
 
 /**
- * A filter bar (after the design system's `c-filter-bar`): renders a list's filter definitions
+ * A filter bar (after the design system's `filter-bar-body`): renders a list's filter definitions
  * (`humhub\components\listing\FilterDefinition`) as a form of its own — nothing is submitted.
  * It keeps the values the controls show (`draft`) apart from the **applied** ones, which are its
  * `v-model`: `update:modelValue` is emitted with a new values object only once a change is
  * applied, so the owner reloads on every emit and never has to debounce itself. Used inside a
- * `PageToolbar`, by `CardDirectory` or on its own (e.g. a file list's filters).
+ * `PageHeader`, by `EntityBrowser` or on its own (e.g. a file list's filters).
  *
  * - Initial values: `modelValue` (missing keys at their defaults), overridden by what the page
  *   URL carries (`syncUrl`). When they differ from `modelValue`, they are emitted at once, while
@@ -164,7 +164,7 @@ const keySlug = (filter) => String(filter.key).replace(/[^A-Za-z0-9_-]+/g, '-').
  *   at debug level), its value is still URL-synced and emitted. `wide` makes an item take a
  *   full row.
  * - Slot `filter-<key>` (`{ filter, value, update }`) replaces one filter's control (inside its
- *   `.c-filter-bar__item` cell), whatever its type; `update(value)` goes through the same apply
+ *   `.filter-bar-item` cell), whatever its type; `update(value)` goes through the same apply
  *   logic.
  * - `placement: 'panel'` puts a filter into a panel below the row, behind a "Filters" toggle
  *   after the search field that shows how many panel filters are set; the panel is open from the
@@ -172,7 +172,7 @@ const keySlug = (filter) => String(filter.key).replace(/[^A-Za-z0-9_-]+/g, '-').
  *   focus to the toggle.
  * - A ghost "clear all filters" X slides in at the end of the row while a visible filter
  *   (in the row or the panel) differs from its default, and resets every filter to its default.
- * - Narrow widths (a container query on `.c-filter-bar-container`, so it follows the space the
+ * - Narrow widths (a container query on `.filter-bar`, so it follows the space the
  *   bar really has, not the viewport): only the first text filter, the toggle and the clear X
  *   stay; the others collapse behind the toggle (`aria-expanded`), which expands the bar with a
  *   height animation — without a panel a funnel icon, only shown then (the CSS decides when
@@ -380,7 +380,7 @@ export default {
             return `${this.idPrefix}-${keySlug(filter)}`;
         },
         itemClass(filter) {
-            return ['c-filter-bar__item', `c-filter-bar__item--${filter.type}`, `form-search-filter-${keySlug(filter)}`, { 'c-filter-bar__item--wide': filter.wide }];
+            return ['filter-bar-item', `filter-bar-item-${filter.type}`, `form-search-filter-${keySlug(filter)}`, { 'filter-bar-item-wide': filter.wide }];
         },
         // The component registered for a filter's type, once both halves of the registration
         // are there (read from the reactive registry, so a late registration re-renders the bar).
@@ -527,7 +527,7 @@ export default {
             const clearTo = flipping ? clear.getBoundingClientRect() : null;
 
             // Focus inside what is being hidden (the panel, a collapsed filter) goes to the toggle.
-            if (!open && focused && bar.contains(focused) && focused.closest('.c-filter-bar__panel, .c-filter-bar__item:not([data-filter-bar-keep])')) {
+            if (!open && focused && bar.contains(focused) && focused.closest('.filter-bar-panel, .filter-bar-item:not([data-filter-bar-keep])')) {
                 this.toggleElement()?.focus();
             }
 

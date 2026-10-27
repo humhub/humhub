@@ -11,7 +11,6 @@ humhub.module('topic', function (module, require, $) {
     var topics = {};
     var string = require('util').string;
     var client = require('client');
-    var loader = require('ui.loader');
     var Widget = require('ui.widget').Widget;
 
     var addTopic = function (evt) {
@@ -91,23 +90,6 @@ humhub.module('topic', function (module, require, $) {
         return result;
     };
 
-    var removeOverviewTopic = function (evt) {
-        var $row = evt.$trigger.closest('[data-key]');
-        var $nameTd = $row.find('td:first');
-        var name = $nameTd.text();
-        var $loader = loader.set($('<span>').text(name), {size: '10px', css: {padding: '0px'}});
-        $nameTd.html($loader);
-        client.post(evt).then(function (response) {
-            if (response.success) {
-                $row.remove();
-                module.log.success(response.message, true);
-            }
-        }).catch(function (e) {
-            module.log.error(e, true);
-            loader.reset($loader);
-        });
-    };
-
     var unload = function () {
         //Todo: remember active topics by space?
         topics = {};
@@ -122,7 +104,6 @@ humhub.module('topic', function (module, require, $) {
         addTopic: addTopic,
         setTopics: setTopics,
         removeTopic: removeTopic,
-        removeOverviewTopic: removeOverviewTopic,
         getTopics: getTopics,
         getTopicIds: getTopicIds,
         unload: unload

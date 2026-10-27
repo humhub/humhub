@@ -22,7 +22,7 @@ use yii\helpers\Url;
  * {@see ModuleList::definitions()}); modules, categories and the version notice
  * load after mounting (see "Initial data: embed or load" in
  * `docs/develop/ui-js-vuejs-components.md`). Until then the placeholder shows the page
- * toolbar and skeleton cards of the core `CardDirectory` the island renders, so the page
+ * toolbar and skeleton cards of the core `EntityBrowser` the island renders, so the page
  * stands at once.
  *
  * @since 1.20

@@ -7,19 +7,18 @@
 
 use humhub\assets\CardsAsset;
 use humhub\modules\content\widgets\SearchFilters;
+use humhub\widgets\ContentCard;
+use humhub\widgets\PageHeader;
 use yii\helpers\Url;
 
 CardsAsset::register($this);
 ?>
 <div class="container" data-action-component="stream.SimpleStream" data-ui-init>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong><?= Yii::t('ContentModule.search', 'Search') ?></strong>
-        </div>
-
-        <div class="panel-body">
+    <div class="d-flex flex-column gap-3">
+        <?= PageHeader::title(Yii::t('ContentModule.search', 'Search')) ?>
+        <?php ContentCard::begin() ?>
             <?= SearchFilters::widget(['data' => ['action-url' => Url::to(['/content/search/results'])]]) ?>
-        </div>
+        <?php ContentCard::end() ?>
     </div>
 
     <div data-stream-content></div>

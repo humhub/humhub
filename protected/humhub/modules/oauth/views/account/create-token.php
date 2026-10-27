@@ -12,8 +12,8 @@ use humhub\widgets\form\ActiveForm;
 ?>
 <?php $this->beginContent('@user/views/security/_layout.php') ?>
 <section class="security-section mb-4">
-    <h2 class="h5 mb-1"><?= Yii::t('OauthModule.base', 'Create token') ?></h2>
-    <p class="text-body-secondary">
+    <h3><?= Yii::t('OauthModule.base', 'Create token') ?></h3>
+    <p>
         <?= Yii::t('OauthModule.base', 'A personal access token lets a script or agent use the API with your account. Only grant the access it needs.') ?>
     </p>
 

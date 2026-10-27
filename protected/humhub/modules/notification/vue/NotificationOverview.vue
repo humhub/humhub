@@ -1,60 +1,54 @@
 <template>
-    <div class="row">
-        <div class="col-lg-9 layout-content-container">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <!-- eslint-disable-next-line vue/no-v-html -- translated heading with markup, as server-side -->
-                    <span v-html="headingLabel"></span>
-                    <div class="float-end">
-                        <button
-                            v-if="unseenCount > 0"
-                            type="button"
-                            id="notification_overview_markseen"
-                            class="btn-light btn btn-icon-only btn-sm"
-                            :aria-label="markSeenLabel"
-                            :title="markSeenLabel"
-                            @click="markAsSeen"
-                        ><span v-html="icons.check"></span></button>
-                        <a
-                            class="btn-light btn btn-icon-only btn-sm"
-                            :href="settingsUrl"
-                            :aria-label="settingsLabel"
-                            :title="settingsLabel"
-                        ><span v-html="icons.cog"></span></a>
+    <div class="d-flex flex-column gap-3">
+        <PageHeader :title="title" :actions="actions">
+            <template #actions>
+                <button
+                    v-if="unseenCount > 0"
+                    type="button"
+                    id="notification_overview_markseen"
+                    class="btn btn-secondary btn-icon-only"
+                    :aria-label="markSeenLabel"
+                    :title="markSeenLabel"
+                    @click="markAsSeen"
+                ><i class="ti ti-check" aria-hidden="true"></i></button>
+            </template>
+        </PageHeader>
+        <div class="row">
+            <div class="col-lg-9 layout-content-container">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <NotificationList
+                            ref="list"
+                            id="notification_overview_list"
+                            :initial="initial"
+                            :page-size="pageSize"
+                            :categories="requestCategories"
+                            :seen="seen || null"
+                            :show-more-button="true"
+                            :empty-text="emptyLabel"
+                            @loaded="onLoaded"
+                        />
                     </div>
                 </div>
-                <div class="panel-body">
-                    <NotificationList
-                        ref="list"
-                        id="notification_overview_list"
-                        :initial="initial"
-                        :page-size="pageSize"
-                        :categories="requestCategories"
-                        :seen="seen || null"
-                        :show-more-button="true"
-                        :empty-text="emptyLabel"
-                        @loaded="onLoaded"
-                    />
-                </div>
             </div>
+            <aside class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <strong>{{ filterLabel }}</strong>
+                        <hr style="margin-bottom:0">
+                    </div>
+                    <div class="panel-body">
+                        <NotificationFilter
+                            :filters="filters"
+                            :selected="selectedCategories"
+                            :seen="seen"
+                            :icons="icons"
+                            @change="onFilterChange"
+                        />
+                    </div>
+                </div>
+            </aside>
         </div>
-        <aside class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <strong>{{ filterLabel }}</strong>
-                    <hr style="margin-bottom:0">
-                </div>
-                <div class="panel-body">
-                    <NotificationFilter
-                        :filters="filters"
-                        :selected="selectedCategories"
-                        :seen="seen"
-                        :icons="icons"
-                        @change="onFilterChange"
-                    />
-                </div>
-            </div>
-        </aside>
     </div>
 </template>
 
@@ -65,10 +59,9 @@
  * top-menu dropdown is the other).
  *
  * The island covers both columns of the page, because the filter in the sidebar and the list in
- * the main panel are one piece of state: a filter change is a new query. The panel/column
- * markup mirrors the former `views/overview/index.php` so the page looks unchanged, and the
- * legacy element ids (`#notification_overview_list`, `#notification_overview_markseen`) are
- * kept for theme CSS.
+ * the main panel are one piece of state: a filter change is a new query. A `PageHeader` with the
+ * settings link and "Mark all as seen" sits above both columns; the legacy element ids
+ * (`#notification_overview_list`, `#notification_overview_markseen`) are kept for theme CSS.
  *
  * **Deliberate change:** the list pages with a "show more" button instead of numbered pages.
  * The endpoint pages by cursor (see its own docblock on why), and numbered pages over a list
@@ -94,7 +87,7 @@ export default {
         initial: { type: Object, default: null },
         // [{id, title}] of every notification category the caller can filter by (localized).
         filters: { type: Array, default: () => [] },
-        // Server-rendered icon markup: {check, cog, all, unseen, seen}.
+        // Server-rendered icon markup of the filter: {all, unseen, seen}.
         icons: { type: Object, default: () => ({}) },
         settingsUrl: { type: String, required: true },
         pageSize: { type: Number, default: 20 },
@@ -113,8 +106,12 @@ export default {
         requestCategories() {
             return this.selectedCategories.length === this.filters.length ? null : this.selectedCategories;
         },
-        headingLabel() {
-            return i18n.t('NotificationModule.base', '<strong>Notification</strong> Overview');
+        title() {
+            return i18n.t('UserModule.base', 'Notifications');
+        },
+        // The page header's tool: the user's notification settings
+        actions() {
+            return [{ id: 'settings', label: this.settingsLabel, icon: 'settings', url: this.settingsUrl }];
         },
         filterLabel() {
             return i18n.t('NotificationModule.base', 'Filter');

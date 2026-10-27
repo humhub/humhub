@@ -3,11 +3,9 @@
 use humhub\helpers\Html;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
-use humhub\widgets\bootstrap\Button;
 
 /* @var Grant[] $grants */
 /* @var array<int, string[]> $scopeLabels */
-/* @var bool $canCreate */
 /* @var bool $limitReached */
 ?>
 <?php if ($grants !== []): ?>
@@ -40,11 +38,6 @@ use humhub\widgets\bootstrap\Button;
     </ul>
 <?php endif ?>
 
-<?php if ($canCreate && $limitReached): ?>
+<?php if ($limitReached): ?>
     <p class="text-body-secondary"><?= Html::encode(PersonalAccessTokenService::getLimitMessage()) ?></p>
-<?php elseif ($canCreate): ?>
-    <?= Button::primary(Yii::t('OauthModule.base', 'Create token'))
-        ->link(['/oauth/account/create-token'])
-        ->icon('plus')
-        ->sm() ?>
 <?php endif ?>

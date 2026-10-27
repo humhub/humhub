@@ -17,7 +17,7 @@ class ChangeEmailCest
         $I->waitForElementVisible('#profile-tabs', 20);
         $I->expectTo('see the profile edit form');
 
-        $I->waitForElementVisible('.nav-tabs', 20);
+        $I->waitForElementVisible('.nav-pills', 20);
         $I->click('Change Email');
         $I->waitForText('Your current E-mail address is');
 

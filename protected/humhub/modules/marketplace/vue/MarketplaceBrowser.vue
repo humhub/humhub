@@ -1,6 +1,6 @@
 <template>
-    <div class="c-marketplace">
-        <CardDirectory
+    <div class="marketplace">
+        <EntityBrowser
             ref="directory"
             :url="listUrl"
             :title="labels.title"
@@ -13,22 +13,22 @@
             <template #actions>
                 <button
                     type="button"
-                    class="btn btn-secondary c-icon-button c-marketplace__settings"
+                    class="btn btn-secondary btn-icon-only marketplace-settings"
                     :aria-label="labels.settings"
                     :title="labels.settings"
                     @click="openSettings()"
                 ><i class="ti ti-settings" aria-hidden="true"></i></button>
-                <span class="c-marketplace__update-all-slot" :class="{ 'is-collapsed': !showUpdateAll }" :aria-hidden="showUpdateAll ? null : 'true'">
+                <span class="marketplace-update-all-slot" :class="{ 'is-collapsed': !showUpdateAll }" :aria-hidden="showUpdateAll ? null : 'true'">
                     <button
                         type="button"
-                        class="btn c-icon-button c-marketplace__update-all"
+                        class="btn btn-icon-only marketplace-update-all"
                         :class="updatingAll ? 'btn-warning is-running' : 'btn-accent'"
                         :aria-label="updatingAll ? labels.cancelAllLabel : labels.updateAllLabel"
                         :title="updatingAll ? labels.cancelAll : labels.updateAll"
                         :tabindex="showUpdateAll ? null : -1"
                         :disabled="updateAllDisabled"
                         @click="updatingAll ? stopUpdateAll() : startUpdateAll()"
-                    ><i class="ti ti-refresh c-marketplace__spin" aria-hidden="true"></i></button>
+                    ><span v-if="updatingAll" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti ti-refresh" aria-hidden="true"></i></button>
                 </span>
             </template>
 
@@ -50,7 +50,7 @@
                     @filter-type="filterByType"
                 />
             </template>
-        </CardDirectory>
+        </EntityBrowser>
 
         <div class="visually-hidden" role="status" aria-live="polite">{{ announcement }}</div>
 
@@ -92,7 +92,7 @@ import { createUpdateQueue } from './components/updateQueue.js';
 const IDLE = Object.freeze({ error: null, update: null });
 
 // After a successful update the card says "Updated!" for this long, then plays its remove
-// animation (`.c-module-card.is-removing`, same duration in `_marketplace.scss`) before it
+// animation (`.module-card.is-removing`, same duration in `_marketplace.scss`) before it
 // shows the updated module.
 export const UPDATED_MS = 1200;
 export const REMOVE_MS = 360;
@@ -112,7 +112,7 @@ const wait = (ms) => new Promise((resolve) => {
 
 /**
  * The marketplace page (`humhub\modules\marketplace\widgets\MarketplaceBrowser`): the core
- * `CardDirectory` fed by `GET /api/v2/marketplace/module`, with the marketplace's toolbar
+ * `EntityBrowser` fed by `GET /api/v2/marketplace/module`, with the marketplace's page header
  * actions (the settings button opening `SettingsDialog`, and "Update all"), the core version
  * notice, the cards (the search marked in them), and the dialogs. A card's Buy and Install open
  * `InstallDialog` (on its `buy` / `confirm` step), which runs key registration, installation and
@@ -232,7 +232,7 @@ export default {
                 if (!cell) {
                     return;
                 }
-                const target = ['.c-module-card__action', 'a.c-module-card__title', '.c-module-card__secondary']
+                const target = ['.entity-card-action', 'a.entity-card-title', '.module-card-secondary']
                     .map((selector) => cell.querySelector(selector))
                     .find((element) => element && !element.disabled);
                 if (target) {

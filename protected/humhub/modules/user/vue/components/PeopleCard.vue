@@ -1,8 +1,8 @@
 <template>
-    <article class="c-entity-card c-people-card">
-        <div class="c-entity-card__cover" :style="coverStyle">
+    <article class="card entity-card people-card">
+        <div class="entity-card-cover" :style="coverStyle">
             <UserImage
-                class="c-entity-card__avatar"
+                class="entity-card-avatar"
                 :guid="user.guid"
                 :display-name="user.displayName"
                 :url="user.url"
@@ -14,11 +14,11 @@
                 aria-hidden="true"
                 tabindex="-1"
             />
-            <span v-if="stat" class="c-entity-card__pill">
+            <span v-if="stat" class="badge rounded-pill entity-card-pill">
                 <button
                     type="button"
-                    class="c-entity-card__stat"
-                    :class="`c-entity-card__stat--${stat.kind}`"
+                    class="entity-card-stat"
+                    :class="`entity-card-stat-${stat.kind}`"
                     :title="stat.label"
                     :aria-label="stat.label"
                     @click="openStat"
@@ -26,32 +26,32 @@
             </span>
         </div>
 
-        <div class="c-entity-card__header">
-            <a class="c-entity-card__title" :href="user.url">{{ user.displayName }}</a>
-            <p v-if="user.title" class="c-entity-card__subtitle">{{ user.title }}</p>
+        <div class="entity-card-header">
+            <a class="entity-card-title" :href="user.url">{{ user.displayName }}</a>
+            <p v-if="user.title" class="entity-card-subtitle">{{ user.title }}</p>
             <ExtensionSlot name="user.card-subtitle" :context="{ user }" />
         </div>
 
-        <div class="c-entity-card__body">
-            <p v-for="(detail, index) in details" :key="index" class="c-people-card__detail" :title="detail">{{ detail }}</p>
+        <div class="entity-card-body">
+            <p v-for="(detail, index) in details" :key="index" class="people-card-detail" :title="detail">{{ detail }}</p>
             <!-- Rendered by the server from the administrator's details template, values encoded -->
-            <div v-if="user.detailsHtml" class="c-people-card__details" v-html="user.detailsHtml"></div>
+            <div v-if="user.detailsHtml" class="people-card-details" v-html="user.detailsHtml"></div>
         </div>
 
-        <div v-if="tags.length" class="c-entity-card__tags">
+        <div v-if="tags.length" class="entity-card-tags">
             <button
                 v-for="tag in tags"
                 :key="tag"
                 type="button"
-                class="c-entity-card__tag"
+                class="badge entity-card-tag"
                 :title="filterByLabel(tag)"
                 :aria-label="filterByLabel(tag)"
                 @click="$emit('filter-tag', tag)"
             >{{ tag }}</button>
         </div>
 
-        <div v-if="showFooter" class="c-entity-card__footer">
-            <button v-if="state === undefined" type="button" class="c-entity-card__action c-entity-card__placeholder" :class="buttons.placeholderClass" disabled aria-hidden="true" tabindex="-1">&nbsp;</button>
+        <div v-if="showFooter" class="entity-card-footer">
+            <button v-if="state === undefined" type="button" class="entity-card-action entity-card-placeholder" :class="buttons.placeholderClass" disabled aria-hidden="true" tabindex="-1">&nbsp;</button>
             <ExtensionSlot v-else name="user.card-actions" :context="actionContext" />
         </div>
     </article>
@@ -65,7 +65,7 @@ import UserImage from '../UserImage.vue';
 const MAX_TAGS = 5;
 
 /**
- * A user of the People directory (`PeopleDirectory`), after the HumHub design system v2 people
+ * A user of the People browser (`PeopleBrowser`), after the HumHub design system v2 people
  * card, on the shared entity card (`_entity-card.scss`): the cover (the user's banner, else
  * plain grey) with the avatar linking to the profile and the stat pill (the friends while the
  * friendship system is on, else the followers — clicking opens the existing friend list
@@ -85,16 +85,16 @@ const MAX_TAGS = 5;
  * - `buttons`: the button classes (`friendClass`, `friendStateClass`, `friendTogglerClass`,
  *   `friendGroupClass` of the `FriendshipButton`; `followClass`, `followingClass` of the
  *   `UserFollowButton`; `placeholderClass`), `icons`: the rendered icon markup (`check`, `plus`,
- *   `clock`, `times`) — both from `user\widgets\PeopleDirectory`.
+ *   `clock`, `times`) — both from `user\widgets\PeopleBrowser`.
  * - Extension slot `user.card-subtitle` (props: `user`): a subtitle line of its own, typically
- *   a `p.c-entity-card__subtitle`.
+ *   a `p.entity-card-subtitle`.
  * - Extension slot `user.card-actions`: the footer's actions, the core's own included —
  *   `friendship` (sortOrder 100, the friendship module's `PeopleCardFriendshipAction`) and
  *   `follow` (200, `PeopleCardFollowAction`) — so a module adds
  *   (`registerSlotComponent('user.card-actions', 'MailCardAction', {id: 'mail', sortOrder:
  *   300})`), replaces (its own component under a core id) or removes
  *   (`removeSlotComponent('user.card-actions', 'follow')`) any of them. Each action gets the
- *   context spread as props and renders a `.c-entity-card__action`, or nothing:
+ *   context spread as props and renders a `.entity-card-action`, or nothing:
  *   `{user, state, buttons, icons, followEnabled, friendshipEnabled, onFollowChange,
  *   onFriendshipChange}` — `state` is always a loaded entry of another user; the two callbacks
  *   are the card's `follow-change`/`friendship-change` (an action declaring and emitting

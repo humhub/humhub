@@ -15,7 +15,7 @@ describe('ProgressFrame', () => {
 
     it('draws the bar as the share of its path length', () => {
         const wrapper = mount(ProgressFrame, { props: { value: 40 } });
-        const bar = wrapper.find('.c-progress-frame__bar');
+        const bar = wrapper.find('.progress-frame-bar');
 
         expect(wrapper.attributes('viewBox')).toBeUndefined();
         expect(bar.attributes('pathLength')).toBe('100');
@@ -29,7 +29,7 @@ describe('ProgressFrame', () => {
 
     it('rounds to whole percent', () => {
         const wrapper = mount(ProgressFrame, { props: { value: 39.6 } });
-        const bar = wrapper.find('.c-progress-frame__bar');
+        const bar = wrapper.find('.progress-frame-bar');
 
         expect(wrapper.attributes('aria-valuenow')).toBe('40');
         expect(bar.attributes('style')).toContain('stroke-dashoffset: 60');

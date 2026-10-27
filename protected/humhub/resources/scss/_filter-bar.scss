@@ -1,0 +1,610 @@
+//
+// Filter bar: the Vue components FilterBar, FilterSelect, FilterPicker and PickerFilterControl
+// (protected/humhub/vue/), with the search field, the custom select and the picker. Built on
+// Bootstrap: the search field, the select's button and the picker's field are `.form-control`s,
+// the select's and the picker's listbox a `.dropdown-menu` of `.dropdown-item`s, the filter
+// toggle and the clear X `.btn`s. The page header and the entity browser build on it
+// (`_page-header.scss`, `_entity-browser.scss`). See docs/ui/filter-bar.md, docs/ui/select-pickers.md.
+// @since 1.20
+// --------------------------------------------------
+
+$filter-bar-gap: $spacer * .5 !default;
+$filter-bar-padding: $spacer * .5 !default;
+$filter-bar-item-width: 256px !default;
+// Below this width the bar collapses to its kept filters and the toggle
+$filter-bar-collapse-width: 570px !default;
+// One row: the taller of a `.form-control` (2px border, see `_form.scss`) and a `.btn`
+$filter-bar-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, 4px, false)) !default;
+$filter-bar-btn-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-padding-y * 2} + #{$btn-border-width} * 2) !default;
+$filter-bar-row-height: max(#{$filter-bar-field-height}, #{$filter-bar-btn-height}) !default;
+$filter-bar-icon-size: $font-size-lg !default;
+$filter-bar-icon-color: var(--hh-text-color-secondary) !default;
+$filter-bar-field-icon-space: $input-padding-x + $filter-bar-icon-size + $spacer * .5 !default;
+
+$select-menu-max-height: 384px !default;
+
+$picker-chip-bg: var(--bs-accent-bg-subtle) !default;
+$picker-chip-color: var(--hh-text-color-highlight) !default;
+$picker-chip-font-size: $font-size-sm !default;
+
+@if not $prev-filter-bar {
+    // Filter bar
+    .filter-bar {
+        container-type: inline-size;
+        container-name: filter-bar;
+    }
+
+    .filter-bar-body {
+        --hh-filter-bar-clear-reserve: calc(#{$filter-bar-btn-height} + #{$filter-bar-gap});
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        align-content: flex-start;
+        gap: $filter-bar-gap;
+        margin: 0;
+        padding: $filter-bar-padding;
+    }
+
+    .filter-bar-item {
+        flex: 1 1 $filter-bar-item-width;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .filter-bar-item-checkbox,
+    .filter-bar-item-tags {
+        flex: 0 1 auto;
+        align-self: center;
+    }
+
+    .filter-bar-item-wide {
+        flex-basis: 100%;
+    }
+
+    .filter-bar-toggle {
+        display: none;
+
+        &.is-active {
+            --bs-btn-color: var(--bs-accent);
+            --bs-btn-bg: var(--bs-accent-bg-subtle);
+            --bs-btn-hover-color: var(--bs-accent);
+            --bs-btn-hover-bg: var(--bs-accent-bg-subtle);
+        }
+    }
+
+    // With a panel: a labelled "Filters" toggle, shown at every width
+    .filter-bar-body.has-panel {
+        @include transition(max-height .3s ease);
+
+        &.is-animating {
+            overflow: hidden;
+        }
+    }
+
+    .filter-bar-toggle-labeled {
+        display: inline-flex;
+        width: auto;
+
+        > .ti {
+            font-size: $filter-bar-icon-size;
+        }
+    }
+
+    .filter-bar-count {
+        --bs-badge-font-size: #{$font-size-sm};
+
+        background: var(--bs-accent);
+        color: var(--hh-accent-contrast);
+    }
+
+    // The panel: a full row of its own below the row's filters, shown while the bar is open
+    // (and while it is collapsing, so the bar shrinks past it)
+    .filter-bar-panel {
+        display: none;
+        flex: 1 0 100%;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: $filter-bar-gap;
+        padding-top: $filter-bar-gap;
+        border-top: var(--bs-border-width) solid var(--bs-border-color);
+
+        > .filter-bar-item {
+            flex: 1 1 $filter-bar-item-width;
+        }
+
+        > .filter-bar-item-checkbox,
+        > .filter-bar-item-tags {
+            flex: 0 1 auto;
+        }
+
+        > .filter-bar-item-wide {
+            flex-basis: 100%;
+        }
+    }
+
+    .filter-bar-body.is-open > .filter-bar-panel,
+    .filter-bar-body.is-collapsing > .filter-bar-panel {
+        display: flex;
+    }
+
+    .filter-bar-clear {
+        --bs-btn-hover-color: var(--bs-danger);
+        --bs-btn-hover-bg: var(--bs-danger-bg-subtle);
+        --bs-btn-active-color: var(--bs-danger);
+        --bs-btn-active-bg: var(--bs-danger-bg-subtle);
+
+        &.is-flipping {
+            animation: none;
+            @include transition(transform .3s ease);
+        }
+    }
+
+    .filter-bar-clear-enter-active {
+        animation: hh-clear-slide-in 180ms ease forwards;
+    }
+
+    .filter-bar-clear-leave-active {
+        animation: hh-clear-slide-out 160ms ease forwards;
+    }
+
+    @container filter-bar (max-width: #{$filter-bar-collapse-width}) {
+        .filter-bar-toggle {
+            display: inline-flex;
+        }
+
+        .filter-bar-body {
+            max-height: calc(#{$filter-bar-row-height} + #{$filter-bar-padding * 2});
+            overflow: hidden;
+            @include transition(max-height .3s ease);
+        }
+
+        // Open without an inline height too (a panel filter set on load opens the bar at once);
+        // while animating, the inline `max-height` wins.
+        .filter-bar-body.is-open {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .filter-bar-body:not(.is-open):not(.is-collapsing) > :not([data-filter-bar-keep]):not([data-filter-bar-toggle]) {
+            display: none;
+        }
+
+        .filter-bar-body > .filter-bar-item[data-filter-bar-keep] {
+            flex: 1 1 0;
+        }
+
+        .filter-bar-body > :not([data-filter-bar-keep]):not([data-filter-bar-toggle]) {
+            flex-basis: calc(100% - var(--hh-filter-bar-clear-reserve));
+            min-width: 0;
+        }
+
+        .filter-bar-body > .filter-bar-panel {
+            flex-basis: 100%;
+
+            > .filter-bar-item {
+                flex-basis: 100%;
+            }
+        }
+    }
+
+    // Search field: a `.form-control` led by an icon
+    .search-field {
+        position: relative;
+        display: flex;
+        width: 100%;
+    }
+
+    .search-field-icon {
+        position: absolute;
+        top: 50%;
+        left: $input-padding-x;
+        transform: translateY(-50%);
+        color: $filter-bar-icon-color;
+        font-size: $filter-bar-icon-size;
+        pointer-events: none;
+    }
+
+    .search-field-input {
+        padding-left: $filter-bar-field-icon-space;
+    }
+
+    // Custom select (FilterSelect): a `.form-control` button opening a `.dropdown-menu` listbox
+    .select-menu {
+        position: relative;
+        display: flex;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .select-menu-button {
+        display: flex;
+        align-items: center;
+        padding-right: $filter-bar-field-icon-space;
+        color: $filter-bar-icon-color;
+        text-align: left;
+        cursor: pointer;
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    .select-menu.is-open .select-menu-button {
+        border-color: var(--bs-accent);
+    }
+
+    .select-menu.has-selection .select-menu-button {
+        color: var(--bs-body-color);
+    }
+
+    .select-menu.is-loading .select-menu-button {
+        cursor: progress;
+    }
+
+    .select-menu-value {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .select-menu-chevron,
+    .select-menu-clear {
+        position: absolute;
+        top: 50%;
+        right: $input-padding-x;
+        transform: translateY(-50%);
+    }
+
+    .select-menu-chevron {
+        color: $filter-bar-icon-color;
+        font-size: $filter-bar-icon-size;
+        pointer-events: none;
+        @include transition(transform .24s ease, opacity .24s ease 60ms);
+    }
+
+    .select-menu.is-open .select-menu-chevron {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    .select-menu.has-selection:not(.is-required) .select-menu-chevron {
+        opacity: 0;
+        transition-delay: 0s;
+    }
+
+    // The clear X takes the chevron's place once a value is chosen
+    .select-menu-clear {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $filter-bar-icon-size * 1.25;
+        height: $filter-bar-icon-size * 1.25;
+        padding: 0;
+        border: 0;
+        border-radius: var(--bs-border-radius-sm);
+        background: transparent;
+        color: var(--bs-danger);
+        font-size: $filter-bar-icon-size;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-50%) scale(.85) rotate(-90deg);
+        @include transition(transform .24s ease, opacity .24s ease);
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 1px;
+        }
+    }
+
+    .select-menu.has-selection .select-menu-clear {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(-50%) scale(1) rotate(0deg);
+    }
+
+    .select-menu:not(.has-selection) .select-menu-clear {
+        transition-delay: 60ms;
+    }
+
+    .select-menu.has-selection.is-disabled .select-menu-clear {
+        cursor: default;
+        opacity: .5;
+    }
+
+    .select-menu-spinner {
+        position: absolute;
+        top: calc(50% - .5rem);
+        right: $input-padding-x;
+        color: $filter-bar-icon-color;
+    }
+
+    // The listbox: a `.dropdown-menu` below the field (`data-bs-popper="static"`), as wide as it
+    // Opening above the field (`dropUp`)
+    .select-menu.is-drop-up .select-menu-drawer[data-bs-popper] {
+        top: auto;
+        bottom: 100%;
+        margin-top: 0;
+        margin-bottom: var(--bs-dropdown-spacer);
+    }
+
+    .select-menu-drawer {
+        width: 100%;
+        max-height: $select-menu-max-height;
+        overflow-y: auto;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .select-menu-option {
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        cursor: pointer;
+
+        // The option the keyboard is on (`aria-activedescendant`), drawn like a hovered item
+        &.is-focused:not(.active) {
+            background-color: var(--bs-dropdown-link-hover-bg);
+            color: var(--bs-dropdown-link-hover-color);
+        }
+    }
+
+    .select-menu-drawer:focus-visible .select-menu-option.is-focused {
+        outline: 2px solid var(--bs-accent);
+        outline-offset: -2px;
+    }
+
+    // Searchable picker (FilterPicker): a `.select-menu` whose button is a `.form-control` field
+    // holding the chips and the combobox input; listbox, chevron, clear X and spinner are the select's.
+    .picker-field {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $spacer * .25;
+        padding-right: $filter-bar-field-icon-space;
+        cursor: text;
+
+        &:focus-within {
+            border-color: var(--bs-accent);
+        }
+    }
+
+    .picker.is-open .picker-field {
+        border-color: var(--bs-accent);
+    }
+
+    .picker.is-disabled .picker-field {
+        background-color: $input-disabled-bg;
+        cursor: default;
+    }
+
+    .picker-input {
+        flex: 1 1 80px;
+        min-width: 80px;
+        height: $input-line-height * $input-font-size;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        outline: none;
+        text-overflow: ellipsis;
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    // One line high whatever the chips wrap to: the chevron, the clear X and the spinner stay at
+    // the first line.
+    .picker .select-menu-chevron,
+    .picker .select-menu-clear {
+        top: calc(#{$filter-bar-field-height} * .5);
+    }
+
+    .picker .select-menu-spinner {
+        top: calc(#{$filter-bar-field-height} * .5 - .5rem);
+    }
+
+    // A chosen value: a pill as high as the input's line
+    .picker-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        max-width: 100%;
+        min-width: 0;
+        height: $input-line-height * $input-font-size;
+        padding: 0 2px 0 $spacer * .5;
+        border-radius: var(--bs-border-radius-pill);
+        background: $picker-chip-bg;
+        color: $picker-chip-color;
+        font-size: $picker-chip-font-size;
+    }
+
+    .picker-chip-label {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .picker-chip-remove {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 1.5em;
+        height: 1.5em;
+        padding: 0;
+        border: 0;
+        border-radius: var(--bs-border-radius-pill);
+        background: transparent;
+        color: inherit;
+        font-size: inherit;
+        cursor: pointer;
+        @include transition(background-color .3s, color .3s);
+
+        &:hover {
+            background: var(--bs-accent);
+            color: var(--hh-accent-contrast);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 1px;
+        }
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    .picker-option-label {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .picker-option-count {
+        flex: 0 0 auto;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+    }
+
+    // Record filters (`PickerFilterControl`: the user module's UserFilterControl, the `user`
+    // filter type, `.user-filter`; the space module's SpaceFilterControl, the `space` type,
+    // `.space-filter`; the topic module's TopicFilterControl, `.topic-filter`): a `.picker`
+    // led by an icon (a person, spaces, a topic), without a chevron, a chosen record a chip with
+    // its image; the suggestions carry images too.
+    .picker-filter .picker-field {
+        padding-right: $input-padding-x;
+    }
+
+    // `keepPlaceholder`: the placeholder stays next to the chips, the input never narrower than it
+    // (its length in characters, set inline by the control) unless the field itself is.
+    .picker-filter.keeps-placeholder .picker-input {
+        flex-basis: min(100%, calc(var(--hh-picker-placeholder-chars) * 1ch + 4px));
+        min-width: min(100%, calc(var(--hh-picker-placeholder-chars) * 1ch + 4px));
+    }
+
+    .picker-filter.is-loading .picker-field {
+        padding-right: $filter-bar-field-icon-space;
+    }
+
+    .picker-filter-icon {
+        flex: 0 0 auto;
+        margin-right: $spacer * .25;
+        color: $filter-bar-icon-color;
+        font-size: $filter-bar-icon-size;
+    }
+
+    .picker-filter-avatar {
+        display: inline-flex;
+        flex: 0 0 auto;
+
+        img {
+            display: block;
+        }
+    }
+
+    .picker-filter-chip {
+        gap: $spacer * .375;
+        padding-left: 2px;
+    }
+
+    .picker-filter-name {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    // The topic module's TopicFilterControl (the `topic` type): a colour dot for an image — the
+    // topic's colour inline, a neutral one without —, a topic of another container than the
+    // filter's followed by that container's name.
+    .topic-filter-dot {
+        display: block;
+        width: 10px;
+        height: 10px;
+        margin: 0 $spacer * .25;
+        border-radius: 50%;
+        background-color: var(--hh-text-color-soft2);
+    }
+
+    .topic-filter-chip {
+        padding-left: $spacer * .25;
+    }
+
+    .topic-filter-container {
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        color: var(--hh-text-color-soft);
+        font-size: $font-size-sm;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // Tags and checkbox filters
+    .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $spacer * .25;
+        min-height: $filter-bar-field-height;
+    }
+
+    .filter-tags-label {
+        margin-right: $spacer * .25;
+        color: $filter-bar-icon-color;
+    }
+
+    // A tag: Bootstrap's toggle button (`.btn.btn-light.btn-sm.rounded-pill`, `.active` +
+    // `aria-pressed`), pressed in the accent colour
+    .filter-tags-tag {
+        --bs-btn-active-color: var(--hh-accent-contrast);
+        --bs-btn-active-bg: var(--bs-accent);
+        --bs-btn-active-border-color: var(--bs-accent);
+    }
+
+    .filter-check {
+        display: flex;
+        align-items: center;
+        min-height: $filter-bar-field-height;
+        margin: 0;
+    }
+
+    // Motion
+    @keyframes hh-clear-slide-in {
+        from {
+            opacity: 0;
+            transform: translateX(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes hh-clear-slide-out {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(12px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .filter-bar-clear-enter-active,
+        .filter-bar-clear-leave-active {
+            animation: none;
+        }
+    }
+}

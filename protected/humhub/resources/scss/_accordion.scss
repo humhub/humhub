@@ -1,0 +1,67 @@
+//
+// Accordion: Bootstrap's `.accordion` (look from Bootstrap's `$accordion-*` variables, see
+// variables.scss) plus the parts of a header: an icon box, a title with a subtitle line, and a
+// static header for an item that does not open. See docs/ui/accordion.md.
+// @since 1.20
+// --------------------------------------------------
+
+$accordion-icon-box-size: 2.5rem !default;
+$accordion-icon-box-font-size: $font-size-lg !default;
+$accordion-header-gap: $spacer * .75 !default;
+
+@if not $prev-accordion {
+    .accordion-icon {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: $accordion-icon-box-size;
+        height: $accordion-icon-box-size;
+        margin-right: $accordion-header-gap;
+        border-radius: var(--bs-border-radius-lg);
+        background: var(--bs-secondary-bg);
+        font-size: $accordion-icon-box-font-size;
+
+        .accordion-button:not(.collapsed) & {
+            background: var(--bs-accent-bg-subtle);
+            color: var(--bs-accent-text-emphasis);
+        }
+    }
+
+    .accordion-title {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-width: 0;
+        color: var(--hh-text-color-highlight);
+        font-weight: $font-weight-semibold;
+    }
+
+    .accordion-subtitle {
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+    }
+
+    // The dot of a group with unsaved changes, after the title
+    .accordion-dot {
+        margin-left: $spacer * .5;
+    }
+
+    // A header that does not open (nothing to set): no chevron, an optional `.accordion-static-icon`
+    // (e.g. a lock) in its place
+    .accordion-button-static {
+        cursor: default;
+
+        &::after {
+            display: none;
+        }
+    }
+
+    .accordion-static-icon {
+        flex: 0 0 auto;
+        width: var(--bs-accordion-btn-icon-width);
+        color: var(--bs-secondary-color);
+        text-align: center;
+    }
+}

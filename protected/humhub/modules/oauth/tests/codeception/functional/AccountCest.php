@@ -97,10 +97,10 @@ class AccountCest
 
         $I->amOnRoute('/user/security/sessions');
         $I->see('Browser sessions');
-        $I->see('HumHub app', '.security-section h2');
+        $I->see('HumHub app', '.security-section h3');
         $I->see('Devices signed in with the HumHub app.');
         $I->see('Safari · iOS');
-        $I->see('Sign out');
+        $I->seeElement('[aria-label="Sign out: Safari · iOS"]');
 
         $this->revoke($I, $grant);
         Assert::assertFalse(Grant::find()->where(['id' => $grant->id])->exists());
@@ -160,8 +160,9 @@ class AccountCest
         $I->see('Personal access tokens');
         $source = $I->grabPageSource();
         Assert::assertStringNotContainsString('<script>alert(', $source);
-        Assert::assertSame(1, substr_count($source, '&lt;script&gt;alert(1)&lt;/script&gt;'));
-        Assert::assertSame(1, substr_count($source, '&lt;script&gt;alert(2)&lt;/script&gt;'));
+        // As the name and in the label of its row's button
+        Assert::assertSame(2, substr_count($source, '&lt;script&gt;alert(1)&lt;/script&gt;'));
+        Assert::assertSame(2, substr_count($source, '&lt;script&gt;alert(2)&lt;/script&gt;'));
     }
 
     public function testTokenIsCreatedShownOnceAndRevoked(FunctionalTester $I)
@@ -175,7 +176,7 @@ class AccountCest
 
         $I->amOnRoute('/oauth/account/create-token');
         // The page belongs to the tab of its section
-        $I->see('Devices & Access', '.nav-tabs .nav-link.active');
+        $I->see('Devices & Access', '.nav-pills .nav-link.active');
         // Without `full` among the scopes, no lock and no hint
         $I->dontSeeElement('#personalaccesstokenform-scopes-full-hint');
         Assert::assertStringNotContainsString('"#personalaccesstokenform-scopes"', $I->grabPageSource());

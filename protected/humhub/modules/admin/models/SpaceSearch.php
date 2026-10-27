@@ -18,6 +18,8 @@ use yii\data\ActiveDataProvider;
  * SpaceSearch for administration
  *
  * @author luke
+ * @deprecated since 1.20 the administration's space list is the `DataTable` island of
+ * {@see \humhub\modules\admin\widgets\SpaceTable}, on {@see \humhub\modules\admin\components\AdminSpaceList}
  */
 class SpaceSearch extends Space
 {

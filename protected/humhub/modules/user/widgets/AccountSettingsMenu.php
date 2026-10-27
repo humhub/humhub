@@ -10,13 +10,13 @@ namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
  * Account Settings Tab Menu
  */
-class AccountSettingsMenu extends TabMenu
+class AccountSettingsMenu extends PillTabs
 {
     /**
      * @inheritdoc

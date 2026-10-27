@@ -35,11 +35,7 @@ class AcceptanceTester extends \AcceptanceTester
         $this->expectTo('see the users list');
 
         $user = User::findOne(['username' => $userName]);
-        $this->waitForText('User administration');
-        $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown button');
-        $this->waitForText('Impersonate');
-        $this->click('Impersonate', '.dropdown-menu.show');
-        $this->acceptPopup();
+        $this->runTableRowAction($user->displayName, 'Impersonate', true);
     }
 
     public function stopImpersonation()
@@ -61,7 +57,7 @@ class AcceptanceTester extends \AcceptanceTester
             'checkboxlist-options' => '',
         ], $options);
 
-        $this->waitForText('Manage profile attributes');
+        $this->waitForText('Profiles', 10, '.content-card .card-title');
         $this->waitForText($options['categoryTitle']);
         $this->click($options['categoryTitle']);
         $this->waitForText('Add new field', 10, '.tab-pane.active');

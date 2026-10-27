@@ -37,8 +37,8 @@ const mountControl = (props = {}) => {
     return wrapper;
 };
 const input = (wrapper) => wrapper.find('input[role="combobox"]');
-const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.c-space-filter__name').text());
-const chipLabels = (wrapper) => wrapper.findAll('.c-picker__chip-label').map((label) => label.text());
+const optionTexts = (wrapper) => wrapper.findAll('[role="option"]').map((option) => option.find('.space-filter-name').text());
+const chipLabels = (wrapper) => wrapper.findAll('.picker-chip-label').map((label) => label.text());
 const key = (wrapper, name) => input(wrapper).trigger('keydown', { key: name });
 const type = async (wrapper, text) => {
     input(wrapper).element.value = text;
@@ -97,7 +97,7 @@ describe('SpaceFilterControl', () => {
         expect(field.attributes('aria-label')).toBe('Space');
         expect(field.attributes('aria-expanded')).toBe('false');
         expect(field.attributes('aria-controls')).toBe(wrapper.find('[role="listbox"]').attributes('id'));
-        expect(wrapper.find('.c-picker__chip').exists()).toBe(false);
+        expect(wrapper.find('.picker-chip').exists()).toBe(false);
     });
 
     it('suggests the member spaces matching the typed text after the debounce', async () => {
@@ -145,10 +145,10 @@ describe('SpaceFilterControl', () => {
         expect(emitted(wrapper)).toEqual([['3']]);
         await wrapper.setProps({ modelValue: ['3'] });
 
-        const chip = wrapper.find('.c-picker__chip');
-        expect(chip.find('.c-picker__chip-label').text()).toBe('Team Beta');
+        const chip = wrapper.find('.picker-chip');
+        expect(chip.find('.picker-chip-label').text()).toBe('Team Beta');
         expect(chip.find('img').attributes('src')).toBe('/img/s3.jpg');
-        expect(chip.find('.c-picker__chip-remove').attributes('aria-label')).toBe('Remove Team Beta');
+        expect(chip.find('.picker-chip-remove').attributes('aria-label')).toBe('Remove Team Beta');
         await flushPromises();
         expect(document.activeElement).toBe(input(wrapper).element, 'the focus stays in the search field');
         expect(input(wrapper).element.value).toBe('');
@@ -174,7 +174,7 @@ describe('SpaceFilterControl', () => {
 
         expect(chipLabels(wrapper)).toEqual(['Team Beta']);
         expect(input(wrapper).attributes('placeholder')).toBe('');
-        expect(wrapper.find('.c-picker').classes()).not.toContain('keeps-placeholder');
+        expect(wrapper.find('.picker').classes()).not.toContain('keeps-placeholder');
     });
 
     it('keeps the placeholder next to the chips with `keepPlaceholder`, the input as wide as it', async () => {
@@ -188,7 +188,7 @@ describe('SpaceFilterControl', () => {
                     search: () => Promise.resolve([]),
                     resolve: (ids) => Promise.resolve(spaces.filter((entry) => ids.includes(String(entry.id)))),
                     itemLabel: (item) => item.name,
-                    block: 'c-space-filter',
+                    block: 'space-filter',
                     ...props,
                 },
                 attachTo: document.body,
@@ -196,7 +196,7 @@ describe('SpaceFilterControl', () => {
             mounted.push(wrapper);
             return wrapper;
         };
-        const root = (wrapper) => wrapper.find('.c-picker');
+        const root = (wrapper) => wrapper.find('.picker');
 
         const empty = picker();
         expect(input(empty).attributes('placeholder')).toBe('Add a space…');
@@ -207,7 +207,7 @@ describe('SpaceFilterControl', () => {
         expect(chipLabels(chosen)).toEqual(['Team Alpha', 'Team Beta']);
         expect(input(chosen).attributes('placeholder')).toBe('Add a space…');
         expect(root(chosen).classes()).toContain('keeps-placeholder');
-        expect(root(chosen).element.style.getPropertyValue('--c-picker-placeholder-chars')).toBe('12');
+        expect(root(chosen).element.style.getPropertyValue('--hh-picker-placeholder-chars')).toBe('12');
 
         // Without `multiple` a chosen item replaces the input: nothing to keep.
         const single = picker({ multiple: false, modelValue: '2' });
@@ -223,7 +223,7 @@ describe('SpaceFilterControl', () => {
         await choose(wrapper, 'sales');
         await wrapper.setProps({ modelValue: ['3', '8'] });
 
-        await wrapper.findAll('.c-picker__chip-remove')[0].trigger('click');
+        await wrapper.findAll('.picker-chip-remove')[0].trigger('click');
 
         expect(emitted(wrapper).at(-1)).toEqual(['8']);
         await wrapper.setProps({ modelValue: ['8'] });
@@ -320,7 +320,7 @@ describe('SpaceFilterControl', () => {
         expect(wrapper.classes()).not.toContain('is-loading');
         // The value stays, shown as it is, and can be removed.
         expect(chipLabels(wrapper)).toEqual(['8']);
-        await wrapper.find('.c-picker__chip-remove').trigger('click');
+        await wrapper.find('.picker-chip-remove').trigger('click');
         expect(emitted(wrapper)).toEqual([[]]);
 
         await wrapper.setProps({ modelValue: [] });
@@ -360,20 +360,20 @@ describe('SpaceFilterControl', () => {
         expect(emitted(wrapper)).toEqual(['3']);
         await wrapper.setProps({ modelValue: '3' });
 
-        const chip = wrapper.find('.c-picker__chip');
+        const chip = wrapper.find('.picker-chip');
         expect(chip.attributes('role')).toBe('group');
         expect(chip.attributes('aria-label')).toBe('Space');
-        expect(chip.find('.c-picker__chip-label').text()).toBe('Team Beta');
+        expect(chip.find('.picker-chip-label').text()).toBe('Team Beta');
         expect(input(wrapper).exists()).toBe(false);
-        expect(chip.find('.c-picker__chip-remove').attributes('id')).toBe('filter-spaceId');
+        expect(chip.find('.picker-chip-remove').attributes('id')).toBe('filter-spaceId');
 
-        await chip.find('.c-picker__chip-remove').trigger('click');
+        await chip.find('.picker-chip-remove').trigger('click');
         expect(emitted(wrapper).at(-1)).toBe('');
 
         const resolving = mountControl({ filter: single, modelValue: '8' });
         await flushPromises();
         expect(params(globalThis.humhubStubs.client.get.mock.calls.at(-1)[0])).toEqual({ purpose: 'picker', scope: 'all', ids: '8', pageSize: '1' });
-        expect(resolving.find('.c-picker__chip-label').text()).toBe('Sales');
+        expect(resolving.find('.picker-chip-label').text()).toBe('Sales');
     });
 
     it('is the control of a `space` definition in a filter bar, which applies the chosen ids', async () => {
@@ -385,7 +385,7 @@ describe('SpaceFilterControl', () => {
         });
         mounted.push(wrapper);
 
-        const field = () => wrapper.find('.c-filter-bar__item--space input[role="combobox"]');
+        const field = () => wrapper.find('.filter-bar-item-space input[role="combobox"]');
         expect(field().attributes('id')).toBe('filter-spaceId');
 
         for (const text of ['alpha', 'sales']) {

@@ -1,9 +1,15 @@
-<div class="panel-body">
-    <h4><?= Yii::t('AdminModule.settings', 'User Settings'); ?></h4>
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.settings', 'Here you can configurate the registration behaviour and additinal user settings of your social network.'); ?>
-    </div>
-</div>
+<?php
 
-<?= humhub\modules\admin\widgets\AuthenticationMenu::widget(); ?>
-<?= $content; ?>
+use humhub\components\View;
+use humhub\modules\admin\widgets\AuthenticationMenu;
+use humhub\widgets\ContentCard;
+
+/* @var View $this */
+/* @var string $content */
+?>
+<?php ContentCard::begin([
+    'title' => Yii::t('AdminModule.user', 'Settings'),
+    'tabs' => AuthenticationMenu::class,
+]) ?>
+<?= $content ?>
+<?php ContentCard::end() ?>

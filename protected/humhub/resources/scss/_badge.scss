@@ -2,6 +2,11 @@
 // Badges
 // --------------------------------------------------
 
+// The theme colours that are badge tones (no `light`, `dark`, `primary`, `secondary`)
+$badge-tones: accent, success, info, warning, danger !default;
+
+$badge-dot-size: .5rem !default;
+
 @if not $prev-badge {
     .badge-space {
         margin-top: 6px;
@@ -13,20 +18,32 @@
     }
 
     .badge {
-        font-family: Arial, sans-serif;
         text-transform: uppercase;
         vertical-align: bottom;
         white-space: nowrap;
         text-shadow: none;
-        background-color: var(--hh-background3);
+        background-color: var(--bs-secondary-bg);
         line-height: 1;
 
-        // Badges rendered as links (eg. Button::asBadge()->link(), tag lists on
-        // the people/space directory cards) - box-shadow follows the badge's own
-        // border-radius, so no need to redeclare it here.
-        &:is(a):focus-visible {
-            outline: 0;
-            box-shadow: 0 0 0 2px var(--accent);
+        // Clickable badges: links (eg. Button::asBadge()->link()) and buttons (the tags of the
+        // entity cards, the marketplace's type filters). The box-shadow follows the badge's own
+        // border-radius: an edge in the badge's colour on hover, the focus ring on focus.
+        &:is(a, button) {
+            @include transition(box-shadow .15s ease-in-out);
+
+            &:hover {
+                box-shadow: inset 0 0 0 1px currentColor;
+            }
+
+            &:focus-visible {
+                outline: 0;
+                box-shadow: 0 0 0 2px var(--bs-accent);
+            }
+        }
+
+        &:is(button) {
+            border: 0;
+            cursor: pointer;
         }
 
         &.text-bg-accent {
@@ -67,5 +84,38 @@
                 display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
             }
         }
+    }
+
+    // Tones (docs/ui/badges.md): the subtle fill and text of a theme colour, e.g. `.badge-success`.
+    // A plain `.badge` is the neutral one (for a tag, an "off", a plain fact).
+    @each $tone in $badge-tones {
+        .badge-#{$tone} {
+            --bs-badge-color: var(--bs-#{$tone}-text-emphasis);
+            background-color: var(--bs-#{$tone}-bg-subtle);
+        }
+    }
+
+    // Badges coloured with a background utility only (`badge bg-success`, Bootstrap 5.0 style):
+    // the contrast colour on it, as with `text-bg-*` above
+    @each $color, $value in $theme-colors {
+        .badge.bg-#{$color} {
+            --bs-badge-color: var(--hh-#{$color}-contrast);
+        }
+    }
+
+    // A dot: something waits (red) or is unsaved (accent); an empty element with visually hidden
+    // text inside (docs/ui/badges.md)
+    .badge-dot {
+        display: inline-block;
+        flex: 0 0 auto;
+        width: $badge-dot-size;
+        height: $badge-dot-size;
+        border-radius: 50%;
+        background: var(--bs-danger);
+        vertical-align: middle;
+    }
+
+    .badge-dot-unsaved {
+        background: var(--bs-accent);
     }
 }

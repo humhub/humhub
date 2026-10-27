@@ -1,80 +1,12 @@
 <?php
 
-use humhub\helpers\Html;
-use humhub\modules\admin\grid\UserActionColumn;
-use humhub\modules\admin\models\UserSearch;
-use humhub\modules\admin\widgets\ExportButton;
-use humhub\modules\user\grid\DisplayNameColumn;
-use humhub\modules\user\grid\ImageColumn;
-use humhub\widgets\bootstrap\Button;
-use humhub\widgets\form\ActiveForm;
-use humhub\widgets\GridView;
-use humhub\widgets\Icon;
-use yii\data\ActiveDataProvider;
-use yii\helpers\Url;
+use humhub\components\View;
+use humhub\modules\admin\widgets\UserTable;
+use humhub\widgets\ContentCard;
 
-/**
- * @var $searchModel UserSearch
- * @var $dataProvider ActiveDataProvider
- * @var $showPendingRegistrations bool
- */
+/* @var $this View */
+
+// The table island is a content card of its own
+ContentCard::markRendered($this);
 ?>
-
-<div class="panel-body">
-
-    <div class="float-end">
-        <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('user-plus')->sm()->link(['/admin/user/add']) ?>
-        <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
-    </div>
-
-    <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
-    <div class="text-body-secondary">
-        <?= Yii::t('AdminModule.user', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
-    </div>
-
-    <br/>
-
-    <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/user/list'])]); ?>
-    <div class="container gx-0 overflow-x-hidden">
-        <div class="row gy-2">
-            <div class="col-lg-8">
-                <div class="input-group">
-                    <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email, username or exact id.')]); ?>
-                    <button class="btn btn-light" type="submit"><?= Icon::get('search') ?></button>
-                </div>
-            </div>
-            <div class="col-lg-4 usersearch-statuses">
-                <?= Html::activeDropDownList($searchModel, 'status', $searchModel->getStatusAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
-            </div>
-        </div>
-    </div>
-    <?php ActiveForm::end(); ?>
-
-    <div class="table-responsive">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'summary' => '',
-            'columns' => [
-                ['class' => ImageColumn::class],
-                ['class' => DisplayNameColumn::class],
-                [
-                    'attribute' => 'email',
-                    'format' => 'email',
-                ],
-                [
-                    'attribute' => 'last_login',
-                    'label' => Yii::t('AdminModule.user', 'Last login'),
-                    'options' => ['style' => 'width:120px;'],
-                    'value' => fn($data) => ($data->last_login == null) ? Yii::t('AdminModule.user', 'never') : Yii::$app->formatter->asDate($data->last_login),
-                ],
-                ['class' => UserActionColumn::class],
-            ],
-        ]); ?>
-    </div>
-    <?php if ($showPendingRegistrations): ?>
-        <br/>
-        <div class="clearfix">
-            <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm() ?>
-        </div>
-    <?php endif; ?>
-</div>
+<?= UserTable::widget() ?>

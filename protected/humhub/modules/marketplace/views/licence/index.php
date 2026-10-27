@@ -5,18 +5,16 @@ use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\PageHeader;
 
 /* @var $this View */
 /* @var $model Licence */
 ?>
-
-<div class="panel">
-    <div class="panel-heading">
-        <?= Yii::t('MarketplaceModule.base', '<strong>Activate</strong> your Professional Edition') ?>
-    </div>
-
-    <div class="panel-body">
+<div class="d-flex flex-column gap-3">
+    <?= PageHeader::title(Yii::t('MarketplaceModule.base', 'Professional Edition')) ?>
+    <?php ContentCard::begin() ?>
 
         <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
             <div class="alert alert-success">
@@ -60,5 +58,5 @@ use humhub\widgets\form\ActiveForm;
         <?= Button::save(Yii::t('MarketplaceModule.base', 'Save and update'))->submit() ?>
 
         <?php ActiveForm::end(); ?>
-    </div>
+    <?php ContentCard::end() ?>
 </div>

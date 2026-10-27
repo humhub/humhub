@@ -105,10 +105,10 @@ afterEach(() => {
 
 const row = (id) => wrapper.find(`[data-category="${id}"]`);
 const checkbox = (categoryId, channelId) => wrapper.find(`input[name="NotificationSettings[categories.${categoryId}.${channelId}]"]`);
-const selectedProfile = () => wrapper.find('[role="radio"][aria-checked="true"]').attributes('data-profile');
+const selectedProfile = () => wrapper.findAll('input[data-profile]').find((input) => input.element.checked).attributes('data-profile');
 
 const expand = async (id) => {
-    await row(id).find('button.c-notification-settings__category-head').trigger('click');
+    await row(id).find('button.accordion-button').trigger('click');
 };
 
 describe('NotificationSettings', () => {
@@ -116,9 +116,9 @@ describe('NotificationSettings', () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
         expect(wrapper.findAll('[data-category]').map((node) => node.attributes('data-category'))).toEqual(['direct', 'social', 'content', 'chat']);
-        const badges = row('social').findAll('.c-notification-settings__badge');
+        const badges = row('social').findAll('.notification-settings-badges .badge');
         expect(badges.map((badge) => badge.attributes('data-channel'))).toEqual(['web', 'email', 'mobile']);
-        expect(badges.map((badge) => badge.classes().includes('is-on'))).toEqual([true, true, false]);
+        expect(badges.map((badge) => badge.classes().includes('badge-accent'))).toEqual([true, true, false]);
         expect(row('social').text()).toContain('social description');
         expect(row('social').find('.ti-social').exists()).toBe(true);
     });
@@ -126,16 +126,19 @@ describe('NotificationSettings', () => {
     it('shows the module categories under their own heading', () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        const headings = wrapper.findAll('.c-notification-settings__divider');
+        const headings = wrapper.findAll('.notification-settings-divider');
         expect(headings).toHaveLength(1);
         expect(headings[0].text()).toBe('From modules');
-        expect(headings[0].element.nextElementSibling.getAttribute('data-category')).toBe('chat');
+        // The module categories form an accordion of their own after the heading.
+        const modules = headings[0].element.nextElementSibling;
+        expect(modules.classList.contains('accordion')).toBe(true);
+        expect([...modules.querySelectorAll('[data-category]')].map((item) => item.getAttribute('data-category'))).toEqual(['chat']);
     });
 
     it('does not offer the web channel for a category without it', async () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        expect(row('chat').findAll('.c-notification-settings__badge').map((badge) => badge.attributes('data-channel'))).toEqual(['email', 'mobile']);
+        expect(row('chat').findAll('.notification-settings-badges .badge').map((badge) => badge.attributes('data-channel'))).toEqual(['email', 'mobile']);
         await expand('chat');
         expect(checkbox('chat', 'web').exists()).toBe(false);
         expect(checkbox('chat', 'email').exists()).toBe(true);
@@ -145,29 +148,29 @@ describe('NotificationSettings', () => {
     it('does not expand a fixed category, which shows a lock', async () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        const head = row('direct').find('.c-notification-settings__category-head');
+        const head = row('direct').find('.accordion-button');
         expect(head.element.tagName).toBe('DIV');
         expect(head.attributes('aria-expanded')).toBeUndefined();
         expect(row('direct').find('.ti-lock').exists()).toBe(true);
         await head.trigger('click');
-        expect(row('direct').find('.c-notification-settings__category-body').exists()).toBe(false);
+        expect(row('direct').find('.notification-settings-category-body').exists()).toBe(false);
         expect(wrapper.findAll('input[type="checkbox"]')).toHaveLength(0);
     });
 
     it('expands a category with a disclosure button, the spaces with the content category', async () => {
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        const head = row('social').find('button.c-notification-settings__category-head');
+        const head = row('social').find('button.accordion-button');
         expect(head.attributes('aria-expanded')).toBe('false');
         await head.trigger('click');
         expect(head.attributes('aria-expanded')).toBe('true');
         expect(wrapper.find(`#${head.attributes('aria-controls')}`).exists()).toBe(true);
         expect(checkbox('social', 'mobile').element.checked).toBe(false);
-        expect(row('social').find('.c-notification-settings__spaces').exists()).toBe(false);
+        expect(row('social').find('.notification-settings-spaces').exists()).toBe(false);
 
         await expand('content');
-        expect(row('content').find('.c-notification-settings__spaces label').text()).toBe('From these Spaces');
-        expect(row('content').find('.c-picker__chip-label').text()).toBe('Space 1');
+        expect(row('content').find('.notification-settings-spaces label').text()).toBe('From these Spaces');
+        expect(row('content').find('.picker-chip-label').text()).toBe('Space 1');
     });
 
     it('detects the Recommended profile when the switches equal the defaults, else Custom', () => {
@@ -204,8 +207,8 @@ describe('NotificationSettings', () => {
                 chat: { email: false, mobile: false },
             },
         });
-        expect(row('social').findAll('.c-notification-settings__badge.is-on').map((badge) => badge.attributes('data-channel'))).toEqual(['web']);
-        expect(wrapper.find('.c-notification-settings__status').text()).toBe('Saved');
+        expect(row('social').findAll('.notification-settings-badges .badge-accent').map((badge) => badge.attributes('data-channel'))).toEqual(['web']);
+        expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
         expect(statuses).toHaveLength(0);
     });
 
@@ -246,7 +249,7 @@ describe('NotificationSettings', () => {
 
         expect(sent()).toEqual([{ categories: { social: { email: false } } }]);
         expect(selectedProfile()).toBe('custom');
-        expect(wrapper.find('.c-notification-settings__status').text()).toBe('Saved');
+        expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
     });
 
     it('sends the requests one after another, merging what changed meanwhile', async () => {
@@ -261,7 +264,7 @@ describe('NotificationSettings', () => {
         await checkbox('social', 'mobile').setValue(true);
         await checkbox('social', 'email').setValue(true);
         expect(ajaxCalls).toHaveLength(1);
-        expect(wrapper.find('.c-notification-settings__status').text()).toBe('Saving…');
+        expect(wrapper.find('.notification-settings-status').text()).toBe('Saving…');
 
         release({});
         await flushPromises();
@@ -272,7 +275,7 @@ describe('NotificationSettings', () => {
         ]);
         release({});
         await flushPromises();
-        expect(wrapper.find('.c-notification-settings__status').text()).toBe('Saved');
+        expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
     });
 
     it('saves the spaces after a pause', async () => {
@@ -303,7 +306,7 @@ describe('NotificationSettings', () => {
 
         expect(checkbox('social', 'email').element.checked).toBe(true);
         expect(row('social').find('.invalid-feedback').text()).toBe('Not today.');
-        expect(wrapper.find('.c-notification-settings__status').text()).toBe('Not saved');
+        expect(wrapper.find('.notification-settings-status').text()).toBe('Not saved');
         expect(selectedProfile()).toBe('recommended');
     });
 
@@ -315,7 +318,7 @@ describe('NotificationSettings', () => {
         await flushPromises();
 
         expect(selectedProfile()).toBe('recommended');
-        expect(wrapper.find('.c-notification-settings__status').text()).toBe('Not saved');
+        expect(wrapper.find('.notification-settings-status').text()).toBe('Not saved');
     });
 
     it('resets after a confirmation and replaces the state with the answer', async () => {
@@ -333,21 +336,21 @@ describe('NotificationSettings', () => {
         };
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        await wrapper.find('.c-notification-settings__reset').trigger('click');
+        await wrapper.find('.notification-settings-reset').trigger('click');
         await flushPromises();
 
         expect(confirms).toEqual([{ body: 'Do you want to reset your notification settings to the defaults?' }]);
         expect(postCalls).toEqual(['/api/v2/notification/settings/reset']);
-        expect(row('social').find('[data-channel="email"]').classes()).not.toContain('is-on');
+        expect(row('social').find('[data-channel="email"]').classes()).not.toContain('badge-accent');
         expect(wrapper.vm.spaceIds).toEqual([]);
-        expect(wrapper.find('.c-notification-settings__reset-all').exists()).toBe(false);
+        expect(wrapper.find('.notification-settings-reset-all').exists()).toBe(false);
     });
 
     it('does not reset without a confirmation', async () => {
         globalThis.humhubStubs.modal.confirm = () => Promise.resolve(false);
         wrapper = mount(NotificationSettings, { ...mountOptions(), props: props() });
 
-        await wrapper.find('.c-notification-settings__reset').trigger('click');
+        await wrapper.find('.notification-settings-reset').trigger('click');
         await flushPromises();
 
         expect(postCalls).toHaveLength(0);
@@ -365,8 +368,8 @@ describe('NotificationSettings', () => {
         });
 
         expect(wrapper.find('[role="radiogroup"]').exists()).toBe(false);
-        expect(wrapper.find('.c-notification-settings__reset').exists()).toBe(false);
-        await wrapper.find('.c-notification-settings__reset-all').trigger('click');
+        expect(wrapper.find('.notification-settings-reset').exists()).toBe(false);
+        await wrapper.find('.notification-settings-reset-all').trigger('click');
         await flushPromises();
 
         expect(postCalls).toEqual(['/api/v2/notification/settings/reset-all']);
@@ -378,30 +381,30 @@ describe('NotificationSettings', () => {
             scope: 'global',
             resetUrl: null,
         });
-        const selectedPrivacy = () => wrapper.find('[data-privacy][aria-checked="true"]').attributes('data-privacy');
+        const selectedPrivacy = () => wrapper.findAll('input[data-privacy]').find((input) => input.element.checked).attributes('data-privacy');
 
         it('is not shown on the account page', () => {
             wrapper = mount(NotificationSettings, { ...mountOptions(), props: props({ initial: payload({ privacy: null }) }) });
 
-            expect(wrapper.find('.c-notification-settings__privacy').exists()).toBe(false);
+            expect(wrapper.find('.notification-settings-privacy').exists()).toBe(false);
         });
 
         it('offers the three levels with an example each in the global scope', () => {
             wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'redacted', fixed: false }) });
 
-            const section = wrapper.find('.c-notification-settings__privacy');
-            expect(section.find('.c-notification-settings__subtitle').text()).toBe('Privacy of e-mails and push messages');
-            const intro = section.find('.c-notification-settings__lead').text();
+            const section = wrapper.find('.notification-settings-privacy');
+            expect(section.find('.notification-settings-subtitle').text()).toBe('Privacy of e-mails and push messages');
+            const intro = section.find('.notification-settings-lead').text();
             expect(intro).toContain('notification e-mails');
             expect(intro).toContain('push messages');
             expect(intro).toContain('E-Mail Summaries');
 
             const options = wrapper.findAll('[data-privacy]');
             expect(options.map((option) => option.attributes('data-privacy'))).toEqual(['full', 'redacted', 'minimal']);
-            expect(options.map((option) => option.find('.c-notification-settings__profile-title').text())).toEqual(['Full details', 'Hide content', 'Minimal']);
-            expect(options.every((option) => option.find('.c-notification-settings__privacy-example').text() !== '')).toBe(true);
+            expect(options.map((option) => option.element.closest('.form-check-card').querySelector('.form-check-card-title').textContent)).toEqual(['Full details', 'Hide content', 'Minimal']);
+            expect(options.every((option) => option.element.closest('.form-check-card').querySelector('.notification-settings-privacy-example').textContent !== '')).toBe(true);
             expect(selectedPrivacy()).toBe('redacted');
-            expect(wrapper.find('.c-notification-settings__privacy-fixed').exists()).toBe(false);
+            expect(wrapper.find('.notification-settings-privacy-fixed').exists()).toBe(false);
         });
 
         it('saves a level right away', async () => {
@@ -414,16 +417,15 @@ describe('NotificationSettings', () => {
             expect(sent()).toEqual([{ privacy: 'minimal' }]);
             expect(ajaxCalls[0].url).toBe('/api/v2/notification/settings');
             expect(selectedPrivacy()).toBe('minimal');
-            expect(wrapper.find('.c-notification-settings__status').text()).toBe('Saved');
+            expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
         });
 
-        it('moves the choice with the arrow keys', async () => {
+        it('is a native radio group, so the arrow keys move the choice', () => {
             wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'full', fixed: false }) });
 
-            await wrapper.find('[data-privacy="full"]').trigger('keydown', { key: 'ArrowRight' });
-            await flushPromises();
-
-            expect(sent()).toEqual([{ privacy: 'redacted' }]);
+            const radios = wrapper.findAll('input[data-privacy]');
+            expect(radios.every((radio) => radio.attributes('type') === 'radio')).toBe(true);
+            expect(new Set(radios.map((radio) => radio.attributes('name'))).size).toBe(1);
         });
 
         it('puts the level back when saving fails', async () => {
@@ -434,13 +436,13 @@ describe('NotificationSettings', () => {
             await flushPromises();
 
             expect(selectedPrivacy()).toBe('full');
-            expect(wrapper.find('.c-notification-settings__status').text()).toBe('Not saved');
+            expect(wrapper.find('.notification-settings-status').text()).toBe('Not saved');
         });
 
         it('is read-only when the configuration file sets it', async () => {
             wrapper = mount(NotificationSettings, { ...mountOptions(), props: globalProps({ mode: 'minimal', fixed: true }) });
 
-            expect(wrapper.find('.c-notification-settings__privacy-fixed').exists()).toBe(true);
+            expect(wrapper.find('.notification-settings-privacy-fixed').exists()).toBe(true);
             expect(wrapper.findAll('[data-privacy]').every((option) => option.attributes('disabled') !== undefined)).toBe(true);
             wrapper.vm.selectPrivacy('full');
             await flushPromises();

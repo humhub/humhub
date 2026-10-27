@@ -1,0 +1,117 @@
+//
+// Entity browser: the Vue components EntityBrowser and EntityGrid (protected/humhub/vue/), after
+// the HumHub design system v2 (card grid); the skeleton card is an entity card
+// (`_entity-card.scss`). The page header and filter bar on top come from `_page-header.scss`
+// and `_filter-bar.scss`.
+// @since 1.20
+// --------------------------------------------------
+
+$entity-browser-max-width: $page-header-max-width !default;
+$entity-browser-gap: $spacer !default;
+$entity-grid-cell-min-width: 264px !default;
+$entity-grid-gap: $spacer !default;
+// The cards' and the message's shadow, the page header's
+$entity-grid-box-shadow: $page-header-box-shadow !default;
+$entity-grid-box-shadow-dark: $page-header-box-shadow-dark !default;
+
+@if not $prev-entity-browser {
+    // Declared on the roots (not `:root`), so it resolves against the element's own colour mode;
+    // the entity card reads it (`_entity-card.scss`).
+    .entity-browser,
+    .entity-grid {
+        --hh-surface-shadow: #{$entity-grid-box-shadow};
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .entity-browser,
+            .entity-grid {
+                --hh-surface-shadow: #{$entity-grid-box-shadow-dark};
+            }
+        }
+    }
+
+    // Page layout: page header, notice and grid, capped and centred
+    .entity-browser {
+        display: flex;
+        flex-direction: column;
+        gap: $entity-browser-gap;
+        width: 100%;
+        max-width: $entity-browser-max-width;
+        margin-inline: auto;
+    }
+
+    // Card grid
+    .entity-grid-cells {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(#{$entity-grid-cell-min-width}, 100%), 1fr));
+        gap: $entity-grid-gap;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    // Dimmed only once a reload takes a moment (the delay applies when dimming, not when the
+    // cards come back), so a fast answer does not flash the grid.
+    .entity-grid.is-loading .entity-grid-cells {
+        opacity: 0.5;
+        transition-delay: 0.15s;
+    }
+
+    .entity-grid-cell {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        animation: hh-pop-in 0.4s ease both;
+        animation-delay: calc(var(--card-stagger-index, 0) * 32ms);
+
+        > * {
+            flex: 1 1 auto;
+        }
+    }
+
+    .entity-grid-message {
+        grid-column: 1 / -1;
+        padding: $spacer * 2 $spacer;
+        border-radius: var(--bs-border-radius-lg);
+        background: var(--hh-background-color-main);
+        box-shadow: var(--hh-surface-shadow);
+        color: var(--hh-text-color-default);
+        text-align: center;
+    }
+
+    .entity-grid-message-text {
+        margin: 0 0 $spacer * .5;
+    }
+
+    .entity-grid-message-empty .entity-grid-message-text {
+        margin: 0;
+    }
+
+    .entity-grid-error,
+    .entity-grid-more {
+        margin: $spacer 0;
+        text-align: center;
+    }
+
+    // Motion
+    @keyframes hh-pop-in {
+        0% {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+
+    @media (prefers-reduced-motion: reduce) {
+        .entity-grid-cell {
+            animation: none;
+        }
+
+        .entity-grid-cells {
+            transition: none !important;
+        }
+    }
+}

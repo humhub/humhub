@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { config, flushPromises, mount } from '@vue/test-utils';
 import MarketplaceBrowser from '../../vue/MarketplaceBrowser.vue';
-import CardDirectory from '../../../../vue/CardDirectory.vue';
+import EntityBrowser from '../../../../vue/EntityBrowser.vue';
 import DropdownMenu from '../../../../vue/DropdownMenu.vue';
 import UiModal from '../../../../vue/UiModal.vue';
 import { marketplaceModule } from './support/marketplaceFixtures.mjs';
@@ -35,7 +35,7 @@ const mountBrowser = () => mount(MarketplaceBrowser, {
         urls: { moduleAdministration: '/admin/module/list', professionalEdition: '/pe' },
         installationId: 'abc',
     },
-    global: { components: { CardDirectory, DropdownMenu, UiModal } },
+    global: { components: { EntityBrowser, DropdownMenu, UiModal } },
     attachTo: document.body,
 });
 
@@ -54,9 +54,9 @@ const deferred = () => {
 };
 const postsTo = (part) => globalThis.humhubStubs.client.post.mock.calls.filter(([url]) => url.includes(part));
 const patches = () => globalThis.humhubStubs.client.ajax.mock.calls.filter(([, cfg]) => cfg && cfg.method === 'PATCH');
-const cardAction = (wrapper, id) => wrapper.find(`[data-id="${id}"] .c-module-card__action`);
-const updateAll = (wrapper) => wrapper.find('.c-marketplace__update-all');
-const updateAllSlot = (wrapper) => wrapper.find('.c-marketplace__update-all-slot');
+const cardAction = (wrapper, id) => wrapper.find(`[data-id="${id}"] .entity-card-action`);
+const updateAll = (wrapper) => wrapper.find('.marketplace-update-all');
+const updateAllSlot = (wrapper) => wrapper.find('.marketplace-update-all-slot');
 // The list requests of the grid (not the settings dialog's purchased modules).
 const moduleListCalls = () => globalThis.humhubStubs.client.get.mock.calls.filter(([url]) => url.includes('marketplace/module?') && !url.includes('tag=purchased'));
 
@@ -102,20 +102,20 @@ describe('MarketplaceBrowser', () => {
         return wrapper;
     };
 
-    it('lists the modules below the toolbar with its title and actions', async () => {
+    it('lists the modules below the page header with its title and actions', async () => {
         await mountIt();
 
-        expect(wrapper.findAll('.c-module-card__title').map((n) => n.text())).toEqual(['Calendar X', 'Community X']);
-        expect(wrapper.find('.c-page-toolbar__title').text()).toBe('Marketplace');
-        expect(wrapper.find('.c-page-toolbar').text()).not.toContain('Find all the modules');
+        expect(wrapper.findAll('.entity-card-title').map((n) => n.text())).toEqual(['Calendar X', 'Community X']);
+        expect(wrapper.find('.page-header-title').text()).toBe('Marketplace');
+        expect(wrapper.find('.page-header').text()).not.toContain('Find all the modules');
         expect(wrapper.find('#marketplace-include-community').exists()).toBe(false);
 
-        const settings = wrapper.find('.c-page-toolbar__actions button.c-marketplace__settings');
+        const settings = wrapper.find('.page-header-actions button.marketplace-settings');
         expect(settings.attributes('aria-label')).toBe('Marketplace Settings');
         expect(settings.attributes('title')).toBe('Marketplace Settings');
-        expect(settings.classes()).toEqual(expect.arrayContaining(['btn', 'btn-secondary', 'c-icon-button']));
+        expect(settings.classes()).toEqual(expect.arrayContaining(['btn', 'btn-secondary', 'btn-icon-only']));
         expect(settings.find('.ti-settings').exists()).toBe(true);
-        expect(wrapper.find('.dropdown-menu').exists()).toBe(false);
+        expect(wrapper.find('.page-header-actions .dropdown-menu').exists()).toBe(false);
 
         expect(updateAllSlot(wrapper).classes()).not.toContain('is-collapsed');
         expect(updateAll(wrapper).attributes('aria-label')).toBe('Update all modules');
@@ -143,7 +143,7 @@ describe('MarketplaceBrowser', () => {
             withCoreVersion({ latest: '1.21.0', updateAvailable: true, updateUrl: 'https://www.humhub.com/update' });
             await mountIt();
 
-            const notice = wrapper.find('.c-card-directory__notice .c-marketplace-notice');
+            const notice = wrapper.find('.entity-browser-notice .marketplace-alert');
             expect(notice.text()).toContain('A new update is available (HumHub 1.21.0)!');
             expect(notice.find('a').attributes('href')).toBe('https://www.humhub.com/update');
         });
@@ -155,7 +155,7 @@ describe('MarketplaceBrowser', () => {
             withCoreVersion(info);
             await mountIt();
 
-            expect(wrapper.find('.c-card-directory__notice').exists()).toBe(false);
+            expect(wrapper.find('.entity-browser-notice').exists()).toBe(false);
         });
     });
 
@@ -163,7 +163,7 @@ describe('MarketplaceBrowser', () => {
         await mountIt();
         const setFilter = vi.spyOn(wrapper.vm.$refs.directory, 'setFilter');
 
-        await wrapper.find('[data-id="calendar-x"] button.c-module-card__badge--official').trigger('click');
+        await wrapper.find('[data-id="calendar-x"] button.module-card-badge-official').trigger('click');
         await flushPromises();
 
         expect(setFilter).toHaveBeenCalledWith('tag', 'official');
@@ -175,7 +175,7 @@ describe('MarketplaceBrowser', () => {
         await mountIt();
 
         expect(moduleListCalls()[0][0]).toContain('q=cal');
-        expect(wrapper.find('[data-id="calendar-x"] .c-module-card__title mark').text()).toBe('Cal');
+        expect(wrapper.find('[data-id="calendar-x"] .entity-card-title mark').text()).toBe('Cal');
         expect(wrapper.find('[data-id="community-x"] mark').exists()).toBe(false);
     });
 
@@ -187,7 +187,7 @@ describe('MarketplaceBrowser', () => {
             await flushPromises();
 
             expect(dialogTitle()).toBe('Install Module');
-            expect(dialog().querySelector('.c-install-dialog__name').textContent).toBe('Calendar X');
+            expect(dialog().querySelector('.install-dialog-name').textContent).toBe('Calendar X');
             expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
 
             click(footerButton('Install'));
@@ -216,7 +216,7 @@ describe('MarketplaceBrowser', () => {
             await flushPromises();
 
             expect(dialog()).toBeNull();
-            expect(document.activeElement).toBe(wrapper.find('[data-id="calendar-x"] a.c-module-card__title').element);
+            expect(document.activeElement).toBe(wrapper.find('[data-id="calendar-x"] a.entity-card-title').element);
         });
 
         it('shows the warning before installing a non-curated module', async () => {
@@ -225,7 +225,7 @@ describe('MarketplaceBrowser', () => {
             await cardAction(wrapper, 'community-x').trigger('click');
             await flushPromises();
 
-            expect(dialog().querySelector('.c-mp-notice--warning').textContent).toContain('Not curated');
+            expect(dialog().querySelector('.marketplace-alert.alert-warning').textContent).toContain('Not curated');
             click(footerButton('Cancel'));
             await flushPromises();
             expect(dialog()).toBeNull();
@@ -243,7 +243,7 @@ describe('MarketplaceBrowser', () => {
         const addKey = async (key) => {
             click(footerButton('Add License'));
             await flushPromises();
-            const input = dialog().querySelector('.c-licence-field__input');
+            const input = dialog().querySelector('.licence-key-input');
             input.value = key;
             input.dispatchEvent(new Event('input'));
             await flushPromises();
@@ -258,8 +258,8 @@ describe('MarketplaceBrowser', () => {
             await flushPromises();
 
             expect(dialogTitle()).toBe('Buy Module');
-            expect(dialog().querySelector('.c-mp-dialog__text b').textContent).toBe('Paid <X>');
-            expect(dialog().querySelector('a.c-install-dialog__checkout').getAttribute('href')).toBe('https://checkout/paid-x');
+            expect(dialog().querySelector('.marketplace-dialog-text b').textContent).toBe('Paid <X>');
+            expect(dialog().querySelector('a.install-dialog-checkout').getAttribute('href')).toBe('https://checkout/paid-x');
         });
 
         it('warns on the buy step of a community module', async () => {
@@ -269,7 +269,7 @@ describe('MarketplaceBrowser', () => {
             await flushPromises();
 
             expect(dialogTitle()).toBe('Buy Module');
-            expect(dialog().querySelector('.c-mp-notice--warning')).not.toBeNull();
+            expect(dialog().querySelector('.marketplace-alert.alert-warning')).not.toBeNull();
         });
 
         it('registers the key and installs the module', async () => {
@@ -317,19 +317,19 @@ describe('MarketplaceBrowser', () => {
 
     describe('the settings dialog', () => {
         const openSettings = async () => {
-            await wrapper.find('button.c-marketplace__settings').trigger('click');
+            await wrapper.find('button.marketplace-settings').trigger('click');
             await flushPromises();
         };
         const tab = (label) => [...dialog().querySelectorAll('[role="tab"]')].find((t) => t.textContent.trim() === label);
 
-        it('opens from the toolbar on the licences, with the installation id', async () => {
+        it('opens from the page header on the licences, with the installation id', async () => {
             await mountIt();
             await openSettings();
 
             expect(dialogTitle()).toBe('Marketplace Settings');
             expect(tab('Licenses').getAttribute('aria-selected')).toBe('true');
-            expect(dialog().querySelector('.c-mp-settings__installation').textContent).toBe('Installation ID: abc');
-            expect(dialog().querySelector('.c-mp-settings__admin').getAttribute('href')).toBe('/admin/module/list');
+            expect(dialog().querySelector('.marketplace-settings-installation').textContent).toBe('Installation ID: abc');
+            expect(dialog().querySelector('.marketplace-settings-admin').getAttribute('href')).toBe('/admin/module/list');
         });
 
         it('reloads the list and the filter options after a setting changed, and stays open', async () => {
@@ -344,11 +344,11 @@ describe('MarketplaceBrowser', () => {
             community.checked = true;
             community.dispatchEvent(new Event('change'));
             await flushPromises();
-            const acknowledge = dialog().querySelector('.c-setting-row.is-expanded input[type="checkbox"]:not([data-setting])');
+            const acknowledge = dialog().querySelector('.marketplace-setting.is-expanded input[type="checkbox"]:not([data-setting])');
             acknowledge.checked = true;
             acknowledge.dispatchEvent(new Event('change'));
             await flushPromises();
-            click([...dialog().querySelectorAll('.c-setting-row button')].find((b) => b.textContent.trim() === 'Confirm'));
+            click([...dialog().querySelectorAll('.marketplace-setting button')].find((b) => b.textContent.trim() === 'Confirm'));
             await flushPromises();
 
             expect(patches()[0][1]).toMatchObject({ data: { includeCommunityModules: 1 } });
@@ -364,11 +364,11 @@ describe('MarketplaceBrowser', () => {
             await openSettings();
             const loads = moduleListCalls().length;
 
-            const input = dialog().querySelector('.c-licence-field__input');
+            const input = dialog().querySelector('.licence-key-input');
             input.value = 'KEY-1';
             input.dispatchEvent(new Event('input'));
             await flushPromises();
-            click(dialog().querySelector('.c-mp-settings__add'));
+            click(dialog().querySelector('.marketplace-settings-add'));
             await flushPromises();
 
             expect(globalThis.humhubStubs.client.post).toHaveBeenCalledWith('/api/v2/marketplace/licence-key', { data: { licenceKey: 'KEY-1' } });
@@ -382,11 +382,11 @@ describe('MarketplaceBrowser', () => {
             await mountIt();
             await openSettings();
 
-            click(dialog().querySelector('.c-licence-list__action'));
+            click(dialog().querySelector('.licence-list-action'));
             await flushPromises();
 
             expect(dialogTitle()).toBe('Install Module');
-            expect(dialog().querySelector('.c-install-dialog__name').textContent).toBe('Licensed X');
+            expect(dialog().querySelector('.install-dialog-name').textContent).toBe('Licensed X');
             expect(document.body.querySelectorAll('.modal[role="dialog"]')).toHaveLength(1);
             expect(globalThis.humhubStubs.client.post).not.toHaveBeenCalled();
         });
@@ -487,7 +487,7 @@ describe('MarketplaceBrowser', () => {
             wrapper.vm.install({ ...modules[0], id: 'wiki-x', name: 'Wiki X' });
             await flushPromises();
             expect(dialogTitle()).toBe('Install Module');
-            expect(dialog().querySelector('.c-install-dialog__name').textContent).toBe('Wiki X');
+            expect(dialog().querySelector('.install-dialog-name').textContent).toBe('Wiki X');
         });
 
         describe('updating a module', () => {
@@ -498,7 +498,7 @@ describe('MarketplaceBrowser', () => {
                 const pending = deferred();
                 globalThis.humhubStubs.client.post = vi.fn(() => pending.promise);
                 await mountIt();
-                const card = () => wrapper.find('[data-id="calendar-x"] .c-module-card');
+                const card = () => wrapper.find('[data-id="calendar-x"] .module-card');
 
                 await cardAction(wrapper, 'calendar-x').trigger('click');
                 await flushPromises();
@@ -508,7 +508,7 @@ describe('MarketplaceBrowser', () => {
                 pending.resolve({ ...modules[0], installedVersion: '2.0.0', updateAvailable: false });
                 await flushPromises();
                 expect(cardAction(wrapper, 'calendar-x').text()).toBe('Updated!');
-                expect(card().find('.c-module-card__badge--update').exists()).toBe(true);
+                expect(card().find('.module-card-badge-update').exists()).toBe(true);
 
                 await vi.advanceTimersByTimeAsync(1199);
                 expect(card().classes()).not.toContain('is-removing');
@@ -521,8 +521,8 @@ describe('MarketplaceBrowser', () => {
                 expect(card().classes()).toContain('is-entering');
                 expect(card().classes()).not.toContain('is-updating');
                 expect(cardAction(wrapper, 'calendar-x').text()).toBe('Installed');
-                expect(card().find('button.c-module-card__badge--official').exists()).toBe(true);
-                expect(card().find('.c-module-card__version').text()).toBe('2.0.0');
+                expect(card().find('button.module-card-badge-official').exists()).toBe(true);
+                expect(card().find('.entity-card-subtitle').text()).toBe('2.0.0');
                 expect(statuses.map((entry) => entry.level)).toEqual(['success']);
                 expect(updateAllSlot(wrapper).classes()).toContain('is-collapsed');
             });
@@ -549,21 +549,21 @@ describe('MarketplaceBrowser', () => {
                 expect(live()[0].attributes('role')).toBe('status');
                 expect(live()[0].classes()).toContain('visually-hidden');
                 expect(live()[0].text()).toBe('');
-                expect(wrapper.find('.c-module-card [role="status"]').exists()).toBe(false);
+                expect(wrapper.find('.module-card [role="status"]').exists()).toBe(false);
 
                 cardAction(wrapper, 'calendar-x').element.focus();
                 await cardAction(wrapper, 'calendar-x').trigger('click');
                 await flushPromises();
 
                 expect(live()[0].text()).toBe('Module "Calendar X" has been updated to version 2.0.0 successfully.');
-                expect(document.activeElement).toBe(wrapper.find('[data-id="calendar-x"] a.c-module-card__title').element);
+                expect(document.activeElement).toBe(wrapper.find('[data-id="calendar-x"] a.entity-card-title').element);
             });
 
             it('leaves the focus where it is when it was not on the card', async () => {
                 modules.splice(0, 1, marketplaceModule({ installedVersion: '1.0.0', updateAvailable: true }));
                 globalThis.humhubStubs.client.post = vi.fn(() => Promise.resolve({ ...modules[0], installedVersion: '2.0.0', updateAvailable: false }));
                 await mountIt();
-                const settings = wrapper.find('.c-marketplace__settings').element;
+                const settings = wrapper.find('.marketplace-settings').element;
                 settings.focus();
 
                 await wrapper.vm.updateOne(modules[0]);
@@ -628,7 +628,7 @@ describe('MarketplaceBrowser', () => {
             const candidateFetches = globalThis.humhubStubs.client.get.mock.calls.filter(([url]) => url.includes('status=update'));
             expect(candidateFetches).toHaveLength(1);
             expect(postsTo('/update')).toHaveLength(1);
-            expect(wrapper.find('[data-id="wiki-x"] .c-module-card__action').text()).toBe('Queued');
+            expect(wrapper.find('[data-id="wiki-x"] .entity-card-action').text()).toBe('Queued');
 
             updates[0].resolve({ ...outdated[0], installedVersion: '2.0.0', updateAvailable: false });
             await flushPromises();

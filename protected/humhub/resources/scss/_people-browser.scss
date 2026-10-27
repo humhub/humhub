@@ -1,0 +1,33 @@
+//
+// People browser island (protected/humhub/modules/user/vue/PeopleBrowser.vue): what the
+// people card has beyond the shared entity card (`_entity-card.scss`) — after the HumHub design
+// system v2 people card. The page header comes from `_page-header.scss`, the grid from
+// `_entity-browser.scss`.
+// @since 1.20
+// --------------------------------------------------
+
+@if not $prev-people-browser {
+    // The details: one line per configured profile field, each one clamped to a line
+    .people-card-detail {
+        margin: 0;
+        overflow: hidden;
+        color: var(--hh-text-color-default);
+        font-size: 14px;
+        line-height: 22px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // The HTML block of the details template wraps instead of cutting each line
+    .people-card-details {
+        color: var(--hh-text-color-default);
+        font-size: 14px;
+        line-height: 22px;
+        overflow-wrap: anywhere;
+    }
+
+    // The details sit closer together than the entity card's body blocks
+    .people-card .entity-card-body {
+        gap: 0;
+    }
+}

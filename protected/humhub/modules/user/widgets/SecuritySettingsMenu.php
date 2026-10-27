@@ -14,7 +14,7 @@ use humhub\modules\user\widgets\security\SecurityLoginSections;
 use humhub\modules\user\widgets\security\SecurityPrivacySections;
 use humhub\modules\user\widgets\security\SecuritySessionSections;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\TabMenu;
+use humhub\widgets\menu\PillTabs;
 use Yii;
 
 /**
@@ -27,7 +27,7 @@ use Yii;
  *
  * @since 1.20
  */
-class SecuritySettingsMenu extends TabMenu
+class SecuritySettingsMenu extends PillTabs
 {
     /**
      * @inheritdoc

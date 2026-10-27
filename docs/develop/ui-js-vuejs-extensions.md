@@ -20,7 +20,7 @@ register('ReactionLink', ReactionLink);
 registerSlotComponent('comment.links', 'ReactionLink', { id: 'reaction', sortOrder: 150 });
 ```
 
-`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder, id})`), passing `context` down as props to each (spread with `v-bind`, so a component declares the keys it uses as props; one that does not use them all sets `inheritAttrs: false`, or the rest become attributes of its root element). Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`; `space.card-subtitle`, the line under the space name on a card of the spaces directory (`SpaceCard.vue`, context `{ space }` — e.g. a module's category of the space, from its own endpoint); `user.card-subtitle`, the line under the user's name on a card of the People directory (`PeopleCard.vue`, context `{ user }`, typically a `p.c-entity-card__subtitle`); `user.card-actions` and `space.card-actions`, the footers of the two cards (see [Card actions](#card-actions) below).
+`ExtensionSlot` renders every component registered for its name (via `registerSlotComponent(slotName, componentName, {sortOrder, id})`), passing `context` down as props to each (spread with `v-bind`, so a component declares the keys it uses as props; one that does not use them all sets `inheritAttrs: false`, or the rest become attributes of its root element). Entries render in `sortOrder` order (default `100`), then registration order for ties. Slot names follow the same `<module>.<region>` convention already used elsewhere: `comment.links`, appended after the core Reply/Like links in `.wall-entry-controls`; `space.card-subtitle`, the line under the space name on a card of the spaces browser (`SpaceCard.vue`, context `{ space }` — e.g. a module's category of the space, from its own endpoint); `user.card-subtitle`, the line under the user's name on a card of the People browser (`PeopleCard.vue`, context `{ user }`, typically a `p.entity-card-subtitle`); `user.card-actions` and `space.card-actions`, the footers of the two cards (see [Card actions](#card-actions) below).
 
 **Entries have ids.** `id` defaults to the component name and is unique per slot, with the semantics of a [menu entry](#menu-entries)'s id:
 
@@ -38,9 +38,9 @@ removeSlotComponent('space.card-actions', 'follow');                            
 
 ### Card actions
 
-The footers of the directory cards are extension slots, and the core's own buttons are entries of them, registered from the modules' `vue/index.js` like any module's — so a module can add an action, reorder, replace or remove any of them, the core's included. An action renders one `.c-entity-card__action` (a button, or a link styled as one), or nothing where it has nothing to offer; labelled actions share the footer's width, an icon-only one adds `.c-entity-card__action--icon` and stays square. The slot only renders once the viewer's state of the card has loaded (a disabled placeholder stands in until then), never on one's own card, and not where there is no state (a user the viewer may not see).
+The footers of the directory cards are extension slots, and the core's own buttons are entries of them, registered from the modules' `vue/index.js` like any module's — so a module can add an action, reorder, replace or remove any of them, the core's included. An action renders one `.entity-card-action` (a button, or a link styled as one), or nothing where it has nothing to offer; labelled actions share the footer's width, an icon-only one adds `.entity-card-action-icon` and stays square. The slot only renders once the viewer's state of the card has loaded (a disabled placeholder stands in until then), never on one's own card, and not where there is no state (a user the viewer may not see).
 
-**`user.card-actions`** — `PeopleCard.vue`, the People directory:
+**`user.card-actions`** — `PeopleCard.vue`, the People browser:
 
 | id | sortOrder | component | shown while |
 |---|---|---|---|
@@ -53,7 +53,7 @@ Context:
 |---|---|
 | `user` | the list item (`GET /api/v2/user`, `UserSerializer::list()`) |
 | `state` | the viewer's `user/states` entry of the user (`isSelf` always `false` here, `isFollowing`, `canFollow`, `friendship`, `isOnline`) |
-| `buttons` | the button classes of `user\widgets\PeopleDirectory::$buttonClasses` (`friendClass`, `friendStateClass`, `friendTogglerClass`, `friendGroupClass`, `followClass`, `followingClass`, `placeholderClass`) |
+| `buttons` | the button classes of `user\widgets\PeopleBrowser::$buttonClasses` (`friendClass`, `friendStateClass`, `friendTogglerClass`, `friendGroupClass`, `followClass`, `followingClass`, `placeholderClass`) |
 | `icons` | rendered icon markup: `check`, `plus`, `clock`, `times` |
 | `followEnabled`, `friendshipEnabled` | whether the platform offers following and friendship |
 | `onFollowChange`, `onFriendshipChange` | the card's `follow-change`/`friendship-change` callbacks, with the `change` payload of the `UserFollowButton` (`{userId, isFollowing, followerCount, canFollow}`) and the `FriendshipButton` (`{userId, state, isFollowing}`): the directory merges them into the user's state and counts. An action declaring `emits: ['follow-change']` reaches `onFollowChange` by emitting. |
@@ -70,7 +70,7 @@ registerSlotComponent('user.card-actions', 'MailCardAction', { id: 'mail', sortO
 ```vue
 <!-- MailCardAction.vue -->
 <template>
-    <button type="button" class="btn btn-light c-entity-card__action c-entity-card__action--icon" :title="label" :aria-label="label" @click="compose">
+    <button type="button" class="btn btn-light entity-card-action entity-card-action-icon" :title="label" :aria-label="label" @click="compose">
         <i class="ti ti-mail" aria-hidden="true"></i>
     </button>
 </template>
@@ -84,7 +84,7 @@ export default {
 </script>
 ```
 
-**`space.card-actions`** — `SpaceCard.vue`, the spaces directory:
+**`space.card-actions`** — `SpaceCard.vue`, the spaces browser:
 
 | id | sortOrder | component | shown while |
 |---|---|---|---|
@@ -97,7 +97,7 @@ Context:
 |---|---|
 | `space` | the list item (`GET /api/v2/space`, `SpaceSerializer::list()`) |
 | `state` | the viewer's `space/states` entry of the space (`membership`, `isMember`, `isFollowing`, `canFollow`, `followerCount`, …) |
-| `buttons` | the button classes of `space\widgets\SpaceDirectory` (`buttonClass`, `pendingClass`, `memberClass`, `togglerClass`, `groupClass`, `followClass`, `followingClass`, `placeholderClass`) |
+| `buttons` | the button classes of `space\widgets\SpacesBrowser` (`buttonClass`, `pendingClass`, `memberClass`, `togglerClass`, `groupClass`, `followClass`, `followingClass`, `placeholderClass`) |
 | `icons` | rendered icon markup: `check`, `clock`, `user` |
 | `followerCount` | the follower count the card shows (the state's, else the list item's; `null` where the space hides it) |
 | `onFollowChange` | the card's `follow-change` callback, with the `FollowButton`'s `change` payload (`{spaceId, isFollowing, followerCount, canFollow}`); a membership change reaches the directory as `space:membership-changed` instead |

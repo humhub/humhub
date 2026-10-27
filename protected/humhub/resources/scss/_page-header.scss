@@ -1,0 +1,86 @@
+//
+// Page header: the card at the top of a page (title, actions, filter bar or tabs).
+// PHP: humhub\widgets\PageHeader; Vue: PageHeader.vue. See docs/ui/page-header.md.
+// @since 1.20
+// --------------------------------------------------
+
+$page-header-max-width: 1440px !default;
+$page-header-padding: $spacer * .5 !default;
+$page-header-gap: $spacer * .5 !default;
+$page-header-tabs-margin-top: $spacer * .5 !default; // on top of the bar's padding: 1rem below the title
+$page-header-bg: var(--hh-background-color-main) !default;
+$page-header-border-radius: $border-radius-lg !default;
+$page-header-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
+$page-header-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
+$page-header-title-font-size: $font-size-lg !default;
+$page-header-title-font-weight: $font-weight-semibold !default;
+$page-header-title-color: var(--hh-text-color-highlight) !default;
+
+@if not $prev-page-header {
+    .page-header {
+        --hh-page-header-max-width: #{$page-header-max-width};
+        --hh-page-header-padding: #{$page-header-padding};
+        --hh-page-header-gap: #{$page-header-gap};
+        --hh-page-header-bg: #{$page-header-bg};
+        --hh-page-header-border-radius: #{$page-header-border-radius};
+        --hh-page-header-box-shadow: #{$page-header-box-shadow};
+        --hh-page-header-title-font-size: #{$page-header-title-font-size};
+        --hh-page-header-title-font-weight: #{$page-header-title-font-weight};
+        --hh-page-header-title-color: #{$page-header-title-color};
+
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: var(--hh-page-header-max-width);
+        margin-inline: auto;
+        padding: var(--hh-page-header-padding);
+        border-radius: var(--hh-page-header-border-radius);
+        background: var(--hh-page-header-bg);
+        box-shadow: var(--hh-page-header-box-shadow);
+    }
+
+    // What follows the page header (its content cards, a data table, a hint) is as wide as it
+    .page-header ~ * {
+        width: 100%;
+        max-width: var(--hh-page-header-max-width, #{$page-header-max-width});
+        margin-inline: auto;
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .page-header {
+                --hh-page-header-box-shadow: #{$page-header-box-shadow-dark};
+            }
+        }
+    }
+
+    .page-header-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--hh-page-header-gap);
+        padding: var(--hh-page-header-padding);
+    }
+
+    .page-header-title {
+        flex: 1 0 0;
+        margin: 0;
+        color: var(--hh-page-header-title-color);
+        font-size: var(--hh-page-header-title-font-size);
+        font-weight: var(--hh-page-header-title-font-weight);
+        line-height: $headings-line-height;
+        word-break: break-word;
+    }
+
+    .page-header-body > .nav-scroller {
+        margin-top: $page-header-tabs-margin-top;
+        padding: 0 var(--hh-page-header-padding) var(--hh-page-header-padding);
+    }
+
+    .page-header-actions {
+        display: flex;
+        align-items: center;
+        gap: var(--hh-page-header-gap);
+        margin-left: auto;
+    }
+}

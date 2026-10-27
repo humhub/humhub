@@ -13,17 +13,13 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\topic\models\forms\TopicSettingsForm;
 use humhub\modules\topic\models\Topic;
+use humhub\modules\topic\widgets\TopicTable;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\GridView;
-use humhub\widgets\modal\ModalButton;
-use yii\data\ActiveDataProvider;
-use yii\grid\ActionColumn;
 
 /* @var $this View */
-/* @var $dataProvider ActiveDataProvider */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $addModel Topic */
 /* @var $topicSettings TopicSettingsForm */
@@ -31,16 +27,15 @@ use yii\grid\ActionColumn;
 ?>
 
 
-<div class="panel panel-default">
-    <div class="panel-heading"><?= $title ?></div>
-
-    <?php if ($contentContainer instanceof Space) {
-        echo DefaultMenu::widget(['space' => $contentContainer]);
-    } elseif ($contentContainer instanceof User) {
-        echo AccountSettingsMenu::widget();
-    } ?>
-
-    <div class="panel-body">
+<?php if ($contentContainer instanceof User) : ?>
+    <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
+<?php else : ?>
+    <?php $this->beginContent('@space/modules/manage/views/layouts/section.php', [
+        'title' => Yii::t('SpaceModule.manage', 'Settings'),
+        'tabs' => new DefaultMenu(['space' => $contentContainer]),
+    ]) ?>
+    <?php ContentCard::begin(['title' => Yii::t('TopicModule.base', 'Topics')]) ?>
+<?php endif; ?>
         <?php if (Topic::isAllowedToCreate($contentContainer)) : ?>
             <?php $form = ActiveForm::begin(); ?>
             <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
@@ -63,42 +58,10 @@ use yii\grid\ActionColumn;
             <?php endif; ?>
         <?php endif; ?>
 
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'tableOptions' => ['class' => 'table table-hover'],
-            'columns' => [
-                'name',
-                'sort_order',
-                [
-                    'header' => Yii::t('base', 'Actions'),
-                    'class' => ActionColumn::class,
-                    'options' => ['width' => '100px'],
-                    'buttons' => [
-                        'update' => fn($url, Topic $model) => ModalButton::primary()
-                            ->load($contentContainer->createUrl('edit', ['id' => $model->id]))
-                            ->icon('edit')
-                            ->options(['aria-label' => Yii::t('base', 'Edit')])
-                            ->sm()
-                            ->loader(false),
-                        'view' => fn($url, Topic $model) => Button::primary()
-                            ->link($model->getUrl())
-                            ->icon('filter')
-                            ->options(['aria-label' => Yii::t('base', 'View')])
-                            ->sm()
-                            ->loader(false),
-                        'delete' => fn($url, Topic $model) => Button::danger()
-                            ->icon('delete')
-                            ->options(['aria-label' => Yii::t('base', 'Delete')])
-                            ->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))
-                            ->confirm(
-                                Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
-                                Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
-                                Yii::t('base', 'Delete'),
-                            )
-                            ->sm()
-                            ->loader(false),
-                    ],
-                ],
-            ]]) ?>
-    </div>
-</div>
+        <?= TopicTable::widget(['container' => $contentContainer]) ?>
+<?php if ($contentContainer instanceof User) : ?>
+    <?php $this->endContent() ?>
+<?php else : ?>
+    <?php ContentCard::end() ?>
+    <?php $this->endContent() ?>
+<?php endif; ?>

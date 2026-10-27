@@ -3,29 +3,25 @@
 use humhub\compat\HForm;
 use humhub\helpers\Html;
 use humhub\modules\user\models\ProfileField;
+use humhub\widgets\ContentCard;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $field ProfileField */
 /* @var $hForm HForm */
 ?>
 
-<div id="edit-profile-field-root" class="panel-body">
-    <div class="float-end">
-        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'float-end']); ?>
-    </div>
-
-    <?php if (!$field->isNewRecord): ?>
-        <h4><?= Yii::t('AdminModule.user', 'Edit profile field') ?></h4>
-    <?php else: ?>
-        <h4><?= Yii::t('AdminModule.user', 'Create new profile field') ?></h4>
-    <?php endif; ?>
-
-    <br>
-
-    <?php $form = ActiveForm::begin(); ?>
-    <?= $hForm->render($form); ?>
-    <?php ActiveForm::end(); ?>
-</div>
+<?php ContentCard::begin([
+    'title' => $field->isNewRecord
+        ? Yii::t('AdminModule.user', 'Create new profile field')
+        : Yii::t('AdminModule.user', 'Edit profile field'),
+    'backUrl' => ['index'],
+    'backLabel' => Yii::t('AdminModule.base', 'Back to overview'),
+    'options' => ['id' => 'edit-profile-field-root'],
+]) ?>
+<?php $form = ActiveForm::begin(); ?>
+<?= $hForm->render($form); ?>
+<?php ActiveForm::end(); ?>
+<?php ContentCard::end() ?>
 
 <script <?= Html::nonce() ?>>
 

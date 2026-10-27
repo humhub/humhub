@@ -258,6 +258,136 @@
         cursor: pointer;
     }
 
+    // Bootstrap's switch (`.form-switch` > `input.form-check-input[role=switch]`), restored over the
+    // checkbox look above: a track with a knob, on in the accent colour like a ticked checkbox
+    .form-switch input.form-check-input[type=checkbox] {
+        width: $form-switch-width;
+        height: $form-check-input-width;
+        min-height: 0;
+        padding: 0;
+        border: $form-check-input-border;
+        border-radius: $form-switch-border-radius;
+        background: var(--bs-body-bg) var(--bs-form-switch-bg) left center / contain no-repeat;
+        @include transition($form-switch-transition);
+
+        &:focus {
+            --bs-form-switch-bg: #{escape-svg($form-switch-focus-bg-image)};
+            border: $form-check-input-border !important;
+            border-color: $form-check-input-focus-border !important;
+            box-shadow: $form-check-input-focus-box-shadow;
+        }
+
+        &:checked {
+            --bs-form-switch-bg: #{escape-svg($form-switch-checked-bg-image)};
+            border-color: var(--bs-accent);
+            background-color: var(--bs-accent);
+            background-position: right center;
+
+            &::after {
+                content: none;
+            }
+        }
+
+        &:disabled {
+            border: $form-check-input-border !important;
+            background-color: var(--bs-body-bg) !important;
+            opacity: $form-check-input-disabled-opacity;
+        }
+    }
+
+    // Radio cards (`.form-check-cards` > `label.form-check-card`): a choice with a title and a
+    // description, e.g. a notification profile. On wider screens the card's border shows the
+    // choice and the radio stays hidden (focusable); on a phone the cards stack and show it.
+    // See docs/ui/choice-controls.md.
+    .form-check-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacer * .75;
+    }
+
+    .form-check-card {
+        position: relative;
+        display: flex;
+        flex: 1 1 10rem;
+        align-items: flex-start;
+        gap: $spacer * .75;
+        min-height: 56px;
+        margin: 0;
+        padding: $spacer * .75 $spacer;
+        border: var(--bs-border-width) solid var(--bs-border-color);
+        border-radius: var(--bs-border-radius);
+        background: var(--hh-background-color-main);
+        font-weight: $font-weight-normal; // not the bold of a HumHub `label`
+        cursor: pointer;
+
+        &:hover {
+            border-color: var(--bs-accent);
+        }
+
+        &:has(.form-check-input:focus-visible) {
+            outline: 2px solid rgba(var(--bs-accent-rgb), .32);
+            outline-offset: 2px;
+        }
+
+        &:has(.form-check-input:checked) {
+            border-color: var(--bs-accent);
+            box-shadow: inset 0 0 0 1px var(--bs-accent);
+            background: var(--hh-background-color-highlight-soft);
+        }
+
+        &:has(.form-check-input:disabled) {
+            cursor: default;
+            opacity: .65;
+
+            &:hover {
+                border-color: var(--bs-border-color);
+            }
+        }
+
+        > .form-check-input {
+            position: absolute;
+            margin: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    .form-check-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    .form-check-card-title {
+        color: var(--hh-text-color-highlight);
+        font-weight: $font-weight-semibold;
+    }
+
+    .form-check-card-text {
+        color: var(--hh-text-color-secondary);
+        font-size: $font-size-sm;
+    }
+
+    @include media-breakpoint-down(sm) {
+        .form-check-cards {
+            flex-direction: column;
+            gap: $spacer * .5;
+        }
+
+        .form-check-card {
+            flex-basis: auto;
+            align-items: center;
+            padding: $spacer * .5 $spacer;
+
+            > .form-check-input {
+                position: static;
+                flex: 0 0 auto;
+                opacity: 1;
+            }
+        }
+    }
+
     div.mb-3 {
         div.checkbox {
             .form-text {
@@ -377,43 +507,48 @@
         }
     }
 
+    // A group of `ActiveForm::beginCollapsibleFields()`: an accordion with one item (see
+    // _accordion.scss); consecutive groups join into one accordion
     .form-collapsible-fields {
-        margin-bottom: 12px;
-        border-left: 3px solid var(--bs-primary);
-        background-color: var(--hh-background-color-secondary);
-    }
+        margin-bottom: $spacer;
 
-    .form-collapsible-fields-label {
-        margin-bottom: 0;
-        padding: 12px;
-        cursor: pointer;
-        &:focus-visible {
-            border-left: 3px solid var(--bs-accent);
-            margin-left: -3px;
+        .accordion-header {
+            margin: 0;
         }
 
-        label {
-            margin-bottom: 0;
+        // Like `.accordion-title` of the notification settings
+        .accordion-button {
+            color: var(--hh-text-color-highlight);
+            font-weight: $font-weight-semibold;
             cursor: pointer;
-        }
-    }
 
-    .form-collapsible-fields fieldset {
-        padding-top: 15px;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .form-collapsible-fields-label {
-        .ti-plus {
-            display: none;
-        }
-        &.collapsed {
-            .ti-minus {
-                display: none;
+            label {
+                margin: 0;
+                color: inherit;
+                font: inherit;
+                cursor: inherit;
             }
-            .ti-plus {
-                display: initial;
+        }
+
+        &:has(+ .form-collapsible-fields) {
+            margin-bottom: 0;
+
+            .accordion-item,
+            .accordion-button.collapsed {
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+        }
+
+        & + .form-collapsible-fields {
+            .accordion-item {
+                border-top: 0;
+            }
+
+            .accordion-item,
+            .accordion-button {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
             }
         }
     }

@@ -72,11 +72,11 @@ class AccountCest
         $I->see('Reactions on my content');
 
         $I->amGoingTo('switch off the e-mails about reactions; the change is saved right away');
-        $I->click('[data-category="social"] .c-notification-settings__category-head');
+        $I->click('[data-category="social"] .accordion-button');
         $I->waitForElementVisible('[name="NotificationSettings[categories.social.email]"]');
         $I->jsClick('[name="NotificationSettings[categories.social.email]"]');
 
-        $I->waitForText('Saved', 10, '.c-notification-settings__status');
-        $I->see('Custom', '[role="radiogroup"] [aria-checked="true"]');
+        $I->waitForText('Saved', 10, '.notification-settings-status');
+        $I->seeCheckboxIsChecked('[role="radiogroup"] [data-profile="custom"]');
     }
 }

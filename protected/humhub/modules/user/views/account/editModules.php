@@ -3,25 +3,20 @@
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\widgets\ContainerModule;
 use humhub\modules\user\models\User;
+use humhub\widgets\ContentCard;
+use humhub\widgets\PageHeader;
 
 /* @var User $user */
 /* @var ContentContainerModule[] $modules */
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('UserModule.manage', '<strong>Profile</strong> modules') ?>
-        <div
-            class="text-body-secondary"><?= Yii::t('UserModule.manage', 'Similar to Spaces, your personal profile also allows you to use modules. Please keep in mind that information you share on your profile is available to other users of the network.') ?></div>
-    </div>
-    <div class="panel-body">
+<div class="d-flex flex-column gap-3">
+    <?= PageHeader::title(Yii::t('UserModule.account', 'Modules')) ?>
+    <?php ContentCard::begin() ?>
+        <p>
+            <?= Yii::t('UserModule.manage', 'Similar to Spaces, your personal profile also allows you to use modules. Please keep in mind that information you share on your profile is available to other users of the network.') ?>
+        </p>
         <?php if (empty($modules)) : ?>
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <?= Yii::t('UserModule.manage', 'Currently there are no modules available for you!'); ?>
-                    </div>
-                </div>
-            </div>
+            <p><?= Yii::t('UserModule.manage', 'Currently there are no modules available for you!') ?></p>
         <?php endif; ?>
 
         <div class="modules-group">
@@ -32,5 +27,5 @@ use humhub\modules\user\models\User;
                 ]); ?>
             <?php endforeach; ?>
         </div>
-    </div>
+    <?php ContentCard::end() ?>
 </div>

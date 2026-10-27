@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400" viewBox="0 0 800 400" font-family="Open Sans, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-labelledby="t">
+  <title id="t">Accordion sets: one open at a time, changed groups stay open</title>
+  <defs>
+    <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 11 L15 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path d="M4 6 L8 10 L12 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-up" viewBox="0 0 16 16"><path d="M4 10 L8 6 L12 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-updown" viewBox="0 0 16 16"><path d="M5 6 L8 3 L11 6 M5 10 L8 13 L11 10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-right" viewBox="0 0 16 16"><path d="M6 4 L10 8 L6 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-left" viewBox="0 0 16 16"><path d="M10 4 L6 8 L10 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 16 16"><path d="M4 4 L12 12 M12 4 L4 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 2 V14 M2 8 H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-kebab" viewBox="0 0 16 16"><circle cx="8" cy="3" r="1.5" fill="currentColor"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-cols" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="11" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M1.5 9.5 H14.5" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M1.5 2.5 H14.5 L9.5 8.5 V13.5 L6.5 12 V8.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 16 16"><rect x="1.5" y="2.5" width="13" height="12" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6 H14.5 M5 1 V4 M11 1 V4" stroke="currentColor" stroke-width="1.3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 16 16"><path d="M3.5 8.5 L6.5 11.5 L12.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 16 16"><path d="M4 8 H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 16 16"><path d="M10.5 2.5 L13.5 5.5 L5.5 13.5 H2.5 V10.5 Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-person" viewBox="0 0 16 16"><circle cx="8" cy="5.5" r="3" fill="currentColor"/><path d="M2 15 Q2 9.5 8 9.5 Q14 9.5 14 15 Z" fill="currentColor"/></symbol>
+    <symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 L9.5 6.5 M7 4.5 L8.5 3 A2.8 2.8 0 0 1 13 7.5 L11.5 9 M9 11.5 L7.5 13 A2.8 2.8 0 0 1 3 8.5 L4.5 7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></symbol>
+  </defs>
+  <style>
+    .sec { font-size: 12px; font-weight: 600; fill: #757575; letter-spacing: .06em; }
+    .card { fill: #fff; stroke: #e5e5e5; }
+    .title { font-size: 16px; font-weight: 600; fill: #000; }
+    .empty { fill: #f5f5f5; stroke: #e5e5e5; }
+    .filled { fill: #fff; stroke: #d5d5d5; }
+    .ph { font-size: 14px; fill: #757575; }
+    .val { font-size: 14px; fill: #000; }
+    .th { font-size: 13px; font-weight: 600; fill: #555; }
+    .th-on { font-size: 13px; font-weight: 600; fill: #000; }
+    .name { font-size: 14px; font-weight: 500; fill: #000; }
+    .sub { font-size: 12px; fill: #555; }
+    .txt { font-size: 13px; fill: #333; }
+    .lnk { font-size: 13px; font-weight: 600; fill: #555; }
+    .chipt { font-size: 10.5px; font-weight: 600; letter-spacing: .03em; }
+    .note { font-size: 12px; fill: #037283; }
+    .legend { font-size: 12.5px; fill: #333; }
+    .num { font-size: 11px; font-weight: 700; fill: #fff; }
+    .lead { stroke: #037283; stroke-width: 1; fill: none; stroke-dasharray: 3 3; }
+  </style>
+  <rect width="800" height="400" fill="#ededed"/>
+<text x="20" y="28" class="sec">ONE-OPEN-AT-A-TIME SET</text>
+<rect x="20" y="40" width="370" height="300" rx="8" class="card"/>
+<text x="36" y="72" class="title">Mobile App</text>
+<rect x="32" y="88" width="346" height="120" rx="6" fill="#fdfdfd" stroke="#d5d5d5" stroke-dasharray="4 3"/>
+<text x="46" y="117" class="name" style="font-weight:600">Links</text><use href="#i-down" x="344" y="104" width="18" height="18" color="#555"/>
+<rect x="44" y="138" width="322" height="1" fill="#e5e5e5"/>
+<rect x="44" y="150" width="220" height="10" rx="5" fill="#eee"/><rect x="44" y="170" width="170" height="10" rx="5" fill="#eee"/>
+<rect x="32" y="216" width="346" height="48" rx="6" fill="#fdfdfd" stroke="#d5d5d5" stroke-dasharray="4 3"/>
+<text x="46" y="245" class="name" style="font-weight:600">Well-Known Files</text><use href="#i-up" x="344" y="232" width="18" height="18" color="#555"/>
+<rect x="32" y="272" width="346" height="48" rx="6" fill="#fdfdfd" stroke="#d5d5d5" stroke-dasharray="4 3"/>
+<text x="46" y="301" class="name" style="font-weight:600">Push Notifications</text><use href="#i-up" x="344" y="288" width="18" height="18" color="#555"/>
+<text x="20" y="364" class="note">opening one closes the others</text>
+<text x="420" y="28" class="sec">… EXCEPT A CHANGED ONE</text>
+<rect x="420" y="40" width="360" height="300" rx="8" class="card"/>
+<text x="436" y="72" class="title">Mobile App</text>
+<rect x="432" y="88" width="336" height="92" rx="6" fill="#fdfdfd" stroke="#d5d5d5" stroke-dasharray="4 3"/>
+<text x="446" y="117" class="name" style="font-weight:600">Links</text><circle cx="495.0" cy="113" r="3.5" fill="#037283"/><use href="#i-down" x="734" y="104" width="18" height="18" color="#555"/>
+<rect x="444" y="138" width="312" height="1" fill="#e5e5e5"/>
+<rect x="444" y="152" width="200" height="10" rx="5" fill="#eee"/>
+<rect x="432" y="188" width="336" height="92" rx="6" fill="#fdfdfd" stroke="#d5d5d5" stroke-dasharray="4 3"/>
+<text x="446" y="217" class="name" style="font-weight:600">Well-Known Files</text><use href="#i-down" x="734" y="204" width="18" height="18" color="#555"/>
+<rect x="444" y="238" width="312" height="1" fill="#e5e5e5"/>
+<rect x="444" y="252" width="200" height="10" rx="5" fill="#eee"/>
+<rect x="432" y="288" width="336" height="48" rx="6" fill="#fdfdfd" stroke="#d5d5d5" stroke-dasharray="4 3"/>
+<text x="446" y="317" class="name" style="font-weight:600">Push Notifications</text><use href="#i-up" x="734" y="304" width="18" height="18" color="#555"/>
+<text x="420" y="364" class="note">"Links" has unsaved changes, so it stays open</text>
+<text x="420" y="382" class="note">when "Well-Known Files" is opened</text>
+</svg>

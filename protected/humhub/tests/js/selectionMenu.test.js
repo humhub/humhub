@@ -34,12 +34,12 @@ describe('SelectionMenu', () => {
     it('renders nothing without a selection', () => {
         const wrapper = mount(SelectionMenu, { props: { count: 0, menuId: 'test.selection', entries: entries() } });
 
-        expect(wrapper.find('.c-selection-menu').exists()).toBe(false);
+        expect(wrapper.find('.selection-menu').exists()).toBe(false);
     });
 
     it('renders a labelled menu toggle for a selection', () => {
         const wrapper = mount(SelectionMenu, { props: { count: 3, menuId: 'test.selection', entries: entries() } });
-        const toggle = wrapper.find('.c-selection-menu [data-bs-toggle="dropdown"]');
+        const toggle = wrapper.find('.selection-menu [data-bs-toggle="dropdown"]');
 
         expect(toggle.exists()).toBe(true);
         expect(toggle.attributes('aria-label')).toBe('Actions for 3 selected');

@@ -1,0 +1,222 @@
+<?php
+
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
+
+namespace humhub\modules\admin\components;
+
+use humhub\components\listing\FilterableList;
+use humhub\components\table\ColumnDefinition;
+use humhub\components\table\DataTable;
+use humhub\components\table\RowAction;
+use humhub\modules\admin\permissions\ManageGroups;
+use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\User;
+use humhub\modules\user\source\UserSourceCollection;
+use Yii;
+
+/**
+ * The administration's user table (Administration › Users, `admin\widgets\UserTable`, rows from
+ * `GET /api/v2/admin/user`): the users of {@see AdminUserList} with their name, groups and last
+ * login (on request also the username, the registration and, for administrators, the source),
+ * and the actions the viewer may take on each — those the user list's action
+ * column offered before (edit, enable / disable, delete, impersonate, view profile).
+ *
+ * Modules add, replace or remove columns and actions on {@see self::EVENT_INIT}. The page and
+ * the endpoint create the table through the DI container (`Yii::createObject()`), so a module
+ * restricting the user administration (who sees it: {@see self::canAccess()}, whom they manage:
+ * {@see self::canManage()}, which users: {@see self::createList()}) may replace the class.
+ *
+ * @since 1.20
+ */
+class UserTable extends DataTable
+{
+    /**
+     * @inheritdoc
+     */
+    protected function createList(): FilterableList
+    {
+        return new AdminUserList();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function columns(): array
+    {
+        $columns = [
+            new ColumnDefinition('name', ColumnDefinition::TYPE_MAIN, Yii::t('UserModule.base', 'Name'), sort: 'name', sortOrder: 100),
+            new ColumnDefinition('groups', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Groups'), priority: 3, filter: 'group', sortOrder: 200, visible: false),
+            new ColumnDefinition('status', ColumnDefinition::TYPE_CHIP, Yii::t('UserModule.base', 'Status'), priority: 1, sort: 'status', filter: 'status', sortOrder: 260),
+            new ColumnDefinition('lastLogin', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Last login'), priority: 2, sort: 'lastLogin', sortOrder: 300),
+            new ColumnDefinition('createdAt', ColumnDefinition::TYPE_DATE, Yii::t('AdminModule.user', 'Registered'), priority: 3, sort: 'createdAt', sortOrder: 400, visible: false),
+            new ColumnDefinition('username', ColumnDefinition::TYPE_TEXT, Yii::t('AdminModule.user', 'Username'), priority: 3, sortOrder: 150, visible: false),
+        ];
+
+        // The source of an account (e.g. LDAP), as the name column showed it to administrators
+        if (Yii::$app->user->isAdmin()) {
+            $columns[] = new ColumnDefinition('source', ColumnDefinition::TYPE_CHIP, Yii::t('AdminModule.user', 'Source'), priority: 3, sort: 'source', filter: 'source', sortOrder: 250);
+        }
+
+        return $columns;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function actions(): array
+    {
+        return [
+            new RowAction(
+                'edit',
+                Yii::t('base', 'Edit'),
+                RowAction::KIND_LINK,
+                static fn(User $user) => ['/admin/user/edit', 'id' => $user->id],
+                icon: 'pencil',
+                visible: fn(User $user) => $user->status != User::STATUS_SOFT_DELETED && $this->canManage($user),
+                sortOrder: 100,
+            ),
+            new RowAction(
+                'enable',
+                Yii::t('AdminModule.user', 'Enable'),
+                RowAction::KIND_REQUEST,
+                static fn(User $user) => ['/admin/api/user/enable', 'id' => $user->id],
+                icon: 'user-check',
+                confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?'),
+                visible: fn(User $user) => $user->status == User::STATUS_DEACTIVATED && $this->canManage($user),
+                sortOrder: 200,
+                bulkUrl: ['/admin/api/user/bulk', 'action' => 'enable'],
+            ),
+            new RowAction(
+                'disable',
+                Yii::t('AdminModule.user', 'Disable'),
+                RowAction::KIND_REQUEST,
+                static fn(User $user) => ['/admin/api/user/disable', 'id' => $user->id],
+                icon: 'ban',
+                confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?'),
+                visible: fn(User $user) => $user->status == User::STATUS_ENABLED && $this->canManage($user),
+                sortOrder: 200,
+                bulkUrl: ['/admin/api/user/bulk', 'action' => 'disable'],
+            ),
+            new RowAction(
+                'impersonate',
+                Yii::t('AdminModule.user', 'Impersonate'),
+                RowAction::KIND_POST,
+                static fn(User $user) => ['/admin/user/impersonate', 'id' => $user->id],
+                icon: 'spy',
+                confirm: Yii::t('AdminModule.user', 'Are you really sure that you want to impersonate this user?'),
+                visible: static fn(User $user) => $user->status == User::STATUS_ENABLED
+                    && Yii::$app->user->impersonation->canStart($user),
+                sortOrder: 300,
+            ),
+            new RowAction(
+                'profile',
+                Yii::t('AdminModule.user', 'View profile'),
+                RowAction::KIND_LINK,
+                static fn(User $user) => $user->getUrl(),
+                icon: 'eye',
+                visible: static fn(User $user) => $user->status == User::STATUS_ENABLED,
+                sortOrder: 400,
+            ),
+            // The confirmation is the delete page's own form.
+            new RowAction(
+                'delete',
+                Yii::t('base', 'Delete'),
+                RowAction::KIND_LINK,
+                static fn(User $user) => ['/admin/user/delete', 'id' => $user->id],
+                icon: 'trash',
+                destructive: true,
+                visible: fn(User $user) => $user->status != User::STATUS_SOFT_DELETED
+                    && $this->canManage($user) && !$user->isCurrentUser(),
+                sortOrder: 100,
+            ),
+            new RowAction(
+                'delete-permanently',
+                Yii::t('AdminModule.user', 'Permanently delete'),
+                RowAction::KIND_LINK,
+                static fn(User $user) => ['/admin/user/delete', 'id' => $user->id],
+                icon: 'trash-x',
+                destructive: true,
+                visible: static fn(User $user) => $user->status == User::STATUS_SOFT_DELETED,
+                sortOrder: 100,
+            ),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function cells($model): array
+    {
+        /** @var User $model */
+        return [
+            'name' => [
+                'text' => $model->displayName,
+                'subtitle' => $model->email,
+                'image' => $model->getProfileImage()->getUrl(),
+                'url' => $model->status == User::STATUS_ENABLED ? $model->getUrl() : null,
+            ],
+            'groups' => array_map(static fn($group) => ['text' => $group->name, 'value' => (string)$group->id], $model->groups),
+            'lastLogin' => $model->last_login
+                ? self::dateCell($model->last_login)
+                : ['text' => Yii::t('AdminModule.user', 'never')],
+            'createdAt' => $model->created_at ? self::dateCell($model->created_at) : null,
+            'source' => [['text' => self::sourceTitle($model->user_source), 'value' => (string)$model->user_source]],
+            'status' => self::statusCell((int)$model->status),
+            'username' => ['text' => $model->username],
+        ];
+    }
+
+    /**
+     * Whether the viewer may see the table (the page and its endpoint): those who may manage users
+     * or groups, as the web user administration.
+     */
+    public function canAccess(): bool
+    {
+        return Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+    }
+
+    /**
+     * A user the viewer may manage — edit, enable / disable, delete: anyone, except a System
+     * Administrator for a viewer who is none (the web actions answer 403 then).
+     */
+    public function canManage(User $user): bool
+    {
+        return Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
+    }
+
+    private static function dateCell(string $value): array
+    {
+        return [
+            'value' => Yii::$app->formatter->asDatetime($value, 'php:c'),
+            'text' => Yii::$app->formatter->asDate($value),
+            'title' => Yii::$app->formatter->asDatetime($value),
+        ];
+    }
+
+    /**
+     * The account's status as a chip setting the list's `status` filter.
+     */
+    private static function statusCell(int $status): ?array
+    {
+        return match ($status) {
+            User::STATUS_ENABLED => [['text' => Yii::t('AdminModule.user', 'Enabled'), 'value' => AdminUserList::STATUS_ENABLED, 'tone' => 'success']],
+            User::STATUS_DEACTIVATED => [['text' => Yii::t('AdminModule.user', 'Deactivated'), 'value' => AdminUserList::STATUS_DEACTIVATED, 'tone' => 'warning']],
+            User::STATUS_SOFT_DELETED => [['text' => Yii::t('AdminModule.user', 'Deleted'), 'value' => AdminUserList::STATUS_DELETED, 'tone' => 'danger']],
+            default => null,
+        };
+    }
+
+    private static function sourceTitle(?string $source): string
+    {
+        /** @var UserSourceCollection $collection */
+        $collection = Yii::$app->userSourceCollection;
+
+        return $source !== null && $collection->hasUserSource($source)
+            ? $collection->getUserSource($source)->getTitle()
+            : (string)$source;
+    }
+}
