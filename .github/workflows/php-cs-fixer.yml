@@ -13,7 +13,7 @@ jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Check the commit message for skipping PHP-CS-Fixer
         id: check_phpcs_skip
@@ -26,7 +26,7 @@ jobs:
             echo "Proceeding with PHP-CS-Fixer steps."
           fi
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         if: steps.check_phpcs_skip.outputs.skip == 'false'
         with:
           path: .php-cs-fixer.cache

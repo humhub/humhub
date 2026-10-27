@@ -7,7 +7,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@v7
+      - uses: actions/stale@v11
         with:
           close-issue-message: 'This issue was closed because it has been stalled for 30 days with no activity.'
           days-before-stale: -1
