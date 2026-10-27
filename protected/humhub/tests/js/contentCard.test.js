@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { h } from 'vue';
-import { mount } from '@vue/test-utils';
+import { defineComponent, h, ref } from 'vue';
+import { flushPromises, mount } from '@vue/test-utils';
 import ContentCard from '../../vue/ContentCard.vue';
 
 await import('../../resources/js/humhub/humhub.url.js');
@@ -43,6 +43,25 @@ describe('ContentCard', () => {
 
         expect(wrapper.find('.card-header > .path').exists()).toBe(true);
         expect(wrapper.find('.card-footer > .pager').exists()).toBe(true);
+    });
+
+    it('renders the header once header content is passed later', async () => {
+        const shown = ref(false);
+        const Host = defineComponent({
+            setup: () => () => h(ContentCard, null, shown.value
+                ? { header: () => h('nav', { class: 'views' }), default: () => h('p') }
+                : { default: () => h('p') }),
+        });
+        const wrapper = mount(Host);
+        expect(wrapper.find('.card-header').exists()).toBe(false);
+
+        shown.value = true;
+        await flushPromises();
+        expect(wrapper.find('.card-header > .views').exists()).toBe(true);
+
+        shown.value = false;
+        await flushPromises();
+        expect(wrapper.find('.card-header').exists()).toBe(false);
     });
 
     it('renders the actions with ghost tools and the primary action last', () => {

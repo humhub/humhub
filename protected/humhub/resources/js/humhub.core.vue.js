@@ -663,7 +663,9 @@
         titleId: `card-title-${++uid$7}`
       };
     },
-    computed: {
+    methods: {
+      // A method, not a computed: `$slots` is not reactive, so a computed would keep the answer
+      // of the first render and miss a header slot the parent passes later.
       hasHeader() {
         return !!(this.title || this.actions.length || this.menu.length || this.$slots.header || this.$slots.actions);
       }
@@ -693,7 +695,7 @@
       "aria-labelledby": $props.title ? $data.titleId : null
     }, {
       default: vue.withCtx(() => [
-        $options.hasHeader ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$q, [
+        $options.hasHeader() ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$q, [
           $props.title ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$k, [
             (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.titleTag), {
               id: $data.titleId,

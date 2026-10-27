@@ -1,6 +1,6 @@
 <template>
     <component :is="title ? 'section' : 'div'" class="card content-card" :aria-labelledby="title ? titleId : null">
-        <div v-if="hasHeader" class="card-header">
+        <div v-if="hasHeader()" class="card-header">
             <div v-if="title" class="card-heading">
                 <component :is="titleTag" :id="titleId" class="card-title">{{ title }}</component>
                 <p v-if="description" class="card-subtitle">{{ description }}</p>
@@ -60,7 +60,9 @@ export default {
             titleId: `card-title-${++uid}`,
         };
     },
-    computed: {
+    methods: {
+        // A method, not a computed: `$slots` is not reactive, so a computed would keep the answer
+        // of the first render and miss a header slot the parent passes later.
         hasHeader() {
             return !!(this.title || this.actions.length || this.menu.length || this.$slots.header || this.$slots.actions);
         },
