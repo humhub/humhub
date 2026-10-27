@@ -29,3 +29,11 @@ Everything in the repository ends up in the package unless it is listed in `.git
 **When a PR adds, moves or removes files or directories outside `protected/humhub`, check whether
 `.github/release/exclude.txt` has to be adjusted** — development-only files (tooling configs,
 build scripts) must be excluded, files needed by an installation must not be.
+
+**Also check the updater's package rules.** The updater module installs core updates from the same
+full package and overwrites everything that is not covered by a rule. If a PR adds files outside
+`protected/humhub` that users customise (and that must therefore not be overwritten), moves
+directories, or removes files that should disappear from existing installations, the updater needs a new
+rules section for that core version, released before the core release — see
+[`config/package-rules.php`](https://github.com/humhub/updater/blob/master/config/package-rules.php) and
+[`docs/PACKAGE-RULES.md`](https://github.com/humhub/updater/blob/master/docs/PACKAGE-RULES.md).
