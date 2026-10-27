@@ -11,6 +11,7 @@ namespace humhub\components\gates;
 use Yii;
 use yii\base\Component;
 use yii\web\Application as WebApplication;
+use yii\web\Request;
 
 /**
  * Collects and evaluates user gates.
@@ -140,6 +141,52 @@ class GateManager extends Component
         $this->collect();
 
         return $this->matchesRoutes($route, $this->infrastructureRoutes);
+    }
+
+    /**
+     * Whether the route is the own flow route of a registered gate (see [[UserGateInterface::getRoute()]]).
+     *
+     * Allowed routes are deliberately not included: they are exemptions that stay reachable while a
+     * gate is open (e.g. logout), not pages that redirect back to the return URL.
+     *
+     * @param string $route e.g. `twofa/check`; matched by path segment prefix
+     * @since 1.19.3
+     */
+    public function isGateRoute(string $route): bool
+    {
+        $routes = [];
+        foreach ($this->getGates() as $gate) {
+            $routes[] = $gate->getRoute()[0] ?? '';
+        }
+
+        return $this->matchesRoutes($route, $routes);
+    }
+
+    /**
+     * Whether the URL points to the own flow route of a registered gate.
+     *
+     * The URL is resolved to a route through the URL manager, so pretty URLs and `?r=` URLs
+     * are compared alike. Absolute URLs of another host never match.
+     *
+     * A gate page must not be a return URL: it redirects to the return URL once the gate is
+     * closed, which would be the gate page itself and ends in an endless redirect loop.
+     *
+     * @param string|array|null $url relative or absolute URL, or a route array as accepted by [[Url::to()]]
+     * @since 1.19.3
+     */
+    public function isGateUrl($url): bool
+    {
+        if (is_array($url)) {
+            return isset($url[0]) && is_string($url[0]) && $this->isGateRoute($url[0]);
+        }
+
+        if (!is_string($url) || $url === '') {
+            return false;
+        }
+
+        $route = $this->resolveUrlRoute($url);
+
+        return $route !== null && $this->isGateRoute($route);
     }
 
     /**
@@ -278,6 +325,43 @@ class GateManager extends Component
         }
 
         return false;
+    }
+
+    /**
+     * Resolves a relative or same-host absolute URL to its route, or null if not possible.
+     */
+    private function resolveUrlRoute(string $url): ?string
+    {
+        if (!Yii::$app instanceof WebApplication) {
+            return null;
+        }
+
+        $parts = parse_url($url);
+        if ($parts === false) {
+            return null;
+        }
+
+        if (isset($parts['host']) && strcasecmp($parts['host'], Yii::$app->request->getHostName()) !== 0) {
+            return null;
+        }
+
+        $query = [];
+        parse_str($parts['query'] ?? '', $query);
+
+        $request = new Request([
+            'url' => ($parts['path'] ?? '') . (isset($parts['query']) ? '?' . $parts['query'] : ''),
+            'queryParams' => $query,
+        ]);
+
+        $resolved = Yii::$app->getUrlManager()->parseRequest($request);
+        $route = is_array($resolved) ? (string)($resolved[0] ?? '') : '';
+
+        // `?r=route` is also accepted when pretty URLs are enabled
+        if ($route === '' && isset($query['r']) && is_string($query['r'])) {
+            $route = $query['r'];
+        }
+
+        return $route === '' ? null : $route;
     }
 
     private function getStateVersion(): int
