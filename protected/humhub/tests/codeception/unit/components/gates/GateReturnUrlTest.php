@@ -66,4 +66,13 @@ class GateReturnUrlTest extends HumHubDbTestCase
 
         $this->assertEquals(Yii::$app->getHomeUrl(), Yii::$app->user->getReturnUrl());
     }
+
+    public function testStoredGateUrlFallsBackToDefaultUrl()
+    {
+        Yii::$app->session->set(Yii::$app->user->returnUrlParam, Url::to(['/mygate/check']));
+
+        $this->assertEquals(Url::to(['/dashboard/dashboard']), Yii::$app->user->getReturnUrl(['/dashboard/dashboard']));
+        // A gate URL is no valid default either
+        $this->assertEquals(Yii::$app->getHomeUrl(), Yii::$app->user->getReturnUrl(['/mygate/check']));
+    }
 }
