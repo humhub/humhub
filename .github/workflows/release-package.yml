@@ -5,7 +5,7 @@ name: Release Package
 #
 # Prerequisites in humhub/humhub:
 #   Secret   HUMHUB_RELEASE_UPLOAD_TOKEN — Bearer token of the web API (params['releaseUploadToken'])
-#   Variable HUMHUB_RELEASE_UPLOAD_URL   — e.g. https://api.humhub.com/v1/release/upload
+#   Secret   HUMHUB_RELEASE_UPLOAD_URL   — e.g. https://api.humhub.com/v1/release/upload
 
 on:
   release:
@@ -90,11 +90,11 @@ jobs:
       - name: Upload packages to web server
         if: github.event_name == 'release' || inputs.upload_web
         env:
-          UPLOAD_URL: ${{ vars.HUMHUB_RELEASE_UPLOAD_URL }}
+          UPLOAD_URL: ${{ secrets.HUMHUB_RELEASE_UPLOAD_URL }}
           UPLOAD_TOKEN: ${{ secrets.HUMHUB_RELEASE_UPLOAD_TOKEN }}
         run: |
           if [ -z "$UPLOAD_URL" ] || [ -z "$UPLOAD_TOKEN" ]; then
-            echo "::error::Variable HUMHUB_RELEASE_UPLOAD_URL and secret HUMHUB_RELEASE_UPLOAD_TOKEN must be set"
+            echo "::error::Secrets HUMHUB_RELEASE_UPLOAD_URL and HUMHUB_RELEASE_UPLOAD_TOKEN must be set"
             exit 1
           fi
           json=$(ls dist/humhub-*.json)
