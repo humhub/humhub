@@ -40,13 +40,14 @@ class FormatterTest extends Unit
             999999999500000 => '1000000B',
         ];
         foreach ($testNumbers as $numberValue => $result) {
-            $this->assertEquals(Yii::$app->formatter->asShortInteger($numberValue), $result);
+            $this->assertEquals($result, Yii::$app->formatter->asShortInteger($numberValue));
         }
     }
 
     public function testAsShortIntegerArabic()
     {
-        Yii::$app->formatter->locale = 'ar';
+        // Explicitly request Arabic-Indic digits: newer ICU/CLDR versions default to Latin digits for the plain 'ar' locale
+        Yii::$app->formatter->locale = 'ar-u-nu-arab';
 
         $testNumbers = [
             1 => '١',
@@ -72,7 +73,7 @@ class FormatterTest extends Unit
             999999999500000 => '١٠٠٠٠٠٠B',
         ];
         foreach ($testNumbers as $numberValue => $result) {
-            $this->assertEquals(Yii::$app->formatter->asShortInteger($numberValue), $result);
+            $this->assertEquals($result, Yii::$app->formatter->asShortInteger($numberValue));
         }
     }
 }
