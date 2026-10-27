@@ -280,8 +280,8 @@ class User extends \yii\web\User
     /**
      * @inheritdoc
      *
-     * Falls back to the home URL if the stored return URL points to a user gate page,
-     * e.g. in sessions that stored it before [[setReturnUrl()]] filtered it.
+     * Ignores the stored return URL if it points to a user gate page, e.g. in sessions that
+     * stored it before [[setReturnUrl()]] filtered it, and falls back to `$defaultUrl` or the home URL.
      *
      * @since 1.19.3
      */
@@ -289,7 +289,13 @@ class User extends \yii\web\User
     {
         $url = parent::getReturnUrl($defaultUrl);
 
-        return $this->isGateUrl($url) ? Yii::$app->getHomeUrl() : $url;
+        if (!$this->isGateUrl($url)) {
+            return $url;
+        }
+
+        return ($defaultUrl !== null && !$this->isGateUrl($defaultUrl))
+            ? Url::to($defaultUrl)
+            : Yii::$app->getHomeUrl();
     }
 
     private function isGateUrl($url): bool
