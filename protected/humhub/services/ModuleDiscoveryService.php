@@ -100,7 +100,7 @@ class ModuleDiscoveryService
      *
      * No module config.php is loaded. Modules without a module.json are ignored.
      *
-     * @return array<string, array{basePath: string, version: string|null}> map of moduleId => metadata
+     * @return array<string, array{basePath: string, version: string|null, name: string|null}> map of moduleId => metadata
      */
     public static function findInstalledModules(): array
     {
@@ -120,6 +120,7 @@ class ModuleDiscoveryService
                         $modules[$moduleId] = [
                             'basePath' => $moduleDir,
                             'version' => $info['version'] ?? null,
+                            'name' => $info['name'] ?? null,
                         ];
                     }
                 } catch (\Throwable) {

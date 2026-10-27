@@ -9,6 +9,7 @@
 namespace humhub\modules\user\services;
 
 use humhub\modules\user\authclient\Collection;
+use humhub\modules\user\authclient\Password;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
@@ -30,16 +31,27 @@ class AuthClientService
     /**
      * Returns the user object linked to the current AuthClient.
      *
-     * Two lookup paths:
+     * Lookup paths:
+     *  - for the Password client by the user's PK in attributes['id'], if the
+     *    user's source allows password login (the user may belong to any source)
      *  - via the user_auth table (source + source_id) for clients that record
      *    an external identity (OAuth, SAML, LDAP)
-     *  - via user.user_source matching the AuthClient ID (Password and any
-     *    other source-owning client whose attributes['id'] is the user's PK)
+     *  - via user.user_source matching the AuthClient ID (any other
+     *    source-owning client whose attributes['id'] is the user's PK)
      */
     public function getUser(): ?User
     {
         $attributes = $this->authClient->getUserAttributes();
         $clientId = $this->authClient->getId();
+
+        // The Password client stores the HumHub user.id as attributes['id'] and
+        // doesn't use the user_auth table, so a user_auth row must not bypass
+        // the source check.
+        if ($clientId === Password::ID) {
+            $user = isset($attributes['id']) ? User::findOne(['id' => $attributes['id']]) : null;
+
+            return $user !== null && UserSourceService::getForUser($user)->isAuthClientAllowed($clientId) ? $user : null;
+        }
 
         if (isset($attributes['id'])) {
             $auth = Auth::find()->where(['source' => $clientId, 'source_id' => $attributes['id']])->one();
@@ -48,7 +60,7 @@ class AuthClientService
             }
         }
 
-        // Source-owning clients (e.g. Password) store the HumHub user.id as attributes['id']
+        // Other source-owning clients store the HumHub user.id as attributes['id']
         // and don't use the user_auth table.
         $source = UserSourceService::getCollection()->findUserSourceForAuthClient($clientId);
         if ($source->getId() === $clientId && isset($attributes['id'])) {

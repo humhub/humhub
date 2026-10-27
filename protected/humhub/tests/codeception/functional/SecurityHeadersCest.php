@@ -12,6 +12,7 @@ use FunctionalTester;
 use humhub\components\Response;
 use humhub\controllers\CspReportController;
 use humhub\services\PwaService;
+use Yii;
 
 /**
  * Covers the security headers applied by {@see Response::prepare()}.
@@ -81,6 +82,16 @@ class SecurityHeadersCest
         $I->wantTo('ensure the violation report endpoint accepts a report');
 
         // A browser posts the report without a CSRF token; the endpoint has to accept that.
+        $I->sendAjaxPostRequest('/index-test.php?r=' . urlencode(trim(CspReportController::ROUTE, '/')));
+
+        $I->seeResponseCodeIs(204);
+    }
+
+    public function testCspReportEndpointAcceptsGuestsWithoutGuestAccess(FunctionalTester $I)
+    {
+        $I->wantTo('ensure a guest can post a violation report while guest access is disabled');
+        Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 0);
+
         $I->sendAjaxPostRequest('/index-test.php?r=' . urlencode(trim(CspReportController::ROUTE, '/')));
 
         $I->seeResponseCodeIs(204);

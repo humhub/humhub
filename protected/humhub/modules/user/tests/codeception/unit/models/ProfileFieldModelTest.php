@@ -3,11 +3,15 @@
 namespace tests\codeception\unit\models;
 
 use humhub\modules\user\models\fieldtype\Number;
+use humhub\modules\user\models\fieldtype\Template;
 use humhub\modules\user\models\fieldtype\Text;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use Twig\Sandbox\SecurityNotAllowedFilterError;
+use Yii;
 use yii\db\ActiveQuery;
+use yii\helpers\Json;
 
 class ProfileFieldModelTest extends HumHubDbTestCase
 {
@@ -182,5 +186,74 @@ class ProfileFieldModelTest extends HumHubDbTestCase
         $model->load($validParams, '');
         $this->assertTrue($model->save());
         $this->assertEquals(1, $model->delete());
+    }
+
+    public function testTemplateFieldUsesHiddenSourceFields()
+    {
+        $user = User::findOne(['username' => 'Admin']);
+
+        $createTemplate = static function (string $template): ProfileField {
+            $field = new ProfileField();
+            $field->load([
+                'profile_field_category_id' => 1,
+                'field_type_class' => Template::class,
+                'internal_name' => 'template_test',
+                'title' => 'Template test',
+                'sort_order' => 900,
+                'visible' => 1,
+            ], '');
+            // Not a safe attribute, so it can't be mass-assigned
+            $field->field_type_config = Json::encode(['template' => $template]);
+            self::assertTrue($field->save());
+
+            return $field;
+        };
+
+        $field = $createTemplate('{% if firstname and lastname %}{{ firstname }} {{ lastname }}{% endif %}');
+        $this->assertEquals('Admin Tester', $field->getUserValue($user));
+
+        // Hidden source fields must still be available to the template
+        ProfileField::updateAll(['visible' => 0], ['internal_name' => ['firstname', 'lastname']]);
+        $this->assertEquals('Admin Tester', ProfileField::findOne($field->id)->getUserValue($user));
+
+        // Empty source fields stay undefined, so a condition can detect them
+        $user->profile->lastname = '';
+        $this->assertEquals('', ProfileField::findOne($field->id)->getUserValue($user));
+    }
+
+    public function testTemplateFieldSandbox()
+    {
+        $user = User::findOne(['username' => 'Admin']);
+
+        $field = new ProfileField();
+        $field->load([
+            'profile_field_category_id' => 1,
+            'field_type_class' => Template::class,
+            'internal_name' => 'template_test',
+            'title' => 'Template test',
+            'sort_order' => 900,
+            'visible' => 1,
+        ], '');
+        $field->field_type_config = Json::encode(['template' => '{{ range(1, 3)|join(\', \') }}{% for c in firstname|split(\'\') %}{{ c|upper }}{% endfor %}']);
+        $this->assertTrue($field->save());
+        $this->assertEquals('1, 2, 3ADMIN', $field->getUserValue($user));
+
+        // Profile field values must stay HTML encoded
+        $field->field_type_config = Json::encode(['template' => '{{ firstname|raw }}']);
+        $this->assertTrue($field->save());
+        try {
+            ProfileField::findOne($field->id)->getUserValue($user);
+            $this->fail('The raw filter must not be allowed by default');
+        } catch (SecurityNotAllowedFilterError) {
+        }
+
+        $module = Yii::$app->getModule('user');
+        $allowedFilters = $module->profileFieldTemplateAllowedFilters;
+        $module->profileFieldTemplateAllowedFilters = ['raw'];
+        try {
+            $this->assertEquals('Admin', ProfileField::findOne($field->id)->getUserValue($user));
+        } finally {
+            $module->profileFieldTemplateAllowedFilters = $allowedFilters;
+        }
     }
 }

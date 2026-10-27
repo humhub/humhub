@@ -12,6 +12,7 @@ use humhub\components\console\WithoutModuleAutoload;
 use humhub\components\Module;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\services\ModuleDependencyService;
 use humhub\services\ModuleDiscoveryService;
 use humhub\services\ModuleService;
 use Yii;
@@ -230,6 +231,10 @@ class MarketplaceController extends Controller
 
     /**
      * Updates all modules to the latest available version.
+     *
+     * All packages are downloaded first and their module dependencies are checked against the
+     * versions installed once all updates are applied (see {@see planUpdates()}). Modules are then
+     * updated so that each one comes after the modules it depends on.
      */
     public function actionUpdateAll()
     {
@@ -245,7 +250,7 @@ class MarketplaceController extends Controller
             $this->stdout('Found ' . count($updates) . ' module(s) with available updates.' . PHP_EOL);
 
             $succeeded = 0;
-            foreach ($updates as $moduleId => $info) {
+            foreach ($this->planUpdates(array_keys($updates)) as $moduleId) {
                 $this->stdout(PHP_EOL . '── ' . $moduleId . ' ──' . PHP_EOL, Console::BOLD);
                 try {
                     $this->actionUpdate($moduleId);
@@ -285,6 +290,49 @@ class MarketplaceController extends Controller
         }
 
         return 0;
+    }
+
+    /**
+     * Downloads the given module updates and returns the ones to apply, in dependency order.
+     *
+     * An update is skipped when the module dependencies of its new version are not met, even
+     * after all other updates are applied. Skipping an update may in turn leave the dependencies
+     * of another one unmet, so the check repeats until no more updates are skipped.
+     *
+     * @param string[] $moduleIds
+     * @return string[]
+     */
+    private function planUpdates(array $moduleIds): array
+    {
+        $onlineModuleManager = $this->getMarketplaceModule()->onlineModuleManager;
+
+        $packages = [];
+        foreach ($moduleIds as $moduleId) {
+            try {
+                $packages[$moduleId] = $onlineModuleManager->getPackageModuleInfo($moduleId);
+            } catch (\Throwable $e) {
+                $this->error('Update of ' . $moduleId . ' failed: ' . $e->getMessage());
+            }
+        }
+
+        do {
+            $plannedVersions = array_filter(array_map(
+                static fn(array $moduleInfo) => $moduleInfo['version'] ?? null,
+                $packages,
+            ));
+
+            $skipped = false;
+            foreach ($packages as $moduleId => $moduleInfo) {
+                $unmetDependencies = (new ModuleDependencyService($moduleInfo, $plannedVersions))->getUnmetDependencies();
+                if ($unmetDependencies !== []) {
+                    $this->error('Update of ' . $moduleId . ' skipped: ' . implode(' ', $unmetDependencies));
+                    unset($packages[$moduleId]);
+                    $skipped = true;
+                }
+            }
+        } while ($skipped);
+
+        return ModuleDependencyService::sortByDependencies($packages);
     }
 
     /**

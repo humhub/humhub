@@ -69,7 +69,7 @@ class MailContentEntry extends \yii\base\Widget
 
             if (!$this->originator) {
                 $this->originator = $this->content instanceof ContentAddonActiveRecord
-                    ? $this->content->user
+                    ? $this->content->createdBy
                     : $this->content->content->createdBy;
             }
         }

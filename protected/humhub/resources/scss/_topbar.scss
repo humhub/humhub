@@ -220,7 +220,7 @@
             }
         }
 
-        a:not(.btn):not(.dropdown-item) {
+        a:not(.dropdown-menu a) {
             color: var(--hh-primary-contrast);
         }
 

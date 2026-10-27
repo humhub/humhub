@@ -93,4 +93,19 @@ class ResponseTest extends Unit
 
         $this->assertTrue($response->isCspReportingEnabled());
     }
+
+    /**
+     * Reports of a Report-Only policy go to their own URL, so they are logged as warnings
+     * even when the browser omits the disposition.
+     */
+    public function testReportOnlyPolicyReportsWithDisposition()
+    {
+        $headers = $this->prepared(Response::FORMAT_HTML, [
+            'Content-Security-Policy' => 'default-src *; report-uri ' . Response::REPORT_URI_PLACEHOLDER,
+            'Content-Security-Policy-Report-Only' => "script-src 'self'; report-uri " . Response::REPORT_URI_PLACEHOLDER,
+        ])->headers;
+
+        $this->assertStringNotContainsString('disposition', $headers->get('Content-Security-Policy'));
+        $this->assertStringContainsString('disposition=report', $headers->get('Content-Security-Policy-Report-Only'));
+    }
 }

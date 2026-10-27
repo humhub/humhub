@@ -77,8 +77,10 @@ jobs:
                   -e LDAP_TLS=false \
                   osixia/openldap:1.5.0 --copy-service
 
-            - uses: actions/checkout@v4
-            - uses: actions/setup-node@v4
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
 
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
@@ -95,7 +97,7 @@ jobs:
               run: composer validate
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                 path: ${{ env.COMPOSER_CACHE_DIR }}
                 key: php${{ matrix.php }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
@@ -109,7 +111,7 @@ jobs:
               run: npm install
 
             - name: Build production assets
-              run: grunt build-assets
+              run: npx grunt build-assets
 
             - name: Run migrations
               run: php protected/humhub/tests/codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
@@ -142,11 +144,11 @@ jobs:
               run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
 
             - name: Run test suite
-              run: grunt test -build -env=github
+              run: npx grunt test -build -env=github
 
             - name: Upload Codeception Output
               if: failure()
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               with:
                 name: codeception-output-php${{ matrix.php }}-${{ matrix.db.engine }}-${{ matrix.db.version }}
                 path: |

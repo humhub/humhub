@@ -30,6 +30,8 @@ This single list on every UserSource governs **three things**:
 2. **Attribute sync gate** — only listed auth clients may push attributes into the user via `updateUser()`. Empty list = no sync gating, all login-allowed clients can sync.
 3. **`createUser` dispatch** — when an unknown user logs in via auth client `Y`, the UserSource collection is iterated; the first source with a non-empty list containing `Y` claims the user. If no source claims it, `LocalUserSource` is the implicit fallback.
 
+The `Password` client (ID `local`) is the exception to 3.: it always belongs to `LocalUserSource`. Listing `local` on another source only allows that source's users to log in with their local password (`user_password`); it never makes the source claim new users or count as a "trusted" provider.
+
 ## Examples
 
 ### Default install
@@ -65,6 +67,22 @@ What happens:
 - A user logs in via `saml` for the first time. `LocalUserSource` claims them (because `'saml'` is in its allow list). They get `user_source = 'local'`.
 - On every subsequent SAML login, `BaseUserSource::updateUser()` writes the listed `managedAttributes` from the SAML assertion into `User` and `Profile`. Other fields stay user-editable.
 - The same user could also log in via Password — also allowed, also doesn't sync (because Password provides no attributes).
+
+### Users of a module source logging in with their password
+
+```php
+// e.g. a source registered by a module via UserSourceCollection::EVENT_BEFORE_USER_SOURCES_SET
+'hr' => [
+    'class' => GenericUserSource::class,
+    'allowedAuthClientIds' => ['local'],
+    'managedAttributes' => ['email', 'firstname', 'lastname'],
+],
+```
+
+What happens:
+- Users with `user_source = 'hr'` log in via the login form with their local password; changing and recovering the password works as for local users.
+- OAuth/SAML clients are not allowed for them, since only `local` is listed.
+- New users signing up with a password still become local users.
 
 ### Form-based self-registration with approval, but SAML bypasses it
 

@@ -604,7 +604,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     {
         if ($insert) {
             if (empty($this->user_source)) {
-                $this->user_source = (new PasswordAuth())->getId();
+                $this->user_source = PasswordAuth::ID;
             }
 
             if (AuthHelper::isGuestAccessEnabled()) {

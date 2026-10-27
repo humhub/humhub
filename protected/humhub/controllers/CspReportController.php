@@ -10,6 +10,7 @@ namespace humhub\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\components\CspReport;
 use humhub\components\Response;
 use Yii;
 
@@ -53,17 +54,10 @@ class CspReportController extends Controller
             return;
         }
 
-        $report = json_decode(file_get_contents('php://input'));
+        $request = Yii::$app->request;
 
-        if ($report === null) {
-            return;
+        foreach (CspReport::parse($request->getRawBody(), $request->get('disposition') === 'report') as $report) {
+            $report->log();
         }
-
-        $report = json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-
-        // The report quotes the policy, and with it the nonce of the reporting session.
-        $report = preg_replace('/\'nonce-[^\']*\'/', "'nonce-xxxxxxxxxxxxxxxxxxxxxxxx'", $report);
-
-        Yii::error($report, 'web.security');
     }
 }

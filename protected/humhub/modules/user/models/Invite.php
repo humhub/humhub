@@ -124,10 +124,27 @@ class Invite extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert && $this->token == '') {
-            $this->token = Yii::$app->security->generateRandomString(self::EMAIL_TOKEN_LENGTH);
+            $this->token = static::generateToken(self::EMAIL_TOKEN_LENGTH);
         }
 
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * Generates a random token which doesn't end with "-" or "_",
+     * because such a trailing character is often cut off when a link is auto-detected in texts.
+     *
+     * @param int $length
+     * @return string
+     * @since 1.19.3
+     */
+    public static function generateToken(int $length): string
+    {
+        do {
+            $token = Yii::$app->security->generateRandomString($length);
+        } while (!ctype_alnum(substr($token, -1)));
+
+        return $token;
     }
 
     public function selfInvite()

@@ -10,11 +10,11 @@ namespace humhub\modules\user\components;
 
 use Exception;
 use Yii;
+use yii\db\Expression;
 use yii\web\DbSession;
 use yii\web\ErrorHandler;
 use yii\web\Request;
 use yii\db\Query;
-use yii\db\Expression;
 
 /**
  * @inheritdoc
@@ -99,20 +99,16 @@ class Session extends DbSession
                 $fields['user_agent'] = $this->getUserAgent();
             }
 
-            if ($row === false) {
-                $this->db->createCommand()
-                    ->insert($this->sessionTable, array_merge(['id' => $id], $fields))
-                    ->execute();
-            } else {
-                $this->db->createCommand()
-                    ->update($this->sessionTable, $fields, ['id' => $id])
-                    ->execute();
-            }
+            // Atomic INSERT ... ON DUPLICATE KEY UPDATE: concurrent requests with the same (new or expired)
+            // session ID must not fail with a duplicate key error, as an INSERT after the SELECT above would.
+            $this->db->createCommand()
+                ->upsert($this->sessionTable, array_merge(['id' => $id], $fields), $fields)
+                ->execute();
         } catch (Exception $e) {
-            $exception = ErrorHandler::convertExceptionToString($e);
-            // its too late to use Yii logging here
-            error_log($exception);
-            echo $exception;
+            // A session write handler must not produce output, as it may run mid-request (e.g. session_regenerate_id()).
+            // Also log to the PHP error log, as the Yii log targets may fail as well (e.g. DbTarget).
+            Yii::error($e, 'user');
+            error_log(ErrorHandler::convertExceptionToString($e));
 
             return false;
         }

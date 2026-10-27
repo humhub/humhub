@@ -291,6 +291,7 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
     - `Space|User::getProfileImage()` => `Space|User::getImage()` / `$container->image` (returns `AssetImage`); `getProfileImage()` itself remains as a deprecated shim returning `humhub\libs\ProfileImage`
     - `Space|User::getProfileBannerImage()` => `Space|User::getBannerImage()` / `$container->bannerImage` — **removed without a shim**: `getProfileBannerImage()`, the `profileBannerImage` property and the `humhub\libs\ProfileBannerImage` class no longer exist; modules using them fatal until migrated
     - `SiteLogo|SiteIcon|LoginBackground|MailHeader::getUrl()` => `Yii::$app->img->logo|icon|loginBackground|mailHeader->getUrl()`
+  - Since 1.19.1, an **absolute** URL (`$image->getUrl($options, true)`) is a permanent URL to the `asset-image` controller instead of the published copy: the controller republishes the variant if needed and redirects to it, so the links in emails or Open Graph tags survive a cache flush (#8594). Request absolute URLs only where the image leaves the platform — a page rendering its images with absolute URLs turns every image load into a PHP request. For a direct absolute URL of the published copy (e.g. in API responses) use `Url::to($image->getUrl(), true)`.
 - `AssetManager::forcePublish()` removed
 - Removed `@filestore` Alias
 - Removed `AssetManager::$preventDefer` option
@@ -397,3 +398,43 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
   browsers ignore or punish (Chrome's quiet UI / automatic block) and browser security extensions
   flag as excessive notification requests. A module that still relied on `window.notify` must ship
   the library itself; permission requests must only be made from a user gesture.
+- Password login is governed by the user source (#8605, 1.19.1). The `Password` auth client
+  (ID `local`) now finds users of **any** user source whose `allowedAuthClientIds` lists `local`
+  (or is empty), provided the user has a password (`user_password` row); before, it only found users
+  with `user_source = 'local'`. Consequently `UserSourceCollection::findUserSourceForAuthClient('local')`
+  always returns `LocalUserSource` and `UserSourceCollection::isAuthClientClaimed('local')` is always
+  `false`: listing `local` on a source only allows its users to log in with their password, it never
+  makes the source claim password sign-ups or count as a trusted provider for
+  `AuthClientService::allowSelfRegistration()`. The client is identified by the new constant
+  `humhub\modules\user\authclient\Password::ID`. Form-based auth clients may override the new
+  `BaseFormClient::findUserByLogin(string $login): ?User` hook to change how the submitted login
+  (username or email) is resolved; the default keeps the `user_source = <client ID>` filter.
+
+- **Since 1.19.1, module dependencies declared in `module.json` are checked.** A module lists the
+  modules it needs under `humhub.modules`, optionally with a minimum version — the format some
+  modules already used:
+
+  ```json
+  "humhub": {
+      "minVersion": "1.19.1",
+      "modules": {
+          "clean-theme": { "minVersion": "2.5.1" }
+      }
+  }
+  ```
+
+  Installing, updating (marketplace and `module/install`, `module/update`) and enabling a module
+  fails while a dependency is not installed and enabled, or installed in a lower version. New:
+  `humhub\services\ModuleDependencyService`. The check reads only metadata, no module class is
+  loaded, so it also works in the `module/*` console commands, which load no third-party modules
+  since 1.19 (`#[WithoutModuleAutoload]`) — there `Yii::$app->getModule()` in a `requirements.php`
+  returns `null` for every third-party module. `module/update-all` downloads all packages first,
+  checks their dependencies against the versions installed once all updates are applied, skips
+  the updates whose dependencies stay unmet and updates dependencies first.
+  - **Recommended:** move dependency checks from `requirements.php` (`Yii::$app->getModule('x')?->isEnabled`,
+    `version_compare(...->getVersion(), ...)`) to `humhub.modules` and keep `requirements.php`
+    for anything else. Until then, the declared dependencies are registered before
+    `requirements.php` is evaluated, so such a check also works in the console commands — a
+    dependency that is not declared is not.
+  - Modules that already declare `humhub.modules` get it enforced; make sure every listed module
+    is really required.

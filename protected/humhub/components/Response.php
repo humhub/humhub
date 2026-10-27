@@ -30,7 +30,9 @@ class Response extends \yii\web\Response
     public const NONCE_PLACEHOLDER = '{{ nonce }}';
 
     /**
-     * Placeholder replaced with the URL of {@see CspReportController}.
+     * Placeholder replaced with the URL of {@see CspReportController}. In a
+     * `Content-Security-Policy-Report-Only` header the URL carries `disposition=report`, so its
+     * reports are logged as warnings even when the browser omits the disposition.
      */
     public const REPORT_URI_PLACEHOLDER = '{{ reportUri }}';
 
@@ -131,11 +133,11 @@ class Response extends \yii\web\Response
             }
 
             // setDefault, so an action that set the header itself keeps its own value.
-            $this->headers->setDefault($name, $this->replacePlaceholders($value));
+            $this->headers->setDefault($name, $this->replacePlaceholders($value, strcasecmp($name, 'Content-Security-Policy-Report-Only') === 0));
         }
     }
 
-    private function replacePlaceholders(string $value): string
+    private function replacePlaceholders(string $value, bool $reportOnly = false): string
     {
         if (str_contains($value, self::NONCE_PLACEHOLDER)) {
             $nonce = $this->getNonce();
@@ -143,7 +145,8 @@ class Response extends \yii\web\Response
         }
 
         if (str_contains($value, self::REPORT_URI_PLACEHOLDER)) {
-            $value = str_replace(self::REPORT_URI_PLACEHOLDER, Url::to([CspReportController::ROUTE], true), $value);
+            $route = $reportOnly ? [CspReportController::ROUTE, 'disposition' => 'report'] : [CspReportController::ROUTE];
+            $value = str_replace(self::REPORT_URI_PLACEHOLDER, Url::to($route, true), $value);
         }
 
         return $value;

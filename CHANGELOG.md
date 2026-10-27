@@ -70,12 +70,35 @@ HumHub Changelog
 - Enh #8403: The control links of the content menu (`EditLink`, `DeleteLink`, `PermaLink`, … and `ContentTopicButton`) are `MenuLink`s instead of widgets and describe themselves to the `/api/v2/content/<id>/controls` endpoint; `WallEntryControlLink` is deprecated, `DescribableWidget` removed
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 
-1.19.1 (Unreleased)
+1.19.3 (Unreleased)
 -------------------
+
+- Fix #8646: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
+- Fix #8648: Invite tokens (link and email) could end with `-` or `_`, which is often cut off when the link is auto-detected in texts
+- Fix #8647: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
+- Fix #8652: Concurrent requests with the same new or expired session ID (e.g. several AJAX requests after the session expired) failed with "Duplicate entry" in `user_http_session`
+- Fix #8654: Activity types excluded from e-mail summaries reappeared after the update to 1.19 (renamed activity classes were not migrated in settings)
+- Fix #8656: A failing daily or hourly cron handler caused the whole run to repeat on every cron tick (e.g. daily summary e-mail spam); run times are now stored before the handlers run; Exceptions of cron handlers are now logged (category `cron`)
+
+1.19.2 (October 26, 2026)
+-------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
+- Enh #8644: "Template" profile fields allow more Twig features (e.g. `for`, `set`, `join`, `split`, `date`, `range`), configurable via `'user' => ['profileFieldTemplateAllowedTags' | 'profileFieldTemplateAllowedFilters' | 'profileFieldTemplateAllowedFunctions' => [...]]`
+- Fix #8641: "New like" emails for a liked comment were not sent ("Getting unknown property: Comment::user" in `MailContentEntry`)
+- Fix #8642: `ItemDrop::save()` always failed (call to the undefined `moveItemIndex()`, undeclared `$id`, broken sort order access, transaction left open when the index did not change); `ProfileHeader` crashed when no `user` was given instead of detecting the profile user from the controller
+- Fix #8636: A failed session write printed the database exception into the response, so a login by the "remember me" cookie failed with "headers already sent" and HTTP 500; the exception is now logged (Yii and PHP error log) instead
+- Fix #8622: Console `module/update`, `module/update-all`, `module/install` and `module/enable` failed the `requirements.php` check of modules depending on another module (e.g. "You must first install and enable the Clean Theme module." for Clean Theme Pro), as other modules are not loaded in these commands since 1.19.0. Module dependencies declared in `module.json` (`humhub.modules`, optionally with a `minVersion`) are now checked from metadata only when a module is installed, updated or enabled (new `ModuleDependencyService`), and registered before `requirements.php` is evaluated; `module/update-all` checks them against the versions installed after all updates, skips updates whose dependencies stay unmet and updates dependencies first
 - Enh #8614: People cards: Twig template for additional card details via `'user' => ['peopleCardDetailsTemplate' => ...]` (one HTML block with the profile fields as variables, e.g. with links and `<br>`), shown below the selected "Information 1-3" fields
+- Enh #8612: Optional `Content-Security-Policy-Report-Only` header (`web.enableCspReportOnly`) to test a stricter policy; violations are logged as warnings, also reports from guests
+- Fix #8607: The two-step login picked a random user when the entered login was one user's username and another user's email
+- Fix #8594: Images in emails already sent (mail header, logo, profile images) broke whenever the published assets were removed, e.g. by the cache flush after every update; absolute `AssetImage` URLs now point to a controller that republishes the image and redirects to it
+- Fix #8605: Users of a user source other than "local" could not log in with their password although their source allowed the Password client; a source allowing it also blocked the password login of local users
 - Fix #8602: Flaky acceptance test logins when the sign-in form pre-filled a username left by an earlier test
 - Enh #8596: Added a `Forward next` CI workflow that merges `develop` into `next` once a day or when started manually (fast-forward or merge commit, fails on a conflict)
 - Fix #8591: Dropdown items in the top bar notification area (e.g. added by modules) had the top bar text color instead of the dropdown text color
+- Fix #8617: Posting from a content form in a modal (e.g. sharing files from the mobile app) failed with "Cannot read properties of undefined (reading 'find')"
 - Enh #8584: `HForm` fields of type `multiselectdropdown` accept `lockedItems` to prevent removing certain selected items
 - Fix #8583: File links opened directly (e.g. a copied link or a link posted as text) showed a modal without layout that could not be closed; the file modal now opens on top of the content page
 - Fix #8581: Attached videos opened in the gallery showed an error icon instead of playing
@@ -87,6 +110,18 @@ HumHub Changelog
 - Fix #8586: Like notifications redirected to the Dashboard instead of the liked content; likes on comments now link to the comment itself
 - Fix #8590: Fix hidden upload button on empty image containers on the Design settings form
 - Fix #8600: AssetManager base URL alias (`@web/assets`) was not resolved, breaking URLs built from an asset bundle's `baseUrl` (e.g. PDF Viewer)
+- Fix #8604: The PWA manifest (`/manifest.json`) was redirected to the page of an open user gate (e.g. the 2FA check or a forced password change) and could set it as the return URL; `web/pwa-manifest` is now an infrastructure route that no gate intercepts
+- Fix #8606: Installer pages are marked `noindex`; an already installed instance answers `/installer` with 404 instead of a logged 500 error
+- Fix #8609: Topic sidebar counted deleted, archived, hidden, draft and scheduled content, so a topic stayed listed although filtering by it showed no matches
+- Enh #8613: The `Template` profile field ignored source fields hidden from the profile (Visible off) and rendered them empty; hidden fields are now available as variables; Source fields with the value `0` are no longer treated as empty
+- Fix #8618: Pending registrations page crashed on PHP 8.5 (null used as array key)
+- Fix #8621: Mail summary job failed with a TypeError when a space limit mode setting was stored as a string
+- Fix #8623: Secrets from `.env` (e.g. `HUMHUB_CONFIG__*` passwords, keys, tokens, DSNs) were written in plain text to `app.log` and the `logging` table via the `$_SERVER` dump; values are now masked by key name (PASS, SECRET, KEY, TOKEN, DSN, AUTH, COOKIE, ...)
+- Fix #8624: Stored XSS via the user display name in the friendship confirmation dialog
+- Fix #8627: The full-size profile image overlay now closes on the browser Back button instead of staying open over the previous page
+- Fix #8638: The default Content-Security-Policy blocked fonts embedded as `data:` URIs (e.g. the icon font of the Calendar module), which logged a violation in the browser console; `data:` is now allowed in `font-src`
+- Fix #8639: Dates containing non-ASCII characters (e.g. the `fa-IR` and `ar` locales) were rejected as invalid on PHP 8.4+, because `IntlDateFormatter::parse()` now returns the position in bytes while Yii compares it with the character count
+- Fix #8643: Permission states fixed for a group (e.g. "Manage content" for registered users) could be changed by a manually crafted request to the permission settings
 
 1.19.0 (October 12, 2026)
 -------------------------

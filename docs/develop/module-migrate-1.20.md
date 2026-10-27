@@ -202,6 +202,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `humhub\modules\web\security\helpers\CSPBuilder` | - (the policy is configured as a plain header string) |
   | `humhub\modules\web\security\models\SecuritySettings` | `humhub\components\Response::$defaultHeaders` |
   | `humhub\modules\web\security\controllers\ReportController` | `humhub\controllers\CspReportController` |
+  | `humhub\modules\web\security\helpers\CspReport` | `humhub\components\CspReport` |
   | Route `web/security-report` | `csp-report/index` |
   | `Security::CSP_VIOLATION_RELOAD_INTERVAL` | - |
   | i18n category `WebModule.base` | - |
@@ -242,7 +243,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     points at the endpoint through `{{ reportUri }}`.
 
     To send a policy in report-only mode, add `Content-Security-Policy-Report-Only` to the same
-    map; both header names are treated alike.
+    map; both header names are treated alike. This replaces `web.enableCspReportOnly` and
+    `web.cspReportOnly` of 1.19.2. In that header `{{ reportUri }}` carries `disposition=report`,
+    so its violations are logged as warnings, enforced ones as errors. The `{{ reporting }}`
+    placeholder of 1.19.2 is gone; use `report-uri {{ reportUri }}`.
 
   - **The policy now reaches every HTML response.** It used to be applied on
     `Controller::EVENT_BEFORE_ACTION` for non-AJAX requests, with an `instanceof` exclusion list,

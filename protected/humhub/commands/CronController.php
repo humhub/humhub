@@ -10,6 +10,7 @@ namespace humhub\commands;
 
 use DateTime;
 use humhub\libs\SelfTest;
+use Throwable;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
@@ -109,8 +110,15 @@ class CronController extends Controller
             }
         }
 
-        $this->trigger(self::EVENT_ON_HOURLY_RUN);
+        // Store the run time first: if a handler crashes, the run must not be repeated on every cron tick
         Yii::$app->settings->set('cronLastHourlyRun', time());
+
+        try {
+            $this->trigger(self::EVENT_ON_HOURLY_RUN);
+        } catch (Throwable $e) {
+            Yii::error('Hourly cron failed: ' . $e, 'cron');
+            $this->stderr('Hourly cron failed: ' . $e->getMessage() . "\n", Console::FG_RED);
+        }
     }
 
     /**
@@ -137,7 +145,14 @@ class CronController extends Controller
             }
         }
 
-        $this->trigger(self::EVENT_ON_DAILY_RUN);
+        // Store the run time first: if a handler crashes, the run must not be repeated on every cron tick
         Yii::$app->settings->set('cronLastDailyRun', time());
+
+        try {
+            $this->trigger(self::EVENT_ON_DAILY_RUN);
+        } catch (Throwable $e) {
+            Yii::error('Daily cron failed: ' . $e, 'cron');
+            $this->stderr('Daily cron failed: ' . $e->getMessage() . "\n", Console::FG_RED);
+        }
     }
 }

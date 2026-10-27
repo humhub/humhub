@@ -14,6 +14,7 @@ use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\like\models\Like;
+use Yii;
 
 class LikeTest extends HumHubDbTestCase
 {
@@ -107,6 +108,28 @@ class LikeTest extends HumHubDbTestCase
         $this->assertStringContainsString('Liked comment', NotificationManager::load($record)->asWeb());
         // links to the comment itself, not only to the post
         $this->assertSame($comment->getUrl(true), NotificationManager::load($record)->getUrl(true));
+    }
+
+    public function testNotificationMailOfCommentLike()
+    {
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'Test post']);
+        $post->silentContentCreation = true;
+        $post->content->setContainer(Space::findOne(['id' => 3]));
+        $this->assertTrue($post->save());
+
+        $this->becomeUser('User1');
+        $comment = new Comment(['message' => 'Test comment', 'content_id' => $post->content->id]);
+        $this->assertTrue($comment->save());
+
+        Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 2]))->set('notification.like_email', 1);
+
+        $this->becomeUser('User2');
+        $this->assertTrue((new LikeService($comment))->like());
+
+        $this->assertEqualsLastEmailTo('user1@example.com');
+        $this->assertEqualsLastEmailSubject('Sara Tester likes your comment "Test comment".');
     }
 
     public function testDeleteLikesOnContentHardDelete()

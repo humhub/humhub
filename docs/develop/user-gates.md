@@ -188,7 +188,7 @@ Gates are enforced by a single `ActionFilter` on `humhub\components\Controller`,
 
 - console requests, installer state, guests (per gate via `isOpen()`)
 - request classification (see below)
-- infrastructure routes every page depends on to render (`i18n/translations`, routes
+- infrastructure routes every page depends on to render (`i18n/translations`, `pwa/manifest`, routes
   declared via `GateManager::registerInfrastructureRoute()`) — they are never intercepted
   by any gate, since a gate's own page requests them too and would otherwise reload itself
   in an endless loop or render without its stylesheet
