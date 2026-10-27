@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #8648: Invite tokens (link and email) could end with `-` or `_`, which is often cut off when the link is auto-detected in texts
 - Fix #8647: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
 - Fix #8652: Concurrent requests with the same new or expired session ID (e.g. several AJAX requests after the session expired) failed with "Duplicate entry" in `user_http_session`
+- Fix #8656: A failing daily or hourly cron handler caused the whole run to repeat on every cron tick (e.g. daily summary e-mail spam); run times are now stored before the handlers run; Exceptions of cron handlers are now logged (category `cron`)
 
 1.19.2 (October 26, 2026)
 -------------------------
