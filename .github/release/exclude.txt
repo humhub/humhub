@@ -1,0 +1,40 @@
+# Files and directories excluded from release packages (rsync --exclude-from format).
+# A leading "/" anchors the pattern to the repository root.
+# Check this list whenever files outside protected/humhub are added, moved or removed,
+# see docs/develop/internals-release-package.md
+/.git
+/.github/
+/.idea/
+/.travis/
+/node_modules/
+/.codeclimate.yml
+/.editorconfig
+/.env
+/.gitattributes
+.gitignore
+/.php-cs-fixer.cache
+/.php-cs-fixer.php
+/.php_cs.dist
+/.phpcs.xml.dist
+/phpcs.xml.dist
+/.travis.yml
+/rector.php
+/recor.php
+/CHANGELOG.md
+/CHANGELOG_DEV.md
+/CHANGELOG-BS5.md
+/CLAUDE.md
+/CONTRIBUTING.md
+/MIGRATE-DEV.md
+/MIGRATE-BS5.md
+/SECURITY.md
+/Gruntfile.js
+/composer.json
+/composer.lock
+/package.json
+/package-lock.json
+/vitest.config.mjs
+/vue.build.mjs
+/index-test.php
+/public/index-test.php
+/protected/vendor/codeception/codeception/tests/
