@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #8652: Concurrent requests with the same new or expired session ID (e.g. several AJAX requests after the session expired) failed with "Duplicate entry" in `user_http_session`
 - Fix #8654: Activity types excluded from e-mail summaries reappeared after the update to 1.19 (renamed activity classes were not migrated in settings)
 - Fix #8656: A failing daily or hourly cron handler caused the whole run to repeat on every cron tick (e.g. daily summary e-mail spam); run times are now stored before the handlers run; Exceptions of cron handlers are now logged (category `cron`)
+- Fix #8657: A user gate page (e.g. `/twofa/check`) opened by a guest was stored as the return URL and caused an endless redirect loop after login
 
 1.19.2 (October 26, 2026)
 -------------------------

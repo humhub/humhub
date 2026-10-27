@@ -259,6 +259,54 @@ class User extends \yii\web\User
 
     /**
      * @inheritdoc
+     *
+     * The own flow page of a registered user gate (e.g. `/twofa/check`) is never stored as the
+     * return URL: the gate page redirects to the return URL once the gate is closed, which would
+     * be the gate page itself (endless redirect loop). A previously stored return URL is dropped
+     * as well, so the user lands on the home page after login.
+     *
+     * @since 1.19.3
+     */
+    public function setReturnUrl($url)
+    {
+        if ($this->isGateUrl($url)) {
+            Yii::$app->getSession()->remove($this->returnUrlParam);
+            return;
+        }
+
+        parent::setReturnUrl($url);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * Ignores the stored return URL if it points to a user gate page, e.g. in sessions that
+     * stored it before [[setReturnUrl()]] filtered it, and falls back to `$defaultUrl` or the home URL.
+     *
+     * @since 1.19.3
+     */
+    public function getReturnUrl($defaultUrl = null)
+    {
+        $url = parent::getReturnUrl($defaultUrl);
+
+        if (!$this->isGateUrl($url)) {
+            return $url;
+        }
+
+        return ($defaultUrl !== null && !$this->isGateUrl($defaultUrl))
+            ? Url::to($defaultUrl)
+            : Yii::$app->getHomeUrl();
+    }
+
+    private function isGateUrl($url): bool
+    {
+        return (is_string($url) || is_array($url))
+            && Yii::$app->has('gateManager')
+            && Yii::$app->gateManager->isGateUrl($url);
+    }
+
+    /**
+     * @inheritdoc
      */
     public function loginRequired($checkAjax = true, $checkAcceptHeader = true)
     {
