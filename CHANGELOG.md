@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.19.4 (Unreleased)
+-------------------
+
+- Fix #8663: `module/remove` did nothing for an enabled module whose files are missing (e.g. no compatible version to reinstall); its enabled flag is now removed from the database
+
 1.19.3 (October 27, 2026)
 -------------------------
 

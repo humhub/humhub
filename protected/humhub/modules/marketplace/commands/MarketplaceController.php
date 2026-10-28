@@ -165,6 +165,15 @@ class MarketplaceController extends Controller
         $module = $this->loadModule($moduleId);
 
         if ($module === null) {
+            // Module files are missing, but the module may still be marked as enabled
+            // (e.g. it can't be reinstalled because no compatible version exists anymore).
+            $moduleEnabled = ModuleEnabled::findOne(['module_id' => $moduleId]);
+            if ($moduleEnabled !== null) {
+                $moduleEnabled->delete();
+                $this->warn('Module ' . $moduleId . ' is not installed, removed its enabled flag from the database.');
+                return 0;
+            }
+
             $this->error('Module ' . $moduleId . ' is not installed.');
             return 1;
         }
