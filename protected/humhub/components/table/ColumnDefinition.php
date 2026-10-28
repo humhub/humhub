@@ -14,7 +14,8 @@ use Closure;
  * A column of a {@see DataTable}: what the `DataTable` Vue component shows in it and how — see
  * docs/ui/data-table.md, "Column types".
  *
- * - `main`: image, linked name and subtitle; always visible
+ * - `main`: image (`image`, or an `icon` — a Tabler name — or the `initials`, on the `color`),
+ *   linked name and subtitle; always visible
  * - `chip`: one or several neutral badges (`[{text, value}]`), each a button setting the column's
  *   `filter` when it has one; or a status badge (`{text, tone}`)
  * - `number`, `date`, `text`: one value (`{text}`, a tooltip `title`; a date also `value`)

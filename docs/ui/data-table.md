@@ -42,7 +42,7 @@ accent fill. Nothing ever scrolls sideways (see [Mobile](#mobile)).
 
 | Type | Shows | Sortable | Filter | Typical mobile priority |
 |---|---|---|---|---|
-| **Main** | Image (avatar, space image) or glyph, linked name, subtitle | yes | search | always visible |
+| **Main** | Image (avatar, space image), icon (e.g. an app's, on its colour) or initials, linked name, subtitle | yes | search | always visible |
 | **Chip · status** | Uppercase chip whose tone comes with the value: success (Enabled), warning (Pending), danger (Blocked), info (Update available), neutral (Disabled) | yes | select | 1 |
 | **Chip · category** | Neutral chip (group, source, type). When its column has a select filter, the chip is a button that sets that filter, and pressing it again clears it. | yes | select | 2–3 |
 | **Number** | Tabular figures. A number may open a dialog, e.g. a space's member count opens the member list. | yes | — | 1–3 |
@@ -236,7 +236,7 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.card.content-card.data-table`, `.card-header`, `.card-header-actions`, `.card-body`, `.card-footer` | The [Content Card](card.md) |
 | `.table.table-hover` | The table; rows without dividers, a hover fill |
 | `.data-table-col-<type>` | A column's cells (`main`, `chip`, `date`, `number`, `text`, `details`, `actions`); all but the main column as narrow as their content |
-| `.data-table-main`, `-main-image`, `-main-initials`, `-main-text`, `-main-name`, `-main-subtitle` | The main cell (the row's header, `th scope="row"`) |
+| `.data-table-main`, `-main-image`, `-main-icon`, `-main-initials`, `-main-text`, `-main-name`, `-main-subtitle` | The main cell (the row's header, `th scope="row"`); without an image, an icon (a Tabler name, e.g. an app's) or the initials |
 | `.data-table-sort` (`.active`) | A sortable column's header button; `aria-sort` on the `<th>` |
 | `.data-table-chips` | The badges of a chip cell (a plain `.badge`, a tone as `.badge-<tone>`); with a column filter each is a `<button>` |
 | `.data-table-row-link`, `.data-table-row-toggle` | A row opening its record on click; a row without one toggling its details (with folded columns) |
@@ -248,7 +248,7 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.data-table-bulk`, `.data-table-bulk-toggle` | The selection menu ("2 ⋮") in place of the header's ⋮ |
 
 - **File:** `_data-table.scss`, behind `$prev-data-table`.
-- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-main-initials-bg|color|font-size`, `$data-table-hover-bg`,
+- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-main-initials-bg|color|font-size`, `$data-table-main-icon-bg|color|font-size`, `$data-table-hover-bg`,
   `$data-table-head-color`, `$data-table-head-font-size`; the rest is Bootstrap's `.table`,
   `.pagination` and `.form-select`.
 

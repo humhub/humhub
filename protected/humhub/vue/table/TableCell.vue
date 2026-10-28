@@ -2,6 +2,13 @@
     <div v-if="column.type === 'main'" class="data-table-main">
         <img v-if="cell.image" :src="cell.image" class="data-table-main-image" alt="" aria-hidden="true">
         <span
+            v-else-if="cell.icon"
+            class="data-table-main-image data-table-main-icon"
+            :class="{ 'has-color': !!cell.color }"
+            :style="cell.color ? { backgroundColor: cell.color } : null"
+            aria-hidden="true"
+        ><i :class="'ti ti-' + cell.icon"></i></span>
+        <span
             v-else-if="cell.initials"
             class="data-table-main-image data-table-main-initials"
             :style="cell.color ? { backgroundColor: cell.color } : null"
@@ -36,7 +43,7 @@ import { i18n } from '@humhub/vue';
 
 /**
  * One cell of a `DataTable` (internal, see `DataTable.vue`), rendered by its column's type: the
- * main column's image (or the initials on a coloured tile), linked name and subtitle, the badges of a chip column (buttons setting the
+ * main column's image (or a Tabler icon or the initials on a coloured tile), linked name and subtitle, the badges of a chip column (buttons setting the
  * column's filter when it has one), a date with its full date and time as tooltip, or a text.
  *
  * @since 1.20
