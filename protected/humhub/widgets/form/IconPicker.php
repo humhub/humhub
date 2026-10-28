@@ -64,16 +64,10 @@ class IconPicker extends Select2
             $this->value = TablerIconProvider::resolveLegacyName($this->value);
         }
 
-        return parent::run();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function renderInput()
-    {
+        // Before Select2 registers its plugin options, which carry the Tabler names
         $this->populateIconList();
-        parent::renderInput();
+
+        return parent::run();
     }
 
     /**
