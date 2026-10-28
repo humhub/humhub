@@ -36,16 +36,18 @@ class PeopleBrowser extends VueWidget
 {
     /**
      * @var array the classes of the card's buttons — the `FriendshipButton` (`friendClass` of
-     * "add friend", `friendStateClass` of the states that follow — pending, received request,
-     * friends —, `friendTogglerClass` and `friendGroupClass` of the received request's dropdown),
+     * "add friend", `friendStateClass` of the states that follow — received request, friends —,
+     * `friendPendingClass` of the sent request, `friendTogglerClass` and `friendGroupClass` of
+     * the received request's dropdown),
      * the `UserFollowButton` (`followClass`, `followingClass`) and the disabled placeholder shown
      * while the states load (`placeholderClass`). The defaults are the design system's people
-     * card: Add friend primary, Follow accent, the states light. A theme may change them before
+     * card: Add friend primary, Follow accent, Pending ghost, the other states light. A theme may change them before
      * the widget runs.
      */
     public array $buttonClasses = [
         'friendClass' => 'btn btn-primary',
         'friendStateClass' => 'btn btn-light',
+        'friendPendingClass' => 'btn btn-ghost',
         'friendTogglerClass' => 'btn btn-light',
         'friendGroupClass' => 'btn-group',
         'followClass' => 'btn btn-accent',
@@ -87,6 +89,7 @@ class PeopleBrowser extends VueWidget
                 'check' => Icon::get('check')->asString(),
                 'plus' => Icon::get('plus')->asString(),
                 'clock' => Icon::get('clock')->asString(),
+                'hourglass' => Icon::get('hourglass')->asString(),
                 'times' => Icon::get('x')->asString(),
             ],
         ];

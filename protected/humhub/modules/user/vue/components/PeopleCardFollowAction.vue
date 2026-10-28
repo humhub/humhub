@@ -1,6 +1,6 @@
 <template>
     <UserFollowButton
-        v-if="followEnabled || state.isFollowing"
+        v-if="!friendshipEnabled && (followEnabled || state.isFollowing)"
         class="entity-card-action"
         :user-id="user.id"
         :user-name="user.displayName"
@@ -20,7 +20,8 @@ import UserFollowButton from '../UserFollowButton.vue';
  * the `user.card-actions` slot (registered in `vue/index.js`): the `UserFollowButton`, fed from
  * the card's state without a request of its own. Rendered while following is enabled, and
  * while the viewer follows the user after following was disabled, so that follow can still be
- * ended.
+ * ended — but never beside the friendship action: while the friendship system is on, the
+ * card offers friendship only.
  *
  * Receives the `user.card-actions` context (see `PeopleCard`) and emits `follow-change` with
  * the button's `change` payload — the context's `onFollowChange`.
@@ -39,6 +40,7 @@ export default {
         buttons: { type: Object, default: () => ({}) },
         icons: { type: Object, default: () => ({}) },
         followEnabled: { type: Boolean, default: false },
+        friendshipEnabled: { type: Boolean, default: false },
     },
     emits: ['follow-change'],
     computed: {

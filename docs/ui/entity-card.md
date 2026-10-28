@@ -28,7 +28,7 @@ install) directly on the card.
 
 | Variant | Cover | Subtitle | Body | Footer |
 |---|---|---|---|---|
-| **People** | Profile banner, avatar with online ring, friends or followers pill | Job title | Admin-chosen profile fields, optional details template | Friendship (Add friend / Pending / Friends), Follow; modules add e.g. Send message |
+| **People** | Profile banner, avatar with online ring, friends or followers pill | Job title | Admin-chosen profile fields, optional details template | Friendship (Add friend / Pending / Friends), or Follow while the friendship system is off; modules add e.g. Send message |
 | **Space** | Space banner, space image, followers and members pill | Via extension slot (Enterprise theme: category) | Description; "Archived" note for archived spaces | Membership (Join / Pending / Member), Follow |
 | **Module** | No banner: module icon, badges | Version | Description, error message | Install / Buy / Update / Learn more, or a disabled "Installed" / "Not compatible"; ghost icon to the changelog or marketplace page |
 

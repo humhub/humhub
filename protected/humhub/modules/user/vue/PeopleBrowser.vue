@@ -43,8 +43,8 @@ const STATE_FRIENDS = 'friends';
  * `EntityBrowser` titled "People", fed by `GET /api/v2/user?purpose=directory` (the platform's
  * user search, see `UserList`), with the page header actions (`PeopleHeaderActions` as data)
  * and the filters (`UserList::definitions()`). The viewer's states of every loaded page come
- * from one `GET user/states` (`itemStates`) and feed each `PeopleCard`'s friendship and follow
- * buttons.
+ * from one `GET user/states` (`itemStates`) and feed each `PeopleCard`'s friendship or follow
+ * button.
  *
  * - A card's tag adds itself to the tag picker (`setFilter('tag', [tag], { add: true })`), or
  *   sets the search where there is no tag filter.
@@ -53,8 +53,8 @@ const STATE_FRIENDS = 'friends';
  *   count follows.
  * - A card's friendship change (its `FriendshipButton`'s `change`, which accompanies
  *   `user:friendship-changed`) is merged into that user's state, and the friend count follows
- *   a friendship that began or ended. The follow the friendship brought along reaches the card
- *   as a follow change: the `UserFollowButton` refetches its state on the domain event.
+ *   a friendship that began or ended. The card shows no follow button while the friendship
+ *   system is on, so the follow the friendship brought along needs no merging.
  *
  * Props: `filters`, `actions`, `buttons`, `icons`, `followEnabled`, `friendshipEnabled` (see
  * `PeopleCard`).

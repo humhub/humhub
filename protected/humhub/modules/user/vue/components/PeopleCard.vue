@@ -82,15 +82,17 @@ const MAX_TAGS = 5;
  *   (a disabled placeholder button stands in for the footer), `null` when there is none (no
  *   footer), else the actions are fed from it without a request of their own.
  * - `followEnabled`, `friendshipEnabled`: which of the two the platform offers.
- * - `buttons`: the button classes (`friendClass`, `friendStateClass`, `friendTogglerClass`,
- *   `friendGroupClass` of the `FriendshipButton`; `followClass`, `followingClass` of the
- *   `UserFollowButton`; `placeholderClass`), `icons`: the rendered icon markup (`check`, `plus`,
- *   `clock`, `times`) — both from `user\widgets\PeopleBrowser`.
+ * - `buttons`: the button classes (`friendClass`, `friendStateClass`, `friendPendingClass`,
+ *   `friendTogglerClass`, `friendGroupClass` of the `FriendshipButton`; `followClass`,
+ *   `followingClass` of the `UserFollowButton`; `placeholderClass`), `icons`: the rendered icon
+ *   markup (`check`, `plus`, `clock`, `hourglass`, `times`) — both from
+ *   `user\widgets\PeopleBrowser`.
  * - Extension slot `user.card-subtitle` (props: `user`): a subtitle line of its own, typically
  *   a `p.entity-card-subtitle`.
  * - Extension slot `user.card-actions`: the footer's actions, the core's own included —
  *   `friendship` (sortOrder 100, the friendship module's `PeopleCardFriendshipAction`) and
- *   `follow` (200, `PeopleCardFollowAction`) — so a module adds
+ *   `follow` (200, `PeopleCardFollowAction`, only while the friendship system is off) — so a
+ *   module adds
  *   (`registerSlotComponent('user.card-actions', 'MailCardAction', {id: 'mail', sortOrder:
  *   300})`), replaces (its own component under a core id) or removes
  *   (`removeSlotComponent('user.card-actions', 'follow')`) any of them. Each action gets the
