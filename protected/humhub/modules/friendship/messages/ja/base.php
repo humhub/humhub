@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => 'マイフレンド',
-    '<strong>Pending</strong> friend requests' => '<strong>保留中の</strong>友達リクエスト',
-    '<strong>Sent</strong> friend requests' => '<strong>送信済みの</strong>友達リクエスト',
     'Accept Friend Request' => '友達リクエストを承認',
     'Deny friend request' => '友達リクエストを却下',
     'Friends' => 'フレンド',

@@ -161,6 +161,7 @@ return [
     'Show topic widget in Stream sidebar' => '',
     'Sort' => '',
     'Space actions' => '',
+    'Space not found!' => '',
     'Space not found.' => '',
     'Topic widget sort order' => '',
     'Unfollow' => '',

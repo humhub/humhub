@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Forumets synlighet',
   'Space actions' => '',
   'Space is invisible!' => 'Forumet är osynligt!',
+  'Space not found!' => 'Nätverket hittades inte!',
   'Space not found.' => '',
   'Spaces' => 'Forum',
   'Status' => 'Status',

@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'スペースの公開設定',
   'Space actions' => '',
   'Space is invisible!' => 'スペースは不可視です。',
+  'Space not found!' => 'スペースが見つかりませんでした！',
   'Space not found.' => '',
   'Spaces' => 'スペース',
   'Status' => 'ステータス',

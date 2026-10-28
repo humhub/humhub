@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => '空间不可见',
+  'Space not found!' => '没找到空间',
   'Space not found.' => '',
   'Spaces' => '空间',
   'Status' => '状态',

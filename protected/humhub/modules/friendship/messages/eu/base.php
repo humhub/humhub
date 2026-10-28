@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Nire</strong> lagunak',
-    '<strong>Pending</strong> friend requests' => '<strong>Oraindik egiteko</strong> dauden adiskidetasun-eskaerak',
-    '<strong>Sent</strong> friend requests' => '<strong>Bidalitako</strong> adiskidetasun-eskaerak',
     'Accept Friend Request' => 'Adiskidetasun-eskaera onartu',
     'Deny friend request' => 'Adiskidetasun-eskaerari uko egin',
     'Friends' => 'Lagunak',

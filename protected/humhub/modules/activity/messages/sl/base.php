@@ -1,20 +1,16 @@
 <?php
 
 return [
-    '<strong>E-Mail</strong> Summaries' => '<strong>E-Mail</strong> Povzetki',
     '<strong>Latest</strong> activities' => '<strong> Najnovejše </strong> dejavnosti',
     'Activities' => 'Aktivnosti',
     'Daily' => 'Dnevno',
     'E-Mail Summaries' => 'Povzetek e-poštnih sporočil',
-    'E-Mail summaries are sent to inform you about recent activities in the network.' => 'Povzetek e-poštnih sporočil se pošljejo, da vas obveščajo o nedavnih dejavnostih v omrežju.',
-    'E-Mail summaries are sent to users to inform them about recent activities in your network.' => 'Povzetek e-poštnih sporočil se pošlje uporabnikom, da jih obvestijo o nedavnih dejavnostih v vašem omrežju.',
     'Exclude spaces below from the mail summary' => 'Izvlecite presledke iz povzetka pošte',
     'Hourly' => 'Urno',
     'Interval' => 'Interval',
     'Latest news' => 'Zadnje novice',
     'Monthly' => 'Mesečno',
     'Never' => 'Nikoli',
-    'On this page you can configure the contents and the interval of these e-mail updates.' => 'Na tej strani lahko konfigurirate vsebino in interval teh e-poštnih posodobitev.',
     'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Na tej strani lahko določite privzeto vedenje za svoje uporabnike. Te nastavitve lahko uporabniki prepišejo na strani Nastavitve računa.',
     'Only include spaces below to the mail summary' => 'Vključite samo presledke spodaj na povzetek pošte',
     'See online:' => 'Glej na spletu:',

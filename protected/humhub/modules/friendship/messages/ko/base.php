@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>내</strong> 친구들',
-    '<strong>Pending</strong> friend requests' => '<strong>보류 중</strong>인 친구 요청',
-    '<strong>Sent</strong> friend requests' => '<strong>친구 요청 보내기</strong>',
     'Accept Friend Request' => '친구 요청 수락',
     'Deny friend request' => '친구 요청 거부',
     'Friends' => '친구들',

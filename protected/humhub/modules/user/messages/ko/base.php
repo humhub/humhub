@@ -66,7 +66,6 @@ return [
     'Here you can connect to external service provider for using external services like a single sign on authentication.' => '',
     'If this wasn\'t you, you can disregard this message.' => '',
     'Invite new people' => '',
-    'Invited by {userName}' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
     'Last Login' => '',
     'Local' => '',

@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => 'Gruppen er usynlig!',
+  'Space not found!' => 'Fant ikke gruppen.',
   'Space not found.' => '',
   'Spaces' => 'Grupper',
   'Status' => 'Status',

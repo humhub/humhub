@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'رؤية الباحة',
   'Space actions' => '',
   'Space is invisible!' => 'الباحة غير مرئية!',
+  'Space not found!' => 'لم اتمكن من إيجاد الباحة!',
   'Space not found.' => '',
   'Spaces' => 'الباحات',
   'Status' => 'الحالة',

@@ -58,7 +58,6 @@ return [
     'Invite by link' => '',
     'Invite new people' => '',
     'Invited by' => '',
-    'Invited by {userName}' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
     'Last Login' => '',
     'Local' => '',

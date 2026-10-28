@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => 'Sivu on näkymätön',
+  'Space not found!' => 'Sivua ei löytynyt',
   'Space not found.' => '',
   'Spaces' => 'Sivut',
   'Status' => 'Tila',

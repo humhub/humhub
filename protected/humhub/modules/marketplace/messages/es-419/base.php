@@ -16,7 +16,6 @@ The license was successfully removed!
 
 ' => '',
     '(opens in a new tab)' => '',
-    '<strong>Activate</strong> your Professional Edition' => '',
     'A new update is available (HumHub %version%)!' => '',
     'Activate' => '',
     'Activate Module' => '',

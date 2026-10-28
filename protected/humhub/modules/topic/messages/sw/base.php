@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Confirm</strong> topic deletion' => '',
     '<strong>Edit</strong> Topic' => '',
     '<strong>Manage</strong> Topics' => '',
     '<strong>Popular</strong> topics' => '',
@@ -11,12 +10,15 @@ return [
     'Always show' => '',
     'Color' => '',
     'Container not found.' => '',
+    'Contents' => '',
     'Controls how the topic picker appears in content creation forms above the stream.' => '',
     'Default topic picker visibility' => '',
     'Do you really want to delete this topic?' => '',
     'Enter a search, or name topics or a container.' => '',
     'Hidden' => '',
     'Name' => '',
+    'Search' => '',
+    'Show contents' => '',
     'Sort order' => '',
     'Topic' => '',
     'Topic has been deleted!' => '',
@@ -25,4 +27,7 @@ return [
     'Topics' => '',
     'Topics required' => '',
     'Use global default' => '',
+    '{count} topic' => '',
+    '{count} topics' => '',
+    '{from}–{to} of {total} topics' => '',
 ];

@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Видимость сообщества',
   'Space actions' => '',
   'Space is invisible!' => 'Сообщество скрыто!',
+  'Space not found!' => 'Пространство не найдено!',
   'Space not found.' => '',
   'Spaces' => 'Сообщества',
   'Status' => 'Статус',

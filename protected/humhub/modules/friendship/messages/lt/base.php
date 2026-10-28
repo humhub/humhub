@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Mano</strong> draugai',
-    '<strong>Pending</strong> friend requests' => '<strong>Draugų</strong> užklausos',
-    '<strong>Sent</strong> friend requests' => '<strong>Išsiųstos</strong> užklausos',
     'Accept Friend Request' => 'Priimti draugo užklausą',
     'Deny friend request' => 'Atmesti draugo užklausą',
     'Friends' => 'Draugai',

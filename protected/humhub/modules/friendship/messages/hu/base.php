@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Ismerőseim</strong>',
-    '<strong>Pending</strong> friend requests' => '<strong>Függőben lévő</strong> jelölések',
-    '<strong>Sent</strong> friend requests' => '<strong>Elküldött</strong> jelölések',
     'Accept Friend Request' => 'Ismerősnek jelölés elfogadása',
     'Deny friend request' => 'Ismerősnek jelölés elutasítása',
     'Friends' => 'Ismerősök',

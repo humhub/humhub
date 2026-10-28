@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Rum Synlighed',
   'Space actions' => '',
   'Space is invisible!' => 'Rummet er usynligt',
+  'Space not found!' => 'Side ikke fundet!',
   'Space not found.' => '',
   'Spaces' => 'Sider',
   'Status' => 'Status',

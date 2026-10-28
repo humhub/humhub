@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>我的</strong> 好友',
-    '<strong>Pending</strong> friend requests' => '<strong>待处理</strong> 的好友请求',
-    '<strong>Sent</strong> friend requests' => '<strong>发送</strong> 好友请求',
     'Accept Friend Request' => '接收好友请求',
     'Deny friend request' => '拒绝好友请求',
     'Friends' => '好友',

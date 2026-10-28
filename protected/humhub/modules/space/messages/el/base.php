@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => '',
+  'Space not found!' => 'Το πεδίο δεν βρέθηκε',
   'Space not found.' => '',
   'Spaces' => 'Χώροι',
   'Status' => 'Κατάσταση',

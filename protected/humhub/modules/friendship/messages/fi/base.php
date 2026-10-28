@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Kaverit</strong>',
-    '<strong>Pending</strong> friend requests' => '<strong>Odottavat</strong> ystäväpyynnöt',
-    '<strong>Sent</strong> friend requests' => '<strong>Lähetetyt</strong> ystäväpyynnöt',
     'Accept Friend Request' => 'Hyväksy ystäväpyyntö',
     'Deny friend request' => 'Hylkää ystäväpyyntö',
     'Friends' => 'Ystävät',

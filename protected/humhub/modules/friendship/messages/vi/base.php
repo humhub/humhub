@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => 'Các bạn <strong>của tôi</strong>',
-    '<strong>Pending</strong> friend requests' => 'Yêu cầu kết bạn <strong>đang chờ duyệt</strong>',
-    '<strong>Sent</strong> friend requests' => '<strong>Gửi</strong> yêu cầu kết bạn',
     'Accept Friend Request' => 'Chấp nhận yêu cầu kết bạn',
     'Deny friend request' => 'Từ chối yêu cầu kết bạn',
     'Friends' => 'Bạn',

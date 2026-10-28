@@ -118,7 +118,6 @@ return [
     'Disconnect {provider} account' => '',
     'Enter a search, or name users or a space.' => '',
     'Filter by {tag}' => '',
-    'Invited by {userName}' => '',
     'Local' => '',
     'Person' => '',
     'Provider' => '',

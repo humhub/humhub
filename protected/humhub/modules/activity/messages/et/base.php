@@ -1,14 +1,11 @@
 <?php
 
 return [
-    '<strong>E-Mail</strong> Summaries' => '',
     '<strong>Latest</strong> activities' => '',
     'Activities' => '',
     'Change it under {link}.' => '',
     'Daily' => '',
     'E-Mail Summaries' => '',
-    'E-Mail summaries are sent to inform you about recent activities in the network.' => '',
-    'E-Mail summaries are sent to users to inform them about recent activities in your network.' => '',
     'E-mail summaries are sent without content.' => '',
     'E-mail summaries only show the number of new activities.' => '',
     'Exclude spaces below from the mail summary' => '',
@@ -22,7 +19,6 @@ return [
     'Never' => '',
     'New activity' => '',
     'Notifications' => '',
-    'On this page you can configure the contents and the interval of these e-mail updates.' => '',
     'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => '',
     'Only include spaces below to the mail summary' => '',
     'Privacy mode: {mode}.' => '',

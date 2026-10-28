@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Vidljivost prostora',
   'Space actions' => '',
   'Space is invisible!' => 'Prostor je nevidljiv!',
+  'Space not found!' => 'Prostor nije pronađen!',
   'Space not found.' => '',
   'Spaces' => 'Prostori',
   'Status' => 'Status',

@@ -106,7 +106,6 @@ return [
     'If this wasn\'t you, you can disregard this message.' => '',
     'Invite by link' => '',
     'Invite new people' => '',
-    'Invited by {userName}' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
     'Local' => '',
     'Mentioning' => '',

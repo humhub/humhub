@@ -128,6 +128,7 @@ return [
     'Space Visibility' => '',
     'Space actions' => '',
     'Space is invisible!' => '',
+    'Space not found!' => '',
     'Space not found.' => '',
     'Stream' => '',
     'Tags' => '',

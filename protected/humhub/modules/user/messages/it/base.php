@@ -111,7 +111,6 @@ return [
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',
     'If this wasn\'t you, you can disregard this message.' => '',
-    'Invited by {userName}' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',
     'Offline' => '',
     'Online' => '',

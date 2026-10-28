@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Közösség láthatósága',
   'Space actions' => '',
   'Space is invisible!' => 'Közösség nem látható!',
+  'Space not found!' => 'Témakör nem található!',
   'Space not found.' => '',
   'Spaces' => 'Közösségek',
   'Status' => 'Állapot',

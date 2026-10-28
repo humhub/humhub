@@ -2,7 +2,6 @@
 
 return [
     'Reset to defaults' => 'Reset to defaults',
-    '<strong>Notification</strong> Overview' => '',
     'Add a Space…' => '',
     'Administration' => '',
     'All' => '',
@@ -43,7 +42,6 @@ return [
     'Not saved' => '',
     'Notification Settings' => '',
     'Notifications' => '',
-    'Notifications are sent directly to your users to inform them about new activities in your network.' => '',
     'Notifications of the {module} module' => '',
     'Only the kind of notification and how many, without names.' => '',
     'Only what is addressed to you by e-mail and push.' => '',

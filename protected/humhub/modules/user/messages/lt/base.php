@@ -118,7 +118,6 @@ return [
     'Enter a search, or name users or a space.' => '',
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',
-    'Invited by {userName}' => '',
     'Person' => '',
     'Provider' => '',
     'Search people...' => '',

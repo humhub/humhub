@@ -2,7 +2,6 @@
 
 return [
     '<strong>Confirm</strong></strong> your new email address' => 'Yeni mail adresinizi <strong>doğrulayın</strong></strong>',
-    '<strong>Your</strong> profile' => '<strong>Senin</strong> profilin',
     'All your personal data will be irrevocably deleted.' => 'Tüm kişisel verileriniz geri alınamaz bir şekilde silinecek.',
     'Are you sure that you want to delete your account?' => 'Hesabınızı silmek istediğinize emin misiniz?',
     'Change password' => 'Şifre değiştir',
@@ -44,7 +43,6 @@ return [
     'Your friends' => 'Arkadaşların',
     'Your password has been successfully changed!' => 'Şifren başarı ile değiştirildi!',
     '<strong>Account</strong> Settings' => '',
-    '<strong>Security</strong> &amp; Privacy' => '',
     '<strong>Your</strong> Account' => '',
     'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'All other sessions have been logged out.' => '',
@@ -55,7 +53,6 @@ return [
     'Changing your password logs you out on all other devices.' => '',
     'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Decide who can see your profile and your online status, block users and manage trusted sources of external content.' => '',
-    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Devices & Access' => '',
     'Devices with “Remember me” enabled can sign in again. Use “Log out all other sessions” to sign them out for good.' => '',
     'Do you really want to delete your icon image?' => '',
@@ -68,7 +65,6 @@ return [
     'Log out all other sessions?' => '',
     'Log out this session?' => '',
     'Logged in {date}' => '',
-    'Manage how you sign in, where you are logged in and what happens with your data.' => '',
     'Markdown Editor Mode' => '',
     'My Data' => '',
     'New User name' => '',

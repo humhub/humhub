@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Teman</strong> saya',
-    '<strong>Pending</strong> friend requests' => '<strong>Menunggu</strong> permintaan teman',
-    '<strong>Sent</strong> friend requests' => '<strong>Terkirim</strong> permintaan pertemanan',
     'Accept Friend Request' => 'Terima Permintaan Teman',
     'Deny friend request' => 'Tolak permintaan teman',
     'Friends' => 'Sahabat',

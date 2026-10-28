@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Widoczność Strefy',
   'Space actions' => '',
   'Space is invisible!' => 'Strefa jest niewidoczna !',
+  'Space not found!' => 'Nie znaleziono strefy! ',
   'Space not found.' => '',
   'Spaces' => 'Strefy',
   'Status' => 'Status',

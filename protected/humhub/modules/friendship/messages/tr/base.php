@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Arkadaşlarım</strong>',
-    '<strong>Pending</strong> friend requests' => '<strong>Arkadaş</strong> istekleri',
-    '<strong>Sent</strong> friend requests' => '<strong>Gönderilen</strong> İstekler',
     'Accept Friend Request' => 'Arkadaşlık isteğini onayla',
     'Deny friend request' => 'İsteği Reddet',
     'Friends' => 'Arkadaşlar',

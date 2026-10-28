@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => 'انجمن پنهان است!',
+  'Space not found!' => 'انجمن پیدا نشد!',
   'Space not found.' => '',
   'Spaces' => 'انجمن‌ها',
   'Status' => 'وضعیت',

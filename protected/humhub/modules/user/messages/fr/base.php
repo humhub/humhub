@@ -47,7 +47,6 @@ return [
     'Invite by link' => 'Invitation par lien',
     'Invite new people' => 'Inviter de nouvelles personnes',
     'Invited by' => 'Invité par',
-    'Invited by {userName}' => 'Invité par {userName}',
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Apparemment, vous avez cliqué sur un lien de réinitialisation de mot de passe non valide. Veuillez ré-essayer.',
     'Language' => 'Langue',
     'Last Login' => 'Dernière connexion',

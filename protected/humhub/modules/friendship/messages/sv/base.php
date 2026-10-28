@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Mina</strong> vänner',
-    '<strong>Pending</strong> friend requests' => '<strong>Väntande</strong> vänförfrågningar',
-    '<strong>Sent</strong> friend requests' => '<strong>Skickade</strong> vänförfrågningar',
     'Accept Friend Request' => 'Acceptera vänförfrågan',
     'Deny friend request' => 'Neka vänförfrågan',
     'Friends' => 'Vänner',

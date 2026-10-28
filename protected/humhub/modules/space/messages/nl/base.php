@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Zichtbaarheid van de ruimte',
   'Space actions' => 'Ruimteacties',
   'Space is invisible!' => 'Ruimte is onzichtbaar!',
+  'Space not found!' => 'Ruimte niet gevonden!',
   'Space not found.' => '',
   'Spaces' => 'Ruimtes',
   'Status' => 'Status',

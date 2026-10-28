@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Visibilité de l’espace',
   'Space actions' => 'Actions de l\'espace',
   'Space is invisible!' => 'Espace invisible',
+  'Space not found!' => 'Espace non trouvé.',
   'Space not found.' => '',
   'Spaces' => 'Espaces',
   'Status' => 'Statut',

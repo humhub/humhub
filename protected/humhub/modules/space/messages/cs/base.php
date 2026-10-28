@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Viditelnost prostoru',
   'Space actions' => '',
   'Space is invisible!' => 'Tento prostor je skrytý!',
+  'Space not found!' => 'Prostor nebyl nalezen!',
   'Space not found.' => '',
   'Spaces' => 'Prostory',
   'Status' => 'Stav',

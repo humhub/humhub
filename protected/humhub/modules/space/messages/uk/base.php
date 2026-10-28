@@ -133,6 +133,7 @@ return [
     'Space Visibility' => '',
     'Space actions' => '',
     'Space is invisible!' => '',
+    'Space not found!' => '',
     'Space not found.' => '',
     'The default homepage for members of this Space' => '',
     'The default homepage for non-members and guests visiting this Space' => '',

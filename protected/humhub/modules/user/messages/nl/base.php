@@ -47,7 +47,6 @@ return [
     'Invite by link' => 'Uitnodigen met link',
     'Invite new people' => 'Nodig nieuwe personen uit',
     'Invited by' => 'Uitgenodigd door',
-    'Invited by {userName}' => 'Uitgenodigd door {userName}',
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Het lijkt erop dat u op een ongeldige koppeling voor het opnieuw instellen van uw wachtwoord heeft geklikt. Probeer het opnieuw.',
     'Language' => 'Taal',
     'Last Login' => 'Laatste login',

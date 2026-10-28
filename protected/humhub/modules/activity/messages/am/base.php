@@ -1,19 +1,15 @@
 <?php
 
 return [
-    '<strong>E-Mail</strong> Summaries' => 'የ<strong>ኢሜል</strong> ጥቅል መግለጫ',
     '<strong>Latest</strong> activities' => '<strong>የቅርብ</strong> ተግባራት',
     'Activities' => 'እንቅስቃሴ',
     'Daily' => 'ዕለታዊ',
     'E-Mail Summaries' => 'የኢሜል ጥቅል መግለጫ',
-    'E-Mail summaries are sent to inform you about recent activities in the network.' => 'በኔትዎርኩ ላይ ያለዎትን ወቅታዊ ተግባራት የሚያሳይ የኢሜል ጥቅል መረጃ ተልክዎሎታል።',
-    'E-Mail summaries are sent to users to inform them about recent activities in your network.' => 'ተጠቃሚዎች በኔትዎርኩ ላይ ያላቸውን ወቅታዊ ተግባራት የሚያሳይ የኢሜል ጥቅል መረጃ ተልኮላቸዋል።',
     'Exclude spaces below from the mail summary' => 'ምህዳሮችን ከኢሜል ጥቅል መረጃው ስር አስወጣ',
     'Hourly' => 'በየሰ' . "\0" . 'ዓቱ',
     'Interval' => 'ልዩነት',
     'Latest news' => 'ወቅታዊ ዜና',
     'Never' => 'ፈፅሞ',
-    'On this page you can configure the contents and the interval of these e-mail updates.' => 'በዚህ ገፅ ላይ ይዘቶችን ሊያዋቅሩና   እነዚህን ኢሜሎች ራሳቸውን የሚያዘምኑበትን የጊዜ ልዩነት ሊያመቻቹ ይችላሉ።',
     'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'በዚህ ገፅ ላይ የተጠቃሚዎችዎን ነበሪ ባህሪያት ሊወስኑ ይችላሉ። ይህ ማስተካከያ ተጠቃሚዎሽ በአካውንታቸው ማስተካከያ ላይ አስተካክለው ሊፅፉት ይችላሉ።',
     'Only include spaces below to the mail summary' => 'ምህዳሮቹን ከኢሜሉ ጥቅል መረጃ ስር ላይ ብቻ አካት።',
     'See online:' => 'በመስመር ላይ ሆነው ይመልከቱ፡',

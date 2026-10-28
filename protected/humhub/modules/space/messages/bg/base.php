@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Видимост на раздела',
   'Space actions' => '',
   'Space is invisible!' => 'Раздела не е видим!',
+  'Space not found!' => 'Зоната не е открита!',
   'Space not found.' => '',
   'Spaces' => 'Раздели',
   'Status' => 'Статус',

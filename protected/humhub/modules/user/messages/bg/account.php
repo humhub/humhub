@@ -2,7 +2,6 @@
 
 return [
     '<strong>Confirm</strong></strong> your new email address' => '<strong>Потвърдете </strong> новия си имейл адрес',
-    '<strong>Your</strong> profile' => '<strong>Вашият</strong> профил',
     'All your personal data will be irrevocably deleted.' => 'Всичките ви лични данни ще бъдат безвъзвратно изтрити.',
     'Are you sure that you want to delete your account?' => 'Наистина ли искате да изтриете акаунта си?',
     'Change password' => 'Променете паролата',
@@ -56,7 +55,6 @@ return [
     'Your username has been changed' => 'Вашето потребителско име е променено',
     'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Вашето потребителско име е успешно променено.<br>Току-що ви изпратихме имейл с нова информация.',
     '<strong>Account</strong> Settings' => '',
-    '<strong>Security</strong> &amp; Privacy' => '',
     '<strong>Your</strong> Account' => '',
     'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
     'All other sessions have been logged out.' => '',
@@ -66,7 +64,6 @@ return [
     'Changing your password logs you out on all other devices.' => '',
     'Content from these sources is displayed without asking for confirmation. Remove a source to be asked again.' => '',
     'Decide who can see your profile and your online status, block users and manage trusted sources of external content.' => '',
-    'Define basic settings for your profile. You can add tags that fit you, choose the language and your time zone and block impolite users.' => '',
     'Devices & Access' => '',
     'Devices with “Remember me” enabled can sign in again. Use “Log out all other sessions” to sign them out for good.' => '',
     'Do you really want to delete your login background image?' => '',
@@ -77,7 +74,6 @@ return [
     'Log out all other sessions?' => '',
     'Log out this session?' => '',
     'Logged in {date}' => '',
-    'Manage how you sign in, where you are logged in and what happens with your data.' => '',
     'Markdown Editor Mode' => '',
     'My Data' => '',
     'Password recovery can only be initiated once every 10 minutes.' => '',

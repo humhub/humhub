@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => 'Sayfa görünmez!',
+  'Space not found!' => 'Alan bulunamadı!',
   'Space not found.' => '',
   'Spaces' => 'Mekanlar',
   'Status' => 'Durum',

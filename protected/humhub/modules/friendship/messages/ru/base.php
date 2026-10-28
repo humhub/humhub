@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Мои друзья</strong>',
-    '<strong>Pending</strong> friend requests' => '<strong>Ожидающие</strong> подтверждения запросы на добавление в друзья',
-    '<strong>Sent</strong> friend requests' => '<strong>Отправленные</strong> запросы на добавление в друзья',
     'Accept Friend Request' => 'Принять запрос на добавление в друзья',
     'Deny friend request' => 'Отказать в запросе на добавление в друзья',
     'Friends' => 'Друзья',

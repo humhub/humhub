@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => 'Οι φίλοι μου',
-    '<strong>Pending</strong> friend requests' => 'Αιτήματα φιλίας σε αναμονή',
-    '<strong>Sent</strong> friend requests' => 'Απεσταλμένα αιτήματα φιλίας',
     'Accept Friend Request' => 'Αποδοχή αιτήματος φιλίας',
     'Deny friend request' => 'Άρνηση αιτήματος φιλίας',
     'Friends' => 'Φίλοι',

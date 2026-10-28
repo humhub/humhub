@@ -1,9 +1,6 @@
 <?php
 
 return [
-    '<strong>My</strong> friends' => '<strong>Els meus</strong> amics',
-    '<strong>Pending</strong> friend requests' => 'Peticions d\'amistat <strong>pendents</strong>',
-    '<strong>Sent</strong> friend requests' => 'Peticions d\'amistat <strong>enviades</strong>',
     'Accept Friend Request' => 'Petició d\'amistat acceptada',
     'Deny friend request' => 'Petició d\'amistat denegada',
     'Friends' => 'Amics',

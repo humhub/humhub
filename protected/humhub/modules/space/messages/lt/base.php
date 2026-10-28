@@ -124,6 +124,7 @@ return [
   'Space Visibility' => 'Erdvės matomumas',
   'Space actions' => '',
   'Space is invisible!' => 'Erdvė matoma!',
+  'Space not found!' => 'Erdvė nerasta!',
   'Space not found.' => '',
   'Spaces' => 'Erdvės',
   'Status' => 'Būsena',

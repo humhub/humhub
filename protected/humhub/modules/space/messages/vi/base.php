@@ -124,6 +124,7 @@ return [
   'Space Visibility' => '',
   'Space actions' => '',
   'Space is invisible!' => 'Diễn đàn ẩn!',
+  'Space not found!' => 'Không tìm thấy nhóm!',
   'Space not found.' => '',
   'Spaces' => 'Diễn đàn',
   'Status' => 'Trạng thái',
