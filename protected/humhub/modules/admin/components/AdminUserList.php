@@ -178,9 +178,6 @@ class AdminUserList extends FilterableList
     }
 
     /**
-     * @return array<int, string> the group names by id
-     */
-    /**
      * The configured user sources and those accounts still name, by id.
      */
     private function sourceOptions(): array
@@ -201,6 +198,9 @@ class AdminUserList extends FilterableList
         return $options;
     }
 
+    /**
+     * @return array<int, string> the group names by id
+     */
     private function groupOptions(): array
     {
         $options = [];
