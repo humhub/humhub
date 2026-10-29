@@ -11,6 +11,10 @@ $data-table-main-image-size: 2.5rem !default;
 $data-table-main-initials-bg: var(--bs-secondary-bg) !default;
 $data-table-main-initials-color: #fff !default;
 $data-table-main-initials-font-size: .875rem !default;
+// A record shown by an icon (e.g. an app): on a light accent tile, or white on its own colour
+$data-table-main-icon-bg: var(--bs-accent-bg-subtle) !default;
+$data-table-main-icon-color: var(--bs-accent) !default;
+$data-table-main-icon-font-size: 1.25rem !default;
 // A hovered row: a light accent fill with an accent outline
 $data-table-hover-bg: var(--bs-accent-bg-subtle) !default;
 $data-table-hover-border-color: var(--bs-accent) !default;
@@ -265,6 +269,21 @@ $data-table-page-size-width: 5.5rem !default;
         font-size: $data-table-main-initials-font-size;
         font-weight: $font-weight-bold;
         line-height: 1;
+    }
+
+    // A record shown by an icon, e.g. an app: on a light accent tile, or white on its colour
+    .data-table-main-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $data-table-main-icon-bg;
+        color: $data-table-main-icon-color;
+        font-size: $data-table-main-icon-font-size;
+        line-height: 1;
+
+        &.has-color {
+            color: #fff;
+        }
     }
 
     .data-table-main-text {

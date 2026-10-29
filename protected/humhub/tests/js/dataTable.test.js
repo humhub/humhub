@@ -91,6 +91,29 @@ describe('DataTable', () => {
         expect(wrapper.find('.data-table-count').text()).toBe('2 users');
     });
 
+    it('shows an icon on the record\'s colour, or the initials, where the main cell has no image', async () => {
+        const withName = (id, name) => {
+            const r = row(id, 'x');
+            r.cells.name = name;
+            return r;
+        };
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([
+            withName(1, { text: 'Bugs', icon: 'bug', color: '#d32f2f' }),
+            withName(2, { text: 'Notes', icon: 'notes' }),
+            withName(3, { text: 'Team', initials: 'T', color: '#123456' }),
+        ])));
+        wrapper = mountTable();
+        await flushPromises();
+
+        const icon = wrapper.find('tr[data-id="1"] .data-table-main-icon');
+        expect(icon.find('i').classes()).toEqual(['ti', 'ti-bug']);
+        expect(icon.classes()).toContain('has-color');
+        expect(icon.attributes('style')).toContain('background-color');
+        expect(wrapper.find('tr[data-id="2"] .data-table-main-icon').classes()).not.toContain('has-color');
+        expect(wrapper.find('tr[data-id="3"] .data-table-main-icon').exists()).toBe(false);
+        expect(wrapper.find('tr[data-id="3"] .data-table-main-initials').text()).toBe('T');
+    });
+
     it('sorts by a column: ascending, descending, then the default order, back on page 1', async () => {
         wrapper = mountTable();
         await flushPromises();

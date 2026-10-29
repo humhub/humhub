@@ -920,7 +920,8 @@
       state: { type: Object, required: true },
       buttons: { type: Object, default: () => ({}) },
       icons: { type: Object, default: () => ({}) },
-      followEnabled: { type: Boolean, default: false }
+      followEnabled: { type: Boolean, default: false },
+      friendshipEnabled: { type: Boolean, default: false }
     },
     emits: ["follow-change"],
     computed: {
@@ -935,7 +936,7 @@
   };
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserFollowButton = vue.resolveComponent("UserFollowButton");
-    return $props.followEnabled || $props.state.isFollowing ? (vue.openBlock(), vue.createBlock(_component_UserFollowButton, {
+    return !$props.friendshipEnabled && ($props.followEnabled || $props.state.isFollowing) ? (vue.openBlock(), vue.createBlock(_component_UserFollowButton, {
       key: 0,
       class: "entity-card-action",
       "user-id": $props.user.id,

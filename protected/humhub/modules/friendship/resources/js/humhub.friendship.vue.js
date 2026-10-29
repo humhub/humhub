@@ -30,10 +30,14 @@
       stateClass: { type: String, default: "btn btn-accent active" },
       togglerClass: { type: String, default: "btn btn-accent active" },
       groupClass: { type: String, default: "btn-group" },
+      // The sent request's classes; `stateClass` when empty.
+      pendingClass: { type: String, default: "" },
       // Server-rendered icon markup (the icon provider is pluggable, see `Icon`).
       checkIconHtml: { type: String, default: "" },
       plusIconHtml: { type: String, default: "" },
       clockIconHtml: { type: String, default: "" },
+      // The sent request's icon; the clock when empty.
+      hourglassIconHtml: { type: String, default: "" },
       timesIconHtml: { type: String, default: "" }
     },
     emits: ["change"],
@@ -281,11 +285,13 @@
       {
         key: 2,
         href: "#",
-        class: vue.normalizeClass([$props.stateClass, { disabled: $data.busy }]),
+        class: vue.normalizeClass([$props.pendingClass || $props.stateClass, { disabled: $data.busy }]),
         onClick: _cache[3] || (_cache[3] = vue.withModifiers((...args) => $options.withdraw && $options.withdraw(...args), ["prevent"]))
       },
       [
-        vue.createElementVNode("span", { innerHTML: $props.clockIconHtml }, null, 8, _hoisted_6),
+        vue.createElementVNode("span", {
+          innerHTML: $props.hourglassIconHtml || $props.clockIconHtml
+        }, null, 8, _hoisted_6),
         vue.createTextVNode(
           vue.toDisplayString($options.pendingLabel),
           1
@@ -346,12 +352,14 @@
       "state-class": $options.actionClass($props.buttons.friendStateClass),
       "toggler-class": $props.buttons.friendTogglerClass,
       "group-class": $options.actionClass($props.buttons.friendGroupClass),
+      "pending-class": $props.buttons.friendPendingClass ? $options.actionClass($props.buttons.friendPendingClass) : "",
       "check-icon-html": $props.icons.check || "",
       "plus-icon-html": $props.icons.plus || "",
       "clock-icon-html": $props.icons.clock || "",
+      "hourglass-icon-html": $props.icons.hourglass || "",
       "times-icon-html": $props.icons.times || "",
       onChange: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("friendship-change", $event))
-    }, null, 8, ["user-id", "user-name", "initial", "button-class", "state-class", "toggler-class", "group-class", "check-icon-html", "plus-icon-html", "clock-icon-html", "times-icon-html"])) : vue.createCommentVNode("v-if", true);
+    }, null, 8, ["user-id", "user-name", "initial", "button-class", "state-class", "toggler-class", "group-class", "pending-class", "check-icon-html", "plus-icon-html", "clock-icon-html", "hourglass-icon-html", "times-icon-html"])) : vue.createCommentVNode("v-if", true);
   }
   const PeopleCardFriendshipAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   Object.entries(/* @__PURE__ */ Object.assign({ "./FriendshipButton.vue": __vite_glob_0_0 })).forEach(([path, component]) => {

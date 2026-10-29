@@ -34,9 +34,9 @@
     <a
         v-else-if="isRequestSent"
         href="#"
-        :class="[stateClass, { disabled: busy }]"
+        :class="[pendingClass || stateClass, { disabled: busy }]"
         @click.prevent="withdraw"
-    ><span v-html="clockIconHtml"></span>{{ pendingLabel }}</a>
+    ><span v-html="hourglassIconHtml || clockIconHtml"></span>{{ pendingLabel }}</a>
 
     <a
         v-else-if="isFriends"
@@ -63,7 +63,7 @@
  * |-------------------|---------------------------------------------------|---------------|
  * | `none`            | "＋ Friends"                                       | PUT           |
  * | `requestReceived` | "Accept Friend Request" + dropdown "Deny …"       | PUT / DELETE  |
- * | `requestSent`     | "Pending"                                          | DELETE        |
+ * | `requestSent`     | "⧗ Pending"                                        | DELETE        |
  * | `friends`         | "✓ Friends"                                        | DELETE        |
  *
  * Every one of them confirms first, exactly like the `data-action-confirm` attributes of the
@@ -73,7 +73,7 @@
  *
  * `buttonClass` carries the classes of the "add" button and `stateClass` those of the three
  * states that follow (`togglerClass`/`groupClass` the invite-style dropdown around the
- * received-request state). The widget's own properties feed them. Deliberately fewer knobs
+ * received-request state, `pendingClass` — when given — the sent request's own look). The widget's own properties feed them. Deliberately fewer knobs
  * than the option array had: it allowed a separate class per button, which no caller ever
  * used — both core call sites give the three state buttons one look.
  *
@@ -112,10 +112,14 @@ export default {
         stateClass: { type: String, default: 'btn btn-accent active' },
         togglerClass: { type: String, default: 'btn btn-accent active' },
         groupClass: { type: String, default: 'btn-group' },
+        // The sent request's classes; `stateClass` when empty.
+        pendingClass: { type: String, default: '' },
         // Server-rendered icon markup (the icon provider is pluggable, see `Icon`).
         checkIconHtml: { type: String, default: '' },
         plusIconHtml: { type: String, default: '' },
         clockIconHtml: { type: String, default: '' },
+        // The sent request's icon; the clock when empty.
+        hourglassIconHtml: { type: String, default: '' },
         timesIconHtml: { type: String, default: '' },
     },
     emits: ['change'],

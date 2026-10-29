@@ -2558,10 +2558,31 @@
         class: "data-table-main-image",
         alt: "",
         "aria-hidden": "true"
-      }, null, 8, _hoisted_2$f)) : $props.cell.initials ? (vue.openBlock(), vue.createElementBlock(
+      }, null, 8, _hoisted_2$f)) : $props.cell.icon ? (vue.openBlock(), vue.createElementBlock(
         "span",
         {
           key: 1,
+          class: vue.normalizeClass(["data-table-main-image data-table-main-icon", { "has-color": !!$props.cell.color }]),
+          style: vue.normalizeStyle($props.cell.color ? { backgroundColor: $props.cell.color } : null),
+          "aria-hidden": "true"
+        },
+        [
+          vue.createElementVNode(
+            "i",
+            {
+              class: vue.normalizeClass("ti ti-" + $props.cell.icon)
+            },
+            null,
+            2
+            /* CLASS */
+          )
+        ],
+        6
+        /* CLASS, STYLE */
+      )) : $props.cell.initials ? (vue.openBlock(), vue.createElementBlock(
+        "span",
+        {
+          key: 2,
           class: "data-table-main-image data-table-main-initials",
           style: vue.normalizeStyle($props.cell.color ? { backgroundColor: $props.cell.color } : null),
           "aria-hidden": "true"

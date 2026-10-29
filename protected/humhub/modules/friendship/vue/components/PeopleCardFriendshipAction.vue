@@ -8,9 +8,11 @@
         :state-class="actionClass(buttons.friendStateClass)"
         :toggler-class="buttons.friendTogglerClass"
         :group-class="actionClass(buttons.friendGroupClass)"
+        :pending-class="buttons.friendPendingClass ? actionClass(buttons.friendPendingClass) : ''"
         :check-icon-html="icons.check || ''"
         :plus-icon-html="icons.plus || ''"
         :clock-icon-html="icons.clock || ''"
+        :hourglass-icon-html="icons.hourglass || ''"
         :times-icon-html="icons.times || ''"
         @change="$emit('friendship-change', $event)"
     />

@@ -44,6 +44,7 @@ const userState = (overrides = {}) => ({
 const buttons = {
     friendClass: 'btn btn-primary',
     friendStateClass: 'btn btn-light',
+    friendPendingClass: 'btn btn-ghost',
     friendTogglerClass: 'btn btn-light',
     friendGroupClass: 'btn-group',
     followClass: 'btn btn-accent',
@@ -143,14 +144,32 @@ describe('PeopleCard', () => {
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
     });
 
-    it('feeds the friendship and follow button from the state without a request', () => {
+    it('feeds the friendship button from the state without a request, never beside the follow button', () => {
         const wrapper = mountCard({ state: userState() });
 
         const actions = wrapper.findAll('.entity-card-footer .entity-card-action');
-        expect(actions.map((action) => action.text())).toEqual(['Friends', 'Follow']);
+        expect(actions.map((action) => action.text())).toEqual(['Friends']);
         expect(actions[0].classes()).toEqual(expect.arrayContaining(['btn', 'btn-primary']));
-        expect(actions[1].classes()).toEqual(expect.arrayContaining(['btn', 'btn-accent']));
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();
+        wrapper.unmount();
+
+        const followOnly = mountCard({ friendshipEnabled: false, state: userState({ friendship: null }) });
+        const follow = followOnly.find('.entity-card-footer .entity-card-action');
+        expect(follow.text()).toBe('Follow');
+        expect(follow.classes()).toEqual(expect.arrayContaining(['btn', 'btn-accent']));
+        followOnly.unmount();
+    });
+
+    it('shows a sent request as a ghost Pending button with an hourglass', () => {
+        const wrapper = mountCard({
+            icons: { hourglass: '<i class="ti ti-hourglass"></i>' },
+            state: userState({ friendship: { state: 'requestSent', isFollowing: true } }),
+        });
+
+        const pending = wrapper.find('.entity-card-footer .entity-card-action');
+        expect(pending.text()).toBe('Pending');
+        expect(pending.classes()).toEqual(expect.arrayContaining(['btn', 'btn-ghost']));
+        expect(pending.find('.ti-hourglass').exists()).toBe(true);
         wrapper.unmount();
     });
 
@@ -198,12 +217,14 @@ describe('PeopleCard', () => {
     });
 
     it('emits the follow and the friendship button changes', async () => {
-        const wrapper = mountCard({ state: userState() });
+        const followCard = mountCard({ friendshipEnabled: false, state: userState({ friendship: null }) });
 
-        await wrapper.find('.entity-card-footer button.entity-card-action').trigger('click');
+        await followCard.find('.entity-card-footer button.entity-card-action').trigger('click');
         await flushPromises();
-        expect(wrapper.emitted('follow-change')).toEqual([[{ userId: 7, isFollowing: true, followerCount: 4, canFollow: true }]]);
+        expect(followCard.emitted('follow-change')).toEqual([[{ userId: 7, isFollowing: true, followerCount: 4, canFollow: true }]]);
+        followCard.unmount();
 
+        const wrapper = mountCard({ state: userState() });
         globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve({ state: 'requestSent', isFollowing: true }));
         await wrapper.find('.entity-card-footer a.entity-card-action').trigger('click');
         await flushPromises();
@@ -318,8 +339,12 @@ describe('PeopleCard', () => {
             ]);
 
             const wrapper = mountWithActions();
-            expect(actionTexts(wrapper)).toEqual(['Friends', 'Follow']);
+            expect(actionTexts(wrapper)).toEqual(['Friends']);
             wrapper.unmount();
+
+            const followOnly = mountWithActions({ friendshipEnabled: false, state: userState({ friendship: null }) });
+            expect(actionTexts(followOnly)).toEqual(['Follow']);
+            followOnly.unmount();
         });
 
         it('renders a module\'s action where its sortOrder puts it', async () => {
@@ -327,13 +352,13 @@ describe('PeopleCard', () => {
 
             vueModule.registerSlotComponent('user.card-actions', 'TestMailAction', { id: 'mail', sortOrder: 300 });
             await flushPromises();
-            expect(actionTexts(wrapper)).toEqual(['Friends', 'Follow', 'Message 7']);
+            expect(actionTexts(wrapper)).toEqual(['Friends', 'Message 7']);
             // Unused context keys are no attributes of the action.
             expect(wrapper.find('.test-mail').attributes('buttons')).toBeUndefined();
 
-            vueModule.registerSlotComponent('user.card-actions', 'TestMailAction', { id: 'mail', sortOrder: 150 });
+            vueModule.registerSlotComponent('user.card-actions', 'TestMailAction', { id: 'mail', sortOrder: 50 });
             await flushPromises();
-            expect(actionTexts(wrapper)).toEqual(['Friends', 'Message 7', 'Follow']);
+            expect(actionTexts(wrapper)).toEqual(['Message 7', 'Friends']);
             wrapper.unmount();
         });
 

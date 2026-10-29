@@ -113,8 +113,8 @@ describe('PeopleBrowser', () => {
 
         expect(wrapper.findAll('.entity-card-title').map((n) => n.text())).toEqual(['User 1', 'User 2']);
         const first = wrapper.find('[data-id="1"] .entity-card-footer');
-        expect(first.text()).toContain('Friends');
-        expect(first.text()).toContain('Follow');
+        // Friendship on: the friendship button, not the follow button.
+        expect(first.text()).toBe('Friends');
         // One's own card has no buttons.
         expect(wrapper.find('[data-id="2"] .entity-card-footer').exists()).toBe(false);
     });
@@ -175,7 +175,7 @@ describe('PeopleBrowser', () => {
         expect(wrapper.find('[data-id="1"] .entity-card-footer button.entity-card-action').text()).toBe('Following');
     });
 
-    it('follows a friendship change: friend count, state and the follow it brought along', async () => {
+    it('follows a friendship change: friend count and state', async () => {
         states[1] = userState({ friendship: { state: 'requestReceived', isFollowing: false } });
         await mountIt();
         expect(wrapper.find('[data-id="1"] .entity-card-stat-friends').text()).toBe('2');
@@ -186,9 +186,6 @@ describe('PeopleBrowser', () => {
 
         expect(wrapper.find('[data-id="1"] .entity-card-stat-friends').text()).toBe('3');
         expect(wrapper.vm.$refs.directory.states[1].friendship).toEqual({ state: 'friends', isFollowing: true });
-        // The follow button refetched its state on `user:friendship-changed`.
-        expect(wrapper.find('[data-id="1"] .entity-card-footer button.entity-card-action').text()).toBe('Following');
-        expect(wrapper.vm.$refs.directory.states[1].isFollowing).toBe(true);
-        expect(wrapper.vm.$refs.directory.items[0].followerCount).toBe(6);
+        expect(wrapper.find('[data-id="1"] .entity-card-footer').text()).toBe('Friends');
     });
 });

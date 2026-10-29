@@ -209,8 +209,13 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         // The height of the skeleton's action bar (`.entity-card-skeleton-action`).
         min-height: $entity-card-action-height;
 
-        &.btn-group > .btn:first-child {
-            flex: 1 1 auto;
+        // A split button: the dropdown toggle as high as the button beside it
+        &.btn-group {
+            align-items: stretch;
+
+            > .btn:first-child {
+                flex: 1 1 auto;
+            }
         }
 
         // An action with an icon only (a module's "Send message", say): square, at the bar's

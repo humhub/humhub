@@ -81,6 +81,7 @@ class PeopleBrowserWidgetTest extends HumHubDbTestCase
 
         $this->assertSame('btn btn-primary', $props['buttons']['friendClass']);
         $this->assertSame('btn btn-light', $props['buttons']['friendStateClass']);
+        $this->assertSame('btn btn-ghost', $props['buttons']['friendPendingClass']);
         $this->assertSame('btn btn-accent', $props['buttons']['followClass']);
         $this->assertSame('btn btn-light', $props['buttons']['followingClass']);
         $this->assertSame('btn btn-light', $props['buttons']['placeholderClass']);
@@ -90,7 +91,7 @@ class PeopleBrowserWidgetTest extends HumHubDbTestCase
         $this->assertStringContainsString(' friendship-enabled="true"', $html);
 
         $this->assertStringContainsString('ti-check', $props['icons']['check']);
-        $this->assertSame(['check', 'plus', 'clock', 'times'], array_keys($props['icons']));
+        $this->assertSame(['check', 'plus', 'clock', 'hourglass', 'times'], array_keys($props['icons']));
     }
 
     public function testFeatureFlags(): void

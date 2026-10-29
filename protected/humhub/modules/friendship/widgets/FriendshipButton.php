@@ -109,6 +109,7 @@ class FriendshipButton extends VueWidget
             'checkIconHtml' => Icon::get('check')->asString(),
             'plusIconHtml' => Icon::get('plus')->asString(),
             'clockIconHtml' => Icon::get('clock')->asString(),
+            'hourglassIconHtml' => Icon::get('hourglass')->asString(),
             'timesIconHtml' => Icon::get('x')->asString(),
         ];
     }
