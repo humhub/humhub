@@ -71,7 +71,8 @@ error states are one own component. Class names and SCSS follow [Styling with Bo
 | `.empty-state.empty-state-error` | Error state with "Try again" |
 
 - **File:** `_empty-state.scss` (new), behind `$prev-empty-state`. No shimmer of its own: the
-  placeholder animation is Bootstrap's.
+  placeholder animation is Bootstrap's. The blocks are a light `--bs-secondary-bg` instead of
+  Bootstrap's text color (`_base.scss`).
 - **Sass variables:** Bootstrap's `$placeholder-opacity-max`, `$placeholder-opacity-min`; plus
   `$empty-state-icon-size`, `$reloading-delay`, `$reloading-opacity`.
 

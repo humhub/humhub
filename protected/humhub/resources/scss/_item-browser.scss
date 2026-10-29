@@ -367,7 +367,6 @@ $tile-border-radius: var(--bs-border-radius) !default;
     // Skeleton tile: Bootstrap placeholders in the tile's geometry
     .tile-skeleton {
         gap: $spacer * .75;
-        color: var(--hh-text-color-soft2);
         cursor: wait;
 
         &:hover {

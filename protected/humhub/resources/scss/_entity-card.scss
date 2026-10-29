@@ -234,7 +234,6 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
     // Skeleton: an entity card of Bootstrap placeholders in the card's own parts, so it has the
     // card's geometry (`CardSkeleton.vue`, `PeopleCardSkeleton.vue`, `SpaceCardSkeleton.vue`).
     .entity-card-skeleton {
-        color: var(--hh-text-color-soft2);
         cursor: wait;
 
         .placeholder {

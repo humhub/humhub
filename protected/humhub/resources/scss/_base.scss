@@ -64,6 +64,14 @@
         display: revert !important;
     }
 
+    // Skeleton blocks: a light grey instead of Bootstrap's text color, so loading states stay calm;
+    // also wins over the legacy `.placeholder` text (_form.scss)
+    .placeholder-glow .placeholder,
+    .placeholder-wave .placeholder {
+        padding: 0;
+        color: var(--bs-secondary-bg);
+    }
+
     // Cols (change position property to prevent the cutting of tooltips or menus)
     .col-lg-1,
     .col-lg-2,
