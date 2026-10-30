@@ -94,4 +94,24 @@ class GroupManagerCest
         ]);
         $I->seeResponseCodeIs(403);
     }
+
+    public function testMemberSearchIsRestrictedToManagedGroups(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that the group manager can search members only in groups he manages');
+
+        $I->amUser2();
+        $managedGroup = Group::findOne(['name' => 'Moderators']);
+        $adminGroup = Group::findOne(['is_admin_group' => 1]);
+
+        foreach (['/admin/group/new-member-search', '/admin/group/admin-user-search'] as $route) {
+            $I->amOnRoute($route, ['keyword' => 'a', 'id' => $managedGroup->id]);
+            $I->seeResponseCodeIs(200);
+
+            $I->amOnRoute($route, ['keyword' => 'a', 'id' => $adminGroup->id]);
+            $I->seeResponseCodeIs(403);
+
+            $I->amOnRoute($route, ['keyword' => 'a', 'id' => 999999]);
+            $I->seeResponseCodeIs(404);
+        }
+    }
 }
