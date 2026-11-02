@@ -112,15 +112,9 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
     }
 
     /**
-     * Whether the given auth client may write the managed attributes of this
-     * source's users on login (via {@see \humhub\modules\user\services\AuthClientService::updateUser()}).
-     * Only consulted for clients that are allowed to log in at all, see
-     * {@see getAllowedAuthClientIds()}.
+     * @inheritdoc
      *
-     * By default every allowed client may. Sources that keep their users in
-     * sync from their own backend (e.g. LDAP, SCIM) override this, so that
-     * clients used only for authentication (JWT, password, SAML, ...) cannot
-     * overwrite or clear the synced values.
+     * By default every allowed client may write managed attributes.
      *
      * @since 1.19.4
      */

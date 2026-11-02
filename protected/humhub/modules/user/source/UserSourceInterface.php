@@ -9,6 +9,7 @@
 namespace humhub\modules\user\source;
 
 use humhub\modules\user\models\User;
+use yii\authclient\ClientInterface;
 
 /**
  * UserSourceInterface defines the contract for user provisioning sources.
@@ -101,6 +102,21 @@ interface UserSourceInterface
      * An empty array means all configured auth clients are allowed.
      */
     public function getAllowedAuthClientIds(): array;
+
+    /**
+     * Whether the given auth client may write the managed attributes of this
+     * source's users on login (via {@see \humhub\modules\user\services\AuthClientService::updateUser()}).
+     * Only consulted for clients that are allowed to log in at all, see
+     * {@see getAllowedAuthClientIds()}.
+     *
+     * Sources that keep their users in sync from their own backend (e.g. LDAP,
+     * SCIM) return false for clients used only for authentication (JWT,
+     * password, SAML, ...), so that these cannot overwrite or clear the synced
+     * values. {@see BaseUserSource} returns true.
+     *
+     * @since 1.20
+     */
+    public function isAttributeSyncAllowed(ClientInterface $authClient): bool;
 
     /**
      * Whether this source claims responsibility for creating a HumHub user

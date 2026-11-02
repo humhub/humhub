@@ -2,6 +2,11 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **`UserSourceInterface::isAttributeSyncAllowed(ClientInterface $authClient): bool` is new.**
+  It decides whether an auth client allowed to log in may also write the managed attributes of
+  the source's users on login. Sources extending `BaseUserSource` need no change: it returns
+  `true` since 1.19.4. Sources implementing the interface directly have to add the method.
+
 - **`/api/v2` controllers are rate limited by their declared scopes.** The filter
   `humhub\components\api\ApiRateLimitFilter` is attached in `BaseController::behaviors()`;
   modules need no change. A module may add policies named `<channel>.<scope>` (`token` or
