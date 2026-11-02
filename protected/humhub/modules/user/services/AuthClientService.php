@@ -14,7 +14,7 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
-use humhub\modules\user\source\BaseUserSource;
+use humhub\modules\user\source\UserSourceInterface;
 use Yii;
 use yii\authclient\ClientInterface;
 
@@ -76,7 +76,7 @@ class AuthClientService
      *
      * The user's UserSource must allow this AuthClient to log in (via
      * `getAllowedAuthClientIds()`) and to write attributes (via
-     * {@see BaseUserSource::isAttributeSyncAllowed()}); otherwise the call is
+     * {@see UserSourceInterface::isAttributeSyncAllowed()}); otherwise the call is
      * a no-op so that AuthClients used purely for authentication cannot
      * overwrite data managed by the user's source.
      *
@@ -96,8 +96,7 @@ class AuthClientService
             return true;
         }
 
-        $userSource = $service->getUserSource();
-        if ($userSource instanceof BaseUserSource && !$userSource->isAttributeSyncAllowed($this->authClient)) {
+        if (!$service->getUserSource()->isAttributeSyncAllowed($this->authClient)) {
             return true;
         }
 
