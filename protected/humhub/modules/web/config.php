@@ -12,6 +12,9 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'urlManagerRules' => [
+        // Without extension: web servers serving `.js` URLs as static files would answer with a 404
+        'sw-js' => 'web/pwa-service-worker/index',
+        // URL until 1.19.3, still used by browsers updating a service worker registered with it
         'sw.js' => 'web/pwa-service-worker/index',
         'manifest.json' => 'web/pwa-manifest/index',
         'offline.pwa.html' => 'web/pwa-offline/index',
