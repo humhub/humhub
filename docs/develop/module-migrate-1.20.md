@@ -268,9 +268,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `Html::getNonce()` returning the raw value, and `null` outside a web request.
 
 - The PWA part of the `web` module moved into the core namespace and was consolidated into a
-  single controller and two services. The public URLs `/manifest.json`, `/sw.js` and
-  `/offline.pwa.html` are unchanged — installed apps keep working — but every class and internal
-  route behind them is new.
+  single controller and two services. The public URLs `/manifest.json` and `/offline.pwa.html`
+  are unchanged, and the service worker keeps answering at `/sw.js` besides its new URL `/sw-js`
+  (since 1.19.4) — installed apps keep working — but every class and internal route behind them
+  is new.
 
   | Removed | Replacement |
   |---|---|

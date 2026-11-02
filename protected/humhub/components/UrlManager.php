@@ -32,6 +32,7 @@ class UrlManager extends \yii\web\UrlManager
             ['class' => WellKnownUrlRule::class],
             PwaService::URL_MANIFEST => PwaService::ROUTE_MANIFEST,
             PwaService::URL_SERVICE_WORKER => PwaService::ROUTE_SERVICE_WORKER,
+            PwaService::URL_SERVICE_WORKER_LEGACY => PwaService::ROUTE_SERVICE_WORKER,
             PwaService::URL_OFFLINE => PwaService::ROUTE_OFFLINE,
         ]);
     }

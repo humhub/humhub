@@ -71,8 +71,18 @@ HumHub Changelog
 - Enh #8403: The control links of the content menu (`EditLink`, `DeleteLink`, `PermaLink`, … and `ContentTopicButton`) are `MenuLink`s instead of widgets and describe themselves to the `/api/v2/content/<id>/controls` endpoint; `WallEntryControlLink` is deprecated, `DescribableWidget` removed
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 
-1.19.3 (Unreleased)
+1.19.4 (Unreleased)
 -------------------
+
+- Fix #8663: `module/remove` did nothing for an enabled module whose files are missing (e.g. no compatible version to reinstall); its enabled flag is now removed from the database
+- Fix #8665: The latest HumHub version (About page, update notification) was only refreshed after flushing the cache
+- Fix #8667: `Undefined property: Application::$user` when the `user` component sets a `returnUrl` (regression of #8657)
+- Fix #8668: Member search actions in the group administration now check access to the requested group
+- Fix #8669: Auth clients allowed only for login (e.g. JWT, password, SAML) cleared or overwrote the LDAP-managed profile fields of LDAP users; new `BaseUserSource::isAttributeSyncAllowed()` decides whether an auth client may write managed attributes; LDAP accepts only its own client
+- Fix #8671: The service worker is served at `/sw-js` instead of `/sw.js`, as web servers serving `.js` URLs as static files answered it with a 404 (the old URL still works when it reaches HumHub)
+
+1.19.3 (October 27, 2026)
+-------------------------
 
 - Fix #8646: Text of notifications in the top bar dropdown was invisible (top bar text color instead of the list text color, since 1.19.1)
 - Fix #8648: Invite tokens (link and email) could end with `-` or `_`, which is often cut off when the link is auto-detected in texts
@@ -80,6 +90,8 @@ HumHub Changelog
 - Fix #8652: Concurrent requests with the same new or expired session ID (e.g. several AJAX requests after the session expired) failed with "Duplicate entry" in `user_http_session`
 - Fix #8654: Activity types excluded from e-mail summaries reappeared after the update to 1.19 (renamed activity classes were not migrated in settings)
 - Fix #8656: A failing daily or hourly cron handler caused the whole run to repeat on every cron tick (e.g. daily summary e-mail spam); run times are now stored before the handlers run; Exceptions of cron handlers are now logged (category `cron`)
+- Fix #8657: A user gate page (e.g. `/twofa/check`) opened by a guest was stored as the return URL and caused an endless redirect loop after login
+- Fix #8660: Update `phpoffice/phpspreadsheet` to 5.10.0 (GHSA-3x94-m842-937c), `symfony/http-foundation` and `symfony/yaml` to 7.4.21 (security fixes)
 
 1.19.2 (October 26, 2026)
 -------------------------

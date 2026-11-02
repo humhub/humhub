@@ -39,7 +39,7 @@ class PwaController extends Controller
     }
 
     /**
-     * Serves the service worker as `/sw.js`.
+     * Serves the service worker as `/sw-js` (and `/sw.js` until 1.19.3).
      */
     public function actionServiceWorker(): string
     {

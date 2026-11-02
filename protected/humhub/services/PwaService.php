@@ -28,7 +28,10 @@ class PwaService
      * cache of already installed apps and must therefore stay stable.
      */
     public const URL_MANIFEST = 'manifest.json';
-    public const URL_SERVICE_WORKER = 'sw.js';
+    // Without extension: web servers serving `.js` URLs as static files would answer with a 404
+    public const URL_SERVICE_WORKER = 'sw-js';
+    // URL until 1.19.3, still used by browsers updating a service worker registered with it
+    public const URL_SERVICE_WORKER_LEGACY = 'sw.js';
     public const URL_OFFLINE = 'offline.pwa.html';
 
     /**

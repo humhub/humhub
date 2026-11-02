@@ -36,7 +36,7 @@ class CheckForNewVersion extends ActiveJob
             return;
         }
 
-        $latestVersion = HumHubAPI::getLatestHumHubVersion();
+        $latestVersion = HumHubAPI::getLatestHumHubVersion(false);
 
         if (!empty($latestVersion)) {
 

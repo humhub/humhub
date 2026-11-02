@@ -211,6 +211,28 @@ The result is a strictly ordered funnel — password → 2FA → terms → wizar
 2FA gate may intercept the terms page, never vice versa. Cycles are impossible and no module
 needs to know any other module's routes.
 
+## Return URL
+
+The dispatcher stores the requested URL as the return URL before it sends the user into a gate
+(`GateFilter`), and a gate's page redirects to `Yii::$app->user->getReturnUrl()` once the gate
+is closed.
+
+**A gate's own page is never a return URL.** Core's login redirect (`loginRequired()`) stores the
+requested URL, so a guest opening a gate page (for example `/twofa/check` from a tab left open after
+the session expired) would otherwise get that page as return URL. After login and passing the gate,
+the gate page would redirect to itself, endlessly (`ERR_TOO_MANY_REDIRECTS`). The user component
+therefore:
+
+- does not store the `getRoute()` page of a registered gate as return URL (`setReturnUrl()`); a previously stored
+  return URL is dropped, so the user lands on the home page after login, and
+- falls back to the home URL in `getReturnUrl()` if the stored return URL is a gate page (covers
+  values stored in running sessions).
+
+URLs are compared by the route they resolve to, so pretty URLs and `?r=` URLs behave the same.
+`getAllowedRoutes()` are not affected. Gate pages and modules need no special handling: just
+redirect to `Yii::$app->user->getReturnUrl()`. `GateManager::isGateUrl()` / `isGateRoute()` are available
+for custom checks.
+
 ## Holding back optional UI until all gates are closed
 
 A module that wants to show something optional only after the user has completed every

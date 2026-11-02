@@ -69,6 +69,7 @@ class Request extends \yii\web\Request
                 $_SERVER['SCRIPT_NAME'],
                 [
                     '/' . PwaService::URL_SERVICE_WORKER,
+                    '/' . PwaService::URL_SERVICE_WORKER_LEGACY,
                     '/' . PwaService::URL_OFFLINE,
                     '/' . PwaService::URL_MANIFEST,
                 ],

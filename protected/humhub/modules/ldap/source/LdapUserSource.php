@@ -22,6 +22,7 @@ use humhub\modules\user\services\AuthClientUserService;
 use humhub\modules\user\source\BaseUserSource;
 use humhub\modules\user\source\UserSourceInterface;
 use Yii;
+use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
 use yii\helpers\VarDumper;
 
@@ -351,6 +352,18 @@ class LdapUserSource extends BaseUserSource
         $registration->setModels();
 
         return $registration;
+    }
+
+    /**
+     * LDAP attributes are synced only from the directory: by the LDAP auth
+     * client of this connection on login and by the LDAP sync, both of which
+     * provide the complete directory entry. Other allowed auth clients (JWT,
+     * password, SAML, ...) only authenticate; their partial attribute sets
+     * would otherwise clear the LDAP-managed profile fields.
+     */
+    public function isAttributeSyncAllowed(ClientInterface $authClient): bool
+    {
+        return $authClient instanceof LdapAuth && $authClient->connectionId === $this->connectionId;
     }
 
     /**

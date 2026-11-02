@@ -1,7 +1,7 @@
 name: Release Package
 
 # Builds the HumHub release packages (zip, tar.gz) for a tag and uploads them to the
-# humhub.com web server (temp directory for now). See docs/develop/internals-release-package.md
+# humhub.com web server, which publishes them and creates the release record. See docs/develop/internals-release-package.md
 #
 # Prerequisites in humhub/humhub:
 #   Secret   HUMHUB_RELEASE_UPLOAD_TOKEN — Bearer token of the web API (params['releaseUploadToken'])
@@ -92,6 +92,7 @@ jobs:
         env:
           UPLOAD_URL: ${{ secrets.HUMHUB_RELEASE_UPLOAD_URL }}
           UPLOAD_TOKEN: ${{ secrets.HUMHUB_RELEASE_UPLOAD_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if [ -z "$UPLOAD_URL" ] || [ -z "$UPLOAD_TOKEN" ]; then
             echo "::error::Secrets HUMHUB_RELEASE_UPLOAD_URL and HUMHUB_RELEASE_UPLOAD_TOKEN must be set"
@@ -99,8 +100,17 @@ jobs:
           fi
           json=$(ls dist/humhub-*.json)
           name=$(basename "$json" .json)
+          # Release notes and date for the release record (empty if the tag has no GitHub release)
+          release_date=""
+          : > release-notes.md
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body,publishedAt > release.json; then
+            jq -r '.body // ""' release.json > release-notes.md
+            release_date=$(jq -r '.publishedAt // ""' release.json)
+          fi
           curl --fail-with-body --show-error --silent --max-time 900 -X POST "$UPLOAD_URL" \
             -H "Authorization: Bearer $UPLOAD_TOKEN" \
             -F "zip=@dist/$name.zip" \
             -F "targz=@dist/$name.tar.gz" \
-            -F "json=@$json"
+            -F "json=@$json" \
+            -F "releaseNotes=<release-notes.md" \
+            -F "releaseDate=$release_date"

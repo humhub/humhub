@@ -15,6 +15,7 @@ use humhub\components\gates\UserGate;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\base\Event;
+use yii\helpers\Url;
 
 class GateManagerTest extends HumHubDbTestCase
 {
@@ -355,5 +356,39 @@ class GateManagerTest extends HumHubDbTestCase
         } finally {
             Yii::$app->session->remove(GateManager::SESSION_KEY_ISSUED_CREDENTIAL);
         }
+    }
+
+    public function testIsGateRouteMatchesOnlyOwnFlowRoutes()
+    {
+        $manager = $this->createManager(
+            new FakeGate(['id' => 'a', 'route' => ['/mygate/check'], 'allowedRoutes' => ['user/auth']]),
+        );
+
+        $this->assertTrue($manager->isGateRoute('mygate/check'));
+        $this->assertTrue($manager->isGateRoute('/mygate/check/'));
+        $this->assertTrue($manager->isGateRoute('mygate/check/index'));
+        $this->assertFalse($manager->isGateRoute('mygate/checkother'));
+        $this->assertFalse($manager->isGateRoute('dashboard'));
+        // Allowed routes are exemptions, not gate pages
+        $this->assertFalse($manager->isGateRoute('user/auth/logout'));
+    }
+
+    public function testIsGateUrlResolvesUrlsToRoutes()
+    {
+        $manager = $this->createManager(
+            new FakeGate(['id' => 'a', 'route' => ['/mygate/check']]),
+        );
+
+        $this->assertTrue($manager->isGateUrl(Url::to(['/mygate/check'])));
+        $this->assertTrue($manager->isGateUrl(Url::to(['/mygate/check', 'foo' => 'bar'])));
+        $this->assertTrue($manager->isGateUrl(Url::to(['/mygate/check'], true)));
+        $this->assertTrue($manager->isGateUrl('/index.php?r=mygate%2Fcheck'));
+        $this->assertTrue($manager->isGateUrl(['/mygate/check']));
+
+        $this->assertFalse($manager->isGateUrl(Url::to(['/dashboard/dashboard'])));
+        $this->assertFalse($manager->isGateUrl(Url::to(['/dashboard/dashboard', 'next' => '/mygate/check'])));
+        $this->assertFalse($manager->isGateUrl('https://other.example.com/mygate/check'));
+        $this->assertFalse($manager->isGateUrl(''));
+        $this->assertFalse($manager->isGateUrl(null));
     }
 }
