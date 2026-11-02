@@ -56,22 +56,6 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
     public array $allowedAuthClientIds = [];
 
     /**
-     * @var bool Whether auth clients may write the managed attributes of this
-     * source's users on login (via {@see \humhub\modules\user\services\AuthClientService::updateUser()}).
-     *
-     * Sources that keep their users in sync from their own backend (e.g. LDAP,
-     * SCIM) disable this, so that clients used only for authentication (JWT,
-     * password, SAML, ...) cannot overwrite or clear the synced values.
-     * Such sources may still accept their own client by overriding
-     * {@see isAttributeSyncAllowed()}.
-     *
-     * This is a property of the source type, not an admin setting.
-     *
-     * @since 1.19.4
-     */
-    public bool $syncFromAuthClients = true;
-
-    /**
      * @var bool Whether new users from this source require admin approval.
      */
     public bool $approval = false;
@@ -128,14 +112,21 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
     }
 
     /**
-     * Whether the given auth client may write managed attributes of this
-     * source's users on login. See {@see $syncFromAuthClients}.
+     * Whether the given auth client may write the managed attributes of this
+     * source's users on login (via {@see \humhub\modules\user\services\AuthClientService::updateUser()}).
+     * Only consulted for clients that are allowed to log in at all, see
+     * {@see getAllowedAuthClientIds()}.
+     *
+     * By default every allowed client may. Sources that keep their users in
+     * sync from their own backend (e.g. LDAP, SCIM) override this, so that
+     * clients used only for authentication (JWT, password, SAML, ...) cannot
+     * overwrite or clear the synced values.
      *
      * @since 1.19.4
      */
     public function isAttributeSyncAllowed(ClientInterface $authClient): bool
     {
-        return $this->syncFromAuthClients;
+        return true;
     }
 
     /**

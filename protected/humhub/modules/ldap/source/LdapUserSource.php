@@ -42,16 +42,6 @@ class LdapUserSource extends BaseUserSource
      */
     public ?string $connectionId = null;
 
-    /**
-     * @inheritdoc
-     *
-     * LDAP attributes are synced only from the directory: by the own LDAP auth
-     * client on login and by the LDAP sync. Other allowed auth clients (JWT,
-     * password, SAML, ...) only authenticate; their partial attribute sets
-     * would otherwise clear the LDAP-managed profile fields.
-     */
-    public bool $syncFromAuthClients = false;
-
     public function init()
     {
         parent::init();
@@ -365,16 +355,15 @@ class LdapUserSource extends BaseUserSource
     }
 
     /**
-     * Always accepts the LDAP auth client of this connection, which provides
-     * the complete directory entry.
+     * LDAP attributes are synced only from the directory: by the LDAP auth
+     * client of this connection on login and by the LDAP sync, both of which
+     * provide the complete directory entry. Other allowed auth clients (JWT,
+     * password, SAML, ...) only authenticate; their partial attribute sets
+     * would otherwise clear the LDAP-managed profile fields.
      */
     public function isAttributeSyncAllowed(ClientInterface $authClient): bool
     {
-        if ($authClient instanceof LdapAuth && $authClient->connectionId === $this->connectionId) {
-            return true;
-        }
-
-        return parent::isAttributeSyncAllowed($authClient);
+        return $authClient instanceof LdapAuth && $authClient->connectionId === $this->connectionId;
     }
 
     /**

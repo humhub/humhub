@@ -11,6 +11,7 @@ use humhub\modules\user\authclient\Password;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
+use humhub\modules\user\source\GenericUserSource;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\authclient\BaseClient;
@@ -122,18 +123,18 @@ class LdapAttributeSyncTest extends HumHubDbTestCase
         $this->assertProfile('Peter', 'Tester');
     }
 
-    public function testForeignClientUpdatesWhenSyncFromAuthClientsIsEnabled(): void
+    public function testOtherSourcesAcceptAllowedClientsByDefault(): void
     {
-        $this->installSource(['allowedAuthClientIds' => ['ldap', 'jwt'], 'syncFromAuthClients' => true]);
+        $this->installGenericSource(['jwt']);
 
         $this->updateUser($this->makeClient('jwt', ['id' => 'User1', 'firstname' => 'John', 'lastname' => 'Doe']));
 
         $this->assertProfile('John', 'Doe');
     }
 
-    public function testNotAllowedClientDoesNotUpdate(): void
+    public function testOtherSourcesIgnoreNotAllowedClients(): void
     {
-        $this->installSource(['syncFromAuthClients' => true]);
+        $this->installGenericSource(['saml']);
 
         $this->updateUser($this->makeClient('jwt', ['id' => 'User1', 'firstname' => 'John', 'lastname' => 'Doe']));
 
@@ -144,6 +145,16 @@ class LdapAttributeSyncTest extends HumHubDbTestCase
     {
         $source = new LdapUserSource(array_merge(['connectionId' => 'ldap'], $config));
         Yii::$app->userSourceCollection->setUserSource('ldap', $source);
+    }
+
+    private function installGenericSource(array $allowedAuthClientIds): void
+    {
+        Yii::$app->userSourceCollection->setUserSource('generic', new GenericUserSource([
+            'id' => 'generic',
+            'managedAttributes' => ['firstname', 'lastname'],
+            'allowedAuthClientIds' => $allowedAuthClientIds,
+        ]));
+        $this->user->updateAttributes(['user_source' => 'generic']);
     }
 
     private function updateUser(BaseClient $client): bool
