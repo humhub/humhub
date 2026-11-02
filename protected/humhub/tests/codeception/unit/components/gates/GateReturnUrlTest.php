@@ -75,4 +75,24 @@ class GateReturnUrlTest extends HumHubDbTestCase
         // A gate URL is no valid default either
         $this->assertEquals(Yii::$app->getHomeUrl(), Yii::$app->user->getReturnUrl(['/mygate/check']));
     }
+
+    /**
+     * A `returnUrl` configured on the `user` component is applied while the component is still
+     * being created, i.e. before `Yii::$app->user` exists. The gate check must not read
+     * `Yii::$app->user` in that state (`MustChangePasswordGate::getRoute()` does), otherwise PHP
+     * answers the re-entrant `__get()` with "Undefined property: Application::$user".
+     */
+    public function testReturnUrlConfiguredOnUserComponentDoesNotRecurse()
+    {
+        $user = Yii::$app->user;
+        $url = Url::to(['/dashboard/dashboard']);
+
+        try {
+            Yii::$app->set('user', array_merge(Yii::$app->getComponents()['user'], ['returnUrl' => $url]));
+
+            $this->assertEquals($url, Yii::$app->user->getReturnUrl());
+        } finally {
+            Yii::$app->set('user', $user);
+        }
+    }
 }
