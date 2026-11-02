@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #8665: The latest HumHub version (About page, update notification) was only refreshed after flushing the cache
 - Fix #8667: `Undefined property: Application::$user` when the `user` component sets a `returnUrl` (regression of #8657)
 - Fix #8668: Member search actions in the group administration now check access to the requested group
+- Fix #8669: Auth clients allowed only for login (e.g. JWT, password, SAML) cleared or overwrote the LDAP-managed profile fields of LDAP users; new `BaseUserSource::$syncFromAuthClients` (disabled for LDAP) controls whether auth clients may write managed attributes
 - Fix #8671: The service worker is served at `/sw-js` instead of `/sw.js`, as web servers serving `.js` URLs as static files answered it with a 404 (the old URL still works when it reaches HumHub)
 
 1.19.3 (October 27, 2026)

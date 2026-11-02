@@ -27,10 +27,16 @@ A user has exactly **one UserSource** (`user.user_source`) and **one or more Aut
 This single list on every UserSource governs **three things**:
 
 1. **Login authorisation** — existing user with `user_source = X` may only log in via auth clients listed by source `X`'s allow list. Empty list = all clients allowed.
-2. **Attribute sync gate** — only listed auth clients may push attributes into the user via `updateUser()`. Empty list = no sync gating, all login-allowed clients can sync.
+2. **Attribute sync gate** — only listed auth clients may push attributes into the user via `updateUser()`. Empty list = no sync gating, all login-allowed clients can sync. This additionally requires `$syncFromAuthClients`, see below.
 3. **`createUser` dispatch** — when an unknown user logs in via auth client `Y`, the UserSource collection is iterated; the first source with a non-empty list containing `Y` claims the user. If no source claims it, `LocalUserSource` is the implicit fallback.
 
 The `Password` client (ID `local`) is the exception to 3.: it always belongs to `LocalUserSource`. Listing `local` on another source only allows that source's users to log in with their local password (`user_password`); it never makes the source claim new users or count as a "trusted" provider.
+
+### `$syncFromAuthClients`
+
+Whether auth clients may write the managed attributes of the source's users on login at all (default `true`). Sources that keep their users in sync from their own backend (LDAP, SCIM) disable it, so that clients allowed only for authentication (JWT, Password, SAML, …) cannot overwrite or clear the synced values. Such a source can still accept its own client by overriding `isAttributeSyncAllowed(ClientInterface $authClient)` — `LdapUserSource` accepts the `LdapAuth` client of its connection, which delivers the complete directory entry.
+
+This is a property of the source type, not an admin setting.
 
 ## Examples
 
@@ -149,6 +155,7 @@ What happens:
 - The Login form iterates over every registered AuthClient — so adding `partner_corp` automatically extends username/password login to that directory.
 - LDAP-managed attributes (those configured per `ProfileField::ldap_attribute` + `LdapConnectionConfig::syncUserTableAttributes`) are locked in the profile UI.
 - Login via Password is blocked unless the admin extended the UserSource's `allowedAuthClientIds` (defaults to just the same connection ID).
+- Other allowed auth clients (Password, JWT, SAML, …) only authenticate: `$syncFromAuthClients` is disabled, so only the connection's own `LdapAuth` client and the LDAP sync write the LDAP-managed attributes.
 - Each connection has its own `user_source` (e.g. `user.user_source = 'partner_corp'`) and matching `user_auth.source` rows.
 
 #### Identity resolution & self-healing
