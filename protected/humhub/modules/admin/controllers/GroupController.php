@@ -326,7 +326,7 @@ class GroupController extends Controller
 
         $keyword = Yii::$app->request->get('keyword');
         $group = Group::findOne(Yii::$app->request->get('id'));
-
+        $this->checkGroupAccess($group);
 
         $subQuery = (new Query())->select('*')->from(GroupUser::tableName() . ' g')->where([
             'and',
@@ -353,10 +353,7 @@ class GroupController extends Controller
     public function actionAdminUserSearch($keyword, $id)
     {
         $group = Group::findOne(['id' => $id]);
-
-        if (!$group) {
-            throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
-        }
+        $this->checkGroupAccess($group);
 
         return $this->asJson(UserPicker::filter([
             'query' => $group->getUsers(),
