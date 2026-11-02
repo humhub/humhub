@@ -10,6 +10,7 @@ namespace humhub\modules\user\source;
 
 use humhub\modules\user\models\User;
 use Yii;
+use yii\authclient\ClientInterface;
 use yii\base\Component;
 use yii\helpers\VarDumper;
 
@@ -108,6 +109,24 @@ abstract class BaseUserSource extends Component implements UserSourceInterface
     public function getAllowedAuthClientIds(): array
     {
         return $this->allowedAuthClientIds;
+    }
+
+    /**
+     * Whether the given auth client may write the managed attributes of this
+     * source's users on login (via {@see \humhub\modules\user\services\AuthClientService::updateUser()}).
+     * Only consulted for clients that are allowed to log in at all, see
+     * {@see getAllowedAuthClientIds()}.
+     *
+     * By default every allowed client may. Sources that keep their users in
+     * sync from their own backend (e.g. LDAP, SCIM) override this, so that
+     * clients used only for authentication (JWT, password, SAML, ...) cannot
+     * overwrite or clear the synced values.
+     *
+     * @since 1.19.4
+     */
+    public function isAttributeSyncAllowed(ClientInterface $authClient): bool
+    {
+        return true;
     }
 
     /**
