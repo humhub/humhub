@@ -1047,6 +1047,16 @@
             href: "#",
             onClick: _cache[2] || (_cache[2] = vue$1.withModifiers((...args) => $options.toggleReply && $options.toggleReply(...args), ["prevent"]))
           }, [
+            _cache[8] || (_cache[8] = vue$1.createElementVNode(
+              "i",
+              {
+                class: "ti ti-message-circle",
+                "aria-hidden": "true"
+              },
+              null,
+              -1
+              /* CACHED */
+            )),
             vue$1.createTextVNode(
               vue$1.toDisplayString($options.replyLabel),
               1
@@ -1058,17 +1068,8 @@
               style: vue$1.normalizeStyle($data.childTotal > 0 ? null : "display:none")
             }, " (" + vue$1.toDisplayString($data.childTotal) + ")", 13, _hoisted_12)
           ])) : vue$1.createCommentVNode("v-if", true),
-          $options.showReplyToggle && $options.likeState && $options.likeState.canLike ? (vue$1.openBlock(), vue$1.createElementBlock(
-            vue$1.Fragment,
-            { key: 1 },
-            [
-              vue$1.createTextVNode(" · ")
-            ],
-            64
-            /* STABLE_FRAGMENT */
-          )) : vue$1.createCommentVNode("v-if", true),
           $options.likeState && $options.likeState.canLike ? (vue$1.openBlock(), vue$1.createBlock(_component_LikeButton, {
-            key: 2,
+            key: 1,
             "record-id": $props.comment.recordId,
             "like-count": $options.likeState.total,
             "current-user-liked": $options.likeState.liked
@@ -1109,7 +1110,7 @@
                         key: $options.revisionKey(child)
                       },
                       [
-                        _cache[8] || (_cache[8] = vue$1.createElementVNode(
+                        _cache[9] || (_cache[9] = vue$1.createElementVNode(
                           "hr",
                           { class: "comment-separator" },
                           null,

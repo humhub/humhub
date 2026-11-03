@@ -318,12 +318,25 @@
         }
     }
 
-    .wall-entry-controls a {
-        font-size: 11px;
+    // Row of the actions below a content (Comment, Like, ...): the gap separates them, no glue text
+    .wall-entry-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 10px;
         margin-top: 10px;
-        margin-bottom: 0;
-        color: var(--hh-text-color-soft);
-        transition: color 0.3s;
+
+        a {
+            font-size: 1rem;
+            color: var(--hh-text-color-soft);
+            transition: color 0.3s;
+
+            // `.link` too, so the generic icon gap of `a.link` does not win over this one
+            > i.ti, &.link > i.ti {
+                font-size: 1.25rem;
+                margin-right: 0.25rem;
+            }
+        }
     }
 
     #wall-stream-filter-nav {

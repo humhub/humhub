@@ -1877,6 +1877,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   theme that styled menus through the removed selectors restyles them through the
   `$dropdown-*` variables.
 
+- **The action row below a content has icons and no separators.** `.wall-entry-controls` is a
+  flex row whose `column-gap` spaces its links, so `WallEntryLinks::$seperator` is now empty, and
+  the Comment, Reply and Like links have a leading icon (`message-circle`, `thumb-up`). A view
+  that builds its own `.wall-entry-controls` row drops its glue text — a literal `·` or the
+  `seperator` of a `ContentObjectLinks` inside it (`'seperator' => ''`); otherwise the
+  separator stands between two gaps.
+
 - **A person filter for lists.** New: `user\components\listing\UserFilter`, a ready filter
   (`new UserFilter('authorId', column: 'content.created_by', definition: ['label' => …])`;
   parameter `userId` by default, an `apply` callback instead of `column`): the id of a user the

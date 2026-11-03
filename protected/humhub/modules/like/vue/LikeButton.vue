@@ -1,7 +1,7 @@
 <template>
     <span v-if="ready" class="likeLinkContainer">
         <template v-if="guest">
-            <a :href="loginUrl" data-bs-target="#globalModal">{{ likeLabel }}</a>
+            <a :href="loginUrl" data-bs-target="#globalModal"><i class="ti ti-thumb-up" aria-hidden="true"></i>{{ likeLabel }}</a>
             <!--
                 The `{{ ' ' }}` interpolation is load-bearing, not decorative: legacy
                 `likeLink.php` had this as whitespace (a newline+indent) BETWEEN the anchor
@@ -14,8 +14,8 @@
             <template v-if="count > 0">{{ ' ' }}<span class="likeCount">({{ count }})</span></template>
         </template>
         <template v-else>
-            <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()">{{ likeLabel }}</a>
-            <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()">{{ unlikeLabel }}</a>
+            <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()"><i class="ti ti-thumb-up" aria-hidden="true"></i>{{ likeLabel }}</a>
+            <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()"><i class="ti ti-thumb-up-filled" aria-hidden="true"></i>{{ unlikeLabel }}</a>
             <!-- See the guest branch's own comment above on the `{{ ' ' }}` interpolation. -->
             <template v-if="count > 0">{{ ' ' }}<a href="#" @click.prevent="showUserList = true">
                 <span class="likeCount">({{ count }})</span>

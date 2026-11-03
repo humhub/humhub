@@ -24,7 +24,7 @@ class WallEntryLinks extends BaseStack
     /**
      * @inheritdoc
      */
-    public $seperator = ' &middot; ';
+    public $seperator = '';
 
     /**
      * @inheritdoc
