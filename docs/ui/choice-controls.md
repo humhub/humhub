@@ -83,7 +83,9 @@ All controls are Bootstrap's **`.form-check`** family. The look is set through B
 
 - Checkboxes in tables and the item browser use the same `.form-check-input`.
 - **File:** `_form.scss`, behind `$prev-form`.
-- **Sass variables:** Bootstrap's `$form-check-input-width`, `$form-check-input-border-radius`,
+- **Sass variables:** `$form-choice-size` (20px) and `$form-choice-border-radius` (4px) size the
+  HumHub checkbox and radio (`input[type=checkbox|radio]`, since 1.20); Bootstrap's
+  `$form-check-input-width`, `$form-check-input-border-radius`,
   `$form-check-input-checked-bg-color` (accent), `$form-switch-width`, `$form-switch-color`,
   `$form-switch-checked-color`. Radio cards use `$spacer`, `--bs-border-*` and the accent; no own
   variables.

@@ -49,8 +49,16 @@ $link-hover-color: $link-color;
 $code-color: mix(black, $accent, 10%) !default;
 $body-color: #555 !default;
 $body-bg: #ededed !default;
-$input-border-color: #e9ecef !default;
+// Form fields: 1px border (Bootstrap's $input-border-width) in the page background colour, 38px
+// high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
+$input-border-color: var(--hh-background-color-page) !default;
 $input-bg: #fff !default; // default is $body-bg
+$input-padding-y: 7.5px !default;
+// No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
+$input-box-shadow: 0 0 0 0 transparent !default;
+$input-hover-border-color: var(--bs-accent) !default; // HumHub: an editable field under the pointer
+$input-focus-border-color: var(--bs-accent) !default;
+$input-focus-box-shadow: 0 0 0 2px color-mix(in srgb, var(--bs-accent) 50%, transparent) !default;
 
 
 //
@@ -198,7 +206,7 @@ $badge-color: var(--bs-secondary-color) !default;
 // Buttons
 // --------------------------------------------------
 
-$btn-padding-y: 0.5rem !default;
+$btn-padding-y: 7.5px !default; // 38px high, as a form field
 $btn-padding-x: 1.1rem !default;
 $btn-padding-y-sm: 0.2rem !default;
 $btn-padding-x-sm: 0.5rem !default;

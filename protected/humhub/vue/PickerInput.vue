@@ -10,7 +10,7 @@
                     :data-value="item.id"
                     :title="item.locked ? msg('locked') : null"
                 >
-                    <PickerImage v-if="item.image" class="picker-chip-image" :image="item.image" :size="18" />
+                    <PickerImage v-if="item.image" class="picker-chip-image" :image="item.image" :size="22" />
                     <span class="picker-chip-label">{{ item.text }}</span>
                     <button
                         v-if="!item.locked && !isDisabled"

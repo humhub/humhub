@@ -34,7 +34,6 @@ echo $form->field($addModel, 'name', [
         'style' => 'margin-bottom: 0',
     ],
     'inputOptions' => [
-        'style' => 'height:36px',
         'class' => 'form-control',
         'placeholder' => Yii::t('AdminModule.settings', 'Add Topic'),
     ],

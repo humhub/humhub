@@ -103,7 +103,9 @@ button is a field with chips and an input. Class names and SCSS follow
   `$select-menu-icon-color`, `$select-menu-icon-space`, `$select-menu-max-height` (the listbox's
   height before it scrolls), `$picker-chip-height`, `$picker-chip-image-size`, `$picker-chip-bg`,
   `$picker-chip-color`, `$picker-chip-font-size`,
-  `$picker-color-size`, `$picker-list-item-bg`; the rest is `$input-*` and `$dropdown-*`.
+  `$picker-color-size`, `$picker-list-item-bg`, `$select-menu-option-padding-y` (a list row as
+  high as a field; context menus keep `$dropdown-item-padding-y`); the rest is `$input-*` and
+  `$dropdown-*`.
 
 ## Implementation in core
 

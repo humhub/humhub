@@ -97,9 +97,10 @@
 
         .form-search-action {
             margin-top: auto;
+            // As high as the search field beside it
             .btn {
-                width: 35px;
-                height: 35px;
+                width: $input-height;
+                height: $input-height;
                 padding: 0;
                 font-size: 20px;
             }

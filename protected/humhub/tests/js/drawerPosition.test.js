@@ -59,6 +59,17 @@ describe('positionDrawer', () => {
         expect(drawer.style.maxHeight).toBe('52px');
     });
 
+    it('measures the field once the drawer is out of the page flow', () => {
+        // In the flow the drawer can lengthen the page: a scrollbar shifts the field until it is fixed
+        const { fieldEl, drawer } = setup({ field: rect(100, 38), drawerHeight: 200 });
+        fieldEl.getBoundingClientRect = () => (drawer.style.position === 'fixed' ? rect(100, 38, 18, 400) : rect(100, 38, 10, 385));
+
+        positionDrawer(fieldEl, drawer, 384);
+
+        expect(drawer.style.left).toBe('18px');
+        expect(drawer.style.width).toBe('400px');
+    });
+
     it('counts the visual viewport (on-screen keyboard)', () => {
         const { fieldEl, drawer } = setup({ field: rect(300, 38), drawerHeight: 200, viewport: 800 });
         window.visualViewport = { offsetTop: 0, height: 400 };
