@@ -190,12 +190,16 @@
     }
   };
   const _hoisted_1 = ["innerHTML"];
-  const _hoisted_2 = ["innerHTML"];
-  const _hoisted_3 = { class: "visually-hidden" };
-  const _hoisted_4 = { class: "dropdown-menu" };
-  const _hoisted_5 = ["innerHTML"];
-  const _hoisted_6 = ["innerHTML"];
+  const _hoisted_2 = { class: "text-truncate" };
+  const _hoisted_3 = ["innerHTML"];
+  const _hoisted_4 = { class: "text-truncate" };
+  const _hoisted_5 = { class: "visually-hidden" };
+  const _hoisted_6 = { class: "dropdown-menu" };
   const _hoisted_7 = ["innerHTML"];
+  const _hoisted_8 = ["innerHTML"];
+  const _hoisted_9 = { class: "text-truncate" };
+  const _hoisted_10 = ["innerHTML"];
+  const _hoisted_11 = { class: "text-truncate" };
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     return $options.isNone ? (vue.openBlock(), vue.createElementBlock(
       "a",
@@ -207,7 +211,9 @@
       },
       [
         vue.createElementVNode("span", { innerHTML: $props.plusIconHtml }, null, 8, _hoisted_1),
-        vue.createTextVNode(
+        vue.createElementVNode(
+          "span",
+          _hoisted_2,
           vue.toDisplayString($options.friendsLabel),
           1
           /* TEXT */
@@ -230,8 +236,10 @@
             onClick: _cache[1] || (_cache[1] = vue.withModifiers((...args) => $options.accept && $options.accept(...args), ["prevent"]))
           },
           [
-            vue.createElementVNode("span", { innerHTML: $props.clockIconHtml }, null, 8, _hoisted_2),
-            vue.createTextVNode(
+            vue.createElementVNode("span", { innerHTML: $props.clockIconHtml }, null, 8, _hoisted_3),
+            vue.createElementVNode(
+              "span",
+              _hoisted_4,
               vue.toDisplayString($options.acceptLabel),
               1
               /* TEXT */
@@ -252,7 +260,7 @@
           [
             vue.createElementVNode(
               "span",
-              _hoisted_3,
+              _hoisted_5,
               vue.toDisplayString($options.toggleDropdownLabel),
               1
               /* TEXT */
@@ -261,14 +269,14 @@
           2
           /* CLASS */
         ),
-        vue.createElementVNode("ul", _hoisted_4, [
+        vue.createElementVNode("ul", _hoisted_6, [
           vue.createElementVNode("li", null, [
             vue.createElementVNode("a", {
               href: "#",
               class: "dropdown-item",
               onClick: _cache[2] || (_cache[2] = vue.withModifiers((...args) => $options.deny && $options.deny(...args), ["prevent"]))
             }, [
-              vue.createElementVNode("span", { innerHTML: $props.timesIconHtml }, null, 8, _hoisted_5),
+              vue.createElementVNode("span", { innerHTML: $props.timesIconHtml }, null, 8, _hoisted_7),
               vue.createTextVNode(
                 "  " + vue.toDisplayString($options.denyLabel),
                 1
@@ -291,8 +299,10 @@
       [
         vue.createElementVNode("span", {
           innerHTML: $props.hourglassIconHtml || $props.clockIconHtml
-        }, null, 8, _hoisted_6),
-        vue.createTextVNode(
+        }, null, 8, _hoisted_8),
+        vue.createElementVNode(
+          "span",
+          _hoisted_9,
           vue.toDisplayString($options.pendingLabel),
           1
           /* TEXT */
@@ -309,8 +319,10 @@
         onClick: _cache[4] || (_cache[4] = vue.withModifiers((...args) => $options.end && $options.end(...args), ["prevent"]))
       },
       [
-        vue.createElementVNode("span", { innerHTML: $props.checkIconHtml }, null, 8, _hoisted_7),
-        vue.createTextVNode(
+        vue.createElementVNode("span", { innerHTML: $props.checkIconHtml }, null, 8, _hoisted_10),
+        vue.createElementVNode(
+          "span",
+          _hoisted_11,
           vue.toDisplayString($options.friendsLabel),
           1
           /* TEXT */

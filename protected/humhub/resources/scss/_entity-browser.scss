@@ -60,7 +60,9 @@ $entity-grid-box-shadow-dark: $page-header-box-shadow-dark !default;
         display: flex;
         flex-direction: column;
         min-width: 0;
-        animation: hh-pop-in 0.4s ease both;
+        // `backwards`, not `both`: a transform kept after the animation would make each cell a
+        // stacking context, and a card's open dropdown would slide under the next row
+        animation: hh-pop-in 0.4s ease backwards;
         animation-delay: calc(var(--card-stagger-index, 0) * 32ms);
 
         > * {

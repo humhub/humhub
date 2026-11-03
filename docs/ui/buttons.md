@@ -103,7 +103,8 @@ of it. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 - **Size:** the icon button is a square of the button's own height, computed from its
   `--bs-btn-*` variables, so it lines up with fields and works for `.btn-sm` too. A dropdown
   toggle keeps its padding for the caret.
-- **Sass variables:** `$btn-icon-only-icon-size` (`$font-size-lg`, regular size only); the ghost
+- **Sass variables:** `$btn-icon-size` (`$font-size-lg`, regular size only), the icon beside a
+  label, and `$btn-icon-only-icon-size` (the same by default); the ghost
   colours are theme variables (`--hh-text-color-default`, `--bs-secondary-bg`). Bootstrap's
   `$btn-padding-*`, `$btn-border-radius` and `$btn-font-weight` stay the base.
 - **HumHub's `.btn-icon-only`** (`Button::icon()` without text) is the square icon button; the

@@ -1877,6 +1877,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   theme that styled menus through the removed selectors restyles them through the
   `$dropdown-*` variables.
 
+- **The legacy list group look applies inside a `.panel` only** (the left navigation and other
+  menus in a panel: 12px, semibold, the accent bar, horizontal scrolling on small screens). A
+  `.list-group` elsewhere — in a `.card`, a dialog — is plain Bootstrap. The selectors keep their
+  specificity (`:where(.panel)`), so theme overrides of `.list-group-item` still apply.
+
+- **An icon beside a button's label is `$btn-icon-size`** (`$font-size-lg`, like an icon-only
+  button's), not the label's size; `.btn-sm` keeps `1em`. An explicit size class (`.icon-lg`, …)
+  still wins.
+
 - **The action row below a content has icons and no separators.** `.wall-entry-controls` is a
   flex row whose `column-gap` spaces its links, so `WallEntryLinks::$seperator` is now empty, and
   the Comment, Reply and Like links have a leading icon (`message-circle`, `thumb-up`). A view

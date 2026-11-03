@@ -4,14 +4,14 @@
         href="#"
         :class="[buttonClass, { disabled: busy }]"
         @click.prevent="request"
-    ><span v-html="plusIconHtml"></span>{{ friendsLabel }}</a>
+    ><span v-html="plusIconHtml"></span><span class="text-truncate">{{ friendsLabel }}</span></a>
 
     <div v-else-if="isRequestReceived" :class="groupClass">
         <a
             href="#"
             :class="[stateClass, { disabled: busy }]"
             @click.prevent="accept"
-        ><span v-html="clockIconHtml"></span>{{ acceptLabel }}</a>
+        ><span v-html="clockIconHtml"></span><span class="text-truncate">{{ acceptLabel }}</span></a>
         <button
             type="button"
             class="dropdown-toggle"
@@ -36,14 +36,14 @@
         href="#"
         :class="[pendingClass || stateClass, { disabled: busy }]"
         @click.prevent="withdraw"
-    ><span v-html="hourglassIconHtml || clockIconHtml"></span>{{ pendingLabel }}</a>
+    ><span v-html="hourglassIconHtml || clockIconHtml"></span><span class="text-truncate">{{ pendingLabel }}</span></a>
 
     <a
         v-else-if="isFriends"
         href="#"
         :class="[stateClass, { disabled: busy }]"
         @click.prevent="end"
-    ><span v-html="checkIconHtml"></span>{{ friendsLabel }}</a>
+    ><span v-html="checkIconHtml"></span><span class="text-truncate">{{ friendsLabel }}</span></a>
 </template>
 
 <script>
