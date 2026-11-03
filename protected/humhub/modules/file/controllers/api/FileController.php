@@ -21,7 +21,8 @@ use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 /**
- * The file API (see `docs/develop/concept-api.md`): uploads files and deletes them again.
+ * The file API (see `docs/develop/concept-api.md`): uploads files, deletes them again and
+ * lists the versions of one.
  *
  * This is what the Vue `UploadField` posts to (see `docs/develop/ui-js-vuejs-forms.md`), and
  * the API counterpart of the legacy {@see \humhub\modules\file\actions\UploadAction} the
@@ -65,7 +66,12 @@ class FileController extends BaseController
     /**
      * @inheritdoc
      */
-    protected array $scopes = ['*' => 'content:write'];
+    protected array $scopes = ['versions' => 'content:read', '*' => 'content:write'];
+
+    /**
+     * @inheritdoc
+     */
+    protected array $guestAllowedActions = ['versions'];
 
     /**
      * @var string the request field name carrying the uploaded files
@@ -83,6 +89,7 @@ class FileController extends BaseController
                 'actions' => [
                     'create' => ['POST'],
                     'delete' => ['DELETE'],
+                    'versions' => ['GET', 'HEAD'],
                 ],
             ],
         ]);
@@ -128,6 +135,25 @@ class FileController extends BaseController
         }
 
         return ['results' => $results, 'errors' => $errors];
+    }
+
+    /**
+     * The versions of a file the caller may see, newest first (see
+     * {@see FileSerializer::versions()}).
+     */
+    public function actionVersions($id)
+    {
+        $file = File::findOne(['id' => (int)$id]);
+
+        if ($file === null) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$file->canView()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return ['results' => FileSerializer::versions($file)];
     }
 
     /**

@@ -195,4 +195,32 @@ class ActivityApiCest
 
         $I->seeResponseCodeIs(401);
     }
+
+    public function testScopesToAContentIncludingTheCallersOwn(ApiTester $I)
+    {
+        $I->wantTo('read the history of one content, my own activities included');
+        $own = $this->seedActivity(9, 1);
+        $other = $this->seedActivity(9, 3);
+        $elsewhere = $this->seedActivity(8, 3);
+
+        $I->amLoggedInAs(1);
+        $I->sendGet('activity', ['contentId' => Post::findOne(['id' => 9])->content->id]);
+
+        $I->seeResponseCodeIs(200);
+        $ids = array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].id'));
+        Assert::assertContains($own, $ids, 'my own activity belongs to the content\'s history');
+        Assert::assertContains($other, $ids);
+        Assert::assertNotContains($elsewhere, $ids, 'another content\'s activity is not in its history');
+    }
+
+    public function testRefusesAContentTheCallerCannotSee(ApiTester $I)
+    {
+        $I->wantTo('not read the history of a content I cannot see');
+        $I->amLoggedInAs(1);
+        $I->sendGet('activity', ['contentId' => Post::findOne(['id' => 11])->content->id]);
+        $I->seeResponseCodeIs(403);
+
+        $I->sendGet('activity', ['contentId' => 999999]);
+        $I->seeResponseCodeIs(404);
+    }
 }

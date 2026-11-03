@@ -96,6 +96,17 @@ class ActiveQueryActivity extends ActiveQuery
         return $this;
     }
 
+    /**
+     * The activities about one content (its creation, comments, likes, …). Says nothing about
+     * who may see them: a caller checks that the user may view the content.
+     */
+    public function content(Content $content): static
+    {
+        $this->andWhere(['activity.content_id' => $content->id]);
+
+        return $this;
+    }
+
     public function subscribedContentContainers(?User $user): static
     {
         if ($user === null) {

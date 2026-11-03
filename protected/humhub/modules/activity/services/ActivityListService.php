@@ -11,6 +11,7 @@ namespace humhub\modules\activity\services;
 use humhub\modules\activity\components\ActiveQueryActivity;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\activity\serializers\ActivitySerializer;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use Throwable;
 use Yii;
@@ -68,12 +69,14 @@ class ActivityListService
      * @param string|null $cursor `nextCursor` of the previous page
      * @param ContentContainer|null $container the container to scope to, `null` for the
      * dashboard view over every container the user subscribes to
+     * @param Content|null $content the content to scope to — its history, see {@see self::contentQuery()};
+     * takes precedence over `$container`
      *
      * @return array{results: array[], nextCursor: string|null}
      */
-    public function page(int $limit, ?string $cursor = null, ?ContentContainer $container = null): array
+    public function page(int $limit, ?string $cursor = null, ?ContentContainer $container = null, ?Content $content = null): array
     {
-        $query = self::query($container);
+        $query = $content === null ? self::query($container) : self::contentQuery($content);
 
         $groupingKey = self::decodeCursor($cursor);
         if ($groupingKey !== null) {
@@ -108,6 +111,20 @@ class ActivityListService
         return $container === null
             ? $query->subscribedContentContainers($user)
             : $query->contentContainer($container, $user);
+    }
+
+    /**
+     * The grouped activity query of one content: its history, newest first — the user's own
+     * activities included, which the container and dashboard views leave out. The caller has
+     * checked that the user may view the content.
+     */
+    public static function contentQuery(Content $content): ActiveQueryActivity
+    {
+        return Activity::find()
+            ->enableGrouping()
+            ->visible()
+            ->content($content)
+            ->orderBy(['activity.grouping_key' => SORT_DESC]);
     }
 
     /**

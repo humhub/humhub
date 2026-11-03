@@ -10,16 +10,16 @@
 import { apiUrl, client } from '@humhub/vue';
 
 /**
- * One page of the activities the caller may see.
+ * One page of the activities the caller may see — or, with `contentId`, of one content's history.
  *
  * `cursor` is the previous page's `nextCursor` and is opaque: it is passed back untouched and
  * never built from an entry (see `ActivityListService` for why an entry's id would be the
  * wrong cursor).
  *
- * @param {{cursor?: ?string, limit?: ?number, containerId?: ?number}} options
+ * @param {{cursor?: ?string, limit?: ?number, containerId?: ?number, contentId?: ?number}} options
  * @returns {Promise<{results: Array, nextCursor: ?string}>}
  */
-export const fetchActivities = ({ cursor = null, limit = null, containerId = null } = {}) => {
+export const fetchActivities = ({ cursor = null, limit = null, containerId = null, contentId = null } = {}) => {
     const params = {};
 
     if (cursor) {
@@ -30,6 +30,9 @@ export const fetchActivities = ({ cursor = null, limit = null, containerId = nul
     }
     if (containerId) {
         params.containerId = containerId;
+    }
+    if (contentId) {
+        params.contentId = contentId;
     }
 
     return client.get(apiUrl('activity', params)).then(normalizePage);

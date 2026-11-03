@@ -10,10 +10,12 @@ namespace humhub\modules\activity\controllers\api;
 
 use humhub\components\api\BaseController;
 use humhub\modules\activity\services\ActivityListService;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -68,8 +70,9 @@ class ActivityController extends BaseController
     /**
      * The activities the caller may see, newest group first.
      *
-     * Parameters: `containerId` (the `contentContainerId` a space or user shape carries),
-     * `limit` and `cursor` (the previous page's `nextCursor`).
+     * Parameters: `containerId` (the `contentContainerId` a space or user shape carries) or
+     * `contentId` (the history of one content, the caller's own activities included), `limit`
+     * and `cursor` (the previous page's `nextCursor`).
      */
     public function actionIndex()
     {
@@ -84,7 +87,33 @@ class ActivityController extends BaseController
             $limit,
             (string)$request->get('cursor', '') ?: null,
             $this->findContainer((int)$request->get('containerId', 0)),
+            $this->findContent((int)$request->get('contentId', 0)),
         );
+    }
+
+    /**
+     * The content to scope to, `null` for none. Unlike a container, a content the caller may
+     * not see is refused: its activities are all about it, so an empty list would still say
+     * that it exists.
+     * @throws NotFoundHttpException|ForbiddenHttpException
+     */
+    private function findContent(int $id): ?Content
+    {
+        if ($id <= 0) {
+            return null;
+        }
+
+        $content = Content::findOne(['id' => $id]);
+
+        if ($content === null) {
+            throw new NotFoundHttpException('Content not found!');
+        }
+
+        if (!$content->canView()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return $content;
     }
 
     /**

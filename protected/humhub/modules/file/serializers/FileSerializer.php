@@ -9,11 +9,15 @@
 namespace humhub\modules\file\serializers;
 
 use humhub\components\ActiveRecord;
+use humhub\components\api\Format;
 use humhub\libs\MimeHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\file\models\FileHistory;
+use humhub\modules\user\models\User;
+use humhub\modules\user\serializers\UserSerializer;
 use yii\helpers\Url;
 
 /**
@@ -82,5 +86,55 @@ class FileSerializer
             // for attachment thumbnails); `null` for anything that has no image preview.
             'previewUrl' => $previewImage->applyFile($file) ? Url::to($previewImage->getUrl(), true) : null,
         ];
+    }
+
+    /**
+     * The versions of a file, newest first: the current content, then each earlier one the file
+     * history kept ({@see FileHistory}, only recorded for records that enable it, see
+     * `ActiveRecord::$fileManagerEnableHistory`).
+     *
+     * A version is numbered from the oldest (`1`) up, and names who saved it and when: for the
+     * current one the file's last update, for an earlier one the update it was the result of
+     * (a history entry is created from the file's state right before it is replaced). An
+     * earlier version is downloaded as the file's `old-<id>` variant.
+     *
+     * @return array{
+     *     id: int|null,
+     *     version: int,
+     *     current: bool,
+     *     size: int,
+     *     createdAt: string|null,
+     *     createdBy: array|null,
+     *     downloadUrl: string,
+     * }[]
+     */
+    public static function versions(File $file): array
+    {
+        $history = $file->historyFiles;
+        $number = count($history) + 1;
+
+        $versions = [[
+            'id' => null,
+            'version' => $number,
+            'current' => true,
+            'size' => (int)$file->size,
+            'createdAt' => Format::dateTime($file->updated_at ?: $file->created_at),
+            'createdBy' => UserSerializer::short(User::findOne(['id' => $file->updated_by ?: $file->created_by])),
+            'downloadUrl' => $file->getUrl(['download' => true], true),
+        ]];
+
+        foreach ($history as $entry) {
+            $versions[] = [
+                'id' => (int)$entry->id,
+                'version' => --$number,
+                'current' => false,
+                'size' => (int)$entry->size,
+                'createdAt' => Format::dateTime($entry->created_at),
+                'createdBy' => UserSerializer::short($entry->createdBy),
+                'downloadUrl' => $file->getUrl(['variant' => $entry->getFileVariantId(), 'download' => true], true),
+            ];
+        }
+
+        return $versions;
     }
 }

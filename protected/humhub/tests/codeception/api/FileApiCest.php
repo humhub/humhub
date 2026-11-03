@@ -183,6 +183,44 @@ class FileApiCest
         Assert::assertNotNull(File::findOne(['id' => $id]), 'the file survived the refused delete');
     }
 
+    public function testListsTheVersionsOfAFile(ApiTester $I)
+    {
+        $I->wantTo('read the versions of a file, newest first');
+        // An unattached file is viewable by its creator only (see File::canView()).
+        $id = $this->seedFile(1);
+        Yii::$app->db->createCommand()->insert('file_history', [
+            'file_id' => $id,
+            'size' => 3,
+            'hash_sha1' => str_repeat('a', 40),
+            'created_at' => '2026-01-01 10:00:00',
+            'created_by' => 2,
+        ])->execute();
+        $historyId = (int)Yii::$app->db->getLastInsertID();
+
+        $I->amLoggedInAs(1);
+        $I->sendGet("file/$id/versions");
+
+        $I->seeResponseCodeIs(200);
+        Assert::assertSame([2, 1], array_map('intval', $I->grabDataFromResponseByJsonPath('$.results[*].version')));
+        Assert::assertSame([true, false], $I->grabDataFromResponseByJsonPath('$.results[*].current'));
+        Assert::assertSame($historyId, (int)$I->grabDataFromResponseByJsonPath('$.results[1].id')[0]);
+        Assert::assertStringContainsString('variant=old-' . $historyId, $I->grabDataFromResponseByJsonPath('$.results[1].downloadUrl')[0]);
+        $I->seeResponseJsonMatchesJsonPath('$.results[1].createdBy.displayName');
+    }
+
+    public function testRefusesTheVersionsOfAFileTheCallerCannotSee(ApiTester $I)
+    {
+        $I->wantTo('not read the versions of somebody else\'s unattached file');
+        $id = $this->seedFile(2);
+
+        $I->amLoggedInAs(1);
+        $I->sendGet("file/$id/versions");
+        $I->seeResponseCodeIs(403);
+
+        $I->sendGet('file/999999/versions');
+        $I->seeResponseCodeIs(404);
+    }
+
     public function testGuestsCannotUploadOrDelete(ApiTester $I)
     {
         $I->wantTo('be rejected as a guest');

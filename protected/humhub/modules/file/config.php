@@ -19,6 +19,7 @@ return [
     'urlManagerRules' => [
         ['pattern' => 'api/v2/file', 'route' => 'file/api/file/create', 'verb' => 'POST'],
         ['pattern' => 'api/v2/file/<id:\d+>', 'route' => 'file/api/file/delete', 'verb' => 'DELETE'],
+        ['pattern' => 'api/v2/file/<id:\d+>/versions', 'route' => 'file/api/file/versions', 'verb' => ['GET', 'HEAD']],
     ],
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],

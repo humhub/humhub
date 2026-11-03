@@ -2,6 +2,8 @@
 // Activities
 // --------------------------------------------------
 
+$content-activity-entry-padding-y: $spacer * .5 !default;
+
 @if not $prev-activities {
     .activities {
         max-height: 400px;
@@ -13,6 +15,18 @@
 
         .d-flex {
             padding: 10px;
+        }
+    }
+
+    // One content's history (`ContentActivity.vue`): in the flow of the pane that holds it,
+    // without the box's own height and scrolling
+    .content-activity-list {
+        div.activity-entry {
+            padding: 0;
+        }
+
+        .activity-box-entry {
+            padding: $content-activity-entry-padding-y 0;
         }
     }
 }
