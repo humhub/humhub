@@ -9,6 +9,7 @@
 namespace humhub\modules\file\assets;
 
 use humhub\components\assets\VueAssetBundle;
+use humhub\modules\user\assets\UserVueAsset;
 
 /**
  * Compiled Vue components of the file module (`vue/`, built via
@@ -18,4 +19,11 @@ use humhub\components\assets\VueAssetBundle;
  */
 class FileVueAsset extends VueAssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $depends = [
+        // <UserImage> — who saved a version (`FileVersions`).
+        UserVueAsset::class,
+    ];
 }

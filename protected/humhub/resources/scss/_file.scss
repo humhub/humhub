@@ -2,6 +2,10 @@
 // File
 // --------------------------------------------------
 
+$file-version-gap: $spacer * .5 !default;
+$file-version-meta-color: var(--hh-text-color-secondary) !default;
+$file-version-meta-font-size: $font-size-sm !default;
+
 @if not $prev-file {
     .files,
     #postFormFiles_list {
@@ -225,5 +229,36 @@
 
     .mime-audio {
         background-image: url("../img/mime/audio.png");
+    }
+
+    // The versions of a file (`FileVersions.vue`): a flush list group, a row per version
+    .file-versions-list {
+        --bs-list-group-bg: transparent;
+        --bs-list-group-item-padding-x: 0;
+    }
+
+    .file-version {
+        display: flex;
+        align-items: center;
+        gap: $file-version-gap;
+    }
+
+    .file-version-body {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .file-version-title {
+        color: var(--hh-text-color-highlight);
+        overflow-wrap: anywhere;
+
+        > .badge {
+            margin-inline-start: $file-version-gap * .5;
+        }
+    }
+
+    .file-version-meta {
+        color: $file-version-meta-color;
+        font-size: $file-version-meta-font-size;
     }
 }

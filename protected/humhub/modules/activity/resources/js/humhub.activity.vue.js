@@ -12,7 +12,7 @@
     }
     return target;
   };
-  const _sfc_main$1 = {
+  const _sfc_main$2 = {
     props: {
       // Serialized activity (ActivitySerializer::activity()).
       activity: { type: Object, required: true },
@@ -25,13 +25,13 @@
       }
     }
   };
-  const _hoisted_1$1 = ["data-activity-id"];
-  const _hoisted_2$1 = { class: "d-flex activity-box-entry" };
-  const _hoisted_3$1 = { class: "flex-shrink-0 me-3 pt-1 img-profile-space" };
-  const _hoisted_4$1 = { class: "flex-grow-1 text-break" };
-  const _hoisted_5$1 = ["innerHTML"];
-  const _hoisted_6$1 = ["datetime", "title"];
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_1$2 = ["data-activity-id"];
+  const _hoisted_2$2 = { class: "d-flex activity-box-entry" };
+  const _hoisted_3$2 = { class: "flex-shrink-0 me-3 pt-1 img-profile-space" };
+  const _hoisted_4$2 = { class: "flex-grow-1 text-break" };
+  const _hoisted_5$2 = ["innerHTML"];
+  const _hoisted_6$2 = ["datetime", "title"];
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserImage = vue.resolveComponent("UserImage");
     const _component_SpaceImage = vue.resolveComponent("SpaceImage");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -42,8 +42,8 @@
         href: $props.activity.url || null
       }, {
         default: vue.withCtx(() => [
-          vue.createElementVNode("div", _hoisted_2$1, [
-            vue.createElementVNode("div", _hoisted_3$1, [
+          vue.createElementVNode("div", _hoisted_2$2, [
+            vue.createElementVNode("div", _hoisted_3$2, [
               $props.activity.user ? (vue.openBlock(), vue.createBlock(
                 _component_UserImage,
                 vue.mergeProps({ key: 0 }, $props.activity.user, {
@@ -66,11 +66,11 @@
                 /* FULL_PROPS */
               )) : vue.createCommentVNode("v-if", true)
             ]),
-            vue.createElementVNode("div", _hoisted_4$1, [
+            vue.createElementVNode("div", _hoisted_4$2, [
               vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered sentence, see docblock "),
               vue.createElementVNode("span", {
                 innerHTML: $props.activity.message
-              }, null, 8, _hoisted_5$1),
+              }, null, 8, _hoisted_5$2),
               _cache[0] || (_cache[0] = vue.createElementVNode(
                 "br",
                 null,
@@ -83,17 +83,17 @@
                 "data-ui-addition": "timeago",
                 datetime: $props.activity.createdAt,
                 title: $options.absoluteTime
-              }, vue.toDisplayString($options.absoluteTime), 9, _hoisted_6$1)
+              }, vue.toDisplayString($options.absoluteTime), 9, _hoisted_6$2)
             ])
           ])
         ]),
         _: 1
         /* STABLE */
       }, 8, ["href"]))
-    ], 8, _hoisted_1$1);
+    ], 8, _hoisted_1$2);
   }
-  const ActivityEntry = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
-  const fetchActivities = ({ cursor = null, limit = null, containerId = null } = {}) => {
+  const ActivityEntry = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const fetchActivities = ({ cursor = null, limit = null, containerId = null, contentId = null } = {}) => {
     const params = {};
     if (cursor) {
       params.cursor = cursor;
@@ -104,6 +104,9 @@
     if (containerId) {
       params.containerId = containerId;
     }
+    if (contentId) {
+      params.contentId = contentId;
+    }
     return vue$1.client.get(vue$1.apiUrl("activity", params)).then(normalizePage);
   };
   const normalizePage = (response) => ({
@@ -112,7 +115,7 @@
   });
   const LIVE_EVENT = "humhub:modules:activity:live:NewActivity";
   const LIVE_DEBOUNCE_MS = 1e3;
-  const _sfc_main = {
+  const _sfc_main$1 = {
     components: { ActivityEntry },
     i18nCategories: ["ActivityModule.base", "base"],
     props: {
@@ -290,18 +293,18 @@
       }
     }
   };
-  const _hoisted_1 = ["innerHTML"];
-  const _hoisted_2 = ["innerHTML"];
-  const _hoisted_3 = { class: "panel-body p-0 pb-1 collapse show" };
-  const _hoisted_4 = {
+  const _hoisted_1$1 = ["innerHTML"];
+  const _hoisted_2$1 = ["innerHTML"];
+  const _hoisted_3$1 = { class: "panel-body p-0 pb-1 collapse show" };
+  const _hoisted_4$1 = {
     key: 0,
     class: "p-3 m-0"
   };
-  const _hoisted_5 = {
+  const _hoisted_5$1 = {
     key: 1,
     class: "text-center p-2"
   };
-  const _hoisted_6 = {
+  const _hoisted_6$1 = {
     class: "visually-hidden",
     role: "status"
   };
@@ -310,7 +313,7 @@
     ref: "sentinel",
     class: "stream-end"
   };
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ActivityEntry = vue.resolveComponent("ActivityEntry");
     const _directive_additions = vue.resolveDirective("additions");
     return vue.openBlock(), vue.createElementBlock(
@@ -321,15 +324,15 @@
         $props.panelMenuHtml ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", {
           key: 0,
           innerHTML: $props.panelMenuHtml
-        }, null, 8, _hoisted_1)), [
+        }, null, 8, _hoisted_1$1)), [
           [_directive_additions]
         ]) : vue.createCommentVNode("v-if", true),
         vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock "),
         vue.createElementVNode("div", {
           class: "panel-heading",
           innerHTML: $options.headingLabel
-        }, null, 8, _hoisted_2),
-        vue.createElementVNode("div", _hoisted_3, [
+        }, null, 8, _hoisted_2$1),
+        vue.createElementVNode("div", _hoisted_3$1, [
           vue.withDirectives((vue.openBlock(), vue.createElementBlock(
             "div",
             {
@@ -348,7 +351,7 @@
               )),
               !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
                 "p",
-                _hoisted_4,
+                _hoisted_4$1,
                 vue.toDisplayString($options.emptyLabel),
                 1
                 /* TEXT */
@@ -366,7 +369,7 @@
                 128
                 /* KEYED_FRAGMENT */
               )),
-              $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5, [
+              $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$1, [
                 _cache[1] || (_cache[1] = vue.createElementVNode(
                   "span",
                   {
@@ -379,7 +382,7 @@
                 )),
                 vue.createElementVNode(
                   "span",
-                  _hoisted_6,
+                  _hoisted_6$1,
                   vue.toDisplayString($options.loadingLabel),
                   1
                   /* TEXT */
@@ -404,7 +407,142 @@
       /* STABLE_FRAGMENT */
     );
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const _sfc_main = {
+    i18nCategories: ["ActivityModule.base", "base"],
+    components: { ActivityEntry },
+    props: {
+      /** The content whose history this is. */
+      contentId: { type: Number, required: true },
+      /** Entries requested per page. */
+      pageSize: { type: Number, default: 10 }
+    },
+    data() {
+      return {
+        entries: [],
+        nextCursor: null,
+        loading: false
+      };
+    },
+    computed: {
+      emptyLabel: () => vue$1.i18n.t("ActivityModule.base", "There are no activities yet."),
+      loadingLabel: () => vue$1.i18n.t("base", "Loading..."),
+      moreLabel: () => vue$1.i18n.t("base", "Show more")
+    },
+    watch: {
+      contentId() {
+        this.entries = [];
+        this.nextCursor = null;
+        this.load();
+      }
+    },
+    mounted() {
+      this.load();
+    },
+    methods: {
+      load() {
+        const contentId = this.contentId;
+        this.loading = true;
+        return fetchActivities({ contentId, cursor: this.nextCursor, limit: this.pageSize }).then((page) => {
+          if (contentId !== this.contentId) {
+            return;
+          }
+          this.entries = this.entries.concat(page.results);
+          this.nextCursor = page.nextCursor;
+          this.loading = false;
+        }).catch((e) => {
+          if (contentId === this.contentId) {
+            this.loading = false;
+          }
+          vue$1.log.error(e, true);
+        });
+      }
+    }
+  };
+  const _hoisted_1 = { class: "content-activity" };
+  const _hoisted_2 = {
+    key: 0,
+    class: "text-muted m-0"
+  };
+  const _hoisted_3 = {
+    key: 1,
+    class: "hh-list content-activity-list"
+  };
+  const _hoisted_4 = {
+    key: 2,
+    class: "text-center p-2"
+  };
+  const _hoisted_5 = {
+    class: "visually-hidden",
+    role: "status"
+  };
+  const _hoisted_6 = {
+    key: 3,
+    class: "text-center p-2"
+  };
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_ActivityEntry = vue.resolveComponent("ActivityEntry");
+    const _directive_additions = vue.resolveDirective("additions");
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [
+      !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
+        "p",
+        _hoisted_2,
+        vue.toDisplayString($options.emptyLabel),
+        1
+        /* TEXT */
+      )) : vue.createCommentVNode("v-if", true),
+      $data.entries.length ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_3, [
+        (vue.openBlock(true), vue.createElementBlock(
+          vue.Fragment,
+          null,
+          vue.renderList($data.entries, (entry) => {
+            return vue.openBlock(), vue.createBlock(_component_ActivityEntry, {
+              key: entry.key,
+              activity: entry,
+              "show-space": false
+            }, null, 8, ["activity"]);
+          }),
+          128
+          /* KEYED_FRAGMENT */
+        ))
+      ])), [
+        [_directive_additions]
+      ]) : vue.createCommentVNode("v-if", true),
+      $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_4, [
+        _cache[1] || (_cache[1] = vue.createElementVNode(
+          "span",
+          {
+            class: "spinner-border spinner-border-sm",
+            "aria-hidden": "true"
+          },
+          null,
+          -1
+          /* CACHED */
+        )),
+        vue.createElementVNode(
+          "span",
+          _hoisted_5,
+          vue.toDisplayString($options.loadingLabel),
+          1
+          /* TEXT */
+        )
+      ])) : $data.nextCursor ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6, [
+        vue.createElementVNode(
+          "button",
+          {
+            type: "button",
+            class: "btn btn-light btn-sm",
+            onClick: _cache[0] || (_cache[0] = (...args) => $options.load && $options.load(...args))
+          },
+          vue.toDisplayString($options.moreLabel),
+          1
+          /* TEXT */
+        )
+      ])) : vue.createCommentVNode("v-if", true)
+    ]);
+  }
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("ActivityBox", C0);
+  vue$1.register("ContentActivity", C1);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.activity.vue.js.map
