@@ -49,7 +49,7 @@ $userModel = Yii::$app->user->identity;
                 'showSelfOnlineStatus' => true,
             ]) ?>
         </a>
-        <ul class="dropdown-menu dropdown-menu-end">
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-primary">
             <?php foreach ($entries as $entry): ?>
                 <li><?= $entry->render(['class' => 'dropdown-item']) ?></li>
             <?php endforeach; ?>

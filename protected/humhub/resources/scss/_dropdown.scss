@@ -60,4 +60,20 @@ $dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in
         --bs-dropdown-link-active-color: var(--bs-danger);
         --bs-dropdown-link-active-bg: var(--bs-danger-bg-subtle);
     }
+
+    // A menu filled like the top bar it hangs from (the account menu). The hover fill and the
+    // divider are the contrast colour over the primary, so any primary colour works.
+    .dropdown-menu-primary {
+        --bs-dropdown-bg: var(--bs-primary);
+        --bs-dropdown-color: var(--hh-primary-contrast);
+        --bs-dropdown-border-color: transparent;
+        --bs-dropdown-link-color: var(--hh-primary-contrast);
+        --bs-dropdown-link-hover-color: var(--hh-primary-contrast);
+        --bs-dropdown-link-hover-bg: color-mix(in srgb, var(--hh-primary-contrast) 12%, transparent);
+        --bs-dropdown-link-active-color: var(--hh-primary-contrast);
+        --bs-dropdown-link-active-bg: color-mix(in srgb, var(--hh-primary-contrast) 18%, transparent);
+        --bs-dropdown-link-disabled-color: color-mix(in srgb, var(--hh-primary-contrast) 50%, transparent);
+        --bs-dropdown-divider-bg: color-mix(in srgb, var(--hh-primary-contrast) 20%, transparent);
+        --bs-dropdown-header-color: color-mix(in srgb, var(--hh-primary-contrast) 70%, transparent);
+    }
 }
