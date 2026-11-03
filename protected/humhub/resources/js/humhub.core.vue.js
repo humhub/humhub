@@ -6469,12 +6469,15 @@
         }
         this.nativeForm = select.form;
         (_a = this.nativeForm) == null ? void 0 : _a.addEventListener("reset", this.onNativeReset);
-        this.observer = new MutationObserver(() => {
+        this.observer = new MutationObserver((mutations) => {
           this.nativeDisabled = select.disabled;
           this.nativeInvalid = select.classList.contains("is-invalid");
           this.nativeDescribedBy = select.getAttribute("aria-describedby");
+          if (mutations.some((mutation) => mutation.type === "childList")) {
+            this.followNativeOptions();
+          }
         });
-        this.observer.observe(select, { attributes: true, attributeFilter: ["disabled", "class", "aria-describedby"] });
+        this.observer.observe(select, { attributes: true, attributeFilter: ["disabled", "class", "aria-describedby"], childList: true, subtree: true });
         const label = labelOf(select);
         if (label) {
           this.labelEl = label;
@@ -6509,6 +6512,25 @@
           delete select.dataset.pickerBound;
         }
       },
+      followNativeOptions() {
+        if (!this.select || this.writing) {
+          return;
+        }
+        if (!this.hasSource) {
+          this.nativeConfig = { ...this.nativeConfig, options: [...this.select.options].map(readOption) };
+          this.remember(this.staticItems);
+        }
+        this.followNativeSelection();
+      },
+      // Reads the selection of the `<select>` when it differs from the chosen items as a set (an
+      // enhanced select keeps its option order, the chips the chosen one).
+      followNativeSelection() {
+        const items = readSelection(this.select);
+        if (items.length !== this.chosenIds.length || items.some((item) => !this.chosenIds.includes(item.id))) {
+          this.chosen = this.nativeItems(items);
+          this.remember(this.chosen);
+        }
+      },
       writeNative(items) {
         if (!this.select) {
           return;
@@ -6519,10 +6541,7 @@
         } finally {
           this.writing = false;
         }
-        const ids = readSelection(this.select).map((item) => item.id);
-        if (ids.length !== this.chosenIds.length || ids.some((id) => !this.chosenIds.includes(id))) {
-          this.onNativeChange();
-        }
+        this.followNativeSelection();
       },
       msg(key, params = {}) {
         const given = this.cfg.messages[key];

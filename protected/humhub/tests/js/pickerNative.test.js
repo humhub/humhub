@@ -112,6 +112,38 @@ describe('nativeSelect', () => {
         expect(select.options).toHaveLength(2);
     });
 
+    it('follows options added or removed by a script without a change event', async () => {
+        const form = render('<select id="o1" data-ui-picker><option value="a">A</option></select>');
+        const select = form.querySelector('select');
+        const wrapper = mountOn(select);
+
+        select.insertAdjacentHTML('beforeend', '<option value="b">B</option><option value="c" selected>C</option>');
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await wrapper.vm.$nextTick();
+
+        await wrapper.find('.picker-field').trigger('click');
+        expect(wrapper.findAll('.picker-option-label').map((node) => node.text())).toEqual(['A', 'B', 'C']);
+        expect(wrapper.find('input[role="combobox"]').element.value).toBe('C');
+
+        select.querySelector('option[value="a"]').remove();
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await wrapper.vm.$nextTick();
+        expect(wrapper.findAll('.picker-option-label').map((node) => node.text())).toEqual(['B', 'C']);
+    });
+
+    it('keeps the chosen order of an enhanced multiple select when its own writing changes the options', async () => {
+        const form = render('<select id="o2" multiple data-ui-picker><option value="a">A</option><option value="b">B</option></select>');
+        const select = form.querySelector('select');
+        const wrapper = mountOn(select);
+
+        wrapper.vm.choose({ id: 'b', text: 'B', subText: null, image: null, disabled: false, locked: false });
+        wrapper.vm.choose({ id: 'a', text: 'A', subText: null, image: null, disabled: false, locked: false });
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.findAll('.picker-chip-label').map((node) => node.text())).toEqual(['B', 'A']);
+    });
+
     it('follows a change a change listener makes right away (a value it rejects)', async () => {
         const form = render('<select id="w6" multiple data-ui-picker><option value="a">A</option><option value="b">B</option></select>');
         const select = form.querySelector('select');
