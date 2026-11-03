@@ -41,7 +41,7 @@ class MarketplaceApiCest
             ],
             'uncategorized' => 4,
         ]);
-        Yii::$app->cache->set('latestVersion', '99.0.0');
+        Yii::$app->cache->set('latestHumHubVersion', '99.0.0');
         Yii::$app->getModule('marketplace')->settings->delete('includeCommunityModules');
         Yii::$app->getModule('marketplace')->settings->delete('includeBetaUpdates');
     }
@@ -51,7 +51,7 @@ class MarketplaceApiCest
         Yii::$app->getModule('marketplace')->modulesPath = $this->modulesPath;
         Yii::$app->cache->delete(OnlineModuleManager::CACHE_KEY_MODULES);
         Yii::$app->cache->delete(OnlineModuleManager::CACHE_KEY_CATEGORIES);
-        Yii::$app->cache->delete('latestVersion');
+        Yii::$app->cache->delete('latestHumHubVersion');
         Yii::$app->getModule('marketplace')->settings->delete('includeCommunityModules');
         Yii::$app->getModule('marketplace')->settings->delete('includeBetaUpdates');
     }
