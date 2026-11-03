@@ -147,14 +147,14 @@ humhub.module('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.resetSettingInputs = function () {
+        // The pickers follow the form's reset (see resetForm()).
         this.$.find('.notifyUserContainer').hide();
-        Widget.instance('#notifyUserInput' + (this.isModal ? 'Modal' : '')).reset();
         $('#postTopicContainer' + (this.isModal ? 'Modal' : '')).hide();
+    };
 
-        var topicPicker = Widget.instance('#postTopicInput' + (this.isModal ? 'Modal' : ''));
-        if (topicPicker) {
-            topicPicker.reset();
-        }
+    // Focuses the input of the picker on the given `<select>`.
+    var focusPicker = function (selector) {
+        $(selector).next('.picker-host').find('.picker-input').trigger('focus');
     };
 
     CreateForm.prototype.resetFilePreview = function () {
@@ -185,7 +185,7 @@ humhub.module('content.form', function (module, require, $) {
                 var fieldSelector = '.field-' + model + '-' + fieldName;
                 var inputSelector = '.field-contentForm_' + fieldName;
                 var multiInputSelector = '[name="' + fieldName + '[]"]';
-                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + inputSelector + ' .select2-selection, ' + multiInputSelector)
+                that.$.find(fieldSelector + ' .form-control,' + inputSelector + '_input, ' + inputSelector + ' .picker-field, ' + multiInputSelector)
                     .addClass('is-invalid');
                 that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input, ' + multiInputSelector)
                     .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
@@ -227,16 +227,12 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.notifyUser = function () {
         this.$.find('.notifyUserContainer').show();
-        Widget.instance('#notifyUserInput' + (this.isModal ? 'Modal' : '')).focus();
+        focusPicker('#notifyUserInput' + (this.isModal ? 'Modal' : ''));
     };
 
     CreateForm.prototype.setTopics = function () {
         $('#postTopicContainer' + (this.isModal ? 'Modal' : '')).show();
-
-        var topicPicker = Widget.instance('#postTopicInput' + (this.isModal ? 'Modal' : ''));
-        if (topicPicker) {
-            topicPicker.focus();
-        }
+        focusPicker('#postTopicInput' + (this.isModal ? 'Modal' : ''));
     };
 
     CreateForm.prototype.changeState = function (state, title, buttonTitle) {
@@ -289,7 +285,7 @@ humhub.module('content.form', function (module, require, $) {
         this.$.find('.badge-content-state').hide();
         this.$.find('.nav-pills [data-action-click=notifyUser]').parent().show();
         const notifyUserContainer = this.$.find('.notifyUserContainer');
-        if (notifyUserContainer.find('ul .select2-selection__clear').length) {
+        if (notifyUserContainer.find('select option:checked').length) {
             notifyUserContainer.show();
         }
     }

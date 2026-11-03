@@ -569,7 +569,7 @@ class UserApiCest
         $I->sendGet('user/picker', ['ids' => '3']);
         $I->seeResponseCodeIs(200);
         $result = $I->grabDataFromResponseByJsonPath('$.results[0]')[0];
-        Assert::assertSame(['id', 'guid', 'displayName', 'url', 'imageUrl', 'contentContainerId'], array_keys($result));
+        Assert::assertSame(['id', 'guid', 'displayName', 'url', 'imageUrl', 'contentContainerId', 'displayNameSub'], array_keys($result), 'the short shape plus the sub title');
         Assert::assertSame(3, $result['id']);
 
         $I->sendGet('user', ['purpose' => 'picker', 'ids' => '3']);

@@ -62,6 +62,7 @@
 
 <script>
 import { i18n } from '@humhub/vue';
+import { pageStep } from './picker/comboboxMixin.js';
 
 let uid = 0;
 
@@ -239,6 +240,11 @@ export default {
                 case 'ArrowUp':
                     event.preventDefault();
                     this.moveTo(Math.max(this.activeIndex - 1, 0));
+                    break;
+                case 'PageDown':
+                case 'PageUp':
+                    event.preventDefault();
+                    this.moveTo(Math.min(Math.max(Math.max(this.activeIndex, 0) + (event.key === 'PageDown' ? 1 : -1) * pageStep(this.$refs.listbox), 0), last));
                     break;
                 case 'Home':
                     event.preventDefault();

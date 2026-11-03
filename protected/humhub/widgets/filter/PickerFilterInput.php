@@ -31,9 +31,10 @@ class PickerFilterInput extends FilterInput
     public $picker = BasePicker::class;
 
     /**
-     * @var string data-action-click handler of the input event
+     * @var string data-action-change handler of the input event (the `<select>` is no component
+     * of its own since 1.20, so the handler is the filter's own `inputChange`)
      */
-    public $changeAction = 'parent.inputChange';
+    public $changeAction = 'inputChange';
 
     /**
      * @inheritdoc

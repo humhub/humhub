@@ -2121,6 +2121,26 @@
     }, null, 8, ["space-id", "space-name", "space-url", "initial", "button-class", "pending-class", "member-class", "toggler-class", "group-class", "check-icon-html", "clock-icon-html", "user-icon-html"]);
   }
   const SpaceCardMembershipAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const PAGE_SIZE = 20;
+  const spacePickerSource = ({ itemKey, params }) => ({
+    search(term) {
+      const query = { purpose: "picker", scope: params.scope || "member", q: term, pageSize: PAGE_SIZE };
+      return vue.client.get(vue.apiUrl("space", query)).then((response) => (response.results || []).map((space) => ({
+        id: String(itemKey === "guid" ? space.guid : space.id),
+        text: space.name,
+        subText: space.description || null,
+        image: { type: "space", id: space.id, name: space.name, color: space.color, imageUrl: space.imageUrl }
+      })));
+    }
+  });
+  const spacePickerImageProps = (image, size) => ({
+    id: image.id ?? null,
+    name: image.name || "",
+    color: image.color || null,
+    imageUrl: image.imageUrl || null,
+    width: size,
+    link: false
+  });
   Object.entries(/* @__PURE__ */ Object.assign({ "./FollowButton.vue": __vite_glob_0_0, "./MembershipButton.vue": __vite_glob_0_1, "./SpaceChooser.vue": __vite_glob_0_2, "./SpaceChooserToggle.vue": __vite_glob_0_3, "./SpaceFilterControl.vue": __vite_glob_0_4, "./SpaceImage.vue": __vite_glob_0_5, "./SpacesBrowser.vue": __vite_glob_0_6 })).forEach(([path, component]) => {
     vue.register(path.slice("./".length, -".vue".length), component);
   });
@@ -2129,5 +2149,7 @@
   vue.registerSlotComponent("space.card-actions", "SpaceCardMembershipAction", { id: "membership", sortOrder: 100 });
   vue.registerSlotComponent("space.card-actions", "SpaceCardFollowAction", { id: "follow", sortOrder: 200 });
   vue.registerFilterType("space", "SpaceFilterControl");
+  vue.registerPickerSource("space", spacePickerSource);
+  vue.registerPickerImage("space", "SpaceImage", spacePickerImageProps);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.space.vue.js.map

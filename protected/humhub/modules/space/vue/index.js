@@ -5,10 +5,12 @@
  * the core's own entries of the space card's `space.card-actions` slot — registered like any
  * module's, so a module can reorder, replace or remove them by id (see `SpaceCard`) — and the
  * `space` filter type of `FilterBar` (`SpaceFilterControl`, the control of a `SpaceFilter`).
+ * Also registers the `space` picker source and image type (see components/pickerSource.js).
  */
-import { register, registerFilterType, registerSlotComponent } from '@humhub/vue';
+import { register, registerFilterType, registerPickerImage, registerPickerSource, registerSlotComponent } from '@humhub/vue';
 import SpaceCardFollowAction from './components/SpaceCardFollowAction.vue';
 import SpaceCardMembershipAction from './components/SpaceCardMembershipAction.vue';
+import { spacePickerImageProps, spacePickerSource } from './components/pickerSource.js';
 
 Object.entries(import.meta.glob('./*.vue', { eager: true, import: 'default' })).forEach(([path, component]) => {
     register(path.slice('./'.length, -'.vue'.length), component);
@@ -20,3 +22,6 @@ registerSlotComponent('space.card-actions', 'SpaceCardMembershipAction', { id: '
 registerSlotComponent('space.card-actions', 'SpaceCardFollowAction', { id: 'follow', sortOrder: 200 });
 
 registerFilterType('space', 'SpaceFilterControl');
+
+registerPickerSource('space', spacePickerSource);
+registerPickerImage('space', 'SpaceImage', spacePickerImageProps);

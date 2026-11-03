@@ -1,0 +1,468 @@
+//
+// Select menu & picker
+// --------------------------------------------------
+// The custom select (FilterSelect) and the pickers (FilterPicker, PickerFilterControl and
+// PickerInput, the replacement of Select2) — protected/humhub/vue/. Built on Bootstrap: the
+// fields are `.form-control`s, the listbox a `.dropdown-menu` of `.dropdown-item`s, positioned
+// fixed while open (picker/drawerPosition.js). See docs/ui/select-pickers.md and
+// docs/develop/ui-js-vuejs-picker.md.
+// @since 1.20
+
+// One field high: a `.form-control` (2px border, see `_form.scss`)
+$select-menu-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, 4px, false)) !default;
+$select-menu-icon-size: $font-size-lg !default;
+$select-menu-icon-color: var(--hh-text-color-secondary) !default;
+$select-menu-icon-space: $input-padding-x + $select-menu-icon-size + $spacer * .5 !default;
+$select-menu-max-height: 384px !default;
+
+$picker-chip-height: 1.875rem !default;
+// The `:size` PickerInput gives a chip picture
+$picker-chip-image-size: 18px !default;
+$picker-chip-bg: var(--bs-accent) !default;
+$picker-chip-color: var(--hh-accent-contrast) !default;
+$picker-chip-font-size: inherit !default;
+$picker-color-size: .75rem !default;
+$picker-list-item-bg: var(--bs-tertiary-bg) !default;
+
+@if not $prev-picker {
+    // Custom select (FilterSelect): a `.form-control` button opening a `.dropdown-menu` listbox
+    .select-menu {
+        position: relative;
+        display: flex;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .select-menu-button {
+        display: flex;
+        align-items: center;
+        padding-right: $select-menu-icon-space;
+        color: $select-menu-icon-color;
+        text-align: left;
+        cursor: pointer;
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    .select-menu.is-open .select-menu-button {
+        border-color: var(--bs-accent);
+    }
+
+    .select-menu.has-selection .select-menu-button {
+        color: var(--bs-body-color);
+    }
+
+    .select-menu.is-loading .select-menu-button {
+        cursor: progress;
+    }
+
+    .select-menu-value {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .select-menu-chevron,
+    .select-menu-clear {
+        position: absolute;
+        top: 50%;
+        right: $input-padding-x;
+        transform: translateY(-50%);
+    }
+
+    .select-menu-chevron {
+        color: $select-menu-icon-color;
+        font-size: $select-menu-icon-size;
+        pointer-events: none;
+        @include transition(transform .24s ease, opacity .24s ease 60ms);
+    }
+
+    .select-menu.is-open .select-menu-chevron {
+        transform: translateY(-50%) rotate(180deg);
+    }
+
+    .select-menu.has-selection:not(.is-required) .select-menu-chevron {
+        opacity: 0;
+        transition-delay: 0s;
+    }
+
+    // The clear X takes the chevron's place once a value is chosen
+    .select-menu-clear {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $select-menu-icon-size * 1.25;
+        height: $select-menu-icon-size * 1.25;
+        padding: 0;
+        border: 0;
+        border-radius: var(--bs-border-radius-sm);
+        background: transparent;
+        color: $select-menu-icon-color;
+        font-size: $select-menu-icon-size;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-50%) scale(.85) rotate(-90deg);
+        @include transition(transform .24s ease, opacity .24s ease, color .2s);
+
+        &:hover {
+            color: var(--bs-danger);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 1px;
+        }
+    }
+
+    .select-menu.has-selection .select-menu-clear {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(-50%) scale(1) rotate(0deg);
+    }
+
+    .select-menu:not(.has-selection) .select-menu-clear {
+        transition-delay: 60ms;
+    }
+
+    .select-menu.has-selection.is-disabled .select-menu-clear {
+        cursor: default;
+        opacity: .5;
+    }
+
+    .select-menu-spinner {
+        position: absolute;
+        top: calc(50% - .5rem);
+        right: $input-padding-x;
+        color: $select-menu-icon-color;
+    }
+
+    // The listbox: a `.dropdown-menu` below the field (`data-bs-popper="static"`), as wide as it
+    // Opening above the field (`dropUp`)
+    .select-menu.is-drop-up .select-menu-drawer[data-bs-popper] {
+        top: auto;
+        bottom: 100%;
+        margin-top: 0;
+        margin-bottom: var(--bs-dropdown-spacer);
+    }
+
+    .select-menu-drawer {
+        width: 100%;
+        max-height: $select-menu-max-height;
+        overflow-y: auto;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .select-menu-option {
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        cursor: pointer;
+
+        // The option the keyboard is on (`aria-activedescendant`), drawn like a hovered item. The
+        // pointer moves it (mousemove), so a plain hover is not drawn: one option is highlighted.
+        &.is-focused:not(.active) {
+            background-color: var(--bs-dropdown-link-hover-bg);
+            color: var(--bs-dropdown-link-hover-color);
+        }
+
+        &:hover:not(.is-focused):not(.active) {
+            background-color: transparent;
+            color: var(--bs-dropdown-link-color);
+        }
+    }
+
+    .select-menu-drawer:focus-visible .select-menu-option.is-focused {
+        outline: 2px solid var(--bs-accent);
+        outline-offset: -2px;
+    }
+
+    // Searchable picker (FilterPicker, PickerInput): a `.select-menu` whose button is a `.form-control` field
+    // holding the chips and the combobox input; listbox, chevron, clear X and spinner are the select's.
+    // Vertical padding shrinks to the chip height, so the field keeps the height of a `.form-control`.
+    .picker-field {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $spacer * .25;
+        min-height: $select-menu-field-height;
+        padding-top: calc((#{$select-menu-field-height} - 4px - #{$picker-chip-height}) * .5);
+        padding-bottom: calc((#{$select-menu-field-height} - 4px - #{$picker-chip-height}) * .5);
+        padding-right: $select-menu-icon-space;
+        cursor: text;
+
+        &:focus-within {
+            border-color: var(--bs-accent);
+        }
+    }
+
+    .picker.is-open .picker-field {
+        border-color: var(--bs-accent);
+    }
+
+    .picker.is-disabled .picker-field {
+        background-color: $input-disabled-bg;
+        cursor: default;
+    }
+
+    .picker-input {
+        flex: 1 1 80px;
+        min-width: 80px;
+        height: $picker-chip-height;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        outline: none;
+        text-overflow: ellipsis;
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    // One line high whatever the chips wrap to: the chevron, the clear X and the spinner stay at
+    // the first line.
+    .picker .select-menu-chevron,
+    .picker .select-menu-clear {
+        top: calc(#{$select-menu-field-height} * .5);
+    }
+
+    .picker .select-menu-spinner {
+        top: calc(#{$select-menu-field-height} * .5 - .5rem);
+    }
+
+    // A chosen value: a filled tag as high as the input
+    .picker-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacer * .375;
+        max-width: 100%;
+        min-width: 0;
+        height: $picker-chip-height;
+        padding: 0 $spacer * .25 0 $spacer * .5;
+        border-radius: var(--bs-border-radius-sm);
+        background: $picker-chip-bg;
+        color: $picker-chip-color;
+        font-size: $picker-chip-font-size;
+    }
+
+    .picker-chip-label {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .picker-chip-remove {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        width: 1.25em;
+        height: 1.25em;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: inherit;
+        font-size: $picker-chip-image-size;
+        cursor: pointer;
+        opacity: .8;
+        @include transition(opacity .2s);
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 1px;
+        }
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+
+    .picker-option-label {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .picker-option-count {
+        flex: 0 0 auto;
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+        font-weight: $font-weight-normal;
+    }
+
+    // PickerInput: the island ui.picker mounts right after a native <select>
+    .picker-host {
+        width: 100%;
+    }
+
+    // Until the island hides it (`visually-hidden`), the select holds the field's place in its
+    // look, without the browser's "3 selected" of a multiple one: no jump while Vue loads.
+    select:is([data-ui-picker], [data-ui-select2]):not(.visually-hidden) {
+        width: 100%;
+        height: $select-menu-field-height;
+        border: $input-border-width solid $input-border-color;
+        border-radius: $input-border-radius;
+        background-color: $input-bg;
+
+        &[multiple] {
+            appearance: none;
+            overflow: hidden;
+            color: transparent;
+        }
+    }
+
+    // Enhanced select: the field is the button, the chevron stays while a value is set
+    .picker.is-select .picker-field,
+    .picker.is-select .picker-input {
+        cursor: pointer;
+    }
+
+    // A chosen value is shown, not edited: the caret shows once the user types.
+    .picker.is-select .picker-input[readonly],
+    .picker:is(.is-select, .is-single).has-selection:not(.is-editing) .picker-input {
+        caret-color: transparent;
+    }
+
+    .picker.is-select.has-selection .select-menu-chevron {
+        opacity: 1;
+    }
+
+    .picker.is-select.has-selection:has(> .select-menu-clear) .select-menu-chevron {
+        opacity: 0;
+    }
+
+    .picker-value-image,
+    .picker-chip-image {
+        flex: 0 0 auto;
+    }
+
+    .picker-chip:has(> .picker-chip-image) {
+        padding-left: calc((#{$picker-chip-height} - #{$picker-chip-image-size}) * .5);
+    }
+
+    // As high as its picture: no line box below it. An icon takes a picture's size, as the remove ⊗.
+    .picker-chip-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    i.picker-chip-image {
+        width: $picker-chip-image-size;
+        height: $picker-chip-image-size;
+        font-size: $picker-chip-image-size;
+    }
+
+    .picker-chip-image,
+    .picker-chip-image img {
+        border-radius: var(--bs-border-radius-sm);
+    }
+
+    .picker-chip.is-locked {
+        padding-right: $spacer * .5;
+    }
+
+    .picker-option-image {
+        display: flex;
+        flex: 0 0 auto;
+    }
+
+    .picker-option-text {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .picker-option-subtext {
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+    }
+
+    .picker-option mark {
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        font-weight: $font-weight-bold;
+    }
+
+    .picker-option.is-new {
+        color: var(--bs-accent);
+    }
+
+    .picker-color {
+        display: inline-block;
+        flex: 0 0 auto;
+        width: $picker-color-size;
+        height: $picker-color-size;
+        border-radius: 50%;
+    }
+
+    // `listed`: the chosen items as rows below the field
+    .picker-list {
+        display: flex;
+        flex-direction: column;
+        gap: $spacer * .25;
+        width: 100%;
+        margin: $spacer * .5 0 0;
+    }
+
+    .picker-list-item {
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+        padding: $spacer * .25 $spacer * .5;
+        border-radius: var(--bs-border-radius);
+        background: $picker-list-item-bg;
+    }
+
+    .picker-list-item-text {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .picker-list-item-subtext {
+        color: var(--bs-secondary-color);
+        font-size: $font-size-sm;
+    }
+
+    .picker-list-item-remove {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--bs-secondary-color);
+        cursor: pointer;
+
+        &:hover {
+            color: var(--bs-danger);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--bs-accent);
+            outline-offset: 1px;
+        }
+    }
+}

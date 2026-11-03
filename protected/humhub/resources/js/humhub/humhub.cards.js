@@ -12,9 +12,6 @@ humhub.module('cards', function(module, require, $) {
             form.find('input[type=text]:first').focus();
         }
         form.on('submit', function () {
-            $(this).find('select[data-select2-id] option[data-id]').each(function() {
-                $(this).val($(this).data('id'));
-            });
             if (form.data('action-url') !== undefined) {
                 $('.container-cards .form-search-action-reset').show();
             }

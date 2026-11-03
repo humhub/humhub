@@ -178,12 +178,12 @@ humhub.module('ui.filter', function (module, require, $) {
         FilterInput.call(this, $node, filter);
     });
 
-    FilterInput.prototype.getValue = function () {
-        return Widget.instance(this.$).val()
+    PickerInput.prototype.getValue = function () {
+        return this.$.val();
     };
 
-    FilterInput.prototype.isActive = function () {
-        return Widget.instance(this.$).hasValues();
+    PickerInput.prototype.isActive = function () {
+        return !!(this.$.val() && this.$.val().length);
     };
 
     var DatePickerInput = FilterInput.extend(function ($node, filter) {

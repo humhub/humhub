@@ -2,23 +2,19 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
 
 namespace humhub\widgets\form;
 
 use humhub\components\icon\TablerIconProvider;
+use humhub\helpers\Html;
 use humhub\widgets\Icon;
-use kartik\select2\Select2;
 use Yii;
-use yii\helpers\Json;
-use yii\web\JsExpression;
-use yii\web\View;
 
 /**
- * IconPicker form field widget
+ * A picker of an icon name (Tabler by default), each suggestion showing its icon.
  *
  * Usage example:
  *
@@ -26,92 +22,142 @@ use yii\web\View;
  *  <?= $activeForm->field($form, 'icon')->widget(IconPicker::class); ?>
  * ```
  *
- * The value is a Tabler icon name. A stored Font Awesome 4 name is preselected as the Tabler icon it
- * renders as and saved as such.
+ * Since 1.20 a single `BasePicker` (the Vue `PickerInput`) on the named source `icon`; before, a
+ * kartik Select2. The `<select>` holds the current value only (kept even when it is not a name of
+ * the library); the names reach the page once per library through the `ui.picker` JS config
+ * (`iconNames`). A stored Font Awesome 4 name is preselected as the Tabler icon it renders as.
  *
  * @since 1.3
  */
-class IconPicker extends Select2
+class IconPicker extends BasePicker
 {
-    public $bsVersion = 5;
-
     /**
-     * @var string optional icon provider id, defaults to the Tabler provider
+     * @var string|null the icon library, null for Tabler
      */
     public $lib;
 
     /**
      * @inheritdoc
      */
-    public function init()
-    {
-        $this->options['placeholder'] = Yii::t('base', 'Select icon');
-        $this->theme = Select2::THEME_BOOTSTRAP;
-        $this->pluginOptions = [
-            'escapeMarkup' => new JsExpression('function (m) { return m; }'),
-        ];
-        parent::init();
-    }
+    public $minInput = 0;
 
     /**
      * @inheritdoc
      */
+    public $maxSelection = 1;
+
+    /**
+     * @inheritdoc
+     * `null` lists all icons of the library.
+     */
+    public ?int $maxResults = null;
+
+    public function init()
+    {
+        $this->placeholder ??= Yii::t('base', 'Select icon');
+        parent::init();
+    }
+
     public function run()
     {
-        $this->value = Icon::stripPrefix((string)$this->value) ?: null;
+        $value = $this->normalize($this->hasModel() ? Html::getAttributeValue($this->model, $this->attribute) : $this->value);
 
-        if ($this->value !== null && $this->isTabler()) {
-            $this->value = TablerIconProvider::resolveLegacyName($this->value);
+        $this->registerIconNames();
+        $this->maxResults ??= count($this->getIconNames());
+
+        $options = $this->getPickerOptions();
+        $options['prompt'] = '';
+        $options['options'] = [];
+        $items = [];
+        if ($value !== null) {
+            $items[$value] = $value;
+            $options['options'][$value] = array_filter([
+                'data-text' => $value,
+                'data-image' => $this->getItemImage($value),
+            ]);
         }
 
-        // Before Select2 registers its plugin options, which carry the Tabler names
-        $this->populateIconList();
+        $name = $this->hasModel() ? Html::getInputName($this->model, $this->attribute) : ($this->name ?: 'icon');
 
-        return parent::run();
+        return Html::dropDownList($name, $value, $items, $options);
     }
 
     /**
-     * Populates the icon list.
-     *
-     * For the Tabler provider the names are handed to Select2 on the client, registered once per
-     * page; only the current value is rendered as an option so it is preselected. Another provider
-     * gets its icons rendered server-side, as before.
+     * @inheritdoc
+     * @since 1.20
      */
-    protected function populateIconList()
+    public function getSource(): ?array
     {
-        if (!$this->isTabler()) {
-            foreach ($this->getIconNames() as $icon) {
-                $this->data[$icon] = Icon::get(['name' => $icon, 'lib' => $this->lib]) . '&nbsp;&nbsp;' . $icon;
-            }
-            return;
-        }
-
-        $this->data = $this->value ? [$this->value => $this->value] : [];
-
-        $this->getView()->registerJs(
-            'window.humhubIconNames = ' . Json::encode(array_values($this->getIconNames())) . ';',
-            View::POS_HEAD,
-            'humhub-icon-names',
-        );
-
-        $template = new JsExpression('function (icon) { return icon.id ? \'<i class="ti ti-\' + icon.id + \'" aria-hidden="true"></i>&nbsp;&nbsp;\' + icon.text : icon.text; }');
-        $this->pluginOptions['data'] = new JsExpression('window.humhubIconNames.map(function (name) { return {id: name, text: name}; })');
-        $this->pluginOptions['templateResult'] = $template;
-        $this->pluginOptions['templateSelection'] = $template;
+        return ['source' => 'icon', 'params' => ['lib' => $this->getLib()]];
     }
 
-    /**
-     * Returns a list of available icons
-     *
-     * @return array a list of icons
-     */
     public function getIconNames()
     {
         return Icon::getNames($this->lib);
     }
 
+    /**
+     * Hands the names of the library to the `icon` picker source: `ui.picker` config
+     * `iconNames.<lib>`, comma-separated — a string, so that the merge of repeated
+     * registerJsConfig() calls replaces it instead of appending the list again.
+     */
+    protected function registerIconNames(): void
+    {
+        $this->getView()->registerJsConfig('ui.picker', [
+            'iconNames' => [$this->getLib() => implode(',', array_values($this->getIconNames()))],
+        ]);
+    }
+
+    protected function getAttributes()
+    {
+        $attributes = parent::getAttributes();
+        unset($attributes['multiple'], $attributes['size']);
+
+        return $attributes;
+    }
+
+    protected function getData()
+    {
+        $data = parent::getData();
+        unset($data['picker-url']);
+
+        return $data;
+    }
+
+    protected function getUrl()
+    {
+        return null;
+    }
+
+    protected function getItemText($item)
+    {
+        return $item;
+    }
+
+    protected function getItemImage($item)
+    {
+        return $this->isTabler() ? 'ti-' . $item : null;
+    }
+
+    protected function getItemKey($item)
+    {
+        return $item;
+    }
+
+    private function normalize($value): ?string
+    {
+        $value = Icon::stripPrefix((string)$value) ?: null;
+
+        return $value !== null && $this->isTabler() ? TablerIconProvider::resolveLegacyName($value) : $value;
+    }
+
+    private function getLib(): string
+    {
+        return $this->lib ?? TablerIconProvider::ID;
+    }
+
     private function isTabler(): bool
     {
-        return $this->lib === null || $this->lib === TablerIconProvider::ID;
+        return $this->getLib() === TablerIconProvider::ID;
     }
 }

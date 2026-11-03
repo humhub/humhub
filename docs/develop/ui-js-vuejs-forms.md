@@ -1,6 +1,6 @@
 # Vue.js Form Suite
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the native `HumHubForm` component suite: `HumHubForm` itself, the field components (`TextField`, `TextareaField`, `CheckboxField`, `SelectField`, `UploadField`), `SubmitButton`, the Yii-parity markup/`name`/`id` convention, the error contract, and how heavy legacy widgets (the rich text editor) embed as suite citizens via `RichTextField`. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md); for the legacy-interop mechanism `RichTextField` itself is built on, see [Legacy interop](ui-js-vuejs-interop.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the native `HumHubForm` component suite: `HumHubForm` itself, the field components (`TextField`, `TextareaField`, `CheckboxField`, `SelectField`, `PickerField`, `UploadField`), `SubmitButton`, the Yii-parity markup/`name`/`id` convention, the error contract, and how heavy legacy widgets (the rich text editor) embed as suite citizens via `RichTextField`. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md); for the legacy-interop mechanism `RichTextField` itself is built on, see [Legacy interop](ui-js-vuejs-interop.md).
 
 ## Why a form suite, not just `LegacyFormWrapper`
 
@@ -24,6 +24,7 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 | `TextareaField` | Multi-line input | same as `TextField` + `rows` (default 4) | `update:modelValue` |
 | `CheckboxField` | Checkbox | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue` (Boolean) | `update:modelValue` |
 | `SelectField` | `<select>` dropdown | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue`, `options` (`[{value, label}]`), `prompt` | `update:modelValue` |
+| `PickerField` | Picker / enhanced select, see [Picker](ui-js-vuejs-picker.md) | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue`; every `PickerInput` prop (`multiple`, `source`, `url`, `options`, `initialItems`, `maxSelection`, `listed`, …) | `update:modelValue` |
 | `SubmitButton` | `type="submit"` button | `disabled`, `loader` (default `true`) | default slot = label/icon |
 | `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlersHtml`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |
 | `RichTextField` | Legacy citizen: the richtext editor shell, see [Legacy fields](#legacy-fields) | `attribute`*, `shellHtml` | exposes `getValue()`, `setValue()`, `clear()`, `focus()` |

@@ -11,6 +11,7 @@ This document covers motivation, goals, constraints and the overall architecture
 - [Extending islands](ui-js-vuejs-extensions.md) — extension slots, menu entries, server-described menu entries, module data served by a module's own endpoint, domain events, and migrating a legacy widget-stack extension.
 - [Legacy interop](ui-js-vuejs-interop.md) — `v-additions`, `RichTextOutput`, `LegacyFormWrapper`, the form-shell pattern, and other patterns for bridging into pre-existing jQuery widgets.
 - [Form suite](ui-js-vuejs-forms.md) — `HumHubForm`, native field components, `SubmitButton`, the Yii-parity markup/naming convention, the error contract, and `RichTextField` as a legacy-citizen field.
+- [Picker](ui-js-vuejs-picker.md) — `PickerField`, the picker and enhanced select replacing Select2 in PHP and Vue forms: the native `<select>` bridge, sources, image descriptions and the `BasePicker` family.
 - [Roadmap](ui-js-vuejs-roadmap.md) — the open work in core.
 
 ## Motivation

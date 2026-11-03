@@ -504,16 +504,10 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.focus = function () {
         const that = this;
         setTimeout(function () {
-            const $input = that.$.find('select[autofocus]:visible:not(:disabled), '
+            that.$.find('select[autofocus]:visible:not(:disabled), '
                 + 'input[autofocus]:visible:not(:disabled), '
                 + 'textarea[autofocus]:visible:not(:disabled), '
-                + '[contenteditable="true"][autofocus]:visible:not(:disabled)').first();
-
-            if ($input.data('select2')) {
-                $input.select2('focus');
-            } else {
-                $input.focus();
-            }
+                + '[contenteditable="true"][autofocus]:visible:not(:disabled)').first().focus();
         }, 100);
     };
 
@@ -639,7 +633,7 @@ humhub.module('ui.modal', function (module, require, $) {
             var that = this;
             $(document).on('focusin.modal', function (e) {
                 var $target = $(e.target);
-                if ($target.hasClass('select2-input') || $target.hasClass('select2-search__field') || $target.hasClass('hexInput')) {
+                if ($target.hasClass('picker-input') || $target.hasClass('hexInput')) {
                     return true;
                 }
 

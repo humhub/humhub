@@ -2,9 +2,9 @@
     <div
         ref="root"
         class="select-menu picker"
-        :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': disabled, 'is-loading': loading, 'is-multiple': multiple }"
+        :class="{ 'is-open': open, 'has-selection': hasSelection, 'is-disabled': disabled, 'is-loading': loading, 'is-multiple': multiple, 'is-drop-up': dropUp }"
     >
-        <div class="form-control picker-field" @click="onFieldClick">
+        <div ref="field" class="form-control picker-field" @click="onFieldClick">
             <span v-for="chip in chips" :key="chip.value" class="picker-chip">
                 <span class="picker-chip-label">{{ chip.label }}</span>
                 <button
@@ -14,7 +14,7 @@
                     :aria-label="removeLabel(chip.label)"
                     :title="removeLabel(chip.label)"
                     @click.stop="remove(chip.value)"
-                ><i class="ti ti-x" aria-hidden="true"></i></button>
+                ><i class="ti ti-circle-x" aria-hidden="true"></i></button>
             </span>
             <input
                 :id="inputId"
@@ -23,6 +23,8 @@
                 class="picker-input"
                 role="combobox"
                 autocomplete="off"
+                spellcheck="false"
+                autocapitalize="off"
                 aria-autocomplete="list"
                 :aria-expanded="open ? 'true' : 'false'"
                 :aria-controls="listboxId"
@@ -82,6 +84,7 @@
 
 <script>
 import { client, i18n, log } from '@humhub/vue';
+import comboboxMixin from './picker/comboboxMixin.js';
 
 export const SEARCH_DEBOUNCE_MS = 250;
 
@@ -136,12 +139,13 @@ const contains = (label, term) => term === '' || label.toLocaleLowerCase().inclu
  *   on, Backspace in an empty input removes the last chip (`multiple`). A click outside closes it.
  *   The clear X resets the value (`''` / `[]`).
  * - Styling: `.select-menu` (drawer, options, clear X, chevron, spinner) and `.picker` (the field
- *   with the chips and the input) in `resources/scss/_filter-bar.scss`.
+ *   with the chips and the input) in `resources/scss/_picker.scss`; combobox basics from `picker/comboboxMixin.js`.
  *
  * @since 1.20
  */
 export default {
     name: 'FilterPicker',
+    mixins: [comboboxMixin],
     props: {
         modelValue: { type: [String, Array], default: '' },
         options: { type: Array, default: () => [] },
@@ -158,8 +162,6 @@ export default {
     data() {
         const key = ++uid;
         return {
-            open: false,
-            activeIndex: -1,
             // The typed text, and (single mode) whether the input shows it instead of the choice.
             query: '',
             editing: false,
@@ -210,6 +212,9 @@ export default {
                 return null;
             }
             return { value: this.term, label: this.term, count: null, custom: true };
+        },
+        comboboxOptions() {
+            return this.choices;
         },
         choices() {
             return this.customChoice ? [this.customChoice, ...this.suggestions] : this.suggestions;
@@ -270,6 +275,9 @@ export default {
                 this.remember(options.map(normalize));
             },
         },
+        comboboxOptions() {
+            this.$nextTick(() => this.placeDrawer());
+        },
         choices(choices) {
             if (this.activeIndex >= choices.length) {
                 this.activeIndex = choices.length - 1;
@@ -292,12 +300,8 @@ export default {
     },
     beforeUnmount() {
         clearTimeout(this.searchTimer);
-        this.unbindOutside();
     },
     methods: {
-        optionId(index) {
-            return `${this.listboxId}-${index}`;
-        },
         labelOf(value) {
             return this.labels[value] ?? value;
         },
@@ -448,13 +452,6 @@ export default {
                 this.$emit('update:modelValue', this.multiple ? [] : '');
             }
         },
-        moveTo(index) {
-            if (index < 0 || !this.choices.length) {
-                return;
-            }
-            this.activeIndex = Math.min(index, this.choices.length - 1);
-            this.$nextTick(() => this.scrollActiveIntoView());
-        },
         onKeydown(event) {
             const last = this.choices.length - 1;
             switch (event.key) {
@@ -472,6 +469,13 @@ export default {
                         this.show(last);
                     } else {
                         this.moveTo(Math.max(this.activeIndex - 1, 0));
+                    }
+                    break;
+                case 'PageDown':
+                case 'PageUp':
+                    if (this.open && this.choices.length) {
+                        event.preventDefault();
+                        this.movePage(event.key === 'PageDown' ? 1 : -1);
                     }
                     break;
                 case 'Home':
@@ -515,32 +519,6 @@ export default {
                     break;
                 default:
             }
-        },
-        scrollActiveIntoView() {
-            const node = this.activeIndex >= 0 ? this.$refs.listbox?.children[this.activeIndex] : null;
-            if (node && typeof node.scrollIntoView === 'function') {
-                node.scrollIntoView({ block: 'nearest' });
-            }
-        },
-        bindOutside() {
-            if (this.outsideHandler) {
-                return;
-            }
-            this.outsideHandler = (event) => {
-                if (this.$refs.root && !this.$refs.root.contains(event.target)) {
-                    this.close();
-                }
-            };
-            document.addEventListener('pointerdown', this.outsideHandler, true);
-            document.addEventListener('focusin', this.outsideHandler, true);
-        },
-        unbindOutside() {
-            if (!this.outsideHandler) {
-                return;
-            }
-            document.removeEventListener('pointerdown', this.outsideHandler, true);
-            document.removeEventListener('focusin', this.outsideHandler, true);
-            this.outsideHandler = null;
         },
     },
 };

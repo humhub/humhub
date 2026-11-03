@@ -87,6 +87,16 @@ describe('FilterSelect', () => {
         expect(button(mountSelect({ modelValue: '42' })).text()).toBe('42');
     });
 
+    it('jumps a page with PageDown and PageUp', async () => {
+        const wrapper = mountSelect({ options: Array.from({ length: 25 }, (_, index) => ({ value: `o${index}`, label: `Option ${index}` })) });
+        await key(button(wrapper), 'ArrowDown');
+        await key(listbox(wrapper), 'Home');
+        await key(listbox(wrapper), 'PageDown');
+        expect(wrapper.find('.is-focused').text()).toContain('Option 10');
+        await key(listbox(wrapper), 'PageUp');
+        expect(wrapper.find('.is-focused').text()).toContain('Option 0');
+    });
+
     it('supports the keyboard: open, move, choose, escape', async () => {
         const wrapper = mountSelect({ modelValue: 'installed' });
 

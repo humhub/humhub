@@ -3,9 +3,11 @@
 namespace humhub\widgets\form;
 
 use humhub\helpers\Html;
+use Stringable;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
 /**
@@ -23,14 +25,10 @@ use yii\helpers\Url;
  * - getItemImage for retrieving the option image (if required)
  *
  *
- * The json result of a picker search query should return an array of items with the following key/values:
- *
- *  - id: option value (itemKey) (required)
- *  - text: option text (required)
- *  - image: option image (optional)
- *  - priority: used to sort results (optional)
- *  - disabled: can be used to disable certain items (optional)
- *  - disabbledText: text describing the reason why the item is disabled (optional)
+ * The JSON answer of a legacy search URL (`$url`/`$defaultRoute`, `?keyword=<term>`) is a list of
+ * `{id, text, subText?, image?, disabled?}`; `image` a URL, `#colour`, Tabler icon name or an image
+ * description (see docs/develop/ui-js-vuejs-picker.md), never HTML. The widget renders a native
+ * `<select>` the Vue `PickerInput` mounts on (`ui.picker`).
  *
  * @package humhub.modules_core.user.widgets
  * @since 1.2
@@ -39,11 +37,43 @@ use yii\helpers\Url;
 abstract class BasePicker extends JsInputWidget
 {
     /**
-     * Defines the javascript picker implementation.
-     *
-     * @var string
+     * Legacy keys of getData() and the `<select>` attributes they become.
      */
-    public $jsWidget = 'ui.picker.Picker';
+    private const DATA_ATTRIBUTES = [
+        'add-options' => 'data-picker-allow-new',
+        'item-key' => 'data-picker-item-key',
+        'maximum-selection-length' => 'data-picker-max-selection',
+        'maximum-input-length' => 'data-picker-max-input',
+        'minimum-input-length' => 'data-picker-min-input',
+        'placeholder' => 'data-picker-placeholder',
+        'placeholder-more' => 'data-picker-placeholder-more',
+    ];
+
+    /**
+     * Legacy message keys of getData() and their `messages` keys.
+     */
+    private const DATA_MESSAGES = [
+        'no-result' => 'noResults',
+        'format-ajax-error' => 'error',
+        'input-too-short' => 'inputTooShort',
+        'locked-text' => 'locked',
+        'maximum-selected' => 'maximumSelected',
+    ];
+
+    /**
+     * Legacy keys of getData() handled separately or no longer used.
+     */
+    private const DATA_HANDLED = [
+        'picker-url', 'default-results', 'disabled-items', 'locked-items', 'disabled',
+        'picker-focus', 'load-more', 'input-too-long',
+    ];
+
+    /**
+     * Not used since 1.20: the `<select>` is enhanced by the `ui.picker` UI addition.
+     *
+     * @var string|null
+     */
+    public $jsWidget = null;
 
     /**
      * Disabled items
@@ -211,10 +241,35 @@ abstract class BasePicker extends JsInputWidget
     public $focus = false;
 
     /**
+     * Shows the chosen items as rows below the field instead of chips in it.
+     *
+     * @var bool
+     * @since 1.20
+     */
+    public bool $listed = false;
+
+    /**
+     * Items a named source suggests on focus, before anything is typed (0: none). Ignored
+     * when $defaultResults are given.
+     *
+     * @var int
+     * @since 1.20
+     */
+    public int $suggested = 0;
+
+    /**
+     * Items a search lists at most; null: 8 for a remote source, all for static options.
+     *
+     * @var int|null
+     * @since 1.20
+     */
+    public ?int $maxResults = null;
+
+    /**
      * @inheritdoc
      * @var bool
      */
-    public $init = true;
+    public $init = false;
 
     /**
      * Used to retrieve the option text of a given $item.
@@ -225,10 +280,11 @@ abstract class BasePicker extends JsInputWidget
     abstract protected function getItemText($item);
 
     /**
-     * Used to retrieve the option image url of a given $item.
+     * Used to retrieve the option image of a given $item.
      *
      * @param ActiveRecord $item selected item
-     * @return string|null image url or null if no selection image required.
+     * @return string|array|Stringable|null an image URL, `#colour`, Tabler icon name, or an image description
+     * array (`['type' => 'user'|'space'|'icon'|'color'|'url', …]`); never HTML
      */
     abstract protected function getItemImage($item);
 
@@ -248,7 +304,7 @@ abstract class BasePicker extends JsInputWidget
             $selection[$id] = $option['data-text'];
         }
 
-        $options = $this->getOptions();
+        $options = $this->getPickerOptions();
         $options['options'] = $selectedOptions;
 
         if ($this->form != null) {
@@ -259,6 +315,155 @@ abstract class BasePicker extends JsInputWidget
             $name = (!$this->name) ? 'pickerField' : $this->name;
             return Html::dropDownList($name, $this->value, $selection, $options);
         }
+    }
+
+    /**
+     * The attributes of the `<select>`: getAttributes(), the picker data, then $options. The
+     * JsWidget defaults ($events, $fadeIn, $visible) apply as in getOptions().
+     *
+     * @since 1.20
+     */
+    protected function getPickerOptions(): array
+    {
+        $this->setDefaultOptions();
+
+        $result = ArrayHelper::merge(
+            $this->getAttributes(),
+            $this->getPickerData($this->getData()),
+            $this->getLegacyOptions(),
+            ['id' => $this->getId()],
+        );
+
+        if (!$this->visible) {
+            Html::addCssStyle($result, 'display:none');
+        }
+
+        return $result;
+    }
+
+    /**
+     * The `$options`, Select2 attributes of a caller (`data-placeholder`, …) translated into their
+     * `data-picker-*` attributes; `data-tags` (no longer used) dropped.
+     *
+     * @since 1.20
+     */
+    private function getLegacyOptions(): array
+    {
+        $options = $this->options;
+        foreach (self::DATA_ATTRIBUTES as $key => $attribute) {
+            if (array_key_exists('data-' . $key, $options)) {
+                $options[$attribute] ??= $options['data-' . $key];
+                unset($options['data-' . $key]);
+            }
+        }
+        unset($options['data-tags']);
+
+        return $options;
+    }
+
+    /**
+     * Translates the (legacy-keyed) result of getData() into the `data-picker-*` attributes and
+     * `data-picker-config` of the markup contract (docs/develop/ui-js-vuejs-picker.md). A key it
+     * does not know passes through as `data-<key>`.
+     *
+     * @since 1.20
+     */
+    final protected function getPickerData(array $data): array
+    {
+        $result = ['data-ui-picker' => true];
+        $config = ['messages' => []];
+
+        $source = $this->getSource();
+        if ($source !== null) {
+            $result['data-picker-source'] = $source['source'];
+            if (!empty($source['params'])) {
+                $config['sourceParams'] = $source['params'];
+            }
+        } elseif (!empty($data['picker-url'])) {
+            $result['data-picker-url'] = $data['picker-url'];
+        }
+
+        foreach ($data as $key => $value) {
+            if (isset(self::DATA_ATTRIBUTES[$key])) {
+                if ($value !== null && $value !== false && $value !== '') {
+                    $result[self::DATA_ATTRIBUTES[$key]] = $value === true ? 'true' : $value;
+                }
+            } elseif (isset(self::DATA_MESSAGES[$key])) {
+                if ($value !== null && $value !== '') {
+                    $config['messages'][self::DATA_MESSAGES[$key]] = $value;
+                }
+            } elseif (!in_array($key, self::DATA_HANDLED, true)) {
+                $result['data-' . $key] = $value;
+            }
+        }
+
+        if (!empty($data['default-results'])) {
+            $config['defaultResults'] = array_values(array_map(
+                static function ($option) {
+                    // buildItemOption() keys, or the JSON shape of a legacy search answer
+                    $image = $option['data-image'] ?? $option['image'] ?? null;
+                    return [
+                        'id' => (string)($option['data-id'] ?? $option['id']),
+                        'text' => $option['data-text'] ?? $option['text'] ?? '',
+                        'subText' => $option['data-sub-text'] ?? $option['subText'] ?? null,
+                        'image' => $image instanceof Stringable ? (string)$image : $image,
+                    ];
+                },
+                $data['default-results'],
+            ));
+        }
+        if (!empty($data['disabled-items'])) {
+            $config['disabledIds'] = array_map('strval', (array)$data['disabled-items']);
+        }
+        if (!empty($data['locked-items'])) {
+            $config['lockedIds'] = array_map('strval', array_values((array)$data['locked-items']));
+        }
+
+        if (isset($result['data-picker-allow-new'])) {
+            // New items are posted as `_add:<term>`, see $addOptions
+            $result['data-picker-new-prefix'] = '_add:';
+        }
+
+        if ($this->listed) {
+            $result['data-picker-listed'] = 'true';
+        }
+        if ($this->suggested > 0) {
+            $result['data-picker-suggested'] = $this->suggested;
+        }
+        if ($this->maxResults !== null) {
+            $result['data-picker-max-results'] = $this->maxResults;
+        }
+
+        $config = array_filter($config, static fn($value) => $value !== []);
+        if ($config !== []) {
+            $result['data-picker-config'] = $config;
+        }
+
+        return $result;
+    }
+
+    /**
+     * The named source of the picker (`['source' => '<name>', 'params' => [...]]`, see
+     * `registerPickerSource()` in docs/develop/ui-js-vuejs-picker.md), or null for the legacy
+     * search URL (getUrl()) — or static options when getData() drops `picker-url`.
+     *
+     * @since 1.20
+     */
+    public function getSource(): ?array
+    {
+        return null;
+    }
+
+    /**
+     * Used to retrieve the option sub text (the second line in the result list) of a given $item.
+     *
+     * @param mixed $item
+     * @return string|null
+     * @since 1.20
+     */
+    protected function getItemSubText($item): ?string
+    {
+        return null;
     }
 
     /**
@@ -365,11 +570,28 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function buildItemOption($item, $selected = true)
     {
+        $image = $this->getItemImage($item);
+        if ($image instanceof Stringable) {
+            $image = (string)$image;
+        }
+
         $result = [
             'data-id' => $this->getItemKey($item),
             'data-text' => $this->getItemText($item),
-            'data-image' => $this->getItemImage($item),
         ];
+
+        if ($image !== null && $image !== '') {
+            $result['data-image'] = $image;
+        }
+
+        $subText = $this->getItemSubText($item);
+        if ($subText !== null && $subText !== '') {
+            $result['data-sub-text'] = $subText;
+        }
+
+        if ($this->isLockedItem($item)) {
+            $result['data-locked'] = true;
+        }
 
         if ($selected) {
             $result['selected'] = 'selected';
@@ -424,29 +646,30 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function getAttributes()
     {
-        return [
+        $attributes = [
             'multiple' => 'multiple',
-            'data-multiple' => 'true',
-            'data-tags' => 'true',
             'size' => '1',
             'class' => 'form-control',
-            'style' => 'width:100%',
-            'title' => $this->placeholder,
         ];
+
+        if ($this->disabled) {
+            $attributes['disabled'] = true;
+        }
+
+        if ($this->focus) {
+            $attributes['autofocus'] = true;
+        }
+
+        return $attributes;
     }
 
     /**
-     * Returns an array of data attributes for this picker isntance.
-     * Following data attributes can be configured by default:
-     *
-     *  - data-placeholder: Placeholder text if no value is set.
-     *  - data-placeholder-more: Placeholder text displayed if at least one item is set.
-     *  - data-maximum-selected: Info message displayed if $maxSelection is exceed.
-     *  - data-no-result: Empty result message.
-     *  - data-format-ajax-error: Ajax error message.
-     *  - data-load-more: Load more items text.
-     *  - data-input-too-short: Info message displayed if $minInput characters is not exceed.
-     *  - data-input-too-long: Info message displayed if $maxInput characters is exceed.
+     * Returns the settings of this picker instance under their legacy keys, which subclasses
+     * override (e.g. `placeholder`, `placeholder-more`, `no-result`, `maximum-selected`,
+     * `picker-url`, `item-key`, `add-options`, `minimum-input-length`, `default-results`,
+     * `disabled-items`, `locked-items`, `locked-text`). getPickerData() translates them into the
+     * `data-picker-*` attributes and `data-picker-config` of the `<select>`; a key it does not
+     * know is rendered as `data-<key>`.
      *
      * @return array
      */

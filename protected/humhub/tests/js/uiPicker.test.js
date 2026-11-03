@@ -1,179 +1,208 @@
-import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-// ui.picker runs against the real select2 build (the version Select2Asset ships, via npm), so the
-// filtering is tested through select2's own data adapters and result rendering.
-
-const $ = globalThis.jQuery;
-
-// Bootstrap/jquery.highlight plugins the result template relies on.
-$.fn.tooltip = $.fn.tooltip || function () { return this; };
-$.fn.highlight = $.fn.highlight || function () { return this; };
-
-// Minimal `ui.widget`: the real one needs the action/event/client core modules this
-// harness does not provide, while the picker only uses the instance bookkeeping.
-globalThis.humhub.module('ui.widget', function (module) {
-    const Widget = function (node, options) {
-        this.$ = $(node);
-        this.$.data('humhub-widget', this);
-        this.options = $.extend(this.getDefaultOptions(), options || {});
-        this.init();
-    };
-    Widget.prototype.getDefaultOptions = () => ({});
-    Widget.prototype.init = () => {};
-    Widget.prototype.fire = () => {};
-    Widget.instance = (node) => $(node).data('humhub-widget');
-
-    module.export({ Widget });
-});
-globalThis.humhub.module('ui.loader', function (module) {
-    module.export({ set: ($node) => $node });
+// The core `config` module (humhub.core.js): `get(moduleId)` answers the module's config object.
+globalThis.humhub.module('config', function (module) {
+    module.export({
+        get: (id) => globalThis.humhub.config.module(id),
+        module: (id) => globalThis.humhub.config.module(id),
+    });
 });
 
-// The UMD build takes its CommonJS branch here and only registers itself once called.
-const select2 = await import('select2/dist/js/select2.full.js');
-if (!$.fn.select2) {
-    (select2.default || select2)(window, $);
-}
 await import('../../resources/js/humhub/humhub.util.js');
+await import('../../resources/js/humhub/humhub.url.js');
+await import('../../resources/js/humhub/humhub.vue.js');
 await import('../../resources/js/humhub/humhub.ui.picker.js');
 
-const { Picker } = globalThis.humhub.modules['ui.picker'];
+const picker = globalThis.humhub.modules['ui.picker'];
+const vueModule = globalThis.humhub.modules.vue;
+const $ = globalThis.jQuery;
 
-let picker;
-
-const tick = () => new Promise((resolve) => setTimeout(resolve, 10));
-
-const createPicker = async (html, options) => {
-    const $select = $(html).appendTo(document.body);
-    picker = new Picker($select[0], options);
-    // select2 is initialised from an (asynchronous) almond require() callback
-    await tick();
-    return picker;
+const render = (html) => {
+    document.body.innerHTML = `<form>${html}</form>`;
+    return document.body.querySelector('select');
 };
 
-const offered = () => $('.select2-results__option[aria-selected]').map(function () {
-    return $(this).find('.picker-text').text();
-}).get();
-
-const open = async () => {
-    picker.$.select2('open');
-    // ajax results arrive asynchronously
-    await tick();
-};
-
-beforeAll(() => {
-    // select2 positions its dropdown against the document, jsdom has no layout
-    window.scrollTo = () => {};
-});
-
-afterEach(async () => {
-    // let the delayed renderPlaceholder() (50ms) run before tearing select2 down
-    await new Promise((resolve) => setTimeout(resolve, 60));
-    picker.$.select2('destroy');
-    $(document.body).empty();
-});
-
-describe('ui.picker', () => {
-    it('does not offer already selected items of a multi-select', async () => {
-        await createPicker(`<select multiple data-multiple="1">
-            <option value="read" selected>Read</option>
-            <option value="write">Write</option>
-            <option value="admin" selected>Admin</option>
-        </select>`);
-
-        await open();
-
-        expect(offered()).toEqual(['Write']);
+describe('ui.picker bridge', () => {
+    beforeAll(() => {
+        vi.spyOn(vueModule, 'mountElement').mockImplementation(() => Promise.resolve());
     });
 
-    it('shows the no results message once everything is selected', async () => {
-        await createPicker(`<select multiple data-multiple="1" data-no-result="Nothing left">
-            <option value="read" selected>Read</option>
-        </select>`);
-
-        await open();
-
-        expect(offered()).toEqual([]);
-        expect($('.select2-results__message').text()).toBe('Nothing left');
+    afterEach(() => {
+        document.body.innerHTML = '';
+        vueModule.mountElement.mockClear();
     });
 
-    it('offers an item again after it was removed from the selection', async () => {
-        await createPicker(`<select multiple data-multiple="1">
-            <option value="read" selected>Read</option>
-            <option value="write">Write</option>
-        </select>`);
+    it('mounts a PickerInput right after each picker select, once', () => {
+        const select = render('<select id="a1" data-ui-picker></select><div class="invalid-feedback"></div>');
+        picker.bind(select);
+        picker.bind(select);
 
-        picker.$.val([]).trigger('change');
-        await open();
-
-        expect(offered()).toEqual(['Read', 'Write']);
+        const host = select.nextElementSibling;
+        expect(host.classList.contains('picker-host')).toBe(true);
+        expect(host.getAttribute('data-vue-component')).toBe('PickerInput');
+        expect(JSON.parse(host.getAttribute('data-props'))).toEqual({ selectId: 'a1' });
+        expect(host.nextElementSibling.classList.contains('invalid-feedback')).toBe(true);
+        expect(vueModule.mountElement).toHaveBeenCalledTimes(1);
     });
 
-    it('does not offer already selected items of ajax results', async () => {
-        await createPicker(`<select multiple data-multiple="1">
-            <option value="u2" selected>Bob</option>
-        </select>`, {
-            pickerUrl: '/user/search',
-            ajax: {
-                delay: 0,
-                transport: (params, success) => success([
-                    { id: 'u1', text: 'Alice' },
-                    { id: 'u2', text: 'Bob' },
-                    { id: 'u3', text: 'Carol' },
-                ]),
-            },
-        });
+    it('binds the matches of the picker UI addition', () => {
+        const { selector, handler } = globalThis.humhubStubs.additions._registered.get('picker');
+        render('<select id="d1" data-ui-picker></select><select id="d2" data-ui-select2></select><select id="d3"></select>');
+        const $match = $(selector);
+        handler.call($match, $match);
 
-        await open();
-
-        expect(offered()).toEqual(['Alice', 'Carol']);
+        expect(vueModule.mountElement).toHaveBeenCalledTimes(2);
+        expect(document.getElementById('d3').nextElementSibling).toBeNull();
     });
 
-    it('compares ajax results by the configured item key', async () => {
-        await createPicker(`<select multiple data-multiple="1" data-item-key="guid">
-            <option value="guid-2" selected>Bob</option>
-        </select>`, {
-            pickerUrl: '/user/search',
-            ajax: {
-                delay: 0,
-                transport: (params, success) => success([
-                    { id: 1, guid: 'guid-1', text: 'Alice' },
-                    { id: 2, guid: 'guid-2', text: 'Bob' },
-                ]),
-            },
-        });
-
-        await open();
-
-        expect(offered()).toEqual(['Alice']);
+    it('gives a select without id one', () => {
+        const select = render('<select data-ui-select2></select>');
+        picker.bind(select);
+        expect(select.id).toMatch(/^picker-\d+$/);
     });
 
-    it('takes an item off the open dropdown once it got selected', async () => {
-        await createPicker(`<select multiple data-multiple="1">
-            <option value="read">Read</option>
-            <option value="write">Write</option>
-        </select>`);
+    it('reads and sets the chosen items of a select, firing change', () => {
+        const select = render('<select id="b1" multiple><option value="1" selected data-text="One" data-image="#f00">One</option></select>');
+        const changes = vi.fn();
+        select.addEventListener('change', changes);
 
-        await open();
-        // ctrl + click keeps the dropdown open
-        const $read = $('.select2-results__option[aria-selected]').filter(function () {
-            return $(this).find('.picker-text').text() === 'Read';
-        });
-        $read.trigger($.Event('mouseup', { ctrlKey: true }));
+        expect(picker.getItems(select)).toEqual([{ id: '1', text: 'One', subText: null, image: '#f00' }]);
 
-        expect(picker.$.val()).toEqual(['read']);
-        expect(picker.$.data('select2').isOpen()).toBe(true);
-        expect(offered()).toEqual(['Write']);
+        picker.setItems(select, [{ id: '2', text: 'Two', image: { type: 'icon', name: 'star' } }]);
+        // The server-selected option stays (unselected), so form.reset() can restore it.
+        expect([...select.options].map((option) => [option.value, option.selected])).toEqual([['1', false], ['2', true]]);
+        expect(select.options[1].dataset.image).toBe('{"type":"icon","name":"star"}');
+
+        picker.addItem($(select), { id: '3', text: 'Three' });
+        picker.removeItem(select, '2');
+        expect(picker.getItems(select).map((item) => item.id)).toEqual(['3']);
+        expect(changes).toHaveBeenCalledTimes(3);
     });
 
-    it('keeps offering the selected item of a single-select', async () => {
-        await createPicker(`<select>
-            <option value="read" selected>Read</option>
-            <option value="write">Write</option>
-        </select>`);
+    it('keeps the options of an enhanced select', () => {
+        const select = render('<select id="e1" multiple data-ui-picker><option value="a" selected>A</option><option value="b">B</option></select>');
 
-        await open();
+        picker.setItems(select, [{ id: 'b', text: 'B' }]);
 
-        expect(offered()).toEqual(['Read', 'Write']);
+        expect([...select.options].map((option) => [option.value, option.selected])).toEqual([['a', false], ['b', true]]);
+    });
+
+    it('keeps a server-selected option when it is removed, so form.reset() restores it', () => {
+        const select = render('<select id="f1" multiple data-picker-source="user">'
+            + '<option value="a" selected>A</option><option value="b" selected>B</option></select>');
+
+        picker.removeItem(select, 'b');
+        expect(picker.getItems(select).map((item) => item.id)).toEqual(['a']);
+        expect([...select.options].map((option) => [option.value, option.selected]).sort()).toEqual([['a', true], ['b', false]]);
+
+        select.form.reset();
+        expect(picker.getItems(select).map((item) => item.id).sort()).toEqual(['a', 'b']);
+    });
+
+    it('appends the chosen options of a picker in the chosen order', () => {
+        const select = render('<select id="g1" multiple data-picker-url="/search">'
+            + '<option value="1" selected>One</option><option value="2" selected>Two</option></select>');
+
+        picker.setItems(select, [{ id: '2', text: 'Two' }, { id: '3', text: 'Three' }, { id: '1', text: 'One' }]);
+
+        expect([...select.options].map((option) => option.value)).toEqual(['2', '3', '1']);
+    });
+
+    it('treats a select with source or url in data-picker-config as picker', () => {
+        const select = render('<select id="h1" multiple data-ui-picker data-picker-config=\'{"source":"space"}\'>'
+            + '<option value="x">X</option></select>');
+
+        picker.setItems(select, [{ id: 'y', text: 'Y' }]);
+
+        // A picker drops unchosen options (an enhanced select would keep `x`).
+        expect([...select.options].map((option) => option.value)).toEqual(['y']);
+    });
+
+    it('keeps one item in a single select and empties it when none is chosen', () => {
+        const select = render('<select id="i1" data-ui-picker><option value="">-</option>'
+            + '<option value="a" selected>A</option><option value="b">B</option></select>');
+
+        picker.setItems(select, [{ id: 'b', text: 'B' }, { id: 'a', text: 'A' }]);
+        expect(select.value).toBe('b');
+        expect(picker.getItems(select).map((item) => item.id)).toEqual(['b']);
+
+        picker.setItems(select, []);
+        expect(select.value).toBe('');
+        expect(picker.getItems(select)).toEqual([]);
+    });
+
+    it('reads options as the picker does and round-trips image descriptions', () => {
+        const select = render('<select id="j1" multiple data-picker-source="topic">'
+            + '<option value="1" selected data-text="" data-image=\'{"type":"icon","name":"star"}\'>Shown</option>'
+            + '<option value="2" selected data-color="#f00">Two</option>'
+            + '<option value="3" selected data-image="{broken">Three</option></select>');
+
+        const items = picker.getItems(select);
+        expect(items).toEqual([
+            { id: '1', text: '', subText: null, image: { type: 'icon', name: 'star' } },
+            { id: '2', text: 'Two', subText: null, image: { type: 'color', color: '#f00' } },
+            { id: '3', text: 'Three', subText: null, image: '{broken' },
+        ]);
+
+        picker.setItems(select, items.slice(0, 2));
+        picker.setItems(select, picker.getItems(select));
+        expect(picker.getItems(select).map((item) => item.image)).toEqual([{ type: 'icon', name: 'star' }, { type: 'color', color: '#f00' }]);
+    });
+
+    it('selects the current user', () => {
+        Object.assign(globalThis.humhub.config.module('user'), { isGuest: false, guid: 'me-guid', text: 'Me', image: '/me.jpg' });
+        const select = render('<select id="c1" multiple data-ui-picker data-picker-source="user"></select>');
+
+        picker.selectSelf({ $target: $(select) });
+
+        expect(picker.getItems(select)).toEqual([{ id: 'me-guid', text: 'Me', subText: null, image: '/me.jpg' }]);
+    });
+
+    it('fires no change when the selection stays the same', () => {
+        const select = render('<select id="k1" multiple data-picker-source="topic"><option value="1" selected>One</option></select>');
+        const changes = vi.fn();
+        select.addEventListener('change', changes);
+
+        picker.setItems(select, [{ id: '1', text: 'One' }]);
+        expect(changes).not.toHaveBeenCalled();
+        picker.setItems(select, [{ id: '1', text: 'One' }, { id: '2', text: 'Two' }]);
+        expect(changes).toHaveBeenCalledTimes(1);
+    });
+
+    it('clears a single picker to its empty option, also when there was none, so the empty value is posted', () => {
+        const withPrompt = render('<select id="k2" data-picker-source="icon"><option value=""></option><option value="pencil" selected>pencil</option></select>');
+        picker.setItems(withPrompt, []);
+        expect(withPrompt.selectedIndex).toBeGreaterThanOrEqual(0);
+        expect(withPrompt.value).toBe('');
+        expect(new FormData(withPrompt.form).get('')).toBeNull();
+
+        const without = render('<select id="k3" name="icon" data-picker-source="icon"><option value="pencil" selected>pencil</option></select>');
+        picker.setItems(without, []);
+        expect(new FormData(without.form).get('icon')).toBe('');
+    });
+
+    it('replaces the item of a single select on addItem', () => {
+        const select = render('<select id="d1" data-picker-source="user"><option value="old" selected>Old</option></select>');
+
+        picker.addItem(select, { id: 'new', text: 'New' });
+
+        expect(picker.getItems(select).map((item) => item.id)).toEqual(['new']);
+    });
+
+    it('registers the icon source, which searches the names of the ui.picker config', async () => {
+        const factory = vueModule.getPickerSource('icon');
+        expect(factory).toBe(picker.iconSource);
+
+        // Names are read on search: set after the source was created.
+        const source = factory({ itemKey: 'id', params: { lib: 'ti' } });
+        Object.assign(globalThis.humhub.config.module('ui.picker'), { iconNames: { ti: 'pencil,star,star-filled', fa: ['star'] } });
+
+        expect(await source.search('STAR')).toEqual([
+            { id: 'star', text: 'star', image: { type: 'icon', name: 'star' } },
+            { id: 'star-filled', text: 'star-filled', image: { type: 'icon', name: 'star-filled' } },
+        ]);
+        expect((await factory({ params: {} }).search('')).map((item) => item.id)).toEqual(['pencil', 'star', 'star-filled']);
+        expect(await factory({ params: { lib: 'fa' } }).search('st')).toEqual([{ id: 'star', text: 'star', image: null }]);
+        expect(await factory({ params: { lib: 'none' } }).search('')).toEqual([]);
     });
 });

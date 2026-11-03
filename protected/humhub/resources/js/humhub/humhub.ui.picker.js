@@ -1,880 +1,261 @@
+/**
+ * The bridge between native `<select>`s and the Vue picker (see
+ * docs/develop/ui-js-vuejs-picker.md, "Native bridge"): the UI addition `picker` mounts a
+ * `PickerInput` island right after every `select[data-ui-picker]` (and `data-ui-select2`, read
+ * as deprecated alias until 1.21); the island hides the select and keeps it in sync.
+ *
+ * Helpers for code that changes a picker: `getItems()`, `setItems()`, `addItem()`,
+ * `removeItem()` — they change the `<select>` and fire `change`, which the island follows.
+ * The action `ui.picker.selectSelf` adds the current user to its target select.
+ *
+ * @since 1.20 (before: the Select2 based `Picker` widget)
+ */
 humhub.module('ui.picker', function (module, require, $) {
-
-    var Widget = require('ui.widget').Widget;
-    var loader = require('ui.loader');
     var additions = require('ui.additions');
-    var util = require('util');
-    var object = util.object;
-    var string = util.string;
-    var i18n = require('i18n');
+    var config = require('config');
 
-    module.requiredI18nCategories = ['base'];
+    var SELECTOR = 'select[data-ui-picker], select[data-ui-select2]';
+    var uid = 0;
 
-    var Picker = function (node, options) {
-        Widget.call(this, node, options);
-    };
-
-    Picker.component = 'humhub-ui-picker';
-
-    object.inherits(Picker, Widget);
-
-    Picker.prototype.init = function () {
-        if (this.options.pickerUrl) {
-            this.options.ajax = this.ajaxOptions();
-            if (this.options.defaultResults && this.options.defaultResults.length) {
-                this.options.dataAdapter = $.fn.select2.amd.require('select2/data/extended-ajax');
-            }
-        }
-
-        if (this.options.beforeInitCallback && typeof window[this.options.beforeInitCallback] === 'function') {
-            this.options = window[this.options.beforeInitCallback].call(null, this.options);
-        }
-
-        _initSelect2(this.$, this.options);
-    };
-
-    Picker.prototype.validate = function () {
-        return this.$.is('select');
-    };
-
-    Picker.prototype.getDefaultOptions = function () {
-        var that = this;
-        return {
-            theme: "humhub",
-            multiple: that.$.data('multiple'),
-            tags: that.$.data('tags'),
-            // Select2 aborts a "remove all" as a whole as soon as a single unselect is
-            // prevented (allowClear.js: _handleClear restores the previous value and
-            // returns), so with locked items present the control could only ever be a
-            // silent no-op - don't offer it at all in that case.
-            allowClear: !(that.$.data('locked-items') || []).length,
-            templateSelection: $.proxy(that.templateSelection, that),
-            templateResult: $.proxy(that.templateResult, that),
-            sorter: that.sortResults,
-            language: {
-                inputTooShort: function () {
-                    return that.$.data('input-too-short');
-                },
-                inputTooLong: function () {
-                    return that.$.data('input-too-long');
-                },
-                errorLoading: function () {
-                    // Aborted requests currently would trigger this message, so we can't make us of it...
-                    // https://github.com/select2/select2/issues/4355
-                    module.log.error('Error Loading Picker result! The request may just has been aborted.');
-                    return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
-                },
-                loadingMore: function () {
-                    return i18n.t('base', 'Show more');
-                },
-                noResults: function () {
-                    return that.$.data('no-result');
-                },
-                maximumSelected: function () {
-                    return that.$.data('maximum-selected');
-                }
-            }
-        };
-    };
-
-    /**
-     * Returns default ajax options.
-     */
-    Picker.prototype.ajaxOptions = function () {
-        var defaultOptions = {
-            delay: 250,
-            dataType: 'json',
-            type: 'GET',
-            url: this.options.pickerUrl,
-            data: this.ajaxData,
-            processResults: $.proxy(this.prepareResult, this),
-        };
-        return $.extend(defaultOptions, this.options.ajax);
-    };
-
-    /**
-     * Mapping between select2 search parameter and our picker parameter.
-     *
-     * @param {type} params select2 search parameter
-     */
-    Picker.prototype.ajaxData = function (params) {
-        return {
-            keyword: params.term,
-            page: params.page
-        };
-    };
-
-    /**
-     * Used to sort the results of the search queries.
-     * The sorter takes the following properties into account:
-     *
-     *   - Sort Priority
-     *   - Item text should match the search term
-     *   - IndexOf search term in item text
-     *   - Disabled items at the end.
-     *
-     * @param {type} results
-     * @returns {unresolved}
-     */
-    Picker.prototype.sortResults = function (results) {
-        results.sort(function (a, b) {
-            if (a.disabled !== b.disabled) {
-                return (a.disabled < b.disabled) ? -1 : 1;
-            } else if (a.new !== b.new) {
-                return (a.new < b.new) ? -1 : 1;
-            } else if (a.priority !== b.priority) {
-                return (a.priority > b.priority) ? -1 : 1;
-            } else {
-                var aQueryIndex = a.text.indexOf(a.term);
-                var bQueryIndex = b.text.indexOf(a.term);
-                if (aQueryIndex !== bQueryIndex) {
-                    return (aQueryIndex > bQueryIndex) ? -1 : 1;
-                }
-                return 0;
-            }
-        });
-        return results;
-    };
-
-    var _searchRemoveChoicePatched = false;
-
-    /**
-     * Initializes the select2 widget for the given $node with the given $options.
-     *
-     * @param {type} $node select field node
-     * @param {type} options widget options
-     * @returns {undefined}
-     */
-    var _initSelect2 = function ($node, options) {
-        // This is a patch for removing select items by backspace see: https://github.com/select2/select2/issues/3354
-        $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
-            // The prototype is shared by every picker on the page, so it may only be wrapped
-            // once - wrapping it per init would stack one wrapper per initialised picker
-            // (growing further with every pjax page load) and each of them would close the
-            // $node captured at its own init rather than the picker actually being edited.
-            // this.$element is the select the Search instance belongs to.
-            if (!_searchRemoveChoicePatched) {
-                _searchRemoveChoicePatched = true;
-
-                var oldRemoveChoice = Search.prototype.searchRemoveChoice;
-
-                Search.prototype.searchRemoveChoice = function () {
-                    oldRemoveChoice.apply(this, arguments);
-                    this.$search.val('');
-                    this.$element.select2('close');
-                };
-            }
-
-            var select2 = $node.select2(options).data('select2');
-
-            if (select2.options.get('multiple')) {
-                _hideSelectedResults($node, select2);
-            }
-
-            // Refuse client side removal of locked items (e.g. via backspace in the
-            // search field, which bypasses the templateSelection close icon entirely).
-            // This mirrors the visual lock in templateSelection and is itself only a
-            // UX safeguard - the actual authorization has to happen server side.
-            if (options.lockedItems && object.isArray(options.lockedItems) && options.lockedItems.length) {
-                $node.on('select2:unselecting', function (evt) {
-                    var data = evt.params && evt.params.args && evt.params.args.data;
-                    if (data && Widget.instance($node).isLockedItem(data)) {
-                        evt.preventDefault();
-                    }
-                });
-            }
-
-            // Get sure our placeholder is rendered when focus out
-            select2.$container.on('focusout', function () {
-                Widget.instance($node).renderPlaceholder();
-            });
-
-            // Make the "Remove all items" (x) clear-selection button keyboard accessible
-            //
-            // Select2's own allowClear decorator (select2/selection/allowClear.js)
-            // only ever binds a 'mousedown' handler to this button and never gives
-            // it a tabindex, so it's unreachable and unusable via keyboard. It also
-            // re-creates the <span> from scratch on every selection change (it's
-            // only rendered at all once something is selected), so rather than
-            // patching a template once we watch for it with a MutationObserver and
-            // patch each instance as it appears.
-            if (options.allowClear) {
-                var $rendered = select2.$selection.find('.select2-selection__rendered');
-
-                var enableClearKeyboardAccess = function () {
-                    $rendered.children('.select2-selection__clear').each(function () {
-                        var $clear = $(this);
-
-                        if ($clear.attr('tabindex')) {
-                            return;
-                        }
-
-                        $clear.attr({
-                            tabindex: 0,
-                            role: 'button',
-                            'aria-label': $clear.attr('title')
-                        });
-
-                        // It's positioned visually via position absolute right so moving
-                        // it within its parent doesn't change where it's drawn.
-                        // Move it to the list end, so keyboard focus order follows visual order.
-                        $rendered.append($clear);
-                    });
-                };
-
-                enableClearKeyboardAccess();
-                new MutationObserver(enableClearKeyboardAccess).observe($rendered[0], {childList: true});
-
-                // Re-dispatch Enter/Space as the mousedown Select2 itself listens for.
-                select2.$selection.on('keydown', '.select2-selection__clear', function (evt) {
-                    if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
-                        evt.preventDefault();
-                        evt.stopPropagation();
-                        $(this).trigger('mousedown');
-                    }
-                });
-            }
-
-            // Patch for https://github.com/select2/select2/issues/4614#issuecomment-251277428 strange rendering behaviour
-            select2.on('results:message', function (params) {
-                this.dropdown._resizeDropdown();
-                this.dropdown._positionDropdown();
-            });
-
-            // Thefollowing two listeners enables placeholder for non empty selection fields
-            $node.on('select2:select', function () {
-                $('.tooltip').remove();
-                Widget.instance($node).renderPlaceholder(true);
-            }).on('select2:close', function () {
-                $('.tooltip').remove();
-            });
-
-            // Get sure the placeholder is active for initial selections
-            Widget.instance($node).renderPlaceholder(true);
-
-            // Focus if auto focus is active
-            if (Widget.instance($node).$.data('picker-focus')) {
-                Widget.instance($node).focus();
-            }
-
-            Widget.instance($node).fire('afterInitSelect2');
-        });
-    };
-
-    /**
-     * Removes the items which are already selected from the given select2 result list,
-     * including the children of option groups (a group left empty is dropped).
-     *
-     * @param {Array} results select2 result items
-     * @param {Array} selectedIds ids of the current selection as strings
-     * @param {Function} idOf returns the option value an item would be selected as
-     * @returns {Array}
-     */
-    var _withoutSelected = function (results, selectedIds, idOf) {
-        var filtered = [];
-
-        $.each(results, function (i, item) {
-            if (item.children) {
-                var children = _withoutSelected(item.children, selectedIds, idOf);
-                if (children.length) {
-                    filtered.push($.extend({}, item, {children: children}));
-                }
-            } else if (typeof idOf(item) === 'undefined' || selectedIds.indexOf(String(idOf(item))) < 0) {
-                filtered.push(item);
-            }
-        });
-
-        return filtered;
-    };
-
-    /**
-     * Select2 keeps offering the selected items of a multi-select in its dropdown (only
-     * flagged by aria-selected, picking one again removes it). Filter them out of every
-     * result set instead - static options, ajax results and default results alike - so
-     * only items which can actually be added are offered.
-     *
-     * Filtering the data rather than hiding the rendered options keeps the keyboard
-     * navigation and the "no results" message consistent with what is shown.
-     *
-     * @param $node select field node
-     * @param select2 select2 instance
-     */
-    var _hideSelectedResults = function ($node, select2) {
-        var results = select2.results;
-        var append = results.append;
-        var Utils = $.fn.select2.amd.require('select2/utils');
-
-        // Ajax results may carry the selected value in another field than `id` (see
-        // prepareItem(), e.g. the guid of users), which only replaces `id` on rendering.
-        var itemKey = $node.data('item-key');
-        var idOf = function (item) {
-            return (itemKey && itemKey !== 'id' && item.hasOwnProperty(itemKey)) ? item[itemKey] : item.id;
-        };
-
-        var selectedIds = function () {
-            return $.map($node.val() || [], function (id) {
-                return String(id);
-            });
-        };
-
-        // A page left empty by this filter is not refilled: picker results are never paginated
-        // (prepareResult() sets no `pagination.more`), so there is no next page to load.
-        results.append = function (data) {
-            if (data && data.results) {
-                data.results = _withoutSelected(data.results, selectedIds(), idOf);
-            }
-
-            return append.apply(this, arguments);
-        };
-
-        // With the dropdown kept open (ctrl/meta + click), take a just selected item off
-        // the list right away instead of on the next query.
-        select2.on('select', function (params) {
-            if (!select2.isOpen() || !params || !params.data) {
-                return;
-            }
-
-            var id = String(idOf(params.data));
-            results.$results.find('.select2-results__option[aria-selected]').filter(function () {
-                var item = Utils.GetData(this, 'data');
-                return item && String(idOf(item)) === id;
-            }).remove();
-
-            if (results.$results.find('.select2-results__option[aria-selected]').length) {
-                results.highlightFirstItem();
-            } else {
-                results.trigger('results:message', {message: 'noResults'});
-            }
-        });
-    };
-
-    Picker.prototype.focus = function () {
-        this.$.select2('focus');
-    };
-
-    /**
-     * Renders the placeholder if the maximum selection count is not exceeded.
-     *
-     * @returns {undefined}
-     */
-    Picker.prototype.renderPlaceholder = function (delayed) {
-        if (delayed) {
-            var that = this;
-            setTimeout(function () {
-                that.renderPlaceholder();
-            }, 50);
+    var bind = function (select) {
+        if (select.hasAttribute('data-picker-bound')) {
             return;
         }
 
-        var input = this.$.data('select2').$selection.find('input');
-        if (this.$.children(':selected').length >= this.$.data('maximum-selection-length')) {
-            input.attr('placeholder', null).attr('title', null);
-        } else if (this.$.val()) {
-            input.attr('placeholder', this.options.placeholderMore).attr('title', this.options.placeholderMore);
-        } else {
-            input.attr('placeholder', this.options.placeholder).attr('title', this.options.placeholderMore);
-        }
-
-        var placeholder = input.attr('placeholder');
-        if (typeof placeholder !== 'undefined' && placeholder.length) {
-            input.attr('size', placeholder.length);
-        }
-    };
-
-    Picker.template = {
-        selectionWithImage: '{imageNodeSelected}<span class="picker-text with-image"></span>',
-        selectionNoImage: '<span class="picker-text no-image"></span>',
-        selectionClear: ' <i class="ti ti-circle-x picker-close" role="button" tabindex="0"></i>',
-        selectionLocked: ' <i class="ti ti-lock picker-locked"></i>',
-        result: '<a href="#" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
-        resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="display:flex; align-items:start; margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-content"><span class="picker-text"></span><span class="picker-subtext"></span></span></a>',
-        imageNode: '<img class="rounded" src="{image}" alt="" style="width:40px;height:40px;"  height="40" width="40">',
-        imageNodeSelected: '<img class="rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
-        imageIcon: '<i class="{iconLib} {image}"></i> ',
-        imageColor: '<span class="picker-color" style="background:{image}"></span> ',
-        option: '<option value="{id}" data-image=\'{image}\' selected></option>',
-    };
-
-    /**
-     * Called after ajax result are received.
-     *
-     * @param data
-     * @param params
-     * @returns {{results: *}}
-     */
-    Picker.prototype.prepareResult = function (data, params) {
-        var that = this;
-
-        $.each(data, function (i, item) {
-            item.term = params.term;
-            if (that.isDisabledItem(item)) {
-                item.disabled = true;
-            }
-            // Compatibility with old picker implementation and data attributes
-            item.id = item.id || item.guid || item['data-id'];
-            item.text = item.text || item.title || item.displayName || item['data-text'];
-            item.subText = item.subText || item.displayNameSub || item['data-subtext'];
-            item.image = item.image || item['data-image'];
-            item.new = false;
-        });
-
-        var encodedTerm = string.encode(params.term);
-
-        if (encodedTerm && encodedTerm.length >= that.options.minimumInputLength &&
-            that.options.addOptions &&
-            $(data).filter(function () {
-                return this.text.localeCompare(encodedTerm) === 0
-            }).length === 0) {
-
-            data.push({
-                'id': '_add:' + params.term,
-                'text': i18n.t('base', 'Add:') + ' \'' + encodedTerm + '\'',
-                'textValue': params.term,
-                'image': '<i class="ti ti-circle-plus" aria-hidden="true"></i>',
-                'new': true
-            });
-        }
-
-        return {
-            results: data,
-            /*pagination: {more: (params.page * 30) < data.total_count}*/
-        };
-    };
-
-    /**
-     * Template function for search query results.
-     *
-     * @param {type} item
-     * @returns {jQuery|$}
-     */
-    Picker.prototype.templateResult = function (item) {
-        // If no item id is given the function was called for the search term.
-        if (typeof (item.id) === 'undefined') {
-            return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
-        }
-
-        this.prepareItem(item);
-
-        var template = (item.disabled) ? Picker.template.resultDisabled : Picker.template.result;
-
-        var $result = $(string.template(template, item))
-            .tooltip({html: false, container: 'body', placement: "bottom"})
-            .on('click', function (evt) {
-                evt.preventDefault();
-            });
-
-        var text = item.text;
-        if (item.subText && item.subText.length) {
-            $result.find('.picker-subtext').text(item.subText);
-        }
-
-        $result.find('.picker-text').text(text);
-
-        if (item.term) {
-            $result.highlight(item.term);
-        }
-
-        return $result;
-    };
-
-    /**
-     * Template function for selected items.
-     *
-     * @param {type} item item data
-     * @param {type} container
-     * @returns {jQuery|$}
-     */
-    Picker.prototype.templateSelection = function (item, container) {
-        this.prepareItem(item);
-
-        var locked = this.isLockedItem(item);
-
-        var selectionTmpl = (item.image && !item.new) ? Picker.template.selectionWithImage : Picker.template.selectionNoImage;
-
-        if (locked) {
-            // Item may not be removed by the current user: show a lock indicator
-            // instead of the close icon and skip wiring up any removal handlers.
-            //
-            // Select2 sets the <li> title from `selection.title` (falling back to the item
-            // text) right after this template runs, so assigning it here is enough to
-            // explain the lock on hover - no extra tooltip handling needed. It also goes
-            // through .attr() rather than a template string, so the translated text can't
-            // break out of the attribute.
-            item.title = this.$.data('locked-text') || item.text;
-            selectionTmpl += Picker.template.selectionLocked;
-        } else if (this.$.data('clearable') || this.$.data('clearable') === undefined) {
-            selectionTmpl += Picker.template.selectionClear;
-        }
-
-        var $result = $(string.template(selectionTmpl, item));
-
-        var test = $result.find('.picker-text');
-        $result.filter('.picker-text').text(item.text);
-
-        if (locked) {
-            return $result;
-        }
-
-        // Initialize item close button.
-        //
-        // The icon is a plain <i>, given role="button" and tabindex="0" in the
-        // template above so it can receive keyboard focus. That alone doesn't make
-        // it activatable via keyboard (unlike a native <button>, an element with
-        // role="button" gets no automatic Enter/Space handling), so a keydown
-        // handler re-dispatches it as a click here, forwarding to Select2's own
-        // (visually hidden) remove control.
-        var that = this;
-        $result.filter('.picker-close')
-            .attr('aria-label', i18n.t('base', 'Remove') + (item.text ? ': ' + item.text : ''))
-            .on('click', function () {
-                $(this).siblings('.select2-selection__choice__remove').trigger('click');
-            })
-            .on('keydown', function (evt) {
-                if (evt.key === 'Enter' || evt.key === ' ' || evt.keyCode === 13 || evt.keyCode === 32) {
-                    evt.preventDefault();
-                    evt.stopPropagation();
-                    $(this).trigger('click');
-                }
-            });
-
-        return $result;
-    };
-
-    Picker.prototype.prepareItem = function (item) {
-        const itemKey = this.$.data('item-key');
-        if (itemKey && itemKey !== 'id' && item.hasOwnProperty(itemKey)) {
-            item.id = item[itemKey];
-        }
-        item.text = item.textValue || item.text || $(item.element).data('text');
-        item.subText = item.subText || item.displayNameSub || $(item.element).data('subtext');
-        item.image = item.image || $(item.element).data('image');
-        item.imageNode = this.getImageNode(item);
-        item.imageNodeSelected = this.getImageNode(item, true);
-        item.disabledText = item.disabledText || '';
-    }
-
-    /**
-     * Prepares the image node.
-     *
-     * @param {type} item
-     * @param selected
-     * @returns {String}
-     */
-    Picker.prototype.getImageNode = function (item, selected = false) {
-        var image = item.image || $(item.element).data('image');
-
-        if (!image) {
-            return '';
-        }
-
-        if (image.indexOf('<') >= 0) {
-            return image;
-        } else if (!image.startsWith('/') && !image.startsWith('http') && !/^(ti|fa)-/.test(image) && !image.startsWith('#')) {
-            // If image isn't a path (/), URL (http), color (#), or already prefixed, assume it's a Tabler icon name and prepend "ti-"
-            image = 'ti-' + image;
-            item.image = image;
-        }
-
-        if (/^(ti|fa)-/.test(image)) {
-            // "fa-" prefixed values are Font Awesome 4 names of modules, rendered by the compatibility layer
-            item.iconLib = image.substring(0, 2);
-            return string.template(Picker.template.imageIcon, item);
-        } else if (image.indexOf('#') === 0) {
-            return string.template(Picker.template.imageColor, item);
-        } else {
-            return string.template(selected ? Picker.template.imageNodeSelected : Picker.template.imageNode, item);
-        }
-    };
-
-
-    /**
-     * Adds a selection item. If the option is not available yet the option is added
-     * to our select field.
-     *
-     * @param {string} id item id
-     * @param {string} text item text
-     * @param {string} image item image
-     * @returns {undefined}
-     */
-    Picker.prototype.select = function (id, text, image, options) {
-        options = options || {};
-        var $option = this.getOption(id);
-
-        // Only select if not already selected
-        if ($option.length && $option.is(':selected')) {
-            return false;
-        } else if ($option.length) {
-            $option.prop('selected', true);
-        } else {
-            this.$.append($(string.template(Picker.template.option, {
-                id: id,
-                image: image || ''
-            })).text(text));
-        }
-
-        if (options.triggerChange !== false) {
-            this.triggerChange();
-        }
-
-        return true;
-    };
-
-    Picker.prototype.triggerChange = function () {
-        this.$.triggerHandler('change');
-        this.renderPlaceholder(true);
-    }
-
-    Picker.prototype.setSelection = function (selection, translate) {
-        var that = this;
-        var changed = false;
-        var vals = this.val();
-
-        this.clear(false);
-
-        selection.forEach(function (item) {
-            if (translate) {
-                item = translate.call(this, item);
-            }
-
-            if (item && that.select(item.id, item.text, item.image, {triggerChange: false}) && vals.indexOf(item.id) < 0) {
-                changed = true;
-            }
-        });
-
-        vals.forEach(function (id) {
-            if (!that.isSelected(id)) {
-                changed = true;
-            }
-        });
-
-        if (changed) {
-            that.triggerChange();
-        }
-    };
-
-    Picker.prototype.isSelected = function (id) {
-        var values = this.val();
-        return values.indexOf(id) >= 0;
-    }
-
-    Picker.prototype.remove = function (id) {
-        var values = this.val();
-        if (this.isSelected(id) && !this.isLockedValue(id)) {
-            values.splice(values.indexOf(id), 1);
-            this.$.val(values).trigger('change');
-        }
-    };
-
-    /**
-     * Deselects an option with the given id (value)
-     *
-     * @param {type} id
-     * @returns {undefined}
-     */
-    Picker.prototype.deselect = function (id) {
-        if (this.isLockedValue(id)) {
+        var vue = humhub.modules.vue;
+        if (!vue || typeof vue.mountElement !== 'function') {
+            // No Vue runtime: the native select stays and works.
             return;
         }
 
-        this.getOption(id).remove();
-        this.$.trigger('change');
-    };
-
-    Picker.prototype.clear = function (triggerChange) {
-        var lockedValues = this.lockedValues();
-
-        this.$.val(lockedValues.length ? lockedValues : null);
-
-        if (triggerChange !== false) {
-            this.triggerChange();
+        if (!select.id) {
+            select.id = 'picker-' + (++uid);
         }
+        select.setAttribute('data-picker-bound', '1');
 
-        return this;
+        var host = document.createElement('div');
+        host.className = 'picker-host';
+        host.setAttribute('data-vue-component', 'PickerInput');
+        host.setAttribute('data-props', JSON.stringify({selectId: select.id}));
+        select.parentNode.insertBefore(host, select.nextSibling);
+
+        vue.mountElement(host);
     };
 
-    Picker.prototype.disable = function ($disable) {
-        $disable = (!object.isDefined($disable)) ? true : $disable;
-        this.$.prop('disabled', $disable);
+    // An image description read from an option (as nativeSelect.js readOption()): a JSON
+    // `data-image` is parsed, `data-color` becomes a `color` image, any other string is kept.
+    var optionImage = function (option) {
+        var image = option.getAttribute('data-image');
+        if (image === null) {
+            var color = option.getAttribute('data-color');
+            return color ? {type: 'color', color: color} : null;
+        }
+        if (image.trim().charAt(0) === '{') {
+            try {
+                return JSON.parse(image);
+            } catch (e) {
+                return image;
+            }
+        }
+        return image;
     };
 
-    /**
-     * Returns an option node by the given id (value)
-     *
-     * @param {type} id
-     * @returns {unresolved}
-     */
-    Picker.prototype.getOption = function (id) {
-        return this.$.children().filter(function () {
-            return this.value == id;
-        });
+    var optionItem = function (option) {
+        var text = option.getAttribute('data-text');
+        var subText = option.getAttribute('data-sub-text');
+        return {
+            id: option.value,
+            text: text !== null ? text : option.textContent.trim(),
+            subText: subText !== null ? subText : null,
+            image: optionImage(option),
+        };
     };
 
-    Picker.prototype.reset = function () {
-        var lockedValues = this.lockedValues();
-
-        this.$.val(lockedValues.length ? lockedValues : '');
-        this.$.trigger('change');
+    var toSelect = function (select) {
+        return select && select.jquery ? select[0] : select;
     };
 
-    Picker.prototype.val = function () {
-        return this.$.val();
-    };
-
-    Picker.prototype.hasValue = function (value) {
-        var values = this.val();
-        return values && values.indexOf(value) >= 0;
-    };
-
-    Picker.prototype.hasValues = function (value) {
-        var values = this.val();
-        return values && values.length;
-    }
-
-    Picker.prototype.data = function () {
-        return this.$.select2('data');
-    };
-
-    Picker.prototype.map = function () {
-        var val = this.val();
-
-        if (!val) {
+    var pickerConfig = function (select) {
+        try {
+            return JSON.parse(select.getAttribute('data-picker-config') || '{}') || {};
+        } catch (e) {
             return {};
         }
+    };
 
-        if (!Array.isArray(val)) {
-            val = [val];
+    // A picker holds only its chosen options (source/url, or a plain select nobody enhanced, as
+    // the old `Picker` widget did); an enhanced select keeps all of them.
+    var isPicker = function (select) {
+        var json = pickerConfig(select);
+        return select.hasAttribute('data-picker-source')
+            || select.hasAttribute('data-picker-url')
+            || !!(json.source || json.url)
+            || (!select.hasAttribute('data-ui-picker') && !select.hasAttribute('data-ui-select2'));
+    };
+
+    var getItems = function (select) {
+        select = toSelect(select);
+        return Array.prototype.filter.call(select.options, function (option) {
+            return option.selected && option.value !== '';
+        }).map(optionItem);
+    };
+
+    var createOption = function (item) {
+        var option = document.createElement('option');
+        option.value = String(item.id);
+        option.textContent = item.text;
+        option.setAttribute('data-text', item.text);
+        if (item.subText) {
+            option.setAttribute('data-sub-text', item.subText);
         }
-
-        var result = {};
-        var that = this;
-        val.forEach(function (value) {
-            result[value] = that.getOption(value).text();
-        })
-
-        return result;
-    };
-
-    Picker.prototype.isDisabledItem = function (item) {
-        return (this.options.disabledItems && object.isArray(this.options.disabledItems) && this.options.disabledItems.indexOf(item.id) >= 0);
-    };
-
-    /**
-     * Checks whether the given (currently selected) item is locked, meaning the current
-     * user is not allowed to remove it from the selection again. This is a client side UX
-     * safeguard only, the server has to enforce this independently.
-     *
-     * @param {type} item
-     * @returns {Boolean}
-     */
-    Picker.prototype.isLockedItem = function (item) {
-        return item ? this.isLockedValue(item.id) : false;
-    };
-
-    /**
-     * Checks whether the option with the given id (value) is locked, see isLockedItem().
-     *
-     * Ids are compared as strings: an option value read from the DOM is always a string,
-     * while lockedItems may well have been handed in as numbers (e.g. record ids).
-     *
-     * @param {type} id
-     * @returns {Boolean}
-     */
-    Picker.prototype.isLockedValue = function (id) {
-        var lockedItems = this.options.lockedItems;
-
-        if (!lockedItems || !object.isArray(lockedItems) || !lockedItems.length) {
-            return false;
+        if (item.image) {
+            option.setAttribute('data-image', typeof item.image === 'string' ? item.image : JSON.stringify(item.image));
         }
+        return option;
+    };
 
-        return lockedItems.some(function (lockedId) {
-            return String(lockedId) === String(id);
+    // Makes `items` the selection, as nativeSelect.js writeSelection(): a picker holds only its
+    // chosen options, in the order chosen, plus its initially selected ones (unselected, so
+    // `form.reset()` can restore them); an enhanced select keeps all options. A single select
+    // takes the first item; without items it selects its empty option (created as needed), so the
+    // empty value is posted. Fires a bubbling `change` when the selection changed.
+    var selectedValues = function (select) {
+        return Array.prototype.filter.call(select.options, function (option) {
+            return option.selected;
+        }).map(function (option) {
+            return option.value;
+        }).join('\n');
+    };
+
+    var write = function (select, items) {
+        var before = selectedValues(select);
+        if (!select.multiple) {
+            items = items.slice(0, 1);
+        }
+        var ids = items.map(function (item) {
+            return String(item.id);
         });
-    };
+        var prune = isPicker(select);
 
-    /**
-     * Returns the currently selected values which are locked and therefore have to survive
-     * a clear/reset, see isLockedItem().
-     *
-     * @returns {Array}
-     */
-    Picker.prototype.lockedValues = function () {
-        var that = this;
-        var values = this.val();
+        items.forEach(function (item) {
+            var option = Array.prototype.find.call(select.options, function (entry) {
+                return entry.value === String(item.id);
+            }) || createOption(item);
+            if (prune || !option.parentNode) {
+                select.appendChild(option);
+            }
+        });
 
-        if (!object.isArray(values)) {
-            values = (values === null || values === undefined || values === '') ? [] : [values];
+        Array.prototype.slice.call(select.options).forEach(function (option) {
+            var chosen = ids.indexOf(option.value) !== -1;
+            if (!chosen && prune && !option.defaultSelected && option.value !== '') {
+                option.remove();
+                return;
+            }
+            option.selected = chosen;
+        });
+
+        if (!select.multiple && ids.length === 0) {
+            var empty = Array.prototype.find.call(select.options, function (option) {
+                return option.value === '';
+            });
+            if (!empty) {
+                empty = document.createElement('option');
+                empty.value = '';
+                select.insertBefore(empty, select.firstChild);
+            }
+            empty.selected = true;
         }
 
-        return values.filter(function (id) {
-            return that.isLockedValue(id);
-        });
+        if (selectedValues(select) !== before) {
+            select.dispatchEvent(new Event('change', {bubbles: true}));
+        }
+    };
+
+    var setItems = function (select, items) {
+        write(toSelect(select), items);
+    };
+
+    var addItem = function (select, item) {
+        select = toSelect(select);
+        var items = getItems(select);
+        if (!select.multiple) {
+            // A single select holds one item: the added one replaces it.
+            items = [item];
+        } else if (!items.some(function (entry) {
+            return entry.id === String(item.id);
+        })) {
+            items.push(item);
+        }
+        write(select, items);
+    };
+
+    var removeItem = function (select, id) {
+        select = toSelect(select);
+        write(select, getItems(select).filter(function (item) {
+            return item.id !== String(id);
+        }));
+    };
+
+    var selectSelf = function (evt) {
+        var user = config.get('user') || {};
+        if (user.isGuest || !user.guid) {
+            return;
+        }
+        addItem(evt.$target, {id: user.guid, text: user.text, image: user.image});
+    };
+
+    // The Tabler icon provider id (`TablerIconProvider::ID`).
+    var TABLER = 'ti';
+
+    // The names of an icon library, handed over by `IconPicker` as `iconNames.<lib>` of this
+    // module's config: a comma-separated string (or a list). Read on every search, as a picker
+    // rendered later (pjax, modal) may bring them after init.
+    var iconNames = function (lib) {
+        var names = ((config.get('ui.picker') || {}).iconNames || {})[lib];
+        if (typeof names === 'string') {
+            return names ? names.split(',') : [];
+        }
+        return Array.isArray(names) ? names : [];
+    };
+
+    // The core picker source `icon` (`IconPicker`): the names of `params.lib` (default Tabler)
+    // containing the term, case-insensitive.
+    var iconSource = function (options) {
+        var lib = (options && options.params && options.params.lib) || TABLER;
+        return {
+            search: function (term) {
+                var needle = String(term || '').toLowerCase();
+                return Promise.resolve(iconNames(lib).filter(function (name) {
+                    return name.toLowerCase().indexOf(needle) !== -1;
+                }).map(function (name) {
+                    return {id: name, text: name, image: lib === TABLER ? {type: 'icon', name: name} : null};
+                }));
+            },
+        };
     };
 
     var init = function () {
-        additions.register('ui.picker', '.multiselect_dropdown', function ($match) {
+        additions.register('picker', SELECTOR, function ($match) {
             $match.each(function () {
-                Picker.instance(this);
+                bind(this);
             });
         });
 
-        // This extension allows preselected values in our picker if the mininput value is not exceded.
-        // http://stackoverflow.com/questions/33080739/select2-default-options-with-ajax
-        // https://gist.github.com/govorov/3ee75f54170735153349b0a430581195
-        $.fn.select2.amd.define('select2/data/extended-ajax', ['./ajax', '../utils', './minimumInputLength'], function (AjaxAdapter, Utils, MinimumInputLength) {
-
-            function ExtendedAjaxAdapter($element, options) {
-                //we need explicitly process minimumInputLength value
-                //to decide should we use AjaxAdapter or return defaultResults,
-                //so it is impossible to use MinimumLength decorator here
-                this.minimumInputLength = options.get('minimumInputLength');
-                this.defaultResults = options.get('defaultResults');
-
-                ExtendedAjaxAdapter.__super__.constructor.call(this, $element, options);
-            }
-
-            Utils.Extend(ExtendedAjaxAdapter, AjaxAdapter);
-
-            //override original query function to support default results
-            var originQuery = AjaxAdapter.prototype.query;
-
-            ExtendedAjaxAdapter.prototype.query = function (params, callback) {
-                var defaultResults = (typeof this.defaultResults == 'function') ? this.defaultResults.call(this) : this.defaultResults;
-                if (defaultResults && defaultResults.length && (!params.term || params.term.length < this.minimumInputLength)) {
-                    if (!params.term || !params.term.length) {
-                        var processedResults = this.processResults(defaultResults, params);
-                        callback(processedResults);
-                        return;
-                    }
-
-                    // If search term
-                    var filterResult = [];
-                    $.each(defaultResults, function (index, item) {
-                        if (item['data-text'].toLowerCase().indexOf(params.term.toLowerCase()) >= 0) {
-                            filterResult.push(item);
-                        }
-                    });
-
-                    if (filterResult.length) {
-                        var processedResults = this.processResults(filterResult, params);
-                        callback(processedResults);
-                    } else {
-                        this.container.$results.empty();
-                    }
-
-                    var $message = $('<li role="treeitem" aria-live="assertive" class="select2-results__option select2-results__message">' + this.options.get('inputTooShort') + '</li>');
-                    this.container.$results.prepend($message);
-                } else {
-                    originQuery.call(this, params, callback);
-                }
-            };
-
-            return ExtendedAjaxAdapter;
-        });
+        var vue = humhub.modules.vue;
+        if (vue && typeof vue.registerPickerSource === 'function') {
+            vue.registerPickerSource('icon', iconSource);
+        }
     };
 
     module.export({
         init: init,
-        sortOrder: 100,
-        Picker: Picker
+        bind: bind,
+        getItems: getItems,
+        setItems: setItems,
+        addItem: addItem,
+        removeItem: removeItem,
+        selectSelf: selectSelf,
+        iconSource: iconSource,
     });
 });

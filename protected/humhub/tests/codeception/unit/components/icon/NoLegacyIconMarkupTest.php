@@ -17,6 +17,9 @@ class NoLegacyIconMarkupTest extends HumHubDbTestCase
         'components/icon/LegacyIconMap.php',
         'tests/codeception/unit/components/icon/',
         'tests/codeception/unit/widgets/IconPickerTest.php',
+        // The picker reads legacy `fa-` image names on purpose (see vue/picker/images.js)
+        'tests/js/pickerImage.test.js',
+        'tests/js/pickerImages.test.js',
         'resources/build/',
         'resources/js/humhub-app.js',
         'resources/js/humhub-bundle.js',

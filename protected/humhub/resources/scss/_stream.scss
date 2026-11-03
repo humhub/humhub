@@ -362,28 +362,6 @@
             margin-right: 6px;
         }
 
-        .select2 {
-            margin-bottom: 5px;
-            margin-top: 2px;
-
-            .select2-search__field {
-                height: 25px !important;
-            }
-
-            .select2-selection__choice {
-                height: 23px !important;
-
-                span, i {
-                    line-height: 19px !important;
-                }
-
-                .rounded {
-                    width: 18px !important;
-                    height: 18px !important;
-                }
-            }
-        }
-
         .wall-stream-filter-bar {
             display: inline;
             float: right;
@@ -431,7 +409,8 @@
                     padding: 0;
                     margin: 0 0 5px;
 
-                    li {
+                    // Direct items only: the listbox of a picker filter is a list too.
+                    > li {
                         font-size: 12px;
                         padding: 2px;
 

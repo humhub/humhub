@@ -242,6 +242,15 @@ describe('FilterPicker', () => {
         expect(emitted(wrapper)).toHaveLength(2);
     });
 
+    it('jumps a page with PageDown and PageUp', async () => {
+        const wrapper = mountPicker({ options: Array.from({ length: 25 }, (_, index) => ({ value: `o${index}`, label: `Option ${index}` })) });
+        await key(wrapper, 'ArrowDown');
+        await key(wrapper, 'PageDown');
+        expect(wrapper.find('.is-focused').text()).toContain('Option 10');
+        await key(wrapper, 'PageUp');
+        expect(wrapper.find('.is-focused').text()).toContain('Option 0');
+    });
+
     it('moves the active option with the arrow keys, Home and End, and chooses it with Enter', async () => {
         const wrapper = mountPicker({ options: staticOptions });
 
@@ -394,5 +403,33 @@ describe('FilterPicker', () => {
 
         expect(optionTexts(wrapper)).toEqual(['PHP', 'JavaScript', 'Go']);
         expect(wrapper.classes()).not.toContain('is-loading');
+    });
+
+    it('positions the open listbox fixed under its field and releases it when closed', async () => {
+        const wrapper = mountPicker({ options: staticOptions });
+        await input(wrapper).trigger('focus');
+        await key(wrapper, 'ArrowDown');
+        await wrapper.vm.$nextTick();
+
+        const listbox = wrapper.find('[role="listbox"]').element;
+        expect(listbox.style.position).toBe('fixed');
+
+        await key(wrapper, 'Escape');
+        expect(listbox.style.position).toBe('');
+    });
+
+    it('places the open listbox again on a resize of the window', async () => {
+        const errors = [];
+        const onError = (event) => errors.push(event.error);
+        window.addEventListener('error', onError);
+        const wrapper = mountPicker({ options: staticOptions });
+        await key(wrapper, 'ArrowDown');
+        await wrapper.vm.$nextTick();
+
+        window.dispatchEvent(new Event('resize'));
+        window.removeEventListener('error', onError);
+
+        expect(errors).toEqual([]);
+        expect(wrapper.find('[role="listbox"]').element.style.position).toBe('fixed');
     });
 });

@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8677: Replaced Select2 with an own Vue picker
 - Enh #8669: `isAttributeSyncAllowed()` is part of `UserSourceInterface`
 - Fix #8662: The icon picker shows no icons
 - Enh #8637: UI styleguide on Bootstrap 5; page header (on every core page), pill tabs, content card, filter bar, entity browser, item browser, toasts, data table (Administration › Users, Groups, Spaces, Modules, group and space members, topics, pending registrations, approvals, space invitations and requests) and unified context menus

@@ -109,9 +109,29 @@
     }, 8, ["filter", "model-value", "input-id", "search", "resolve", "item-label", "item-title"]);
   }
   const __vite_glob_0_0 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const PAGE_SIZE = 20;
+  const topicPickerSource = ({ params }) => ({
+    // A topic added in the picker shows the module icon, as a topic without colour.
+    newImage: { type: "icon", name: params.icon || "star" },
+    search(term) {
+      if (term === "" && !params.containerId) {
+        return Promise.resolve([]);
+      }
+      const query = { q: term, pageSize: PAGE_SIZE };
+      if (params.containerId) {
+        query.containerId = params.containerId;
+      }
+      return vue$1.client.get(vue$1.apiUrl("topic/picker", query)).then((response) => (response.results || []).map((topic) => ({
+        id: String(topic.id),
+        text: topic.name,
+        image: topic.color ? { type: "color", color: topic.color } : { type: "icon", name: params.icon || "star" }
+      })));
+    }
+  });
   Object.entries(/* @__PURE__ */ Object.assign({ "./TopicFilterControl.vue": __vite_glob_0_0 })).forEach(([path, component]) => {
     vue$1.register(path.slice("./".length, -".vue".length), component);
   });
   vue$1.registerFilterType("topic", "TopicFilterControl");
+  vue$1.registerPickerSource("topic", topicPickerSource);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.topic.vue.js.map
