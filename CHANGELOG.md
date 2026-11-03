@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8679: The picker follows options a script adds to its select
 - Enh #8677: Replaced Select2 with an own Vue picker
 - Enh #8669: `isAttributeSyncAllowed()` is part of `UserSourceInterface`
 - Fix #8662: The icon picker shows no icons
