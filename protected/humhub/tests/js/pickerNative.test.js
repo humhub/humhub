@@ -112,6 +112,24 @@ describe('nativeSelect', () => {
         expect(select.options).toHaveLength(2);
     });
 
+    it('follows a change a change listener makes right away (a value it rejects)', async () => {
+        const form = render('<select id="w6" multiple data-ui-picker><option value="a">A</option><option value="b">B</option></select>');
+        const select = form.querySelector('select');
+        select.addEventListener('change', () => {
+            if ([...select.selectedOptions].some((option) => option.value === 'b')) {
+                select.querySelector('option[value="b"]').selected = false;
+                select.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+        const wrapper = mountOn(select);
+
+        wrapper.vm.choose({ id: 'a', text: 'A', subText: null, image: null, disabled: false, locked: false });
+        wrapper.vm.choose({ id: 'b', text: 'B', subText: null, image: null, disabled: false, locked: false });
+        await wrapper.vm.$nextTick();
+
+        expect(wrapper.findAll('.picker-chip-label').map((node) => node.text())).toEqual(['A']);
+    });
+
     it('follows a change made from outside, and a form reset', async () => {
         const form = render('<select id="w3" multiple data-ui-picker><option value="a" selected>A</option><option value="b">B</option></select>');
         const select = form.querySelector('select');

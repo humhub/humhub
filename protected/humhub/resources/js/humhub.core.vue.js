@@ -6519,6 +6519,10 @@
         } finally {
           this.writing = false;
         }
+        const ids = readSelection(this.select).map((item) => item.id);
+        if (ids.length !== this.chosenIds.length || ids.some((id) => !this.chosenIds.includes(id))) {
+          this.onNativeChange();
+        }
       },
       msg(key, params = {}) {
         const given = this.cfg.messages[key];

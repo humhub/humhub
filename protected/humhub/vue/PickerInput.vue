@@ -628,6 +628,13 @@ export default {
             } finally {
                 this.writing = false;
             }
+            // A `change` listener may have changed the select right away (rejected a value, say):
+            // the picker follows it.
+            // Compared as a set: an enhanced select keeps its option order, the chips the chosen one.
+            const ids = readSelection(this.select).map((item) => item.id);
+            if (ids.length !== this.chosenIds.length || ids.some((id) => !this.chosenIds.includes(id))) {
+                this.onNativeChange();
+            }
         },
         msg(key, params = {}) {
             const given = this.cfg.messages[key];
