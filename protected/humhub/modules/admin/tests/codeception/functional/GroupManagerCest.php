@@ -74,7 +74,7 @@ class GroupManagerCest
         $I->see('Update Space memberships also for existing members.', 'form');
         $I->seeElement('[name="EditGroupForm[updateSpaceMemberships]"]');
         $I->see('Group Manager(s)', 'form');
-        $I->seeElement('[name="EditGroupForm[managerGuids][]"][data-disabled]');
+        $I->seeElement('[name="EditGroupForm[managerGuids][]"][disabled]');
         $I->dontSee('Group Type', 'form');
         $I->dontSee('Enable Notifications', 'form');
         $I->dontSee('Show At Registration', 'form');
