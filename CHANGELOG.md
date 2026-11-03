@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8681: Icons on the Comment, Reply and Like links, spaced without separators
 - Enh #8680: Form fields and buttons 38px high, fields with a 1px border, an accent edge on hover and a focus ring; 20px checkboxes and radios
 - Enh #8679: The picker follows options a script adds to its select
 - Enh #8677: Replaced Select2 with an own Vue picker

@@ -905,7 +905,8 @@ describe('CommentSection', () => {
             // CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
             // eslint-disable-next-line no-bitwise
             expect(replyLink.compareDocumentPosition(likeContainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
-            expect(controls.textContent).toContain(' · ');
+            // No glue text: the flex gap of `.wall-entry-controls` separates the links.
+            expect(controls.textContent).not.toContain('·');
         });
 
         it('renders Reply with no separator when the caller cannot like', () => {

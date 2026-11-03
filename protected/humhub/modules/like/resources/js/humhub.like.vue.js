@@ -129,13 +129,29 @@
           vue.createElementVNode("a", {
             href: $options.loginUrl,
             "data-bs-target": "#globalModal"
-          }, vue.toDisplayString($options.likeLabel), 9, _hoisted_2),
+          }, [
+            _cache[7] || (_cache[7] = vue.createElementVNode(
+              "i",
+              {
+                class: "ti ti-thumb-up",
+                "aria-hidden": "true"
+              },
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue.createTextVNode(
+              vue.toDisplayString($options.likeLabel),
+              1
+              /* TEXT */
+            )
+          ], 8, _hoisted_2),
           vue.createCommentVNode("\n                The `{{ ' ' }}` interpolation is load-bearing, not decorative: legacy\n                `likeLink.php` had this as whitespace (a newline+indent) BETWEEN the anchor\n                and this span, which the browser collapses to a single rendered space. Vue's\n                template compiler (`whitespace: 'condense'`, the default) strips a purely\n                static whitespace-only text node containing a newline entirely rather than\n                collapsing it — an interpolation is not static text, so it survives condensing\n                and keeps rendering \"Like (2)\" instead of \"Like(2)\".\n            "),
           $data.count > 0 ? (vue.openBlock(), vue.createElementBlock(
             vue.Fragment,
             { key: 0 },
             [
-              _cache[7] || (_cache[7] = vue.createTextVNode(
+              _cache[8] || (_cache[8] = vue.createTextVNode(
                 vue.toDisplayString(" "),
                 -1
                 /* CACHED */
@@ -158,35 +174,55 @@
         vue.Fragment,
         { key: 1 },
         [
-          !$data.liked ? (vue.openBlock(), vue.createElementBlock(
-            "a",
-            {
-              key: 0,
-              href: "#",
-              class: "like likeAnchor",
-              onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => $options.toggle(), ["prevent"]))
-            },
-            vue.toDisplayString($options.likeLabel),
-            1
-            /* TEXT */
-          )) : (vue.openBlock(), vue.createElementBlock(
-            "a",
-            {
-              key: 1,
-              href: "#",
-              class: "unlike likeAnchor",
-              onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => $options.toggle(), ["prevent"]))
-            },
-            vue.toDisplayString($options.unlikeLabel),
-            1
-            /* TEXT */
-          )),
+          !$data.liked ? (vue.openBlock(), vue.createElementBlock("a", {
+            key: 0,
+            href: "#",
+            class: "like likeAnchor",
+            onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => $options.toggle(), ["prevent"]))
+          }, [
+            _cache[9] || (_cache[9] = vue.createElementVNode(
+              "i",
+              {
+                class: "ti ti-thumb-up",
+                "aria-hidden": "true"
+              },
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue.createTextVNode(
+              vue.toDisplayString($options.likeLabel),
+              1
+              /* TEXT */
+            )
+          ])) : (vue.openBlock(), vue.createElementBlock("a", {
+            key: 1,
+            href: "#",
+            class: "unlike likeAnchor",
+            onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => $options.toggle(), ["prevent"]))
+          }, [
+            _cache[10] || (_cache[10] = vue.createElementVNode(
+              "i",
+              {
+                class: "ti ti-thumb-up-filled",
+                "aria-hidden": "true"
+              },
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue.createTextVNode(
+              vue.toDisplayString($options.unlikeLabel),
+              1
+              /* TEXT */
+            )
+          ])),
           vue.createCommentVNode(" See the guest branch's own comment above on the `{{ ' ' }}` interpolation. "),
           $data.count > 0 ? (vue.openBlock(), vue.createElementBlock(
             vue.Fragment,
             { key: 2 },
             [
-              _cache[8] || (_cache[8] = vue.createTextVNode(
+              _cache[11] || (_cache[11] = vue.createTextVNode(
                 vue.toDisplayString(" "),
                 -1
                 /* CACHED */

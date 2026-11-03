@@ -81,14 +81,11 @@
 
             <div class="wall-entry-controls">
                 <template v-if="showReplyToggle">
-                    <a href="#" @click.prevent="toggleReply">{{ replyLabel }}<span
+                    <a href="#" @click.prevent="toggleReply"><i class="ti ti-message-circle" aria-hidden="true"></i>{{ replyLabel }}<span
                         class="comment-count"
                         :data-count="childTotal"
                         :style="childTotal > 0 ? null : 'display:none'"
                     > ({{ childTotal }})</span></a>
-                </template>
-                <template v-if="showReplyToggle && likeState && likeState.canLike">
-                    &middot;
                 </template>
                 <LikeButton
                     v-if="likeState && likeState.canLike"
@@ -167,9 +164,8 @@
  * ## Visual parity fixes (browser-verified against the legacy UI)
  *
  * - Entry links render Reply before Like (`CommentEntryLinks`' sort order:
- *   `CommentLink` 100, `LikeLink` 200 - see `widgets\BaseStack::run()`), with
- *   the `&middot;` separator only between the two when BOTH are rendered,
- *   mirroring `BaseStack`'s own "join non-empty widgets only" behavior.
+ *   `CommentLink` 100, `LikeLink` 200 - see `widgets\BaseStack::run()`), without
+ *   glue text: the flex gap of `.wall-entry-controls` separates them.
  * - The avatar is a `<UserImage v-bind="comment.author" :size="25" />` (see
  *   `protected/humhub/modules/user/vue/UserImage.vue` - provided by the user module,
  *   resolved through the global registry the same way `RichTextOutput` is, not

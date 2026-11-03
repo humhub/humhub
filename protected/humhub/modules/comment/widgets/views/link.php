@@ -6,6 +6,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\Icon;
 use yii\helpers\Url;
 
 /* @var $this View */
@@ -24,7 +25,7 @@ $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'style' => ($hasComments) ? null : 'display:none',
 ]);
 
-$label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment");
+$label = Icon::get('message-circle')->asString() . (($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment"));
 
 ?>
 <?php if ($mode == CommentLink::MODE_POPUP): ?>
