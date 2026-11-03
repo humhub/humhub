@@ -12,6 +12,7 @@ namespace humhub\modules\topic\widgets;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\ContentTagPicker;
+use humhub\modules\topic\assets\TopicVueAsset;
 use humhub\modules\topic\models\Topic;
 use Yii;
 use yii\helpers\Url;
@@ -38,10 +39,17 @@ class TopicPicker extends ContentTagPicker
     public $showDefaults = true;
 
     /**
+     * Whether $url was passed in (a legacy search endpoint) rather than filled by init().
+     */
+    private bool $ownUrl = false;
+
+    /**
      * @inheritdoc
      */
     public function init()
     {
+        $this->ownUrl = $this->url !== null;
+
         if (!$this->contentContainer) {
             $this->contentContainer = ContentContainerHelper::getCurrent();
         }
@@ -62,9 +70,14 @@ class TopicPicker extends ContentTagPicker
      */
     public function run()
     {
-        return static::showTopicPicker($this->contentContainer)
-            ? parent::run()
-            : $this->emptyResult();
+        if (!static::showTopicPicker($this->contentContainer)) {
+            return $this->emptyResult();
+        }
+
+        // The `topic` picker source
+        TopicVueAsset::register($this->getView());
+
+        return parent::run();
     }
 
     /**
@@ -110,7 +123,7 @@ class TopicPicker extends ContentTagPicker
     {
         $result = parent::jsonResult($tags);
         foreach ($result as $key => $tag) {
-            $result[$key]['image'] = Yii::$app->getModule('topic')->icon;
+            $result[$key]['image'] = $result[$key]['image'] ?: Yii::$app->getModule('topic')->icon;
         }
 
         return $result;
@@ -121,7 +134,23 @@ class TopicPicker extends ContentTagPicker
      */
     public function getItemImage($item)
     {
-        return Yii::$app->getModule('topic')->icon;
+        return $item->color ?: Yii::$app->getModule('topic')->icon;
+    }
+
+    /**
+     * @inheritdoc
+     * @since 1.20
+     */
+    public function getSource(): ?array
+    {
+        if ($this->ownUrl) {
+            return null;
+        }
+
+        return ['source' => 'topic', 'params' => array_filter([
+            'containerId' => $this->contentContainer?->contentcontainer_id,
+            'icon' => Yii::$app->getModule('topic')->icon,
+        ])];
     }
 
     /**

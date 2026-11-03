@@ -47,12 +47,10 @@ class SpacePickerField extends ContentContainerPickerField
 
     /**
      * @inheritdoc
+     * @since 1.20
      */
-    protected function getItemImage($item)
+    public function getSource(): ?array
     {
-        return Image::widget([
-            'space' => $item,
-            'width' => 24,
-        ]);
+        return $this->hasOwnSearch(self::class) ? null : ['source' => 'space', 'params' => ['scope' => 'all']];
     }
 }

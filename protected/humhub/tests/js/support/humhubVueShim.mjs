@@ -15,6 +15,10 @@ export const removeMenuEntry = (...args) => vueModule().removeMenuEntry(...args)
 export const getMenuEntries = (...args) => vueModule().getMenuEntries(...args);
 export const registerFilterType = (...args) => vueModule().registerFilterType(...args);
 export const getFilterType = (...args) => vueModule().getFilterType(...args);
+export const registerPickerSource = (...args) => vueModule().registerPickerSource(...args);
+export const getPickerSource = (...args) => vueModule().getPickerSource(...args);
+export const registerPickerImage = (...args) => vueModule().registerPickerImage(...args);
+export const getPickerImage = (...args) => vueModule().getPickerImage(...args);
 export const mountElement = (...args) => vueModule().mountElement(...args);
 export const getConfig = (...args) => vueModule().getConfig(...args);
 export const url = (...args) => vueModule().url(...args);

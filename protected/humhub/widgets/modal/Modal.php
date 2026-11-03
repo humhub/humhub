@@ -98,7 +98,7 @@ class Modal extends \yii\bootstrap5\Modal
     {
         $this->options['data-bs-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
         $this->options['data-bs-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
-        // Disable autofocus on click outside the modal to avoid issue with Select2 rendered outside
+        // Disable autofocus on click outside the modal to avoid issues with the picker's listbox rendered outside
         $this->options['data-bs-focus'] = 'false';
 
         // If `clientOptions` property is false, `registerJs()` will not be called on the view to initialize the module.

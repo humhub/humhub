@@ -24,11 +24,6 @@ class UserPickerField extends ContentContainerPickerField
     public $defaultRoute = '/user/search/json';
 
     /**
-     * @inheritdoc
-     */
-    public $jsWidget = 'user.picker.UserPicker';
-
-    /**
      * @var string|bool|null True to show a link to select the current user, String to use a custom link text
      * @since 1.19
      */
@@ -41,7 +36,7 @@ class UserPickerField extends ContentContainerPickerField
     {
         if (!$this->url) {
             // provide the space id if the widget is calling from a space
-            if (Yii::$app->controller->id === 'space') {
+            if (Yii::$app->controller?->id === 'space') {
                 return Url::to([$this->defaultRoute, 'space_id' => Yii::$app->controller->getSpace()->id]);
             }
 
@@ -49,6 +44,16 @@ class UserPickerField extends ContentContainerPickerField
         }
 
         return parent::getUrl();
+    }
+
+    /**
+     * @inheritdoc
+     * @since 1.20
+     */
+    public function getSource(): ?array
+    {
+        // No `spaceId`: as the legacy search, the picker finds every user (e.g. non-members)
+        return $this->hasOwnSearch(self::class) ? null : ['source' => 'user', 'params' => []];
     }
 
     /**
@@ -116,7 +121,7 @@ class UserPickerField extends ContentContainerPickerField
     public static function selfSelect(string $selector, ?string $label = null): Link
     {
         return Link::to($label ?? Yii::t('base', 'Select Me'))
-            ->action('selectSelf', null, $selector)
+            ->action('ui.picker.selectSelf', null, $selector)
             ->icon('check-circle-o')
             ->right();
     }

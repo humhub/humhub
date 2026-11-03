@@ -55,7 +55,6 @@ use yii\helpers\Url;
         <?= $form->field($model, 'patScopes')->widget(MultiSelect::class, [
             'items' => $model->getScopeOptions(),
             'placeholderMore' => '',
-            'options' => ['data-tags' => 'false'],
         ])->hint($model->hasLockedFullAccess()
             ? $model->getAttributeHint('patScopes') . ' ' . Yii::t('OauthModule.base', '"{scope}" is included, set by a system administrator.', [
                 'scope' => Html::encode(ScopeRegistry::get(ScopeRegistry::FULL)->label),

@@ -2355,3 +2355,48 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     navigation).
   - User gates whose `getAllowedRoutes()` allow `user/account/delete` (or another moved route) must
     allow the new `user/security/*` routes, since the old routes only redirect.
+
+- **Select2 is replaced by an own Vue picker (`PickerInput`).** The `<select>` stays the value
+  carrier; see `docs/develop/ui-js-vuejs-picker.md`. Removed:
+  - The Select2 JS API (`$.fn.select2`, `.select2(…)`), its events (`select2:select`,
+    `select2:unselect`, `select2:open`, …) and `afterInitSelect2`. Listen to `change` on the
+    `<select>` and use `humhub.modules.ui.picker` (`getItems()`, `setItems()`, `addItem()`,
+    `removeItem()`) instead.
+  - The JS widgets `humhub.ui.picker.Picker` and `user.picker.UserPicker`
+    (`humhub.user.picker.js`). The `<select>` is no action component any more: an action on it
+    resolves to the surrounding component, so `PickerFilterInput::$changeAction` is `inputChange`
+    (was `parent.inputChange`).
+  - `humhub\assets\Select2Asset`, `Select2StyleAsset`, `Select2SearchInputPlaceholderAsset` and
+    `humhub\modules\user\assets\UserPickerAsset`; a bundle depending on them has to drop the
+    dependency (`PickerInput` is part of the core Vue bundle, the bridge of
+    `CoreExtensionAsset`; `humhub-contrib/devtools`' `GiiAsset` depended on `Select2Asset`).
+  - `npm-asset/select2` and `kartik\select2`: `IconPicker` no longer extends it, and
+    `kartik-v/yii2-widget-select2` stays installed only as an indirect dependency of
+    `kartik-v/yii2-widgets`, which core no longer uses.
+  - HTML as the image of a picker item (`image` of a search answer, `BasePicker::getItemImage()`):
+    give a URL, a `#colour`, an icon name or an image description
+    (`['type' => 'user'|'space'|'icon'|'color'|'url', …]`).
+- **Deprecated: `data-ui-select2`** is read as `data-ui-picker` until 1.21; `data-ui-select2-allow-new`
+  becomes `data-picker-allow-new` (`data-ui-select2-new-sign` is ignored). `data-ui-select2 => false`
+  on `Html::dropDownList()` keeps the native `<select>`. `Html::getDropDownListOptions()` now sets
+  `data-ui-picker` and `data-picker-search`.
+- **Refactored: `BasePicker` renders a native `<select>`** (always `multiple`; with `maxSelection`
+  1 the picker shows a single record, the value stays an array) with `data-picker-*` attributes
+  and `data-picker-config`, that `PickerInput` mounts on.
+  - Subclasses keep their `getData()` keys: the final `getPickerData()` translates them. A
+    customized picker (`$url` set, `$defaultRoute` changed or `getUrl()` overridden) stays on its
+    legacy endpoint.
+  - New: `getSource()` (named source), `getItemSubText()`, `$listed`, `$suggested`, `$maxResults`;
+    `getItemImage()` may return an image description array. A picker that allows new items renders
+    `data-picker-new-prefix="_add:"`.
+  - Styles live in `_picker.scss` behind `$prev-picker` (moved from `_filter-bar.scss`);
+    `_select2.scss` is gone. New Sass variables: `$select-menu-field-height`,
+    `$select-menu-icon-size`, `$select-menu-icon-color`, `$select-menu-icon-space`,
+    `$picker-chip-*`, `$picker-color-size`, `$picker-list-item-bg`.
+  - `UserPickerField` searches all users and uses `GET /api/v2/user/picker`, which now also answers
+    `displayNameSub` (`UserSerializer::short()` is unchanged); `UserPickerField::selfSelect()`
+    targets the action `ui.picker.selectSelf`.
+  - `space\widgets\Chooser::getSpaceResult()` gives `image` as a space image description (no HTML)
+    and `text` next to `title`; callers that rendered the image as HTML (`humhub/sharebetween`,
+    `cuzy-app/cloner`) have to use the description.
+  - Acceptance tests: `selectFromPicker()` and `selectUserFromPicker()` are unchanged.

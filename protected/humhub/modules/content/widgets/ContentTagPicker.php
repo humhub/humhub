@@ -126,6 +126,6 @@ class ContentTagPicker extends BasePicker
      */
     protected function getItemImage($item)
     {
-        return null;
+        return $item instanceof ContentTag && $item->color ? $item->color : null;
     }
 }

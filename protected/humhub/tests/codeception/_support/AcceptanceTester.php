@@ -359,10 +359,17 @@ class AcceptanceTester extends BaseTester
                 $this->wait(1);
             }
         } else {
-            $select2Input = $selector . ' ~ span input';
-            $this->fillField($select2Input, $search);
-            $this->waitForText($search, 10, '.select2-results__option.select2-results__option--highlighted .picker-text');
-            $this->pressKey($select2Input, WebDriverKeys::ENTER);
+            $input = $selector . ' + .picker-host .picker-input';
+            $this->fillField($input, $search);
+            // The answer to the text is in (no spinner), then its first item is active.
+            $this->waitForElementNotVisible($selector . ' + .picker-host .select-menu-spinner', 10);
+            $this->waitForText($search, 10, $selector . ' + .picker-host .select-menu-option.is-focused');
+            $this->pressKey($input, WebDriverKeys::ENTER);
+            // A multiple picker keeps its list open after a choice: close it, it may cover the next control.
+            // (Only when open: Escape on a closed picker would close a surrounding modal.)
+            if ($this->grabAttributeFrom($input, 'aria-expanded') === 'true') {
+                $this->pressKey($input, WebDriverKeys::ESCAPE);
+            }
         }
     }
 

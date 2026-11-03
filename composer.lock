@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22195a3108937e3831b9447f51c144f0",
+    "content-hash": "0c54e2d3bbe8c5c6a4537ef92d73ccad",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -5200,18 +5200,6 @@
                 "npm-asset/nanoid": ">=3.3.17,<4.0.0",
                 "npm-asset/picocolors": ">=1.1.1,<2.0.0",
                 "npm-asset/source-map-js": ">=1.2.1,<2.0.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/select2",
-            "version": "4.0.13",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/select2/-/select2-4.0.13.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -17090,5 +17078,5 @@
     "platform-overrides": {
         "php": "8.2"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }

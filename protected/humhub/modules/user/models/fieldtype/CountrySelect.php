@@ -111,7 +111,7 @@ class CountrySelect extends Select
     public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return parent::getFieldFormDefinition($user, array_merge([
-            'htmlOptions' => ['data-ui-select2' => true, 'style' => 'width:100%'],
+            'htmlOptions' => ['data-ui-picker' => true],
         ], $options));
     }
 

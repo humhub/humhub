@@ -68,6 +68,16 @@ humhub.module('vue', function (module, require, $) {
     // Rendered by FilterBar.vue itself, never through the registry.
     var CORE_FILTER_TYPES = ['text', 'select', 'picker', 'tags', 'checkbox'];
 
+    // picker source name -> factory (see registerPickerSource()). A plain object: sources are
+    // looked up when a picker mounts, never while rendering.
+    var pickerSources = {};
+    // picker image type -> { component, toProps } (see registerPickerImage()) — reactive, as
+    // `filterTypes`: PickerImage reads it while rendering, and a type registered after a
+    // picker mounted (a module bundle loading late) must be picked up.
+    var pickerImages = Vue.reactive({});
+    // Rendered by PickerImage.vue itself, never through the registry.
+    var CORE_PICKER_IMAGES = ['icon', 'color', 'url'];
+
     // A reservation token (see mountElement) is a plain {} — only a real
     // mounted Vue app instance has an `unmount` function. Used everywhere an
     // `apps` entry needs to be treated as "not actually mounted yet".
@@ -558,6 +568,88 @@ humhub.module('vue', function (module, require, $) {
         return filterTypes[type] || null;
     };
 
+    /**
+     * Registers the picker source `name`: `factory({ itemKey, params })` returns a source
+     * `{ search(term) → Promise<item[]> }` (see docs/develop/ui-js-vuejs-picker.md, "Sources").
+     * A `<select data-picker-source="<name>">` and `<PickerInput source="<name>">` use it.
+     * The first registration wins: the same factory again is a debug-level no-op (artifact
+     * scripts re-execute), another one for a taken name an error.
+     *
+     * @since 1.20
+     */
+    var registerPickerSource = function (name, factory) {
+        if (typeof name !== 'string' || !name || typeof factory !== 'function') {
+            log.error('Invalid picker source "' + name + '" — a non-empty name and a factory function are required');
+            return;
+        }
+
+        if (pickerSources[name]) {
+            if (pickerSources[name] === factory) {
+                log.debug('Picker source "' + name + '" is already registered — skipping duplicate registration');
+            } else {
+                log.error('Picker source "' + name + '" is already registered — the new factory is ignored');
+            }
+            return;
+        }
+
+        pickerSources[name] = factory;
+    };
+
+    /**
+     * The factory registered for the picker source `name`, or `null`.
+     *
+     * @since 1.20
+     */
+    var getPickerSource = function (name) {
+        return pickerSources[name] || null;
+    };
+
+    /**
+     * Registers the registered component `componentName` as renderer of the picker image type
+     * `type`; `toProps(image, size)` maps an image description to the component's props
+     * (default: the description plus `size`). The types `icon`, `color` and `url` are built
+     * into PickerImage and cannot be registered. First registration wins, as for sources.
+     *
+     * @since 1.20
+     */
+    var registerPickerImage = function (type, componentName, toProps) {
+        if (typeof type !== 'string' || !type || CORE_PICKER_IMAGES.indexOf(type) !== -1) {
+            log.error('Invalid picker image type "' + type + '" — a non-empty name other than ' + CORE_PICKER_IMAGES.join(', ') + ' is required');
+            return;
+        }
+
+        if (!NAME_PATTERN.test(componentName) || toTagName(componentName).indexOf('-') === -1) {
+            log.error('Invalid Vue component name "' + componentName + '" for picker image type "' + type + '" — PascalCase producing a dashed tag name required (see register())');
+            return;
+        }
+
+        if (pickerImages[type]) {
+            if (pickerImages[type].component === componentName) {
+                log.debug('Picker image type "' + type + '" is already registered — skipping duplicate registration');
+            } else {
+                log.error('Picker image type "' + type + '" is already registered to "' + pickerImages[type].component + '" — "' + componentName + '" is ignored');
+            }
+            return;
+        }
+
+        pickerImages[type] = {
+            component: componentName,
+            toProps: typeof toProps === 'function' ? toProps : function (image, size) {
+                return $.extend({}, image, { size: size });
+            },
+        };
+    };
+
+    /**
+     * `{ component, toProps }` registered for the picker image type `type`, or `null`.
+     * Reactive like getFilterType().
+     *
+     * @since 1.20
+     */
+    var getPickerImage = function (type) {
+        return pickerImages[type] || null;
+    };
+
     var componentFor = function (element) {
         var name = element.getAttribute('data-vue-component') || tagNames[element.tagName.toLowerCase()];
         return { name: name, component: name ? components[name] : null };
@@ -955,6 +1047,10 @@ humhub.module('vue', function (module, require, $) {
         getMenuEntries: getMenuEntries,
         registerFilterType: registerFilterType,
         getFilterType: getFilterType,
+        registerPickerSource: registerPickerSource,
+        getPickerSource: getPickerSource,
+        registerPickerImage: registerPickerImage,
+        getPickerImage: getPickerImage,
         // TEST-ONLY — see its own docblock above. Exported so test files can reach it the
         // same way they reach every other registry function, not because it belongs to the
         // documented public API surface (docs/develop/ui-js-vuejs-extensions.md's "Menu

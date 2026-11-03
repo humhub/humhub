@@ -12,7 +12,7 @@ use humhub\components\assets\AssetBundle;
 use yii\web\View;
 
 /**
- * select2
+ * Modified jquery.pjax (pjax navigation).
  *
  * @author buddha
  */

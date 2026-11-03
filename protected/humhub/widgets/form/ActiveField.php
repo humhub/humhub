@@ -93,7 +93,7 @@ class ActiveField extends \yii\bootstrap5\ActiveField
     }
 
     /**
-     * Override drop-down list to enable plugin Select2 with
+     * Override drop-down list to enable the picker (`ui.picker`) with
      *     searchable feature if items >= $options['minimumResultsForSearch'],
      *     -1 - to never display the search box,
      *      0 - always display the search box.

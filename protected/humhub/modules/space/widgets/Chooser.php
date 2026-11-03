@@ -145,8 +145,15 @@ class Chooser extends Widget
         $spaceInfo = [
             'guid' => $space->guid,
             'title' => $space->name,
+            'text' => $space->name,
             'tags' => Html::encode(implode(', ', $space->getTags())),
-            'image' => Image::widget(['space' => $space, 'width' => 24]),
+            'image' => [
+                'type' => 'space',
+                'id' => $space->id,
+                'name' => $space->name,
+                'color' => $space->color,
+                'imageUrl' => $space->image->exists() ? $space->image->getUrl() : null,
+            ],
             'link' => $space->getUrl(),
         ];
 

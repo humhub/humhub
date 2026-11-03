@@ -239,36 +239,40 @@ class Html extends \yii\bootstrap5\Html
         return static::endTag('div');
     }
 
+    /**
+     * The options that make a drop-down list an enhanced select (the Vue `PickerInput`, see
+     * docs/develop/ui-js-vuejs-picker.md): `data-ui-picker`, and `data-picker-search` from
+     * `minimumResultsForSearch` (the search input shows from that many options on; -1 never,
+     * 0 always; default 5, a `prompt` not counted). `data-ui-select2-allow-new` (deprecated) and
+     * `data-picker-allow-new` let the typed text be chosen; `data-ui-select2 => false` (deprecated)
+     * and `data-ui-picker => false` keep the native select.
+     */
     public static function getDropDownListOptions(array $options = []): array
     {
-        if (isset($options['minimumResultsForSearch'])) {
-            $minimumResultsForSearch = (int) $options['minimumResultsForSearch'];
-            unset($options['minimumResultsForSearch']);
+        $search = isset($options['minimumResultsForSearch']) ? (int)$options['minimumResultsForSearch'] : 5;
+        unset($options['minimumResultsForSearch']);
+
+        if (!empty($options['data-ui-select2-allow-new']) || !empty($options['data-picker-allow-new'])) {
+            $search = 0;
+            $options['data-picker-allow-new'] = 'true';
         } else {
-            $minimumResultsForSearch = 5;
+            unset($options['data-picker-allow-new']);
         }
 
-        if ($minimumResultsForSearch >= 0 && isset($options['prompt'])) {
-            // Don't consider an empty option like "Please select:" as real option for searching
-            $minimumResultsForSearch++;
+        if (array_key_exists('data-ui-select2', $options) && $options['data-ui-select2'] === false) {
+            $options['data-ui-picker'] = false;
         }
 
-        if ($minimumResultsForSearch > 0 && isset($options['data-ui-select2-allow-new'])) {
-            // Don't use this limit when new item is allowed for adding,
-            // otherwise a new item input is hidden by Select2 JS code
-            $minimumResultsForSearch = 0;
-        }
+        unset($options['data-ui-select2'], $options['data-ui-select2-allow-new'], $options['data-ui-select2-new-sign']);
 
         return ArrayHelper::merge([
-            'data-ui-select2' => true,
-            'style' => 'width:100%',
-            'data-search-input-placeholder' => Yii::t('base', 'Search...'),
-            'data-minimum-results-for-search' => $minimumResultsForSearch,
+            'data-ui-picker' => true,
+            'data-picker-search' => $search,
         ], $options);
     }
 
     /**
-     * Override Active drop-down list to enable plugin Select2 with
+     * Override Active drop-down list to make it an enhanced select (`PickerInput`) with
      *     searchable feature if items >= $options['minimumResultsForSearch'],
      *     -1 - to never display the search box,
      *      0 - always display the search box.
@@ -280,7 +284,7 @@ class Html extends \yii\bootstrap5\Html
     }
 
     /**
-     * Override drop-down list to enable plugin Select2 with
+     * Override drop-down list to make it an enhanced select (`PickerInput`) with
      *     searchable feature if items >= $options['minimumResultsForSearch'],
      *     -1 - to never display the search box,
      *      0 - always display the search box.

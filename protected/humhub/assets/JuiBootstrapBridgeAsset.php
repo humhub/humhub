@@ -13,7 +13,7 @@ use humhub\components\View;
 use yii\jui\JuiAsset;
 
 /**
- * select2
+ * Resolves conflicting jQuery UI and Bootstrap plugin namespaces.
  *
  * @author buddha
  */

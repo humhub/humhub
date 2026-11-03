@@ -66,7 +66,7 @@ use yii\helpers\Url;
 
 <?php if ($canManage) : ?>
     <script <?= Html::nonce() ?>>
-        $(document).on('select2:select', '#editgroupform-type', function () {
+        $(document).on('change', '#editgroupform-type', function () {
             const isParentGroup = this.value === '<?= EditGroupForm::TYPE_NORMAL?>';
             document.querySelector('.field-editgroupform-parent').classList.toggle('d-none', isParentGroup);
             document.querySelector('.field-editgroupform-subgroups').classList.toggle('d-none', !isParentGroup);

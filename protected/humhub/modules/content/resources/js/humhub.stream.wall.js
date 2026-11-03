@@ -15,12 +15,12 @@ humhub.module('stream.wall', function (module, require, $) {
     var stream = require('stream');
     var Stream = stream.Stream;
     var Component = require('action').Component;
-    var Widget = require('ui.widget').Widget;
     var event = require('event');
     var Filter = require('ui.filter').Filter;
     var Url = require('ui.filter').Url;
     var string = require('util').string;
     var topic = require('topic');
+    var picker = require('ui.picker');
     var view = require('ui.view');
     var loader = require('ui.loader');
     var container = require('content.container');
@@ -337,34 +337,32 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.initTopicPicker = function () {
-        const topicPicker = this.getTopicPicker();
-        if (topicPicker) {
+        const select = this.getTopicPicker();
+        if (select) {
             const updateFilterBar = function () {
-                const topics = [];
-                $.each(topicPicker.map(), function (key, value) {
-                    topics.push({id: key, name: value})
-                });
                 // Note the stream init is triggered by the humhub:topic:updated event
-                topic.setTopics(topics);
-            }
-            topicPicker.on('afterInitSelect2', updateFilterBar)
-                .$.on('change', updateFilterBar);
+                topic.setTopics(picker.getItems(select).map(function (item) {
+                    return {id: item.id, name: item.text};
+                }));
+            };
+            $(select).on('change', updateFilterBar);
+            updateFilterBar();
         }
     };
 
     WallStreamFilter.prototype.initContentTypePicker = function () {
         const that = this;
-        const contentTypePicker = this.getContentTypePicker();
-        if (contentTypePicker) {
+        const select = this.getContentTypePicker();
+        if (select) {
             const updateFilterBar = function () {
                 const $filterBar = that.getFilterBar();
                 $filterBar.find('.content-type-remove-label').remove();
-                contentTypePicker.data().forEach(function (contentType) {
+                picker.getItems(select).forEach(function (contentType) {
                     $(string.template(WallStreamFilter.template.removeContentTypeLabel, contentType)).appendTo($filterBar);
                 });
-            }
-            contentTypePicker.on('afterInitSelect2', updateFilterBar)
-                .$.on('change', updateFilterBar);
+            };
+            $(select).on('change', updateFilterBar);
+            updateFilterBar();
         }
     };
 
@@ -379,13 +377,17 @@ humhub.module('stream.wall', function (module, require, $) {
             var topicPicker = this.getTopicPicker();
             var $filterBar = this.getFilterBar();
 
-            topicPicker.setSelection(topics, function (topic) {
-                return {
-                    id: topic.id,
-                    text: topic.name,
-                    image: topic.icon
-                };
-            });
+            // A topic new to the picker (added from a label) shows the module icon of the topic source.
+            var config = {};
+            try {
+                config = JSON.parse($(topicPicker).attr('data-picker-config') || '{}') || {};
+            } catch (e) {
+            }
+            var icon = (config.sourceParams && config.sourceParams.icon) || 'star';
+
+            picker.setItems(topicPicker, topics.map(function (topic) {
+                return {id: topic.id, text: topic.name, image: {type: 'icon', name: icon}};
+            }));
 
             var selectors = [];
 
@@ -408,11 +410,11 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.getTopicPicker = function () {
-        return Widget.instance($('#stream-topic-picker'));
+        return $('#stream-topic-picker')[0];
     };
 
     WallStreamFilter.prototype.removeContentTypeFilter = function (evt) {
-        this.getContentTypePicker().remove(evt.$trigger.data('typeId'));
+        picker.removeItem(this.getContentTypePicker(), evt.$trigger.data('typeId'));
     };
 
     WallStreamFilter.prototype.triggerChange = function () {
@@ -441,7 +443,7 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.prototype.getContentTypePicker = function () {
-        return Widget.instance($('#stream_filter_content_type'));
+        return $('#stream_filter_content_type')[0];
     };
 
     WallStreamFilter.prototype.getFilterBar = function () {

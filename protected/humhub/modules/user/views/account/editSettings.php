@@ -16,7 +16,7 @@ use humhub\widgets\form\ActiveForm;
 <?= $form->field($model, 'tags')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
 
 <?php if (count($languages) > 1): ?>
-    <?= $form->field($model, 'language')->dropDownList($languages, ['data-ui-select2' => '']); ?>
+    <?= $form->field($model, 'language')->dropDownList($languages); ?>
 <?php endif; ?>
 
 <?= $form->field($model, 'timeZone')->dropDownList(TimezoneHelper::generateList(true)); ?>
@@ -25,7 +25,7 @@ use humhub\widgets\form\ActiveForm;
     <?= $form->field($model, 'show_introduction_tour')->checkbox(); ?>
 <?php endif; ?>
 
-<?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList(), ['data-ui-select2' => '']) ?>
+<?= $form->field($model, 'markdownEditorMode')->dropDownList($model->getEditorModeList()) ?>
 
 <button class="btn btn-primary" type="submit" data-ui-loader><?= Yii::t('UserModule.account', 'Save') ?></button>
 

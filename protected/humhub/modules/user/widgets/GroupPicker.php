@@ -23,6 +23,15 @@ class GroupPicker extends MultiSelect
         parent::init();
     }
 
+    /**
+     * @inheritdoc
+     * @since 1.20
+     */
+    protected function getItemImage($item)
+    {
+        return 'users-group';
+    }
+
     private function initDefaultGroupFormOptions(): void
     {
         if (!($this->model instanceof EditGroupForm)) {
@@ -41,10 +50,6 @@ class GroupPicker extends MultiSelect
                 $groups->andWhere(['!=', 'is_admin_group', '1']);
             }
             $this->items = UserEditForm::getGroupItems($groups->all());
-        }
-
-        if (!isset($this->options['data-tags'])) {
-            $this->options['data-tags'] = 'false';
         }
 
         $this->placeholderMore = match ($this->attribute) {

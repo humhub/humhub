@@ -13,7 +13,6 @@ use humhub\modules\content\assets\StreamAsset;
 use humhub\modules\topic\assets\TopicAsset;
 use humhub\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
-use humhub\modules\user\assets\UserPickerAsset;
 
 /**
  * This asset bundle contains core script dependencies which should be compatible with defer script loading.
@@ -37,8 +36,6 @@ class CoreBundleAsset extends AssetBundle
         CoreVueAsset::class,
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,
-        Select2Asset::class,
-        Select2SearchInputPlaceholderAsset::class,
         JqueryWidgetAsset::class,
         NProgressAsset::class,
         JqueryNiceScrollAsset::class,
@@ -55,7 +52,6 @@ class CoreBundleAsset extends AssetBundle
         UserAsset::class,
         LiveAsset::class,
         ContentContainerAsset::class,
-        UserPickerAsset::class,
         PostAsset::class,
         SpaceAsset::class,
         TopicAsset::class,

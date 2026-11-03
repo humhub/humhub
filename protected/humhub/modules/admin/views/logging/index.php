@@ -28,15 +28,15 @@ if ($filter->day) {
 ?>
 
 <style>
-    #admin-log-root .select2-selection__choice[title="<?= Html::encode(LogFilterForm::getLevelLabel(Logger::LEVEL_ERROR)) ?>"] {
+    #admin-log-root .picker-chip[data-value="<?= Logger::LEVEL_ERROR ?>"] {
         background-color: var(--danger);
     }
 
-    #admin-log-root .select2-selection__choice[title="<?= Html::encode(LogFilterForm::getLevelLabel(Logger::LEVEL_WARNING)) ?>"] {
+    #admin-log-root .picker-chip[data-value="<?= Logger::LEVEL_WARNING ?>"] {
         background-color: var(--warning);
     }
 
-    #admin-log-root .select2-selection__choice[title="<?= Html::encode(LogFilterForm::getLevelLabel(Logger::LEVEL_INFO)) ?>"] {
+    #admin-log-root .picker-chip[data-value="<?= Logger::LEVEL_INFO ?>"] {
         background-color: var(--info);
     }
 </style>

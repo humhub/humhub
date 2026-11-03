@@ -140,6 +140,9 @@ $prev-page-header: false !default;
 $prev-card: false !default;
 @import "card";
 
+$prev-picker: false !default;
+@import "picker";
+
 $prev-filter-bar: false !default;
 @import "filter-bar";
 
@@ -171,6 +174,3 @@ $prev-modules: false !default;
 
 $prev-search: false !default;
 @import "search";
-
-$prev-select2: false !default;
-@import "select2";

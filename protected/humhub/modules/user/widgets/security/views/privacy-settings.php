@@ -24,7 +24,6 @@ use humhub\widgets\form\MultiSelect;
     <?= $form->field($model, 'allowedExternalSources')->widget(MultiSelect::class, [
         'items' => array_combine($model->getAllowedDomains(), $model->getAllowedDomains()),
         'placeholderMore' => '',
-        'options' => ['data-tags' => 'false'],
     ]) ?>
 <?php endif ?>
 

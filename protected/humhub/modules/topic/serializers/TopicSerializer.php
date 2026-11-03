@@ -74,7 +74,8 @@ class TopicSerializer
         }
 
         return array_map(
-            static fn(Topic $topic) => self::short($topic, $containers[$topic->contentcontainer_id] ?? null),
+            // A global topic has no container (`null` is no array key).
+            static fn(Topic $topic) => self::short($topic, $topic->contentcontainer_id !== null ? ($containers[$topic->contentcontainer_id] ?? null) : null),
             $topics,
         );
     }

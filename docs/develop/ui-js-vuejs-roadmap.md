@@ -26,10 +26,6 @@ Web routes an endpoint duplicates, still in place because other consumers depend
 - **File upload** — `file/file/upload` (`UploadAction`) next to `POST /api/v2/file`: the
   jQuery upload widget, the mobile app (`fileUploadUrl`) and module actions extending
   `UploadAction` still use it.
-- **Space picker search** — `space/browse/search-json` next to `GET /api/v2/space`: the
-  picker widgets expect its result shape. Moves together with the pickers becoming islands,
-  which then search with an endpoint of their own, `GET /api/v2/space/picker`, after the user
-  picker's (`ids`/`exclude` for the chosen spaces; see "Lists" in `concept-api.md`).
 - **Module enabling** — `admin/module/enable|disable` next to
   `POST /api/v2/module/<id>/enable`: the module administration (`admin/module/list`) is the
   `ModuleTable` island and enables through the API, but disables and uninstalls by form POST to

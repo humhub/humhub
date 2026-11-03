@@ -949,11 +949,39 @@
     }, null, 8, ["user-id", "user-name", "initial", "follow-class", "following-class", "check-icon-html"])) : vue.createCommentVNode("v-if", true);
   }
   const PeopleCardFollowAction = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const PAGE_SIZE = 20;
+  const userPickerSource = ({ itemKey, params }) => ({
+    search(term) {
+      if (term === "" && !params.spaceId) {
+        return Promise.resolve([]);
+      }
+      const query = { q: term, pageSize: PAGE_SIZE };
+      if (params.spaceId) {
+        query.spaceId = params.spaceId;
+      }
+      return vue$1.client.get(vue$1.apiUrl("user/picker", query)).then((response) => (response.results || []).map((user) => ({
+        id: String(itemKey === "guid" ? user.guid : user.id),
+        text: user.displayName,
+        subText: user.displayNameSub || null,
+        image: { type: "user", guid: user.guid, displayName: user.displayName, imageUrl: user.imageUrl, url: user.url }
+      })));
+    }
+  });
+  const userPickerImageProps = (image, size) => ({
+    guid: image.guid || "",
+    displayName: image.displayName || "",
+    url: image.url || "",
+    imageUrl: image.imageUrl || "",
+    size,
+    link: false
+  });
   Object.entries(/* @__PURE__ */ Object.assign({ "./PeopleBrowser.vue": __vite_glob_0_0, "./UserFilterControl.vue": __vite_glob_0_1, "./UserFollowButton.vue": __vite_glob_0_2, "./UserImage.vue": __vite_glob_0_3, "./UserList.vue": __vite_glob_0_4 })).forEach(([path, component]) => {
     vue$1.register(path.slice("./".length, -".vue".length), component);
   });
   vue$1.register("PeopleCardFollowAction", PeopleCardFollowAction);
   vue$1.registerSlotComponent("user.card-actions", "PeopleCardFollowAction", { id: "follow", sortOrder: 200 });
   vue$1.registerFilterType("user", "UserFilterControl");
+  vue$1.registerPickerSource("user", userPickerSource);
+  vue$1.registerPickerImage("user", "UserImage", userPickerImageProps);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.user.vue.js.map

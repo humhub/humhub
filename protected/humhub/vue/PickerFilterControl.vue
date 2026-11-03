@@ -2,10 +2,10 @@
     <div
         ref="root"
         class="select-menu picker picker-filter"
-        :class="[block, { 'is-open': open, 'has-selection': hasValue, 'is-disabled': resolving, 'is-loading': resolving, 'is-multiple': multiple, 'keeps-placeholder': keepsPlaceholder }]"
+        :class="[block, { 'is-open': open, 'has-selection': hasValue, 'is-disabled': resolving, 'is-loading': resolving, 'is-multiple': multiple, 'keeps-placeholder': keepsPlaceholder, 'is-drop-up': dropUp }]"
         :style="keepsPlaceholder ? { '--hh-picker-placeholder-chars': placeholder.length } : null"
     >
-        <div class="form-control picker-field" @click="onFieldClick">
+        <div ref="field" class="form-control picker-field" @click="onFieldClick">
             <template v-if="multiple">
                 <i v-if="icon" class="ti picker-filter-icon" :class="[icon, `${block}-icon`]" aria-hidden="true"></i>
                 <span
@@ -25,7 +25,7 @@
                         :aria-label="removeLabel(chip.label)"
                         :title="removeLabel(chip.label)"
                         @click.stop="remove(chip.id)"
-                    ><i class="ti ti-x" aria-hidden="true"></i></button>
+                    ><i class="ti ti-circle-x" aria-hidden="true"></i></button>
                 </span>
             </template>
             <span
@@ -48,7 +48,7 @@
                     :aria-label="removeLabel(chips[0].label)"
                     :title="removeLabel(chips[0].label)"
                     @click.stop="remove(chips[0].id)"
-                ><i class="ti ti-x" aria-hidden="true"></i></button>
+                ><i class="ti ti-circle-x" aria-hidden="true"></i></button>
             </span>
             <i v-if="!multiple && !(hasValue && !resolving) && icon" class="ti picker-filter-icon" :class="[icon, `${block}-icon`]" aria-hidden="true"></i>
             <input
@@ -59,6 +59,8 @@
                 class="picker-input"
                 role="combobox"
                 autocomplete="off"
+                spellcheck="false"
+                autocapitalize="off"
                 aria-autocomplete="list"
                 :aria-expanded="open ? 'true' : 'false'"
                 :aria-controls="listboxId"
@@ -112,6 +114,7 @@
 
 <script>
 import { i18n, log } from '@humhub/vue';
+import comboboxMixin from './picker/comboboxMixin.js';
 import { TEXT_DEBOUNCE_MS } from './FilterBar.vue';
 
 /**
@@ -194,6 +197,7 @@ const ID_PATTERN = /^[1-9]\d*$/;
  */
 export default {
     name: 'PickerFilterControl',
+    mixins: [comboboxMixin],
     props: {
         filter: { type: Object, required: true },
         modelValue: { type: [String, Number, Array], default: '' },
@@ -211,8 +215,6 @@ export default {
     data() {
         return {
             query: '',
-            open: false,
-            activeIndex: -1,
             results: [],
             searching: false,
             resolving: false,
@@ -260,6 +262,9 @@ export default {
         accessibleName() {
             return this.filter.label || this.filter.placeholder || null;
         },
+        comboboxOptions() {
+            return this.results;
+        },
         activeDescendant() {
             return this.open && this.activeIndex >= 0 && this.activeIndex < this.results.length ? this.optionId(this.activeIndex) : null;
         },
@@ -271,6 +276,9 @@ export default {
         },
     },
     watch: {
+        comboboxOptions() {
+            this.$nextTick(() => this.placeDrawer());
+        },
         valueKey() {
             this.show();
             if (this.pendingFocus) {
@@ -295,13 +303,9 @@ export default {
         // bind document listeners of an instance that is gone) nor emit.
         this.searchSeq++;
         this.resolveSeq++;
-        this.unbindOutside();
     },
     methods: {
         idOf,
-        optionId(index) {
-            return `${this.listboxId}-${index}`;
-        },
         chipTitle(chip) {
             return (chip.item && this.itemTitle && this.itemTitle(chip.item)) || null;
         },
@@ -432,6 +436,7 @@ export default {
             this.pendingFocus = true;
             this.emitIds(this.ids.filter((entry) => entry !== id));
         },
+        // Overrides the mixin's: an index below the first clamps to it instead of being ignored.
         moveTo(index) {
             if (!this.results.length) {
                 return;
@@ -452,6 +457,13 @@ export default {
                         }
                     } else {
                         this.moveTo(this.activeIndex + (event.key === 'ArrowDown' ? 1 : -1));
+                    }
+                    break;
+                case 'PageDown':
+                case 'PageUp':
+                    if (this.open && this.results.length) {
+                        event.preventDefault();
+                        this.movePage(event.key === 'PageDown' ? 1 : -1);
                     }
                     break;
                 case 'Home':
@@ -488,32 +500,6 @@ export default {
                     break;
                 default:
             }
-        },
-        scrollActiveIntoView() {
-            const node = this.activeIndex >= 0 ? this.$refs.listbox?.children[this.activeIndex] : null;
-            if (node && typeof node.scrollIntoView === 'function') {
-                node.scrollIntoView({ block: 'nearest' });
-            }
-        },
-        bindOutside() {
-            if (this.outsideHandler) {
-                return;
-            }
-            this.outsideHandler = (event) => {
-                if (this.$refs.root && !this.$refs.root.contains(event.target)) {
-                    this.close();
-                }
-            };
-            document.addEventListener('pointerdown', this.outsideHandler, true);
-            document.addEventListener('focusin', this.outsideHandler, true);
-        },
-        unbindOutside() {
-            if (!this.outsideHandler) {
-                return;
-            }
-            document.removeEventListener('pointerdown', this.outsideHandler, true);
-            document.removeEventListener('focusin', this.outsideHandler, true);
-            this.outsideHandler = null;
         },
     },
 };

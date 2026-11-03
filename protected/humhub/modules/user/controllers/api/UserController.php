@@ -154,7 +154,8 @@ class UserController extends BaseController
      * A picker suggests from a search, ids or a space: a non-empty `q`, `ids` or `spaceId` is
      * required (else `422` under `q`). At most {@see self::PICKER_PAGE_SIZE} users per page (the
      * default; a larger `pageSize` is capped) and as many `ids` (else `422`). Answered with the
-     * short shape ({@see UserSerializer::short()}), what a picker renders.
+     * short shape ({@see UserSerializer::short()}) plus `displayNameSub` (string|null, the
+     * second line of a picker suggestion), what a picker renders.
      */
     public function actionPicker()
     {
@@ -179,7 +180,10 @@ class UserController extends BaseController
 
         $pagination = $this->handlePagination($users, self::PICKER_PAGE_SIZE, self::PICKER_PAGE_SIZE);
 
-        return $this->returnPagination($pagination, array_map(UserSerializer::short(...), $users->all()));
+        return $this->returnPagination($pagination, array_map(
+            static fn(User $user) => UserSerializer::short($user) + ['displayNameSub' => $user->getDisplayNameSub() ?: null],
+            $users->all(),
+        ));
     }
 
     /**

@@ -64,5 +64,43 @@ class TopicPickerTest extends HumHubDbTestCase
         $this->assertFalse(TopicPicker::showTopicPicker($space));
     }
 
+    public function testTopicPickerUsesTheTopicSourceWithinItsContainer()
+    {
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 1]);
 
+        $html = TopicPicker::widget(['name' => 'topics', 'contentContainer' => $space]);
+
+        $this->assertStringContainsString('data-picker-source="topic"', $html);
+        // data-picker-config is single-quoted Json::htmlEncode() output
+        $this->assertStringContainsString('"containerId":' . $space->contentcontainer_id, $html);
+        $this->assertStringContainsString('data-picker-max-input="20"', $html);
+        // Admin may create topics
+        $this->assertStringContainsString('data-picker-allow-new="true"', $html);
+        $this->assertStringContainsString('data-picker-new-prefix="_add:"', $html);
+    }
+
+    public function testTopicPickerWithOwnUrlStaysLegacy()
+    {
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 1]);
+        $html = TopicPicker::widget(['name' => 'topics', 'contentContainer' => $space, 'url' => '/custom/topics']);
+
+        $this->assertStringContainsString('data-picker-url="/custom/topics"', $html);
+        $this->assertStringNotContainsString('data-picker-source', $html);
+    }
+
+    public function testTopicImageIsItsColourElseTheModuleIcon()
+    {
+        $this->becomeUser('Admin');
+        $space = Space::findOne(['id' => 1]);
+        $coloured = new Topic($space);
+        $coloured->name = 'Coloured';
+        $coloured->color = '#ff0000';
+        $this->assertTrue($coloured->save());
+
+        $html = TopicPicker::widget(['name' => 'topics', 'contentContainer' => $space, 'selection' => [$coloured]]);
+
+        $this->assertMatchesRegularExpression('/<option value="' . $coloured->id . '" selected[^>]*data-image="#ff0000"/', $html);
+    }
 }

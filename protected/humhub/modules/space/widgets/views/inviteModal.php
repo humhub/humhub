@@ -155,14 +155,13 @@ $form = Modal::beginFormDialog([
 
 <script <?= Html::nonce() ?>>
     $('#inviteform-allregisteredusers').on('change', function () {
-        var userPicker = humhub.modules.action.Component.instance('#space-invite-user-picker');
+        var $userPicker = $('#space-invite-user-picker');
 
         if ($(this).is(':checked')) {
-            userPicker.clear();
-            userPicker.disable();
-        } else {
-            userPicker.disable(false);
+            humhub.modules.ui.picker.setItems($userPicker, []);
         }
+        // The picker follows the select's `disabled`.
+        $userPicker.prop('disabled', $(this).is(':checked'));
     });
 
     $('.tab-user-picker a').on('shown.bs.tab', function (e) {
