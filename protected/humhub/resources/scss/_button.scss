@@ -6,8 +6,9 @@
 // Sizings, paddings, radius etc. are customized through Sass variables, see variables.scss.
 // Only selector-scoped customizations are declared here as `--bs-*` overrides.
 
-// The icon of an icon-only button of the regular size
-$btn-icon-only-icon-size: $font-size-lg !default;
+// The icon of a button of the regular size, with a label or without
+$btn-icon-size: $font-size-lg !default;
+$btn-icon-only-icon-size: $btn-icon-size !default;
 
 @if not $prev-button {
     .btn {
@@ -83,6 +84,12 @@ $btn-icon-only-icon-size: $font-size-lg !default;
 
     .btn-icon-only:not(.btn-sm):not(.dropdown-toggle) > .ti {
         font-size: $btn-icon-only-icon-size;
+    }
+
+    // The icon beside a label, a bit larger than the text; `:where()` keeps an explicit size
+    // (`.icon-lg`, … in `_icon.scss`) above it
+    :where(.btn:not(.btn-sm)) .ti {
+        font-size: $btn-icon-size;
     }
 
     // Bootstrap's toggle buttons (`.btn-check` + `label.btn`): the input stays hidden. The

@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8683: Larger icons beside a button label, legacy list group look only in panels; card dropdowns stay above the next grid row
 - Enh #8682: The account menu is filled with the primary colour
 - Enh #8681: Icons on the Comment, Reply and Like links, spaced without separators
 - Enh #8680: Form fields and buttons 38px high, fields with a 1px border, an accent edge on hover and a focus ring; 20px checkboxes and radios
