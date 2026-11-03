@@ -2,6 +2,9 @@
 // Forms
 // --------------------------------------------------
 
+$form-choice-size: 20px !default;
+$form-choice-border-radius: 4px !default;
+
 @if not $prev-form {
     // Fix input lists (radio, checkboxes, dropdown) for Bootstrap 5
     // See https://github.com/yiisoft/yii2-bootstrap5/issues/99
@@ -46,17 +49,13 @@
         }
     }
 
+    // Border, padding and focus come from Bootstrap's `$input-*` variables (variables.scss)
     %form-control-base {
-        border: 2px solid var(--hh-background-color-page);
-        box-shadow: none;
-        min-height: 35px;
         background-color: var(--hh-background-color-main);
         font-size: 14px;
 
         &:focus {
-            border: 2px solid var(--bs-accent);
             outline: 0;
-            box-shadow: none;
             background-color: var(--hh-background-color-main);
         }
 
@@ -73,6 +72,11 @@
 
     .form-control {
         @extend %form-control-base;
+    }
+
+    // An editable field under the pointer: its border in the accent; focus adds the ring
+    :is(.form-control, .form-select):hover:not(:disabled, [readonly], .is-invalid, .is-valid) {
+        border-color: $input-hover-border-color;
     }
 
     .form-group-search {
@@ -187,19 +191,21 @@
         margin-left: 0;
     }
 
+    // Checkbox and radio: a 20px square / circle (docs/ui/choice-controls.md)
     input[type=checkbox], input[type=radio] {
         -webkit-appearance: none;
         position: relative;
         display: inline-block;
-        width: auto;
-        height: auto;
+        box-sizing: border-box;
+        width: $form-choice-size;
+        height: $form-choice-size;
         min-height: auto;
-        padding: 7px;
+        padding: 0;
         margin: 0 6px 0 0;
         vertical-align: middle;
         background: var(--hh-background-color-main);
         border: 2px solid var(--hh-background3);
-        border-radius: 3px;
+        border-radius: $form-choice-border-radius;
         cursor: pointer;
 
         &:disabled {
@@ -223,10 +229,13 @@
             &::after {
                 content: '\ea5e'; /* Tabler check */
                 font-family: 'tabler-icons';
-                font-size: 12px;
+                font-size: 14px;
+                line-height: 1;
                 position: absolute;
-                top: -1px;
-                left: 1px;
+                inset: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 color: var(--hh-accent-contrast);
             }
         }
@@ -241,15 +250,13 @@
 
             &::after {
                 content: ' ';
-                width: 8px;
-                height: 8px;
+                width: 10px;
+                height: 10px;
                 border-radius: 50%;
                 position: absolute;
-                top: 3px;
+                top: calc(50% - 5px);
+                left: calc(50% - 5px);
                 background: var(--bs-accent);
-                text-shadow: none;
-                left: 3px;
-                font-size: 32px;
             }
         }
     }

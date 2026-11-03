@@ -123,12 +123,14 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 
 | Design | Bootstrap variable |
 |---|---|
-| Height 38px | `$input-padding-y`, `$input-line-height` |
-| Radius 6px | `$input-border-radius` |
+| Height 38px | `$input-padding-y` (7.5px), `$input-line-height` — done since 1.20 |
+| 1px edge in the page background colour | `$input-border-width`, `$input-border-color` — done since 1.20 |
+| Radius 6px | `$input-border-radius` (still Bootstrap's `$border-radius`) |
 | White when filled | `$input-bg` |
 | Grey when empty | `$input-empty-bg` (new), applied with `:placeholder-shown` |
-| Accent edge on hover and focus | `$input-hover-border-color` (new), `$input-focus-border-color` |
-| Soft glow on focus | `$input-focus-box-shadow` |
+| Accent edge on hover and focus | `$input-hover-border-color` (HumHub), `$input-focus-border-color` — done since 1.20 |
+| Glow on focus: a 2px accent ring (50 %) | `$input-focus-box-shadow` (no inner shadow: `$input-box-shadow`) — done since 1.20 |
+| A button beside a field as high as it (38px) | `$btn-padding-y` (7.5px) — done since 1.20 |
 | Red edge and icon | `$form-feedback-invalid-color`, `$form-feedback-icon-invalid` |
 
 - **File:** `_form.scss`, behind `$prev-form`. The field styles of the filter bar

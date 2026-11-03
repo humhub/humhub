@@ -2356,6 +2356,16 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - User gates whose `getAllowedRoutes()` allow `user/account/delete` (or another moved route) must
     allow the new `user/security/*` routes, since the old routes only redirect.
 
+- **Form fields are 38px high with a 1px border.** `%form-control-base` (`_form.scss`) no longer
+  sets a 2px border, `min-height: 35px` or the focus border; they come from Bootstrap's `$input-*`
+  variables (`$input-padding-y` 7.5px, `$input-border-color`, `$input-focus-border-color`,
+  `$input-focus-box-shadow` — an accent ring; on hover the edge takes HumHub's
+  `$input-hover-border-color`; `$input-box-shadow` is a transparent no-op). Themes
+  that styled fields against the 2px border adjust these variables instead; code that fixed a
+  field's height (36px) uses Bootstrap's `$input-height`. Buttons match the field height
+  (`$btn-padding-y` 7.5px → 38px); checkboxes and radios are 20px (`$form-choice-size`,
+  `$form-choice-border-radius` in `_form.scss`; before: 18px via `padding: 7px`).
+
 - **Select2 is replaced by an own Vue picker (`PickerInput`).** The `<select>` stays the value
   carrier; see `docs/develop/ui-js-vuejs-picker.md`. Removed:
   - The Select2 JS API (`$.fn.select2`, `.select2(…)`), its events (`select2:select`,

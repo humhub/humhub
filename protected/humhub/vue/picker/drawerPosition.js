@@ -18,7 +18,11 @@ export const DRAWER_GAP = 2;
  * Returns `{ dropUp }`.
  */
 export const positionDrawer = (field, drawer, maxHeight) => {
+    // Out of the page flow first: in it, the open list can lengthen the page, and the scrollbar that
+    // brings shifts the field until the list is fixed
+    drawer.style.position = 'fixed';
     const box = field.getBoundingClientRect();
+    drawer.style.width = `${box.width}px`;
     const viewport = window.visualViewport;
     const viewTop = viewport ? viewport.offsetTop : 0;
     const viewBottom = viewTop + (viewport ? viewport.height : window.innerHeight);

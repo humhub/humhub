@@ -8,16 +8,20 @@
 // docs/develop/ui-js-vuejs-picker.md.
 // @since 1.20
 
-// One field high: a `.form-control` (2px border, see `_form.scss`)
-$select-menu-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, 4px, false)) !default;
+// One field high: a `.form-control` (`$input-*` in variables.scss: two 1px borders)
+$select-menu-field-borders: 2px !default;
+$select-menu-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, $select-menu-field-borders, false)) !default;
 $select-menu-icon-size: $font-size-lg !default;
 $select-menu-icon-color: var(--hh-text-color-secondary) !default;
 $select-menu-icon-space: $input-padding-x + $select-menu-icon-size + $spacer * .5 !default;
 $select-menu-max-height: 384px !default;
+// A select list row as high as a field (≈38px: 21px line + 2 × 8.5px); context menus keep
+// Bootstrap's `$dropdown-item-padding-y`
+$select-menu-option-padding-y: 8.5px !default;
 
-$picker-chip-height: 1.875rem !default;
+$picker-chip-height: 30px !default; // a 38px field: 3px above and below
 // The `:size` PickerInput gives a chip picture
-$picker-chip-image-size: 18px !default;
+$picker-chip-image-size: 22px !default;
 $picker-chip-bg: var(--bs-accent) !default;
 $picker-chip-color: var(--hh-accent-contrast) !default;
 $picker-chip-font-size: inherit !default;
@@ -163,6 +167,8 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     .select-menu-option {
         display: flex;
         align-items: center;
+        padding-top: $select-menu-option-padding-y;
+        padding-bottom: $select-menu-option-padding-y;
         gap: $spacer * .5;
         white-space: normal;
         overflow-wrap: anywhere;
@@ -195,21 +201,24 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         align-items: center;
         gap: $spacer * .25;
         min-height: $select-menu-field-height;
-        padding-top: calc((#{$select-menu-field-height} - 4px - #{$picker-chip-height}) * .5);
-        padding-bottom: calc((#{$select-menu-field-height} - 4px - #{$picker-chip-height}) * .5);
+        padding-top: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5);
+        padding-bottom: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5);
         padding-right: $select-menu-icon-space;
         cursor: text;
 
         &:focus-within {
-            border-color: var(--bs-accent);
+            border-color: $input-focus-border-color;
+            box-shadow: $input-focus-box-shadow;
         }
     }
 
     .picker.is-open .picker-field {
-        border-color: var(--bs-accent);
+        border-color: $input-focus-border-color;
+        box-shadow: $input-focus-box-shadow;
     }
 
     .picker.is-disabled .picker-field {
+        border-color: $input-border-color; // no hover border (`_form.scss`)
         background-color: $input-disabled-bg;
         cursor: default;
     }
@@ -255,6 +264,12 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         background: $picker-chip-bg;
         color: $picker-chip-color;
         font-size: $picker-chip-font-size;
+    }
+
+    // The input text keeps the field's left padding from the last chip (at a line end, if the input
+    // wraps, the margin does not show)
+    .picker-chip:has(+ .picker-input) {
+        margin-right: calc(#{$input-padding-x} - #{$spacer * .25});
     }
 
     .picker-chip-label {

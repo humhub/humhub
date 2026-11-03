@@ -748,7 +748,9 @@
   const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$v]]);
   const DRAWER_GAP = 2;
   const positionDrawer = (field, drawer, maxHeight) => {
+    drawer.style.position = "fixed";
     const box = field.getBoundingClientRect();
+    drawer.style.width = `${box.width}px`;
     const viewport = window.visualViewport;
     const viewTop = viewport ? viewport.offsetTop : 0;
     const viewBottom = viewTop + (viewport ? viewport.height : window.innerHeight);
@@ -6980,7 +6982,7 @@
                     key: 0,
                     class: "picker-chip-image",
                     image: item.image,
-                    size: 18
+                    size: 22
                   }, null, 8, ["image"])) : vue.createCommentVNode("v-if", true),
                   vue.createElementVNode(
                     "span",
