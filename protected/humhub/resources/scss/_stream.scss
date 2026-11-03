@@ -324,16 +324,16 @@
         flex-wrap: wrap;
         align-items: center;
         column-gap: 10px;
-        margin-top: 10px;
+        margin-top: 14px;
 
         a {
-            font-size: 1rem;
+            font-size: 12px; // below the 13px of the content text
             color: var(--hh-text-color-soft);
             transition: color 0.3s;
 
             // `.link` too, so the generic icon gap of `a.link` does not win over this one
             > i.ti, &.link > i.ti {
-                font-size: 1.25rem;
+                font-size: 1.33333em;
                 margin-right: 0.25rem;
             }
         }
