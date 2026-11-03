@@ -177,7 +177,7 @@ Emits `update:modelValue`. In native mode the `<select>` is the model (see [Nati
 - **Disabled items** are listed dimmed, not selectable, with `aria-disabled`.
 - **`allowNew`**: while the typed text (at least `minInput` characters) matches no item's `text`, the list ends with `messages.add` ("Add: '…'"); the first match is active right after typing, the new item when nothing matches. The new item's value is `newPrefix` followed by the text. `BasePicker` renders `data-picker-new-prefix="_add:"` — the server contract it documents and `Topic::attach()` reads; `Html::dropDownList` sets none, so an enhanced select posts the plain text, also when `multiple`.
 - **Feedback rows** (`.select-menu-feedback`): `inputTooShort`, `loading` (with spinner), `noResults`, `error`, `maximumSelected`; a visually hidden `role="status"` region announces them.
-- **Keyboard and ARIA**: the combobox pattern of `FilterPicker` — input `role="combobox"` with `aria-expanded`, `aria-controls`, `aria-activedescendant`; list `role="listbox"`, options `role="option"` with `aria-selected`/`aria-disabled`; ArrowDown/ArrowUp open and move, Home/End, Enter chooses (on a closed list it opens it — Enter never submits the form, as on a `<select>`; on the new item while the answer to the typed text is still out, it chooses once the answer is in: an item of that name, else the new one), Escape closes (pressed again, drops the typed text), Tab closes and moves on; a click outside closes.
+- **Keyboard and ARIA**: the combobox pattern of `FilterPicker` — input `role="combobox"` with `aria-expanded`, `aria-controls`, `aria-activedescendant`; list `role="listbox"`, options `role="option"` with `aria-selected`/`aria-disabled`; ArrowDown/ArrowUp open and move, Home/End, PageUp/PageDown move a page, Enter chooses (on a closed list it opens it — Enter never submits the form, as on a `<select>`; on the new item while the answer to the typed text is still out, it chooses once the answer is in: an item of that name, else the new one), Escape closes (pressed again, drops the typed text), Tab closes and moves on; a click outside closes.
 - **The list** (`.dropdown-menu.select-menu-drawer`) stays in the picker's DOM and is positioned `fixed` under the field, at the field's width, so an `overflow` of a dialog or a card never clips it; it opens above (`is-drop-up`) when there is less room below than its height and more above, its height limited to the visible area (`visualViewport`, so the on-screen keyboard counts). It follows the field on scroll and resize while open.
 
 ### Vue usage
@@ -195,7 +195,7 @@ Emits `update:modelValue`. In native mode the `<select>` is the model (see [Nati
 
 `humhub.ui.picker.js` is rewritten as the UI addition `picker` on `select[data-ui-picker], select[data-ui-select2]`:
 
-1. Skips a `<select>` it already bound (marker `data-picker-bound`); gives it an id when it has none.
+1. Skips a `<select>` it already bound (marker `data-picker-bound`); gives it an id when it has none. A copy of a bound `<select>` (a cloned form row, then `additions.applyTo()`) is bound again: the copied host and the island's marks on the copy go.
 2. Inserts `<div data-vue-component="PickerInput" data-props='{"selectId":"…"}'>` right after the `<select>` (before any `.invalid-feedback`, so Bootstrap's `.is-invalid ~ .invalid-feedback` still applies) and mounts it through `humhub.vue.mountElement()`.
 3. Only once the island is mounted, hides the `<select>` visually (`.visually-hidden`, `tabindex="-1"`, `aria-hidden`; its `autofocus` moves to the picker's input). It is not `hidden`, so scripts and WebDriver's `selectOption()` still reach it, as with Select2. A failed mount leaves the native `<select>` visible and working.
 
@@ -243,7 +243,7 @@ Kept: every property, `getItemText()`, `getItemImage()`, `getItemKey()`, `loadIt
 | `GroupPicker` | static (`$items`) | `icon` `users-group` | — | `maxSelection` 1 for `parent` |
 | `ContentTypePicker` | static | `icon`: the type's icon (resolved as today) | — | — |
 | `MultiSelect` | static | from `getItemImage()` | — | — |
-| `IconPicker` | named source `icon` (`lib` param, default Tabler `ti`): names from the `ui.picker` JS config (`iconNames.<lib>`, comma-separated), once per page; the `<select>` holds the current value only (kept when it is no name of the library) | `icon` | — | single, `maxResults` 50, `minInput` 0 |
+| `IconPicker` | named source `icon` (`lib` param, default Tabler `ti`): names from the `ui.picker` JS config (`iconNames.<lib>`, comma-separated), once per page; the `<select>` holds the current value only (kept when it is no name of the library) | `icon` | — | single, `maxResults` all icons of the library (rendered in steps), `minInput` 0 |
 
 `IconPicker` drops `kartik\select2\Select2` and extends `BasePicker` (single, on the named source `icon`).
 

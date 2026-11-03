@@ -45,6 +45,33 @@ describe('ui.picker bridge', () => {
         expect(vueModule.mountElement).toHaveBeenCalledTimes(1);
     });
 
+    it('binds a copy of a bound select again (a cloned form row), dropping the copied host', () => {
+        const select = render('<div class="row"><select id="r1" data-ui-picker></select></div>');
+        picker.bind(select);
+        // What the island does on mount.
+        select.classList.add('visually-hidden');
+        select.setAttribute('tabindex', '-1');
+        select.setAttribute('aria-hidden', 'true');
+
+        const row = select.parentElement;
+        const copy = row.cloneNode(true);
+        row.after(copy);
+        const clone = copy.querySelector('select');
+        clone.id = 'r2';
+        picker.bind(clone);
+
+        expect(copy.querySelectorAll('.picker-host')).toHaveLength(1);
+        expect(JSON.parse(clone.nextElementSibling.getAttribute('data-props'))).toEqual({ selectId: 'r2' });
+        expect(clone.classList.contains('visually-hidden')).toBe(false);
+        expect(clone.hasAttribute('tabindex')).toBe(false);
+        expect(clone.hasAttribute('aria-hidden')).toBe(false);
+        expect(vueModule.mountElement).toHaveBeenCalledTimes(2);
+
+        // The original stays bound once.
+        picker.bind(select);
+        expect(vueModule.mountElement).toHaveBeenCalledTimes(2);
+    });
+
     it('binds the matches of the picker UI addition', () => {
         const { selector, handler } = globalThis.humhubStubs.additions._registered.get('picker');
         render('<select id="d1" data-ui-picker></select><select id="d2" data-ui-select2></select><select id="d3"></select>');

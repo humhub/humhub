@@ -16,10 +16,29 @@ humhub.module('ui.picker', function (module, require, $) {
 
     var SELECTOR = 'select[data-ui-picker], select[data-ui-select2]';
     var uid = 0;
+    // The hosts bind() created: a host not in here is a copy (see unbindCopy()).
+    var hosts = typeof WeakSet === 'function' ? new WeakSet() : null;
+
+    // A copy of a bound select (a cloned form row) carries the island's marks and a dead copy of
+    // its host: both go, so the copy is bound like a new select.
+    var unbindCopy = function (select) {
+        var host = select.nextElementSibling;
+        if (host && host.classList.contains('picker-host')) {
+            host.remove();
+        }
+        select.removeAttribute('data-picker-bound');
+        select.classList.remove('visually-hidden');
+        select.removeAttribute('tabindex');
+        select.removeAttribute('aria-hidden');
+    };
 
     var bind = function (select) {
         if (select.hasAttribute('data-picker-bound')) {
-            return;
+            var bound = select.nextElementSibling;
+            if (!hosts || (bound && hosts.has(bound))) {
+                return;
+            }
+            unbindCopy(select);
         }
 
         var vue = humhub.modules.vue;
@@ -38,6 +57,9 @@ humhub.module('ui.picker', function (module, require, $) {
         host.setAttribute('data-vue-component', 'PickerInput');
         host.setAttribute('data-props', JSON.stringify({selectId: select.id}));
         select.parentNode.insertBefore(host, select.nextSibling);
+        if (hosts) {
+            hosts.add(host);
+        }
 
         vue.mountElement(host);
     };
