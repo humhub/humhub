@@ -8,6 +8,7 @@
 import {Plugin} from "prosemirror-state"
 import {Decoration, DecorationSet} from "prosemirror-view"
 import {getLoaderWidget} from "../../humhub-bridge";
+import {isAltTextPending} from "../image/alt-text";
 
 
 const loaderPlugin = (context) => {
@@ -86,8 +87,11 @@ function removeLoader(context, id, dispatch) {
     let pos = findLoader(context, id);
 
     // Focus the editor in order to synchronized changes into hidden textarea
-    // for case when before file uploading the editor was not focused
-    view.focus();
+    // for case when before file uploading the editor was not focused.
+    // The alt text dialog opened for the upload keeps the focus and hands it back when it closes.
+    if (!isAltTextPending(context)) {
+        view.focus();
+    }
 
     // If the content around the placeholder has been deleted, drop the image
     if (pos === null) {

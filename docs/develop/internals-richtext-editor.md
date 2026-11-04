@@ -180,3 +180,9 @@ The upload menu offers the file handlers (`fileHandlers`, by default the links n
 legacy upload button). With the `upload` option the platform's "upload this type" entries
 (`file.uploadByType`) go through it with that type; any other entry runs its own action, and
 the file it announces on `humhub:file:created` is inserted into the editor whose menu ran it.
+
+After an image is uploaded and inserted - by any of these ways - the editor asks for its
+alternative text (for screen readers) in the platform's dialog, one per image: the core Vue
+component `ImageAltTextModal`, mounted through `humhub.vue.mountElement()`. Skipping keeps the
+file name; an empty text marks the image as decorative. Without the Vue runtime (outside
+HumHub) the editor does not ask. `image: { altTextPrompt: false }` turns it off.

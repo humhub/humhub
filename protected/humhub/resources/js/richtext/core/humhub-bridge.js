@@ -102,6 +102,33 @@ export function getOembed(url) {
     return humhub.require('oembed').get(url);
 }
 
+/**
+ * Mounts a registered Vue component of the platform on a new element at the end of the page and
+ * returns that element, or null without the Vue runtime or the component. Removing the element
+ * unmounts it. `onFail` runs when the mount fails.
+ */
+export function mountVueComponent(name, props, onFail) {
+    const vue = window.humhub && humhub.modules && humhub.modules.vue;
+
+    if (!vue || typeof vue.isRegistered !== 'function' || !vue.isRegistered(name)) {
+        return null;
+    }
+
+    const host = document.createElement('div');
+    host.setAttribute('data-vue-component', name);
+    host.setAttribute('data-props', JSON.stringify(props || {}));
+    document.body.appendChild(host);
+
+    Promise.resolve(vue.mountElement(host)).then((app) => {
+        if (!app) {
+            host.remove();
+            onFail && onFail();
+        }
+    });
+
+    return host;
+}
+
 // TODO: Implement upload provider interface
 export function getWidgetInstance(selector) {
     if (!window.humhub) {
