@@ -705,4 +705,12 @@
         }
     }
 
+    // ImageAltTextModal.vue: the image whose alt text is asked for
+    .image-alt-text-preview {
+        display: block;
+        max-width: 100%;
+        max-height: 200px;
+        margin: 0 auto 1rem;
+        border-radius: var(--bs-border-radius);
+    }
 }

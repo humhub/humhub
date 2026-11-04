@@ -6,6 +6,7 @@
  */
 
 import {loaderStart, replaceLoader, removeLoader} from "../loader/plugin";
+import {requestAltText} from "../image/alt-text";
 
 const isVideoFile = (file) => {
     return !!((file.mimeIcon && file.mimeIcon.indexOf('mime-video') === 0) ||
@@ -71,8 +72,7 @@ const triggerUpload = function(state, view, context, files) {
             // Replace the selection with a placeholder
             loaderStart(context, id, true);
         }).off('uploadEnd.richtext').on('uploadEnd.richtext', (evt, response) => {
-            replaceLoader(context, id, createNodesFromResponse(context, response), true);
-            console.log('UPLOADER uploadEnd.richtext')
+            insertUploaded(context, id, createNodesFromResponse(context, response));
         }).off('uploadFinish.richtext').on('uploadFinish.richtext', () => {
             // Make sure our loader is removed after upload
             removeLoader(context, id, true);
@@ -105,13 +105,22 @@ const uploadThroughOption = function(context, id, files, accept = null) {
         const nodes = (uploaded || []).map((file) => createNodeFromFile(context, file)).filter(Boolean);
 
         if (nodes.length) {
-            replaceLoader(context, id, nodes, true);
+            insertUploaded(context, id, nodes);
         } else {
             removeLoader(context, id, true);
         }
     }).catch(() => {
         removeLoader(context, id, true);
     });
+};
+
+/**
+ * Inserts the uploaded files' nodes at the placeholder, then asks for the alt text of the images
+ */
+const insertUploaded = function(context, id, nodes) {
+    if (replaceLoader(context, id, nodes, true)) {
+        requestAltText(context, nodes);
+    }
 };
 
 const createNodesFromResponse = function(context, response) {
@@ -132,6 +141,7 @@ const createNodesFromResponse = function(context, response) {
 export {
     triggerUpload,
     uploadThroughOption,
+    insertUploaded,
     createNodesFromResponse,
     createNodeFromFile,
 }

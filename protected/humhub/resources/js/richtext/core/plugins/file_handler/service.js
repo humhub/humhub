@@ -7,8 +7,9 @@
 
 import {isHumhub} from "../../humhub-bridge"
 import {canInsertLink, MenuItem} from "../../menu"
-import {loaderStart, replaceLoader, removeLoader} from "../loader/plugin"
-import {createNodeFromFile, createNodesFromResponse, uploadThroughOption} from "../upload/service"
+import {loaderStart, removeLoader} from "../loader/plugin"
+import {createNodeFromFile, createNodesFromResponse, insertUploaded, uploadThroughOption} from "../upload/service"
+import {requestAltText} from "../image/alt-text"
 
 // The platform's own handlers ("Attach an image", ...): open the picker for one type
 const UPLOAD_BY_TYPE_ACTION = 'file.uploadByType';
@@ -65,6 +66,7 @@ const initFileHandler = function(context) {
             const node = createFileHandlerNode(context, file)
             if (node) {
                 view.dispatch(view.state.tr.replaceSelectionWith(node, false));
+                requestAltText(context, [node])
             }
             // Taken: a file a handler outside the editor creates later is not the editor's
             activeContext = null
@@ -80,7 +82,7 @@ const initFileHandler = function(context) {
             }
         }).off('uploadEnd.richtext').on('uploadEnd.richtext', (evt, response) => {
             if (isActiveFileHandler(context)) {
-                replaceLoader(context, id, createNodesFromResponse(context, response), true)
+                insertUploaded(context, id, createNodesFromResponse(context, response))
             }
         }).off('uploadFinish.richtext').on('uploadFinish.richtext', () => {
             if (isActiveFileHandler(context)) {

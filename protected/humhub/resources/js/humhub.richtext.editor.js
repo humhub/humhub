@@ -1014,9 +1014,9 @@
       let after = this.parent.maybeChild(this.index());
       if (!after || !after.isInline)
         return null;
-      let marks = after.marks, next = $end.parent.maybeChild($end.index());
+      let marks = after.marks, next2 = $end.parent.maybeChild($end.index());
       for (var i2 = 0; i2 < marks.length; i2++)
-        if (marks[i2].type.spec.inclusive === false && (!next || !marks[i2].isInSet(next.marks)))
+        if (marks[i2].type.spec.inclusive === false && (!next2 || !marks[i2].isInSet(next2.marks)))
           marks = marks[i2--].removeFromSet(marks);
       return marks;
     }
@@ -1713,10 +1713,10 @@
         if (finished && (!toEnd || finished.validEnd))
           return Fragment.from(types2.map((tp) => tp.createAndFill()));
         for (let i2 = 0; i2 < match.next.length; i2++) {
-          let { type, next } = match.next[i2];
-          if (!(type.isText || type.hasRequiredAttrs()) && seen.indexOf(next) == -1) {
-            seen.push(next);
-            let found2 = search(next, types2.concat(type));
+          let { type, next: next2 } = match.next[i2];
+          if (!(type.isText || type.hasRequiredAttrs()) && seen.indexOf(next2) == -1) {
+            seen.push(next2);
+            let found2 = search(next2, types2.concat(type));
             if (found2)
               return found2;
           }
@@ -1753,8 +1753,8 @@
           return result.reverse();
         }
         for (let i2 = 0; i2 < match.next.length; i2++) {
-          let { type, next } = match.next[i2];
-          if (!type.isLeaf && !type.hasRequiredAttrs() && !(type.name in seen) && (!current.type || next.validEnd)) {
+          let { type, next: next2 } = match.next[i2];
+          if (!type.isLeaf && !type.hasRequiredAttrs() && !(type.name in seen) && (!current.type || next2.validEnd)) {
             active.push({ match: type.contentMatch, type, via: current });
             seen[type.name] = true;
           }
@@ -1924,10 +1924,10 @@
         return expr2.exprs.reduce((out, expr3) => out.concat(compile2(expr3, from)), []);
       } else if (expr2.type == "seq") {
         for (let i2 = 0; ; i2++) {
-          let next = compile2(expr2.exprs[i2], from);
+          let next2 = compile2(expr2.exprs[i2], from);
           if (i2 == expr2.exprs.length - 1)
-            return next;
-          connect(next, from = node());
+            return next2;
+          connect(next2, from = node());
         }
       } else if (expr2.type == "star") {
         let loop2 = node();
@@ -1944,18 +1944,18 @@
       } else if (expr2.type == "range") {
         let cur = from;
         for (let i2 = 0; i2 < expr2.min; i2++) {
-          let next = node();
-          connect(compile2(expr2.expr, cur), next);
-          cur = next;
+          let next2 = node();
+          connect(compile2(expr2.expr, cur), next2);
+          cur = next2;
         }
         if (expr2.max == -1) {
           connect(compile2(expr2.expr, cur), cur);
         } else {
           for (let i2 = expr2.min; i2 < expr2.max; i2++) {
-            let next = node();
-            edge(cur, next);
-            connect(compile2(expr2.expr, cur), next);
-            cur = next;
+            let next2 = node();
+            edge(cur, next2);
+            connect(compile2(expr2.expr, cur), next2);
+            cur = next2;
           }
         }
         return [edge(cur)];
@@ -2018,12 +2018,12 @@
     for (let i2 = 0, work = [match]; i2 < work.length; i2++) {
       let state2 = work[i2], dead = !state2.validEnd, nodes2 = [];
       for (let j = 0; j < state2.next.length; j++) {
-        let { type, next } = state2.next[j];
+        let { type, next: next2 } = state2.next[j];
         nodes2.push(type.name);
         if (dead && !(type.isText || type.hasRequiredAttrs()))
           dead = false;
-        if (work.indexOf(next) == -1)
-          work.push(next);
+        if (work.indexOf(next2) == -1)
+          work.push(next2);
       }
       if (dead)
         stream.err("Only non-generatable nodes (" + nodes2.join(", ") + ") in a required position (see https://prosemirror.net/docs/guide/#generatable)");
@@ -2541,7 +2541,7 @@
       function insert2(rule) {
         let priority = rule.priority == null ? 50 : rule.priority, i2 = 0;
         for (; i2 < result.length; i2++) {
-          let next = result[i2], nextPriority = next.priority == null ? 50 : next.priority;
+          let next2 = result[i2], nextPriority = next2.priority == null ? 50 : next2.priority;
           if (nextPriority < priority)
             break;
         }
@@ -3045,8 +3045,8 @@
                 return true;
             return false;
           } else {
-            let next = depth > 0 || depth == 0 && useRoot ? this.nodes[depth].type : option && depth >= minDepth ? option.node(depth - minDepth).type : null;
-            if (!next || next.name != part && !next.isInGroup(part))
+            let next2 = depth > 0 || depth == 0 && useRoot ? this.nodes[depth].type : option && depth >= minDepth ? option.node(depth - minDepth).type : null;
+            if (!next2 || next2.name != part && !next2.isInGroup(part))
               return false;
             depth--;
           }
@@ -3101,10 +3101,10 @@
       let seen = [], scan = (match) => {
         seen.push(match);
         for (let i2 = 0; i2 < match.edgeCount; i2++) {
-          let { type, next } = match.edge(i2);
+          let { type, next: next2 } = match.edge(i2);
           if (type == nodeType)
             return true;
-          if (seen.indexOf(next) < 0 && scan(next))
+          if (seen.indexOf(next2) < 0 && scan(next2))
             return true;
         }
       };
@@ -3140,12 +3140,12 @@
         if (active.length || node.marks.length) {
           let keep = 0, rendered = 0;
           while (keep < active.length && rendered < node.marks.length) {
-            let next = node.marks[rendered];
-            if (!this.marks[next.type.name]) {
+            let next2 = node.marks[rendered];
+            if (!this.marks[next2.type.name]) {
               rendered++;
               continue;
             }
-            if (!next.eq(active[keep][0]) || next.type.spec.spanning === false)
+            if (!next2.eq(active[keep][0]) || next2.type.spec.spanning === false)
               break;
             keep++;
             rendered++;
@@ -4039,11 +4039,11 @@
       dist2--;
     }
     if (dist2 > 0) {
-      let next = $from.node(depth).maybeChild($from.indexAfter(depth));
+      let next2 = $from.node(depth).maybeChild($from.indexAfter(depth));
       while (dist2 > 0) {
-        if (!next || next.isLeaf)
+        if (!next2 || next2.isLeaf)
           return true;
-        next = next.firstChild;
+        next2 = next2.firstChild;
         dist2--;
       }
     }
@@ -4534,13 +4534,13 @@
       }
       let openEndCount = fragment.size + sliceDepth - (slice.content.size - slice.openEnd);
       while (taken < fragment.childCount) {
-        let next = fragment.child(taken), matches2 = match.matchType(next.type);
+        let next2 = fragment.child(taken), matches2 = match.matchType(next2.type);
         if (!matches2)
           break;
         taken++;
-        if (taken > 1 || openStart == 0 || next.content.size) {
+        if (taken > 1 || openStart == 0 || next2.content.size) {
           match = matches2;
-          add2.push(closeNodeStart(next.mark(type.allowedMarks(next.marks)), taken == 1 ? openStart : 0, taken == fragment.childCount ? openEndCount : -1));
+          add2.push(closeNodeStart(next2.mark(type.allowedMarks(next2.marks)), taken == 1 ? openStart : 0, taken == fragment.childCount ? openEndCount : -1));
         }
       }
       let toEnd = taken == fragment.childCount;
@@ -6513,8 +6513,8 @@
       if (gecko$1 && isElt(node)) {
         offset = Math.min(offset, node.childNodes.length);
         if (offset < node.childNodes.length) {
-          let next = node.childNodes[offset], box;
-          if (next.nodeName == "IMG" && (box = next.getBoundingClientRect()).right <= coords.left && box.bottom > coords.top)
+          let next2 = node.childNodes[offset], box;
+          if (next2.nodeName == "IMG" && (box = next2.getBoundingClientRect()).right <= coords.left && box.bottom > coords.top)
             offset++;
         }
       }
@@ -6910,15 +6910,15 @@
           return prev.domFromPos(prev.size, side);
         return { node: this.contentDOM, offset: prev ? domIndex$1(prev.dom) + 1 : 0 };
       } else {
-        let next, enter = true;
+        let next2, enter = true;
         for (; ; i2++, enter = false) {
-          next = i2 < this.children.length ? this.children[i2] : null;
-          if (!next || next.dom.parentNode == this.contentDOM)
+          next2 = i2 < this.children.length ? this.children[i2] : null;
+          if (!next2 || next2.dom.parentNode == this.contentDOM)
             break;
         }
-        if (next && enter && !next.border && !next.domAtom)
-          return next.domFromPos(0, side);
-        return { node: this.contentDOM, offset: next ? domIndex$1(next.dom) : this.contentDOM.childNodes.length };
+        if (next2 && enter && !next2.border && !next2.domAtom)
+          return next2.domFromPos(0, side);
+        return { node: this.contentDOM, offset: next2 ? domIndex$1(next2.dom) : this.contentDOM.childNodes.length };
       }
     }
     // Used to find a DOM range in a single parent for a given changed
@@ -6948,12 +6948,12 @@
         if (fromOffset > -1 && (end2 > to || i2 == this.children.length - 1)) {
           to = end2;
           for (let j = i2 + 1; j < this.children.length; j++) {
-            let next = this.children[j];
-            if (next.size && next.dom.parentNode == this.contentDOM && !next.emptyChildAt(-1)) {
-              toOffset = domIndex$1(next.dom);
+            let next2 = this.children[j];
+            if (next2.size && next2.dom.parentNode == this.contentDOM && !next2.emptyChildAt(-1)) {
+              toOffset = domIndex$1(next2.dom);
               break;
             }
-            to += next.size;
+            to += next2.size;
           }
           if (toOffset == -1)
             toOffset = this.contentDOM.childNodes.length;
@@ -7672,9 +7672,9 @@
     return true;
   }
   function rm(dom) {
-    let next = dom.nextSibling;
+    let next2 = dom.nextSibling;
     dom.parentNode.removeChild(dom);
-    return next;
+    return next2;
   }
   class ViewTreeUpdater {
     constructor(top2, lock2, view2) {
@@ -7720,8 +7720,8 @@
         if (parentIndex < this.preMatch.index)
           scanTo = Math.min(this.index + 3, scanTo);
         for (let i2 = this.index; i2 < scanTo; i2++) {
-          let next = this.top.children[i2];
-          if (next.matchesMark(marks[depth]) && !this.isLocked(next.dom)) {
+          let next2 = this.top.children[i2];
+          if (next2.matchesMark(marks[depth]) && !this.isLocked(next2.dom)) {
             found2 = i2;
             break;
           }
@@ -7802,20 +7802,20 @@
     // pre-matches to avoid overwriting nodes that could still be used.
     updateNextNode(node, outerDeco, innerDeco, view2, index, pos) {
       for (let i2 = this.index; i2 < this.top.children.length; i2++) {
-        let next = this.top.children[i2];
-        if (next instanceof NodeViewDesc) {
-          let preMatch2 = this.preMatch.matched.get(next);
+        let next2 = this.top.children[i2];
+        if (next2 instanceof NodeViewDesc) {
+          let preMatch2 = this.preMatch.matched.get(next2);
           if (preMatch2 != null && preMatch2 != index)
             return false;
-          let nextDOM = next.dom, updated;
-          let locked = this.isLocked(nextDOM) && !(node.isText && next.node && next.node.isText && next.nodeDOM.nodeValue == node.text && next.dirty != NODE_DIRTY && sameOuterDeco(outerDeco, next.outerDeco));
-          if (!locked && next.update(node, outerDeco, innerDeco, view2)) {
+          let nextDOM = next2.dom, updated;
+          let locked = this.isLocked(nextDOM) && !(node.isText && next2.node && next2.node.isText && next2.nodeDOM.nodeValue == node.text && next2.dirty != NODE_DIRTY && sameOuterDeco(outerDeco, next2.outerDeco));
+          if (!locked && next2.update(node, outerDeco, innerDeco, view2)) {
             this.destroyBetween(this.index, i2);
-            if (next.dom != nextDOM)
+            if (next2.dom != nextDOM)
               this.changed = true;
             this.index++;
             return true;
-          } else if (!locked && (updated = this.recreateWrapper(next, node, outerDeco, innerDeco, view2, pos))) {
+          } else if (!locked && (updated = this.recreateWrapper(next2, node, outerDeco, innerDeco, view2, pos))) {
             this.destroyBetween(this.index, i2);
             this.top.children[this.index] = updated;
             if (updated.contentDOM) {
@@ -7834,17 +7834,17 @@
     }
     // When a node with content is replaced by a different node with
     // identical content, move over its children.
-    recreateWrapper(next, node, outerDeco, innerDeco, view2, pos) {
-      if (next.dirty || node.isAtom || !next.children.length || !next.node.content.eq(node.content) || !sameOuterDeco(outerDeco, next.outerDeco) || !innerDeco.eq(next.innerDeco))
+    recreateWrapper(next2, node, outerDeco, innerDeco, view2, pos) {
+      if (next2.dirty || node.isAtom || !next2.children.length || !next2.node.content.eq(node.content) || !sameOuterDeco(outerDeco, next2.outerDeco) || !innerDeco.eq(next2.innerDeco))
         return null;
       let wrapper = NodeViewDesc.create(this.top, node, outerDeco, innerDeco, view2, pos);
       if (wrapper.contentDOM) {
-        wrapper.children = next.children;
-        next.children = [];
+        wrapper.children = next2.children;
+        next2.children = [];
         for (let ch of wrapper.children)
           ch.parent = wrapper;
       }
-      next.destroy();
+      next2.destroy();
       return wrapper;
     }
     // Insert the node as a newly created node desc.
@@ -7856,8 +7856,8 @@
       this.changed = true;
     }
     placeWidget(widget, view2, pos) {
-      let next = this.index < this.top.children.length ? this.top.children[this.index] : null;
-      if (next && next.matchesWidget(widget) && (widget == next.widget || !next.widget.type.toDOM.parentNode)) {
+      let next2 = this.index < this.top.children.length ? this.top.children[this.index] : null;
+      if (next2 && next2.matchesWidget(widget) && (widget == next2.widget || !next2.widget.type.toDOM.parentNode)) {
         this.index++;
       } else {
         let desc = new WidgetViewDesc(this.top, widget, view2, pos);
@@ -7910,12 +7910,12 @@
       let desc;
       for (; ; ) {
         if (descI) {
-          let next = curDesc.children[descI - 1];
-          if (next instanceof MarkViewDesc) {
-            curDesc = next;
-            descI = next.children.length;
+          let next2 = curDesc.children[descI - 1];
+          if (next2 instanceof MarkViewDesc) {
+            curDesc = next2;
+            descI = next2.children.length;
           } else {
-            desc = next;
+            desc = next2;
             descI--;
             break;
           }
@@ -7954,12 +7954,12 @@
     for (let parentIndex = 0; ; ) {
       let widget, widgets;
       while (decoIndex < locals.length && locals[decoIndex].to == offset) {
-        let next = locals[decoIndex++];
-        if (next.widget) {
+        let next2 = locals[decoIndex++];
+        if (next2.widget) {
           if (!widget)
-            widget = next;
+            widget = next2;
           else
-            (widgets || (widgets = [widget])).push(next);
+            (widgets || (widgets = [widget])).push(next2);
         }
       }
       if (widget) {
@@ -8026,11 +8026,11 @@
         continue;
       let str = child2.text;
       while (i2 < frag.childCount) {
-        let next = frag.child(i2++);
-        pos += next.nodeSize;
-        if (!next.isText)
+        let next2 = frag.child(i2++);
+        pos += next2.nodeSize;
+        if (!next2.isText)
           break;
-        str += next.text;
+        str += next2.text;
       }
       if (pos >= from) {
         if (pos >= to && str.slice(to - text2.length - childStart, to - childStart) == text2)
@@ -8282,9 +8282,9 @@
       } else if (!sel.empty) {
         return false;
       } else if (view2.endOfTextblock(dir > 0 ? "forward" : "backward")) {
-        let next = moveSelectionBlock(view2.state, dir);
-        if (next && next instanceof NodeSelection)
-          return apply(view2, next);
+        let next2 = moveSelectionBlock(view2.state, dir);
+        if (next2 && next2 instanceof NodeSelection)
+          return apply(view2, next2);
         return false;
       } else if (!(mac$4 && mods.indexOf("m") > -1)) {
         let $head = sel.$head, node = $head.textOffset ? null : dir < 0 ? $head.nodeBefore : $head.nodeAfter, desc;
@@ -8302,9 +8302,9 @@
     } else if (sel instanceof NodeSelection && sel.node.isInline) {
       return apply(view2, new TextSelection(dir > 0 ? sel.$to : sel.$from));
     } else {
-      let next = moveSelectionBlock(view2.state, dir);
-      if (next)
-        return apply(view2, next);
+      let next2 = moveSelectionBlock(view2.state, dir);
+      if (next2)
+        return apply(view2, next2);
       return false;
     }
   }
@@ -8383,19 +8383,19 @@
       } else if (isBlockNode(node)) {
         break;
       } else {
-        let next = node.nextSibling;
-        while (next && isIgnorable(next, 1)) {
-          moveNode = next.parentNode;
-          moveOffset = domIndex$1(next) + 1;
-          next = next.nextSibling;
+        let next2 = node.nextSibling;
+        while (next2 && isIgnorable(next2, 1)) {
+          moveNode = next2.parentNode;
+          moveOffset = domIndex$1(next2) + 1;
+          next2 = next2.nextSibling;
         }
-        if (!next) {
+        if (!next2) {
           node = node.parentNode;
           if (node == view2.dom)
             break;
           offset = len = 0;
         } else {
-          node = next;
+          node = next2;
           offset = 0;
           len = nodeSize$1(node);
         }
@@ -8414,12 +8414,12 @@
       node = node.parentNode;
     }
     while (node && offset < node.childNodes.length) {
-      let next = node.childNodes[offset];
-      if (isText(next))
-        return next;
-      if (isElt(next) && next.contentEditable == "false")
+      let next2 = node.childNodes[offset];
+      if (isText(next2))
+        return next2;
+      if (isElt(next2) && next2.contentEditable == "false")
         break;
-      node = next;
+      node = next2;
       offset = 0;
     }
   }
@@ -8429,12 +8429,12 @@
       node = node.parentNode;
     }
     while (node && offset) {
-      let next = node.childNodes[offset - 1];
-      if (isText(next))
-        return next;
-      if (isElt(next) && next.contentEditable == "false")
+      let next2 = node.childNodes[offset - 1];
+      if (isText(next2))
+        return next2;
+      if (isElt(next2) && next2.contentEditable == "false")
         break;
-      node = next;
+      node = next2;
       offset = node.childNodes.length;
     }
   }
@@ -8496,9 +8496,9 @@
       return false;
     let { $from, $to } = sel;
     if (!$from.parent.inlineContent || view2.endOfTextblock(dir < 0 ? "up" : "down")) {
-      let next = moveSelectionBlock(view2.state, dir);
-      if (next && next instanceof NodeSelection)
-        return apply(view2, next);
+      let next2 = moveSelectionBlock(view2.state, dir);
+      if (next2 && next2 instanceof NodeSelection)
+        return apply(view2, next2);
     }
     if (!$from.parent.inlineContent) {
       let side = dir < 0 ? $from : $to;
@@ -9302,8 +9302,8 @@
     let { focusNode, focusOffset } = view2.domSelectionRange();
     if (!focusNode || !isElt(focusNode) || focusOffset >= focusNode.childNodes.length)
       return false;
-    let next = focusNode.childNodes[focusOffset];
-    return isElt(next) && next.contentEditable == "false";
+    let next2 = focusNode.childNodes[focusOffset];
+    return isElt(next2) && next2.contentEditable == "false";
   }
   editHandlers.compositionend = (view2, event) => {
     if (view2.composing) {
@@ -10199,21 +10199,21 @@
       let span = working[i2];
       if (span.from != span.to)
         for (let j = i2 + 1; j < working.length; j++) {
-          let next = working[j];
-          if (next.from == span.from) {
-            if (next.to != span.to) {
+          let next2 = working[j];
+          if (next2.from == span.from) {
+            if (next2.to != span.to) {
               if (working == spans)
                 working = spans.slice();
-              working[j] = next.copy(next.from, span.to);
-              insertAhead(working, j + 1, next.copy(span.to, next.to));
+              working[j] = next2.copy(next2.from, span.to);
+              insertAhead(working, j + 1, next2.copy(span.to, next2.to));
             }
             continue;
           } else {
-            if (next.from < span.to) {
+            if (next2.from < span.to) {
               if (working == spans)
                 working = spans.slice();
-              working[i2] = span.copy(span.from, next.from);
-              insertAhead(working, j, span.copy(next.from, span.to));
+              working[i2] = span.copy(span.from, next2.from);
+              insertAhead(working, j, span.copy(next2.from, span.to));
             }
             break;
           }
@@ -10476,19 +10476,19 @@
         }
         if (desc.contentDOM && desc.contentDOM != desc.dom && !desc.contentDOM.contains(mut.target))
           return { from: desc.posBefore, to: desc.posAfter };
-        let prev = mut.previousSibling, next = mut.nextSibling;
+        let prev = mut.previousSibling, next2 = mut.nextSibling;
         if (ie$2 && ie_version <= 11 && mut.addedNodes.length) {
           for (let i2 = 0; i2 < mut.addedNodes.length; i2++) {
             let { previousSibling, nextSibling } = mut.addedNodes[i2];
             if (!previousSibling || Array.prototype.indexOf.call(mut.addedNodes, previousSibling) < 0)
               prev = previousSibling;
             if (!nextSibling || Array.prototype.indexOf.call(mut.addedNodes, nextSibling) < 0)
-              next = nextSibling;
+              next2 = nextSibling;
           }
         }
         let fromOffset = prev && prev.parentNode == mut.target ? domIndex$1(prev) + 1 : 0;
         let from = desc.localPosFromDOM(mut.target, fromOffset, -1);
-        let toOffset = next && next.parentNode == mut.target ? domIndex$1(next) : mut.target.childNodes.length;
+        let toOffset = next2 && next2.parentNode == mut.target ? domIndex$1(next2) : mut.target.childNodes.length;
         let to = desc.localPosFromDOM(mut.target, toOffset, 1);
         return { from, to };
       } else if (mut.type == "attributes") {
@@ -10848,9 +10848,9 @@
       fromEnd = false;
     }
     if (mayOpen) {
-      let next = $pos.node(depth).maybeChild($pos.indexAfter(depth));
-      while (next && !next.isLeaf) {
-        next = next.firstChild;
+      let next2 = $pos.node(depth).maybeChild($pos.indexAfter(depth));
+      while (next2 && !next2.isLeaf) {
+        next2 = next2.firstChild;
         end2++;
       }
     }
@@ -12431,8 +12431,8 @@
         return null;
       let end2 = this.items.length;
       for (; ; end2--) {
-        let next = this.items.get(end2 - 1);
-        if (next.selection) {
+        let next2 = this.items.get(end2 - 1);
+        if (next2.selection) {
           --end2;
           break;
         }
@@ -12973,10 +12973,10 @@
   function crelt() {
     var elt = arguments[0];
     if (typeof elt == "string") elt = document.createElement(elt);
-    var i2 = 1, next = arguments[1];
-    if (next && typeof next == "object" && next.nodeType == null && !Array.isArray(next)) {
-      for (var name2 in next) if (Object.prototype.hasOwnProperty.call(next, name2)) {
-        var value = next[name2];
+    var i2 = 1, next2 = arguments[1];
+    if (next2 && typeof next2 == "object" && next2.nodeType == null && !Array.isArray(next2)) {
+      for (var name2 in next2) if (Object.prototype.hasOwnProperty.call(next2, name2)) {
+        var value = next2[name2];
         if (typeof value == "string") elt.setAttribute(name2, value);
         else if (value != null) elt[name2] = value;
       }
@@ -17094,6 +17094,124 @@
     }
     return humhub.require("oembed").get(url);
   }
+  function mountVueComponent(name2, props, onFail) {
+    const vue = window.humhub && humhub.modules && humhub.modules.vue;
+    if (!vue || typeof vue.isRegistered !== "function" || !vue.isRegistered(name2)) {
+      return null;
+    }
+    const host = document.createElement("div");
+    host.setAttribute("data-vue-component", name2);
+    host.setAttribute("data-props", JSON.stringify(props || {}));
+    document.body.appendChild(host);
+    Promise.resolve(vue.mountElement(host)).then((app) => {
+      if (!app) {
+        host.remove();
+        onFail && onFail();
+      }
+    });
+    return host;
+  }
+  const DEFAULT_LINK_REL = "noopener noreferrer nofollow";
+  function validateHref(href, cfg) {
+    cfg = cfg || {};
+    return /^https?:\/\//i.test(href) || /^mailto:/i.test(href) || /^ftps?:\/\//i.test(href) || cfg.anchor && validateAnchor(href) || cfg.relative && validateRelative(href);
+  }
+  function validateRelative(href) {
+    return /^\/[^\/].*$/i.test(href);
+  }
+  function validateAnchor(href) {
+    return /^#((?:[!$&()*+,;=._~:@?-]|%[0-9a-fA-F]{2}|[a-zA-Z0-9])+)$/i.test(href);
+  }
+  function buildLink(href, attrs2, text2, validate) {
+    attrs2 = attrs2 || {};
+    if (validate !== false) {
+      href = validateHref(href, validate) ? href : "#";
+    }
+    text2 = text2 || href;
+    let defaultAttrs2 = { href };
+    if (href !== "#") {
+      defaultAttrs2.target = "_blank";
+      defaultAttrs2.rel = DEFAULT_LINK_REL;
+    }
+    return $("<div>").append($("<a>").attr($.extend(defaultAttrs2, attrs2)).text(text2)).html();
+  }
+  /*
+   * @link https://www.humhub.org/
+   * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
+   * @license https://www.humhub.com/licences
+   */
+  const MODAL_COMPONENT = "ImageAltTextModal";
+  const queues = /* @__PURE__ */ new WeakMap();
+  const requestAltText = function(context, nodes2) {
+    const imageType = context.schema.nodes.image;
+    if (!imageType || context.getPluginOption("image", "altTextPrompt", true) === false) {
+      return;
+    }
+    const images = (nodes2 || []).filter((node) => node && node.type === imageType);
+    if (!images.length) {
+      return;
+    }
+    let queue = queues.get(context);
+    const isOpen = !!queue;
+    if (!queue) {
+      queue = [];
+      queues.set(context, queue);
+    }
+    queue.push(...images);
+    if (!isOpen) {
+      next(context);
+    }
+  };
+  const isAltTextPending = function(context) {
+    return queues.has(context);
+  };
+  const next = function(context) {
+    const queue = queues.get(context);
+    const node = queue && queue.shift();
+    if (!node) {
+      queues.delete(context);
+      return;
+    }
+    if (findPos(context, node) === null) {
+      next(context);
+      return;
+    }
+    const stop = () => queues.delete(context);
+    const host = mountVueComponent(MODAL_COMPONENT, { src: validateHref(node.attrs.src) ? node.attrs.src : null }, stop);
+    if (!host) {
+      stop();
+      return;
+    }
+    const close2 = (alt) => {
+      host.remove();
+      if (typeof alt === "string") {
+        setAlt(context, node, alt);
+      }
+      context.editor.view.focus();
+      next(context);
+    };
+    host.addEventListener("altText:save", (evt) => close2(evt.detail.alt));
+    host.addEventListener("altText:cancel", () => close2());
+  };
+  const setAlt = function(context, node, alt) {
+    const view2 = context.editor.view;
+    const pos = findPos(context, node);
+    if (pos !== null) {
+      view2.dispatch(view2.state.tr.setNodeMarkup(pos, null, Object.assign({}, node.attrs, { alt })));
+    }
+  };
+  const findPos = function(context, node) {
+    let found2 = null;
+    context.editor.view.state.doc.descendants((child2, pos) => {
+      if (found2 !== null) {
+        return false;
+      }
+      if (child2 === node) {
+        found2 = pos;
+      }
+    });
+    return found2;
+  };
   /*
    * @link https://www.humhub.org/
    * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -17159,7 +17277,9 @@
   function removeLoader(context, id2, dispatch) {
     let view2 = context.editor.view;
     let pos = findLoader(context, id2);
-    view2.focus();
+    if (!isAltTextPending(context)) {
+      view2.focus();
+    }
     if (pos === null) {
       return;
     }
@@ -23201,8 +23321,8 @@
           marks = marks.filter((m2) => {
             if (index + 1 == parent.childCount)
               return false;
-            let next = parent.child(index + 1);
-            return m2.isInSet(next.marks) && (!next.isText || /\S/.test(next.text));
+            let next2 = parent.child(index + 1);
+            return m2.isInSet(next2.marks) && (!next2.isText || /\S/.test(next2.text));
           });
         let leading = trailing;
         trailing = "";
@@ -23715,11 +23835,11 @@
     let prev = codePointAt$1(str, pos);
     pos += codePointSize$1(prev);
     while (pos < str.length) {
-      let next = codePointAt$1(str, pos);
-      if (prev == ZWJ || next == ZWJ || includeExtending && isExtendingChar(next)) {
-        pos += codePointSize$1(next);
-        prev = next;
-      } else if (isRegionalIndicator(next)) {
+      let next2 = codePointAt$1(str, pos);
+      if (prev == ZWJ || next2 == ZWJ || includeExtending && isExtendingChar(next2)) {
+        pos += codePointSize$1(next2);
+        prev = next2;
+      } else if (isRegionalIndicator(next2)) {
         let countBefore = 0, i2 = pos - 2;
         while (i2 >= 0 && isRegionalIndicator(codePointAt$1(str, i2))) {
           countBefore++;
@@ -24180,23 +24300,23 @@
           }
           skip--;
         } else if (top2 instanceof TextLeaf) {
-          let next = top2.text[offset + (dir < 0 ? -1 : 0)];
+          let next2 = top2.text[offset + (dir < 0 ? -1 : 0)];
           this.offsets[last2] += dir;
-          if (next.length > Math.max(0, skip)) {
-            this.value = skip == 0 ? next : dir > 0 ? next.slice(skip) : next.slice(0, next.length - skip);
+          if (next2.length > Math.max(0, skip)) {
+            this.value = skip == 0 ? next2 : dir > 0 ? next2.slice(skip) : next2.slice(0, next2.length - skip);
             return this;
           }
-          skip -= next.length;
+          skip -= next2.length;
         } else {
-          let next = top2.children[offset + (dir < 0 ? -1 : 0)];
-          if (skip > next.length) {
-            skip -= next.length;
+          let next2 = top2.children[offset + (dir < 0 ? -1 : 0)];
+          if (skip > next2.length) {
+            skip -= next2.length;
             this.offsets[last2] += dir;
           } else {
             if (dir < 0)
               this.offsets[last2]--;
-            this.nodes.push(next);
-            this.offsets.push(dir > 0 ? 1 : (next instanceof TextLeaf ? next.text.length : next.children.length) << 1);
+            this.nodes.push(next2);
+            this.offsets.push(dir > 0 ? 1 : (next2 instanceof TextLeaf ? next2.text.length : next2.children.length) << 1);
           }
         }
       }
@@ -24596,11 +24716,11 @@
       let resultSections = [], resultInserted = [], filteredSections = [];
       let iter = new SectionIter(this);
       done: for (let i2 = 0, pos = 0; ; ) {
-        let next = i2 == ranges.length ? 1e9 : ranges[i2++];
-        while (pos < next || pos == next && iter.len == 0) {
+        let next2 = i2 == ranges.length ? 1e9 : ranges[i2++];
+        while (pos < next2 || pos == next2 && iter.len == 0) {
           if (iter.done)
             break done;
-          let len = Math.min(iter.len, next - pos);
+          let len = Math.min(iter.len, next2 - pos);
           addSection(filteredSections, len, -1);
           let ins = iter.ins == -1 ? -1 : iter.off == 0 ? iter.ins : 0;
           addSection(resultSections, len, ins);
@@ -26282,10 +26402,10 @@
         start = prev;
       }
       while (end2 < length) {
-        let next = findClusterBreak(text2, end2);
-        if (cat3(text2.slice(end2, next)) != CharCategory.Word)
+        let next2 = findClusterBreak(text2, end2);
+        if (cat3(text2.slice(end2, next2)) != CharCategory.Word)
           break;
-        end2 = next;
+        end2 = next2;
       }
       return start == end2 ? null : EditorSelection.range(start + from, end2 + from);
     }
@@ -26552,10 +26672,10 @@
           }
         }
       }
-      let next = this.nextLayer.map(changes);
+      let next2 = this.nextLayer.map(changes);
       if (spilled)
-        next = spilled.finishInner(next);
-      return chunks.length == 0 ? next : new RangeSet(chunkPos, chunks, next || RangeSet.empty, maxPoint);
+        next2 = spilled.finishInner(next2);
+      return chunks.length == 0 ? next2 : new RangeSet(chunkPos, chunks, next2 || RangeSet.empty, maxPoint);
     }
     /**
     Iterate over the ranges that touch the region `from` to `to`,
@@ -26794,12 +26914,12 @@
     /**
     @internal
     */
-    finishInner(next) {
+    finishInner(next2) {
       if (this.from.length)
         this.finishChunk(false);
       if (this.chunks.length == 0)
-        return next;
-      let result = RangeSet.create(this.chunkPos, this.chunks, this.nextLayer ? this.nextLayer.finishInner(next) : next, this.setMaxPoint);
+        return next2;
+      let result = RangeSet.create(this.chunkPos, this.chunks, this.nextLayer ? this.nextLayer.finishInner(next2) : next2, this.setMaxPoint);
       this.from = null;
       return result;
     }
@@ -26839,8 +26959,8 @@
     }
     gotoInner(pos, side, forward) {
       while (this.chunkIndex < this.layer.chunk.length) {
-        let next = this.layer.chunk[this.chunkIndex];
-        if (!(this.skip && this.skip.has(next) || this.layer.chunkEnd(this.chunkIndex) < pos || next.maxPoint < this.minPoint))
+        let next2 = this.layer.chunk[this.chunkIndex];
+        if (!(this.skip && this.skip.has(next2) || this.layer.chunkEnd(this.chunkIndex) < pos || next2.maxPoint < this.minPoint))
           break;
         this.chunkIndex++;
         forward = false;
@@ -27687,33 +27807,33 @@
     sync(view2, track) {
       if (this.flags & 2) {
         let parent = this.dom;
-        let prev = null, next;
+        let prev = null, next2;
         for (let child2 of this.children) {
           if (child2.flags & 7) {
-            if (!child2.dom && (next = prev ? prev.nextSibling : parent.firstChild)) {
-              let contentView = ContentView.get(next);
+            if (!child2.dom && (next2 = prev ? prev.nextSibling : parent.firstChild)) {
+              let contentView = ContentView.get(next2);
               if (!contentView || !contentView.parent && contentView.canReuseDOM(child2))
-                child2.reuseDOM(next);
+                child2.reuseDOM(next2);
             }
             child2.sync(view2, track);
             child2.flags &= -8;
           }
-          next = prev ? prev.nextSibling : parent.firstChild;
-          if (track && !track.written && track.node == parent && next != child2.dom)
+          next2 = prev ? prev.nextSibling : parent.firstChild;
+          if (track && !track.written && track.node == parent && next2 != child2.dom)
             track.written = true;
           if (child2.dom.parentNode == parent) {
-            while (next && next != child2.dom)
-              next = rm$1(next);
+            while (next2 && next2 != child2.dom)
+              next2 = rm$1(next2);
           } else {
-            parent.insertBefore(child2.dom, next);
+            parent.insertBefore(child2.dom, next2);
           }
           prev = child2.dom;
         }
-        next = prev ? prev.nextSibling : parent.firstChild;
-        if (next && track && track.node == parent)
+        next2 = prev ? prev.nextSibling : parent.firstChild;
+        if (next2 && track && track.node == parent)
           track.written = true;
-        while (next)
-          next = rm$1(next);
+        while (next2)
+          next2 = rm$1(next2);
       } else if (this.flags & 1) {
         for (let child2 of this.children)
           if (child2.flags & 7) {
@@ -27888,9 +28008,9 @@
   }
   ContentView.prototype.breakAfter = 0;
   function rm$1(dom) {
-    let next = dom.nextSibling;
+    let next2 = dom.nextSibling;
     dom.parentNode.removeChild(dom);
-    return next;
+    return next2;
   }
   class ChildCursor {
     constructor(children, pos, i2) {
@@ -27905,8 +28025,8 @@
           this.off = pos - this.pos;
           return this;
         }
-        let next = this.children[--this.i];
-        this.pos -= next.length + next.breakAfter;
+        let next2 = this.children[--this.i];
+        this.pos -= next2.length + next2.breakAfter;
       }
     }
   }
@@ -28317,9 +28437,9 @@
         return prev.domAtPos(prev.length);
     }
     for (let j = i2; j < children.length; j++) {
-      let next = children[j];
-      if (next.dom.parentNode == dom)
-        return next.domAtPos(0);
+      let next2 = children[j];
+      if (next2.dom.parentNode == dom)
+        return next2.domAtPos(0);
     }
     return new DOMPos(dom, 0);
   }
@@ -29322,10 +29442,10 @@
       for (let iCh = from, iI = 0; iCh < to; ) {
         let sameDir = true, isNum = false;
         if (iI == isolates.length || iCh < isolates[iI].from) {
-          let next = types[iCh];
-          if (next != ourType) {
+          let next2 = types[iCh];
+          if (next2 != ourType) {
             sameDir = false;
-            isNum = next == 16;
+            isNum = next2 == 16;
           }
         }
         let recurse = !sameDir && ourType == 1 ? [] : null;
@@ -29374,10 +29494,10 @@
       for (let iCh = to, iI = isolates.length; iCh > from; ) {
         let sameDir = true, isNum = false;
         if (!iI || iCh > isolates[iI - 1].to) {
-          let next = types[iCh - 1];
-          if (next != ourType) {
+          let next2 = types[iCh - 1];
+          if (next2 != ourType) {
             sameDir = false;
-            isNum = next == 16;
+            isNum = next2 == 16;
           }
         }
         let recurse = !sameDir && ourType == 1 ? [] : null;
@@ -29692,8 +29812,8 @@
         return diff;
       let result = [];
       for (let dI = 0, rI = 0, posA = 0, posB = 0; ; dI++) {
-        let next = dI == diff.length ? null : diff[dI], off = posA - posB;
-        let end2 = next ? next.fromB : 1e9;
+        let next2 = dI == diff.length ? null : diff[dI], off = posA - posB;
+        let end2 = next2 ? next2.fromB : 1e9;
         while (rI < ranges.length && ranges[rI] < end2) {
           let from = ranges[rI], to = ranges[rI + 1];
           let fromB = Math.max(posB, from), toB = Math.min(end2, to);
@@ -29704,11 +29824,11 @@
           else
             rI += 2;
         }
-        if (!next)
+        if (!next2)
           return result;
-        new ChangedRange(next.fromA, next.toA, next.fromB, next.toB).addToSet(result);
-        posA = next.toA;
-        posB = next.toB;
+        new ChangedRange(next2.fromA, next2.toA, next2.fromB, next2.toB).addToSet(result);
+        posA = next2.toA;
+        posB = next2.toB;
       }
     }
   }
@@ -29880,10 +30000,10 @@
       let ranges = composition ? composition.range.addToSet(changes.slice()) : changes;
       let cursor = this.childCursor(oldLength);
       for (let i2 = ranges.length - 1; ; i2--) {
-        let next = i2 >= 0 ? ranges[i2] : null;
-        if (!next)
+        let next2 = i2 >= 0 ? ranges[i2] : null;
+        if (!next2)
           break;
-        let { fromA, toA, fromB, toB } = next, content2, breakAtStart, openStart, openEnd;
+        let { fromA, toA, fromB, toB } = next2, content2, breakAtStart, openStart, openEnd;
         if (composition && composition.range.fromB < toB && composition.range.toB > fromB) {
           let before = ContentBuilder.build(this.view.state.doc, fromB, composition.range.fromB, this.decorations, this.dynamicDecorationMap);
           let after = ContentBuilder.build(this.view.state.doc, composition.range.toB, toB, this.decorations, this.dynamicDecorationMap);
@@ -30203,8 +30323,8 @@
     computeBlockGapDeco() {
       let deco = [], vs2 = this.view.viewState;
       for (let pos = 0, i2 = 0; ; i2++) {
-        let next = i2 == vs2.viewports.length ? null : vs2.viewports[i2];
-        let end2 = next ? next.from - 1 : this.length;
+        let next2 = i2 == vs2.viewports.length ? null : vs2.viewports[i2];
+        let end2 = next2 ? next2.from - 1 : this.length;
         if (end2 > pos) {
           let height = (vs2.lineBlockAt(end2).bottom - vs2.lineBlockAt(pos).top) / this.view.scaleY;
           deco.push(Decoration.replace({
@@ -30214,9 +30334,9 @@
             isBlockGap: true
           }).range(pos, end2));
         }
-        if (!next)
+        if (!next2)
           break;
-        pos = next.to + 1;
+        pos = next2.to + 1;
       }
       return Decoration.set(deco);
     }
@@ -30397,10 +30517,10 @@
       from = prev;
     }
     while (to < line.length) {
-      let next = findClusterBreak(line.text, to);
-      if (categorize(line.text.slice(to, next)) != cat3)
+      let next2 = findClusterBreak(line.text, to);
+      if (categorize(line.text.slice(to, next2)) != cat3)
         break;
-      to = next;
+      to = next2;
     }
     return EditorSelection.range(from + line.from, to + line.from);
   }
@@ -30586,8 +30706,8 @@
     let len;
     if (node.nodeType != 3 || offset != (len = node.nodeValue.length))
       return false;
-    for (let next = node.nextSibling; next; next = next.nextSibling)
-      if (next.nodeType != 1 || next.nodeName != "BR")
+    for (let next2 = node.nextSibling; next2; next2 = next2.nextSibling)
+      if (next2.nodeType != 1 || next2.nodeName != "BR")
         return false;
     return textRange(node, len - 1, len).getBoundingClientRect().left > x2;
   }
@@ -30633,30 +30753,30 @@
     let line = view2.state.doc.lineAt(start.head), spans = view2.bidiSpans(line);
     let direction = view2.textDirectionAt(line.from);
     for (let cur = start, check = null; ; ) {
-      let next = moveVisually(line, spans, direction, cur, forward), char = movedOver;
-      if (!next) {
+      let next2 = moveVisually(line, spans, direction, cur, forward), char = movedOver;
+      if (!next2) {
         if (line.number == (forward ? view2.state.doc.lines : 1))
           return cur;
         char = "\n";
         line = view2.state.doc.line(line.number + (forward ? 1 : -1));
         spans = view2.bidiSpans(line);
-        next = view2.visualLineSide(line, !forward);
+        next2 = view2.visualLineSide(line, !forward);
       }
       if (!check) {
         if (!by)
-          return next;
+          return next2;
         check = by(char);
       } else if (!check(char)) {
         return cur;
       }
-      cur = next;
+      cur = next2;
     }
   }
   function byGroup(view2, pos, start) {
     let categorize = view2.state.charCategorizer(pos);
     let cat3 = categorize(start);
-    return (next) => {
-      let nextCat = categorize(next);
+    return (next2) => {
+      let nextCat = categorize(next2);
       if (cat3 == CharCategory.Space)
         cat3 = nextCat;
       return cat3 == nextCat;
@@ -30732,13 +30852,13 @@
         this.findPointBefore(parent, cur);
         let oldLen = this.text.length;
         this.readNode(cur);
-        let next = cur.nextSibling;
-        if (next == end2)
+        let next2 = cur.nextSibling;
+        if (next2 == end2)
           break;
-        let view2 = ContentView.get(cur), nextView = ContentView.get(next);
-        if (view2 && nextView ? view2.breakAfter : (view2 ? view2.breakAfter : isBlockElement(cur)) || isBlockElement(next) && (cur.nodeName != "BR" || cur.cmIgnore) && this.text.length > oldLen)
+        let view2 = ContentView.get(cur), nextView = ContentView.get(next2);
+        if (view2 && nextView ? view2.breakAfter : (view2 ? view2.breakAfter : isBlockElement(cur)) || isBlockElement(next2) && (cur.nodeName != "BR" || cur.cmIgnore) && this.text.length > oldLen)
           this.lineBreak();
-        cur = next;
+        cur = next2;
       }
       this.findPointBefore(parent, end2);
       return this;
@@ -30791,9 +30911,9 @@
         this.readRange(node.firstChild, null);
       }
     }
-    findPointBefore(node, next) {
+    findPointBefore(node, next2) {
       for (let point of this.points)
-        if (point.node == node && node.childNodes[point.offset] == next)
+        if (point.node == node && node.childNodes[point.offset] == next2)
           point.pos = this.text.length;
     }
     findPointInside(node, length) {
@@ -32025,13 +32145,13 @@
             break;
           }
         } else if (before < after) {
-          let next = nodes2[i2++];
-          if (next)
-            before += next.size;
+          let next2 = nodes2[i2++];
+          if (next2)
+            before += next2.size;
         } else {
-          let next = nodes2[--j];
-          if (next)
-            after += next.size;
+          let next2 = nodes2[--j];
+          if (next2)
+            after += next2.size;
         }
       }
       let brk = 0;
@@ -35352,9 +35472,9 @@
           }
         }
         while (old) {
-          let next = old.nextSibling;
+          let next2 = old.nextSibling;
           old.remove();
-          old = next;
+          old = next2;
         }
         this.drawn = markers;
       }
@@ -35749,9 +35869,9 @@
           skipTo = this.markers.length;
         }
         while (iOld < skipTo) {
-          let next = this.markers[iOld++];
-          if (next.toDOM) {
-            next.destroy(domPos);
+          let next2 = this.markers[iOld++];
+          if (next2.toDOM) {
+            next2.destroy(domPos);
             let after = domPos.nextSibling;
             domPos.remove();
             domPos = after;
@@ -36433,21 +36553,21 @@
     nextChild(i2, dir, pos, side, mode = 0) {
       for (let parent = this; ; ) {
         for (let { children, positions } = parent._tree, e2 = dir > 0 ? children.length : -1; i2 != e2; i2 += dir) {
-          let next = children[i2], start = positions[i2] + parent.from, mounted;
-          if (!(mode & IterMode.EnterBracketed && next instanceof Tree && (mounted = MountedTree.get(next)) && !mounted.overlay && mounted.bracketed && pos >= start && pos <= start + next.length) && !checkSide(side, pos, start, start + next.length))
+          let next2 = children[i2], start = positions[i2] + parent.from, mounted;
+          if (!(mode & IterMode.EnterBracketed && next2 instanceof Tree && (mounted = MountedTree.get(next2)) && !mounted.overlay && mounted.bracketed && pos >= start && pos <= start + next2.length) && !checkSide(side, pos, start, start + next2.length))
             continue;
-          if (next instanceof TreeBuffer) {
+          if (next2 instanceof TreeBuffer) {
             if (mode & IterMode.ExcludeBuffers)
               continue;
-            let index = next.findChild(0, next.buffer.length, dir, pos - start, side);
+            let index = next2.findChild(0, next2.buffer.length, dir, pos - start, side);
             if (index > -1)
-              return new BufferNode(new BufferContext(parent, next, i2, start), null, index);
-          } else if (mode & IterMode.IncludeAnonymous || (!next.type.isAnonymous || hasChild(next))) {
+              return new BufferNode(new BufferContext(parent, next2, i2, start), null, index);
+          } else if (mode & IterMode.IncludeAnonymous || (!next2.type.isAnonymous || hasChild(next2))) {
             let mounted2;
-            if (!(mode & IterMode.IgnoreMounts) && (mounted2 = MountedTree.get(next)) && !mounted2.overlay)
+            if (!(mode & IterMode.IgnoreMounts) && (mounted2 = MountedTree.get(next2)) && !mounted2.overlay)
               return new TreeNode(mounted2.tree, start, i2, parent);
-            let inner = new TreeNode(next, start, i2, parent);
-            return mode & IterMode.IncludeAnonymous || !inner.type.isAnonymous ? inner : inner.nextChild(dir < 0 ? next.children.length - 1 : 0, dir, pos, side, mode);
+            let inner = new TreeNode(next2, start, i2, parent);
+            return mode & IterMode.IncludeAnonymous || !inner.type.isAnonymous ? inner : inner.nextChild(dir < 0 ? next2.children.length - 1 : 0, dir, pos, side, mode);
           }
         }
         if (mode & IterMode.IncludeAnonymous || !parent.type.isAnonymous)
@@ -36719,10 +36839,10 @@
         pick2 = i2;
       }
     }
-    let next = picked instanceof TreeNode && picked.index < 0 ? null : picked.parent;
+    let next2 = picked instanceof TreeNode && picked.index < 0 ? null : picked.parent;
     let newHeads = heads.slice();
-    if (next)
-      newHeads[pick2] = next;
+    if (next2)
+      newHeads[pick2] = next2;
     else
       newHeads.splice(pick2, 1);
     return new StackIterator(newHeads, picked);
@@ -37641,12 +37761,12 @@
             pos += m2[0].length;
             if (pos == part.length)
               break;
-            let next = part[pos++];
-            if (pos == part.length && next == "!") {
+            let next2 = part[pos++];
+            if (pos == part.length && next2 == "!") {
               mode = 0;
               break;
             }
-            if (next != "/")
+            if (next2 != "/")
               throw new RangeError("Invalid path: " + part);
             rest = part.slice(pos);
           }
@@ -37683,11 +37803,11 @@
     }
   });
   class Rule {
-    constructor(tags2, mode, context, next) {
+    constructor(tags2, mode, context, next2) {
       this.tags = tags2;
       this.mode = mode;
       this.context = context;
-      this.next = next;
+      this.next = next2;
     }
     get opaque() {
       return this.mode == 0;
@@ -37793,8 +37913,8 @@
         let innerHighlighters = this.highlighters.filter((h) => !h.scope || h.scope(mounted.tree.type));
         let hasChild2 = cursor.firstChild();
         for (let i2 = 0, pos = start; ; i2++) {
-          let next = i2 < mounted.overlay.length ? mounted.overlay[i2] : null;
-          let nextPos = next ? next.from + start : end2;
+          let next2 = i2 < mounted.overlay.length ? mounted.overlay[i2] : null;
+          let nextPos = next2 ? next2.from + start : end2;
           let rangeFrom2 = Math.max(from, pos), rangeTo2 = Math.min(to, nextPos);
           if (rangeFrom2 < rangeTo2 && hasChild2) {
             while (cursor.from < rangeTo2) {
@@ -37804,11 +37924,11 @@
                 break;
             }
           }
-          if (!next || nextPos > to)
+          if (!next2 || nextPos > to)
             break;
-          pos = next.to + start;
+          pos = next2.to + start;
           if (pos > from) {
-            this.highlightRange(inner.cursor(), Math.max(from, next.from + start), Math.min(to, pos), "", innerHighlighters);
+            this.highlightRange(inner.cursor(), Math.max(from, next2.from + start), Math.min(to, pos), "", innerHighlighters);
             this.startSpan(Math.min(to, pos), cls);
           }
         }
@@ -39005,16 +39125,16 @@
     let openLine = context.state.doc.lineAt(openToken.from);
     let lineEnd2 = sim == null || sim <= openLine.from ? openLine.to : Math.min(openLine.to, sim);
     for (let pos = openToken.to; ; ) {
-      let next = tree.childAfter(pos);
-      if (!next || next == last2)
+      let next2 = tree.childAfter(pos);
+      if (!next2 || next2 == last2)
         return null;
-      if (!next.type.isSkipped) {
-        if (next.from >= lineEnd2)
+      if (!next2.type.isSkipped) {
+        if (next2.from >= lineEnd2)
           return null;
         let space2 = /^ */.exec(openLine.text.slice(openToken.to - openLine.from))[0].length;
         return { from: openToken.from, to: openToken.to + space2 };
       }
-      pos = next.to;
+      pos = next2.to;
     }
   }
   function delimitedIndent({ closing, align = true, units = 1 }) {
@@ -39563,13 +39683,13 @@
     let pos = syntaxTree(state2).resolveInner(start.head);
     let bracketProp = forward ? NodeProp.closedBy : NodeProp.openedBy;
     for (let at = start.head; ; ) {
-      let next = forward ? pos.childAfter(at) : pos.childBefore(at);
-      if (!next)
+      let next2 = forward ? pos.childAfter(at) : pos.childBefore(at);
+      if (!next2)
         break;
-      if (interestingNode(state2, next, bracketProp))
-        pos = next;
+      if (interestingNode(state2, next2, bracketProp))
+        pos = next2;
       else
-        at = forward ? next.to : next.from;
+        at = forward ? next2.to : next2.from;
     }
     let bracket2 = pos.type.prop(bracketProp), match, newPos;
     if (bracket2 && (match = forward ? matchBrackets(state2, pos.from, 1) : matchBrackets(state2, pos.to, -1)) && match.matched)
@@ -39828,14 +39948,14 @@
           pos += forward ? 1 : -1;
         break;
       }
-      let next = findClusterBreak(line.text, pos - line.from, forward) + line.from;
-      let nextChar = line.text.slice(Math.min(pos, next) - line.from, Math.max(pos, next) - line.from);
+      let next2 = findClusterBreak(line.text, pos - line.from, forward) + line.from;
+      let nextChar = line.text.slice(Math.min(pos, next2) - line.from, Math.max(pos, next2) - line.from);
       let nextCat = categorize(nextChar);
       if (cat3 != null && nextCat != cat3)
         break;
       if (nextChar != " " || pos != range.head)
         cat3 = nextCat;
-      pos = next;
+      pos = next2;
     }
     return pos;
   });
@@ -40327,24 +40447,24 @@
     /**
     @internal
     */
-    apply(action, next, nextStart, nextEnd) {
+    apply(action, next2, nextStart, nextEnd) {
       if (action & 65536)
         this.reduce(action);
       else
-        this.shift(action, next, nextStart, nextEnd);
+        this.shift(action, next2, nextStart, nextEnd);
     }
     // Add a prebuilt (reused) node into the buffer.
     /**
     @internal
     */
-    useNode(value, next, start) {
+    useNode(value, next2, start) {
       let index = this.p.reused.length - 1;
       if (index < 0 || this.p.reused[index] != value) {
         this.p.reused.push(value);
         index++;
       }
       let end2 = this.reducePos = this.pos = start + value.length;
-      this.pushState(next, start);
+      this.pushState(next2, start);
       this.buffer.push(
         index,
         start,
@@ -40377,10 +40497,10 @@
     /**
     @internal
     */
-    recoverByDelete(next, nextEnd) {
-      let isNode = next <= this.p.parser.maxNode;
+    recoverByDelete(next2, nextEnd) {
+      let isNode = next2 <= this.p.parser.maxNode;
       if (isNode)
-        this.storeNode(next, this.pos, nextEnd, 4);
+        this.storeNode(next2, this.pos, nextEnd, 4);
       this.storeNode(0, this.pos, nextEnd, isNode ? 8 : 4);
       this.pos = this.reducePos = nextEnd;
       this.score -= 190;
@@ -40410,14 +40530,14 @@
     /**
     @internal
     */
-    recoverByInsert(next) {
+    recoverByInsert(next2) {
       if (this.stack.length >= 300)
         return [];
       let nextStates = this.p.parser.nextStates(this.state);
       if (nextStates.length > 4 << 1 || this.stack.length >= 120) {
         let best = [];
         for (let i2 = 0, s2; i2 < nextStates.length; i2 += 2) {
-          if ((s2 = nextStates[i2 + 1]) != this.state && this.p.parser.hasAction(s2, next))
+          if ((s2 = nextStates[i2 + 1]) != this.state && this.p.parser.hasAction(s2, next2))
             best.push(nextStates[i2], s2);
         }
         if (this.stack.length < 120)
@@ -40664,11 +40784,11 @@
       return new StackBufferCursor(stack, pos, pos - stack.bufferBase);
     }
     maybeNext() {
-      let next = this.stack.parent;
-      if (next != null) {
-        this.index = this.stack.bufferBase - next.bufferBase;
-        this.stack = next;
-        this.buffer = next.buffer;
+      let next2 = this.stack.parent;
+      if (next2 != null) {
+        this.index = this.stack.bufferBase - next2.bufferBase;
+        this.stack = next2;
+        this.buffer = next2.buffer;
       }
     }
     get id() {
@@ -40700,16 +40820,16 @@
     for (let pos = 0, out = 0; pos < input.length; ) {
       let value = 0;
       for (; ; ) {
-        let next = input.charCodeAt(pos++), stop = false;
-        if (next == 126) {
+        let next2 = input.charCodeAt(pos++), stop = false;
+        if (next2 == 126) {
           value = 65535;
           break;
         }
-        if (next >= 92)
-          next--;
-        if (next >= 34)
-          next--;
-        let digit = next - 32;
+        if (next2 >= 92)
+          next2--;
+        if (next2 >= 34)
+          next2--;
+        let digit = next2 - 32;
         if (digit >= 46) {
           digit -= 46;
           stop = true;
@@ -40766,16 +40886,16 @@
       while (pos < range.from) {
         if (!index)
           return null;
-        let next = this.ranges[--index];
-        pos -= range.from - next.to;
-        range = next;
+        let next2 = this.ranges[--index];
+        pos -= range.from - next2.to;
+        range = next2;
       }
       while (assoc < 0 ? pos > range.to : pos >= range.to) {
         if (index == this.ranges.length - 1)
           return null;
-        let next = this.ranges[++index];
-        pos += next.from - range.to;
-        range = next;
+        let next2 = this.ranges[++index];
+        pos += next2.from - range.to;
+        range = next2;
       }
       return pos;
     }
@@ -41016,7 +41136,7 @@
             break;
           }
         }
-      let next = input.next, low = 0, high = data[state2 + 2];
+      let next2 = input.next, low = 0, high = data[state2 + 2];
       if (input.next < 0 && high > low && data[accEnd + high * 3 - 3] == 65535) {
         state2 = data[accEnd + high * 3 - 1];
         continue scan;
@@ -41025,9 +41145,9 @@
         let mid = low + high >> 1;
         let index = accEnd + mid + (mid << 1);
         let from = data[index], to = data[index + 1] || 65536;
-        if (next < from)
+        if (next2 < from)
           high = mid;
-        else if (next >= to)
+        else if (next2 >= to)
           low = mid + 1;
         else {
           state2 = data[index + 2];
@@ -41039,8 +41159,8 @@
     }
   }
   function findOffset(data, start, term) {
-    for (let i2 = start, next; (next = data[i2]) != 65535; i2++)
-      if (next == term)
+    for (let i2 = start, next2; (next2 = data[i2]) != 65535; i2++)
+      if (next2 == term)
         return i2 - start;
     return -1;
   }
@@ -41129,34 +41249,34 @@
           this.index.pop();
           continue;
         }
-        let next = top2.children[index];
+        let next2 = top2.children[index];
         let start = this.start[last2] + top2.positions[index];
         if (start > pos) {
           this.nextStart = start;
           return null;
         }
-        if (next instanceof Tree) {
-          let storeRepeat = start > this.lastRepeatPos && next.type.id >= this.minRepeat;
+        if (next2 instanceof Tree) {
+          let storeRepeat = start > this.lastRepeatPos && next2.type.id >= this.minRepeat;
           if (start == pos || storeRepeat) {
-            let end2 = start + next.length, lookahead;
-            if (start >= this.safeFrom && end2 <= this.safeTo && (!(lookahead = next.prop(NodeProp.lookAhead)) || end2 + lookahead < this.fragment.to)) {
+            let end2 = start + next2.length, lookahead;
+            if (start >= this.safeFrom && end2 <= this.safeTo && (!(lookahead = next2.prop(NodeProp.lookAhead)) || end2 + lookahead < this.fragment.to)) {
               if (storeRepeat) {
-                this.lastRepeat = next;
+                this.lastRepeat = next2;
                 this.lastRepeatPos = start;
               }
               if (start == pos)
-                return next;
+                return next2;
             }
           }
           this.index[last2]++;
-          if (start + next.length >= Math.max(this.safeFrom, pos)) {
-            this.trees.push(next);
+          if (start + next2.length >= Math.max(this.safeFrom, pos)) {
+            this.trees.push(next2);
             this.start.push(start);
             this.index.push(0);
           }
         } else {
           this.index[last2]++;
-          this.nextStart = start + next.length;
+          this.nextStart = start + next2.length;
         }
       }
     }
@@ -41627,12 +41747,12 @@
           if (typeof prop == "string")
             prop = NodeProp[prop];
           for (let i2 = 1; i2 < propSpec.length; ) {
-            let next = propSpec[i2++];
-            if (next >= 0) {
-              setProp(next, prop, propSpec[i2++]);
+            let next2 = propSpec[i2++];
+            if (next2 >= 0) {
+              setProp(next2, prop, propSpec[i2++]);
             } else {
-              let value = propSpec[i2 + -next];
-              for (let j = -next; j > 0; j--)
+              let value = propSpec[i2 + -next2];
+              for (let j = -next2; j > 0; j--)
                 setProp(propSpec[i2++], prop, value);
               i2++;
             }
@@ -41706,16 +41826,16 @@
           state2,
           set ? 2 : 1
           /* ParseState.Actions */
-        ), next; ; i2 += 3) {
-          if ((next = data[i2]) == 65535) {
+        ), next2; ; i2 += 3) {
+          if ((next2 = data[i2]) == 65535) {
             if (data[i2 + 1] == 1)
-              next = data[i2 = pair(data, i2 + 2)];
+              next2 = data[i2 = pair(data, i2 + 2)];
             else if (data[i2 + 1] == 2)
               return pair(data, i2 + 2);
             else
               break;
           }
-          if (next == terminal || next == 0)
+          if (next2 == terminal || next2 == 0)
             return pair(data, i2 + 1);
         }
       }
@@ -41959,30 +42079,30 @@
     strict: false
   });
   const insertSemicolon = new ExternalTokenizer((input, stack) => {
-    let { next } = input;
-    if (next == braceR || next == -1 || stack.context)
+    let { next: next2 } = input;
+    if (next2 == braceR || next2 == -1 || stack.context)
       input.acceptToken(insertSemi);
   }, { contextual: true, fallback: true });
   const noSemicolon = new ExternalTokenizer((input, stack) => {
-    let { next } = input, after;
-    if (space.indexOf(next) > -1) return;
-    if (next == slash && ((after = input.peek(1)) == slash || after == star$3)) return;
-    if (next != braceR && next != semicolon && next != -1 && !stack.context)
+    let { next: next2 } = input, after;
+    if (space.indexOf(next2) > -1) return;
+    if (next2 == slash && ((after = input.peek(1)) == slash || after == star$3)) return;
+    if (next2 != braceR && next2 != semicolon && next2 != -1 && !stack.context)
       input.acceptToken(noSemi);
   }, { contextual: true });
   const noSemicolonType = new ExternalTokenizer((input, stack) => {
     if (input.next == bracketL && !stack.context) input.acceptToken(noSemiType);
   }, { contextual: true });
   const operatorToken = new ExternalTokenizer((input, stack) => {
-    let { next } = input;
-    if (next == plus || next == minus) {
+    let { next: next2 } = input;
+    if (next2 == plus || next2 == minus) {
       input.advance();
-      if (next == input.next) {
+      if (next2 == input.next) {
         input.advance();
         let mayPostfix = !stack.context && stack.canShift(incdec);
         input.acceptToken(mayPostfix ? incdec : incdecPrefix);
       }
-    } else if (next == question$3 && input.peek(1) == dot) {
+    } else if (next2 == question$3 && input.peek(1) == dot) {
       input.advance();
       input.advance();
       if (input.next < 48 || input.next > 57)
@@ -42445,10 +42565,10 @@
       let active = state2.field(snippetState, false);
       if (!active || dir < 0 && active.active == 0)
         return false;
-      let next = active.active + dir, last2 = dir > 0 && !active.ranges.some((r2) => r2.field == next + dir);
+      let next2 = active.active + dir, last2 = dir > 0 && !active.ranges.some((r2) => r2.field == next2 + dir);
       dispatch(state2.update({
-        selection: fieldSelection(active.ranges, next),
-        effects: setActive.of(last2 ? null : new ActiveSnippet(active.ranges, next)),
+        selection: fieldSelection(active.ranges, next2),
+        effects: setActive.of(last2 ? null : new ActiveSnippet(active.ranges, next2)),
         scrollIntoView: true
       }));
       return true;
@@ -58651,30 +58771,6 @@
     getClassForFloat,
     parseFloatFromAlt
   }, Symbol.toStringTag, { value: "Module" }));
-  const DEFAULT_LINK_REL = "noopener noreferrer nofollow";
-  function validateHref(href, cfg) {
-    cfg = cfg || {};
-    return /^https?:\/\//i.test(href) || /^mailto:/i.test(href) || /^ftps?:\/\//i.test(href) || cfg.anchor && validateAnchor(href) || cfg.relative && validateRelative(href);
-  }
-  function validateRelative(href) {
-    return /^\/[^\/].*$/i.test(href);
-  }
-  function validateAnchor(href) {
-    return /^#((?:[!$&()*+,;=._~:@?-]|%[0-9a-fA-F]{2}|[a-zA-Z0-9])+)$/i.test(href);
-  }
-  function buildLink(href, attrs2, text2, validate) {
-    attrs2 = attrs2 || {};
-    if (validate !== false) {
-      href = validateHref(href, validate) ? href : "#";
-    }
-    text2 = text2 || href;
-    let defaultAttrs2 = { href };
-    if (href !== "#") {
-      defaultAttrs2.target = "_blank";
-      defaultAttrs2.rel = DEFAULT_LINK_REL;
-    }
-    return $("<div>").append($("<a>").attr($.extend(defaultAttrs2, attrs2)).text(text2)).html();
-  }
   /*
    * @link https://www.humhub.org/
    * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -61788,8 +61884,7 @@
       uploadWidget.off("uploadStart.richtext").on("uploadStart.richtext", (evt, response) => {
         loaderStart(context, id2, true);
       }).off("uploadEnd.richtext").on("uploadEnd.richtext", (evt, response) => {
-        replaceLoader(context, id2, createNodesFromResponse(context, response), true);
-        console.log("UPLOADER uploadEnd.richtext");
+        insertUploaded(context, id2, createNodesFromResponse(context, response));
       }).off("uploadFinish.richtext").on("uploadFinish.richtext", () => {
         removeLoader(context, id2, true);
       });
@@ -61809,13 +61904,18 @@
     pending.then((uploaded) => {
       const nodes2 = (uploaded || []).map((file) => createNodeFromFile(context, file)).filter(Boolean);
       if (nodes2.length) {
-        replaceLoader(context, id2, nodes2, true);
+        insertUploaded(context, id2, nodes2);
       } else {
         removeLoader(context, id2, true);
       }
     }).catch(() => {
       removeLoader(context, id2, true);
     });
+  };
+  const insertUploaded = function(context, id2, nodes2) {
+    if (replaceLoader(context, id2, nodes2, true)) {
+      requestAltText(context, nodes2);
+    }
   };
   const createNodesFromResponse = function(context, response) {
     const nodes2 = [];
@@ -62766,6 +62866,7 @@
         const node = createFileHandlerNode(context, file);
         if (node) {
           view2.dispatch(view2.state.tr.replaceSelectionWith(node, false));
+          requestAltText(context, [node]);
         }
         activeContext = null;
       }
@@ -62779,7 +62880,7 @@
         }
       }).off("uploadEnd.richtext").on("uploadEnd.richtext", (evt, response) => {
         if (isActiveFileHandler(context)) {
-          replaceLoader(context, id2, createNodesFromResponse(context, response), true);
+          insertUploaded(context, id2, createNodesFromResponse(context, response));
         }
       }).off("uploadFinish.richtext").on("uploadFinish.richtext", () => {
         if (isActiveFileHandler(context)) {
@@ -63445,11 +63546,11 @@
       search: for (; ; ) {
         if (!mustMove && GapCursor.valid($pos))
           return $pos;
-        let pos = $pos.pos, next = null;
+        let pos = $pos.pos, next2 = null;
         for (let d2 = $pos.depth; ; d2--) {
           let parent = $pos.node(d2);
           if (dir > 0 ? $pos.indexAfter(d2) < parent.childCount : $pos.index(d2) > 0) {
-            next = parent.child(dir > 0 ? $pos.indexAfter(d2) : $pos.index(d2) - 1);
+            next2 = parent.child(dir > 0 ? $pos.indexAfter(d2) : $pos.index(d2) - 1);
             break;
           } else if (d2 == 0) {
             return null;
@@ -63460,16 +63561,16 @@
             return $cur;
         }
         for (; ; ) {
-          let inside2 = dir > 0 ? next.firstChild : next.lastChild;
+          let inside2 = dir > 0 ? next2.firstChild : next2.lastChild;
           if (!inside2) {
-            if (next.isAtom && !next.isText && !NodeSelection.isSelectable(next)) {
-              $pos = $pos.doc.resolve(pos + next.nodeSize * dir);
+            if (next2.isAtom && !next2.isText && !NodeSelection.isSelectable(next2)) {
+              $pos = $pos.doc.resolve(pos + next2.nodeSize * dir);
               mustMove = false;
               continue search;
             }
             break;
           }
-          next = inside2;
+          next2 = inside2;
           pos += dir;
           let $cur = $pos.doc.resolve(pos);
           if (GapCursor.valid($cur))
