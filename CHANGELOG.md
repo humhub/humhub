@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #8686: LDAP user filter without enclosing parentheses (e.g. `objectClass=person`) caused a "Bad search filter" error on login
 - Fix #8669: Auth clients allowed only for login (e.g. JWT, password, SAML) cleared or overwrote the LDAP-managed profile fields of LDAP users; new `BaseUserSource::isAttributeSyncAllowed()` decides whether an auth client may write managed attributes; LDAP accepts only its own client
 - Fix #8671: The service worker is served at `/sw-js` instead of `/sw.js`, as web servers serving `.js` URLs as static files answered it with a 404 (the old URL still works when it reaches HumHub)
+- Fix #8689: `module/update-all` reported all modules as up to date when the HumHub API could not be reached or was disabled; it now fails with an error
 
 1.19.3 (October 27, 2026)
 -------------------------
