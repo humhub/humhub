@@ -114,10 +114,10 @@ $form-choice-border-radius: 4px !default;
         }
     }
 
-    // Placeholder text
+    // Placeholder text (`--hh-placeholder-color`, also a select's "nothing chosen", _picker.scss)
 
     ::placeholder {
-        color: var(--hh-text-color-soft3) !important;
+        color: var(--hh-placeholder-color) !important;
     }
 
     /* hide native password reveal icons */
@@ -135,7 +135,7 @@ $form-choice-border-radius: 4px !default;
     input.placeholder,
     textarea.placeholder {
         padding: 0 0 0 10px;
-        color: var(--hh-text-color-secondary);
+        color: var(--hh-placeholder-color);
     }
 
     .invalid-feedback {

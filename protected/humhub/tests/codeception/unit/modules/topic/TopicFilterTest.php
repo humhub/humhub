@@ -261,6 +261,21 @@ class TopicFilterTest extends HumHubDbTestCase
         $this->assertSame(['extra' => 1, 'containerId' => 5], $definition->props);
     }
 
+    public function testSuggestsTheTopicsItsCallbackNamesThatTheCallerMaySee(): void
+    {
+        $filter = new TopicFilter(definition: [], suggest: fn(ListContext $context, int $limit) => [
+            $this->topics['Private'],
+            $this->topics['Public'],
+            $this->topics['Global'],
+        ]);
+
+        $suggestions = $filter->suggestions($this->context());
+
+        $this->assertSame([$this->topics['Public'], $this->topics['Global']], array_column($suggestions, 'id'), 'in order, only those the caller may see');
+        $this->assertSame('Public', $suggestions[0]['name'], 'the shape of the picker');
+        $this->assertSame([], (new TopicFilter())->suggestions($this->context()), 'none without a callback');
+    }
+
     public function testDefinitionCannotOverrideTypeOrMultiple(): void
     {
         $definition = (new TopicFilter(definition: ['type' => 'text', 'multiple' => false, 'label' => 'Tag']))->definition($this->context());

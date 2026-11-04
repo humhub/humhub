@@ -66,12 +66,13 @@
                 :aria-controls="listboxId"
                 :aria-activedescendant="activeDescendant"
                 :aria-label="accessibleName"
-                :aria-busy="resolving || searching ? 'true' : null"
+                :aria-busy="resolving || searching || loadingSuggestions ? 'true' : null"
                 :placeholder="multiple && hasValue && !keepPlaceholder ? '' : placeholder"
                 :value="query"
                 :disabled="resolving"
                 @input="onInput"
                 @keydown="onKeydown"
+                @focus="onFocus"
             >
         </div>
         <span v-if="resolving" class="spinner-border spinner-border-sm select-menu-spinner" aria-hidden="true"></span>
@@ -83,7 +84,7 @@
             data-bs-popper="static"
             role="listbox"
             :aria-label="accessibleName"
-            :aria-busy="searching ? 'true' : null"
+            :aria-busy="searching || loadingSuggestions ? 'true' : null"
         >
             <li
                 v-for="(result, index) in results"
@@ -113,7 +114,7 @@
 </template>
 
 <script>
-import { i18n, log } from '@humhub/vue';
+import { client, i18n, log } from '@humhub/vue';
 import comboboxMixin from './picker/comboboxMixin.js';
 import { TEXT_DEBOUNCE_MS } from './FilterBar.vue';
 
@@ -170,7 +171,14 @@ const ID_PATTERN = /^[1-9]\d*$/;
  *   chosen item ends). Emits `update:modelValue` with the new value (ids as strings).
  * - Search: a typed text (trimmed, not empty) is searched after `SEARCH_DEBOUNCE_MS`; only the
  *   answer to the latest text is shown, its first suggestion active; with `multiple` the chosen
- *   items are not suggested again. A suggestion is the `option` slot (an image), the label and
+ *   items are not suggested again.
+ * - Suggestions without a text: with the definition's `props.suggestionsUrl` (put there by a
+ *   list whose PHP filter has `suggest` — see `HasSuggestions`) the empty field lists what that
+ *   URL answers (`{results: [...]}`, items in the shape `search()` answers) as soon as it gets
+ *   the focus (a click, Tab, ArrowDown) and again once a typed text is deleted; the chosen ones
+ *   are left out. Requested once, when first needed ("Loading..." meanwhile), and kept. None of
+ *   them is active until ArrowDown (or the pointer) moves to one: nothing typed asks for the
+ *   first. Without the URL the field lists nothing until a text is typed. A suggestion is the `option` slot (an image), the label and
  *   the `option-detail` slot (after the label in a `.picker-filter-detail`, behind a
  *   visually hidden comma, so part of the option's accessible name — the container of a
  *   topic, say).
@@ -217,6 +225,8 @@ export default {
             query: '',
             results: [],
             searching: false,
+            // The suggestions for an empty field are being loaded
+            loadingSuggestions: false,
             resolving: false,
             // Items seen among the suggestions or resolved, by id: a value of them needs no request.
             known: {},
@@ -252,6 +262,10 @@ export default {
         term() {
             return this.query.trim();
         },
+        // Where the list's suggestions for an empty field load from (see "Suggestions without a text").
+        suggestionsUrl() {
+            return this.filter.props?.suggestionsUrl || null;
+        },
         placeholder() {
             return this.filter.placeholder || this.filter.label || '';
         },
@@ -272,7 +286,7 @@ export default {
             if (this.results.length) {
                 return null;
             }
-            return this.searching ? i18n.t('base', 'Loading...') : i18n.t('base', 'No results found!');
+            return this.searching || this.loadingSuggestions ? i18n.t('base', 'Loading...') : i18n.t('base', 'No results found!');
         },
     },
     watch: {
@@ -285,15 +299,24 @@ export default {
                 // After a choice (single: the chip's X) or a removal (the input): whichever the
                 // applied value renders keeps the focus in the control.
                 this.pendingFocus = false;
-                this.$nextTick(() => (this.$refs.input || this.$refs.remove)?.focus());
+                this.$nextTick(() => {
+                    this.quietFocus = true;
+                    (this.$refs.input || this.$refs.remove)?.focus();
+                    this.quietFocus = false;
+                });
             }
         },
     },
     created() {
+        // The suggestions, once loaded (`null` before).
+        this.suggested = null;
+        this.suggestSeq = 0;
         this.searchSeq = 0;
         this.resolveSeq = 0;
         this.searchTimer = null;
         this.pendingFocus = false;
+        // The focus the control moves itself (after a choice or a removal) lists no suggestions.
+        this.quietFocus = false;
         // Not an immediate watcher: that would run before the fields above exist.
         this.show();
     },
@@ -303,6 +326,7 @@ export default {
         // bind document listeners of an instance that is gone) nor emit.
         this.searchSeq++;
         this.resolveSeq++;
+        this.suggestSeq++;
     },
     methods: {
         idOf,
@@ -363,6 +387,70 @@ export default {
         onInput(event) {
             this.query = event.target.value;
             this.runSearch();
+            if (this.term === '') {
+                this.suggest();
+            }
+        },
+        onFocus() {
+            if (!this.quietFocus && this.term === '') {
+                this.suggest();
+            }
+        },
+        // Lists the suggestions for an empty field, the chosen ones left out (loaded first, when
+        // that is still to do); none: closed.
+        suggest() {
+            if (!this.suggestionsUrl) {
+                this.close();
+                return;
+            }
+            if (this.suggested === null) {
+                this.loadSuggestions();
+                return;
+            }
+            const chosen = this.ids;
+            this.results = this.suggested.filter((item) => !chosen.includes(idOf(item.id)));
+            if (!this.results.length) {
+                this.close();
+                return;
+            }
+            // None active: nothing was typed that one of them would answer - ArrowDown starts.
+            this.activeIndex = -1;
+            this.openListbox();
+        },
+        loadSuggestions() {
+            if (this.loadingSuggestions) {
+                return;
+            }
+            const seq = ++this.suggestSeq;
+            this.loadingSuggestions = true;
+            this.results = [];
+            this.openListbox();
+            client.get(this.suggestionsUrl).then((response) => {
+                if (seq === this.suggestSeq) {
+                    this.suggested = response.results || [];
+                    this.suggested.forEach((item) => (this.known[idOf(item.id)] = item));
+                }
+            }).catch((response) => {
+                if (seq === this.suggestSeq) {
+                    log.error(response);
+                    this.suggested = [];
+                }
+            }).finally(() => {
+                if (seq !== this.suggestSeq) {
+                    return;
+                }
+                this.loadingSuggestions = false;
+                // Still waiting for them: nothing typed meanwhile, the list not closed.
+                if (this.open && this.term === '') {
+                    this.suggest();
+                }
+            });
+        },
+        openListbox() {
+            if (!this.open) {
+                this.open = true;
+                this.bindOutside();
+            }
         },
         runSearch() {
             clearTimeout(this.searchTimer);
@@ -403,7 +491,11 @@ export default {
             });
         },
         openList() {
-            if (this.open || this.term === '') {
+            if (this.open) {
+                return;
+            }
+            if (this.term === '') {
+                this.suggest();
                 return;
             }
             this.open = true;

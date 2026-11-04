@@ -6,7 +6,6 @@
         :search="search"
         :resolve="resolve"
         :item-label="itemLabel"
-        icon="ti-user"
         block="user-filter"
         @update:model-value="$emit('update:modelValue', $event)"
     >
@@ -14,7 +13,7 @@
             <UserImage v-bind="imageProps(item)" :size="24" :link="false" />
         </template>
         <template #chip="{ item }">
-            <UserImage v-bind="imageProps(item)" :size="18" :link="false" />
+            <UserImage v-bind="imageProps(item)" :size="22" :link="false" />
         </template>
     </PickerFilterControl>
 </template>
@@ -38,8 +37,8 @@ export const SEARCH_DEBOUNCE_MS = 300;
  * module's Vue bundle (`UserVueAsset` in its asset bundle's `$depends`).
  *
  * The combobox is the core's `PickerFilterControl` (a global component — see there for
- * the keyboard, the resolving of a URL value and the error handling), led by a person icon, with
- * avatars (`.user-filter`):
+ * the keyboard, the resolving of a URL value and the error handling), with avatars
+ * (`.user-filter`):
  *
  * - Props: the filter-type contract — `filter` (the definition: `placeholder`, else `label`, as
  *   placeholder; `label` as accessible name), `modelValue` (the user id as a string, `''` for

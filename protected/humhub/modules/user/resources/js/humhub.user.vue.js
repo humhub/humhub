@@ -499,7 +499,6 @@
       search: $options.search,
       resolve: $options.resolve,
       "item-label": $options.itemLabel,
-      icon: "ti-user",
       block: "user-filter",
       "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
     }, {
@@ -519,7 +518,7 @@
         vue.createVNode(
           _component_UserImage,
           vue.mergeProps($options.imageProps(item), {
-            size: 18,
+            size: 22,
             link: false
           }),
           null,

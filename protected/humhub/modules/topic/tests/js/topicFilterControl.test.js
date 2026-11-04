@@ -82,10 +82,10 @@ describe('TopicFilterControl', () => {
         expect(vueModule.isRegistered('TopicFilterControl')).toBe(true);
     });
 
-    it('is a search field led by the topic icon', () => {
+    it('is a search field without an icon', () => {
         const wrapper = mountControl();
 
-        expect(wrapper.find('.ti-star').exists()).toBe(true);
+        expect(wrapper.find('.picker-filter-icon').exists()).toBe(false);
         expect(wrapper.classes()).toContain('topic-filter');
         expect(input(wrapper).attributes('id')).toBe('filter-topicId');
         expect(input(wrapper).attributes('placeholder')).toBe('Any topic');
@@ -111,15 +111,16 @@ describe('TopicFilterControl', () => {
         expect(requests()).toEqual([{ q: 'new', pageSize: '8', containerId: '5' }]);
     });
 
-    it('shows a colour dot per suggestion, with a fallback for a topic without a colour', async () => {
+    it('shows a star per suggestion, in the topic\'s colour, neutral without one', async () => {
         const wrapper = mountControl();
 
         await typeAndWait(wrapper, 'n');
 
-        const dots = wrapper.findAll('[role="option"] .topic-filter-dot');
-        expect(dots).toHaveLength(3);
-        expect(dots[0].attributes('style')).toContain('background-color: rgb(255, 0, 0)');
-        expect(dots[2].attributes('style')).toBeUndefined();
+        const stars = wrapper.findAll('[role="option"] .topic-filter-star');
+        expect(stars).toHaveLength(3);
+        expect(stars[0].classes()).toContain('ti-star');
+        expect(stars[0].attributes('style')).toContain('color: rgb(255, 0, 0)');
+        expect(stars[2].attributes('style')).toBeUndefined();
     });
 
     it('names the container of a topic only when it is not the filter\'s own', async () => {
@@ -144,7 +145,7 @@ describe('TopicFilterControl', () => {
         expect(global.find('[role="option"] .topic-filter-container').text(), 'without a container every container is foreign').toBe('Team Alpha');
     });
 
-    it('emits the chosen topic\'s id and shows it as a chip with dot and name', async () => {
+    it('emits the chosen topic\'s id and shows it as a chip with star and name', async () => {
         const wrapper = mountControl();
 
         await choose(wrapper, 'newsl');
@@ -154,7 +155,8 @@ describe('TopicFilterControl', () => {
 
         const chip = wrapper.find('.picker-chip');
         expect(chip.find('.picker-chip-label').text()).toBe('Newsletter');
-        expect(chip.find('.topic-filter-dot').attributes('style')).toContain('background-color: rgb(0, 255, 0)');
+        expect(chip.find('.topic-filter-star').exists()).toBe(true);
+        expect(chip.find('.topic-filter-star').attributes('style'), 'in the chip\'s colour').toBeUndefined();
         expect(chip.find('.topic-filter-container').exists()).toBe(false);
         expect(chip.find('.picker-chip-remove').attributes('aria-label')).toBe('Remove Newsletter');
         expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);

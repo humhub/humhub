@@ -205,8 +205,8 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
     // Record filters (`PickerFilterControl`: the user module's UserFilterControl, the `user`
     // filter type, `.user-filter`; the space module's SpaceFilterControl, the `space` type,
     // `.space-filter`; the topic module's TopicFilterControl, `.topic-filter`): a `.picker`
-    // led by an icon (a person, spaces, a topic), without a chevron, a chosen record a chip with
-    // its image; the suggestions carry images too.
+    // without a chevron (an `icon` may lead it), a chosen record a chip with its image; the
+    // suggestions carry images too.
     .picker-filter .picker-field {
         padding-right: $input-padding-x;
     }
@@ -238,9 +238,10 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
         }
     }
 
+    // The image of a chip as in every picker (`.picker-chip-image`): as far from the chip's left
+    // edge as from its top and bottom.
     .picker-filter-chip {
-        gap: $spacer * .375;
-        padding-left: 2px;
+        padding-left: calc((#{$picker-chip-height} - #{$picker-chip-image-size}) * .5);
     }
 
     .picker-filter-name {
@@ -248,20 +249,20 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
         min-width: 0;
     }
 
-    // The topic module's TopicFilterControl (the `topic` type): a colour dot for an image — the
-    // topic's colour inline, a neutral one without —, a topic of another container than the
-    // filter's followed by that container's name.
-    .topic-filter-dot {
+    // The topic module's TopicFilterControl (the `topic` type): the topic module's star for an
+    // image — in the topic's colour inline, a neutral one without —, a topic of another
+    // container than the filter's followed by that container's name.
+    .topic-filter-star {
         display: block;
-        width: 10px;
-        height: 10px;
-        margin: 0 $spacer * .25;
-        border-radius: 50%;
-        background-color: var(--hh-text-color-soft2);
+        color: var(--hh-text-color-soft);
+        font-size: $filter-bar-icon-size;
+        line-height: 1;
     }
 
-    .topic-filter-chip {
-        padding-left: $spacer * .25;
+    // In a chip as big as every chip's image, in the chip's colour
+    .topic-filter-chip .topic-filter-star {
+        color: inherit;
+        font-size: $picker-chip-image-size;
     }
 
     .topic-filter-container {

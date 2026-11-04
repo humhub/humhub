@@ -17,6 +17,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
+- **Picker filters suggest before anything is typed.** `SpaceFilter`, `UserFilter` and
+  `TopicFilter` take `suggest` (`fn(ListContext $context, int $limit): int[]`, the ids worth
+  suggesting, the most relevant first; `HasSuggestions`). A list answers them through an endpoint
+  of its own (`FilterableList::suggestions()`) and names it in `suggestionsUrl()`, which becomes
+  the definition's `props.suggestionsUrl`; `PickerFilterControl` requests it when the empty field
+  first gets the focus. The `user` and `space` filter controls no longer lead with an icon, the
+  `topic` one shows a star per topic instead of a colour dot.
+- **One placeholder colour:** `--hh-placeholder-color` (default `--hh-text-color-secondary`) for
+  every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
+  `--hh-text-color-soft3` for text fields and the icon colour for selects.
+
 - **The richtext editor is part of the core.** Its sources moved from the
   `humhub-prosemirror-richtext` npm package (dropped from `composer.json`) to
   `protected/humhub/resources/js/richtext/`; `humhub\assets\ProsemirrorEditorAsset` publishes the built

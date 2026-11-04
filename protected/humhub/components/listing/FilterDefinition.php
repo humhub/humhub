@@ -97,6 +97,29 @@ final class FilterDefinition
     }
 
     /**
+     * A copy with `$props` merged over the definition's own.
+     */
+    public function withProps(array $props): self
+    {
+        return new self(
+            $this->type,
+            $this->label,
+            $this->placeholder,
+            $this->options,
+            $this->optionsUrl,
+            $this->multiple,
+            $this->custom,
+            $this->default,
+            $this->hidden,
+            $this->wide,
+            $this->placement,
+            $this->sortOrder,
+            $this->key,
+            array_merge($this->props, $props),
+        );
+    }
+
+    /**
      * The definition as the kit reads it: `{key, type, label?, placeholder?, options?,
      * optionsUrl?, multiple?, custom?, default?, hidden?, wide?, placement, props?}` in this
      * order, without the keys that are `null` — `props` also omitted when it is empty.

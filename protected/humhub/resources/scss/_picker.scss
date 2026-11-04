@@ -37,11 +37,12 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         min-width: 0;
     }
 
+    // Without a choice it shows its placeholder: in the placeholder colour of every field
     .select-menu-button {
         display: flex;
         align-items: center;
         padding-right: $select-menu-icon-space;
-        color: $select-menu-icon-color;
+        color: var(--hh-placeholder-color);
         text-align: left;
         cursor: pointer;
 

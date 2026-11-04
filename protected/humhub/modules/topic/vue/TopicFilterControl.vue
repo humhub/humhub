@@ -8,18 +8,18 @@
         :resolve="resolve"
         :item-label="itemLabel"
         :item-title="itemTitle"
-        icon="ti-star"
         block="topic-filter"
         @update:model-value="$emit('update:modelValue', $event)"
     >
         <template #option="{ item }">
-            <span class="topic-filter-dot" :style="dotStyle(item)"></span>
+            <i class="ti ti-star topic-filter-star" :style="starStyle(item)" aria-hidden="true"></i>
         </template>
         <template #option-detail="{ item }">
             <span v-if="isForeign(item)" class="topic-filter-container">{{ item.container.name }}</span>
         </template>
-        <template #chip="{ item }">
-            <span class="topic-filter-dot" :style="dotStyle(item)"></span>
+        <!-- In the chip's own colour: a topic's colour may not read on the chip's background -->
+        <template #chip>
+            <i class="ti ti-star topic-filter-star" aria-hidden="true"></i>
         </template>
     </PickerFilterControl>
 </template>
@@ -35,18 +35,18 @@ import { apiUrl, client } from '@humhub/vue';
  * needs the topic module's Vue bundle (`TopicVueAsset` in its asset bundle's `$depends`).
  *
  * The combobox is the core's `PickerFilterControl` (a global component — see there for the
- * keyboard, the resolving of a URL value and the error handling), led by the topic icon (the
- * topic module's `star`), with a colour dot per topic (`.topic-filter`):
+ * keyboard, the resolving of a URL value and the error handling), with the topic module's
+ * star per topic (`.topic-filter`):
  *
  * - Props: the filter-type contract — `filter` (the definition: `placeholder`, else `label`, as
  *   placeholder; `label` as accessible name; always `multiple`, as the PHP filter sets it;
  *   `props.containerId`), `modelValue` (the ids as strings, `[]` for none — how the bar reads
  *   them from the URL), `inputId`. Emits `update:modelValue` with the new ids.
  * - Suggestions: `GET /api/v2/topic/picker?q=<text>&pageSize=8[&containerId=<props.containerId>]`
- *   — with a container its topics and the global ones. A suggestion is the topic's colour dot
- *   (a neutral one without a colour), its name and, for a topic of another container than the
+ *   — with a container its topics and the global ones. A suggestion is a star in the topic's
+ *   colour (a neutral one without a colour), its name and, for a topic of another container than the
  *   filter's (every container's, without one), that container's name, muted.
- * - A chip per topic (dot, name, a remove X; a topic of a foreign container names it in the
+ * - A chip per topic (a star in the chip's colour, name, a remove X; a topic of a foreign container names it in the
  *   chip's `title`), choosing appends. Ids the control has not seen
  *   among its suggestions (from the page URL) are resolved with one
  *   `GET /api/v2/topic/picker?ids=<ids>[&containerId=…]&pageSize=<count>` — at most 20, as the
@@ -89,9 +89,9 @@ export default {
         itemTitle(topic) {
             return this.isForeign(topic) ? `${topic.name} (${topic.container.name})` : null;
         },
-        // Without a colour the dot keeps the neutral colour of its class.
-        dotStyle(topic) {
-            return topic.color ? { backgroundColor: topic.color } : null;
+        // Without a colour the star keeps the neutral colour of its class.
+        starStyle(topic) {
+            return topic.color ? { color: topic.color } : null;
         },
         isForeign(topic) {
             return !!topic.container && String(topic.container.id) !== String(this.containerId);
