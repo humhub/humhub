@@ -17,9 +17,6 @@
  *    opens the global modal with a `<comment-section>` mount point for the link's
  *    `data-content-id`. The island loads the thread and the form by that id alone (see
  *    `CommentSection.vue`, "Mounted by `contentId` alone"); the modal's additions mount it.
- *  - `scrollActive`/`scrollInactive` - bound via the `events` option of the `RichTextField`
- *    rendered into the comment form shell (see `comment/widgets/views/commentFormShell.php`);
- *    toggles the scroll-shadow class on the editor's wrapper exactly like the pre-Vue form did.
  *
  * Count bookkeeping used to be this module's own job (`Form.prototype.incrementCommentCount`
  * walking up to the nearest `.stream-entry-addons`/`[data-action-component="comment.Comment"]`
@@ -52,14 +49,6 @@ humhub.module('comment', function (module, require, $) {
             body: '<comment-section content-id="' + contentId + '"></comment-section>',
         }).show();
         modal.global.applyAdditions();
-    };
-
-    var scrollActive = function (evt) {
-        evt.$trigger.closest('.richtext-create-input-group').addClass('scrollActive');
-    };
-
-    var scrollInactive = function (evt) {
-        evt.$trigger.closest('.richtext-create-input-group').removeClass('scrollActive');
     };
 
     /**
@@ -105,8 +94,6 @@ humhub.module('comment', function (module, require, $) {
 
     module.export({
         toggleComment: toggleComment,
-        showComments: showComments,
-        scrollActive: scrollActive,
-        scrollInactive: scrollInactive
+        showComments: showComments
     });
 });

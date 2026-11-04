@@ -65,7 +65,7 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [Vue.js components](ui-js-vuejs-components.md) — authoring and using components, registry, mounting
 - [Vue.js build tooling](ui-js-vuejs-build.md) — grunt build-vue, committed artifacts, vitest
 - [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, menu entries, module data, domain events
-- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
+- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, the rich text editor
 - [Vue.js form suite](ui-js-vuejs-forms.md) — HumHubForm, native field components, SubmitButton, error contract
 - [Vue.js roadmap](ui-js-vuejs-roadmap.md) — open work of the Vue islands initiative in core
 

@@ -34,9 +34,10 @@ export class DropdownSubmenu extends Dropdown {
      * </div>
      */
     initWrapper(view) {
+        $(this.trigger).addClass('dropdown-item');
         let label = $('<div>').addClass(buildMenuClass('submenu-label')).html(this.trigger)[0];
 
-        this.menu = crelt("div", {class: buildMenuClass("submenu")},  this.getContentDom(view));
+        this.menu = crelt("div", {class: buildMenuClass("submenu") + " dropdown-menu"},  this.getContentDom(view));
 
         this.dom = crelt("div", {class: buildMenuClass("submenu-wrap")}, label, this.menu);
 

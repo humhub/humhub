@@ -232,10 +232,44 @@ describe('UploadField', () => {
         ]);
     });
 
+    it('takes the file a module\'s handler created, once its entry was clicked', async () => {
+        mountField({
+            handlers: [{ label: 'New text file', icon: 'file-text', attributes: { 'data-action-click': 'texteditor.createSubmit' } }],
+        });
+        const created = { guid: 'guid-7', name: 'notes.txt', mimeIcon: 'mime-text' };
+
+        // Not this field's: nothing was asked of it
+        globalThis.humhubStubs.event.trigger('humhub:file:created', [created]);
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+
+        await wrapper.find('.dropdown-menu a.dropdown-item').trigger('click');
+        globalThis.humhubStubs.event.trigger('humhub:file:created', [created]);
+        globalThis.humhubStubs.event.trigger('humhub:file:created', [{ guid: 'guid-8', name: 'other.txt' }]);
+
+        expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
+        expect(wrapper.emitted('update:modelValue')[0][0]).toEqual([{ ...created, fileName: 'notes.txt' }]);
+    });
+
+    it('leaves the file to whoever\'s handler entry was clicked after its own', async () => {
+        mountField({
+            handlers: [{ label: 'New text file', icon: 'file-text', attributes: { 'data-action-click': 'texteditor.createSubmit' } }],
+        });
+        await wrapper.find('.dropdown-menu a.dropdown-item').trigger('click');
+
+        // An editor's menu ran a handler since
+        const elsewhere = document.createElement('a');
+        elsewhere.setAttribute('data-action-process', 'file-handler');
+        document.body.appendChild(elsewhere);
+        elsewhere.click();
+        globalThis.humhubStubs.event.trigger('humhub:file:created', [{ guid: 'guid-7', name: 'notes.txt' }]);
+
+        expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+        elsewhere.remove();
+    });
+
     it('opens the picker with the accept type of an upload-by-type handler entry', async () => {
         mountField({
-            handlersHtml: '<li><a class="dropdown-item" data-action-click="file.uploadByType" '
-                + 'data-action-params=\'{"type":"image/*"}\'>Image</a></li>',
+            handlers: [{ label: 'Image', icon: 'camera', attributes: { 'data-action-click': 'file.uploadByType', 'data-action-params': '{"type":"image/*"}' } }],
         });
 
         const input = wrapper.find('input[type="file"]');
@@ -252,8 +286,7 @@ describe('UploadField', () => {
 
     it('keeps the click away from the legacy action delegate, which would open a second picker', async () => {
         mountField({
-            handlersHtml: '<li><a class="dropdown-item" data-action-click="file.uploadByType" '
-                + 'data-action-params=\'{"type":"image/*"}\'>Image</a></li>',
+            handlers: [{ label: 'Image', icon: 'camera', attributes: { 'data-action-click': 'file.uploadByType', 'data-action-params': '{"type":"image/*"}' } }],
         });
 
         // `humhub.action.js` listens on the document; browser-verified, letting the click

@@ -30,7 +30,7 @@ const anchors = {
     registerMarkdownIt: (markdownIt) => {
         const anchorOptions = {
             permalink: anchor_plugin.permalink.linkInsideHeader({
-                symbol: '<i class="fa fa-chain"></i>',
+                symbol: '<i class="ti ti-link" aria-hidden="true"></i>',
                 placement: 'after',
                 ariaHidden: true,
                 renderAttrs: (slug, state) => {

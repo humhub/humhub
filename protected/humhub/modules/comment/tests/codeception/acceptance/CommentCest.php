@@ -14,18 +14,18 @@ use Exception;
 /**
  * Exercises the comment Vue island end-to-end (see `comment\vue\CommentSection.vue`) - the
  * comment list itself is no longer server-rendered HTML, only the initial JSON window and the
- * reusable form shell travel with the page (see `comment\widgets\Comments`/`CommentFormShell`).
+ * form's props travel with the page (see `comment\widgets\Comments`); the form's editor is
+ * rendered client-side (`RichTextField.vue`).
  *
  * Selectors below are browser-verified against the island's rendered DOM rather than the
  * removed server-rendered `comment.php`/`form.php` markup:
- *  - the form has NO native submit button anymore - `CommentForm.vue` renders its own
- *    Vue-owned `button.btn-comment-submit` outside the shell's `<form>` (see that component's
- *    own docblock);
+ *  - the submit button is `CommentForm.vue`'s own `button.btn-comment-submit` (see that
+ *    component's own docblock);
  *  - the editable richtext root is `.ProseMirror[contenteditable="true"]` inside
  *    `[data-ui-widget="ui.richtext.prosemirror.RichTextEditor"]` (the `.humhub-ui-richtext`
  *    class also lands on that same contenteditable node - either selector reaches it - but the
  *    widget instance itself is cached on the `[data-ui-widget]` root, not on that class; see
- *    the `e6e0362228` fix and `LegacyFormWrapper.vue`'s own docblock);
+ *    the `e6e0362228` fix and `RichTextField.vue`'s `getEditorInstance()`);
  *  - a comment entry's root is `#comment_<id>` (`.single-comment`), not the legacy
  *    `#comment-message-<id>` - that id no longer exists, the message itself is an
  *    unidentified `.comment-message` child of the entry root;
@@ -69,10 +69,8 @@ class CommentCest
         $this->openCommentForm($I);
 
         $I->click('.btn-comment-submit', self::COMMENT_SECTION);
-        // `#comment-message-error` (the `Comment[message]` field id plus `-error`, see
-        // `vue/form/fieldMixin.js`) rather than a bare `.invalid-feedback`: the legacy form
-        // shell renders its own - always empty - feedback element before it, and Codeception
-        // resolves a wait selector to the FIRST match only, which would never carry the text.
+        // `#comment-message-error`: the `Comment[message]` field id plus `-error`, see
+        // `vue/form/fieldMixin.js`.
         $I->waitForText('The comment must not be empty!', 10, self::COMMENT_SECTION . ' #comment-message-error');
 
         $I->fillField(self::RICHTEXT, 'Test comment');

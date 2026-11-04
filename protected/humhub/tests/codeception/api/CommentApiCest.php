@@ -152,6 +152,7 @@ class CommentApiCest
             'rootTotal' => 4,    // root comments only
             'prevCount' => 2,
             'nextCount' => 0,
+            'canComment' => true, // the caller's, beside the caller-neutral window
         ]);
         Assert::assertEquals([$roots[3], $roots[4]], $I->grabDataFromResponseByJsonPath('$.results[*].id'));
 
@@ -374,7 +375,7 @@ class CommentApiCest
 
         $I->sendGet('content/10/comments');
         $I->seeResponseCodeIs(200);
-        $I->seeResponseContainsJson(['results' => [['message' => 'Public comment']]]);
+        $I->seeResponseContainsJson(['results' => [['message' => 'Public comment']], 'canComment' => false]);
 
         // A guest reads the very same payload a member does - there is nothing
         // caller-specific left in it

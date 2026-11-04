@@ -10,6 +10,7 @@ namespace humhub\widgets;
 
 use humhub\components\api\ApiRules;
 use humhub\modules\admin\libs\CacheHelper;
+use humhub\modules\file\serializers\FileHandlerSerializer;
 use humhub\modules\file\validators\FileValidator;
 use humhub\widgets\Icon;
 use humhub\modules\user\models\User;
@@ -75,7 +76,17 @@ class CoreJsConfig extends Widget
                     'upload' => [
                         'url' => Url::to(['/file/file/upload']),
                         'deleteUrl' => Url::to(['/file/file/delete']),
+                        // The most files a content's form may attach (`UploadField`'s `max`).
+                        // @since 1.20
+                        'maxAttachedFiles' => (int)Yii::$app->getModule('content')->maxAttachedFiles,
                     ],
+                    // The file handlers the user may add a file with, for the Vue islands'
+                    // upload and editor menus (see FileHandlerSerializer). Taken per page, not
+                    // per island: they depend on the user only. @since 1.20
+                    'handlers' => Yii::$app->user->isGuest ? [] : FileHandlerSerializer::addHandlers(),
+                    // Whether a content's attachment list leaves out what its media preview
+                    // shows (the file module's `excludeMediaFilesPreview`). @since 1.20
+                    'excludeMediaFilesPreview' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
                     'url' => [
                         'download' => Url::to(['/file/file/download', 'download' => true, 'guid' => '-guid-'], true),
                         'load' => Url::to(['/file/file/download', 'guid' => '-guid-'], true),

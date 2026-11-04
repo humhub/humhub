@@ -11,7 +11,7 @@ import {triggerUpload} from "./service"
 let uploadFile = (context) => {
     return new MenuItem({
         title: context.translate("Upload and include a File"),
-        label: '<i class="fa fa-upload"></i>' + context.translate("Upload File"),
+        label: '<i class="ti ti-upload" aria-hidden="true"></i>' + context.translate("Upload File"),
         sortOrder: 0,
         enable(state) {
             return canInsertLink(state);

@@ -63,20 +63,6 @@ describe('comment bridge (humhub.comment.js)', () => {
         });
     });
 
-    describe('scrollActive / scrollInactive', () => {
-        it('toggles the scrollActive class on the closest richtext-create-input-group', () => {
-            const wrapper = createTag('div', { class: 'richtext-create-input-group' });
-            const trigger = document.createElement('span');
-            wrapper.appendChild(trigger);
-
-            commentModule.scrollActive({ $trigger: jQuery(trigger) });
-            expect(wrapper.classList.contains('scrollActive')).toBe(true);
-
-            commentModule.scrollInactive({ $trigger: jQuery(trigger) });
-            expect(wrapper.classList.contains('scrollActive')).toBe(false);
-        });
-    });
-
     describe('humhub:comment:countChanged bridge (bound once at module.init)', () => {
         const dispatchCountChanged = (island, total) => {
             island.dispatchEvent(new CustomEvent('humhub:comment:countChanged', {

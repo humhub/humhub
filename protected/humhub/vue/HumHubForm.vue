@@ -103,37 +103,11 @@
  * belt-and-suspenders together with the `computed()` wrapper above, and what lets
  * `this.errors` be read directly wherever object identity matters.
  *
- * ## A note on legacy-citizen fields and nested `<form>`
+ * ## Richtext
  *
- * `RichTextField` (see its own docblock) embeds `LegacyFormWrapper`, which `v-html`s
- * a server-rendered shell that is ITSELF a `<form>` (see
- * `humhub\widgets\VueFormShell`). Nesting that inside `HumHubForm`'s own `<form>`
- * therefore puts a `<form>` inside a `<form>` — invalid per the HTML5 content model.
- * That the inner `<form>` actually survives is NOT, as an earlier version of this
- * note claimed, some general property of `v-html`/fragment parsing being independent
- * of the live document — it depends on one narrow, fragile timing fact (verified in
- * Chromium): the fragment-parsing algorithm `innerHTML`/`v-html` runs seeds its
- * internal "form element pointer" from the context element's ANCESTORS, and at the
- * moment Vue's mount patch first assigns `LegacyFormWrapper`'s shell markup to its
- * root element, that element is still DETACHED and PARENTLESS — Vue builds a
- * component's DOM off-document and only inserts the whole finished subtree into the
- * live document in one step afterwards. A parentless element has no ancestors, so the
- * parser never sees this outer `<form>` and lets the inner `<form>` start tag through
- * untouched. A LATER re-render that reassigns that same element's `innerHTML` while it
- * is already attached inside this outer `<form>` would have the parser find the outer
- * form as an ancestor instead and silently DROP the inner `<form>` start tag — its
- * attributes lost, its children hoisted straight into `LegacyFormWrapper`'s own root,
- * no thrown error — see `LegacyFormWrapper.vue`'s own `checkFormPresence()` for the
- * safety net that detects exactly this failure mode. The PRACTICAL consequence
- * (documented on `CommentForm.vue` itself, which is the one component that hits
- * this): any element physically inside that inner shell — including a `SubmitButton`
- * `Teleport`ed into it — resolves its native form-submission activation against the
- * INNER (legacy) form, never against this component's own outer one. `HumHubForm`'s
- * own `submit` emission is therefore effectively dormant for such a field; the
- * consumer wires its submit handler directly on the `SubmitButton` instead
- * (`@click`), exactly as it already did before this suite existed. Every *native*
- * field (`TextField` and friends) has no such inner form, so `submit` fires normally
- * for them (including native Enter-to-submit inside a `TextField`).
+ * `RichTextField` renders the platform's richtext editor client-side, inside this
+ * component's `<form>` like any other field: its Ctrl+S clicks this form's
+ * `[type="submit"]`, so `submit` fires for it as for the native fields.
  *
  * @since 1.20
  */

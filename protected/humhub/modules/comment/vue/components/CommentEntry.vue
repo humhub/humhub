@@ -49,15 +49,12 @@
 
             <!-- class comment_edit_content required since v1.2 -->
             <div class="content comment_edit_content" :id="'comment_editarea_' + comment.id">
-                <template v-if="editing && formShellHtml">
+                <template v-if="editing">
                     <CommentForm
                         ref="editForm"
-                        :shell-html="formShellHtml"
                         :content-id="comment.contentId"
                         :edit-comment-id="comment.id"
                         :initial-message="editMessage"
-                        :submit-icon-html="submitIconHtml"
-                        :upload-options="uploadOptions"
                         @updated="onEditSaved"
                     />
                     <a href="#" class="comment-cancel-edit-link" @click.prevent="cancelEdit">{{ cancelEditLabel }}</a>
@@ -109,9 +106,6 @@
                                 :comment="child"
                                 :is-nested="true"
                                 :can-comment="canComment"
-                                :form-shell-html="formShellHtml"
-                                :submit-icon-html="submitIconHtml"
-                                :upload-options="uploadOptions"
                                 :page-size="pageSize"
                                 @entry-removed="onChildRemoved"
                                 @entry-updated="onChildUpdated"
@@ -120,13 +114,10 @@
                     </div>
 
                     <CommentForm
-                        v-if="replyOpen && formShellHtml"
+                        v-if="replyOpen"
                         ref="replyForm"
-                        :shell-html="formShellHtml"
                         :content-id="comment.contentId"
                         :parent-comment-id="comment.id"
-                        :submit-icon-html="submitIconHtml"
-                        :upload-options="uploadOptions"
                         @created="onReplyCreated"
                     />
                 </div>
@@ -325,10 +316,6 @@ export default {
     props: {
         comment: { type: Object, required: true },
         canComment: { type: Boolean, default: false },
-        formShellHtml: { type: String, default: null },
-        submitIconHtml: { type: String, default: null },
-        // Upload field settings, handed down to the reply/edit forms this entry can open.
-        uploadOptions: { type: Object, default: null },
         pageSize: { type: Number, default: 10 },
         // A reply (one level deep) never gets its own reply toggle or further
         // nesting - the server enforces at most one level (see
@@ -478,10 +465,8 @@ export default {
                 });
         },
         cancelEdit() {
-            // Discard before unmounting - see CommentForm.vue's/LegacyFormWrapper.vue's
-            // "Unsaved-changes guard" docblock section (P2-7 fix): a form the user walks
-            // away from without submitting must not leave a stale acknowledgeForm/backup
-            // baseline armed for a later, unrelated pjax navigation to trip over.
+            // Discard before unmounting: a form the user walks away from without
+            // submitting must not leave its draft backup behind (see RichTextField).
             if (this.$refs.editForm) {
                 this.$refs.editForm.clear();
             }

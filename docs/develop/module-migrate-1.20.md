@@ -2440,10 +2440,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - Acceptance tests: `selectFromPicker()` and `selectUserFromPicker()` are unchanged.
 
 - **A comment section mounts by `contentId` alone; the comments popup has no server route.**
-  `<CommentSection :content-id="…">` without `initial` and `canComment` loads its thread through
-  the HTTP API and the comment form from the new UI route `comment/comment/form?contentId=`
-  (JSON, not part of `/api/v2`: the form is server-rendered markup). `Comments::formProps()` is
-  the one source of those form props, for the widget and the route.
+  `<CommentSection :content-id="…">` without `initial` loads its thread through the HTTP API,
+  whose `GET content/<id>/comments` also answers `canComment` (the caller's, beside the
+  caller-neutral window). Everything else the form needs is the page's, in the core JS config:
+  `file.handlers` (the user's import and create file handlers as data,
+  `file\serializers\FileHandlerSerializer`), `file.upload.maxAttachedFiles` and
+  `file.excludeMediaFilesPreview`. The `Comments` widget embeds the first window, the like
+  states and `canComment` - no `uploadOptions`, `submitIconHtml` or `excludeMediaFiles` anymore.
   - Removed: `CommentController::actionShow()` (`comment/comment/show?mode=popup`) and its view
     `showPopup.php`. `CommentLink::MODE_POPUP` keeps working: the link opens the global modal
     client-side (`data-action-click="comment.showComments"`, `data-content-id`). A module that
@@ -2452,3 +2455,33 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     shows a content's whole thread and renders the replies itself. A comment passed as the
     deprecated `object` of either widget now stands for its content.
   - Removed: the unused `comment\widgets\CommentEntryLinks` (see the comment section entry above).
+
+- **The Vue `RichTextField` renders the editor client-side; the form shell is gone.**
+  `RichTextField` (see `docs/develop/ui-js-vuejs-forms.md`, "Rich text") renders the editor's
+  mount element and boots `ui.richtext.prosemirror.RichTextEditor` on it, with the PHP widget's
+  options as props (`preset`, `include`, `exclude`, `pluginOptions`, `mentioningUrl`,
+  `placeholder`, `layout`, `autofocus`) and `instanceKey` for the draft backup. Editor plugins
+  and presets a module registers keep applying. The PHP `RichTextField` widget is unchanged.
+  - Removed (all introduced earlier in this cycle): `humhub\widgets\VueFormShell`,
+    `LegacyFormWrapper.vue`, `comment\widgets\CommentFormShell` and its view, the
+    `shellHtml` prop of `RichTextField`/`CommentForm` and `getShellElement()` (now
+    `getElement()`), the `formShellHtml`, `submitIconHtml`, `uploadOptions` and
+    `excludeMediaFiles` props of the comment components, the `comment/comment/form` route
+    (`comment\controllers\CommentController`) with `Comments::formProps()`, and the
+    `comment.scrollActive`/`comment.scrollInactive` actions.
+  - `UploadField`'s and `RichTextField`'s `handlersHtml` prop is `handlers` (the data of the
+    core JS config's `file.handlers`).
+  - `upload` (`true`, or an own `(files) => Promise<file[]>`) puts files into the text through
+    the editor's new `upload` option; `handlers` adds
+    the file handlers to the editor's upload menu (its new `fileHandlers` option).
+  - The editor's menu shows Tabler icons; a theme that
+    styled `.ProseMirror-icon svg` styles `.ProseMirror-icon .ti` too. Its dropdowns are
+    Bootstrap's `.dropdown-menu` with `.dropdown-item` rows and take the `$dropdown-*`
+    variables like every context menu.
+  - The editor is one frame around its menu and text, with an input's focus look - the
+    block editor (`.plainMenu`, e.g. a post) shows its menu always, the inline one
+    (`.focusMenu`, e.g. a comment) is an input until it is focused, then its menu joins it at
+    the top. The frame is `.ProseMirror-menubar-wrapper`; the inline menu no longer floats
+    above the input (`margin-top: -27px` is gone), and the menu is one row high in both.
+  - `UploadField` takes the file a module's handler announces on `humhub:file:created` after
+    its dropdown entry was clicked (drawio, collabora, text-editor and the like).
