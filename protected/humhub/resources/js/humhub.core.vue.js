@@ -7267,6 +7267,8 @@
         query: "",
         results: [],
         searching: false,
+        // The suggestions for an empty field are being loaded
+        loadingSuggestions: false,
         resolving: false,
         // Items seen among the suggestions or resolved, by id: a value of them needs no request.
         known: {},
@@ -7298,6 +7300,11 @@
       term() {
         return this.query.trim();
       },
+      // Where the list's suggestions for an empty field load from (see "Suggestions without a text").
+      suggestionsUrl() {
+        var _a;
+        return ((_a = this.filter.props) == null ? void 0 : _a.suggestionsUrl) || null;
+      },
       placeholder() {
         return this.filter.placeholder || this.filter.label || "";
       },
@@ -7318,7 +7325,7 @@
         if (this.results.length) {
           return null;
         }
-        return this.searching ? vue$1.i18n.t("base", "Loading...") : vue$1.i18n.t("base", "No results found!");
+        return this.searching || this.loadingSuggestions ? vue$1.i18n.t("base", "Loading...") : vue$1.i18n.t("base", "No results found!");
       }
     },
     watch: {
@@ -7331,22 +7338,28 @@
           this.pendingFocus = false;
           this.$nextTick(() => {
             var _a;
-            return (_a = this.$refs.input || this.$refs.remove) == null ? void 0 : _a.focus();
+            this.quietFocus = true;
+            (_a = this.$refs.input || this.$refs.remove) == null ? void 0 : _a.focus();
+            this.quietFocus = false;
           });
         }
       }
     },
     created() {
+      this.suggested = null;
+      this.suggestSeq = 0;
       this.searchSeq = 0;
       this.resolveSeq = 0;
       this.searchTimer = null;
       this.pendingFocus = false;
+      this.quietFocus = false;
       this.show();
     },
     beforeUnmount() {
       clearTimeout(this.searchTimer);
       this.searchSeq++;
       this.resolveSeq++;
+      this.suggestSeq++;
     },
     methods: {
       idOf,
@@ -7405,6 +7418,68 @@
       onInput(event) {
         this.query = event.target.value;
         this.runSearch();
+        if (this.term === "") {
+          this.suggest();
+        }
+      },
+      onFocus() {
+        if (!this.quietFocus && this.term === "") {
+          this.suggest();
+        }
+      },
+      // Lists the suggestions for an empty field, the chosen ones left out (loaded first, when
+      // that is still to do); none: closed.
+      suggest() {
+        if (!this.suggestionsUrl) {
+          this.close();
+          return;
+        }
+        if (this.suggested === null) {
+          this.loadSuggestions();
+          return;
+        }
+        const chosen = this.ids;
+        this.results = this.suggested.filter((item) => !chosen.includes(idOf(item.id)));
+        if (!this.results.length) {
+          this.close();
+          return;
+        }
+        this.activeIndex = -1;
+        this.openListbox();
+      },
+      loadSuggestions() {
+        if (this.loadingSuggestions) {
+          return;
+        }
+        const seq = ++this.suggestSeq;
+        this.loadingSuggestions = true;
+        this.results = [];
+        this.openListbox();
+        vue$1.client.get(this.suggestionsUrl).then((response) => {
+          if (seq === this.suggestSeq) {
+            this.suggested = response.results || [];
+            this.suggested.forEach((item) => this.known[idOf(item.id)] = item);
+          }
+        }).catch((response) => {
+          if (seq === this.suggestSeq) {
+            vue$1.log.error(response);
+            this.suggested = [];
+          }
+        }).finally(() => {
+          if (seq !== this.suggestSeq) {
+            return;
+          }
+          this.loadingSuggestions = false;
+          if (this.open && this.term === "") {
+            this.suggest();
+          }
+        });
+      },
+      openListbox() {
+        if (!this.open) {
+          this.open = true;
+          this.bindOutside();
+        }
       },
       runSearch() {
         clearTimeout(this.searchTimer);
@@ -7443,7 +7518,11 @@
         });
       },
       openList() {
-        if (this.open || this.term === "") {
+        if (this.open) {
+          return;
+        }
+        if (this.term === "") {
+          this.suggest();
           return;
         }
         this.open = true;
@@ -7577,7 +7656,7 @@
           {
             ref: "field",
             class: "form-control picker-field",
-            onClick: _cache[3] || (_cache[3] = (...args) => $options.onFieldClick && $options.onFieldClick(...args))
+            onClick: _cache[4] || (_cache[4] = (...args) => $options.onFieldClick && $options.onFieldClick(...args))
           },
           [
             $props.multiple ? (vue.openBlock(), vue.createElementBlock(
@@ -7631,7 +7710,7 @@
                         "aria-label": $options.removeLabel(chip.label),
                         title: $options.removeLabel(chip.label),
                         onClick: vue.withModifiers(($event) => $options.remove(chip.id), ["stop"])
-                      }, [..._cache[5] || (_cache[5] = [
+                      }, [..._cache[6] || (_cache[6] = [
                         vue.createElementVNode(
                           "i",
                           {
@@ -7687,7 +7766,7 @@
                 "aria-label": $options.removeLabel($options.chips[0].label),
                 title: $options.removeLabel($options.chips[0].label),
                 onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => $options.remove($options.chips[0].id), ["stop"]))
-              }, [..._cache[6] || (_cache[6] = [
+              }, [..._cache[7] || (_cache[7] = [
                 vue.createElementVNode(
                   "i",
                   {
@@ -7726,12 +7805,13 @@
               "aria-controls": $data.listboxId,
               "aria-activedescendant": $options.activeDescendant,
               "aria-label": $options.accessibleName,
-              "aria-busy": $data.resolving || $data.searching ? "true" : null,
+              "aria-busy": $data.resolving || $data.searching || $data.loadingSuggestions ? "true" : null,
               placeholder: $props.multiple && $options.hasValue && !$props.keepPlaceholder ? "" : $options.placeholder,
               value: $data.query,
               disabled: $data.resolving,
               onInput: _cache[1] || (_cache[1] = (...args) => $options.onInput && $options.onInput(...args)),
-              onKeydown: _cache[2] || (_cache[2] = (...args) => $options.onKeydown && $options.onKeydown(...args))
+              onKeydown: _cache[2] || (_cache[2] = (...args) => $options.onKeydown && $options.onKeydown(...args)),
+              onFocus: _cache[3] || (_cache[3] = (...args) => $options.onFocus && $options.onFocus(...args))
             }, null, 40, _hoisted_7$2)) : vue.createCommentVNode("v-if", true)
           ],
           512
@@ -7745,7 +7825,7 @@
           "data-bs-popper": "static",
           role: "listbox",
           "aria-label": $options.accessibleName,
-          "aria-busy": $data.searching ? "true" : null
+          "aria-busy": $data.searching || $data.loadingSuggestions ? "true" : null
         }, [
           (vue.openBlock(true), vue.createElementBlock(
             vue.Fragment,
@@ -7757,7 +7837,7 @@
                 class: vue.normalizeClass(["dropdown-item select-menu-option picker-filter-option", [`${$props.block}-option`, { "is-focused": index === _ctx.activeIndex }]]),
                 role: "option",
                 "aria-selected": index === _ctx.activeIndex ? "true" : "false",
-                onPointerdown: _cache[4] || (_cache[4] = vue.withModifiers(() => {
+                onPointerdown: _cache[5] || (_cache[5] = vue.withModifiers(() => {
                 }, ["prevent"])),
                 onClick: ($event) => $options.choose(result),
                 onMousemove: ($event) => _ctx.activeIndex = index
@@ -7790,7 +7870,7 @@
                     class: vue.normalizeClass(["picker-filter-detail", `${$props.block}-detail`])
                   },
                   [
-                    _cache[7] || (_cache[7] = vue.createElementVNode(
+                    _cache[8] || (_cache[8] = vue.createElementVNode(
                       "span",
                       { class: "visually-hidden" },
                       ", ",

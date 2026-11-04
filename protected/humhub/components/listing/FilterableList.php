@@ -9,6 +9,7 @@
 namespace humhub\components\listing;
 
 use Closure;
+use humhub\components\listing\filters\HasSuggestions;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
@@ -327,9 +328,17 @@ abstract class FilterableList extends Component
         $definitions = [];
         foreach ($this->filters as $key => $filter) {
             $definition = $filter->isAvailable($context) ? $filter->definition($context) : null;
-            if ($definition !== null) {
-                $definitions[] = $definition->withKey($key);
+            if ($definition === null) {
+                continue;
             }
+
+            // Where the control loads its suggestions, when the list answers them
+            $url = $filter instanceof HasSuggestions && $filter->hasSuggestions() ? $this->suggestionsUrl($key, $context) : null;
+            if ($url !== null) {
+                $definition = $definition->withProps(['suggestionsUrl' => $url]);
+            }
+
+            $definitions[] = $definition->withKey($key);
         }
 
         $sort = $this->sortDefinition($context);
@@ -341,6 +350,33 @@ abstract class FilterableList extends Component
         usort($definitions, static fn(FilterDefinition $a, FilterDefinition $b) => $a->sortOrder <=> $b->sortOrder);
 
         return array_map(static fn(FilterDefinition $definition) => $definition->toArray(), $definitions);
+    }
+
+    /**
+     * The suggestions of the filter `$key` ({@see HasSuggestions}): what its control lists before
+     * anything is typed, for the context's user — what the list's suggestions endpoint answers
+     * (`{results: [...]}`). `null` for a key that names no such filter, or one not available in
+     * the context.
+     */
+    public function suggestions(string $key, ListContext $context): ?array
+    {
+        $filter = $this->getFilter($key);
+
+        if (!$filter instanceof HasSuggestions || !$filter->hasSuggestions() || !$filter->isAvailable($context)) {
+            return null;
+        }
+
+        return $filter->suggestions($context);
+    }
+
+    /**
+     * The URL of the endpoint answering {@see self::suggestions()} for the filter `$key`, put into
+     * its definition as `props.suggestionsUrl` — `null` (the default) for a list without one: its
+     * filters' controls suggest nothing until a text is typed.
+     */
+    protected function suggestionsUrl(string $key, ListContext $context): ?string
+    {
+        return null;
     }
 
     /**

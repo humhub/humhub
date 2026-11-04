@@ -438,7 +438,15 @@ to the control as `props.containerId`): its `containerId`, else the list context
 else none (every visible topic); and matches content with any of them. It is
 the `topic` filter type, rendered by the topic module's `TopicFilterControl` with suggestions from
 `GET /api/v2/topic/picker`; not available to guests, and a page using it lists `TopicVueAsset` in
-its asset bundle's `$depends`.
+its asset bundle's `$depends`. All three take `suggest`, `fn(ListContext $context, int $limit): int[]`:
+the ids of what the control lists as soon as the empty field gets the focus — the latest authors of
+the list's items, say, the most relevant first (`HasSuggestions`, `SuggestingFilter`). They are
+loaded lazily, when the control first needs them: the list answers them through an endpoint of its
+own (`FilterableList::suggestions($key, $context)` — the items the filter's picker shows the caller,
+at most `HasSuggestions::LIMIT` (6), in the shape the picker's search answers — as
+`{results: [...]}`) and names it by overriding `FilterableList::suggestionsUrl($key, $context)`,
+which puts it into the filter's definition as `props.suggestionsUrl`. A page render computes
+nothing of them.
 
 A purpose never changes the permission, the parameters, the limits or the shape of a list
 endpoint. Where a consumer needs another rule — a user picker for every logged-in user, without

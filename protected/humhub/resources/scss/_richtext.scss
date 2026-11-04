@@ -510,7 +510,9 @@
             min-width: 3em;
         }
 
+        // The editor's placeholder, in the placeholder colour of every field
         .ProseMirror .placeholder {
+            color: var(--hh-placeholder-color);
             padding: 0 !important;
             pointer-events: none;
             height: 0;
