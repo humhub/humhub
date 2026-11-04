@@ -62,11 +62,13 @@ class AssetBundle extends BaseAssetBundle
      * `build/` is deliberately NOT excluded here: the compiled `css/humhub-app.css`
      * references its contents at runtime via relative `url(../build/<hash>/...)`
      * (e.g. FontAwesome, OpenSans), so it must always be published alongside
-     * the rest of the tree. `scss/` only contains sources, never referenced at runtime.
+     * the rest of the tree. `scss/` and `js/richtext/` (the richtext editor, built into
+     * `js/humhub.richtext.editor.js`) only contain sources, never referenced at runtime.
      */
     public const HUMHUB_RESOURCES_PUBLISH_OPTIONS = [
         'except' => [
             'scss/',
+            'js/richtext/',
             '.gitignore',
         ],
     ];

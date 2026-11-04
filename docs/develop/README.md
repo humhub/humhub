@@ -102,4 +102,5 @@ How user accounts, authentication and provisioning fit together.
 Deep dives into how parts of the core are wired. Not needed for module development — useful when touching the core machinery itself.
 
 - [Asset building](internals-assets.md) — bundles, AssetManager publishing, the build pipeline
+- [Richtext editor](internals-richtext-editor.md) — the editor's sources, build, tests, npm dependencies and configuration
 - [Release packages](internals-release-package.md) — how the GitHub workflow builds the zip/tar.gz packages, `exclude.txt`
