@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8688: The richtext field of the Vue.js forms renders the editor client-side; file handlers come with the page config, and the editor gets an upload and a file handlers option, Tabler icons and Bootstrap dropdowns
 - Enh #8687: The richtext editor is part of the core, built from `protected/humhub/resources/js/richtext/` instead of the `humhub-prosemirror-richtext` package
 - Enh #8685: A comment section loads by its content id alone; the comments popup opens without a server route
 - Enh #8684: File versions and the activity history of one content, as API endpoints and Vue islands
