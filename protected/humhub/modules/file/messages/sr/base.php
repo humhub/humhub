@@ -24,8 +24,12 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ovaj upload fajlova dozvoljava maksimum od {n,plural,=1{# file} other{# files}}.',
     'Upload' => 'Dodaj',
     'Upload files' => 'Podignuti fajlovi',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

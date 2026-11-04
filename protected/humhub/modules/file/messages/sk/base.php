@@ -27,7 +27,11 @@ return [
  =3{# súbori} =3{# súbori} =4{# súbori} other{# súborov}}.',
     'Upload' => 'Nahrať',
     'Upload files' => 'Nahrať súbory',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

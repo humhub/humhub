@@ -25,7 +25,11 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'هذا الحقل يسمح فقط بملف واحد {n,plural,=1{# ملف} other{# ملفات}} بحد أقصى.',
     'Upload' => 'رفع',
     'Upload files' => 'رفع ملفات',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

@@ -27,5 +27,9 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'To pole wgrywania pozwala na maksymalne wgranie {n,plural,=1{# pliku} other{# plików}}.',
     'Upload' => 'Wczytaj',
     'Upload files' => 'Wczytaj plik',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

@@ -23,9 +23,13 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Toto pole pro nahrávání povoluje maximálně {n,plural,=1{# file} other{# files}}.',
     'Upload' => 'Nahrát',
     'Upload files' => 'Nahrát soubory',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

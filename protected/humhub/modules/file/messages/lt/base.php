@@ -24,8 +24,12 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Vienu metu galite įkelti tik {n,plural,=1{# file} other{# files}}. failus',
     'Upload' => 'Įkelti',
     'Upload files' => 'Įkelti failus',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

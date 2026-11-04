@@ -24,9 +24,13 @@ return [
     'Attach a video' => '',
     'Attach an audio message' => '',
     'Attach an image' => '',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
     'The uploaded image is not a squared.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

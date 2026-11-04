@@ -27,5 +27,9 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Esse campo só permite o envio de até {n,plural,=1{# arquivo} other{# arquivos}}.',
     'Upload' => 'Enviar',
     'Upload files' => 'Fazer upload de arquivos',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

@@ -25,7 +25,11 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Det här uppladdningsfältet tillåter endast uppladdning av maximalt {n,plural,=1{# file} other{# files}}.',
     'Upload' => 'Ladda upp',
     'Upload files' => 'Ladda upp filer',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

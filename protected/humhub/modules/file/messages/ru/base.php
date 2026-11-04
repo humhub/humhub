@@ -24,8 +24,12 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Это поле загрузки допускает максимум {n,plural,=1{# файл} other{# файлов}}.',
     'Upload' => 'Загрузть',
     'Upload files' => 'Загрузить файлы',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

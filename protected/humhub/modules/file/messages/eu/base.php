@@ -24,8 +24,12 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Igotzeko eremu honek, gehienez ere, {n,plural,=1{# file} other{# files}} bakarrik baimentzen du.',
     'Upload' => 'Igo',
     'Upload files' => 'Igotako fitxategiak',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

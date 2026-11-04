@@ -19,7 +19,9 @@ return [
     'Attach an audio message' => '',
     'Attach an image' => '',
     'Could not find requested file variant!' => '',
+    'Current' => '',
     'Double file extensions are not allowed!' => '',
+    'Download version {version}' => '',
     'File {fileName} could not be uploaded!' => '',
     'No file was uploaded.' => '',
     'Share' => '',
@@ -27,5 +29,7 @@ return [
     'Share in {targetDisplayName}' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
     'The uploaded image is not a squared.' => '',
+    'The versions could not be loaded.' => '',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+    '{name} uploaded {version}' => '',
 ];

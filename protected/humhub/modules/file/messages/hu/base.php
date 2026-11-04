@@ -25,7 +25,11 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ez a feltöltési mező maximum {n,plural,=1{# fájl} other{# fájl}} feltöltését teszi lehetővé.',
     'Upload' => 'Feltöltés',
     'Upload files' => 'Fájlok feltöltése',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

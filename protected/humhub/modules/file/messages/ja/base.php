@@ -27,5 +27,9 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '{n} 個までのファイルしかこのアップロードに指定できません。',
     'Upload' => 'アップロード',
     'Upload files' => 'ファイルをアップロード',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

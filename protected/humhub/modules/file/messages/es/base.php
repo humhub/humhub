@@ -25,7 +25,11 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Este campo permite un máximo de {n,plural,=1{# fichero} other{# fichero}}.',
     'Upload' => 'Subir',
     'Upload files' => 'Subir archivos',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

@@ -27,5 +27,9 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Naložite lahko minimalno {n,plural,=1{# file} other{# files}}.',
     'Upload' => 'Naloži',
     'Upload files' => 'Naloži datoteke',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

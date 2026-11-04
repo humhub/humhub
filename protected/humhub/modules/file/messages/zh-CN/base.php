@@ -18,8 +18,10 @@ return [
     'Attach a video' => '',
     'Attach an audio message' => '',
     'Attach an image' => '',
+    'Current' => '',
     'Double file extensions are not allowed!' => '',
     'Download' => '',
+    'Download version {version}' => '',
     'Last update by:' => '',
     'No file was uploaded.' => '',
     'Share' => '',
@@ -28,4 +30,6 @@ return [
     'Size:' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
     'The uploaded image is not a squared.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];

@@ -14,8 +14,10 @@ return [
     'Could not find requested file variant!' => '',
     'Could not find requested file!' => '',
     'Created by:' => '',
+    'Current' => '',
     'Double file extensions are not allowed!' => '',
     'Download' => '',
+    'Download version {version}' => '',
     'File {fileName} could not be uploaded!' => '',
     'Insufficient permissions!' => '',
     'Invalid Mime-Type' => '',
@@ -27,5 +29,7 @@ return [
     'Size:' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
     'The uploaded image is not a squared.' => '',
+    'The versions could not be loaded.' => '',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+    '{name} uploaded {version}' => '',
 ];

@@ -18,7 +18,9 @@ return [
     'Attach an image' => '',
     'Could not find requested file variant!' => '',
     'Created by:' => '',
+    'Current' => '',
     'Double file extensions are not allowed!' => '',
+    'Download version {version}' => '',
     'File {fileName} could not be uploaded!' => '',
     'Invalid Mime-Type' => '',
     'Last update by:' => '',
@@ -27,5 +29,7 @@ return [
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+    'The versions could not be loaded.' => '',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+    '{name} uploaded {version}' => '',
 ];

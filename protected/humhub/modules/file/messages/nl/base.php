@@ -27,5 +27,9 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Dit upload veld kan maximaal {n,plural,=1{# bestand} other {# bestanden}} bevatten.',
     'Upload' => 'Upload',
     'Upload files' => 'Upload bestanden',
+    'Current' => '',
+    'Download version {version}' => '',
     'No file was uploaded.' => '',
+    'The versions could not be loaded.' => '',
+    '{name} uploaded {version}' => '',
 ];
