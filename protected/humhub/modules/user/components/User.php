@@ -300,7 +300,12 @@ class User extends \yii\web\User
 
     private function isGateUrl($url): bool
     {
+        // Not before this instance is registered as `Yii::$app->user`: a `returnUrl` configured on
+        // the component is applied while it is still being created, and a gate reading
+        // `Yii::$app->user` in its route (e.g. MustChangePasswordGate) would re-enter the
+        // application's `__get()` ("Undefined property: Application::$user").
         return (is_string($url) || is_array($url))
+            && Yii::$app->has('user', true)
             && Yii::$app->has('gateManager')
             && Yii::$app->gateManager->isGateUrl($url);
     }
