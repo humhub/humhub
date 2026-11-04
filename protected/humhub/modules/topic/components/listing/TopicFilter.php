@@ -11,6 +11,8 @@ namespace humhub\modules\topic\components\listing;
 use humhub\components\listing\FilterDefinition;
 use humhub\components\listing\filters\ConfigurableFilter;
 use humhub\components\listing\filters\IdsFilter;
+use humhub\components\listing\filters\HasSuggestions;
+use humhub\components\listing\filters\SuggestingFilter;
 use humhub\components\listing\FilterValue;
 use humhub\components\listing\ListBuilder;
 use humhub\components\listing\ListContext;
@@ -18,6 +20,7 @@ use humhub\components\listing\ListValidationException;
 use humhub\components\listing\QueryListBuilder;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\topic\components\TopicList;
+use humhub\modules\topic\serializers\TopicSerializer;
 use Yii;
 
 /**
@@ -60,8 +63,10 @@ use Yii;
  *
  * @since 1.20
  */
-class TopicFilter extends ConfigurableFilter
+class TopicFilter extends ConfigurableFilter implements HasSuggestions
 {
+    use SuggestingFilter;
+
     public const TYPE = 'topic';
 
     /**
@@ -75,8 +80,10 @@ class TopicFilter extends ConfigurableFilter
         ?callable $apply = null,
         ?array $definition = null,
         protected readonly ?int $containerId = null,
+        ?callable $suggest = null,
     ) {
         parent::__construct($key, $apply, $definition);
+        $this->setSuggest($suggest);
     }
 
     /**
@@ -149,6 +156,32 @@ class TopicFilter extends ConfigurableFilter
             $this->definition,
             ['type' => self::TYPE, 'multiple' => true, 'props' => $props],
         ));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function suggestionItems(array $ids, ListContext $context): array
+    {
+        $params = ['ids' => $ids];
+        $containerId = $this->containerIdOf($context);
+        if ($containerId !== null) {
+            $params['containerId'] = $containerId;
+        }
+
+        try {
+            $topics = (new TopicList())->build($params, new ListContext($context->user))->query()->all();
+        } catch (ListValidationException) {
+            return [];
+        }
+
+        // The shape of `GET /api/v2/topic/picker`
+        $items = [];
+        foreach (TopicSerializer::batch($topics) as $item) {
+            $items[(int)$item['id']] = $item;
+        }
+
+        return $items;
     }
 
     /**

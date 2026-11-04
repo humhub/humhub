@@ -10,11 +10,15 @@ namespace humhub\modules\user\components\listing;
 
 use humhub\components\listing\FilterDefinition;
 use humhub\components\listing\filters\ConfigurableFilter;
+use humhub\components\listing\filters\HasSuggestions;
+use humhub\components\listing\filters\SuggestingFilter;
 use humhub\components\listing\FilterValue;
 use humhub\components\listing\ListBuilder;
 use humhub\components\listing\ListContext;
 use humhub\components\listing\QueryListBuilder;
 use humhub\modules\user\components\UserList;
+use humhub\modules\user\models\User;
+use humhub\modules\user\serializers\UserSerializer;
 use Yii;
 
 /**
@@ -37,10 +41,15 @@ use Yii;
  * or, on a {@see QueryListBuilder}, as `column = <id>`. The definition's `type` is always
  * `user` — the value is an id only this control produces —, its label defaults to "Person".
  *
+ * `suggest` names the people the control lists before anything is typed (the latest authors of
+ * the list's items, say), see {@see HasSuggestions}.
+ *
  * @since 1.20
  */
-class UserFilter extends ConfigurableFilter
+class UserFilter extends ConfigurableFilter implements HasSuggestions
 {
+    use SuggestingFilter;
+
     public const TYPE = 'user';
 
     public function __construct(
@@ -48,8 +57,10 @@ class UserFilter extends ConfigurableFilter
         protected readonly ?string $column = null,
         ?callable $apply = null,
         ?array $definition = null,
+        ?callable $suggest = null,
     ) {
         parent::__construct($key, $apply, $definition);
+        $this->setSuggest($suggest);
     }
 
     /**
@@ -112,6 +123,26 @@ class UserFilter extends ConfigurableFilter
 
         // The type last: a definition cannot turn the filter into a control that sends no user id.
         return new FilterDefinition(...array_merge($this->defaultDefinition($context), $this->definition, ['type' => self::TYPE]));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function suggestionItems(array $ids, ListContext $context): array
+    {
+        $users = (new UserList())
+            ->build(['ids' => $ids], new ListContext($context->user, UserList::PURPOSE_PICKER))
+            ->query()
+            ->all();
+
+        $items = [];
+        foreach ($users as $user) {
+            /** @var User $user */
+            // The shape of `GET /api/v2/user/picker`
+            $items[$user->id] = UserSerializer::short($user) + ['displayNameSub' => $user->getDisplayNameSub() ?: null];
+        }
+
+        return $items;
     }
 
     /**

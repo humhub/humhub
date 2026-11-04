@@ -65,7 +65,7 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [Vue.js components](ui-js-vuejs-components.md) — authoring and using components, registry, mounting
 - [Vue.js build tooling](ui-js-vuejs-build.md) — grunt build-vue, committed artifacts, vitest
 - [Vue.js extensions](ui-js-vuejs-extensions.md) — extension slots, menu entries, module data, domain events
-- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, LegacyFormWrapper, form shells
+- [Vue.js legacy interop](ui-js-vuejs-interop.md) — v-additions, RichTextOutput, the rich text editor
 - [Vue.js form suite](ui-js-vuejs-forms.md) — HumHubForm, native field components, SubmitButton, error contract
 - [Vue.js roadmap](ui-js-vuejs-roadmap.md) — open work of the Vue islands initiative in core
 
@@ -102,4 +102,5 @@ How user accounts, authentication and provisioning fit together.
 Deep dives into how parts of the core are wired. Not needed for module development — useful when touching the core machinery itself.
 
 - [Asset building](internals-assets.md) — bundles, AssetManager publishing, the build pipeline
+- [Richtext editor](internals-richtext-editor.md) — the editor's sources, build, tests, npm dependencies and configuration
 - [Release packages](internals-release-package.md) — how the GitHub workflow builds the zip/tar.gz packages, `exclude.txt`

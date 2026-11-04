@@ -10,18 +10,12 @@
             :root-total="rootTotal"
             :page-size="pageSize"
             :can-comment="showForm"
-            :form-shell-html="formShellHtml"
-            :submit-icon-html="submitIconHtml"
-            :upload-options="uploadOptions"
             :anchor-comment-id="anchorCommentId"
         />
         <CommentForm
-            v-if="showForm && formShellHtml"
+            v-if="showForm"
             ref="form"
-            :shell-html="formShellHtml"
             :content-id="contentId"
-            :submit-icon-html="submitIconHtml"
-            :upload-options="uploadOptions"
             @created="onMainCreated"
         />
     </div>
@@ -116,6 +110,17 @@
  * earlier draft of this comment assumed. `countChanged`'s `detail` is
  * `{contentId, total}`.
  *
+ * ## Mounted by `contentId` alone
+ *
+ * Everything but `contentId` is optional. Without `initial` the island fetches its first
+ * window through the HTTP API (`fetchInitial()`), which also says whether the caller may
+ * comment (`canComment`, taken unless the prop said so). What the form needs beyond that -
+ * the file handlers, the attachment limit - is the page's (the core JS config's `file`
+ * block). So `<CommentSection :content-id="42" />` is a complete thread anywhere - a page
+ * that opens one client-side (a file's details pane, the comments popup) needs no widget and
+ * one request. The widget embeds the first window for a stream entry, which saves the island
+ * that request on first paint.
+ *
  * @since 1.20
  */
 import { events, getConfig, log } from '@humhub/vue';
@@ -163,23 +168,14 @@ export default {
         // cacheable, see docs/develop/concept-api.md) while THIS page render is per user
         // anyway, so inlining them saves the island its first `like/states` request.
         initialLikeStates: { type: Object, default: () => ({}) },
-        canComment: { type: Boolean, default: false },
-        // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
-        formShellHtml: { type: String, default: null },
-        // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
-        submitIconHtml: { type: String, default: null },
-        // Settings of the form's upload field ({max, handlersHtml}) - see UploadField.vue.
-        uploadOptions: { type: Object, default: null },
+        // `null` (not told): taken from the first window's response, see "Mounted by
+        // `contentId` alone"
+        canComment: { type: Boolean, default: null },
         pageSize: { type: Number, default: 10 },
         // permalink highlight target
         anchorCommentId: { type: Number, default: null },
         // stream preview: section hidden until toggled via humhub:comment:toggle
         collapsed: { type: Boolean, default: false },
-        // The file module's `excludeMediaFilesPreview` setting, provided down to every
-        // entry's <AttachedFiles> so a comment's attachment list leaves out what the
-        // preview grid above it already shows - the same call `ShowFiles` makes for a
-        // wall entry.
-        excludeMediaFiles: { type: Boolean, default: false },
     },
     data() {
         // The raw window payload is mapped ONCE here — everything below this
@@ -207,6 +203,8 @@ export default {
             // rather than 0, so an unmigrated payload degrades no worse than before this fix.
             rootTotal: initialWindow ? (initialWindow.rootTotal ?? initialWindow.total) : 0,
             loaded: !!initialWindow,
+            // Whether the caller may comment: as handed over, or as the first window says
+            commentAllowed: !!this.canComment,
             isCollapsed: this.collapsed,
             // id -> revision counter, bumped whenever an entry object is
             // swapped in place under the same id (edit-save/live-append) —
@@ -232,7 +230,11 @@ export default {
             isKnownId: this.isKnownId,
             likeStates: this.likeStates,
             ensureLikeStates: this.ensureLikeStates,
-            excludeMediaFiles: this.excludeMediaFiles,
+            // The file module's `excludeMediaFilesPreview` setting (core JS config), for every
+            // entry's <AttachedFiles>: a comment's attachment list leaves out what the
+            // preview grid above it already shows - the same call `ShowFiles` makes for a
+            // wall entry.
+            excludeMediaFiles: !!(getConfig('file') || {}).excludeMediaFilesPreview,
         };
     },
     computed: {
@@ -240,7 +242,7 @@ export default {
             return getConfig('user').isGuest === true;
         },
         showForm() {
-            return this.canComment && !this.guest;
+            return this.commentAllowed && !this.guest;
         },
     },
     watch: {
@@ -294,6 +296,9 @@ export default {
             // exactly like the embedded initial window the widget ships.
             fetchWindow({ contentId: this.contentId })
                 .then((response) => {
+                    if (this.canComment === null) {
+                        this.commentAllowed = !!response.canComment;
+                    }
                     this.comments = response.results;
                     this.prevCount = response.prevCount;
                     this.nextCount = response.nextCount;

@@ -94,6 +94,17 @@ class SpaceFilterTest extends HumHubDbTestCase
         $this->assertSpaceNotFound($this->parse('2'));
     }
 
+    public function testSuggestsTheSpacesItsCallbackNamesThatTheCallerMaySee(): void
+    {
+        $filter = new SpaceFilter(definition: [], suggest: fn(ListContext $context, int $limit) => [5, 2, 9999, 1]);
+
+        $suggestions = $filter->suggestions($this->context());
+
+        $this->assertSame([2, 1], array_column($suggestions, 'id'), 'in order, only those the picker lists (5 is private)');
+        $this->assertSame(Space::findOne(['id' => 2])->name, $suggestions[0]['name'], 'the shape of the picker');
+        $this->assertSame([], (new SpaceFilter())->suggestions($this->context()), 'none without a callback');
+    }
+
     public function testRefusesAnUnknownSpace(): void
     {
         $this->assertSpaceNotFound($this->parse('9999'));

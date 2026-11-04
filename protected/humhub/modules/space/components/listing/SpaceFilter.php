@@ -11,11 +11,14 @@ namespace humhub\modules\space\components\listing;
 use humhub\components\listing\FilterDefinition;
 use humhub\components\listing\filters\ConfigurableFilter;
 use humhub\components\listing\filters\IdsFilter;
+use humhub\components\listing\filters\HasSuggestions;
+use humhub\components\listing\filters\SuggestingFilter;
 use humhub\components\listing\FilterValue;
 use humhub\components\listing\ListBuilder;
 use humhub\components\listing\ListContext;
 use humhub\components\listing\QueryListBuilder;
 use humhub\modules\space\components\SpaceList;
+use humhub\modules\space\serializers\SpaceSerializer;
 use Yii;
 
 /**
@@ -50,8 +53,10 @@ use Yii;
  *
  * @since 1.20
  */
-class SpaceFilter extends ConfigurableFilter
+class SpaceFilter extends ConfigurableFilter implements HasSuggestions
 {
+    use SuggestingFilter;
+
     public const TYPE = 'space';
 
     public function __construct(
@@ -60,8 +65,10 @@ class SpaceFilter extends ConfigurableFilter
         ?callable $apply = null,
         ?array $definition = null,
         protected readonly bool $multiple = true,
+        ?callable $suggest = null,
     ) {
         parent::__construct($key, $apply, $definition);
+        $this->setSuggest($suggest);
     }
 
     /**
@@ -148,6 +155,25 @@ class SpaceFilter extends ConfigurableFilter
             $this->definition,
             ['type' => self::TYPE, 'multiple' => $this->multiple],
         ));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function suggestionItems(array $ids, ListContext $context): array
+    {
+        $spaces = (new SpaceList())
+            ->build(['ids' => $ids, 'scope' => SpaceList::SCOPE_ALL], new ListContext($context->user, SpaceList::PURPOSE_PICKER))
+            ->query()
+            ->all();
+
+        // The shape of `GET /api/v2/space?purpose=picker`
+        $items = [];
+        foreach (SpaceSerializer::batch($spaces) as $item) {
+            $items[(int)$item['id']] = $item;
+        }
+
+        return $items;
     }
 
     /**

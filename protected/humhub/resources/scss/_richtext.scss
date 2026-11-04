@@ -65,6 +65,7 @@
 
         .ProseMirror-menuitem {
             display: flex;
+            align-items: center;
             margin-right: 0;
         }
 
@@ -76,6 +77,7 @@
         .ProseMirror-menu-group {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
             min-height: 22px;
         }
 
@@ -122,6 +124,12 @@
             position: relative;
         }
 
+        .ProseMirror-menu-dropdown-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
         .ProseMirror-menu-dropdown:after {
             content: "";
             border-left: 4px solid transparent;
@@ -133,41 +141,29 @@
             top: calc(50% - 2px);
         }
 
-        .ProseMirror-menu-dropdown-menu, .ProseMirror-menu-submenu {
-            background: var(--hh-background-color-main);
-            border: 1px solid var(--hh-text-color-soft2);
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-            color: var(--hh-text-color-highlight);
-            position: absolute;
-
-            .ProseMirror-menu-active {
-                background: var(--hh-background-color-secondary);
-                border-left: 2px solid var(--bs-accent);
-                opacity: 1 !important;
-                padding: 4px 7px 4px 5px;
-            }
-        }
-
+        // The dropdowns are Bootstrap's `.dropdown-menu` with `.dropdown-item` rows, so they look
+        // like every other context menu (`_dropdown.scss`); only the editor's states are mapped
         .ProseMirror-menu-dropdown-menu {
+            top: 100%;
+            left: 0;
             margin-top: 2px;
-            min-width: 6em;
             z-index: 15;
         }
 
-        .ProseMirror-menu-dropdown-item {
-            cursor: pointer;
-        }
+        .ProseMirror-menu-dropdown-menu .dropdown-item {
+            display: flex;
+            align-items: center;
 
-        .ProseMirror-menu-dropdown-item div[title],
-        .ProseMirror-menu-dropdown-item a.ProseMirror-menu-trigger,
-        .ProseMirror-menu-submenu-wrap {
-            display: block;
-            padding: 4px 7px;
-        }
+            &.ProseMirror-menu-disabled {
+                color: var(--bs-dropdown-link-disabled-color);
+                opacity: 1;
+                pointer-events: none;
+            }
 
-        .ProseMirror-menu-dropdown-item:hover {
-            background: var(--hh-background-color-secondary);
+            &.ProseMirror-menu-active {
+                color: var(--bs-dropdown-link-active-color);
+                background-color: var(--bs-dropdown-link-active-bg);
+            }
         }
 
         .ProseMirror-menu-submenu-wrap {
@@ -181,17 +177,13 @@
             content: "";
             opacity: .6;
             position: absolute;
-            right: 4px;
+            right: 8px;
             top: calc(50% - 4px);
         }
 
         .ProseMirror-menu-submenu {
-            background: var(--hh-background-color-main);
-            border-top-right-radius: 4px;
-            display: none;
-            min-width: 4em;
             left: 100%;
-            top: 0;
+            top: calc(-1 * var(--bs-dropdown-padding-y));
         }
 
         .ProseMirror-menu-disabled {
@@ -211,18 +203,11 @@
             align-items: center;
             justify-content: center;
             min-width: 28px;
+            height: 24px;
             padding: 0 5px;
 
             &.ProseMirror-menu-active {
                 border-color: var(--hh-text-color-soft3);
-            }
-
-            &.ProseMirror-menu-tableOption,
-            &.ProseMirror-menu-insertEmoji {
-                svg {
-                    padding-top: 1px;
-                    padding-left: 1px;
-                }
             }
         }
 
@@ -233,6 +218,13 @@
         .ProseMirror-icon svg {
             fill: currentColor;
             height: 20px;
+        }
+
+        // The menu's Tabler icons (humhub-prosemirror-richtext 2.4)
+        .ProseMirror-icon .ti {
+            display: block;
+            font-size: 18px;
+            line-height: 1;
         }
 
         .ProseMirror-icon span {
@@ -299,31 +291,52 @@
     }
 
     /**
-     * Editor style attached at the top of input only visible on focus
+     * One frame around the menu and the text, with an input's focus look: the block editor
+     * (e.g. a post) shows its menu always, the inline one (e.g. a comment) is an input until it
+     * is focused, then its menu joins it at the top
      */
-    .ProsemirrorEditor.focusMenu {
-        .form-control:focus {
-            border-top-left-radius: 0 !important;
+    .ProsemirrorEditor.focusMenu,
+    .ProsemirrorEditor.plainMenu {
+        .ProseMirror-menubar-wrapper {
+            border: $input-border-width solid $input-border-color;
+            border-radius: $input-border-radius;
+            background-color: $input-bg;
+            @include transition($input-transition);
+
+            &:focus-within {
+                border-color: $input-focus-border-color;
+                box-shadow: $input-focus-box-shadow;
+            }
+        }
+
+        // The frame is the wrapper's
+        .ProseMirror.form-control {
+            border: 0 !important;
+            border-radius: $input-border-radius !important;
+            box-shadow: none !important;
         }
 
         .ProseMirror-menubar {
-            background: var(--hh-background-color-main);
-            border: 1px solid var(--hh-text-color-soft2);
-            border-bottom: 0;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            box-sizing: border-box;
+            background: var(--hh-background-color-page);
+            border: 0;
+            border-bottom: $input-border-width solid var(--hh-background3);
+            border-radius: $input-border-radius $input-border-radius 0 0;
             color: var(--hh-text-color-soft);
-            float: left;
-            margin-top: -27px;
-            min-height: 1em;
-            overflow: visible;
-            padding: 2px 0;
+            padding: 2px 4px;
             position: relative;
-            top: 0;
-            left: 0;
-            right: 0;
             z-index: 10;
+        }
+
+        // One row high in both layouts: the groups keep their side spacing only
+        .ProseMirror-menu-group,
+        .ProseMirror-menuitem .ProseMirror-menu-group {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .ProseMirror-menubar:not(.d-none) ~ .ProseMirror.form-control {
+            border-top-left-radius: 0 !important;
+            border-top-right-radius: 0 !important;
         }
     }
 
@@ -497,7 +510,9 @@
             min-width: 3em;
         }
 
+        // The editor's placeholder, in the placeholder colour of every field
         .ProseMirror .placeholder {
+            color: var(--hh-placeholder-color);
             padding: 0 !important;
             pointer-events: none;
             height: 0;
@@ -685,26 +700,9 @@
 
     @include media-breakpoint-down(sm) {
         .ProsemirrorEditor .ProseMirror-menu-dropdown-right {
+            left: auto;
             right: 0;
         }
     }
 
-    @include media-breakpoint-down(md) {
-        .ProsemirrorEditor.focusMenu {
-            .form-control:focus {
-                border-top-right-radius: 0 !important;
-            }
-
-            .ProseMirror-menubar {
-                min-height: 1em;
-                margin-top: 0;
-            }
-        }
-
-        .ProsemirrorEditor.focusMenu {
-            .humhub-ui-richtext {
-                margin-top: 0;
-            }
-        }
-    }
 }

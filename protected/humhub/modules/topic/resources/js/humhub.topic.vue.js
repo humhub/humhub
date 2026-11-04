@@ -43,9 +43,9 @@
       itemTitle(topic) {
         return this.isForeign(topic) ? `${topic.name} (${topic.container.name})` : null;
       },
-      // Without a colour the dot keeps the neutral colour of its class.
-      dotStyle(topic) {
-        return topic.color ? { backgroundColor: topic.color } : null;
+      // Without a colour the star keeps the neutral colour of its class.
+      starStyle(topic) {
+        return topic.color ? { color: topic.color } : null;
       },
       isForeign(topic) {
         return !!topic.container && String(topic.container.id) !== String(this.containerId);
@@ -67,16 +67,16 @@
       resolve: $options.resolve,
       "item-label": $options.itemLabel,
       "item-title": $options.itemTitle,
-      icon: "ti-star",
       block: "topic-filter",
       "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
     }, {
       option: vue.withCtx(({ item }) => [
         vue.createElementVNode(
-          "span",
+          "i",
           {
-            class: "topic-filter-dot",
-            style: vue.normalizeStyle($options.dotStyle(item))
+            class: "ti ti-star topic-filter-star",
+            style: vue.normalizeStyle($options.starStyle(item)),
+            "aria-hidden": "true"
           },
           null,
           4
@@ -92,18 +92,18 @@
           /* TEXT */
         )) : vue.createCommentVNode("v-if", true)
       ]),
-      chip: vue.withCtx(({ item }) => [
+      chip: vue.withCtx(() => [..._cache[1] || (_cache[1] = [
         vue.createElementVNode(
-          "span",
+          "i",
           {
-            class: "topic-filter-dot",
-            style: vue.normalizeStyle($options.dotStyle(item))
+            class: "ti ti-star topic-filter-star",
+            "aria-hidden": "true"
           },
           null,
-          4
-          /* STYLE */
+          -1
+          /* CACHED */
         )
-      ]),
+      ])]),
       _: 1
       /* STABLE */
     }, 8, ["filter", "model-value", "input-id", "search", "resolve", "item-label", "item-title"]);

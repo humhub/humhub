@@ -270,10 +270,9 @@ class StreamCest
         $I->wait(1);
         $I->click('Comment', $postSelector);
         $I->waitForElementVisible($postSelector . ' .comment-container');
-        // The comment form is a Vue island now (comment\vue\CommentSection.vue) - it has no
-        // native submit button of its own (the shell only holds the editor/upload widgets,
-        // see CommentFormShell.php); submission goes through the island's own
-        // `.btn-comment-submit` button instead of the removed `[data-action-click=submit]`.
+        // The comment form is a Vue island now (comment\vue\CommentSection.vue) - submission
+        // goes through its own `.btn-comment-submit` button instead of the removed
+        // `[data-action-click=submit]`.
         $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
         $I->waitForElementClickable($postSelector . ' .btn-comment-submit');
         $I->click($postSelector . ' .btn-comment-submit');

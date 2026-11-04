@@ -9,6 +9,7 @@
 namespace humhub\tests\codeception\unit\modules\user;
 
 use humhub\components\listing\FilterableList;
+use humhub\components\listing\filters\HasSuggestions;
 use humhub\components\listing\FilterValue;
 use humhub\components\listing\ListBuilder;
 use humhub\components\listing\ListContext;
@@ -215,6 +216,50 @@ class UserFilterTest extends HumHubDbTestCase
         $this->assertNull((new UserFilter())->definition($this->context()), 'no definition without one');
     }
 
+    public function testSuggestsTheUsersItsCallbackNamesThatTheCallerMaySee(): void
+    {
+        $filter = new UserFilter(definition: [], suggest: function (ListContext $context, int $limit) use (&$args) {
+            $args = [$context->user->id, $limit];
+
+            return [3, 5, 2, 9999, 3, '1'];
+        });
+
+        $suggestions = $filter->suggestions($this->context());
+
+        $this->assertTrue($filter->hasSuggestions());
+        $this->assertSame([4, HasSuggestions::LIMIT], $args, 'the caller and the limit');
+        $this->assertSame([3, 2, 1], array_column($suggestions, 'id'), 'in order, once, only those the picker lists (5 is disabled, 9999 nobody)');
+        $this->assertSame(User::findOne(['id' => 3])->displayName, $suggestions[0]['displayName'], 'the shape of the picker');
+        $this->assertArrayHasKey('displayNameSub', $suggestions[0]);
+    }
+
+    public function testHasNoSuggestionsWithoutACallbackOrAUserLeft(): void
+    {
+        $this->assertFalse((new UserFilter())->hasSuggestions());
+        $this->assertSame([], (new UserFilter())->suggestions($this->context()));
+        $this->assertSame([], (new UserFilter(suggest: fn() => [5, 9999]))->suggestions($this->context()));
+        $this->assertLessThanOrEqual(
+            HasSuggestions::LIMIT,
+            count((new UserFilter(suggest: fn() => range(1, 20)))->suggestions($this->context())),
+            'at most LIMIT',
+        );
+    }
+
+    public function testAListPutsItsSuggestionsUrlIntoTheDefinitionAndAnswersThem(): void
+    {
+        $list = new UserFilterTestSuggestingList();
+        $definitions = array_column($list->definitions($this->context()), null, 'key');
+
+        $this->assertSame('/suggest/userId', $definitions['userId']['props']['suggestionsUrl']);
+        $this->assertArrayNotHasKey('props', $definitions['authorId'], 'no URL for a filter without suggestions');
+        $this->assertArrayNotHasKey('props', array_column((new UserFilterTestList())->definitions($this->context()), null, 'key')['userId'], 'none from a list without an endpoint');
+
+        $this->assertSame([3, 2], array_column($list->suggestions('userId', $this->context()), 'id'));
+        $this->assertNull($list->suggestions('authorId', $this->context()), 'a filter without suggestions');
+        $this->assertNull($list->suggestions('nothing', $this->context()), 'no such filter');
+        $this->assertNull($list->suggestions('userId', $this->context(null)), 'not available to guests');
+    }
+
     public function testValidatesAndAppliesInAList(): void
     {
         $query = (new UserFilterTestList())->build(['authorId' => '2'], $this->context())->query();
@@ -254,5 +299,24 @@ class UserFilterTestList extends FilterableList
         $builder = parent::build($params, $context);
 
         return $builder;
+    }
+}
+
+/**
+ * {@see UserFilterTestList} whose `userId` filter suggests, with an endpoint for them.
+ */
+class UserFilterTestSuggestingList extends UserFilterTestList
+{
+    protected function filters(): array
+    {
+        return [
+            new UserFilter('authorId', column: 'content.created_by', definition: ['label' => 'Author', 'sortOrder' => 100]),
+            new UserFilter(definition: ['sortOrder' => 200], suggest: fn() => [3, 2]),
+        ];
+    }
+
+    protected function suggestionsUrl(string $key, ListContext $context): ?string
+    {
+        return '/suggest/' . $key;
     }
 }

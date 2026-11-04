@@ -17,6 +17,26 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
+- **Picker filters suggest before anything is typed.** `SpaceFilter`, `UserFilter` and
+  `TopicFilter` take `suggest` (`fn(ListContext $context, int $limit): int[]`, the ids worth
+  suggesting, the most relevant first; `HasSuggestions`). A list answers them through an endpoint
+  of its own (`FilterableList::suggestions()`) and names it in `suggestionsUrl()`, which becomes
+  the definition's `props.suggestionsUrl`; `PickerFilterControl` requests it when the empty field
+  first gets the focus. The `user` and `space` filter controls no longer lead with an icon, the
+  `topic` one shows a star per topic instead of a colour dot.
+- **One placeholder colour:** `--hh-placeholder-color` (default `--hh-text-color-secondary`) for
+  every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
+  `--hh-text-color-soft3` for text fields and the icon colour for selects.
+
+- **The richtext editor is part of the core.** Its sources moved from the
+  `humhub-prosemirror-richtext` npm package (dropped from `composer.json`) to
+  `protected/humhub/resources/js/richtext/`; `humhub\assets\ProsemirrorEditorAsset` publishes the built
+  `humhub.richtext.editor.js` instead of `@npm/humhub-prosemirror-richtext/dist/humhub-editor.js`.
+  The editor's API (`window.prosemirror`/`humhub.richtext`, the `ui.richtext` module,
+  `registerPlugin()`/`registerPreset()`) is unchanged; only code that loads the package's files
+  by their path has to depend on `ProsemirrorEditorAsset` (or `ProseMirrorRichTextAsset`)
+  instead. See [Richtext editor](internals-richtext-editor.md).
+
 - **Font Awesome 4 replaced by Tabler Icons.** `humhub\widgets\Icon` renders
   `<i class="ti ti-<name>">` through the new `humhub\components\icon\TablerIconProvider`, and Tabler
   names (https://tabler.io/icons) are the canonical icon names from now on — `Icon::get('pencil')`,
@@ -971,8 +991,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (`Comment`, `Form`, `showMore`) and their prototypes are gone. `CommentAsset` (the bridge)
     stays part of `CoreBundleAsset`; the new `CommentVueAsset` (depends on `LikeVueAsset` +
     `CoreApiAsset` - `LikeVueAsset` must register first so `<LikeButton>` resolves inside
-    `CommentEntry.vue`) is registered on demand by the widget. `CommentLink`,
-    `CommentEntryLinks` are unchanged/kept (`AdminDeleteModal` is removed later in this
+    `CommentEntry.vue`) is registered on demand by the widget. `CommentLink` is
+    unchanged/kept (`CommentEntryLinks` and `AdminDeleteModal` are removed later in this
     same cycle, see the REST-convergence entry below) -
     islandizing `CommentLink` itself is a documented follow-up, not part of this change.
   - **Breaking for known external modules**, found via module-search while preparing this
@@ -980,10 +1000,13 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     pass that had gated the removal - module owners should audit before upgrading to 1.20):
     `humhub/reportcontent` and the private `cuzy-app/reaction` module hook
     `CommentControls::EVENT_INIT` / `CommentEntryLinks::EVENT_BEFORE_RUN` respectively to
-    inject a menu entry/reaction picker into each comment's controls row. Both classes are
-    kept (so they still exist/autoload - no fatal error), but neither is instantiated anymore
-    (comment entries render from JSON in `CommentEntry.vue`, there is no more per-comment PHP
-    widget pass to hook into), so both integrations silently stop firing. The private
+    inject a menu entry/reaction picker into each comment's controls row. Neither class is
+    instantiated anymore (comment entries render from JSON in `CommentEntry.vue`, there is no
+    more per-comment PHP widget pass to hook into), so both integrations stop firing. Both
+    classes are removed: a `CommentControls::class` reference still resolves to a string, but
+    reading `CommentEntryLinks::EVENT_BEFORE_RUN` fatals (class not found) - such a module
+    must drop the handler; entries and links of a comment are extended client-side now (the
+    `comment.controls` menu, see `docs/develop/ui-js-vuejs-extensions.md`). The private
     `cuzy-app/external-websites` module's `FirstCommentForm` widget `extends Form` directly -
     this **does** fatal (class no longer exists) and needs a follow-up fix before that module
     can run against 1.20. Separately, the `cuzy-app/saas` theme's override of
@@ -2426,3 +2449,50 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     and `text` next to `title`; callers that rendered the image as HTML (`humhub/sharebetween`,
     `cuzy-app/cloner`) have to use the description.
   - Acceptance tests: `selectFromPicker()` and `selectUserFromPicker()` are unchanged.
+
+- **A comment section mounts by `contentId` alone; the comments popup has no server route.**
+  `<CommentSection :content-id="…">` without `initial` loads its thread through the HTTP API,
+  whose `GET content/<id>/comments` also answers `canComment` (the caller's, beside the
+  caller-neutral window). Everything else the form needs is the page's, in the core JS config:
+  `file.handlers` (the user's import and create file handlers as data,
+  `file\serializers\FileHandlerSerializer`), `file.upload.maxAttachedFiles` and
+  `file.excludeMediaFilesPreview`. The `Comments` widget embeds the first window, the like
+  states and `canComment` - no `uploadOptions`, `submitIconHtml` or `excludeMediaFiles` anymore.
+  - Removed: `CommentController::actionShow()` (`comment/comment/show?mode=popup`) and its view
+    `showPopup.php`. `CommentLink::MODE_POPUP` keeps working: the link opens the global modal
+    client-side (`data-action-click="comment.showComments"`, `data-content-id`). A module that
+    linked to the route itself uses that action instead.
+  - Removed: `Comments::$parentComment` and `CommentLink::$parentComment`. A section always
+    shows a content's whole thread and renders the replies itself. A comment passed as the
+    deprecated `object` of either widget now stands for its content.
+  - Removed: the unused `comment\widgets\CommentEntryLinks` (see the comment section entry above).
+
+- **The Vue `RichTextField` renders the editor client-side; the form shell is gone.**
+  `RichTextField` (see `docs/develop/ui-js-vuejs-forms.md`, "Rich text") renders the editor's
+  mount element and boots `ui.richtext.prosemirror.RichTextEditor` on it, with the PHP widget's
+  options as props (`preset`, `include`, `exclude`, `pluginOptions`, `mentioningUrl`,
+  `placeholder`, `layout`, `autofocus`) and `instanceKey` for the draft backup. Editor plugins
+  and presets a module registers keep applying. The PHP `RichTextField` widget is unchanged.
+  - Removed (all introduced earlier in this cycle): `humhub\widgets\VueFormShell`,
+    `LegacyFormWrapper.vue`, `comment\widgets\CommentFormShell` and its view, the
+    `shellHtml` prop of `RichTextField`/`CommentForm` and `getShellElement()` (now
+    `getElement()`), the `formShellHtml`, `submitIconHtml`, `uploadOptions` and
+    `excludeMediaFiles` props of the comment components, the `comment/comment/form` route
+    (`comment\controllers\CommentController`) with `Comments::formProps()`, and the
+    `comment.scrollActive`/`comment.scrollInactive` actions.
+  - `UploadField`'s and `RichTextField`'s `handlersHtml` prop is `handlers` (the data of the
+    core JS config's `file.handlers`).
+  - `upload` (`true`, or an own `(files) => Promise<file[]>`) puts files into the text through
+    the editor's new `upload` option; `handlers` adds
+    the file handlers to the editor's upload menu (its new `fileHandlers` option).
+  - The editor's menu shows Tabler icons; a theme that
+    styled `.ProseMirror-icon svg` styles `.ProseMirror-icon .ti` too. Its dropdowns are
+    Bootstrap's `.dropdown-menu` with `.dropdown-item` rows and take the `$dropdown-*`
+    variables like every context menu.
+  - The editor is one frame around its menu and text, with an input's focus look - the
+    block editor (`.plainMenu`, e.g. a post) shows its menu always, the inline one
+    (`.focusMenu`, e.g. a comment) is an input until it is focused, then its menu joins it at
+    the top. The frame is `.ProseMirror-menubar-wrapper`; the inline menu no longer floats
+    above the input (`margin-top: -27px` is gone), and the menu is one row high in both.
+  - `UploadField` takes the file a module's handler announces on `humhub:file:created` after
+    its dropdown entry was clicked (drawio, collabora, text-editor and the like).

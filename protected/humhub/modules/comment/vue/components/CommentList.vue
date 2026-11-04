@@ -9,9 +9,6 @@
             <CommentEntry
                 :comment="comment"
                 :can-comment="canComment"
-                :form-shell-html="formShellHtml"
-                :submit-icon-html="submitIconHtml"
-                :upload-options="uploadOptions"
                 :page-size="pageSize"
                 :highlighted="anchorCommentId !== null && comment.id === anchorCommentId"
                 @entry-removed="removeRoot"
@@ -122,10 +119,6 @@ export default {
         rootTotal: { type: Number, required: true },
         pageSize: { type: Number, default: 10 },
         canComment: { type: Boolean, default: false },
-        formShellHtml: { type: String, default: null },
-        submitIconHtml: { type: String, default: null },
-        // Upload field settings, handed down to every form this list can open.
-        uploadOptions: { type: Object, default: null },
         anchorCommentId: { type: Number, default: null },
     },
     data() {

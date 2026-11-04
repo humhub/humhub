@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c54e2d3bbe8c5c6a4537ef92d73ccad",
+    "content-hash": "94dc57e2e5c979a9f2cb7c9eb0d04a3e",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4917,18 +4917,6 @@
             "type": "npm-asset",
             "license": [
                 "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "2.3.4",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.3.4.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "Apache-2.0"
             ]
         },
         {

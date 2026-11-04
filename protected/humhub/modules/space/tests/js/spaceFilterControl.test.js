@@ -91,7 +91,7 @@ describe('SpaceFilterControl', () => {
         const wrapper = mountControl();
         const field = input(wrapper);
 
-        expect(wrapper.find('.ti-users-group').exists()).toBe(true);
+        expect(wrapper.find('.picker-filter-icon').exists()).toBe(false);
         expect(field.attributes('id')).toBe('filter-spaceId');
         expect(field.attributes('placeholder')).toBe('Any space');
         expect(field.attributes('aria-label')).toBe('Space');

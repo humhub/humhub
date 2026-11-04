@@ -4,7 +4,6 @@ import CommentSection from '../../vue/CommentSection.vue';
 import CommentForm from '../../vue/components/CommentForm.vue';
 import LikeButton from '../../../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../../../vue/RichTextOutput.vue';
-import LegacyFormWrapper from '../../../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../../../vue/ExtensionSlot.vue';
 import UserImage from '../../../../modules/user/vue/UserImage.vue';
@@ -36,7 +35,7 @@ const additionsDirective = {
 };
 
 // CommentEntry/CommentForm/CommentControls no longer import RichTextOutput/
-// LegacyFormWrapper/DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
+// DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
 // directly (they now resolve through the global Vue component registry - see their own
 // docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
 // same way it already does for LikeButton below. UiModal/UserList are needed too - nested
@@ -46,25 +45,11 @@ const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
         components: {
-            LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
+            LikeButton, RichTextOutput, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
             HumHubForm, RichTextField, SubmitButton, UploadField, UiModal, UserList, TextareaField, CheckboxField,
         },
     },
 });
-
-// Synthetic __VUEFORM__ shell: a minimal stand-in for the real
-// comment/widgets/views/form.php contract (see LegacyFormWrapper's own
-// docblock and coreInterop.test.js) - only what CommentForm itself
-// touches (a <form> to attach the submit listener to, a `.humhub-ui-richtext`
-// node so LegacyFormWrapper.focus()/getValue() have something to look up).
-const buildShell = () => `
-    <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
-        <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
-            <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
-            <button type="submit" class="btn-comment-submit">Send</button>
-        </form>
-    </div>
-`;
 
 // API user shape (camelCase, see `user\serializers\UserSerializer::short()`) —
 // consumed as-is, no client-side mapping.
@@ -239,7 +224,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: true },
             });
 
             expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
@@ -248,7 +233,7 @@ describe('CommentSection', () => {
         it('hides the form when canComment is false', () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: false, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: false },
             });
 
             expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
@@ -257,10 +242,43 @@ describe('CommentSection', () => {
         it('renders the form for a logged-in user who can comment', () => {
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: true },
             });
 
             expect(wrapper.findComponent(CommentForm).exists()).toBe(true);
+        });
+    });
+
+    // A page that opens a thread client-side mounts the island with nothing but `contentId`:
+    // one request, whose response also says whether the caller may comment.
+    describe('mounted by contentId alone', () => {
+        it('takes whether the caller may comment from the first window', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ ...emptyWindow(), canComment: true }));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
+            expect(decodeURIComponent(globalThis.humhubStubs.client.get.mock.calls[0][0])).toContain('content/42/comments');
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(true);
+        });
+
+        it('shows no form where the window says the caller may not comment', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ ...emptyWindow(), canComment: false }));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+            await flushPromises();
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
+        });
+
+        it('keeps what it was told over what the window says', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ ...emptyWindow(), canComment: true }));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, canComment: false } });
+            await flushPromises();
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
         });
     });
 
@@ -502,7 +520,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 }, canComment: true },
             });
 
             const rootControls = wrapper.find('.single-comment').find('.wall-entry-controls');
@@ -548,7 +566,6 @@ describe('CommentSection', () => {
                         contentId: 42,
                         initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                         canComment: true,
-                        formShellHtml: buildShell(),
                     },
                 });
 
@@ -670,7 +687,6 @@ describe('CommentSection', () => {
                     contentId: 42,
                     initial: emptyWindow(),
                     canComment: true,
-                    formShellHtml: buildShell(),
                     collapsed: true,
                 },
             });
@@ -854,11 +870,17 @@ describe('CommentSection', () => {
             expect(wrapper.find('.post-files-images a').attributes('data-ui-gallery')).toBe('gallery-comment-1');
         });
 
-        // The file module's `excludeMediaFilesPreview` setting reaches every entry through
-        // CommentSection's provide(), the same way the like states do — see the widget.
-        it('leaves media out of the list below the grid when the section says so', () => {
+        // The file module's `excludeMediaFilesPreview` setting (core JS config) reaches every
+        // entry through CommentSection's provide(), the same way the like states do.
+        it('leaves media out of the list below the grid when the setting says so', () => {
             expect(mountWith().findAll('.post-file-list li')).toHaveLength(1);
-            expect(mountWith({ excludeMediaFiles: true }).find('.post-file-list').exists()).toBe(false);
+
+            globalThis.humhub.config.module('file').excludeMediaFilesPreview = true;
+            try {
+                expect(mountWith().find('.post-file-list').exists()).toBe(false);
+            } finally {
+                delete globalThis.humhub.config.module('file').excludeMediaFilesPreview;
+            }
         });
     });
 
@@ -902,7 +924,7 @@ describe('CommentSection', () => {
 
             expect(replyLink).toBeTruthy();
             expect(likeContainer).toBeTruthy();
-            // CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
+            // As the former PHP CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
             // eslint-disable-next-line no-bitwise
             expect(replyLink.compareDocumentPosition(likeContainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
             // No glue text: the flex gap of `.wall-entry-controls` separates the links.

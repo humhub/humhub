@@ -83,7 +83,7 @@ describe('UserFilterControl', () => {
         const wrapper = mountControl();
         const field = input(wrapper);
 
-        expect(wrapper.find('.ti-user').exists()).toBe(true);
+        expect(wrapper.find('.picker-filter-icon').exists()).toBe(false);
         expect(field.attributes('id')).toBe('filter-userId');
         expect(field.attributes('placeholder')).toBe('Any author');
         expect(field.attributes('aria-label')).toBe('Author');
@@ -347,5 +347,122 @@ describe('UserFilterControl', () => {
         expect(emitted(wrapper).at(-1)).toEqual({ userId: '2' });
         expect(window.location.search).toBe('?userId=2');
         expect(wrapper.find('.picker-chip-label').text()).toBe('Peter Tester');
+    });
+    describe('suggestions without a text (`props.suggestionsUrl`)', () => {
+        const suggesting = { ...filter, props: { suggestionsUrl: '/api/v2/suggest?filter=userId' } };
+        const suggestionRequests = () => globalThis.humhubStubs.client.get.mock.calls.filter(([url]) => url.startsWith('/api/v2/suggest'));
+
+        beforeEach(() => {
+            const search = globalThis.humhubStubs.client.get;
+            globalThis.humhubStubs.client.get = vi.fn((url) => (url.startsWith('/api/v2/suggest')
+                ? Promise.resolve({ results: [people[1], people[0]] })
+                : search(url)));
+        });
+
+        it('loads them when the empty field first gets the focus, and lists them', async () => {
+            const wrapper = mountControl({ filter: suggesting });
+            expect(suggestionRequests()).toHaveLength(0);
+
+            await input(wrapper).trigger('focus');
+            expect(input(wrapper).attributes('aria-expanded')).toBe('true');
+            expect(wrapper.find('.select-menu-feedback').text()).toBe('Loading...');
+
+            await flushPromises();
+            expect(optionTexts(wrapper)).toEqual(['Sara Tester', 'Peter Tester']);
+            expect(suggestionRequests()).toHaveLength(1);
+        });
+
+        it('requests them once', async () => {
+            const wrapper = mountControl({ filter: suggesting });
+
+            await input(wrapper).trigger('focus');
+            await flushPromises();
+            await key(wrapper, 'Escape');
+            await key(wrapper, 'ArrowDown');
+
+            expect(optionTexts(wrapper)).toEqual(['Sara Tester', 'Peter Tester']);
+            expect(suggestionRequests()).toHaveLength(1);
+        });
+
+        it('activates none of them until ArrowDown', async () => {
+            const wrapper = mountControl({ filter: suggesting });
+
+            await input(wrapper).trigger('focus');
+            await flushPromises();
+            expect(wrapper.findAll('[role="option"].is-focused')).toHaveLength(0);
+            expect(input(wrapper).attributes('aria-activedescendant')).toBeUndefined();
+
+            await key(wrapper, 'Enter');
+            expect(emitted(wrapper)).toEqual([]);
+
+            await key(wrapper, 'ArrowDown');
+            expect(wrapper.findAll('[role="option"]')[0].classes()).toContain('is-focused');
+
+            await key(wrapper, 'Enter');
+            expect(emitted(wrapper)).toEqual(['3']);
+        });
+
+        it('chooses one like a found person', async () => {
+            const wrapper = mountControl({ filter: suggesting });
+
+            await input(wrapper).trigger('focus');
+            await flushPromises();
+            await wrapper.findAll('[role="option"]')[1].trigger('click');
+
+            expect(emitted(wrapper)).toEqual(['2']);
+        });
+
+        it('lists them again once a typed text is deleted, and closes on Escape until ArrowDown', async () => {
+            const wrapper = mountControl({ filter: suggesting });
+            await input(wrapper).trigger('focus');
+            await flushPromises();
+
+            await typeAndWait(wrapper, 'sam');
+            expect(optionTexts(wrapper)).toEqual(['Sam User']);
+
+            await type(wrapper, '');
+            expect(optionTexts(wrapper)).toEqual(['Sara Tester', 'Peter Tester']);
+
+            await key(wrapper, 'Escape');
+            expect(input(wrapper).attributes('aria-expanded')).toBe('false');
+
+            await key(wrapper, 'ArrowDown');
+            expect(input(wrapper).attributes('aria-expanded')).toBe('true');
+            expect(optionTexts(wrapper)).toEqual(['Sara Tester', 'Peter Tester']);
+        });
+
+        it('shows what is typed while they load, not them', async () => {
+            const pending = deferredClient();
+            const wrapper = mountControl({ filter: suggesting });
+
+            await input(wrapper).trigger('focus');
+            await typeAndWait(wrapper, 'sam');
+            pending.find(({ url }) => !url.startsWith('/api/v2/suggest')).resolve({ results: [people[2]] });
+            await flushPromises();
+            pending.find(({ url }) => url.startsWith('/api/v2/suggest')).resolve({ results: [people[1]] });
+            await flushPromises();
+
+            expect(optionTexts(wrapper)).toEqual(['Sam User']);
+        });
+
+        it('logs a failed request and lists nothing', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.reject(new Error('down')));
+            const wrapper = mountControl({ filter: suggesting });
+
+            await input(wrapper).trigger('focus');
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.logCalls.error).toHaveLength(1);
+            expect(input(wrapper).attributes('aria-expanded')).toBe('false');
+        });
+
+        it('lists nothing on focus without them', async () => {
+            const wrapper = mountControl();
+
+            await input(wrapper).trigger('focus');
+
+            expect(input(wrapper).attributes('aria-expanded')).toBe('false');
+            expect(wrapper.findAll('[role="option"]')).toHaveLength(0);
+        });
     });
 });

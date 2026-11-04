@@ -1546,7 +1546,6 @@
       search: $options.search,
       resolve: $options.resolve,
       "item-label": $options.itemLabel,
-      icon: "ti-users-group",
       block: "space-filter",
       "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event))
     }, {
@@ -1566,7 +1565,7 @@
         vue$1.createVNode(
           _component_SpaceImage,
           vue$1.mergeProps($options.imageProps(item), {
-            width: 18,
+            width: 22,
             link: false
           }),
           null,

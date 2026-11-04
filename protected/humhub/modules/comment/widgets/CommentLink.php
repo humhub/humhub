@@ -17,12 +17,12 @@ class CommentLink extends Widget
     public const MODE_POPUP = 'popup';
 
     public Content $content;
-    public ?CommentModel $parentComment = null;
 
     /**
      * @deprecated since 1.20, set {@see self::$content} instead. Kept for backward
      * compatibility - some modules still call `CommentLink::widget(['object' => $x])` (the
-     * API before #7917 replaced polymorphic `object` relations with `content_id`).
+     * API before #7917 replaced polymorphic `object` relations with `content_id`). A comment
+     * given here stands for its content: replies are linked by the comment island itself.
      * @var ContentActiveRecord|CommentModel|null
      */
     public $object = null;
@@ -42,12 +42,7 @@ class CommentLink extends Widget
         parent::init();
 
         if ($this->object !== null && !isset($this->content)) {
-            if ($this->object instanceof CommentModel) {
-                $this->parentComment = $this->object;
-                $this->content = $this->object->content;
-            } else {
-                $this->content = $this->object->content;
-            }
+            $this->content = $this->object->content;
         }
     }
 
@@ -56,11 +51,8 @@ class CommentLink extends Widget
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
 
-        if (Yii::$app->user->isGuest && $module->guestHideComments) {
-            if ($this->parentComment !== null) {
-                return '';
-            }
-        } elseif (!$module->canComment($this->content)) {
+        // A guest who may not see comments still gets the link, to the login
+        if (!(Yii::$app->user->isGuest && $module->guestHideComments) && !$module->canComment($this->content)) {
             return '';
         }
 
@@ -69,12 +61,10 @@ class CommentLink extends Widget
         }
 
         return $this->render('link', [
-            'id' => IdHelper::getId($this->content, $this->parentComment),
+            'id' => IdHelper::getId($this->content, null),
             'mode' => $this->mode,
             'content' => $this->content,
-            'parentComment' => $this->parentComment,
-            'commentCount' => (new CommentListService($this->content, $this->parentComment))->getCount(),
-            'isNestedComment' => ($this->parentComment !== null),
+            'commentCount' => (new CommentListService($this->content, null))->getCount(),
             'module' => $module,
         ]);
     }
