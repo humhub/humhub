@@ -43,6 +43,24 @@ class LdapHelper
         return false;
     }
 
+    /**
+     * Wraps an LDAP filter in parentheses if they are missing, e.g. `objectClass=person`
+     * becomes `(objectClass=person)`. Required when the filter is combined with other filters,
+     * otherwise the resulting query is invalid ("Bad search filter").
+     *
+     * @since 1.19.4
+     */
+    public static function normalizeFilter(string $filter): string
+    {
+        $filter = trim($filter);
+
+        if ($filter === '' || str_starts_with($filter, '(')) {
+            return $filter;
+        }
+
+        return '(' . $filter . ')';
+    }
+
     public static function isBinary(string $value): bool
     {
         if (!mb_check_encoding($value, 'UTF-8') || str_contains($value, "\0")) {

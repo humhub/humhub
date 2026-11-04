@@ -12,6 +12,29 @@ use humhub\modules\ldap\helpers\LdapHelper;
 class LdapHelperTest extends Unit
 {
     // ---------------------------------------------------------------------------
+    // normalizeFilter
+    // ---------------------------------------------------------------------------
+
+    public function testNormalizeFilterWrapsFilterWithoutParentheses(): void
+    {
+        $this->assertSame('(objectClass=person)', LdapHelper::normalizeFilter(' objectClass=person '));
+    }
+
+    public function testNormalizeFilterKeepsFilterWithParentheses(): void
+    {
+        $this->assertSame('(objectClass=person)', LdapHelper::normalizeFilter('(objectClass=person)'));
+        $this->assertSame(
+            '(&(objectClass=person)(memberOf=CN=Workers,DC=example,DC=com))',
+            LdapHelper::normalizeFilter('(&(objectClass=person)(memberOf=CN=Workers,DC=example,DC=com))'),
+        );
+    }
+
+    public function testNormalizeFilterKeepsEmptyFilter(): void
+    {
+        $this->assertSame('', LdapHelper::normalizeFilter('  '));
+    }
+
+    // ---------------------------------------------------------------------------
     // isBinary
     // ---------------------------------------------------------------------------
 
