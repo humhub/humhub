@@ -360,9 +360,9 @@ describe('Comment mutations + live updates', () => {
 
     // Bug: Ctrl+S (STRG+S) in the richtext editor stopped submitting the
     // comment form after the Vue island port. The legacy keyboard chain
-    // lives in the vendored `humhub-prosemirror-richtext` package
-    // (src/editor/core/plugins/save/plugin.js, bundled into
-    // dist/humhub-editor.js) - its `handleKeyDown` intercepts a bare Ctrl+S
+    // lives in the richtext editor
+    // (protected/humhub/resources/js/richtext/core/plugins/save/plugin.js, bundled into
+    // humhub.richtext.editor.js) - its `handleKeyDown` intercepts a bare Ctrl+S
     // (`event.ctrlKey && event.key === 's'`), then does exactly:
     //   context.editor.$.closest('form').find('[type="submit"]').trigger('click')
     // (`context.editor.$` is the richtext widget's own root element, the

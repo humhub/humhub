@@ -63,15 +63,18 @@ jobs:
             - name: Rebuild every Vue artifact
               run: node vue.build.mjs --module all
 
+            - name: Rebuild the richtext editor
+              run: node richtext.build.mjs
+
             # `git status --porcelain`, not `git diff`: this has to fail for an artifact that
             # was never added either (a new island whose module ships its first artifact),
             # which a diff against the index would not report at all.
             - name: Verify the committed artifacts are up to date
               run: |
-                  CHANGED=$(git status --porcelain -- '**/humhub.*.vue.js' '**/humhub.*.vue.js.map')
+                  CHANGED=$(git status --porcelain -- '**/humhub.*.vue.js' '**/humhub.*.vue.js.map' 'protected/humhub/resources/js/humhub.richtext.editor.js')
                   if [ -n "$CHANGED" ]; then
                       echo "$CHANGED"
                       git diff -- '**/humhub.*.vue.js'
-                      echo "::error::Committed Vue artifacts are out of date. Run 'grunt build-vue --module=all' and commit the result."
+                      echo "::error::Committed artifacts are out of date. Run 'grunt build-vue --module=all' and 'npm run build:richtext' and commit the result."
                       exit 1
                   fi

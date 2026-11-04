@@ -17,6 +17,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
+- **The richtext editor is part of the core.** Its sources moved from the
+  `humhub-prosemirror-richtext` npm package (dropped from `composer.json`) to
+  `protected/humhub/resources/js/richtext/`; `humhub\assets\ProsemirrorEditorAsset` publishes the built
+  `humhub.richtext.editor.js` instead of `@npm/humhub-prosemirror-richtext/dist/humhub-editor.js`.
+  The editor's API (`window.prosemirror`/`humhub.richtext`, the `ui.richtext` module,
+  `registerPlugin()`/`registerPreset()`) is unchanged; only code that loads the package's files
+  by their path has to depend on `ProsemirrorEditorAsset` (or `ProseMirrorRichTextAsset`)
+  instead. See [Richtext editor](internals-richtext-editor.md).
+
 - **Font Awesome 4 replaced by Tabler Icons.** `humhub\widgets\Icon` renders
   `<i class="ti ti-<name>">` through the new `humhub\components\icon\TablerIconProvider`, and Tabler
   names (https://tabler.io/icons) are the canonical icon names from now on — `Icon::get('pencil')`,

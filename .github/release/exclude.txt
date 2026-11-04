@@ -35,6 +35,10 @@
 /package-lock.json
 /vitest.config.mjs
 /vue.build.mjs
+/richtext.build.mjs
+# The richtext editor's sources: packages ship its built artifact (resources/js)
+/protected/humhub/resources/js/richtext/
+/protected/humhub/tests/js/richtext/
 /index-test.php
 /public/index-test.php
 /protected/vendor/codeception/codeception/tests/

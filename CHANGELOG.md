@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8687: The richtext editor is part of the core, built from `protected/humhub/resources/js/richtext/` instead of the `humhub-prosemirror-richtext` package
 - Enh #8685: A comment section loads by its content id alone; the comments popup opens without a server route
 - Enh #8684: File versions and the activity history of one content, as API endpoints and Vue islands
 - Enh #8683: Larger icons beside a button label, legacy list group look only in panels; card dropdowns stay above the next grid row
