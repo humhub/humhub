@@ -35,6 +35,34 @@ describe('comment bridge (humhub.comment.js)', () => {
         });
     });
 
+    describe('showComments', () => {
+        it('opens the global modal with a comment section island for the link\'s content', () => {
+            const global = globalThis.humhubStubs.modal.global;
+            const opened = { show: vi.fn() };
+            global.set = vi.fn(() => opened);
+            global.applyAdditions = vi.fn();
+            const link = createTag('a', { 'data-content-id': '42', 'data-modal-title': 'Comments' });
+
+            commentModule.showComments({ $trigger: jQuery(link) });
+
+            expect(global.set).toHaveBeenCalledWith({
+                header: 'Comments',
+                body: '<comment-section content-id="42"></comment-section>',
+            });
+            expect(opened.show).toHaveBeenCalledTimes(1);
+            expect(global.applyAdditions).toHaveBeenCalledTimes(1);
+        });
+
+        it('opens nothing for a link without a content', () => {
+            const global = globalThis.humhubStubs.modal.global;
+            global.set = vi.fn();
+
+            commentModule.showComments({ $trigger: jQuery(createTag('a')) });
+
+            expect(global.set).not.toHaveBeenCalled();
+        });
+    });
+
     describe('scrollActive / scrollInactive', () => {
         it('toggles the scrollActive class on the closest richtext-create-input-group', () => {
             const wrapper = createTag('div', { class: 'richtext-create-input-group' });

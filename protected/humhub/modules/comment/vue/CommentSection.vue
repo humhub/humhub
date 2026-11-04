@@ -10,18 +10,18 @@
             :root-total="rootTotal"
             :page-size="pageSize"
             :can-comment="showForm"
-            :form-shell-html="formShellHtml"
-            :submit-icon-html="submitIconHtml"
-            :upload-options="uploadOptions"
+            :form-shell-html="form.formShellHtml"
+            :submit-icon-html="form.submitIconHtml"
+            :upload-options="form.uploadOptions"
             :anchor-comment-id="anchorCommentId"
         />
         <CommentForm
-            v-if="showForm && formShellHtml"
+            v-if="showForm && form.formShellHtml"
             ref="form"
-            :shell-html="formShellHtml"
+            :shell-html="form.formShellHtml"
             :content-id="contentId"
-            :submit-icon-html="submitIconHtml"
-            :upload-options="uploadOptions"
+            :submit-icon-html="form.submitIconHtml"
+            :upload-options="form.uploadOptions"
             @created="onMainCreated"
         />
     </div>
@@ -116,13 +116,24 @@
  * earlier draft of this comment assumed. `countChanged`'s `detail` is
  * `{contentId, total}`.
  *
+ * ## Mounted by `contentId` alone
+ *
+ * Everything but `contentId` is optional. Without `initial` the island fetches its first
+ * window through the HTTP API (`fetchInitial()`); handed neither `initial` nor `canComment`
+ * (`null`: not told), it also fetches the form's props from the comment module's UI route
+ * (`fetchFormProps()`, see `Comments::formProps()`), as the form is server-rendered markup
+ * the API does not carry.
+ * So `<CommentSection :content-id="42" />` is a complete thread anywhere - a page that opens
+ * one client-side (a file's details pane, say) needs no widget. The widget embeds both for a
+ * stream entry, which saves the island these requests on first paint.
+ *
  * @since 1.20
  */
 import { events, getConfig, log } from '@humhub/vue';
 import CommentList from './components/CommentList.vue';
 import CommentForm from './components/CommentForm.vue';
 import {
-    collectRecordIds, fetchComment, fetchLikeStates, fetchWindow, mapWindow,
+    collectRecordIds, fetchComment, fetchFormProps, fetchLikeStates, fetchWindow, mapWindow,
 } from './components/commentApi.js';
 
 // The live event this component subscribes to for new comments/replies (see
@@ -163,7 +174,8 @@ export default {
         // cacheable, see docs/develop/concept-api.md) while THIS page render is per user
         // anyway, so inlining them saves the island its first `like/states` request.
         initialLikeStates: { type: Object, default: () => ({}) },
-        canComment: { type: Boolean, default: false },
+        // `null` (not told): fetched with the form's props, see "Mounted by `contentId` alone"
+        canComment: { type: Boolean, default: null },
         // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
         formShellHtml: { type: String, default: null },
         // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
@@ -207,6 +219,13 @@ export default {
             // rather than 0, so an unmigrated payload degrades no worse than before this fix.
             rootTotal: initialWindow ? (initialWindow.rootTotal ?? initialWindow.total) : 0,
             loaded: !!initialWindow,
+            // The form's props: as handed over, or fetched (see `fetchForm()`).
+            form: {
+                canComment: !!this.canComment,
+                formShellHtml: this.formShellHtml,
+                submitIconHtml: this.submitIconHtml,
+                uploadOptions: this.uploadOptions,
+            },
             isCollapsed: this.collapsed,
             // id -> revision counter, bumped whenever an entry object is
             // swapped in place under the same id (edit-save/live-append) —
@@ -240,7 +259,7 @@ export default {
             return getConfig('user').isGuest === true;
         },
         showForm() {
-            return this.canComment && !this.guest;
+            return this.form.canComment && !this.guest;
         },
     },
     watch: {
@@ -252,6 +271,10 @@ export default {
         },
     },
     created() {
+        if (!this.initial && this.canComment === null && !this.guest) {
+            this.fetchForm();
+        }
+
         if (!this.initial) {
             this.fetchInitial();
             return;
@@ -289,6 +312,16 @@ export default {
         events.off(LIVE_NEW_COMMENT, this.onLiveNewComment);
     },
     methods: {
+        fetchForm() {
+            fetchFormProps(this.contentId)
+                .then((form) => {
+                    this.form = form;
+                })
+                .catch((e) => {
+                    // Read-only then: the thread itself still shows.
+                    log.error(e);
+                });
+        },
         fetchInitial() {
             // No explicit window size: the server defaults to `commentsPreviewMax`,
             // exactly like the embedded initial window the widget ships.

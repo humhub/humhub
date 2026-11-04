@@ -264,6 +264,67 @@ describe('CommentSection', () => {
         });
     });
 
+    // A page that opens a thread client-side mounts the island with nothing but `contentId`.
+    describe('mounted by contentId alone', () => {
+        const formProps = () => ({
+            canComment: true, formShellHtml: buildShell(), uploadOptions: { max: 5, handlersHtml: '' }, submitIconHtml: null,
+        });
+        const routeOf = (call) => decodeURIComponent(call[0]);
+        const isFormRoute = (url) => decodeURIComponent(url).includes('comment/comment/form');
+
+        it('fetches the form\'s props from the UI route, and the window from the API', async () => {
+            globalThis.humhubStubs.client.get = vi.fn((url) => Promise.resolve(isFormRoute(url) ? formProps() : emptyWindow()));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+            await flushPromises();
+
+            const calls = globalThis.humhubStubs.client.get.mock.calls;
+            expect(calls.find((call) => isFormRoute(call[0]))[0]).toContain('contentId=42');
+            expect(calls.some((call) => routeOf(call).includes('content/42/comments'))).toBe(true);
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(true);
+        });
+
+        it('shows no form where the route says the user may not comment', async () => {
+            globalThis.humhubStubs.client.get = vi.fn((url) => Promise.resolve(isFormRoute(url) ? { canComment: false } : emptyWindow()));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+            await flushPromises();
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
+        });
+
+        it('stays a readable thread when the form\'s props cannot be loaded', async () => {
+            globalThis.humhubStubs.client.get = vi.fn((url) => (isFormRoute(url)
+                ? Promise.reject(new Error('nope'))
+                : Promise.resolve({ ...emptyWindow({ total: 1 }), results: [makeComment()] })));
+
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+            await flushPromises();
+
+            expect(wrapper.findComponent(CommentForm).exists()).toBe(false);
+            expect(wrapper.find('.single-comment').exists()).toBe(true);
+        });
+
+        it('asks for no form where it was told whether the user may comment', async () => {
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(emptyWindow()));
+
+            mount(CommentSection, { ...mountOptions(), props: { contentId: 42, canComment: false } });
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.client.get.mock.calls.some((call) => isFormRoute(call[0]))).toBe(false);
+        });
+
+        it('asks a guest for no form', async () => {
+            globalThis.humhub.config.module('user').isGuest = true;
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(emptyWindow()));
+
+            mount(CommentSection, { ...mountOptions(), props: { contentId: 42 } });
+            await flushPromises();
+
+            expect(globalThis.humhubStubs.client.get.mock.calls.some((call) => isFormRoute(call[0]))).toBe(false);
+        });
+    });
+
     describe('show more (root list)', () => {
         it('loads and prepends previous comments with the right url, and updates the remaining count', async () => {
             const initial = {
@@ -902,7 +963,7 @@ describe('CommentSection', () => {
 
             expect(replyLink).toBeTruthy();
             expect(likeContainer).toBeTruthy();
-            // CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
+            // As the former PHP CommentEntryLinks: CommentLink sortOrder 100 before LikeLink sortOrder 200.
             // eslint-disable-next-line no-bitwise
             expect(replyLink.compareDocumentPosition(likeContainer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
             // No glue text: the flex gap of `.wall-entry-controls` separates the links.

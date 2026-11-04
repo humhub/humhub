@@ -163,9 +163,9 @@
  *
  * ## Visual parity fixes (browser-verified against the legacy UI)
  *
- * - Entry links render Reply before Like (`CommentEntryLinks`' sort order:
- *   `CommentLink` 100, `LikeLink` 200 - see `widgets\BaseStack::run()`), without
- *   glue text: the flex gap of `.wall-entry-controls` separates them.
+ * - Entry links render Reply before Like (the sort order of the former PHP
+ *   `CommentEntryLinks`: `CommentLink` 100, `LikeLink` 200), without glue text: the flex
+ *   gap of `.wall-entry-controls` separates them.
  * - The avatar is a `<UserImage v-bind="comment.author" :size="25" />` (see
  *   `protected/humhub/modules/user/vue/UserImage.vue` - provided by the user module,
  *   resolved through the global registry the same way `RichTextOutput` is, not
