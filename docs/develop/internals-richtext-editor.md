@@ -155,3 +155,28 @@ new MarkdownEditor('#stage1', { translate: { 'Test me!': 'Teste mich!' } });
 
 window.prosemirror.globalOptions.translate = (key) => ({ 'Test me!': 'Teste mich!' })[key];
 ```
+
+### Upload
+
+By default the editor's upload (its "Upload File" menu entry, and files pasted into it) goes
+through the legacy upload button the PHP widget renders next to the editor
+(`#<editor id>-file-upload`). An editor without one - such as `RichTextField`, the editor of the
+Vue.js forms - passes an `upload` option instead: a function receiving the pasted files, or
+`null` from the menu entry (the host picks the files itself), and resolving with the uploaded
+ones. Each is inserted where the selection was - an image, video or audio file as such,
+anything else as a link. Resolving with none (the picker was cancelled) or rejecting just
+removes the placeholder.
+
+```js
+new MarkdownEditor('#stage', {
+    // Promise<[{guid, url, fileName|name, mimeType, mimeIcon}]>; `accept` narrows a picker (`image/*`)
+    upload: (files, { accept }) => myUpload(files, accept),
+    // The file handler links (`a[data-action-process=file-handler]`) the upload menu offers
+    fileHandlers: () => document.querySelector('#my-handlers'),
+});
+```
+
+The upload menu offers the file handlers (`fileHandlers`, by default the links next to the
+legacy upload button). With the `upload` option the platform's "upload this type" entries
+(`file.uploadByType`) go through it with that type; any other entry runs its own action, and
+the file it announces on `humhub:file:created` is inserted into the editor whose menu ran it.

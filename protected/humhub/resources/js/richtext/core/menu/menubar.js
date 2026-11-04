@@ -248,6 +248,13 @@ function translate(view, text) {
     return view._props.translate ? view._props.translate(text) : text;
 }
 
+// Whether a mouse button or a touch is down right now (see the blur handler below)
+let pointerDown = false;
+document.addEventListener('mousedown', () => { pointerDown = true; }, true);
+document.addEventListener('touchstart', () => { pointerDown = true; }, true);
+document.addEventListener('mouseup', () => { pointerDown = false; }, true);
+document.addEventListener('touchend', () => { pointerDown = false; }, true);
+
 let lastFocusedElement = null;
 
 class MenuBarView {
@@ -321,9 +328,24 @@ class MenuBarView {
                     if (!$editor.is('.fullscreen') && !targetHasMenuBtn && !$(e.target).hasClass('cm-editor')) {
                         lastFocusedElement = null;
                         const that = this.$;
-                        that.data('isHiding', true)
-                            // Don't apply the d-none immediately to allow clicking on links which might move after hiding the toolbar
-                            .hide(100, function(){that.addClass('d-none')});
+                        const hide = () => {
+                            // Focused again in the meantime
+                            if ($editor.find('.ProseMirror, textarea').is(':focus')) {
+                                return;
+                            }
+                            that.data('isHiding', true)
+                                // Don't apply the d-none immediately to allow clicking on links which might move after hiding the toolbar
+                                .hide(100, function(){that.addClass('d-none')});
+                        };
+
+                        // The blur of a press elsewhere (a submit button below the editor): hiding
+                        // the menu now moves what was pressed before it is released, and the click
+                        // misses it - hide once the press is over
+                        if (pointerDown) {
+                            $(document).one('mouseup touchend', () => setTimeout(hide, 0));
+                        } else {
+                            hide();
+                        }
                     }
                 });
         }

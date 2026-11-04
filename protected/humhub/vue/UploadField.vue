@@ -27,7 +27,7 @@
                         @click.stop
                     >
                 </span>
-                <template v-if="handlersHtml">
+                <template v-if="handlers.length">
                     <button
                         type="button"
                         class="btn btn-light btn-icon-only dropdown-toggle"
@@ -35,7 +35,9 @@
                         aria-haspopup="true"
                         aria-expanded="false"
                     ><span class="visually-hidden">{{ toggleLabel }}</span></button>
-                    <ul class="dropdown-menu dropdown-menu-end" v-html="handlersHtml" @click="onHandlerClick"></ul>
+                    <ul class="dropdown-menu dropdown-menu-end" @click="onHandlerClick">
+                        <FileHandlerItems :handlers="handlers" />
+                    </ul>
                 </template>
             </div>
         </Teleport>
@@ -92,7 +94,7 @@
  * form was saved.
  *
  * ```html
- * <UploadField attribute="fileList" v-model="files" :max="10" :handlers-html="handlersHtml" />
+ * <UploadField attribute="fileList" v-model="files" :max="10" :handlers="handlers" />
  * ```
  *
  * | Prop | | |
@@ -102,7 +104,7 @@
  * | `accept` | `String`, `null` | `accept` attribute of the file input |
  * | `multiple` | `Boolean`, `true` | allow selecting several files at once |
  * | `title` | `String`, `null` | trigger tooltip, defaults to the platform's "Upload files" |
- * | `handlersHtml` | `String`, `''` | server-rendered `<li>` entries of additional file handlers (see below) |
+ * | `handlers` | `Array`, `[]` | file handlers offered in a dropdown next to the trigger (see below) |
  * | `triggerTarget` | `Object\|String`, `null` | teleport target for the trigger button group, so a caller can place it in its own button row while progress/preview stay here |
  *
  * Emits `update:modelValue` (the new file list) and `busy` (`true`/`false` around a request,
@@ -124,12 +126,18 @@
  * ## Legacy file handlers
  *
  * `FileHandlerCollection::TYPE_CREATE` handlers (9 external modules implement
- * `BaseFileHandler`) are rendered by the server into `handlersHtml` and appear in this
- * field's dropdown, so their `data-action-click` attributes keep being served by
+ * `BaseFileHandler`) come as data (`{label, icon, attributes}` - the core JS config's
+ * `file.handlers`, see `file\serializers\FileHandlerSerializer`) and appear in this field's
+ * dropdown as links carrying their attributes, so their `data-action-click` keeps being served by
  * `humhub.action.js`'s document-level delegate. Core's own handlers are "open the picker
  * with this `accept`" entries (`file.uploadByType`); those are handled natively here,
  * because the legacy action walks a DOM structure (`.btn-group` → `.fileinput-button` →
  * `data-action-target`) this component does not reproduce.
+ *
+ * A module's handler that creates a document (an office or diagram editor) announces the new
+ * file on the global `humhub:file:created` event, as it always did: the field whose handler
+ * entry was clicked last takes it over (the legacy file shape `FileHelper::getFileInfos()`
+ * answers, `name` read as `fileName`).
  *
  * A handler that needs to hand an ALREADY-uploaded file to the field (a cloud-storage picker,
  * say) dispatches a DOM event on the field instead of reaching into a widget instance:
@@ -151,14 +159,27 @@
  *
  * @since 1.20
  */
-import { i18n, log } from '@humhub/vue';
+import { events, i18n, log } from '@humhub/vue';
 import fieldMixin from './form/fieldMixin.js';
 import { uploadFiles } from './upload/uploadClient.js';
+import FileHandlerItems from './upload/FileHandlerItems.vue';
 
 /** Mirrors `humhub.file.js`'s `uploadByType` action, which core's create-handlers use. */
 const UPLOAD_BY_TYPE_ACTION = 'file.uploadByType';
 
+/** The field whose module handler entry was clicked last: it takes the created files. */
+let handlerField = null;
+
+// Any handler entry clicked - this field's, or one in an editor's menu - resets it first
+// (capture phase, before a field's own click handler claims it again).
+document.addEventListener('click', (event) => {
+    if (event.target instanceof Element && event.target.closest('a[data-action-process="file-handler"]')) {
+        handlerField = null;
+    }
+}, true);
+
 export default {
+    components: { FileHandlerItems },
     mixins: [fieldMixin],
     props: {
         modelValue: { type: Array, default: () => [] },
@@ -166,7 +187,7 @@ export default {
         accept: { type: String, default: null },
         multiple: { type: Boolean, default: true },
         title: { type: String, default: null },
-        handlersHtml: { type: String, default: '' },
+        handlers: { type: Array, default: () => [] },
         triggerTarget: { type: [Object, String], default: null },
     },
     emits: ['update:modelValue', 'busy'],
@@ -212,9 +233,14 @@ export default {
         // A legacy file handler hands over already-uploaded files this way - see the class
         // docblock. Registered on the field's own root, so a handler needs no global channel.
         this.$el.addEventListener('humhub:file:attach', this.onAttachEvent);
+        events.on('humhub:file:created', this.onFileCreated);
     },
     beforeUnmount() {
         this.$el.removeEventListener('humhub:file:attach', this.onAttachEvent);
+        events.off('humhub:file:created', this.onFileCreated);
+        if (handlerField === this) {
+            handlerField = null;
+        }
     },
     methods: {
         openPicker(accept = null) {
@@ -248,7 +274,14 @@ export default {
         onHandlerClick(event) {
             const entry = event.target.closest('[data-action-click]');
 
-            if (!entry || entry.getAttribute('data-action-click') !== UPLOAD_BY_TYPE_ACTION) {
+            if (!entry) {
+                return;
+            }
+
+            if (entry.getAttribute('data-action-click') !== UPLOAD_BY_TYPE_ACTION) {
+                // A module's handler: its action runs through humhub.action.js, and what it
+                // creates comes back on `humhub:file:created` (see onFileCreated()).
+                handlerField = this;
                 return;
             }
 
@@ -277,6 +310,21 @@ export default {
             const files = Array.from((event.clipboardData && event.clipboardData.files) || []);
             if (files.length) {
                 this.addFiles(files);
+            }
+        },
+        /** A file a module's handler created (see the class docblock, "Legacy file handlers"). */
+        onFileCreated(event, ...created) {
+            if (handlerField !== this) {
+                return;
+            }
+            handlerField = null;
+
+            // `event.trigger('humhub:file:created', [file])` hands the files over as arguments
+            const files = created.flat()
+                .filter(Boolean)
+                .map((file) => ({ ...file, fileName: file.fileName || file.name }));
+            if (files.length) {
+                this.emitFiles([...this.files, ...files]);
             }
         },
         onAttachEvent(event) {

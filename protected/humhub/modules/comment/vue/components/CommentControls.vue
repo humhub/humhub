@@ -42,7 +42,7 @@
  * comment/widgets/views/commentControls.php so existing theme CSS applies
  * unchanged - now composed from the shared, core `DropdownMenu` component
  * (protected/humhub/vue/DropdownMenu.vue, resolved through the global Vue
- * component registry, same as `RichTextOutput`/`LegacyFormWrapper`) rather
+ * component registry, same as `RichTextOutput`) rather
  * than repeating the nav/dropdown markup locally. `DropdownMenu`'s
  * `alignEnd`/`toggleClass` defaults already match what this component used
  * to hardcode (`dropdown-menu-end`, `nav-link dropdown-toggle`), so neither

@@ -286,6 +286,8 @@ export class Dropdown extends MenuItemGroup {
         let rendered = [];
         this.content.items.forEach((item) => {
             let dom = item.render(view, {htmlNode: 'a', tabindex: 0});
+            // Bootstrap's row, styled like every other context menu of the platform
+            dom.classList.add('dropdown-item');
             let itemDom = crelt("div", {}, dom);
             addMenuClass(itemDom, 'dropdown-item');
             rendered.push(itemDom);
@@ -311,7 +313,8 @@ export class Dropdown extends MenuItemGroup {
 
     expand(dom) {
 
-        let menuDOM = crelt("div", {}, this.getContentDom());
+        // Bootstrap's `.dropdown-menu`, shown while it exists
+        let menuDOM = crelt("div", {class: "dropdown-menu show"}, this.getContentDom());
         addMenuClass(menuDOM, 'dropdown-menu');
 
         let done = false;

@@ -63,7 +63,7 @@ export function filterFileUrl(url, mode) {
 }
 
 export function getLoaderWidget() {
-    if (!window.humhub) {
+    if (!isHumhub()) {
         return $('<div class="loader">loading...</div>');
     }
 

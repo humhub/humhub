@@ -24,6 +24,9 @@ const createNodeFromFile = function (context, file) {
         return null;
     }
 
+    // `fileName` is the HTTP API's file shape (`POST /api/v2/file`), `name` the legacy upload's
+    file = Object.assign({}, file, {name: file.name || file.fileName});
+
     const schema = context.schema;
 
     if (file.mimeIcon === 'mime-image') {
@@ -56,6 +59,11 @@ const triggerUpload = function(state, view, context, files) {
     // A fresh object to act as the ID for this upload
     let id = {};
 
+    if (typeof context.options.upload === 'function') {
+        uploadThroughOption(context, id, files);
+        return;
+    }
+
     let uploadWidget = humhub.require('ui.widget.Widget').instance($('#'+context.id+'-file-upload'));
 
     if (uploadWidget) {
@@ -78,6 +86,34 @@ const triggerUpload = function(state, view, context, files) {
     }
 }
 
+/**
+ * The `upload` option: the host uploads - the given files (pasted or dropped), or the ones
+ * the user picks when none are given (`accept` narrowing the picker, e.g. `image/*`) - and
+ * resolves with the uploaded files, which are inserted where the selection was. Resolving
+ * with none (the user cancelled) or rejecting just removes the placeholder.
+ */
+const uploadThroughOption = function(context, id, files, accept = null) {
+    const pending = context.options.upload(files ? Array.from(files) : null, {accept});
+
+    if (!pending || typeof pending.then !== 'function') {
+        return;
+    }
+
+    loaderStart(context, id, true);
+
+    pending.then((uploaded) => {
+        const nodes = (uploaded || []).map((file) => createNodeFromFile(context, file)).filter(Boolean);
+
+        if (nodes.length) {
+            replaceLoader(context, id, nodes, true);
+        } else {
+            removeLoader(context, id, true);
+        }
+    }).catch(() => {
+        removeLoader(context, id, true);
+    });
+};
+
 const createNodesFromResponse = function(context, response) {
     const nodes = [];
 
@@ -95,6 +131,7 @@ const createNodesFromResponse = function(context, response) {
 
 export {
     triggerUpload,
+    uploadThroughOption,
     createNodesFromResponse,
     createNodeFromFile,
 }

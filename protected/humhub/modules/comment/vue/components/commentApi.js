@@ -15,7 +15,7 @@
  * Validation failures use the API's `422 {"errors": {attribute: [messages]}}` contract —
  * `extractFieldErrors()` unwraps it for `HumHubForm.setErrors()`.
  */
-import { apiUrl, client, getConfig, url } from '@humhub/vue';
+import { apiUrl, client, getConfig } from '@humhub/vue';
 
 const blockedUserIds = () => getConfig('user').blockedUserIds || [];
 const currentUserId = () => {
@@ -78,20 +78,6 @@ export const fetchWindow = ({ contentId, parentCommentId, ...params }) => {
         : `content/${contentId}/comments`;
     return client.get(apiUrl(path, params)).then(mapWindow);
 };
-
-/**
- * Fetches the comment form's props of a content — `{canComment, formShellHtml, uploadOptions,
- * submitIconHtml}`, what `Comments::formProps()` hands an embedded section — for a section
- * mounted by `contentId` alone. A UI route (`comment/comment/form`), not the HTTP API: the
- * form is server-rendered markup.
- */
-export const fetchFormProps = (contentId) => client.get(url('comment/comment/form', { contentId }))
-    .then((response) => ({
-        canComment: !!response.canComment,
-        formShellHtml: response.formShellHtml || null,
-        uploadOptions: response.uploadOptions || null,
-        submitIconHtml: response.submitIconHtml || null,
-    }));
 
 export const fetchComment = (id) => client.get(apiUrl(`comment/${id}`)).then(mapComment);
 

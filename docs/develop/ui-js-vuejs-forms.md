@@ -1,15 +1,10 @@
 # Vue.js Form Suite
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the native `HumHubForm` component suite: `HumHubForm` itself, the field components (`TextField`, `TextareaField`, `CheckboxField`, `SelectField`, `PickerField`, `UploadField`), `SubmitButton`, the Yii-parity markup/`name`/`id` convention, the error contract, and how heavy legacy widgets (the rich text editor) embed as suite citizens via `RichTextField`. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md); for the legacy-interop mechanism `RichTextField` itself is built on, see [Legacy interop](ui-js-vuejs-interop.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the native `HumHubForm` component suite: `HumHubForm` itself, the field components (`TextField`, `TextareaField`, `CheckboxField`, `SelectField`, `PickerField`, `UploadField`), `SubmitButton`, the Yii-parity markup/`name`/`id` convention, the error contract, and the rich text editor as a field (`RichTextField`). For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
-## Why a form suite, not just `LegacyFormWrapper`
+## Why a form suite
 
-Before this suite existed, a module writing a Vue island form had exactly one building block: wrap a whole server-rendered `ActiveForm` shell in `LegacyFormWrapper` (see [Legacy interop](ui-js-vuejs-interop.md)) and hand-roll error state, `name`/`id` conventions and busy/disable logic per component — which is what the comment section's `CommentForm.vue` did before this suite existed. That pattern is the right one for genuinely deep legacy widgets (a rich text editor, a drag/drop uploader), but it is the wrong default for an ordinary text field, checkbox or select: those don't need a server round-trip to render, and re-deriving Yii's own `name`/`id`/error-class conventions by hand in every module invites drift.
-
-The suite therefore layers two things:
-
-- **Native field components** for standard inputs — pure Vue, markup-parity with `yii\bootstrap5\ActiveField`, sharing one error/busy context.
-- **`LegacyFormWrapper` kept as the internal engine** for the handful of widgets not (yet) worth rewriting in Vue, wrapped as suite citizens (`RichTextField`, see below) so they participate in the same error contract as everything else.
+A Vue island form needs Yii's `name`/`id`/error-class conventions, one error state and one busy state. Re-deriving them by hand in every module invites drift, so the suite provides **native field components** for standard inputs — pure Vue, markup-parity with `yii\bootstrap5\ActiveField`, sharing one error/busy context — and the platform's rich text editor as one of them (`RichTextField`).
 
 **Validation stays server-side.** Yii model rules are the single source of truth for whether a value is valid; the client never re-implements them. `required`, `type`, etc. on a field are display/UX hints only (a visual marker, an `<input type>`) — the actual accept/reject decision, and the messages shown, always come from the server's response to a real submit attempt.
 
@@ -27,7 +22,7 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 | `PickerField` | Picker / enhanced select, see [Picker](ui-js-vuejs-picker.md) | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue`; every `PickerInput` prop (`multiple`, `source`, `url`, `options`, `initialItems`, `maxSelection`, `listed`, …) | `update:modelValue` |
 | `SubmitButton` | `type="submit"` button | `disabled`, `loader` (default `true`) | default slot = label/icon |
 | `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlersHtml`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |
-| `RichTextField` | Legacy citizen: the richtext editor shell, see [Legacy fields](#legacy-fields) | `attribute`*, `shellHtml` | exposes `getValue()`, `setValue()`, `clear()`, `focus()` |
+| `RichTextField` | The richtext editor, see [Rich text](#rich-text) | `attribute`*, `instanceKey`, `mentioningUrl`, `pluginOptions`, `exclude` | exposes `getValue()`, `setValue()`, `clear()`, `focus()` |
 
 \* `attribute` is required on every field — it is both the Yii model attribute this field maps to and the key its server-side errors are read from.
 
@@ -131,7 +126,7 @@ Because `HumHubForm` renders a real `<form @submit.prevent>`, pressing Enter ins
     attribute="fileList"
     v-model="files"
     :max="10"
-    :handlers-html="handlersHtml"
+    :handlers="handlers"
     :trigger-target="buttonRow"
     @busy="uploadBusy = $event"
 />
@@ -160,11 +155,12 @@ can be Teleported elsewhere via `triggerTarget` — the comment form puts it in 
 root; a caller with a larger drop zone (the comment form: the whole comment box) forwards those
 events to `addFiles()`.
 
-**Legacy file handlers.** `FileHandlerCollection::TYPE_CREATE` handlers stay server-rendered:
-pass `FileHandlerButtonDropdown::widget(['handlers' => …, 'itemsOnly' => true])` as
-`handlersHtml` and the field renders those `<li>` entries in its own dropdown, where their
-`data-action-click` attributes keep being served by `humhub.action.js`'s document-level
-delegate. Core's own "upload with this `accept` type" entries (`file.uploadByType`) are handled
+**File handlers.** The import and create handlers of the current user come with every page
+as data, in the core JS config (`getConfig('file').handlers`: `{label, icon, attributes}`, see
+`file\serializers\FileHandlerSerializer`). Pass them as `handlers` and the field renders them in
+its own dropdown as links carrying their attributes, so their `data-action-click` keeps being
+served by `humhub.action.js`'s document-level delegate; a file a module's handler creates
+(`humhub:file:created`) is attached to the field whose entry was clicked. Core's own "upload with this `accept` type" entries (`file.uploadByType`) are handled
 natively by the field. A handler that produces an already-uploaded file hands it over with a
 DOM event instead of reaching into a widget instance:
 
@@ -172,17 +168,33 @@ DOM event instead of reaching into a widget instance:
 element.dispatchEvent(new CustomEvent('humhub:file:attach', { detail: { files: [fileShape] } }));
 ```
 
-## Legacy fields
+## Rich text
 
-`RichTextField` is the suite's "legacy citizen": it wraps `LegacyFormWrapper` (see [Legacy interop](ui-js-vuejs-interop.md)) hosting a server-rendered rich-text-editor shell (`humhub\widgets\VueFormShell`), and participates in the same `HumHubForm` error contract as every native field — its `attribute`'s server-side messages render under the editor, exactly like a `TextField`'s render under its input.
+`RichTextField` holds the platform's rich text editor (ProseMirror, see [Richtext editor](internals-richtext-editor.md)), rendered client-side — no server-rendered form shell. It renders the editor's mount element with the options the PHP widget (`content\widgets\richtext\RichTextField`) would put on it as data attributes and boots the same `ui.richtext.prosemirror.RichTextEditor` widget on it through `v-additions`, so plugins and presets a module registers on the editor (`prosemirror.plugin.registerPlugin()`/`registerPreset()`) apply here as in any PHP form. The PHP widget stays the way to put the editor into a server-rendered form.
 
-A shell used to bake the editor AND the file-upload widget into one HTML blob, which is why this field once owned both (`getFileGuids()`). Uploads are native now (see [File uploads](#file-uploads)), so a shell carries only what has no native counterpart, and the two are separate fields of the same form — see the comment module's `CommentFormShell`/`commentFormShell.php` for the reference composition.
+```html
+<RichTextField
+    attribute="message"
+    layout="inline"
+    :instance-key="'c' + contentId"
+    :placeholder="placeholder"
+    :mentioning-url="mentioningUrl"
+    :plugin-options="{ maxHeight: '300px' }"
+    upload
+    :handlers="handlers"
+/>
+```
 
-`RichTextField` also renders NO generic field wrapper (`mb-3`/`field-<id>`, no `label`/`hint`) — the legacy shell's own server-rendered markup already carries its own established spacing and has no slot for an externally-imposed label; see the component's own docblock. `disabled`/busy do not reach the wrapped editor itself either (the legacy widgets it wraps expose no reactive disable hook) — `SubmitButton`'s own busy-disable remains the actual guard against a double submit while a request is in flight.
+- Options as on the PHP widget: `preset`, `include`, `exclude`, `pluginOptions`, `mentioningUrl`, `placeholder`; `layout` `inline` (menu on focus) or `block` (always shown, the default); `autofocus`.
+- `instanceKey` keys the editor's draft backup (`sessionStorage`): unique among the fields mounted at once and stable across page loads for the same logical form. Without one the field keeps no backup.
+- API: `getValue()`, `setValue(markdown)`, `clear()` (also drops the draft), `focus()`, `getElement()`. Events: `scroll-active`/`scroll-inactive` for a height-limited editor.
+- `upload` puts files into the text: `true` uploads through `POST /api/v2/file`, a function `(files) => Promise<file[]>` uploads itself. The editor's menu entry then opens a file picker, a pasted file is uploaded too, and each file is inserted at the cursor (the server attaches what the text references on save). Without it the editor's upload is left out. Attachments are an `UploadField`'s job (see [File uploads](#file-uploads)).
+- `handlers` (the file handlers, as `UploadField` takes them) adds the file handlers to the editor's upload menu: the platform's "upload this type" entries go through `upload` with that type, a module's entry runs its own action and the editor inserts the file it creates. Without them the editor's file handler plugin is left out.
+- Its `attribute`'s server-side messages render under the editor, like a `TextField`'s. No `label`/`hint` is rendered, and `disabled`/busy do not reach the editor; `SubmitButton`'s busy-disable guards a request in flight.
 
-## Reference migration: `CommentForm.vue`
+## Reference: `CommentForm.vue`
 
-`comment/vue/components/CommentForm.vue` is the suite's reference consumer, built on `<HumHubForm model-name="Comment">` + `RichTextField` (`attribute="message"`) + a Teleported `SubmitButton`. See its own docblock, section "Built on `HumHubForm`", for the migration specifics — including a one-off wrinkle worth knowing before building a similar legacy-citizen composition: `RichTextField`'s wrapped shell is ITSELF a server-rendered `<form>` (`VueFormShell`), so nesting it inside `HumHubForm`'s own `<form>` puts a `<form>` inside a `<form>` — harmless in the DOM (the inner one arrives via `v-html`, never through the browser's live-document parser, which is the only thing that would reject it), but it means a native form-submission activation (a `[type=submit]` click, Enter in a real `<input>`) inside that inner shell always resolves against the INNER form, never `HumHubForm`'s own outer one. `CommentForm.vue`'s `SubmitButton` therefore still wires `@click` directly (as it did before this suite existed) rather than relying solely on `HumHubForm`'s `submit` emission for this specific composition — the emission is real and does fire for pure-native-field forms (see [Worked example](#worked-example) above), just not reachable through a Teleported legacy-shell button. See `HumHubForm.vue`'s own docblock for the full writeup.
+`comment/vue/components/CommentForm.vue` is the suite's reference consumer: `<HumHubForm model-name="Comment">` with a `RichTextField` (`attribute="message"`), an `UploadField` whose trigger is teleported into the form's button row, and a `SubmitButton` beside it. The editor's Ctrl+S clicks the `[type="submit"]` of the editor's form, i.e. that button. See its own docblock for the details.
 
 ## Internals
 

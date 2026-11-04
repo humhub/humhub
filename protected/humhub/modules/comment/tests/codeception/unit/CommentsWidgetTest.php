@@ -152,47 +152,25 @@ class CommentsWidgetTest extends HumHubDbTestCase
     }
 
     /**
-     * `submitIconHtml` reproduces the legacy `Button::accent()->icon('send')` markup for
-     * CommentForm.vue's submit button (see that component's own docblock) - only worth
-     * sending down when the viewer can comment at all. Like `formShellHtml`, it is a scalar
-     * (string) prop, so `VueComponent::run()` renders it as an individual `submit-icon-html`
-     * attribute rather than folding it into the JSON `props` blob - and, like the `null`
-     * `anchorCommentId` case above, a `null` value is omitted entirely rather than rendered.
+     * Whether the viewer may comment is the only form prop left per content: the form itself
+     * (the file handlers, the attachment limit, the media setting) is the page's, see
+     * `widgets\CoreJsConfig`.
      */
-    public function testSubmitIconHtmlOnlyPresentWhenCommentingIsAllowed()
+    public function testCanCommentIsTheOnlyFormProp()
     {
         $this->becomeUser('User2');
 
         $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
         $this->assertSame('true', $props['can-comment']);
-        $this->assertStringContainsString('ti-send', $props['submit-icon-html']);
+        foreach (['submit-icon-html', 'upload-options', 'uploadOptions', 'form-shell-html', 'exclude-media-files'] as $removed) {
+            $this->assertArrayNotHasKey($removed, $props);
+        }
 
         self::allowGuestAccess(true);
         $this->logout();
 
         $props = $this->islandProps(Comments::widget(['content' => Post::findOne(['id' => 11])->content]));
         $this->assertSame('false', $props['can-comment']);
-        $this->assertArrayNotHasKey('submit-icon-html', $props);
-    }
-
-    /**
-     * A comment's attachments render through the file module's shared `<AttachedFiles>`
-     * component, so the widget hands over the same `excludeMediaFilesPreview` setting
-     * `file\widgets\ShowFiles` reads for a wall entry - an attachment the preview grid
-     * already shows is left out of the list below it.
-     */
-    public function testExcludeMediaFilesFollowsTheFileModuleSetting()
-    {
-        $this->becomeUser('User2');
-
-        $settings = Yii::$app->getModule('file')->settings;
-        $content = Post::findOne(['id' => 11])->content;
-
-        $settings->set('excludeMediaFilesPreview', '1');
-        $this->assertSame('true', $this->islandProps(Comments::widget(['content' => $content]))['exclude-media-files']);
-
-        $settings->set('excludeMediaFilesPreview', '0');
-        $this->assertSame('false', $this->islandProps(Comments::widget(['content' => $content]))['exclude-media-files']);
     }
 
     /**
@@ -210,7 +188,7 @@ class CommentsWidgetTest extends HumHubDbTestCase
      * Parses a `Comments::widget()` result into the mount element's own attributes plus the
      * JSON-encoded `props` attribute (see `humhub\widgets\VueComponent::run()`), merged into a
      * single associative array (`id`, `content-id`, `can-comment`, `page-size`,
-     * `anchor-comment-id`, `collapsed` as rendered attribute strings; `initial`/`formShellHtml`
+     * `anchor-comment-id`, `collapsed` as rendered attribute strings; `initial`/`uploadOptions`
      * decoded from `props`).
      */
     private function islandProps(string $html): array

@@ -1,114 +1,270 @@
 <template>
-    <LegacyFormWrapper ref="wrapper" :shell-html="shellHtml" :instance-key="instanceKey" />
-    <div v-if="hasError" :id="errorId" class="invalid-feedback d-block">
-        <div v-for="(message, index) in errorMessages" :key="index">{{ message }}</div>
+    <div v-additions class="richtext-field" @input="clearOwnError">
+        <div
+            :id="editorId"
+            ref="editor"
+            v-editor-options="{
+                upload: upload ? uploadOption : null,
+                fileHandlers: handlers.length ? () => $refs.handlers : null,
+            }"
+            class="ProsemirrorEditor"
+            :class="layout === 'block' ? 'plainMenu' : 'focusMenu'"
+            data-ui-widget="ui.richtext.prosemirror.RichTextEditor"
+            data-ui-init
+            :data-preset="preset"
+            :data-include="JSON.stringify(include)"
+            :data-exclude="JSON.stringify(editorExclude)"
+            :data-plugin-options="JSON.stringify(pluginOptions)"
+            :data-mentioning-url="mentioningUrl"
+            :data-placeholder="placeholder"
+            :data-focus="autofocus ? 'true' : null"
+            data-backup-interval="0"
+            :data-backup-cookie-key="backupKey"
+        ></div>
+        <input
+            v-if="upload"
+            ref="picker"
+            type="file"
+            class="d-none"
+            multiple
+            :accept="pickerAccept"
+            @change="onPicked"
+            @cancel="onPicked"
+        >
+        <!-- The file handlers the editor's menu offers (its `fileHandlers` option) -->
+        <ul v-if="handlers.length" ref="handlers" class="d-none">
+            <FileHandlerItems :handlers="handlers" />
+        </ul>
+        <textarea
+            :id="editorId + '_input'"
+            :name="fieldName"
+            class="d-none"
+            :title="placeholder"
+            :aria-describedby="describedBy"
+        ></textarea>
+        <div v-if="hasError" :id="errorId" class="invalid-feedback d-block">
+            <div v-for="(message, index) in errorMessages" :key="index">{{ message }}</div>
+        </div>
     </div>
 </template>
 
 <script>
 /**
- * A `HumHubForm` field embedding a legacy richtext-editor-plus-upload shell (see
- * `HumHubForm.vue`'s own docblock for the suite overview) — the "legacy citizen"
- * the suite's owner design explicitly allows for: native components for standard
- * fields, `LegacyFormWrapper` kept as the internal engine for heavy legacy widgets
- * (ProseMirror richtext, upload) until native Vue counterparts exist. See
- * `docs/develop/ui-js-vuejs-forms.md`, "Legacy fields", for the full writeup this
- * docblock summarizes.
+ * A `HumHubForm` field holding the platform's richtext editor (ProseMirror, see
+ * docs/develop/internals-richtext-editor.md), rendered client-side: no server-rendered form
+ * shell. It renders the editor's mount element with the options the PHP widget
+ * (`content\widgets\richtext\RichTextField`, which stays the way to put the editor into a
+ * server-rendered form) would put on it as data attributes, and boots the same
+ * `ui.richtext.prosemirror.RichTextEditor` widget on it through the additions
+ * (`v-additions`). Plugins and presets a module registers on the editor
+ * (`prosemirror.plugin.registerPlugin()`/`registerPreset()`) therefore work here as in any
+ * PHP form.
  *
- * ## Scope: the richtext editor only
+ * ## Options
  *
- * A shell used to bake the richtext editor AND the file-upload widget into one
- * server-rendered HTML blob, which is why this field once owned both. Uploads
- * now have a native counterpart (`UploadField.vue`, see
- * `docs/develop/ui-js-vuejs-forms.md`), so a shell carries only what has none —
- * the ProseMirror editor — and the two are separate fields of the same form
- * (`CommentForm.vue` is the reference composition).
+ * `preset`, `include`, `exclude`, `pluginOptions` and `mentioningUrl` as on the PHP widget;
+ * `layout` `inline` (the menu shows on focus, `focusMenu`) or `block` (always shown,
+ * `plainMenu`, without the resize handle - as the PHP widget does); `autofocus`.
  *
- * ## No generic field wrapper markup
+ * ## Files in the text
  *
- * Unlike `TextField`/`TextareaField`/`CheckboxField`/`SelectField` (see their own
- * docblocks), this component's template is a bare fragment — no `mb-3`/`field-<id>`
- * wrapper div, no rendered `label`/`hint`. The shell's own server-rendered markup
- * (`commentFormShell.php` et al.) already carries its own established spacing and
- * has no slot for an externally-imposed label — adding the generic wrapper here
- * would both be visually redundant and risk a spacing regression against the
- * pre-`HumHubForm` markup (see `CommentForm.vue`'s own migration notes). `label`/
- * `hint`/`required`/`disabled` are still accepted (inherited from `form/
- * fieldMixin.js`, shared by every field) for interface consistency, but `label`/
- * `hint` are not rendered and `disabled`/busy do not reach the editor itself — the
- * legacy widgets it wraps expose no reactive disable hook; `SubmitButton`'s own
- * busy-disable (see its docblock) remains the actual guard against a double
- * submit while a request is in flight. Documented gap, not an oversight.
+ * `upload` turns on the editor's upload - `true` uploads through the HTTP API
+ * (`POST /api/v2/file`, refused files are reported as a status message), a function
+ * `(files) => Promise<file[]>` uploads the browser `File`s itself and resolves with the
+ * uploaded ones in the API's file shape. Its menu entry opens a file picker, a pasted file is
+ * uploaded too, and each file is inserted
+ * where the cursor was (an image or a video as such, anything else as a link; the server
+ * attaches what the text references when it is saved). Without it the editor's upload
+ * plugin is left out.
+ *
+ * `handlers` - the file handlers (`{label, icon, attributes}`, the core JS config's
+ * `file.handlers`), as `UploadField` takes them - adds them to the
+ * editor's upload menu, as the PHP widget's editor has them: the platform's "upload this type"
+ * entries go through `upload` with that type, a module's entry (a new document, say) runs its
+ * own action, and the editor inserts the file the handler announces on `humhub:file:created`.
+ * Without them the editor's file handler plugin is left out.
+ *
+ * ## Draft backup
+ *
+ * The editor keeps an unsaved text in `sessionStorage`, keyed by its input's id. That id
+ * comes from `instanceKey` - pass one that is unique among the fields mounted at once and
+ * stable across page loads for the same logical form (see `CommentForm.vue`), or the draft of
+ * one form turns up in another. Without a key the field keeps no backup. The backup runs on
+ * this field's own timer (`backupInterval` seconds), which stops when the field unmounts -
+ * the widget's own would run for the rest of the page.
  *
  * ## API
  *
- * Thin proxies to the wrapped `LegacyFormWrapper` ref — see ITS OWN docblock for
- * the full widget-interop contract (the `__VUEFORM__` token, the widget-instance
- * APIs read off cached jQuery data, the unsaved-changes-guard mechanism, ...) this
- * component does not duplicate: `getValue()`, `setValue(markdown)`, `clear()`,
- * `resetAcknowledge()`, `focus()` (also this field's
- * `HumHubForm.focusFirstError()` entry point), plus `getShellElement()` — the
- * shell's own root DOM node, which `CommentForm.vue` needs directly to resolve its
- * Teleport target and its native-submit-fallback `<form>` listener (see its own
- * docblock).
+ * `getValue()` (the markdown), `setValue(markdown)`, `clear()` (also drops the draft),
+ * `focus()` (also this field's `HumHubForm.focusFirstError()` entry point) and
+ * `getElement()`, the field's root node. Events: `scroll-active`/`scroll-inactive` while a
+ * height-limited editor (`pluginOptions.maxHeight`) scrolls.
  *
- * Error rendering (`hasError`/`errorMessages`, from `form/fieldMixin.js`) reuses
- * the exact class list (`invalid-feedback d-block`) `CommentForm.vue` rendered
- * itself before this suite existed — `d-block` (rather than relying on Bootstrap's
- * `.is-invalid ~ .invalid-feedback` sibling-selector CSS, which every OTHER field
- * in this suite can lean on) stays necessary here because there is no sibling
- * `.is-invalid`-carrying input for it to follow: the shell's own inner input
- * elements are legacy-rendered and never gain that class from this suite.
+ * `label`/`hint` (from `form/fieldMixin.js`) are not rendered and `disabled` does not reach
+ * the editor; the submit button's busy state guards a request in flight.
  *
  * @since 1.20
  */
+import { log } from '@humhub/vue';
 import fieldMixin from './form/fieldMixin.js';
+import { uploadFiles } from './upload/uploadClient.js';
+import FileHandlerItems from './upload/FileHandlerItems.vue';
+
+// Where the widget caches its instance on its node (`RichTextEditor.component`)
+const RICHTEXT_COMPONENT_DATA = 'humhub-ui-richtexteditor';
+let instanceCounter = 0;
+
+// Hands options a data attribute cannot carry (functions) to the editor widget, which reads
+// its options from the node's jQuery data. `created` runs before the node is mounted, so
+// before the additions boot the widget on it.
+const editorOptions = {
+    created(el, binding) {
+        Object.entries(binding.value).forEach(([key, value]) => {
+            if (value !== null) {
+                jQuery(el).data(key, value);
+            }
+        });
+    },
+};
 
 export default {
+    components: { FileHandlerItems },
+    directives: { editorOptions },
     mixins: [fieldMixin],
     props: {
-        shellHtml: { type: String, required: true },
-        // Passed through to LegacyFormWrapper — see ITS "Unique-id contract"
-        // docblock section for the uniqueness/stability contract (and why a
-        // caller whose shell hosts the backup-enabled richtext editor — i.e.
-        // every caller of THIS field — should pass one).
         instanceKey: { type: String, default: null },
+        preset: { type: String, default: null },
+        include: { type: Array, default: () => [] },
+        exclude: { type: Array, default: () => [] },
+        pluginOptions: { type: Object, default: () => ({}) },
+        mentioningUrl: { type: String, default: null },
+        layout: { type: String, default: 'block' },
+        autofocus: { type: Boolean, default: false },
+        backupInterval: { type: Number, default: 3 },
+        // `true` or `(files) => Promise<file[]>`, see "Files in the text"
+        upload: { type: [Boolean, Function], default: false },
+        // File handlers (`{label, icon, attributes}`), see "Files in the text"
+        handlers: { type: Array, default: () => [] },
+    },
+    emits: ['scroll-active', 'scroll-inactive'],
+    data() {
+        return {
+            // The PHP widget's `AbstractRichTextEditor::BACKUP_COOKIE_KEY`
+            backupKey: 'RichTextEditor.backup',
+            pickerAccept: null,
+            editorId: this.instanceKey
+                ? 'richtext-' + this.instanceKey.replace(/[^A-Za-z0-9_-]/g, '-')
+                : 'richtext-' + (++instanceCounter),
+        };
+    },
+    computed: {
+        editorExclude() {
+            const exclude = [...this.exclude];
+            if (this.layout === 'block') {
+                exclude.push('resizeNav');
+            }
+            if (!this.upload && !exclude.includes('upload')) {
+                exclude.push('upload');
+            }
+            if (!this.handlers.length && !exclude.includes('file_handler')) {
+                exclude.push('file_handler');
+            }
+            return exclude;
+        },
     },
     mounted() {
-        // Clear-error-on-input parity with the native fields: their
-        // `internalValue` setters call `clearOwnError()` on every write (see
-        // e.g. TextField.vue), but the legacy ProseMirror editor inside the
-        // shell never routes its input through any Vue binding, so a 422
-        // message rendered by this field used to stick even while the user
-        // was already fixing the value (browser-verified). The editor's
-        // contenteditable emits native `input` events that bubble through the
-        // shell — one delegated listener on the wrapper root is the whole
-        // bridge. Runs alongside fieldMixin's own mounted() (Vue merges mixin
-        // and component hooks; both run).
-        this.$refs.wrapper.$el.addEventListener('input', this.clearOwnError);
+        // The editor triggers these as jQuery events on its node
+        jQuery(this.$refs.editor)
+            .on('scrollActive.richtextField', () => this.$emit('scroll-active'))
+            .on('scrollInactive.richtextField', () => this.$emit('scroll-inactive'));
+
+        if (this.instanceKey && this.backupInterval > 0) {
+            this.backupTimer = setInterval(() => {
+                const editor = this.getEditorInstance();
+                if (editor) {
+                    editor.backup();
+                }
+            }, this.backupInterval * 1000);
+        }
     },
     beforeUnmount() {
-        this.$refs.wrapper.$el.removeEventListener('input', this.clearOwnError);
+        clearInterval(this.backupTimer);
+        jQuery(this.$refs.editor).off('.richtextField');
+
+        const editor = this.getEditorInstance();
+        if (editor && editor.editor && typeof editor.editor.destroy === 'function') {
+            editor.editor.destroy();
+        }
     },
     methods: {
+        getEditorInstance() {
+            return this.$refs.editor ? jQuery(this.$refs.editor).data(RICHTEXT_COMPONENT_DATA) : null;
+        },
+        /** @returns {string} the editor's markdown */
         getValue() {
-            return this.$refs.wrapper.getValue();
+            const editor = this.getEditorInstance();
+            return editor ? editor.editor.serialize() : '';
         },
+        /** Replaces the editor's content (e.g. to edit an existing text). */
         setValue(markdown) {
-            this.$refs.wrapper.setValue(markdown);
+            const editor = this.getEditorInstance();
+            if (editor) {
+                editor.editor.init(markdown || '');
+            }
         },
+        /** Empties the editor and drops its draft. */
         clear() {
-            this.$refs.wrapper.clear();
-        },
-        resetAcknowledge() {
-            this.$refs.wrapper.resetAcknowledge();
+            const editor = this.getEditorInstance();
+            if (editor) {
+                editor.$.trigger('clear');
+            }
         },
         focus() {
-            this.$refs.wrapper.focus();
+            const editor = this.getEditorInstance();
+            if (editor) {
+                editor.focus();
+            }
         },
-        /** @returns {Element} the shell's own root DOM node (see the class docblock's "API" section). */
-        getShellElement() {
-            return this.$refs.wrapper.$el;
+        /**
+         * The editor's `upload` option: the given files (pasted), or the ones the user picks;
+         * resolves with none when the picker is cancelled.
+         */
+        uploadOption(files, { accept = null } = {}) {
+            if (files && files.length) {
+                return this.uploadFiles(files);
+            }
+
+            return new Promise((resolve) => {
+                this.resolvePick = resolve;
+                // The attribute has to be on the input before the click opens the dialog
+                this.pickerAccept = accept;
+                this.$nextTick(() => {
+                    this.$refs.picker.value = '';
+                    this.$refs.picker.click();
+                });
+            }).then((picked) => (picked.length ? this.uploadFiles(picked) : []));
+        },
+        uploadFiles(files) {
+            if (typeof this.upload === 'function') {
+                return this.upload(files);
+            }
+
+            return uploadFiles(files).then((response) => {
+                (response.errors || []).forEach((error) => {
+                    log.error(error.fileName + ': ' + (error.messages || []).join(' '), true);
+                });
+                return response.results || [];
+            });
+        },
+        onPicked(event) {
+            if (this.resolvePick) {
+                this.resolvePick(Array.from(event.target.files || []));
+                this.resolvePick = null;
+            }
+        },
+        /** @returns {Element} the field's root node */
+        getElement() {
+            return this.$el;
         },
     },
 };
