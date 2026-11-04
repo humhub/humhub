@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8692: The richtext editor asks for the alt text of an uploaded image
 - Enh #8690: New console command `version` prints the HumHub version, `version/info` details about the installation (edition, PHP, database, Docker image)
 - Enh #8691: Picker filters (space, person, topic) suggest before anything is typed, loaded when first opened; fewer icons in the filter bar and one placeholder colour
 - Enh #8688: The richtext field of the Vue.js forms renders the editor client-side; file handlers come with the page config, and the editor gets an upload and a file handlers option, Tabler icons and Bootstrap dropdowns
