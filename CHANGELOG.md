@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8690: New console command `version` prints the HumHub version, `version/info` details about the installation (edition, PHP, database, Docker image)
 - Enh #8684: File versions and the activity history of one content, as API endpoints and Vue islands
 - Enh #8683: Larger icons beside a button label, legacy list group look only in panels; card dropdowns stay above the next grid row
 - Enh #8682: The account menu is filled with the primary colour
