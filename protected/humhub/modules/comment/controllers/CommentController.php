@@ -3,26 +3,26 @@
 namespace humhub\modules\comment\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\widgets\Comments;
 use humhub\modules\content\models\Content;
 use Yii;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * Serves the one remaining HTML route of the comment UI (the `show` popup mode).
+ * Serves the one UI route of the comment section that is not part of the platform's HTTP API:
+ * the comment form's props (`form`).
  * All JSON read/write traffic of the comment Vue island goes through the platform's
  * HTTP API ({@see \humhub\modules\comment\controllers\api\CommentController}) — the
  * former JSON actions of this controller were removed with that switch, and the delete
  * dialogs (plain confirm AND the admin notify/reason mode) are a native Vue modal now
  * (`CommentDeleteModal.vue`), so the former `get-admin-delete-modal` action is gone too.
+ * The comments popup (`CommentLink::MODE_POPUP`) mounts the island client-side as well
+ * (`comment.showComments` in humhub.comment.js), so the former `show` action is gone.
  */
 class CommentController extends Controller
 {
-    public ?Comment $comment = null;
     private ?Content $content = null;
-
-    public ?Comment $parentComment = null;
 
     public function beforeAction($action)
     {
@@ -30,23 +30,8 @@ class CommentController extends Controller
             return false;
         }
 
-        $commentId = (int)Yii::$app->request->get('id', Yii::$app->request->post('id'));
-        $parentCommentId = (int)Yii::$app->request->get(
-            'parentCommentId',
-            Yii::$app->request->post('parentCommentId'),
-        );
-        $contentId = (int)Yii::$app->request->get('contentId', Yii::$app->request->post('contentId'));
-
-        if ($commentId) {
-            $this->comment = Comment::findOne(['id' => $commentId]);
-            $this->content = $this->comment?->content;
-            $this->parentComment = $this->comment?->parentComment;
-        } elseif ($parentCommentId) {
-            $this->parentComment = Comment::findOne(['id' => $parentCommentId]);
-            $this->content = $this->parentComment?->content;
-        } elseif ($contentId) {
-            $this->content = Content::findOne(['id' => $contentId]);
-        }
+        $contentId = (int)Yii::$app->request->get('contentId');
+        $this->content = $contentId ? Content::findOne(['id' => $contentId]) : null;
 
         if (!$this->content) {
             throw new NotFoundHttpException();
@@ -60,23 +45,17 @@ class CommentController extends Controller
     }
 
     /**
-     * Renders the comment section (see {@see \humhub\modules\comment\widgets\Comments}) inside
-     * a modal - the only remaining mode of this action, used by
-     * {@see \humhub\modules\content\widgets\ContentObjectLinks}'s `CommentLink::MODE_POPUP`.
-     * The comment island itself owns listing/pagination via the REST API, so this only
-     * needs to set up the modal chrome around it. `renderAjax()` (no site layout, but still
-     * the ajax asset/CSRF envelope - see `humhub\components\View::renderAjax()`) is what lets
-     * the island's own asset bundle flow with this response, same as before.
+     * The comment form's props for a content (see {@see Comments::formProps()}), for a
+     * `CommentSection` island mounted by `contentId` alone - e.g. in the comments popup or a
+     * file's details pane -, which loads its comments through the HTTP API but has no widget
+     * to hand it the form.
+     *
+     * Deliberately a UI route and not part of `/api/v2`: the form is server-rendered markup
+     * (the legacy richtext editor's shell, the file handlers' menu entries), which has no
+     * place in the API other clients use.
      */
-    public function actionShow()
+    public function actionForm()
     {
-        if (Yii::$app->request->get('mode') !== 'popup') {
-            throw new NotFoundHttpException();
-        }
-
-        return $this->renderAjax('showPopup', [
-            'content' => $this->content,
-            'parentComment' => $this->parentComment,
-        ]);
+        return $this->asJson(Comments::formProps($this->content));
     }
 }

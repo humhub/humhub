@@ -36,13 +36,12 @@ class Comments extends VueWidget
 
     public ?Content $content = null;
 
-    public ?CommentModel $parentComment = null;
-
     /**
-     * @deprecated since 1.20, set {@see self::$content} (and {@see self::$parentComment} for
-     * nested rendering) instead. Kept for backward compatibility - some modules still call
-     * `Comments::widget(['object' => $x])` (the API before #7917 replaced polymorphic
-     * `object` relations with `content_id`/`parent_comment_id`).
+     * @deprecated since 1.20, set {@see self::$content} instead. Kept for backward
+     * compatibility - some modules still call `Comments::widget(['object' => $x])` (the API
+     * before #7917 replaced polymorphic `object` relations with `content_id`). A comment
+     * given here stands for its content: a section always shows a content's whole thread,
+     * the island renders the replies itself.
      * @var ContentActiveRecord|CommentModel|null
      */
     public $object = null;
@@ -61,16 +60,8 @@ class Comments extends VueWidget
     {
         parent::init();
 
-        if ($this->object !== null && $this->content === null && $this->parentComment === null) {
-            if ($this->object instanceof CommentModel) {
-                $this->parentComment = $this->object;
-            } else {
-                $this->content = $this->object->content;
-            }
-        }
-
-        if ($this->parentComment !== null) {
-            $this->content = $this->parentComment->content;
+        if ($this->object !== null && $this->content === null) {
+            $this->content = $this->object->content;
         }
 
         $this->module = Yii::$app->getModule('comment');
@@ -93,7 +84,7 @@ class Comments extends VueWidget
      */
     protected function getOptions(): array
     {
-        return ['id' => 'comment_' . IdHelper::getId($this->content, $this->parentComment)];
+        return ['id' => 'comment_' . IdHelper::getId($this->content, null)];
     }
 
     /**
@@ -101,7 +92,6 @@ class Comments extends VueWidget
      */
     protected function getProps(): array
     {
-        $canComment = $this->module->canComment($this->content);
         $anchorCommentId = $this->getHighlightCommentId(true);
 
         // Anchored windows (permalinks) stay focused around the anchor with a small
@@ -113,7 +103,7 @@ class Comments extends VueWidget
         // island its initial request - shape and semantics are identical.
         $initial = CommentPayloadCache::window(
             $this->content,
-            $this->parentComment,
+            null,
             commentId: $anchorCommentId,
             limit: $anchorCommentId ? $this->module->commentsPreviewMax : $this->getLimit(),
         );
@@ -127,8 +117,36 @@ class Comments extends VueWidget
             // handing them over here saves the island its first `like/states` request and
             // renders the like links complete on first paint.
             'initialLikeStates' => LikeSerializer::statesByRecordId(CommentSerializer::recordIds($initial)),
+            ...self::formProps($this->content),
+            'pageSize' => $this->getPageSize(),
+            'anchorCommentId' => $this->getHighlightCommentId(false),
+            // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
+            // when at least one comment is preloaded into the initial window.
+            'collapsed' => empty($initial['results']),
+            // Same call `file\widgets\ShowFiles` makes for a wall entry: an attachment
+            // the preview grid already shows is left out of the list below it. The
+            // setting is the file module's, the shape rendering it is the shared
+            // `<AttachedFiles>` component.
+            'excludeMediaFiles' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
+        ];
+    }
+
+    /**
+     * What the section's comment form needs, for a content: whether the current user may
+     * comment and, if so, the form's shell, the settings of its upload field and its submit
+     * icon. The same props whether the widget embeds them or the island fetches them for a
+     * section it was mounted for by `contentId` alone (`comment/comment/form`, see
+     * {@see \humhub\modules\comment\controllers\CommentController::actionForm()}).
+     *
+     * @since 1.20
+     */
+    public static function formProps(Content $content): array
+    {
+        $canComment = (bool)Yii::$app->getModule('comment')->canComment($content);
+
+        return [
             'canComment' => $canComment,
-            'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $this->content]) : null,
+            'formShellHtml' => $canComment ? CommentFormShell::widget(['content' => $content]) : null,
             // Settings of the form's Vue-native upload field (`UploadField`), which
             // replaced the shell's former server-rendered upload composition. The handler
             // entries stay server-rendered: they are menu entries a module contributed,
@@ -148,16 +166,6 @@ class Comments extends VueWidget
             // docblock) - rendered here rather than hardcoded client-side since the icon
             // provider (FontAwesome by default) is pluggable/configurable.
             'submitIconHtml' => $canComment ? Icon::get('send')->asString() : null,
-            'pageSize' => $this->getPageSize(),
-            'anchorCommentId' => $this->getHighlightCommentId(false),
-            // Mirrors comments.php's `d-none` class, only lifted (inline `.show()`)
-            // when at least one comment is preloaded into the initial window.
-            'collapsed' => empty($initial['results']),
-            // Same call `file\widgets\ShowFiles` makes for a wall entry: an attachment
-            // the preview grid already shows is left out of the list below it. The
-            // setting is the file module's, the shape rendering it is the shared
-            // `<AttachedFiles>` component.
-            'excludeMediaFiles' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
         ];
     }
 
@@ -197,10 +205,10 @@ class Comments extends VueWidget
         if (!$highlightedComment) {
             Yii::warning('Could not load highlight comment id: ' . $currentCommentId, 'comment');
             return null;
-        } elseif ($returnParentId && !empty($highlightedComment->parent_comment_id) && empty($this->parentComment)) {
+        } elseif ($returnParentId && !empty($highlightedComment->parent_comment_id)) {
             // Highlighted comment has parent, but we're in root context. So return 'parentId' as highlighted instead.
             return $highlightedComment->parent_comment_id;
-        } elseif ($highlightedComment->parent_comment_id !== $this->parentComment?->id) {
+        } elseif ($highlightedComment->parent_comment_id !== null) {
             // Skip highlight, highlighted comment doesn't belong to this level.
             return null;
         }

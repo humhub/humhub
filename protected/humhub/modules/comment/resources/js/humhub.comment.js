@@ -12,6 +12,11 @@
  *    it). Dispatches a `humhub:comment:toggle` CustomEvent on the resolved island mount
  *    element; `CommentSection.vue` listens for it (see its own `mounted()`) to lift the
  *    `d-none` collapse and focus the form.
+ *  - `showComments` - bound via `data-action-click="comment.showComments"` in the same
+ *    view's popup mode (`CommentLink::MODE_POPUP`, e.g. under a gallery or link list entry):
+ *    opens the global modal with a `<comment-section>` mount point for the link's
+ *    `data-content-id`. The island loads the thread and the form by that id alone (see
+ *    `CommentSection.vue`, "Mounted by `contentId` alone"); the modal's additions mount it.
  *  - `scrollActive`/`scrollInactive` - bound via the `events` option of the `RichTextField`
  *    rendered into the comment form shell (see `comment/widgets/views/commentFormShell.php`);
  *    toggles the scroll-shadow class on the editor's wrapper exactly like the pre-Vue form did.
@@ -25,6 +30,8 @@
  */
 humhub.module('comment', function (module, require, $) {
 
+    var modal = require('ui.modal');
+
     var toggleComment = function (evt) {
         var target = evt.$target && evt.$target.get(0);
         if (!target) {
@@ -32,6 +39,19 @@ humhub.module('comment', function (module, require, $) {
         }
 
         target.dispatchEvent(new CustomEvent('humhub:comment:toggle', {bubbles: true}));
+    };
+
+    var showComments = function (evt) {
+        var contentId = parseInt(evt.$trigger.data('content-id'), 10);
+        if (!contentId) {
+            return;
+        }
+
+        modal.global.set({
+            header: evt.$trigger.data('modal-title'),
+            body: '<comment-section content-id="' + contentId + '"></comment-section>',
+        }).show();
+        modal.global.applyAdditions();
     };
 
     var scrollActive = function (evt) {
@@ -85,6 +105,7 @@ humhub.module('comment', function (module, require, $) {
 
     module.export({
         toggleComment: toggleComment,
+        showComments: showComments,
         scrollActive: scrollActive,
         scrollInactive: scrollInactive
     });

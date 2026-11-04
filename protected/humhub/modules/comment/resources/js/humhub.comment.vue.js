@@ -288,6 +288,12 @@
     const path = parentCommentId ? `comment/${parentCommentId}/replies` : `content/${contentId}/comments`;
     return vue.client.get(vue.apiUrl(path, params)).then(mapWindow);
   };
+  const fetchFormProps = (contentId) => vue.client.get(vue.url("comment/comment/form", { contentId })).then((response) => ({
+    canComment: !!response.canComment,
+    formShellHtml: response.formShellHtml || null,
+    uploadOptions: response.uploadOptions || null,
+    submitIconHtml: response.submitIconHtml || null
+  }));
   const fetchComment = (id) => vue.client.get(vue.apiUrl(`comment/${id}`)).then(mapComment);
   const fetchCommentPermissions = (id) => vue.client.get(vue.apiUrl(`comment/${id}/permissions`));
   const fetchLikeStates = (recordIds) => recordIds.length ? vue.client.get(vue.apiUrl("like/states", { recordIds: recordIds.join(",") })).then((response) => response.results || {}) : Promise.resolve({});
@@ -1468,7 +1474,8 @@
       // cacheable, see docs/develop/concept-api.md) while THIS page render is per user
       // anyway, so inlining them saves the island its first `like/states` request.
       initialLikeStates: { type: Object, default: () => ({}) },
-      canComment: { type: Boolean, default: false },
+      // `null` (not told): fetched with the form's props, see "Mounted by `contentId` alone"
+      canComment: { type: Boolean, default: null },
       // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
       formShellHtml: { type: String, default: null },
       // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
@@ -1509,6 +1516,13 @@
         // rather than 0, so an unmigrated payload degrades no worse than before this fix.
         rootTotal: initialWindow ? initialWindow.rootTotal ?? initialWindow.total : 0,
         loaded: !!initialWindow,
+        // The form's props: as handed over, or fetched (see `fetchForm()`).
+        form: {
+          canComment: !!this.canComment,
+          formShellHtml: this.formShellHtml,
+          submitIconHtml: this.submitIconHtml,
+          uploadOptions: this.uploadOptions
+        },
         isCollapsed: this.collapsed,
         // id -> revision counter, bumped whenever an entry object is
         // swapped in place under the same id (edit-save/live-append) —
@@ -1542,7 +1556,7 @@
         return vue.getConfig("user").isGuest === true;
       },
       showForm() {
-        return this.canComment && !this.guest;
+        return this.form.canComment && !this.guest;
       }
     },
     watch: {
@@ -1554,6 +1568,9 @@
       }
     },
     created() {
+      if (!this.initial && this.canComment === null && !this.guest) {
+        this.fetchForm();
+      }
       if (!this.initial) {
         this.fetchInitial();
         return;
@@ -1574,6 +1591,13 @@
       vue.events.off(LIVE_NEW_COMMENT, this.onLiveNewComment);
     },
     methods: {
+      fetchForm() {
+        fetchFormProps(this.contentId).then((form) => {
+          this.form = form;
+        }).catch((e) => {
+          vue.log.error(e);
+        });
+      },
       fetchInitial() {
         fetchWindow({ contentId: this.contentId }).then((response) => {
           this.comments = response.results;
@@ -1747,18 +1771,18 @@
           "root-total": $data.rootTotal,
           "page-size": $props.pageSize,
           "can-comment": $options.showForm,
-          "form-shell-html": $props.formShellHtml,
-          "submit-icon-html": $props.submitIconHtml,
-          "upload-options": $props.uploadOptions,
+          "form-shell-html": $data.form.formShellHtml,
+          "submit-icon-html": $data.form.submitIconHtml,
+          "upload-options": $data.form.uploadOptions,
           "anchor-comment-id": $props.anchorCommentId
         }, null, 8, ["content-id", "comments", "prev-count", "total", "root-total", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "upload-options", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
-        $options.showForm && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
+        $options.showForm && $data.form.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
           key: 1,
           ref: "form",
-          "shell-html": $props.formShellHtml,
+          "shell-html": $data.form.formShellHtml,
           "content-id": $props.contentId,
-          "submit-icon-html": $props.submitIconHtml,
-          "upload-options": $props.uploadOptions,
+          "submit-icon-html": $data.form.submitIconHtml,
+          "upload-options": $data.form.uploadOptions,
           onCreated: $options.onMainCreated
         }, null, 8, ["shell-html", "content-id", "submit-icon-html", "upload-options", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
       ],
