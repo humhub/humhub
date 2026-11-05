@@ -77,7 +77,7 @@ $testUrl = Url::to(['/installer/config/mail-test']);
 
         <div id="dsnOptions">
             <?= $form->field($model, 'dsn')->textInput(['readonly' => $settings->isFixed('mailerDsn')]) ?>
-            <p class="help-block">
+            <p class="form-text">
                 <?= Yii::t('InstallerModule.base', 'You can find more configuration options here:') ?>
                 <a href="https://symfony.com/doc/current/mailer.html#transport-setup" target="_blank">Symfony Mailer</a>
             </p>
@@ -86,7 +86,7 @@ $testUrl = Url::to(['/installer/config/mail-test']);
         <hr>
 
         <?= $form->field($model, 'testEmail', [
-            'template' => "{label}\n<div class=\"input-group\">{input}\n<button type=\"button\" id=\"mail-test-btn\" class=\"btn btn-default\">" . Html::encode(Yii::t('InstallerModule.base', 'Test')) . "</button>\n</div>\n{error}\n{hint}",
+            'template' => "{label}\n<div class=\"input-group\">{input}\n<button type=\"button\" id=\"mail-test-btn\" class=\"btn btn-light\">" . Html::encode(Yii::t('InstallerModule.base', 'Test')) . "</button>\n</div>\n{error}\n{hint}",
         ])->textInput() ?>
 
         <div id="mail-test-result" class="mb-3"></div>
