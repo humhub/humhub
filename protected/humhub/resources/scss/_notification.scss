@@ -39,7 +39,7 @@
             }
 
             &:not(.new) {
-                * &, strong {
+                &, strong {
                     color: var(--hh-text-color-secondary);
                 }
             }
@@ -51,14 +51,15 @@
             // Overwrite BS classes as -md variants doesn't exist
             position: static !important;
             transform: none !important;
+        }
 
-            .dropdown-menu {
-                width: 300px !important;
-                margin-left: 0 !important;
+        // Above the width and position of `_topbar.scss`
+        #topbar-first .notifications .dropdown-menu {
+            width: 300px;
+            margin-left: 0;
 
-                .arrow {
-                    margin-left: -142px !important;
-                }
+            .arrow {
+                margin-left: -142px;
             }
         }
     }

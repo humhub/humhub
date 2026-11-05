@@ -13,12 +13,4 @@
         background-color: var(--bs-accent);
         box-shadow: none;
     }
-
-    //
-    // Pjax page loader bar since 1.2
-    //
-    #nprogress .bar {
-        height: 2px;
-        background: lighten($accent, 8%);
-    }
 }

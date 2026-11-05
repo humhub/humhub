@@ -11,12 +11,4 @@
             margin-right: 0.2rem;
         }
     }
-
-    @each $color, $value in $theme-colors {
-        .link-#{$color} {
-            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
-                color: var(--hh-text-color-highlight) !important;
-            }
-        }
-    }
 }

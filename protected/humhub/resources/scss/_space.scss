@@ -56,8 +56,9 @@
             display: none;
         }
 
-        #space-menu-dropdown {
-            width: 300px !important;
+        // Above the width of `_topbar.scss`
+        #topbar-second #space-menu-dropdown {
+            width: 300px;
         }
     }
 }

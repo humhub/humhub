@@ -423,10 +423,6 @@ $form-choice-border-radius: 4px !default;
                 }
             }
 
-            &.active .fa.radio-pill-active-icon {
-                display: inline;
-            }
-
             label {
                 font-weight: 600;
                 padding: 2px 12px;
@@ -580,16 +576,16 @@ $form-choice-border-radius: 4px !default;
 
             .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
                 background: var(--hh-background-color-page);
-                color: var(--hh-text-color-default) !important;
+                color: var(--hh-text-color-default);
                 border-color: var(--hh-background-color-page);
 
                 &:hover, &:focus {
-                    background: var(--hh-background3) !important;
+                    background: var(--hh-background3);
                     border-color: var(--hh-background3);
                 }
 
                 &:active, &.active {
-                    background: var(--hh-background4) !important;
+                    background: var(--hh-background4);
                     border-color: var(--hh-background4);
                 }
             }

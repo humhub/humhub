@@ -2550,3 +2550,20 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   A theme's `variables.scss` is imported before the core one, so a value a theme set for one of
   them was overwritten until now. Check the look of a theme that sets one of them (e.g. the
   Enterprise Theme's `enterprise-white`, whose `$link-hover-color` applies now).
+
+- **The `theme.css` uses cascade layers** (`@layer core, theme`, see
+  [Theme Structure](theme-structure.md#cascade-layers)). Bootstrap and the core are in the `core`
+  layer, a theme's `build.scss` in the `theme` layer; the Bootstrap utilities, the custom SCSS of
+  the Appearance settings, and the CSS of modules and third-party libraries are not in a layer.
+  - A theme rule wins against the core whatever the specificity of its selector, a module rule
+    too. A rule of a module or theme that so far lost against a more specific core rule applies
+    now - check unscoped module CSS such as `.modal-dialog .modal-header { … }`.
+  - An `!important` of the core wins against an `!important` of a theme or module. A theme or
+    module that overrode one of them (e.g. the Enterprise Theme's upload buttons and mobile
+    dropdowns) no longer needs to: those core declarations are without `!important` now.
+  - A theme's `build.scss` can no longer read the variables declared in a core partial (e.g.
+    `$data-table-gap`), only those of `variables.scss`. Setting them in the theme's
+    `variables.scss` works as before.
+  - The core styles for third-party libraries moved to `_vendor.scss`, the core's changes to the
+    Bootstrap utilities (`.bg-light`, `.link-*`, `.badge.text-bg-*`, `.d-revert`) to
+    `_utilities.scss`, both outside of the layers.

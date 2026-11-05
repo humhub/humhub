@@ -7,14 +7,6 @@
         @include text-break;
     }
 
-    #blueimp-gallery {
-        .slide {
-            img {
-                max-height: 80%;
-            }
-        }
-    }
-
 
     audio, canvas, progress, video {
         display: inline-block;

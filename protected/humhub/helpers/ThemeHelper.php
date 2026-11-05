@@ -27,6 +27,20 @@ use yii\helpers\ArrayHelper;
 class ThemeHelper
 {
     /**
+     * Cascade layers of the compiled `theme.css`: the theme wins against the core whatever the specificity of
+     * its selectors. Bootstrap and the core styles share the `core` layer, so specificity decides between them
+     * as before. Outside of the layers, and therefore winning against them: the Bootstrap utilities and the
+     * core's `_utilities.scss` and `_vendor.scss` (at the end of the `theme.css`), the custom SCSS of the Design
+     * settings, the CSS of third-party libraries and of modules.
+     *
+     * Beware of `!important`, for which the order is reversed: an `!important` of the core wins against an
+     * `!important` of the theme or of a module.
+     *
+     * @since 1.20
+     */
+    public const CSS_LAYERS = ['core', 'theme'];
+
+    /**
      * @var Theme[] loaded themes
      */
     protected static $_themes = null;
@@ -247,6 +261,61 @@ class ThemeHelper
     }
 
     /**
+     * Imports Bootstrap, the core and the theme stylesheets into the cascade layers of [[CSS_LAYERS]]
+     *
+     * @param string[] $themeBuildFiles the `build.scss` of each theme, parent theme first
+     * @return string
+     * @since 1.20
+     */
+    protected static function getLayersScss(array $themeBuildFiles): string
+    {
+        $bootstrapPath = Yii::getAlias('@vendor/twbs/bootstrap/scss');
+
+        // Bootstrap's own entry file, split into the files without CSS output (functions, variables, mixins, the
+        // utilities map), its components and helpers, and its utilities. The first are imported outside of the
+        // layers: mixins and functions of an import nested in a block are only defined within that block.
+        preg_match_all('/^@import "([^"]+)";/m', file_get_contents($bootstrapPath . '/bootstrap.scss'), $matches);
+        $global = $components = $utilities = [];
+        foreach ($matches[1] as $file) {
+            $path = $bootstrapPath . '/' . $file;
+            if ($file === 'mixins/banner') {
+                continue;
+            }
+            if (in_array($file, ['functions', 'variables', 'variables-dark', 'maps', 'mixins', 'utilities'], true)) {
+                $global[] = $path;
+            } elseif ($file === 'utilities/api') {
+                $utilities[] = $path;
+            } else {
+                $components[] = $path;
+            }
+        }
+        $global[] = Yii::getAlias('@humhub/resources/scss/mixins');
+
+        $layers = [
+            'core' => [...$components, Yii::getAlias('@humhub/resources/scss/build')],
+            'theme' => $themeBuildFiles,
+        ];
+
+        $scss = '@import "' . implode('", "', $global) . '";' . PHP_EOL
+            . '@layer ' . implode(', ', self::CSS_LAYERS) . ';' . PHP_EOL;
+        foreach ($layers as $layer => $files) {
+            if ($files !== []) {
+                $scss .= '@layer ' . $layer . ' { @import "' . implode('", "', $files) . '"; }' . PHP_EOL;
+            }
+        }
+
+        // Outside of the layers: the utilities (all `!important`) keep winning against an `!important` of a module,
+        // the styles for the third-party libraries against their CSS, which is not in a layer either
+        $unlayered = [
+            ...$utilities,
+            Yii::getAlias('@humhub/resources/scss/utilities'),
+            Yii::getAlias('@humhub/resources/scss/vendor'),
+        ];
+
+        return $scss . '@import "' . implode('", "', $unlayered) . '";' . PHP_EOL;
+    }
+
+    /**
      * @param Theme|null $theme
      * @return true|string true if successfully compiled, string if error occurred
      * @throws \yii\base\Exception
@@ -293,15 +362,12 @@ class ThemeHelper
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
         $imports[] = Yii::getAlias('@humhub/resources/scss/maps');
 
-        // Import Bootstrap files
-        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/bootstrap');
-
-        // Import all other files, in reverse order (parent theme first)
-        $imports[] = Yii::getAlias('@humhub/resources/scss/build');
+        // Bootstrap, the core and the theme stylesheets are compiled into cascade layers, parent theme first
+        $themeBuildFiles = [];
         foreach (array_reverse($treeThemes) as $treeTheme) {
             $buildFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
             if (file_exists($buildFile . '.scss')) {
-                $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+                $themeBuildFiles[] = $buildFile;
             }
         }
 
@@ -355,6 +421,8 @@ class ThemeHelper
             .= $customVariables . PHP_EOL
             . $customMaps . PHP_EOL
             . '@import "' . implode('", "', $imports) . '";' . PHP_EOL
+            . static::getLayersScss($themeBuildFiles)
+            // Not in a layer: the custom SCSS of the Design settings wins against all of the above
             . $otherCustomScss;
 
         // Compile to CSS

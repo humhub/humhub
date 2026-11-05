@@ -1,0 +1,73 @@
+//
+// Third-party libraries
+// --------------------------------------------------
+// Styles of the core for the CSS of third-party libraries (jQuery UI, blueimp Gallery, NProgress, the icon
+// fonts). The library CSS is not in a cascade layer, so these rules are not either: in a layer they would lose
+// against it whatever their specificity. Imported by \humhub\helpers\ThemeHelper after the layers.
+
+// A theme deactivates a component by its `$prev-*` variable in variables.scss; the defaults of build.scss are only
+// defined within the `core` layer.
+$prev-button: false !default;
+$prev-form: false !default;
+$prev-oembed: false !default;
+$prev-media: false !default;
+$prev-progress: false !default;
+$prev-datepicker: false !default;
+$prev-richtext: false !default;
+
+@if not $prev-button {
+    // Icons (`line-height: 1`) must keep the line height of the button, as in the former `inline-block` layout,
+    // otherwise buttons with only an icon get shorter than buttons with a text.
+    .btn > .fa {
+        line-height: inherit;
+    }
+}
+
+@if not $prev-form {
+    .radio-pills div.radio.active .fa.radio-pill-active-icon {
+        display: inline;
+    }
+}
+
+@if not $prev-oembed {
+    .oembed_confirmation i.ti {
+        line-height: 25px;
+    }
+}
+
+@if not $prev-media {
+    #blueimp-gallery .slide img {
+        max-height: 80%;
+    }
+}
+
+@if not $prev-progress {
+    // Pjax page loader bar since 1.2
+    #nprogress .bar {
+        height: 2px;
+        background: lighten($accent, 8%);
+    }
+}
+
+@if not $prev-datepicker {
+    .ui-widget-content {
+        background: var(--hh-background-color-main);
+    }
+
+    .ui-datepicker .ui-datepicker-prev:hover,
+    .ui-datepicker .ui-datepicker-next:hover {
+        border: none;
+        margin: 1px;
+    }
+}
+
+@if not $prev-richtext {
+    // ProseMirror positions the menu bar by inline styles
+    .ProsemirrorEditor.fullscreen .ProseMirror-menubar {
+        position: static !important;
+        top: 0 !important;
+        left: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+    }
+}
