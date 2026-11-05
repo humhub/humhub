@@ -1,0 +1,48 @@
+name: Stylelint
+
+# Lints the core's SCSS (`.stylelintrc.json`: the correctness rules of stylelint-config-recommended-scss).
+# No workflow input is interpolated into a run: step.
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - master
+            - develop
+            - next
+        paths:
+            - '**.scss'
+            - '.stylelintrc.json'
+            - 'package.json'
+            - 'package-lock.json'
+            - '.github/workflows/stylelint.yml'
+    pull_request:
+        branches:
+            - master
+            - develop
+            - next
+        paths:
+            - '**.scss'
+            - '.stylelintrc.json'
+            - 'package.json'
+            - 'package-lock.json'
+            - '.github/workflows/stylelint.yml'
+
+permissions:
+    contents: read
+
+jobs:
+    stylelint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Lint the SCSS
+              run: npm run lint:scss

@@ -76,7 +76,7 @@ $content-card-margin-bottom: 15px !default; // the margin of the `.panel` it rep
         font-size: $content-card-title-font-size;
         font-weight: $content-card-title-font-weight;
         line-height: $headings-line-height;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     // The title with badges next to it
