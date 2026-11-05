@@ -21,14 +21,6 @@
             z-index: 999999 !important;
         }
 
-        @include media-breakpoint-down(lg) {
-            .modal-dialog-large {
-                width: auto !important;
-                padding-top: 30px;
-                padding-bottom: 30px;
-            }
-        }
-
         .modal-title {
             font-size: 20px;
             color: var(--hh-text-color-highlight);

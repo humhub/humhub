@@ -144,8 +144,22 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     @each $color, $value in $theme-colors {
         .btn-outline-#{$color} {
             @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
-                color: var(--text-color-highlight);
+                color: var(--hh-text-color-highlight);
             }
         }
+    }
+
+    // Temporary exceptions for "active" Primary and Info buttons to display as outlined
+    // See https://github.com/humhub/humhub-internal/issues/661#issuecomment-2968279827
+    .btn-primary {
+        --bs-btn-active-color: var(--bs-primary);
+        --bs-btn-active-bg: var(--hh-primary-contrast);
+        --bs-btn-active-border-color: var(--bs-primary);
+    }
+
+    .btn-info {
+        --bs-btn-active-color: var(--bs-accent);
+        --bs-btn-active-bg: var(--hh-primary-contrast);
+        --bs-btn-active-border-color: var(--bs-accent);
     }
 }

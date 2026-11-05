@@ -4,29 +4,4 @@
 
 @if not $prev-popover {
     // Bootstrap overwrite: see the popover Sass variables in variables.scss
-
-    .popover {
-        .popover-title {
-            background: none;
-            border-bottom: none;
-            color: var(--hh-text-color-highlight);
-            font-weight: 300;
-            font-size: 16px;
-            padding: 15px;
-        }
-
-        .popover-content {
-            font-size: 13px;
-            padding: 5px 15px;
-            color: var(--hh-text-color-highlight);
-
-            img {
-                max-width: 100%;
-            }
-        }
-
-        .popover-navigation {
-            padding: 15px;
-        }
-    }
 }

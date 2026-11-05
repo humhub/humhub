@@ -107,13 +107,6 @@ $form-choice-border-radius: 4px !default;
         overflow: hidden;
     }
 
-    div.PendingRegistrations {
-        thead > tr > th > label, tbody > tr > td > label {
-            margin-bottom: 0;
-            height: 17px;
-        }
-    }
-
     // Placeholder text (`--hh-placeholder-color`, also a select's "nothing chosen", _picker.scss)
 
     ::placeholder {
@@ -162,12 +155,6 @@ $form-choice-border-radius: 4px !default;
         font-size: 12px;
     }
 
-    a.input-field-addon {
-        font-size: 12px;
-        float: right;
-        margin-top: -10px;
-    }
-
     a.input-field-addon-sm {
         font-size: 11px;
         float: right;
@@ -184,9 +171,7 @@ $form-choice-border-radius: 4px !default;
 
     // Flatelements
     .radio input[type=radio],
-    .radio-inline input[type=radio],
-    .checkbox input[type=checkbox],
-    .checkbox-inline input[type=checkbox] {
+    .checkbox input[type=checkbox] {
         position: relative;
         margin-left: 0;
     }
@@ -496,10 +481,6 @@ $form-choice-border-radius: 4px !default;
         border-color: var(--bs-danger) !important;
     }
 
-    .bootstrap-timepicker-widget .form-control {
-        padding: 0;
-    }
-
     // The show/hide password icon (appended in humhub.ui.form.elements.js) is a
     // plain <div>, so it needs its own focus style: :focus-visible outline is
     // reset to none globally in _base.scss (see comment there). Negative
@@ -621,9 +602,5 @@ $form-choice-border-radius: 4px !default;
         .fileinput-button:active {
             box-shadow: none !important;
         }
-    }
-
-    #choose-language-form {
-        min-width: 150px;
     }
 }

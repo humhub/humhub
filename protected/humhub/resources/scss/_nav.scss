@@ -269,12 +269,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             }
         }
 
-        &.tabs-small {
-            li > a {
-                padding: 5px 7px;
-            }
-        }
-
         > li.nav-item {
             font-weight: 600;
             font-size: 12px;
@@ -377,7 +371,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
                 &:hover, &.active {
                     z-index: 1;
-                    color: var(--text-color-default);
+                    color: var(--hh-text-color-default);
                 }
             }
         }

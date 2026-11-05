@@ -29,15 +29,15 @@ if ($filter->day) {
 
 <style>
     #admin-log-root .picker-chip[data-value="<?= Logger::LEVEL_ERROR ?>"] {
-        background-color: var(--danger);
+        background-color: var(--bs-danger);
     }
 
     #admin-log-root .picker-chip[data-value="<?= Logger::LEVEL_WARNING ?>"] {
-        background-color: var(--warning);
+        background-color: var(--bs-warning);
     }
 
     #admin-log-root .picker-chip[data-value="<?= Logger::LEVEL_INFO ?>"] {
-        background-color: var(--info);
+        background-color: var(--bs-info);
     }
 </style>
 

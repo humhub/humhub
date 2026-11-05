@@ -80,19 +80,8 @@
     --background-color-secondary: #{$background-color-secondary};
     --background-color-page: #{$background-color-page};
     --background-color-highlight: #{$background-color-highlight};
-    --background-color-highlight-soft: #{$background-color-highlight-soft};
     --background3: #{$background3};
-    --background4: #{$background4};
-    --background-color-success: #{$background-color-success};
-    --text-color-success: #{$text-color-success};
-    --border-color-success: #{$border-color-success};
     --background-color-warning: #{$background-color-warning};
-    --text-color-warning: #{$text-color-warning};
-    --border-color-warning: #{$border-color-warning};
-    --background-color-danger: #{$background-color-danger};
-    --text-color-danger: #{$text-color-danger};
-    --border-color-danger: #{$border-color-danger};
-    --mail-font-family: #{$mail-font-family};
 }
 
 // Dark Mode CSS Variables
@@ -146,17 +135,7 @@
         --background-color-secondary: #{$background-color-secondary-dark};
         --background-color-page: #{$background-color-page-dark};
         --background-color-highlight: #{$background-color-highlight-dark};
-        --background-color-highlight-soft: #{$background-color-highlight-soft-dark};
         --background3: #{$background3-dark};
-        --background4: #{$background4-dark};
-        --background-color-success: #{$background-color-success-dark};
-        --text-color-success: #{$text-color-success-dark};
-        --border-color-success: #{$border-color-success-dark};
         --background-color-warning: #{$background-color-warning-dark};
-        --text-color-warning: #{$text-color-warning-dark};
-        --border-color-warning: #{$border-color-warning-dark};
-        --background-color-danger: #{$background-color-danger-dark};
-        --text-color-danger: #{$text-color-danger-dark};
-        --border-color-danger: #{$border-color-danger-dark};
     }
 }

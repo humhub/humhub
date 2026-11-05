@@ -19,15 +19,6 @@
         }
     }
 
-    #content-topic-bar {
-        margin-top: 5px;
-        text-align: right;
-
-        .badge {
-            margin-left: 4px;
-        }
-    }
-
     .content-form-body {
         .mb-3, .invalid-feedback {
             margin: 0 !important;
@@ -206,14 +197,6 @@
                     .emoji {
                         width: 20px;
                     }
-                }
-            }
-        }
-
-        .wall-stream-footer {
-            .wall-stream-addons {
-                .files {
-                    margin-bottom: 5px;
                 }
             }
         }
@@ -434,7 +417,7 @@
                         // which already has its own focus style and would otherwise get a double ring.
                         a.filterInput:focus-visible {
                             outline: 0;
-                            box-shadow: 0 0 0 2px var(--accent);
+                            box-shadow: 0 0 0 2px var(--bs-accent);
                             border-radius: 3px;
                         }
                     }
@@ -474,7 +457,7 @@
 
             &:focus-visible {
                 outline: 0;
-                box-shadow: 0 0 0 2px var(--accent);
+                box-shadow: 0 0 0 2px var(--bs-accent);
                 border-radius: 0 0 4px 4px;
             }
         }

@@ -3,28 +3,6 @@
 // --------------------------------------------------
 
 @if not $prev-space {
-    .space-owner {
-        text-align: center;
-        margin: 14px 0;
-        font-size: 13px;
-        color: var(--hh-text-color-secondary);
-    }
-
-    // Member sign for directory list
-    .space-member-sign {
-        color: var(--bs-success);
-        position: absolute;
-        top: 42px;
-        left: 42px;
-        font-size: 16px;
-        background: var(--hh-background-color-main);
-        width: 24px;
-        height: 24px;
-        padding: 2px 3px 1px 4px;
-        border-radius: 50px;
-        border: 2px solid var(--bs-success);
-    }
-
     #space-menu-dropdown i.type {
         font-size: 16px;
         color: #BFBFBF;
@@ -71,45 +49,6 @@
 
     .d-none-space-image {
         display: none !important;
-    }
-
-    .card-space {
-        .card-header {
-            .card-space-link {
-                position: absolute;
-                display: block;
-                width: 100%;
-                top: 0;
-                left: 0;
-                padding: 16px;
-            }
-
-            .card-icons {
-                position: absolute;
-                right: 16px;
-                top: 85px;
-
-                a:focus-visible {
-                    outline: 0;
-                    box-shadow: 0 0 0 2px var(--accent);
-                    border-radius: 3px;
-                }
-            }
-        }
-
-        .card-body {
-            .card-space-link {
-                display: block;
-                margin: -16px;
-                padding: 16px;
-
-                &:focus-visible {
-                    outline: 0;
-                    box-shadow: inset 0 0 0 2px var(--accent);
-                    border-radius: 4px;
-                }
-            }
-        }
     }
 
     @include media-breakpoint-down(md) {

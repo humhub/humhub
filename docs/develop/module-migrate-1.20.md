@@ -2496,3 +2496,40 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     above the input (`margin-top: -27px` is gone), and the menu is one row high in both.
   - `UploadField` takes the file a module's handler announces on `humhub:file:created` after
     its dropdown entry was clicked (drawio, collabora, text-editor and the like).
+
+- **Unused styles removed from the core SCSS.** None of the classes, CSS variables and Sass
+  symbols below is used by the core or by a module in the `humhub`, `humhub-contrib` and
+  `cuzy-app` organisations. A module or theme that still renders one of the classes has to
+  style it itself.
+  - BS3 compatibility (`_bootstrap3.scss`): `.label-light`, `.wall-entry-topics`,
+    `.heading-link`, `.usersearch-statuses`, `.panel-success`, `.well-small`, `.modal.in`,
+    `.modal-dialog-{extra-small,small,normal,medium,large}` (`humhub\widgets\modal\Modal`
+    maps these size names to Bootstrap's), the SpinKit loader (`.sk-adjust-huener*`,
+    `.loader-modal`, `.loader-postform`), and the helper classes `.colorDefault`,
+    `.backgroundDefault`, `.borderDefault`, `.background{Primary,Success,Warning,Danger}`,
+    `.border{Primary,Info,Success,Warning,Danger}` and `.colorFont1` … `.colorFont5`.
+    `.colorPrimary`, `.colorInfo`, `.backgroundInfo`, `.colorLink`, `.colorSuccess`,
+    `.colorWarning` and `.colorDanger` stay.
+  - Old directory and marketplace cards: `.directory-filters-footer*`, `.cards-no-results`,
+    `.card-archived`, `.card-icons`, `.card-status*`, `.card-image-wrapper`, `.card-details`,
+    `.card-tags`, `.form-search-filter-tags` (in `.container-cards`), `.modules-type`,
+    `.card-module`, `.container-content-modules*`, `.container-module-updates`, and in the
+    space styles `.space-owner`, `.space-member-sign`, `.card-space-link`.
+  - Others: `.popover-title`, `.popover-content`, `.popover-navigation` (BS3 names, Bootstrap 5
+    uses `.popover-header`/`.popover-body`), `.tabs-small`, `.table-middle`,
+    `td.notification-type`, `.wall-stream-footer`, `.md-editor`, `div.PendingRegistrations`,
+    `a.input-field-addon` (`a.input-field-addon-sm` stays), `.radio-inline`, `.checkbox-inline`,
+    `.bootstrap-timepicker-widget`, and the ids `#content-topic-bar`, `#postFormFiles_list`,
+    `#choose-language-form`, `#notification_overview_filter`.
+  - Deprecated (1.18) CSS variables: `--background4`, `--background-color-highlight-soft`,
+    `--background-color-success`, `--text-color-success`, `--border-color-success`,
+    `--text-color-warning`, `--border-color-warning`, `--background-color-danger`,
+    `--text-color-danger`, `--border-color-danger` and `--mail-font-family`. Their `--hh-*`
+    counterparts stay.
+  - Sass: the mixin `button-variant-dark-active()` and the variables `$input-bg-dark` and
+    `$input-border-color-dark`.
+
+- **`$isFluid`, `$link-hover-color` and the `$text-color-*-contrast` variables carry `!default`.**
+  A theme's `variables.scss` is imported before the core one, so a value a theme set for one of
+  them was overwritten until now. Check the look of a theme that sets one of them (e.g. the
+  Enterprise Theme's `enterprise-white`, whose `$link-hover-color` applies now).

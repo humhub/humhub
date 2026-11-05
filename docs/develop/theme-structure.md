@@ -39,9 +39,9 @@ Lookup order for any view:
 
 ## Variables
 
-`variables.scss` carries the Sass variables that drive the colour palette, spacing, typography, etc. Copy individual variables from `humhub/static/scss/variables.scss` into your theme's `variables.scss` and adjust them.
+`variables.scss` carries the Sass variables that drive the colour palette, spacing, typography, etc. Copy individual variables from `protected/humhub/resources/scss/variables.scss` into your theme's `variables.scss` and adjust them. Core variables carry the `!default` flag, and the theme's `variables.scss` is imported before the core one, so the theme's value wins.
 
-All Sass variables are mirrored to CSS custom properties on `:root`, so prefer the CSS form (`var(--my-variable)`) in your rules — it cooperates with runtime theme switching (e.g. dark mode).
+The colour variables are mirrored to CSS custom properties on `:root` (`--hh-*`, see `_root.scss`, and Bootstrap's `--bs-*`), so prefer the CSS form (`var(--hh-text-color-main)`) in your rules — it cooperates with runtime theme switching (e.g. dark mode).
 
 Variables are also accessible in PHP via the theme component, mainly useful in mail templates where CSS variables are not supported:
 
@@ -59,12 +59,12 @@ Icons are [Tabler Icons](https://tabler.io/icons), rendered by `humhub\widgets\I
 
 ## Suppressing default component imports
 
-The core `build.scss` imports a number of optional partials (login, modals, …). Each can be suppressed by setting a flag *before* the parent build runs:
+The core `build.scss` imports a number of optional partials (login, modals, …). Each can be suppressed by a flag in the theme's `variables.scss` — the theme's `build.scss` is imported after the core one, so a flag set there comes too late:
 
 ```scss
-// scss/build.scss
-$prev-login: true;   // skip core's login.scss
-$prev-modal: true;   // skip core's modal.scss
+// scss/variables.scss
+$prev-login: true;   // skip core's _login.scss
+$prev-modal: true;   // skip core's _modal.scss
 ```
 
-See the [`build.scss` source](https://github.com/humhub/humhub/blob/master/static/scss/build.scss) for the full list of `$prev-*` flags.
+See the [`build.scss` source](https://github.com/humhub/humhub/blob/develop/protected/humhub/resources/scss/build.scss) for the full list of `$prev-*` flags.
