@@ -8,6 +8,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use AcceptanceTester;
 use humhub\helpers\ThemeHelper;
 use RuntimeException;
+use Yii;
 
 /**
  * Takes the screenshots of the visual comparison of the CSS: the same pages are taken with the
@@ -38,6 +39,9 @@ class VisualCest
         if ($this->folder === '' || !preg_match('/^[\w-]+$/', $this->folder)) {
             $scenario->skip('Set HUMHUB_VISUAL=<folder> to take the screenshots of the visual comparison');
         }
+
+        // The test server may have cached the settings from before the fixtures (e.g. the site name of the installer)
+        Yii::$app->cache->flush();
 
         // Another theme than the core one, e.g. of a module (enabled before); after the fixtures, which reset the
         // settings
