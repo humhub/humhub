@@ -5,8 +5,9 @@
 @if not $prev-table {
     // Bootstrap overwrite: see the table Sass variables in variables.scss
 
-    table {
-        margin-bottom: 0 !important;
+    // Also `.table`, whose margin of Bootstrap is more specific than `table`
+    table, .table {
+        margin-bottom: 0;
 
         th {
             font-size: 11px;

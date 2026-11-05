@@ -97,6 +97,9 @@ class VisualCest
         $I->amOnRoute(['/admin/module/list']);
         $this->screenshot($I, 'admin-modules');
 
+        $I->amOnRoute(['/admin/user-profile']);
+        $this->screenshot($I, 'admin-profile-fields');
+
         // Opened menus of the top bar
         $I->amOnDashboard();
         $this->menuScreenshot($I, '#icon-notifications', 'notifications-dropdown');
@@ -114,6 +117,9 @@ class VisualCest
 
         $I->amOnSpace(1);
         $this->screenshot($I, 'mobile-space-stream');
+
+        $I->amOnProfile();
+        $this->screenshot($I, 'mobile-profile');
 
         $I->amOnDashboard();
         $this->menuScreenshot($I, '#icon-notifications', 'mobile-notifications-dropdown');
