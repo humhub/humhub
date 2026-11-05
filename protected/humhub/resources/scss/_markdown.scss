@@ -222,4 +222,15 @@
             }
         }
     }
+
+    // Floated images in user content
+    .markdown-render, [data-ui-markdown], [data-ui-richtext] {
+        img.pull-right {
+            margin: 5px 0 0 10px;
+        }
+
+        img.pull-left {
+            margin: 5px 10px 0 0;
+        }
+    }
 }

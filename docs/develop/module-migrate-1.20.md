@@ -2508,8 +2508,6 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `.loader-modal`, `.loader-postform`), and the helper classes `.colorDefault`,
     `.backgroundDefault`, `.borderDefault`, `.background{Primary,Success,Warning,Danger}`,
     `.border{Primary,Info,Success,Warning,Danger}` and `.colorFont1` … `.colorFont5`.
-    `.colorPrimary`, `.colorInfo`, `.backgroundInfo`, `.colorLink`, `.colorSuccess`,
-    `.colorWarning` and `.colorDanger` stay.
   - Old directory and marketplace cards: `.directory-filters-footer*`, `.cards-no-results`,
     `.card-archived`, `.card-icons`, `.card-status*`, `.card-image-wrapper`, `.card-details`,
     `.card-tags`, `.form-search-filter-tags` (in `.container-cards`), `.modules-type`,
@@ -2528,6 +2526,25 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     counterparts stay.
   - Sass: the mixin `button-variant-dark-active()` and the variables `$input-bg-dark` and
     `$input-border-color-dark`.
+
+- **Rarely used Bootstrap 3 classes removed.** `_bootstrap3.scss` keeps only `.panel*`
+  (with `.panel-danger`), `.well`, `.loader` and `.img-responsive`; the profile header
+  (`.panel-profile*`), `.topic-label-list` and the floated Markdown images moved to their own
+  partials. A module still rendering one of these classes has to switch to the Bootstrap 5
+  equivalent:
+
+  | Removed | Replacement |
+  |---|---|
+  | `.label`, `.label-{default,info,success,warning,danger}` | `Badge` widget / `.badge .text-bg-{light,accent,success,warning,danger}` |
+  | `.panel-info`, `.panel-primary`, `.panel-warning` | `.panel` (or `ContentCard`), a border utility if needed |
+  | `.panel.profile .controls` | - |
+  | `.media-list`, `.media-left`, `.media-body`, `.media > .pull-left`, `.activities li.activity-entry` | `.d-flex` / `.flex-grow-1`, `.hh-list` |
+  | `.help-block` | `.form-text` |
+  | `.btn-default` | `.btn-light` (or `Button::light()`) |
+  | `.btn-xs` | `.btn-sm` |
+  | `.colorPrimary`, `.colorInfo`, `.colorSuccess`, `.colorWarning`, `.colorDanger` | `.text-primary`, `.text-accent`, `.text-success`, `.text-warning`, `.text-danger` |
+  | `.colorLink` | - (a link has the link colour anyway) |
+  | `.backgroundInfo` | `.bg-accent` |
 
 - **`$isFluid`, `$link-hover-color` and the `$text-color-*-contrast` variables carry `!default`.**
   A theme's `variables.scss` is imported before the core one, so a value a theme set for one of
