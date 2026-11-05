@@ -1,0 +1,20 @@
+# Screenshots for the visual comparison of the CSS (see docs/develop/intro-testing.md).
+# The suite is skipped unless HUMHUB_VISUAL names the folder of the screenshots.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver
+        - tests\codeception\_support\WebHelper
+        - tests\codeception\_support\DynamicFixtureHelper:
+              loadDefaultFixtures: true
+    config:
+        WebDriver:
+            url: 'http://localhost:8080/'
+            browser: chrome
+            port: 4444
+            window_size: 1280x900
+            restart: true
+            capabilities:
+                goog:chromeOptions:
+                    args: [ "--headless", "--lang=en-US", "--hide-scrollbars", "--force-device-scale-factor=1" ]

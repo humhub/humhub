@@ -69,7 +69,7 @@ $page-header-title-color: var(--hh-text-color-highlight) !default;
         font-size: var(--hh-page-header-title-font-size);
         font-weight: var(--hh-page-header-title-font-weight);
         line-height: $headings-line-height;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     .page-header-body > .nav-scroller {

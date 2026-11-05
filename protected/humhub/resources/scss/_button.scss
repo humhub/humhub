@@ -101,7 +101,7 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     // outweigh `.btn-check`, hence the attribute in the selector.
     input[type].btn-check {
         position: absolute;
-        clip: rect(0, 0, 0, 0);
+        clip-path: inset(50%);
         padding: 0;
         border: 0;
         pointer-events: none;

@@ -394,8 +394,8 @@
     .filter-root {
         .filter-panel {
             // Same vertical padding as the .container horizontal one
-            padding-top: calc(var(--bs-gutter-x)*.5);
-            padding-bottom: calc(var(--bs-gutter-x)*.5);
+            padding-top: calc(var(--bs-gutter-x) * .5);
+            padding-bottom: calc(var(--bs-gutter-x) * .5);
 
             .filter-block {
                 strong {
@@ -465,7 +465,7 @@
 
     @media print {
         .wall-entry {
-            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
         #wall-stream-filter-nav,

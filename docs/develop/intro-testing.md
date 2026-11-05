@@ -204,3 +204,48 @@ Acceptance tests run against the production asset bundle. See [Build → Build p
 ```sh
 codecept run acceptance
 ```
+
+## Visual comparison of the CSS
+
+The `visual` suite (`protected/humhub/tests/codeception/visual/VisualCest.php`) takes screenshots of a fixed set of pages with the default fixtures: the login page, dashboard, space, profile, the directories, account and administration pages, the opened menus of the top bar, and a few pages at phone width. The CI workflow `.github/workflows/css-visual.yml` takes them twice for a pull request that changes the SCSS - with the stylesheets of the base branch and with those of the pull request, everything else unchanged - and compares them pixel by pixel. The job summary lists the screenshots that differ; the `css-visual-diff` artifact contains all screenshots and, for each difference, the base, the changed version and the changed pixels in red side by side. The workflow does not fail on differences: an intended change of the look shows up there as well. A refactoring of the SCSS should come out with all screenshots identical.
+
+The suite is skipped unless `HUMHUB_VISUAL` names the folder under `codeception/_output/visual/` to write to. Locally, with the test server and ChromeDriver or Selenium running as for the [acceptance tests](#acceptance-tests):
+
+```sh
+cd protected/humhub/tests
+HUMHUB_VISUAL=base php ../../vendor/bin/codecept run visual
+# change the SCSS, then let the theme be compiled anew
+rm -f ../../../public/assets/tests/*/resources/css/theme.css
+HUMHUB_VISUAL=changed php ../../vendor/bin/codecept run visual
+python3 ../../../.github/scripts/visual-diff.py codeception/_output/visual/base codeception/_output/visual/changed codeception/_output/visual/diff
+```
+
+The comparison needs Python with [Pillow](https://pypi.org/project/pillow/). To cover another page, add it to `VisualCest::takeScreenshots()`. `HUMHUB_VISUAL_THEME=<name>` takes the screenshots with another theme, e.g. of a module (enable the module first); a menu the theme does not have is left out.
+
+A module that provides a theme compares its theme the same way, by calling the workflow of the core. The module is checked out into the core (`develop` by default, `core-ref`), and the `themes` folder of the pull request's base and head is compared:
+
+```yaml
+# .github/workflows/css-visual.yml of the module
+name: CSS Visual Comparison
+on:
+    pull_request:
+        paths:
+            - 'themes/**'
+jobs:
+    compare:
+        strategy:
+            matrix:
+                theme: [enterprise, enterprise-white]
+        uses: humhub/humhub/.github/workflows/css-visual.yml@develop
+        with:
+            module: enterprise-theme
+            theme: ${{ matrix.theme }}
+```
+
+## Linting the SCSS
+
+[Stylelint](https://stylelint.io/) checks the core's SCSS with the correctness rules of `stylelint-config-recommended-scss` (`.stylelintrc.json`), in CI by `.github/workflows/stylelint.yml`:
+
+```sh
+npm run lint:scss
+```

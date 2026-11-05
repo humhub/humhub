@@ -551,7 +551,7 @@ $form-choice-border-radius: 4px !default;
                 margin-bottom: 0 !important;
 
                 [data-ui-markdown] {
-                    word-break: break-word !important;
+                    overflow-wrap: anywhere !important;
 
                     pre code {
                         display: block;

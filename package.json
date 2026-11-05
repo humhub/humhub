@@ -8,7 +8,8 @@
   "scripts": {
     "build:vue": "node vue.build.mjs",
     "build:richtext": "node richtext.build.mjs",
-    "test:js": "vitest run"
+    "test:js": "vitest run",
+    "lint:scss": "stylelint \"protected/humhub/resources/scss/**/*.scss\" \"protected/humhub/themes/HumHub/scss/**/*.scss\""
   },
   "devDependencies": {
     "@codemirror/commands": "^6.6.2",
@@ -48,6 +49,8 @@
     "prosemirror-tables": "^1.5.0",
     "prosemirror-transform": "^1.10.0",
     "prosemirror-view": "^1.42.6",
+    "stylelint": "^17.16.0",
+    "stylelint-config-recommended-scss": "^17.0.1",
     "twemoji": "^14.0.2",
     "unicode-emoji-json": "^0.4.0",
     "vite": "^6.3.5",

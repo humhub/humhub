@@ -1,0 +1,9 @@
+{
+    "extends": ["stylelint-config-recommended-scss"],
+    "rules": {
+        "scss/comment-no-empty": null,
+        "scss/no-global-function-names": null,
+        "scss/at-extend-no-missing-placeholder": null,
+        "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["/^tabler-icons/"]}]
+    }
+}

@@ -335,7 +335,7 @@
     .ProsemirrorEditor {
         .ProseMirror {
             position: relative;
-            word-wrap: break-word;
+            overflow-wrap: break-word;
             white-space: pre-wrap;
             font-variant-ligatures: none;
         }

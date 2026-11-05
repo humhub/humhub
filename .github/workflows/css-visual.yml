@@ -1,0 +1,160 @@
+name: CSS Visual Comparison
+
+# Takes the same pages with the stylesheets of the pull request and of its base and compares the
+# screenshots (docs/develop/intro-testing.md). Reports the differences, does not fail on them.
+#
+# Also called by a module that provides a theme (e.g. humhub/enterprise-theme): the module is checked
+# out into the core and its theme is compared instead, with its `themes` folder of the base and of
+# the pull request.
+on:
+    pull_request:
+        paths:
+            - 'protected/humhub/resources/scss/**'
+            - 'protected/humhub/themes/HumHub/scss/**'
+            - 'protected/humhub/helpers/ThemeHelper.php'
+            - 'protected/humhub/helpers/ScssHelper.php'
+            - 'protected/humhub/tests/codeception/visual/**'
+            - 'protected/humhub/tests/codeception/visual.suite.yml'
+            - '.github/scripts/visual-diff.py'
+            - '.github/workflows/css-visual.yml'
+    workflow_dispatch:
+        inputs:
+            base:
+                description: Branch, tag or commit whose stylesheets are compared with the selected branch
+                default: develop
+                type: string
+    workflow_call:
+        inputs:
+            module:
+                description: ID of the calling module, which is checked out to protected/modules/<module>
+                required: true
+                type: string
+            theme:
+                description: Name of the module's theme to take the screenshots with
+                required: true
+                type: string
+            core-ref:
+                description: Branch of humhub/humhub to run on
+                default: develop
+                type: string
+
+permissions:
+  contents: read
+
+concurrency:
+    group: css-visual-${{ github.ref }}-${{ inputs.theme }}
+    cancel-in-progress: true
+
+jobs:
+    compare:
+        runs-on: ubuntu-latest
+        env:
+            # Only passed through the environment, never interpolated into a script
+            BASE_REF: ${{ github.event.pull_request.base.sha || inputs.base }}
+            MODULE: ${{ inputs.module }}
+            HUMHUB_VISUAL_THEME: ${{ inputs.theme }}
+            # The compared files, relative to the repository the workflow runs for
+            STYLESHEETS: ${{ inputs.module && 'themes' || 'protected/humhub/resources/scss protected/humhub/themes/HumHub/scss protected/humhub/helpers/ThemeHelper.php protected/humhub/helpers/ScssHelper.php' }}
+            STYLESHEETS_REPOSITORY: ${{ inputs.module && format('protected/modules/{0}', inputs.module) || '.' }}
+
+        services:
+            db:
+                image: mariadb:11.8
+                env:
+                    MYSQL_DATABASE: humhub_test
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="healthcheck.sh --connect --innodb_initialized"
+                    --health-interval=10s --health-timeout=5s --health-retries=3
+
+        steps:
+            - name: Check out the core
+              uses: actions/checkout@v7
+              with:
+                  repository: ${{ inputs.module && 'humhub/humhub' || github.repository }}
+                  ref: ${{ inputs.module && inputs.core-ref || '' }}
+                  fetch-depth: ${{ inputs.module && 1 || 0 }}
+
+            - name: Check out the module
+              if: inputs.module
+              uses: actions/checkout@v7
+              with:
+                  path: protected/modules/${{ inputs.module }}
+                  fetch-depth: 0
+
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 24
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+                  extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd
+                  ini-values: date.timezone='UTC'
+
+            - name: Determine composer cache directory
+              run: echo "COMPOSER_CACHE_DIR=$(composer config cache-dir)" >> $GITHUB_ENV
+
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v6
+              with:
+                path: ${{ env.COMPOSER_CACHE_DIR }}
+                key: php8.3-composer-${{ hashFiles('composer.json') }}
+                restore-keys: |
+                            php8.3-composer-
+
+            - name: Install dependencies
+              run: |
+                composer install --prefer-dist --no-interaction --no-progress --optimize-autoloader --ansi
+                npm install
+                pip install --quiet pillow
+
+            - name: Build production assets
+              run: npx grunt build-assets
+
+            - name: Install HumHub
+              run: |
+                php protected/humhub/tests/codeception/bin/yii migrate/up --includeModuleMigrations=1 --interactive=0
+                php protected/humhub/tests/codeception/bin/yii installer/auto
+                if [ -n "$MODULE" ]; then
+                    php protected/humhub/tests/codeception/bin/yii module/enable "$MODULE"
+                fi
+
+            - name: Start ChromeDriver and the test server
+              run: |
+                chromedriver --port=4444 --allowed-ips=127.0.0.1 &>/tmp/chromedriver.log &
+                php --server 127.0.0.1:8080 --docroot public public/index-test.php &>/tmp/phpserver.log &
+                sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
+
+            - name: Build the test actors
+              run: cd protected/humhub/tests && php ../../vendor/bin/codecept build
+
+            - name: Screenshots with the stylesheets of the base
+              run: |
+                git -C "$STYLESHEETS_REPOSITORY" checkout "$BASE_REF" -- $STYLESHEETS
+                rm -f public/assets/tests/*/resources/css/theme.css
+                cd protected/humhub/tests && HUMHUB_VISUAL=base php ../../vendor/bin/codecept run visual
+
+            - name: Screenshots with the stylesheets of the branch
+              run: |
+                git -C "$STYLESHEETS_REPOSITORY" checkout HEAD -- $STYLESHEETS
+                rm -f public/assets/tests/*/resources/css/theme.css
+                cd protected/humhub/tests && HUMHUB_VISUAL=changed php ../../vendor/bin/codecept run visual
+
+            - name: Compare the screenshots
+              run: |
+                cd protected/humhub/tests/codeception/_output/visual
+                python3 "$GITHUB_WORKSPACE/.github/scripts/visual-diff.py" base changed diff
+
+            - name: Upload the screenshots and differences
+              uses: actions/upload-artifact@v7
+              if: always()
+              with:
+                  name: css-visual-diff${{ inputs.theme && format('-{0}', inputs.theme) || '' }}
+                  path: |
+                      protected/humhub/tests/codeception/_output/visual/
+                      protected/humhub/tests/codeception/_output/*.fail.*
+                  if-no-files-found: ignore
