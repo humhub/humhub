@@ -20,6 +20,7 @@ use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
+use yii\console\ExitCode;
 use yii\helpers\Console;
 use yii\helpers\Json;
 use yii\web\HttpException;
@@ -250,6 +251,18 @@ class MarketplaceController extends Controller
         $onlineModuleManager = $this->getMarketplaceModule()->onlineModuleManager;
 
         $this->stdout(PHP_EOL . 'Checking for module updates...' . PHP_EOL);
+
+        // An empty module list means the marketplace API is disabled or could not be reached,
+        // e.g. due to network issues. Reporting the modules as up to date would hide that.
+        if (empty($onlineModuleManager->getModules())) {
+            if (empty(Yii::$app->params['humhub']['apiEnabled'])) {
+                $this->error('Could not check for module updates, the HumHub API is disabled.');
+            } else {
+                $this->error('Could not check for module updates, no module list received from the HumHub API ('
+                    . Yii::$app->params['humhub']['apiUrl'] . '). Check the connection to the API, see the log for details.');
+            }
+            return ExitCode::UNSPECIFIED_ERROR;
+        }
 
         $updates = $onlineModuleManager->getModuleUpdates();
 

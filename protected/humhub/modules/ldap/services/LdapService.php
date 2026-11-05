@@ -64,7 +64,7 @@ class LdapService
     {
         $query = $this->connection->query()
             ->select('dn')
-            ->rawFilter($this->config->userFilter);
+            ->rawFilter(LdapHelper::normalizeFilter($this->config->userFilter));
 
         return count($this->fetchAll($query));
     }
@@ -73,7 +73,7 @@ class LdapService
     {
         $result = $this->connection->query()
             ->select('dn')
-            ->rawFilter($this->config->userFilter)
+            ->rawFilter(LdapHelper::normalizeFilter($this->config->userFilter))
             ->orFilter(function ($query) use ($usernameOrEmail): void {
                 $query->where($this->config->usernameAttribute, '=', $usernameOrEmail)
                     ->where($this->config->emailAttribute, '=', $usernameOrEmail);
@@ -93,7 +93,7 @@ class LdapService
     {
         $query = $this->connection->query()
             ->in($this->config->baseDn)
-            ->rawFilter($this->config->userFilter)
+            ->rawFilter(LdapHelper::normalizeFilter($this->config->userFilter))
             ->select($this->getQueriedAttributes());
 
         $entries = [];

@@ -64,9 +64,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
     <?php if (AuthChoice::hasClients()): ?>
         <div class="panel panel-default mb-4 animated bounceIn" id="auth-choice-panel">
             <div class="panel-body">
-                <p class="text-center mb-2">
-                    <?= Yii::t('UserModule.auth', 'Or continue with') ?>
-                </p>
+                <?php if ($showLoginForm): ?>
+                    <p class="text-center mb-2">
+                        <?= Yii::t('UserModule.auth', 'Or continue with') ?>
+                    </p>
+                <?php endif; ?>
                 <?= AuthChoice::widget() ?>
             </div>
         </div>
