@@ -51,5 +51,9 @@ return [
     '[Code Block]' => '[รหัสบล็อก]',
     '[Invalid file]' => '[ไฟล์ไม่ถูกต้อง]',
     '[Table]' => '[โต๊ะ]',
+    'Alternative text' => '',
+    'Describe the image' => '',
+    'Describe the image for people who cannot see it. Leave it empty if the image is purely decorative.' => '',
+    'Skip' => '',
     'Switch editor mode' => '',
 ];

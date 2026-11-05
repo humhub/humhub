@@ -51,5 +51,9 @@ return [
     '[Code Block]' => '[Bloco de Código]',
     '[Invalid file]' => '[Ficheiro inválido]',
     '[Table]' => '[Tabela]',
+    'Alternative text' => '',
+    'Describe the image' => '',
+    'Describe the image for people who cannot see it. Leave it empty if the image is purely decorative.' => '',
+    'Skip' => '',
     'Switch editor mode' => '',
 ];

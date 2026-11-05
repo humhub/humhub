@@ -52,4 +52,8 @@ return [
     '[Code Block]' => '[Code Block]',
     '[Invalid file]' => '[Invalid file]',
     '[Table]' => '[Table]',
+    'Alternative text' => '',
+    'Describe the image' => '',
+    'Describe the image for people who cannot see it. Leave it empty if the image is purely decorative.' => '',
+    'Skip' => '',
 ];
