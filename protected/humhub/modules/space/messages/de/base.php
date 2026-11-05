@@ -185,6 +185,6 @@ return [
   '{displayName} left this Space.' => '{displayName} hat diesen Space verlassen.',
   '{displayName} unarchived a Space.' => '{displayName} hat einen Space wieder aus dem Archiv geholt.',
   '{email} is not valid!' => '{email} ist ungültig!',
-  '{groupCount, plural, =1{{displayName}} other{{displayNames}}} joined a Space.' => '',
-  '{groupCount, plural, =1{{displayName}} other{{displayNames}}} left a Space.' => '',
+  '{groupCount, plural, =1{{displayName}} other{{displayNames}}} joined a Space.' => '{groupCount, plural, =1{{displayName} ist} other{{displayNames} sind}} einem Space beigetreten.',
+  '{groupCount, plural, =1{{displayName}} other{{displayNames}}} left a Space.' => '{groupCount, plural, =1{{displayName} hat} other{{displayNames} haben}} einen Space verlassen.',
 ];
