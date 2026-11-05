@@ -5,6 +5,7 @@ namespace humhub\tests\codeception\visual;
 use Codeception\Scenario;
 use Facebook\WebDriver\Chrome\ChromeDevToolsDriver;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverKeys;
 use AcceptanceTester;
 use humhub\helpers\ThemeHelper;
 use RuntimeException;
@@ -70,6 +71,26 @@ class VisualCest
         $I->amOnSpace(1);
         $this->screenshot($I, 'space-stream');
 
+        // The post form's editor: focused, with the mention list and the emoji chooser
+        $I->click('#contentForm_message .ProseMirror');
+        $I->wait(1);
+        $this->screenshot($I, 'editor-focused', false);
+        $I->pressKey('#contentForm_message .ProseMirror', '@', 'a');
+        $I->waitForElementVisible('.atwho-view', 10);
+        $this->screenshot($I, 'editor-mention', false);
+        $I->pressKey('#contentForm_message .ProseMirror', WebDriverKeys::ESCAPE);
+        $I->click('#contentForm_message [title="Insert Emoji"]');
+        $I->waitForElementVisible('.humhub-emoji-chooser', 10);
+        $I->moveMouseOver('.humhub-emoji-chooser .atwho-emoji-entry:nth-child(3)');
+        $this->screenshot($I, 'editor-emoji', false);
+
+        // The comment form of the first entry
+        $I->amOnSpace(1);
+        $this->waitUntilLoaded($I);
+        $I->click('[data-action-click="comment.toggleComment"]');
+        $I->wait(1);
+        $this->screenshot($I, 'comment-form');
+
         $I->amOnSpace(1, '/space/space/about');
         $this->screenshot($I, 'space-about');
 
@@ -120,6 +141,12 @@ class VisualCest
 
         $I->amOnProfile();
         $this->screenshot($I, 'mobile-profile');
+
+        // The menu of the account settings as a list group, an entry hovered
+        $I->amOnRoute(['/user/account/edit']);
+        $this->waitUntilLoaded($I);
+        $I->moveMouseOver('.panel .list-group-item:not(.active)');
+        $this->screenshot($I, 'mobile-account');
 
         $I->amOnDashboard();
         $this->menuScreenshot($I, '#icon-notifications', 'mobile-notifications-dropdown');

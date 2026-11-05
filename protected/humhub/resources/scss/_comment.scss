@@ -10,7 +10,7 @@
 
         .comment {
             .single-comment {
-                position: relative !important;
+                position: relative;
                 margin: -0.5rem;
 
                 &.d-flex > .flex-grow-1 {
@@ -95,7 +95,7 @@
 
                     div.comment {
                         .single-comment {
-                            position: relative !important;
+                            position: relative;
                         }
                     }
                 }
