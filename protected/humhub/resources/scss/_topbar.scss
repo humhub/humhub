@@ -357,6 +357,8 @@
                     min-height: 50px;
                     text-transform: uppercase;
                     text-align: center;
+                    // Bootstrap fades the border color in; without this it starts from the text color
+                    border-bottom-color: transparent;
 
                     &.active,
                     &:hover,

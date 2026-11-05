@@ -15,6 +15,7 @@ use ReflectionMethod;
 use ReflectionProperty;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
+use yii\console\ExitCode;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -100,6 +101,38 @@ class MarketplaceControllerTest extends HumHubDbTestCase
         static::assertStringContainsString('Update of dep-child skipped', $this->output);
     }
 
+    public function testUpdateAllFailsWithoutModuleList(): void
+    {
+        $onlineModuleManager = new class extends OnlineModuleManager {
+            public function getModules(bool $cached = true)
+            {
+                return [];
+            }
+        };
+        $this->getOnlineModuleManagerProperty()->setValue(Yii::$app->getModule('marketplace'), $onlineModuleManager);
+
+        $controller = $this->createController();
+        $exitCode = $controller->actionUpdateAll();
+
+        static::assertSame(ExitCode::UNSPECIFIED_ERROR, $exitCode);
+        static::assertStringContainsString('Could not check for module updates', $controller->output);
+        static::assertStringNotContainsString('All modules are up to date', $controller->output);
+        static::assertStringNotContainsString('Reinstalling', $controller->output);
+    }
+
+    private function createController(): MarketplaceController
+    {
+        return new class ('module', Yii::$app) extends MarketplaceController {
+            public string $output = '';
+
+            public function stdout($string)
+            {
+                $this->output .= $string;
+                return strlen($string);
+            }
+        };
+    }
+
     /**
      * @param array<string, array|\Throwable> $packages
      * @return string[]
@@ -123,15 +156,7 @@ class MarketplaceControllerTest extends HumHubDbTestCase
         };
         $this->getOnlineModuleManagerProperty()->setValue(Yii::$app->getModule('marketplace'), $onlineModuleManager);
 
-        $controller = new class ('module', Yii::$app) extends MarketplaceController {
-            public string $output = '';
-
-            public function stdout($string)
-            {
-                $this->output .= $string;
-                return strlen($string);
-            }
-        };
+        $controller = $this->createController();
 
         $order = (new ReflectionMethod($controller, 'planUpdates'))->invoke($controller, array_keys($packages));
         $this->output = $controller->output;

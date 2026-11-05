@@ -32,6 +32,16 @@
         }
     }
 
+    // The flex gap already separates the caret
+    .btn.dropdown-toggle::after {
+        margin-left: 0;
+    }
+
+    // Keep the caret close to the icon, as before 1.19
+    .btn-icon-only.dropdown-toggle {
+        --hh-btn-gap: .255em;
+    }
+
     .btn-sm, .btn-group-sm > .btn {
         --hh-btn-gap: 0.4rem;
     }
