@@ -101,7 +101,7 @@ $form-choice-border-radius: 4px !default;
 
     select.form-control:not([multiple]) {
         appearance: none;
-        background-image: url("../img/select_arrow.png") !important;
+        background-image: url("../img/select_arrow.png");
         background-repeat: no-repeat;
         background-position: right 16px;
         overflow: hidden;
@@ -146,12 +146,12 @@ $form-choice-border-radius: 4px !default;
     }
 
     .hint-block {
-        color: var(--hh-text-color-soft2) !important;
+        color: var(--hh-text-color-soft2);
         font-size: 12px;
     }
 
     .hint-block:hover {
-        color: var(--hh-text-color-secondary) !important;
+        color: var(--hh-text-color-secondary);
         font-size: 12px;
     }
 

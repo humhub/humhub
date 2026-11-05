@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #8696: Removed rarely used Bootstrap 3 classes from the core SCSS
 - Enh #8699: The `theme.css` puts the core and theme styles into cascade layers, a theme overrides the core without `!important`
 - Enh #8700: Visual comparison of the CSS in pull requests and Stylelint for the SCSS
+- Enh #8701: Removed `!important` from the core SCSS where a selector suffices, so a theme can override these declarations
 - Enh #8692: The richtext editor asks for the alt text of an uploaded image
 - Enh #8690: New console command `version` prints the HumHub version, `version/info` details about the installation (edition, PHP, database, Docker image)
 - Enh #8691: Picker filters (space, person, topic) suggest before anything is typed, loaded when first opened; fewer icons in the filter bar and one placeholder colour

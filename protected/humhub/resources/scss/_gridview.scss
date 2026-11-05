@@ -27,16 +27,16 @@
 
         table {
             th {
-                font-size: 13px !important;
-                font-weight: bold !important;
+                font-size: 13px;
+                font-weight: bold;
             }
 
             td {
-                vertical-align: middle !important;
+                vertical-align: middle;
             }
 
             tr {
-                font-size: 13px !important;
+                font-size: 13px;
             }
 
             thead {
@@ -75,7 +75,7 @@
 
     // Detail View
     .detail-view td, .detail-view th {
-        padding: 8px !important;
+        padding: 8px;
     }
 
     .detail-view th {

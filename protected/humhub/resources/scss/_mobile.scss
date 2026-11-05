@@ -85,17 +85,17 @@
             }
 
             .image-upload-container .image-upload-buttons {
-                right: 2px !important;
+                right: 2px;
             }
 
 
             // Space
             .panel-profile .panel-profile-header .img-profile-header-background {
-                min-height: 80px !important;
+                min-height: 80px;
             }
 
             .panel-profile .panel-profile-header .img-profile-data {
-                padding-top: 50px !important;
+                padding-top: 50px;
                 padding-left: 125px;
             }
         }
@@ -113,10 +113,6 @@
         select.form-control:not([multiple]) {
             padding-right: 23px;
             width: auto;
-        }
-
-        .modal.in {
-            padding-right: 0 !important;
         }
 
         // STREAM
