@@ -65,9 +65,7 @@ class ServiceWorkerService
                 console.log('********** The service worker is being installed.');
 
                 // Store "Offline" page
-                var offlineRequest = new Request(OFFLINE_PAGE_URL, {init: {
-                    credentials: 'omit'
-                }});
+                var offlineRequest = new Request(OFFLINE_PAGE_URL, {credentials: 'omit'});
 
                 event.waitUntil(
                     fetch(offlineRequest).then(function (response) {
