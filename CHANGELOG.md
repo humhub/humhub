@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh #8695: Removed unused styles from the core SCSS; theme values for `$link-hover-color`, `$isFluid` and the `*-contrast` variables are no longer overwritten
+- Enh #8696: Removed rarely used Bootstrap 3 classes from the core SCSS
 - Enh #8692: The richtext editor asks for the alt text of an uploaded image
 - Enh #8690: New console command `version` prints the HumHub version, `version/info` details about the installation (edition, PHP, database, Docker image)
 - Enh #8691: Picker filters (space, person, topic) suggest before anything is typed, loaded when first opened; fewer icons in the filter bar and one placeholder colour
