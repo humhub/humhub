@@ -5,7 +5,6 @@ import CommentForm from '../../vue/components/CommentForm.vue';
 import CommentEntry from '../../vue/components/CommentEntry.vue';
 import LikeButton from '../../../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../../../vue/RichTextOutput.vue';
-import LegacyFormWrapper from '../../../../vue/LegacyFormWrapper.vue';
 import DropdownMenu from '../../../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../../../vue/ExtensionSlot.vue';
 import UserImage from '../../../../modules/user/vue/UserImage.vue';
@@ -40,7 +39,7 @@ const additionsDirective = {
 };
 
 // CommentEntry/CommentForm/CommentControls no longer import RichTextOutput/
-// LegacyFormWrapper/DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
+// DropdownMenu/ExtensionSlot/HumHubForm/RichTextField/SubmitButton
 // directly (they now resolve through the global Vue component registry - see their own
 // docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
 // same way it already does for LikeButton below. UiModal/UserList are needed too - nested
@@ -49,45 +48,24 @@ const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
         components: {
-            LikeButton, RichTextOutput, LegacyFormWrapper, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
+            LikeButton, RichTextOutput, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
             HumHubForm, RichTextField, SubmitButton, UploadField, UiModal, UserList, TextareaField, CheckboxField,
         },
     },
 });
 
-// Synthetic __VUEFORM__ shell (see LegacyFormWrapper's own docblock and
-// coreInterop.test.js): a <form> to attach the native submit interceptor
-// to, a `.humhub-ui-richtext` node the auto-boot handler below attaches a
-// fake editor to (exactly like a real richtext widget boot would), and a
-// `.richtext-create-buttons` container - the REAL production shell's button
-// group (see commentFormShell.php), which is where CommentForm's own
-// Vue-rendered submit button now Teleports itself into (see its "Submit
-// button placement" docblock section) - this is the PRIMARY, tested path.
-//
-// Deliberately has NO `.btn-comment-submit` button of its own (matching the
-// REAL production shell, see CommentForm's "Submit button" docblock section)
-// - only CommentForm's own Vue-rendered button carries that class, so tests
-// can select it unambiguously.
-const buildShell = () => `
-    <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
-        <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
-            <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
-            <div class="richtext-create-buttons"></div>
-        </form>
-    </div>
-`;
-
 /**
  * Attaches a fake `ui.richtext.prosemirror.RichTextEditor` instance to a DOM
  * node the same way the real widget caches itself once booted (jQuery
- * `.data('humhub-ui-richtexteditor', instance)` — see LegacyFormWrapper's own
- * docblock). `editor.serialize()`/`editor.init()` are wired to a shared
+ * `.data('humhub-ui-richtexteditor', instance)` — see RichTextField's own
+ * `getEditorInstance()`). `editor.serialize()`/`editor.init()` are wired to a shared
  * `currentValue` so getValue()/setValue() round-trip realistically.
  */
 const attachFakeEditor = (node, initialValue = 'hello') => {
     const fake = { currentValue: initialValue };
     fake.$ = jQuery(node);
     fake.focus = vi.fn();
+    fake.backup = vi.fn();
     fake.editor = {
         serialize: vi.fn(() => fake.currentValue),
         init: vi.fn((markdown) => {
@@ -199,12 +177,8 @@ describe('Comment mutations + live updates', () => {
     });
 
     describe('create (main form)', () => {
-        // Regression guard for the P2-7 finding: the __VUEFORM__ shell has no
-        // submit button of its own (see CommentForm's own "Submit button"
-        // docblock section) — the ONLY way a real user can submit is the
-        // Vue-owned button rendered alongside it. Clicking that button here,
-        // rather than dispatching a synthetic native 'submit' event, is what
-        // would have caught this gap.
+        // Submits through the button a user clicks, rather than a synthetic native
+        // 'submit' event.
         it('posts message+fileList, appends at the end, clears the editor and bumps the count', async () => {
             const initial = { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 };
             let resolvePost;
@@ -212,7 +186,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial, canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial, canComment: true },
             });
 
             const countHandler = vi.fn();
@@ -271,7 +245,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: true },
             });
 
             const editor = jQuery(wrapper.find(RICHTEXT_SELECTOR).element).data('humhub-ui-richtexteditor');
@@ -301,7 +275,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentForm, {
                 ...mountOptions(),
-                props: { shellHtml: buildShell(), contentId: 42 },
+                props: { contentId: 42 },
             });
 
             await wrapper.find('.btn-comment-submit').trigger('click');
@@ -326,7 +300,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentForm, {
                 ...mountOptions(),
-                props: { shellHtml: buildShell(), contentId: 42 },
+                props: { contentId: 42 },
             });
 
             await wrapper.find('.btn-comment-submit').trigger('click');
@@ -348,7 +322,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: true },
             });
 
             await wrapper.find('.btn-comment-submit').trigger('click');
@@ -358,31 +332,16 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
-    // Bug: Ctrl+S (STRG+S) in the richtext editor stopped submitting the
-    // comment form after the Vue island port. The legacy keyboard chain
-    // lives in the vendored `humhub-prosemirror-richtext` package
-    // (src/editor/core/plugins/save/plugin.js, bundled into
-    // dist/humhub-editor.js) - its `handleKeyDown` intercepts a bare Ctrl+S
-    // (`event.ctrlKey && event.key === 's'`), then does exactly:
+    // Ctrl+S in the editor submits: the richtext editor's save plugin
+    // (protected/humhub/resources/js/richtext/core/plugins/save/plugin.js) does exactly
     //   context.editor.$.closest('form').find('[type="submit"]').trigger('click')
-    // (`context.editor.$` is the richtext widget's own root element, the
-    // same node RICHTEXT_SELECTOR finds below). The Vue-owned submit button
-    // used to be `type="button"` (see CommentForm's "Submit button"
-    // docblock section, P2-7) so that `[type="submit"]` lookup came up
-    // empty and the shortcut silently did nothing - even though, since
-    // CommentForm.vue's own "Submit button placement" docblock section
-    // (P2-7), the button had ALREADY started Teleporting into
-    // `.richtext-create-buttons`, which is INSIDE the shell's `<form>`
-    // (see commentFormShell.php) - `closest('form')` would have found it
-    // fine, only the type attribute was wrong.
+    // (`context.editor.$` is the node RICHTEXT_SELECTOR finds below), so the submit button
+    // has to be a `type="submit"` inside the editor's form.
     //
-    // jsdom can't load the real ProseMirror plugin bundle, so this
-    // reproduces its exact DOM contract with real jQuery (the same library
-    // and the same `.trigger()` the plugin itself calls) instead of
-    // @vue/test-utils' own `.trigger()` (a plain jsdom `dispatchEvent()`
-    // that, unlike jQuery's, never falls back to the element's native
-    // `.click()` method and so never reaches a `type="submit"` button's
-    // form-submission activation behavior at all here).
+    // jsdom can't load the real ProseMirror plugin bundle, so this reproduces its exact DOM
+    // contract with real jQuery (the same `.trigger()` the plugin calls) instead of
+    // @vue/test-utils' own `.trigger()`, which never reaches a `type="submit"` button's
+    // form-submission activation behavior.
     describe('keyboard submit (Ctrl+S bridge)', () => {
         it('reaches the submit button via closest(form).find([type="submit"]).trigger("click"), same as the legacy keymap plugin', async () => {
             // A realistic resolved comment, not the default {} stub - CommentSection
@@ -392,15 +351,8 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: true },
             });
-
-            // The button Teleports into .richtext-create-buttons (INSIDE the shell's
-            // <form>) only from the tick after mount (see CommentForm's own "Submit
-            // button placement" docblock section / the dedicated Teleport-target test
-            // above) - before that it renders disabled/in-place, still findable by
-            // class but not yet a descendant of <form>.
-            await wrapper.vm.$nextTick();
 
             const editor = jQuery(wrapper.find(RICHTEXT_SELECTOR).element).data('humhub-ui-richtexteditor');
 
@@ -426,45 +378,9 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
-    describe('submit button icon parity (F1)', () => {
-        // The legacy button was icon-only (Button::accent()->icon('send'), no visible
-        // label) - see Comments.php's `submitIconHtml` prop and CommentForm.vue's own
-        // "Submit button" docblock section for the exact evidence trail.
-        const ICON_HTML = '<i class="ti ti-send" aria-hidden="true"></i>';
-
-        it('renders the server-provided icon html, aria-label and btn-icon-only when submitIconHtml is given', () => {
-            const wrapper = mount(CommentSection, {
-                ...mountOptions(),
-                props: {
-                    contentId: 42,
-                    initial: emptyWindow(),
-                    canComment: true,
-                    formShellHtml: buildShell(),
-                    submitIconHtml: ICON_HTML,
-                },
-            });
-
-            const button = wrapper.find('.btn-comment-submit');
-            expect(button.exists()).toBe(true);
-            expect(button.classes()).toContain('btn-icon-only');
-            expect(button.attributes('aria-label')).toBe('Submit');
-            expect(button.find('.ti-send').exists()).toBe(true);
-            expect(button.text()).toBe(''); // icon-only - no visible text label
-        });
-
-        it('falls back to a visible text label (no btn-icon-only) when submitIconHtml is not provided', () => {
-            const wrapper = mount(CommentSection, {
-                ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
-            });
-
-            const button = wrapper.find('.btn-comment-submit');
-            expect(button.classes()).not.toContain('btn-icon-only');
-            expect(button.attributes('aria-label')).toBe('Submit');
-            expect(button.text()).toBe('Submit');
-        });
-
-        it('threads submitIconHtml down to a reply form too', async () => {
+    describe('submit button icon', () => {
+        // Icon-only, as the legacy `Button::accent()->icon('send')` was, named by its aria-label.
+        it('is an icon-only send button, in a reply form too', async () => {
             const comment = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
@@ -472,10 +388,14 @@ describe('Comment mutations + live updates', () => {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
-                    submitIconHtml: ICON_HTML,
                 },
             });
+
+            const button = wrapper.find('.btn-comment-submit');
+            expect(button.classes()).toContain('btn-icon-only');
+            expect(button.attributes('aria-label')).toBe('Submit');
+            expect(button.find('.ti-send').exists()).toBe(true);
+            expect(button.text()).toBe('');
 
             const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
             await replyLink.trigger('click');
@@ -485,47 +405,16 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
-    describe('submit button placement (item 1 - Teleport into the shell button group)', () => {
-        // Primary path: the real production shell (commentFormShell.php) always carries
-        // `.richtext-create-buttons` (the upload dropdown's button group) - buildShell()
-        // above now includes it, so this is the shell every other test in this file already
-        // mounts CommentForm/CommentSection with.
-        it('teleports the submit button into the shell\'s .richtext-create-buttons container', async () => {
+    describe('submit button placement', () => {
+        it('renders the submit button in .richtext-create-buttons, bottom-right of the input', () => {
             const wrapper = mount(CommentForm, {
                 ...mountOptions(),
-                props: { shellHtml: buildShell(), contentId: 42 },
+                props: { contentId: 42 },
             });
 
-            // teleportTarget is only resolved in mounted() (the ref isn't populated any
-            // earlier - see CommentForm's own "Submit button placement" docblock section),
-            // so the Teleport itself only picks it up on the reactive update this triggers -
-            // one tick after the initial (fallback, in-place) render.
-            await wrapper.vm.$nextTick();
-
-            const group = wrapper.find('.richtext-create-buttons');
+            const group = wrapper.find('.richtext-create-input-group .richtext-create-buttons');
             expect(group.exists()).toBe(true);
             expect(group.find('.btn-comment-submit').exists()).toBe(true);
-        });
-
-        // Fallback path: a shell without the container (e.g. a caller that hasn't wired up
-        // the full production markup) must still get a working, visible button - Teleport's
-        // own `disabled` prop renders it in place instead of warning/vanishing.
-        it('falls back to rendering the button in place when the shell has no button-group container', () => {
-            const shellWithoutButtonGroup = `
-                <div id="comment_create_form___VUEFORM__" class="comment_create content_create">
-                    <form id="w___VUEFORM__" action="/comment/comment/post" method="post">
-                        <div data-ui-widget="ui.richtext.prosemirror.RichTextEditor" class="humhub-ui-richtext" id="newCommentForm___VUEFORM__"></div>
-                    </form>
-                </div>
-            `;
-
-            const wrapper = mount(CommentForm, {
-                ...mountOptions(),
-                props: { shellHtml: shellWithoutButtonGroup, contentId: 42 },
-            });
-
-            expect(wrapper.find('.richtext-create-buttons').exists()).toBe(false);
-            expect(wrapper.find('.btn-comment-submit').exists()).toBe(true);
         });
     });
 
@@ -542,7 +431,6 @@ describe('Comment mutations + live updates', () => {
                     contentId: 42,
                     initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -605,7 +493,6 @@ describe('Comment mutations + live updates', () => {
                     // docblock note on `total` vs. `rootTotal`.
                     initial: { results: [root], prevCount: 0, nextCount: 0, total: 3, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -642,7 +529,6 @@ describe('Comment mutations + live updates', () => {
                     // total: 5 (1 root + 4 replies), rootTotal: 1 (just the one root).
                     initial: { results: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                     pageSize: 10,
                 },
             });
@@ -747,7 +633,6 @@ describe('Comment mutations + live updates', () => {
                     // No replies in this scenario - total and rootTotal coincide.
                     initial: { results: [commentA, commentB], prevCount: 0, nextCount: 1, total: 3, rootTotal: 3 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                     pageSize: 5,
                 },
             });
@@ -800,7 +685,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial, canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial, canComment: true },
             });
 
             await wrapper.find('.btn-comment-submit').trigger('click');
@@ -827,7 +712,6 @@ describe('Comment mutations + live updates', () => {
                     // opening a phantom root-level "show next" link.
                     initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -853,7 +737,7 @@ describe('Comment mutations + live updates', () => {
 
             const wrapper = mount(CommentSection, {
                 ...mountOptions(),
-                props: { contentId: 42, initial: emptyWindow(), canComment: true, formShellHtml: buildShell() },
+                props: { contentId: 42, initial: emptyWindow(), canComment: true },
             });
 
             await wrapper.find('.btn-comment-submit').trigger('click'); // create POST now in flight, unresolved
@@ -889,7 +773,6 @@ describe('Comment mutations + live updates', () => {
                     contentId: 42,
                     initial: { results: [root], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -951,7 +834,6 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -968,8 +850,8 @@ describe('Comment mutations + live updates', () => {
                 .data('humhub-ui-richtexteditor');
             expect(editor.editor.init).toHaveBeenCalledWith('raw **markdown**');
 
-            // #5: the edit form is the same CommentForm component and also
-            // gets its own submit button (the shell it hosts has none).
+            // #5: the edit form is the same CommentForm component, with its own
+            // submit button.
             const editSubmit = wrapper.find('#comment_editarea_1 .btn-comment-submit');
             expect(editSubmit.exists()).toBe(true);
 
@@ -1007,7 +889,6 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -1024,8 +905,17 @@ describe('Comment mutations + live updates', () => {
         });
     });
 
-    describe('discarding a form resets its unsaved-changes guard (F2)', () => {
-        it('resets the edit form\'s acknowledgeForm baseline before it unmounts on cancel', async () => {
+    // A discarded form only loses its DOM - the editor's sessionStorage draft outlives the
+    // unmount and would resurface the text later. The editor's 'clear' DOM event is what the
+    // real widget's own handler runs resetBackup() on (see humhub.ui.richtext.prosemirror.js).
+    describe('discarding a form drops its draft', () => {
+        const watchClear = (wrapper, scope) => {
+            const handler = vi.fn();
+            jQuery(wrapper.find(`${scope} ${RICHTEXT_SELECTOR}`).element).on('clear', handler);
+            return handler;
+        };
+
+        it('clears the edit form\'s editor before it unmounts on cancel', async () => {
             const comment = makeComment({ id: 1 });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 1, message: 'raw markdown' })));
 
@@ -1034,7 +924,6 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -1042,35 +931,14 @@ describe('Comment mutations + live updates', () => {
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
-
-            // `#comment_editarea_1 form` now also matches HumHubForm's own outer <form>
-            // (CommentForm is built on the suite - see its own docblock's "Built on
-            // HumHubForm" section) - resolving via the richtext editor node's
-            // closest('form') unambiguously reaches the INNER, legacy-shell-rendered
-            // form `resetAcknowledge()` actually operates on (see RichTextField.vue's/
-            // LegacyFormWrapper.vue's own docblocks), same as the production code and
-            // the "keyboard submit" test above already do.
-            const formEl = wrapper.find(`#comment_editarea_1 ${RICHTEXT_SELECTOR}`).element.closest('form');
-            // Simulates onBeforeLoad()'s own baseline capture at boot time.
-            jQuery(formEl).data('state', 'message=typed+but+discarded');
+            const cleared = watchClear(wrapper, '#comment_editarea_1');
 
             await wrapper.find('.comment-cancel-edit-link').trigger('click');
 
-            // The node is gone from the wrapper's DOM by now (Vue unmounted it) -
-            // jQuery's data cache is keyed by the node object itself, still held
-            // here, so it stays inspectable regardless.
-            expect(jQuery(formEl).data('state')).toBeNull();
+            expect(cleared).toHaveBeenCalledTimes(1);
         });
 
-        // The save twin of the cancel test above (browser-verified gap): the
-        // edit form is discarded on success too, but the discard only removes
-        // DOM — the acknowledgeForm baseline and the richtext editor's
-        // sessionStorage draft backup both outlive the unmount, resurfacing
-        // the just-saved text as a phantom draft/"unsaved changes" confirm
-        // later. CommentForm therefore clear()s on edit success as well: the
-        // editor 'clear' DOM event is what the real widget's own handler runs
-        // resetBackup() on (see humhub.ui.richtext.prosemirror.js).
-        it('resets the edit form\'s acknowledgeForm baseline and triggers the editor backup clear on save', async () => {
+        it('clears the edit form\'s editor on save', async () => {
             const comment = makeComment({ id: 1 });
             globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(makeComment({ id: 1, message: 'raw markdown' })));
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(
@@ -1082,7 +950,6 @@ describe('Comment mutations + live updates', () => {
                 props: {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
-                    formShellHtml: buildShell(),
                 },
             });
 
@@ -1090,21 +957,15 @@ describe('Comment mutations + live updates', () => {
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(true));
-
-            const editorNode = wrapper.find(`#comment_editarea_1 ${RICHTEXT_SELECTOR}`).element;
-            const clearHandler = vi.fn();
-            jQuery(editorNode).on('clear', clearHandler);
-            const formEl = editorNode.closest('form');
-            jQuery(formEl).data('state', 'message=typed+then+saved');
+            const cleared = watchClear(wrapper, '#comment_editarea_1');
 
             await wrapper.find('#comment_editarea_1 .btn-comment-submit').trigger('click');
             await vi.waitFor(() => expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(false));
 
-            expect(clearHandler).toHaveBeenCalledTimes(1);
-            expect(jQuery(formEl).data('state')).toBeNull();
+            expect(cleared).toHaveBeenCalledTimes(1);
         });
 
-        it('resets the reply form\'s acknowledgeForm baseline before it unmounts on close', async () => {
+        it('clears the reply form\'s editor before it unmounts on close', async () => {
             const comment = makeComment({ id: 1, replies: { total: 0, items: [], hasMore: false } });
 
             const wrapper = mount(CommentSection, {
@@ -1113,34 +974,24 @@ describe('Comment mutations + live updates', () => {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                 },
             });
 
             const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
             await replyLink.trigger('click');
             await wrapper.vm.$nextTick();
-
-            // See the edit-form test above for why this resolves via the richtext
-            // editor node's closest('form') rather than a plain 'form' selector.
-            const formEl = wrapper.find(`.nested-comments-root ${RICHTEXT_SELECTOR}`).element.closest('form');
-            jQuery(formEl).data('state', 'message=typed+but+discarded');
+            const cleared = watchClear(wrapper, '.nested-comments-root');
 
             await replyLink.trigger('click'); // toggles the reply form closed again
 
-            expect(jQuery(formEl).data('state')).toBeNull();
+            expect(cleared).toHaveBeenCalledTimes(1);
         });
     });
 
-    // Browser-verified bug: LegacyFormWrapper's per-page-load counter fallback
-    // produced `vueform-1` on EVERY page, so the richtext editor's
-    // sessionStorage draft backup (keyed by the hidden input's id, see
-    // humhub.ui.richtext.prosemirror.js) collided across pages — drafts of
-    // unrelated contents merged into one entry and armed phantom
-    // "unsaved changes" confirms. CommentForm now derives a key from its mount
-    // context instead (see its `formInstanceKey` computed): stable across page
-    // loads for the same logical form, and distinct between the main create
-    // form, each reply form and each edit form.
+    // The editor's sessionStorage draft is keyed by its input's id (see RichTextField's "Draft
+    // backup" docblock section): CommentForm derives the key from its mount context (see its
+    // `formInstanceKey`), stable across page loads for the same logical form and distinct
+    // between the main create form, each reply form and each edit form.
     describe('stable per-form instance ids (richtext draft backup key contract)', () => {
         it('derives main/reply/edit form ids from contentId/parent/comment id, not the page counter', async () => {
             const comment = makeComment({ id: 7 });
@@ -1152,24 +1003,23 @@ describe('Comment mutations + live updates', () => {
                     contentId: 42,
                     initial: { results: [comment], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 },
                     canComment: true,
-                    formShellHtml: buildShell(),
                 },
             });
 
             // Main create form: keyed by content id alone.
-            expect(wrapper.find('#newCommentForm_vueform-c42').exists()).toBe(true);
+            expect(wrapper.find('#richtext-c42').exists()).toBe(true);
 
             // Reply form: additionally keyed by the parent comment id.
             const replyLink = wrapper.findAll('.wall-entry-controls a').find((a) => a.text().startsWith('Reply'));
             await replyLink.trigger('click');
             await wrapper.vm.$nextTick();
-            expect(wrapper.find('#newCommentForm_vueform-c42-r7').exists()).toBe(true);
+            expect(wrapper.find('#richtext-c42-r7').exists()).toBe(true);
 
             // Edit form: keyed by the edited comment's own id.
             await openCommentMenu(wrapper);
             const editItem = wrapper.findAll('.dropdown-item').find((item) => item.text() === 'Edit');
             await editItem.trigger('click');
-            await vi.waitFor(() => expect(wrapper.find('#newCommentForm_vueform-c42-e7').exists()).toBe(true));
+            await vi.waitFor(() => expect(wrapper.find('#richtext-c42-e7').exists()).toBe(true));
         });
     });
 

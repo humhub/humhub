@@ -2,20 +2,17 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\comment\models\Comment;
+use humhub\modules\comment\assets\CommentVueAsset;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\widgets\bootstrap\Link;
 use humhub\widgets\Icon;
-use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $content \humhub\modules\content\models\Content */
-/* @var $parentComment Comment */
 /* @var $id string unique object id */
 /* @var $commentCount int */
 /* @var $mode string */
-/* @var $isNestedComment bool */
 /* @var $module Module */
 
 $hasComments = ($commentCount > 0);
@@ -25,14 +22,17 @@ $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
     'style' => ($hasComments) ? null : 'display:none',
 ]);
 
-$label = Icon::get('message-circle')->asString() . (($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('CommentModule.base', "Comment"));
+$label = Icon::get('message-circle')->asString() . Yii::t('CommentModule.base', "Comment");
 
 ?>
 <?php if ($mode == CommentLink::MODE_POPUP): ?>
-    <?php $url = Url::to(['/comment/comment/show', 'contentId' => $content->id, 'parentCommentId' => $parentComment?->id, 'mode' => 'popup']); ?>
-    <a href="#" data-action-click="ui.modal.load" data-action-url="<?= $url ?>">
-        <?= $label . ' (' . $commentCount . ')' ?>
-    </a>
+    <?php // The popup's island (see `comment.showComments`) mounts on this page, not in a response ?>
+    <?php CommentVueAsset::register($this) ?>
+    <?= Html::a($label . ' (' . $commentCount . ')', '#', [
+        'data-action-click' => 'comment.showComments',
+        'data-content-id' => $content->id,
+        'data-modal-title' => Yii::t('CommentModule.base', 'Comments'),
+    ]) ?>
 <?php elseif (Yii::$app->user->isGuest): ?>
     <?= Html::a(
         $label . $commentCountSpan,

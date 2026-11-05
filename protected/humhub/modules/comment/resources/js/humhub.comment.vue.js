@@ -175,7 +175,7 @@
     }
   };
   const _hoisted_1$3 = ["id", "innerHTML"];
-  const _hoisted_2$2 = ["aria-label"];
+  const _hoisted_2$3 = ["aria-label"];
   const _hoisted_3$2 = { key: 1 };
   const _hoisted_4$1 = ["disabled"];
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
@@ -198,7 +198,7 @@
           class: "btn-close",
           "aria-label": $options.cancelLabel,
           onClick: _cache[0] || (_cache[0] = (...args) => $options.close && $options.close(...args))
-        }, null, 8, _hoisted_2$2)
+        }, null, 8, _hoisted_2$3)
       ]),
       footer: vue$1.withCtx(() => [
         vue$1.createElementVNode(
@@ -323,27 +323,22 @@
   };
   const _sfc_main$3 = {
     props: {
-      shellHtml: { type: String, required: true },
       contentId: { type: Number, required: true },
       parentCommentId: { type: Number, default: null },
       // When set, this form edits an existing comment instead of creating one.
       editCommentId: { type: Number, default: null },
       // Edit mode only: the raw markdown to prefill the editor with once booted.
-      initialMessage: { type: String, default: null },
-      // Server-rendered submit-icon HTML (see "Submit button" docblock section above).
-      submitIconHtml: { type: String, default: null },
-      // Upload field settings: `{max, handlersHtml}` (see the "Attachments" docblock
-      // section below), or null when the island rendered no form shell.
-      uploadOptions: { type: Object, default: null }
+      initialMessage: { type: String, default: null }
     },
     emits: ["created", "updated"],
     data() {
       return {
         busy: false,
-        // Resolved once in mounted() - see the "Submit button placement" docblock
-        // section above. `null` until then/if the shell has no button-group
-        // container, which Teleport's `disabled` prop treats as "render in place".
-        teleportTarget: null,
+        // The button row the upload trigger is teleported into, once mounted
+        // (`null` renders it in place until then).
+        triggerTarget: null,
+        // While the height-limited editor scrolls (see "Editor" above)
+        scrollActive: false,
         // Files attached in THIS editing session (API file shapes, owned by the
         // UploadField below) - see the "Attachments" docblock section.
         files: [],
@@ -360,28 +355,23 @@
       sendLabel() {
         return vue.i18n.t("ContentModule.base", "Submit");
       },
-      // Same label the shell's server-rendered upload button carried before the field
-      // became Vue-native - again a ContentModule.base key CommentSection preloads.
+      // The legacy form's upload button label - again a ContentModule.base key
+      // CommentSection preloads.
       attachLabel() {
         return vue.i18n.t("ContentModule.base", "Attach Files");
       },
+      // The page's, not the content's (the core JS config's `file` block)
       uploadMax() {
-        return this.uploadOptions && this.uploadOptions.max || 0;
+        return (vue.getConfig("file").upload || {}).maxAttachedFiles || 0;
       },
-      uploadHandlersHtml() {
-        return this.uploadOptions && this.uploadOptions.handlersHtml || "";
+      fileHandlers() {
+        return vue.getConfig("file").handlers || [];
       },
-      // Deterministic identity for the shell's DOM ids, threaded down to
-      // LegacyFormWrapper (see ITS "Unique-id contract" docblock section for
-      // the full contract this scheme satisfies): unique among every comment
-      // form that can be mounted at once — the main create form (`c<contentId>`),
-      // one reply form per commented-on entry (`-r<parentCommentId>`), one edit
-      // form per comment (`-e<editCommentId>`) — AND stable across page loads
-      // for the same logical form. Stability is what keys the richtext
-      // editor's sessionStorage draft backup correctly: the wrapper's own
-      // per-page-load counter fallback produced `vueform-1` on EVERY page,
-      // merging drafts of unrelated contents across navigations
-      // (browser-verified) and arming phantom unsaved-changes confirms.
+      // The editor's identity (see RichTextField's "Draft backup" docblock section): unique
+      // among the comment forms mounted at once — the main form (`c<contentId>`), a reply
+      // form per entry (`-r<parentCommentId>`), an edit form per comment
+      // (`-e<editCommentId>`) — and stable across page loads, so a draft is restored into
+      // the form it was typed in and no other.
       formInstanceKey() {
         if (this.editCommentId !== null) {
           return "c" + this.contentId + "-e" + this.editCommentId;
@@ -390,19 +380,19 @@
           return "c" + this.contentId + "-r" + this.parentCommentId;
         }
         return "c" + this.contentId;
+      },
+      placeholder() {
+        return vue.i18n.t("CommentModule.base", "Write a new comment...");
+      },
+      mentioningUrl() {
+        return vue.url("user/mentioning/content", { id: this.contentId });
       }
     },
     mounted() {
-      const shellEl = this.$refs.richtext.getShellElement();
-      this.formEl = shellEl.querySelector("form");
-      if (this.formEl) {
-        this.formEl.addEventListener("submit", this.onSubmit);
-      }
-      this.teleportTarget = shellEl.querySelector(".richtext-create-buttons");
-      this.zoneEl = shellEl;
-      this.zoneEl.addEventListener("drop", this.onZoneDrop);
-      this.zoneEl.addEventListener("dragover", this.onZoneDragOver);
-      this.zoneEl.addEventListener("paste", this.onZonePaste);
+      this.triggerTarget = this.$refs.buttons;
+      this.$refs.zone.addEventListener("drop", this.onZoneDrop);
+      this.$refs.zone.addEventListener("dragover", this.onZoneDragOver);
+      this.$refs.zone.addEventListener("paste", this.onZonePaste);
       if (this.initialMessage !== null) {
         this.$nextTick(() => {
           if (this.$refs.richtext) {
@@ -412,14 +402,9 @@
       }
     },
     beforeUnmount() {
-      if (this.formEl) {
-        this.formEl.removeEventListener("submit", this.onSubmit);
-      }
-      if (this.zoneEl) {
-        this.zoneEl.removeEventListener("drop", this.onZoneDrop);
-        this.zoneEl.removeEventListener("dragover", this.onZoneDragOver);
-        this.zoneEl.removeEventListener("paste", this.onZonePaste);
-      }
+      this.$refs.zone.removeEventListener("drop", this.onZoneDrop);
+      this.$refs.zone.removeEventListener("dragover", this.onZoneDragOver);
+      this.$refs.zone.removeEventListener("paste", this.onZonePaste);
     },
     methods: {
       onSubmit(event) {
@@ -462,9 +447,8 @@
         }
       },
       /**
-       * Empties the form: the editor (via RichTextField's clear(), which also resets the
-       * unsaved-changes guard baseline - see this component's own "Unsaved-changes guard"
-       * docblock section) and the attachment list. Called both on a successful create/reply
+       * Empties the form: the editor (including its draft, see RichTextField's clear())
+       * and the attachment list. Called both on a successful create/reply
        * submit (below) and by CommentEntry when a reply/edit form is discarded without
        * submitting.
        */
@@ -478,8 +462,8 @@
       },
       /**
        * Drop/paste anywhere in the comment box attaches files - the area the legacy upload
-       * widget pointed its `dropZone`/`pasteZone` options at (the shell's own root element,
-       * `#<token>_comment_create_form`). The upload field itself covers its own root; this
+       * widget pointed its `dropZone`/`pasteZone` options at (`.comment_create`). The upload
+       * field itself covers its own root; this
        * extends the zone to the whole box, and both funnel into the same `addFiles()`.
        */
       onZoneDrop(event) {
@@ -490,6 +474,9 @@
         }
       },
       onZonePaste(event) {
+        if (event.defaultPrevented) {
+          return;
+        }
         const files = Array.from(event.clipboardData && event.clipboardData.files || []);
         if (files.length && this.$refs.upload) {
           this.$refs.upload.addFiles(files);
@@ -500,11 +487,18 @@
       }
     }
   };
-  const _hoisted_1$2 = ["innerHTML"];
+  const _hoisted_1$2 = {
+    ref: "zone",
+    class: "comment_create content_create"
+  };
+  const _hoisted_2$2 = {
+    ref: "buttons",
+    class: "richtext-create-buttons"
+  };
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_RichTextField = vue$1.resolveComponent("RichTextField");
-    const _component_UploadField = vue$1.resolveComponent("UploadField");
     const _component_SubmitButton = vue$1.resolveComponent("SubmitButton");
+    const _component_UploadField = vue$1.resolveComponent("UploadField");
     const _component_HumHubForm = vue$1.resolveComponent("HumHubForm");
     return vue$1.openBlock(), vue$1.createBlock(_component_HumHubForm, {
       ref: "form",
@@ -513,55 +507,85 @@
       onSubmit: $options.onSubmit
     }, {
       default: vue$1.withCtx(() => [
-        vue$1.createVNode(_component_RichTextField, {
-          ref: "richtext",
-          attribute: "message",
-          "shell-html": $props.shellHtml,
-          "instance-key": $options.formInstanceKey
-        }, null, 8, ["shell-html", "instance-key"]),
+        vue$1.createElementVNode(
+          "div",
+          _hoisted_1$2,
+          [
+            _cache[5] || (_cache[5] = vue$1.createElementVNode(
+              "hr",
+              null,
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue$1.createElementVNode(
+              "div",
+              {
+                class: vue$1.normalizeClass(["richtext-create-input-group input-group", { scrollActive: $data.scrollActive }])
+              },
+              [
+                vue$1.createVNode(_component_RichTextField, {
+                  ref: "richtext",
+                  class: "mb-3",
+                  attribute: "message",
+                  layout: "inline",
+                  "instance-key": $options.formInstanceKey,
+                  placeholder: $options.placeholder,
+                  "mentioning-url": $options.mentioningUrl,
+                  "plugin-options": { maxHeight: "300px" },
+                  upload: "",
+                  handlers: $options.fileHandlers,
+                  onScrollActive: _cache[0] || (_cache[0] = ($event) => $data.scrollActive = true),
+                  onScrollInactive: _cache[1] || (_cache[1] = ($event) => $data.scrollActive = false)
+                }, null, 8, ["instance-key", "placeholder", "mentioning-url", "handlers"]),
+                vue$1.createElementVNode(
+                  "div",
+                  _hoisted_2$2,
+                  [
+                    vue$1.createVNode(_component_SubmitButton, {
+                      loader: false,
+                      class: "btn btn-accent btn-comment-submit btn-sm btn-icon-only",
+                      "aria-label": $options.sendLabel,
+                      onClick: $options.onSubmit
+                    }, {
+                      default: vue$1.withCtx(() => [..._cache[4] || (_cache[4] = [
+                        vue$1.createElementVNode(
+                          "i",
+                          {
+                            class: "ti ti-send",
+                            "aria-hidden": "true"
+                          },
+                          null,
+                          -1
+                          /* CACHED */
+                        )
+                      ])]),
+                      _: 1
+                      /* STABLE */
+                    }, 8, ["aria-label", "onClick"])
+                  ],
+                  512
+                  /* NEED_PATCH */
+                )
+              ],
+              2
+              /* CLASS */
+            )
+          ],
+          512
+          /* NEED_PATCH */
+        ),
         vue$1.createVNode(_component_UploadField, {
           ref: "upload",
           attribute: "fileList",
           modelValue: $data.files,
-          "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $data.files = $event),
+          "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $data.files = $event),
           max: $options.uploadMax,
-          "handlers-html": $options.uploadHandlersHtml,
+          handlers: $options.fileHandlers,
           title: $options.attachLabel,
-          "trigger-target": $data.teleportTarget,
-          onBusy: _cache[1] || (_cache[1] = ($event) => $data.uploadBusy = $event)
-        }, null, 8, ["modelValue", "max", "handlers-html", "title", "trigger-target"]),
-        (vue$1.openBlock(), vue$1.createBlock(vue$1.Teleport, {
-          to: $data.teleportTarget,
-          disabled: !$data.teleportTarget
-        }, [
-          vue$1.createVNode(_component_SubmitButton, {
-            loader: false,
-            class: vue$1.normalizeClass(["btn btn-accent btn-comment-submit btn-sm", { "btn-icon-only": $props.submitIconHtml }]),
-            "aria-label": $options.sendLabel,
-            onClick: $options.onSubmit
-          }, {
-            default: vue$1.withCtx(() => [
-              $props.submitIconHtml ? (vue$1.openBlock(), vue$1.createElementBlock("span", {
-                key: 0,
-                innerHTML: $props.submitIconHtml
-              }, null, 8, _hoisted_1$2)) : (vue$1.openBlock(), vue$1.createElementBlock(
-                vue$1.Fragment,
-                { key: 1 },
-                [
-                  vue$1.createTextVNode(
-                    vue$1.toDisplayString($options.sendLabel),
-                    1
-                    /* TEXT */
-                  )
-                ],
-                64
-                /* STABLE_FRAGMENT */
-              ))
-            ]),
-            _: 1
-            /* STABLE */
-          }, 8, ["class", "aria-label", "onClick"])
-        ], 8, ["to", "disabled"]))
+          "trigger-target": $data.triggerTarget,
+          onBusy: _cache[3] || (_cache[3] = ($event) => $data.uploadBusy = $event)
+        }, null, 8, ["modelValue", "max", "handlers", "title", "trigger-target"])
       ]),
       _: 1
       /* STABLE */
@@ -598,10 +622,6 @@
     props: {
       comment: { type: Object, required: true },
       canComment: { type: Boolean, default: false },
-      formShellHtml: { type: String, default: null },
-      submitIconHtml: { type: String, default: null },
-      // Upload field settings, handed down to the reply/edit forms this entry can open.
-      uploadOptions: { type: Object, default: null },
       pageSize: { type: Number, default: 10 },
       // A reply (one level deep) never gets its own reply toggle or further
       // nesting - the server enforces at most one level (see
@@ -991,20 +1011,17 @@
           class: "content comment_edit_content",
           id: "comment_editarea_" + $props.comment.id
         }, [
-          $data.editing && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createElementBlock(
+          $data.editing ? (vue$1.openBlock(), vue$1.createElementBlock(
             vue$1.Fragment,
             { key: 0 },
             [
               vue$1.createVNode(_component_CommentForm, {
                 ref: "editForm",
-                "shell-html": $props.formShellHtml,
                 "content-id": $props.comment.contentId,
                 "edit-comment-id": $props.comment.id,
                 "initial-message": $data.editMessage,
-                "submit-icon-html": $props.submitIconHtml,
-                "upload-options": $props.uploadOptions,
                 onUpdated: $options.onEditSaved
-              }, null, 8, ["shell-html", "content-id", "edit-comment-id", "initial-message", "submit-icon-html", "upload-options", "onUpdated"]),
+              }, null, 8, ["content-id", "edit-comment-id", "initial-message", "onUpdated"]),
               vue$1.createElementVNode(
                 "a",
                 {
@@ -1121,13 +1138,10 @@
                           comment: child,
                           "is-nested": true,
                           "can-comment": $props.canComment,
-                          "form-shell-html": $props.formShellHtml,
-                          "submit-icon-html": $props.submitIconHtml,
-                          "upload-options": $props.uploadOptions,
                           "page-size": $props.pageSize,
                           onEntryRemoved: $options.onChildRemoved,
                           onEntryUpdated: $options.onChildUpdated
-                        }, null, 8, ["comment", "can-comment", "form-shell-html", "submit-icon-html", "upload-options", "page-size", "onEntryRemoved", "onEntryUpdated"])
+                        }, null, 8, ["comment", "can-comment", "page-size", "onEntryRemoved", "onEntryUpdated"])
                       ],
                       64
                       /* STABLE_FRAGMENT */
@@ -1137,16 +1151,13 @@
                   /* KEYED_FRAGMENT */
                 ))
               ]),
-              $data.replyOpen && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
+              $data.replyOpen ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
                 key: 0,
                 ref: "replyForm",
-                "shell-html": $props.formShellHtml,
                 "content-id": $props.comment.contentId,
                 "parent-comment-id": $props.comment.id,
-                "submit-icon-html": $props.submitIconHtml,
-                "upload-options": $props.uploadOptions,
                 onCreated: $options.onReplyCreated
-              }, null, 8, ["shell-html", "content-id", "parent-comment-id", "submit-icon-html", "upload-options", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
+              }, null, 8, ["content-id", "parent-comment-id", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
             ],
             2
             /* CLASS */
@@ -1201,10 +1212,6 @@
       rootTotal: { type: Number, required: true },
       pageSize: { type: Number, default: 10 },
       canComment: { type: Boolean, default: false },
-      formShellHtml: { type: String, default: null },
-      submitIconHtml: { type: String, default: null },
-      // Upload field settings, handed down to every form this list can open.
-      uploadOptions: { type: Object, default: null },
       anchorCommentId: { type: Number, default: null }
     },
     data() {
@@ -1396,14 +1403,11 @@
               vue$1.createVNode(_component_CommentEntry, {
                 comment,
                 "can-comment": $props.canComment,
-                "form-shell-html": $props.formShellHtml,
-                "submit-icon-html": $props.submitIconHtml,
-                "upload-options": $props.uploadOptions,
                 "page-size": $props.pageSize,
                 highlighted: $props.anchorCommentId !== null && comment.id === $props.anchorCommentId,
                 onEntryRemoved: $options.removeRoot,
                 onEntryUpdated: $options.onEntryUpdated
-              }, null, 8, ["comment", "can-comment", "form-shell-html", "submit-icon-html", "upload-options", "page-size", "highlighted", "onEntryRemoved", "onEntryUpdated"])
+              }, null, 8, ["comment", "can-comment", "page-size", "highlighted", "onEntryRemoved", "onEntryUpdated"])
             ],
             64
             /* STABLE_FRAGMENT */
@@ -1468,23 +1472,14 @@
       // cacheable, see docs/develop/concept-api.md) while THIS page render is per user
       // anyway, so inlining them saves the island its first `like/states` request.
       initialLikeStates: { type: Object, default: () => ({}) },
-      canComment: { type: Boolean, default: false },
-      // __VUEFORM__ shell token template, see LegacyFormWrapper.vue
-      formShellHtml: { type: String, default: null },
-      // Server-rendered submit-button icon HTML - see CommentForm.vue's own docblock.
-      submitIconHtml: { type: String, default: null },
-      // Settings of the form's upload field ({max, handlersHtml}) - see UploadField.vue.
-      uploadOptions: { type: Object, default: null },
+      // `null` (not told): taken from the first window's response, see "Mounted by
+      // `contentId` alone"
+      canComment: { type: Boolean, default: null },
       pageSize: { type: Number, default: 10 },
       // permalink highlight target
       anchorCommentId: { type: Number, default: null },
       // stream preview: section hidden until toggled via humhub:comment:toggle
-      collapsed: { type: Boolean, default: false },
-      // The file module's `excludeMediaFilesPreview` setting, provided down to every
-      // entry's <AttachedFiles> so a comment's attachment list leaves out what the
-      // preview grid above it already shows - the same call `ShowFiles` makes for a
-      // wall entry.
-      excludeMediaFiles: { type: Boolean, default: false }
+      collapsed: { type: Boolean, default: false }
     },
     data() {
       const initialWindow = this.initial ? mapWindow(this.initial) : null;
@@ -1509,6 +1504,8 @@
         // rather than 0, so an unmigrated payload degrades no worse than before this fix.
         rootTotal: initialWindow ? initialWindow.rootTotal ?? initialWindow.total : 0,
         loaded: !!initialWindow,
+        // Whether the caller may comment: as handed over, or as the first window says
+        commentAllowed: !!this.canComment,
         isCollapsed: this.collapsed,
         // id -> revision counter, bumped whenever an entry object is
         // swapped in place under the same id (edit-save/live-append) —
@@ -1534,7 +1531,11 @@
         isKnownId: this.isKnownId,
         likeStates: this.likeStates,
         ensureLikeStates: this.ensureLikeStates,
-        excludeMediaFiles: this.excludeMediaFiles
+        // The file module's `excludeMediaFilesPreview` setting (core JS config), for every
+        // entry's <AttachedFiles>: a comment's attachment list leaves out what the
+        // preview grid above it already shows - the same call `ShowFiles` makes for a
+        // wall entry.
+        excludeMediaFiles: !!(vue.getConfig("file") || {}).excludeMediaFilesPreview
       };
     },
     computed: {
@@ -1542,7 +1543,7 @@
         return vue.getConfig("user").isGuest === true;
       },
       showForm() {
-        return this.canComment && !this.guest;
+        return this.commentAllowed && !this.guest;
       }
     },
     watch: {
@@ -1576,6 +1577,9 @@
     methods: {
       fetchInitial() {
         fetchWindow({ contentId: this.contentId }).then((response) => {
+          if (this.canComment === null) {
+            this.commentAllowed = !!response.canComment;
+          }
           this.comments = response.results;
           this.prevCount = response.prevCount;
           this.nextCount = response.nextCount;
@@ -1747,20 +1751,14 @@
           "root-total": $data.rootTotal,
           "page-size": $props.pageSize,
           "can-comment": $options.showForm,
-          "form-shell-html": $props.formShellHtml,
-          "submit-icon-html": $props.submitIconHtml,
-          "upload-options": $props.uploadOptions,
           "anchor-comment-id": $props.anchorCommentId
-        }, null, 8, ["content-id", "comments", "prev-count", "total", "root-total", "page-size", "can-comment", "form-shell-html", "submit-icon-html", "upload-options", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
-        $options.showForm && $props.formShellHtml ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
+        }, null, 8, ["content-id", "comments", "prev-count", "total", "root-total", "page-size", "can-comment", "anchor-comment-id"])) : vue$1.createCommentVNode("v-if", true),
+        $options.showForm ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
           key: 1,
           ref: "form",
-          "shell-html": $props.formShellHtml,
           "content-id": $props.contentId,
-          "submit-icon-html": $props.submitIconHtml,
-          "upload-options": $props.uploadOptions,
           onCreated: $options.onMainCreated
-        }, null, 8, ["shell-html", "content-id", "submit-icon-html", "upload-options", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
+        }, null, 8, ["content-id", "onCreated"])) : vue$1.createCommentVNode("v-if", true)
       ],
       2
       /* CLASS */

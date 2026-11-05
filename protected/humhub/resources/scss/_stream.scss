@@ -325,9 +325,11 @@
         align-items: center;
         column-gap: 10px;
         margin-top: 14px;
+        // On the row, not only on its links: a wrapped link (the like button's `span.likeLinkContainer`)
+        // would otherwise sit on the baseline of a taller line box and drop below the bare ones
+        font-size: 12px; // below the 13px of the content text
 
         a {
-            font-size: 12px; // below the 13px of the content text
             color: var(--hh-text-color-soft);
             transition: color 0.3s;
 

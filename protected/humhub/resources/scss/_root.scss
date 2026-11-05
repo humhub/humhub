@@ -12,6 +12,9 @@
     --hh-text-color-soft: #{$text-color-soft};
     --hh-text-color-soft2: #{$text-color-soft2};
     --hh-text-color-soft3: #{$text-color-soft3};
+    // Every field's placeholder: a text field's `::placeholder` and a select's "nothing chosen"
+    // (a reference, so the dark mode follows)
+    --hh-placeholder-color: var(--hh-text-color-secondary);
 
     // Background colors
     --hh-background-color-main: #{$background-color-main};

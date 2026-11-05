@@ -26,6 +26,7 @@ class AssetBundlePublishOptionsTest extends HumHubDbTestCase
     {
         $bundle = new CoreApiAsset();
         $this->assertContains('scss/', $bundle->publishOptions['except']);
+        $this->assertContains('js/richtext/', $bundle->publishOptions['except']);
         $this->assertNotContains('build/', $bundle->publishOptions['except']);
     }
 

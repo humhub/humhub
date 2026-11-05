@@ -91,11 +91,17 @@ class CommentController extends BaseController
     }
 
     /**
-     * The root comments of a content, as a window (`GET content/<id>/comments`).
+     * The root comments of a content, as a window (`GET content/<id>/comments`), and whether
+     * the caller may comment on it (`canComment`) - set beside the window, which is cached
+     * caller-neutral.
      */
     public function actionContentComments($id)
     {
-        return $this->window($this->findContent((int)$id), null);
+        $content = $this->findContent((int)$id);
+
+        return $this->window($content, null) + [
+            'canComment' => !Yii::$app->user->isGuest && (bool)$this->getCommentModule()->canComment($content),
+        ];
     }
 
     /**

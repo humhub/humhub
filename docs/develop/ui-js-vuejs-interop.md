@@ -1,6 +1,6 @@
 # Vue.js Legacy Interop
 
-> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the patterns islands use to bridge into pre-existing jQuery widgets and legacy enhancers, rather than rewriting them in Vue: the `v-additions` directive, `RichTextOutput`, the form-shell pattern and `LegacyFormWrapper`, `timeago`/`[data-ui-addition]`, delegated legacy actions, and known caveats of the approach. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
+> Part of the [Vue.js integration](ui-js-vuejs.md) documentation. This chapter covers the patterns islands use to bridge into pre-existing jQuery widgets and legacy enhancers, rather than rewriting them in Vue: the `v-additions` directive, `RichTextOutput`, the rich text editor in a form, `timeago`/`[data-ui-addition]`, delegated legacy actions, and known caveats of the approach. For motivation, goals, constraints and the overall architecture, see the [overview](ui-js-vuejs.md).
 
 ## The `v-additions` directive
 
@@ -22,7 +22,7 @@ It runs on **both** `mounted` and `updated`, not just once on mount — genuinel
 - `showMore` (`humhub.ui.showMore.js`) used to stack a duplicate, unnamespaced click handler on every re-apply to the same "Read more" button; it was fixed to be re-apply-safe (namespaced, unbound before rebound) specifically because Vue-rendered, repeatedly-`updated` content like comment entries is exactly what exercises this path.
 - A couple of additions (`select2`, `highlightCode`) aren't demonstrably idempotent on repeat calls, but aren't expected on island-rendered content, and already carry the same repeat-apply exposure today wherever legacy code reloads DOM via `ui.additions` (e.g. `Widget.prototype.replace()`).
 
-Use `v-additions` on any island subtree that renders legacy-enhanced markup — either directly (as `CommentEntry.vue`'s root does, for its `timeago`/tooltip children) or inside a component like `RichTextOutput`/`LegacyFormWrapper` below that exists specifically to host such markup.
+Use `v-additions` on any island subtree that renders legacy-enhanced markup — either directly (as `CommentEntry.vue`'s root does, for its `timeago`/tooltip children) or inside a component like `RichTextOutput`/`RichTextField` that exists specifically to host such markup.
 
 ## RichTextOutput
 
@@ -44,42 +44,9 @@ It is a generic core interop component — any module's island can embed it wher
 
 `v-additions` boots the legacy richtext DISPLAY widget on the envelope div — and any other legacy enhancer targeting the subtree (`timeago`, mentions, oembed lookup, ...) — on mount, and re-runs it on update so a re-rendered message (e.g. after editing a comment) is picked up again. The widget caches its instance on the envelope node and initializes once per node, which is why the envelope is keyed by `message`: a new message mounts a new node instead of swapping the text of one the widget has already rendered. The component is deliberately classless: the caller owns layout and styling of the rendered output.
 
-## Form-shell pattern: VueFormShell
+## Rich text editor in a form
 
-> As of the [Form suite](ui-js-vuejs-forms.md), a module building a Vue island form should
-> reach for `HumHubForm` + its native field components first, and only fall back to the
-> pattern below (via `RichTextField`, the suite's own legacy-citizen field) for widgets too
-> deep to rewrite in Vue — this section documents that underlying mechanism, which
-> `RichTextField` embeds unchanged rather than duplicates.
-
-Some server-rendered widgets are too deep to rewrite in Vue in one pass (rich text editors, file uploaders with drag/drop, progress and previews). `humhub\widgets\VueFormShell` is the reusable core mechanism for wrapping one inside an island without server-rendering a form per instance:
-
-1. `VueFormShell::widget(['content' => function (ActiveForm $form) { ... }])` renders a bare `ActiveForm` shell: the widget owns `ActiveForm::begin()`/`::end()` and its own conventions (`action => '#'`, CSRF input disabled, `acknowledge => true`), while the `content` closure renders whatever fields the caller needs, using the `ActiveForm` instance the widget already began. Every id the closure declares or references (`id`, `for`, and CSS-id-selector fragments embedded in `data-*` attribute values) is built from one literal placeholder token via the `VueFormShell::id('suffix')` static helper, instead of a real id.
-2. That HTML string travels once in the island's initial props (e.g. `formShellHtml`) — the shell is rendered once, not once per form instance, even though a page can host many instances of it at once (a create form, one open reply form per commented-on entry, an edit form).
-
-```php
-echo VueFormShell::widget([
-    'content' => function (ActiveForm $form) use ($model) {
-        return $form->field($model, 'title', [
-            'options' => ['id' => VueFormShell::id('title-group')],
-        ])->textInput(['id' => VueFormShell::id('title')])->label(false);
-    },
-]);
-```
-
-The comment form (`humhub\modules\comment\widgets\CommentFormShell`, backed by `comment/widgets/views/commentFormShell.php`) is the reference composition on top of this mechanism: it wraps `VueFormShell::widget()`'s output in its own comment-specific markup (a drop-zone container, `<hr>`) and supplies a `content` closure rendering the richtext editor — uploads are a native `UploadField` next to the shell (see [Form suite: file uploads](ui-js-vuejs-forms.md#file-uploads)); everything comment-specific stays in that widget/view; `VueFormShell` itself knows nothing about comments.
-
-See [LegacyFormWrapper](#legacyformwrapper) below for how the client turns that one shell into as many independent, collision-free form instances as needed.
-
-## LegacyFormWrapper
-
-`LegacyFormWrapper` (see [Components: core component set](ui-js-vuejs-components.md#core-component-set)) is the client half of the form-shell pattern: a small wrapper component that hosts a [`VueFormShell`](#form-shell-pattern-vueformshell)-rendered server shell inside an island and exposes a small, clean API to the surrounding Vue component so it never has to touch jQuery/legacy widgets itself. The [Form suite](ui-js-vuejs-forms.md)'s `RichTextField` is built directly on top of this component (see its own "Legacy fields" section) rather than duplicating its logic — this section remains the authoritative reference for what `LegacyFormWrapper` itself does.
-
-**`__VUEFORM__` token contract.** The server-rendered shell carries the literal token `__VUEFORM__` (`VueFormShell::TOKEN` server-side) everywhere an id is declared *or* referenced (`id`, `for`, and any `data-*` attribute value that embeds an id, including CSS-id-selector fragments like `#__VUEFORM___comment_create_form`, from `VueFormShell::id('comment_create_form')`) — not just in `id="..."` attributes themselves. Note the token is a **prefix** (`VueFormShell::id()` returns `TOKEN . '_' . $suffix`), not a suffix. `LegacyFormWrapper` binds the shell with `v-html` plus `v-additions` (booting the legacy widgets the same way any other injected fragment does), after replacing every occurrence of the token with a unique id from a module-scope counter (not `Math.random()`, so `vue.build`'s output stays deterministic) — so the SAME shell can be cloned as many times on the page as needed (a create form, several open reply forms, an edit form) without id collisions. The literal token is a mirrored pair across languages: `VueFormShell::TOKEN` (PHP) and `LegacyFormWrapper.vue`'s own `FORM_TOKEN` constant must always agree.
-
-**Widget-instance APIs used.** The wrapper exposes a small, typed API (`getValue()`/`setValue()`/`clear()`/`focus()`, plus `resetAcknowledge()` for the unsaved-changes guard) that reads the booted widget instances directly off their own cached jQuery data (`Component.prototype.init`'s `this.$.data(this.static('component'), this)` key) instead of exporting jQuery/legacy globals to the rest of the Vue tree. It has no file API any more: uploads are a native field of their own (`UploadField`).
-
-This keeps the deep interactive editing surface exactly as-is while the surrounding list/state/mutation logic is plain, testable Vue.
+The platform's rich text editor is the jQuery widget `ui.richtext.prosemirror.RichTextEditor`. `RichTextField` (see [Form suite: Rich text](ui-js-vuejs-forms.md#rich-text)) renders its mount element client-side and boots it through `v-additions`, then reads and writes it through the instance the widget caches on its node — no server-rendered form shell.
 
 ## `timeago` and `[data-ui-addition]`
 

@@ -10,10 +10,11 @@ extension points: PHP **extensions**, which process the text on the server, and 
 Everything server-side lives in `humhub\modules\content\widgets\richtext`. `RichText` is the
 static façade every caller uses; it dispatches to the implementation configured in
 `Yii::$app->params['richText']['class']` (default `ProsemirrorRichText`, with
-`ProsemirrorRichTextEditor` as its editor). Client-side there are two parts: the
-`humhub-prosemirror-richtext` package (bundled as `humhub-editor.js`, exposed as
-`humhub.richtext` and as the `ui.richtext` module), which holds the editor, the markdown
-renderer and every plugin, and the `ui.richtext.prosemirror` module
+`ProsemirrorRichTextEditor` as its editor). Client-side there are two parts: the editor
+(sources in `protected/humhub/resources/js/richtext/`, bundled as `humhub.richtext.editor.js` by
+`ProsemirrorEditorAsset`, exposed as `humhub.richtext` and as the `ui.richtext` module), which
+holds the editor, the markdown renderer and every plugin (building, testing and configuring
+it: [Richtext editor](internals-richtext-editor.md)), and the `ui.richtext.prosemirror` module
 (`humhub.ui.richtext.prosemirror.js`) with the two widgets the platform boots on markup:
 `RichText` (display) and `RichTextEditor`.
 

@@ -19,9 +19,9 @@
  *
  * ## Why `type="submit"` (Ctrl+S compatibility)
  *
- * The vendored richtext editor's save plugin (`humhub-prosemirror-richtext`'s
- * `src/editor/core/plugins/save/plugin.js`) reacts to Ctrl+S by doing exactly
- * `editor.$.closest('form').find('[type="submit"]').trigger('click')` — a
+ * The richtext editor's save plugin
+ * (`protected/humhub/resources/js/richtext/core/plugins/save/plugin.js`) reacts to Ctrl+S
+ * by doing exactly `editor.$.closest('form').find('[type="submit"]').trigger('click')` — a
  * `type="button"` button is invisible to that lookup. Any `HumHubForm` field the
  * richtext editor could appear alongside therefore needs its submit trigger to
  * carry the real attribute, not just a `@click` handler — see `CommentForm.vue`'s

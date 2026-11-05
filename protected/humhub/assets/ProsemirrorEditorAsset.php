@@ -11,15 +11,19 @@ namespace humhub\assets;
 
 use humhub\components\assets\AssetBundle;
 
+/**
+ * The richtext editor (ProseMirror), built from `protected/humhub/resources/js/richtext/` into a committed
+ * artifact - see docs/develop/concept-richtext.md.
+ */
 class ProsemirrorEditorAsset extends AssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/humhub-prosemirror-richtext/dist/';
+    public $sourcePath = '@humhub/resources';
 
     /**
      * @inheritdoc
      */
-    public $js = ['humhub-editor.js'];
+    public $js = ['js/humhub.richtext.editor.js'];
 }
