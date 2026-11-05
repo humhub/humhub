@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #8669: Auth clients allowed only for login (e.g. JWT, password, SAML) cleared or overwrote the LDAP-managed profile fields of LDAP users; new `BaseUserSource::isAttributeSyncAllowed()` decides whether an auth client may write managed attributes; LDAP accepts only its own client
 - Fix #8671: The service worker is served at `/sw-js` instead of `/sw.js`, as web servers serving `.js` URLs as static files answered it with a 404 (the old URL still works when it reaches HumHub)
 - Fix #8689: `module/update-all` reported all modules as up to date when the HumHub API could not be reached or was disabled; it now fails with an error
+- Fix #8694: Wide gap between icon and caret of dropdown buttons (e.g. space header settings menu)
 
 1.19.3 (October 27, 2026)
 -------------------------
