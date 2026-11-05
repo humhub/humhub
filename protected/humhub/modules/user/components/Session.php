@@ -25,6 +25,16 @@ class Session extends DbSession
     public $sessionTable = 'user_http_session';
 
     /**
+     * @var string|null ID of the session this request read last
+     */
+    private ?string $readId = null;
+
+    /**
+     * @var string|null data of the session this request read last
+     */
+    private ?string $readData = null;
+
+    /**
      * Returns all current logged in users.
      *
      * @return ActiveQueryUser
@@ -62,6 +72,19 @@ class Session extends DbSession
     /**
      * @inheritdoc
      */
+    public function readSession($id)
+    {
+        $data = parent::readSession($id);
+
+        $this->readId = $id;
+        $this->readData = $data;
+
+        return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function writeSession($id, $data)
     {
         // exception must be caught in session write handler
@@ -70,6 +93,16 @@ class Session extends DbSession
             $userId = new Expression('NULL');
             if (!Yii::$app->user->getIsGuest()) {
                 $userId = Yii::$app->user->id;
+            }
+
+            // Sessions are not locked, so what this request read may be outdated by now. If it changed nothing, writing
+            // the data back would remove what a parallel request stored in the meantime: only renew the expiry.
+            if ($data !== '' && $id === $this->readId && $data === $this->readData) {
+                $this->db->createCommand()
+                    ->update($this->sessionTable, ['expire' => time() + $this->getTimeout(), 'user_id' => $userId], ['id' => $id])
+                    ->execute();
+
+                return true;
             }
 
             // Atomic INSERT ... ON DUPLICATE KEY UPDATE: concurrent requests with the same (new or expired)
