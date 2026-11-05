@@ -1,0 +1,42 @@
+//
+// Utilities
+// --------------------------------------------------
+// Utility classes of the core and its changes to the Bootstrap utilities: after the Bootstrap utilities and,
+// like them, outside of the cascade layers, so a module's own `!important` still wins against them.
+// Imported by \humhub\helpers\ThemeHelper.
+
+// A theme deactivates a component by its `$prev-*` variable in variables.scss; the defaults of build.scss are only
+// defined within the `core` layer.
+$prev-base: false !default;
+$prev-link: false !default;
+$prev-badge: false !default;
+
+@if not $prev-base {
+    .d-revert {
+        display: revert !important;
+    }
+
+    .bg-light {
+        background-color: var(--hh-background-color-secondary) !important;
+    }
+}
+
+@if not $prev-link {
+    @each $color, $value in $theme-colors {
+        .link-#{$color} {
+            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
+                color: var(--hh-text-color-highlight) !important;
+            }
+        }
+    }
+}
+
+@if not $prev-badge {
+    .badge {
+        @each $color in accent, primary, secondary, info, success, warning, danger, light, dark {
+            &.text-bg-#{$color} {
+                color: var(--hh-#{$color}-contrast) !important;
+            }
+        }
+    }
+}

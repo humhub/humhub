@@ -53,6 +53,31 @@ Yii::$app->view->theme->variable('background-color-page');
 
 SCSS is compiled to CSS on cache flush (*Administration → Settings → Flush Cache*). There is no separate build step for themes.
 
+## Cascade layers
+
+The compiled `theme.css` puts its rules into [cascade layers](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer) (`humhub\helpers\ThemeHelper::CSS_LAYERS`):
+
+| Order | Content |
+|---|---|
+| `@layer core` | Bootstrap's components and helpers, and the core's `build.scss` |
+| `@layer theme` | The `build.scss` of the theme (parent theme first) |
+| not in a layer | Bootstrap's utilities, the core's `_utilities.scss` and `_vendor.scss`, the custom SCSS of *Administration → Settings → Appearance* |
+
+A later layer wins against an earlier one whatever the specificity of the selectors, and CSS outside of any layer wins against all layers. So a rule of the theme overrides the core without copying the core's selector or adding `!important`:
+
+```scss
+// scss/build.scss of the theme: wins against `#topbar-first .nav > li > a` of the core
+.topbar a {
+    color: var(--hh-text-color-main);
+}
+```
+
+- Bootstrap and the core share the `core` layer, so the specificity decides between them as before.
+- The CSS of modules and of third-party libraries (jQuery UI, blueimp Gallery, …) is not in a layer, it wins against the core and the theme. The core's rules for these libraries are in `_vendor.scss`, outside of the layers too.
+- The utilities (`.d-none`, `.mt-2`, …) stay outside of the layers and keep winning (`!important`).
+- For `!important` the order of the layers is reversed: an `!important` of the core wins against an `!important` of the theme or of a module. Override such a declaration in the custom SCSS of the Appearance settings, which is not in a layer.
+- The variables a core partial declares (e.g. `$data-table-gap` in `_data-table.scss`) can still be set in the theme's `variables.scss`, but a theme's `build.scss` can't read them: they are only defined within the `core` layer. The variables of the core's `variables.scss` and of Bootstrap, and the mixins of `_mixins.scss`, are available everywhere.
+
 ## Icons
 
 Icons are [Tabler Icons](https://tabler.io/icons), rendered by `humhub\widgets\Icon` as `<i class="ti ti-<name>">`; a filled variant is `ti-<name>-filled`. Style them through `.ti` and `.ti-<name>`, and use a Tabler codepoint with `font-family: tabler-icons` (or `tabler-icons-filled`) for glyphs placed via `content`. The library-neutral size and utility classes `icon-sm`, `icon-lg`, `icon-2x` … `icon-10x`, `icon-fw`, `icon-pull-left`, `icon-pull-right` and `icon-spin` live in the core's `_icon.scss`.

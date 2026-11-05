@@ -60,10 +60,6 @@
         opacity: 0.1;
     }
 
-    .d-revert {
-        display: revert !important;
-    }
-
     // Skeleton blocks: a light grey instead of Bootstrap's text color, so loading states stay calm;
     // also wins over the legacy `.placeholder` text (_form.scss)
     .placeholder-glow .placeholder,
@@ -195,9 +191,5 @@
         overflow-wrap: normal;
         word-break: normal;
         hyphens: none;
-    }
-
-    .bg-light {
-        background-color: var(--hh-background-color-secondary) !important;
     }
 }

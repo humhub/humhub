@@ -28,6 +28,21 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->testTheme($this->createTheme('Test'));
     }
 
+    public function testBuildCssPutsCoreAndThemeIntoCascadeLayers()
+    {
+        $theme = $this->createTheme('Layers');
+        file_put_contents($theme->getBasePath() . '/scss/build.scss', '.layers-test-theme { color: red; }');
+        $this->assertTrue(ThemeHelper::buildCss($theme, false));
+
+        $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
+        $this->assertMatchesRegularExpression('/@layer core, ?theme;/', $css);
+
+        // The core, then the theme, then the utilities outside of the layers
+        $this->assertMatchesRegularExpression('/@layer core ?\{/', $css);
+        $this->assertMatchesRegularExpression('/@layer theme ?\{[^@]*\.layers-test-theme/', $css);
+        $this->assertGreaterThan(strpos($css, '.layers-test-theme'), strpos($css, '.d-none{'));
+    }
+
     public function testGetThemeByPathIgnoresThemeWithoutVariablesFile()
     {
         // An empty/incomplete theme directory (e.g. a `themes/HumHub` skeleton left

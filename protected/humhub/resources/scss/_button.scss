@@ -25,12 +25,6 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
             min-height: calc(var(--bs-btn-font-size) * var(--bs-btn-line-height) + 2 * var(--bs-btn-padding-y) + 2 * var(--bs-btn-border-width));
         }
 
-        // Icons (`line-height: 1`) must keep the line height of the button, as in the former `inline-block` layout,
-        // otherwise buttons with only an icon get shorter than buttons with a text.
-        > .fa {
-            line-height: inherit;
-        }
-
         &.input {
             outline: none;
         }

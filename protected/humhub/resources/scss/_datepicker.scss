@@ -13,7 +13,6 @@
     .ui-widget-content {
         border: 1px solid #dddcda !important;
         border-radius: 0 !important;
-        background: var(--hh-background-color-main);
         color: var(--hh-text-color-highlight) !important;
         box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
     }
@@ -26,8 +25,6 @@
     .ui-datepicker .ui-datepicker-prev:hover,
     .ui-datepicker .ui-datepicker-next:hover {
         background: var(--hh-background-color-main) !important;
-        border: none;
-        margin: 1px;
     }
 
     .ui-state-default,
