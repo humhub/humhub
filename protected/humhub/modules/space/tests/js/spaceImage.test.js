@@ -45,7 +45,7 @@ describe('SpaceImage', () => {
     it('falls back to the theme background when the space has no colour', () => {
         const wrapper = mountImage({ color: null });
 
-        expect(wrapper.find('.space-acronym').attributes('style')).toContain('background-color: var(--background3)');
+        expect(wrapper.find('.space-acronym').attributes('style')).toContain('background-color: var(--hh-background3)');
     });
 
     it('applies the size to both variants and picks the border radius by width', () => {
