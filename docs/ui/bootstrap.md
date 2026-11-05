@@ -133,7 +133,7 @@ filled from the Sass variables. Its rules only use these variables:
 ### 6. Dark mode
 
 - A colour that differs in dark mode gets a `$<component>-<property>-dark` variable next to the
-  light one (the pattern `variables.scss` already uses, e.g. `$input-bg-dark`).
+  light one (e.g. `$content-card-box-shadow-dark` in `_card.scss`).
 - The component sets the dark value inside `@include color-mode(dark) { … }`, on its own local
   CSS variable. Most components need nothing here, because their colours already point to
   variables that switch.

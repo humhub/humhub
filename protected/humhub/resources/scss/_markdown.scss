@@ -3,14 +3,6 @@
 // --------------------------------------------------
 
 @if not $prev-markdown {
-    .md-editor.active {
-        border: 2px solid var(--bs-accent) !important;
-    }
-
-    .md-editor textarea {
-        padding: 10px !important;
-    }
-
     $md-block-spacing: 1.2em;
 
     .markdown-render, [data-ui-markdown], [data-ui-richtext] {

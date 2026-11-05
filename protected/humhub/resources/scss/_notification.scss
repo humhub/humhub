@@ -3,10 +3,6 @@
 // --------------------------------------------------
 
 @if not $prev-notification {
-    #notification_overview_filter label {
-        display: block;
-    }
-
     .field-filterform-allfilter {
         input[type=checkbox] {
             border-color: #ccc;
@@ -16,7 +12,7 @@
                 background: var(--bs-light);
 
                 &::after {
-                    color: var(--text-color-main);
+                    color: var(--hh-text-color-main);
                 }
             }
 

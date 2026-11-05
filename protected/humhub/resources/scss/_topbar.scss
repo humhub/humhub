@@ -187,14 +187,6 @@
                             font-size: 14px;
                         }
 
-                        i.accepted {
-                            color: #5cb85c;
-                        }
-
-                        i.declined {
-                            color: #d9534f;
-                        }
-
                         &.new {
                             background-color: transparent;
                             border-left: none;
@@ -202,7 +194,7 @@
 
                         &:not(.new) {
                             > a {
-                                * &, strong {
+                                &, strong {
                                     color: var(--hh-text-color-secondary);
                                 }
                             }

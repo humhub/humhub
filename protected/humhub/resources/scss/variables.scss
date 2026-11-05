@@ -10,7 +10,7 @@
 // belong in a component file as a `--bs-*` override.
 // --------------------------------------------------
 
-$isFluid: false;
+$isFluid: false !default;
 
 
 //
@@ -45,7 +45,7 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 // --------------------------------------------------
 
 $link-color: #000000 !default;
-$link-hover-color: $link-color;
+$link-hover-color: $link-color !default;
 $code-color: mix(black, $accent, 10%) !default;
 $body-color: #555 !default;
 $body-bg: #ededed !default;
@@ -132,15 +132,15 @@ $color-contrast-dark: $black !default;
 $color-contrast-light: $white !default;
 
 // Text contrast colors for each Bootstrap background color:
-$text-color-accent-contrast: color-contrast($accent);
-$text-color-primary-contrast: color-contrast($primary);
-$text-color-secondary-contrast: color-contrast($secondary);
-$text-color-info-contrast: color-contrast($info);
-$text-color-success-contrast: color-contrast($success);
-$text-color-warning-contrast: color-contrast($warning);
-$text-color-danger-contrast: color-contrast($danger);
-$text-color-light-contrast: color-contrast($light);
-$text-color-dark-contrast: color-contrast($dark);
+$text-color-accent-contrast: color-contrast($accent) !default;
+$text-color-primary-contrast: color-contrast($primary) !default;
+$text-color-secondary-contrast: color-contrast($secondary) !default;
+$text-color-info-contrast: color-contrast($info) !default;
+$text-color-success-contrast: color-contrast($success) !default;
+$text-color-warning-contrast: color-contrast($warning) !default;
+$text-color-danger-contrast: color-contrast($danger) !default;
+$text-color-light-contrast: color-contrast($light) !default;
+$text-color-dark-contrast: color-contrast($dark) !default;
 
 
 //
@@ -352,8 +352,6 @@ $link-hover-color-dark: mix(white, $primary, 10%) !default;
 $code-color-dark: mix(white, $accent, 10%) !default;
 $body-color-dark: #ddd !default;
 $body-bg-dark: #000 !default;
-$input-border-color-dark: #1f2225 !default;
-$input-bg-dark: #000 !default; // default is $body-bg-dark
 
 //
 // HumHub Text colors

@@ -15,7 +15,7 @@
     @each $color, $value in $theme-colors {
         .link-#{$color} {
             @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
-                color: var(--text-color-highlight) !important;
+                color: var(--hh-text-color-highlight) !important;
             }
         }
     }

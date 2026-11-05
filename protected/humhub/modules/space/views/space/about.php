@@ -39,7 +39,7 @@ use humhub\widgets\Icon;
                                         'showTooltip' => true,
                                         'user' => $user, 'width' => 40,
                                         'htmlOptions' => ['style' => 'padding: 3px'],
-                                        'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                                        'imageOptions' => ['style' => 'border:1px solid var(--bs-success)'],
                                     ]) ?>
                                 <?php endforeach; ?>
                             </div>
@@ -59,7 +59,7 @@ use humhub\widgets\Icon;
                                         'showTooltip' => true,
                                         'user' => $user, 'width' => 40,
                                         'htmlOptions' => ['style' => 'padding: 3px'],
-                                        'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                                        'imageOptions' => ['style' => 'border:1px solid var(--bs-success)'],
                                     ]) ?>
                                 <?php endforeach; ?>
                             </div>
@@ -79,7 +79,7 @@ use humhub\widgets\Icon;
                             'showTooltip' => true,
                             'user' => $user, 'width' => 40,
                             'htmlOptions' => ['style' => 'padding: 3px'],
-                            'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                            'imageOptions' => ['style' => 'border:1px solid var(--bs-success)'],
                         ]) ?>
                     <?php endforeach; ?>
                 </div>

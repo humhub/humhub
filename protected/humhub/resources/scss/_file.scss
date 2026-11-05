@@ -7,8 +7,7 @@ $file-version-meta-color: var(--hh-text-color-secondary) !default;
 $file-version-meta-font-size: $font-size-sm !default;
 
 @if not $prev-file {
-    .files,
-    #postFormFiles_list {
+    .files {
         padding-left: 0;
     }
 
