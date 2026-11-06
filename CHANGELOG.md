@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix #8698: The service worker requested the offline page with cookies, as `credentials: 'omit'` was passed in an option `new Request()` does not know
 - Enh #8695: Removed unused styles from the core SCSS; theme values for `$link-hover-color`, `$isFluid` and the `*-contrast` variables are no longer overwritten
 - Enh #8696: Removed rarely used Bootstrap 3 classes from the core SCSS
 - Enh #8699: The `theme.css` puts the core and theme styles into cascade layers, a theme overrides the core without `!important`

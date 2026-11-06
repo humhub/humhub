@@ -40,6 +40,19 @@ class ServiceWorkerServiceTest extends Unit
     }
 
     /**
+     * The offline page is the same for everyone and is cached for later. The second argument of
+     * `new Request()` is the `RequestInit` itself: an unknown key like `init` is ignored, and the
+     * request then carries the cookies as usual.
+     */
+    public function testOfflinePageIsRequestedWithoutCookies()
+    {
+        $this->assertMatchesRegularExpression(
+            "/new Request\(OFFLINE_PAGE_URL, \{\s*credentials: 'omit'\s*\}\)/",
+            ServiceWorkerService::buildScript(),
+        );
+    }
+
+    /**
      * EVENT_BUILD_SCRIPT is the public extension point modules like `fcm-push` rely on.
      * Without it their service worker logic silently disappears from `/sw.js`.
      */
