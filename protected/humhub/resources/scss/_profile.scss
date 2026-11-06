@@ -51,6 +51,14 @@
                 min-height: 110px;
             }
 
+            // Without an uploaded banner: a background color, not the pixels of the default image (a light grey
+            // in every color mode). In the dark mode lighter than the surface, so that the gradient behind the
+            // name ends lighter than the panel below, as in the light mode.
+            .img-profile-header-default {
+                background-color: var(--bs-secondary-bg);
+                object-position: -10000px 0;
+            }
+
             .img-profile-data {
                 position: absolute;
                 height: 100px;
@@ -138,6 +146,14 @@
         .panel-profile .panel-profile-controls {
             padding-left: 0;
             padding-top: 50px;
+        }
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .panel-profile .panel-profile-header .img-profile-header-default {
+                background-color: color-mix(in srgb, var(--bs-emphasis-color) 25%, var(--bs-body-bg));
+            }
         }
     }
 }

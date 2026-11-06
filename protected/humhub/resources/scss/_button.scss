@@ -126,6 +126,25 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
         --bs-btn-active-shadow: none;
     }
 
+    // The neutral button (`Button::light()`): Bootstrap keeps `.btn-light` light in the dark mode, a light fill
+    // there looks like a highlight
+    @include color-mode(dark) {
+        .btn-light {
+            --bs-btn-color: var(--bs-body-color);
+            --bs-btn-bg: var(--bs-secondary-bg);
+            --bs-btn-border-color: var(--bs-secondary-bg);
+            --bs-btn-hover-color: var(--bs-emphasis-color);
+            --bs-btn-hover-bg: color-mix(in srgb, var(--bs-secondary-bg), var(--bs-emphasis-color) 10%);
+            --bs-btn-hover-border-color: color-mix(in srgb, var(--bs-secondary-bg), var(--bs-emphasis-color) 10%);
+            --bs-btn-active-color: var(--bs-emphasis-color);
+            --bs-btn-active-bg: color-mix(in srgb, var(--bs-secondary-bg), var(--bs-emphasis-color) 15%);
+            --bs-btn-active-border-color: color-mix(in srgb, var(--bs-secondary-bg), var(--bs-emphasis-color) 15%);
+            --bs-btn-disabled-color: var(--bs-tertiary-color);
+            --bs-btn-disabled-bg: var(--bs-secondary-bg);
+            --bs-btn-disabled-border-color: var(--bs-secondary-bg);
+        }
+    }
+
     .btn-ghost-danger {
         --bs-btn-color: var(--bs-danger);
         --bs-btn-hover-color: var(--bs-danger);

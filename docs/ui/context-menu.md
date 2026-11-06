@@ -86,7 +86,7 @@ style is set through `$dropdown-*` variables. Class names and SCSS follow [Styli
 | `.dropdown-menu`, `.dropdown-item`, `.dropdown-divider`, `.dropdown-header` | Bootstrap |
 | `.dropdown-item-icon` | The icon column (fixed width, so the labels line up). A menu's rows have an icon either all or none. |
 | `.dropdown-item-danger` | A destructive row (red text and icon, red hover fill) |
-| `.dropdown-menu-primary` | A menu filled with the primary colour, for the account menu that hangs from the top bar |
+| `.dropdown-menu-topbar` | A menu filled like the top bar it hangs from (the account menu): `--hh-topbar-bg`, the primary colour by default, a dark grey in the dark mode |
 | `.badge-count` | Count on a row ([Badges & Status](badges.md)) |
 
 - The trigger has no `.dropdown-toggle`, so Bootstrap draws no caret. Its `.show` state is the
@@ -95,7 +95,7 @@ style is set through `$dropdown-*` variables. Class names and SCSS follow [Styli
   and while pressed (red for `.dropdown-item-danger`), a short colour transition.
 - **One look everywhere:** the menu doesn't change with where it sits (panel, modal, tabs, page
   header). Only the top bar, Select2 and the rich text editor keep menus of their own; the
-  account menu is filled with the primary colour (`.dropdown-menu-primary`).
+  account menu is filled like the top bar (`.dropdown-menu-topbar`).
 - **Legacy markup:** a leading `<i>` in a row takes the icon column like `.dropdown-item-icon`,
   a plain `<a>` in `.dropdown-menu > li` gets the row style, and the ⋮ toggle of
   `.nav-pills.preferences` (wall entries, panels, comments) looks like the ghost icon button.
@@ -111,8 +111,8 @@ style is set through `$dropdown-*` variables. Class names and SCSS follow [Styli
 **Today:**
 
 - **Look (implemented):** one row style for all menus (icon column, neutral hover, red
-  `.dropdown-item-danger`), no accent bar; the only variant is the primary-filled account menu
-  (`.dropdown-menu-primary`). Destructive
+  `.dropdown-item-danger`), no accent bar; the only variant is the account menu filled like the top bar
+  (`.dropdown-menu-topbar`). Destructive
   rows in core: content "Delete" (`DeleteLink`), comment "Delete", module "Uninstall", data
   table row actions with `destructive`.
 - **PHP:** `humhub\widgets\menu\DropdownMenu` (Bootstrap dropdown with `MenuEntry` / `MenuLink`

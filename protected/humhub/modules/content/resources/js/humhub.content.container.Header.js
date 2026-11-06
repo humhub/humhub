@@ -68,7 +68,7 @@ humhub.module('content.container.Header', function (module, require, $) {
 
         $image.attr('src', file.url + '&c=' + random)
             .addClass('animated bounceIn')
-            .removeClass('d-none-space-image');
+            .removeClass('d-none-space-image img-profile-header-default');
 
         this.getEditButtons().removeClass('d-none');
 
@@ -86,6 +86,9 @@ humhub.module('content.container.Header', function (module, require, $) {
         var containerId = this.getContainerId();
 
         $image.addClass('d-none-space-image').attr('src', defaultUrl);
+        if (type === 'banner') {
+            $image.addClass('img-profile-header-default');
+        }
 
 
         if ($acronym.length) { // Space only

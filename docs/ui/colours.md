@@ -38,6 +38,7 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 | A lighter selection: a checked choice, a hovered new item | `--hh-accent-bg-soft` | | `#f2f9fb` | `#223538` |
 | Marked text: `<mark>`, the matched part of a suggestion | `--bs-highlight-bg` | `.mark` | `#fff4d3` | |
 | Inline code | `--hh-code-bg` | | `#dbf5f8` | |
+| The top bar and the account menu hanging from it; their text | `--hh-topbar-bg`, `--hh-topbar-color` | | primary, its contrast colour | `#111`, `#fff` |
 | Status: alert, notice | `--bs-{color}-bg-subtle` | `.bg-{color}-subtle` | | |
 
 `--bs-body-bg` is the surface, not the page: Bootstrap's components take it as their background.
@@ -56,7 +57,13 @@ A focus ring is `box-shadow: 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-rin
 The values are those of the core theme. A theme sets them by the Sass variable of the token's
 name: `$body-bg` (and `$body-bg-dark`) for `--bs-body-bg`, `$hh-page-bg` for `--hh-page-bg`,
 `$mark-bg` for `--bs-highlight-bg`, `$accent-bg-subtle` for `--bs-accent-bg-subtle`. A `$hh-*`
-variable is HumHub's, any other one Bootstrap's. The theme colours (`$primary`, `$accent`, …)
+variable is HumHub's, any other one Bootstrap's. The dark mode's value is the `-dark` variable, e.g. a top bar in
+the primary colour in both modes:
+
+```scss
+$hh-topbar-bg-dark: var(--bs-primary); // Not `$primary`: a theme's variables come before the core's
+$hh-topbar-color-dark: var(--hh-primary-contrast);
+``` The theme colours (`$primary`, `$accent`, …)
 can also be set in the *Appearance* settings.
 
 ## Rules
