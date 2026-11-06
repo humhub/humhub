@@ -95,7 +95,7 @@ Every PR must include a changelog entry. In this core repo the changelog is `CHA
 
 ## Release packages
 
-Release packages are built by `.github/workflows/release-package.yml`. When a change adds, moves or removes files or directories outside `protected/humhub`, check whether `.github/release/exclude.txt` needs to be adjusted — see `docs/develop/internals-release-package.md`.
+Release packages are built by `.github/workflows/release-package.yml`. When a change adds, moves or removes files or directories outside `protected/humhub`, check whether `.github/release/exclude.txt` and the updater module's package rules (`config/package-rules.php` in humhub/updater) need to be adjusted — see `docs/develop/internals-release-package.md`.
 
 ## Running Tests
 
