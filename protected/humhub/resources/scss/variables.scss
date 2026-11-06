@@ -421,18 +421,3 @@ $border-color-warning-dark: #fdd198 !default;
 $background-color-danger-dark: #372a2a !default;
 $text-color-danger-dark: #ff8989 !default;
 $border-color-danger-dark: #ff8989 !default;
-
-
-//
-// Bootstrap's body colors follow the HumHub ones
-// --------------------------------------------------
-
-// One value for each pair, so `--hh-text-color-main`, `--hh-text-color-highlight` and
-// `--hh-background-color-page` can be aliases of Bootstrap's `--bs-body-color`, `--bs-emphasis-color` and
-// `--bs-body-bg` (_root.scss). A theme can set either name.
-$body-color: $text-color-main;
-$body-emphasis-color: $text-color-highlight !default;
-$body-bg: $background-color-page;
-$body-color-dark: $text-color-main-dark;
-$body-emphasis-color-dark: $text-color-highlight-dark !default;
-$body-bg-dark: $background-color-page-dark;

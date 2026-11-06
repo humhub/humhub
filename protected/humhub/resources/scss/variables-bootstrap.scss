@@ -1,0 +1,16 @@
+//
+// Bootstrap's variables follow the HumHub ones
+// Imported after `variables.scss`, before Bootstrap's: the values are final here, whatever the theme set. A separate
+// file, as `ScssHelper::getVariables()` reads `variables.scss` and resolves a variable without the order of the
+// declarations: a pair linked both ways would resolve to the name of the other.
+// --------------------------------------------------
+
+// One value for each pair, so `--hh-text-color-main`, `--hh-text-color-highlight` and
+// `--hh-background-color-page` can be aliases of Bootstrap's `--bs-body-color`, `--bs-emphasis-color` and
+// `--bs-body-bg` (_root.scss). A theme can set either name.
+$body-color: $text-color-main;
+$body-emphasis-color: $text-color-highlight !default;
+$body-bg: $background-color-page;
+$body-color-dark: $text-color-main-dark;
+$body-emphasis-color-dark: $text-color-highlight-dark !default;
+$body-bg-dark: $background-color-page-dark;

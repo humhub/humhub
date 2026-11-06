@@ -55,7 +55,7 @@ The colours come in three levels:
 
 - A rule uses a semantic or component token, not a literal colour: a colour mode (`data-bs-theme="dark"`) redefines the semantic tokens only, and everything that refers to them follows. A colour that is right in every mode (white on a coloured badge, a shadow, an accent outline) may stay literal.
 - A shade of a token is a `color-mix()` of tokens, not a Sass `darken()`/`lighten()` of a primitive, which is fixed at compile time: e.g. `color-mix(in srgb, var(--hh-text-color-highlight) 5%, var(--hh-background-color-secondary))` is a little darker in the light mode and a little lighter in the dark one.
-- `--hh-text-color-main`, `--hh-text-color-highlight` and `--hh-background-color-page` are aliases of Bootstrap's `--bs-body-color`, `--bs-emphasis-color` and `--bs-body-bg`. Their Sass variables are linked (`$body-color` is `$text-color-main`, etc.), so a theme can set either name.
+- `--hh-text-color-main`, `--hh-text-color-highlight` and `--hh-background-color-page` are aliases of Bootstrap's `--bs-body-color`, `--bs-emphasis-color` and `--bs-body-bg`. Their Sass variables are linked in `variables-bootstrap.scss` (`$body-color` is `$text-color-main`, etc.), so a theme can set either name.
 - The dark values are the `*-dark` Sass variables. A theme enables the dark mode by setting `data-bs-theme="dark"` on `<html>` (or on an element, for a part of the page).
 
 Variables are also accessible in PHP via the theme component, mainly useful in mail templates where CSS variables are not supported:

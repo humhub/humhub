@@ -27,6 +27,17 @@ class ScssHelperTest extends Unit
         $this->assertEquals('#21A1B3', $accent);
     }
 
+    public function testCoreVariablesResolveToColors()
+    {
+        // Read e.g. by the mail layouts (MailStyleHelper)
+        $variables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
+
+        $this->assertEquals('#555', $variables['text-color-main']);
+        $this->assertEquals('#555', $variables['body-color']);
+        $this->assertEquals('#ededed', $variables['background-color-page']);
+        $this->assertEquals('#ededed', $variables['body-bg']);
+    }
+
     public function testSimpleVariables()
     {
         $scss = <<<'SCSS'

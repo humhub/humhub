@@ -356,6 +356,7 @@ class ThemeHelper
             }
         }
         $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
+        $imports[] = Yii::getAlias('@humhub/resources/scss/variables-bootstrap');
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
 
         // Import maps
