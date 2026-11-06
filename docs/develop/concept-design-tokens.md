@@ -98,7 +98,7 @@ field's own focus (accent border plus a 50 % accent ring) stays the component va
 
 ## Deprecated
 
-Deprecated since 1.20. The core uses none of them.
+Deprecated since 1.20, removed in 1.21 (the transition below is gone). The core uses none of them.
 
 ### Sass variables
 

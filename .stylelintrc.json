@@ -10,7 +10,7 @@
     },
     "overrides": [
         {
-            "files": ["**/variables.scss", "**/variables-deprecated.scss", "**/_root.scss"],
+            "files": ["**/variables.scss", "**/_root.scss"],
             "rules": {
                 "color-no-hex": null,
                 "function-disallowed-list": null

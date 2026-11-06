@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.21.0 (Unreleased)
+-------------------
+- Chg: Removed the colour tokens and Sass variables deprecated in 1.20 and 1.18
+
 1.20.0 (Unreleased)
 -------------------
 - Enh #8695: Removed unused styles from the core SCSS; theme values for `$link-hover-color`, `$isFluid` and the `*-contrast` variables are no longer overwritten
