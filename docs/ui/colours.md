@@ -73,7 +73,7 @@ can also be set in the *Appearance* settings.
 
 ## Replaced tokens and variables
 
-Deprecated since 1.20. The former tokens still work, as aliases of their replacements.
+Deprecated in 1.20, removed in 1.21.
 
 | Instead of | Use |
 |---|---|
@@ -104,5 +104,4 @@ Deprecated since 1.20. The former tokens still work, as aliases of their replace
 | `$background3` | `$hh-border-color-strong` |
 | `$text-color-{color}-contrast` | `$hh-{color}-contrast` |
 
-Each with its `-dark` variable. The other former colour variables (`$text-color-soft`,
-`$background4`, the alert colours, …) are removed.
+Each with its `-dark` variable.

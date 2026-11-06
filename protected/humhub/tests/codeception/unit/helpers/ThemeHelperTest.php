@@ -43,19 +43,6 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertGreaterThan(strpos($css, '.layers-test-theme'), strpos($css, '.d-none{'));
     }
 
-    public function testThemeSettingAFormerColorVariableSetsTheNewOne()
-    {
-        $theme = $this->createTheme('FormerVariables');
-        file_put_contents($theme->getBasePath() . '/scss/variables.scss', '$text-color-secondary: #4b4b4b;', FILE_APPEND);
-        $this->assertTrue(ThemeHelper::buildCss($theme, false));
-
-        $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
-        $this->assertMatchesRegularExpression('/--bs-secondary-color: ?#4b4b4b/', $css);
-        $this->assertEquals('#4b4b4b', $theme->variable('body-secondary-color'));
-        // A module reading the former name
-        $this->assertEquals('#4b4b4b', $theme->variable('text-color-secondary'));
-    }
-
     public function testGetThemeByPathIgnoresThemeWithoutVariablesFile()
     {
         // An empty/incomplete theme directory (e.g. a `themes/HumHub` skeleton left

@@ -12,59 +12,6 @@
 //    semantic tokens, never to a literal color.
 // --------------------------------------------------
 
-// @deprecated since 1.20, the former tokens: aliases of their replacements (docs/ui/colours.md). Not used by the core.
-// Declared again in each color mode, because a custom property computes its `var()` where it is declared.
-@mixin hh-deprecated-tokens {
-    --hh-text-color-main: var(--bs-body-color);
-    --hh-text-color-highlight: var(--bs-emphasis-color);
-    --hh-text-color-secondary: var(--bs-secondary-color);
-    --hh-text-color-soft: var(--bs-body-color);
-    --hh-text-color-soft2: var(--bs-tertiary-color);
-    --hh-background-color-main: var(--bs-body-bg);
-    --hh-background-color-page: var(--hh-page-bg);
-    --hh-background-color-secondary: var(--bs-tertiary-bg);
-    --hh-background-color-highlight: var(--bs-accent-bg-subtle);
-    --hh-background-color-highlight-soft: var(--hh-accent-bg-soft);
-    --hh-background3: var(--hh-border-color-strong);
-    --hh-text-color-contrast: var(--hh-primary-contrast);
-    --hh-text-color-default: var(--bs-body-color);
-    --hh-text-color-soft3: var(--bs-tertiary-color);
-    --hh-background4: var(--bs-tertiary-color);
-    --hh-background-color-success: var(--bs-success-bg-subtle);
-    --hh-text-color-success: var(--bs-success-text-emphasis);
-    --hh-border-color-success: var(--bs-success-border-subtle);
-    --hh-background-color-warning: var(--bs-warning-bg-subtle);
-    --hh-text-color-warning: var(--bs-warning-text-emphasis);
-    --hh-border-color-warning: var(--bs-warning-border-subtle);
-    --hh-background-color-danger: var(--bs-danger-bg-subtle);
-    --hh-text-color-danger: var(--bs-danger-text-emphasis);
-    --hh-border-color-danger: var(--bs-danger-border-subtle);
-
-    // @deprecated since 1.18
-    --primary: var(--bs-primary);
-    --accent: var(--bs-accent);
-    --info: var(--bs-info);
-    --success: var(--bs-success);
-    --warning: var(--bs-warning);
-    --danger: var(--bs-danger);
-    --link: var(--bs-link-color);
-    --default: var(--bs-light);
-    --text-color-main: var(--hh-text-color-main);
-    --text-color-default: var(--hh-text-color-default);
-    --text-color-secondary: var(--hh-text-color-secondary);
-    --text-color-highlight: var(--hh-text-color-highlight);
-    --text-color-soft: var(--hh-text-color-soft);
-    --text-color-soft2: var(--hh-text-color-soft2);
-    --text-color-soft3: var(--hh-text-color-soft3);
-    --background-color-main: var(--hh-background-color-main);
-    --background-color-secondary: var(--hh-background-color-secondary);
-    --background-color-page: var(--hh-background-color-page);
-    --background-color-highlight: var(--hh-background-color-highlight);
-    --background3: var(--hh-background3);
-    --background-color-warning: var(--hh-background-color-warning);
-    --text-color-contrast: var(--hh-text-color-contrast);
-}
-
 :root {
     // The page, behind the surfaces (`--bs-body-bg`)
     --hh-page-bg: #{$hh-page-bg};
@@ -92,9 +39,6 @@
     // Dimensions
     --hh-fixed-header-height: 130px;
     --hh-fixed-footer-height: 0px; // Force keeping `px` after CSS compilation (required for `calc()` function)
-
-    // @deprecated since 1.20
-    @include hh-deprecated-tokens;
 }
 
 // Dark Mode CSS Variables
@@ -106,8 +50,5 @@
         --hh-border-color-strong: #{$hh-border-color-strong-dark};
         --hh-accent-bg-soft: #{$hh-accent-bg-soft-dark};
         --hh-code-bg: #{$hh-code-bg-dark};
-
-        // @deprecated since 1.20
-        @include hh-deprecated-tokens;
     }
 }

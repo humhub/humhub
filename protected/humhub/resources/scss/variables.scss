@@ -304,36 +304,3 @@ $mark-bg-dark: shade-color($warning, 80%) !default;
 $border-color-dark: #3f3f3f !default;
 $hh-border-color-strong-dark: #393939 !default;
 
-
-//
-// @deprecated since 1.20, the former names of the color variables, see variables-deprecated.scss. Not used by the
-// core: for themes and modules that still read them.
-// --------------------------------------------------
-
-$text-color-main: $body-color !default;
-$text-color-highlight: $body-emphasis-color !default;
-$text-color-secondary: $body-secondary-color !default;
-$text-color-soft2: $body-tertiary-color !default;
-$background-color-main: $body-bg !default;
-$background-color-secondary: $body-tertiary-bg !default;
-$background-color-page: $hh-page-bg !default;
-$background-color-highlight-soft: $hh-accent-bg-soft !default;
-$background3: $hh-border-color-strong !default;
-$text-color-main-dark: $body-color-dark !default;
-$text-color-highlight-dark: $body-emphasis-color-dark !default;
-$text-color-secondary-dark: $body-secondary-color-dark !default;
-$text-color-soft2-dark: $body-tertiary-color-dark !default;
-$background-color-main-dark: $body-bg-dark !default;
-$background-color-secondary-dark: $body-tertiary-bg-dark !default;
-$background-color-page-dark: $hh-page-bg-dark !default;
-$background-color-highlight-soft-dark: $hh-accent-bg-soft-dark !default;
-$background3-dark: $hh-border-color-strong-dark !default;
-$text-color-accent-contrast: $hh-accent-contrast !default;
-$text-color-primary-contrast: $hh-primary-contrast !default;
-$text-color-secondary-contrast: $hh-secondary-contrast !default;
-$text-color-info-contrast: $hh-info-contrast !default;
-$text-color-success-contrast: $hh-success-contrast !default;
-$text-color-warning-contrast: $hh-warning-contrast !default;
-$text-color-danger-contrast: $hh-danger-contrast !default;
-$text-color-light-contrast: $hh-light-contrast !default;
-$text-color-dark-contrast: $hh-dark-contrast !default;

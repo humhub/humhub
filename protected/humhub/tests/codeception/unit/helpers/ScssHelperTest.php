@@ -35,10 +35,7 @@ class ScssHelperTest extends Unit
         $this->assertEquals('#555', $variables['body-color']);
         $this->assertEquals('#fff', $variables['body-bg']);
         $this->assertEquals('#ededed', $variables['hh-page-bg']);
-        // The former names (deprecated since 1.20)
-        $this->assertEquals('#555', $variables['text-color-main']);
-        $this->assertEquals('#ededed', $variables['background-color-page']);
-        $this->assertEquals('#fff', $variables['background-color-main']);
+        $this->assertArrayNotHasKey('text-color-main', $variables);
     }
 
     public function testSimpleVariables()
