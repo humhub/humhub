@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\controllers;
 
-use Collator;
 use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\components\BaseAccountController;
@@ -104,38 +103,22 @@ class AccountController extends BaseAccountController
         $user = Yii::$app->user->getIdentity();
 
         $model = new AccountSettings(['user' => $user]);
-        $model->language = Yii::$app->i18n->getAllowedLanguage($user->language);
-        $model->timeZone = $user->time_zone;
-        if (empty($model->timeZone)) {
-            $model->timeZone = Yii::$app->settings->get('defaultTimeZone');
-        }
-
         $model->tags = $user->getTags();
-        $model->markdownEditorMode = $user->settings->get("markdownEditorMode");
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $user->settings->set('markdownEditorMode', $model->markdownEditorMode);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
-            $user->language = $model->language;
             $user->tagsField = $model->tags;
-            $user->time_zone = $model->timeZone;
             $user->save();
 
             $this->view->saved();
             return $this->redirect(['edit-settings']);
         }
 
-        // Sort countries list based on user language
-        $languages = Yii::$app->i18n->getAllowedLanguages();
-        $col = new Collator(Yii::$app->language);
-        $col->asort($languages);
-
         return $this->render('editSettings', [
             'model' => $model,
-            'languages' => $languages,
         ]);
     }
 

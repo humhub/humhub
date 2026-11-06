@@ -105,6 +105,16 @@ class AdminMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'id' => 'appearance',
+            'label' => Yii::t('AdminModule.base', 'Appearance'),
+            'url' => ['/admin/appearance'],
+            'icon' => 'paint-brush',
+            'sortOrder' => 550,
+            'isActive' => ControllerHelper::isActivePath('admin', 'appearance'),
+            'isVisible' => Yii::$app->user->can(ManageSettings::class),
+        ]));
+
+        $this->addEntry(new MenuLink([
             'id' => 'settings',
             'label' => Yii::t('AdminModule.base', 'Settings'),
             'url' => ['/admin/setting'],

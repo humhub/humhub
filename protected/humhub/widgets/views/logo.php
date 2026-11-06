@@ -12,11 +12,15 @@ use humhub\widgets\SiteLogo;
  */
 
 if (Yii::$app->img->logo->exists()) {
-    $img = Html::img(Yii::$app->img->logo->getUrl(['maxWidth' => $maxWidth, 'maxHeight' => $maxHeight]), [
-        'id' => $id,
-        'class' => $class,
-        'alt' => Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]),
-    ]);
+    $alt = Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]);
+    $size = ['maxWidth' => $maxWidth, 'maxHeight' => $maxHeight];
+    $img = Html::img(Yii::$app->img->logo->getUrl($size), ['id' => $id, 'class' => $class, 'alt' => $alt]);
+
+    // Both logos, CSS shows the one of the colour mode (the mode may follow the system setting)
+    if (Yii::$app->img->logoDark->exists() && Yii::$app->appearance->isDarkModeAllowed()) {
+        $img = Html::img(Yii::$app->img->logo->getUrl($size), ['id' => $id, 'class' => [$class, 'hh-logo-light'], 'alt' => $alt])
+            . Html::img(Yii::$app->img->logoDark->getUrl($size), ['class' => [$class, 'hh-logo-dark'], 'alt' => $alt]);
+    }
 }
 ?>
 

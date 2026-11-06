@@ -79,7 +79,7 @@ The compiled `theme.css` puts its rules into [cascade layers](https://developer.
 |---|---|
 | `@layer core` | Bootstrap's components and helpers, and the core's `build.scss` |
 | `@layer theme` | The `build.scss` of the theme (parent theme first) |
-| not in a layer | Bootstrap's utilities, the core's `_utilities.scss` and `_vendor.scss`, the custom SCSS of *Administration → Settings → Appearance* |
+| not in a layer | Bootstrap's utilities, the core's `_utilities.scss` and `_vendor.scss`, the custom SCSS of *Administration → Appearance* |
 
 A later layer wins against an earlier one whatever the specificity of the selectors, and CSS outside of any layer wins against all layers. So a rule of the theme overrides the core without copying the core's selector or adding `!important`:
 

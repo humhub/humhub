@@ -105,15 +105,4 @@ $entity-grid-box-shadow-dark: $page-header-box-shadow-dark !default;
             transform: translateY(0) scale(1);
         }
     }
-
-
-    @media (prefers-reduced-motion: reduce) {
-        .entity-grid-cell {
-            animation: none;
-        }
-
-        .entity-grid-cells {
-            transition: none !important;
-        }
-    }
 }

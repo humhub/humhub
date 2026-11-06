@@ -257,7 +257,7 @@ class ActiveThemeService
         return [
             'rev' => Yii::$app->systemRevision->getPublicSignature(),
             // The Custom SCSS feeds straight into `vars`, so watch it directly rather than
-            // relying on DesignSettingsForm::save() happening to call Theme::activate()
+            // relying on ThemeSettingsForm::save() happening to call Theme::activate()
             'scss' => crc32((string)Yii::$app->settings->get('themeCustomScss')),
             // Always the requested name, never the resolved one: isValid() compares this
             // against the `theme` setting, so storing anything else - including the core

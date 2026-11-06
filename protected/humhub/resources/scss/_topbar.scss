@@ -68,7 +68,8 @@
             height: 50px;
             padding: 5px;
 
-            img#img-logo {
+            img#img-logo,
+            img.hh-logo-dark {
                 max-height: 40px;
             }
 
@@ -308,12 +309,6 @@
         #space-menu-dropdown {
             &.show {
                 animation: hh-dropdown-unroll 220ms ease-out;
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                &.show {
-                    animation: none;
-                }
             }
         }
 

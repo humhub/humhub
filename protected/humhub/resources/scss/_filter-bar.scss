@@ -326,11 +326,4 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
             transform: translateX(12px);
         }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-        .filter-bar-clear-enter-active,
-        .filter-bar-clear-leave-active {
-            animation: none;
-        }
-    }
 }

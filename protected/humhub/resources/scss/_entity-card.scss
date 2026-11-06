@@ -283,10 +283,4 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         flex: 0 0 $entity-card-action-height;
         height: $entity-card-action-height;
     }
-
-    @media (prefers-reduced-motion: reduce) {
-        .entity-card-skeleton .placeholder {
-            animation: none;
-        }
-    }
 }

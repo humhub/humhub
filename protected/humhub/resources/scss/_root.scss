@@ -116,3 +116,22 @@
         @include hh-deprecated-tokens;
     }
 }
+
+// High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes
+@mixin hh-high-contrast-tokens($border-color) {
+    --bs-secondary-color: var(--bs-body-color);
+    --bs-tertiary-color: var(--bs-body-color);
+    --bs-border-color: #{$border-color};
+    --hh-border-color-strong: #{$border-color};
+}
+
+:root {
+    @include hh-high-contrast {
+        @include hh-high-contrast-tokens($hh-border-color-contrast);
+
+        &[data-bs-theme="dark"] {
+            @include hh-high-contrast-tokens($hh-border-color-contrast-dark);
+        }
+    }
+}
+

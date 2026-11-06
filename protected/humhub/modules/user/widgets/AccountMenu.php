@@ -58,6 +58,15 @@ class AccountMenu extends LeftNavigation
         ]));
 
         $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Appearance & Accessibility'),
+            'id' => 'account-settings-appearance',
+            'icon' => 'paint-brush',
+            'url' => ['/user/appearance/index'],
+            'sortOrder' => 111,
+            'isActive' => ControllerHelper::isActivePath('user', 'appearance'),
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Security & Privacy'),
             'id' => 'account-settings-security',
             'icon' => 'shield',

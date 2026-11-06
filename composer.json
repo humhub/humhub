@@ -49,6 +49,7 @@
         "npm-asset/codemirror": "^5.59",
         "npm-asset/driver.js": "^1.3.6",
         "npm-asset/fontsource--open-sans": "^5.0",
+        "npm-asset/fontsource-variable--lexend": "^5.0",
         "npm-asset/imagesloaded": "^5.0",
         "npm-asset/intersection-observer": "^0.7.0",
         "npm-asset/intl-messageformat": "11.1.2",

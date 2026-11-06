@@ -100,8 +100,12 @@ export const REMOVE_MS = 360;
 // Update states during which an update still occupies its card (see `ModuleCard`).
 const UPDATE_BUSY = ['running', 'success', 'removing'];
 
-const reducedMotion = () => typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The user's accessibility option (`<html data-hh-motion>`), else the system setting
+const reducedMotion = () => {
+    const motion = document.documentElement.getAttribute('data-hh-motion');
+    return motion ? motion === 'reduce' : typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
 
 // Focus went nowhere: on the body, or on an element that was removed.
 const focusLost = () => !document.activeElement || document.activeElement === document.body || !document.activeElement.isConnected;

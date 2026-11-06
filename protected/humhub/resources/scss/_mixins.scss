@@ -17,3 +17,30 @@
     color: var(--hh-primary-contrast);
     border-left: none !important; // see _list-group.scss
 }
+
+// The accessibility options of the user (`<html data-hh-*>`, see `\humhub\components\Appearance`). Each applies the
+// user's choice, else the system setting as long as the user didn't turn it off. Include on `:root`.
+
+@mixin hh-high-contrast {
+    &[data-hh-contrast="more"] {
+        @content;
+    }
+
+    @media (prefers-contrast: more) {
+        &:not([data-hh-contrast]) {
+            @content;
+        }
+    }
+}
+
+@mixin hh-reduced-motion {
+    &[data-hh-motion="reduce"] {
+        @content;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        &:not([data-hh-motion]) {
+            @content;
+        }
+    }
+}

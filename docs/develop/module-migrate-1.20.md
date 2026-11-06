@@ -2615,3 +2615,29 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   without `!important`. The richtext editor's `maxHeight` plugin option sets `--hh-richtext-max-height` instead of
   an inline `max-height`. Code reading the inline `style.width` of such an image or the editor's inline
   `max-height` gets the variable now; the computed size (`getComputedStyle()`, jQuery `.width()`) is unchanged.
+
+- **Administration → Appearance** is a menu item of its own (`AdminMenu` id `appearance`, controller
+  `admin/AppearanceController`, tabs `admin\widgets\AppearanceMenu`), and users get **Account → Appearance &
+  Accessibility** (`user/AppearanceController`, tabs `user\widgets\AppearanceSettingsMenu`), see
+  `docs/develop/concept-appearance.md`.
+  - Removed: `admin\models\forms\DesignSettingsForm` and the view `admin/views/setting/design.php`. Their fields are in
+    `AppearanceGeneralForm`, `AppearanceImagesForm`, `ThemeSettingsForm`, `CustomScssForm` and `BasicSettingsForm`
+    (pagination, display name, "My Spaces" sorting, stream order, post title). The setting keys are unchanged.
+    `/admin/setting/design` redirects to `/admin/appearance/theme`.
+  - Removed: `SettingController::actionDeleteLogoImage()`, `actionDeleteIconImage()`,
+    `actionDeleteLoginBackgroundImage()` and `actionDeleteMailHeaderImage()`; use
+    `/admin/appearance/delete-image?image=logo|logo-dark|icon|login-background|mail-header`.
+  - `BasicSettingsForm` no longer has `name`, `defaultLanguage` and `defaultTimeZone` (now `AppearanceGeneralForm`).
+    `user\models\forms\AccountSettings` no longer has `language`, `timeZone`, `markdownEditorMode` and
+    `getEditorModeList()` (now `AppearanceSettings`).
+  - New component `Yii::$app->appearance` (`humhub\components\Appearance`): colour mode and accessibility options of
+    the current user. An inline script in the head sets `data-bs-theme`, `data-hh-contrast`, `data-hh-motion` and
+    `data-hh-font` on `<html>`. JS: `humhub.require('ui.appearance')` (`colorMode()`, `reducedMotion()`,
+    `highContrast()`); jQuery animations are off (`$.fx.off`) while motion is reduced.
+  - SCSS: the mixins `hh-reduced-motion` and `hh-high-contrast` (include them on `:root`) replace
+    `@media (prefers-reduced-motion: reduce)` and `(prefers-contrast: more)`, so the user's choice wins over the
+    system setting. The core sets all animation and transition durations to `0.01ms` while motion is reduced, so
+    module styles need no own rule. Bootstrap's `$enable-reduced-motion` is `false` for the same reason: its
+    `prefers-reduced-motion` media queries would ignore a user who turned the option off.
+  - New image `Yii::$app->img->logoDark`: `SiteLogo` renders it next to the logo (`.hh-logo-light`, `.hh-logo-dark`)
+    while the dark mode is allowed. A theme that overrides `widgets/views/logo.php` shows only its own logo.

@@ -40,6 +40,7 @@ class Yii
  * @property \yii\mutex\Mutex $mutex
  * @property \yii\web\User|__WebUser $user
  * @property \yii\caching\ArrayCache $runtimeCache
+ * @property \humhub\components\Appearance $appearance
  * @property \humhub\components\assets\AssetImageRegistry $img
  * @property \humhub\components\InstallationState $installationState
  * @property \humhub\components\bootstrap\SystemRevision $systemRevision

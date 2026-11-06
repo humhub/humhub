@@ -207,10 +207,14 @@ $config = [
                 return file_exists($file) ? require $file : [];
             })(),
         ],
+        'appearance' => [
+            'class' => \humhub\components\Appearance::class,
+        ],
         'img' => [
             'class' => 'humhub\components\assets\AssetImageRegistry',
             'definitions' => [
                 'logo' => ['file' => '/logo_image/logo.png'],
+                'logoDark' => ['file' => '/logo_image/logo-dark.png'],
                 'icon' => [
                     'file' => '/icon/icon.png',
                     'defaultFile' => '@humhub/resources/img/default_icon.png',

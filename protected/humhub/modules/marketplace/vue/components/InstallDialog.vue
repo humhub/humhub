@@ -141,8 +141,12 @@ const STEPS = ['buy', 'license', 'confirm', 'installing', 'activate', 'configure
 // be a gateway timing out while PHP still installs.
 const isDefinite = (response) => Boolean(response) && response.status >= 400 && response.status < 500;
 
-const reducedMotion = () => typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The user's accessibility option (`<html data-hh-motion>`), else the system setting
+const reducedMotion = () => {
+    const motion = document.documentElement.getAttribute('data-hh-motion');
+    return motion ? motion === 'reduce' : typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
 
 let uid = 0;
 

@@ -107,8 +107,12 @@ const CORE_TYPES = ['text', 'select', 'picker', 'tags', 'checkbox'];
 
 let uid = 0;
 
-const reducedMotion = () => typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The user's accessibility option (`<html data-hh-motion>`), else the system setting
+const reducedMotion = () => {
+    const motion = document.documentElement.getAttribute('data-hh-motion');
+    return motion ? motion === 'reduce' : typeof window.matchMedia === 'function'
+        && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
 
 const same = (keys, a, b) => keys.every((key) => JSON.stringify(a?.[key]) === JSON.stringify(b?.[key]));
 

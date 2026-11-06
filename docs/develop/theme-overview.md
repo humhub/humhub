@@ -1,6 +1,6 @@
 # Theming Overview
 
-Most appearance changes don't need a theme. *Administration → Settings → Appearance* covers:
+Most appearance changes don't need a theme. *Administration → Appearance* covers:
 
 - Logo, favicon, login background, mail header image
 - Eight theme colours (primary, accent, secondary, success, danger, warning, info, light)
@@ -17,7 +17,7 @@ If your change fits in the Appearance UI, stay there — themes are a heavier to
 
 ## Lifecycle
 
-A theme is a folder under `themes/` (or shipped via a theme module). It is activated under *Administration → Settings → Appearance → Theme*. Multiple themes can coexist; one is active at a time.
+A theme is a folder under `themes/` (or shipped via a theme module). It is activated under *Administration → Appearance → Theme*. Multiple themes can coexist; one is active at a time.
 
 A theme can declare a **parent theme** (via the `$baseTheme` SCSS variable) and inherit unmodified views and styles from it. This is the recommended pattern — derive from `HumHub` (Community Edition) or `enterprise` (Enterprise Edition) and override only what you need.
 

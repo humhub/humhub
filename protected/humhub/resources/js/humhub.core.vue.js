@@ -2042,7 +2042,10 @@
   const ANIMATION_MS = 300;
   const CORE_TYPES = ["text", "select", "picker", "tags", "checkbox"];
   let uid$5 = 0;
-  const reducedMotion = () => typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion = () => {
+    const motion = document.documentElement.getAttribute("data-hh-motion");
+    return motion ? motion === "reduce" : typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
   const same = (keys, a, b) => keys.every((key) => JSON.stringify(a == null ? void 0 : a[key]) === JSON.stringify(b == null ? void 0 : b[key]));
   const keysOf = (filters, fixed) => [.../* @__PURE__ */ new Set([...filters.map((filter) => filter.key), ...Object.keys(fixed || {})])];
   const isPanel = (filter) => filter.placement === "panel";

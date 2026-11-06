@@ -381,7 +381,7 @@ The icon font is Tabler Icons now; Font Awesome 4 is no longer shipped. Nothing 
 installations that only use the shipped themes and modules — markup and icon names of older modules
 keep rendering through a compatibility layer until 1.22.
 
-Custom SCSS entered under *Administration → Settings → Appearance* and themes that style icons by
+Custom SCSS entered under *Administration → Appearance* and themes that style icons by
 their Font Awesome class have to be adjusted: icons rendered by HumHub carry the class `ti` (and
 `ti-<name>`) instead of `fa` (`fa-<name>`), so a rule such as `.panel-heading .fa { color: … }`
 stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome glyphs placed by
@@ -433,6 +433,15 @@ categories and of most modules carry over; a module whose former category id dif
 module id loses its settings and starts from the default again. If users had switched module
 notifications off, you may want to ask them to check their notification settings. Details:
 [Notifications — Updating from 1.19](notifications.md#updating-from-119).
+
+## Appearance
+
+*Appearance* is a menu item of its own in the Administration now, with the tabs General (name,
+default language and time zone, date format), Logo & Images, Theme, Dark Mode, Accessibility and
+Custom SCSS. Pagination, display name, "My Spaces" sorting, stream order and post title moved to
+*Settings → General*. All values carry over. The dark mode is experimental and off until you allow
+it. Users find their language, time zone, editor, colour mode and the accessibility options (high
+contrast, reduced motion, readable font) under *Account → Appearance & Accessibility*.
 
 ## Modules
 
