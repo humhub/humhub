@@ -14,6 +14,7 @@ use Yii;
 use yii\log\DbTarget;
 use yii\log\EmailTarget;
 use yii\log\FileTarget;
+use yii\log\Logger;
 
 /**
  * Tests that secrets (e.g. loaded from `.env` into `$_SERVER`) are masked in the context dump of log entries.
@@ -126,6 +127,10 @@ class LogMaskVarsTest extends Unit
             fn(array $target) => array_merge($target, ['enabled' => false]),
             $logConfig['targets'],
         );
+
+        // Own logger: the dispatcher's constructor attaches itself to the given logger, and without one it would
+        // take over the application's logger for the rest of the test run
+        $logConfig['logger'] = new Logger();
 
         $dispatcher = Yii::createObject($logConfig);
         $this->assertInstanceOf(Dispatcher::class, $dispatcher);
