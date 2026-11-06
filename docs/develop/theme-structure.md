@@ -43,6 +43,21 @@ Lookup order for any view:
 
 The colour variables are mirrored to CSS custom properties on `:root` (`--hh-*`, see `_root.scss`, and Bootstrap's `--bs-*`), so prefer the CSS form (`var(--hh-text-color-main)`) in your rules — it cooperates with runtime theme switching (e.g. dark mode).
 
+## Design tokens
+
+The colours come in three levels:
+
+| Level | What | Examples |
+|---|---|---|
+| Primitive | The Sass variables of `variables.scss`, set by a theme or the Appearance settings | `$accent`, `$background-color-main`, `$text-color-main-dark` |
+| Semantic | CSS variables naming what a colour is for (`_root.scss`), and Bootstrap's | `--hh-text-color-secondary`, `--hh-background-color-main`, `--hh-border-color`, `--hh-code-bg`, `--hh-mark-bg`, `--bs-body-color` |
+| Component | The variables of one component, referring to semantic tokens | `--bs-btn-hover-bg`, `$dropdown-bg`, `$data-table-hover-bg` |
+
+- A rule uses a semantic or component token, not a literal colour: a colour mode (`data-bs-theme="dark"`) redefines the semantic tokens only, and everything that refers to them follows. A colour that is right in every mode (white on a coloured badge, a shadow, an accent outline) may stay literal.
+- A shade of a token is a `color-mix()` of tokens, not a Sass `darken()`/`lighten()` of a primitive, which is fixed at compile time: e.g. `color-mix(in srgb, var(--hh-text-color-highlight) 5%, var(--hh-background-color-secondary))` is a little darker in the light mode and a little lighter in the dark one.
+- `--hh-text-color-main`, `--hh-text-color-highlight` and `--hh-background-color-page` are aliases of Bootstrap's `--bs-body-color`, `--bs-emphasis-color` and `--bs-body-bg`. Their Sass variables are linked (`$body-color` is `$text-color-main`, etc.), so a theme can set either name.
+- The dark values are the `*-dark` Sass variables. A theme enables the dark mode by setting `data-bs-theme="dark"` on `<html>` (or on an element, for a part of the page).
+
 Variables are also accessible in PHP via the theme component, mainly useful in mail templates where CSS variables are not supported:
 
 ```php

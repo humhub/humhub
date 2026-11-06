@@ -74,7 +74,7 @@
         }
 
         code {
-            background-color: lighten($accent, 50%);
+            background-color: var(--hh-code-bg);
             color: var(--bs-code-color);
             padding: 4px 8px;
             border-radius: 4px;

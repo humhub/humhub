@@ -42,7 +42,7 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background-color: rgba(0, 0, 0, .5);
+                    background-color: color-mix(in srgb, var(--hh-text-color-highlight) 50%, transparent);
                     border-radius: 10px;
                     border: 2px solid var(--hh-background-color-main);
                 }

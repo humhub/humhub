@@ -25,7 +25,7 @@
 
         .card {
             .card-panel > div {
-                background: #F5F5F5;
+                background: var(--hh-background-color-secondary);
             }
         }
     }
@@ -40,7 +40,7 @@
         }
 
         .module-row {
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--hh-border-color);
             margin: 0 0 16px 0;
 
             > div {

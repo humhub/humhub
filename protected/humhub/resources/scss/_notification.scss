@@ -3,25 +3,6 @@
 // --------------------------------------------------
 
 @if not $prev-notification {
-    .field-filterform-allfilter {
-        input[type=checkbox] {
-            border-color: #ccc;
-
-            &:checked {
-                border-color: var(--bs-light);
-                background: var(--bs-light);
-
-                &::after {
-                    color: var(--hh-text-color-main);
-                }
-            }
-
-            &:focus {
-                border-color: #ccc;
-            }
-        }
-    }
-
     #notification_overview_list {
         .d-flex {
             border-left: none;

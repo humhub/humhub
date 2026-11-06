@@ -2568,6 +2568,22 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     Bootstrap utilities (`.bg-light`, `.link-*`, `.badge.text-bg-*`, `.d-revert`) to
     `_utilities.scss`, both outside of the layers.
 
+- **Design tokens: the colours are semantic CSS variables** (see
+  [Theme Structure](theme-structure.md#design-tokens)), so the dark mode (`data-bs-theme="dark"`) applies to
+  more of the core: form fields, selects and the editor's menu bar (`$input-bg` is
+  `var(--hh-background-color-main)`), inline code, the editor in comments, and text marks.
+  - `--hh-text-color-main`, `--hh-text-color-highlight` and `--hh-background-color-page` are aliases of
+    `--bs-body-color`, `--bs-emphasis-color` and `--bs-body-bg`. `$body-color` and `$body-bg` (and their
+    `-dark` variants) are set from `$text-color-main` and `$background-color-page`: a theme that sets the two
+    pairs to different values gets the HumHub one for both.
+  - New: `--hh-border-color` (a neutral line, `#ddd` on white), `--hh-code-bg` (inline code),
+    `--hh-mark-bg` (a marked text). The CSS variables deprecated since 1.18 (`--text-color-main`, …) are
+    aliases of the `--hh-*` ones now.
+  - The *Read more* fade of a long content (`ui.showMore`) is a `mask-image` of the collapsed content
+    (`.show-more-collapsed`), no longer a gradient coloured by JS: it shows whatever lies behind, in any
+    colour mode.
+  - Removed: the unused `.form-control.form-search-filter` and `.field-filterform-allfilter` styles.
+
 - **Image sizes and the editor's height limit as CSS variables.** `user\widgets\Image`, `space\widgets\Image`
   (and `UserImage.vue`, `SpaceImage.vue`) write their size as `width: var(--hh-content-container-image-width, 32px); height:
   var(--hh-content-container-image-height, 32px)` (`BaseImage::getSizeStyle()`), so a stylesheet can change it by the variables

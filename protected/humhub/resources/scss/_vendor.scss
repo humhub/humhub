@@ -61,7 +61,7 @@ $prev-richtext: false !default;
 
     .ui-widget-content,
     .ui-widget.ui-widget-content {
-        border: 1px solid #dddcda;
+        border: 1px solid var(--hh-border-color);
         border-radius: 0;
         background: var(--hh-background-color-main);
         color: var(--hh-text-color-highlight);

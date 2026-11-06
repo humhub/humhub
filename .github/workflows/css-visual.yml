@@ -1,7 +1,8 @@
 name: CSS Visual Comparison
 
-# Takes the same pages with the stylesheets of the pull request and of its base and compares the
-# screenshots (docs/develop/intro-testing.md). Reports the differences, does not fail on them.
+# Takes the same pages with the stylesheets of the pull request and of its base, in the light and the dark
+# colour mode, and compares the screenshots (docs/develop/intro-testing.md). Reports the differences, does not
+# fail on them.
 #
 # Also called by a module that provides a theme (e.g. humhub/enterprise-theme): the module is checked
 # out into the core and its theme is compared instead, with its `themes` folder of the base and of
@@ -136,18 +137,23 @@ jobs:
               run: |
                 git -C "$STYLESHEETS_REPOSITORY" checkout "$BASE_REF" -- $STYLESHEETS
                 rm -f public/assets/tests/*/resources/css/theme.css
-                cd protected/humhub/tests && HUMHUB_VISUAL=base php ../../vendor/bin/codecept run visual
+                cd protected/humhub/tests
+                HUMHUB_VISUAL=base php ../../vendor/bin/codecept run visual
+                HUMHUB_VISUAL=base-dark HUMHUB_VISUAL_COLOR_MODE=dark php ../../vendor/bin/codecept run visual
 
             - name: Screenshots with the stylesheets of the branch
               run: |
                 git -C "$STYLESHEETS_REPOSITORY" checkout HEAD -- $STYLESHEETS
                 rm -f public/assets/tests/*/resources/css/theme.css
-                cd protected/humhub/tests && HUMHUB_VISUAL=changed php ../../vendor/bin/codecept run visual
+                cd protected/humhub/tests
+                HUMHUB_VISUAL=changed php ../../vendor/bin/codecept run visual
+                HUMHUB_VISUAL=changed-dark HUMHUB_VISUAL_COLOR_MODE=dark php ../../vendor/bin/codecept run visual
 
             - name: Compare the screenshots
               run: |
                 cd protected/humhub/tests/codeception/_output/visual
-                python3 "$GITHUB_WORKSPACE/.github/scripts/visual-diff.py" base changed diff
+                python3 "$GITHUB_WORKSPACE/.github/scripts/visual-diff.py" base changed diff light
+                python3 "$GITHUB_WORKSPACE/.github/scripts/visual-diff.py" base-dark changed-dark diff-dark dark
 
             - name: Upload the screenshots and differences
               uses: actions/upload-artifact@v7

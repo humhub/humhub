@@ -76,11 +76,7 @@
     }
 
     .atwho-view strong {
-        background-color: lighten($warning, 40%);
-    }
-
-    .atwho-view .cur strong {
-        background-color: lighten($warning, 40%);
+        background-color: var(--hh-mark-bg);
     }
 
     .atwho-view small {

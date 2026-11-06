@@ -328,7 +328,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     .nav .open > a,
     .nav .open > a:hover,
     .nav .open > a:focus {
-        border-color: #ededed;
+        border-color: var(--hh-background-color-page);
     }
 
     .footer-nav {
@@ -392,7 +392,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 font-size: 18px;
 
                 &:hover {
-                    color: #333;
+                    color: color-mix(in srgb, var(--hh-text-color-highlight) 80%, var(--hh-background-color-main)); // #333 on white
                 }
             }
         }

@@ -124,6 +124,11 @@
 
     [data-ui-show-more] {
         overflow: hidden;
+
+        // A collapsed content fades out at its bottom: a mask, so it shows whatever lies behind in any color mode
+        &.show-more-collapsed {
+            mask-image: linear-gradient(to bottom, #000 calc(100% - 40px), transparent);
+        }
     }
 
     @include media-breakpoint-only(md) {

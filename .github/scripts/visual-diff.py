@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compares the screenshots of the CSS visual comparison (VisualCest) of two runs.
 
-    visual-diff.py <base-dir> <changed-dir> <output-dir>
+    visual-diff.py <base-dir> <changed-dir> <output-dir> [<title>]
 
 For every screenshot that differs, <output-dir>/<name>.png shows the base, the changed version and
 the changed pixels (red) side by side. A Markdown report goes to stdout and, in GitHub Actions, to
@@ -46,11 +46,12 @@ def compare(base_file, changed_file, output_file):
 
 
 def main():
-    if len(sys.argv) != 4:
+    if len(sys.argv) not in (4, 5):
         print(__doc__)
         return 1
 
-    base_dir, changed_dir, output_dir = sys.argv[1:]
+    base_dir, changed_dir, output_dir = sys.argv[1:4]
+    title = 'CSS visual comparison' + (f' ({sys.argv[4]})' if len(sys.argv) == 5 else '')
     os.makedirs(output_dir, exist_ok=True)
 
     names = sorted({name for directory in (base_dir, changed_dir) if os.path.isdir(directory)
@@ -73,13 +74,13 @@ def main():
             rows.append(f'| `{name[:-4]}` | {pixels:,} px changed | {area} |')
 
     if changed:
-        report = (f'## CSS visual comparison: {changed} of {len(names)} screenshots differ\n\n'
+        report = (f'## {title}: {changed} of {len(names)} screenshots differ\n\n'
                   '| Screenshot | Difference | Area (x,y – x,y) |\n|---|---|---|\n' + '\n'.join(rows) +
                   '\n\nThe images (base · changed · changed pixels in red) are in the `css-visual-diff` artifact.\n')
         if os.environ.get('GITHUB_ACTIONS'):
-            print(f'::warning::CSS visual comparison: {changed} of {len(names)} screenshots differ')
+            print(f'::warning::{title}: {changed} of {len(names)} screenshots differ')
     else:
-        report = f'## CSS visual comparison: all {len(names)} screenshots are identical\n'
+        report = f'## {title}: all {len(names)} screenshots are identical\n'
 
     print(report)
     summary = os.environ.get('GITHUB_STEP_SUMMARY')

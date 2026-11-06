@@ -52,7 +52,7 @@ $body-bg: #ededed !default;
 // Form fields: 1px border (Bootstrap's $input-border-width) in the page background colour, 38px
 // high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
 $input-border-color: var(--hh-background-color-page) !default;
-$input-bg: #fff !default; // default is $body-bg
+$input-bg: var(--hh-background-color-main) !default; // default is the body background (the page grey here)
 $input-padding-y: 7.5px !default;
 // No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
 $input-box-shadow: 0 0 0 0 transparent !default;
@@ -421,3 +421,18 @@ $border-color-warning-dark: #fdd198 !default;
 $background-color-danger-dark: #372a2a !default;
 $text-color-danger-dark: #ff8989 !default;
 $border-color-danger-dark: #ff8989 !default;
+
+
+//
+// Bootstrap's body colors follow the HumHub ones
+// --------------------------------------------------
+
+// One value for each pair, so `--hh-text-color-main`, `--hh-text-color-highlight` and
+// `--hh-background-color-page` can be aliases of Bootstrap's `--bs-body-color`, `--bs-emphasis-color` and
+// `--bs-body-bg` (_root.scss). A theme can set either name.
+$body-color: $text-color-main;
+$body-emphasis-color: $text-color-highlight !default;
+$body-bg: $background-color-page;
+$body-color-dark: $text-color-main-dark;
+$body-emphasis-color-dark: $text-color-highlight-dark !default;
+$body-bg-dark: $background-color-page-dark;

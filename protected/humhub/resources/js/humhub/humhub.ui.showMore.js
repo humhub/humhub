@@ -42,9 +42,9 @@ humhub.module('ui.showMore', function (module, require, $) {
             if (!this.$collapseButton.length) {
                 this.$.after($(module.templates.showMore));
                 this.$collapseButton = this.$.siblings('.showMore');
-                this.$gradient = this.$.siblings('.showMoreGradient');
-                this.$gradient.children().css({background: 'linear-gradient(rgba(251,251,251,0), '+determineBackground(this.$)+')'});
             }
+            // The fade-out is the content's own mask (`.show-more-collapsed`), on any background
+            this.$gradient = this.$.siblings('.showMoreGradient');
 
             // Init collapse button. Namespaced + unbound-before-bound so
             // repeat application (e.g. a Vue island's v-additions running
@@ -72,44 +72,15 @@ humhub.module('ui.showMore', function (module, require, $) {
         }
     };
 
-    var determineBackground = function($node) {
-        var bc;
-        var defColor = '#ffff';
-
-        if(!$node || !$node.length) {
-            return defColor;
-        }
-
-        while (isTransparent(bc = $node.css("background-color"))) {
-            if ($node.is("body")) {
-                return defColor;
-            }
-            $node = $node.parent();
-        }
-
-        return bc;
-    };
-
-    var isTransparent = function(color) {
-        switch ((color || "").replace(/\s+/g, '').toLowerCase()) {
-            case "transparent":
-            case "":
-            case "rgba(0,0,0,0)":
-                return true;
-            default:
-                return false;
-        }
-    };
-
     CollapseContent.prototype.collapse = function () {
-        this.$.css({'display': 'block', 'max-height': this.collapseAt + 'px'});
+        this.$.css({'display': 'block', 'max-height': this.collapseAt + 'px'}).addClass('show-more-collapsed');
         this.$collapseButton.html('<i class="ti ti-arrow-down"></i> ' + this.options.readMoreText);
         this.$.data('state', 'collapsed');
         this.$gradient.show();
     };
 
     CollapseContent.prototype.expand = function () {
-        this.$.css('max-height', '');
+        this.$.css('max-height', '').removeClass('show-more-collapsed');
         this.$collapseButton.html('<i class="ti ti-arrow-up"></i> ' + this.options.readLessText);
         this.$.data('state', 'expanded');
         this.$gradient.hide();

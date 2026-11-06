@@ -174,7 +174,7 @@ $file-version-meta-font-size: $font-size-sm !default;
             width: 100%;
             height: 100%;
             padding: 20px;
-            background: #f8f8f8;
+            background: var(--hh-background-color-secondary);
         }
     }
 

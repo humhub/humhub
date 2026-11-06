@@ -21,7 +21,7 @@ use Yii;
  * stylesheets of two branches, `.github/scripts/visual-diff.py` compares them.
  *
  * Skipped unless `HUMHUB_VISUAL` names the folder (under `_output/visual/`) to write to. `HUMHUB_VISUAL_THEME` names
- * another theme to take them with.
+ * another theme to take them with, `HUMHUB_VISUAL_COLOR_MODE` Bootstrap's colour mode (`dark`, `[data-bs-theme]`).
  *
  * @see docs/develop/intro-testing.md
  */
@@ -65,6 +65,8 @@ class VisualCest
 
     private string $folder = '';
 
+    private string $colorMode = '';
+
     public function _before(AcceptanceTester $I, Scenario $scenario): void
     {
         $this->folder = (string)getenv('HUMHUB_VISUAL');
@@ -91,6 +93,11 @@ class VisualCest
             $comment->updateAttributes(['created_at' => '2020-01-15 11:00:00', 'updated_at' => '2020-01-15 11:00:00']);
         }
         Yii::$app->user->logout();
+
+        $this->colorMode = (string)getenv('HUMHUB_VISUAL_COLOR_MODE');
+        if ($this->colorMode !== '' && !preg_match('/^[a-z]+$/', $this->colorMode)) {
+            throw new RuntimeException('Invalid HUMHUB_VISUAL_COLOR_MODE');
+        }
 
         // The test server may have cached the settings from before the fixtures (e.g. the site name of the installer)
         Yii::$app->cache->flush();
@@ -271,6 +278,9 @@ class VisualCest
         $I->executeJS('if (!document.getElementById("visual-test-style")) {'
             . ' const style = document.createElement("style"); style.id = "visual-test-style";'
             . ' style.textContent = ' . json_encode(self::STABILIZE_CSS) . '; document.head.appendChild(style); }');
+        if ($this->colorMode !== '') {
+            $I->executeJS('document.documentElement.setAttribute("data-bs-theme", ' . json_encode($this->colorMode) . ');');
+        }
         // Lazy content (stream entries, images, web fonts) settles
         $I->wait(1);
         $this->waitUntilLoaded($I);

@@ -1,29 +1,75 @@
 //
-// CSS Variables
+// CSS Variables: the design tokens
 // @since 1.14.0
+//
+// Three levels (see docs/develop/theme-structure.md, "Design tokens"):
+// 1. Primitive: the Sass variables (variables.scss), e.g. `$accent` or `$background-color-main`. A theme or the
+//    appearance settings change them; the CSS only sees their compiled values.
+// 2. Semantic: what a color is for, the custom properties below (`--hh-text-color-*`, `--hh-background-color-*`,
+//    `--hh-border-color`, ...) and Bootstrap's (`--bs-body-color`, `--bs-secondary-bg`, ...). A color mode
+//    (`[data-bs-theme]`) redefines only these, so does a future contrast mode.
+// 3. Component: the variables of a component (`--bs-btn-*`, `$dropdown-bg`, ...). They refer to semantic
+//    tokens, never to a literal color.
 // --------------------------------------------------
 
+// Tokens derived from other tokens: declared again in each color mode, because a custom property computes its
+// `var()` where it is declared. Light values are the former literal ones.
+@mixin hh-derived-tokens {
+    // Bootstrap's body colors are the HumHub ones (variables.scss)
+    --hh-text-color-main: var(--bs-body-color);
+    --hh-text-color-highlight: var(--bs-emphasis-color);
+    --hh-background-color-page: var(--bs-body-bg);
+    // A neutral line: separators, borders of a box (#ddd on white)
+    --hh-border-color: color-mix(in srgb, var(--hh-text-color-highlight) 13.3%, var(--hh-background-color-main));
+    // Every field's placeholder: a text field's `::placeholder` and a select's "nothing chosen"
+    --hh-placeholder-color: var(--hh-text-color-secondary);
+}
+
+// @deprecated since 1.18, aliases of the `--bs-*` and `--hh-*` tokens
+@mixin hh-deprecated-tokens {
+    --primary: var(--bs-primary);
+    --accent: var(--bs-accent);
+    --info: var(--bs-info);
+    --success: var(--bs-success);
+    --warning: var(--bs-warning);
+    --danger: var(--bs-danger);
+    --link: var(--bs-link-color);
+    --text-color-main: var(--hh-text-color-main);
+    --text-color-default: var(--hh-text-color-default);
+    --text-color-secondary: var(--hh-text-color-secondary);
+    --text-color-highlight: var(--hh-text-color-highlight);
+    --text-color-soft: var(--hh-text-color-soft);
+    --text-color-soft2: var(--hh-text-color-soft2);
+    --text-color-soft3: var(--hh-text-color-soft3);
+    --background-color-main: var(--hh-background-color-main);
+    --background-color-secondary: var(--hh-background-color-secondary);
+    --background-color-page: var(--hh-background-color-page);
+    --background-color-highlight: var(--hh-background-color-highlight);
+    --background3: var(--hh-background3);
+    --background-color-warning: var(--hh-background-color-warning);
+}
+
 :root {
+    @include hh-derived-tokens;
+
     // Text colors
-    --hh-text-color-main: #{$text-color-main};
     --hh-text-color-default: #{$text-color-default};
     --hh-text-color-secondary: #{$text-color-secondary};
-    --hh-text-color-highlight: #{$text-color-highlight};
     --hh-text-color-soft: #{$text-color-soft};
     --hh-text-color-soft2: #{$text-color-soft2};
     --hh-text-color-soft3: #{$text-color-soft3};
-    // Every field's placeholder: a text field's `::placeholder` and a select's "nothing chosen"
-    // (a reference, so the dark mode follows)
-    --hh-placeholder-color: var(--hh-text-color-secondary);
 
     // Background colors
     --hh-background-color-main: #{$background-color-main};
     --hh-background-color-secondary: #{$background-color-secondary};
-    --hh-background-color-page: #{$background-color-page};
     --hh-background-color-highlight: #{$background-color-highlight};
     --hh-background-color-highlight-soft: #{$background-color-highlight-soft};
     --hh-background3: #{$background3};
     --hh-background4: #{$background4};
+    // Inline code
+    --hh-code-bg: #{lighten($accent, 50%)};
+    // A marked text: the matched part of a suggestion, an invalid input
+    --hh-mark-bg: #{lighten($warning, 40%)};
 
     // Color contrast
     --hh-accent-contrast: #{$text-color-accent-contrast};
@@ -60,39 +106,20 @@
 
     // @deprecated since 1.18, use the above variable instead
     --default: #{$default};
-    --primary: var(--bs-primary);
-    --accent: var(--bs-accent);
-    --info: var(--bs-info);
-    --success: var(--bs-success);
-    --warning: var(--bs-warning);
-    --danger: var(--bs-danger);
-    --link: var(--bs-link-color);
-    --text-color-main: #{$text-color-main};
-    --text-color-default: #{$text-color-default};
-    --text-color-secondary: #{$text-color-secondary};
-    --text-color-highlight: #{$text-color-highlight};
-    --text-color-soft: #{$text-color-soft};
-    --text-color-soft2: #{$text-color-soft2};
-    --text-color-soft3: #{$text-color-soft3};
     --text-color-contrast: #{$text-color-contrast};
     --hh-text-color-contrast: #{$text-color-contrast};
-    --background-color-main: #{$background-color-main};
-    --background-color-secondary: #{$background-color-secondary};
-    --background-color-page: #{$background-color-page};
-    --background-color-highlight: #{$background-color-highlight};
-    --background3: #{$background3};
-    --background-color-warning: #{$background-color-warning};
+    @include hh-deprecated-tokens;
 }
 
 // Dark Mode CSS Variables
 @if $enable-dark-mode {
     @include color-mode(dark, true) {
         color-scheme: dark;
+        @include hh-derived-tokens;
+
         // Text colors
-        --hh-text-color-main: #{$text-color-main-dark};
         --hh-text-color-default: #{$text-color-default-dark};
         --hh-text-color-secondary: #{$text-color-secondary-dark};
-        --hh-text-color-highlight: #{$text-color-highlight-dark};
         --hh-text-color-soft: #{$text-color-soft-dark};
         --hh-text-color-soft2: #{$text-color-soft2-dark};
         --hh-text-color-soft3: #{$text-color-soft3-dark};
@@ -100,11 +127,12 @@
         // Background colors
         --hh-background-color-main: #{$background-color-main-dark};
         --hh-background-color-secondary: #{$background-color-secondary-dark};
-        --hh-background-color-page: #{$background-color-page-dark};
         --hh-background-color-highlight: #{$background-color-highlight-dark};
         --hh-background-color-highlight-soft: #{$background-color-highlight-soft-dark};
         --hh-background3: #{$background3-dark};
         --hh-background4: #{$background4-dark};
+        --hh-code-bg: var(--bs-accent-bg-subtle);
+        --hh-mark-bg: var(--bs-warning-bg-subtle);
 
         // Bootstrap Alert boxes
         // Success
@@ -122,20 +150,8 @@
 
         // @deprecated since 1.18, use the above variable instead
         --default: #2a2a2a;
-        --text-color-main: #{$text-color-main-dark};
-        --text-color-default: #{$text-color-default-dark};
-        --text-color-secondary: #{$text-color-secondary-dark};
-        --text-color-highlight: #{$text-color-highlight-dark};
-        --text-color-soft: #{$text-color-soft-dark};
-        --text-color-soft2: #{$text-color-soft2-dark};
-        --text-color-soft3: #{$text-color-soft3-dark};
         --text-color-contrast: #{$text-color-contrast-dark};
         --hh-text-color-contrast: #{$text-color-contrast-dark};
-        --background-color-main: #{$background-color-main-dark};
-        --background-color-secondary: #{$background-color-secondary-dark};
-        --background-color-page: #{$background-color-page-dark};
-        --background-color-highlight: #{$background-color-highlight-dark};
-        --background3: #{$background3-dark};
-        --background-color-warning: #{$background-color-warning-dark};
+        @include hh-deprecated-tokens;
     }
 }
