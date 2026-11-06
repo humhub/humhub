@@ -16,7 +16,7 @@ HumHub Changelog
 - Fix #8689: `module/update-all` reported all modules as up to date when the HumHub API could not be reached or was disabled; it now fails with an error
 - Fix #8694: Wide gap between icon and caret of dropdown buttons (e.g. space header settings menu)
 - Fix #8693: Accent border of the main menu flashed black on hover
-- Fix #xxxx: Browser hung in an endless loop when the top menu overflowed without its "Menu" sub dropdown
+- Fix #8708: Browser hung in an endless loop when the top menu overflowed without its "Menu" sub dropdown
 
 1.19.3 (October 27, 2026)
 -------------------------
