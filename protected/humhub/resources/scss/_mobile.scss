@@ -42,14 +42,14 @@
                 }
 
                 &::-webkit-scrollbar-thumb {
-                    background-color: rgba(0, 0, 0, .5);
+                    background-color: color-mix(in srgb, var(--bs-emphasis-color) 50%, transparent);
                     border-radius: 10px;
-                    border: 2px solid var(--hh-background-color-main);
+                    border: 2px solid var(--bs-body-bg);
                 }
 
                 &::-webkit-scrollbar-track {
                     border-radius: 10px;
-                    background-color: var(--hh-background-color-main);
+                    background-color: var(--bs-body-bg);
                 }
             }
 

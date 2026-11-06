@@ -33,7 +33,7 @@ $accordion-header-gap: $spacer * .75 !default;
         flex: 1 1 auto;
         flex-direction: column;
         min-width: 0;
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-weight: $font-weight-semibold;
     }
 

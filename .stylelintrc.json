@@ -4,6 +4,17 @@
         "scss/comment-no-empty": null,
         "scss/no-global-function-names": null,
         "scss/at-extend-no-missing-placeholder": null,
-        "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["/^tabler-icons/"]}]
-    }
+        "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["/^tabler-icons/"]}],
+        "color-no-hex": [true, {"message": "Use a design token (docs/develop/concept-design-tokens.md)"}],
+        "function-disallowed-list": [["darken", "lighten"], {"message": "Use a design token or color-mix() (docs/develop/concept-design-tokens.md)"}]
+    },
+    "overrides": [
+        {
+            "files": ["**/variables.scss", "**/variables-deprecated.scss", "**/_root.scss"],
+            "rules": {
+                "color-no-hex": null,
+                "function-disallowed-list": null
+            }
+        }
+    ]
 }

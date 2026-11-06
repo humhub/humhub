@@ -47,12 +47,9 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 $link-color: #000000 !default;
 $link-hover-color: $link-color !default;
 $code-color: mix(black, $accent, 10%) !default;
-$body-color: #555 !default;
-$body-bg: #ededed !default;
-// Form fields: 1px border (Bootstrap's $input-border-width) in the page background colour, 38px
+// Form fields: 1px border (Bootstrap's $input-border-width) in a light separator color, 38px
 // high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
-$input-border-color: var(--hh-background-color-page) !default;
-$input-bg: #fff !default; // default is $body-bg
+$input-border-color: var(--bs-secondary-bg) !default;
 $input-padding-y: 7.5px !default;
 // No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
 $input-box-shadow: 0 0 0 0 transparent !default;
@@ -62,59 +59,39 @@ $input-focus-box-shadow: 0 0 0 2px color-mix(in srgb, var(--bs-accent) 50%, tran
 
 
 //
-// HumHub Text colors
+// Colors of text, surfaces and lines: Bootstrap's semantic variables, and `$hh-*` for the roles Bootstrap lacks.
+// They become the CSS variables of the same name (`--bs-body-color`, `--hh-page-bg`, ...), see _root.scss and
+// docs/ui/colours.md. A `$hh-*` variable is HumHub's, any other one Bootstrap's.
 // --------------------------------------------------
 
-// Default body text color.
-$text-color-main: $body-color !default;
+// Text
+$body-color: #555 !default;
+$body-emphasis-color: #000 !default; // Headings, a hovered link, an active item
+$body-secondary-color: #7a7a7a !default; // Muted: meta data, help text, captions, placeholders
+$body-tertiary-color: #aeaeae !default; // Faint: a disabled item, a hint
 
-// used for default icons and buttons etc.
-$text-color-default: #4b4b4b !default;
+// Surfaces
+$hh-page-bg: #ededed !default; // The page, behind the surfaces
+$body-bg: #fff !default; // A surface: panel, card, dropdown, dialog, field. Bootstrap's components take it
+$body-tertiary-bg: #f9f9f9 !default; // A sunken area in a surface: comments, tabs, a filter
+$body-secondary-bg: #ededed !default; // The fill of a hovered or active item, a neutral badge; a light separator
+$hh-accent-bg-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !default; // Lighter than `$accent-bg-subtle`
+$hh-code-bg: lighten($accent, 50%) !default; // Inline code
+$mark-bg: lighten($warning, 40%) !default; // Marked text
 
-// used for some icons and buttons etc. - former $font2
-$text-color-secondary: #7a7a7a !default;
+// Lines
+$border-color: #ddd !default; // A separator, the border of a box
+$hh-border-color-strong: #d7d7d7 !default; // The border of a control (checkbox, radio, switch)
 
-// highlighted text like some active links hovered links etc. - former $font3
-$text-color-highlight: #000 !default;
-
-// side information like dates, placeholder, some dropdown headers - former $font4
-$text-color-soft: #555555 !default;
-
-// also side information wall entry links (like/comment), help blocks in forms etc.  - former $font5
-$text-color-soft2: #aeaeae !default;
-
-// used in gridview summary and installer - former $font1
-$text-color-soft3: #bac2c7 !default;
+// Bootstrap's greys ($gray-100 ... $gray-900) are not used: the components that would show one take a semantic color
+$dropdown-header-color: var(--bs-secondary-color) !default;
+$blockquote-footer-color: var(--bs-secondary-color) !default;
+$btn-link-disabled-color: var(--bs-secondary-color) !default;
+$form-floating-label-disabled-color: var(--bs-secondary-color) !default;
 
 
 //
-// Background colors
-// --------------------------------------------------
-
-// main content background color should be in contrast with $text-color-main, $text-color-secondary and other text colors
-$background-color-main: #fff !default;
-
-// used beside others for tabs - former $background1
-$background-color-secondary: #f9f9f9 !default;
-
-// page background which is also used for other ui components as comment box etc. - former $background2
-$background-color-page: $body-bg !default;
-
-// Informative highlighting color
-// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight: rgba($accent, 0.2) !default;
-
-// Informative highlighting soft color
-// (e.g. Wiki Active Category)
-$background-color-highlight-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !default;
-
-// Additional background colors
-$background3: #d7d7d7 !default;
-$background4: #b2b2b2 !default;
-
-
-//
-// HumHub Text contrast colors
+// Text on a background in a theme color
 // --------------------------------------------------
 
 //
@@ -131,36 +108,15 @@ $black: #000 !default;
 $color-contrast-dark: $black !default;
 $color-contrast-light: $white !default;
 
-// Text contrast colors for each Bootstrap background color:
-$text-color-accent-contrast: color-contrast($accent) !default;
-$text-color-primary-contrast: color-contrast($primary) !default;
-$text-color-secondary-contrast: color-contrast($secondary) !default;
-$text-color-info-contrast: color-contrast($info) !default;
-$text-color-success-contrast: color-contrast($success) !default;
-$text-color-warning-contrast: color-contrast($warning) !default;
-$text-color-danger-contrast: color-contrast($danger) !default;
-$text-color-light-contrast: color-contrast($light) !default;
-$text-color-dark-contrast: color-contrast($dark) !default;
-
-
-//
-// Bootstrap Alert boxes
-// --------------------------------------------------
-
-// Alert box success (used in forms)
-$background-color-success: #f7fbf4 !default;
-$text-color-success: #84be5e !default;
-$border-color-success: #97d271 !default;
-
-// Alert box warning (used in forms)
-$background-color-warning: #fffbf7 !default;
-$text-color-warning: #e9b168 !default;
-$border-color-warning: #fdd198 !default;
-
-// Alert box danger (used in forms)
-$background-color-danger: #fff6f6 !default;
-$text-color-danger: #ff8989 !default;
-$border-color-danger: #ff8989 !default;
+$hh-accent-contrast: color-contrast($accent) !default;
+$hh-primary-contrast: color-contrast($primary) !default;
+$hh-secondary-contrast: color-contrast($secondary) !default;
+$hh-info-contrast: color-contrast($info) !default;
+$hh-success-contrast: color-contrast($success) !default;
+$hh-warning-contrast: color-contrast($warning) !default;
+$hh-danger-contrast: color-contrast($danger) !default;
+$hh-light-contrast: color-contrast($light) !default;
+$hh-dark-contrast: color-contrast($dark) !default;
 
 
 //
@@ -225,7 +181,6 @@ $btn-border-radius-lg: $btn-border-radius !default;
 // Dropdowns
 // --------------------------------------------------
 
-$dropdown-bg: var(--hh-background-color-main) !default;
 // One look for every menu, wherever it sits (_dropdown.scss): rows inset with rounded corners,
 // a light accent fill on hover and while pressed
 $dropdown-min-width: 17rem !default;
@@ -234,7 +189,7 @@ $dropdown-padding-y: divide(8px, $font-size-root) * 1rem !default;
 $dropdown-item-padding-x: divide(8px, $font-size-root) * 1rem !default;
 $dropdown-item-padding-y: divide(8px, $font-size-root) * 1rem !default;
 $dropdown-link-hover-bg: var(--bs-accent-bg-subtle) !default;
-$dropdown-link-hover-color: var(--hh-text-color-highlight) !default;
+$dropdown-link-hover-color: var(--bs-emphasis-color) !default;
 $dropdown-link-active-bg: $dropdown-link-hover-bg !default;
 $dropdown-link-active-color: $dropdown-link-hover-color !default;
 
@@ -243,10 +198,9 @@ $dropdown-link-active-color: $dropdown-link-hover-color !default;
 // List groups
 // --------------------------------------------------
 
-$list-group-bg: var(--hh-background-color-main) !default;
 $list-group-border-width: 0 !default;
-$list-group-active-color: var(--hh-text-color-highlight) !default;
-$list-group-active-bg: var(--hh-background-color-secondary) !default;
+$list-group-active-color: var(--bs-emphasis-color) !default;
+$list-group-active-bg: var(--bs-tertiary-bg) !default;
 
 
 //
@@ -254,7 +208,6 @@ $list-group-active-bg: var(--hh-background-color-secondary) !default;
 // --------------------------------------------------
 
 $nav-link-hover-color: var(--bs-link-color) !default;
-$nav-tabs-link-active-bg: var(--hh-background-color-main) !default;
 // Pill tabs: fully rounded, Bootstrap's $border-radius-pill (not defined yet here); the rest in _nav.scss
 $nav-pills-border-radius: 50rem !default;
 
@@ -274,7 +227,7 @@ $popover-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175) !default;
 // --------------------------------------------------
 
 $progress-height: 10px !default;
-$progress-bg: var(--hh-background-color-page) !default;
+$progress-bg: var(--bs-secondary-bg) !default;
 $progress-border-radius: 10px !default;
 $progress-box-shadow: none !default;
 
@@ -283,10 +236,8 @@ $progress-box-shadow: none !default;
 // Accordion (see _accordion.scss)
 // --------------------------------------------------
 
-// The main background; Bootstrap's body background is the page grey here
-$accordion-bg: var(--hh-background-color-main) !default;
-$accordion-button-active-bg: var(--hh-background-color-secondary) !default;
-$accordion-button-active-color: var(--hh-text-color-highlight) !default;
+$accordion-button-active-bg: var(--bs-tertiary-bg) !default;
+$accordion-button-active-color: var(--bs-emphasis-color) !default;
 
 
 //
@@ -295,8 +246,8 @@ $accordion-button-active-color: var(--hh-text-color-highlight) !default;
 
 // Body text size; Bootstrap's .875rem is small at HumHub's 14px root
 $toast-font-size: 1rem !default;
-// Solid; Bootstrap's translucent body background is the page grey here
-$toast-background-color: var(--hh-background-color-main) !default;
+// Solid; Bootstrap's is translucent
+$toast-background-color: var(--bs-body-bg) !default;
 
 
 //
@@ -304,7 +255,6 @@ $toast-background-color: var(--hh-background-color-main) !default;
 // --------------------------------------------------
 
 $table-color: var(--bs-body-color) !default;
-$table-bg: var(--hh-background-color-main) !default;
 
 
 //
@@ -329,95 +279,61 @@ $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default;
-$component-active-color: $text-color-primary-contrast !default; // Because $component-active-bg has Primary color
+$component-active-color: $hh-primary-contrast !default; // Because $component-active-bg has Primary color
 
 //
-// @deprecated since 1.18
-// --------------------------------------------------
-
-$default: #e7e7e7 !default;
-$link: $primary !default;
-$text-color-contrast: #fff !default;
-$text-color-contrast-dark: #fff !default;
-
-// Dark color mode variables
-//
-// Custom variables for the `[data-bs-theme="dark"]` theme.
-
-//
-// Color Bootstrap overwritten variables
+// Dark color mode (`[data-bs-theme="dark"]`)
 // --------------------------------------------------
 
 $link-hover-color-dark: mix(white, $primary, 10%) !default;
 $code-color-dark: mix(white, $accent, 10%) !default;
+
 $body-color-dark: #ddd !default;
-$body-bg-dark: #000 !default;
+$body-emphasis-color-dark: #fff !default;
+$body-secondary-color-dark: #bbb !default;
+$body-tertiary-color-dark: #999 !default;
+
+$hh-page-bg-dark: #000 !default;
+$body-bg-dark: #222 !default;
+$body-tertiary-bg-dark: #333 !default;
+$body-secondary-bg-dark: #393939 !default;
+$hh-accent-bg-soft-dark: mix($accent, $body-bg-dark, 15%) !default;
+$hh-code-bg-dark: $accent-bg-subtle-dark !default;
+$mark-bg-dark: shade-color($warning, 80%) !default;
+
+$border-color-dark: #3f3f3f !default;
+$hh-border-color-strong-dark: #393939 !default;
+
 
 //
-// HumHub Text colors
+// @deprecated since 1.20, the former names of the color variables, see variables-deprecated.scss. Not used by the
+// core: for themes and modules that still read them.
 // --------------------------------------------------
 
-// Default body text color.
+$text-color-main: $body-color !default;
+$text-color-highlight: $body-emphasis-color !default;
+$text-color-secondary: $body-secondary-color !default;
+$text-color-soft2: $body-tertiary-color !default;
+$background-color-main: $body-bg !default;
+$background-color-secondary: $body-tertiary-bg !default;
+$background-color-page: $hh-page-bg !default;
+$background-color-highlight-soft: $hh-accent-bg-soft !default;
+$background3: $hh-border-color-strong !default;
 $text-color-main-dark: $body-color-dark !default;
-
-// used for default icons and buttons etc.
-$text-color-default-dark: #f0f0f0 !default;
-
-// used for some icons and buttons etc. - former $font2
-$text-color-secondary-dark: #bbb !default;
-
-// highlighted text like some active links hovered links etc. - former $font3
-$text-color-highlight-dark: #fff !default;
-
-// side information like dates, placeholder, some dropdown headers - former $font4
-$text-color-soft-dark: #ddd !default;
-
-// also side information wall entry links (like/comment), help blocks in forms etc.  - former $font5
-$text-color-soft2-dark: #ccc !default;
-
-// used in gridview summary and installer - former $font1
-$text-color-soft3-dark: #7b7773 !default;
-
-//
-// Background colors
-// --------------------------------------------------
-
-// main content background color should be in contrast with $text-color-main-dark, $text-color-secondary-dark and other text colors
-$background-color-main-dark: #222 !default;
-
-// used beside others for tabs - former $background1
-$background-color-secondary-dark: #333 !default;
-
-// page background which is also used for other ui components as comment box etc. - former $background2
-$background-color-page-dark: $body-bg-dark !default;
-
-// Informative highlighting color
-// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight-dark: rgba($accent, 0.2) !default;
-
-// Informative highlighting soft color
-// (e.g. Wiki Active Category)
-$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($accent, 6), 16%), 55%) !default;
-
-// Additional background colors
-$background3-dark: #393939 !default;
-$background4-dark: #5e5e5e !default;
-
-//
-// Bootstrap Alert boxes
-// --------------------------------------------------
-
-// Alert box success (used in forms)
-$background-color-success-dark: #3e423b !default;
-$text-color-success-dark: #84be5e !default;
-$border-color-success-dark: #97d271 !default;
-
-// Alert box warning (used in forms)
-$background-color-warning-dark: #4d443b !default;
-$text-color-warning-dark: #e9b168 !default;
-$border-color-warning-dark: #fdd198 !default;
-
-// Alert box danger (used in forms)
-$background-color-danger-dark: #372a2a !default;
-$text-color-danger-dark: #ff8989 !default;
-$border-color-danger-dark: #ff8989 !default;
+$text-color-highlight-dark: $body-emphasis-color-dark !default;
+$text-color-secondary-dark: $body-secondary-color-dark !default;
+$text-color-soft2-dark: $body-tertiary-color-dark !default;
+$background-color-main-dark: $body-bg-dark !default;
+$background-color-secondary-dark: $body-tertiary-bg-dark !default;
+$background-color-page-dark: $hh-page-bg-dark !default;
+$background-color-highlight-soft-dark: $hh-accent-bg-soft-dark !default;
+$background3-dark: $hh-border-color-strong-dark !default;
+$text-color-accent-contrast: $hh-accent-contrast !default;
+$text-color-primary-contrast: $hh-primary-contrast !default;
+$text-color-secondary-contrast: $hh-secondary-contrast !default;
+$text-color-info-contrast: $hh-info-contrast !default;
+$text-color-success-contrast: $hh-success-contrast !default;
+$text-color-warning-contrast: $hh-warning-contrast !default;
+$text-color-danger-contrast: $hh-danger-contrast !default;
+$text-color-light-contrast: $hh-light-contrast !default;
+$text-color-dark-contrast: $hh-dark-contrast !default;

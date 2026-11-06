@@ -41,6 +41,43 @@ class ThemeHelper
     public const CSS_LAYERS = ['core', 'theme'];
 
     /**
+     * The color variables renamed in 1.20, former name => new name. A theme that sets a former name sets the new
+     * one, and reading a former name reads the new one (`Theme::variable()`). See `variables-deprecated.scss`.
+     *
+     * @since 1.20
+     * @deprecated since 1.20, for the transition of themes and modules
+     */
+    public const DEPRECATED_VARIABLES = [
+        'text-color-main' => 'body-color',
+        'text-color-highlight' => 'body-emphasis-color',
+        'text-color-secondary' => 'body-secondary-color',
+        'text-color-soft2' => 'body-tertiary-color',
+        'background-color-main' => 'body-bg',
+        'background-color-secondary' => 'body-tertiary-bg',
+        'background-color-page' => 'hh-page-bg',
+        'background-color-highlight-soft' => 'hh-accent-bg-soft',
+        'background3' => 'hh-border-color-strong',
+        'text-color-main-dark' => 'body-color-dark',
+        'text-color-highlight-dark' => 'body-emphasis-color-dark',
+        'text-color-secondary-dark' => 'body-secondary-color-dark',
+        'text-color-soft2-dark' => 'body-tertiary-color-dark',
+        'background-color-main-dark' => 'body-bg-dark',
+        'background-color-secondary-dark' => 'body-tertiary-bg-dark',
+        'background-color-page-dark' => 'hh-page-bg-dark',
+        'background-color-highlight-soft-dark' => 'hh-accent-bg-soft-dark',
+        'background3-dark' => 'hh-border-color-strong-dark',
+        'text-color-accent-contrast' => 'hh-accent-contrast',
+        'text-color-primary-contrast' => 'hh-primary-contrast',
+        'text-color-secondary-contrast' => 'hh-secondary-contrast',
+        'text-color-info-contrast' => 'hh-info-contrast',
+        'text-color-success-contrast' => 'hh-success-contrast',
+        'text-color-warning-contrast' => 'hh-warning-contrast',
+        'text-color-danger-contrast' => 'hh-danger-contrast',
+        'text-color-light-contrast' => 'hh-light-contrast',
+        'text-color-dark-contrast' => 'hh-dark-contrast',
+    ];
+
+    /**
      * @var Theme[] loaded themes
      */
     protected static $_themes = null;
@@ -177,7 +214,7 @@ class ThemeHelper
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
             $variables = ArrayHelper::merge(
                 $variables,
-                ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)),
+                static::renameDeprecatedVariables(ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme))),
             );
         }
 
@@ -187,10 +224,32 @@ class ThemeHelper
             [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
                 $settingsManager->get('themeCustomScss'),
             );
-            $variables = ArrayHelper::merge($variables, ScssHelper::parseVariables($customVariables));
+            $variables = ArrayHelper::merge(
+                $variables,
+                static::renameDeprecatedVariables(ScssHelper::parseVariables($customVariables)),
+            );
         }
 
         return ScssHelper::updateLinkedScssVariables($variables);
+    }
+
+    /**
+     * Sets the new name of a color variable renamed in 1.20 that a theme sets by its former name, unless the theme
+     * sets the new name too (see `variables-deprecated.scss`)
+     *
+     * @param array $variables the variables of one theme file, or of the custom SCSS
+     * @return array
+     * @since 1.20
+     */
+    protected static function renameDeprecatedVariables(array $variables): array
+    {
+        foreach (static::DEPRECATED_VARIABLES as $former => $new) {
+            if (isset($variables[$former]) && !isset($variables[$new])) {
+                $variables[$new] = $variables[$former];
+            }
+        }
+
+        return $variables;
     }
 
 
@@ -355,6 +414,7 @@ class ThemeHelper
                 $imports[] = $variablesFile;
             }
         }
+        $imports[] = Yii::getAlias('@humhub/resources/scss/variables-deprecated');
         $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
 

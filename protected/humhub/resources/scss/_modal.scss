@@ -23,7 +23,7 @@
 
         .modal-title {
             font-size: 20px;
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
 
             &, & strong {
                 font-weight: 600;
@@ -41,7 +41,7 @@
         .modal-content {
             box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
             border: none;
-            background-color: var(--hh-background-color-main);
+            background-color: var(--bs-body-bg);
             padding: var(--hh-modal-content-padding);
 
             .modal-header {

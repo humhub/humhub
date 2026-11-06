@@ -41,7 +41,25 @@ Lookup order for any view:
 
 `variables.scss` carries the Sass variables that drive the colour palette, spacing, typography, etc. Copy individual variables from `protected/humhub/resources/scss/variables.scss` into your theme's `variables.scss` and adjust them. Core variables carry the `!default` flag, and the theme's `variables.scss` is imported before the core one, so the theme's value wins.
 
-The colour variables are mirrored to CSS custom properties on `:root` (`--hh-*`, see `_root.scss`, and Bootstrap's `--bs-*`), so prefer the CSS form (`var(--hh-text-color-main)`) in your rules — it cooperates with runtime theme switching (e.g. dark mode).
+The colour variables are mirrored to CSS custom properties on `:root` (Bootstrap's `--bs-*` and HumHub's `--hh-*`, see [Design tokens](#design-tokens)), so prefer the CSS form (`var(--bs-body-color)`) in your rules — it cooperates with runtime theme switching (e.g. dark mode).
+
+## Design tokens
+
+The colours come in three levels (see [Design tokens](concept-design-tokens.md)):
+
+| Level | What | Examples |
+|---|---|---|
+| Primitive | The Sass variables of `variables.scss`, set by a theme or the Appearance settings | `$accent`, `$body-bg`, `$hh-page-bg`, `$body-color-dark` |
+| Semantic | CSS variables naming what a colour is for: Bootstrap's, and HumHub's where Bootstrap has none | `--bs-body-color`, `--bs-secondary-color`, `--bs-body-bg`, `--bs-border-color`, `--hh-page-bg` |
+| Component | The variables of one component, referring to semantic tokens | `--bs-btn-hover-bg`, `$dropdown-link-hover-bg`, `$data-table-hover-bg` |
+
+- A theme sets the primitives. A colour variable has the name of its token: `$body-bg` becomes `--bs-body-bg`, `$hh-page-bg` becomes `--hh-page-bg`. A `$hh-*` variable is HumHub's, any other one Bootstrap's.
+- `--bs-body-bg` is the surface (panels, cards, dropdowns, fields), as in Bootstrap; the page behind is `--hh-page-bg`.
+- A rule uses a semantic or component token, not a literal colour: a colour mode (`data-bs-theme="dark"`) redefines the semantic tokens only, and everything that refers to them follows. Stylelint rejects hex colours and `darken()`/`lighten()` in the core partials. A colour that is right in every mode (white on a coloured badge, a shadow) may stay literal.
+- A shade of a token is a `color-mix()` of tokens: e.g. `color-mix(in srgb, var(--bs-emphasis-color) 5%, var(--bs-tertiary-bg))` is a little darker in the light mode and a little lighter in the dark one.
+- The dark values are the `*-dark` Sass variables. A theme enables the dark mode by setting `data-bs-theme="dark"` on `<html>` (or on an element, for a part of the page).
+
+Which token to use for what: [Colours](../ui/colours.md), also listing the replacements of the tokens deprecated in 1.20.
 
 Variables are also accessible in PHP via the theme component, mainly useful in mail templates where CSS variables are not supported:
 
@@ -68,7 +86,7 @@ A later layer wins against an earlier one whatever the specificity of the select
 ```scss
 // scss/build.scss of the theme: wins against `#topbar-first .nav > li > a` of the core
 .topbar a {
-    color: var(--hh-text-color-main);
+    color: var(--bs-body-color);
 }
 ```
 

@@ -11,8 +11,8 @@ $item-browser-gap: $spacer * .5 !default;
 $item-browser-hover-bg: var(--bs-secondary-bg) !default;
 $item-browser-selected-bg: rgba(var(--bs-accent-rgb), .1) !default;
 $item-browser-accent: var(--bs-accent) !default;
-$item-browser-muted: var(--hh-text-color-secondary) !default;
-$item-browser-strong: var(--hh-text-color-highlight) !default;
+$item-browser-muted: var(--bs-secondary-color) !default;
+$item-browser-strong: var(--bs-emphasis-color) !default;
 $item-browser-focus-ring: 0 0 0 3px rgba(var(--bs-accent-rgb), .32) !default;
 $item-browser-focus-ring-inset: inset 0 0 0 2px rgba(var(--bs-accent-rgb), .5) !default;
 
@@ -495,7 +495,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
         max-width: 100%;
         padding: $spacer * .5 $spacer * .75;
         border-radius: var(--bs-border-radius);
-        background: var(--hh-background-color-main);
+        background: var(--bs-body-bg);
         color: $item-browser-accent;
         font-weight: $font-weight-semibold;
 

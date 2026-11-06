@@ -74,9 +74,9 @@ $entity-grid-box-shadow-dark: $page-header-box-shadow-dark !default;
         grid-column: 1 / -1;
         padding: $spacer * 2 $spacer;
         border-radius: var(--bs-border-radius-lg);
-        background: var(--hh-background-color-main);
+        background: var(--bs-body-bg);
         box-shadow: var(--hh-surface-shadow);
-        color: var(--hh-text-color-default);
+        color: var(--bs-body-color);
         text-align: center;
     }
 

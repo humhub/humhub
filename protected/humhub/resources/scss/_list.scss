@@ -13,13 +13,13 @@
 
         > div:not(.stream-end), > a:not(.stream-end) {
             padding: 10px;
-            border-bottom: 1px solid var(--hh-background-color-page);
+            border-bottom: 1px solid var(--bs-secondary-bg);
             position: relative;
-            border-left: 3px solid var(--hh-background-color-main);
+            border-left: 3px solid var(--bs-body-bg);
 
             &:hover,
             &.selected {
-                background-color: var(--hh-background-color-secondary);
+                background-color: var(--bs-tertiary-bg);
                 border-left: 3px solid var(--bs-accent);
             }
 
@@ -27,15 +27,15 @@
             // that merely happens to be rendered inside a row, not to the row - it keeps the
             // menu's own colours (`_dropdown.scss`).
             &, a:not(.dropdown-item) {
-                color: var(--hh-text-color-main);
+                color: var(--bs-body-color);
             }
 
             &.new {
                 border-left: 3px solid var(--bs-accent);
-                background-color: var(--hh-background-color-highlight);
+                background-color: var(--bs-accent-bg-subtle);
 
                 &:hover {
-                    background-color: var(--hh-background-color-highlight-soft);
+                    background-color: var(--hh-accent-bg-soft);
                 }
             }
 
@@ -46,14 +46,14 @@
 
             &.placeholder:hover {
                 background: none;
-                border-left: 3px solid var(--hh-background-color-main);
+                border-left: 3px solid var(--bs-body-bg);
             }
 
             // TODO: move to Enterprise Theme module
             .badge-space-type {
-                background-color: var(--hh-background-color-secondary);
-                border: 1px solid var(--hh-background3);
-                color: var(--hh-background4);
+                background-color: var(--bs-tertiary-bg);
+                border: 1px solid var(--hh-border-color-strong);
+                color: var(--bs-tertiary-color);
                 padding: 3px 3px 2px 3px;
             }
 
@@ -66,12 +66,12 @@
             h4 {
                 font-size: 14px;
                 font-weight: 500;
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
 
                 small,
                 small a {
                     font-size: 11px;
-                    color: var(--hh-text-color-soft);
+                    color: var(--bs-body-color);
                 }
 
                 .content {
@@ -80,7 +80,7 @@
             }
 
             h5 {
-                color: var(--hh-text-color-soft2);
+                color: var(--bs-tertiary-color);
                 font-weight: 300;
                 margin-top: 5px;
                 margin-bottom: 5px;
@@ -92,12 +92,12 @@
             }
 
             strong {
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
             }
 
             .time {
                 font-size: 11px;
-                color: var(--hh-text-color-soft);
+                color: var(--bs-body-color);
             }
 
             .module-controls {
@@ -105,7 +105,7 @@
             }
 
             .content .files a {
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
             }
         }
     }

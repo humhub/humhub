@@ -40,7 +40,7 @@
                         left: 0;
 
                         &:focus {
-                            border-color: var(--hh-background3);
+                            border-color: var(--hh-border-color-strong);
 
                             &:checked {
                                 border-color: var(--bs-accent);
@@ -93,11 +93,11 @@
 
         .wall-entry-header {
 
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
             position: relative;
             padding-bottom: $wallEntryInnerPadding;
             margin-bottom: $wallEntryInnerPadding;
-            border-bottom: 1px solid var(--hh-background-color-page);
+            border-bottom: 1px solid var(--bs-secondary-bg);
 
             .img-space {
                 top: 25px;
@@ -131,8 +131,8 @@
                     font-size: 2.39em;
                     margin-top: 5px;
 
-                    @if contrast-ratio($background-color-main, $accent) < $min-contrast-ratio {
-                        color: var(--hh-text-color-main);
+                    @if contrast-ratio($body-bg, $accent) < $min-contrast-ratio {
+                        color: var(--bs-body-color);
                     } @else {
                         color: var(--bs-accent);
                     }
@@ -235,7 +235,7 @@
                 font-size: 13px;
 
                 i {
-                    color: var(--hh-text-color-soft);
+                    color: var(--bs-body-color);
                     padding-left: 4px;
                     padding-right: 4px;
                 }
@@ -244,11 +244,11 @@
         }
 
         h5 {
-            color: var(--hh-text-color-soft);
+            color: var(--bs-body-color);
             font-size: 12px;
 
             a .time {
-                color: var(--hh-text-color-soft);
+                color: var(--bs-body-color);
                 font-size: 12px;
                 white-space: nowrap;
             }
@@ -313,7 +313,7 @@
         font-size: 12px; // below the 13px of the content text
 
         a {
-            color: var(--hh-text-color-soft);
+            color: var(--bs-body-color);
             transition: color 0.3s;
 
             // `.link` too, so the generic icon gap of `a.link` does not win over this one
@@ -337,13 +337,13 @@
 
         .wall-stream-filter-head {
             padding: 5px 5px 10px 5px;
-            border-bottom: 1px solid var(--hh-background3);
+            border-bottom: 1px solid var(--hh-border-color-strong);
         }
 
         .wall-stream-filter-body {
             overflow: hidden;
-            background-color: var(--hh-background-color-secondary);
-            border: 1px solid var(--hh-background3);
+            background-color: var(--bs-tertiary-bg);
+            border: 1px solid var(--hh-border-color-strong);
             border-top: 0;
             border-radius: 0 0 4px 4px;
         }
@@ -368,11 +368,11 @@
             .badge {
                 height: 18px;
                 padding-top: 4px;
-                background-color: var(--hh-background-color-main);
+                background-color: var(--bs-body-bg);
             }
 
             .btn, .badge {
-                box-shadow: 0 0 2px var(--hh-text-color-secondary);
+                box-shadow: 0 0 2px var(--bs-secondary-color);
             }
         }
     }
@@ -432,7 +432,7 @@
         }
 
         .filter-panel + .filter-panel {
-            border-left: 2px solid var(--hh-background-color-page);
+            border-left: 2px solid var(--bs-secondary-bg);
         }
     }
 
@@ -449,10 +449,10 @@
 
         a {
             display: inline-block;
-            background-color: var(--hh-background-color-main);
+            background-color: var(--bs-body-bg);
             padding: 5px;
             border-radius: 0 0 4px 4px;
-            border: 1px solid var(--hh-background3);
+            border: 1px solid var(--hh-border-color-strong);
             font-size: 11px;
 
             &:focus-visible {

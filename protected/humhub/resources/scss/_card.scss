@@ -8,7 +8,7 @@
 $content-card-border-radius: $border-radius-lg !default;
 $content-card-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $content-card-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
-$content-card-bg: var(--hh-background-color-main) !default;
+$content-card-bg: var(--bs-body-bg) !default;
 $content-card-header-gap: $spacer * .5 !default;
 // The header's padding: as much space above the title as in the page header, and with the body's
 // padding 1.5rem between title and content
@@ -72,7 +72,7 @@ $content-card-margin-bottom: 15px !default; // the margin of the `.panel` it rep
 
     .content-card > .card-header .card-title {
         margin: 0;
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-size: $content-card-title-font-size;
         font-weight: $content-card-title-font-weight;
         line-height: $headings-line-height;
@@ -97,7 +97,7 @@ $content-card-margin-bottom: 15px !default; // the margin of the `.panel` it rep
     // A section of the card's content; `:where()` keeps it below the styles of rich text
     :where(.content-card > .card-body) h3:not(.accordion-header) {
         margin: 0 0 $content-card-section-title-margin-bottom;
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-size: $content-card-section-title-font-size;
         font-weight: $content-card-section-title-font-weight;
         line-height: $headings-line-height;

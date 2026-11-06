@@ -40,7 +40,7 @@ class Image extends BaseImage
         if ($this->space->color != null) {
             $color = Html::encode($this->space->color);
         } else {
-            $color = 'var(--hh-background3)';
+            $color = 'var(--hh-border-color-strong)';
         }
 
         if (!isset($this->htmlOptions['class'])) {

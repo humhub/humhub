@@ -5,7 +5,7 @@
 @if not $prev-login {
     .login-container {
         background-color: var(--bs-primary);
-        background-image: linear-gradient(to right, $primary 0%, lighten($primary, 10%) 50%, lighten($primary, 10%) 100%), linear-gradient(to right, lighten($primary, 5%) 0%, lighten($primary, 25%) 51%, lighten($primary, 20%) 100%);
+        background-image: linear-gradient(to right, var(--bs-primary) 0%, color-mix(in srgb, var(--bs-primary), white 15%) 50%, color-mix(in srgb, var(--bs-primary), white 15%) 100%), linear-gradient(to right, color-mix(in srgb, var(--bs-primary), white 8%) 0%, color-mix(in srgb, var(--bs-primary), white 38%) 51%, color-mix(in srgb, var(--bs-primary), white 30%) 100%);
         background-size: 100% 100%;
         position: relative;
         padding-top: 40px;
@@ -33,7 +33,7 @@
         }
 
         .panel {
-            box-shadow: 0 0 15px #627d92;
+            box-shadow: 0 0 15px color-mix(in srgb, var(--bs-primary), white 20%);
 
             .panel-heading,
             .panel-body {
@@ -42,12 +42,12 @@
 
             h1,
             h2 {
-                color: var(--hh-text-color-main);
+                color: var(--bs-body-color);
             }
         }
 
         select {
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
         }
 
         .container {
@@ -145,7 +145,7 @@
 
             &.active {
                 background-color: transparent;
-                color: var(--hh-text-color-main);
+                color: var(--bs-body-color);
                 border-left-color: var(--bs-primary);
                 font-weight: 500;
             }
@@ -153,7 +153,7 @@
             &:hover:not(.active),
             &:focus:not(.active) {
                 background-color: color-mix(in srgb, var(--bs-link-color) 8%, transparent);
-                color: var(--hh-text-color-main);
+                color: var(--bs-body-color);
             }
         }
     }

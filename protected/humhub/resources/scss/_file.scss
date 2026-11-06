@@ -3,7 +3,7 @@
 // --------------------------------------------------
 
 $file-version-gap: $spacer * .5 !default;
-$file-version-meta-color: var(--hh-text-color-secondary) !default;
+$file-version-meta-color: var(--bs-secondary-color) !default;
 $file-version-meta-font-size: $font-size-sm !default;
 
 @if not $prev-file {
@@ -68,7 +68,7 @@ $file-version-meta-font-size: $font-size-sm !default;
         video {
             max-height: 576px;
             max-width: 1024px;
-            background-color: var(--bs-body-bg);
+            background-color: var(--bs-secondary-bg);
         }
 
         .col-12 img { // One image
@@ -174,7 +174,7 @@ $file-version-meta-font-size: $font-size-sm !default;
             width: 100%;
             height: 100%;
             padding: 20px;
-            background: #f8f8f8;
+            background: var(--bs-tertiary-bg);
         }
     }
 
@@ -248,7 +248,7 @@ $file-version-meta-font-size: $font-size-sm !default;
     }
 
     .file-version-title {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         overflow-wrap: anywhere;
 
         > .badge {

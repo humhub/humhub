@@ -51,12 +51,12 @@ $form-choice-border-radius: 4px !default;
 
     // Border, padding and focus come from Bootstrap's `$input-*` variables (variables.scss)
     %form-control-base {
-        background-color: var(--hh-background-color-main);
+        background-color: var(--bs-body-bg);
         font-size: 14px;
 
         &:focus {
             outline: 0;
-            background-color: var(--hh-background-color-main);
+            background-color: var(--bs-body-bg);
         }
 
         &[readonly] {
@@ -85,7 +85,7 @@ $form-choice-border-radius: 4px !default;
         &:before {
             font: 14px 'tabler-icons';
             content: "\eb1c"; /* Tabler search */
-            color: var(--hh-background-color-page);
+            color: var(--bs-secondary-bg);
             position: absolute;
             top: 10px;
             left: 13px;
@@ -107,10 +107,10 @@ $form-choice-border-radius: 4px !default;
         overflow: hidden;
     }
 
-    // Placeholder text (`--hh-placeholder-color`, also a select's "nothing chosen", _picker.scss)
+    // Placeholder text (Bootstrap's `$input-placeholder-color`, also a select's "nothing chosen", _picker.scss)
 
     ::placeholder {
-        color: var(--hh-placeholder-color) !important;
+        color: $input-placeholder-color !important;
     }
 
     /* hide native password reveal icons */
@@ -121,14 +121,14 @@ $form-choice-border-radius: 4px !default;
     // Placeholder text for empty content
     .placeholder {
         padding: 10px;
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
     }
 
     // HTML5 Placeholder jQuery Plugin
     input.placeholder,
     textarea.placeholder {
         padding: 0 0 0 10px;
-        color: var(--hh-placeholder-color);
+        color: $input-placeholder-color;
     }
 
     .invalid-feedback {
@@ -136,7 +136,7 @@ $form-choice-border-radius: 4px !default;
     }
 
     .form-text, .text-body-secondary {
-        color: var(--hh-text-color-soft);
+        color: var(--bs-body-color);
         font-size: 13px;
     }
 
@@ -146,12 +146,12 @@ $form-choice-border-radius: 4px !default;
     }
 
     .hint-block {
-        color: var(--hh-text-color-soft2);
+        color: var(--bs-tertiary-color);
         font-size: 12px;
     }
 
     .hint-block:hover {
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
         font-size: 12px;
     }
 
@@ -188,8 +188,8 @@ $form-choice-border-radius: 4px !default;
         padding: 0;
         margin: 0 6px 0 0;
         vertical-align: middle;
-        background: var(--hh-background-color-main);
-        border: 2px solid var(--hh-background3);
+        background: var(--bs-body-bg);
+        border: 2px solid var(--hh-border-color-strong);
         border-radius: $form-choice-border-radius;
         cursor: pointer;
     }
@@ -219,8 +219,7 @@ $form-choice-border-radius: 4px !default;
         border-radius: 50%;
 
         &:checked {
-            border: 2px solid var(--hh-background3);
-            color: #99a1a7;
+            border: 2px solid var(--hh-border-color-strong);
 
             &::after {
                 content: ' ';
@@ -237,14 +236,14 @@ $form-choice-border-radius: 4px !default;
 
     // The states in this order instead of `!important`: the focus above a ticked checkbox, disabled above both
     input[type=checkbox]:focus {
-        border: 2px solid var(--hh-text-color-highlight);
+        border: 2px solid var(--bs-emphasis-color);
         outline: none;
     }
 
     input[type=checkbox], input[type=radio] {
         &:disabled {
-            background: var(--hh-background3);
-            border: 2px solid var(--hh-background3);
+            background: var(--hh-border-color-strong);
+            border: 2px solid var(--hh-border-color-strong);
             cursor: not-allowed;
         }
     }
@@ -262,7 +261,7 @@ $form-choice-border-radius: 4px !default;
         padding: 0;
         border: $form-check-input-border;
         border-radius: $form-switch-border-radius;
-        background: var(--bs-body-bg) var(--bs-form-switch-bg) left center / contain no-repeat;
+        background: var(--bs-secondary-bg) var(--bs-form-switch-bg) left center / contain no-repeat;
         @include transition($form-switch-transition);
 
         // Before `:checked`, whose knob wins
@@ -315,7 +314,7 @@ $form-choice-border-radius: 4px !default;
         padding: $spacer * .75 $spacer;
         border: var(--bs-border-width) solid var(--bs-border-color);
         border-radius: var(--bs-border-radius);
-        background: var(--hh-background-color-main);
+        background: var(--bs-body-bg);
         font-weight: $font-weight-normal; // not the bold of a HumHub `label`
         cursor: pointer;
 
@@ -331,7 +330,7 @@ $form-choice-border-radius: 4px !default;
         &:has(.form-check-input:checked) {
             border-color: var(--bs-accent);
             box-shadow: inset 0 0 0 1px var(--bs-accent);
-            background: var(--hh-background-color-highlight-soft);
+            background: var(--hh-accent-bg-soft);
         }
 
         &:has(.form-check-input:disabled) {
@@ -359,12 +358,12 @@ $form-choice-border-radius: 4px !default;
     }
 
     .form-check-card-title {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-weight: $font-weight-semibold;
     }
 
     .form-check-card-text {
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
         font-size: $font-size-sm;
     }
 
@@ -413,7 +412,7 @@ $form-choice-border-radius: 4px !default;
             text-align: center;
             font-size: 12px;
             border-radius: 3px;
-            background: var(--hh-background-color-main);
+            background: var(--bs-body-bg);
             box-shadow: none;
             margin: 0 !important;
             white-space: nowrap;
@@ -509,7 +508,7 @@ $form-choice-border-radius: 4px !default;
 
         // Like `.accordion-title` of the notification settings
         .accordion-button {
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
             font-weight: $font-weight-semibold;
             cursor: pointer;
 
@@ -582,18 +581,18 @@ $form-choice-border-radius: 4px !default;
             }
 
             .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
-                background: var(--hh-background-color-page);
-                color: var(--hh-text-color-default);
-                border-color: var(--hh-background-color-page);
+                background: var(--bs-secondary-bg);
+                color: var(--bs-body-color);
+                border-color: var(--bs-secondary-bg);
 
                 &:hover, &:focus {
-                    background: var(--hh-background3);
-                    border-color: var(--hh-background3);
+                    background: var(--hh-border-color-strong);
+                    border-color: var(--hh-border-color-strong);
                 }
 
                 &:active, &.active {
-                    background: var(--hh-background4);
-                    border-color: var(--hh-background4);
+                    background: color-mix(in srgb, var(--bs-emphasis-color) 30%, var(--bs-body-bg)); // #b3b3b3 on white
+                    border-color: color-mix(in srgb, var(--bs-emphasis-color) 30%, var(--bs-body-bg));
                 }
             }
 

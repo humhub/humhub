@@ -154,7 +154,7 @@
 
         .modal-body {
             padding: 0;
-            color: var(--hh-text-color-default);
+            color: var(--bs-body-color);
             font-size: 14px;
             line-height: 22px;
         }
@@ -179,7 +179,7 @@
         margin: 0;
 
         b {
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
             font-weight: 600;
         }
     }
@@ -239,20 +239,20 @@
     }
 
     .install-dialog-name {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-weight: 600;
         overflow-wrap: anywhere;
     }
 
     .install-dialog-version {
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
     }
 
     .install-dialog-checkout {
-        --bs-btn-color: var(--hh-text-color-highlight);
+        --bs-btn-color: var(--bs-emphasis-color);
         --bs-btn-bg: transparent;
         --bs-btn-border-color: transparent;
-        --bs-btn-hover-color: var(--hh-text-color-highlight);
+        --bs-btn-hover-color: var(--bs-emphasis-color);
         --bs-btn-hover-bg: var(--bs-secondary-bg);
         --bs-btn-hover-border-color: transparent;
         --bs-btn-active-bg: var(--bs-secondary-bg);
@@ -303,13 +303,13 @@
     .marketplace-settings-empty {
         margin: 0;
         padding: 16px 0;
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
         text-align: center;
     }
 
     .marketplace-settings-installation {
         margin: 0;
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
         font-size: 12px;
         line-height: 18px;
         text-align: center;
@@ -321,7 +321,7 @@
         align-items: center;
         gap: 6px;
         align-self: flex-start;
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-weight: 600;
         text-decoration: none;
 
@@ -390,12 +390,12 @@
     }
 
     .licence-list-name {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-weight: 600;
     }
 
     .licence-list-key {
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
         font-size: 12px;
         font-weight: 500;
         line-height: 18px;
@@ -415,7 +415,7 @@
         padding: 8px;
         border: 1px dashed var(--bs-border-color);
         border-radius: 6px;
-        background: var(--hh-background-color-secondary);
+        background: var(--bs-tertiary-bg);
 
         .form-check {
             margin: 0;
@@ -423,14 +423,14 @@
     }
 
     .marketplace-setting-title {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-weight: 600;
         cursor: pointer;
     }
 
     .marketplace-setting-hint {
         margin-top: 0;
-        color: var(--hh-text-color-default);
+        color: var(--bs-body-color);
     }
 
     .marketplace-setting-more {

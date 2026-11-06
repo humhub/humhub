@@ -254,7 +254,7 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
     // container than the filter's followed by that container's name.
     .topic-filter-star {
         display: block;
-        color: var(--hh-text-color-soft);
+        color: var(--bs-body-color);
         font-size: $filter-bar-icon-size;
         line-height: 1;
     }
@@ -269,7 +269,7 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
         flex: 0 1 auto;
         min-width: 0;
         overflow: hidden;
-        color: var(--hh-text-color-soft);
+        color: var(--bs-body-color);
         font-size: $font-size-sm;
         text-overflow: ellipsis;
         white-space: nowrap;

@@ -7,9 +7,9 @@
 $nav-pills-gap: $spacer * .5 !default;
 $nav-pills-font-weight: $font-weight-medium !default;
 $nav-pills-color: var(--bs-body-color) !default;
-$nav-pills-hover-color: var(--hh-text-color-highlight) !default;
+$nav-pills-hover-color: var(--bs-emphasis-color) !default;
 $nav-pills-hover-bg: var(--bs-tertiary-bg) !default;
-$nav-pills-active-color: var(--hh-text-color-highlight) !default;
+$nav-pills-active-color: var(--bs-emphasis-color) !default;
 $nav-pills-active-bg: var(--bs-secondary-bg) !default;
 $nav-pills-border-width: 2px !default;
 $nav-pills-border-color: var(--bs-border-color) !default;
@@ -110,12 +110,12 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         .nav-link {
             &:hover,
             &:focus {
-                background-color: var(--hh-background-color-secondary);
+                background-color: var(--bs-tertiary-bg);
                 border-bottom-color: var(--bs-nav-tabs-border-color);
             }
 
             &.active {
-                background-color: var(--hh-background-color-main);
+                background-color: var(--bs-body-bg);
                 border-bottom-color: transparent;
             }
         }
@@ -123,7 +123,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     .tab-menu {
         padding-top: 10px;
-        background-color: var(--hh-background-color-main);
+        background-color: var(--bs-body-bg);
 
         .nav-tabs {
             padding-left: 10px;
@@ -132,7 +132,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 padding-top: 12px;
                 border-color: var(--bs-nav-tabs-border-color);
                 border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
-                background-color: var(--hh-background-color-secondary);
+                background-color: var(--bs-tertiary-bg);
                 max-height: 41px;
                 outline: none;
 
@@ -143,13 +143,13 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 }
 
                 &:hover {
-                    background-color: var(--hh-background-color-secondary);
+                    background-color: var(--bs-tertiary-bg);
                 }
 
                 &.active {
                     padding-top: 10px;
                     border-top: 3px solid var(--bs-accent);
-                    background-color: var(--hh-background-color-main);
+                    background-color: var(--bs-body-bg);
                     border-bottom-color: transparent;
                 }
             }
@@ -158,7 +158,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     ul.tab-menu {
         padding-top: 10px;
-        background-color: var(--hh-background-color-main);
+        background-color: var(--bs-body-bg);
 
         padding-left: 10px;
     }
@@ -168,7 +168,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             padding-top: 12px;
             border-color: var(--bs-nav-tabs-border-color);
             border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
-            background-color: var(--hh-background-color-secondary);
+            background-color: var(--bs-tertiary-bg);
             max-height: 41px;
             outline: none;
 
@@ -179,13 +179,13 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             }
 
             &:hover {
-                background-color: var(--hh-background-color-secondary);
+                background-color: var(--bs-tertiary-bg);
             }
 
             &.active {
                 padding-top: 10px;
                 border-top: 3px solid var(--bs-accent) !important;
-                background-color: var(--hh-background-color-main);
+                background-color: var(--bs-body-bg);
                 border-bottom-color: transparent !important;
             }
         }
@@ -224,7 +224,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             &:focus-visible,
             &.show {
                 background-color: var(--bs-secondary-bg);
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
             }
 
             // The dots replace Bootstrap's caret
@@ -277,14 +277,14 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 &,
                 &[data-bs-toggle] {
                     margin-right: 2px;
-                    color: var(--hh-text-color-main);
+                    color: var(--bs-body-color);
                 }
 
                 &.active,
                 &:hover,
                 &:focus {
                     border-bottom-color: transparent;
-                    color: var(--hh-text-color-highlight);
+                    color: var(--bs-emphasis-color);
                 }
             }
         }
@@ -307,28 +307,28 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     .nav .caret,
     .nav .caret:hover,
     .nav .caret:active {
-        border-top-color: var(--hh-text-color-highlight);
-        border-bottom-color: var(--hh-text-color-highlight);
+        border-top-color: var(--bs-emphasis-color);
+        border-bottom-color: var(--bs-emphasis-color);
         height: 6.928px;
     }
 
     .nav li.dropdown > a:hover .caret,
     .nav li.dropdown > a:active .caret {
-        border-top-color: var(--hh-text-color-highlight);
-        border-bottom-color: var(--hh-text-color-highlight);
+        border-top-color: var(--bs-emphasis-color);
+        border-bottom-color: var(--bs-emphasis-color);
     }
 
     .nav .open > a .caret,
     .nav .open > a:hover .caret,
     .nav .open > a:focus .caret {
-        border-top-color: var(--hh-text-color-highlight);
-        border-bottom-color: var(--hh-text-color-highlight);
+        border-top-color: var(--bs-emphasis-color);
+        border-bottom-color: var(--bs-emphasis-color);
     }
 
     .nav .open > a,
     .nav .open > a:hover,
     .nav .open > a:focus {
-        border-color: #ededed;
+        border-color: var(--bs-secondary-bg);
     }
 
     .footer-nav {
@@ -364,14 +364,14 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 position: relative;
 
                 &, &.active {
-                    color: #7A7A7A;
-                    background: var(--hh-background-color-main);
-                    border-color: var(--hh-background-color-main);
+                    color: var(--bs-secondary-color);
+                    background: var(--bs-body-bg);
+                    border-color: var(--bs-body-bg);
                 }
 
                 &:hover, &.active {
                     z-index: 1;
-                    color: var(--hh-text-color-default);
+                    color: var(--bs-body-color);
                 }
             }
         }
@@ -387,12 +387,12 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
             > i {
                 border-radius: 4px 4px 0 0;
-                background: var(--hh-background-color-main);
+                background: var(--bs-body-bg);
                 padding: 10px 15px 11px;
                 font-size: 18px;
 
                 &:hover {
-                    color: #333;
+                    color: color-mix(in srgb, var(--bs-emphasis-color) 80%, var(--bs-body-bg)); // #333 on white
                 }
             }
         }

@@ -11,7 +11,7 @@
     .people-card-detail {
         margin: 0;
         overflow: hidden;
-        color: var(--hh-text-color-default);
+        color: var(--bs-body-color);
         font-size: 14px;
         line-height: 22px;
         text-overflow: ellipsis;
@@ -20,7 +20,7 @@
 
     // The HTML block of the details template wraps instead of cutting each line
     .people-card-details {
-        color: var(--hh-text-color-default);
+        color: var(--bs-body-color);
         font-size: 14px;
         line-height: 22px;
         overflow-wrap: anywhere;

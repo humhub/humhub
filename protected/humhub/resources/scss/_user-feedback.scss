@@ -8,39 +8,21 @@
     // --------------------------------------------------
     // Highlight
     .highlight {
-        background-color: var(--hh-background-color-highlight);
+        background-color: var(--bs-accent-bg-subtle);
     }
 
     //
-    // Bootstrap Alert panels
+    // Alerts: Bootstrap's variants (`.alert-success`, ...) and a neutral one
     // --------------------------------------------------
     .alert-default {
-        color: var(--hh-text-color-highlight);
-        background-color: var(--hh-background-color-secondary);
-        border-color: var(--hh-background-color-page);
+        color: var(--bs-emphasis-color);
+        background-color: var(--bs-tertiary-bg);
+        border-color: var(--bs-secondary-bg);
         font-size: 13px;
 
         .info {
             margin: 10px 0;
         }
-    }
-
-    .alert-success {
-        color: var(--hh-text-color-success);
-        background-color: var(--hh-background-color-success);
-        border-color: var(--hh-border-color-success);
-    }
-
-    .alert-warning {
-        color: var(--hh-text-color-warning);
-        background-color: var(--hh-background-color-warning);
-        border-color: var(--hh-border-color-warning);
-    }
-
-    .alert-danger {
-        color: var(--hh-text-color-danger);
-        background-color: var(--hh-background-color-danger);
-        border-color: var(--hh-border-color-danger);
     }
 
     //

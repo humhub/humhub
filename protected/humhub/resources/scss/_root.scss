@@ -1,54 +1,90 @@
 //
-// CSS Variables
+// CSS Variables: the design tokens
 // @since 1.14.0
+//
+// Three levels (see docs/develop/concept-design-tokens.md and docs/ui/colours.md):
+// 1. Primitive: the Sass variables (variables.scss), e.g. `$accent`, `$body-bg` or `$hh-page-bg`. A theme or the
+//    appearance settings change them; the CSS only sees their compiled values.
+// 2. Semantic: what a color is for. Bootstrap's (`--bs-body-color`, `--bs-body-bg`, `--bs-border-color`, ...) and,
+//    for roles Bootstrap lacks, the `--hh-*` ones below. A color mode (`[data-bs-theme]`) redefines only these, so
+//    does a future contrast mode.
+// 3. Component: the variables of a component (`--bs-btn-*`, `$dropdown-link-hover-bg`, ...). They refer to
+//    semantic tokens, never to a literal color.
 // --------------------------------------------------
 
+// @deprecated since 1.20, the former tokens: aliases of their replacements (docs/ui/colours.md). Not used by the core.
+// Declared again in each color mode, because a custom property computes its `var()` where it is declared.
+@mixin hh-deprecated-tokens {
+    --hh-text-color-main: var(--bs-body-color);
+    --hh-text-color-highlight: var(--bs-emphasis-color);
+    --hh-text-color-secondary: var(--bs-secondary-color);
+    --hh-text-color-soft: var(--bs-body-color);
+    --hh-text-color-soft2: var(--bs-tertiary-color);
+    --hh-background-color-main: var(--bs-body-bg);
+    --hh-background-color-page: var(--hh-page-bg);
+    --hh-background-color-secondary: var(--bs-tertiary-bg);
+    --hh-background-color-highlight: var(--bs-accent-bg-subtle);
+    --hh-background-color-highlight-soft: var(--hh-accent-bg-soft);
+    --hh-background3: var(--hh-border-color-strong);
+    --hh-text-color-contrast: var(--hh-primary-contrast);
+    --hh-text-color-default: var(--bs-body-color);
+    --hh-text-color-soft3: var(--bs-tertiary-color);
+    --hh-background4: var(--bs-tertiary-color);
+    --hh-background-color-success: var(--bs-success-bg-subtle);
+    --hh-text-color-success: var(--bs-success-text-emphasis);
+    --hh-border-color-success: var(--bs-success-border-subtle);
+    --hh-background-color-warning: var(--bs-warning-bg-subtle);
+    --hh-text-color-warning: var(--bs-warning-text-emphasis);
+    --hh-border-color-warning: var(--bs-warning-border-subtle);
+    --hh-background-color-danger: var(--bs-danger-bg-subtle);
+    --hh-text-color-danger: var(--bs-danger-text-emphasis);
+    --hh-border-color-danger: var(--bs-danger-border-subtle);
+
+    // @deprecated since 1.18
+    --primary: var(--bs-primary);
+    --accent: var(--bs-accent);
+    --info: var(--bs-info);
+    --success: var(--bs-success);
+    --warning: var(--bs-warning);
+    --danger: var(--bs-danger);
+    --link: var(--bs-link-color);
+    --default: var(--bs-light);
+    --text-color-main: var(--hh-text-color-main);
+    --text-color-default: var(--hh-text-color-default);
+    --text-color-secondary: var(--hh-text-color-secondary);
+    --text-color-highlight: var(--hh-text-color-highlight);
+    --text-color-soft: var(--hh-text-color-soft);
+    --text-color-soft2: var(--hh-text-color-soft2);
+    --text-color-soft3: var(--hh-text-color-soft3);
+    --background-color-main: var(--hh-background-color-main);
+    --background-color-secondary: var(--hh-background-color-secondary);
+    --background-color-page: var(--hh-background-color-page);
+    --background-color-highlight: var(--hh-background-color-highlight);
+    --background3: var(--hh-background3);
+    --background-color-warning: var(--hh-background-color-warning);
+    --text-color-contrast: var(--hh-text-color-contrast);
+}
+
 :root {
-    // Text colors
-    --hh-text-color-main: #{$text-color-main};
-    --hh-text-color-default: #{$text-color-default};
-    --hh-text-color-secondary: #{$text-color-secondary};
-    --hh-text-color-highlight: #{$text-color-highlight};
-    --hh-text-color-soft: #{$text-color-soft};
-    --hh-text-color-soft2: #{$text-color-soft2};
-    --hh-text-color-soft3: #{$text-color-soft3};
-    // Every field's placeholder: a text field's `::placeholder` and a select's "nothing chosen"
-    // (a reference, so the dark mode follows)
-    --hh-placeholder-color: var(--hh-text-color-secondary);
+    // The page, behind the surfaces (`--bs-body-bg`)
+    --hh-page-bg: #{$hh-page-bg};
+    // The border of a control (checkbox, radio, switch), a neutral placeholder fill
+    --hh-border-color-strong: #{$hh-border-color-strong};
+    // A lighter selection than `--bs-accent-bg-subtle`: a checked choice, a hovered new item
+    --hh-accent-bg-soft: #{$hh-accent-bg-soft};
+    // Inline code
+    --hh-code-bg: #{$hh-code-bg};
 
-    // Background colors
-    --hh-background-color-main: #{$background-color-main};
-    --hh-background-color-secondary: #{$background-color-secondary};
-    --hh-background-color-page: #{$background-color-page};
-    --hh-background-color-highlight: #{$background-color-highlight};
-    --hh-background-color-highlight-soft: #{$background-color-highlight-soft};
-    --hh-background3: #{$background3};
-    --hh-background4: #{$background4};
-
-    // Color contrast
-    --hh-accent-contrast: #{$text-color-accent-contrast};
-    --hh-primary-contrast: #{$text-color-primary-contrast};
-    --hh-secondary-contrast: #{$text-color-secondary-contrast};
-    --hh-info-contrast: #{$text-color-info-contrast};
-    --hh-success-contrast: #{$text-color-success-contrast};
-    --hh-warning-contrast: #{$text-color-warning-contrast};
-    --hh-danger-contrast: #{$text-color-danger-contrast};
-    --hh-light-contrast: #{$text-color-light-contrast};
-    --hh-dark-contrast: #{$text-color-dark-contrast};
-
-    // Bootstrap Alert boxes
-    // Success
-    --hh-background-color-success: #{$background-color-success};
-    --hh-text-color-success: #{$text-color-success};
-    --hh-border-color-success: #{$border-color-success};
-    // Warning
-    --hh-background-color-warning: #{$background-color-warning};
-    --hh-text-color-warning: #{$text-color-warning};
-    --hh-border-color-warning: #{$border-color-warning};
-    // Danger
-    --hh-background-color-danger: #{$background-color-danger};
-    --hh-text-color-danger: #{$text-color-danger};
-    --hh-border-color-danger: #{$border-color-danger};
+    // Text on a background in a theme color
+    --hh-accent-contrast: #{$hh-accent-contrast};
+    --hh-primary-contrast: #{$hh-primary-contrast};
+    --hh-secondary-contrast: #{$hh-secondary-contrast};
+    --hh-info-contrast: #{$hh-info-contrast};
+    --hh-success-contrast: #{$hh-success-contrast};
+    --hh-warning-contrast: #{$hh-warning-contrast};
+    --hh-danger-contrast: #{$hh-danger-contrast};
+    --hh-light-contrast: #{$hh-light-contrast};
+    --hh-dark-contrast: #{$hh-dark-contrast};
 
     // Fonts
     --hh-mail-font-family: #{$mail-font-family};
@@ -57,85 +93,21 @@
     --hh-fixed-header-height: 130px;
     --hh-fixed-footer-height: 0px; // Force keeping `px` after CSS compilation (required for `calc()` function)
 
-
-    // @deprecated since 1.18, use the above variable instead
-    --default: #{$default};
-    --primary: var(--bs-primary);
-    --accent: var(--bs-accent);
-    --info: var(--bs-info);
-    --success: var(--bs-success);
-    --warning: var(--bs-warning);
-    --danger: var(--bs-danger);
-    --link: var(--bs-link-color);
-    --text-color-main: #{$text-color-main};
-    --text-color-default: #{$text-color-default};
-    --text-color-secondary: #{$text-color-secondary};
-    --text-color-highlight: #{$text-color-highlight};
-    --text-color-soft: #{$text-color-soft};
-    --text-color-soft2: #{$text-color-soft2};
-    --text-color-soft3: #{$text-color-soft3};
-    --text-color-contrast: #{$text-color-contrast};
-    --hh-text-color-contrast: #{$text-color-contrast};
-    --background-color-main: #{$background-color-main};
-    --background-color-secondary: #{$background-color-secondary};
-    --background-color-page: #{$background-color-page};
-    --background-color-highlight: #{$background-color-highlight};
-    --background3: #{$background3};
-    --background-color-warning: #{$background-color-warning};
+    // @deprecated since 1.20
+    @include hh-deprecated-tokens;
 }
 
 // Dark Mode CSS Variables
 @if $enable-dark-mode {
     @include color-mode(dark, true) {
         color-scheme: dark;
-        // Text colors
-        --hh-text-color-main: #{$text-color-main-dark};
-        --hh-text-color-default: #{$text-color-default-dark};
-        --hh-text-color-secondary: #{$text-color-secondary-dark};
-        --hh-text-color-highlight: #{$text-color-highlight-dark};
-        --hh-text-color-soft: #{$text-color-soft-dark};
-        --hh-text-color-soft2: #{$text-color-soft2-dark};
-        --hh-text-color-soft3: #{$text-color-soft3-dark};
 
-        // Background colors
-        --hh-background-color-main: #{$background-color-main-dark};
-        --hh-background-color-secondary: #{$background-color-secondary-dark};
-        --hh-background-color-page: #{$background-color-page-dark};
-        --hh-background-color-highlight: #{$background-color-highlight-dark};
-        --hh-background-color-highlight-soft: #{$background-color-highlight-soft-dark};
-        --hh-background3: #{$background3-dark};
-        --hh-background4: #{$background4-dark};
+        --hh-page-bg: #{$hh-page-bg-dark};
+        --hh-border-color-strong: #{$hh-border-color-strong-dark};
+        --hh-accent-bg-soft: #{$hh-accent-bg-soft-dark};
+        --hh-code-bg: #{$hh-code-bg-dark};
 
-        // Bootstrap Alert boxes
-        // Success
-        --hh-background-color-success: #{$background-color-success-dark};
-        --hh-text-color-success: #{$text-color-success-dark};
-        --hh-border-color-success: #{$border-color-success-dark};
-        // Warning
-        --hh-background-color-warning: #{$background-color-warning-dark};
-        --hh-text-color-warning: #{$text-color-warning-dark};
-        --hh-border-color-warning: #{$border-color-warning-dark};
-        // Danger
-        --hh-background-color-danger: #{$background-color-danger-dark};
-        --hh-text-color-danger: #{$text-color-danger-dark};
-        --hh-border-color-danger: #{$border-color-danger-dark};
-
-        // @deprecated since 1.18, use the above variable instead
-        --default: #2a2a2a;
-        --text-color-main: #{$text-color-main-dark};
-        --text-color-default: #{$text-color-default-dark};
-        --text-color-secondary: #{$text-color-secondary-dark};
-        --text-color-highlight: #{$text-color-highlight-dark};
-        --text-color-soft: #{$text-color-soft-dark};
-        --text-color-soft2: #{$text-color-soft2-dark};
-        --text-color-soft3: #{$text-color-soft3-dark};
-        --text-color-contrast: #{$text-color-contrast-dark};
-        --hh-text-color-contrast: #{$text-color-contrast-dark};
-        --background-color-main: #{$background-color-main-dark};
-        --background-color-secondary: #{$background-color-secondary-dark};
-        --background-color-page: #{$background-color-page-dark};
-        --background-color-highlight: #{$background-color-highlight-dark};
-        --background3: #{$background3-dark};
-        --background-color-warning: #{$background-color-warning-dark};
+        // @deprecated since 1.20
+        @include hh-deprecated-tokens;
     }
 }

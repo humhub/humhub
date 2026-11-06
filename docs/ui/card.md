@@ -103,7 +103,7 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 - **Look:** `.content-card` sets the card's `--bs-card-*` variables: no border,
   `$content-card-border-radius` (`$border-radius-lg`), the shadow of the page header
   (`$content-card-box-shadow`, `$content-card-box-shadow-dark`), `$content-card-bg`
-  (`--hh-background-color-main`), a transparent header. Padding stays Bootstrap's.
+  (`--bs-body-bg`), a transparent header. Padding stays Bootstrap's.
 - **Why a modifier, not Bootstrap's `$card-*`:** several modules (survey, ecommerce, matchmaking,
   classified-space, …), themes and the old card grid (`.container-cards .card`) use a plain
   `.card` and expect Bootstrap's look. Changing `$card-*` globally would restyle all of them.
