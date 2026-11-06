@@ -8,7 +8,6 @@
 
 namespace humhub\components;
 
-use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\services\ActiveThemeService;
 use Throwable;
@@ -53,9 +52,10 @@ class ThemeVariables extends Component
         }
 
         if ($key === 'text-color-contrast') {
-            Yii::warning('The theme variable "text-color-contrast" is deprecated since 1.18, use '
-                . '`ScssHelper::getColorContrast()`.', 'ui');
-            return ScssHelper::getColorContrast($this->get('primary')) ?? $default;
+            // Always white before, whatever the background
+            Yii::warning('The theme variable "text-color-contrast" is deprecated since 1.18, use the contrast '
+                . 'color of the background, e.g. "hh-primary-contrast".', 'ui');
+            return '#fff';
         }
 
         if (isset(ThemeHelper::DEPRECATED_VARIABLES[$key])) {

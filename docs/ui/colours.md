@@ -89,7 +89,7 @@ Deprecated since 1.20. The former tokens still work, as aliases of their replace
 | `--hh-background3` | `--hh-border-color-strong` |
 | `--hh-background4` | `--bs-tertiary-color` for an icon or a line |
 | `--hh-{background,text,border}-color-{success,warning,danger}` | `--bs-{color}-bg-subtle`, `--bs-{color}-text-emphasis`, `--bs-{color}-border-subtle` |
-| `--hh-text-color-contrast` | `--hh-primary-contrast` |
+| `--hh-text-color-contrast` | The contrast color of the background (`--hh-{color}-contrast`), or `--bs-white` on a fixed color |
 
 | Instead of the Sass variable | Use |
 |---|---|

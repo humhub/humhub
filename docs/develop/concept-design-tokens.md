@@ -129,7 +129,7 @@ Removed without a successor (no theme with SCSS and no module sets or reads them
 `$text-color-default`, `$text-color-soft`, `$text-color-soft3`, `$background4`,
 `$background-color-highlight`, the alert variables `${background,text,border}-color-{success,warning,danger}`
 and, deprecated since 1.18, `$default`, `$link`, `$text-color-contrast` (`Theme::variable()` still
-answers it with the contrast colour of `$primary`). A theme that sets one of them no longer
+answers it with `#fff`). A theme that sets one of them no longer
 changes anything.
 
 ### Tokens
@@ -155,7 +155,7 @@ computes its `var()` where it is declared.
 | `--hh-background-color-highlight` | `--bs-accent-bg-subtle` |
 | `--hh-background-color-highlight-soft` | `--hh-accent-bg-soft` |
 | `--hh-{background,text,border}-color-{success,warning,danger}` | `--bs-{color}-bg-subtle`, `--bs-{color}-text-emphasis`, `--bs-{color}-border-subtle` |
-| `--hh-text-color-contrast` | `--hh-primary-contrast` |
+| `--hh-text-color-contrast` (always white) | `--bs-white`; on a theme colour its contrast color `--hh-{color}-contrast` |
 
 The tokens deprecated since 1.18 (`--text-color-*`, `--background-*`, `--primary`, `--default`, …)
 stay aliases.

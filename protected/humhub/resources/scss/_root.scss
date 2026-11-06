@@ -26,7 +26,7 @@
     --hh-background-color-highlight: var(--bs-accent-bg-subtle);
     --hh-background-color-highlight-soft: var(--hh-accent-bg-soft);
     --hh-background3: var(--hh-border-color-strong);
-    --hh-text-color-contrast: var(--hh-primary-contrast);
+    --hh-text-color-contrast: var(--bs-white); // Always white before, whatever the background
     --hh-text-color-default: var(--bs-body-color);
     --hh-text-color-soft3: var(--bs-tertiary-color);
     --hh-background4: var(--bs-tertiary-color);
