@@ -86,7 +86,7 @@
                     }
 
                     hr.comment-separator:not(:first-of-type) {
-                        display: inherit !important;
+                        display: inherit;
                     }
 
                     .showMore {
@@ -183,7 +183,7 @@
         // Hide the separator of the first list entry, but not the separator
         // inside a "Show next" .showMore box
         .comment > hr.comment-separator:first-of-type {
-            display: none !important;
+            display: none;
         }
 
         @include media-breakpoint-down(md) {

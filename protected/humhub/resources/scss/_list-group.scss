@@ -6,11 +6,12 @@
     // Bootstrap overwrite: see the list group Sass variables in variables.scss
 
     // The legacy look of the left navigation and other menus in a `.panel`; a list group
-    // anywhere else (in a `.card`, a dialog) keeps Bootstrap's. `:where()` keeps the old
-    // specificity, so the themes' overrides still apply.
-    :where(.panel) .list-group-item {
+    // anywhere else (in a `.card`, a dialog) keeps Bootstrap's. More specific than Bootstrap's
+    // states (`.list-group-horizontal > .list-group-item + .list-group-item.active`, …); a theme overrides it
+    // by its cascade layer.
+    .panel .list-group .list-group-item {
         padding: 6px 8px;
-        border-left: 3px solid var(--hh-background-color-main) !important;
+        border-left: 3px solid var(--hh-background-color-main);
         font-size: 12px;
         font-weight: 600;
 
@@ -19,7 +20,7 @@
         }
     }
 
-    :where(.panel) a.list-group-item {
+    .panel .list-group a.list-group-item {
 
         &.active, &:focus {
             @include listGroupItemActiveOrFocus();
@@ -29,7 +30,7 @@
         &:hover, &.active:hover, &.active:focus {
             background: inherit;
             color: inherit;
-            border-left: none !important;
+            border-left: none;
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -92,7 +93,7 @@
             }
         }
 
-        :where(.panel) .list-group {
+        .panel .list-group {
             margin-left: 4px;
             gap: 4px;
             flex-direction: row;
@@ -100,10 +101,18 @@
 
             .list-group-item {
                 white-space: nowrap;
-                border-radius: 3px !important;
-                border-left: none !important;
+                border-left: none;
                 margin: 4px 0;
-                margin-bottom: 4px !important;
+
+                // Also above `.panel a.list-group-item:first-child` and `:last-child`
+                &, &:first-child, &:last-child {
+                    border-radius: 3px;
+                }
+
+                // As `.list-group-horizontal > .list-group-item.active` above
+                &.active {
+                    margin-top: auto;
+                }
             }
 
             a.list-group-item {

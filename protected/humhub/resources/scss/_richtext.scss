@@ -625,8 +625,9 @@
             overflow: hidden;
         }
 
-        .atwho-emoji-entry.cur {
-            background-color: var(--hh-background-color-page) !important;
+        // Above the hover of `_mentioning.scss`
+        .atwho-view & li.atwho-emoji-entry.cur {
+            background-color: var(--hh-background-color-page);
         }
     }
 

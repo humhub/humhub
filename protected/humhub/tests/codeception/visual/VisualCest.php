@@ -8,6 +8,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverKeys;
 use AcceptanceTester;
 use humhub\helpers\ThemeHelper;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
@@ -57,6 +58,17 @@ class VisualCest
         $post->save();
         // A fixed date instead of "just now", which changes the width of the entry's header
         $post->content->updateAttributes(['created_at' => '2020-01-15 10:00:00', 'updated_at' => '2020-01-15 10:00:00']);
+        // Two comments and a reply below it
+        $comments = [];
+        foreach (['A first comment', 'A second comment'] as $message) {
+            $comments[] = $comment = new Comment(['message' => $message, 'content_id' => $post->content->id]);
+            $comment->save();
+        }
+        $reply = new Comment(['message' => 'A reply', 'content_id' => $post->content->id, 'parent_comment_id' => $comments[0]->id]);
+        $reply->save();
+        foreach ([...$comments, $reply] as $comment) {
+            $comment->updateAttributes(['created_at' => '2020-01-15 11:00:00', 'updated_at' => '2020-01-15 11:00:00']);
+        }
         Yii::$app->user->logout();
 
         // The test server may have cached the settings from before the fixtures (e.g. the site name of the installer)
