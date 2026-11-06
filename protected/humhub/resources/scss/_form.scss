@@ -288,10 +288,8 @@ $form-choice-border-radius: 4px !default;
             box-shadow: $form-check-input-focus-box-shadow;
         }
 
-        // The shorthand (without the knob) as so far, when the checkbox's disabled `background` won
+        // As Bootstrap's: the colours of its state, paler; the knob stays visible
         &:disabled {
-            border: $form-check-input-border;
-            background: var(--bs-body-bg);
             opacity: $form-check-input-disabled-opacity;
         }
     }
