@@ -40,12 +40,12 @@
             }
 
             &.placeholder {
-                font-size: 14px !important;
+                font-size: 14px;
                 border-bottom: none;
             }
 
             &.placeholder:hover {
-                background: none !important;
+                background: none;
                 border-left: 3px solid var(--hh-background-color-main);
             }
 
