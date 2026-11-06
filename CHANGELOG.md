@@ -18,7 +18,7 @@ HumHub Changelog
 - Fix #8693: Accent border of the main menu flashed black on hover
 - Fix #8708: Browser hung in an endless loop when the top menu overflowed without its "Menu" sub dropdown
 - Fix #8706: Wide avatar column in the space member request widget
-- Fix #8623: Secrets were not masked in the context dump of log targets added outside the core configuration (e.g. an `EmailTarget` via `HUMHUB_CONFIG__COMPONENTS__LOG__TARGETS__EMAIL`), nor in `$_POST`, `$_COOKIE` and `$_SESSION`; new `humhub\components\log\Dispatcher` masks them in every target
+- Fix #8712: Secrets were not masked in the context dump of log targets added outside the core configuration (e.g. an `EmailTarget` via `HUMHUB_CONFIG__COMPONENTS__LOG__TARGETS__EMAIL`), nor in `$_POST`, `$_COOKIE` and `$_SESSION`; new `humhub\components\log\Dispatcher` masks them in every target
 - Fix #8705: Browser autofill of the password field in the admin user edit form caused a "must be equal to Confirm new password" error on save
 
 1.19.3 (October 27, 2026)
