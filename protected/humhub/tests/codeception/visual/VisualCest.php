@@ -8,6 +8,10 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverKeys;
 use AcceptanceTester;
 use humhub\helpers\ThemeHelper;
+use humhub\modules\content\models\Content;
+use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use RuntimeException;
 use Yii;
 
@@ -28,6 +32,11 @@ class VisualCest
     // Pages that are long anyway are cut, so a changed height does not hide all other differences
     private const MAX_HEIGHT = 4000;
 
+    // A post with all the Markdown the stylesheets style
+    private const MARKDOWN = "## Heading\n\nA paragraph with **bold**, *italic*, `inline code` and a [link](https://www.humhub.com).\n\n"
+        . "- First item\n- Second item\n    - Nested item\n\n1. One\n2. Two\n\n> A quotation\n\n"
+        . "```\nfunction example() {\n    return 42;\n}\n```\n\n| Name | Value |\n|---|---|\n| Alpha | 1 |\n| Beta | 2 |\n\n---\n\nThe end.";
+
     // Things that differ between two runs whatever the CSS
     private const STABILIZE_CSS = '*, *::before, *::after { transition: none !important; animation: none !important;'
         . ' caret-color: transparent !important; } time, .time, #nprogress { visibility: hidden !important; }';
@@ -40,6 +49,15 @@ class VisualCest
         if ($this->folder === '' || !preg_match('/^[\w-]+$/', $this->folder)) {
             $scenario->skip('Set HUMHUB_VISUAL=<folder> to take the screenshots of the visual comparison');
         }
+
+        // The Markdown post on top of the stream of the first space
+        $user = User::findOne(['username' => 'Admin']);
+        Yii::$app->user->switchIdentity($user);
+        $post = new Post(Space::findOne(['id' => 1]), Content::VISIBILITY_PUBLIC, ['message' => self::MARKDOWN]);
+        $post->save();
+        // A fixed date instead of "just now", which changes the width of the entry's header
+        $post->content->updateAttributes(['created_at' => '2020-01-15 10:00:00', 'updated_at' => '2020-01-15 10:00:00']);
+        Yii::$app->user->logout();
 
         // The test server may have cached the settings from before the fixtures (e.g. the site name of the installer)
         Yii::$app->cache->flush();
@@ -91,6 +109,13 @@ class VisualCest
         $I->wait(1);
         $this->screenshot($I, 'comment-form');
 
+        // The Markdown post, unfolded
+        $I->amOnSpace(1);
+        $this->waitUntilLoaded($I);
+        $I->click('Read more');
+        $I->wait(1);
+        $this->screenshot($I, 'markdown-post');
+
         $I->amOnSpace(1, '/space/space/about');
         $this->screenshot($I, 'space-about');
 
@@ -108,6 +133,13 @@ class VisualCest
 
         $I->amOnRoute(['/user/account/edit']);
         $this->screenshot($I, 'account-profile');
+
+        // The date picker of the birthday, on a fixed month (no "today")
+        $I->executeJS('$("#profile-birthday").datepicker("setDate", new Date(2020, 0, 15));');
+        $I->click('#profile-birthday');
+        $I->waitForElementVisible('#ui-datepicker-div', 10);
+        $I->moveMouseOver('#ui-datepicker-div tbody tr:nth-child(2) td:nth-child(3) a');
+        $this->screenshot($I, 'datepicker', false);
 
         $I->amOnRoute(['/admin/user/list']);
         $this->screenshot($I, 'admin-users');
