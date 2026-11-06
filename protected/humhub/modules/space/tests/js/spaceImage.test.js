@@ -57,10 +57,10 @@ describe('SpaceImage', () => {
             .toContain('border-radius: 4px');
 
         const sized = mountImage({ width: 32, imageUrl: 'https://example.com/space.jpg' });
-        expect(sized.find('img').attributes('style')).toContain('width: 32px');
-        expect(sized.find('img').attributes('style')).toContain('height: 32px');
+        expect(sized.find('img').attributes('style')).toContain('width: var(--hh-image-width, 32px)');
+        expect(sized.find('img').attributes('style')).toContain('height: var(--hh-image-height, 32px)');
         expect(mountImage({ width: 32, height: 64 }).find('.space-acronym').attributes('style'))
-            .toContain('height: 64px');
+            .toContain('height: var(--hh-image-height, 64px)');
     });
 
     it('derives the acronym like the PHP widget does', () => {

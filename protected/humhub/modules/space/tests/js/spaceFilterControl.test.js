@@ -117,7 +117,7 @@ describe('SpaceFilterControl', () => {
         expect(optionTexts(wrapper)).toEqual(['Team Alpha', 'Team Beta']);
         const image = wrapper.find('[role="option"] img');
         expect(image.attributes('src')).toBe('/img/s2.jpg');
-        expect(image.attributes('style')).toContain('width: 24px');
+        expect(image.attributes('style')).toContain('width: var(--hh-image-width, 24px)');
     });
 
     it('searches in the scope of the definition\'s props', async () => {

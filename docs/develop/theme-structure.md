@@ -78,6 +78,20 @@ A later layer wins against an earlier one whatever the specificity of the select
 - For `!important` the order of the layers is reversed: an `!important` of the core wins against an `!important` of the theme or of a module. Override such a declaration in the custom SCSS of the Appearance settings, which is not in a layer.
 - The variables a core partial declares (e.g. `$data-table-gap` in `_data-table.scss`) can still be set in the theme's `variables.scss`, but a theme's `build.scss` can't read them: they are only defined within the `core` layer. The variables of the core's `variables.scss` and of Bootstrap, and the mixins of `_mixins.scss`, are available everywhere.
 
+## Image sizes
+
+The profile images and space images of the core (`user\widgets\Image`, `space\widgets\Image`, their Vue counterparts `UserImage`/`SpaceImage`, the profile header) set their size inline as `width: var(--hh-image-width, 32px); height: var(--hh-image-height, 32px)`. A theme changes the size by these variables, without `!important`; like every CSS variable they are inherited by the images inside:
+
+```scss
+// scss/build.scss of the theme: all profile and space images within a box of the theme
+.my-theme-box {
+    --hh-image-width: 48px;
+    --hh-image-height: 48px;
+}
+```
+
+The height limit of a richtext editor (`pluginOptions.maxHeight`) is the variable `--hh-richtext-max-height` in the same way.
+
 ## Icons
 
 Icons are [Tabler Icons](https://tabler.io/icons), rendered by `humhub\widgets\Icon` as `<i class="ti ti-<name>">`; a filled variant is `ti-<name>-filled`. Style them through `.ti` and `.ti-<name>`, and use a Tabler codepoint with `font-family: tabler-icons` (or `tabler-icons-filled`) for glyphs placed via `content`. The library-neutral size and utility classes `icon-sm`, `icon-lg`, `icon-2x` … `icon-10x`, `icon-fw`, `icon-pull-left`, `icon-pull-right` and `icon-spin` live in the core's `_icon.scss`.

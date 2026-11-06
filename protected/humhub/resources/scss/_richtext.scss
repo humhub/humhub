@@ -3,6 +3,11 @@
 // --------------------------------------------------
 
 @if not $prev-richtext {
+    // The height limit of an editor (`pluginOptions.maxHeight`, set by the max_height plugin)
+    .humhub-ui-richtext {
+        max-height: var(--hh-richtext-max-height, none);
+    }
+
     .ProsemirrorEditor.fullscreen {
         height: calc(100vh - 3px);
         position: fixed;
@@ -16,7 +21,7 @@
         }
 
         .humhub-ui-richtext {
-            max-height: none !important;
+            max-height: none;
         }
 
         .ProseMirror {

@@ -19,7 +19,12 @@ const maxHeight = {
 
         context.editor.on('init', () => {
             if(context.options.maxHeight) {
-                context.editor.getStage().css({'max-height': context.options.maxHeight, 'overflow': 'auto'});
+                // A CSS variable instead of an inline `max-height`, so the stylesheet can lift it (fullscreen)
+                const maxHeight = context.options.maxHeight;
+                context.editor.getStage().css({
+                    '--hh-richtext-max-height': typeof maxHeight === 'number' ? maxHeight + 'px' : maxHeight,
+                    'overflow': 'auto'
+                });
             }
 
             if(!context.editor.isEmpty()) {

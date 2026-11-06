@@ -27,6 +27,7 @@ use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\space\models\Space;
+use humhub\widgets\BaseImage;
 use humhub\widgets\bootstrap\Link;
 
 ContainerHeaderAsset::register($this);
@@ -77,7 +78,7 @@ $profileImageHeight = $container->image->defaultOptions['height'];
     </div>
 
     <div class="image-upload-container profile-user-photo-container"
-         style="width: <?= $profileImageWidth ?>px; height: <?= $profileImageHeight ?>px;">
+         style="<?= BaseImage::getSizeStyle($profileImageWidth, $profileImageHeight) ?>">
 
         <?php if ($container->image->exists()) : ?>
             <a data-ui-gallery="spaceHeader"
