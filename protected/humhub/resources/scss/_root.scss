@@ -74,6 +74,9 @@
     --hh-accent-bg-soft: #{$hh-accent-bg-soft};
     // Inline code
     --hh-code-bg: #{$hh-code-bg};
+    // The top bar and the account menu hanging from it
+    --hh-topbar-bg: #{$hh-topbar-bg};
+    --hh-topbar-color: #{$hh-topbar-color};
 
     // Text on a background in a theme color
     --hh-accent-contrast: #{$hh-accent-contrast};
@@ -106,6 +109,8 @@
         --hh-border-color-strong: #{$hh-border-color-strong-dark};
         --hh-accent-bg-soft: #{$hh-accent-bg-soft-dark};
         --hh-code-bg: #{$hh-code-bg-dark};
+        --hh-topbar-bg: #{$hh-topbar-bg-dark};
+        --hh-topbar-color: #{$hh-topbar-color-dark};
 
         // @deprecated since 1.20
         @include hh-deprecated-tokens;

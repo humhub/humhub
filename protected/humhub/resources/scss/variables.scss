@@ -83,6 +83,10 @@ $mark-bg: lighten($warning, 40%) !default; // Marked text
 $border-color: #ddd !default; // A separator, the border of a box
 $hh-border-color-strong: #d7d7d7 !default; // The border of a control (checkbox, radio, switch)
 
+// The top bar and the account menu hanging from it
+$hh-topbar-bg: var(--bs-primary) !default;
+$hh-topbar-color: var(--hh-primary-contrast) !default;
+
 // Bootstrap's greys ($gray-100 ... $gray-900) are not used: the components that would show one take a semantic color
 $dropdown-header-color: var(--bs-secondary-color) !default;
 $blockquote-footer-color: var(--bs-secondary-color) !default;
@@ -285,7 +289,8 @@ $component-active-color: $hh-primary-contrast !default; // Because $component-ac
 // Dark color mode (`[data-bs-theme="dark"]`)
 // --------------------------------------------------
 
-$link-hover-color-dark: mix(white, $primary, 10%) !default;
+$link-color-dark: #fff !default; // As the light mode's black: the emphasis color
+$link-hover-color-dark: $link-color-dark !default;
 $code-color-dark: mix(white, $accent, 10%) !default;
 
 $body-color-dark: #ddd !default;
@@ -303,6 +308,8 @@ $mark-bg-dark: shade-color($warning, 80%) !default;
 
 $border-color-dark: #3f3f3f !default;
 $hh-border-color-strong-dark: #393939 !default;
+$hh-topbar-bg-dark: #111 !default; // Darker than the surfaces, as the primary color in the light mode
+$hh-topbar-color-dark: var(--bs-emphasis-color) !default;
 
 
 //

@@ -48,7 +48,11 @@ $profileImageHeight = $container->image->defaultOptions['height'];
 
     <div class="image-upload-container profile-banner-image-container">
         <!-- profile image output-->
-        <?= Html::img($container->bannerImage, ['width => 100%', 'class' => 'img-profile-header-background']) ?>
+        <?= Html::img($container->bannerImage, [
+            'width => 100%',
+            // Without an uploaded banner: the background color of the theme instead of the default image
+            'class' => 'img-profile-header-background' . ($container->bannerImage->exists() ? '' : ' img-profile-header-default'),
+        ]) ?>
 
         <!-- show user name and title -->
         <div class="img-profile-data">
