@@ -228,11 +228,13 @@ class UserController extends Controller
                         'type' => 'password',
                         'class' => 'form-control',
                         'maxlength' => 45,
+                        'htmlOptions' => ['autocomplete' => 'new-password'],
                     ],
                     'newPasswordConfirm' => [
                         'type' => 'password',
                         'class' => 'form-control',
                         'maxlength' => 45,
+                        'htmlOptions' => ['autocomplete' => 'new-password'],
                     ],
                     'mustChangePassword' => [
                         'type' => 'checkbox',
