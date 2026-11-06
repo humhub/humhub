@@ -38,6 +38,27 @@ class VisualCest
         . "- First item\n- Second item\n    - Nested item\n\n1. One\n2. Two\n\n> A quotation\n\n"
         . "```\nfunction example() {\n    return 42;\n}\n```\n\n| Name | Value |\n|---|---|\n| Alpha | 1 |\n| Beta | 2 |\n\n---\n\nThe end.";
 
+    // Checkboxes, radios and switches in each state, put on top of the first panel body; the checked checkbox of the
+    // first row is focused
+    private const CHOICE_CONTROLS_JS = <<<'JS'
+        const states = ['', 'checked', 'disabled', 'checked disabled'];
+        const row = (type, extra) => '<div class="d-flex gap-3 mb-2">' + states.map(state =>
+            '<div class="form-check' + (extra || '') + '"><input class="form-check-input" type="' + type + '" '
+            + state + ' name="visual-' + type + (extra || '') + state.replace(' ', '') + '"'
+            + (extra ? ' role="switch"' : '') + '><label class="form-check-label">' + (state || 'off') + '</label></div>'
+        ).join('') + '<div class="form-check' + (extra || '') + '"><input class="form-check-input visual-focus" type="'
+            + type + '" checked' + (extra ? ' role="switch"' : '') + '><label class="form-check-label">focused</label></div></div>';
+        const box = document.createElement('div');
+        box.className = 'p-3';
+        box.innerHTML = row('checkbox') + row('radio') + row('checkbox', ' form-switch')
+            + '<div class="checkbox"><label><input type="checkbox" checked> legacy</label></div>'
+            + '<div class="content-form-body"><div class="contentForm_options"><div class="mb-3"><div class="checkbox">'
+            + '<label><input type="checkbox" class="visual-focus" checked> post option</label></div></div></div></div>';
+        (document.querySelector('#layout-content .panel-body, #layout-content .card-body')
+            || document.querySelector('#layout-content')).prepend(box);
+        box.querySelector('.visual-focus').focus();
+        JS;
+
     // Things that differ between two runs whatever the CSS
     private const STABILIZE_CSS = '*, *::before, *::after { transition: none !important; animation: none !important;'
         . ' caret-color: transparent !important; } time, .time, #nprogress { visibility: hidden !important; }';
@@ -145,6 +166,20 @@ class VisualCest
 
         $I->amOnRoute(['/user/account/edit']);
         $this->screenshot($I, 'account-profile');
+
+        // Every state of the choice controls, placed into the page
+        $I->amOnRoute(['/user/account/edit']);
+        $this->waitUntilLoaded($I);
+        $I->executeJS(self::CHOICE_CONTROLS_JS);
+        $this->screenshot($I, 'choice-controls', false);
+        // The focus on the switch, then on the option of the post form
+        $I->executeJS('document.querySelectorAll(".visual-focus")[2].focus();');
+        $this->screenshot($I, 'choice-controls-switch-focus', false);
+        $I->executeJS('document.querySelectorAll(".visual-focus")[3].focus();');
+        $this->screenshot($I, 'choice-controls-option-focus', false);
+
+        $I->amOnRoute(['/user/account/edit']);
+        $this->waitUntilLoaded($I);
 
         // The date picker of the birthday, on a fixed month (no "today")
         $I->executeJS('$("#profile-birthday").datepicker("setDate", new Date(2020, 0, 15));');
