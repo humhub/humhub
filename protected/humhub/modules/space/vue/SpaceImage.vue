@@ -75,8 +75,8 @@ export default {
         sizeStyle() {
             // As `BaseImage::getSizeStyle()`: the CSS variables override the size
             return {
-                width: `var(--hh-image-width, ${this.width}px)`,
-                height: `var(--hh-image-height, ${this.resolvedHeight}px)`,
+                width: `var(--hh-content-container-image-width, ${this.width}px)`,
+                height: `var(--hh-content-container-image-height, ${this.resolvedHeight}px)`,
             };
         },
         acronymStyle() {

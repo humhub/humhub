@@ -10,7 +10,7 @@ HumHub Changelog
 - Enh #8701: Removed `!important` from the core SCSS where a selector suffices, so a theme can override these declarations
 - Enh #8704: Removed `!important` from the richtext editor, comments, mentions, date picker, Markdown and list group
 - Fix #8704: A disabled switch shows its knob and the colour of its state
-- Enh #8704: Image sizes (`--hh-image-width`/`--hh-image-height`) and the editor's height limit (`--hh-richtext-max-height`) can be changed by CSS variables
+- Enh #8704: Image sizes (`--hh-content-container-image-width`/`--hh-content-container-image-height`) and the editor's height limit (`--hh-richtext-max-height`) can be changed by CSS variables
 - Enh #8692: The richtext editor asks for the alt text of an uploaded image
 - Enh #8690: New console command `version` prints the HumHub version, `version/info` details about the installation (edition, PHP, database, Docker image)
 - Enh #8691: Picker filters (space, person, topic) suggest before anything is typed, loaded when first opened; fewer icons in the filter bar and one placeholder colour

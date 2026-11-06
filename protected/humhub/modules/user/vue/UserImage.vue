@@ -44,7 +44,7 @@ import { i18n } from '@humhub/vue';
  *
  * - `rounded` class + inline `width`/`height` (from `size`, default 25 -
  *   `Image::run()`'s own default, `BaseImage::getSizeStyle()`: the CSS
- *   variables `--hh-image-width`/`--hh-image-height` override it -
+ *   variables `--hh-content-container-image-width`/`--hh-content-container-image-height` override it -
  *   `BaseImage::init()`).
  * - `data-contentcontainer-id` (from `contentContainerId`) on the `<img>` -
  *   same attribute `Image::run()` sets on `$this->imageOptions`, drives the
@@ -139,7 +139,7 @@ export default {
         },
         imageStyle() {
             // As `BaseImage::getSizeStyle()`: the CSS variables override the size
-            return `width: var(--hh-image-width, ${this.size}px); height: var(--hh-image-height, ${this.size}px)`;
+            return `width: var(--hh-content-container-image-width, ${this.size}px); height: var(--hh-content-container-image-height, ${this.size}px)`;
         },
         hasOnlineIndicator() {
             return this.online !== null;

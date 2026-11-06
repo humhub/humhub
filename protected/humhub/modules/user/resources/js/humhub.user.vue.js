@@ -36,7 +36,7 @@
         return this.imageAlt || vue$1.i18n.t("base", "Profile picture of {displayName}", { displayName: this.displayName });
       },
       imageStyle() {
-        return `width: var(--hh-image-width, ${this.size}px); height: var(--hh-image-height, ${this.size}px)`;
+        return `width: var(--hh-content-container-image-width, ${this.size}px); height: var(--hh-content-container-image-height, ${this.size}px)`;
       },
       hasOnlineIndicator() {
         return this.online !== null;

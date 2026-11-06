@@ -80,13 +80,13 @@ A later layer wins against an earlier one whatever the specificity of the select
 
 ## Image sizes
 
-The profile images and space images of the core (`user\widgets\Image`, `space\widgets\Image`, their Vue counterparts `UserImage`/`SpaceImage`, the profile header) set their size inline as `width: var(--hh-image-width, 32px); height: var(--hh-image-height, 32px)`. A theme changes the size by these variables, without `!important`; like every CSS variable they are inherited by the images inside:
+The profile images and space images of the core (`user\widgets\Image`, `space\widgets\Image`, their Vue counterparts `UserImage`/`SpaceImage`, the profile header) set their size inline as `width: var(--hh-content-container-image-width, 32px); height: var(--hh-content-container-image-height, 32px)`. A theme changes the size by these variables, without `!important`; like every CSS variable they are inherited by the images inside:
 
 ```scss
 // scss/build.scss of the theme: all profile and space images within a box of the theme
 .my-theme-box {
-    --hh-image-width: 48px;
-    --hh-image-height: 48px;
+    --hh-content-container-image-width: 48px;
+    --hh-content-container-image-height: 48px;
 }
 ```
 

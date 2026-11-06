@@ -61,7 +61,7 @@ class BaseImage extends Widget
     }
 
     /**
-     * The inline size of the image. The CSS variables `--hh-image-width` and `--hh-image-height` override it, so a
+     * The inline size of the image. The CSS variables `--hh-content-container-image-width` and `--hh-content-container-image-height` override it, so a
      * stylesheet can change the size without `!important` (e.g. the profile header on a phone).
      *
      * @param int|string $width in px
@@ -71,6 +71,6 @@ class BaseImage extends Widget
      */
     public static function getSizeStyle($width, $height): string
     {
-        return 'width: var(--hh-image-width, ' . $width . 'px); height: var(--hh-image-height, ' . $height . 'px);';
+        return 'width: var(--hh-content-container-image-width, ' . $width . 'px); height: var(--hh-content-container-image-height, ' . $height . 'px);';
     }
 }

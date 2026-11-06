@@ -78,7 +78,7 @@ describe('PeopleCard', () => {
         const avatar = wrapper.find('a.entity-card-avatar');
         expect(avatar.attributes('href')).toBe('/u/sara');
         expect(avatar.attributes('aria-hidden')).toBe('true');
-        expect(avatar.find('img').attributes('style')).toContain('width: var(--hh-image-width, 80px)');
+        expect(avatar.find('img').attributes('style')).toContain('width: var(--hh-content-container-image-width, 80px)');
         // Without a banner the cover is plain grey (from the stylesheet).
         expect(wrapper.find('.entity-card-cover').attributes('style')).toBeUndefined();
         expect(wrapper.find('.entity-card-subtitle').text()).toBe('Sales Manager');

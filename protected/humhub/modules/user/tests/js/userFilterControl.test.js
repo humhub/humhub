@@ -116,7 +116,7 @@ describe('UserFilterControl', () => {
         expect(optionTexts(wrapper)).toEqual(['Peter Tester', 'Sara Tester']);
         const avatar = wrapper.find('[role="option"] img');
         expect(avatar.attributes('src')).toBe('/img/2.jpg');
-        expect(avatar.attributes('style')).toContain('width: var(--hh-image-width, 24px)');
+        expect(avatar.attributes('style')).toContain('width: var(--hh-content-container-image-width, 24px)');
     });
 
     it('sends no request for an empty text', async () => {

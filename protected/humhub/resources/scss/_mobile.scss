@@ -75,15 +75,15 @@
             .panel-profile-header {
                 // The inline sizes (`BaseImage::getSizeStyle()`) read these variables
                 #profilefileupload, .profile-user-photo-container, .space-acronym {
-                    --hh-image-width: 100px;
-                    --hh-image-height: 100px;
+                    --hh-content-container-image-width: 100px;
+                    --hh-content-container-image-height: 100px;
                     height: 100px;
                     width: 100px;
                 }
 
                 .profile-user-photo {
-                    --hh-image-width: 95px;
-                    --hh-image-height: 95px;
+                    --hh-content-container-image-width: 95px;
+                    --hh-content-container-image-height: 95px;
                 }
             }
 
