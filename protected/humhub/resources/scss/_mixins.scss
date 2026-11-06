@@ -9,11 +9,11 @@
 
 @mixin listGroupItemActiveOrFocus {
     z-index: 2;
-    border-left: 3px solid var(--bs-accent);
+    border-left: 3px solid var(--bs-accent) !important; // see _list-group.scss
 }
 
 @mixin mobileListGroupItemActiveOrFocus {
     background: var(--bs-primary);
     color: var(--hh-primary-contrast);
-    border-left: none;
+    border-left: none !important; // see _list-group.scss
 }

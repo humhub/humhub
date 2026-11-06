@@ -68,6 +68,11 @@ $prev-richtext: false !default;
         box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
     }
 
+    // jQuery UI's `margin: 0 0 .4em`
+    .ui-datepicker table {
+        margin-bottom: 0;
+    }
+
     .ui-datepicker .ui-datepicker-prev span,
     .ui-datepicker .ui-datepicker-next span {
         opacity: 0.2;

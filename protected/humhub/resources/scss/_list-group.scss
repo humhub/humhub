@@ -8,10 +8,11 @@
     // The legacy look of the left navigation and other menus in a `.panel`; a list group
     // anywhere else (in a `.card`, a dialog) keeps Bootstrap's. More specific than Bootstrap's
     // states (`.list-group-horizontal > .list-group-item + .list-group-item.active`, …); a theme overrides it
-    // by its cascade layer.
+    // by its cascade layer. The left border keeps `!important`: the Enterprise Theme (enterprise-white) sets it with
+    // `!important` on every `.list-group-item`, the active entry's border still has to win against it.
     .panel .list-group .list-group-item {
         padding: 6px 8px;
-        border-left: 3px solid var(--hh-background-color-main);
+        border-left: 3px solid var(--hh-background-color-main) !important;
         font-size: 12px;
         font-weight: 600;
 
@@ -30,7 +31,7 @@
         &:hover, &.active:hover, &.active:focus {
             background: inherit;
             color: inherit;
-            border-left: none;
+            border-left: none !important;
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -101,18 +102,18 @@
 
             .list-group-item {
                 white-space: nowrap;
-                border-left: none;
+                border-left: none !important;
                 margin: 4px 0;
 
                 // Also above `.panel a.list-group-item:first-child` and `:last-child`
                 &, &:first-child, &:last-child {
                     border-radius: 3px;
                 }
+            }
 
-                // As `.list-group-horizontal > .list-group-item.active` above
-                &.active {
-                    margin-top: auto;
-                }
+            // As `.list-group-horizontal > .list-group-item.active` above
+            &.list-group-horizontal > .list-group-item.active {
+                margin-top: auto;
             }
 
             a.list-group-item {
