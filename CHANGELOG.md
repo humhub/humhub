@@ -9,6 +9,7 @@ HumHub Changelog
 - Enh #8700: Visual comparison of the CSS in pull requests and Stylelint for the SCSS
 - Enh #8701: Removed `!important` from the core SCSS where a selector suffices, so a theme can override these declarations
 - Enh #8702: Removed `!important` from the richtext editor, comments and mentions
+- Enh #8703: Removed `!important` from the date picker and the Markdown styles
 - Enh #8692: The richtext editor asks for the alt text of an uploaded image
 - Enh #8690: New console command `version` prints the HumHub version, `version/info` details about the installation (edition, PHP, database, Docker image)
 - Enh #8691: Picker filters (space, person, topic) suggest before anything is typed, loaded when first opened; fewer icons in the filter bar and one placeholder colour
