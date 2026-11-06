@@ -237,9 +237,9 @@ class PermissionCest
         $I->see('Advanced');
         $I->see('General');
 
-        $I->amOnRoute('/admin/setting/design');
+        $I->amOnRoute('/admin/appearance/theme');
         $I->dontSee('You are not permitted to access this section.');
-        $I->see('Appearance', '.content-card .card-title');
+        $I->see('Theme', '.content-card .card-title');
 
         $I->amOnRoute('/notification/admin/defaults');
         $I->dontSee('You are not permitted to access this section.');

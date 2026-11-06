@@ -196,4 +196,14 @@
         word-break: normal;
         hyphens: none;
     }
+
+    // The site logo when a dark logo exists, see widgets/views/logo.php
+    .hh-logo-dark,
+    [data-bs-theme="dark"] .hh-logo-light {
+        display: none;
+    }
+
+    [data-bs-theme="dark"] .hh-logo-dark {
+        display: inline;
+    }
 }

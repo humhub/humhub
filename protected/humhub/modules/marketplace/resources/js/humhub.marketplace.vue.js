@@ -168,7 +168,10 @@
   const PROGRESS_TAU_MS = 2500;
   const STEPS = ["buy", "license", "confirm", "installing", "activate", "configure", "failed"];
   const isDefinite = (response) => Boolean(response) && response.status >= 400 && response.status < 500;
-  const reducedMotion$1 = () => typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion$1 = () => {
+    const motion = document.documentElement.getAttribute("data-hh-motion");
+    return motion ? motion === "reduce" : typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
   let uid = 0;
   const _sfc_main$3 = {
     name: "InstallDialog",
@@ -2041,7 +2044,10 @@
   const UPDATED_MS = 1200;
   const REMOVE_MS = 360;
   const UPDATE_BUSY = ["running", "success", "removing"];
-  const reducedMotion = () => typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion = () => {
+    const motion = document.documentElement.getAttribute("data-hh-motion");
+    return motion ? motion === "reduce" : typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
   const focusLost = () => !document.activeElement || document.activeElement === document.body || !document.activeElement.isConnected;
   const wait = (ms) => new Promise((resolve) => {
     setTimeout(resolve, ms);

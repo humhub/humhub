@@ -513,10 +513,4 @@ $tile-border-radius: var(--bs-border-radius) !default;
     .drop-zone-fade-leave-to {
         opacity: 0;
     }
-
-    @media (prefers-reduced-motion: reduce) {
-        .tile-skeleton .placeholder {
-            animation: none;
-        }
-    }
 }

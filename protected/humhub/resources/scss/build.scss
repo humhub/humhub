@@ -171,3 +171,6 @@ $prev-modules: false !default;
 
 $prev-search: false !default;
 @import "search";
+
+$prev-accessibility: false !default;
+@import "accessibility";

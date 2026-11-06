@@ -77,7 +77,7 @@ Guidelines and widget conventions for meeting WCAG 2.1 AA conformance.
 
 ## Theming
 
-Most appearance changes are handled in *Administration → Settings → Appearance* (colours, logo, custom SCSS). A dedicated theme is only needed when you want to override view templates or ship a coordinated style as a module.
+Most appearance changes are handled in *Administration → Appearance* (colours, logo, dark mode, custom SCSS). A dedicated theme is only needed when you want to override view templates or ship a coordinated style as a module.
 
 - [Theming overview](theme-overview.md) — when a theme is needed, lifecycle
 - [Theme structure](theme-structure.md) — folder layout, SCSS variables, parent themes

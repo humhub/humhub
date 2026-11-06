@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\models\forms;
 
-use DateTimeZone;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
@@ -21,10 +20,7 @@ use yii\base\Model;
 class AccountSettings extends Model
 {
     public $tags;
-    public $language;
-    public $markdownEditorMode;
     public $show_introduction_tour;
-    public $timeZone;
 
     public ?User $user = null;
 
@@ -36,9 +32,6 @@ class AccountSettings extends Model
         return [
             [['tags'], 'safe'],
             [['show_introduction_tour'], 'boolean'],
-            [['markdownEditorMode'], 'in', 'range' => [0, 1]],
-            [['timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
-            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
         ];
     }
 
@@ -49,10 +42,7 @@ class AccountSettings extends Model
     {
         return [
             'tags' => Yii::t('UserModule.account', 'Profile Tags'),
-            'language' => Yii::t('UserModule.account', 'Language'),
-            'markdownEditorMode' => Yii::t('UserModule.account', 'Markdown Editor Mode'),
             'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
-            'timeZone' => Yii::t('UserModule.account', 'TimeZone'),
         ];
     }
 
@@ -66,13 +56,5 @@ class AccountSettings extends Model
     public function getTags(): array
     {
         return is_array($this->tags) ? $this->tags : [];
-    }
-
-    public function getEditorModeList(): array
-    {
-        return [
-            User::EDITOR_RICH_TEXT => Yii::t('UserModule.account', 'Rich Text'),
-            User::EDITOR_PLAIN => Yii::t('UserModule.account', 'Plain'),
-        ];
     }
 }

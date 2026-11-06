@@ -508,6 +508,11 @@ class View extends \yii\web\View
         }
 
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            // Here, not in renderHeadHtml(): the CSS files of asset bundles registered there are no longer rendered
+            if (!Yii::$app->request->isAjax) {
+                Yii::$app->appearance->registerHead($this);
+            }
+
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower((string)key($viewStatus));

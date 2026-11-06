@@ -35,14 +35,6 @@ class SettingsMenu extends PillTabs
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.base', 'Appearance'),
-            'url' => ['/admin/setting/design'],
-            'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('admin', 'setting', 'design'),
-            'isVisible' => $canEditSettings,
-        ]));
-
-        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Notifications'),
             'url' => ['/notification/admin/defaults'],
             'sortOrder' => 400,

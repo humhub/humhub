@@ -9,14 +9,12 @@
 namespace humhub\modules\admin\controllers;
 
 use Exception;
-use humhub\helpers\ThemeHelper;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
@@ -60,7 +58,6 @@ class SettingController extends Controller
             'statistic' => Yii::t('AdminModule.base', 'Statistics'),
             'mailing' => Yii::t('AdminModule.base', 'Mailing'),
             'mailing-server' => Yii::t('AdminModule.base', 'Mailing'),
-            'design' => Yii::t('AdminModule.base', 'Design'),
             'permissions' => Yii::t('AdminModule.base', 'Permissions'),
             'file' => Yii::t('AdminModule.base', 'Files'),
             'cronjobs' => Yii::t('AdminModule.base', 'Cronjobs'),
@@ -103,44 +100,6 @@ class SettingController extends Controller
         return $this->render('basic', [
             'model' => $form,
         ]);
-    }
-
-    /**
-     * Deletes Logo Image
-     */
-    public function actionDeleteLogoImage()
-    {
-        $this->forcePostRequest();
-        Yii::$app->img->logo->delete();
-
-        Yii::$app->response->format = 'json';
-        return [];
-    }
-
-    public function actionDeleteLoginBackgroundImage()
-    {
-        $this->forcePostRequest();
-        Yii::$app->img->loginBackground->delete();
-        Yii::$app->response->format = 'json';
-        return [];
-    }
-
-    public function actionDeleteMailHeaderImage()
-    {
-        $this->forcePostRequest();
-        Yii::$app->img->mailHeader->delete();
-        Yii::$app->response->format = 'json';
-        return [];
-    }
-
-    /**
-     * Delete Icon Image
-     */
-    public function actionDeleteIconImage()
-    {
-        $this->forcePostRequest();
-        Yii::$app->img->icon->delete();
-        return $this->asJson([]);
     }
 
     /**
@@ -260,25 +219,12 @@ class SettingController extends Controller
     }
 
 
+    /**
+     * @deprecated since 1.20, moved to Administration → Appearance
+     */
     public function actionDesign()
     {
-        $form = new DesignSettingsForm();
-        $post = Yii::$app->request->post();
-
-        if ($form->load($post) && $form->validate() && $form->save()) {
-            $newTheme = ThemeHelper::getThemeByName($form->theme);
-            $buildResult = ThemeHelper::buildCss($newTheme);
-            if ($buildResult === true) {
-                $this->view->saved();
-            } else {
-                $this->view->error($buildResult);
-            }
-            return $this->refresh(); // Reload the page without ajax to refresh the theme
-        }
-
-        return $this->render('design', [
-            'model' => $form,
-        ]);
+        return $this->redirect(['/admin/appearance/theme']);
     }
 
     /**

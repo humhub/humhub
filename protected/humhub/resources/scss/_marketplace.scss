@@ -495,20 +495,4 @@
             opacity: 1;
         }
     }
-
-    @media (prefers-reduced-motion: reduce) {
-        .module-card.is-removing,
-        .module-card.is-entering,
-        .install-dialog-step,
-        .marketplace-settings-panel,
-        .licence-list-item.is-entering {
-            animation: none !important;
-        }
-
-        .marketplace-update-all-slot,
-        .marketplace-update-all-slot.is-collapsed,
-        .marketplace-setting-more {
-            transition: none !important;
-        }
-    }
 }

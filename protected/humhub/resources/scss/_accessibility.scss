@@ -1,0 +1,38 @@
+//
+// Accessibility options of the user, see `hh-high-contrast` and `hh-reduced-motion` in _mixins.scss
+// --------------------------------------------------
+
+@if not $prev-accessibility {
+    :root {
+        // Durations instead of `animation: none`, so `animationend` and `transitionend` still fire
+        @include hh-reduced-motion {
+            &,
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        @include hh-high-contrast {
+            // Links in running text, which are told apart by their colour only
+            a:not([class]),
+            .markdown-render a,
+            .richtext a {
+                text-decoration: underline;
+            }
+
+            :focus-visible {
+                outline: 3px solid var(--bs-emphasis-color) !important;
+                outline-offset: 2px;
+            }
+        }
+
+        &[data-hh-font="readable"] {
+            --bs-body-font-family: "Lexend Variable", #{$font-family-base};
+        }
+    }
+}

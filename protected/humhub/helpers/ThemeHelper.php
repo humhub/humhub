@@ -10,7 +10,7 @@ namespace humhub\helpers;
 
 use Exception;
 use humhub\components\Theme;
-use humhub\modules\admin\models\forms\DesignSettingsForm;
+use humhub\modules\admin\models\forms\ThemeSettingsForm;
 use RuntimeException;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
@@ -219,10 +219,9 @@ class ThemeHelper
         }
 
         if ($includeCustomScss) {
-            // Overwrite with custom variables from DesignSettingsForm
-            $settingsManager = Yii::$app->settings; // Don't use `new DesignSettingsForm()` as it would make an infinite loop
+            // Overwrite with the variables of the Custom SCSS (Administration → Appearance)
             [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
-                $settingsManager->get('themeCustomScss'),
+                Yii::$app->settings->get('themeCustomScss'),
             );
             $variables = ArrayHelper::merge(
                 $variables,
@@ -384,11 +383,10 @@ class ThemeHelper
         $theme ??= Yii::$app->view->theme;
         $treeThemes = static::getThemeTree($theme);
         $compiler = new Compiler();
-        $designSettingsForm = new DesignSettingsForm();
 
         try {
             [$customVariables, $customMaps, $otherCustomScss] = $includeCustomScss
-                ? ScssHelper::extractVariablesAndMaps($designSettingsForm->themeCustomScss)
+                ? ScssHelper::extractVariablesAndMaps((string)Yii::$app->settings->get('themeCustomScss'))
                 : ['', '', ''];
         } catch (SassException|RuntimeException $e) {
             return static::logAndGetError('Error while compiling the custom SCSS code: ' . $e->getMessage());
@@ -448,41 +446,20 @@ class ThemeHelper
         $cssFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.css';
         $mapFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.map';
 
-        // Create SCSS source from Design Settings form and imports
+        // The colours of Administration → Appearance → Theme
         $scssSource = '';
-        if (!$designSettingsForm->useDefaultThemePrimaryColor && $designSettingsForm->themePrimaryColor) {
-            $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeAccentColor && $designSettingsForm->themeAccentColor) {
-            $scssSource .= '$accent: ' . $designSettingsForm->themeAccentColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeSecondaryColor && $designSettingsForm->themeSecondaryColor) {
-            $scssSource .= '$secondary: ' . $designSettingsForm->themeSecondaryColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeSuccessColor && $designSettingsForm->themeSuccessColor) {
-            $scssSource .= '$success: ' . $designSettingsForm->themeSuccessColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeDangerColor && $designSettingsForm->themeDangerColor) {
-            $scssSource .= '$danger: ' . $designSettingsForm->themeDangerColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeWarningColor && $designSettingsForm->themeWarningColor) {
-            $scssSource .= '$warning: ' . $designSettingsForm->themeWarningColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeInfoColor && $designSettingsForm->themeInfoColor) {
-            $scssSource .= '$info: ' . $designSettingsForm->themeInfoColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeLightColor && $designSettingsForm->themeLightColor) {
-            $scssSource .= '$light: ' . $designSettingsForm->themeLightColor . ';' . PHP_EOL;
-        }
-        if (!$designSettingsForm->useDefaultThemeDarkColor && $designSettingsForm->themeDarkColor) {
-            $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
+        foreach (ThemeSettingsForm::COLORS as $color) {
+            $value = Yii::$app->settings->get(ThemeSettingsForm::colorAttribute($color));
+            if ($value && !Yii::$app->settings->get(ThemeSettingsForm::defaultAttribute($color), true)) {
+                $scssSource .= '$' . $color . ': ' . $value . ';' . PHP_EOL;
+            }
         }
         $scssSource
             .= $customVariables . PHP_EOL
             . $customMaps . PHP_EOL
             . '@import "' . implode('", "', $imports) . '";' . PHP_EOL
             . static::getLayersScss($themeBuildFiles)
-            // Not in a layer: the custom SCSS of the Design settings wins against all of the above
+            // Not in a layer: the Custom SCSS (Administration → Appearance) wins against all of the above
             . $otherCustomScss;
 
         // Compile to CSS

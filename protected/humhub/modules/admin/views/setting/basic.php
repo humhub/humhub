@@ -1,7 +1,6 @@
 <?php
 
 use humhub\helpers\Html;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\widgets\bootstrap\Alert;
 use humhub\widgets\bootstrap\Button;
@@ -19,14 +18,32 @@ use humhub\widgets\Icon;
 ]) ?>
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<?= $form->field($model, 'name') ?>
 <?= $form->field($model, 'baseUrl')->textInput(['disabled' => Yii::$app->settings->isFixed('baseUrl')]) ?>
 
-<?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
-<?php if (count($allowedLanguages) > 1) : ?>
-    <?= $languageDropDown = $form->field($model, 'defaultLanguage')->dropDownList($allowedLanguages) ?>
-<?php endif; ?>
-<?= $form->field($model, 'defaultTimeZone')->dropDownList(TimezoneHelper::generateList(true), ['disabled' => Yii::$app->settings->isFixed('defaultTimeZone')]) ?>
+<?= $form->field($model, 'paginationSize') ?>
+
+<div class="container gx-0 overflow-x-hidden">
+    <div class="row">
+        <div class="col-lg-6">
+            <?= $form->field($model, 'displayNameFormat')->dropDownList([
+                '{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'),
+                '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)'),
+            ]) ?>
+        </div>
+        <div class="col-lg-6">
+            <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()) ?>
+        </div>
+    </div>
+</div>
+
+<?= $form->field($model, 'spaceOrder')->dropDownList([
+    '0' => Yii::t('AdminModule.settings', 'Custom sort order (alphabetical if not defined)'),
+    '1' => Yii::t('AdminModule.settings', 'Last visit'),
+]) ?>
+
+<?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()) ?>
+
+<?= $form->field($model, 'postTitleMode')->dropDownList($model->getPostTitleModeOptions()) ?>
 
 <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Dashboard')) ?>
 <?= $form->field($model, 'tour')->checkbox() ?>

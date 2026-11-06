@@ -182,7 +182,46 @@ humhub.module('admin', function (module, require, $) {
         }
     };
 
+    var deleteLogoDark = function (evt) {
+        evt.finish();
+
+        var options = {
+            'header': i18n.t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+            'body': i18n.t('AdminModule.settings', 'Do you really want to delete the dark logo?'),
+            'confirmText': i18n.t('AdminModule.settings', 'Delete')
+        };
+
+        modal.confirm(options).then(function ($confirmed) {
+            if ($confirmed) {
+                client.post(evt).then(function () {
+                    $('#admin-delete-logoDark-image').addClass('d-none');
+                    $('#logoDark-image').attr('src', '').hide();
+                });
+            }
+        });
+    };
+
+    var changeLogoDark = function (evt) {
+        var input = evt.$trigger[0];
+        if (input.files && input.files.length) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#logoDark-image').attr('src', e.target.result).removeClass('d-none').show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
     var init = function () {
+        if ($('#admin-logoDark-file-upload').length) {
+            $('#admin-logoDark-upload-button').on('click', function (evt) {
+                evt.preventDefault();
+                $('#admin-logoDark-file-upload').trigger('click');
+            });
+        }
+
         if ($('#admin-logo-file-upload').length) {
             // Forward file to chooser.
             $('#admin-logo-upload-button').on('click', function (evt) {
@@ -253,6 +292,8 @@ humhub.module('admin', function (module, require, $) {
         deleteMailHeader: deleteMailHeader,
         changeLoginBg: changeLoginBg,
         changeMailHeader: changeMailHeader,
+        deleteLogoDark: deleteLogoDark,
+        changeLogoDark: changeLogoDark,
         changeIndividualProfilePermissions: changeIndividualProfilePermissions,
         moduleSetAsDefault: moduleSetAsDefault,
     });

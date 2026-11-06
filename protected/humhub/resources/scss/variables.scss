@@ -279,6 +279,7 @@ $tooltip-bg: var(--bs-primary) !default;
 // --------------------------------------------------
 
 $enable-shadows: true !default;
+$enable-reduced-motion: false !default; // The user's option decides, see `hh-reduced-motion` and _accessibility.scss
 $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
@@ -310,6 +311,14 @@ $border-color-dark: #3f3f3f !default;
 $hh-border-color-strong-dark: #393939 !default;
 $hh-topbar-bg-dark: #111 !default; // Darker than the surfaces, as the primary color in the light mode
 $hh-topbar-color-dark: var(--bs-emphasis-color) !default;
+
+
+//
+// High contrast (`[data-hh-contrast="more"]` or `prefers-contrast: more`), see _root.scss
+// --------------------------------------------------
+
+$hh-border-color-contrast: #767676 !default; // 4.5:1 on white
+$hh-border-color-contrast-dark: #8a8a8a !default; // 4.5:1 on $body-bg-dark
 
 
 //

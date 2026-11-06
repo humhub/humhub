@@ -198,7 +198,7 @@ class VisualCest
         $I->amOnRoute(['/admin/user/list']);
         $this->screenshot($I, 'admin-users');
 
-        $I->amOnRoute(['/admin/setting/design']);
+        $I->amOnRoute(['/admin/appearance/theme']);
         $this->screenshot($I, 'admin-appearance');
 
         $I->amOnRoute(['/admin/module/list']);
