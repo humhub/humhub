@@ -94,7 +94,7 @@ HumHub Changelog
 - Enh #8403: Attached files are a Vue island (`AttachedFiles`), shared by `ShowFiles` and the comment section; audio plays natively and jPlayer is gone
 - Enh #8403: The control links of the content menu (`EditLink`, `DeleteLink`, `PermaLink`, … and `ContentTopicButton`) are `MenuLink`s instead of widgets and describe themselves to the `/api/v2/content/<id>/controls` endpoint; `WallEntryControlLink` is deprecated, `DescribableWidget` removed
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
-- Enh #XXXX: Admin menu item Appearance, account page Appearance & Accessibility (dark mode, high contrast, reduced motion, readable font)
+- Enh #8713: Admin menu item Appearance, account page Appearance & Accessibility (dark mode, high contrast, reduced motion, readable font)
 
 1.19.4 (Unreleased)
 -------------------
