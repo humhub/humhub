@@ -110,16 +110,16 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     // Ghost: no fill until hovered, for quiet tools (row actions, ⋮, pager); defined the way
     // Bootstrap defines `.btn-link`, by the class's `--bs-btn-*` variables.
     .btn-ghost {
-        --bs-btn-color: var(--hh-text-color-default);
+        --bs-btn-color: var(--bs-body-color);
         --bs-btn-bg: transparent;
         --bs-btn-border-color: transparent;
-        --bs-btn-hover-color: var(--hh-text-color-highlight);
+        --bs-btn-hover-color: var(--bs-emphasis-color);
         --bs-btn-hover-bg: var(--bs-secondary-bg);
         --bs-btn-hover-border-color: transparent;
-        --bs-btn-active-color: var(--hh-text-color-highlight);
+        --bs-btn-active-color: var(--bs-emphasis-color);
         --bs-btn-active-bg: var(--bs-secondary-bg);
         --bs-btn-active-border-color: transparent;
-        --bs-btn-disabled-color: var(--hh-text-color-soft2);
+        --bs-btn-disabled-color: var(--bs-tertiary-color);
         --bs-btn-disabled-bg: transparent;
         --bs-btn-disabled-border-color: transparent;
         --bs-btn-box-shadow: none;
@@ -137,8 +137,8 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     // Outline buttons: use black color for texts if insufficient contrast relatively to background color main, as the background color is transparent
     @each $color, $value in $theme-colors {
         .btn-outline-#{$color} {
-            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
-                color: var(--hh-text-color-highlight);
+            @if contrast-ratio($body-bg, $value) < $min-contrast-ratio {
+                color: var(--bs-emphasis-color);
             }
         }
     }

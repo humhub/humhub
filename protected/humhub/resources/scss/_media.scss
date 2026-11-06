@@ -51,7 +51,7 @@
             border: 1px solid transparent;
 
             &.user-is-online {
-                border-color: var(--hh-background-color-main);
+                border-color: var(--bs-body-bg);
                 background-color: var(--bs-success);
             }
 

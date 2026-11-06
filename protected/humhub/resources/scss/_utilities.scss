@@ -17,15 +17,15 @@ $prev-badge: false !default;
     }
 
     .bg-light {
-        background-color: var(--hh-background-color-secondary) !important;
+        background-color: var(--bs-tertiary-bg) !important;
     }
 }
 
 @if not $prev-link {
     @each $color, $value in $theme-colors {
         .link-#{$color} {
-            @if contrast-ratio($background-color-main, $value) < $min-contrast-ratio {
-                color: var(--hh-text-color-highlight) !important;
+            @if contrast-ratio($body-bg, $value) < $min-contrast-ratio {
+                color: var(--bs-emphasis-color) !important;
             }
         }
     }

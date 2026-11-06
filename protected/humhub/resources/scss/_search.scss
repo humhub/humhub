@@ -26,7 +26,7 @@
         .dropdown-header {
             font-size: 20px;
             font-weight: 600;
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
             padding: 24px 24px 16px;
             margin: 0;
             flex: 0 0 auto;
@@ -42,7 +42,7 @@
                 right: 10px;
                 margin-left: -18px;
                 border-top-width: 0;
-                border-bottom-color: var(--hh-background4);
+                border-bottom-color: var(--bs-tertiary-color);
                 top: -8px;
                 z-index: 1035;
 
@@ -55,7 +55,7 @@
                     top: 1px;
                     margin-left: -8px;
                     border-top-width: 0;
-                    border-bottom-color: var(--hh-background-color-main);
+                    border-bottom-color: var(--bs-body-bg);
                     z-index: 1035;
                 }
             }
@@ -73,8 +73,8 @@
             flex: 0 1 auto;
 
             .dropdown-search-keyword {
-                background: var(--hh-background-color-secondary);
-                border-color: var(--hh-background-color-secondary);
+                background: var(--bs-tertiary-bg);
+                border-color: var(--bs-tertiary-bg);
                 border-radius: 6px;
                 padding-left: 32px;
                 font-weight: 500;
@@ -83,8 +83,8 @@
                 &:-webkit-autofill:hover,
                 &:-webkit-autofill:focus,
                 &:-webkit-autofill:active {
-                    -webkit-text-fill-color: var(--hh-text-color-secondary) !important;
-                    -webkit-box-shadow: 0 0 0 30px var(--hh-background-color-secondary) inset !important;
+                    -webkit-text-fill-color: var(--bs-secondary-color) !important;
+                    -webkit-box-shadow: 0 0 0 30px var(--bs-tertiary-bg) inset !important;
                 }
             }
 
@@ -95,7 +95,7 @@
                 border: 0;
                 font-size: 16px;
                 font-weight: 600;
-                color: var(--hh-text-color-secondary);
+                color: var(--bs-secondary-color);
                 box-shadow: none;
 
                 &:active {
@@ -123,7 +123,7 @@
                 padding: 8px;
                 font-weight: 600;
                 font-size: 18px;
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
 
                 > span {
                     font-size: 14px;
@@ -160,7 +160,7 @@
                     padding: 8px;
 
                     &:hover, &:focus {
-                        background: var(--hh-background-color-secondary);
+                        background: var(--bs-tertiary-bg);
                         border-radius: 3px;
                         outline: none;
                     }
@@ -172,7 +172,7 @@
                         > i.ti {
                             font-size: 25px;
                             color: var(--bs-accent);
-                            background: var(--hh-background-color-secondary);
+                            background: var(--bs-tertiary-bg);
                             border-radius: 4px;
                             display: flex;
                             align-items: center;
@@ -202,7 +202,7 @@
                             &:last-child { // Description
                                 font-size: 12px;
                                 font-weight: 400;
-                                color: var(--hh-text-color-soft);
+                                color: var(--bs-body-color);
                             }
                         }
                     }
@@ -232,11 +232,11 @@
             bottom: 0;
             left: 0;
             z-index: 990;
-            background: rgba($text-color-highlight, 0.15);
+            background: rgba(var(--bs-emphasis-color-rgb), 0.15);
         }
 
         #search-menu.show {
-            background: var(--hh-background-color-main);
+            background: var(--bs-body-bg);
             border-bottom: 3px solid var(--bs-accent);
             z-index: 1000;
             position: relative;
@@ -259,11 +259,11 @@
 
     // Search results page list:
     .search-results-header {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-size: 12px;
         line-height: 1.5;
         padding: 10px 0 15px;
         margin-bottom: 10px;
-        border-bottom: 1px solid var(--hh-background3);
+        border-bottom: 1px solid var(--hh-border-color-strong);
     }
 }

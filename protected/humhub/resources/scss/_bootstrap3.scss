@@ -18,8 +18,8 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         // background would not cover its block contents.
         display: block;
         border: none;
-        background-color: var(--hh-background-color-main);
-        box-shadow: 0 0 3px var(--hh-background3);
+        background-color: var(--bs-body-bg);
+        box-shadow: 0 0 3px var(--hh-border-color-strong);
         border-radius: 4px;
         position: relative;
         margin-bottom: 15px;
@@ -28,14 +28,14 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
             font-size: 16px;
             font-weight: 300;
             margin-top: 0;
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
         }
 
         .panel-heading {
             font-size: 16px;
             font-weight: 300;
-            color: var(--hh-text-color-highlight);
-            background-color: var(--hh-background-color-main);
+            color: var(--bs-emphasis-color);
+            background-color: var(--bs-body-bg);
             border: none;
             padding: 10px;
             margin: 0;
@@ -62,7 +62,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
             font-size: 13px;
 
             p {
-                color: var(--hh-text-color-main);
+                color: var(--bs-body-color);
             }
 
             .spacesearch-visibilities {
@@ -80,7 +80,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
             .entry {
                 margin-left: 20px;
                 font-size: 12px;
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
 
                 .count {
                     font-weight: 600;
@@ -122,12 +122,12 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     .well {
         border: none;
         box-shadow: none;
-        background-color: var(--hh-background-color-secondary);
+        background-color: var(--bs-tertiary-bg);
         margin-bottom: 1px;
 
         hr {
             margin: 10px 0;
-            border-top: 1px solid var(--hh-background-color-secondary);
+            border-top: 1px solid var(--bs-tertiary-bg);
         }
 
         table > thead {

@@ -12,7 +12,7 @@
     // `!important` on every `.list-group-item`, the active entry's border still has to win against it.
     .panel .list-group .list-group-item {
         padding: 6px 8px;
-        border-left: 3px solid var(--hh-background-color-main) !important;
+        border-left: 3px solid var(--bs-body-bg) !important;
         font-size: 12px;
         font-weight: 600;
 

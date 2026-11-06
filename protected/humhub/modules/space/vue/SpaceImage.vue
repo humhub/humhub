@@ -83,7 +83,7 @@ export default {
             return {
                 ...this.sizeStyle,
                 // Same fallback the widget uses when a space has no colour of its own.
-                backgroundColor: this.color || 'var(--hh-background3)',
+                backgroundColor: this.color || 'var(--hh-border-color-strong)',
                 borderRadius: this.borderRadius + 'px',
             };
         },

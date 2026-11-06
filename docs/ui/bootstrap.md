@@ -113,8 +113,8 @@ filled from the Sass variables. Its rules only use these variables:
 - A theme can override a value with Sass (all pages) or with the CSS variable (one place, or at
   runtime).
 - Colours point to variables that switch with the colour mode: `var(--bs-body-bg)`,
-  `var(--bs-border-color)`, `var(--bs-accent)`, `var(--hh-background-color-main)`,
-  `var(--hh-text-color-highlight)`.
+  `var(--bs-border-color)`, `var(--bs-accent)`,
+  `var(--bs-emphasis-color)` (see [Colours](colours.md)).
 - No parallel token sets for things Bootstrap already has. A field is styled by `$input-*`, not
   by a `--hh-field-*` set.
 

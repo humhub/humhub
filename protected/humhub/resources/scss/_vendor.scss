@@ -45,7 +45,7 @@ $prev-richtext: false !default;
     // Pjax page loader bar since 1.2
     #nprogress .bar {
         height: 2px;
-        background: lighten($accent, 8%);
+        background: var(--bs-accent);
     }
 }
 
@@ -54,17 +54,17 @@ $prev-richtext: false !default;
     // is jQuery UI's border of the widget
     .ui-widget-header {
         border: none;
-        background: var(--hh-background-color-main);
-        color: var(--hh-text-color-secondary);
+        background: var(--bs-body-bg);
+        color: var(--bs-secondary-color);
         font-weight: 300;
     }
 
     .ui-widget-content,
     .ui-widget.ui-widget-content {
-        border: 1px solid var(--hh-border-color);
+        border: 1px solid var(--bs-border-color);
         border-radius: 0;
-        background: var(--hh-background-color-main);
-        color: var(--hh-text-color-highlight);
+        background: var(--bs-body-bg);
+        color: var(--bs-emphasis-color);
         box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
     }
 
@@ -80,7 +80,7 @@ $prev-richtext: false !default;
 
     .ui-datepicker .ui-datepicker-prev:hover,
     .ui-datepicker .ui-datepicker-next:hover {
-        background: var(--hh-background-color-main);
+        background: var(--bs-body-bg);
         border: none;
         margin: 1px;
     }
@@ -89,14 +89,14 @@ $prev-richtext: false !default;
     .ui-widget-content .ui-state-default,
     .ui-widget-header .ui-state-default {
         border: none;
-        background: var(--hh-background-color-secondary);
-        color: var(--hh-text-color-secondary);
+        background: var(--bs-tertiary-bg);
+        color: var(--bs-secondary-color);
     }
 
     .ui-state-highlight,
     .ui-widget-content .ui-state-highlight,
     .ui-widget-header .ui-state-highlight {
-        border: 1px solid var(--hh-background4);
+        border: 1px solid var(--bs-tertiary-color);
     }
 
     .ui-state-active,

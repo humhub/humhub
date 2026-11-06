@@ -24,7 +24,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   the definition's `props.suggestionsUrl`; `PickerFilterControl` requests it when the empty field
   first gets the focus. The `user` and `space` filter controls no longer lead with an icon, the
   `topic` one shows a star per topic instead of a colour dot.
-- **One placeholder colour:** `--hh-placeholder-color` (default `--hh-text-color-secondary`) for
+- **One placeholder colour:** Bootstrap's `$input-placeholder-color` (`var(--bs-secondary-color)`) for
   every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
   `--hh-text-color-soft3` for text fields and the icon colour for selects.
 
@@ -2568,17 +2568,42 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     Bootstrap utilities (`.bg-light`, `.link-*`, `.badge.text-bg-*`, `.d-revert`) to
     `_utilities.scss`, both outside of the layers.
 
-- **Design tokens: the colours are semantic CSS variables** (see
-  [Theme Structure](theme-structure.md#design-tokens)), so the dark mode (`data-bs-theme="dark"`) applies to
-  more of the core: form fields, selects and the editor's menu bar (`$input-bg` is
-  `var(--hh-background-color-main)`), inline code, the editor in comments, and text marks.
-  - `--hh-text-color-main`, `--hh-text-color-highlight` and `--hh-background-color-page` are aliases of
-    `--bs-body-color`, `--bs-emphasis-color` and `--bs-body-bg`. `$body-color` and `$body-bg` (and their
-    `-dark` variants) are set from `$text-color-main` and `$background-color-page`: a theme that sets the two
-    pairs to different values gets the HumHub one for both.
-  - New: `--hh-border-color` (a neutral line, `#ddd` on white), `--hh-code-bg` (inline code),
-    `--hh-mark-bg` (a marked text). The CSS variables deprecated since 1.18 (`--text-color-main`, …) are
-    aliases of the `--hh-*` ones now.
+- **Design tokens: the colours are Bootstrap's semantic CSS variables** (see
+  [Colours](../ui/colours.md) and [Design tokens](concept-design-tokens.md)), so the dark mode
+  (`data-bs-theme="dark"`) applies to more of the core: form fields, selects, the editor, inline code and marks.
+  - **The colour Sass variables have the names of their tokens**, Bootstrap's where Bootstrap has the role, `$hh-*`
+    otherwise: `$text-color-main` → `$body-color`, `$text-color-highlight` → `$body-emphasis-color`,
+    `$text-color-secondary` → `$body-secondary-color`, `$text-color-soft2` → `$body-tertiary-color`,
+    `$background-color-main` → `$body-bg`, `$background-color-secondary` → `$body-tertiary-bg`,
+    `$background-color-page` → `$hh-page-bg`, `$background-color-highlight-soft` → `$hh-accent-bg-soft`,
+    `$background3` → `$hh-border-color-strong`, `$text-color-{color}-contrast` → `$hh-{color}-contrast`, each with its
+    `-dark` variable. The former names are deprecated: a theme setting one sets the new one
+    (`variables-deprecated.scss`), and `Theme::variable()` with a former name returns the new one and logs a
+    warning. Removed without a successor: `$text-color-default`, `$text-color-soft`, `$text-color-soft3`,
+    `$background4`, `$background-color-highlight`, the alert colours `${background,text,border}-color-{success,warning,danger}`
+    and `$default`, `$link`, `$text-color-contrast` (deprecated since 1.18).
+  - `--bs-secondary-color` and `--bs-tertiary-color` (`.text-body-secondary`, `.text-body-tertiary`, help texts,
+    placeholders) are `#7a7a7a` and `#aeaeae`, no longer a translucent body colour; `--bs-border-color`,
+    `--bs-secondary-bg` and `--bs-tertiary-bg` are the neutral HumHub greys (`#ddd`, `#ededed`, `#f9f9f9`), no
+    longer Bootstrap's bluish ones.
+  - **`--bs-body-bg` is the surface** (`$body-bg`, white), as Bootstrap's components expect, no longer the page
+    grey. The page is the new `--hh-page-bg` (`$hh-page-bg`). Module CSS that used `var(--bs-body-bg)` for the page
+    grey uses `--hh-page-bg` or `--bs-secondary-bg`.
+  - The core no longer sets `$input-bg`, `$dropdown-bg`, `$list-group-bg`, `$table-bg`, `$accordion-bg` and
+    `$nav-tabs-link-active-bg`: Bootstrap's default, the surface, is right now.
+  - The alerts (`.alert-success`, `.alert-warning`, `.alert-danger`) use Bootstrap's colours (`--bs-{color}-bg-subtle`,
+    `-text-emphasis`, `-border-subtle`): their text is readable now (contrast 7:1 instead of 2:1).
+  - New: `--hh-page-bg`, `--hh-border-color-strong` (border of a checkbox, radio or switch), `--hh-accent-bg-soft`
+    (a light selection), `--hh-code-bg` (inline code).
+  - **Deprecated:** the colour tokens `--hh-text-color-*`, `--hh-background-color-*`, `--hh-background3`,
+    `--hh-background4` and `--hh-{background,text,border}-color-{success,warning,danger}`. They keep working as aliases
+    of their replacements, so a few take the core's colour: `--hh-text-color-default` `#4b4b4b` → `#555`,
+    `--hh-text-color-soft3` and `--hh-background4` → `#aeaeae`, the alert colours → Bootstrap's;
+    [Colours](../ui/colours.md#replaced-tokens-and-variables) lists the replacements. A theme that writes one of them (e.g.
+    `--hh-background-color-page: #f1f4f5` in `:root`) no longer changes the core: set the Sass variable instead
+    (`$hh-page-bg`).
+  - Stylelint rejects hex colours and `darken()`/`lighten()` in the core partials (outside `variables.scss`,
+    `variables-deprecated.scss` and `_root.scss`).
   - The *Read more* fade of a long content (`ui.showMore`) is a `mask-image` of the collapsed content
     (`.show-more-collapsed`), no longer a gradient coloured by JS: it shows whatever lies behind, in any
     colour mode.

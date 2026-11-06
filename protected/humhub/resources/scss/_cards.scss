@@ -124,14 +124,14 @@
                 flex-direction: column;
                 margin: 15px 0;
                 border-radius: 4px;
-                box-shadow: 0 0 3px var(--hh-background3);
-                background-color: var(--hh-background-color-main);
+                box-shadow: 0 0 3px var(--hh-border-color-strong);
+                background-color: var(--bs-body-bg);
             }
 
             .card-bg-image {
                 width: 100%;
                 height: 86px;
-                background-color: var(--hh-background3);
+                background-color: var(--hh-border-color-strong);
                 background-size: cover;
                 background-position: center;
                 border-radius: 4px 4px 0 0;
@@ -147,7 +147,7 @@
 
                 .profile-user-photo,
                 .space-acronym {
-                    border: 2px solid var(--hh-background-color-main);
+                    border: 2px solid var(--bs-body-bg);
                 }
             }
 

@@ -1,0 +1,62 @@
+//
+// @deprecated since 1.20, the color variables renamed in 1.20 (see docs/ui/colours.md)
+// Imported after the variables of the theme and before the core's `variables.scss`: a theme that still sets an old
+// name sets the new one. An old name the theme doesn't set is `null`, and the core's default of the new one applies.
+// Keep in sync with `ThemeHelper::DEPRECATED_VARIABLES`.
+// --------------------------------------------------
+
+$text-color-main: null !default;
+$text-color-highlight: null !default;
+$text-color-secondary: null !default;
+$text-color-soft2: null !default;
+$background-color-main: null !default;
+$background-color-secondary: null !default;
+$background-color-page: null !default;
+$background-color-highlight-soft: null !default;
+$background3: null !default;
+$text-color-main-dark: null !default;
+$text-color-highlight-dark: null !default;
+$text-color-secondary-dark: null !default;
+$text-color-soft2-dark: null !default;
+$background-color-main-dark: null !default;
+$background-color-secondary-dark: null !default;
+$background-color-page-dark: null !default;
+$background-color-highlight-soft-dark: null !default;
+$background3-dark: null !default;
+$text-color-accent-contrast: null !default;
+$text-color-primary-contrast: null !default;
+$text-color-secondary-contrast: null !default;
+$text-color-info-contrast: null !default;
+$text-color-success-contrast: null !default;
+$text-color-warning-contrast: null !default;
+$text-color-danger-contrast: null !default;
+$text-color-light-contrast: null !default;
+$text-color-dark-contrast: null !default;
+
+$body-color: $text-color-main !default;
+$body-emphasis-color: $text-color-highlight !default;
+$body-secondary-color: $text-color-secondary !default;
+$body-tertiary-color: $text-color-soft2 !default;
+$body-bg: $background-color-main !default;
+$body-tertiary-bg: $background-color-secondary !default;
+$hh-page-bg: $background-color-page !default;
+$hh-accent-bg-soft: $background-color-highlight-soft !default;
+$hh-border-color-strong: $background3 !default;
+$body-color-dark: $text-color-main-dark !default;
+$body-emphasis-color-dark: $text-color-highlight-dark !default;
+$body-secondary-color-dark: $text-color-secondary-dark !default;
+$body-tertiary-color-dark: $text-color-soft2-dark !default;
+$body-bg-dark: $background-color-main-dark !default;
+$body-tertiary-bg-dark: $background-color-secondary-dark !default;
+$hh-page-bg-dark: $background-color-page-dark !default;
+$hh-accent-bg-soft-dark: $background-color-highlight-soft-dark !default;
+$hh-border-color-strong-dark: $background3-dark !default;
+$hh-accent-contrast: $text-color-accent-contrast !default;
+$hh-primary-contrast: $text-color-primary-contrast !default;
+$hh-secondary-contrast: $text-color-secondary-contrast !default;
+$hh-info-contrast: $text-color-info-contrast !default;
+$hh-success-contrast: $text-color-success-contrast !default;
+$hh-warning-contrast: $text-color-warning-contrast !default;
+$hh-danger-contrast: $text-color-danger-contrast !default;
+$hh-light-contrast: $text-color-light-contrast !default;
+$hh-dark-contrast: $text-color-dark-contrast !default;

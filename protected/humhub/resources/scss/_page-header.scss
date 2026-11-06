@@ -8,13 +8,13 @@ $page-header-max-width: 1440px !default;
 $page-header-padding: $spacer * .5 !default;
 $page-header-gap: $spacer * .5 !default;
 $page-header-tabs-margin-top: $spacer * .5 !default; // on top of the bar's padding: 1rem below the title
-$page-header-bg: var(--hh-background-color-main) !default;
+$page-header-bg: var(--bs-body-bg) !default;
 $page-header-border-radius: $border-radius-lg !default;
 $page-header-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $page-header-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
 $page-header-title-font-size: $font-size-lg !default;
 $page-header-title-font-weight: $font-weight-semibold !default;
-$page-header-title-color: var(--hh-text-color-highlight) !default;
+$page-header-title-color: var(--bs-emphasis-color) !default;
 
 @if not $prev-page-header {
     .page-header {

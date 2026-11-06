@@ -7,6 +7,7 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
+use humhub\helpers\ScssHelper;
 
 /* @var View $this */
 ?>
@@ -20,13 +21,13 @@ use humhub\helpers\Html;
     <style type="text/css">
         body {
             background: <?= $this->theme->variable('primary') ?>;
-            color: <?= $this->theme->variable('text-color-contrast', '#fff') ?>;
+            color: <?= ScssHelper::getColorContrast('primary') ?? '#fff' ?>;
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
             font-weight: 300;
         }
 
         body a {
-            color: <?= $this->theme->variable('text-color-contrast', '#fff') ?>;
+            color: <?= ScssHelper::getColorContrast('primary') ?? '#fff' ?>;
         }
 
         #content {

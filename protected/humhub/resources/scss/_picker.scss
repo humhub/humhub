@@ -12,7 +12,7 @@
 $select-menu-field-borders: 2px !default;
 $select-menu-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, $select-menu-field-borders, false)) !default;
 $select-menu-icon-size: $font-size-lg !default;
-$select-menu-icon-color: var(--hh-text-color-secondary) !default;
+$select-menu-icon-color: var(--bs-secondary-color) !default;
 $select-menu-icon-space: $input-padding-x + $select-menu-icon-size + $spacer * .5 !default;
 $select-menu-max-height: 384px !default;
 // A select list row as high as a field (≈38px: 21px line + 2 × 8.5px); context menus keep
@@ -42,7 +42,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         display: flex;
         align-items: center;
         padding-right: $select-menu-icon-space;
-        color: var(--hh-placeholder-color);
+        color: $input-placeholder-color;
         text-align: left;
         cursor: pointer;
 

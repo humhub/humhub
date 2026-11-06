@@ -10,7 +10,7 @@
 
             &:hover {
                 border-left: none;
-                background-color: var(--hh-background-color-secondary);
+                background-color: var(--bs-tertiary-bg);
             }
 
             &.new {
@@ -21,7 +21,7 @@
 
             &:not(.new) {
                 &, strong {
-                    color: var(--hh-text-color-secondary);
+                    color: var(--bs-secondary-color);
                 }
             }
         }

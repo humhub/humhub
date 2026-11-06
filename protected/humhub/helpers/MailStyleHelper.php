@@ -47,42 +47,42 @@ class MailStyleHelper
 
     public static function getTextColorSoft(): string
     {
-        return static::getVariable('text-color-soft', self::DEFAULT_TEXT_COLOR_SOFT);
+        return static::getVariable('body-color', self::DEFAULT_TEXT_COLOR_SOFT);
     }
 
     public static function getTextColorSoft2(): string
     {
-        return static::getVariable('text-color-soft2', self::DEFAULT_TEXT_COLOR_SOFT2);
+        return static::getVariable('body-tertiary-color', self::DEFAULT_TEXT_COLOR_SOFT2);
     }
 
     public static function getTextColorMain(): string
     {
-        return static::getVariable('text-color-main', self::DEFAULT_TEXT_COLOR_MAIN);
+        return static::getVariable('body-color', self::DEFAULT_TEXT_COLOR_MAIN);
     }
 
     public static function getTextColorHighlight(): string
     {
-        return static::getVariable('text-color-highlight', self::DEFAULT_TEXT_COLOR_HIGHLIGHT);
+        return static::getVariable('body-emphasis-color', self::DEFAULT_TEXT_COLOR_HIGHLIGHT);
     }
 
     public static function getTextColorContrast(): string
     {
-        return static::getVariable('text-color-contrast', self::DEFAULT_TEXT_COLOR_CONTRAST);
+        return ScssHelper::getColorContrast('primary') ?? self::DEFAULT_TEXT_COLOR_CONTRAST;
     }
 
     public static function getBackgroundColorMain(): string
     {
-        return static::getVariable('background-color-main', self::DEFAULT_BACKGROUND_COLOR_MAIN);
+        return static::getVariable('body-bg', self::DEFAULT_BACKGROUND_COLOR_MAIN);
     }
 
     public static function getBackgroundColorPage(): string
     {
-        return static::getVariable('background-color-page', self::DEFAULT_BACKGROUND_COLOR_PAGE);
+        return static::getVariable('hh-page-bg', self::DEFAULT_BACKGROUND_COLOR_PAGE);
     }
 
     public static function getBackgroundColorSecondary(): string
     {
-        return static::getVariable('background-color-secondary', self::DEFAULT_BACKGROUND_COLOR_SECONDARY);
+        return static::getVariable('body-tertiary-bg', self::DEFAULT_BACKGROUND_COLOR_SECONDARY);
     }
 
     public static function getVariable(string $key, ?string $default = null): string

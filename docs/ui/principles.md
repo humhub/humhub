@@ -85,7 +85,8 @@ contradict them. When a new component is designed or built, check it against thi
     slots through the extension points (menus, `registerMenuEntry()`, `registerSlotComponent()`,
     list events). They never copy and change a core view.
 23. **Tokens, not values.** Colours, spacing, radii and shadows come from Sass variables and the
-    component's CSS variables, so themes and dark mode work without touching components.
+    component's CSS variables, so themes and dark mode work without touching components. The
+    colour tokens: [Colours](colours.md).
 24. **Accessibility is part of the component.** Labels, roles, focus handling and hidden texts
     are specified on each page and are not optional.
 25. **Bootstrap first.** A component is built on the Bootstrap 5 component for the job, and named

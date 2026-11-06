@@ -12,7 +12,7 @@
 
         h1, h2, h3, h4, h5, h6 {
             margin: $md-block-spacing 0 0.8em;
-            color: var(--hh-text-color-main);
+            color: var(--bs-body-color);
             font-weight: normal;
             text-align: start;
         }
@@ -65,12 +65,12 @@
         pre {
             padding: 0;
             border: none;
-            background-color: var(--hh-background-color-secondary);
+            background-color: var(--bs-tertiary-bg);
         }
 
         pre code {
-            background-color: var(--hh-background-color-secondary);
-            color: var(--hh-text-color-main);
+            background-color: var(--bs-tertiary-bg);
+            color: var(--bs-body-color);
         }
 
         code {
@@ -152,7 +152,7 @@
         }
 
         a.header-anchor {
-            color: var(--hh-text-color-main);
+            color: var(--bs-body-color);
         }
 
         a.not-found {
@@ -188,7 +188,7 @@
         }
 
         table {
-            border: 1px solid var(--hh-background3);
+            border: 1px solid var(--hh-border-color-strong);
             margin-bottom: $md-block-spacing;
             font-size: 1em;
             width: 100%;
@@ -198,7 +198,7 @@
             }
 
             th, td {
-                border: 1px solid var(--hh-background3);
+                border: 1px solid var(--hh-border-color-strong);
                 box-sizing: border-box;
                 position: relative;
             }

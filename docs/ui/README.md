@@ -39,6 +39,9 @@ Bootstrap; core is. This page says how the design is translated: which Bootstrap
 part builds on, how classes are named (`.page-header`, `.page-header-title`), and where values
 come from (Sass variables, local CSS variables).
 
+**Colours:** [Colours](colours.md). Which colour token to use for which job: text, backgrounds,
+lines, in the light and the dark mode.
+
 ## Where things live
 
 ![Where the components live on a page](images/overview-map.svg)

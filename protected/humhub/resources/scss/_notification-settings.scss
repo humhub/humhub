@@ -30,7 +30,7 @@ $notification-settings-gap: $spacer !default;
 
     .notification-settings-subtitle {
         margin: 0;
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-size: $font-size-base;
         font-weight: $font-weight-semibold;
     }

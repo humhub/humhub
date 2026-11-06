@@ -4,9 +4,9 @@
 
 @if not $prev-mentioning {
     .atwho-view {
-        background: var(--hh-background-color-main);
-        color: var(--hh-text-color-soft);
-        border: 1px solid var(--hh-background3);
+        background: var(--bs-body-bg);
+        color: var(--bs-body-color);
+        border: 1px solid var(--hh-border-color-strong);
         border-radius: 4px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
         display: none;
@@ -39,9 +39,9 @@
     }
 
     .atwho-view ul li.hint {
-        background: var(--hh-background-color-main);
+        background: var(--bs-body-bg);
         border-left: 3px solid transparent;
-        color: var(--hh-text-color-soft2);
+        color: var(--bs-tertiary-color);
         font-size: 12px;
     }
 
@@ -65,23 +65,23 @@
         border: none;
 
         &:hover, &:active, &:focus {
-            background-color: var(--hh-background-color-secondary);
+            background-color: var(--bs-tertiary-bg);
             border-radius: 3px;
         }
     }
 
     .atwho-view .cur {
-        border-left: 3px solid lighten($accent, 30%);
-        background-color: var(--hh-background-color-secondary);
+        border-left: 3px solid var(--bs-accent-border-subtle);
+        background-color: var(--bs-tertiary-bg);
     }
 
     .atwho-view strong {
-        background-color: var(--hh-mark-bg);
+        background-color: var(--bs-highlight-bg);
     }
 
     .atwho-view small {
         font-size: smaller;
-        color: var(--hh-text-color-secondary);
+        color: var(--bs-secondary-color);
         font-weight: normal;
     }
 

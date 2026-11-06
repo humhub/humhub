@@ -26,7 +26,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         --bs-card-border-width: 0;
         --bs-card-border-radius: #{$entity-card-border-radius};
         --bs-card-inner-border-radius: #{$entity-card-border-radius};
-        --bs-card-bg: var(--hh-background-color-main);
+        --bs-card-bg: var(--bs-body-bg);
         --bs-card-box-shadow: var(--hh-surface-shadow);
         --bs-card-height: 100%;
 
@@ -77,7 +77,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         .space-acronym,
         img {
             box-sizing: border-box;
-            border: 2px solid var(--hh-background-color-main);
+            border: 2px solid var(--bs-body-bg);
             object-fit: cover;
         }
     }
@@ -96,7 +96,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         min-width: 0;
         margin-left: auto;
         border: var(--bs-border-width) solid var(--bs-border-color);
-        background-color: var(--hh-background-color-main);
+        background-color: var(--bs-body-bg);
     }
 
     // A count in the pill, a button where it opens the list
@@ -120,7 +120,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
 
         &:hover,
         &:focus-visible {
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
         }
 
         &:focus-visible {
@@ -138,7 +138,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
     }
 
     .entity-card-title {
-        color: var(--hh-text-color-highlight);
+        color: var(--bs-emphasis-color);
         font-size: $entity-card-title-font-size;
         font-weight: $font-weight-bold;
         line-height: $headings-line-height;

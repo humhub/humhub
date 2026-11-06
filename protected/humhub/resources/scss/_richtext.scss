@@ -67,7 +67,7 @@
         }
 
         .ProseMirror-menuseparator {
-            border-right: 1px solid var(--hh-background3);
+            border-right: 1px solid var(--hh-border-color-strong);
             margin-right: 1px;
         }
 
@@ -80,7 +80,7 @@
 
         .ProseMirror-menuitem {
             .ProseMirror-menu-group {
-                border-right: 1px solid var(--hh-background3);
+                border-right: 1px solid var(--hh-border-color-strong);
             }
 
             .ProseMirror-menu-group.last {
@@ -92,7 +92,7 @@
             }
 
             .seperator {
-                border-right: 1px solid var(--hh-background3);
+                border-right: 1px solid var(--hh-border-color-strong);
                 border-radius: 0;
             }
         }
@@ -204,7 +204,7 @@
             padding: 0 5px;
 
             &.ProseMirror-menu-active {
-                border-color: var(--hh-text-color-soft3);
+                border-color: var(--bs-tertiary-color);
             }
         }
 
@@ -229,7 +229,7 @@
         }
 
         .ProseMirror-editor-source {
-            border: 2px solid var(--hh-background-color-page);
+            border: 2px solid var(--bs-secondary-bg);
             border-radius: 0 4px 4px 4px;
             box-sizing: border-box;
             display: block;
@@ -271,12 +271,12 @@
         }
 
         .ProseMirror-menubar {
-            background: var(--hh-background-color-main);
-            border: 1px solid var(--hh-background3);
+            background: var(--bs-body-bg);
+            border: 1px solid var(--hh-border-color-strong);
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
             box-sizing: border-box;
-            color: var(--hh-text-color-soft);
+            color: var(--bs-body-color);
             position: relative;
             min-height: 1em;
             overflow: visible;
@@ -314,11 +314,11 @@
         }
 
         .ProseMirror-menubar {
-            background: var(--hh-background-color-page);
+            background: var(--bs-secondary-bg);
             border: 0;
-            border-bottom: $input-border-width solid var(--hh-background3);
+            border-bottom: $input-border-width solid var(--hh-border-color-strong);
             border-radius: $input-border-radius $input-border-radius 0 0;
-            color: var(--hh-text-color-soft);
+            color: var(--bs-body-color);
             padding: 2px 4px;
             position: relative;
             z-index: 10;
@@ -366,7 +366,7 @@
         }
 
         .ProseMirror-selectednode {
-            outline: 2px dashed lighten($accent, 30%);
+            outline: 2px dashed var(--bs-accent-border-subtle);
         }
 
         /* Make sure li selections wrap around markers */
@@ -382,7 +382,7 @@
             right: -2px;
             top: -2px;
             bottom: -2px;
-            border: 2px solid lighten($accent, 30%);
+            border: 2px solid var(--bs-accent-border-subtle);
             pointer-events: none;
         }
 
@@ -412,7 +412,7 @@
             position: absolute;
             top: -2px;
             width: 20px;
-            border-top: 1px solid var(--hh-text-color-highlight);
+            border-top: 1px solid var(--bs-emphasis-color);
             animation: ProseMirror-cursor-blink 1.1s steps(2, start) infinite;
         }
 
@@ -509,7 +509,7 @@
 
         // The editor's placeholder, in the placeholder colour of every field
         .ProseMirror .placeholder {
-            color: var(--hh-placeholder-color);
+            color: $input-placeholder-color;
             padding: 0;
             pointer-events: none;
             height: 0;
@@ -526,7 +526,7 @@
         }
 
         .ProseMirror .column-resize-handle {
-            background-color: lighten($accent, 40%);
+            background-color: var(--bs-accent-border-subtle);
             pointer-events: none;
             position: absolute;
             right: -2px;
@@ -569,8 +569,8 @@
     }
 
     .ProseMirror-prompt {
-        background: var(--hh-background-color-main);
-        border: 1px solid var(--hh-border-color);
+        background: var(--bs-body-bg);
+        border: 1px solid var(--bs-border-color);
         border-radius: 3px;
         box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
         padding: 5px 10px 5px 15px;
@@ -591,7 +591,7 @@
 
     .ProseMirror-prompt-close {
         background: transparent;
-        color: var(--hh-text-color-soft);
+        color: var(--bs-body-color);
         padding: 0;
         position: absolute;
         left: 2px;
@@ -605,8 +605,8 @@
     }
 
     .ProseMirror-invalid {
-        background: var(--hh-mark-bg);
-        border: 1px solid lighten($warning, 10%);
+        background: var(--bs-highlight-bg);
+        border: 1px solid var(--bs-warning-border-subtle);
         border-radius: 4px;
         padding: 5px 10px;
         position: absolute;
@@ -632,7 +632,7 @@
 
         // Above the hover of `_mentioning.scss`
         .atwho-view & li.atwho-emoji-entry.cur {
-            background-color: var(--hh-background-color-page);
+            background-color: var(--bs-secondary-bg);
         }
     }
 
@@ -640,7 +640,7 @@
         padding-top: 10px;
 
         .emoji-nav-item {
-            border-top: 2px solid var(--hh-background-color-highlight);
+            border-top: 2px solid var(--bs-accent-bg-subtle);
         }
 
         .emoji-nav-item.cur {

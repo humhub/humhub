@@ -35,7 +35,7 @@
             padding: 6px 16px;
             margin-bottom: 10px;
             font-weight: 600;
-            color: var(--hh-text-color-highlight);
+            color: var(--bs-emphasis-color);
 
             .dropdown-header-actions {
                 float: right;
@@ -195,7 +195,7 @@
                         &:not(.new) {
                             > a {
                                 &, strong {
-                                    color: var(--hh-text-color-secondary);
+                                    color: var(--bs-secondary-color);
                                 }
                             }
                         }
@@ -221,30 +221,30 @@
         }
 
         .btn-group > a {
-            background-color: lighten($primary, 5%);
+            background-color: color-mix(in srgb, var(--bs-primary), white 8%);
         }
 
         .btn-enter {
-            background-color: lighten($primary, 5%);
+            background-color: color-mix(in srgb, var(--bs-primary), white 8%);
             margin: 6px 0;
         }
 
         .btn-enter:hover {
-            background-color: lighten($primary, 8%);
+            background-color: color-mix(in srgb, var(--bs-primary), white 12%);
         }
 
         .hh-list {
             > div, > a {
                 padding: 8px 16px;
                 border-bottom: none;
-                color: var(--hh-text-color-highlight);
+                color: var(--bs-emphasis-color);
 
                 &.new {
                     border: none;
                     background: none;
 
                     &:hover {
-                        background-color: var(--hh-background-color-secondary);
+                        background-color: var(--bs-tertiary-bg);
                     }
 
                     time {
@@ -288,11 +288,11 @@
 
     #topbar-second {
         top: 50px;
-        background-color: var(--hh-background-color-main);
+        background-color: var(--bs-body-bg);
         z-index: 1029;
         background-image: none;
         box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid var(--hh-background3);
+        border-bottom: 1px solid var(--hh-border-color-strong);
 
         .dropdown-menu {
             padding-top: 0;
@@ -341,7 +341,7 @@
 
             .search-reset {
                 position: absolute;
-                color: var(--hh-background4);
+                color: var(--bs-tertiary-color);
                 margin: 4px;
                 top: 0px;
                 right: 40px;
@@ -372,13 +372,13 @@
                     &:active,
                     &:focus {
                         border-bottom: 3px solid var(--bs-accent);
-                        background-color: var(--hh-background-color-secondary);
+                        background-color: var(--bs-tertiary-bg);
                         text-decoration: none;
                     }
 
                     &#space-menu {
                         padding-right: 13px;
-                        border-right: 1px solid var(--hh-background-color-page);
+                        border-right: 1px solid var(--bs-secondary-bg);
 
                         .no-space {
                             display: inline;
@@ -394,7 +394,7 @@
                     }
 
                     .caret {
-                        border-top-color: var(--hh-text-color-secondary);
+                        border-top-color: var(--bs-secondary-color);
                     }
 
                     i {
@@ -404,21 +404,21 @@
 
                 > ul > li > a {
                     & {
-                        border-left: 3px solid var(--hh-background-color-main);
-                        background-color: var(--hh-background-color-main);
+                        border-left: 3px solid var(--bs-body-bg);
+                        background-color: var(--bs-body-bg);
                     }
 
                     &:hover,
                     &.active {
                         border-left: 3px solid var(--bs-accent);
-                        background-color: var(--hh-background-color-secondary);
+                        background-color: var(--bs-tertiary-bg);
                     }
                 }
             }
         }
 
         #space-menu-dropdown p.space-description {
-            color: var(--hh-text-color-soft);
+            color: var(--bs-body-color);
             font-size: 11px;
             margin: 0;
             font-weight: 400;
