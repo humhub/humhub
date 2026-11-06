@@ -1,7 +1,7 @@
 //
 // Third-party libraries
 // --------------------------------------------------
-// Styles of the core for the CSS of third-party libraries (jQuery UI, blueimp Gallery, NProgress, the icon
+// Styles of the core for the CSS of third-party libraries (jQuery UI's date picker, blueimp Gallery, NProgress, the icon
 // fonts). The library CSS is not in a cascade layer, so these rules are not either: in a layer they would lose
 // against it whatever their specificity. Imported by \humhub\helpers\ThemeHelper after the layers.
 
@@ -50,14 +50,61 @@ $prev-richtext: false !default;
 }
 
 @if not $prev-datepicker {
-    .ui-widget-content {
+    // jQuery UI's date picker: its own CSS comes earlier with the same specificity, `.ui-widget.ui-widget-content`
+    // is jQuery UI's border of the widget
+    .ui-widget-header {
+        border: none;
         background: var(--hh-background-color-main);
+        color: var(--hh-text-color-secondary);
+        font-weight: 300;
+    }
+
+    .ui-widget-content,
+    .ui-widget.ui-widget-content {
+        border: 1px solid #dddcda;
+        border-radius: 0;
+        background: var(--hh-background-color-main);
+        color: var(--hh-text-color-highlight);
+        box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    // jQuery UI's `margin: 0 0 .4em`
+    .ui-datepicker table {
+        margin-bottom: 0;
+    }
+
+    .ui-datepicker .ui-datepicker-prev span,
+    .ui-datepicker .ui-datepicker-next span {
+        opacity: 0.2;
     }
 
     .ui-datepicker .ui-datepicker-prev:hover,
     .ui-datepicker .ui-datepicker-next:hover {
+        background: var(--hh-background-color-main);
         border: none;
         margin: 1px;
+    }
+
+    .ui-state-default,
+    .ui-widget-content .ui-state-default,
+    .ui-widget-header .ui-state-default {
+        border: none;
+        background: var(--hh-background-color-secondary);
+        color: var(--hh-text-color-secondary);
+    }
+
+    .ui-state-highlight,
+    .ui-widget-content .ui-state-highlight,
+    .ui-widget-header .ui-state-highlight {
+        border: 1px solid var(--hh-background4);
+    }
+
+    .ui-state-active,
+    .ui-widget-content .ui-state-active,
+    .ui-widget-header .ui-state-active {
+        border: 1px solid var(--bs-accent);
+        background: var(--bs-accent);
+        color: var(--hh-accent-contrast);
     }
 }
 

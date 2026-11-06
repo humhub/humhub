@@ -192,20 +192,9 @@ $form-choice-border-radius: 4px !default;
         border: 2px solid var(--hh-background3);
         border-radius: $form-choice-border-radius;
         cursor: pointer;
-
-        &:disabled {
-            background: var(--hh-background3) !important;
-            border: 2px solid var(--hh-background3) !important;
-            cursor: not-allowed;
-        }
     }
 
     input[type=checkbox] {
-        &:focus {
-            border: 2px solid var(--hh-text-color-highlight) !important;
-            outline: none;
-        }
-
         &:checked {
             border: 2px solid var(--bs-accent);
             background: var(--bs-accent);
@@ -246,6 +235,20 @@ $form-choice-border-radius: 4px !default;
         }
     }
 
+    // The states in this order instead of `!important`: the focus above a ticked checkbox, disabled above both
+    input[type=checkbox]:focus {
+        border: 2px solid var(--hh-text-color-highlight);
+        outline: none;
+    }
+
+    input[type=checkbox], input[type=radio] {
+        &:disabled {
+            background: var(--hh-background3);
+            border: 2px solid var(--hh-background3);
+            cursor: not-allowed;
+        }
+    }
+
     .form-check-label {
         cursor: pointer;
     }
@@ -262,11 +265,9 @@ $form-choice-border-radius: 4px !default;
         background: var(--bs-body-bg) var(--bs-form-switch-bg) left center / contain no-repeat;
         @include transition($form-switch-transition);
 
+        // Before `:checked`, whose knob wins
         &:focus {
             --bs-form-switch-bg: #{escape-svg($form-switch-focus-bg-image)};
-            border: $form-check-input-border !important;
-            border-color: $form-check-input-focus-border !important;
-            box-shadow: $form-check-input-focus-box-shadow;
         }
 
         &:checked {
@@ -280,9 +281,15 @@ $form-choice-border-radius: 4px !default;
             }
         }
 
+        // After `:checked`, the focus colours the border of a switched-on switch too
+        &:focus {
+            border: $form-check-input-border;
+            border-color: $form-check-input-focus-border;
+            box-shadow: $form-check-input-focus-box-shadow;
+        }
+
+        // As Bootstrap's: the colours of its state, paler; the knob stays visible
         &:disabled {
-            border: $form-check-input-border !important;
-            background-color: var(--bs-body-bg) !important;
             opacity: $form-check-input-disabled-opacity;
         }
     }

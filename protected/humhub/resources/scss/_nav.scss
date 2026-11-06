@@ -343,7 +343,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     @include media-breakpoint-down(lg) {
         .controls-header {
-            text-align: left !important;
+            text-align: left;
         }
     }
 

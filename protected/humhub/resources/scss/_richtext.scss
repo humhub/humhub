@@ -3,6 +3,11 @@
 // --------------------------------------------------
 
 @if not $prev-richtext {
+    // The height limit of an editor (`pluginOptions.maxHeight`, set by the max_height plugin)
+    .humhub-ui-richtext {
+        max-height: var(--hh-richtext-max-height, none);
+    }
+
     .ProsemirrorEditor.fullscreen {
         height: calc(100vh - 3px);
         position: fixed;
@@ -16,7 +21,7 @@
         }
 
         .humhub-ui-richtext {
-            max-height: none !important;
+            max-height: none;
         }
 
         .ProseMirror {
@@ -246,9 +251,9 @@
      */
     .ProsemirrorEditor.plainMenu {
         .ProseMirror {
-            border-top-left-radius: 0 !important;
-            border-top-right-radius: 0 !important;
-            border-top-width: 1px !important;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-top-width: 1px;
             min-height: 100px;
         }
 
@@ -258,7 +263,7 @@
         }
 
         .ProseMirror-menubar ~ .ProseMirror-focused {
-            border-color: var(--bs-accent) !important;
+            border-color: var(--bs-accent);
         }
 
         .ProseMirror-textblock-dropdown {
@@ -303,9 +308,9 @@
 
         // The frame is the wrapper's
         .ProseMirror.form-control {
-            border: 0 !important;
-            border-radius: $input-border-radius !important;
-            box-shadow: none !important;
+            border: 0;
+            border-radius: $input-border-radius;
+            box-shadow: none;
         }
 
         .ProseMirror-menubar {
@@ -327,8 +332,8 @@
         }
 
         .ProseMirror-menubar:not(.d-none) ~ .ProseMirror.form-control {
-            border-top-left-radius: 0 !important;
-            border-top-right-radius: 0 !important;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
         }
     }
 
@@ -460,7 +465,7 @@
             position: relative;
 
             .ProseMirror {
-                padding-right: 12px !important;
+                padding-right: 12px;
             }
         }
 
@@ -505,7 +510,7 @@
         // The editor's placeholder, in the placeholder colour of every field
         .ProseMirror .placeholder {
             color: var(--hh-placeholder-color);
-            padding: 0 !important;
+            padding: 0;
             pointer-events: none;
             height: 0;
             display: block;
@@ -625,8 +630,9 @@
             overflow: hidden;
         }
 
-        .atwho-emoji-entry.cur {
-            background-color: var(--hh-background-color-page) !important;
+        // Above the hover of `_mentioning.scss`
+        .atwho-view & li.atwho-emoji-entry.cur {
+            background-color: var(--hh-background-color-page);
         }
     }
 

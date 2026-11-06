@@ -65,16 +65,16 @@ describe('UserImage', () => {
             const img = wrapper.find('img');
             expect(img.attributes('src')).toBe('/uploads/alice.jpg');
             expect(img.classes()).toContain('rounded');
-            expect(img.attributes('style')).toContain('width: 25px');
-            expect(img.attributes('style')).toContain('height: 25px');
+            expect(img.attributes('style')).toContain('width: var(--hh-content-container-image-width, 25px)');
+            expect(img.attributes('style')).toContain('height: var(--hh-content-container-image-height, 25px)');
         });
 
         it('drives width/height style from a custom size prop', () => {
             const wrapper = mount(UserImage, { props: author({ size: 60 }) });
 
             const img = wrapper.find('img');
-            expect(img.attributes('style')).toContain('width: 60px');
-            expect(img.attributes('style')).toContain('height: 60px');
+            expect(img.attributes('style')).toContain('width: var(--hh-content-container-image-width, 60px)');
+            expect(img.attributes('style')).toContain('height: var(--hh-content-container-image-height, 60px)');
         });
 
         it('uses the provided imageAlt verbatim', () => {

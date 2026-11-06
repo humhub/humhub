@@ -55,12 +55,12 @@ class Image extends BaseImage
         $imageHtmlOptions = $this->htmlOptions;
 
         $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym d-inline-flex justify-content-center align-items-center";
-        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; width: " . $this->width . "px; height: " . $this->height . "px;";
+        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; " . static::getSizeStyle($this->width, $this->height);
         $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
         $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " rounded profile-user-photo";
-        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px;";
+        $imageHtmlOptions['style'] .= " " . static::getSizeStyle($this->width, $this->height);
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         $imageHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;

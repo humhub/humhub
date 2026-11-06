@@ -43,8 +43,8 @@ import { i18n } from '@humhub/vue';
  * ## Parity with `user\widgets\Image::run()` / `BaseImage`
  *
  * - `rounded` class + inline `width`/`height` (from `size`, default 25 -
- *   `Image::run()`'s own default, `width: $this->width . 'px'; height:
- *   $this->height . 'px'`, `$height` defaulting to `$width` -
+ *   `Image::run()`'s own default, `BaseImage::getSizeStyle()`: the CSS
+ *   variables `--hh-content-container-image-width`/`--hh-content-container-image-height` override it -
  *   `BaseImage::init()`).
  * - `data-contentcontainer-id` (from `contentContainerId`) on the `<img>` -
  *   same attribute `Image::run()` sets on `$this->imageOptions`, drives the
@@ -138,7 +138,8 @@ export default {
             return this.imageAlt || i18n.t('base', 'Profile picture of {displayName}', { displayName: this.displayName });
         },
         imageStyle() {
-            return `width: ${this.size}px; height: ${this.size}px`;
+            // As `BaseImage::getSizeStyle()`: the CSS variables override the size
+            return `width: var(--hh-content-container-image-width, ${this.size}px); height: var(--hh-content-container-image-height, ${this.size}px)`;
         },
         hasOnlineIndicator() {
             return this.online !== null;

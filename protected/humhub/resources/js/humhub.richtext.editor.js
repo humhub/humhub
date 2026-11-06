@@ -62397,7 +62397,11 @@
       }
       context.editor.on("init", () => {
         if (context.options.maxHeight) {
-          context.editor.getStage().css({ "max-height": context.options.maxHeight, "overflow": "auto" });
+          const maxHeight2 = context.options.maxHeight;
+          context.editor.getStage().css({
+            "--hh-richtext-max-height": typeof maxHeight2 === "number" ? maxHeight2 + "px" : maxHeight2,
+            "overflow": "auto"
+          });
         }
         if (!context.editor.isEmpty()) {
           const maxHeightState = pluginKey.getState(context.editor.view.state);

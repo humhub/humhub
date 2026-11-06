@@ -73,7 +73,11 @@ export default {
             return this.height === null ? this.width : this.height;
         },
         sizeStyle() {
-            return { width: this.width + 'px', height: this.resolvedHeight + 'px' };
+            // As `BaseImage::getSizeStyle()`: the CSS variables override the size
+            return {
+                width: `var(--hh-content-container-image-width, ${this.width}px)`,
+                height: `var(--hh-content-container-image-height, ${this.resolvedHeight}px)`,
+            };
         },
         acronymStyle() {
             return {

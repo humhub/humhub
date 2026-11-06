@@ -111,7 +111,7 @@
             border-left: 2px solid var(--bs-primary);
 
             code {
-                white-space: pre !important;
+                white-space: pre;
             }
         }
 
@@ -126,7 +126,7 @@
 
             li p {
                 // otherwise single list items p hides the marker
-                overflow: visible !important;
+                overflow: visible;
             }
 
             li > p:first-child {
@@ -152,7 +152,7 @@
         }
 
         a.header-anchor {
-            color: var(--hh-text-color-main) !important;
+            color: var(--hh-text-color-main);
         }
 
         a.not-found {
@@ -160,8 +160,8 @@
         }
 
         li {
-            border: 0 !important;
-            background-color: transparent !important;
+            border: 0;
+            background-color: transparent;
             padding: 0;
             margin: 5px 0;
         }
@@ -189,7 +189,7 @@
 
         table {
             border: 1px solid var(--hh-background3);
-            margin-bottom: $md-block-spacing !important;
+            margin-bottom: $md-block-spacing;
             font-size: 1em;
             width: 100%;
 
@@ -198,7 +198,7 @@
             }
 
             th, td {
-                border: 1px solid var(--hh-background3) !important;
+                border: 1px solid var(--hh-background3);
                 box-sizing: border-box;
                 position: relative;
             }

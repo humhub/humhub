@@ -40,10 +40,10 @@
                         left: 0;
 
                         &:focus {
-                            border-color: var(--hh-background3) !important;
+                            border-color: var(--hh-background3);
 
                             &:checked {
-                                border-color: var(--bs-accent) !important;
+                                border-color: var(--bs-accent);
                             }
                         }
                     }

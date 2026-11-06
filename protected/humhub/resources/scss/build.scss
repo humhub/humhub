@@ -106,9 +106,6 @@ $prev-markdown: false !default;
 $prev-sidebar: false !default;
 @import "sidebar";
 
-$prev-datepicker: false !default;
-@import "datepicker";
-
 $prev-user-feedback: false !default;
 @import "user-feedback";
 $prev-toast: false !default;

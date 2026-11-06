@@ -244,7 +244,7 @@
                     background: none;
 
                     &:hover {
-                        background-color: var(--hh-background-color-secondary) !important;
+                        background-color: var(--hh-background-color-secondary);
                     }
 
                     time {
@@ -265,11 +265,11 @@
                 }
 
                 i.accepted {
-                    color: var(--bs-success) !important;
+                    color: var(--bs-success);
                 }
 
                 i.declined {
-                    color: var(--bs-danger) !important;
+                    color: var(--bs-danger);
                 }
             }
         }

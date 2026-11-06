@@ -39,8 +39,8 @@
     }
 
     .atwho-view ul li.hint {
-        background: var(--hh-background-color-main) !important;
-        border-left: 3px solid transparent !important;
+        background: var(--hh-background-color-main);
+        border-left: 3px solid transparent;
         color: var(--hh-text-color-soft2);
         font-size: 12px;
     }
@@ -57,24 +57,22 @@
         margin: 0;
     }
 
-    .atwho-emoji-entry {
+    // The entries of the emoji chooser, above `.atwho-view ul li` and `.atwho-view .cur`
+    .atwho-view ul li.atwho-emoji-entry {
         float: left;
-        padding: 4px !important;
-        margin: 0 !important;
-        border: none !important;
-    }
+        padding: 4px;
+        margin: 0;
+        border: none;
 
-    .atwho-emoji-entry:hover, .atwho-emoji-entry:active, .atwho-emoji-entry:focus {
-        padding: 4px !important;
-        margin: 0 !important;
-        border: none !important;
-        background-color: var(--hh-background-color-secondary) !important;
-        border-radius: 3px;
+        &:hover, &:active, &:focus {
+            background-color: var(--hh-background-color-secondary);
+            border-radius: 3px;
+        }
     }
 
     .atwho-view .cur {
         border-left: 3px solid lighten($accent, 30%);
-        background-color: var(--hh-background-color-secondary) !important;
+        background-color: var(--hh-background-color-secondary);
     }
 
     .atwho-view strong {

@@ -6,7 +6,8 @@ import {initEditor, pressKeyEnter, pressKeyBackspace} from '../../testEditor.js'
 
 describe("Plugin:max_height", () => {
     // jsdom lays nothing out: lay the editor's blocks out at 36px each, its height capped by
-    // its `max-height` (the plugin compares `scrollHeight` with `offsetHeight`)
+    // its `--hh-richtext-max-height`, the stylesheet's `max-height` (the plugin compares
+    // `scrollHeight` with `offsetHeight`)
     const BLOCK_HEIGHT = 36;
     const contentHeight = (element) => element.childElementCount * BLOCK_HEIGHT;
 
@@ -15,7 +16,7 @@ describe("Plugin:max_height", () => {
             return contentHeight(this);
         });
         vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function () {
-            const maxHeight = parseFloat(this.style.maxHeight);
+            const maxHeight = parseFloat(this.style.getPropertyValue('--hh-richtext-max-height'));
             return isNaN(maxHeight) ? contentHeight(this) : Math.min(contentHeight(this), maxHeight);
         });
     });

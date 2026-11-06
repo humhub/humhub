@@ -2567,3 +2567,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - The core styles for third-party libraries moved to `_vendor.scss`, the core's changes to the
     Bootstrap utilities (`.bg-light`, `.link-*`, `.badge.text-bg-*`, `.d-revert`) to
     `_utilities.scss`, both outside of the layers.
+
+- **Image sizes and the editor's height limit as CSS variables.** `user\widgets\Image`, `space\widgets\Image`
+  (and `UserImage.vue`, `SpaceImage.vue`) write their size as `width: var(--hh-content-container-image-width, 32px); height:
+  var(--hh-content-container-image-height, 32px)` (`BaseImage::getSizeStyle()`), so a stylesheet can change it by the variables
+  without `!important`. The richtext editor's `maxHeight` plugin option sets `--hh-richtext-max-height` instead of
+  an inline `max-height`. Code reading the inline `style.width` of such an image or the editor's inline
+  `max-height` gets the variable now; the computed size (`getComputedStyle()`, jQuery `.width()`) is unchanged.
