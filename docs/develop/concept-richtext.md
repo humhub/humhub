@@ -21,14 +21,13 @@ it: [Richtext editor](internals-richtext-editor.md)), and the `ui.richtext.prose
 ## The format
 
 What is stored, and what the [HTTP API](concept-api.md) ships, is **HumHub richtext markdown**:
-CommonMark with tables and strikethrough, plus these additions the platform resolves itself.
+CommonMark with tables and strikethrough, plus these additions the platform resolves itself. Emojis are plain Unicode text, see [Emojis](internals-emoji.md).
 
 | Syntax | Meaning |
 |---|---|
 | `[Jane Doe](mention:<guid> "<profile url>")` | Mention of a user or space. Text is the display name, title the profile URL. |
 | `[report.pdf](file-guid:<guid> "<file url>")`, `![alt](file-guid:<guid> "<file url>")` | An attached file, or an image of one. |
 | `[<url>](oembed:<url>)` | A link that renders as an embedded preview when an [oEmbed provider](advanced-oembed.md) matches. |
-| `:smile:` | Emoji shortcode. |
 
 The scheme in front of the colon is the **key** of the extension that owns the link
 (`RichTextLinkExtension::$key`); `buildExtensionLink()` builds such a link and
@@ -36,8 +35,9 @@ The scheme in front of the colon is the **key** of the extension that owns the l
 the platform re-resolves them on output (see below), the snapshot keeps the text readable and
 gives a plain markdown renderer something to show.
 
-Texts written before HumHub 1.3 use an older syntax (`;smile;` emoji, `@-<guid>` mentions,
-bare URLs for embeds). `RichTextCompatibilityExtension` rewrites them on the fly whenever a text
+Texts written before HumHub 1.20 store emojis as shortcodes (`:smile:`), which
+`RichTextEmojiExtension` converts to Unicode on output, conversion and save. Texts written before
+HumHub 1.3 use an older syntax (`;smile;` emoji, `@-<guid>` mentions, bare URLs for embeds). `RichTextCompatibilityExtension` rewrites them on the fly whenever a text
 is output or converted. The rewrite is switched off by the content module's
 `richtextCompatMode` property or db setting of the same name once no legacy content is left.
 
@@ -46,8 +46,8 @@ Two properties of the format matter for everything that follows:
 - It is the **canonical, lossless** representation. Converted forms (plain markdown, HTML) drop
   the guid bindings; a client that edits a text therefore always works on this format and sends
   it back unchanged in structure.
-- Rendering it needs the platform: three URL schemes and the emoji shortcodes have no meaning
-  to a generic markdown renderer. HumHub's own renderer runs in the browser (the display
+- Rendering it needs the platform: three URL schemes have no meaning to a generic markdown
+  renderer. HumHub's own renderer runs in the browser (the display
   widget); a third-party client needs a link hook for the three schemes.
 
 ## Lifecycle of a text
@@ -180,7 +180,7 @@ The converters in `converter/` build on `cebe/markdown`'s GitHub flavor and acce
 such as `exclude` (blocks or extensions to leave out), `linkTarget`, `linkAsText`,
 `imageAsLink`, `imageAsText`, `maxLength`, `preserveNewlines`, `nl2br` and `cacheKey` (caches
 the result; `exclude` is part of the key). Extensions take part through `onBeforeConvert()` and
-`onAfterConvert()` — `RichTextEmojiExtension` turns shortcodes into UTF-8 here — and, for link
+`onAfterConvert()` — `RichTextEmojiExtension` turns legacy shortcodes into UTF-8 here — and, for link
 extensions, `onBeforeConvertLink(LinkParserBlock $block)`, which the converter calls for every
 link whose scheme matches the extension's key so the extension can set the final URL, text or
 title (`MentioningExtension` sets the profile URL, `FileExtension` the file URL,
@@ -200,7 +200,7 @@ Its hooks, in the order a text meets them:
 
 Two base classes save most of the work. `RichTextContentExtension` is a `yii\base\Model` with a
 regex contract (`getRegex()`, `initMatch()`) and the static helpers `scan()` and `replace()`
-for anything that is not a link — the emoji extension is one. `RichTextLinkExtension` is the
+for anything that is not a link. `RichTextLinkExtension` is the
 base for a link scheme: it knows the `[text](key:id "title")` pattern, offers
 `buildExtensionLink()`, `scanLinkExtension()`, `replaceLinkExtension()` and
 `cutExtensionKeyFromUrl()`, and adds the `onBeforeConvertLink()` hook. The core extensions:
@@ -211,7 +211,7 @@ base for a link scheme: it knows the `[text](key:id "title")` pattern, offers
 | `mention` | `MentioningExtension` | creates `Mentioning` records | refreshes name and URL | link to the profile, `@Name` in markdown |
 | `file-guid` | `FileExtension` | attaches files, stores base64 images | — | link or image with the file URL |
 | `oembed` | `OembedExtension` | preloads previews | — (previews are appended in `onAfterOutput()`) | plain link |
-| — | `RichTextEmojiExtension` | — | — | shortcode → UTF-8 |
+| — | `RichTextEmojiExtension` | legacy shortcode → UTF-8 | legacy shortcode → UTF-8 | legacy shortcode → UTF-8 |
 
 A module registers its own with `ProsemirrorRichText::addExtension('my-key', MyExtension::class)`.
 The registry is static and per request, so the call has to run before the first rich text is
@@ -289,7 +289,7 @@ widget's `include` can pick it up.
 | Mention | creates notifications after save, refreshes name/URL on output, resolves the link on convert | autocomplete in the editor (search via `mentioningUrl`), renders the link with the container's data |
 | File | attaches files after save, resolves the URL on convert | upload, paste and drop in the editor; renders links, images, video and audio |
 | Oembed | preloads after save, appends the previews on a server-rendered page, plain link on convert | turns a pasted link into an embed, renders the preview `humhub.oembed.js` knows |
-| Emoji | UTF-8 on convert | picker in the editor, twemoji images on display |
+| Emoji | legacy shortcodes → UTF-8 on save, output and convert | picker, `:name` autocomplete and text shortcuts in the editor; a font renders the text |
 
 ## Events
 

@@ -57,19 +57,6 @@
         margin: 0;
     }
 
-    // The entries of the emoji chooser, above `.atwho-view ul li` and `.atwho-view .cur`
-    .atwho-view ul li.atwho-emoji-entry {
-        float: left;
-        padding: 4px;
-        margin: 0;
-        border: none;
-
-        &:hover, &:active, &:focus {
-            background-color: var(--bs-tertiary-bg);
-            border-radius: 3px;
-        }
-    }
-
     .atwho-view .cur {
         border-left: 3px solid var(--bs-accent-border-subtle);
         background-color: var(--bs-tertiary-bg);

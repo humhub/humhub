@@ -8,13 +8,13 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
-use humhub\libs\EmojiMap;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\file\actions\DownloadAction;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 {
@@ -207,8 +207,12 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 
     public function testConvertAllEmojis()
     {
-        $allEmojis = EmojiMap::getData();
+        $allEmojis = require Yii::getAlias('@humhub/modules/content/widgets/richtext/extensions/emoji/legacy-shortcodes.php');
         foreach ($allEmojis as $emoji => $unicode) {
+            if (str_contains((string)$emoji, '\\')) {
+                // Markdown escapes of the editor (`keycap \*`)
+                continue;
+            }
             $this->assertConversionResult(
                 addcslashes((string) $emoji, '*') . ' = :' . $emoji . ':',
                 '<p>' . str_replace('&', '&amp;', $emoji) . ' = ' . $unicode . '</p>',

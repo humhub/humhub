@@ -8,12 +8,13 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\helpers\EmojiHelper;
 use humhub\helpers\ThemeHelper;
 use Yii;
 use yii\base\Model;
 
 /**
- * Administration → Appearance → Theme: the theme and its colours
+ * Administration → Appearance → Theme: the theme, its colours and the emoji style
  *
  * Each colour is the setting `theme{Color}Color`, used while `useDefaultTheme{Color}Color` is off.
  *
@@ -42,6 +43,7 @@ class ThemeSettingsForm extends Model
     public $useDefaultThemeLightColor;
     public $themeDarkColor;
     public $useDefaultThemeDarkColor;
+    public $emojiStyle;
 
     /**
      * @inheritdoc
@@ -59,6 +61,8 @@ class ThemeSettingsForm extends Model
             $this->$attribute = Yii::$app->settings->get($attribute, $themeVariables->get($color));
             $this->$default = (bool)Yii::$app->settings->get($default, true);
         }
+
+        $this->emojiStyle = EmojiHelper::getStyle();
     }
 
     public static function colorAttribute(string $color): string
@@ -83,6 +87,7 @@ class ThemeSettingsForm extends Model
             [$colorAttributes, 'trim'],
             [$colorAttributes, 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             [array_map(static::defaultAttribute(...), static::COLORS), 'boolean'],
+            ['emojiStyle', 'in', 'range' => array_keys(EmojiHelper::getStyles())],
         ];
     }
 
@@ -102,6 +107,7 @@ class ThemeSettingsForm extends Model
             'themeInfoColor' => Yii::t('AdminModule.settings', 'Info color'),
             'themeLightColor' => Yii::t('AdminModule.settings', 'Light color'),
             'themeDarkColor' => Yii::t('AdminModule.settings', 'Dark color'),
+            'emojiStyle' => Yii::t('AdminModule.settings', 'Emoji style'),
         ] + array_fill_keys(
             array_map(static::defaultAttribute(...), static::COLORS),
             Yii::t('AdminModule.settings', 'Default'),
@@ -140,6 +146,11 @@ class ThemeSettingsForm extends Model
             Yii::$app->settings->set($attribute, $this->$default ? null : $this->$attribute);
             Yii::$app->settings->set($default, $this->$default);
         }
+
+        Yii::$app->settings->set(
+            EmojiHelper::SETTING_STYLE,
+            $this->emojiStyle === EmojiHelper::STYLE_NOTO ? null : $this->emojiStyle,
+        );
 
         return true;
     }

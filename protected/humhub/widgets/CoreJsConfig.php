@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\components\api\ApiRules;
+use humhub\helpers\EmojiHelper;
 use humhub\modules\admin\libs\CacheHelper;
 use humhub\modules\file\serializers\FileHandlerSerializer;
 use humhub\modules\file\validators\FileValidator;
@@ -101,7 +102,6 @@ class CoreJsConfig extends Widget
                     'icon' => Icon::get(Yii::$app->getModule('topic')->icon)->asString(),
                 ],
                 'ui.richtext' => [
-                    'emoji.url' => Yii::getAlias(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/emoji/'),
                     'text' => [
                         'info.minInput' => Yii::t('base', 'Please type at least 3 characters'),
                         'info.loading' => Yii::t('base', 'Loading...'),
@@ -109,10 +109,9 @@ class CoreJsConfig extends Widget
                 ],
                 'ui.richtext.prosemirror' => [
                     'emoji' => [
-                        'twemoji' => [
-                            'base' => Yii::getAlias(Yii::$app->params['twemoji']['path'] ?? Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/twemoji/'),
-                            'size' => Yii::$app->params['twemoji']['size'],
-                        ],
+                        'dataUrl' => EmojiHelper::getDataUrl(),
+                        'locale' => EmojiHelper::getDataLocale(),
+                        'font' => EmojiHelper::isFontEnabled(),
                     ],
                     'oembed' => [
                         'max' => Yii::$app->getModule('content')->maxOembeds,

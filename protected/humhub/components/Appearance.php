@@ -8,7 +8,9 @@
 
 namespace humhub\components;
 
+use humhub\assets\EmojiFontAsset;
 use humhub\assets\ReadableFontAsset;
+use humhub\helpers\EmojiHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
@@ -130,10 +132,15 @@ class Appearance extends Component
     }
 
     /**
-     * Registers the inline script that sets the attributes of the `<html>` element, and the readable font
+     * Registers the inline script that sets the attributes of the `<html>` element, the readable font and the emoji
+     * font
      */
     public function registerHead(View $view): void
     {
+        if (EmojiHelper::isFontEnabled()) {
+            EmojiFontAsset::register($view);
+        }
+
         $font = $this->get(self::FONT) === self::ON;
         if ($font) {
             ReadableFontAsset::register($view);

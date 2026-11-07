@@ -33,10 +33,11 @@ class VisualCest
     // Pages that are long anyway are cut, so a changed height does not hide all other differences
     private const MAX_HEIGHT = 4000;
 
-    // A post with all the Markdown the stylesheets style
+    // A post with all the Markdown the stylesheets style, and emojis
     private const MARKDOWN = "## Heading\n\nA paragraph with **bold**, *italic*, `inline code` and a [link](https://www.humhub.com).\n\n"
         . "- First item\n- Second item\n    - Nested item\n\n1. One\n2. Two\n\n> A quotation\n\n"
-        . "```\nfunction example() {\n    return 42;\n}\n```\n\n| Name | Value |\n|---|---|\n| Alpha | 1 |\n| Beta | 2 |\n\n---\n\nThe end.";
+        . "```\nfunction example() {\n    return 42;\n}\n```\n\n| Name | Value |\n|---|---|\n| Alpha | 1 |\n| Beta | 2 |\n\n---\n\n"
+        . "Emojis: 😀 👍🏽 ❤️ 👩‍💻 🇩🇪 1️⃣ 🫨\n\nThe end.";
 
     // Checkboxes, radios and switches in each state, put on top of the first panel body; the checked checkbox of the
     // first row is focused
@@ -129,7 +130,7 @@ class VisualCest
         $I->amOnSpace(1);
         $this->screenshot($I, 'space-stream');
 
-        // The post form's editor: focused, with the mention list and the emoji chooser
+        // The post form's editor: focused, with the mention list, the emoji picker and the emoji autocomplete
         $I->click('#contentForm_message .ProseMirror');
         $I->wait(1);
         $this->screenshot($I, 'editor-focused', false);
@@ -138,9 +139,16 @@ class VisualCest
         $this->screenshot($I, 'editor-mention', false);
         $I->pressKey('#contentForm_message .ProseMirror', WebDriverKeys::ESCAPE);
         $I->click('#contentForm_message [title="Insert Emoji"]');
-        $I->waitForElementVisible('.humhub-emoji-chooser', 10);
-        $I->moveMouseOver('.humhub-emoji-chooser .atwho-emoji-entry:nth-child(3)');
+        $I->waitForElementVisible('.humhub-emoji-picker emoji-picker', 10);
+        // The picker data is loaded on the first opening
+        $I->wait(2);
         $this->screenshot($I, 'editor-emoji', false);
+        $I->pressKey('.humhub-emoji-picker emoji-picker', WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('.humhub-emoji-picker', 10);
+        $I->pressKey('#contentForm_message .ProseMirror', ' ', ':', 's', 'm', 'i');
+        $I->waitForElementVisible('.humhub-emoji-autocomplete', 10);
+        $this->screenshot($I, 'editor-emoji-autocomplete', false);
+        $I->pressKey('#contentForm_message .ProseMirror', WebDriverKeys::ESCAPE);
 
         // The comment form of the first entry
         $I->amOnSpace(1);

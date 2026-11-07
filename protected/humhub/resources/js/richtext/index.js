@@ -29,6 +29,7 @@ import {registerPreset, registerPlugin, buildPlugins} from "./core/plugins";
 import * as markdown from "./markdown/index";
 
 import MentionProvider from "./core/plugins/mention/provider";
+import {openEmojiPicker} from "./core/plugins/emoji/picker";
 import {EDIT_MODE_SOURCE, sourcePluginKey, isSourceMode, switchToSourceMode} from "./core/plugins/source/plugin";
 
 import Context from './core/context';
@@ -312,7 +313,8 @@ window.prosemirror = window.humhub.richtext = {
         markdown: markdown
     },
     $node: $node,
-    MentionProvider: MentionProvider
+    MentionProvider: MentionProvider,
+    openEmojiPicker: openEmojiPicker
 };
 
 if (window.humhub && window.humhub.module) {

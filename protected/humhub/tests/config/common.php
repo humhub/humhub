@@ -6,7 +6,7 @@ return [
             'dsn' => 'mysql:host=127.0.0.1;dbname=humhub_test',
             'username' => 'root',
             'password' => 'root',
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
             'attributes' => [
                 PDO::ATTR_PERSISTENT => true,
             ],
