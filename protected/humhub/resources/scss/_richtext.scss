@@ -618,34 +618,54 @@
         text-align: center;
     }
 
-    [data-emoji-category] {
-        max-height: 200px;
-        display: block;
-        position: relative;
-        overflow: auto;
+    // The emoji picker (emoji-picker-element) in the colours of the theme
+    .humhub-emoji-picker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 11110;
+        border-radius: var(--bs-border-radius);
+        box-shadow: var(--bs-box-shadow);
 
-        .atwho-emoji-entry {
-            width: 24px;
-            height: 28px;
-            overflow: hidden;
+        emoji-picker {
+            --background: var(--bs-body-bg);
+            --border-color: var(--hh-border-color-strong);
+            --border-radius: var(--bs-border-radius);
+            --button-active-background: var(--bs-secondary-bg);
+            --button-hover-background: var(--bs-tertiary-bg);
+            --category-font-color: var(--bs-body-color);
+            --category-font-size: 1rem;
+            --indicator-color: var(--bs-accent);
+            --input-border-color: var(--bs-border-color);
+            --input-border-radius: var(--bs-border-radius);
+            --input-font-color: var(--bs-body-color);
+            --input-font-size: 1rem;
+            --input-placeholder-color: var(--bs-secondary-color);
+            --outline-color: var(--bs-accent);
         }
 
-        // Above the hover of `_mentioning.scss`
-        .atwho-view & li.atwho-emoji-entry.cur {
-            background-color: var(--bs-secondary-bg);
+        &.humhub-emoji-picker-small {
+            position: fixed;
+            top: auto;
+            right: 0;
+            bottom: 0;
+
+            emoji-picker {
+                width: 100%;
+                height: 50vh;
+            }
         }
     }
 
-    .emoji-nav {
-        padding-top: 10px;
+    // The inline autocomplete of `:smi`
+    .atwho-view.humhub-emoji-autocomplete {
+        margin-top: 0;
+        max-width: none;
+        white-space: nowrap;
 
-        .emoji-nav-item {
-            border-top: 2px solid var(--bs-accent-bg-subtle);
-        }
-
-        .emoji-nav-item.cur {
-            border-left: 0;
-            border-top: 2px solid var(--bs-accent);
+        .humhub-emoji-autocomplete-emoji {
+            padding: 0;
+            font-size: 1.25em;
         }
     }
 

@@ -9,7 +9,6 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
-use humhub\libs\EmojiMap;
 use humhub\libs\UUID;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
@@ -212,7 +211,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test emoji :smile:",
-            "Test emoji " . EmojiMap::getUnicode('smile'),
+            "Test emoji 😄",
         );
     }
 

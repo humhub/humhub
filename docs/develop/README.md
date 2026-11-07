@@ -103,4 +103,5 @@ Deep dives into how parts of the core are wired. Not needed for module developme
 
 - [Asset building](internals-assets.md) — bundles, AssetManager publishing, the build pipeline
 - [Richtext editor](internals-richtext-editor.md) — the editor's sources, build, tests, npm dependencies and configuration
+- [Emojis](internals-emoji.md) — Unicode storage, the Noto emoji font, picker and autocomplete, legacy shortcodes, the build
 - [Release packages](internals-release-package.md) — how the GitHub workflow builds the zip/tar.gz packages, `exclude.txt`

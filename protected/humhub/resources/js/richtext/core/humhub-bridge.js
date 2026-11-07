@@ -20,12 +20,15 @@ export function onDocumentReady(callback) {
     humhub.event.on('humhub:ready', callback);
 }
 
+/**
+ * The emoji configuration of the platform: `dataUrl` and `locale` of the picker data (see \humhub\helpers\EmojiHelper)
+ */
 export function getEmojiConfig() {
     if (!window.humhub || !window.humhub.config) {
         return {};
     }
 
-    return humhub.config.get('ui.richtext.prosemirror', 'emoji', {twemoji: {}});
+    return humhub.config.get('ui.richtext.prosemirror', 'emoji', {});
 }
 
 export function isSmallView() {

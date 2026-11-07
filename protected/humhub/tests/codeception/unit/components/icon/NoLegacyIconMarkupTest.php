@@ -20,8 +20,6 @@ class NoLegacyIconMarkupTest extends HumHubDbTestCase
         // The picker reads legacy `fa-` image names on purpose (see vue/picker/images.js)
         'tests/js/pickerImage.test.js',
         'tests/js/pickerImages.test.js',
-        // The emoji flags map the locale `fa-ir` (Persian, Iran)
-        'resources/js/richtext/core/plugins/emoji/provider.js',
         'resources/js/humhub.richtext.editor.js',
         'resources/build/',
         'resources/js/humhub-app.js',

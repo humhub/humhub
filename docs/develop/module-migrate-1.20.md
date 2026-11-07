@@ -28,6 +28,23 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
   `--hh-text-color-soft3` for text fields and the icon colour for selects.
 
+- **Emojis are Unicode text, rendered by the Noto Color Emoji font** (see [Emojis](internals-emoji.md)).
+  The editor stores the emoji character instead of a `:name:` shortcode, and `RichTextEmojiExtension`
+  converts shortcodes of older texts on output, conversion and save. Removed without replacement:
+  - `humhub\libs\EmojiMap` and `RichTextEmojiExtensionMatch`; `RichTextEmojiExtension` no longer
+    extends `RichTextContentExtension`. `RichTextEmojiExtension::convertEmojiToUtf8()` stays.
+  - Twemoji: `Yii::$app->params['twemoji']`, the JS config `ui.richtext.prosemirror.emoji.twemoji`
+    and `ui.richtext.emoji.url`, the images in `@humhub/resources/img/twemoji/` and
+    `@humhub/resources/img/emoji/`.
+  - The editor's `emoji` node (`<img class="emoji">`), the `emojiQuery` mark and the chooser's CSS
+    classes `.humhub-emoji-chooser`, `.atwho-emoji-entry`, `[data-emoji-category]`, `.emoji-nav`,
+    `.emoji-nav-item`.
+  - The unused view `widgets/views/richTextEditor.php`.
+
+  To show emojis, output the text; to offer a picker, use `humhub.richtext.openEmojiPicker()` or
+  the `<emoji-picker>` element of the editor bundle. A theme that sets its own `$font-family-base`
+  should keep `'HumHub Emoji'` after its text font.
+
 - **The richtext editor is part of the core.** Its sources moved from the
   `humhub-prosemirror-richtext` npm package (dropped from `composer.json`) to
   `protected/humhub/resources/js/richtext/`; `humhub\assets\ProsemirrorEditorAsset` publishes the built

@@ -57,9 +57,10 @@ range, `DataTransfer`, `ClipboardEvent`), and a test that depends on heights stu
 
 ## Dependencies
 
-ProseMirror, markdown-it, CodeMirror (the source mode's code view), twemoji and the emoji data
-are `devDependencies` of the core's `package.json`, locked in `package-lock.json` and installed
-into `node_modules/`. They are needed to build only; the artifact contains them.
+ProseMirror, markdown-it, CodeMirror (the source mode's code view) and the emoji picker
+(`emoji-picker-element`) are `devDependencies` of the core's `package.json`, locked in
+`package-lock.json` and installed into `node_modules/`. They are needed to build only; the
+artifact contains them. The emoji font and data have a build of their own, see [Emojis](internals-emoji.md).
 
 ```sh
 npm outdated                              # what is behind

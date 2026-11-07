@@ -56,7 +56,7 @@ use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExte
  * Allows pasting of raw markdown content into the richtext editor.
  *
  * ### emoji
- * [twemoji](https://github.com/twitter/twemoji) and [markdown-it-emoji](https://www.npmjs.com/package/markdown-it-emoji) based emojies
+ * Emoji picker, `:name` autocomplete and text shortcuts like `:)`. Emojis are stored as Unicode, see [[\humhub\helpers\EmojiHelper]].
  *
  * ### fullscreen
  * Adds a enlarge/shrink button to the rich text editor.

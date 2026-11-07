@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f4d04d669f4fc3544e313235df771938",
+    "content-hash": "43801d3357d96130857e7682ef912951",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -5318,18 +5318,6 @@
             "type": "npm-asset",
             "license": [
                 "0BSD"
-            ]
-        },
-        {
-            "name": "npm-asset/unicode-emoji-json",
-            "version": "0.5.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/unicode-emoji-json/-/unicode-emoji-json-0.5.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
             ]
         },
         {

@@ -8,6 +8,7 @@
   "scripts": {
     "build:vue": "node vue.build.mjs",
     "build:richtext": "node richtext.build.mjs",
+    "build:emoji": "node emoji.build.mjs",
     "test:js": "vitest run",
     "lint:scss": "stylelint \"protected/humhub/resources/scss/**/*.scss\" \"protected/humhub/themes/HumHub/scss/**/*.scss\""
   },
@@ -18,9 +19,10 @@
     "@codemirror/view": "^6.34.1",
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.6",
+    "@web-alchemy/fonttools": "^1.4.0",
     "crelt": "^1.0.6",
-    "emoji-name-map": "^1.2.9",
-    "emojilib": "3.0.11",
+    "emoji-picker-element": "^1.29.1",
+    "emojibase-data": "^18.0.0",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
@@ -33,7 +35,6 @@
     "jsdom": "^26.1.0",
     "markdown-it": "^14.3.3",
     "markdown-it-anchor": "^8.6.7",
-    "markdown-it-emoji": "2.0.2",
     "prosemirror-commands": "^1.6.0",
     "prosemirror-dropcursor": "^1.8.1",
     "prosemirror-gapcursor": "^1.3.2",
@@ -51,8 +52,6 @@
     "prosemirror-view": "^1.42.6",
     "stylelint": "^17.16.0",
     "stylelint-config-recommended-scss": "^17.0.1",
-    "twemoji": "^14.0.2",
-    "unicode-emoji-json": "^0.4.0",
     "vite": "^6.3.5",
     "vitest": "^3.1.4",
     "vue": "~3.5.13"

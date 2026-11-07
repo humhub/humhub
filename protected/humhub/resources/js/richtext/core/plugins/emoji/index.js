@@ -4,49 +4,35 @@
  * @license https://www.humhub.com/licences
  */
 
-import {schema} from './schema';
-import twemoji from "twemoji";
-import emoji_plugin from "markdown-it-emoji";
-import {getMarkdownItOpts} from './util';
-import {emojiPlugin} from "./plugin";
-import {emojiAutoCompleteRule, emojiChooser} from "./input-rules";
-import {keymap} from "./keymap";
-import {menu} from "./menu";
-import {getEmojiConfig} from "../../humhub-bridge";
+import {Plugin} from 'prosemirror-state';
+import {autocompleteKeymap, autocompletePlugin} from './autocomplete';
+import {shortcutRules} from './shortcuts';
+import {menu} from './menu';
 
+/**
+ * Emojis are plain Unicode text. The plugin adds the picker (menu), the inline autocomplete (`:smi`) and the text
+ * shortcuts (`:)`), and turns emoji images of pasted HTML into their text.
+ */
 const emoji = {
     id: 'emoji',
-    schema: schema,
     menu: (context) => menu(context),
-    inputRules: (schema) => {
-        return [
-            emojiAutoCompleteRule(schema),
-            emojiChooser(schema)
-        ];
-    },
-    keymap: (context) => keymap(),
-    plugins: (context) => {
-        return [
-            emojiPlugin(context)
-        ];
-    },
-    registerMarkdownIt: (markdownIt) => {
-        markdownIt.use(emoji_plugin, getMarkdownItOpts());
-        markdownIt.renderer.rules.emoji = (token, idx) => {
-            let emojiToken = token[idx];
-
-            // Not that clean but unfortunately we don't have access to the editor context here...
-            let config = getEmojiConfig();
-            let twemojiConfig = config.twemoji || {};
-            twemojiConfig.attributes = (icon, variant) => {
-                return {
-                    'data-name': emojiToken.markup
-                };
-            };
-
-            return twemoji.parse(emojiToken.content, twemojiConfig);
-        };
-    }
+    inputRules: () => shortcutRules(),
+    keymap: () => autocompleteKeymap(),
+    plugins: () => [
+        autocompletePlugin(),
+        new Plugin({
+            props: {
+                // E.g. `<img class="emoji" alt="😀">` copied from HumHub < 1.20 or other sites
+                transformPastedHTML: (html) => html.replace(
+                    /<img\b[^>]*\bclass="[^"]*\bemoji\b[^"]*"[^>]*>/gi,
+                    (img) => {
+                        const alt = img.match(/\balt="([^"]*)"/i);
+                        return alt ? alt[1] : img;
+                    }
+                ),
+            },
+        }),
+    ],
 };
 
 export default emoji;
