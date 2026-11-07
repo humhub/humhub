@@ -11,4 +11,19 @@
             margin-right: 0.2rem;
         }
     }
+
+    // A link in a theme color, readable on the surfaces in both color modes (Bootstrap's takes the color as it is, and
+    // its `!important` has to be outdone here, in the same layer). Hovered, a step toward the emphasis color
+    @each $color in $hh-text-colors {
+        .link-#{$color} {
+            color: var(--hh-#{$color}-text) !important;
+            text-decoration-color: var(--hh-#{$color}-text) !important;
+
+            &:hover,
+            &:focus {
+                color: color-mix(in srgb, var(--hh-#{$color}-text) 75%, var(--bs-emphasis-color)) !important;
+                text-decoration-color: color-mix(in srgb, var(--hh-#{$color}-text) 75%, var(--bs-emphasis-color)) !important;
+            }
+        }
+    }
 }

@@ -27,6 +27,23 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 - **One placeholder colour:** Bootstrap's `$input-placeholder-color` (`var(--bs-secondary-color)`) for
   every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
   `--hh-text-color-soft3` for text fields and the icon colour for selects.
+- **A theme colour as text is `--hh-{color}-text`**, not `var(--bs-{color})`: the colour itself
+  where it reaches 4.5:1 (`$hh-text-contrast-ratio`) on the surfaces, otherwise a darker shade, a
+  lighter one in the dark mode. `.text-{color}` and `.link-{color}` (`primary`, `accent`,
+  `secondary`, `info`, `success`, `warning`, `danger`) use it; the core's `color: var(--bs-accent)`
+  and the like do too. A module that writes a theme colour as text should switch, e.g.
+  `color: var(--bs-accent)` → `color: var(--hh-accent-text)`. The new Sass function
+  `hh-readable($color, $background, $min-ratio: 4.5)` works out such a shade. The former
+  `.link-{color}` fallback to the emphasis colour in `_utilities.scss` (without effect since the
+  cascade layers) is removed.
+- **The surfaces are derived from `$body-bg`** (and `$body-bg-dark`), which can be set in
+  *Administration → Appearance → Theme*: `$hh-page-bg`, `$body-tertiary-bg`, `$body-secondary-bg`,
+  `$border-color` and `$hh-border-color-strong` (and their `-dark` variables, plus
+  `$hh-topbar-bg-dark`) are mixed from it. The defaults are unchanged, except the dark mode's page: `#161616` instead of black. A theme that sets
+  `$body-bg` gets a page that follows it; to keep a fixed one, it sets `$hh-page-bg` too.
+  `ThemeVariables::get()` returns such derived variables as the `#rrggbb` they compile to.
+  `ThemeSettingsForm::colorAttribute()` names a hyphenated colour in camel case
+  (`body-bg-dark` → `themeBodyBgDarkColor`).
 
 - **Emojis are Unicode text, rendered by the Noto Color Emoji font** (see [Emojis](internals-emoji.md)).
   The editor stores the emoji character instead of a `:name:` shortcode, and `RichTextEmojiExtension`

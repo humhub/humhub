@@ -21,12 +21,12 @@ $prev-badge: false !default;
     }
 }
 
-@if not $prev-link {
-    @each $color, $value in $theme-colors {
-        .link-#{$color} {
-            @if contrast-ratio($body-bg, $value) < $min-contrast-ratio {
-                color: var(--bs-emphasis-color) !important;
-            }
+@if not $prev-base {
+    // A theme color as text, readable on the surfaces in both color modes (Bootstrap's takes the color as it is).
+    // The links are in _link.scss: Bootstrap's `.link-*` are in the `core` layer, whose `!important` wins against this
+    @each $color in $hh-text-colors {
+        .text-#{$color} {
+            color: var(--hh-#{$color}-text) !important;
         }
     }
 }

@@ -218,6 +218,7 @@ class ThemeHelper
             );
         }
 
+        $customVariables = $customMaps = '';
         if ($includeCustomScss) {
             // Overwrite with the variables of the Custom SCSS (Administration → Appearance)
             [$customVariables, $customMaps, $otherCustomScss] = ScssHelper::extractVariablesAndMaps(
@@ -229,7 +230,55 @@ class ThemeHelper
             );
         }
 
-        return ScssHelper::updateLinkedScssVariables($variables);
+        return static::resolveVariables(
+            ScssHelper::updateLinkedScssVariables($variables),
+            static::getThemeTree($theme),
+            $customVariables,
+            $customMaps,
+        );
+    }
+
+    /**
+     * Replaces the values that are derived from other variables (`darken($body-bg, 7%)`) by what they compile to
+     * (`#ededed`), with the colours of Administration → Appearance → Theme, so PHP gets the colours the CSS has, e.g.
+     * for the inline styles of an email. A colour comes as `#rrggbb`.
+     *
+     * Keeps the values as they are if the SCSS doesn't compile.
+     *
+     * @param array $variables the variables as read from the SCSS files
+     * @param Theme[] $treeThemes the theme and its parents, child first
+     * @since 1.20
+     */
+    protected static function resolveVariables(array $variables, array $treeThemes, string $customVariables, string $customMaps): array
+    {
+        $names = array_keys(array_filter($variables, fn($value) => str_contains((string)$value, '$')));
+        if ($names === []) {
+            return $variables;
+        }
+
+        $compiler = new Compiler();
+        $scss = static::getVariablesScss($compiler, $treeThemes, $customVariables, $customMaps) . 'hh-variables {';
+        foreach ($names as $name) {
+            $scss .= '@if variable-exists("' . $name . '") and $' . $name . ' != null {'
+                . '--' . $name . ': #{if(type-of($' . $name . ') == color and alpha($' . $name . ') == 1, '
+                . 'ie-hex-str($' . $name . '), inspect($' . $name . '))};}';
+        }
+        $scss .= '}';
+
+        try {
+            $css = $compiler->compileString(str_replace('\\', '/', $scss))->getCss();
+        } catch (SassException $e) {
+            Yii::warning('Could not resolve the theme variables: ' . $e->getMessage(), 'ui');
+            return $variables;
+        }
+
+        preg_match_all('/--([\w-]+):\s*(.*?);/', $css, $matches, PREG_SET_ORDER);
+        foreach ($matches as [, $name, $value]) {
+            // `ie-hex-str()` is `#AARRGGBB`, the colours here are opaque
+            $variables[$name] = preg_match('/^#FF([0-9A-F]{6})$/i', $value, $hex) ? '#' . strtolower($hex[1]) : $value;
+        }
+
+        return $variables;
     }
 
     /**
@@ -374,6 +423,58 @@ class ThemeHelper
     }
 
     /**
+     * The SCSS that defines the variables, the start of every compile of a theme: the colours of Administration →
+     * Appearance → Theme, the variables and maps of the Custom SCSS, Bootstrap's functions, the variables of the
+     * theme tree, of the core and of Bootstrap, and the maps. Sets the import paths of `$compiler` for it.
+     *
+     * @param Theme[] $treeThemes the theme and its parents, child first
+     * @since 1.20
+     */
+    protected static function getVariablesScss(Compiler $compiler, array $treeThemes, string $customVariables, string $customMaps): string
+    {
+        $compiler->setImportPaths(Yii::getAlias('@vendor/twbs/bootstrap/scss'));
+        $compiler->addImportPath(Yii::getAlias('@humhub/resources/scss'));
+        foreach ($treeThemes as $treeTheme) {
+            $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
+        }
+
+        // Import Bootstrap's functions and HumHub's
+        $imports = [
+            Yii::getAlias('@vendor/twbs/bootstrap/scss/functions'),
+            Yii::getAlias('@humhub/resources/scss/functions'),
+        ];
+
+        // Import variables child theme first, because they have the !default flag
+        foreach ($treeThemes as $treeTheme) {
+            $variablesFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            if (file_exists($variablesFile . '.scss')) {
+                $imports[] = $variablesFile;
+            }
+        }
+        $imports[] = Yii::getAlias('@humhub/resources/scss/variables-deprecated');
+        $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
+
+        // Import maps
+        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
+        $imports[] = Yii::getAlias('@humhub/resources/scss/maps');
+
+        // The colours of Administration → Appearance → Theme
+        $scss = '';
+        foreach (ThemeSettingsForm::COLORS as $color) {
+            $value = Yii::$app->settings->get(ThemeSettingsForm::colorAttribute($color));
+            if ($value && !Yii::$app->settings->get(ThemeSettingsForm::defaultAttribute($color), true)) {
+                $scss .= '$' . $color . ': ' . $value . ';' . PHP_EOL;
+            }
+        }
+
+        return $scss
+            . $customVariables . PHP_EOL
+            . $customMaps . PHP_EOL
+            . '@import "' . implode('", "', $imports) . '";' . PHP_EOL;
+    }
+
+    /**
      * @param Theme|null $theme
      * @return true|string true if successfully compiled, string if error occurred
      * @throws \yii\base\Exception
@@ -394,31 +495,6 @@ class ThemeHelper
 
         // Compress CSS
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
-
-        // Set import paths
-        $compiler->setImportPaths(Yii::getAlias('@vendor/twbs/bootstrap/scss'));
-        $compiler->addImportPath(Yii::getAlias('@humhub/resources/scss'));
-        foreach ($treeThemes as $treeTheme) {
-            $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
-        }
-
-        // Import Bootstrap functions
-        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/functions');
-
-        // Import variables child theme first, because they have the !default flag
-        foreach ($treeThemes as $treeTheme) {
-            $variablesFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
-            if (file_exists($variablesFile . '.scss')) {
-                $imports[] = $variablesFile;
-            }
-        }
-        $imports[] = Yii::getAlias('@humhub/resources/scss/variables-deprecated');
-        $imports[] = Yii::getAlias('@humhub/resources/scss/variables');
-        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/variables');
-
-        // Import maps
-        $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
-        $imports[] = Yii::getAlias('@humhub/resources/scss/maps');
 
         // Bootstrap, the core and the theme stylesheets are compiled into cascade layers, parent theme first
         $themeBuildFiles = [];
@@ -446,18 +522,7 @@ class ThemeHelper
         $cssFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.css';
         $mapFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.map';
 
-        // The colours of Administration → Appearance → Theme
-        $scssSource = '';
-        foreach (ThemeSettingsForm::COLORS as $color) {
-            $value = Yii::$app->settings->get(ThemeSettingsForm::colorAttribute($color));
-            if ($value && !Yii::$app->settings->get(ThemeSettingsForm::defaultAttribute($color), true)) {
-                $scssSource .= '$' . $color . ': ' . $value . ';' . PHP_EOL;
-            }
-        }
-        $scssSource
-            .= $customVariables . PHP_EOL
-            . $customMaps . PHP_EOL
-            . '@import "' . implode('", "', $imports) . '";' . PHP_EOL
+        $scssSource = static::getVariablesScss($compiler, $treeThemes, $customVariables, $customMaps)
             . static::getLayersScss($themeBuildFiles)
             // Not in a layer: the Custom SCSS (Administration → Appearance) wins against all of the above
             . $otherCustomScss;
