@@ -36,8 +36,7 @@ export function getDataOptions() {
  * own emojis.
  */
 export function isNotoFont() {
-    return !!getEmojiConfig().font
-        && typeof CSS !== 'undefined' && typeof CSS.supports === 'function'
+    return typeof CSS !== 'undefined' && typeof CSS.supports === 'function'
         && CSS.supports('font-tech(color-COLRv1)');
 }
 

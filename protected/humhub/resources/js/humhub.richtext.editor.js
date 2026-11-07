@@ -43913,7 +43913,7 @@
     };
   }
   function isNotoFont() {
-    return !!getEmojiConfig().font && typeof CSS !== "undefined" && typeof CSS.supports === "function" && CSS.supports("font-tech(color-COLRv1)");
+    return typeof CSS !== "undefined" && typeof CSS.supports === "function" && CSS.supports("font-tech(color-COLRv1)");
   }
   function getPickerOptions() {
     const options = getDataOptions();

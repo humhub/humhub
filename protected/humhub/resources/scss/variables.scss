@@ -127,8 +127,8 @@ $hh-dark-contrast: color-contrast($dark) !default;
 // Fonts
 // --------------------------------------------------
 
-// 'HumHub Emoji' is the Noto emoji font (\humhub\assets\EmojiFontAsset): without it, e.g. with the emoji style
-// "System", the emojis of the operating system are used
+// 'HumHub Emoji' is the Noto emoji font (\humhub\assets\EmojiFontAsset); a browser without COLRv1 (Safari) skips it
+// and uses the emojis of the operating system
 $font-family-base: 'Open Sans', 'HumHub Emoji', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $font-family-sans-serif: $font-family-base !default;
 $font-size-root: 14px !default; // affects the value of `rem`, which is used for as well font sizes, paddings, and margins

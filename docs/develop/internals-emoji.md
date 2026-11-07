@@ -7,14 +7,10 @@ search index get the emoji without any mapping.
 
 ## Rendering: a font
 
-| Style | What renders the emojis |
-|---|---|
-| Noto Color Emoji (default) | The font family `'HumHub Emoji'` of `humhub\assets\EmojiFontAsset`, second in `$font-family-base` (`variables.scss`) after the text font. Every text of the platform gets it, without wrapper markup. |
-| System | The asset is not registered, `'HumHub Emoji'` has no `@font-face`, and the font stack falls through to the emojis of the operating system. |
-
-The administrator chooses the style under Administration → Appearance → Theme ("Emoji style",
-core setting `emojiStyle`, `humhub\helpers\EmojiHelper`). `humhub\components\Appearance` registers
-the font asset on every page of an installed platform.
+The font family `'HumHub Emoji'` of `humhub\assets\EmojiFontAsset` renders the emojis. It comes
+second in `$font-family-base` (`variables.scss`), after the text font, so every text of the
+platform gets it without wrapper markup. `humhub\components\Appearance` registers the asset on
+every page of an installed platform.
 
 The font is [Noto Color Emoji](https://github.com/googlefonts/noto-emoji) (2D, COLRv1, SIL Open
 Font License, `fonts/emoji/OFL.txt`), cut into one WOFF2 file per emoji group (smileys, people,
@@ -49,8 +45,8 @@ Picker and autocomplete read the data of the user's language, `resources/emoji/d
 `@humhub/resources`. The JS config `ui.richtext.prosemirror.emoji` names it (`dataUrl`, `locale`,
 see `EmojiHelper::getDataUrl()`). It is loaded when the picker or the autocomplete is used for the
 first time and cached in the browser's IndexedDB, nothing of it is part of the editor bundle.
-With the Noto font, the picker shows every emoji of the font (`emojiVersion`) instead of testing
-which ones the operating system can render.
+In a browser with COLRv1 support, the picker shows every emoji of the font (`emojiVersion`)
+instead of testing which ones the operating system can render.
 
 A module opens the same picker with `humhub.richtext.openEmojiPicker(anchor, {onSelect: (emoji) => …})`
 (the editor bundle, `ProsemirrorEditorAsset`), or uses the `<emoji-picker>` element it registers.

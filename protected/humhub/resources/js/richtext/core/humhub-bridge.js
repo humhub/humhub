@@ -21,8 +21,7 @@ export function onDocumentReady(callback) {
 }
 
 /**
- * The emoji configuration of the platform: `dataUrl` and `locale` of the picker data, `font` whether the Noto
- * emoji font is in use (see \humhub\helpers\EmojiHelper)
+ * The emoji configuration of the platform: `dataUrl` and `locale` of the picker data (see \humhub\helpers\EmojiHelper)
  */
 export function getEmojiConfig() {
     if (!window.humhub || !window.humhub.config) {

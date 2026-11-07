@@ -111,7 +111,6 @@ class CoreJsConfig extends Widget
                     'emoji' => [
                         'dataUrl' => EmojiHelper::getDataUrl(),
                         'locale' => EmojiHelper::getDataLocale(),
-                        'font' => EmojiHelper::isFontEnabled(),
                     ],
                     'oembed' => [
                         'max' => Yii::$app->getModule('content')->maxOembeds,

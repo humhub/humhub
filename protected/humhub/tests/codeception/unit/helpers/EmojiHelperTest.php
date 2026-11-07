@@ -41,17 +41,4 @@ class EmojiHelperTest extends HumHubDbTestCase
     {
         $this->assertFileExists(Yii::getAlias(EmojiHelper::DATA_PATH) . '/' . EmojiHelper::getDataLocale('de') . '.json');
     }
-
-    public function testStyle()
-    {
-        $this->assertSame(EmojiHelper::STYLE_NOTO, EmojiHelper::getStyle());
-        $this->assertTrue(EmojiHelper::isFontEnabled());
-
-        Yii::$app->settings->set(EmojiHelper::SETTING_STYLE, EmojiHelper::STYLE_SYSTEM);
-        $this->assertSame(EmojiHelper::STYLE_SYSTEM, EmojiHelper::getStyle());
-        $this->assertFalse(EmojiHelper::isFontEnabled());
-
-        Yii::$app->settings->set(EmojiHelper::SETTING_STYLE, 'unknown');
-        $this->assertSame(EmojiHelper::STYLE_NOTO, EmojiHelper::getStyle());
-    }
 }

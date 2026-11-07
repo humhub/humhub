@@ -13,7 +13,7 @@ use humhub\components\assets\AssetBundle;
 /**
  * Noto Color Emoji as the font family 'HumHub Emoji', in chunks per emoji group (built by emoji.build.mjs)
  *
- * Registered by [[\humhub\components\Appearance]] unless the emoji style is "System".
+ * Registered by [[\humhub\components\Appearance]] on every page.
  *
  * @see \humhub\helpers\EmojiHelper
  * @since 1.20

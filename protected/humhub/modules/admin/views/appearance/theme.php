@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\View;
-use humhub\helpers\EmojiHelper;
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\ThemeSettingsForm;
 use humhub\widgets\ContentCard;
@@ -41,10 +40,6 @@ $checkBoxOptions = ['options' => ['class' => 'pt-2']];
         <?php endforeach; ?>
     </div>
 </div>
-
-<?= $form->field($model, 'emojiStyle')->dropDownList(EmojiHelper::getStyles())->hint(
-    Yii::t('AdminModule.settings', 'Noto Color Emoji looks the same on all devices. Safari always shows its own emojis.'),
-) ?>
 
 <hr>
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
