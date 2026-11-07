@@ -34,6 +34,12 @@ does, worked out by the Sass function `hh-readable($color, $background, $min-rat
 (`_functions.scss`). A theme raises the contrast by `$hh-text-contrast-ratio`. `--hh-{color}-text`
 is there for `primary`, `accent`, `secondary`, `info`, `success`, `warning` and `danger`.
 
+In high contrast (the user's *Accessibility* option or `prefers-contrast: more`) the body text and
+`--hh-{color}-text` reach `$hh-high-contrast-ratio` (7:1, WCAG AAA) on the surfaces, and
+`--bs-{color}` as a fill is darkened (or lightened) until its `--hh-{color}-contrast` text reaches
+it too; the buttons follow. Panels, cards and the page header get the same 1px edge in
+`--bs-border-color` (`$hh-surface-box-shadow-contrast`) instead of their soft shadow.
+
 ## Backgrounds
 
 | Job | Token | Utility | Light | Dark |

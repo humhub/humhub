@@ -175,4 +175,23 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
         --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-accent);
     }
+
+    // High contrast: the fill of `--bs-{color}` (see _root.scss), hovered a bit further away from its text
+    :root {
+        @include hh-high-contrast {
+            @each $color in $hh-text-colors {
+                .btn-#{$color} {
+                    $text: map-get($hh-contrast-colors, $color);
+                    $fill: hh-readable(map-get($theme-colors, $color), $text, $hh-high-contrast-ratio);
+                    $hover: if(type-of($text) == color and lightness($text) > 50%, shade-color($fill, 15%), tint-color($fill, 15%));
+                    --bs-btn-bg: var(--bs-#{$color});
+                    --bs-btn-border-color: var(--bs-#{$color});
+                    --bs-btn-hover-bg: #{$hover};
+                    --bs-btn-hover-border-color: #{$hover};
+                    --bs-btn-disabled-bg: var(--bs-#{$color});
+                    --bs-btn-disabled-border-color: var(--bs-#{$color});
+                }
+            }
+        }
+    }
 }

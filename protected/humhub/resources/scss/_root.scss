@@ -128,20 +128,34 @@
     }
 }
 
-// High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes
-@mixin hh-high-contrast-tokens($border-color) {
+// High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes.
+// The body text and a theme color as text reach `$hh-high-contrast-ratio` on the darkest (lightest) surface
+@mixin hh-high-contrast-tokens($border-color, $body-color, $surface) {
+    --bs-body-color: #{hh-readable($body-color, $surface, $hh-high-contrast-ratio)};
     --bs-secondary-color: var(--bs-body-color);
     --bs-tertiary-color: var(--bs-body-color);
     --bs-border-color: #{$border-color};
     --hh-border-color-strong: #{$border-color};
+
+    @each $color in $hh-text-colors {
+        --hh-#{$color}-text: #{hh-readable(map-get($theme-colors, $color), $surface, $hh-high-contrast-ratio)};
+    }
 }
 
 :root {
     @include hh-high-contrast {
-        @include hh-high-contrast-tokens($hh-border-color-contrast);
+        @include hh-high-contrast-tokens($hh-border-color-contrast, $body-color, $body-secondary-bg);
+
+        // A theme color as a fill: darker (lighter) until its text reaches the ratio. The same in both colour modes,
+        // the buttons are in _button.scss
+        @each $color in $hh-text-colors {
+            $fill: hh-readable(map-get($theme-colors, $color), map-get($hh-contrast-colors, $color), $hh-high-contrast-ratio);
+            --bs-#{$color}: #{$fill};
+            --bs-#{$color}-rgb: #{to-rgb($fill)};
+        }
 
         &[data-bs-theme="dark"] {
-            @include hh-high-contrast-tokens($hh-border-color-contrast-dark);
+            @include hh-high-contrast-tokens($hh-border-color-contrast-dark, $body-color-dark, $body-secondary-bg-dark);
         }
     }
 }

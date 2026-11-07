@@ -127,6 +127,16 @@ $hh-warning-contrast: color-contrast($warning) !default;
 $hh-danger-contrast: color-contrast($danger) !default;
 $hh-light-contrast: color-contrast($light) !default;
 $hh-dark-contrast: color-contrast($dark) !default;
+// The text on each theme color as a fill, by the names of `$hh-text-colors`
+$hh-contrast-colors: (
+    primary: $hh-primary-contrast,
+    secondary: $hh-secondary-contrast,
+    accent: $hh-accent-contrast,
+    info: $hh-info-contrast,
+    success: $hh-success-contrast,
+    warning: $hh-warning-contrast,
+    danger: $hh-danger-contrast,
+) !default;
 
 
 //
@@ -329,6 +339,12 @@ $hh-topbar-color-dark: var(--bs-emphasis-color) !default;
 
 $hh-border-color-contrast: #767676 !default; // 4.5:1 on white
 $hh-border-color-contrast-dark: #8a8a8a !default; // 4.5:1 on $body-bg-dark
+// The body text, a theme color as text and the text on a theme color fill reach this contrast (WCAG 2.2 AAA)
+$hh-high-contrast-ratio: 7 !default;
+// The edge of a surface (a panel, a card, the page header) instead of its soft shadow
+$hh-surface-box-shadow-contrast: 0 0 0 1px var(--bs-border-color) !default;
+// Links that are controls and stay without an underline
+$hh-high-contrast-link-exclude: ".btn, .dropdown-item, .dropdown-toggle, .nav-link, .navbar-brand, .list-group-item, .page-link, .badge, .link-topic, .d-flex, [role=tab], [role=button], [role=menuitem]" !default;
 
 
 //
