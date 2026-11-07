@@ -89,6 +89,12 @@
     --hh-light-contrast: #{$hh-light-contrast};
     --hh-dark-contrast: #{$hh-dark-contrast};
 
+    // A theme color as text on the surfaces: a link, an icon, a label. The color itself where it is readable on the
+    // darkest of them, otherwise darker
+    @each $color in $hh-text-colors {
+        --hh-#{$color}-text: #{hh-readable(map-get($theme-colors, $color), $body-secondary-bg, $hh-text-contrast-ratio)};
+    }
+
     // Fonts
     --hh-mail-font-family: #{$mail-font-family};
 
@@ -111,6 +117,11 @@
         --hh-code-bg: #{$hh-code-bg-dark};
         --hh-topbar-bg: #{$hh-topbar-bg-dark};
         --hh-topbar-color: #{$hh-topbar-color-dark};
+
+        // Readable on the lightest dark surface: lighter where the color itself is not
+        @each $color in $hh-text-colors {
+            --hh-#{$color}-text: #{hh-readable(map-get($theme-colors, $color), $body-secondary-bg-dark, $hh-text-contrast-ratio)};
+        }
 
         // @deprecated since 1.20
         @include hh-deprecated-tokens;

@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\helpers\ThemeHelper;
+use humhub\modules\admin\models\forms\ThemeSettingsForm;
 use humhub\services\ActiveThemeService;
 use Throwable;
 use Yii;
@@ -79,8 +80,8 @@ class ThemeVariables extends Component
      */
     public function getCustom(string $key): ?string
     {
-        return in_array($key, ['primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'])
-            ? Yii::$app->settings->get('theme' . ucfirst($key) . 'Color')
+        return in_array($key, ThemeSettingsForm::COLORS, true)
+            ? Yii::$app->settings->get(ThemeSettingsForm::colorAttribute($key))
             : null;
     }
 

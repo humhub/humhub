@@ -1,0 +1,30 @@
+// HumHub's Sass functions, imported after Bootstrap's: a theme's variables can use them too
+
+// A color as text on a background: the color itself where it reaches `$min-ratio` (WCAG 2.2 contrast) on it, otherwise
+// mixed with black (on a light background) or white (on a dark one) until it does. Anything that is not a color, e.g.
+// a `var()`, comes back as it is
+@function hh-readable($color, $background, $min-ratio: 4.5) {
+    @if type-of($color) != color or type-of($background) != color {
+        @return $color;
+    }
+
+    @if contrast-ratio($background, $color) >= $min-ratio {
+        @return $color;
+    }
+
+    // The least whole percent of black or white that reaches the ratio, found by bisection: the contrast grows with it,
+    // and `contrast-ratio()` is slow in the PHP compiler
+    $toward: if(contrast-ratio($background, black) >= contrast-ratio($background, white), black, white);
+    $low: 0;
+    $high: 100;
+    @while $high - $low > 1 {
+        $middle: floor(($low + $high) * 0.5);
+        @if contrast-ratio($background, mix($toward, $color, $middle * 1%)) >= $min-ratio {
+            $high: $middle;
+        } @else {
+            $low: $middle;
+        }
+    }
+
+    @return mix($toward, $color, $high * 1%);
+}

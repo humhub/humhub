@@ -28,7 +28,7 @@ $form-choice-border-radius: 4px !default;
 
         &[required]:after {
             content: " *";
-            color: var(--bs-accent);
+            color: var(--hh-accent-text);
         }
     }
 
@@ -39,7 +39,7 @@ $form-choice-border-radius: 4px !default;
 
     div.required > label:after {
         content: " *";
-        color: var(--bs-accent);
+        color: var(--hh-accent-text);
     }
 
     .form-checkboxes-normal {
@@ -474,7 +474,7 @@ $form-choice-border-radius: 4px !default;
     // Errror handling
     //
     .errorMessage {
-        color: var(--bs-danger);
+        color: var(--hh-danger-text);
         padding: 10px 0;
     }
 

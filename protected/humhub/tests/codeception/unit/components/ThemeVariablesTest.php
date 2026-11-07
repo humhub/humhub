@@ -127,6 +127,39 @@ class ThemeVariablesTest extends HumHubDbTestCase
         $this->assertSame('#abcdef', $variables->get('primary'));
     }
 
+    /**
+     * A variable derived from another one comes as the colour it compiles to, not as its SCSS expression
+     */
+    public function testDerivedVariablesAreResolved()
+    {
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#ededed', $variables->get('hh-page-bg'));
+        $this->assertSame('#f9f9f9', $variables->get('body-tertiary-bg'));
+        $this->assertSame('#dddddd', $variables->get('border-color'));
+        $this->assertSame('#161616', $variables->get('hh-page-bg-dark'));
+        $this->assertSame('#393939', $variables->get('body-secondary-bg-dark'));
+    }
+
+    /**
+     * The page and the other surfaces are steps from the surface colour of Administration → Appearance → Theme
+     */
+    public function testSurfaceColorSettingDerivesThePage()
+    {
+        Yii::$app->settings->set('themeBodyBgColor', '#fdf8ec');
+        Yii::$app->settings->set('useDefaultThemeBodyBgColor', false);
+        Yii::$app->settings->set('themeBodyBgDarkColor', '#1b2a44');
+        Yii::$app->settings->set('useDefaultThemeBodyBgDarkColor', false);
+        ActiveThemeService::flush();
+
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#fdf8ec', $variables->get('body-bg'));
+        $this->assertSame('#ebe7db', $variables->get('hh-page-bg'));
+        $this->assertSame('#1b2a44', $variables->get('body-bg-dark'));
+        $this->assertSame('#121b2c', $variables->get('hh-page-bg-dark'));
+    }
+
     public function testFlushCacheDropsTheState()
     {
         $variables = new ThemeVariables(['theme' => Yii::$app->view->theme]);

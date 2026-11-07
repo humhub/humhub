@@ -21,16 +21,24 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 | Faint text: a disabled item, a hint | `--bs-tertiary-color` | `.text-body-tertiary` | `#aeaeae` | `#999` |
 | A field's placeholder | `--bs-secondary-color` | | = muted | = muted |
 | Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `.text-bg-{color}` | `$color-contrast-dark` or `$color-contrast-light`, whichever reads better on the colour (black or white by default) | same |
-| Status text | `--bs-{color}-text-emphasis` | `.text-{color}-emphasis` | | |
+| A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-text` | `.text-{color}`, `.link-{color}` | the colour, darker where it is below 4.5:1 on `--bs-secondary-bg` | the colour, lighter where it is below 4.5:1 on `--bs-secondary-bg` |
+| Status text on its subtle background (an alert) | `--bs-{color}-text-emphasis` | `.text-{color}-emphasis` | | |
 
 `{color}` is one of the theme colours: `primary`, `accent`, `secondary`, `info`, `success`,
 `warning`, `danger`, `light`, `dark`.
+
+A theme colour is never used as text by itself (`color: var(--bs-accent)`): an accent chosen in the
+*Appearance* settings may be too light for a white card or too dark for the dark mode. Its
+`--hh-{color}-text` is the colour itself wherever it reads, and otherwise the nearest shade that
+does, worked out by the Sass function `hh-readable($color, $background, $min-ratio: 4.5)`
+(`_functions.scss`). A theme raises the contrast by `$hh-text-contrast-ratio`. `--hh-{color}-text`
+is there for `primary`, `accent`, `secondary`, `info`, `success`, `warning` and `danger`.
 
 ## Backgrounds
 
 | Job | Token | Utility | Light | Dark |
 |---|---|---|---|---|
-| The page, behind the surfaces | `--hh-page-bg` | | `#ededed` | `#000` |
+| The page, behind the surfaces | `--hh-page-bg` | | `#ededed` | `#161616` |
 | A surface: panel, card, dropdown, dialog, popover, field, table | `--bs-body-bg` | `.bg-body` | `#fff` | `#222` |
 | A sunken area in a surface: comments, tabs, a filter | `--bs-tertiary-bg` | `.bg-body-tertiary` | `#f9f9f9` | `#333` |
 | The fill of a hovered or active item, a neutral badge; a light separator | `--bs-secondary-bg` | `.bg-body-secondary` | `#ededed` | `#393939` |
@@ -42,6 +50,9 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 | Status: alert, notice | `--bs-{color}-bg-subtle` | `.bg-{color}-subtle` | | |
 
 `--bs-body-bg` is the surface, not the page: Bootstrap's components take it as their background.
+It can be set for each mode in *Administration → Appearance → Theme*. The page, the other surfaces
+and the lines are mixed from it (`mix(black, $body-bg, 7%)` for the page), so they follow a
+tinted surface; a theme can still set each of them.
 
 ## Lines and focus
 
