@@ -54,10 +54,10 @@ $dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in
 
     // A destructive row: red text and icon, a red hover fill
     .dropdown-item-danger {
-        --bs-dropdown-link-color: var(--bs-danger);
-        --bs-dropdown-link-hover-color: var(--bs-danger);
+        --bs-dropdown-link-color: var(--hh-danger-fg);
+        --bs-dropdown-link-hover-color: var(--hh-danger-fg);
         --bs-dropdown-link-hover-bg: var(--bs-danger-bg-subtle);
-        --bs-dropdown-link-active-color: var(--bs-danger);
+        --bs-dropdown-link-active-color: var(--hh-danger-fg);
         --bs-dropdown-link-active-bg: var(--bs-danger-bg-subtle);
     }
 

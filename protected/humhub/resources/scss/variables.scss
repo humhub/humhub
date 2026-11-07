@@ -85,6 +85,24 @@ $mark-bg: lighten($warning, 40%) !default; // Marked text
 // `fg` (foreground) is the name Bootstrap 6 gives this role, next to `bg`, `bg-subtle` and `contrast`
 $hh-fg-contrast-ratio: 4.5 !default; // WCAG 2.2 AA for normal text
 $hh-fg-colors: primary, secondary, accent, info, success, warning, danger !default; // Those with a `--hh-{color}-fg`
+// The shade of each: the color itself where it reads on the darkest surface, otherwise darker. A theme can set one
+$hh-primary-fg: hh-readable($primary, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-secondary-fg: hh-readable($secondary, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-accent-fg: hh-readable($accent, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-info-fg: hh-readable($info, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-success-fg: hh-readable($success, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-warning-fg: hh-readable($warning, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-danger-fg: hh-readable($danger, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+// By the names of `$hh-fg-colors`, for the loops
+$hh-fg: (
+    primary: $hh-primary-fg,
+    secondary: $hh-secondary-fg,
+    accent: $hh-accent-fg,
+    info: $hh-info-fg,
+    success: $hh-success-fg,
+    warning: $hh-warning-fg,
+    danger: $hh-danger-fg,
+) !default;
 
 // Lines
 $border-color: mix(black, $body-bg, 13.3%) !default; // A separator, the border of a box
@@ -304,6 +322,9 @@ $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default;
 $component-active-color: $hh-primary-contrast !default; // Because $component-active-bg has Primary color
+// As a token, not compiled in: a checked box follows `--bs-primary` wherever that is redefined (high contrast)
+$form-check-input-checked-bg-color: var(--bs-primary) !default;
+$form-check-input-indeterminate-bg-color: var(--bs-primary) !default;
 
 //
 // Dark color mode (`[data-bs-theme="dark"]`)
@@ -324,6 +345,23 @@ $body-bg-dark: #222 !default;
 $hh-page-bg-dark: mix(black, $body-bg-dark, 35%) !default;
 $body-tertiary-bg-dark: mix(white, $body-bg-dark, 7.7%) !default;
 $body-secondary-bg-dark: mix(white, $body-bg-dark, 10.4%) !default;
+// A theme color as text, lighter where the color itself doesn't read on the lightest dark surface (see `$hh-{color}-fg`)
+$hh-primary-fg-dark: hh-readable($primary, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-secondary-fg-dark: hh-readable($secondary, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-accent-fg-dark: hh-readable($accent, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-info-fg-dark: hh-readable($info, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-success-fg-dark: hh-readable($success, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-warning-fg-dark: hh-readable($warning, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-danger-fg-dark: hh-readable($danger, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+$hh-fg-dark: (
+    primary: $hh-primary-fg-dark,
+    secondary: $hh-secondary-fg-dark,
+    accent: $hh-accent-fg-dark,
+    info: $hh-info-fg-dark,
+    success: $hh-success-fg-dark,
+    warning: $hh-warning-fg-dark,
+    danger: $hh-danger-fg-dark,
+) !default;
 $hh-accent-bg-soft-dark: mix($accent, $body-bg-dark, 15%) !default;
 $hh-code-bg-dark: $accent-bg-subtle-dark !default;
 $mark-bg-dark: shade-color($warning, 80%) !default;
@@ -344,8 +382,8 @@ $hh-border-color-contrast-dark: #8a8a8a !default; // 4.5:1 on $body-bg-dark
 $hh-high-contrast-ratio: 7 !default;
 // The edge of a surface (a panel, a card, the page header) instead of its soft shadow
 $hh-surface-box-shadow-contrast: 0 0 0 1px var(--bs-border-color) !default;
-// Links that are controls and stay without an underline
-$hh-high-contrast-link-exclude: ".btn, .dropdown-item, .dropdown-toggle, .nav-link, .navbar-brand, .list-group-item, .page-link, .badge, .link-topic, .d-flex, [role=tab], [role=button], [role=menuitem]" !default;
+// Links that are controls (a button, a menu item, a tab, a chip) and stay without an underline
+$hh-high-contrast-link-exclude: ".btn, .dropdown-item, .dropdown-toggle, .nav-link, .navbar-brand, .list-group-item, .page-link, .badge, .link-topic, [role=tab], [role=button], [role=menuitem]" !default;
 
 
 //

@@ -20,6 +20,7 @@ class MailStyleHelper
 {
     public const DEFAULT_FONT_FAMILY = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif";
     public const DEFAULT_COLOR_PRIMARY = '#435f6f';
+    public const DEFAULT_LINK_COLOR = '#435f6f';
     public const DEFAULT_COLOR_INFO = '#0582FF';
     public const DEFAULT_TEXT_COLOR_MAIN = '#555555';
     public const DEFAULT_TEXT_COLOR_SOFT = '#555555';
@@ -38,6 +39,16 @@ class MailStyleHelper
     public static function getColorPrimary(): string
     {
         return static::getVariable('primary', self::DEFAULT_COLOR_PRIMARY);
+    }
+
+    /**
+     * A link: the primary colour as text, in the shade that reads on the surfaces (`$hh-primary-fg`)
+     *
+     * @since 1.20
+     */
+    public static function getLinkColor(): string
+    {
+        return static::getVariable('hh-primary-fg', self::DEFAULT_LINK_COLOR);
     }
 
     public static function getColorInfo(): string

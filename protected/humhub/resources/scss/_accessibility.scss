@@ -18,9 +18,8 @@
         }
 
         @include hh-high-contrast {
-            // Every text link, not only those in running text ("Reply" next to "Like"). Not the controls that look like
-            // one (a button, a menu item, a tab, a badge) nor a link that lays out a block (`.d-flex`). An icon is an
-            // inline block and stays without the line
+            // Every text link, not only those in running text ("Reply" next to "Like"), but not the controls that
+            // look like one (`$hh-high-contrast-link-exclude`). An icon is an inline block and stays without the line
             a:not(#{$hh-high-contrast-link-exclude}) {
                 text-decoration: underline;
 
@@ -29,11 +28,6 @@
                 svg {
                     display: inline-block;
                 }
-            }
-
-            .markdown-render a,
-            .richtext a {
-                text-decoration: underline;
             }
 
             :focus-visible {

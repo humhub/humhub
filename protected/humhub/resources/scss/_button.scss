@@ -146,17 +146,20 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     }
 
     .btn-ghost-danger {
-        --bs-btn-color: var(--bs-danger);
-        --bs-btn-hover-color: var(--bs-danger);
+        --bs-btn-color: var(--hh-danger-fg);
+        --bs-btn-hover-color: var(--hh-danger-fg);
         --bs-btn-hover-bg: var(--bs-danger-bg-subtle);
-        --bs-btn-active-color: var(--bs-danger);
+        --bs-btn-active-color: var(--hh-danger-fg);
         --bs-btn-active-bg: var(--bs-danger-bg-subtle);
     }
 
-    // Outline buttons: use black color for texts if insufficient contrast relatively to background color main, as the background color is transparent
+    // Outline buttons: the text in the shade of the color that reads on the surfaces, as any theme color as text;
+    // `light` and `dark` take the emphasis color where their own doesn't read
     @each $color, $value in $theme-colors {
         .btn-outline-#{$color} {
-            @if contrast-ratio($body-bg, $value) < $min-contrast-ratio {
+            @if index($hh-fg-colors, $color) {
+                --bs-btn-color: var(--hh-#{$color}-fg);
+            } @else if contrast-ratio($body-bg, $value) < $min-contrast-ratio {
                 color: var(--bs-emphasis-color);
             }
         }
@@ -165,31 +168,37 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     // Temporary exceptions for "active" Primary and Info buttons to display as outlined
     // See https://github.com/humhub/humhub-internal/issues/661#issuecomment-2968279827
     .btn-primary {
-        --bs-btn-active-color: var(--bs-primary);
+        --bs-btn-active-color: var(--hh-primary-fg);
         --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-primary);
     }
 
     .btn-info {
-        --bs-btn-active-color: var(--bs-accent);
+        --bs-btn-active-color: var(--hh-accent-fg);
         --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-accent);
     }
 
-    // High contrast: the fill of `--bs-{color}` (see _root.scss), hovered a bit further away from its text
+    // High contrast: the fill of `--bs-{color}` (see _root.scss); hovered and pressed a step further away from its
+    // text, mixed from the fill at runtime
     :root {
         @include hh-high-contrast {
             @each $color in $hh-fg-colors {
                 .btn-#{$color} {
                     $text: map-get($hh-contrast-colors, $color);
-                    $fill: hh-readable(map-get($theme-colors, $color), $text, $hh-high-contrast-ratio);
-                    $hover: if(type-of($text) == color and lightness($text) > 50%, shade-color($fill, 15%), tint-color($fill, 15%));
+                    $away: if(type-of($text) == color and lightness($text) > 50%, black, white);
                     --bs-btn-bg: var(--bs-#{$color});
                     --bs-btn-border-color: var(--bs-#{$color});
-                    --bs-btn-hover-bg: #{$hover};
-                    --bs-btn-hover-border-color: #{$hover};
+                    --bs-btn-hover-bg: color-mix(in srgb, var(--bs-#{$color}) 85%, #{$away});
+                    --bs-btn-hover-border-color: color-mix(in srgb, var(--bs-#{$color}) 85%, #{$away});
                     --bs-btn-disabled-bg: var(--bs-#{$color});
                     --bs-btn-disabled-border-color: var(--bs-#{$color});
+
+                    // Pressed, checked, open. Primary and info show the outlined state above instead
+                    @if not index((primary, info), $color) {
+                        --bs-btn-active-bg: color-mix(in srgb, var(--bs-#{$color}) 80%, #{$away});
+                        --bs-btn-active-border-color: color-mix(in srgb, var(--bs-#{$color}) 80%, #{$away});
+                    }
                 }
             }
         }

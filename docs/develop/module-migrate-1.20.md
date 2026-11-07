@@ -33,8 +33,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `secondary`, `info`, `success`, `warning`, `danger`) use it; the core's `color: var(--bs-accent)`
   and the like do too. A module that writes a theme colour as text should switch, e.g.
   `color: var(--bs-accent)` → `color: var(--hh-accent-fg)`. The new Sass function
-  `hh-readable($color, $background, $min-ratio: 4.5)` works out such a shade. `.text-{color}` comes
-  from `$utilities-text-colors`, so `.text-opacity-*` no longer applies to it. The former
+  `hh-readable($color, $background, $min-ratio: 4.5)` works out such a shade into the variables
+  `$hh-{color}-fg` and `$hh-{color}-fg-dark`, which a theme can set. `.text-{color}` comes from
+  `$utilities-text-colors`, so `.text-opacity-*` no longer applies to it. The outline buttons and
+  `.btn-ghost-danger`, `.dropdown-item-danger` take the shade too. A mail link in the primary
+  colour is `MailStyleHelper::getLinkColor()` instead of `getColorPrimary()`. The former
   `.link-{color}` fallback to the emphasis colour in `_utilities.scss` (without effect since the
   cascade layers) is removed.
 - **The surfaces are derived from `$body-bg`** (and `$body-bg-dark`), which can be set in

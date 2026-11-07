@@ -203,15 +203,17 @@ class ThemeHelper
      * @param Theme $theme
      * @param bool $includeCustomScss whether the variables of the Custom SCSS overwrite the ones of the theme files
      * @return array
-     * @throws SassException if syntax error in the custom SCSS, only when $includeCustomScss is true
+     * @throws SassException if the custom SCSS doesn't compile, only when $includeCustomScss is true
      * @throws RuntimeException if the custom SCSS is malformed, only when $includeCustomScss is true -
      *                          reading without it is free of both, which is the point of the parameter
      */
     public static function getAllVariables(Theme $theme, bool $includeCustomScss = true): array
     {
+        $treeThemes = static::getThemeTree($theme);
+
         // Get variables from theme files
         $variables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
-        foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
+        foreach (array_reverse($treeThemes) as $treeTheme) {
             $variables = ArrayHelper::merge(
                 $variables,
                 static::renameDeprecatedVariables(ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme))),
@@ -232,7 +234,7 @@ class ThemeHelper
 
         return static::resolveVariables(
             ScssHelper::updateLinkedScssVariables($variables),
-            static::getThemeTree($theme),
+            $treeThemes,
             $customVariables,
             $customMaps,
         );
@@ -243,15 +245,21 @@ class ThemeHelper
      * (`#ededed`), with the colours of Administration → Appearance → Theme, so PHP gets the colours the CSS has, e.g.
      * for the inline styles of an email. A colour comes as `#rrggbb`.
      *
-     * Keeps the values as they are if the SCSS doesn't compile.
+     * Keeps the values as they are if the theme's SCSS doesn't compile. With a custom SCSS, which is the likely cause
+     * then, it throws instead: the caller reads again without it (see `ThemeVariables::getAll()`).
      *
      * @param array $variables the variables as read from the SCSS files
      * @param Theme[] $treeThemes the theme and its parents, child first
+     * @throws SassException if the SCSS doesn't compile and a custom SCSS is involved
      * @since 1.20
      */
     protected static function resolveVariables(array $variables, array $treeThemes, string $customVariables, string $customMaps): array
     {
-        $names = array_keys(array_filter($variables, fn($value) => str_contains((string)$value, '$')));
+        // Whatever is not a literal: a variable, a function (`darken(#fff, 7%)`), but not a `var()`
+        $names = array_keys(array_filter(
+            $variables,
+            fn($value) => preg_match('/[$(]/', (string)$value) && !str_starts_with(trim((string)$value), 'var('),
+        ));
         if ($names === []) {
             return $variables;
         }
@@ -268,6 +276,9 @@ class ThemeHelper
         try {
             $css = $compiler->compileString(str_replace('\\', '/', $scss))->getCss();
         } catch (SassException $e) {
+            if ($customVariables !== '' || $customMaps !== '') {
+                throw $e;
+            }
             Yii::warning('Could not resolve the theme variables: ' . $e->getMessage(), 'ui');
             return $variables;
         }

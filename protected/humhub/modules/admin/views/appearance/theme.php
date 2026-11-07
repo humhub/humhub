@@ -30,7 +30,7 @@ $checkBoxOptions = ['options' => ['class' => 'pt-2']];
                     <?= $form->field($model, $attribute)->hint(false)->colorInput([
                         'disabled' => $model->$default,
                         'class' => 'rounded',
-                        'data-default-color' => $themeVariables->get($color),
+                        'data-default-color' => $themeVariables->getThemeDefault($color),
                     ]) ?>
                     <?= $form->field($model, $default, $checkBoxOptions)->checkbox([
                         'data-color-input' => Html::getInputId($model, $attribute),

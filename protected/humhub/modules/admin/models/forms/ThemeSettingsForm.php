@@ -118,8 +118,10 @@ class ThemeSettingsForm extends Model
             return;
         }
 
+        // The text of the theme chosen in the form, which may not be the active one yet
         [$textVariable, $textDefault] = static::SURFACE_TEXT_COLORS[$surface];
-        $textColor = (string)Yii::$app->view->theme->variable($textVariable);
+        $theme = ThemeHelper::getThemeByName((string)$this->theme) ?? Yii::$app->view->theme;
+        $textColor = (string)$theme->variable($textVariable);
         if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $textColor)) {
             $textColor = $textDefault;
         }

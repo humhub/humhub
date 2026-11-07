@@ -41,7 +41,7 @@ $spaceOf = static fn(BaseNotification $notification): ?Space => $batch->privacy 
 
 $textStyle = 'font-size: 14px; line-height: 22px; font-family: ' . MailStyleHelper::getFontFamily()
     . '; color: ' . MailStyleHelper::getTextColorMain() . '; font-weight: 300; text-align: left;';
-$linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary() . '; font-weight: bold;';
+$linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getLinkColor() . '; font-weight: bold;';
 ?>
 <!-- START NOTIFICATION -->
 <tr>

@@ -31,8 +31,10 @@ A theme colour is never used as text by itself (`color: var(--bs-accent)`): an a
 *Appearance* settings may be too light for a white card or too dark for the dark mode. Its
 `--hh-{color}-fg` is the colour itself wherever it reads, and otherwise the nearest shade that
 does, worked out by the Sass function `hh-readable($color, $background, $min-ratio: 4.5)`
-(`_functions.scss`). A theme raises the contrast by `$hh-fg-contrast-ratio`. `--hh-{color}-fg`
-is there for `primary`, `accent`, `secondary`, `info`, `success`, `warning` and `danger`.
+(`_functions.scss`) into the variables `$hh-{color}-fg` and `$hh-{color}-fg-dark`. A theme sets
+one of them, or raises the contrast of all by `$hh-fg-contrast-ratio`. `--hh-{color}-fg` is there
+for `primary`, `accent`, `secondary`, `info`, `success`, `warning` and `danger`. A mail, which has
+no tokens, takes `MailStyleHelper::getLinkColor()` for a link in the primary colour.
 
 ### A theme colour as text: class or token
 

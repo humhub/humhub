@@ -86,6 +86,21 @@ class ThemeVariables extends Component
     }
 
     /**
+     * The value of the theme itself, without the colour of Administration → Appearance → Theme that {@see get()}
+     * prefers: the "Default" of the theme settings
+     *
+     * @since 1.20
+     */
+    public function getThemeDefault(string $key): ?string
+    {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            return null;
+        }
+
+        return $this->getAll()[$key] ?? null;
+    }
+
+    /**
      * Drops the state of the active theme - regardless of which theme this instance
      * wraps, since there is only ever one state and it always describes the active
      * theme. The variables memoized by this instance are dropped along with it.

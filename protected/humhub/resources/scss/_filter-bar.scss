@@ -59,9 +59,9 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
         display: none;
 
         &.is-active {
-            --bs-btn-color: var(--bs-accent);
+            --bs-btn-color: var(--hh-accent-fg);
             --bs-btn-bg: var(--bs-accent-bg-subtle);
-            --bs-btn-hover-color: var(--bs-accent);
+            --bs-btn-hover-color: var(--hh-accent-fg);
             --bs-btn-hover-bg: var(--bs-accent-bg-subtle);
         }
     }
@@ -122,9 +122,9 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
     }
 
     .filter-bar-clear {
-        --bs-btn-hover-color: var(--bs-danger);
+        --bs-btn-hover-color: var(--hh-danger-fg);
         --bs-btn-hover-bg: var(--bs-danger-bg-subtle);
-        --bs-btn-active-color: var(--bs-danger);
+        --bs-btn-active-color: var(--hh-danger-fg);
         --bs-btn-active-bg: var(--bs-danger-bg-subtle);
 
         &.is-flipping {
