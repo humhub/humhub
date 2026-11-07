@@ -90,9 +90,9 @@ use humhub\helpers\MailStyleHelper;
                                                                         <?php if ($url != '') : ?>
                                                                             <!-- START: CONTENT LINK -->
                                                                             <span
-                                                                                style="text-decoration: none; color: <?= MailStyleHelper::getColorPrimary() ?>"> - <a
+                                                                                style="text-decoration: none; color: <?= MailStyleHelper::getLinkColor() ?>"> - <a
                                                                                     href="<?= $url ?>"
-                                                                                    style="text-decoration: none; color: <?= MailStyleHelper::getColorPrimary() ?>; font-weight: bold"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
+                                                                                    style="text-decoration: none; color: <?= MailStyleHelper::getLinkColor() ?>; font-weight: bold"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
                                                                         <?php endif ?>
                                                                     </div>

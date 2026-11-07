@@ -483,7 +483,7 @@
         }
 
         .ProseMirror [data-mention] {
-            color: var(--bs-accent);
+            color: var(--hh-accent-fg);
         }
 
         .ProseMirror {
@@ -675,7 +675,7 @@
         overflow-wrap: break-word;
 
         a {
-            color: var(--bs-accent);
+            color: var(--hh-accent-fg);
         }
     }
 

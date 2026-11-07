@@ -89,6 +89,12 @@
     --hh-light-contrast: #{$hh-light-contrast};
     --hh-dark-contrast: #{$hh-dark-contrast};
 
+    // A theme color as text on the surfaces (`fg`, as Bootstrap 6 names the role): a link, an icon, a label. The color
+    // itself where it is readable on the darkest of them, otherwise darker. `.text-{color}` reads it, see maps.scss
+    @each $color in $hh-fg-colors {
+        --hh-#{$color}-fg: #{map-get($hh-fg, $color)};
+    }
+
     // Fonts
     --hh-mail-font-family: #{$mail-font-family};
 
@@ -112,26 +118,62 @@
         --hh-topbar-bg: #{$hh-topbar-bg-dark};
         --hh-topbar-color: #{$hh-topbar-color-dark};
 
+        // Readable on the lightest dark surface: lighter where the color itself is not
+        @each $color in $hh-fg-colors {
+            --hh-#{$color}-fg: #{map-get($hh-fg-dark, $color)};
+        }
+
         // @deprecated since 1.20
         @include hh-deprecated-tokens;
     }
 }
 
-// High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes
-@mixin hh-high-contrast-tokens($border-color) {
+// High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes.
+// The body text and a theme color as text reach `$hh-high-contrast-ratio` on the darkest (lightest) surface, a theme
+// color as a fill is darkened (lightened) until its text does. Worked out once here: the mixin below is output twice
+// (the user's option and the system setting), and _button.scss reads the fills too
+$hh-body-color-high-contrast: hh-readable($body-color, $body-secondary-bg, $hh-high-contrast-ratio);
+$hh-body-color-high-contrast-dark: hh-readable($body-color-dark, $body-secondary-bg-dark, $hh-high-contrast-ratio);
+$hh-fg-high-contrast: ();
+$hh-fg-high-contrast-dark: ();
+$hh-fill-high-contrast: ();
+@each $color in $hh-fg-colors {
+    $hh-fg-high-contrast: map-merge($hh-fg-high-contrast, (
+        $color: hh-readable(map-get($hh-fg, $color), $body-secondary-bg, $hh-high-contrast-ratio),
+    ));
+    $hh-fg-high-contrast-dark: map-merge($hh-fg-high-contrast-dark, (
+        $color: hh-readable(map-get($hh-fg-dark, $color), $body-secondary-bg-dark, $hh-high-contrast-ratio),
+    ));
+    $hh-fill-high-contrast: map-merge($hh-fill-high-contrast, (
+        $color: hh-readable(map-get($theme-colors, $color), map-get($hh-contrast-colors, $color), $hh-high-contrast-ratio),
+    ));
+}
+
+@mixin hh-high-contrast-tokens($border-color, $body-color, $fg) {
+    --bs-body-color: #{$body-color};
+    --bs-body-color-rgb: #{to-rgb($body-color)};
     --bs-secondary-color: var(--bs-body-color);
     --bs-tertiary-color: var(--bs-body-color);
     --bs-border-color: #{$border-color};
     --hh-border-color-strong: #{$border-color};
+
+    @each $color, $value in $fg {
+        --hh-#{$color}-fg: #{$value};
+    }
 }
 
 :root {
     @include hh-high-contrast {
-        @include hh-high-contrast-tokens($hh-border-color-contrast);
+        @include hh-high-contrast-tokens($hh-border-color-contrast, $hh-body-color-high-contrast, $hh-fg-high-contrast);
+
+        // The fills, the same in both colour modes
+        @each $color, $fill in $hh-fill-high-contrast {
+            --bs-#{$color}: #{$fill};
+            --bs-#{$color}-rgb: #{to-rgb($fill)};
+        }
 
         &[data-bs-theme="dark"] {
-            @include hh-high-contrast-tokens($hh-border-color-contrast-dark);
+            @include hh-high-contrast-tokens($hh-border-color-contrast-dark, $hh-body-color-high-contrast-dark, $hh-fg-high-contrast-dark);
         }
     }
 }
-

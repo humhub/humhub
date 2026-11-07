@@ -149,7 +149,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
 
     a.entity-card-title:hover,
     a.entity-card-title:focus {
-        color: var(--bs-accent);
+        color: var(--hh-accent-fg);
     }
 
     .entity-card-subtitle {

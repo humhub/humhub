@@ -115,7 +115,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         @include transition(transform .24s ease, opacity .24s ease, color .2s);
 
         &:hover {
-            color: var(--bs-danger);
+            color: var(--hh-danger-fg);
         }
 
         &:focus-visible {
@@ -420,7 +420,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker-option.is-new {
-        color: var(--bs-accent);
+        color: var(--hh-accent-fg);
     }
 
     .picker-color {
@@ -473,7 +473,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         cursor: pointer;
 
         &:hover {
-            color: var(--bs-danger);
+            color: var(--hh-danger-fg);
         }
 
         &:focus-visible {

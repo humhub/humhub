@@ -6,7 +6,11 @@
         "scss/at-extend-no-missing-placeholder": null,
         "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["/^tabler-icons/"]}],
         "color-no-hex": [true, {"message": "Use a design token (docs/develop/concept-design-tokens.md)"}],
-        "function-disallowed-list": [["darken", "lighten"], {"message": "Use a design token or color-mix() (docs/develop/concept-design-tokens.md)"}]
+        "function-disallowed-list": [["darken", "lighten"], {"message": "Use a design token or color-mix() (docs/develop/concept-design-tokens.md)"}],
+        "declaration-property-value-disallowed-list": [
+            {"/^(color|--bs-(?!.*border).*-color)$/": ["/var\\(--bs-(primary|secondary|accent|info|success|warning|danger)\\)/"]},
+            {"message": "A theme colour as text is var(--hh-{color}-fg) (docs/ui/colours.md)"}
+        ]
     },
     "overrides": [
         {

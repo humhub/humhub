@@ -116,11 +116,11 @@
                 }
 
                 .icon-pin {
-                    color: var(--bs-danger);
+                    color: var(--hh-danger-fg);
                 }
 
                 .ti-archive {
-                    color: var(--bs-warning);
+                    color: var(--hh-warning-fg);
                 }
             }
 
@@ -131,11 +131,7 @@
                     font-size: 2.39em;
                     margin-top: 5px;
 
-                    @if contrast-ratio($body-bg, $accent) < $min-contrast-ratio {
-                        color: var(--bs-body-color);
-                    } @else {
-                        color: var(--bs-accent);
-                    }
+                    color: var(--hh-accent-fg);
                 }
             }
 
@@ -155,7 +151,7 @@
                 }
 
                 i.archived {
-                    color: var(--bs-warning);
+                    color: var(--hh-warning-fg);
                 }
             }
 

@@ -79,9 +79,7 @@ $container = $model->content->container;
             &middot;
         <?php endif; ?>
 
-        <a href="<?= $permaLink ?>">
-            <?= TimeAgo::widget(['timestamp' => $model->content->created_at, 'titlePrefixInfo' => Yii::t('ContentModule.base', 'Created at:') . ' ']) ?>
-        </a>
+        <a href="<?= $permaLink ?>"><?= TimeAgo::widget(['timestamp' => $model->content->created_at, 'titlePrefixInfo' => Yii::t('ContentModule.base', 'Created at:') . ' ']) ?></a>
 
         &middot;
 

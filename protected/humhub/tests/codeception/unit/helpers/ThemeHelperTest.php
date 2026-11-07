@@ -56,6 +56,26 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertEquals('#4b4b4b', $theme->variable('text-color-secondary'));
     }
 
+    /**
+     * A theme colour as text is its `--hh-{color}-fg`, in the utilities, the components and the high contrast tokens
+     */
+    public function testBuildCssWiresTheThemeColorsAsText()
+    {
+        $theme = $this->createTheme('ColorsAsText');
+        $this->assertTrue(ThemeHelper::buildCss($theme, false));
+
+        $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
+        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-accent-fg: ?#187683/', $css);
+        $this->assertMatchesRegularExpression('/\.text-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
+        $this->assertMatchesRegularExpression('/\.link-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
+        $this->assertMatchesRegularExpression('/\.btn-ghost-danger\{[^}]*--bs-btn-color: ?var\(--hh-danger-fg\)/', $css);
+        $this->assertMatchesRegularExpression('/\.btn-outline-accent\{[^}]*--bs-btn-color: ?var\(--hh-accent-fg\)/', $css);
+        // High contrast: the body text and its rgb twin, a fill and the pressed button from it
+        $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\]\{[^}]*--bs-body-color: ?#[0-9a-f]{6};--bs-body-color-rgb: ?\d/', $css);
+        $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\]\{[^}]*--bs-danger-rgb: ?\d/', $css);
+        $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\] \.btn-danger\{[^}]*--bs-btn-active-bg: ?color-mix\(in srgb, ?var\(--bs-danger\)/', $css);
+    }
+
     public function testGetThemeByPathIgnoresThemeWithoutVariablesFile()
     {
         // An empty/incomplete theme directory (e.g. a `themes/HumHub` skeleton left

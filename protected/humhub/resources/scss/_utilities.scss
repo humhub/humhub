@@ -8,7 +8,6 @@
 // A theme deactivates a component by its `$prev-*` variable in variables.scss; the defaults of build.scss are only
 // defined within the `core` layer.
 $prev-base: false !default;
-$prev-link: false !default;
 $prev-badge: false !default;
 
 @if not $prev-base {
@@ -18,16 +17,6 @@ $prev-badge: false !default;
 
     .bg-light {
         background-color: var(--bs-tertiary-bg) !important;
-    }
-}
-
-@if not $prev-link {
-    @each $color, $value in $theme-colors {
-        .link-#{$color} {
-            @if contrast-ratio($body-bg, $value) < $min-contrast-ratio {
-                color: var(--bs-emphasis-color) !important;
-            }
-        }
     }
 }
 

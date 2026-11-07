@@ -45,11 +45,11 @@ $notification-settings-gap: $spacer !default;
         font-size: $font-size-sm;
 
         &.is-saved {
-            color: var(--bs-success);
+            color: var(--hh-success-fg);
         }
 
         &.is-error {
-            color: var(--bs-danger);
+            color: var(--hh-danger-fg);
         }
     }
 

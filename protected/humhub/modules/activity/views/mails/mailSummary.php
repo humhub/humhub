@@ -14,7 +14,7 @@ $unseenNotificationCount ??= 0;
 $activityCount ??= 0;
 $privacy ??= NotificationPrivacy::Full;
 $lineStyle = 'font-size: 14px; line-height: 22px; font-family: ' . MailStyleHelper::getFontFamily() . '; color: ' . MailStyleHelper::getTextColorMain() . '; font-weight: 300;';
-$linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getColorPrimary() . '; font-weight: bold;';
+$linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getLinkColor() . '; font-weight: bold;';
 ?>
 
 <tr>

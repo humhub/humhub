@@ -18,16 +18,50 @@
         }
 
         @include hh-high-contrast {
-            // Links in running text, which are told apart by their colour only
-            a:not([class]),
-            .markdown-render a,
-            .richtext a {
+            // Every text link, not only those in running text ("Reply" next to "Like"), but not the controls that
+            // look like one (`$hh-high-contrast-link-exclude`). An icon is an inline block and stays without the line
+            a:not(#{$hh-high-contrast-link-exclude}) {
                 text-decoration: underline;
+
+                .ti,
+                .fa,
+                svg {
+                    display: inline-block;
+                }
             }
 
             :focus-visible {
                 outline: 3px solid var(--bs-emphasis-color) !important;
                 outline-offset: 2px;
+            }
+
+            // A field around its own input (the select and the people picker): the ring around the whole field
+            .picker-field:has(.picker-input:focus-visible) {
+                outline: 3px solid var(--bs-emphasis-color);
+                outline-offset: 2px;
+            }
+
+            .picker-input:focus-visible {
+                outline: none !important;
+            }
+
+            // Surfaces: the same clear edge for the old panels and the new cards
+            .panel,
+            .cards .card .card-panel {
+                box-shadow: $hh-surface-box-shadow-contrast;
+            }
+
+            .page-header {
+                --hh-page-header-box-shadow: #{$hh-surface-box-shadow-contrast};
+            }
+
+            .content-card {
+                --bs-card-box-shadow: #{$hh-surface-box-shadow-contrast};
+            }
+
+            .entity-browser,
+            .entity-grid {
+                --hh-surface-shadow: #{$hh-surface-box-shadow-contrast};
             }
         }
 

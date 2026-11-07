@@ -360,20 +360,43 @@ class ScssHelper
             return null;
         }
 
-        $hex = ltrim((string) $color, '#');
-        $r = hexdec(substr($hex, 0, 2)) / 255;
-        $g = hexdec(substr($hex, 2, 2)) / 255;
-        $b = hexdec(substr($hex, 4, 2)) / 255;
+        return static::getContrastRatio((string) $color, '#ffffff') >= $minContrast ? '#FFFFFF' : '#000000';
+    }
 
-        // Calculate relative luminance
-        $r = $r <= 0.03928 ? $r / 12.92 : (($r + 0.055) / 1.055) ** 2.4;
-        $g = $g <= 0.03928 ? $g / 12.92 : (($g + 0.055) / 1.055) ** 2.4;
-        $b = $b <= 0.03928 ? $b / 12.92 : (($b + 0.055) / 1.055) ** 2.4;
-        $lum = 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
+    /**
+     * WCAG 2.2 contrast ratio of two colors, from 1 to 21
+     *
+     * @param string $color1 `#rrggbb` or `#rgb`
+     * @param string $color2 `#rrggbb` or `#rgb`
+     * @since 1.20
+     */
+    public static function getContrastRatio(string $color1, string $color2): float
+    {
+        $luminance1 = static::getRelativeLuminance($color1);
+        $luminance2 = static::getRelativeLuminance($color2);
 
-        // Calculate contrast with white and black
-        $contrastWhite = (max($lum, 1) + 0.05) / (min($lum, 1) + 0.05);
+        return (max($luminance1, $luminance2) + 0.05) / (min($luminance1, $luminance2) + 0.05);
+    }
 
-        return $contrastWhite >= $minContrast ? '#FFFFFF' : '#000000';
+    /**
+     * WCAG 2.2 relative luminance of a color, from 0 (black) to 1 (white)
+     *
+     * @param string $color `#rrggbb` or `#rgb`
+     * @since 1.20
+     */
+    public static function getRelativeLuminance(string $color): float
+    {
+        $hex = ltrim(trim($color), '#');
+        if (strlen($hex) === 3) {
+            $hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+        }
+
+        $luminance = 0.0;
+        foreach ([0.2126, 0.7152, 0.0722] as $index => $weight) {
+            $channel = hexdec(substr($hex, $index * 2, 2)) / 255;
+            $luminance += $weight * ($channel <= 0.04045 ? $channel / 12.92 : (($channel + 0.055) / 1.055) ** 2.4);
+        }
+
+        return $luminance;
     }
 }
