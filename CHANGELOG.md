@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh #1417: Emojis are stored as Unicode and rendered by the Noto Color Emoji font (or the system emojis), with a new picker, `:name` autocomplete and without Twemoji
+- Enh #8714: Emojis are stored as Unicode and rendered by the Noto Color Emoji font (or the system emojis), with a new picker, `:name` autocomplete and without Twemoji
 - Enh #8695: Removed unused styles from the core SCSS; theme values for `$link-hover-color`, `$isFluid` and the `*-contrast` variables are no longer overwritten
 - Enh #8696: Removed rarely used Bootstrap 3 classes from the core SCSS
 - Enh #8699: The `theme.css` puts the core and theme styles into cascade layers, a theme overrides the core without `!important`
