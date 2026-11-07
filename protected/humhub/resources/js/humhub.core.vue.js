@@ -12,19 +12,19 @@
     }
     return target;
   };
-  const _sfc_main$A = {
+  const _sfc_main$C = {
     name: "CardSkeleton"
   };
-  const _hoisted_1$x = {
+  const _hoisted_1$z = {
     class: "card entity-card entity-card-skeleton placeholder-glow",
     "aria-hidden": "true"
   };
-  function _sfc_render$A(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$x, [..._cache[0] || (_cache[0] = [
+  function _sfc_render$C(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$z, [..._cache[0] || (_cache[0] = [
       vue.createStaticVNode('<div class="entity-card-cover entity-card-cover-plain"><span class="placeholder entity-card-skeleton-image"></span></div><div class="entity-card-header"><span class="placeholder entity-card-skeleton-title"></span><span class="placeholder entity-card-skeleton-subtitle"></span></div><div class="entity-card-body"><span class="placeholder entity-card-skeleton-line"></span><span class="placeholder entity-card-skeleton-line entity-card-skeleton-line-short"></span></div><div class="entity-card-footer"><span class="placeholder entity-card-skeleton-action"></span><span class="placeholder entity-card-skeleton-icon"></span></div>', 4)
     ])]);
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["render", _sfc_render$A]]);
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$C, [["render", _sfc_render$C]]);
   const FORM_CONTEXT_KEY = "humhubForm";
   const ID_REPLACEMENTS = [
     ["[]", ""],
@@ -111,7 +111,7 @@
       }
     }
   };
-  const _sfc_main$z = {
+  const _sfc_main$B = {
     mixins: [fieldMixin],
     props: {
       modelValue: { type: Boolean, default: false }
@@ -136,19 +136,19 @@
       }
     }
   };
-  const _hoisted_1$w = { class: "form-check" };
-  const _hoisted_2$q = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
-  const _hoisted_3$o = ["for"];
+  const _hoisted_1$y = { class: "form-check" };
+  const _hoisted_2$s = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_3$q = ["for"];
   const _hoisted_4$m = ["id"];
   const _hoisted_5$i = ["id"];
-  function _sfc_render$z(_ctx, _cache, $props, $setup, $data, $options) {
+  function _sfc_render$B(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
       "div",
       {
         class: vue.normalizeClass(["mb-3", [`field-${_ctx.fieldId}`, { required: _ctx.required }]])
       },
       [
-        vue.createElementVNode("div", _hoisted_1$w, [
+        vue.createElementVNode("div", _hoisted_1$y, [
           vue.withDirectives(vue.createElementVNode("input", {
             ref: "input",
             id: _ctx.fieldId,
@@ -161,14 +161,14 @@
             "aria-invalid": _ctx.hasError ? "true" : null,
             "aria-describedby": _ctx.describedBy,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
-          }, null, 10, _hoisted_2$q), [
+          }, null, 10, _hoisted_2$s), [
             [vue.vModelCheckbox, $options.internalValue]
           ]),
           _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
             key: 0,
             for: _ctx.fieldId,
             class: "form-check-label"
-          }, vue.toDisplayString(_ctx.label), 9, _hoisted_3$o)) : vue.createCommentVNode("v-if", true),
+          }, vue.toDisplayString(_ctx.label), 9, _hoisted_3$q)) : vue.createCommentVNode("v-if", true),
           _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
             key: 1,
             id: _ctx.errorId,
@@ -201,7 +201,368 @@
       /* CLASS */
     );
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["render", _sfc_render$z]]);
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$B, [["render", _sfc_render$B]]);
+  const HEX = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+  const normalizeHex = (value) => {
+    const text = String(value ?? "").trim();
+    if (!HEX.test(text)) {
+      return null;
+    }
+    const hex = text.slice(1).toLowerCase();
+    return `#${hex.length === 3 ? hex.split("").map((char) => char + char).join("") : hex}`;
+  };
+  const _sfc_main$A = {
+    name: "ColorInput",
+    props: {
+      // Native mode: the id of the text input to mount over
+      inputId: { type: String, default: null },
+      modelValue: { type: String, default: "" },
+      name: { type: String, default: null },
+      id: { type: String, default: null },
+      label: { type: String, default: null },
+      placeholder: { type: String, default: "#rrggbb" },
+      disabled: { type: Boolean, default: false },
+      invalid: { type: Boolean, default: false },
+      describedBy: { type: String, default: null }
+    },
+    emits: ["update:modelValue", "change"],
+    data() {
+      return {
+        text: "",
+        swatch: "#000000",
+        nativeDisabled: false,
+        nativeInvalid: false,
+        nativeDescribedBy: null,
+        nativeLabel: null,
+        writing: false
+      };
+    },
+    computed: {
+      isNative() {
+        return !!this.inputId;
+      },
+      isDisabled() {
+        return this.disabled || this.nativeDisabled;
+      },
+      isInvalid() {
+        return this.invalid || this.nativeInvalid;
+      },
+      isDescribedBy() {
+        return this.describedBy || this.nativeDescribedBy || null;
+      },
+      textId() {
+        return this.isNative ? `${this.inputId}-hex` : this.id;
+      },
+      textName() {
+        return this.isNative ? null : this.name;
+      },
+      textLabel() {
+        return this.isNative ? this.nativeLabel : this.label;
+      },
+      swatchLabel() {
+        return this.textLabel;
+      }
+    },
+    watch: {
+      modelValue(value) {
+        if (!this.isNative) {
+          this.setText(value);
+        }
+      }
+    },
+    created() {
+      if (this.isNative) {
+        this.initNative();
+      } else {
+        this.setText(normalizeHex(this.modelValue) ?? this.modelValue);
+      }
+    },
+    mounted() {
+      this.mountNative();
+    },
+    beforeUnmount() {
+      this.unmountNative();
+    },
+    methods: {
+      setText(value) {
+        this.text = String(value ?? "");
+        const hex = normalizeHex(this.text);
+        if (hex) {
+          this.swatch = hex;
+        }
+      },
+      // A click into the text field opens the picker too, a click within the focused field only moves the caret;
+      // focusing it with the keyboard opens nothing. `showPicker()` needs the click's activation
+      onTextMousedown(event) {
+        this.textWasFocused = document.activeElement === event.target;
+      },
+      onTextClick() {
+        if (!this.textWasFocused) {
+          this.openPicker();
+        }
+      },
+      openPicker() {
+        const swatch = this.$refs.swatch;
+        if (!swatch || this.isDisabled || typeof swatch.showPicker !== "function") {
+          return;
+        }
+        try {
+          swatch.showPicker();
+        } catch (e) {
+        }
+      },
+      onType(event) {
+        this.setText(event.target.value);
+        this.write(false);
+      },
+      onPick(event) {
+        this.setText(event.target.value);
+        this.write(false);
+      },
+      onCommit() {
+        const hex = normalizeHex(this.text);
+        if (hex) {
+          this.text = hex;
+        }
+        this.write(true);
+      },
+      // The value goes to the native input, or to the model
+      write(committed) {
+        if (this.isNative) {
+          if (!this.native) {
+            return;
+          }
+          this.writing = true;
+          this.native.value = this.text;
+          this.native.dispatchEvent(new Event("input", { bubbles: true }));
+          if (committed) {
+            this.native.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          this.writing = false;
+          return;
+        }
+        this.$emit("update:modelValue", this.text);
+        if (committed) {
+          this.$emit("change", this.text);
+        }
+      },
+      initNative() {
+        const native = document.getElementById(this.inputId);
+        if (!native) {
+          vue$1.log.error(`ColorInput: no <input id="${this.inputId}">`);
+          return;
+        }
+        this.native = native;
+        this.setText(normalizeHex(native.value) ?? native.value);
+        this.readNative();
+        const label = native.id ? document.querySelector(`label[for="${native.id}"]`) : null;
+        if (label) {
+          this.labelEl = label;
+          this.nativeLabel = label.textContent.trim();
+        }
+      },
+      mountNative() {
+        var _a;
+        const native = this.native;
+        if (!native) {
+          return;
+        }
+        this.nativeAttributes = Object.fromEntries(["tabindex", "aria-hidden"].map((name) => [name, native.getAttribute(name)]));
+        native.classList.add("visually-hidden");
+        native.setAttribute("tabindex", "-1");
+        native.setAttribute("aria-hidden", "true");
+        this.onNativeInput = () => {
+          if (!this.writing) {
+            this.setText(native.value);
+          }
+        };
+        if (window.jQuery) {
+          window.jQuery(native).on("input.colorInput change.colorInput", this.onNativeInput);
+        } else {
+          native.addEventListener("input", this.onNativeInput);
+          native.addEventListener("change", this.onNativeInput);
+        }
+        this.onNativeReset = () => {
+          this.resetTimer = setTimeout(() => this.setText(native.value), 0);
+        };
+        this.nativeForm = native.form;
+        (_a = this.nativeForm) == null ? void 0 : _a.addEventListener("reset", this.onNativeReset);
+        this.observer = new MutationObserver(() => this.readNative());
+        this.observer.observe(native, { attributes: true, attributeFilter: ["disabled", "class", "aria-describedby"] });
+        if (this.labelEl) {
+          this.onLabelClick = (event) => {
+            event.preventDefault();
+            this.focus();
+          };
+          this.labelEl.addEventListener("click", this.onLabelClick);
+        }
+      },
+      readNative() {
+        const native = this.native;
+        this.nativeDisabled = native.disabled;
+        this.nativeInvalid = native.classList.contains("is-invalid");
+        this.nativeDescribedBy = native.getAttribute("aria-describedby");
+      },
+      unmountNative() {
+        var _a, _b, _c;
+        const native = this.native;
+        if (!native) {
+          return;
+        }
+        clearTimeout(this.resetTimer);
+        (_a = this.observer) == null ? void 0 : _a.disconnect();
+        if (window.jQuery) {
+          window.jQuery(native).off(".colorInput");
+        } else {
+          native.removeEventListener("input", this.onNativeInput);
+          native.removeEventListener("change", this.onNativeInput);
+        }
+        (_b = this.nativeForm) == null ? void 0 : _b.removeEventListener("reset", this.onNativeReset);
+        (_c = this.labelEl) == null ? void 0 : _c.removeEventListener("click", this.onLabelClick);
+        native.classList.remove("visually-hidden");
+        Object.entries(this.nativeAttributes).forEach(([name, value]) => {
+          if (value === null) {
+            native.removeAttribute(name);
+          } else {
+            native.setAttribute(name, value);
+          }
+        });
+        this.native = null;
+      },
+      focus() {
+        var _a;
+        (_a = this.$refs.input) == null ? void 0 : _a.focus();
+      }
+    }
+  };
+  const _hoisted_1$x = {
+    ref: "root",
+    class: "input-group color-input"
+  };
+  const _hoisted_2$r = ["value", "disabled", "aria-label", "title"];
+  const _hoisted_3$p = ["id", "name", "value", "placeholder", "disabled", "aria-label", "aria-invalid", "aria-describedby"];
+  function _sfc_render$A(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createElementBlock(
+      "div",
+      _hoisted_1$x,
+      [
+        vue.createElementVNode("input", {
+          ref: "swatch",
+          type: "color",
+          class: "form-control form-control-color",
+          value: $data.swatch,
+          disabled: $options.isDisabled,
+          "aria-label": $options.swatchLabel,
+          title: $options.swatchLabel,
+          onInput: _cache[0] || (_cache[0] = (...args) => $options.onPick && $options.onPick(...args)),
+          onChange: _cache[1] || (_cache[1] = (...args) => $options.onCommit && $options.onCommit(...args))
+        }, null, 40, _hoisted_2$r),
+        vue.createElementVNode("input", {
+          ref: "input",
+          id: $options.textId,
+          name: $options.textName,
+          type: "text",
+          class: vue.normalizeClass(["form-control color-input-hex", { "is-invalid": $options.isInvalid }]),
+          value: $data.text,
+          placeholder: $props.placeholder,
+          disabled: $options.isDisabled,
+          "aria-label": $options.textLabel,
+          "aria-invalid": $options.isInvalid ? "true" : null,
+          "aria-describedby": $options.isDescribedBy,
+          maxlength: "7",
+          spellcheck: "false",
+          autocomplete: "off",
+          onMousedown: _cache[2] || (_cache[2] = (...args) => $options.onTextMousedown && $options.onTextMousedown(...args)),
+          onClick: _cache[3] || (_cache[3] = (...args) => $options.onTextClick && $options.onTextClick(...args)),
+          onInput: _cache[4] || (_cache[4] = (...args) => $options.onType && $options.onType(...args)),
+          onChange: _cache[5] || (_cache[5] = (...args) => $options.onCommit && $options.onCommit(...args))
+        }, null, 42, _hoisted_3$p)
+      ],
+      512
+      /* NEED_PATCH */
+    );
+  }
+  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["render", _sfc_render$A]]);
+  const _sfc_main$z = {
+    name: "ColorField",
+    components: { ColorInput: C3 },
+    mixins: [fieldMixin],
+    props: {
+      modelValue: { type: String, default: "" }
+    },
+    emits: ["update:modelValue", "change"],
+    methods: {
+      onUpdate(value) {
+        this.clearOwnError();
+        this.$emit("update:modelValue", value);
+      },
+      focus() {
+        var _a;
+        (_a = this.$refs.color) == null ? void 0 : _a.focus();
+      }
+    }
+  };
+  const _hoisted_1$w = ["for"];
+  const _hoisted_2$q = ["id"];
+  const _hoisted_3$o = ["id"];
+  function _sfc_render$z(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_ColorInput = vue.resolveComponent("ColorInput");
+    return vue.openBlock(), vue.createElementBlock(
+      "div",
+      {
+        class: vue.normalizeClass(["mb-3", [`field-${_ctx.fieldId}`, { required: _ctx.required }]])
+      },
+      [
+        _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
+          key: 0,
+          for: _ctx.fieldId,
+          class: "form-label"
+        }, vue.toDisplayString(_ctx.label), 9, _hoisted_1$w)) : vue.createCommentVNode("v-if", true),
+        vue.createVNode(_component_ColorInput, {
+          ref: "color",
+          id: _ctx.fieldId,
+          name: _ctx.fieldName,
+          label: _ctx.label,
+          placeholder: _ctx.placeholder || "#rrggbb",
+          disabled: _ctx.isDisabled,
+          invalid: _ctx.hasError,
+          "described-by": _ctx.describedBy,
+          "model-value": $props.modelValue,
+          "onUpdate:modelValue": $options.onUpdate,
+          onChange: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("change", $event))
+        }, null, 8, ["id", "name", "label", "placeholder", "disabled", "invalid", "described-by", "model-value", "onUpdate:modelValue"]),
+        _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 1,
+          id: _ctx.hintId,
+          class: "form-text text-muted"
+        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_2$q)) : vue.createCommentVNode("v-if", true),
+        _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
+          key: 2,
+          id: _ctx.errorId,
+          class: "invalid-feedback d-block"
+        }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList(_ctx.errorMessages, (message, index) => {
+              return vue.openBlock(), vue.createElementBlock(
+                "div",
+                { key: index },
+                vue.toDisplayString(message),
+                1
+                /* TEXT */
+              );
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ], 8, _hoisted_3$o)) : vue.createCommentVNode("v-if", true)
+      ],
+      2
+      /* CLASS */
+    );
+  }
+  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["render", _sfc_render$z]]);
   function resolveMenuEntries(menuId, entries = [], context = {}) {
     if (!menuId) {
       return [];
@@ -503,11 +864,11 @@
       /* CLASS */
     );
   }
-  const C5 = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["render", _sfc_render$y]]);
+  const C7 = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["render", _sfc_render$y]]);
   let uid$9 = 0;
   const _sfc_main$x = {
     name: "HeaderActions",
-    components: { DropdownMenu: C5 },
+    components: { DropdownMenu: C7 },
     props: {
       actions: { type: Array, default: () => [] },
       menu: { type: Array, default: () => [] },
@@ -745,7 +1106,7 @@
       /* FORWARDED */
     }, 8, ["aria-labelledby"]);
   }
-  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["render", _sfc_render$w]]);
+  const C4 = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["render", _sfc_render$w]]);
   const DRAWER_GAP = 2;
   const positionDrawer = (field, drawer, maxHeight) => {
     drawer.style.position = "fixed";
@@ -1450,7 +1811,7 @@
       /* CLASS */
     );
   }
-  const C10 = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$v]]);
+  const C12 = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["render", _sfc_render$v]]);
   let uid$6 = 0;
   const _sfc_main$u = {
     name: "FilterSelect",
@@ -1797,10 +2158,10 @@
       /* CLASS */
     );
   }
-  const C11 = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["render", _sfc_render$u]]);
+  const C13 = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["render", _sfc_render$u]]);
   const _sfc_main$t = {
     name: "FilterControl",
-    components: { FilterPicker: C10, FilterSelect: C11 },
+    components: { FilterPicker: C12, FilterSelect: C13 },
     props: {
       filter: { type: Object, required: true },
       modelValue: { type: [String, Array, Boolean, Number], default: "" },
@@ -2620,7 +2981,7 @@
       ], 42, _hoisted_2$j)
     ]);
   }
-  const C9 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$s]]);
+  const C11 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$s]]);
   const _sfc_main$r = {
     name: "TableCell",
     props: {
@@ -2940,7 +3301,7 @@
       )) : vue.createCommentVNode("v-if", true)
     ]);
   }
-  const C29 = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$q]]);
+  const C31 = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["render", _sfc_render$q]]);
   const COLUMN_WIDTHS = { main: 240, chip: 160, date: 120, number: 90, text: 150 };
   const SIDE_COLUMN_WIDTH = 48;
   const REFRESH_EVENT = "humhub:data-table:refresh";
@@ -2950,7 +3311,7 @@
   let uid$4 = 0;
   const _sfc_main$p = {
     name: "DataTable",
-    components: { DropdownMenu: C5, FilterBar: C9, FilterSelect: C11, HeaderActions, TableCell, UiModal: C29 },
+    components: { DropdownMenu: C7, FilterBar: C11, FilterSelect: C13, HeaderActions, TableCell, UiModal: C31 },
     props: {
       tableId: { type: String, required: true },
       label: { type: String, required: true },
@@ -4549,7 +4910,7 @@
       }, 8, ["show", "title"])) : vue.createCommentVNode("v-if", true)
     ], 10, _hoisted_1$m);
   }
-  const C3 = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$p]]);
+  const C5 = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["render", _sfc_render$p]]);
   const carriesFiles = (event) => {
     var _a;
     return Array.prototype.includes.call(((_a = event.dataTransfer) == null ? void 0 : _a.types) || [], "Files");
@@ -4662,7 +5023,7 @@
       /* NEED_HYDRATION */
     );
   }
-  const C4 = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$o]]);
+  const C6 = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["render", _sfc_render$o]]);
   const _sfc_main$n = {
     name: "EntityGrid",
     components: { CardSkeleton: C0 },
@@ -4944,7 +5305,7 @@
       /* CLASS */
     );
   }
-  const C7 = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
+  const C9 = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["render", _sfc_render$n]]);
   let uid$3 = 0;
   const _sfc_main$m = {
     name: "PageHeader",
@@ -5035,10 +5396,10 @@
       ])) : vue.createCommentVNode("v-if", true)
     ], 8, _hoisted_1$j);
   }
-  const C14 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
+  const C16 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
   const _sfc_main$l = {
     name: "EntityBrowser",
-    components: { EntityGrid: C7, FilterBar: C9, PageHeader: C14 },
+    components: { EntityGrid: C9, FilterBar: C11, PageHeader: C16 },
     props: {
       url: { type: String, required: true },
       title: { type: String, default: "" },
@@ -5343,7 +5704,7 @@
       ]), 1032, ["items", "item-key", "loading", "loading-more", "error", "has-more", "skeleton-count", "card-class", "page-starts", "onLoadMore", "onRetry"])
     ]);
   }
-  const C6 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
+  const C8 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
   const _sfc_main$k = {
     name: "ExtensionSlot",
     props: {
@@ -5375,7 +5736,7 @@
       /* KEYED_FRAGMENT */
     );
   }
-  const C8 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
+  const C10 = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["render", _sfc_render$k]]);
   const _sfc_main$j = {
     props: {
       modelName: { type: String, default: "" },
@@ -5523,7 +5884,7 @@
       /* NEED_HYDRATION */
     );
   }
-  const C12 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
+  const C14 = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["render", _sfc_render$j]]);
   const _sfc_main$i = {
     mixins: [fieldMixin],
     props: {
@@ -5612,10 +5973,10 @@
       /* CLASS */
     );
   }
-  const C26 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
+  const C28 = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["render", _sfc_render$i]]);
   const _sfc_main$h = {
     name: "ImageAltTextModal",
-    components: { UiModal: C29, HumHubForm: C12, TextField: C26 },
+    components: { UiModal: C31, HumHubForm: C14, TextField: C28 },
     i18nCategories: ["ContentModule.richtexteditor", "base"],
     props: {
       src: { type: String, default: null }
@@ -5727,7 +6088,7 @@
       /* STABLE */
     }, 8, ["show", "title", "onOpened", "onClosed"]);
   }
-  const C13 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
+  const C15 = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["render", _sfc_render$h]]);
   const plainClick = (event) => !(event.button > 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
   const _sfc_main$g = {
     name: "PathBar",
@@ -5890,7 +6251,7 @@
       vue.renderSlot(_ctx.$slots, "end")
     ]);
   }
-  const C15 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
+  const C17 = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["render", _sfc_render$g]]);
   const toImage = (value) => {
     if (value === null || value === void 0 || value === "") {
       return null;
@@ -7366,10 +7727,10 @@
       /* CLASS */
     );
   }
-  const C18 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
+  const C20 = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["render", _sfc_render$e]]);
   const _sfc_main$d = {
     name: "PickerField",
-    components: { PickerInput: C18 },
+    components: { PickerInput: C20 },
     mixins: [fieldMixin],
     inheritAttrs: false,
     props: {
@@ -7446,7 +7807,7 @@
       /* CLASS */
     );
   }
-  const C16 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
+  const C18 = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["render", _sfc_render$d]]);
   const SEARCH_DEBOUNCE_MS = TEXT_DEBOUNCE_MS;
   const MAX_SUGGESTIONS = 8;
   let uid$1 = 0;
@@ -8114,7 +8475,7 @@
       /* CLASS, STYLE */
     );
   }
-  const C17 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
+  const C19 = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["render", _sfc_render$c]]);
   const _sfc_main$b = {
     name: "ProgressFrame",
     props: {
@@ -8166,7 +8527,7 @@
       )
     ], 8, _hoisted_1$9);
   }
-  const C19 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
+  const C21 = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["render", _sfc_render$b]]);
   function uploadFiles(files, onProgress) {
     const formData = new FormData();
     files.forEach((file) => formData.append("files[]", file));
@@ -8476,7 +8837,7 @@
       [_directive_additions]
     ]);
   }
-  const C20 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
+  const C22 = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["render", _sfc_render$9]]);
   const ENVELOPE_ATTRS = {
     "data-ui-richtext": "",
     "data-ui-widget": "ui.richtext.prosemirror.RichText",
@@ -8545,7 +8906,7 @@
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);
   }
-  const C21 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
+  const C23 = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["render", _sfc_render$8]]);
   const _sfc_main$7 = {
     mixins: [fieldMixin],
     props: {
@@ -8658,10 +9019,10 @@
       /* CLASS */
     );
   }
-  const C22 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
+  const C24 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);
   const _sfc_main$6 = {
     name: "SelectionMenu",
-    components: { DropdownMenu: C5 },
+    components: { DropdownMenu: C7 },
     props: {
       count: { type: Number, required: true },
       menuId: { type: String, required: true },
@@ -8708,7 +9069,7 @@
       /* STABLE */
     });
   }
-  const C23 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
+  const C25 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
   const TRANSITION_MS = 150;
   const AUTOCLOSE = {
     info: 6e3,
@@ -8968,7 +9329,7 @@
       ], 42, _hoisted_2$5)
     ])) : vue.createCommentVNode("v-if", true);
   }
-  const C24 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
+  const C26 = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["render", _sfc_render$5]]);
   const _sfc_main$4 = {
     inject: {
       humhubForm: { from: FORM_CONTEXT_KEY, default: null }
@@ -9027,7 +9388,7 @@
       ])) : vue.renderSlot(_ctx.$slots, "default", {}, void 0, void 0, 1)
     ], 8, _hoisted_1$4);
   }
-  const C25 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
+  const C27 = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["render", _sfc_render$4]]);
   const _sfc_main$3 = {
     mixins: [fieldMixin],
     props: {
@@ -9116,10 +9477,10 @@
       /* CLASS */
     );
   }
-  const C27 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+  const C29 = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const _sfc_main$2 = {
     name: "TileGrid",
-    components: { ProgressFrame: C19 },
+    components: { ProgressFrame: C21 },
     props: {
       items: { type: Array, required: true },
       itemKey: { type: String, default: "id" },
@@ -9430,7 +9791,7 @@
       ])) : vue.createCommentVNode("v-if", true)
     ], 10, _hoisted_1$2);
   }
-  const C28 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const C30 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const UPLOAD_BY_TYPE_ACTION = "file.uploadByType";
   let handlerField = null;
   document.addEventListener("click", (event) => {
@@ -9839,7 +10200,7 @@
       [_directive_additions]
     ]);
   }
-  const C30 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const C32 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
   let uid = 0;
   const _sfc_main = {
     name: "ViewSwitch",
@@ -9925,38 +10286,40 @@
       ))
     ], 8, _hoisted_1);
   }
-  const C31 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const C33 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue$1.register("CardSkeleton", C0);
   vue$1.register("CheckboxField", C1);
-  vue$1.register("ContentCard", C2);
-  vue$1.register("DataTable", C3);
-  vue$1.register("DropZone", C4);
-  vue$1.register("DropdownMenu", C5);
-  vue$1.register("EntityBrowser", C6);
-  vue$1.register("EntityGrid", C7);
-  vue$1.register("ExtensionSlot", C8);
-  vue$1.register("FilterBar", C9);
-  vue$1.register("FilterPicker", C10);
-  vue$1.register("FilterSelect", C11);
-  vue$1.register("HumHubForm", C12);
-  vue$1.register("ImageAltTextModal", C13);
-  vue$1.register("PageHeader", C14);
-  vue$1.register("PathBar", C15);
-  vue$1.register("PickerField", C16);
-  vue$1.register("PickerFilterControl", C17);
-  vue$1.register("PickerInput", C18);
-  vue$1.register("ProgressFrame", C19);
-  vue$1.register("RichTextField", C20);
-  vue$1.register("RichTextOutput", C21);
-  vue$1.register("SelectField", C22);
-  vue$1.register("SelectionMenu", C23);
-  vue$1.register("StatusBar", C24);
-  vue$1.register("SubmitButton", C25);
-  vue$1.register("TextField", C26);
-  vue$1.register("TextareaField", C27);
-  vue$1.register("TileGrid", C28);
-  vue$1.register("UiModal", C29);
-  vue$1.register("UploadField", C30);
-  vue$1.register("ViewSwitch", C31);
+  vue$1.register("ColorField", C2);
+  vue$1.register("ColorInput", C3);
+  vue$1.register("ContentCard", C4);
+  vue$1.register("DataTable", C5);
+  vue$1.register("DropZone", C6);
+  vue$1.register("DropdownMenu", C7);
+  vue$1.register("EntityBrowser", C8);
+  vue$1.register("EntityGrid", C9);
+  vue$1.register("ExtensionSlot", C10);
+  vue$1.register("FilterBar", C11);
+  vue$1.register("FilterPicker", C12);
+  vue$1.register("FilterSelect", C13);
+  vue$1.register("HumHubForm", C14);
+  vue$1.register("ImageAltTextModal", C15);
+  vue$1.register("PageHeader", C16);
+  vue$1.register("PathBar", C17);
+  vue$1.register("PickerField", C18);
+  vue$1.register("PickerFilterControl", C19);
+  vue$1.register("PickerInput", C20);
+  vue$1.register("ProgressFrame", C21);
+  vue$1.register("RichTextField", C22);
+  vue$1.register("RichTextOutput", C23);
+  vue$1.register("SelectField", C24);
+  vue$1.register("SelectionMenu", C25);
+  vue$1.register("StatusBar", C26);
+  vue$1.register("SubmitButton", C27);
+  vue$1.register("TextField", C28);
+  vue$1.register("TextareaField", C29);
+  vue$1.register("TileGrid", C30);
+  vue$1.register("UiModal", C31);
+  vue$1.register("UploadField", C32);
+  vue$1.register("ViewSwitch", C33);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.core.vue.js.map

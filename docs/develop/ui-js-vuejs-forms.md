@@ -20,6 +20,7 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 | `CheckboxField` | Checkbox | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue` (Boolean) | `update:modelValue` |
 | `SelectField` | `<select>` dropdown | `attribute`*, `label`, `hint`, `required`, `disabled`, `modelValue`, `options` (`[{value, label}]`), `prompt` | `update:modelValue` |
 | `PickerField` | Picker / enhanced select, see [Picker](ui-js-vuejs-picker.md) | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue`; every `PickerInput` prop (`multiple`, `source`, `url`, `options`, `initialItems`, `maxSelection`, `listed`, …) | `update:modelValue` |
+| `ColorField` | A colour as `#rrggbb` with the browser's own picker as the swatch (`ColorInput`, see its docblock; over a native input it is mounted by `humhub\widgets\form\ColorInput`) | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue` | `update:modelValue`, `change` |
 | `SubmitButton` | `type="submit"` button | `disabled`, `loader` (default `true`) | default slot = label/icon |
 | `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlersHtml`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |
 | `RichTextField` | The richtext editor, see [Rich text](#rich-text) | `attribute`*, `instanceKey`, `mentioningUrl`, `pluginOptions`, `exclude` | exposes `getValue()`, `setValue()`, `clear()`, `focus()` |

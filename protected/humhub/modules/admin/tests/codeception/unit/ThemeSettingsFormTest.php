@@ -9,22 +9,41 @@
 namespace humhub\modules\admin\tests\codeception\unit;
 
 use humhub\modules\admin\models\forms\ThemeSettingsForm;
+use humhub\services\ActiveThemeService;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class ThemeSettingsFormTest extends HumHubDbTestCase
 {
+    protected function _after()
+    {
+        foreach (ThemeSettingsForm::COLORS as $color) {
+            Yii::$app->settings->delete(ThemeSettingsForm::colorAttribute($color));
+        }
+        ActiveThemeService::flush();
+
+        parent::_after();
+    }
+
     public function testSettingNameOfAHyphenatedColor()
     {
         $this->assertSame('themePrimaryColor', ThemeSettingsForm::colorAttribute('primary'));
         $this->assertSame('themeBodyBgDarkColor', ThemeSettingsForm::colorAttribute('body-bg-dark'));
-        $this->assertSame('useDefaultThemeBodyBgColor', ThemeSettingsForm::defaultAttribute('body-bg'));
+    }
+
+    public function testShowsTheThemesColorsAndTheStoredDeviations()
+    {
+        Yii::$app->settings->set('themeAccentColor', '#1700c7');
+
+        $model = new ThemeSettingsForm();
+
+        $this->assertSame('#435f6f', $model->themePrimaryColor);
+        $this->assertSame('#1700c7', $model->themeAccentColor);
     }
 
     public function testSurfaceColorKeepsTheTextReadable()
     {
         $model = new ThemeSettingsForm();
-        $model->useDefaultThemeBodyBgColor = false;
-        $model->useDefaultThemeBodyBgDarkColor = false;
 
         $model->themeBodyBgColor = '#fdf8ec';
         $model->themeBodyBgDarkColor = '#1b2a44';
@@ -38,12 +57,20 @@ class ThemeSettingsFormTest extends HumHubDbTestCase
         $this->assertTrue($model->hasErrors('themeBodyBgDarkColor'));
     }
 
-    public function testDefaultSurfaceColorIsNotChecked()
+    /**
+     * A colour equal to the theme's own is not stored, so it keeps following the theme; a deviation is stored as
+     * lowercase `#rrggbb`
+     */
+    public function testStoresTheDeviationsFromTheThemeOnly()
     {
         $model = new ThemeSettingsForm();
-        $model->useDefaultThemeBodyBgColor = true;
-        $model->themeBodyBgColor = '#555555';
+        $model->themePrimaryColor = '#435F6F'; // The core theme's primary, written differently
+        $model->themeAccentColor = '#ABC';
 
-        $this->assertTrue($model->validate(['themeBodyBgColor']));
+        $this->assertTrue($model->save());
+
+        $this->assertNull(Yii::$app->settings->get('themePrimaryColor'));
+        $this->assertSame('#aabbcc', Yii::$app->settings->get('themeAccentColor'));
+        $this->assertNull(Yii::$app->settings->get('themeDangerColor'));
     }
 }

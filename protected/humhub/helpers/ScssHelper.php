@@ -399,4 +399,20 @@ class ScssHelper
 
         return $luminance;
     }
+
+    /**
+     * A hex colour as `#rrggbb`, lowercase: `#ABC` becomes `#aabbcc`. `null` for anything else
+     *
+     * @since 1.20
+     */
+    public static function normalizeHexColor(string $color): ?string
+    {
+        if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', trim($color), $match)) {
+            return null;
+        }
+
+        $hex = strtolower($match[1]);
+
+        return '#' . (strlen($hex) === 3 ? $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2] : $hex);
+    }
 }

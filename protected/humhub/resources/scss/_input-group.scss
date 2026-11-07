@@ -44,4 +44,22 @@
             z-index: 1;
         }
     }
+
+    // The colour input (`ColorInput.vue`, mounted by `humhub\widgets\form\ColorInput` over its native text input):
+    // the browser's colour picker as the swatch, the hex value beside it
+    .color-input-host {
+        display: block;
+    }
+
+    .color-input {
+        // Bootstrap's `.input-group > .form-control` would stretch the swatch: keep its own width
+        .form-control-color {
+            flex: 0 0 auto;
+            width: $form-color-width;
+        }
+
+        .color-input-hex {
+            font-family: $font-family-monospace;
+        }
+    }
 }

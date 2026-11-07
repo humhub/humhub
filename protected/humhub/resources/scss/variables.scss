@@ -23,8 +23,8 @@ $info: #0582FF !default;
 $success: #52a11c !default;
 $warning: #FFC107 !default;
 $danger: #FC4A64 !default;
-$light: #e7e7e7 !default;
 $dark: #333 !default;
+// `$light`, the neutral button, is derived from the surface below
 
 
 //
@@ -77,6 +77,7 @@ $body-bg: #fff !default; // A surface: panel, card, dropdown, dialog, field. Boo
 $hh-page-bg: mix(black, $body-bg, 7%) !default; // The page, behind the surfaces
 $body-tertiary-bg: mix(black, $body-bg, 2.4%) !default; // A sunken area in a surface: comments, tabs, a filter
 $body-secondary-bg: mix(black, $body-bg, 7%) !default; // The fill of a hovered or active item, a neutral badge; a light separator
+$light: mix(black, $body-bg, 9.4%) !default; // Bootstrap's `light` theme color: the neutral button (`Button::light()`), a light edge
 $hh-accent-bg-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !default; // Lighter than `$accent-bg-subtle`
 $hh-code-bg: lighten($accent, 50%) !default; // Inline code
 $mark-bg: lighten($warning, 40%) !default; // Marked text

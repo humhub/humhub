@@ -49,7 +49,7 @@ The other form pages build on this one: [Select & Pickers](select-pickers.md),
 | **Textarea** | Longer text | Grows vertically. For rich text, the editor keeps its own toolbar, but uses this field's frame and states. |
 | **Code** | CSS, snippets, lists ("one URL per line") | Monospace font |
 | **With action** | A button inside the field (show, copy, generate) | The action is an icon button with a label |
-| **Select, picker, date, colour, upload** | See the specific pages | They share the anatomy and states |
+| **Select, picker, date, colour, upload** | See the specific pages; a colour is `humhub\widgets\form\ColorInput` (`ColorInput.vue`): the browser's picker as the swatch beside a hex field | They share the anatomy and states |
 
 ## Layout
 

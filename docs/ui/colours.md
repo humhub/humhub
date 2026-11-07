@@ -27,6 +27,9 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 `{color}` is one of the theme colours: `primary`, `accent`, `secondary`, `info`, `success`,
 `warning`, `danger`, `light`, `dark`.
 
+Bootstrap's `light` theme colour, the neutral button (`Button::light()`), is a step of the surface
+too (`$light`), so it follows a surface chosen in the settings; `dark` stays the theme's.
+
 A theme colour is never used as text by itself (`color: var(--bs-accent)`): an accent chosen in the
 *Appearance* settings may be too light for a white card or too dark for the dark mode. Its
 `--hh-{color}-fg` is the colour itself wherever it reads, and otherwise the nearest shade that
