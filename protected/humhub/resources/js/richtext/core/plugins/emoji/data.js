@@ -17,6 +17,11 @@ const NOTO_EMOJI_VERSION = 18;
  */
 const NOTO_FONT_FAMILY = "'HumHub Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif";
 
+/**
+ * `size-adjust` of the Noto font (emoji.build.mjs): the picker sizes its emojis itself, so it divides by it
+ */
+const NOTO_SIZE_ADJUST = 1.15;
+
 let database = null;
 
 /**
@@ -54,8 +59,22 @@ export function getPickerOptions() {
     return options;
 }
 
-export function getPickerFontFamily() {
-    return isNotoFont() ? NOTO_FONT_FAMILY : null;
+/**
+ * @returns {Object<string, string>} CSS variables of a picker element: the font, and the sizes of the emojis without
+ * the enlargement of the font (the defaults of emoji-picker-element)
+ */
+export function getPickerStyle() {
+    if (!isNotoFont()) {
+        return {};
+    }
+
+    const size = (1.375 / NOTO_SIZE_ADJUST).toFixed(3) + 'rem';
+
+    return {
+        '--emoji-font-family': NOTO_FONT_FAMILY,
+        '--emoji-size': size,
+        '--category-emoji-size': size,
+    };
 }
 
 /**

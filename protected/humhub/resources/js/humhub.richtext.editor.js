@@ -43904,6 +43904,7 @@
    */
   const NOTO_EMOJI_VERSION = 18;
   const NOTO_FONT_FAMILY = "'HumHub Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif";
+  const NOTO_SIZE_ADJUST = 1.15;
   let database = null;
   function getDataOptions() {
     const config2 = getEmojiConfig();
@@ -43922,8 +43923,16 @@
     }
     return options;
   }
-  function getPickerFontFamily() {
-    return isNotoFont() ? NOTO_FONT_FAMILY : null;
+  function getPickerStyle() {
+    if (!isNotoFont()) {
+      return {};
+    }
+    const size = (1.375 / NOTO_SIZE_ADJUST).toFixed(3) + "rem";
+    return {
+      "--emoji-font-family": NOTO_FONT_FAMILY,
+      "--emoji-size": size,
+      "--category-emoji-size": size
+    };
   }
   function getDatabase() {
     const options = getDataOptions();
@@ -45528,10 +45537,8 @@
     const picker = new PickerElement(Object.assign(getPickerOptions(), {
       i18n: getPickerI18n(options.translate)
     }));
-    const fontFamily = getPickerFontFamily();
-    if (fontFamily) {
-      picker.style.setProperty("--emoji-font-family", fontFamily);
-    }
+    const style = getPickerStyle();
+    Object.keys(style).forEach((name2) => picker.style.setProperty(name2, style[name2]));
     container.appendChild(picker);
     let closed = false;
     const instance = {

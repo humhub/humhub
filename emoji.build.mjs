@@ -27,7 +27,8 @@ const NOTO_SHA256 = 'b8e25ea68db82f9e4d0aee921f4420be2be39887bd5c893a2ad98710531
 
 const FONT_FAMILY = 'HumHub Emoji';
 
-// Emojis a touch larger than the text around them, as the Twemoji images were (16px at 14px)
+// Emojis a touch larger than the text around them, as the Twemoji images were (16px at 14px). The picker compensates
+// for it (NOTO_SIZE_ADJUST in plugins/emoji/data.js)
 const SIZE_ADJUST = '115%';
 
 const root = dirname(fileURLToPath(import.meta.url));

@@ -6,7 +6,7 @@
 
 import Picker from 'emoji-picker-element/picker';
 import {isSmallView} from '../../humhub-bridge';
-import {getPickerFontFamily, getPickerI18n, getPickerOptions} from './data';
+import {getPickerI18n, getPickerOptions, getPickerStyle} from './data';
 
 let current = null;
 
@@ -29,10 +29,8 @@ export function openEmojiPicker(anchor, options = {}) {
     const picker = new Picker(Object.assign(getPickerOptions(), {
         i18n: getPickerI18n(options.translate),
     }));
-    const fontFamily = getPickerFontFamily();
-    if (fontFamily) {
-        picker.style.setProperty('--emoji-font-family', fontFamily);
-    }
+    const style = getPickerStyle();
+    Object.keys(style).forEach((name) => picker.style.setProperty(name, style[name]));
     container.appendChild(picker);
 
     let closed = false;
