@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh #TBD: The theme colours in groups, each with the browser's colour picker beside a hex field and "Reset colours" instead of the "Default" checkboxes; a colour equal to the theme's is not stored, the light colour follows the surface
+- Enh #8717: The theme colours in groups, each with the browser's colour picker beside a hex field and "Reset colours" instead of the "Default" checkboxes; a colour equal to the theme's is not stored, the light colour follows the surface
 - Fix #8716: The error of a theme colour is shown below its field, which stays editable; the gap between an icon and its label is a margin, not a space, which high contrast underlined
 - Enh #8715: Links, icons and status texts in a theme colour reach 4.5:1 on the surfaces in both colour modes, 7:1 in high contrast
 - Enh #8715: Surface colour for the light and the dark mode in the theme settings, the page and the other surfaces are derived from it; a softer dark page
