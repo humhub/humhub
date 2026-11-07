@@ -249,7 +249,7 @@
                     }
 
                     time {
-                        color: var(--hh-accent-text);
+                        color: var(--hh-accent-fg);
                     }
                 }
 
@@ -266,11 +266,11 @@
                 }
 
                 i.accepted {
-                    color: var(--hh-success-text);
+                    color: var(--hh-success-fg);
                 }
 
                 i.declined {
-                    color: var(--hh-danger-text);
+                    color: var(--hh-danger-fg);
                 }
             }
         }

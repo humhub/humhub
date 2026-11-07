@@ -81,9 +81,10 @@ $hh-accent-bg-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !defau
 $hh-code-bg: lighten($accent, 50%) !default; // Inline code
 $mark-bg: lighten($warning, 40%) !default; // Marked text
 
-// A theme color as text (a link, an icon, a label) reaches this contrast on the surfaces, see `--hh-{color}-text`
-$hh-text-contrast-ratio: 4.5 !default; // WCAG 2.2 AA for normal text
-$hh-text-colors: primary, secondary, accent, info, success, warning, danger !default; // Those with a `--hh-{color}-text`
+// A theme color as text (a link, an icon, a label) reaches this contrast on the surfaces, see `--hh-{color}-fg`.
+// `fg` (foreground) is the name Bootstrap 6 gives this role, next to `bg`, `bg-subtle` and `contrast`
+$hh-fg-contrast-ratio: 4.5 !default; // WCAG 2.2 AA for normal text
+$hh-fg-colors: primary, secondary, accent, info, success, warning, danger !default; // Those with a `--hh-{color}-fg`
 
 // Lines
 $border-color: mix(black, $body-bg, 13.3%) !default; // A separator, the border of a box
@@ -127,7 +128,7 @@ $hh-warning-contrast: color-contrast($warning) !default;
 $hh-danger-contrast: color-contrast($danger) !default;
 $hh-light-contrast: color-contrast($light) !default;
 $hh-dark-contrast: color-contrast($dark) !default;
-// The text on each theme color as a fill, by the names of `$hh-text-colors`
+// The text on each theme color as a fill, by the names of `$hh-fg-colors`
 $hh-contrast-colors: (
     primary: $hh-primary-contrast,
     secondary: $hh-secondary-contrast,

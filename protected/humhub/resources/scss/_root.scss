@@ -89,10 +89,10 @@
     --hh-light-contrast: #{$hh-light-contrast};
     --hh-dark-contrast: #{$hh-dark-contrast};
 
-    // A theme color as text on the surfaces: a link, an icon, a label. The color itself where it is readable on the
-    // darkest of them, otherwise darker
-    @each $color in $hh-text-colors {
-        --hh-#{$color}-text: #{hh-readable(map-get($theme-colors, $color), $body-secondary-bg, $hh-text-contrast-ratio)};
+    // A theme color as text on the surfaces (`fg`, as Bootstrap 6 names the role): a link, an icon, a label. The color
+    // itself where it is readable on the darkest of them, otherwise darker. `.text-{color}` reads it, see maps.scss
+    @each $color in $hh-fg-colors {
+        --hh-#{$color}-fg: #{hh-readable(map-get($theme-colors, $color), $body-secondary-bg, $hh-fg-contrast-ratio)};
     }
 
     // Fonts
@@ -119,8 +119,8 @@
         --hh-topbar-color: #{$hh-topbar-color-dark};
 
         // Readable on the lightest dark surface: lighter where the color itself is not
-        @each $color in $hh-text-colors {
-            --hh-#{$color}-text: #{hh-readable(map-get($theme-colors, $color), $body-secondary-bg-dark, $hh-text-contrast-ratio)};
+        @each $color in $hh-fg-colors {
+            --hh-#{$color}-fg: #{hh-readable(map-get($theme-colors, $color), $body-secondary-bg-dark, $hh-fg-contrast-ratio)};
         }
 
         // @deprecated since 1.20
@@ -137,8 +137,8 @@
     --bs-border-color: #{$border-color};
     --hh-border-color-strong: #{$border-color};
 
-    @each $color in $hh-text-colors {
-        --hh-#{$color}-text: #{hh-readable(map-get($theme-colors, $color), $surface, $hh-high-contrast-ratio)};
+    @each $color in $hh-fg-colors {
+        --hh-#{$color}-fg: #{hh-readable(map-get($theme-colors, $color), $surface, $hh-high-contrast-ratio)};
     }
 }
 
@@ -148,7 +148,7 @@
 
         // A theme color as a fill: darker (lighter) until its text reaches the ratio. The same in both colour modes,
         // the buttons are in _button.scss
-        @each $color in $hh-text-colors {
+        @each $color in $hh-fg-colors {
             $fill: hh-readable(map-get($theme-colors, $color), map-get($hh-contrast-colors, $color), $hh-high-contrast-ratio);
             --bs-#{$color}: #{$fill};
             --bs-#{$color}-rgb: #{to-rgb($fill)};

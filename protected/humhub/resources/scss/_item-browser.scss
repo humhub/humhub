@@ -11,7 +11,7 @@ $item-browser-gap: $spacer * .5 !default;
 $item-browser-hover-bg: var(--bs-secondary-bg) !default;
 $item-browser-selected-bg: rgba(var(--bs-accent-rgb), .1) !default;
 $item-browser-accent: var(--bs-accent) !default;
-$item-browser-accent-text: var(--hh-accent-text) !default;
+$item-browser-accent-fg: var(--hh-accent-fg) !default;
 $item-browser-muted: var(--bs-secondary-color) !default;
 $item-browser-strong: var(--bs-emphasis-color) !default;
 $item-browser-focus-ring: 0 0 0 3px rgba(var(--bs-accent-rgb), .32) !default;
@@ -126,7 +126,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
         @include transition(color .3s);
 
         &:hover {
-            color: $item-browser-accent-text;
+            color: $item-browser-accent-fg;
         }
     }
 
@@ -280,7 +280,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
     }
 
     .tile:hover .tile-name > :is(a, button) {
-        color: $item-browser-accent-text;
+        color: $item-browser-accent-fg;
     }
 
     // As wide as the tile (a flex item of the centred column is only as wide as its content),
@@ -497,7 +497,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
         padding: $spacer * .5 $spacer * .75;
         border-radius: var(--bs-border-radius);
         background: var(--bs-body-bg);
-        color: $item-browser-accent-text;
+        color: $item-browser-accent-fg;
         font-weight: $font-weight-semibold;
 
         .is-refused & {

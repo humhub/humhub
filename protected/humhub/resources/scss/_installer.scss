@@ -32,15 +32,15 @@
         }
 
         .check-ok {
-            color: var(--hh-success-text);
+            color: var(--hh-success-fg);
         }
 
         .check-warning {
-            color: var(--hh-warning-text);
+            color: var(--hh-warning-fg);
         }
 
         .check-error {
-            color: var(--hh-danger-text);
+            color: var(--hh-danger-fg);
         }
 
         .prerequisites-list {

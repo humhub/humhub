@@ -21,16 +21,6 @@ $prev-badge: false !default;
     }
 }
 
-@if not $prev-base {
-    // A theme color as text, readable on the surfaces in both color modes (Bootstrap's takes the color as it is).
-    // The links are in _link.scss: Bootstrap's `.link-*` are in the `core` layer, whose `!important` wins against this
-    @each $color in $hh-text-colors {
-        .text-#{$color} {
-            color: var(--hh-#{$color}-text) !important;
-        }
-    }
-}
-
 @if not $prev-badge {
     .badge {
         @each $color in accent, primary, secondary, info, success, warning, danger, light, dark {

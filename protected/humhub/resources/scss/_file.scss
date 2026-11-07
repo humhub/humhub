@@ -36,7 +36,7 @@ $file-version-meta-font-size: $font-size-sm !default;
 
     .file_upload_remove_link,
     .file_upload_remove_link:hover {
-        color: var(--hh-danger-text);
+        color: var(--hh-danger-fg);
         cursor: pointer;
     }
 
@@ -107,7 +107,7 @@ $file-version-meta-font-size: $font-size-sm !default;
         margin-bottom: 10px;
 
         a, a:active, a:focus, a:hover {
-            color: var(--hh-accent-text);
+            color: var(--hh-accent-fg);
         }
     }
 

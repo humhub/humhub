@@ -179,7 +179,7 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
     // High contrast: the fill of `--bs-{color}` (see _root.scss), hovered a bit further away from its text
     :root {
         @include hh-high-contrast {
-            @each $color in $hh-text-colors {
+            @each $color in $hh-fg-colors {
                 .btn-#{$color} {
                     $text: map-get($hh-contrast-colors, $color);
                     $fill: hh-readable(map-get($theme-colors, $color), $text, $hh-high-contrast-ratio);

@@ -50,3 +50,11 @@ $utilities-bg-subtle: map-merge($utilities-bg-subtle, (
 $utilities-border-subtle: map-merge($utilities-border-subtle, (
     "accent-subtle": var(--#{$prefix}accent-border-subtle),
 ));
+
+// A theme color as text is its `--hh-{color}-fg` (see _root.scss): `.text-{color}` reads it instead of the raw color.
+// The links are in _link.scss: Bootstrap's `.link-*` are in the `core` layer and have no map
+$hh-utilities-fg: ();
+@each $color in $hh-fg-colors {
+    $hh-utilities-fg: map-merge($hh-utilities-fg, ($color: var(--hh-#{$color}-fg)));
+}
+$utilities-text-colors: map-merge($utilities-text-colors, $hh-utilities-fg);

@@ -310,7 +310,7 @@ $data-table-page-size-width: 5.5rem !default;
 
         &:is(a):hover,
         &:is(a):focus-visible {
-            color: var(--hh-accent-text);
+            color: var(--hh-accent-fg);
         }
     }
 
