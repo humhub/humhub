@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\Theme;
 use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use Yii;
@@ -18,15 +19,14 @@ use yii\helpers\Inflector;
  * Administration → Appearance → Theme: the theme and its colours
  *
  * Each colour is the Sass variable of its name, stored in the setting `theme{Color}Color` (e.g. `themeBodyBgDarkColor`
- * for `body-bg-dark`) and used while `useDefaultTheme{Color}Color` is off.
+ * for `body-bg-dark`) while it differs from the theme's own value. A colour equal to the theme's is not stored, so it
+ * keeps following the theme.
  *
  * @since 1.20
  */
 class ThemeSettingsForm extends Model
 {
-    public const COLORS = [
-        'primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark', 'body-bg', 'body-bg-dark',
-    ];
+    public const COLORS = ['primary', 'accent', 'secondary', 'success', 'danger', 'warning', 'info', 'body-bg', 'body-bg-dark'];
 
     /**
      * The surface colours and the text colour that has to stay readable on them, with its value of the core theme
@@ -40,27 +40,14 @@ class ThemeSettingsForm extends Model
 
     public $theme;
     public $themePrimaryColor;
-    public $useDefaultThemePrimaryColor;
     public $themeAccentColor;
-    public $useDefaultThemeAccentColor;
     public $themeSecondaryColor;
-    public $useDefaultThemeSecondaryColor;
     public $themeSuccessColor;
-    public $useDefaultThemeSuccessColor;
     public $themeDangerColor;
-    public $useDefaultThemeDangerColor;
     public $themeWarningColor;
-    public $useDefaultThemeWarningColor;
     public $themeInfoColor;
-    public $useDefaultThemeInfoColor;
-    public $themeLightColor;
-    public $useDefaultThemeLightColor;
-    public $themeDarkColor;
-    public $useDefaultThemeDarkColor;
     public $themeBodyBgColor;
-    public $useDefaultThemeBodyBgColor;
     public $themeBodyBgDarkColor;
-    public $useDefaultThemeBodyBgDarkColor;
 
     /**
      * @inheritdoc
@@ -74,20 +61,13 @@ class ThemeSettingsForm extends Model
         $themeVariables = Yii::$app->view->theme->variables;
         foreach (static::COLORS as $color) {
             $attribute = static::colorAttribute($color);
-            $default = static::defaultAttribute($color);
-            $this->$attribute = Yii::$app->settings->get($attribute, $themeVariables->get($color));
-            $this->$default = (bool)Yii::$app->settings->get($default, true);
+            $this->$attribute = Yii::$app->settings->get($attribute) ?: $themeVariables->getThemeDefault($color);
         }
     }
 
     public static function colorAttribute(string $color): string
     {
         return 'theme' . Inflector::id2camel($color) . 'Color';
-    }
-
-    public static function defaultAttribute(string $color): string
-    {
-        return 'useDefaultTheme' . Inflector::id2camel($color) . 'Color';
     }
 
     /**
@@ -101,7 +81,6 @@ class ThemeSettingsForm extends Model
             ['theme', 'in', 'range' => $this->getThemes()],
             [$colorAttributes, 'trim'],
             [$colorAttributes, 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
-            [array_map(static::defaultAttribute(...), static::COLORS), 'boolean'],
             [array_map(static::colorAttribute(...), array_keys(static::SURFACE_TEXT_COLORS)), 'validateSurfaceContrast'],
         ];
     }
@@ -112,16 +91,16 @@ class ThemeSettingsForm extends Model
      */
     public function validateSurfaceContrast(string $attribute): void
     {
-        $surfaces = array_keys(static::SURFACE_TEXT_COLORS);
-        $surface = array_combine(array_map(static::colorAttribute(...), $surfaces), $surfaces)[$attribute];
-        if ($this->{static::defaultAttribute($surface)} || $this->hasErrors($attribute)) {
+        if ($this->hasErrors($attribute)) {
             return;
         }
 
+        $surfaces = array_keys(static::SURFACE_TEXT_COLORS);
+        $surface = array_combine(array_map(static::colorAttribute(...), $surfaces), $surfaces)[$attribute];
+
         // The text of the theme chosen in the form, which may not be the active one yet
         [$textVariable, $textDefault] = static::SURFACE_TEXT_COLORS[$surface];
-        $theme = ThemeHelper::getThemeByName((string)$this->theme) ?? Yii::$app->view->theme;
-        $textColor = (string)$theme->variable($textVariable);
+        $textColor = (string)$this->getSelectedTheme()->variable($textVariable);
         if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $textColor)) {
             $textColor = $textDefault;
         }
@@ -152,14 +131,9 @@ class ThemeSettingsForm extends Model
             'themeDangerColor' => Yii::t('AdminModule.settings', 'Danger color'),
             'themeWarningColor' => Yii::t('AdminModule.settings', 'Warning color'),
             'themeInfoColor' => Yii::t('AdminModule.settings', 'Info color'),
-            'themeLightColor' => Yii::t('AdminModule.settings', 'Light color'),
-            'themeDarkColor' => Yii::t('AdminModule.settings', 'Dark color'),
             'themeBodyBgColor' => Yii::t('AdminModule.settings', 'Surface color'),
             'themeBodyBgDarkColor' => Yii::t('AdminModule.settings', 'Surface color in the dark mode'),
-        ] + array_fill_keys(
-            array_map(static::defaultAttribute(...), static::COLORS),
-            Yii::t('AdminModule.settings', 'Default'),
-        );
+        ];
     }
 
     /**
@@ -168,6 +142,13 @@ class ThemeSettingsForm extends Model
     public function attributeHints()
     {
         return [
+            'themePrimaryColor' => Yii::t('AdminModule.settings', 'The top bar, primary buttons and the checked state of a control.'),
+            'themeAccentColor' => Yii::t('AdminModule.settings', 'Links, icons and the highlight of a selected item.'),
+            'themeSecondaryColor' => Yii::t('AdminModule.settings', 'The grey button and neutral badges.'),
+            'themeSuccessColor' => Yii::t('AdminModule.settings', 'Confirmations and things that went well.'),
+            'themeDangerColor' => Yii::t('AdminModule.settings', 'Errors, and actions that delete.'),
+            'themeWarningColor' => Yii::t('AdminModule.settings', 'Things that need attention.'),
+            'themeInfoColor' => Yii::t('AdminModule.settings', 'Notices and neutral highlights.'),
             'themeBodyBgColor' => Yii::t('AdminModule.settings', 'Cards, panels and dialogs. The page behind them, the lines and the other areas are derived from it.'),
             'themeBodyBgDarkColor' => Yii::t('AdminModule.settings', 'The same in the dark mode. Keep it dark.'),
         ];
@@ -186,26 +167,33 @@ class ThemeSettingsForm extends Model
         return $themes;
     }
 
+    /**
+     * The theme chosen in the form, the active one while the choice is unknown
+     */
+    public function getSelectedTheme(): Theme
+    {
+        return ThemeHelper::getThemeByName((string)$this->theme) ?? Yii::$app->view->theme;
+    }
+
     public function save(): bool
     {
         if (!$this->validate()) {
             return false;
         }
 
-        // Before the activation: it rebuilds the theme's variables, which are derived from these colours
+        // A colour equal to the theme's own is not stored: it keeps following the theme. Before the activation, which
+        // rebuilds the theme's variables, derived from these colours
+        $theme = $this->getSelectedTheme();
         foreach (static::COLORS as $color) {
             $attribute = static::colorAttribute($color);
-            $default = static::defaultAttribute($color);
-            Yii::$app->settings->set($attribute, $this->$default ? null : $this->$attribute);
-            Yii::$app->settings->set($default, $this->$default);
+            $value = ScssHelper::normalizeHexColor((string)$this->$attribute);
+            $default = ScssHelper::normalizeHexColor((string)$theme->variables->getThemeDefault($color));
+            Yii::$app->settings->set($attribute, $value === $default ? null : $value);
         }
 
-        $theme = ThemeHelper::getThemeByName($this->theme);
-        if ($theme !== null) {
-            $theme->activate();
-            // Force new theme immediately, e.g. to rebuild the CSS files
-            Yii::$app->view->theme = $theme;
-        }
+        $theme->activate();
+        // Force new theme immediately, e.g. to rebuild the CSS files
+        Yii::$app->view->theme = $theme;
 
         return true;
     }

@@ -139,6 +139,7 @@ class ThemeVariablesTest extends HumHubDbTestCase
         $this->assertSame('#dddddd', $variables->get('border-color'));
         $this->assertSame('#161616', $variables->get('hh-page-bg-dark'));
         $this->assertSame('#393939', $variables->get('body-secondary-bg-dark'));
+        $this->assertSame('#e7e7e7', $variables->get('light'));
     }
 
     /**

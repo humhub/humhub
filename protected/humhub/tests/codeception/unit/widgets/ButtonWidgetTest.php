@@ -8,18 +8,20 @@ use humhub\widgets\menu\MenuLink;
 use tests\codeception\_support\HumHubDbTestCase;
 
 /**
- * A label directly follows the icon's closing `</i>` tag with no separating markup; the visual gap
- * relies entirely on an explicit space, inserted here, rather than on the icon font's own glyph
- * metrics — which is what silently broke when Font Awesome 4 was replaced by Tabler Icons, since
- * Tabler crops each glyph to its own bounds instead of a fixed per-character advance width.
+ * A label directly follows the icon's closing `</i>` tag; the visual gap is the icon's
+ * `icon-before-label` margin rather than the icon font's own glyph metrics — which is what silently
+ * broke when Font Awesome 4 was replaced by Tabler Icons, since Tabler crops each glyph to its own
+ * bounds instead of a fixed per-character advance width — and not a space, which a link underlined
+ * in high contrast would underline too.
  */
 class ButtonWidgetTest extends HumHubDbTestCase
 {
-    public function testIconAndLabelAreSeparatedBySpace()
+    public function testIconBeforeALabelCarriesTheGap()
     {
         $html = (string)Button::none('Users')->icon('user');
 
-        $this->assertStringContainsString('</i> Users<', $html);
+        $this->assertStringContainsString('icon-before-label', $html);
+        $this->assertStringContainsString('</i>Users<', $html);
     }
 
     public function testIconOnlyButtonHasNoTrailingSpace()
@@ -27,6 +29,7 @@ class ButtonWidgetTest extends HumHubDbTestCase
         $html = (string)Button::none()->icon('user');
 
         $this->assertStringContainsString('btn-icon-only', $html);
+        $this->assertStringNotContainsString('icon-before-label', $html);
         $this->assertStringEndsWith('</i></button>', $html);
     }
 
@@ -37,11 +40,12 @@ class ButtonWidgetTest extends HumHubDbTestCase
         $this->assertStringContainsString('>Users<', $html);
     }
 
-    public function testLinkAlsoGetsTheSpace()
+    public function testLinkAlsoGetsTheGap()
     {
         $html = (string)Link::to('Back')->icon('arrow-left');
 
-        $this->assertStringContainsString('</i> Back<', $html);
+        $this->assertStringContainsString('icon-before-label', $html);
+        $this->assertStringContainsString('</i>Back<', $html);
     }
 
     /**
@@ -51,6 +55,9 @@ class ButtonWidgetTest extends HumHubDbTestCase
     {
         $link = new MenuLink(['label' => 'Spaces', 'url' => '#', 'icon' => 'dot-circle-o']);
 
-        $this->assertStringContainsString('</i> Spaces<', $link->render());
+        $html = $link->render();
+
+        $this->assertStringContainsString('icon-before-label', $html);
+        $this->assertStringContainsString('</i>Spaces<', $html);
     }
 }

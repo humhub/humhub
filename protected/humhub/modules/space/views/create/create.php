@@ -24,7 +24,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <?= $form->field($model, 'description') ?>
 
     <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
-        <?= Icon::get('caret-right-filled') ?> <?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
+        <?= Icon::get('caret-right-filled')->class('icon-before-label') ?><?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
     </a>
 
     <div id="collapse-access-settings" class="panel-collapse collapse">

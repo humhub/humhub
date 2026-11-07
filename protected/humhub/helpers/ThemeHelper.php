@@ -470,11 +470,11 @@ class ThemeHelper
         $imports[] = Yii::getAlias('@vendor/twbs/bootstrap/scss/maps');
         $imports[] = Yii::getAlias('@humhub/resources/scss/maps');
 
-        // The colours of Administration → Appearance → Theme
+        // The colours of Administration → Appearance → Theme: stored where they differ from the theme's own
         $scss = '';
         foreach (ThemeSettingsForm::COLORS as $color) {
             $value = Yii::$app->settings->get(ThemeSettingsForm::colorAttribute($color));
-            if ($value && !Yii::$app->settings->get(ThemeSettingsForm::defaultAttribute($color), true)) {
+            if ($value) {
                 $scss .= '$' . $color . ': ' . $value . ';' . PHP_EOL;
             }
         }
