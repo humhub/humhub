@@ -27,8 +27,8 @@ $checkBoxOptions = ['options' => ['class' => 'pt-2']];
             <div class="col-lg-4 mb-3">
                 <?= Html::activeLabel($model, $attribute) ?>
                 <div class="input-group input-color-group bg-light p-3 pb-0">
-                    <?= $form->field($model, $attribute)->hint(false)->colorInput([
-                        'disabled' => $model->$default,
+                    <?= $form->field($model, $attribute)->hint(false)->error(false)->colorInput([
+                        'disabled' => (bool)$model->$default,
                         'class' => 'rounded',
                         'data-default-color' => $themeVariables->getThemeDefault($color),
                     ]) ?>
@@ -36,6 +36,9 @@ $checkBoxOptions = ['options' => ['class' => 'pt-2']];
                         'data-color-input' => Html::getInputId($model, $attribute),
                     ]) ?>
                 </div>
+                <?php if ($model->hasErrors($attribute)) : ?>
+                    <?= Html::error($model, $attribute, ['class' => 'invalid-feedback d-block']) ?>
+                <?php endif; ?>
                 <?php if ($model->getAttributeHint($attribute) !== '') : ?>
                     <div class="form-text"><?= Html::encode($model->getAttributeHint($attribute)) ?></div>
                 <?php endif; ?>

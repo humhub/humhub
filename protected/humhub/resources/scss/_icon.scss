@@ -8,6 +8,12 @@
         vertical-align: -.125em;
     }
 
+    // An icon before a label (`Button::icon()`): the gap a space would leave, without one, which a link underlined in
+    // high contrast would underline too
+    .icon-before-label {
+        margin-right: .25em;
+    }
+
     .icon-xs {
         font-size: .75em;
     }
