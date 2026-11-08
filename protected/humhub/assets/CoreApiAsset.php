@@ -47,6 +47,7 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.view.js',
         'js/humhub/humhub.ui.appearance.js',
         'js/humhub/humhub.ui.focus.js',
+        'js/humhub/humhub.ui.tooltip.js',
         'js/humhub/humhub.client.js',
         'js/humhub/humhub.vue.js', // Vue island registry/mounter, see docs/develop/ui-js-vuejs.md
         'js/humhub/humhub.ui.status.js',
