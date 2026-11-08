@@ -40,7 +40,7 @@ describe("Plugin:upload, the alt text of an uploaded image", () => {
         await flush();
 
         expect(dialogs()).toHaveLength(1);
-        expect(JSON.parse(dialogs()[0].getAttribute('data-props'))).toEqual({src: 'https://x.test/a.png'});
+        expect(JSON.parse(dialogs()[0].getAttribute('data-props'))).toEqual({src: 'https://x.test/a.png', required: false});
         expect(vue.mountElement).toHaveBeenCalledWith(dialogs()[0]);
 
         answer('A red bicycle');
@@ -88,8 +88,30 @@ describe("Plugin:upload, the alt text of an uploaded image", () => {
         expect(serialize()).to.equal('![First](file-guid:g1 "a.png")[b.pdf](file-guid:g2)![Second](file-guid:g3 "c.png")');
     });
 
-    it("is not asked for when disabled, or without the platform's dialog", async () => {
-        initEditor({upload: () => Promise.resolve([image('g1', 'a.png')]), image: {altTextPrompt: false}});
+    it("when required, cannot be skipped: cancelling removes the image", async () => {
+        initEditor({upload: () => Promise.resolve([image('g1', 'a.png')]), image: {altText: 'required'}}, 'Before');
+        clickUpload();
+        stubVue();
+        await flush();
+
+        expect(JSON.parse(dialogs()[0].getAttribute('data-props'))).toEqual({src: 'https://x.test/a.png', required: true});
+        expect(serialize()).to.equal('![a.png](file-guid:g1 "a.png")Before');
+
+        skip();
+        expect(dialogs()).toHaveLength(0);
+        expect(serialize()).to.equal('Before');
+
+        delete globalThis.humhub.modules;
+        initEditor({upload: () => Promise.resolve([image('g1', 'a.png')]), image: {altText: 'required'}});
+        clickUpload();
+        stubVue();
+        await flush();
+        answer('A red bicycle');
+        expect(serialize()).to.equal('![A red bicycle](file-guid:g1 "a.png")');
+    });
+
+    it("is not asked for when off, or without the platform's dialog", async () => {
+        initEditor({upload: () => Promise.resolve([image('g1', 'a.png')]), image: {altText: 'off'}});
         clickUpload();
         const vue = stubVue();
         await flush();

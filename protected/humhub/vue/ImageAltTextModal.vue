@@ -1,18 +1,31 @@
 <template>
-    <UiModal v-model:show="show" :title="titleLabel" @opened="focusInput" @closed="onClosed">
+    <UiModal
+        v-model:show="show"
+        :title="titleLabel"
+        :backdrop-close="!required"
+        :keyboard="!required"
+        @opened="focusInput"
+        @closed="onClosed"
+    >
+        <!-- Required: no close button, the image is described or removed -->
+        <template v-if="required" #header="{ titleId }">
+            <h5 class="modal-title" :id="titleId">{{ titleLabel }}</h5>
+        </template>
+
         <img v-if="src" :src="src" alt="" class="image-alt-text-preview">
-        <HumHubForm model-name="ImageAltText" @submit="save">
+        <HumHubForm ref="form" model-name="ImageAltText" @submit="save">
             <TextField
                 ref="field"
                 attribute="alt"
                 :label="altLabel"
                 :hint="hintLabel"
+                :required="required"
                 v-model="alt"
             />
         </HumHubForm>
 
         <template #footer>
-            <button type="button" class="btn btn-light" @click="show = false">{{ skipLabel }}</button>
+            <button type="button" class="btn btn-light" @click="show = false">{{ required ? removeLabel : skipLabel }}</button>
             <button type="button" class="btn btn-primary" @click="save">{{ saveLabel }}</button>
         </template>
     </UiModal>
@@ -29,6 +42,9 @@
  * - `altText:save` with `detail: {alt}` (trimmed; empty marks the image as decorative)
  * - `altText:cancel` when dismissed (Skip, ×, Escape, backdrop)
  *
+ * With `required` the text cannot be empty and the dialog cannot be dismissed: "Remove image"
+ * replaces Skip, and `altText:cancel` means the image is not wanted.
+ *
  * The mount point is the caller's to remove afterwards, which unmounts the island.
  *
  * @since 1.20
@@ -44,6 +60,7 @@ export default {
     i18nCategories: ['ContentModule.richtexteditor', 'base'],
     props: {
         src: { type: String, default: null },
+        required: { type: Boolean, default: false },
     },
     data() {
         return {
@@ -60,10 +77,18 @@ export default {
             return i18n.t('ContentModule.richtexteditor', 'Alternative text');
         },
         hintLabel() {
-            return i18n.t('ContentModule.richtexteditor', 'Describe the image for people who cannot see it. Leave it empty if the image is purely decorative.');
+            return this.required
+                ? i18n.t('ContentModule.richtexteditor', 'Describe the image for people who cannot see it.')
+                : i18n.t('ContentModule.richtexteditor', 'Describe the image for people who cannot see it. Leave it empty if the image is purely decorative.');
+        },
+        requiredMessage() {
+            return i18n.t('ContentModule.richtexteditor', 'Please describe the image.');
         },
         skipLabel() {
             return i18n.t('ContentModule.richtexteditor', 'Skip');
+        },
+        removeLabel() {
+            return i18n.t('ContentModule.richtexteditor', 'Remove image');
         },
         saveLabel() {
             return i18n.t('base', 'Save');
@@ -77,6 +102,11 @@ export default {
             this.$refs.field?.$refs.input?.focus();
         },
         save() {
+            if (this.required && this.alt.trim() === '') {
+                this.$refs.form.setErrors({ alt: [this.requiredMessage] });
+                this.focusInput();
+                return;
+            }
             this.saved = true;
             this.show = false;
         },

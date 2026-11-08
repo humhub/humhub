@@ -184,6 +184,16 @@ the file it announces on `humhub:file:created` is inserted into the editor whose
 
 After an image is uploaded and inserted - by any of these ways - the editor asks for its
 alternative text (for screen readers) in the platform's dialog, one per image: the core Vue
-component `ImageAltTextModal`, mounted through `humhub.vue.mountElement()`. Skipping keeps the
-file name; an empty text marks the image as decorative. Without the Vue runtime (outside
-HumHub) the editor does not ask. `image: { altTextPrompt: false }` turns it off.
+component `ImageAltTextModal`, mounted through `humhub.vue.mountElement()`. The `altText`
+option of the image plugin says how; its default is the platform's setting (Administration →
+Appearance → Accessibility):
+
+- `optional`: skipping keeps the file name, an empty text marks the image as decorative.
+- `required`: the dialog cannot be skipped or dismissed, "Remove image" takes the image out again.
+- `off`: no dialog.
+
+Without the Vue runtime (outside HumHub) the editor does not ask.
+
+```js
+new MarkdownEditor('#stage', { image: { altText: 'off' } });
+```
