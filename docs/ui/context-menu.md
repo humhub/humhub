@@ -60,6 +60,8 @@ is visible, and everything else is in the menu.
   - Escape closes the menu and returns focus to the trigger.
 - Destructive rows say so in text ("Delete"). Colour is not the only signal.
 - A count on a row is part of its accessible name ("Approvals, 3 waiting").
+- A trigger that is hidden until its item is hovered is visible while the focus is inside the
+  item and while the menu is open ([Keyboard](keyboard.md#reaching-everything)).
 
 ## Markup and styles
 

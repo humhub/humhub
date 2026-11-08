@@ -37,8 +37,8 @@ and get to the profile from there.
 
 - The hover card is an **enhancement**. Everything in it is also reachable through the profile
   link.
-- Keyboard users reach the profile via the link and don't get the card. A keyboard trigger could
-  follow later.
+- Keyboard users reach the profile via the link and don't get the card. The card stays
+  mouse-only ([Keyboard](keyboard.md#decisions)).
 - Reduced motion: no fade or slide.
 
 ## Markup and styles
@@ -85,5 +85,4 @@ the container.
    this design and keep it a module?
 2. **Content:** picture, name and subtitle only, or also a relationship button and a short
    description?
-3. **Keyboard access:** add a keyboard trigger (e.g. focus plus a delay), or keep the card mouse-only?
-4. **Setting:** can users switch hover cards off?
+3. **Setting:** can users switch hover cards off?

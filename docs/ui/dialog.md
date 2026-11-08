@@ -77,8 +77,10 @@ margin.
 
 - `role="dialog"` with `aria-modal="true"`. Labelled by the title and described by the confirm
   text.
-- Focus moves into the dialog on open, to the first field or else the dialog title. Focus is
-  trapped and restored on close.
+- Focus moves into the dialog on open, to the first field or else the dialog itself. It is
+  trapped while the dialog is open and returns to its trigger on close, or to the trigger's menu
+  toggle when that menu has closed; when the trigger is gone, it goes to the content container
+  ([Keyboard](keyboard.md#moving-the-focus)).
 - Escape closes the dialog, unless a nested popup (select, date picker) is open; then Escape
   closes that popup first.
 - Reduced motion: no scale, slide or height animations.
