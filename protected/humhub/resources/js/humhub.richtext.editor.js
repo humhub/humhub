@@ -16613,6 +16613,12 @@
       this.$ = $(this.menu);
       if ($editor.is(".focusMenu")) {
         this.$.addClass("d-none");
+        const hideMenu = () => {
+          if ($editor.find(".ProseMirror, textarea").is(":focus")) {
+            return;
+          }
+          this.$.data("isHiding", true).hide(100, () => this.$.addClass("d-none"));
+        };
         $editor.off("focus", ".ProseMirror, textarea").off("blur", ".ProseMirror, textarea").on("focus", ".ProseMirror, textarea", (event) => {
           if (this.$.data("isHiding")) {
             this.$.data("isHiding", false).addClass("d-none").stop(true, false);
@@ -16635,21 +16641,19 @@
           lastFocusedElement = e2.target;
           if (!$editor.is(".fullscreen") && !targetHasMenuBtn && !$(e2.target).hasClass("cm-editor")) {
             lastFocusedElement = null;
-            const that = this.$;
-            const hide = () => {
-              if ($editor.find(".ProseMirror, textarea").is(":focus")) {
-                return;
-              }
-              that.data("isHiding", true).hide(100, function() {
-                that.addClass("d-none");
-              });
-            };
             if (pointerDown) {
-              $(document).one("mouseup touchend", () => setTimeout(hide, 0));
+              $(document).one("mouseup touchend", () => setTimeout(hideMenu, 0));
             } else {
-              hide();
+              hideMenu();
             }
           }
+        });
+        this.$.on("focusout", (e2) => {
+          const target = e2.relatedTarget;
+          if (!target || $editor[0].contains(target) || $(target).closest(".modal, .ProseMirror-prompt, .humhub-richtext-provider").length) {
+            return;
+          }
+          hideMenu();
         });
       }
       this.$.on("mousedown", (e2) => {
