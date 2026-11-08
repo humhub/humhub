@@ -92,6 +92,27 @@ describe("Menu:accessibility", () => {
         });
     }));
 
+    it("test the toolbar is one Tab stop", () => new Promise((done) => {
+        initEditor();
+        const inTabOrder = () => $('.ProseMirror-menubar .ProseMirror-menu-trigger')
+            .not('.ProseMirror-menu-dropdown-menu .ProseMirror-menu-trigger')
+            .not('.d-none')
+            .filter((i, el) => el.getAttribute('tabindex') !== '-1');
+
+        // Before anything is focused, exactly one button is reachable by Tab: the first one
+        expect(inTabOrder().length).to.equal(1);
+        expect(inTabOrder().is('.ProseMirror-menu-type')).to.be.true;
+
+        focusMenuItem();
+        wait(() => {
+            // The arrow keys move the one Tab stop along
+            navigate(DIR_RIGHT, 'markStrong');
+            expect(inTabOrder().length).to.equal(1);
+            expect(inTabOrder().is('.ProseMirror-menu-markStrong')).to.be.true;
+            done();
+        });
+    }));
+
     it("test open dropdown on ArrowDown", () => new Promise((done) => {
         if (!canAssertFocus()) {
             done();
