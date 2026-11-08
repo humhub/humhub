@@ -15,7 +15,11 @@ use yii\log\Target;
  *
  * The context dump contains `$_SERVER`, which also holds every variable loaded from `.env`. The masks are added to
  * all targets, including the ones configured outside HumHub's core configuration (e.g. an `EmailTarget` added via
- * `HUMHUB_CONFIG__COMPONENTS__LOG__TARGETS__EMAIL`), so that no target dumps a secret.
+ * `HUMHUB_CONFIG__COMPONENTS__LOG__TARGETS__EMAIL`) and the ones added at run time (`Yii::$app->log->targets[] = …`),
+ * so that no target dumps a secret.
+ *
+ * Limit: Yii matches the patterns against the flattened context, so a key that itself contains a dot (e.g. the
+ * session key `twofa.switchedUserId` or an `.env` variable `mail.smtp.password`) is not masked.
  *
  * @since 1.19.4
  * @see Target::$maskVars
@@ -44,7 +48,24 @@ class Dispatcher extends \yii\log\Dispatcher
     public function init()
     {
         parent::init();
+        $this->maskTargets();
+    }
 
+    /**
+     * @inheritdoc
+     */
+    public function dispatch($messages, $final)
+    {
+        // Covers the targets added after the component was built
+        $this->maskTargets();
+        parent::dispatch($messages, $final);
+    }
+
+    /**
+     * Adds [[getMaskVars()]] to the `maskVars` of every target.
+     */
+    protected function maskTargets(): void
+    {
         $maskVars = $this->getMaskVars();
         foreach ($this->targets as $target) {
             if ($target instanceof Target) {

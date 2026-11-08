@@ -11,10 +11,9 @@ namespace humhub\tests\codeception\unit\components;
 use Codeception\Test\Unit;
 use humhub\components\log\Dispatcher;
 use Yii;
-use yii\log\DbTarget;
 use yii\log\EmailTarget;
-use yii\log\FileTarget;
 use yii\log\Logger;
+use yii\log\Target;
 
 /**
  * Tests that secrets (e.g. loaded from `.env` into `$_SERVER`) are masked in the context dump of log entries.
@@ -112,11 +111,30 @@ class LogMaskVarsTest extends Unit
         $this->assertStringContainsString('jdoe', $context);
     }
 
+    public function testTargetsAddedAtRunTimeAreMasked()
+    {
+        $_SERVER['LATE_TARGET_SECRET'] = 'late-secret-1';
+
+        // e.g. `Yii::$app->log->targets[] = …` in an event handler of a module, after the component was built
+        $dispatcher = $this->createDispatcher();
+        $dispatcher->targets['late'] = Yii::createObject([
+            'class' => EmailTarget::class,
+            'message' => ['to' => 'admin@example.com'],
+            'enabled' => false,
+        ]);
+        $dispatcher->dispatch([], true);
+
+        $context = $this->getTargetContext($dispatcher->targets['late']);
+
+        $this->assertStringNotContainsString('late-secret-1', $context);
+        $this->assertStringContainsString('LATE_TARGET_SECRET', $context);
+    }
+
     /**
-     * Builds the context message of a target created by the log dispatcher with the configuration of
-     * `config/common.php`: the file and the database target, or the given one.
+     * Creates the log dispatcher with the configuration of `config/common.php`, with its file and database target
+     * or the given one. The targets are disabled so that nothing is written.
      */
-    private function getContextMessage(?array $customTarget = null): string
+    private function createDispatcher(?array $customTarget = null): Dispatcher
     {
         $config = require Yii::getAlias('@humhub/config/common.php');
         $logConfig = $config['components']['log'];
@@ -135,13 +153,27 @@ class LogMaskVarsTest extends Unit
         $dispatcher = Yii::createObject($logConfig);
         $this->assertInstanceOf(Dispatcher::class, $dispatcher);
 
+        return $dispatcher;
+    }
+
+    /**
+     * Builds the context message of every target of the dispatcher created by [[createDispatcher()]]
+     * and asserts that they mask identically.
+     */
+    private function getContextMessage(?array $customTarget = null): string
+    {
         $contexts = [];
-        foreach ($dispatcher->targets as $target) {
-            $contexts[] = (fn() => $this->getContextMessage())->call($target);
+        foreach ($this->createDispatcher($customTarget)->targets as $target) {
+            $contexts[] = $this->getTargetContext($target);
         }
 
         $this->assertCount(1, array_unique($contexts), 'All targets must mask identically');
 
         return $contexts[0];
+    }
+
+    private function getTargetContext(Target $target): string
+    {
+        return (fn() => $this->getContextMessage())->call($target);
     }
 }
