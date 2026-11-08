@@ -102,6 +102,11 @@ class FileExtension extends RichTextLinkExtension
 
             $record->fileManager->attach($file);
 
+            // A file the text shows is not listed as an attachment as well
+            if ($file->show_in_stream && $file->isAssignedTo($record)) {
+                $file->updateAttributes(['show_in_stream' => 0]);
+            }
+
             return true;
         } catch (Exception $e) {
             Yii::error($e);

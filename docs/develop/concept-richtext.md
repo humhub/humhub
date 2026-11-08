@@ -108,8 +108,9 @@ do; the space manage controller does it for the about text). Every extension's
 `onPostProcess()` runs over the text:
 
 - `FileExtension` attaches every referenced `file-guid:` file to the record (via its
-  `fileManager`) and converts pasted base64 images into files first. Files cannot be attached
-  to an unpersisted record, which is why this runs after save.
+  `fileManager`) and takes it out of the stream (`show_in_stream = 0`): the text shows it, so it
+  is not listed as an attachment as well. Pasted base64 images are converted into files first.
+  Files cannot be attached to an unpersisted record, which is why this runs after save.
 - `MentioningExtension` creates the `Mentioning` records — each sends a `MentionedNotification`
   — and lists the newly mentioned users in `$result['mentioning']`. A record that notifies them
   itself, together with other notifications of the same event (`Comment` does, see

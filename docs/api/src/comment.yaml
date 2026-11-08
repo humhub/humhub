@@ -370,6 +370,9 @@ components:
           description: Absolute permalink
         files:
           type: array
+          description: |
+            The attachments listed below the comment. A file the message embeds (`file-guid:`)
+            is not among them.
           items:
             $ref: "common.yaml#/components/schemas/File"
         childCount:

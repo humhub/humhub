@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix #8720: A file embedded in the text of a Vue.js form (comments) was shown a second time in the attachment list
 - Enh #8719: One keyboard focus ring for every control, in the accent as text; a text field shows it after Tab only
 - Enh #8717: The theme colours in groups, each with the browser's colour picker beside a hex field and "Reset colours" instead of the "Default" checkboxes; a colour equal to the theme's is not stored, the light colour follows the surface
 - Fix #8716: The error of a theme colour is shown below its field, which stays editable; the gap between an icon and its label is a margin, not a space, which high contrast underlined

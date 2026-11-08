@@ -32,7 +32,9 @@ use yii\helpers\Url;
 class FileSerializer
 {
     /**
-     * All files attached to the given record.
+     * The files listed as the record's attachments: those shown in the stream, as the legacy
+     * `ShowFiles` widget lists them. A file the richtext embeds is not among them (the file
+     * extension of the richtext takes it out of the stream when the text is saved).
      *
      * @return array[]
      */
@@ -42,7 +44,7 @@ class FileSerializer
             $record = $record->getPolymorphicRelation();
         }
 
-        return array_map(static::file(...), $record->fileManager->findAll());
+        return array_map(static::file(...), $record->fileManager->findStreamFiles());
     }
 
     /**
