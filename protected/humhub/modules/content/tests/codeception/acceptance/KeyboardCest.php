@@ -96,6 +96,9 @@ class KeyboardCest
             $I->fillField($richtext, $text);
             $I->click('.btn-comment-submit', self::POST . ' .comment-container');
             $I->waitForText($text, 10, self::POST . ' .comment-container');
+            // The form clears and remounts its editor after the submit; typing into the old one fails as stale
+            $I->waitForJS('var editor = document.querySelector(' . json_encode($richtext) . '); return editor && !editor.textContent.includes(' . json_encode($text) . ');', 10);
+            $I->wait(1);
         }
         $comments = self::POST . ' .comment-container > .comment[role="feed"] > .single-comment[role="article"]';
         $index = 'return [...document.querySelectorAll(' . json_encode($comments) . ')].indexOf(document.activeElement);';
