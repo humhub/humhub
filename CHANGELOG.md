@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix #TBD: A file embedded in the text of a Vue.js form (comments) was shown a second time in the attachment list
 - Enh #8717: The theme colours in groups, each with the browser's colour picker beside a hex field and "Reset colours" instead of the "Default" checkboxes; a colour equal to the theme's is not stored, the light colour follows the surface
 - Fix #8716: The error of a theme colour is shown below its field, which stays editable; the gap between an icon and its label is a margin, not a space, which high contrast underlined
 - Enh #8715: Links, icons and status texts in a theme colour reach 4.5:1 on the surfaces in both colour modes, 7:1 in high contrast

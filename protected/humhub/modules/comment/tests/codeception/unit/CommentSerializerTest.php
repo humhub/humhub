@@ -8,10 +8,13 @@
 
 namespace tests\codeception\unit\modules\comment\components;
 
+use humhub\libs\UUID;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\serializers\CommentSerializer;
+use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
 use tests\codeception\_support\HumHubDbTestCase;
+use Throwable;
 use Yii;
 
 /**
@@ -34,6 +37,44 @@ class CommentSerializerTest extends HumHubDbTestCase
         $this->assertTrue($comment->save(), implode(' ', $comment->getFirstErrors()));
 
         return $comment;
+    }
+
+    private function createFile(string $name): File
+    {
+        $file = new File([
+            'guid' => UUID::v4(),
+            'file_name' => $name,
+            'hash_sha1' => 'xxx',
+            'mime_type' => 'image/png',
+            'size' => 1024,
+        ]);
+
+        try {
+            $file->save();
+        } catch (Throwable) {
+            // Need to catch since hash saving will fail
+        }
+
+        return $file;
+    }
+
+    /**
+     * The attachment list is what the legacy ShowFiles widget lists: a file the text embeds
+     * is shown by the text, not a second time as an attachment.
+     */
+    public function testFilesAreTheAttachmentsNotTheEmbeddedOnes()
+    {
+        $this->becomeUser('User2');
+        $embedded = $this->createFile('embedded.png');
+        $attached = $this->createFile('attached.png');
+
+        $comment = $this->createComment('![A picture](file-guid:' . $embedded->guid . ' "embedded.png")');
+        $comment->fileManager->attach($attached);
+
+        $files = CommentSerializer::comment(Comment::findOne($comment->id))['files'];
+
+        $this->assertSame([$attached->guid], array_column($files, 'guid'));
+        $this->assertSame([$embedded->guid, $attached->guid], array_column($comment->fileManager->findAll(), 'guid'), 'Both files are attached to the comment');
     }
 
     public function testCommentShape()
