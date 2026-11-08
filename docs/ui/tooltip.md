@@ -2,7 +2,7 @@
 
 > Found in the design: every icon button, truncated names (files, tables), counters, chips that
 > filter ("Filter by Marketing")
-> · Core: Bootstrap 5 tooltips via `humhub.ui.additions` (`.tt`, `data-bs-toggle="tooltip"`,
+> · Core: Bootstrap 5 tooltips via `humhub.ui.tooltip` (`.tt`, `data-bs-toggle="tooltip"`,
 > `Button::tooltip()`)
 > · Technology: **Both** (one shared tooltip for PHP and Vue markup)
 

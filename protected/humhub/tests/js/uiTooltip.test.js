@@ -92,6 +92,14 @@ describe('ui.tooltip', () => {
         expect(reachedBody).toBe(false);
     });
 
+    it('removes orphaned tooltip elements on a click and keeps referenced ones', () => {
+        document.body.insertAdjacentHTML('beforeend', '<div class="tooltip show" id="tooltip-orphan">o</div>'
+            + '<div class="tooltip show" id="tooltip-live">l</div><button id="ref" aria-describedby="tooltip-live">r</button>');
+        document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        expect(byId('tooltip-orphan')).toBeNull();
+        expect(byId('tooltip-live')).not.toBeNull();
+    });
+
     it('lets Escape through when no tooltip is shown', () => {
         let reachedBody = false;
         document.body.addEventListener('keydown', () => { reachedBody = true; }, { once: true });

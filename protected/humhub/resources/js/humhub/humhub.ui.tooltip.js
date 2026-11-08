@@ -44,6 +44,18 @@ humhub.module('ui.tooltip', function (module, require, $) {
         return hidden;
     };
 
+    /**
+     * Removes tooltip elements whose trigger left the document (replaced by ajax, or removed while
+     * it was focused, which fires no focusout), as the old click handler swept every tooltip away
+     */
+    var removeOrphans = function () {
+        document.querySelectorAll('.tooltip').forEach(function (tip) {
+            if (!tip.id || !document.querySelector('[aria-describedby~="' + tip.id + '"]')) {
+                tip.remove();
+            }
+        });
+    };
+
     var init = function () {
         // The first hover happened before Bootstrap could listen, so show it by hand once
         document.addEventListener('mouseover', function (e) {
@@ -78,6 +90,7 @@ humhub.module('ui.tooltip', function (module, require, $) {
         // A click dismisses every tooltip, as the old ui.additions handler did, but through Bootstrap so its state stays right
         document.addEventListener('click', function () {
             hideAll();
+            removeOrphans();
         });
     };
 
