@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #<PR>: The richtext editor's toolbar is one Tab stop; the arrow keys move between its buttons
 - Fix #8730: The icon of a module's stream entry, which links to the permalink, has an accessible name
 - Enh #8728: A deleted stream entry or comment hands the keyboard focus to the next one, an edited entry keeps it
 - Enh #8727: In the richtext editor, Tab after the last table cell and Shift+Tab before the first leave the table instead of adding a row
