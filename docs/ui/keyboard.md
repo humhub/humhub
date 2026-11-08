@@ -24,10 +24,11 @@ messages are announced (4.1.3).
 - **What hover shows, focus shows.** A control that appears when the pointer rests on its
   container (the ⋮ menu of a comment, the actions of a tile) also appears while the focus is
   inside the container (`:focus-within`), and stays while its menu is open
-  (`:has(.dropdown-menu.show)`). The container holds a focusable element before the control (the
-  name link), so Tab enters the container before it reaches the control. A control hidden with
-  `display: none` or `visibility: hidden` is out of the tab order, which is fine only with these
-  two selectors in place. On touch devices (`hover: none`) the control is always visible.
+  (`:has(.dropdown-menu.show)`). Either the control stays in the tab order, hidden by
+  `opacity: 0`, and shows the moment it takes the focus; or it leaves the tab order
+  (`display: none`, `visibility: hidden`) and then its container holds a focusable element before
+  it (the name link), so Tab enters the container first. The hiding applies under
+  `@media (hover: hover)` only: a touch screen always shows the control.
 - **The order is the visual order.** No positive `tabindex`. After a full page load the first stop
   is the skip link to the main content, then the top bar, then the content. After a pjax swap the
   focus is on the loaded content, so Tab continues there instead of at the top of the page.
@@ -137,7 +138,7 @@ tooltip.
 
 | Gap | Change |
 |---|---|
-| The comment ⋮ menu is `visibility: hidden` until `.single-comment:hover`, and so out of the tab order | `:focus-within:not(:has(.single-comment:focus-within))` next to the `:hover` rule in `_comment.scss`, the same guard as the hover rule so a focused reply does not show its parent's menu; always visible on `hover: none` |
+| The comment ⋮ menu is `visibility: hidden` until `.single-comment:hover`, and so out of the tab order | `opacity: 0` under `@media (hover: hover)` instead, so the toggle stays in the tab order and a touch screen always shows it; shown on `:hover` and on `:focus-within`, both with the reply guard `:not(:has(.single-comment:focus-within))`, so a focused reply does not show its parent's menu (`_comment.scss`) |
 | Tooltips are initialised on `mouseover` only, so the keyboard never sees one | A `humhub.ui.tooltip` module replaces the block in `humhub.ui.additions`: hover, `focusin` under keyboard modality, hidden on `focusout` and Escape |
 | `humhub.ui.modal` leaves the focus on `<body>` after a dialog closes | A `humhub.ui.focus` module (`restore()`, `handOver()`, `focusContent()`); the modal remembers the trigger on `show.bs.modal` and restores it on `hidden.bs.modal`, else the dropdown toggle, else the content |
 | The top bars are `<div>`s: no `<nav>`, no `<header>`, no `aria-current` | Landmark tags in `views/layouts/main.php` (ids and classes unchanged), `aria-current="page"` in `TopMenu` and `LeftNavigation`; the Enterprise theme layout follows |
