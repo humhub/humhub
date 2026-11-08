@@ -60,6 +60,33 @@ class KeyboardCest
             'the focus is back on the menu toggle, was: ' . $I->grabActiveElement());
     }
 
+    public function testTooltipShowsOnKeyboardFocusAndHidesOnEscape(AcceptanceTester $I)
+    {
+        $I->wantToTest('that a tooltip appears on keyboard focus and Escape hides it');
+        $this->openSpaceStream($I);
+
+        // The space page has no focusable tooltip control in a fixed place, so add one before the skip link
+        $I->executeJS('document.body.insertAdjacentHTML("afterbegin", '
+            . '\'<button id="kb-tooltip" class="btn" data-bs-toggle="tooltip" data-bs-title="Keyboard tooltip">t</button>\');');
+
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        Assert::assertStringContainsString('button#kb-tooltip', $I->grabActiveElement());
+        $I->waitForElementVisible('.tooltip.show', 3);
+        $I->see('Keyboard tooltip', '.tooltip.show');
+
+        // Enter clicks the button: the click dismisses the tooltip through Bootstrap, so Escape is not swallowed later
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementNotVisible('.tooltip', 3);
+
+        // Focus it again by keyboard (the modality is still keyboard): the tooltip comes back, Escape hides it
+        $I->executeJS('document.activeElement.blur(); document.getElementById("kb-tooltip").focus();');
+        $I->waitForElementVisible('.tooltip.show', 3);
+
+        $I->pressKeyboard(WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('.tooltip', 3);
+        Assert::assertStringContainsString('button#kb-tooltip', $I->grabActiveElement());
+    }
+
     private function openSpaceStream(AcceptanceTester $I): void
     {
         $I->amUser1();

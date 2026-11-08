@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8724: Tooltips appear on keyboard focus as on hover, hide on Escape and when the focus leaves (`humhub.ui.tooltip`)
 - Enh #8723: A dialog gives the keyboard focus back to the element that opened it, or to the dropdown toggle or the content when that element is gone (`humhub.ui.focus`)
 - Enh #8722: The top bars are a header and a navigation landmark, the active menu link carries `aria-current`
 - Enh #8721: Keyboard rules of the UI styleguide (`docs/ui/keyboard.md`), a Keyboard section in the principles
