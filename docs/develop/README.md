@@ -74,6 +74,7 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 Guidelines and widget conventions for meeting WCAG 2.1 AA conformance.
 
 - [Icon-only buttons: accessible name via tooltip](wcag/button-icon-aria-label.md) — `aria-label` derivation, tooltip requirement, dev-mode warning
+- [Keyboard](../ui/keyboard.md) — the keyboard rules of the UI styleguide: reach, landmarks, focus handling, Escape, tooltips, the editor
 
 ## Theming
 

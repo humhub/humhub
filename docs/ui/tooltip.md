@@ -47,7 +47,9 @@ own. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 - **Markup:** `data-bs-toggle="tooltip"` with `data-bs-title` (or `title`), as today. Icon
   buttons get it from `Button::iconOnly()` and `IconButton.vue`.
 - **Options:** `delay: { show: 500, hide: 0 }` (`$tooltip-delay` as a CSS variable read by the
-  JS), `trigger: 'hover focus'` with a `:focus-visible` check, no tooltip on touch.
+  JS), `trigger: 'hover'` plus the keyboard focus from `humhub.ui.tooltip`, which shows a tooltip
+  on `focusin` only while `humhub.ui.appearance` reports keyboard modality, hides it on `focusout`
+  and on Escape ([Keyboard](keyboard.md#popups-and-escape)); no tooltip on touch.
 - **Truncated text:** `data-tooltip="overflow"` creates the tooltip only while the text is cut
   off.
 - **File:** `_tooltip.scss`, behind `$prev-tooltip`.
@@ -65,11 +67,12 @@ native `title` attribute instead (e.g. `PageToolbar` actions).
 
 | Gap | Proposal |
 |---|---|
-| Delay, quick follow-up, keyboard-only focus, no touch | One shared tooltip, bound by delegation, that reads `data-tooltip` (or the existing Bootstrap attributes) from PHP and Vue markup alike |
+| Initialised on `mouseover` only, so a keyboard user never sees one | `humhub.ui.tooltip`: the same delegated binding on hover and on keyboard focus, hidden on `focusout` and Escape ([Keyboard](keyboard.md#popups-and-escape)) |
+| Delay, quick follow-up, no touch | One shared tooltip, bound by delegation, that reads `data-tooltip` (or the existing Bootstrap attributes) from PHP and Vue markup alike |
 | Vue uses native `title` | Switch to the shared tooltip, so icon buttons look the same everywhere |
 | Truncated text | `data-tooltip="overflow"`: show only when the text is cut off |
 
 ## Open questions
 
 1. **Keep Bootstrap tooltips** and restyle them, or replace them with one small shared
-   implementation? Bootstrap has no quick follow-up and no keyboard-only focus.
+   implementation? Bootstrap has no quick follow-up; the keyboard focus comes from `humhub.ui.tooltip`.
