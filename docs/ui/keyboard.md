@@ -121,10 +121,11 @@ Automated: the internal **Accessibility Audit** module (`humhub/a11yAudit`, axe-
 develop instance. The rules that matter for the keyboard are `button-name`, `link-name`,
 `landmark-one-main`, `landmark-no-duplicate-banner`, `region`, `tabindex`,
 `scrollable-region-focusable`, `aria-allowed-attr` and `aria-required-children`; the three views
-stay free of them. The acceptance test `KeyboardCest` (content module) covers four scenarios: the
-skip link, the stream entry menu, the focus after a dialog closes, and the comment menu by Tab.
-Vitest covers the JS: tooltips on focus and Escape, the modal's focus return, Enter and Space in
-the action framework, Tab in editor tables.
+stay free of them. The acceptance test `KeyboardCest` (content module) covers the skip link, the
+focus after a dialog closes, tooltips on keyboard focus, the comment menu, Enter and Space on a
+`data-action-click` element, and the focus after a stream entry is deleted. Vitest covers the JS:
+the focus helper (`ui.focus`), tooltips on focus and Escape, Tab in editor tables, and the comment
+island's hand-over.
 
 ## Implementation in core
 
