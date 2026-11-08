@@ -37,8 +37,8 @@ use Exception;
  *  - delete goes through the island's own `CommentDeleteModal` (a native `UiModal`
  *    teleported into `document.body`, so `.modal.show` - see `CommentEntry.vue`'s
  *    `onDelete()`), not the legacy `#globalModalConfirm` dialog `stream\StreamCest` uses;
- *    the entry's `.preferences` menu toggle stays `visibility: hidden` until its comment
- *    is hovered (`_comment.scss`).
+ *    the entry's `.preferences` menu toggle stays `opacity: 0` until its comment
+ *    is hovered or holds the focus (`_comment.scss`).
  *
  * Every test method starts from the same clean fixture state: this suite enables
  * `DynamicFixtureHelper` (see `comment/tests/codeception/acceptance.suite.yml`), which
@@ -123,8 +123,8 @@ class CommentCest
 
         $comment = $this->createComment($I, 'Test comment');
 
-        // The entry's menu toggle is `visibility: hidden` until its comment is hovered
-        // (see `_comment.scss`), so a plain click would not be interactable.
+        // The entry's menu toggle is `opacity: 0` until its comment is hovered
+        // or holds the focus (see `_comment.scss`), so a plain click would not be interactable.
         $I->moveMouseOver($comment);
         $I->click('.preferences .dropdown-toggle', $comment);
         // `Edit`/`Delete` only appear once the entry's permissions have been fetched
