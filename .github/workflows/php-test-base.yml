@@ -138,7 +138,7 @@ jobs:
                   -f protected/humhub/modules/ldap/tests/codeception/_data/init.ldif
 
             - name: Run test server
-              run: php --server 127.0.0.1:8080 --docroot public public/index-test.php &>/tmp/phpserver.log &
+              run: php -d max_execution_time=60 --server 127.0.0.1:8080 --docroot public public/index-test.php &>/tmp/phpserver.log &
 
             - name: Valdiate test server
               run: sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php

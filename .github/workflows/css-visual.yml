@@ -127,7 +127,7 @@ jobs:
             - name: Start ChromeDriver and the test server
               run: |
                 chromedriver --port=4444 --url-base=/wd/hub --allowed-ips=127.0.0.1 &>/tmp/chromedriver.log &
-                php --server 127.0.0.1:8080 --docroot public public/index-test.php &>/tmp/phpserver.log &
+                php -d max_execution_time=60 --server 127.0.0.1:8080 --docroot public public/index-test.php &>/tmp/phpserver.log &
                 sleep 5 && curl --fail --head http://127.0.0.1:8080/index-test.php
 
             - name: Build the test actors
