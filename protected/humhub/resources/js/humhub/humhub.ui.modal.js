@@ -603,7 +603,7 @@ humhub.module('ui.modal', function (module, require, $) {
             if (!this.contains(document.activeElement)) {
                 // Opened from another dialog (a confirm): keep that dialog's trigger, its button is about to vanish
                 var $from = $(document.activeElement).closest('.modal');
-                $(this).data('hh-trigger', ($from.length && $from.data('hh-trigger')) || document.activeElement);
+                $(this).data(focus.TRIGGER_KEY, ($from.length && $from.data(focus.TRIGGER_KEY)) || document.activeElement);
             }
         });
 
@@ -619,8 +619,8 @@ humhub.module('ui.modal', function (module, require, $) {
             _setModalsAndBackdropsOrder();
             $(this).attr('aria-hidden', 'true');
 
-            var trigger = $(this).data('hh-trigger');
-            $(this).removeData('hh-trigger');
+            var trigger = $(this).data(focus.TRIGGER_KEY);
+            $(this).removeData(focus.TRIGGER_KEY);
             // A stacked dialog that is still open keeps the focus (see _setModalsAndBackdropsOrder)
             if (!$('.modal.show').length) {
                 focus.restore(trigger, this);

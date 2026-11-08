@@ -284,6 +284,7 @@ import CommentControls from './CommentControls.vue';
 import CommentDeleteModal from './CommentDeleteModal.vue';
 import CommentForm from './CommentForm.vue';
 import { deleteComment, fetchComment, fetchCommentPermissions, fetchWindow, isAdminDelete } from './commentApi.js';
+import { handOverFocus } from '../focusHandOver.js';
 
 // RichTextOutput/UserImage are NOT imported here — RichTextOutput lives at
 // protected/humhub/vue/ (core component set) and UserImage at
@@ -493,9 +494,16 @@ export default {
             this.ensureLikeStates([comment]);
         },
         onChildRemoved(id) {
+            const index = this.childItems.findIndex((child) => child.id === id);
+            const neighbour = index === -1 ? null : (this.childItems[index + 1] || this.childItems[index - 1] || null);
+            const removed = document.getElementById('comment_' + id);
+
             this.childItems = this.childItems.filter((child) => child.id !== id);
             this.childTotal = Math.max(0, this.childTotal - 1);
             this.pruneCommentRevision(id);
+
+            // A removed reply hands the focus to its sibling, else to this comment's author link
+            this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el.querySelector('.comment-heading a')));
         },
         onChildUpdated({ id, comment }) {
             const index = this.childItems.findIndex((child) => child.id === id);

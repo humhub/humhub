@@ -156,6 +156,25 @@ describe('ui.focus', () => {
             + '<div class="entry" id="e3"><a href="#" id="a3">3</a></div>'
             + '</div>');
 
+        it('makes the neighbour the return target of an open dialog whose trigger is in the entry', () => {
+            list();
+            document.body.insertAdjacentHTML('beforeend', '<div id="dlg" class="modal show"><button id="confirm">Delete</button></div>');
+            jQuery('#dlg').data('hh-trigger', byId('a2'));
+            byId('confirm').focus();
+            expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(false);
+            expect(document.activeElement.id).toBe('confirm');
+            expect(jQuery('#dlg').data('hh-trigger')).toBe(byId('a3'));
+        });
+
+        it('leaves the return target of an open dialog alone when it is elsewhere', () => {
+            list();
+            document.body.insertAdjacentHTML('beforeend', '<div id="dlg" class="modal show"><button id="confirm">Delete</button></div>');
+            jQuery('#dlg').data('hh-trigger', byId('a1'));
+            byId('confirm').focus();
+            expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(false);
+            expect(jQuery('#dlg').data('hh-trigger')).toBe(byId('a1'));
+        });
+
         it('moves to the next entry', () => {
             list();
             byId('a2').focus();
@@ -183,12 +202,53 @@ describe('ui.focus', () => {
             expect(document.activeElement.id).toBe('a3');
         });
 
-        it('acts while the focus is in a dialog that is closing', () => {
+        it('only updates the return target while the focus is in a dialog that is closing', () => {
             list();
-            document.body.insertAdjacentHTML('beforeend', '<div class="modal"><button id="confirm">Delete</button></div>');
+            document.body.insertAdjacentHTML('beforeend', '<div id="dlg" class="modal"><button id="confirm">Delete</button></div>');
+            jQuery('#dlg').data('hh-trigger', byId('a2'));
             byId('confirm').focus();
-            expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(true);
-            expect(document.activeElement.id).toBe('a3');
+            expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(false);
+            expect(document.activeElement.id).toBe('confirm');
+            expect(jQuery('#dlg').data('hh-trigger')).toBe(byId('a3'));
+        });
+
+        it('makes the neighbour the return target when the dialog trigger is gone', () => {
+            list();
+            document.body.insertAdjacentHTML('beforeend', '<div id="dlg" class="modal show"><button id="confirm">Delete</button></div>');
+            const gone = document.createElement('button');
+            jQuery('#dlg').data('hh-trigger', gone);
+            byId('confirm').focus();
+            expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(false);
+            expect(jQuery('#dlg').data('hh-trigger')).toBe(byId('a3'));
+        });
+
+        it('leaves a hidden trigger of another entry alone', () => {
+            list();
+            byId('a1').hidden = true;
+            document.body.insertAdjacentHTML('beforeend', '<div id="dlg" class="modal show"><button id="confirm">Delete</button></div>');
+            jQuery('#dlg').data('hh-trigger', byId('a1'));
+            byId('confirm').focus();
+            expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(false);
+            expect(jQuery('#dlg').data('hh-trigger')).toBe(byId('a1'));
+        });
+
+        it('falls back to the entry itself when the neighbour has no control', () => {
+            html('<div id="list"><div class="entry" id="e1"><a href="#" id="a1">1</a></div><div class="entry" id="e2">plain</div></div>');
+            byId('a1').focus();
+            expect(focus.handOver(byId('e1'), '.entry', byId('list'))).toBe(true);
+            expect(document.activeElement.id).toBe('e2');
+        });
+
+        it('falls back to the content when there is neither neighbour nor fallback', () => {
+            html('<main id="main-content"><div id="list"><div class="entry" id="e1"><a href="#" id="a1">1</a></div></div></main>');
+            byId('a1').focus();
+            expect(focus.handOver(byId('e1'), '.entry', null)).toBe(true);
+            expect(document.activeElement.id).toBe('main-content');
+        });
+
+        it('returns false for a detached element', () => {
+            const detached = document.createElement('div');
+            expect(focus.handOver(detached, '.entry', null)).toBe(false);
         });
 
         it('does nothing while the focus is in an open dialog', () => {
