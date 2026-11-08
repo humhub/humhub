@@ -125,8 +125,9 @@ feed, and a text field or editor keeps them.
 - In a table, Tab moves to the next cell and Shift+Tab to the previous one. After the last cell,
   Tab places the cursor after the table; before the first cell, Shift+Tab places it before. A
   row is added from the table menu, not by Tab.
-- The toolbar is a `role="toolbar"`: the arrow keys move between its buttons, Enter or ArrowDown
-  opens a dropdown, Escape closes it. The mention and emoji suggestions take ↑/↓ and Enter, and
+- The toolbar is a `role="toolbar"` and one Tab stop: only one of its buttons is in the tab
+  order, the arrow keys move between them, Enter or ArrowDown opens a dropdown, Escape closes it,
+  and Tab leaves the toolbar for the text. The mention and emoji suggestions take ↑/↓ and Enter, and
   Escape closes them.
 
 ## Checking

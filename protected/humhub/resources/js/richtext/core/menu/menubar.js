@@ -369,6 +369,7 @@ class MenuBarView {
         });
 
         this.$.data('menuBarInstance', this);
+        this.applyRovingTabindex();
 
         this.update();
 
@@ -400,7 +401,36 @@ class MenuBarView {
             }
         }
 
+        this.applyRovingTabindex();
         this.context.event.trigger('afterMenuBarUpdate', this);
+    }
+
+    /**
+     * The toolbar is one Tab stop: a single button keeps `tabindex="0"` and the arrow keys move
+     * between the others (docs/ui/keyboard.md, "The editor"). Dropdown entries keep their own
+     * tabindex, they are reached through their dropdown. Called after every update, as buttons
+     * come and go with the selection.
+     */
+    applyRovingTabindex() {
+        const trigger = '.' + buildMenuClass('trigger');
+        const $buttons = this.$.find(trigger)
+            .not('.' + buildMenuClass('dropdown-menu') + ' ' + trigger)
+            .not('.' + buildMenuClass('submenu') + ' ' + trigger);
+        const $shown = $buttons.not('.d-none');
+        if (!$shown.length) {
+            return;
+        }
+
+        let $active = $shown.filter(':focus');
+        if (!$active.length) {
+            $active = $shown.filter('[tabindex="0"]').first();
+        }
+        if (!$active.length) {
+            $active = $shown.first();
+        }
+
+        $shown.attr('tabindex', -1);
+        $active.attr('tabindex', 0);
     }
 
     focusPrev() {
