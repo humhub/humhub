@@ -282,8 +282,10 @@ class View extends \yii\web\View
 
         if (!Yii::$app->request->isAjax) {
             // The skip links (docs/ui/keyboard.md, "Reaching everything"); `_base.scss` hides one whose target the
-            // page lacks
+            // page lacks. The content is the column beside the page's own menu (space, profile, account, admin)
+            // when there is one, else the main area, so only one of the first two shows
             $skipLinks = [
+                '#layout-content-column' => Yii::t('base', 'Skip to main content'),
                 '#main-content' => Yii::t('base', 'Skip to main content'),
                 '#topbar-second' => Yii::t('base', 'Skip to navigation'),
                 '#layout-sidebar' => Yii::t('base', 'Skip to sidebar'),

@@ -2721,7 +2721,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   (`[data-stream-content]`) is `role="feed"` while it has entries and `aria-busy` while loading. The new `humhub.ui.feed` moves
   the focus with PageDown/PageUp and Ctrl+End/Home in every `role="feed"` and asks for more at the end
   (`humhub:feed:more`, bubbling: a listener acts only when `evt.target` is its own feed); a module's own
-  list gets the keys by rendering the roles (`docs/ui/keyboard.md`, "Feeds"). The skip links at the top of the page lead to `#main-content`, `#topbar-second` and
+  list gets the keys by rendering the roles (`docs/ui/keyboard.md`, "Feeds"). The skip links at the top of the page lead to `#layout-content-column` (the content column beside a space,
+  profile, account or admin menu; `#main-content` when the page has none), `#topbar-second` and
   `#layout-sidebar` (the `<aside class="layout-sidebar-container">` of the core layouts); a theme with its
   own layout keeps these ids, a link without a target on the page is hidden by `_base.scss`.
 - **Enter and Space trigger `data-action-click`.** On an element that is neither a link nor a button,
