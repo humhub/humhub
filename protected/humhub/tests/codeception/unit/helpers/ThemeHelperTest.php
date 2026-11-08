@@ -57,6 +57,23 @@ class ThemeHelperTest extends HumHubDbTestCase
     }
 
     /**
+     * The core variables as colours, derived ones (`$hh-page-bg: mix(black, $body-bg, 7%)`) resolved, as the mail
+     * layouts read them (`MailStyleHelper`)
+     */
+    public function testCoreVariablesResolveToColors()
+    {
+        $variables = ThemeHelper::getAllVariables(ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME), false);
+
+        $this->assertEquals('#555', $variables['body-color']);
+        $this->assertEquals('#fff', $variables['body-bg']);
+        $this->assertEquals('#ededed', $variables['hh-page-bg']);
+        // The former names (deprecated since 1.20)
+        $this->assertEquals('#555', $variables['text-color-main']);
+        $this->assertEquals('#ededed', $variables['background-color-page']);
+        $this->assertEquals('#fff', $variables['background-color-main']);
+    }
+
+    /**
      * A theme colour as text is its `--hh-{color}-fg`, in the utilities, the components and the high contrast tokens
      */
     public function testBuildCssWiresTheThemeColorsAsText()
