@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #<PR>: The top bars are a header and a navigation landmark, the active menu link carries `aria-current`
 - Enh #8721: Keyboard rules of the UI styleguide (`docs/ui/keyboard.md`), a Keyboard section in the principles
 - Enh #8718: Administration → Appearance → Accessibility sets whether the richtext editor asks for the alt text of an uploaded image: off, optional or required
 - Fix #8718: A message without translation in a JavaScript translation category was rendered empty instead of in English

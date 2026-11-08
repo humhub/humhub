@@ -18,7 +18,7 @@ use humhub\widgets\menu\MenuEntry;
     <?php foreach ($entries as $e => $entry) : ?>
         <?php $entry->setIsActive($e === 0) ?>
         <li class="nav-item">
-            <?= $entry->render(['class' => 'nav-link' . ($entry->getIsActive() ? ' active' : '')]) ?>
+            <?= $entry->render(['class' => 'nav-link' . ($entry->getIsActive() ? ' active' : ''), 'aria-current' => null]) ?>
         </li>
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
             <li class="nav-item content-create-menu-more">
@@ -29,7 +29,7 @@ use humhub\widgets\menu\MenuEntry;
                             continue;
                         } ?>
                         <li>
-                            <?= $entry->render(['class' => 'dropdown-item']) ?>
+                            <?= $entry->render(['class' => 'dropdown-item', 'aria-current' => null]) ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>

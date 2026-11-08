@@ -47,7 +47,8 @@ humhub.module('ui.navigation', function (module, require, $) {
     };
 
     var setActiveItem = function ($item) {
-        $('#top-menu-nav a.nav-link').removeClass('active');
+        // aria-current follows the active class (docs/ui/keyboard.md, "Landmarks and names")
+        $('#top-menu-nav a.nav-link').removeClass('active').removeAttr('aria-current');
 
         if (!$item || !$item.length) {
             return;
@@ -55,8 +56,8 @@ humhub.module('ui.navigation', function (module, require, $) {
 
         $item.each(function () {
             var $this = $(this);
-            $this.closest('ul').find('a.nav-link').removeClass('active');
-            $this.closest('a.nav-link').addClass('active');
+            $this.closest('ul').find('a.nav-link').removeClass('active').removeAttr('aria-current');
+            $this.closest('a.nav-link').addClass('active').attr('aria-current', 'page');
             $this.trigger('blur');
         });
     };
