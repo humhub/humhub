@@ -173,7 +173,8 @@ as on hover and hides them on Escape; the comment menu in the tab order, shown w
 holds the focus; Enter and Space on a `data-action-click` element that is no link or button; Tab
 leaving an editor table; the focus after a pjax swap and after "Show more" in the stream; the Vue
 dialog, the pickers, the space chooser and the item browser following the rules; the editor toolbar
-with keyboard tests; icon-only buttons deriving their `aria-label` from the tooltip.
+with keyboard tests; icon-only buttons deriving their `aria-label` from the tooltip; the create form expanding when the keyboard
+focus enters it.
 
 **Gaps:** none known in core. The stream entry's own menu is always visible, so it needs no
 hover rule.

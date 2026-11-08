@@ -280,6 +280,23 @@ class KeyboardCest
             'the focus is inside another stream entry, was: ' . $I->grabActiveElement());
     }
 
+    public function testTheCreateFormExpandsOnKeyboardFocus(AcceptanceTester $I)
+    {
+        $I->wantToTest('that the create-content form expands when the keyboard focus enters it, and the focus stays in the editor');
+        $this->openSpaceStream($I);
+
+        $editor = '#contentFormBody .ProseMirror[contenteditable="true"]';
+        $I->waitForElementVisible($editor, 10);
+        Assert::assertFalse((bool)$I->executeJS('return document.getElementById("contentFormBody").classList.contains("contentForm-expanded");'),
+            'the form is collapsed at first');
+
+        $this->focus($I, $editor);
+        $I->waitForElementVisible('#contentFormBody.contentForm-expanded', 5);
+        $I->waitForElementVisible('#contentFormBody .contentForm_options', 5);
+        Assert::assertTrue((bool)$I->executeJS('return document.activeElement === document.querySelector(' . json_encode($editor) . ');'),
+            'the editor keeps the focus, was: ' . $I->grabActiveElement());
+    }
+
     private function openSpaceStream(AcceptanceTester $I): void
     {
         $I->amUser1();
