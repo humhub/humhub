@@ -421,12 +421,27 @@ class AcceptanceTester extends BaseTester
 
     /**
      * Presses keys on whatever has the focus, without focusing anything first (unlike `pressKey()`, which
-     * focuses its element). Takes `WebDriverKeys` constants and characters.
+     * focuses its element). Takes `WebDriverKeys` constants and characters; a modifier (`SHIFT`, `CONTROL`,
+     * `ALT`, `META`) is held down for the keys that follow it, e.g. `pressKeyboard(WebDriverKeys::SHIFT, WebDriverKeys::TAB)`.
      */
     public function pressKeyboard(string ...$keys): void
     {
-        $this->executeInSelenium(function (RemoteWebDriver $webDriver) use ($keys) {
-            $webDriver->action()->sendKeys(null, implode('', $keys))->perform();
+        $modifiers = [WebDriverKeys::SHIFT, WebDriverKeys::CONTROL, WebDriverKeys::ALT, WebDriverKeys::META];
+        $this->executeInSelenium(function (RemoteWebDriver $webDriver) use ($keys, $modifiers) {
+            $actions = $webDriver->action();
+            $held = [];
+            foreach ($keys as $key) {
+                if (in_array($key, $modifiers, true)) {
+                    $actions->keyDown(null, $key);
+                    $held[] = $key;
+                } else {
+                    $actions->sendKeys(null, $key);
+                }
+            }
+            foreach (array_reverse($held) as $key) {
+                $actions->keyUp(null, $key);
+            }
+            $actions->perform();
         });
     }
 

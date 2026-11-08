@@ -87,6 +87,39 @@ class KeyboardCest
         Assert::assertStringContainsString('button#kb-tooltip', $I->grabActiveElement());
     }
 
+    public function testCommentMenuIsReachableByKeyboard(AcceptanceTester $I)
+    {
+        $I->wantToTest('that the comment menu toggle shows while the focus is in the comment and is reached by Shift+Tab');
+        $this->openSpaceStream($I);
+
+        $I->click('Comment', self::POST);
+        $richtext = self::POST . ' .comment-container .ProseMirror[contenteditable="true"]';
+        $I->waitForElementVisible($richtext, 10);
+        $I->fillField($richtext, 'Keyboard test comment');
+        $I->click('.btn-comment-submit', self::POST . ' .comment-container');
+        $entry = self::POST . ' .comment-container .single-comment';
+        $I->waitForElementVisible($entry, 10);
+        $comment = '#' . $I->grabAttributeFrom($entry, 'id');
+        $toggle = $comment . ' > .preferences .dropdown-toggle';
+        $opacity = 'return getComputedStyle(document.querySelector(' . json_encode($toggle) . ')).opacity;';
+        $isToggleFocused = 'return document.activeElement === document.querySelector(' . json_encode($toggle) . ');';
+
+        // Headless Chrome reports no hover capability, so the toggle is always shown there and the hidden state
+        // is only covered by a manual check in a desktop browser (docs/ui/keyboard.md, "Checking")
+        if ($I->executeJS('return matchMedia("(hover: hover)").matches;')) {
+            Assert::assertSame('0', $I->executeJS($opacity), 'hidden without hover or focus');
+        }
+
+        $this->focus($I, $comment . ' .comment-heading a');
+        Assert::assertSame('1', $I->executeJS($opacity), 'shown while the focus is in the comment');
+
+        for ($i = 0; $i < 3 && !$I->executeJS($isToggleFocused); $i++) {
+            $I->pressKeyboard(WebDriverKeys::SHIFT, WebDriverKeys::TAB);
+        }
+        Assert::assertTrue((bool)$I->executeJS($isToggleFocused), 'Shift+Tab reaches the toggle, last stop: ' . $I->grabActiveElement());
+        Assert::assertSame('1', $I->executeJS($opacity), 'shown while it holds the focus');
+    }
+
     private function openSpaceStream(AcceptanceTester $I): void
     {
         $I->amUser1();
