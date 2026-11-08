@@ -86,9 +86,16 @@ tinted surface; a theme can still set each of them.
 | A separator, the border of a box | `--bs-border-color` | `.border` | `#ddd` | `#3f3f3f` |
 | The border of a control (checkbox, radio, switch), a neutral placeholder fill | `--hh-border-color-strong` | | `#d7d7d7` | `#393939` |
 | A status border | `--bs-{color}-border-subtle` | `.border-{color}-subtle` | | |
-| A focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width` | `.focus-ring` | primary at 25 %, `0.25rem` | same |
+| The keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 
-A focus ring is `box-shadow: 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color)`.
+The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color)` with
+`outline-offset: var(--hh-focus-ring-offset)`, drawn by the mixin `hh-focus-ring`
+(`hh-focus-ring(true)` draws it inside the edge, for a box that clips or a row that fills its box).
+`_base.scss` draws it on every `:focus-visible`; a component only adds it where Bootstrap turned it
+off (`outline: 0`), or redefines `--bs-focus-ring-color` on a surface in another colour (the top
+bar: `--hh-topbar-color`). High contrast makes it 3px in `--bs-emphasis-color`. A text field shows
+it after Tab only; a click shows the field's glow (`$input-focus-box-shadow`): `ui.appearance` keeps
+`data-hh-input-modality` (`keyboard`, `pointer`) on `<html>`.
 
 The values are those of the core theme. A theme sets them by the Sass variable of the token's
 name: `$body-bg` (and `$body-bg-dark`) for `--bs-body-bg`, `$hh-page-bg` for `--hh-page-bg`,

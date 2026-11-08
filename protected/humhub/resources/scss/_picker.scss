@@ -117,11 +117,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         &:hover {
             color: var(--hh-danger-fg);
         }
-
-        &:focus-visible {
-            outline: 2px solid var(--bs-accent);
-            outline-offset: 1px;
-        }
     }
 
     .select-menu.has-selection .select-menu-clear {
@@ -189,8 +184,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .select-menu-drawer:focus-visible .select-menu-option.is-focused {
-        outline: 2px solid var(--bs-accent);
-        outline-offset: -2px;
+        @include hh-focus-ring(true);
     }
 
     // Searchable picker (FilterPicker, PickerInput): a `.select-menu` whose button is a `.form-control` field
@@ -216,6 +210,12 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     .picker.is-open .picker-field {
         border-color: $input-focus-border-color;
         box-shadow: $input-focus-box-shadow;
+    }
+
+    // Keyboard focus: the ring around the field instead of the glow, as `_form.scss` draws it on a text field
+    :root:not([data-hh-input-modality="pointer"]) .picker-field:has(.picker-input:focus-visible) {
+        @include hh-focus-ring;
+        box-shadow: $input-box-shadow;
     }
 
     .picker.is-disabled .picker-field {
@@ -299,11 +299,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
         &:hover {
             opacity: 1;
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--bs-accent);
-            outline-offset: 1px;
         }
 
         &:disabled {
@@ -474,11 +469,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
         &:hover {
             color: var(--hh-danger-fg);
-        }
-
-        &:focus-visible {
-            outline: 2px solid var(--bs-accent);
-            outline-offset: 1px;
         }
     }
 }

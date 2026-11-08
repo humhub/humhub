@@ -149,6 +149,40 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEquals($file->object_model, Post::class);
     }
 
+    /**
+     * A file the text shows is taken out of the stream, so it is not listed as an attachment too
+     * (the legacy editor's upload sets the flag on upload, the API upload does not).
+     */
+    public function testProcessFileIsTakenOutOfTheStream()
+    {
+        $post = Post::findOne(['id' => 1]);
+
+        $guid = UUID::v4();
+        $file = new File([
+            'guid' => $guid,
+            'file_name' => 'image.png',
+            'hash_sha1' => 'xxx',
+            'mime_type' => 'image/png',
+            'size' => 1024,
+            'show_in_stream' => 1,
+        ]);
+
+        try {
+            $file->save();
+        } catch (Throwable) {
+            // Need to catch since hash saving will fail
+        }
+
+        RichText::postProcess('![Alt](file-guid:' . $guid . ' "image.png")', $post);
+
+        $file->refresh();
+
+        static::assertEquals($post->id, $file->object_id);
+        static::assertEquals(0, $file->show_in_stream);
+        static::assertEmpty($post->fileManager->findStreamFiles());
+        static::assertCount(1, $post->fileManager->findStreamFiles(false));
+    }
+
     public function testProcessMultipleFiles()
     {
         $post = Post::findOne(['id' => 1]);

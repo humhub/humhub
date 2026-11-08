@@ -13,6 +13,9 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
 @if not $prev-button {
     .btn {
         --hh-btn-gap: 0.6rem;
+        // Keyboard focus: the ring of `_base.scss`, not Bootstrap's shadow in the button's colour (`.btn-ghost` has
+        // no `--bs-btn-focus-shadow-rgb` for it anyway)
+        --bs-btn-focus-box-shadow: 0 0 0 0 transparent;
 
         display: inline-flex;
         align-items: center;
@@ -28,6 +31,15 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
         &.input {
             outline: none;
         }
+
+        &:focus-visible,
+        .btn-check:focus-visible + & {
+            @include hh-focus-ring;
+        }
+    }
+
+    .btn-close:focus-visible {
+        @include hh-focus-ring;
     }
 
     // The flex gap already separates the caret
