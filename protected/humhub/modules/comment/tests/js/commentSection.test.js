@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import CommentSection from '../../vue/CommentSection.vue';
 import CommentForm from '../../vue/components/CommentForm.vue';
+import CommentList from '../../vue/components/CommentList.vue';
+import CommentEntry from '../../vue/components/CommentEntry.vue';
 import LikeButton from '../../../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../../../vue/RichTextOutput.vue';
 import DropdownMenu from '../../../../vue/DropdownMenu.vue';
@@ -1250,5 +1252,89 @@ describe('CommentSection', () => {
 
             expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalledWith(expect.stringContaining('/permissions'));
         });
+    });
+});
+
+describe('focus hand-over when a comment is deleted (docs/ui/keyboard.md)', () => {
+    const mountComments = (comments) => mount(CommentSection, {
+        ...mountOptions(),
+        attachTo: document.body,
+        props: {
+            contentId: 42,
+            initial: { results: comments, prevCount: 0, nextCount: 0, total: comments.length, rootTotal: comments.length },
+        },
+    });
+    const twoComments = () => mountComments([makeComment({ id: 1, message: 'first' }), makeComment({ id: 2, message: 'second' })]);
+    const focusAuthorOf = (id) => document.querySelector('#comment_' + id + ' .comment-heading a').focus();
+
+    it('moves the focus to the next comment when the focused one is removed', async () => {
+        const wrapper = twoComments();
+        focusAuthorOf(1);
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.closest('#comment_2')).not.toBeNull();
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the previous comment when the last one is removed', async () => {
+        const wrapper = twoComments();
+        focusAuthorOf(2);
+
+        wrapper.findComponent(CommentList).vm.removeRoot(2);
+        await flushPromises();
+
+        expect(document.activeElement.closest('#comment_1')).not.toBeNull();
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the list when the only comment is removed', async () => {
+        const wrapper = mountComments([makeComment({ id: 1 })]);
+        focusAuthorOf(1);
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.classList.contains('comment')).toBe(true);
+        wrapper.unmount();
+    });
+
+    it('acts when the focus was already lost to body', async () => {
+        const wrapper = twoComments();
+        focusAuthorOf(1);
+        document.activeElement.blur();
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.closest('#comment_2')).not.toBeNull();
+        wrapper.unmount();
+    });
+
+    it('leaves the focus alone when something else holds it', async () => {
+        const wrapper = twoComments();
+        document.body.insertAdjacentHTML('beforeend', '<button id="elsewhere">x</button>');
+        document.getElementById('elsewhere').focus();
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.id).toBe('elsewhere');
+        document.getElementById('elsewhere').remove();
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the author link of the parent when the only reply is removed', async () => {
+        const reply = makeComment({ id: 5, parentCommentId: 4, replies: null, message: 'reply' });
+        const root = makeComment({ id: 4, replies: { total: 1, items: [reply], hasMore: false } });
+        const wrapper = mountComments([root]);
+        focusAuthorOf(5);
+
+        wrapper.findComponent(CommentEntry).vm.onChildRemoved(5);
+        await flushPromises();
+
+        expect(document.activeElement).toBe(document.querySelector('#comment_4 .comment-heading a'));
+        wrapper.unmount();
     });
 });

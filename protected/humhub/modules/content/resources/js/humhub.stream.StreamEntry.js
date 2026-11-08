@@ -24,6 +24,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     var additions = require('ui.additions');
     var streamModule = require('stream');
     var i18n = require('i18n');
+    var focus = require('ui.focus');
 
     /**
      * Represents a single stream entry within a stream.
@@ -74,6 +75,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
 
         promise.then(function ($confirm) {
             if ($confirm) {
+                that.handOverFocus();
                 that.$.remove(); // Make sure to remove the wallentry node.
             }
         }).catch(function (err) {
@@ -352,6 +354,9 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
      */
     StreamEntry.prototype.replace = function (newEntry) {
         var that = this;
+        // The edited entry keeps the focus (docs/ui/keyboard.md, "Moving the focus")
+        var hadFocus = that.$[0].contains(document.activeElement);
+
         return new Promise(function (resolve, reject) {
             var $newEntry = $(newEntry);
 
@@ -364,6 +369,9 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
                 that.apply();
 
                 that.$.hide().css('opacity', 1).fadeIn('fast', function () {
+                    if (hadFocus && (document.activeElement === document.body || !document.activeElement.isConnected)) {
+                        focus.focus(that.$);
+                    }
                     resolve();
                 });
             });
@@ -438,10 +446,20 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     };
 
     /**
+     * Hands the keyboard focus to the next entry, else the previous one, else the stream, before this
+     * entry leaves the DOM (docs/ui/keyboard.md, "Moving the focus")
+     */
+    StreamEntry.prototype.handOverFocus = function () {
+        var stream = this.stream();
+        focus.handOver(this.$, StreamEntry.SELECTOR, stream ? stream.$ : null);
+    };
+
+    /**
      * Removes this entry from the stream, but does not delete it.
      */
     StreamEntry.prototype.remove = function () {
         var stream = this.stream();
+        this.handOverFocus();
         return Content.prototype.remove.call(this).then($.proxy(stream.onChange, stream));
     };
 

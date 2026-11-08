@@ -10,6 +10,13 @@ humhub.module('ui.focus', function (module, require, $) {
     var CONTROLS = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
     var CONTENT = ['.layout-content-container', '#main-content'];
 
+    /**
+     * The jQuery data key under which a dialog keeps the element to give the focus back to on close
+     * (set by `ui.modal` on `show.bs.modal`, read by `restore()`, replaced by `handOver()` when the
+     * trigger is removed along with the element it sits in).
+     */
+    var TRIGGER_KEY = 'hh-trigger';
+
     var element = function (el) {
         return el instanceof $ ? el[0] : (el || null);
     };
@@ -49,34 +56,43 @@ humhub.module('ui.focus', function (module, require, $) {
     };
 
     /**
-     * Focuses the first shown control inside an element, else the element itself.
+     * The first shown control inside an element, else the element itself when it can take the focus.
      *
      * @param {Element|jQuery} el
-     * @returns {boolean} whether the focus was moved
+     * @returns {Element|null}
      */
-    var focusInto = function (el) {
+    var firstControl = function (el) {
         el = element(el);
         if (!el) {
-            return false;
+            return null;
         }
         var control = $(el).find(CONTROLS).filter(function () {
             return isFocusable(this);
         })[0];
-        return focus(control) || focus(el);
+        return control || (isFocusable(el) ? el : null);
     };
 
     /**
-     * Focuses the content container, the target the focus takes after a pjax swap as well.
+     * The content container, the target the focus takes after a pjax swap as well.
      *
-     * @returns {boolean} whether the focus was moved
+     * @returns {Element|null}
      */
-    var focusContent = function () {
+    var contentElement = function () {
         var target = null;
         CONTENT.some(function (selector) {
             target = document.querySelector(selector);
             return !!target;
         });
-        return focus(target);
+        return target;
+    };
+
+    /**
+     * Focuses the content container.
+     *
+     * @returns {boolean} whether the focus was moved
+     */
+    var focusContent = function () {
+        return focus(contentElement());
     };
 
     /**
@@ -107,7 +123,8 @@ humhub.module('ui.focus', function (module, require, $) {
     /**
      * Hands the focus of an element that is about to be removed to its next sibling matching
      * `selector`, else the previous one, else `fallback`, else the content. Only when the focus is
-     * inside the element, already lost to <body>, or in a dialog that is closing (the confirm).
+     * inside the element, already lost to <body>, or in a dialog, which then hands the focus over on
+     * close: the dialog's trigger is replaced by the neighbour when it is gone or sits in the element.
      *
      * @param {Element|jQuery} el
      * @param {string} selector
@@ -116,26 +133,39 @@ humhub.module('ui.focus', function (module, require, $) {
      */
     var handOver = function (el, selector, fallback) {
         var $el = $(el);
-        if (!$el.length) {
+        if (!$el.length || !$el[0].isConnected) {
             return false;
         }
         var active = document.activeElement;
-        var inClosingDialog = !!active.closest('.modal') && !active.closest('.modal.show');
-        if (active !== document.body && !$el[0].contains(active) && !inClosingDialog) {
+        var $dialog = active ? $(active).closest('.modal') : $();
+        if (active && active !== document.body && !$el[0].contains(active) && !$dialog.length) {
             return false;
         }
+
         var shown = function () {
             return isFocusable(this);
         };
-        var $next = $el.nextAll(selector).filter(shown).first();
-        var $prev = $el.prevAll(selector).filter(shown).first();
-        return focusInto($next[0]) || focusInto($prev[0]) || focus(fallback) || focusContent();
+        var target = firstControl($el.nextAll(selector).filter(shown).first()[0])
+            || firstControl($el.prevAll(selector).filter(shown).first()[0])
+            || (isFocusable(fallback) ? element(fallback) : null)
+            || contentElement();
+
+        if ($dialog.length) {
+            // The focus stays in the dialog, open or closing; the dialog hands it over on close
+            // (ui.modal's hidden handler) - to the neighbour when its own trigger is gone or part of
+            // the removed element, else to its own trigger as before
+            var trigger = element($dialog.data(TRIGGER_KEY));
+            if (!trigger || !trigger.isConnected || $el[0].contains(trigger)) {
+                $dialog.data(TRIGGER_KEY, target);
+            }
+            return false;
+        }
+        return focus(target);
     };
 
     module.export({
-        isFocusable: isFocusable,
+        TRIGGER_KEY: TRIGGER_KEY,
         focus: focus,
-        focusInto: focusInto,
         focusContent: focusContent,
         restore: restore,
         handOver: handOver,

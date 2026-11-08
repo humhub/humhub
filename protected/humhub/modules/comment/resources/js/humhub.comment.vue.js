@@ -592,6 +592,22 @@
     }, 8, ["busy", "onSubmit"]);
   }
   const CommentForm = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
+  function handOverFocus(removed, neighbourId, fallback) {
+    const active = document.activeElement;
+    const lost = !active || active === document.body || !active.isConnected || removed && removed.contains(active);
+    if (!lost) {
+      return;
+    }
+    const neighbour = neighbourId === null ? null : document.getElementById("comment_" + neighbourId);
+    const target = neighbour && (neighbour.querySelector(".comment-heading a") || neighbour) || fallback;
+    if (!target || !target.isConnected) {
+      return;
+    }
+    if (!target.matches("a[href], button, input, select, textarea, [tabindex]")) {
+      target.setAttribute("tabindex", "-1");
+    }
+    target.focus({ preventScroll: true });
+  }
   const _sfc_main$2 = {
     name: "CommentEntry",
     components: { CommentControls, CommentDeleteModal, CommentForm },
@@ -784,9 +800,13 @@
         this.ensureLikeStates([comment]);
       },
       onChildRemoved(id) {
+        const index = this.childItems.findIndex((child) => child.id === id);
+        const neighbour = index === -1 ? null : this.childItems[index + 1] || this.childItems[index - 1] || null;
+        const removed = document.getElementById("comment_" + id);
         this.childItems = this.childItems.filter((child) => child.id !== id);
         this.childTotal = Math.max(0, this.childTotal - 1);
         this.pruneCommentRevision(id);
+        this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el.querySelector(".comment-heading a")));
       },
       onChildUpdated({ id, comment }) {
         const index = this.childItems.findIndex((child) => child.id === id);
@@ -1276,8 +1296,12 @@
         this.items.push(comment);
       },
       removeRoot(id) {
+        const index = this.items.findIndex((comment) => comment.id === id);
+        const neighbour = index === -1 ? null : this.items[index + 1] || this.items[index - 1] || null;
+        const removed = document.getElementById("comment_" + id);
         this.items = this.items.filter((comment) => comment.id !== id);
         this.pruneCommentRevision(id);
+        this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el));
       },
       replaceRoot(id, comment) {
         const index = this.items.findIndex((item) => item.id === id);

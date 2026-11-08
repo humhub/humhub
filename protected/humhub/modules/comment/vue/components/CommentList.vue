@@ -88,6 +88,7 @@ import { getConfig, i18n, log } from '@humhub/vue';
 import CommentEntry from './CommentEntry.vue';
 import { fetchWindow } from './commentApi.js';
 import { getId } from './commentIdHelper.js';
+import { handOverFocus } from '../focusHandOver.js';
 
 export default {
     components: { CommentEntry },
@@ -183,8 +184,15 @@ export default {
             this.items.push(comment);
         },
         removeRoot(id) {
+            const index = this.items.findIndex((comment) => comment.id === id);
+            const neighbour = index === -1 ? null : (this.items[index + 1] || this.items[index - 1] || null);
+            const removed = document.getElementById('comment_' + id);
+
             this.items = this.items.filter((comment) => comment.id !== id);
             this.pruneCommentRevision(id);
+
+            // Once the entry is out of the DOM: to its neighbour, else to the list itself
+            this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el));
         },
         replaceRoot(id, comment) {
             const index = this.items.findIndex((item) => item.id === id);

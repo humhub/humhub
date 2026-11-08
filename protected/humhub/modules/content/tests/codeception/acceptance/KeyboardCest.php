@@ -167,6 +167,34 @@ class KeyboardCest
         $I->dontSeeElement('.modal.show#globalModal');
     }
 
+    public function testDeletedPostHandsTheFocusToTheNextEntry(AcceptanceTester $I)
+    {
+        $I->wantToTest('that deleting a stream entry moves the focus into the next entry');
+        $this->openSpaceStream($I);
+
+        $I->createPost('Keyboard test post');
+        $I->waitForText('Keyboard test post', 10, '[data-stream-entry]');
+        $newEntry = '[data-content-key="' . $I->executeJS('return document.querySelector("[data-stream-entry]").getAttribute("data-content-key");') . '"]';
+        $I->see('Keyboard test post', $newEntry);
+
+        $this->focus($I, $newEntry . ' .preferences .dropdown-toggle');
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementVisible($newEntry . ' .dropdown-menu.show', 5);
+        $I->executeJS('[...document.querySelectorAll(' . json_encode($newEntry . ' .dropdown-menu.show a') . ')]'
+            . '.find((a) => a.textContent.trim() === "Delete").focus();');
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+
+        $I->waitForElementVisible('.modal.show#globalModalConfirm', 5);
+        // Answered by a click right after the dialog appeared: depending on the server's timing the focus is then in an open or a closing dialog; both paths are covered by the ui.focus unit tests, the outcome is the same
+        $I->click('Delete', '#globalModalConfirm');
+        $I->waitForElementNotVisible($newEntry, 10);
+        $I->waitForElementNotVisible('#globalModalConfirm', 5);
+        $I->waitForJS('return !document.body.classList.contains("modal-open");', 5);
+
+        Assert::assertTrue((bool)$I->executeJS('return document.activeElement.closest("[data-stream-entry]") !== null;'),
+            'the focus is inside another stream entry, was: ' . $I->grabActiveElement());
+    }
+
     private function openSpaceStream(AcceptanceTester $I): void
     {
         $I->amUser1();

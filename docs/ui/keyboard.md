@@ -19,8 +19,9 @@ messages are announced (4.1.3).
   toolbar), and Escape closes what was opened.
 - **Native elements first.** An action is a `<button>`, a navigation is an `<a href>`. A
   `role="button"` on another element is the exception; it then has `tabindex="0"` and reacts to
-  Enter and Space. The action framework provides that for every `data-action-click` element that
-  is neither a link nor a button, so a forgotten handler does not lock keyboard users out.
+  Enter and Space. The action framework provides the Enter and Space handling for every
+  `data-action-click` element that is neither a link nor a button; the `tabindex` and the `role`
+  remain the markup's job.
 - **What hover shows, focus shows.** A control that appears when the pointer rests on its
   container (the ⋮ menu of a comment, the actions of a tile) also appears while the focus is
   inside the container (`:focus-within`), and stays while its menu is open
@@ -129,24 +130,19 @@ island's hand-over.
 
 ## Implementation in core
 
-**Today:** the focus ring for every control, with the input modality (#8719); the skip link; the
-focus after a pjax swap (#8416) and after "Show more" in the stream (#8408); the Vue dialog
-returns the focus (`UiModal.vue`); the pickers, the space chooser and the item browser follow the
-rules; the editor toolbar has keyboard tests; icon-only buttons derive their `aria-label` from the
-tooltip.
+**Today:** the focus ring for every control, with the input modality; the skip link; `<header>`,
+`<nav>` and `<aside>` landmarks, and `aria-current="page"` on the active menu link, kept up by
+`humhub.ui.navigation` on a pjax swap; `humhub.ui.focus`, which gives the focus back to a dialog's
+trigger (or its menu toggle, or the content) and hands it on when a stream entry is removed (the
+comment island does the same in its `focusHandOver.js`), while an edited entry keeps it; `humhub.ui.tooltip`, which shows tooltips on keyboard focus
+as on hover and hides them on Escape; the comment menu in the tab order, shown while its comment
+holds the focus; Enter and Space on a `data-action-click` element that is no link or button; Tab
+leaving an editor table; the focus after a pjax swap and after "Show more" in the stream; the Vue
+dialog, the pickers, the space chooser and the item browser following the rules; the editor toolbar
+with keyboard tests; icon-only buttons deriving their `aria-label` from the tooltip.
 
-**Gaps:**
-
-| Gap | Change |
-|---|---|
-| The comment ⋮ menu is `visibility: hidden` until `.single-comment:hover`, and so out of the tab order | `opacity: 0` under `@media (hover: hover)` instead, so the toggle stays in the tab order and a touch screen always shows it; shown on `:hover` and on `:focus-within`, both with the reply guard `:not(:has(.single-comment:focus-within))`, so a focused reply does not show its parent's menu (`_comment.scss`) |
-| Tooltips are initialised on `mouseover` only, so the keyboard never sees one | A `humhub.ui.tooltip` module replaces the block in `humhub.ui.additions`: hover, `focusin` under keyboard modality, hidden on `focusout` and Escape |
-| `humhub.ui.modal` leaves the focus on `<body>` after a dialog closes | A `humhub.ui.focus` module (`restore()`, `handOver()`, `focusContent()`); the modal remembers the trigger on `show.bs.modal` and restores it on `hidden.bs.modal`, else the dropdown toggle, else the content |
-| The top bars are `<div>`s: no `<nav>`, no `<header>`, no `aria-current` | Landmark tags in `views/layouts/main.php` (ids and classes unchanged), `aria-current="page"` in `TopMenu` and `LeftNavigation`; the Enterprise theme layout follows |
-| A `data-action-click` on a non-native element reacts to clicks only | `humhub.action` binds Enter and Space for `[data-action-click]` elements that are neither links nor buttons |
-| A deleted stream entry or comment drops the focus to `<body>` | `StreamEntry.delete()`/`remove()` through `humhub.ui.focus.handOver()`, the comment island through its own `focusHandOver()`: the next entry, else the previous one, else the list |
-| An entry replaced after an edit or a reload drops the focus | `StreamEntry.replace()` focuses the new node when the old one held the focus |
-| Tab in the last table cell adds a row, so a table cannot be left by Tab | Tab after the last cell leaves the table, Shift+Tab before the first (`tab_behavior/keymap.js`) |
+**Gaps:** none known in core. The stream entry's own menu is always visible, so it needs no
+hover rule.
 
 **Modules:** the same rules, checked with the module search for four patterns: a control hidden
 until `:hover` without `:focus-within`, a dropdown toggle or icon link without a name, an `<h1>`
