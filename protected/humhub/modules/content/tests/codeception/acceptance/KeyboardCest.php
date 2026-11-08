@@ -291,7 +291,7 @@ class KeyboardCest
             'the form is collapsed at first');
 
         $this->focus($I, $editor);
-        $I->waitForElementVisible('#contentFormBody.contentForm-expanded', 5);
+        $I->waitForElementVisible('.contentForm-expanded#contentFormBody', 5);
         $I->waitForElementVisible('#contentFormBody .contentForm_options', 5);
         Assert::assertTrue((bool)$I->executeJS('return document.activeElement === document.querySelector(' . json_encode($editor) . ');'),
             'the editor keeps the focus, was: ' . $I->grabActiveElement());
