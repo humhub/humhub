@@ -156,13 +156,15 @@ in a feed, and the "Show more" link between the comments is no article (the sepa
 from assistive technology, the "load hidden posts" control of the stream is an entry of its own). The acceptance test `KeyboardCest` (content module) covers the skip link, the
 focus after a dialog closes, tooltips on keyboard focus, the comment menu, Enter and Space on a
 `data-action-click` element, the focus after a stream entry is deleted, the skip links and the feed
-keys in the stream. Vitest covers the JS: the focus helper (`ui.focus`), the feed keys (`ui.feed`),
-tooltips on focus and Escape, Tab in editor tables, and the comment island's hand-over.
+keys in the stream and in the comments. Vitest covers the JS: the focus helper (`ui.focus`), the feed
+keys (`ui.feed`), tooltips on focus and Escape, Tab in editor tables, and the comment island's roles,
+loading and hand-over.
 
 ## Implementation in core
 
 **Today:** the focus ring for every control, with the input modality; the skip links to the main
-content, the navigation and the sidebar; the stream as a feed of articles with `humhub.ui.feed`; `<header>`,
+content, the navigation and the sidebar; the stream as a feed of articles with `humhub.ui.feed`, and the
+comments of an entry as a feed inside it (the comment island); `<header>`,
 `<nav>` and `<aside>` landmarks, and `aria-current="page"` on the active menu link, kept up by
 `humhub.ui.navigation` on a pjax swap; `humhub.ui.focus`, which gives the focus back to a dialog's
 trigger (or its menu toggle, or the content) and hands it on when a stream entry is removed (the
@@ -173,8 +175,8 @@ leaving an editor table; the focus after a pjax swap and after "Show more" in th
 dialog, the pickers, the space chooser and the item browser following the rules; the editor toolbar
 with keyboard tests; icon-only buttons deriving their `aria-label` from the tooltip.
 
-**Gaps:** the comments of a post are not a feed yet (the comment island renders no feed roles).
-The stream entry's own menu is always visible, so it needs no hover rule.
+**Gaps:** none known in core. The stream entry's own menu is always visible, so it needs no
+hover rule.
 
 **Modules:** the same rules, checked with the module search for four patterns: a control hidden
 until `:hover` without `:focus-within`, a dropdown toggle or icon link without a name, an `<h1>`
