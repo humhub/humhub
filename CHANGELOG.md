@@ -19,6 +19,7 @@ HumHub Changelog
 - Fix #8693: Accent border of the main menu flashed black on hover
 - Fix #8708: Browser hung in an endless loop when the top menu overflowed without its "Menu" sub dropdown
 - Fix #8706: Wide avatar column in the space member request widget
+- Fix #8712: Secrets were not masked in the context dump of log targets configured outside the core (e.g. an `EmailTarget`)
 - Fix #8705: Browser autofill of the password field in the admin user edit form caused a "must be equal to Confirm new password" error on save
 
 1.19.3 (October 27, 2026)
