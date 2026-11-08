@@ -2708,3 +2708,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   JavaScript that moves the `active` class between menu links has to move `aria-current` with it (see
   `humhub.ui.navigation`). A menu whose active entry is not the current page passes `'aria-current' => null` in
   the render options.
+- **Tooltips moved to `humhub.ui.tooltip`.** The delegated tooltip binding left `humhub.ui.additions`.
+  Tooltips on `.tt` and `[data-bs-toggle="tooltip"]` are created with `trigger: 'hover'` and appear
+  on focus only when the focus came from the keyboard (`docs/ui/keyboard.md`). A click hides them
+  through Bootstrap (`humhub.ui.tooltip.hideAll()`) and removes tooltip elements whose trigger left
+  the document, instead of `$('.tooltip').remove()`. A module that creates its own
+  `bootstrap.Tooltip` should not set `focus` as a trigger.
+- **Enter and Space trigger `data-action-click`.** On an element that is neither a link nor a button,
+  `humhub.action` runs the click action on Enter and Space when the element itself has the focus. A
+  module that handles these keys itself calls `preventDefault()` in a handler bound to the element
+  (a handler delegated from `document` runs too late and the action fires twice). The element still
+  needs `tabindex="0"` and `role="button"`.

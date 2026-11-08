@@ -60,26 +60,6 @@ describe('ui.focus', () => {
         });
     });
 
-    describe('focusInto()', () => {
-        it('focuses the first shown control inside', () => {
-            html('<div id="e"><a href="#" id="hidden" style="display:none">h</a><a href="#" id="a">a</a><button id="b">b</button></div>');
-            expect(focus.focusInto(byId('e'))).toBe(true);
-            expect(document.activeElement.id).toBe('a');
-        });
-
-        it('focuses the element itself when it has no control', () => {
-            html('<div id="e">text</div>');
-            expect(focus.focusInto(byId('e'))).toBe(true);
-            expect(document.activeElement.id).toBe('e');
-        });
-
-        it('skips programmatic-only targets', () => {
-            html('<div id="e"><div id="p" tabindex="-1">p</div><a href="#" id="a">a</a></div>');
-            expect(focus.focusInto(byId('e'))).toBe(true);
-            expect(document.activeElement.id).toBe('a');
-        });
-    });
-
     describe('focusContent()', () => {
         it('prefers the layout content container over main', () => {
             html('<main id="main-content"><div class="layout-content-container" id="c">c</div></main>');
@@ -257,6 +237,14 @@ describe('ui.focus', () => {
             byId('field').focus();
             expect(focus.handOver(byId('e2'), '.entry', byId('list'))).toBe(false);
             expect(document.activeElement.id).toBe('field');
+        });
+
+        it('skips programmatic-only targets when picking the neighbour control', () => {
+            html('<div id="list"><div class="entry" id="e1"><a href="#" id="a1">1</a></div>'
+                + '<div class="entry" id="e2"><div id="p" tabindex="-1">p</div><a href="#" id="a2">2</a></div></div>');
+            byId('a1').focus();
+            expect(focus.handOver(byId('e1'), '.entry', byId('list'))).toBe(true);
+            expect(document.activeElement.id).toBe('a2');
         });
 
         it('skips a hidden sibling', () => {

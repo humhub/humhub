@@ -12,7 +12,8 @@ humhub.module('ui.focus', function (module, require, $) {
 
     /**
      * The jQuery data key under which a dialog keeps the element to give the focus back to on close
-     * (set by `ui.modal` on `show.bs.modal`, read by `restore()`, replaced by `handOver()`).
+     * (set by `ui.modal` on `show.bs.modal`, read by `restore()`, replaced by `handOver()` when the
+     * trigger is removed along with the element it sits in).
      */
     var TRIGGER_KEY = 'hh-trigger';
 
@@ -72,19 +73,9 @@ humhub.module('ui.focus', function (module, require, $) {
     };
 
     /**
-     * Focuses the first shown control inside an element, else the element itself.
+     * The content container, the target the focus takes after a pjax swap as well.
      *
-     * @param {Element|jQuery} el
-     * @returns {boolean} whether the focus was moved
-     */
-    var focusInto = function (el) {
-        return focus(firstControl(el));
-    };
-
-    /**
-     * Focuses the content container, the target the focus takes after a pjax swap as well.
-     *
-     * @returns {boolean} whether the focus was moved
+     * @returns {Element|null}
      */
     var contentElement = function () {
         var target = null;
@@ -95,6 +86,11 @@ humhub.module('ui.focus', function (module, require, $) {
         return target;
     };
 
+    /**
+     * Focuses the content container.
+     *
+     * @returns {boolean} whether the focus was moved
+     */
     var focusContent = function () {
         return focus(contentElement());
     };
@@ -128,7 +124,7 @@ humhub.module('ui.focus', function (module, require, $) {
      * Hands the focus of an element that is about to be removed to its next sibling matching
      * `selector`, else the previous one, else `fallback`, else the content. Only when the focus is
      * inside the element, already lost to <body>, or in a dialog, which then hands the focus over on
-     * close: the dialog gets the new return target when its own is gone or sits in the element.
+     * close: the dialog's trigger is replaced by the neighbour when it is gone or sits in the element.
      *
      * @param {Element|jQuery} el
      * @param {string} selector
@@ -169,9 +165,7 @@ humhub.module('ui.focus', function (module, require, $) {
 
     module.export({
         TRIGGER_KEY: TRIGGER_KEY,
-        isFocusable: isFocusable,
         focus: focus,
-        focusInto: focusInto,
         focusContent: focusContent,
         restore: restore,
         handOver: handOver,
