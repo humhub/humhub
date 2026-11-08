@@ -14,8 +14,6 @@ $item-browser-accent: var(--bs-accent) !default;
 $item-browser-accent-fg: var(--hh-accent-fg) !default;
 $item-browser-muted: var(--bs-secondary-color) !default;
 $item-browser-strong: var(--bs-emphasis-color) !default;
-$item-browser-focus-ring: 0 0 0 3px rgba(var(--bs-accent-rgb), .32) !default;
-$item-browser-focus-ring-inset: inset 0 0 0 2px rgba(var(--bs-accent-rgb), .5) !default;
 
 $path-bar-bg: var(--bs-secondary-bg) !default;
 $path-bar-root-size: 30px !default;
@@ -134,12 +132,10 @@ $tile-border-radius: var(--bs-border-radius) !default;
         font-weight: $font-weight-semibold;
     }
 
-    // `_base.scss` drops the browser's outline on `:focus-visible`; the crumbs clip anything
-    // drawn outside them, so the ring is inset. `:focus-visible` rather than `:focus`: after a
-    // `focusCurrent()` that follows a click, the browser leaves it out, as for a clicked link.
+    // The crumbs clip anything drawn outside them, so the ring is inset. `:focus-visible` rather than `:focus`:
+    // after a `focusCurrent()` that follows a click, the browser leaves it out, as for a clicked link.
     .path-bar .breadcrumb-item > :is(a, span):focus-visible {
-        outline: none;
-        box-shadow: $item-browser-focus-ring-inset;
+        @include hh-focus-ring(true);
     }
 
     // Selection menu, sliding in beside the path
@@ -268,12 +264,13 @@ $tile-border-radius: var(--bs-border-radius) !default;
                 border-radius: inherit;
             }
 
+            // The ring around the whole tile, its click target
             &:focus-visible {
                 outline: none;
 
                 &::after {
                     border-radius: $tile-border-radius;
-                    box-shadow: $item-browser-focus-ring;
+                    @include hh-focus-ring;
                 }
             }
         }
@@ -303,10 +300,6 @@ $tile-border-radius: var(--bs-border-radius) !default;
         visibility: hidden;
         transform: translateY(-4px);
         @include transition(opacity .3s, transform .3s, visibility linear .3s);
-
-        &:focus-visible {
-            box-shadow: $item-browser-focus-ring;
-        }
     }
 
     .tile:hover .tile-check,

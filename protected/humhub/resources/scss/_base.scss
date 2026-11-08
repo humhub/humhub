@@ -147,10 +147,19 @@
         }
     }
 
-    // Fix system blue outline issues:
-    // - Safari: When the top account menu is focused on mouse click
-    // - Chrome(and other browsers): When a link is focused on press "Tab" key
+    // Keyboard focus: one ring for everything the keyboard reaches, see docs/ui/colours.md. Bootstrap's components
+    // set `outline: 0` for their own (off) shadow ring, each gets this one back in its partial
     :focus-visible {
+        @include hh-focus-ring;
+    }
+
+    // The ring follows the control's corners, a plain link or button gets rounded ones (zero specificity)
+    :where(a, button, summary):where(:focus-visible) {
+        border-radius: var(--bs-border-radius);
+    }
+
+    // Focused by script only (a dialog, a pane): no ring
+    [tabindex="-1"]:focus-visible {
         outline: none;
     }
 
@@ -182,12 +191,6 @@
             border-right: 0.4em solid transparent;
             border-bottom: 0;
             border-left: 0.4em solid transparent;
-        }
-
-        &:focus-visible {
-            outline: 0;
-            box-shadow: 0 0 0 2px var(--bs-accent);
-            border-radius: 2px;
         }
     }
 

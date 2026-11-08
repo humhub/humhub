@@ -56,6 +56,12 @@ $input-box-shadow: 0 0 0 0 transparent !default;
 $input-hover-border-color: var(--bs-accent) !default; // HumHub: an editable field under the pointer
 $input-focus-border-color: var(--bs-accent) !default;
 $input-focus-box-shadow: 0 0 0 2px color-mix(in srgb, var(--bs-accent) 50%, transparent) !default;
+$form-select-focus-box-shadow: $input-focus-box-shadow !default; // As a text field's, not Bootstrap's 25 % primary
+// Keyboard focus: a ring in the accent as text (readable on the surfaces), 2px outside the control, see the
+// `hh-focus-ring` mixin and docs/ui/colours.md
+$focus-ring-width: 2px !default;
+$focus-ring-color: var(--hh-accent-fg) !default;
+$hh-focus-ring-offset: 2px !default;
 
 
 //
@@ -321,7 +327,7 @@ $enable-reduced-motion: false !default; // The user's option decides, see `hh-re
 $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
-$focus-ring-box-shadow: none !default;
+$focus-ring-box-shadow: none !default; // The ring is an outline (`hh-focus-ring`), not Bootstrap's shadow
 $component-active-color: $hh-primary-contrast !default; // Because $component-active-bg has Primary color
 // As a token, not compiled in: a checked box follows `--bs-primary` wherever that is redefined (high contrast)
 $form-check-input-checked-bg-color: var(--bs-primary) !default;

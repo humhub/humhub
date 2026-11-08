@@ -77,6 +77,8 @@
     // The top bar and the account menu hanging from it
     --hh-topbar-bg: #{$hh-topbar-bg};
     --hh-topbar-color: #{$hh-topbar-color};
+    // Keyboard focus: the ring (`--bs-focus-ring-width`, `--bs-focus-ring-color`) is this far outside the control
+    --hh-focus-ring-offset: #{$hh-focus-ring-offset};
 
     // Text on a background in a theme color
     --hh-accent-contrast: #{$hh-accent-contrast};
@@ -117,6 +119,7 @@
         --hh-code-bg: #{$hh-code-bg-dark};
         --hh-topbar-bg: #{$hh-topbar-bg-dark};
         --hh-topbar-color: #{$hh-topbar-color-dark};
+        --bs-focus-ring-color: #{$focus-ring-color}; // Computed here, so a dark scope reads its own `--hh-accent-fg`
 
         // Readable on the lightest dark surface: lighter where the color itself is not
         @each $color in $hh-fg-colors {

@@ -120,7 +120,9 @@ it) sets them as attributes of `<html>` before the first paint:
 The SCSS mixins `hh-high-contrast` and `hh-reduced-motion` (`_mixins.scss`) write both selectors.
 JS reads the effective values through the new JS module `humhub.modules.ui.appearance`
 (`colorMode()`, `reducedMotion()`, `highContrast()`); while motion is reduced, `$.fx.off` turns the
-jQuery animations off.
+jQuery animations off. The module also keeps `data-hh-input-modality` on `<html>` (`keyboard` once
+Tab moves the focus, `pointer` after a click; `keyboardModality()`), which gates the focus ring of a
+text field (`_form.scss`).
 
 **Dark logo** (`Yii::$app->img->logoDark`): `SiteLogo` renders both images when a dark logo exists
 and the dark mode is allowed, `.hh-logo-light` and `.hh-logo-dark`, and CSS shows the one of the

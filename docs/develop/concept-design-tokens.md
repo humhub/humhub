@@ -90,10 +90,13 @@ reaches a contrast of 7.2–9.4:1 on its fill, formerly 1.9–2.2:1.
 |---|---|---|---|---|
 | Separator, border of a box | `--bs-border-color` | `$border-color` | `#ddd` | `#3f3f3f` |
 | Border of a control: checkbox, radio, switch; a neutral placeholder fill | `--hh-border-color-strong` | `$hh-border-color-strong` | `#d7d7d7` | `#393939` |
-| Focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width` | `$focus-ring-color`, `$focus-ring-width` | primary at 25 %, `0.25rem` | same |
+| Keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | `$focus-ring-color`, `$focus-ring-width`, `$hh-focus-ring-offset` | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 
-A focus ring is `box-shadow: 0 0 0 var(--bs-focus-ring-width) var(--bs-focus-ring-color)`. A
-field's own focus (accent border plus a 50 % accent ring) stays the component variable
+The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color)` with
+`outline-offset: var(--hh-focus-ring-offset)` (mixin `hh-focus-ring`, see `docs/ui/colours.md`), not
+Bootstrap's box-shadow (`$focus-ring-box-shadow` is `none`). High contrast redefines the two tokens
+(3px, `--bs-emphasis-color`), a surface in another colour redefines the colour. A field's own focus
+on a click (accent border plus a 50 % accent glow) stays the component variable
 `$input-focus-box-shadow`.
 
 ## Deprecated

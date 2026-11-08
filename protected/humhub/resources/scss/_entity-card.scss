@@ -122,12 +122,6 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         &:focus-visible {
             color: var(--bs-emphasis-color);
         }
-
-        &:focus-visible {
-            border-radius: var(--bs-border-radius-sm);
-            outline: 2px solid var(--bs-accent);
-            outline-offset: 2px;
-        }
     }
 
     // Header: the name, then subtitle lines (own ones and those of extension slots)

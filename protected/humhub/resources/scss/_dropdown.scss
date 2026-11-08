@@ -33,6 +33,11 @@ $dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in
         cursor: pointer;
         @include transition($dropdown-item-transition);
 
+        // Keyboard focus: the ring inside the row, which fills the menu
+        &:focus-visible {
+            @include hh-focus-ring(true);
+        }
+
         // A leading icon (`.dropdown-item-icon`, or any `<i>` of a legacy row) in a column of its
         // own, so the labels line up
         > .dropdown-item-icon,

@@ -56,6 +56,20 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `ThemeVariables::get()` returns such derived variables as the `#rrggbb` they compile to.
   `ThemeSettingsForm::colorAttribute()` names a hyphenated colour in camel case
   (`body-bg-dark` → `themeBodyBgDarkColor`).
+- **One keyboard focus ring:** `:focus-visible` draws `outline: var(--bs-focus-ring-width) solid
+  var(--bs-focus-ring-color)` with `outline-offset: var(--hh-focus-ring-offset)` on everything the
+  keyboard reaches (2px in `--hh-accent-fg`, 2px outside the control; 3px in `--bs-emphasis-color` in
+  high contrast), instead of the former `outline: none` and a ring per component. The SCSS mixin
+  `hh-focus-ring($inset: false)` draws it; inset for a box that clips or a row that fills its box.
+  Bootstrap's box-shadow rings stay off (`$focus-ring-box-shadow: none`, and `.btn` sets
+  `--bs-btn-focus-box-shadow` to nothing). A module's own `:focus-visible` rule (`outline: 0` plus
+  `box-shadow: 0 0 0 2px var(--bs-accent)` and the like) can go; a surface in another colour
+  redefines `--bs-focus-ring-color` (the top bar: `--hh-topbar-color`). A text field shows the ring
+  after Tab only: `ui.appearance` keeps `data-hh-input-modality` (`keyboard` after Tab, `pointer`
+  after a click; `keyboardModality()`) on `<html>`, and `_form.scss` draws the ring instead of the
+  glow unless it is `pointer`. Removed: `$item-browser-focus-ring`, `$item-browser-focus-ring-inset`;
+  the mixins `listGroupItemActiveOrFocus` and `mobileListGroupItemActiveOrFocus` are
+  `listGroupItemActive` and `mobileListGroupItemActive` (a focused entry no longer looks active).
 
 - **Emojis are Unicode text, rendered by the Noto Color Emoji font** (see [Emojis](internals-emoji.md)).
   The editor stores the emoji character instead of a `:name:` shortcode, and `RichTextEmojiExtension`

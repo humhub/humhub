@@ -111,7 +111,7 @@ tiles are an own component. Class names and SCSS follow [Styling with Bootstrap 
 
 - **File:** `_item-browser.scss`, behind `$prev-item-browser`.
 - **Sass variables:** `$item-browser-gap` (`$spacer * .5`), `$item-browser-hover-bg`,
-  `-selected-bg`, `-accent`, `-muted`, `-strong`, `-focus-ring`, `-focus-ring-inset`;
+  `-selected-bg`, `-accent`, `-muted`, `-strong`;
   `$path-bar-bg`, `$path-bar-root-size`; `$tile-min-width` (136px), `$tile-thumb-height`,
   `$tile-border-radius`. Transitions use Bootstrap's `transition()` mixin, so they stop under
   `prefers-reduced-motion`.

@@ -7,15 +7,22 @@
     hyphens: auto;
 }
 
-@mixin listGroupItemActiveOrFocus {
+@mixin listGroupItemActive {
     z-index: 2;
     border-left: 3px solid var(--bs-accent) !important; // see _list-group.scss
 }
 
-@mixin mobileListGroupItemActiveOrFocus {
+@mixin mobileListGroupItemActive {
     background: var(--bs-primary);
     color: var(--hh-primary-contrast);
     border-left: none !important; // see _list-group.scss
+}
+
+// Keyboard focus (`:focus-visible`): the ring, `--hh-focus-ring-offset` outside the control (docs/ui/colours.md).
+// Inset for a control in a box that clips, or that fills a row: the ring inside the edge, with the same gap
+@mixin hh-focus-ring($inset: false) {
+    outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color);
+    outline-offset: if($inset, calc((var(--bs-focus-ring-width) + var(--hh-focus-ring-offset)) * -1), var(--hh-focus-ring-offset));
 }
 
 // The accessibility options of the user (`<html data-hh-*>`, see `\humhub\components\Appearance`). Each applies the
