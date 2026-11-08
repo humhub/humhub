@@ -304,6 +304,12 @@
                 border-color: $input-focus-border-color;
                 box-shadow: $input-focus-box-shadow;
             }
+
+            // Keyboard focus: the ring around the frame, as `_form.scss` draws it on a text field
+            :root:not([data-hh-input-modality="pointer"]) &:has(.ProseMirror:focus-visible) {
+                @include hh-focus-ring;
+                box-shadow: $input-box-shadow;
+            }
         }
 
         // The frame is the wrapper's
@@ -311,6 +317,10 @@
             border: 0;
             border-radius: $input-border-radius;
             box-shadow: none;
+
+            &:focus-visible {
+                outline: none;
+            }
         }
 
         .ProseMirror-menubar {

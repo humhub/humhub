@@ -10,6 +10,12 @@ $accordion-icon-box-font-size: $font-size-lg !default;
 $accordion-header-gap: $spacer * .75 !default;
 
 @if not $prev-accordion {
+    // Keyboard focus: the ring inside the header, which fills its item; Bootstrap's `.accordion-button:focus`
+    // turns the one of `_base.scss` off for its own
+    .accordion-button:focus-visible {
+        @include hh-focus-ring(true);
+    }
+
     .accordion-icon {
         display: flex;
         flex: 0 0 auto;

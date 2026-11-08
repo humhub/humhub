@@ -51,6 +51,11 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
     }
 
+    // Keyboard focus: the ring of `_base.scss`, which Bootstrap's `.nav-link:focus-visible` turns off for its own
+    .nav-link:focus-visible {
+        @include hh-focus-ring;
+    }
+
     .nav-scroller > .nav-pills {
         --bs-nav-link-color: #{$nav-pills-color};
         --bs-nav-link-hover-color: #{$nav-pills-hover-color};
@@ -75,7 +80,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             }
 
             &:focus-visible {
-                box-shadow: inset 0 0 0 $nav-pills-border-width var(--hh-nav-pills-active-border-color), $nav-link-focus-box-shadow;
+                @include hh-focus-ring(true);
             }
         }
     }
@@ -134,7 +139,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
                 background-color: var(--bs-tertiary-bg);
                 max-height: 41px;
-                outline: none;
 
                 &:hover,
                 &:focus {
@@ -170,7 +174,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
             background-color: var(--bs-tertiary-bg);
             max-height: 41px;
-            outline: none;
 
             &:hover,
             &:focus {
