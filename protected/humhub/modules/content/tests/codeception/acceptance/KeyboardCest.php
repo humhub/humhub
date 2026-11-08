@@ -84,6 +84,36 @@ class KeyboardCest
             'Ctrl+End leaves the stream, was: ' . $I->grabActiveElement());
     }
 
+    public function testFeedKeysMoveBetweenCommentsAndLeaveThemIntoThePost(AcceptanceTester $I)
+    {
+        $I->wantToTest('that PageDown moves between the comments of a post, stays at the last one, and Ctrl+End leaves the comments into the post');
+        $this->openSpaceStream($I);
+
+        $I->click('Comment', self::POST);
+        $richtext = self::POST . ' .comment-container .ProseMirror[contenteditable="true"]';
+        $I->waitForElementVisible($richtext, 10);
+        foreach (['First keyboard comment', 'Second keyboard comment'] as $text) {
+            $I->fillField($richtext, $text);
+            $I->click('.btn-comment-submit', self::POST . ' .comment-container');
+            $I->waitForText($text, 10, self::POST . ' .comment-container');
+        }
+        $comments = self::POST . ' .comment-container > .comment[role="feed"] > .single-comment[role="article"]';
+        $index = 'return [...document.querySelectorAll(' . json_encode($comments) . ')].indexOf(document.activeElement);';
+        Assert::assertSame(2, (int)$I->executeJS('return document.querySelectorAll(' . json_encode($comments) . ').length;'), 'two comments are articles of the comment feed');
+
+        $this->focus($I, $comments);
+        $I->pressKeyboard(WebDriverKeys::PAGE_DOWN);
+        Assert::assertSame(1, (int)$I->executeJS($index), 'PageDown moves to the second comment, was: ' . $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::PAGE_DOWN);
+        Assert::assertSame(1, (int)$I->executeJS($index), 'the last comment keeps the focus instead of the next post, was: ' . $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::CONTROL, WebDriverKeys::END);
+        Assert::assertTrue((bool)$I->executeJS('return document.querySelector(' . json_encode(self::POST) . ').contains(document.activeElement)'
+            . ' && !document.activeElement.closest(".comment[role=feed]");'),
+            'Ctrl+End leaves the comments but stays in the post, was: ' . $I->grabActiveElement());
+    }
+
     public function testDialogReturnsTheFocusToItsTrigger(AcceptanceTester $I)
     {
         $I->wantToTest('that a dialog closed with Escape puts the focus back on its trigger');

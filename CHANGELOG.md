@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #<PR>: The comments of a post are a feed inside its entry: PageDown and PageUp move between them, Ctrl+End leaves them into the post
 - Enh #8733: The stream is a feed: PageDown and PageUp move between its entries, Ctrl+End and Ctrl+Home leave it (`humhub.ui.feed`); skip links to the navigation and the sidebar
 - Enh #8732: The richtext editor's toolbar is one Tab stop; the arrow keys move between its buttons
 - Fix #8730: The icon of a module's stream entry, which links to the permalink, has an accessible name

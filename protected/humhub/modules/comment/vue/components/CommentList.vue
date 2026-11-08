@@ -1,11 +1,19 @@
 <template>
-    <div class="comment" :class="{ 'guest-mode': guest }" :id="commentsAreaId">
+    <div
+        class="comment"
+        :class="{ 'guest-mode': guest }"
+        :id="commentsAreaId"
+        :role="items.length ? 'feed' : null"
+        :aria-label="feedLabel"
+        :aria-busy="busyPrev || busyNext ? 'true' : null"
+        @humhub:feed:more.self="onFeedMore"
+    >
         <div v-if="remainingPrev > 0 && items.length > 0" class="showMore">
             <a href="#" :class="{ disabled: busyPrev }" @click.prevent="loadPrev">{{ prevLabel }}</a>
         </div>
 
         <template v-for="comment in items" :key="revisionKey(comment)">
-            <hr class="comment-separator">
+            <hr class="comment-separator" aria-hidden="true">
             <CommentEntry
                 :comment="comment"
                 :can-comment="canComment"
@@ -142,6 +150,10 @@ export default {
         guest() {
             return getConfig('user').isGuest === true;
         },
+        // The feed's name (docs/ui/keyboard.md, "Feeds")
+        feedLabel() {
+            return i18n.t('CommentModule.base', 'Comments');
+        },
         commentsAreaId() {
             return 'comments_area_' + getId(this.contentId, null);
         },
@@ -206,6 +218,16 @@ export default {
         onEntryUpdated({ id, comment }) {
             this.replaceRoot(id, comment);
             this.bumpCommentRevision(id);
+        },
+        // PageUp before the first or PageDown after the last comment (ui.feed): `.self`, as the event
+        // bubbles up from the replies of an entry as well; `aria-busy` tells ui.feed when to follow
+        onFeedMore(evt) {
+            const direction = evt.detail ? evt.detail.direction : null;
+            if (direction === 'prev' && this.remainingPrev > 0) {
+                this.loadPrev();
+            } else if (direction === 'next' && this.remainingNext > 0) {
+                this.loadNext();
+            }
         },
         loadPrev() {
             if (this.busyPrev || this.items.length === 0) {
