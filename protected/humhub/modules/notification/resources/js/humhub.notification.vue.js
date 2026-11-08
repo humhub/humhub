@@ -858,6 +858,7 @@
           ])
         ]),
         vue.createElementVNode("aside", {
+          id: "layout-sidebar",
           class: "col-lg-3 layout-sidebar-container",
           "aria-label": $options.sidebarLabel
         }, [

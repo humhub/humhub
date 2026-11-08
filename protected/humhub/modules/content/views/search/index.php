@@ -6,6 +6,7 @@
  */
 
 use humhub\assets\CardsAsset;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\SearchFilters;
 use humhub\widgets\ContentCard;
 use humhub\widgets\PageHeader;
@@ -21,5 +22,5 @@ CardsAsset::register($this);
         <?php ContentCard::end() ?>
     </div>
 
-    <div data-stream-content></div>
+    <div data-stream-content role="feed" aria-label="<?= Html::encode(Yii::t('ContentModule.search', 'Search results')) ?>"></div>
 </div>

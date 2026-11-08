@@ -281,12 +281,21 @@ class View extends \yii\web\View
         $lines = [];
 
         if (!Yii::$app->request->isAjax) {
-            $lines[] = Button::primary(Yii::t('base', 'Skip to main content'))
-                ->link('#main-content')
-                ->cssClass('visually-hidden-focusable position-absolute start-50 translate-middle-x')
-                ->style('z-index:100000')
-                ->sm()
-                ->loader(false);
+            // The skip links (docs/ui/keyboard.md, "Reaching everything"); `_base.scss` hides one whose target the
+            // page lacks
+            $skipLinks = [
+                '#main-content' => Yii::t('base', 'Skip to main content'),
+                '#topbar-second' => Yii::t('base', 'Skip to navigation'),
+                '#layout-sidebar' => Yii::t('base', 'Skip to sidebar'),
+            ];
+            foreach ($skipLinks as $target => $label) {
+                $lines[] = Button::primary($label)
+                    ->link($target)
+                    ->cssClass('skip-link visually-hidden-focusable position-absolute start-50 translate-middle-x')
+                    ->style('z-index:100000')
+                    ->sm()
+                    ->loader(false);
+            }
         }
 
         if (!empty($this->js[self::POS_BEGIN])) {

@@ -23,6 +23,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     var StreamRequest = require('stream').StreamRequest;
     var loader = require('ui.loader');
     var event = require('event');
+    var feed = require('ui.feed');
 
     var EVENT_AFTER_ADD_ENTRIES = 'humhub:stream:afterAddEntries';
     var EVENT_BEFORE_ADD_ENTRIES = 'humhub:stream:beforeAddEntries';
@@ -158,6 +159,16 @@ humhub.module('stream.Stream', function (module, require, $) {
 
     Stream.prototype.initDefaultEvents = function () {
         var that = this;
+
+        // PageDown on the last entry asks for more (ui.feed, docs/ui/keyboard.md "Feeds"); the focus follows
+        // once the entries are in the DOM and the content is no longer `aria-busy`
+        this.$feed.on(feed.EVENT_MORE, function (evt) {
+            var direction = evt.originalEvent && evt.originalEvent.detail ? evt.originalEvent.detail.direction : null;
+            // The event bubbles: one from the comments of an entry is theirs, not the stream's
+            if (evt.target === that.$feed[0] && direction === 'next' && !that.preventScrollLoading()) {
+                that.load();
+            }
+        });
         event.on('humhub:modules:content:live:NewContent.stream', function (evt, events) {
             if (!events
                 || !that.state.initialized
@@ -213,13 +224,38 @@ humhub.module('stream.Stream', function (module, require, $) {
             this.initWidget();
         }
 
+        this.setBusy(true);
         return this.clear()
             .show()
             .loadInit()
             .then($.proxy(this.handleResponse, this))
             .then($.proxy(this.updateTop, this))
             .then($.proxy(this.triggerInitEvent, this))
-            .catch($.proxy(this.handleLoadError, this));
+            .catch($.proxy(this.handleLoadError, this))
+            .finally($.proxy(this.setBusy, this, false));
+    };
+
+    /**
+     * Marks the feed as loading (`aria-busy`) from the request until the entries of the response are in the DOM,
+     * which is longer than `isLoading()`: ui.feed moves the focus to a new entry only after that. Counted, as a
+     * reload (`init()`) can overlap a pending `load()`.
+     *
+     * @param {boolean} busy
+     * @since 1.20
+     */
+    Stream.prototype.setBusy = function (busy) {
+        this.busyCount = Math.max(0, (this.busyCount || 0) + (busy ? 1 : -1));
+        this.$feed.attr('aria-busy', this.busyCount ? 'true' : null);
+    };
+
+    /**
+     * A feed holds articles and nothing else (`aria-required-children`): the role is dropped while the stream is
+     * empty and shows a message instead, and the keys of ui.feed fall to the feed around it.
+     *
+     * @since 1.20
+     */
+    Stream.prototype.updateFeedRole = function () {
+        this.$feed.attr('role', this.hasEntries() ? 'feed' : null);
     };
 
     /**
@@ -252,6 +288,9 @@ humhub.module('stream.Stream', function (module, require, $) {
 
     Stream.prototype.initWidget = function () {
         this.$content = this.$.find(this.options.contentSelector);
+        // The feed of ui.feed (docs/ui/keyboard.md, "Feeds") is the content element when it has the role (a
+        // SimpleStream reassigns `$content` to its root afterwards); a stream without one has no feed
+        this.$feed = this.$content.filter('[role="feed"]');
         this.loader = this.options.loader || new StreamLoader(this);
         this.initDefaultEvents();
         this.initEvents();
@@ -356,9 +395,11 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.prototype.load = function (options) {
+        this.setBusy(true);
         return new StreamRequest(this, options).load()
             .then($.proxy(this.handleResponse, this))
-            .catch($.proxy(this.handleLoadError, this));
+            .catch($.proxy(this.handleLoadError, this))
+            .finally($.proxy(this.setBusy, this, false));
     };
 
     /**
@@ -608,6 +649,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.onChange = function (request) {
         var hasEntries = this.hasEntries();
 
+        this.updateFeedRole();
         this.$.find('.streamMessage').remove();
         this.clearFilterErrors();
 

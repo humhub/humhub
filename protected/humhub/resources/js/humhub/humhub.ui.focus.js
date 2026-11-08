@@ -165,6 +165,7 @@ humhub.module('ui.focus', function (module, require, $) {
 
     module.export({
         TRIGGER_KEY: TRIGGER_KEY,
+        isFocusable: isFocusable,
         focus: focus,
         focusContent: focusContent,
         restore: restore,

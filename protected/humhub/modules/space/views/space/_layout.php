@@ -34,7 +34,7 @@ $space = $context->contentContainer;
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
         </div>
         <?php if ($this->hasSidebar()): ?>
-            <aside class="col-lg-3 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
+            <aside id="layout-sidebar" class="col-lg-3 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
                 <?= $this->getSidebar() ?>
                 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
             </aside>

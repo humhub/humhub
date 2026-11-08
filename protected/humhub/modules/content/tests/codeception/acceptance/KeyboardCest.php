@@ -38,6 +38,52 @@ class KeyboardCest
             'the stop after the skip link is inside the main content, was: ' . $I->grabActiveElement());
     }
 
+    public function testSkipLinksReachTheNavigationAndTheSidebar(AcceptanceTester $I)
+    {
+        $I->wantToTest('that the skip links follow each other and Enter on "Skip to sidebar" lands in the sidebar');
+        $this->openSpaceStream($I);
+
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        Assert::assertTrue((bool)$I->executeJS('return document.activeElement.getAttribute("href") === "#topbar-second";'),
+            'the second stop is the skip link to the navigation, was: ' . $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        Assert::assertTrue((bool)$I->executeJS('return document.activeElement.getAttribute("href") === "#layout-sidebar";'),
+            'the third stop is the skip link to the sidebar, was: ' . $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        Assert::assertTrue((bool)$I->executeJS('return document.getElementById("layout-sidebar").contains(document.activeElement);'),
+            'the stop after the skip link is inside the sidebar, was: ' . $I->grabActiveElement());
+    }
+
+    public function testFeedKeysMoveBetweenStreamEntriesAndLeaveTheStream(AcceptanceTester $I)
+    {
+        $I->wantToTest('that PageDown moves to the next stream entry, PageUp back, and Ctrl+End leaves the stream');
+        $this->openSpaceStream($I);
+
+        $I->createPost('Keyboard feed post');
+        $I->waitForText('Keyboard feed post', 10, '[data-stream-entry]');
+        $entries = '[data-stream-content][role="feed"] > [data-stream-entry][role="article"]';
+        Assert::assertGreaterThanOrEqual(2, (int)$I->executeJS('return document.querySelectorAll(' . json_encode($entries) . ').length;'));
+        $isEntry = 'return [...document.querySelectorAll(' . json_encode($entries) . ')].indexOf(document.activeElement);';
+
+        $this->focus($I, $entries);
+        Assert::assertSame(0, (int)$I->executeJS($isEntry), 'the first entry holds the focus');
+
+        $I->pressKeyboard(WebDriverKeys::PAGE_DOWN);
+        Assert::assertSame(1, (int)$I->executeJS($isEntry), 'PageDown moves to the second entry, was: ' . $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::PAGE_UP);
+        Assert::assertSame(0, (int)$I->executeJS($isEntry), 'PageUp moves back, was: ' . $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::CONTROL, WebDriverKeys::END);
+        Assert::assertTrue((bool)$I->executeJS('return !document.querySelector("[data-stream-content]").contains(document.activeElement)'
+            . ' && document.activeElement !== document.body;'),
+            'Ctrl+End leaves the stream, was: ' . $I->grabActiveElement());
+    }
+
     public function testDialogReturnsTheFocusToItsTrigger(AcceptanceTester $I)
     {
         $I->wantToTest('that a dialog closed with Escape puts the focus back on its trigger');
@@ -79,8 +125,12 @@ class KeyboardCest
         // Bootstrap removes the tip after its fade; waiting for that avoids racing the next show() against it
         $I->waitForJS('return document.querySelectorAll(".tooltip").length === 0;', 3);
 
-        // Focus it again by keyboard (the modality is still keyboard): the tooltip comes back, Escape hides it
-        $I->executeJS('document.activeElement.blur(); document.getElementById("kb-tooltip").focus();');
+        // Focus it again by keyboard (the modality is still keyboard): the tooltip comes back, Escape hides it.
+        // Bootstrap shows it after its delay; a second focus covers a hide that was still running (CI flake)
+        for ($i = 0; $i < 3 && !$I->executeJS('return !!document.querySelector(".tooltip.show");'); $i++) {
+            $I->executeJS('document.activeElement.blur(); document.getElementById("kb-tooltip").focus();');
+            $I->wait(1);
+        }
         $I->waitForElementVisible('.tooltip.show', 3);
 
         $I->pressKeyboard(WebDriverKeys::ESCAPE);
