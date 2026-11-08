@@ -124,6 +124,7 @@ HumHub Changelog
 1.19.4 (Unreleased)
 -------------------
 
+- Fix #8711: The mobile app settings (`/mobile-app/get-settings`) failed with a `TypeError` after the mobile settings were saved with no whitelisted URL, as the empty field was stored as an empty string instead of an empty list
 - Fix #8663: `module/remove` did nothing for an enabled module whose files are missing (e.g. no compatible version to reinstall); its enabled flag is now removed from the database
 - Fix #8665: The latest HumHub version (About page, update notification) was only refreshed after flushing the cache
 - Fix #8667: `Undefined property: Application::$user` when the `user` component sets a `returnUrl` (regression of #8657)
@@ -135,7 +136,9 @@ HumHub Changelog
 - Fix #8689: `module/update-all` reported all modules as up to date when the HumHub API could not be reached or was disabled; it now fails with an error
 - Fix #8694: Wide gap between icon and caret of dropdown buttons (e.g. space header settings menu)
 - Fix #8693: Accent border of the main menu flashed black on hover
+- Fix #8708: Browser hung in an endless loop when the top menu overflowed without its "Menu" sub dropdown
 - Fix #8706: Wide avatar column in the space member request widget
+- Fix #8712: Secrets were not masked in the context dump of log targets configured outside the core (e.g. an `EmailTarget`)
 - Fix #8705: Browser autofill of the password field in the admin user edit form caused a "must be equal to Confirm new password" error on save
 
 1.19.3 (October 27, 2026)

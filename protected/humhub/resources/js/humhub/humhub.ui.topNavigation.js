@@ -26,8 +26,14 @@ humhub.module('ui.topNavigation', function (module, require, $) {
             return;
         }
 
-        $topSub.show();
         var $topMenuDropdown = $('#top-menu-sub-dropdown');
+        if (!$topMenuDropdown.length) {
+            // Without the sub menu no item can be moved, the loop below would never end
+            $topBarSecond.css('overflow', '');
+            return;
+        }
+
+        $topSub.show();
 
         while (isOverflow() && moveNextItemToDropDown($topMenuDropdown)) {
         }
