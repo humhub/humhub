@@ -120,6 +120,53 @@ class KeyboardCest
         Assert::assertSame('1', $I->executeJS($opacity), 'shown while it holds the focus');
     }
 
+    public function testEnterTriggersAnActionOnANonNativeElement(AcceptanceTester $I)
+    {
+        $I->wantToTest('that Enter triggers data-action-click on an element that is no link or button');
+        $this->openSpaceStream($I);
+
+        // No such element exists in core (links and buttons are used), so add one before the skip link
+        $permalink = $I->grabAttributeFrom(self::POST . ' [data-content-permalink]', 'data-content-permalink');
+        $I->executeJS('document.body.insertAdjacentHTML("afterbegin", \'<span id="kb-action" role="button" tabindex="0"'
+            . ' data-action-click="content.permalink" data-content-permalink="\' + ' . json_encode($permalink) . ' + \'">p</span>\');');
+
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        Assert::assertStringContainsString('span#kb-action', $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementVisible('.modal.show#globalModal', 5);
+        $I->waitForJS('return document.getElementById("globalModal").contains(document.activeElement);', 5); // Bootstrap moves the focus in on `shown`
+
+        $I->pressKeyboard(WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('#globalModal', 5);
+        $I->waitForJS('return !document.body.classList.contains("modal-open");', 5);
+        Assert::assertStringContainsString('span#kb-action', $I->grabActiveElement());
+
+        // Space does the same
+        $I->pressKeyboard(WebDriverKeys::SPACE);
+        $I->waitForElementVisible('.modal.show#globalModal', 5);
+        $I->waitForJS('return document.getElementById("globalModal").contains(document.activeElement);', 5);
+        $I->pressKeyboard(WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('#globalModal', 5);
+        $I->waitForJS('return !document.body.classList.contains("modal-open");', 5);
+    }
+
+    public function testEnterOnAChildOfAnActionElementDoesNotFireIt(AcceptanceTester $I)
+    {
+        $I->wantToTest('that Enter on a focusable child of a data-action-click element does not fire the action of the parent');
+        $this->openSpaceStream($I);
+
+        $permalink = $I->grabAttributeFrom(self::POST . ' [data-content-permalink]', 'data-content-permalink');
+        $I->executeJS('document.body.insertAdjacentHTML("afterbegin", \'<div id="kb-card" tabindex="0" data-action-click="content.permalink"'
+            . ' data-content-permalink="\' + ' . json_encode($permalink) . ' + \'"><span id="kb-inner" tabindex="0">i</span></div>\');');
+
+        $this->focus($I, '#kb-inner');
+        Assert::assertStringContainsString('span#kb-inner', $I->grabActiveElement());
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->wait(1);
+        $I->dontSeeElement('.modal.show#globalModal');
+    }
+
     private function openSpaceStream(AcceptanceTester $I): void
     {
         $I->amUser1();
