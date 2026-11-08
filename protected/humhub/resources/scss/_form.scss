@@ -74,6 +74,13 @@ $form-choice-border-radius: 4px !default;
         @extend %form-control-base;
     }
 
+    // Keyboard focus (Tab) shows the ring instead of the glow; a click, which `:focus-visible` matches on a text
+    // field too, only the glow. `data-hh-input-modality` is kept by `ui.appearance`
+    :root:not([data-hh-input-modality="pointer"]) :is(.form-control, .form-select):focus-visible {
+        @include hh-focus-ring;
+        box-shadow: $input-box-shadow;
+    }
+
     // An editable field under the pointer: its border in the accent; focus adds the ring
     :is(.form-control, .form-select):hover:not(:disabled, [readonly], .is-invalid, .is-valid) {
         border-color: $input-hover-border-color;
@@ -234,12 +241,12 @@ $form-choice-border-radius: 4px !default;
         }
     }
 
-    // The states in this order instead of `!important`: the focus above a ticked checkbox, disabled above both
-    input[type=checkbox]:focus {
-        border: 2px solid var(--bs-emphasis-color);
-        outline: none;
+    // Keyboard focus: the ring of `_base.scss`, which Bootstrap's `.form-check-input:focus` turns off for its own
+    .form-check-input:focus-visible {
+        @include hh-focus-ring;
     }
 
+    // After `:checked`, so it wins without `!important`
     input[type=checkbox], input[type=radio] {
         &:disabled {
             background: var(--hh-border-color-strong);
@@ -322,9 +329,13 @@ $form-choice-border-radius: 4px !default;
             border-color: var(--bs-accent);
         }
 
+        // The ring around the card, not the radio (shown on a phone)
         &:has(.form-check-input:focus-visible) {
-            outline: 2px solid rgba(var(--bs-accent-rgb), .32);
-            outline-offset: 2px;
+            @include hh-focus-ring;
+        }
+
+        .form-check-input:focus-visible {
+            outline: none;
         }
 
         &:has(.form-check-input:checked) {
@@ -483,17 +494,13 @@ $form-choice-border-radius: 4px !default;
         border-color: var(--bs-danger) !important;
     }
 
-    // The show/hide password icon (appended in humhub.ui.form.elements.js) is a
-    // plain <div>, so it needs its own focus style: :focus-visible outline is
-    // reset to none globally in _base.scss (see comment there). Negative
-    // outline-offset keeps the ring inside the icon's own box so it never
-    // pokes out past the input's border.
+    // The show/hide password icon (appended in humhub.ui.form.elements.js): the ring inside its own box, so it
+    // never pokes out past the input's border
     .humhub-pw-show {
         border-radius: 4px;
 
         &:focus-visible {
-            outline: 2px solid var(--bs-accent);
-            outline-offset: -2px;
+            @include hh-focus-ring(true);
         }
     }
 

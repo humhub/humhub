@@ -23,22 +23,27 @@
 
     .panel .list-group a.list-group-item {
 
-        &.active, &:focus {
-            @include listGroupItemActiveOrFocus();
+        &.active {
+            @include listGroupItemActive();
         }
 
         // Hover effect only on desktop
-        &:hover, &.active:hover, &.active:focus {
+        &:hover, &.active:hover {
             background: inherit;
             color: inherit;
             border-left: none !important;
         }
 
         @media (hover: hover) and (pointer: fine) {
-            &:hover, &.active:hover, &.active:focus {
-                @include listGroupItemActiveOrFocus();
+            &:hover, &.active:hover {
+                @include listGroupItemActive();
             }
         }
+    }
+
+    // Keyboard focus: the ring inside the row, which fills its box
+    .list-group-item:focus-visible {
+        @include hh-focus-ring(true);
     }
 
     .panel a.list-group-item {
@@ -117,14 +122,14 @@
             }
 
             a.list-group-item {
-                &.active, &:focus {
-                    @include mobileListGroupItemActiveOrFocus();
+                &.active {
+                    @include mobileListGroupItemActive();
                 }
 
                 // Hover effect only on desktop
                 @media (hover: hover) and (pointer: fine) {
-                    &:hover, &.active:hover, &.active:focus {
-                        @include mobileListGroupItemActiveOrFocus();
+                    &:hover, &.active:hover {
+                        @include mobileListGroupItemActive();
                     }
                 }
             }

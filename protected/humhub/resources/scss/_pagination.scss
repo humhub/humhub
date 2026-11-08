@@ -17,4 +17,9 @@
             background-color: var(--bs-body-bg);
         }
     }
+
+    // Keyboard focus: the ring of `_base.scss`, which Bootstrap's `.page-link:focus` turns off for its own
+    .page-link:focus-visible {
+        @include hh-focus-ring;
+    }
 }

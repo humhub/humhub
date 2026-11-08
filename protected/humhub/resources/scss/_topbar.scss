@@ -56,6 +56,12 @@
     #topbar-first {
         background-color: var(--hh-topbar-bg);
         color: var(--hh-topbar-color);
+        // The focus ring in the bar's own text colour; the menus hanging from it are surfaces, but the account menu
+        --bs-focus-ring-color: var(--hh-topbar-color);
+
+        .dropdown-menu:not(.dropdown-menu-topbar) {
+            --bs-focus-ring-color: var(--hh-accent-fg);
+        }
 
         .topbar-brand {
             max-width: 40%;
@@ -363,8 +369,7 @@
 
                     &.active,
                     &:hover,
-                    &:active,
-                    &:focus {
+                    &:active {
                         border-bottom: 3px solid var(--bs-accent);
                         background-color: var(--bs-tertiary-bg);
                         text-decoration: none;
