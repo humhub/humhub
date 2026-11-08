@@ -3,8 +3,37 @@ import { describe, it, expect } from 'vitest';
 /* jshint expr:true */
 
 import {initEditor, type, toHtml, serialize, clickDropdownMenuItem, pressKeyTab, pressKeyShiftTab, clickMenuItem,
-    expectMenuItemVisible, pressKeyEnter, insertText
+    expectMenuItemVisible, pressKeyEnter, insertText, setSelection
 } from '../../testEditor.js';
+
+const TABLE_HTML = '<table><tbody>'
+    + '<tr><th><p><br class="ProseMirror-trailingBreak"></p></th><th><p><br class="ProseMirror-trailingBreak"></p></th></tr>'
+    + '<tr><td><p><br class="ProseMirror-trailingBreak"></p></td><td><p><br class="ProseMirror-trailingBreak"></p></td></tr>'
+    + '</tbody></table>';
+
+const MD_TABLE = '|  |  |\n|--|--|\n|  |  |';
+const P_EMPTY = '<p><br class="ProseMirror-trailingBreak"></p>';
+
+// Puts the cursor into the last cell of the first table
+const cursorInLastCellOfFirstTable = (editor) => {
+    let pos = null;
+    let found = false;
+    editor.view.state.doc.descendants((node, nodePos) => {
+        if (found) {
+            return false;
+        }
+        if (node.type.name === 'table') {
+            node.descendants((cell, cellPos) => {
+                if (cell.type.name === 'table_cell') {
+                    pos = nodePos + 1 + cellPos + 2;
+                }
+            });
+            found = true;
+            return false;
+        }
+    });
+    setSelection(pos, null, editor);
+};
 
 describe("Plugin:tab_behavior", () => {
     it("test tab in paragraph", () => {
@@ -91,34 +120,78 @@ describe("Plugin:tab_behavior", () => {
         expect($from.index(depth - 3)).to.equal(0);
         expect($from.index(depth - 2)).to.equal(0);
         expect(table.childCount).to.equal(2);
-        expect(toHtml()).to.equal('<table><tbody><tr><th><p><br class="ProseMirror-trailingBreak"></p></th><th><p><br class="ProseMirror-trailingBreak"></p></th></tr><tr><td><p><br class="ProseMirror-trailingBreak"></p></td><td><p><br class="ProseMirror-trailingBreak"></p></td></tr></tbody></table>');
+        expect(toHtml()).to.equal(TABLE_HTML);
 
-        // Checking work Tab
-        for (let i = 0; i < 4; i++) {
+        // Tab walks the remaining three cells...
+        for (let i = 0; i < 3; i++) {
             pressKeyTab();
         }
-
-        // Checking cursor position and table rows after pressing Tab 4 times and creating new row
         $from = editor.view.state.selection.$from;
         depth = $from.depth;
-        table = $from.node(depth - 3);
-
-        expect($from.index(depth - 3)).to.equal(2);
-        expect($from.index(depth - 2)).to.equal(0);
-        expect(table.childCount).to.equal(3);
-        expect(toHtml()).to.equal('<table><tbody><tr><th><p><br class="ProseMirror-trailingBreak"></p></th><th><p><br class="ProseMirror-trailingBreak"></p></th></tr><tr><td><p><br class="ProseMirror-trailingBreak"></p></td><td><p><br class="ProseMirror-trailingBreak"></p></td></tr><tr><td><p><br class="ProseMirror-trailingBreak"></p></td><td><p><br class="ProseMirror-trailingBreak"></p></td></tr></tbody></table>');
-
-        // Checking work Shift+Tab
-        pressKeyShiftTab();
-
-        $from = editor.view.state.selection.$from;
-        depth = $from.depth;
-
-        // Checking cursor position and table rows after pressing Shift+Tab
-        expect(toHtml()).to.equal('<table><tbody><tr><th><p><br class="ProseMirror-trailingBreak"></p></th><th><p><br class="ProseMirror-trailingBreak"></p></th></tr><tr><td><p><br class="ProseMirror-trailingBreak"></p></td><td><p><br class="ProseMirror-trailingBreak"></p></td></tr><tr><td><p><br class="ProseMirror-trailingBreak"></p></td><td><p><br class="ProseMirror-trailingBreak"></p></td></tr></tbody></table>');
         expect($from.index(depth - 3)).to.equal(1);
         expect($from.index(depth - 2)).to.equal(1);
 
+        // ...and the fourth Tab leaves the table into a new paragraph after it, instead of adding a row
+        pressKeyTab();
+        $from = editor.view.state.selection.$from;
+        expect($from.depth).to.equal(1);
+        expect($from.parent.type.name).to.equal('paragraph');
+        expect(editor.view.state.doc.firstChild.childCount).to.equal(2);
+        expect(toHtml()).to.equal(TABLE_HTML + '<p><br class="ProseMirror-trailingBreak"></p>');
+
+        // Outside a table and a list the editor does not handle Shift+Tab
+        pressKeyShiftTab();
+        expect(toHtml()).to.equal(TABLE_HTML + '<p><br class="ProseMirror-trailingBreak"></p>');
+
+    });
+
+    it("test shift tab in the first table cell leaves the table", () => {
+        const editor = initEditor();
+        clickMenuItem('resizeNav');
+        expectMenuItemVisible('insertTable');
+        clickMenuItem('insertTable');
+        const formInputs = $('.ProseMirror-prompt input');
+        $(formInputs[0]).val(2);
+        $(formInputs[1]).val(2);
+        $('.ProseMirror-prompt-submit').click();
+        expect(toHtml()).to.equal(TABLE_HTML);
+
+        pressKeyShiftTab();
+
+        const $from = editor.view.state.selection.$from;
+        expect($from.depth).to.equal(1);
+        expect($from.parent.type.name).to.equal('paragraph');
+        expect($from.pos).to.equal(1);
+        expect(toHtml()).to.equal('<p><br class="ProseMirror-trailingBreak"></p>' + TABLE_HTML);
+    });
+
+    it("test tab after the last table cell moves into the following paragraph", () => {
+        const editor = initEditor(MD_TABLE + '\n\nafter');
+        expect(toHtml()).to.equal(TABLE_HTML + '<p>after</p>');
+        const childCount = editor.view.state.doc.childCount;
+        cursorInLastCellOfFirstTable(editor);
+
+        pressKeyTab();
+
+        const $from = editor.view.state.selection.$from;
+        expect($from.parent.type.name).to.equal('paragraph');
+        expect($from.parent.textContent).to.equal('after');
+        expect($from.parentOffset).to.equal(0);
+        expect(editor.view.state.doc.childCount).to.equal(childCount);
+        expect(toHtml()).to.equal(TABLE_HTML + '<p>after</p>');
+    });
+
+    it("test tab after the last table cell before another table inserts a paragraph", () => {
+        const editor = initEditor(MD_TABLE + '\n\n' + MD_TABLE);
+        expect(toHtml()).to.equal(TABLE_HTML + TABLE_HTML);
+        cursorInLastCellOfFirstTable(editor);
+
+        pressKeyTab();
+
+        const $from = editor.view.state.selection.$from;
+        expect($from.parent.type.name).to.equal('paragraph');
+        expect($from.depth).to.equal(1);
+        expect(toHtml()).to.equal(TABLE_HTML + P_EMPTY + TABLE_HTML);
     });
 
     it("test tab in code block", () => {
