@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <aside class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
+            <aside id="layout-sidebar" class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>{{ filterLabel }}</strong>

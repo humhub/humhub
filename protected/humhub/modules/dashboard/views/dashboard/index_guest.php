@@ -13,7 +13,7 @@ use humhub\widgets\FooterMenu;
     <div class="col-lg-8 layout-content-container">
         <?= DashboardContent::widget(); ?>
     </div>
-    <aside class="col-lg-4 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
+    <aside id="layout-sidebar" class="col-lg-4 layout-sidebar-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
         <?= Sidebar::widget([
             'widgets' => [
                 [
