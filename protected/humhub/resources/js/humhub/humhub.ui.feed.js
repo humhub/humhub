@@ -72,11 +72,19 @@ humhub.module('ui.feed', function (module, require, $) {
         return (dir > 0 ? candidates[0] : candidates[candidates.length - 1]) || null;
     };
 
+    /**
+     * Focuses an entry and scrolls it to the top of the window, but only when it is not fully in view: while it
+     * is, the focus ring shows the position and the page does not jump.
+     */
     var focusEntry = function (article) {
         if (!focus.focus(article)) {
             return false;
         }
-        article.scrollIntoView({block: 'start'});
+        var rect = article.getBoundingClientRect();
+        var top = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+        if (rect.top < top || rect.bottom > window.innerHeight) {
+            article.scrollIntoView({block: 'start'});
+        }
         return true;
     };
 
