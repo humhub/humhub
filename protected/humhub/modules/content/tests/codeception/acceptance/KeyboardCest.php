@@ -125,8 +125,12 @@ class KeyboardCest
         // Bootstrap removes the tip after its fade; waiting for that avoids racing the next show() against it
         $I->waitForJS('return document.querySelectorAll(".tooltip").length === 0;', 3);
 
-        // Focus it again by keyboard (the modality is still keyboard): the tooltip comes back, Escape hides it
-        $I->executeJS('document.activeElement.blur(); document.getElementById("kb-tooltip").focus();');
+        // Focus it again by keyboard (the modality is still keyboard): the tooltip comes back, Escape hides it.
+        // Bootstrap shows it after its delay; a second focus covers a hide that was still running (CI flake)
+        for ($i = 0; $i < 3 && !$I->executeJS('return !!document.querySelector(".tooltip.show");'); $i++) {
+            $I->executeJS('document.activeElement.blur(); document.getElementById("kb-tooltip").focus();');
+            $I->wait(1);
+        }
         $I->waitForElementVisible('.tooltip.show', 3);
 
         $I->pressKeyboard(WebDriverKeys::ESCAPE);
