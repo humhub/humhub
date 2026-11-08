@@ -83,6 +83,43 @@ describe('ImageAltTextModal', () => {
         expect(events).toEqual([['cancel']]);
     });
 
+    it('when required, refuses an empty text and cannot be dismissed', async () => {
+        await open({ src: 'https://x.test/a.png', required: true });
+
+        expect(dialog().querySelector('.btn-close')).toBeNull();
+        expect(footerButton('.btn-light').textContent).toBe('Remove image');
+        expect(dialog().querySelector('.form-text').textContent).toBe('Describe the image for people who cannot see it.');
+        expect(input().getAttribute('aria-required')).toBe('true');
+
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+        await flushPromises();
+        expect(dialog()).not.toBeNull();
+
+        footerButton('.btn-primary').click();
+        await flushPromises();
+        expect(dialog()).not.toBeNull();
+        expect(input().classList.contains('is-invalid')).toBe(true);
+        expect(dialog().querySelector('.invalid-feedback').textContent).toBe('Please describe the image.');
+        expect(document.activeElement).toBe(input());
+        expect(events).toEqual([]);
+
+        await type('A red bicycle');
+        expect(dialog().querySelector('.invalid-feedback')).toBeNull();
+        footerButton('.btn-primary').click();
+        await flushPromises();
+        expect(dialog()).toBeNull();
+        expect(events).toEqual([['save', { alt: 'A red bicycle' }]]);
+    });
+
+    it('when required, "Remove image" cancels', async () => {
+        await open({ src: null, required: true });
+        footerButton('.btn-light').click();
+        await flushPromises();
+
+        expect(dialog()).toBeNull();
+        expect(events).toEqual([['cancel']]);
+    });
+
     it('shows no preview without an image source', async () => {
         await open({ src: null });
 

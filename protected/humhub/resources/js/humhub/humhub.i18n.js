@@ -147,7 +147,9 @@ humhub.module('i18n', function(module, require, $) {
             module.log.warn(`Category '${category}' was not correctly preloaded for translation '${key}'`);
         }
 
-        var template = (globalMessages[category] && key in globalMessages[category]) ? globalMessages[category][key] : key;
+        var translations = globalMessages[category] || {};
+        // A message without translation ('' in the message file) is shown in the source language
+        var template = (key in translations && translations[key] !== '') ? translations[key] : key;
         return compileMessage(template).format(params);
     };
 

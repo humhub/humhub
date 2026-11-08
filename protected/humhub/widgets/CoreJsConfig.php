@@ -115,6 +115,11 @@ class CoreJsConfig extends Widget
                     'oembed' => [
                         'max' => Yii::$app->getModule('content')->maxOembeds,
                     ],
+                    // Whether the editor asks for the alt text of an uploaded image (its
+                    // `image.altText` option: off, optional or required). @since 1.20
+                    'image' => [
+                        'altText' => Yii::$app->getModule('content')->getImageAltTextMode(),
+                    ],
                     'markdownEditorMode' => Yii::$app->user->getIdentity()
                         ? Yii::$app->user->getIdentity()->settings->get('markdownEditorMode')
                         : User::EDITOR_RICH_TEXT,

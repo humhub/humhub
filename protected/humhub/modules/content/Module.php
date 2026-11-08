@@ -27,6 +27,16 @@ use Yii;
 class Module extends \humhub\components\Module
 {
     /**
+     * Whether the richtext editor asks for the alternative text of an uploaded image, see
+     * [[getImageAltTextMode()]]
+     *
+     * @since 1.20
+     */
+    public const IMAGE_ALT_TEXT_OFF = 'off';
+    public const IMAGE_ALT_TEXT_OPTIONAL = 'optional';
+    public const IMAGE_ALT_TEXT_REQUIRED = 'required';
+
+    /**
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\content\controllers';
@@ -184,5 +194,29 @@ class Module extends \humhub\components\Module
     public function getSearchDriver(): AbstractDriver
     {
         return $this->search;
+    }
+
+    /**
+     * Whether the richtext editor asks for the alternative text of an uploaded image, one of the
+     * `IMAGE_ALT_TEXT_*` constants (Administration → Appearance → Accessibility): `optional` - the
+     * dialog can be skipped, `required` - the image is only inserted with a text, `off` - no dialog.
+     *
+     * @since 1.20
+     */
+    public function getImageAltTextMode(): string
+    {
+        $mode = $this->settings->get('imageAltText');
+
+        return in_array($mode, [self::IMAGE_ALT_TEXT_OFF, self::IMAGE_ALT_TEXT_REQUIRED], true)
+            ? $mode
+            : self::IMAGE_ALT_TEXT_OPTIONAL;
+    }
+
+    /**
+     * @since 1.20
+     */
+    public function setImageAltTextMode(string $mode): void
+    {
+        $this->settings->set('imageAltText', $mode);
     }
 }

@@ -39,7 +39,11 @@ class I18nController extends Controller
                         $cat = str_replace(I18NHelper::getModuleTranslationCategory($messageSource->module->id), '', $cat);
                     }
 
-                    $messages[$originalCat] = $messageSource->loadMessages($cat, Yii::$app->language);
+                    // Without the untranslated ones: the client shows their source message, as Yii::t() does
+                    $messages[$originalCat] = array_filter(
+                        $messageSource->loadMessages($cat, Yii::$app->language),
+                        static fn($message) => $message !== '' && $message !== null,
+                    );
                 }
             } catch (\Exception) {
             }

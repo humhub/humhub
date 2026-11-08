@@ -17136,9 +17136,14 @@
    */
   const MODAL_COMPONENT = "ImageAltTextModal";
   const queues = /* @__PURE__ */ new WeakMap();
+  const MODES = ["off", "optional", "required"];
+  const getMode = function(context) {
+    const mode = context.getPluginOption("image", "altText", "optional");
+    return MODES.includes(mode) ? mode : "optional";
+  };
   const requestAltText = function(context, nodes2) {
     const imageType = context.schema.nodes.image;
-    if (!imageType || context.getPluginOption("image", "altTextPrompt", true) === false) {
+    if (!imageType || getMode(context) === "off") {
       return;
     }
     const images = (nodes2 || []).filter((node) => node && node.type === imageType);
@@ -17171,7 +17176,11 @@
       return;
     }
     const stop = () => queues.delete(context);
-    const host = mountVueComponent(MODAL_COMPONENT, { src: validateHref(node.attrs.src) ? node.attrs.src : null }, stop);
+    const required = getMode(context) === "required";
+    const host = mountVueComponent(MODAL_COMPONENT, {
+      src: validateHref(node.attrs.src) ? node.attrs.src : null,
+      required
+    }, stop);
     if (!host) {
       stop();
       return;
@@ -17180,6 +17189,8 @@
       host.remove();
       if (typeof alt === "string") {
         setAlt(context, node, alt);
+      } else if (required) {
+        removeImage(context, node);
       }
       context.editor.view.focus();
       next(context);
@@ -17192,6 +17203,13 @@
     const pos = findPos(context, node);
     if (pos !== null) {
       view2.dispatch(view2.state.tr.setNodeMarkup(pos, null, Object.assign({}, node.attrs, { alt })));
+    }
+  };
+  const removeImage = function(context, node) {
+    const view2 = context.editor.view;
+    const pos = findPos(context, node);
+    if (pos !== null) {
+      view2.dispatch(view2.state.tr.delete(pos, pos + node.nodeSize));
     }
   };
   const findPos = function(context, node) {

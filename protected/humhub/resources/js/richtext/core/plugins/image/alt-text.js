@@ -13,15 +13,26 @@ const MODAL_COMPONENT = 'ImageAltTextModal';
 // Images waiting for their alt text, per editor: one dialog at a time
 const queues = new WeakMap();
 
+const MODES = ['off', 'optional', 'required'];
+
+// The `altText` option of the image plugin, by default the platform's setting
+const getMode = function (context) {
+    const mode = context.getPluginOption('image', 'altText', 'optional');
+
+    return MODES.includes(mode) ? mode : 'optional';
+};
+
 /**
  * Asks for the alt text of each image among the inserted nodes, one after another, in the
- * platform's dialog (none without the Vue runtime, e.g. outside HumHub). Skipping keeps the alt
- * text the image was inserted with (its file name). Disabled with `image: {altTextPrompt: false}`.
+ * platform's dialog (none without the Vue runtime, e.g. outside HumHub). `image: {altText}`:
+ * `optional` - skipping keeps the alt text the image was inserted with (its file name);
+ * `required` - the dialog cannot be skipped, "Remove image" takes the image out again;
+ * `off` - no dialog.
  */
 const requestAltText = function (context, nodes) {
     const imageType = context.schema.nodes.image;
 
-    if (!imageType || context.getPluginOption('image', 'altTextPrompt', true) === false) {
+    if (!imageType || getMode(context) === 'off') {
         return;
     }
 
@@ -67,8 +78,12 @@ const next = function (context) {
     }
 
     const stop = () => queues.delete(context);
+    const required = getMode(context) === 'required';
 
-    const host = mountVueComponent(MODAL_COMPONENT, {src: validateHref(node.attrs.src) ? node.attrs.src : null}, stop);
+    const host = mountVueComponent(MODAL_COMPONENT, {
+        src: validateHref(node.attrs.src) ? node.attrs.src : null,
+        required,
+    }, stop);
 
     if (!host) {
         stop();
@@ -79,6 +94,8 @@ const next = function (context) {
         host.remove();
         if (typeof alt === 'string') {
             setAlt(context, node, alt);
+        } else if (required) {
+            removeImage(context, node);
         }
         context.editor.view.focus();
         next(context);
@@ -94,6 +111,15 @@ const setAlt = function (context, node, alt) {
 
     if (pos !== null) {
         view.dispatch(view.state.tr.setNodeMarkup(pos, null, Object.assign({}, node.attrs, {alt})));
+    }
+};
+
+const removeImage = function (context, node) {
+    const view = context.editor.view;
+    const pos = findPos(context, node);
+
+    if (pos !== null) {
+        view.dispatch(view.state.tr.delete(pos, pos + node.nodeSize));
     }
 };
 

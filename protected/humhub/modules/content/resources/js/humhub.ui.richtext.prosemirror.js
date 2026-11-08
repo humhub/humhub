@@ -116,6 +116,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             },
             emoji: module.config.emoji,
             oembed: module.config.oembed,
+            image: module.config.image,
             markdownEditorMode: module.config.markdownEditorMode,
             translate: function (key) {
                 return getRichTextEditorTranslation(key);

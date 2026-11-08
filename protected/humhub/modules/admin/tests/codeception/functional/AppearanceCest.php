@@ -10,6 +10,7 @@ namespace admin\functional;
 
 use admin\FunctionalTester;
 use humhub\components\Appearance;
+use humhub\modules\content\Module as ContentModule;
 use PHPUnit\Framework\Assert;
 use Yii;
 
@@ -69,9 +70,15 @@ class AppearanceCest
             'AccessibilitySettingsForm[contrast]' => 'on',
             'AccessibilitySettingsForm[motion]' => 'system',
             'AccessibilitySettingsForm[font]' => 1,
+            'AccessibilitySettingsForm[imageAltText]' => 'required',
         ]);
         Assert::assertSame(Appearance::ON, Yii::$app->appearance->getDefault(Appearance::CONTRAST));
         Assert::assertSame(Appearance::ON, Yii::$app->appearance->getDefault(Appearance::FONT));
+        Assert::assertSame(ContentModule::IMAGE_ALT_TEXT_REQUIRED, Yii::$app->getModule('content')->getImageAltTextMode());
+
+        // The editor is told on every page
+        $I->amOnRoute('/admin/appearance/accessibility');
+        $I->seeInSource('"image":{"altText":"required"}');
     }
 
     public function testGeneralSettingsKeepTheFormerAppearanceFields(FunctionalTester $I)

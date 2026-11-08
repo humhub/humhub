@@ -22,6 +22,9 @@ use humhub\widgets\form\ActiveForm;
 <?= $form->field($model, 'font')->checkbox() ?>
 
 <hr>
+<?= $form->field($model, 'imageAltText')->dropDownList($model->getImageAltTextOptions()) ?>
+
+<hr>
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
 
 <?php ActiveForm::end(); ?>

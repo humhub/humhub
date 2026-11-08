@@ -25,7 +25,7 @@ menu `admin/widgets/AppearanceMenu`, so modules can add a tab (e.g. a theme modu
 | **Logo & Images** | `images` | `AppearanceImagesForm` | Logo, Icon, Login background, E-mail header image |
 | **Theme** | `theme` | `ThemeSettingsForm` | Theme, the nine theme colours with their "Default" switches |
 | **Dark Mode** | `dark-mode` | `DarkModeSettingsForm` | see below |
-| **Accessibility** | `accessibility` | `AccessibilitySettingsForm` | defaults of the user options, see below |
+| **Accessibility** | `accessibility` | `AccessibilitySettingsForm` | defaults of the user options and the alt text of images, see below |
 | **Custom SCSS** | `custom-scss` | `CustomScssForm` | Custom SCSS |
 
 Saving the Theme or Custom SCSS tab rebuilds the theme CSS. Every tab saves with a full page load,
@@ -57,6 +57,17 @@ settings (`user` module), so `getInherit()` falls back to them:
 | High contrast | `a11y.contrast` | `system`, `off`, `on` | `system` |
 | Reduced motion | `a11y.motion` | `system`, `off`, `on` | `system` |
 | Readable font | `a11y.font` | `off`, `on` | `off` |
+
+Below them, a setting of the richtext editor rather than a default of a user option:
+
+| Setting | Key (`content` module) | Values | Default |
+|---|---|---|---|
+| Alternative text for images | `imageAltText` | `off`, `optional`, `required` | `optional` |
+
+Whether the editor asks to describe an uploaded image (`ImageAltTextModal`, see
+[internals-richtext-editor.md](internals-richtext-editor.md)): `required` inserts the image only
+with a description, `off` never asks. `Module::getImageAltTextMode()` of the content module reads
+it; `CoreJsConfig` hands it to the editor as its `image.altText` option.
 
 ### Settings → General
 
