@@ -50221,65 +50221,51 @@
    * @license https://www.humhub.com/licences
    */
   let keymap = () => {
-    const getNextSelectionCell = ($from) => {
-      let depth = $from.depth;
-      let parent;
-      do {
-        parent = $from.node(depth);
-        if (parent) {
-          if (parent.type.name === "table_header" || parent.type.name === "table_cell") {
-            const table2 = $from.node(depth - 2);
-            const row = $from.node(depth - 1);
-            const isLastCell = $from.index(depth - 2) === table2.childCount - 1 && $from.index(depth - 1) === row.childCount - 1;
-            return !isLastCell;
-          }
-          depth--;
+    const getListItemType = (state2) => {
+      const { $from } = state2.selection;
+      const parent = $from.depth > 1 ? $from.node($from.depth - 1) : null;
+      return state2.selection.empty && parent && parent.type.name === "list_item" ? parent.type : null;
+    };
+    const getTableDepth = ($from) => {
+      for (let depth = $from.depth; depth > 0; depth--) {
+        if ($from.node(depth).type.name === "table") {
+          return depth;
         }
-      } while (depth > 0 && parent);
+      }
       return null;
     };
-    return {
-      "Tab": (state2, dispatch, view2) => {
-        if (dispatch) {
-          const { $from } = state2.selection;
-          const parent = $from.node($from.depth - 1);
-          const nodeType = parent ? parent.type : null;
-          if (state2.selection.empty && $from.depth > 1 && nodeType.name === "list_item") {
-            sinkListItem(nodeType)(state2, dispatch);
-          } else {
-            const nextSelection = getNextSelectionCell($from);
-            if (nextSelection !== null) {
-              if (nextSelection) {
-                goToNextCell(1)(state2, dispatch);
-              } else {
-                addRowAfter(state2, dispatch);
-                view2.dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", code: 9 }));
-              }
-            } else {
-              return false;
-            }
-          }
-        }
-        return true;
-      },
-      "Shift-Tab": (state2, dispatch) => {
-        if (dispatch) {
-          const { $from } = state2.selection;
-          const parent = $from.node($from.depth - 1);
-          const nodeType = parent ? parent.type : null;
-          if (state2.selection.empty && $from.depth > 1 && nodeType.name === "list_item") {
-            liftListItem(nodeType)(state2, dispatch);
-          } else {
-            const nextSelection = getNextSelectionCell($from);
-            if (nextSelection !== null) {
-              goToNextCell(-1)(state2, dispatch);
-            } else {
-              return false;
-            }
-          }
-        }
+    const leaveTable = (state2, dispatch, tableDepth, dir) => {
+      if (!dispatch) {
         return true;
       }
+      const { $from } = state2.selection;
+      const pos = dir > 0 ? $from.after(tableDepth) : $from.before(tableDepth);
+      let tr = state2.tr;
+      const $pos = tr.doc.resolve(pos);
+      const neighbour = dir > 0 ? $pos.nodeAfter : $pos.nodeBefore;
+      let selection = neighbour && neighbour.isTextblock ? Selection.findFrom($pos, dir, true) : null;
+      if (!selection) {
+        tr = tr.insert(pos, state2.schema.nodes.paragraph.create());
+        selection = TextSelection.create(tr.doc, pos + 1);
+      }
+      dispatch(tr.setSelection(selection).scrollIntoView());
+      return true;
+    };
+    const tab = (dir) => (state2, dispatch) => {
+      const listItemType = getListItemType(state2);
+      if (listItemType) {
+        (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state2, dispatch);
+        return true;
+      }
+      const tableDepth = getTableDepth(state2.selection.$from);
+      if (tableDepth === null) {
+        return false;
+      }
+      return goToNextCell(dir)(state2, dispatch) || leaveTable(state2, dispatch, tableDepth, dir);
+    };
+    return {
+      "Tab": tab(1),
+      "Shift-Tab": tab(-1)
     };
   };
   /*

@@ -3,6 +3,9 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8727: In the richtext editor, Tab after the last table cell and Shift+Tab before the first leave the table instead of adding a row
+- Enh #8726: Enter and Space trigger a `data-action-click` on an element that is neither a link nor a button
+- Fix #8729: The menu of a comment is reachable by keyboard: it shows while the focus is inside the comment, and always on a touch screen
 - Enh #8724: Tooltips appear on keyboard focus as on hover, hide on Escape and when the focus leaves (`humhub.ui.tooltip`)
 - Enh #8723: A dialog gives the keyboard focus back to the element that opened it, or to the dropdown toggle or the content when that element is gone (`humhub.ui.focus`)
 - Enh #8722: The top bars are a header and a navigation landmark, the active menu link carries `aria-current`

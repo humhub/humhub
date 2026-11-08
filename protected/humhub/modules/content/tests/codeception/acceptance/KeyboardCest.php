@@ -87,6 +87,86 @@ class KeyboardCest
         Assert::assertStringContainsString('button#kb-tooltip', $I->grabActiveElement());
     }
 
+    public function testCommentMenuIsReachableByKeyboard(AcceptanceTester $I)
+    {
+        $I->wantToTest('that the comment menu toggle shows while the focus is in the comment and is reached by Shift+Tab');
+        $this->openSpaceStream($I);
+
+        $I->click('Comment', self::POST);
+        $richtext = self::POST . ' .comment-container .ProseMirror[contenteditable="true"]';
+        $I->waitForElementVisible($richtext, 10);
+        $I->fillField($richtext, 'Keyboard test comment');
+        $I->click('.btn-comment-submit', self::POST . ' .comment-container');
+        $entry = self::POST . ' .comment-container .single-comment';
+        $I->waitForElementVisible($entry, 10);
+        $comment = '#' . $I->grabAttributeFrom($entry, 'id');
+        $toggle = $comment . ' > .preferences .dropdown-toggle';
+        $opacity = 'return getComputedStyle(document.querySelector(' . json_encode($toggle) . ')).opacity;';
+        $isToggleFocused = 'return document.activeElement === document.querySelector(' . json_encode($toggle) . ');';
+
+        // Headless Chrome reports no hover capability, so the toggle is always shown there and the hidden state
+        // is only covered by a manual check in a desktop browser (docs/ui/keyboard.md, "Checking")
+        if ($I->executeJS('return matchMedia("(hover: hover)").matches;')) {
+            Assert::assertSame('0', $I->executeJS($opacity), 'hidden without hover or focus');
+        }
+
+        $this->focus($I, $comment . ' .comment-heading a');
+        Assert::assertSame('1', $I->executeJS($opacity), 'shown while the focus is in the comment');
+
+        for ($i = 0; $i < 3 && !$I->executeJS($isToggleFocused); $i++) {
+            $I->pressKeyboard(WebDriverKeys::SHIFT, WebDriverKeys::TAB);
+        }
+        Assert::assertTrue((bool)$I->executeJS($isToggleFocused), 'Shift+Tab reaches the toggle, last stop: ' . $I->grabActiveElement());
+        Assert::assertSame('1', $I->executeJS($opacity), 'shown while it holds the focus');
+    }
+
+    public function testEnterTriggersAnActionOnANonNativeElement(AcceptanceTester $I)
+    {
+        $I->wantToTest('that Enter triggers data-action-click on an element that is no link or button');
+        $this->openSpaceStream($I);
+
+        // No such element exists in core (links and buttons are used), so add one before the skip link
+        $permalink = $I->grabAttributeFrom(self::POST . ' [data-content-permalink]', 'data-content-permalink');
+        $I->executeJS('document.body.insertAdjacentHTML("afterbegin", \'<span id="kb-action" role="button" tabindex="0"'
+            . ' data-action-click="content.permalink" data-content-permalink="\' + ' . json_encode($permalink) . ' + \'">p</span>\');');
+
+        $I->pressKeyboard(WebDriverKeys::TAB);
+        Assert::assertStringContainsString('span#kb-action', $I->grabActiveElement());
+
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementVisible('.modal.show#globalModal', 5);
+        $I->waitForJS('return document.getElementById("globalModal").contains(document.activeElement);', 5); // Bootstrap moves the focus in on `shown`
+
+        $I->pressKeyboard(WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('#globalModal', 5);
+        $I->waitForJS('return !document.body.classList.contains("modal-open");', 5);
+        Assert::assertStringContainsString('span#kb-action', $I->grabActiveElement());
+
+        // Space does the same
+        $I->pressKeyboard(WebDriverKeys::SPACE);
+        $I->waitForElementVisible('.modal.show#globalModal', 5);
+        $I->waitForJS('return document.getElementById("globalModal").contains(document.activeElement);', 5);
+        $I->pressKeyboard(WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('#globalModal', 5);
+        $I->waitForJS('return !document.body.classList.contains("modal-open");', 5);
+    }
+
+    public function testEnterOnAChildOfAnActionElementDoesNotFireIt(AcceptanceTester $I)
+    {
+        $I->wantToTest('that Enter on a focusable child of a data-action-click element does not fire the action of the parent');
+        $this->openSpaceStream($I);
+
+        $permalink = $I->grabAttributeFrom(self::POST . ' [data-content-permalink]', 'data-content-permalink');
+        $I->executeJS('document.body.insertAdjacentHTML("afterbegin", \'<div id="kb-card" tabindex="0" data-action-click="content.permalink"'
+            . ' data-content-permalink="\' + ' . json_encode($permalink) . ' + \'"><span id="kb-inner" tabindex="0">i</span></div>\');');
+
+        $this->focus($I, '#kb-inner');
+        Assert::assertStringContainsString('span#kb-inner', $I->grabActiveElement());
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->wait(1);
+        $I->dontSeeElement('.modal.show#globalModal');
+    }
+
     private function openSpaceStream(AcceptanceTester $I): void
     {
         $I->amUser1();
