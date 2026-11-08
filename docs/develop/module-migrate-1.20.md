@@ -2701,3 +2701,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `prefers-reduced-motion` media queries would ignore a user who turned the option off.
   - New image `Yii::$app->img->logoDark`: `SiteLogo` renders it next to the logo (`.hh-logo-light`, `.hh-logo-dark`)
     while the dark mode is allowed. A theme that overrides `widgets/views/logo.php` shows only its own logo.
+- **The page frame uses landmark elements.** In `views/layouts/main.php` the first top bar is a
+  `<header>` and the second a `<nav aria-label="…">` instead of two `<div>`s; ids and classes are
+  unchanged. A theme with its own `main.php` should follow, so assistive technology can list the
+  landmarks (`docs/ui/keyboard.md`). `MenuLink` renders `aria-current="page"` on its active link.
+  JavaScript that moves the `active` class between menu links has to move `aria-current` with it (see
+  `humhub.ui.navigation`). A menu whose active entry is not the current page passes `'aria-current' => null` in
+  the render options.
