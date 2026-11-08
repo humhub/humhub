@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh #<PR>: A deleted stream entry or comment hands the keyboard focus to the next one, an edited entry keeps it
+- Enh #8728: A deleted stream entry or comment hands the keyboard focus to the next one, an edited entry keeps it
 - Enh #8727: In the richtext editor, Tab after the last table cell and Shift+Tab before the first leave the table instead of adding a row
 - Enh #8726: Enter and Space trigger a `data-action-click` on an element that is neither a link nor a button
 - Fix #8729: The menu of a comment is reachable by keyboard: it shows while the focus is inside the comment, and always on a touch screen
