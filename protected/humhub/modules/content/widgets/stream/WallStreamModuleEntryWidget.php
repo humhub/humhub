@@ -5,6 +5,7 @@ namespace humhub\modules\content\widgets\stream;
 use Exception;
 use humhub\helpers\Html;
 use humhub\widgets\Icon;
+use Yii;
 
 /**
  * Class WallStreamModuleEntryWidget
