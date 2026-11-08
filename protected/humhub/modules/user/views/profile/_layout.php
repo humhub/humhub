@@ -18,7 +18,7 @@ $user = $this->context->contentContainer;
         <aside class="col-lg-2 layout-nav-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
             <?= ProfileMenu::widget(['user' => $user]); ?>
         </aside>
-        <div class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
+        <div id="layout-content-column" class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= $content; ?>
             <?php if (!$this->hasSidebar()): ?>
                 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>

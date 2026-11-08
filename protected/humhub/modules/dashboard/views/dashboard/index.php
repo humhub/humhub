@@ -15,7 +15,7 @@ use humhub\widgets\FooterMenu;
 
 <?= Html::beginContainer() ?>
 <div class="row">
-    <div class="col-lg-8 layout-content-container">
+    <div id="layout-content-column" class="col-lg-8 layout-content-container">
         <?= DashboardContent::widget([
             'contentContainer' => $contentContainer,
             'showProfilePostForm' => $showProfilePostForm

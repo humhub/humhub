@@ -25,17 +25,18 @@ class KeyboardCest
 
     public function testSkipLinkIsTheFirstStop(AcceptanceTester $I)
     {
-        $I->wantToTest('that Tab reaches the skip link first and Enter lands in the main content');
+        $I->wantToTest('that Tab reaches the skip link first and Enter lands in the content column, after the space menu');
         $this->openSpaceStream($I);
 
         $I->pressKeyboard(WebDriverKeys::TAB);
-        Assert::assertTrue((bool)$I->executeJS('return document.activeElement.getAttribute("href") === "#main-content";'),
-            'the first stop is the skip link, was: ' . $I->grabActiveElement());
+        // The space page has a content column, so the link to the main area is hidden and this one shows
+        Assert::assertTrue((bool)$I->executeJS('return document.activeElement.getAttribute("href") === "#layout-content-column";'),
+            'the first stop is the skip link to the content, was: ' . $I->grabActiveElement());
 
         $I->pressKeyboard(WebDriverKeys::ENTER);
         $I->pressKeyboard(WebDriverKeys::TAB);
-        Assert::assertTrue((bool)$I->executeJS('return document.getElementById("main-content").contains(document.activeElement);'),
-            'the stop after the skip link is inside the main content, was: ' . $I->grabActiveElement());
+        Assert::assertTrue((bool)$I->executeJS('return document.getElementById("layout-content-column").contains(document.activeElement);'),
+            'the stop after the skip link is inside the content column, was: ' . $I->grabActiveElement());
     }
 
     public function testSkipLinksReachTheNavigationAndTheSidebar(AcceptanceTester $I)

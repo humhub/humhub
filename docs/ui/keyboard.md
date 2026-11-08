@@ -31,8 +31,10 @@ messages are announced (4.1.3).
   it (the name link), so Tab enters the container first. The hiding applies under
   `@media (hover: hover)` only: a touch screen always shows the control.
 - **The order is the visual order.** No positive `tabindex`. After a full page load the first
-  stops are the skip links (to the main content, the navigation and the sidebar; a link whose
-  target the page lacks is hidden), then the top bar, then the content. After a pjax swap the
+  stops are the skip links (to the content, the navigation and the sidebar; a link whose target
+  the page lacks is hidden), then the top bar, then the content. The content is the column beside
+  the page's own menu (`#layout-content-column` in a space, a profile, the account and the administration),
+  else the main area (`#main-content`), so the link skips that menu as well. After a pjax swap the
   focus is on the loaded content, so Tab continues there instead of at the top of the page.
 
 ## Landmarks and names
@@ -162,7 +164,7 @@ loading and hand-over.
 
 ## Implementation in core
 
-**Today:** the focus ring for every control, with the input modality; the skip links to the main
+**Today:** the focus ring for every control, with the input modality; the skip links to the
 content, the navigation and the sidebar; the stream as a feed of articles with `humhub.ui.feed`, and the
 comments of an entry as a feed inside it (the comment island); `<header>`,
 `<nav>` and `<aside>` landmarks, and `aria-current="page"` on the active menu link, kept up by

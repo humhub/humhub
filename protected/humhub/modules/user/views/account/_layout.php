@@ -18,7 +18,7 @@ use humhub\widgets\FooterMenu;
             <?php
             echo AccountMenu::widget(); ?>
         </div>
-        <div class="col-lg-9">
+        <div id="layout-content-column" class="col-lg-9">
             <?php if (ContentCard::isRendered($this)) : ?>
                 <?= $content ?>
             <?php else : ?>

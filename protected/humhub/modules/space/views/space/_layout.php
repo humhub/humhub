@@ -30,7 +30,7 @@ $space = $context->contentContainer;
         <aside class="col-lg-2 layout-nav-container" aria-label="<?= Html::encode(Yii::t('base', 'Sidebar')) ?>">
             <?= Menu::widget(['space' => $space]); ?>
         </aside>
-        <div class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
+        <div id="layout-content-column" class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
         </div>
         <?php if ($this->hasSidebar()): ?>
