@@ -42,7 +42,8 @@ humhub.module('content.form', function (module, require, $) {
         }
 
         if (!module.config['disabled']) {
-            this.$.on('click.humhub:content:form dragover.humhub:content:form', function (evt) {
+            // The form expands on a click and when the keyboard focus enters it (Tab into the editor)
+            this.$.on('click.humhub:content:form dragover.humhub:content:form focusin.humhub:content:form', function (evt) {
                 // Prevent fading in for topic remove button clicks
                 if ($(evt.target).closest('.topic-remove-label').length) {
                     return;
@@ -50,7 +51,8 @@ humhub.module('content.form', function (module, require, $) {
 
                 if (!this.isModal) {
                     this.$.find('.contentForm_options').fadeIn();
-                    this.expandFields();
+                    // The keyboard focus stays where the user put it (docs/ui/keyboard.md, "Moving the focus")
+                    this.expandFields(evt.type !== 'focusin');
                 }
             }.bind(this));
         } else {
@@ -72,8 +74,10 @@ humhub.module('content.form', function (module, require, $) {
      * Expands the create form: marks it as expanded (which reveals the fixed
      * editor toolbar, see post form.php) and reveals additional fields hidden
      * until the user starts interacting with the form (e.g. the post title).
+     *
+     * @param {boolean} [focusFirst=true] whether the first revealed text field takes the focus
      */
-    CreateForm.prototype.expandFields = function () {
+    CreateForm.prototype.expandFields = function (focusFirst) {
         this.$.addClass('contentForm-expanded');
 
         var $fields = this.$.find('[data-content-form-expand]:hidden');
@@ -82,7 +86,9 @@ humhub.module('content.form', function (module, require, $) {
         }
 
         $fields.fadeIn();
-        this.$.find('input[type=text], textarea').first().trigger('focus');
+        if (focusFirst !== false) {
+            this.$.find('input[type=text], textarea').first().trigger('focus');
+        }
     };
 
     CreateForm.prototype.submit = function (evt) {

@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix #8735: The create-content form at the top of the stream expands when the keyboard focus enters it
 - Enh #8734: The comments of a post are a feed inside its entry: PageDown and PageUp move between them, Ctrl+End leaves them into the post
 - Enh #8733: The stream is a feed: PageDown and PageUp move between its entries, Ctrl+End and Ctrl+Home leave it (`humhub.ui.feed`); skip links to the navigation and the sidebar
 - Enh #8732: The richtext editor's toolbar is one Tab stop; the arrow keys move between its buttons
