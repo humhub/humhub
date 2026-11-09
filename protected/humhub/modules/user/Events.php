@@ -9,6 +9,7 @@ use humhub\components\gates\GateInitEvent;
 use humhub\helpers\ControllerHelper;
 use humhub\modules\user\components\MaintenanceModeGate;
 use humhub\modules\user\components\MustChangePasswordGate;
+use humhub\modules\user\components\SudoMode;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\widgets\menu\MenuLink;
@@ -45,6 +46,27 @@ class Events extends BaseObject
      *
      * @param \yii\base\Event $event
      */
+    /**
+     * Any login starts without a sudo mode; only the login controller records one ({@see onAuthAfterLogin()}), so a
+     * login by cookie never inherits it.
+     *
+     * @param \yii\web\UserEvent $event
+     */
+    public static function onUserAfterLogin($event): void
+    {
+        SudoMode::forget();
+    }
+
+    /**
+     * An interactive login (password, LDAP, SSO) starts the sudo mode.
+     *
+     * @param \humhub\modules\user\events\UserEvent $event
+     */
+    public static function onAuthAfterLogin($event): void
+    {
+        SudoMode::forCurrentUser()?->touch();
+    }
+
     public static function onContentDelete($event)
     {
         /* @var ContentActiveRecord $content */

@@ -36,7 +36,7 @@ class ChangePasswordSection extends SecuritySection
 
     protected function renderContent(): string
     {
-        $model = $this->model ?? new Password(['scenario' => 'changePassword']);
+        $model = $this->model ?? new Password(['scenario' => Password::SCENARIO_CHANGE_PASSWORD]);
 
         return $this->render('change-password', ['model' => $model]);
     }

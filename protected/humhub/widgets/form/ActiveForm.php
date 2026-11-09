@@ -9,8 +9,10 @@
 namespace humhub\widgets\form;
 
 use humhub\helpers\Html;
+use humhub\modules\user\components\SudoMode;
 use Yii;
 use yii\base\Widget;
+use yii\helpers\Url;
 
 /**
  * A HumHub enhanced version of native bootstrap ActiveForm
@@ -44,6 +46,13 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
     public $acknowledge = false;
 
     /**
+     * @var bool whether the form's action is protected by the sudo mode: while the user's sudo mode is not active,
+     * `humhub.ui.sudo` asks for the confirmation before the form is sent (docs/develop/concept-sudo-mode.md)
+     * @since 1.20
+     */
+    public bool $sudo = false;
+
+    /**
      * @inheritdoc
      */
     public function init(): void
@@ -52,6 +61,10 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
 
         if ($this->acknowledge) {
             $this->options['data-ui-addition'] = 'acknowledgeForm';
+        }
+
+        if ($this->sudo && SudoMode::forCurrentUser()?->isActive() === false) {
+            $this->options['data-sudo-required'] = Url::to(['/user/sudo/confirm']);
         }
     }
 

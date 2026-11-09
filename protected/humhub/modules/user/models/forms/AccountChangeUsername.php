@@ -11,7 +11,6 @@ namespace humhub\modules\user\models\forms;
 use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\user\models\User;
-use humhub\modules\user\components\CheckPasswordValidator;
 use yii\base\Model;
 
 /**
@@ -21,11 +20,6 @@ use yii\base\Model;
  */
 class AccountChangeUsername extends Model
 {
-    /**
-     * @var string the users password
-     */
-    public $currentPassword;
-
     /**
      * @var string the users new email address
      */
@@ -39,7 +33,7 @@ class AccountChangeUsername extends Model
         /** @var Module $userModule */
         $userModule = Yii::$app->getModule('user');
 
-        $rules = [
+        return [
             ['newUsername', 'required'],
             ['newUsername', 'string', 'min' => $userModule->minimumUsernameLength, 'max' => $userModule->maximumUsernameLength],
             ['newUsername', 'unique', 'targetAttribute' => 'username', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
@@ -47,13 +41,6 @@ class AccountChangeUsername extends Model
             ['newUsername', 'trim'],
             [['newUsername'], 'validateForbiddenUsername'],
         ];
-
-        if (CheckPasswordValidator::hasPassword()) {
-            $rules[] = ['currentPassword', CheckPasswordValidator::class];
-            $rules[] = ['currentPassword', 'required'];
-        }
-
-        return $rules;
     }
 
     /**
@@ -62,7 +49,6 @@ class AccountChangeUsername extends Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('UserModule.account', 'Current password'),
             'newUsername' => Yii::t('UserModule.account', 'New User name'),
         ];
     }

@@ -2768,3 +2768,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   the entry's `count` (shown as the dot), not badge HTML in the label. Tests, tours and themes
   that select `.left-navigation`, `.panel-heading` or `.list-group-item` on these two menus need
   the new classes. The space and profile menus keep the panel.
+
+- **Sudo mode** (`docs/develop/concept-sudo-mode.md`): changing the e-mail address, the username or the password,
+  deleting the account and creating a personal access token ask for a recent confirmation instead of a "current
+  password" field. `AccountChangeEmail`, `AccountChangeUsername` and `AccountDelete` have no `currentPassword`
+  attribute any more; `Password`'s scenario `changePassword` neither (the forced change after a login uses the new
+  scenario `mustChangePassword`, which still asks for it). The password change posts to `user/security/change-password`
+  (was `user/security/login`). `humhub\modules\oauth\components\RecentAuthentication` was removed, as was
+  `PersonalAccessTokenForm::$currentPassword`. Modules protect their own sensitive actions with the action filter
+  `humhub\modules\user\components\SudoFilter` and mark the form with `ActiveForm::$sudo`, so the dialog opens before
+  it is sent; `SudoMode::forCurrentUser()->isActive()` tells whether the user confirmed recently.
+  `RequestClass::current()` classifies the current request as the gates do.

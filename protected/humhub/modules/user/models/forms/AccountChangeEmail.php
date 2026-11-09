@@ -12,7 +12,6 @@ use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
-use humhub\modules\user\components\CheckPasswordValidator;
 
 /**
  * Form Model for email change
@@ -21,11 +20,6 @@ use humhub\modules\user\components\CheckPasswordValidator;
  */
 class AccountChangeEmail extends Model
 {
-    /**
-     * @var string the users password
-     */
-    public $currentPassword;
-
     /**
      * @var string the users new email address
      */
@@ -36,19 +30,12 @@ class AccountChangeEmail extends Model
      */
     public function rules()
     {
-        $rules = [
+        return [
             ['newEmail', 'required'],
             ['newEmail', 'string', 'max' => 150],
             ['newEmail', 'email'],
             ['newEmail', 'unique', 'targetAttribute' => 'email', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
         ];
-
-        if (CheckPasswordValidator::hasPassword()) {
-            $rules[] = ['currentPassword', CheckPasswordValidator::class];
-            $rules[] = ['currentPassword', 'required'];
-        }
-
-        return $rules;
     }
 
     /**
@@ -57,7 +44,6 @@ class AccountChangeEmail extends Model
     public function attributeLabels()
     {
         return [
-            'currentPassword' => Yii::t('UserModule.account', 'Current password'),
             'newEmail' => Yii::t('UserModule.account', 'New E-Mail address'),
         ];
     }

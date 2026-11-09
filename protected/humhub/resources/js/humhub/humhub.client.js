@@ -219,6 +219,9 @@ humhub.module('client', function (module, require, $) {
             cfg = {'success': cfg};
         }
 
+        // The caller's request, before this function adds its handlers: repeated after a sudo confirmation
+        var callerCfg = $.extend({}, cfg);
+
         var viewContext = cfg.viewContext || view.getViewContext();
 
         if (viewContext) {
@@ -244,6 +247,23 @@ humhub.module('client', function (module, require, $) {
                 if (response.status == 302) {
                     _redirect(xhr);
                     resolve(response);
+                    return;
+                }
+
+                // The action asks for the sudo mode (docs/develop/concept-sudo-mode.md): the dialog, then the same request again
+                var sudoUrl = (response.status == 401 && sudoHandler) ? xhr.getResponseHeader('X-Sudo-Required') : null;
+                if (sudoUrl) {
+                    sudoHandler(sudoUrl).then(function () {
+                        return ajax(url, callerCfg, originalEvent);
+                    }, function () {
+                        if (errorHandler && object.isFunction(errorHandler)) {
+                            errorHandler(response);
+                        }
+                        throw response;
+                    }).then(resolve, function (rejected) {
+                        finish(originalEvent);
+                        reject(rejected);
+                    });
                     return;
                 }
 
@@ -377,6 +397,18 @@ humhub.module('client', function (module, require, $) {
         var visible = Math.min(Math.max(seconds || 0, RATE_LIMIT_NOTICE_MIN), RATE_LIMIT_NOTICE_MAX) * 1000;
         rateLimitNoticeUntil = now + visible;
         require('ui.status').warn(message, undefined, visible);
+    };
+
+    var sudoHandler = null;
+
+    /**
+     * Sets who answers a request that asks for the sudo mode: a function taking the confirmation URL and returning a
+     * promise, resolved once the user confirmed (`humhub.ui.sudo`).
+     *
+     * @since 1.20
+     */
+    var setSudoHandler = function (handler) {
+        sudoHandler = handler;
     };
 
     var _redirect = function (xhr) {
@@ -638,6 +670,7 @@ humhub.module('client', function (module, require, $) {
         offBeforeLoad: offBeforeLoad,
         unloadForm: unloadForm,
         confirmUnload: confirmUnload,
-        redirect: redirect
+        redirect: redirect,
+        setSudoHandler: setSudoHandler
     });
 });

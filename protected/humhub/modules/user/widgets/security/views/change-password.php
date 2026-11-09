@@ -6,11 +6,7 @@ use humhub\widgets\form\ActiveForm;
 
 /* @var Password $model */
 ?>
-<?php $form = ActiveForm::begin(['action' => ['/user/security/login'], 'acknowledge' => true]) ?>
-
-<?php if ($model->isAttributeSafe('currentPassword')): ?>
-    <?= $form->field($model, 'currentPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'current-password']) ?>
-<?php endif ?>
+<?php $form = ActiveForm::begin(['action' => ['/user/security/change-password'], 'acknowledge' => true, 'sudo' => true]) ?>
 
 <?= $form->field($model, 'newPassword')->passwordInput(['maxlength' => 45, 'autocomplete' => 'new-password']) ?>
 

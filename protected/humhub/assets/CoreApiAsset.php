@@ -54,6 +54,7 @@ class CoreApiAsset extends AssetBundle
         'js/humhub/humhub.ui.status.js',
         'js/humhub/humhub.ui.navigation.js', // Required here since we set the active navigation on each call
         'js/humhub/humhub.ui.modal.js', // Should be moved to CoreModuleScriptAssets later
+        'js/humhub/humhub.ui.sudo.js', // the sudo mode's dialog, see docs/develop/concept-sudo-mode.md
         'js/humhub/humhub.ui.progress.js',
     ];
 

@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\components\BaseAccountController;
+use humhub\modules\user\components\SudoFilter;
 use humhub\modules\user\models\forms\AccountDelete;
 use humhub\modules\user\models\forms\PrivacySettings;
 use humhub\modules\user\models\Password;
@@ -35,7 +36,17 @@ class SecurityController extends BaseAccountController
     protected function getAccessRules()
     {
         return array_merge(parent::getAccessRules(), [
-            [ControllerAccess::RULE_POST => ['disconnect', 'terminate-session', 'terminate-other-sessions']],
+            [ControllerAccess::RULE_POST => ['change-password', 'disconnect', 'terminate-session', 'terminate-other-sessions']],
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return array_merge(parent::behaviors(), [
+            'sudo' => ['class' => SudoFilter::class, 'only' => ['change-password', 'delete']],
         ]);
     }
 
@@ -46,6 +57,7 @@ class SecurityController extends BaseAccountController
     {
         $this->setActionTitles([
             'login' => Yii::t('UserModule.account', 'Login'),
+            'change-password' => Yii::t('UserModule.account', 'Login'),
             'sessions' => Yii::t('UserModule.account', 'Devices & Access'),
             'privacy' => Yii::t('UserModule.account', 'Privacy'),
             'data' => Yii::t('UserModule.account', 'My Data'),
@@ -67,24 +79,33 @@ class SecurityController extends BaseAccountController
 
     public function actionLogin()
     {
-        $model = null;
+        return $this->render('login', ['passwordModel' => null]);
+    }
 
-        if (UserSourceService::getForUser()->canChangePassword()) {
-            $model = new Password(['scenario' => 'changePassword']);
+    /**
+     * Saves a new password, a section of the "Login" tab. The sudo mode confirmed the user, so the form has no
+     * current password field.
+     */
+    public function actionChangePassword()
+    {
+        if (!UserSourceService::getForUser()->canChangePassword()) {
+            throw new HttpException(403, 'Change password is not allowed');
+        }
 
-            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-                $model->user_id = Yii::$app->user->id;
-                $model->setPassword($model->newPassword);
-                if ($model->save()) {
-                    // Saving the password already invalidated the other sessions, drop their rows as well
-                    $sessions = new UserSessionService($this->getUser());
-                    if ($sessions->isAvailable()) {
-                        $sessions->deleteOthers();
-                    }
+        $model = new Password(['scenario' => Password::SCENARIO_CHANGE_PASSWORD]);
 
-                    $this->view->success(Yii::t('UserModule.account', 'Your password has been successfully changed!'));
-                    return $this->redirect(['login']);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->user_id = Yii::$app->user->id;
+            $model->setPassword($model->newPassword);
+            if ($model->save()) {
+                // Saving the password already invalidated the other sessions, drop their rows as well
+                $sessions = new UserSessionService($this->getUser());
+                if ($sessions->isAvailable()) {
+                    $sessions->deleteOthers();
                 }
+
+                $this->view->success(Yii::t('UserModule.account', 'Your password has been successfully changed!'));
+                return $this->redirect(['login']);
             }
         }
 

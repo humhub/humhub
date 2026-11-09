@@ -16,6 +16,7 @@ use humhub\modules\oauth\services\GrantService;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
 use humhub\modules\oauth\widgets\TokensSection;
 use humhub\modules\user\components\BaseAccountController;
+use humhub\modules\user\components\SudoFilter;
 use humhub\modules\user\widgets\security\SecuritySessionSections;
 use humhub\modules\user\widgets\SecuritySettingsMenu;
 use Yii;
@@ -35,6 +36,17 @@ class AccountController extends BaseAccountController
     {
         return array_merge(parent::getAccessRules(), [
             [ControllerAccess::RULE_POST => ['revoke']],
+        ]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        // A personal access token bypasses 2FA: its creation asks for the sudo mode
+        return array_merge(parent::behaviors(), [
+            'sudo' => ['class' => SudoFilter::class, 'only' => ['create-token']],
         ]);
     }
 

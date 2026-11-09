@@ -8,6 +8,8 @@
 
 namespace humhub\components\gates;
 
+use Yii;
+
 /**
  * Classification of an incoming request used to decide whether a user gate applies to it.
  * It reflects the server-side authentication context, not client-supplied content
@@ -31,4 +33,24 @@ enum RequestClass
     case FullPage;
     case Ajax;
     case Api;
+
+    /**
+     * The class of the current request: API when there is no session, else AJAX/pjax or a full page.
+     *
+     * @since 1.20
+     */
+    public static function current(): self
+    {
+        if (!Yii::$app->user->isSessionBased()) {
+            return self::Api;
+        }
+
+        $request = Yii::$app->request;
+
+        if ($request->getIsAjax() || $request->getIsPjax()) {
+            return self::Ajax;
+        }
+
+        return self::FullPage;
+    }
 }
