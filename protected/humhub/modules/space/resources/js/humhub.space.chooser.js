@@ -468,7 +468,11 @@ humhub.module('space.chooser', function (module, require, $) {
     SpaceChooser.prototype._changeMenuButton = function (newButton) {
         var $newTitle = (newButton instanceof $) ? newButton : $(newButton);
         var $oldTitle = this.$menu.children();
-        this.$menu.append($newTitle.addClass('d-none'));
+        // One space before the caret, as in the server-rendered button, so the caret does not move
+        this.$menu.contents().filter(function () {
+            return this.nodeType === Node.TEXT_NODE;
+        }).remove();
+        this.$menu.append($newTitle.addClass('d-none'), ' ');
         ui.additions.switchButtons($oldTitle, $newTitle, {remove: true});
     };
 
