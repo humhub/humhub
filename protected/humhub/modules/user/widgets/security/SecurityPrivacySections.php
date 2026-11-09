@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets\security;
 
+use humhub\modules\user\widgets\SettingsSectionStack;
 use humhub\modules\user\models\forms\PrivacySettings;
 
 /**
@@ -15,7 +16,7 @@ use humhub\modules\user\models\forms\PrivacySettings;
  *
  * @since 1.20
  */
-class SecurityPrivacySections extends SecuritySectionStack
+class SecurityPrivacySections extends SettingsSectionStack
 {
     /**
      * @var PrivacySettings|null the privacy settings form model, to show validation errors after a submit

@@ -9,13 +9,14 @@ use humhub\widgets\PageHeader;
 /* @var View $this */
 /* @var string $content */
 
-AccountMenu::markAsActive(['/user/account/edit-settings']);
+// Also marks the entry active on module pages that render inside this layout
+AccountMenu::markAsActive('account-settings-settings');
 $tabs = new AccountSettingsMenu();
 ?>
 <div class="d-flex flex-column gap-3">
-    <?= PageHeader::title(Yii::t('UserModule.account', 'General'))->tabs($tabs) ?>
+    <?= PageHeader::title(Yii::t('UserModule.account', 'Account'))->tabs($tabs) ?>
     <?php ContentCard::begin([
-        'title' => $tabs->getActiveLabel() ?? Yii::t('UserModule.account', 'General'),
+        'title' => $tabs->getActiveLabel() ?? Yii::t('UserModule.account', 'Account'),
     ]) ?>
         <?= $content ?>
     <?php ContentCard::end() ?>

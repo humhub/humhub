@@ -33,7 +33,7 @@ StreamAsset::register($this);
     <div class="back_button_holder" style="display:none">
         <?= Button::primary(Yii::t('ContentModule.base', 'Back to stream'))->action('init')->loader(false)->sm(); ?>
     </div>
-    <div class="s2_streamContent" data-stream-content></div>
+    <div class="s2_streamContent" data-stream-content role="feed" aria-label="<?= Html::encode(Yii::t('ContentModule.base', 'Stream')) ?>"></div>
 </div>
 
 <?= Html::endTag('div') ?>

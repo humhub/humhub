@@ -16,17 +16,15 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('Your Account');
-        $I->click('General');
+        $I->waitForText('My Settings', 30, '.left-navigation');
+        $I->click('Tags', '.page-header');
 
-        $I->waitForText('Basic Settings');
+        $I->amGoingTo('fill the tags of the profile form');
 
-        $I->amGoingTo('fill the basic settings form');
-
-        $I->selectFromPicker('#accountsettings-tags', 'Tester');
-        $I->selectFromPicker('#accountsettings-tags', 'Actor');
-        #$I->selectOption('#accountsettings-language', 'Deutsch');
-        $I->click('Save');
+        $I->waitForElementVisible('#user-tagsfield');
+        $I->selectFromPicker('#user-tagsfield', 'Tester');
+        $I->selectFromPicker('#user-tagsfield', 'Actor');
+        $I->click('Save profile');
 
         /*
         $I->expectTo('see the german translation');
@@ -60,11 +58,9 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('Your Account');
-        $I->click('General');
-        $I->waitForText('Basic Settings');
+        $I->waitForText('My Settings', 30, '.left-navigation');
 
-        $I->click('Notifications'); //Notification tab
+        $I->click('Notifications & E-Mails');
         $I->waitForText('Categories');
 
         $I->expectTo('see the notification settings');

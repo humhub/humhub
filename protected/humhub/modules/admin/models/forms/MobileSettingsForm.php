@@ -36,7 +36,15 @@ class MobileSettingsForm extends Model
         $this->enableLinkService = $settingsManager->get('mailerLinkService');
         $this->fileAssetLinks = $settingsManager->get('fileAssetLinks');
         $this->fileAppleAssociation = $settingsManager->get('fileAppleAssociation');
-        $this->whiteListedUrls = $settingsManager->getSerialized('whiteListedUrls');
+        $this->whiteListedUrls = self::normalizeUrls($settingsManager->getSerialized('whiteListedUrls'));
+    }
+
+    /**
+     * An empty multiple select is submitted as an empty string, which used to be stored as is
+     */
+    private static function normalizeUrls($urls): array
+    {
+        return is_array($urls) ? array_values(array_filter($urls, 'strlen')) : [];
     }
 
     /**
@@ -115,7 +123,7 @@ class MobileSettingsForm extends Model
         $settingsManager->set('mailerLinkService', $this->enableLinkService);
         $settingsManager->set('fileAssetLinks', $this->fileAssetLinks);
         $settingsManager->set('fileAppleAssociation', $this->fileAppleAssociation);
-        $settingsManager->setSerialized('whiteListedUrls', $this->whiteListedUrls);
+        $settingsManager->setSerialized('whiteListedUrls', self::normalizeUrls($this->whiteListedUrls));
 
         return true;
     }

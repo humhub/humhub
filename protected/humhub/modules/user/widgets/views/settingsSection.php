@@ -7,7 +7,7 @@ use humhub\helpers\Html;
 /* @var string $actions */
 /* @var string $content */
 ?>
-<section class="security-section mb-4">
+<section class="settings-section mb-4">
     <?php if ($actions !== ''): ?>
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
             <h3 class="m-0"><?= Html::encode($title) ?></h3>

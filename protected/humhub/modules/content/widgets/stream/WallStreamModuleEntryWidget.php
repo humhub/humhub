@@ -5,6 +5,7 @@ namespace humhub\modules\content\widgets\stream;
 use Exception;
 use humhub\helpers\Html;
 use humhub\widgets\Icon;
+use Yii;
 
 /**
  * Class WallStreamModuleEntryWidget
@@ -40,7 +41,10 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
      */
     protected function renderHeadImage()
     {
-        return Html::a($this->renderIconImage(), $this->getPermaLink());
+        // An icon-only link needs a name (docs/ui/keyboard.md, "Landmarks and names")
+        return Html::a($this->renderIconImage(), $this->getPermaLink(), [
+            'aria-label' => Yii::t('ContentModule.base', 'Permalink'),
+        ]);
     }
 
     /**

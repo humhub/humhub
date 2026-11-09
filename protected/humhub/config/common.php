@@ -31,17 +31,7 @@ if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);
 }
 
-// The context dump of log entries contains `$_SERVER`, which also holds every variable loaded from `.env`.
-// Values of keys whose name contains one of these words are masked (case-insensitive, e.g.
-// `HUMHUB_CONFIG__COMPONENTS__DB__PASSWORD`, `HUMHUB_FIXED_SETTINGS__BASE__MAILER_DSN`, `HTTP_AUTHORIZATION`).
-$logMaskedWords = ['PASS', 'SECRET', 'KEY', 'TOKEN', 'DSN', 'CREDENTIAL', 'AUTH', 'PRIVATE', 'SALT', 'COOKIE'];
-$logMaskVars = [];
-foreach (['_SERVER', '_GET'] as $logVar) {
-    foreach ($logMaskedWords as $logMaskedWord) {
-        $logMaskVars[] = $logVar . '.*' . $logMaskedWord . '*';
-    }
-}
-
+// Secrets in the context dump of log entries are masked for every target by `humhub\components\log\Dispatcher`.
 $logTargetConfig = [
     'levels' => ['error', 'warning'],
     'except' => [
@@ -54,7 +44,6 @@ $logTargetConfig = [
         'yii\web\User::renewAuthStatus',
     ],
     'logVars' => ['_GET', '_SERVER'],
-    'maskVars' => $logMaskVars,
 ];
 
 // The installation root. Only `public/` below it is meant to be reachable over the web.
@@ -132,6 +121,7 @@ $config = [
             ],
         ],
         'log' => [
+            'class' => \humhub\components\log\Dispatcher::class,
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 \yii\log\FileTarget::class => \yii\helpers\ArrayHelper::merge(

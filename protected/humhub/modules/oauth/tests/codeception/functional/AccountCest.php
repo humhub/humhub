@@ -97,7 +97,7 @@ class AccountCest
 
         $I->amOnRoute('/user/security/sessions');
         $I->see('Browser sessions');
-        $I->see('HumHub app', '.security-section h3');
+        $I->see('HumHub app', '.settings-section h3');
         $I->see('Devices signed in with the HumHub app.');
         $I->see('Safari · iOS');
         $I->seeElement('[aria-label="Sign out: Safari · iOS"]');

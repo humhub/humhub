@@ -31,7 +31,7 @@ AppAsset::register($this);
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
-        <div id="topbar-first" class="topbar fixed-top navbar">
+        <header id="topbar-first" class="topbar fixed-top navbar">
             <div class="container position-relative">
                 <div class="topbar-brand d-none d-md-block">
                     <?= SiteLogo::widget() ?>
@@ -46,11 +46,11 @@ AppAsset::register($this);
                     <?= AccountTopMenu::widget() ?>
                 </div>
             </div>
-        </div>
+        </header>
         <!-- end: first top navigation bar -->
 
         <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar fixed-top navbar">
+        <nav id="topbar-second" class="topbar fixed-top navbar" aria-label="<?= Html::encode(Yii::t('base', 'Main navigation')) ?>">
             <div class="container">
                 <ul class="nav" id="top-menu-nav">
                     <!-- load space chooser widget -->
@@ -64,7 +64,7 @@ AppAsset::register($this);
                     <?= TopMenuRightStack::widget() ?>
                 </ul>
             </div>
-        </div>
+        </nav>
         <!-- end: second top navigation bar -->
 
         <main id="main-content">

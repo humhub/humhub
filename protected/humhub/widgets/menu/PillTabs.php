@@ -70,6 +70,16 @@ abstract class PillTabs extends Menu
     }
 
     /**
+     * @return string|null the URL of the first visible tab
+     */
+    public function getFirstUrl(): ?string
+    {
+        $entry = $this->getFirstEntry(MenuLink::class, true);
+
+        return $entry?->getUrl();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getAttributes()

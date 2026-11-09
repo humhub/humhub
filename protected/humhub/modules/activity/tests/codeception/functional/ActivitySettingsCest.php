@@ -73,4 +73,14 @@ class ActivitySettingsCest
         return '[value="' . str_replace('\\', '\\\5c ', $className) . '"]';
     }
 
+    public function testUserPageIsATabOfTheNotificationSettings(FunctionalTester $I)
+    {
+        $I->amUser1();
+        $I->amOnRoute('/activity/user');
+
+        $I->see('Notifications & E-Mails', '.page-header-title');
+        $I->see('E-Mail Summaries', '.page-header .nav-pills .nav-link.active');
+        $I->seeElement('.left-navigation [data-menu-id="account-settings-notifications"].active');
+        $I->dontSeeElement('.left-navigation [data-menu-id="account-settings-emailsummary"]');
+    }
 }

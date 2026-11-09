@@ -299,6 +299,16 @@ class MenuBarView {
         if ($editor.is('.focusMenu')) {
             this.$.addClass('d-none');
 
+            // Hides the menu, unless the text took the focus again in the meantime
+            const hideMenu = () => {
+                if ($editor.find('.ProseMirror, textarea').is(':focus')) {
+                    return;
+                }
+                this.$.data('isHiding', true)
+                    // Don't apply the d-none immediately to allow clicking on links which might move after hiding the toolbar
+                    .hide(100, () => this.$.addClass('d-none'));
+            };
+
             $editor.off('focus', '.ProseMirror, textarea').off('blur', '.ProseMirror, textarea')
                 .on('focus', '.ProseMirror, textarea', (event) => {
                     if (this.$.data('isHiding')) {
@@ -327,27 +337,30 @@ class MenuBarView {
 
                     if (!$editor.is('.fullscreen') && !targetHasMenuBtn && !$(e.target).hasClass('cm-editor')) {
                         lastFocusedElement = null;
-                        const that = this.$;
-                        const hide = () => {
-                            // Focused again in the meantime
-                            if ($editor.find('.ProseMirror, textarea').is(':focus')) {
-                                return;
-                            }
-                            that.data('isHiding', true)
-                                // Don't apply the d-none immediately to allow clicking on links which might move after hiding the toolbar
-                                .hide(100, function(){that.addClass('d-none')});
-                        };
 
                         // The blur of a press elsewhere (a submit button below the editor): hiding
                         // the menu now moves what was pressed before it is released, and the click
                         // misses it - hide once the press is over
                         if (pointerDown) {
-                            $(document).one('mouseup touchend', () => setTimeout(hide, 0));
+                            $(document).one('mouseup touchend', () => setTimeout(hideMenu, 0));
                         } else {
-                            hide();
+                            hideMenu();
                         }
                     }
                 });
+
+            // The toolbar is a Tab stop of its own (docs/ui/keyboard.md, "The editor"), and the blur handler
+            // above only sees the focus leaving the text: leaving the toolbar for an element outside the editor
+            // hides the menu here. A dialog, prompt or picker opened from a toolbar button gives the focus back
+            // to the button, so the menu stays for those
+            this.$.on('focusout', (e) => {
+                const target = e.relatedTarget;
+                if (!target || $editor[0].contains(target)
+                    || $(target).closest('.modal, .ProseMirror-prompt, .humhub-richtext-provider').length) {
+                    return;
+                }
+                hideMenu();
+            });
         }
 
         this.$.on('mousedown', (e) => {
@@ -369,6 +382,7 @@ class MenuBarView {
         });
 
         this.$.data('menuBarInstance', this);
+        this.applyRovingTabindex();
 
         this.update();
 
@@ -400,7 +414,36 @@ class MenuBarView {
             }
         }
 
+        this.applyRovingTabindex();
         this.context.event.trigger('afterMenuBarUpdate', this);
+    }
+
+    /**
+     * The toolbar is one Tab stop: a single button keeps `tabindex="0"` and the arrow keys move
+     * between the others (docs/ui/keyboard.md, "The editor"). Dropdown entries keep their own
+     * tabindex, they are reached through their dropdown. Called after every update, as buttons
+     * come and go with the selection.
+     */
+    applyRovingTabindex() {
+        const trigger = '.' + buildMenuClass('trigger');
+        const $buttons = this.$.find(trigger)
+            .not('.' + buildMenuClass('dropdown-menu') + ' ' + trigger)
+            .not('.' + buildMenuClass('submenu') + ' ' + trigger);
+        const $shown = $buttons.not('.d-none');
+        if (!$shown.length) {
+            return;
+        }
+
+        let $active = $shown.filter(':focus');
+        if (!$active.length) {
+            $active = $shown.filter('[tabindex="0"]').first();
+        }
+        if (!$active.length) {
+            $active = $shown.first();
+        }
+
+        $shown.attr('tabindex', -1);
+        $active.attr('tabindex', 0);
     }
 
     focusPrev() {

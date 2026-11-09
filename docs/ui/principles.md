@@ -77,18 +77,31 @@ contradict them. When a new component is designed or built, check it against thi
 20. **Reduced motion is respected.** With the system setting (and later a user setting), all
     movement becomes an instant change. Nothing depends on animation to be understood.
 
+## Keyboard
+
+21. **Everything works without a mouse.** Tab reaches every control, Enter and Space activate it,
+    the arrow keys move inside a composite control, and Escape closes what was opened. Native
+    elements first: a `<button>` for an action, an `<a href>` for a navigation. See
+    [Keyboard](keyboard.md).
+22. **What hover shows, focus shows.** A control that appears when its container is hovered also
+    appears while the focus is inside the container, and stays while its menu is open.
+23. **The focus never gets lost.** A dialog returns it to its trigger, a removed entry hands it to
+    the next one, loaded content takes it. It never lands on `<body>` after something the user did.
+24. **Escape closes the innermost popup** and returns the focus to the trigger: the tooltip, then
+    the dropdown or picker list, then the dialog.
+
 ## Building components
 
-21. **Technology per component.** Each component is Vue, PHP or Both. "Both" means one design and
+25. **Technology per component.** Each component is Vue, PHP or Both. "Both" means one design and
     one set of CSS classes, with a Vue component and a PHP widget rendering identical markup.
-22. **Extend, don't override.** Modules add menu entries, card actions, filter types, columns and
+26. **Extend, don't override.** Modules add menu entries, card actions, filter types, columns and
     slots through the extension points (menus, `registerMenuEntry()`, `registerSlotComponent()`,
     list events). They never copy and change a core view.
-23. **Tokens, not values.** Colours, spacing, radii and shadows come from Sass variables and the
+27. **Tokens, not values.** Colours, spacing, radii and shadows come from Sass variables and the
     component's CSS variables, so themes and dark mode work without touching components. The
     colour tokens: [Colours](colours.md).
-24. **Accessibility is part of the component.** Labels, roles, focus handling and hidden texts
+28. **Accessibility is part of the component.** Labels, roles, focus handling and hidden texts
     are specified on each page and are not optional.
-25. **Bootstrap first.** A component is built on the Bootstrap 5 component for the job, and named
+29. **Bootstrap first.** A component is built on the Bootstrap 5 component for the job, and named
     the Bootstrap way (`.page-header`, `.page-header-title`, `.btn-ghost`). The prototype's CSS is
     translated, never copied. See [Styling with Bootstrap 5](bootstrap.md).

@@ -20,8 +20,14 @@
                 > .nav-pills.preferences {
                     right: 6px;
 
-                    > .dropdown > .dropdown-toggle:not(.show) {
-                        visibility: hidden; // Visible on hovering .comment, see bellow
+                    // Hidden until the comment is hovered or holds the focus (see below). Opacity, not
+                    // visibility: the toggle stays in the tab order and shows the moment it takes the
+                    // focus. A touch screen has no hover and always shows it (docs/ui/keyboard.md,
+                    // "What hover shows, focus shows").
+                    @media (hover: hover) {
+                        > .dropdown > .dropdown-toggle:not(.show) {
+                            opacity: 0;
+                        }
                     }
                 }
 
@@ -33,8 +39,11 @@
                 // guard below. That guard keeps only the innermost hovered
                 // .single-comment "active"; replies never nest further (one level
                 // only, see CommentEntry.vue), so a single :has() check suffices.
-                &:hover:not(:has(.single-comment:hover)) > .nav-pills.preferences > .dropdown > .dropdown-toggle {
-                    visibility: visible;
+                &:hover:not(:has(.single-comment:hover)) > .nav-pills.preferences > .dropdown > .dropdown-toggle,
+                // ...and for the keyboard, while the focus is inside this comment but not inside a
+                // nested reply (docs/ui/keyboard.md, "What hover shows, focus shows")
+                &:focus-within:not(:has(.single-comment:focus-within)) > .nav-pills.preferences > .dropdown > .dropdown-toggle {
+                    opacity: 1;
                 }
 
                 &:first-of-type > .nav-pills.preferences {

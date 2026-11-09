@@ -798,7 +798,10 @@
   const _hoisted_1$1 = { class: "d-flex flex-column gap-3" };
   const _hoisted_2$1 = ["aria-label", "title"];
   const _hoisted_3$1 = { class: "row" };
-  const _hoisted_4$1 = { class: "col-lg-9 layout-content-container" };
+  const _hoisted_4$1 = {
+    id: "layout-content-column",
+    class: "col-lg-9 layout-content-container"
+  };
   const _hoisted_5$1 = { class: "panel panel-default" };
   const _hoisted_6$1 = { class: "panel-body" };
   const _hoisted_7$1 = ["aria-label"];
@@ -858,6 +861,7 @@
           ])
         ]),
         vue.createElementVNode("aside", {
+          id: "layout-sidebar",
           class: "col-lg-3 layout-sidebar-container",
           "aria-label": $options.sidebarLabel
         }, [

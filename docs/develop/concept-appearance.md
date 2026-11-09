@@ -86,7 +86,7 @@ A new entry in `AccountMenu`:
 
 | Label | Route | sortOrder |
 |---|---|---|
-| Appearance & Accessibility | `/user/appearance` | 111 (between General and Security & Privacy) |
+| Appearance & Accessibility | `/user/appearance` | 400 (between Notifications & E-Mails and Security & Privacy) |
 
 `user/controllers/AppearanceController`, tabs in the `PillTabs` menu
 `user/widgets/AppearanceSettingsMenu`:

@@ -68,7 +68,7 @@ class AccountTopMenu extends Menu
             'sortOrder' => 100]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('base', 'Settings'),
+            'label' => Yii::t('UserModule.account', 'My Settings'),
             'icon' => 'edit',
             'url' => Url::toRoute('/user/account/edit'),
             'sortOrder' => 200,

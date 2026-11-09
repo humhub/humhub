@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import CommentSection from '../../vue/CommentSection.vue';
 import CommentForm from '../../vue/components/CommentForm.vue';
+import CommentList from '../../vue/components/CommentList.vue';
+import CommentEntry from '../../vue/components/CommentEntry.vue';
 import LikeButton from '../../../../modules/like/vue/LikeButton.vue';
 import RichTextOutput from '../../../../vue/RichTextOutput.vue';
 import DropdownMenu from '../../../../vue/DropdownMenu.vue';
@@ -618,6 +620,120 @@ describe('CommentSection', () => {
             // .flex-grow-1 > .nested-comments-root > .comment-container > .comment), which
             // is exactly why hovering it also matches `.single-comment:hover` for the root.
             expect(rootComment.element.contains(replyComment.element)).toBe(true);
+        });
+    });
+
+    describe('feed roles (keyboard, docs/ui/keyboard.md "Feeds")', () => {
+        const feedMore = (element, direction) => {
+            element.dispatchEvent(new CustomEvent('humhub:feed:more', { bubbles: true, detail: { direction } }));
+        };
+        // The window requests only (the island also fetches like states on mount)
+        const windowRequests = () => globalThis.humhubStubs.client.get.mock.calls
+            .map((call) => String(call[0]))
+            .filter((url) => url.includes('direction='));
+
+        it('renders the list as a feed of articles named by their heading, and the replies as a feed inside', () => {
+            const reply = makeComment({ id: 15, parentCommentId: 4, replies: null });
+            const root = makeComment({ id: 4, replies: { total: 1, items: [reply], hasMore: false } });
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [root, makeComment({ id: 5 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 2 } },
+            });
+
+            const list = wrapper.find('.comment-container > .comment');
+            expect(list.attributes('role')).toBe('feed');
+            expect(list.attributes('aria-label')).toBe('Comments');
+            expect(list.attributes('aria-busy')).toBeUndefined();
+
+            const entry = wrapper.find('#comment_4');
+            expect(entry.attributes('role')).toBe('article');
+            expect(entry.attributes('tabindex')).toBe('0');
+            expect(wrapper.find('#' + entry.attributes('aria-labelledby')).text()).toContain('Alice');
+
+            const replies = wrapper.find('.nested-comments-root .comment');
+            expect(replies.attributes('role')).toBe('feed');
+            expect(replies.attributes('aria-label')).toBe('Replies');
+            expect(wrapper.find('#comment_15').attributes('role')).toBe('article');
+        });
+
+        it('drops the feed role while the list has no entries', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [], prevCount: 0, nextCount: 0, total: 0, rootTotal: 0 } },
+            });
+            expect(wrapper.find('.comment-container > .comment').attributes('role')).toBeUndefined();
+        });
+
+        it('marks a masked comment as an article named by its label', () => {
+            globalThis.humhub.config.module('user').blockedUserIds = [9];
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [makeComment({ id: 1 })], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+            const masked = wrapper.find('.comment-blocked-user');
+            expect(masked.attributes('role')).toBe('article');
+            expect(masked.attributes('tabindex')).toBe('0');
+            expect(masked.attributes('aria-label')).toBe('Comment of blocked user.');
+        });
+
+        it('loads the next comments on humhub:feed:more and is busy until they are rendered', async () => {
+            const initial = { results: [makeComment({ id: 5 }), makeComment({ id: 6 })], prevCount: 0, nextCount: 3, total: 5, rootTotal: 5 };
+            let resolve;
+            globalThis.humhubStubs.client.get = vi.fn(() => new Promise((r) => { resolve = r; }));
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
+            const list = wrapper.find('.comment-container > .comment');
+
+            feedMore(list.element, 'next');
+            await flushPromises();
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/api/v2/content/42/comments?cursor=6&direction=next&limit=2',
+            );
+            expect(list.attributes('aria-busy')).toBe('true');
+
+            resolve({ results: [makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 });
+            await vi.waitFor(() => {
+                expect(wrapper.findAll('.single-comment').length).toBe(3);
+            });
+            await flushPromises();
+            expect(list.attributes('aria-busy')).toBeUndefined();
+        });
+
+        it('loads the previous comments on direction prev, and nothing when there is nothing to load', async () => {
+            const initial = { results: [makeComment({ id: 5 }), makeComment({ id: 6 })], prevCount: 3, nextCount: 0, total: 5, rootTotal: 5 };
+            const response = { results: [makeComment({ id: 3 }), makeComment({ id: 4 })], prevCount: 1, nextCount: 0, total: 5, rootTotal: 5 };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+            const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
+            const list = wrapper.find('.comment-container > .comment');
+
+            feedMore(list.element, 'next'); // nothing newer to load
+            await flushPromises();
+            expect(windowRequests()).toEqual([]);
+
+            feedMore(list.element, 'prev');
+            await flushPromises();
+            expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
+                '/api/v2/content/42/comments?cursor=5&direction=previous&limit=2',
+            );
+        });
+
+        it('lets the replies load older ones on their own feed event, which the list does not answer', async () => {
+            const reply15 = makeComment({ id: 15, parentCommentId: 4, replies: null });
+            const reply16 = makeComment({ id: 16, parentCommentId: 4, replies: null });
+            const root = makeComment({ id: 4, contentId: 2, replies: { total: 4, items: [reply15, reply16], hasMore: true } });
+            const response = { results: [makeComment({ id: 13, parentCommentId: 4, replies: null }), makeComment({ id: 14, parentCommentId: 4, replies: null })], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 };
+            globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(response));
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                // prevCount 3: the list would load previous comments if it answered the replies' event
+                props: { contentId: 2, initial: { results: [root], prevCount: 3, nextCount: 0, total: 5, rootTotal: 1 }, pageSize: 10 },
+            });
+
+            feedMore(wrapper.find('.nested-comments-root .comment').element, 'prev');
+            await flushPromises();
+            expect(windowRequests()).toEqual(['/api/v2/comment/4/replies?cursor=15&direction=previous&limit=10']);
+            await vi.waitFor(() => {
+                expect(wrapper.findAll('.nested-comments-root .single-comment').length).toBe(4);
+            });
         });
     });
 
@@ -1250,5 +1366,89 @@ describe('CommentSection', () => {
 
             expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalledWith(expect.stringContaining('/permissions'));
         });
+    });
+});
+
+describe('focus hand-over when a comment is deleted (docs/ui/keyboard.md)', () => {
+    const mountComments = (comments) => mount(CommentSection, {
+        ...mountOptions(),
+        attachTo: document.body,
+        props: {
+            contentId: 42,
+            initial: { results: comments, prevCount: 0, nextCount: 0, total: comments.length, rootTotal: comments.length },
+        },
+    });
+    const twoComments = () => mountComments([makeComment({ id: 1, message: 'first' }), makeComment({ id: 2, message: 'second' })]);
+    const focusAuthorOf = (id) => document.querySelector('#comment_' + id + ' .comment-heading a').focus();
+
+    it('moves the focus to the next comment when the focused one is removed', async () => {
+        const wrapper = twoComments();
+        focusAuthorOf(1);
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.closest('#comment_2')).not.toBeNull();
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the previous comment when the last one is removed', async () => {
+        const wrapper = twoComments();
+        focusAuthorOf(2);
+
+        wrapper.findComponent(CommentList).vm.removeRoot(2);
+        await flushPromises();
+
+        expect(document.activeElement.closest('#comment_1')).not.toBeNull();
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the list when the only comment is removed', async () => {
+        const wrapper = mountComments([makeComment({ id: 1 })]);
+        focusAuthorOf(1);
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.classList.contains('comment')).toBe(true);
+        wrapper.unmount();
+    });
+
+    it('acts when the focus was already lost to body', async () => {
+        const wrapper = twoComments();
+        focusAuthorOf(1);
+        document.activeElement.blur();
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.closest('#comment_2')).not.toBeNull();
+        wrapper.unmount();
+    });
+
+    it('leaves the focus alone when something else holds it', async () => {
+        const wrapper = twoComments();
+        document.body.insertAdjacentHTML('beforeend', '<button id="elsewhere">x</button>');
+        document.getElementById('elsewhere').focus();
+
+        wrapper.findComponent(CommentList).vm.removeRoot(1);
+        await flushPromises();
+
+        expect(document.activeElement.id).toBe('elsewhere');
+        document.getElementById('elsewhere').remove();
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the author link of the parent when the only reply is removed', async () => {
+        const reply = makeComment({ id: 5, parentCommentId: 4, replies: null, message: 'reply' });
+        const root = makeComment({ id: 4, replies: { total: 1, items: [reply], hasMore: false } });
+        const wrapper = mountComments([root]);
+        focusAuthorOf(5);
+
+        wrapper.findComponent(CommentEntry).vm.onChildRemoved(5);
+        await flushPromises();
+
+        expect(document.activeElement).toBe(document.querySelector('#comment_4 .comment-heading a'));
+        wrapper.unmount();
     });
 });

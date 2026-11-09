@@ -50,7 +50,7 @@ $container = $model->content->container;
 
 <div class="wall-entry-header-info flex-grow-1">
 
-    <h4 class="mt-0">
+    <h4 class="mt-0" id="<?= Html::encode($this->context->getTitleId()) ?>">
         <?= $title ?>
 
         <?php if ($renderOptions->isShowContainerInformationInTitle($model)) : ?>

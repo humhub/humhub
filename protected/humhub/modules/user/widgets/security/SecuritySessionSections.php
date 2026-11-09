@@ -8,12 +8,14 @@
 
 namespace humhub\modules\user\widgets\security;
 
+use humhub\modules\user\widgets\SettingsSectionStack;
+
 /**
  * Sections of the "Devices & Access" tab: where the account is signed in and what else has access to it
  *
  * @since 1.20
  */
-class SecuritySessionSections extends SecuritySectionStack
+class SecuritySessionSections extends SettingsSectionStack
 {
     public function init()
     {

@@ -3,6 +3,23 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8738: Account settings regrouped into "My Settings": profile categories as tabs, "Account" with username and e-mail, e-mail summaries under the notifications
+- Fix: The inline richtext editor hides its toolbar when the keyboard focus leaves the toolbar for the page, not only when it leaves the text
+- Fix #8737: The test server of the CI workflows allows 60 seconds per request, so the first request, which builds the theme CSS, no longer fails on a slow runner
+- Fix #8736: "Skip to main content" lands in the content column, after the menu of a space, profile, account or admin page
+- Fix #8735: The create-content form at the top of the stream expands when the keyboard focus enters it
+- Enh #8734: The comments of a post are a feed inside its entry: PageDown and PageUp move between them, Ctrl+End leaves them into the post
+- Enh #8733: The stream is a feed: PageDown and PageUp move between its entries, Ctrl+End and Ctrl+Home leave it (`humhub.ui.feed`); skip links to the navigation and the sidebar
+- Enh #8732: The richtext editor's toolbar is one Tab stop; the arrow keys move between its buttons
+- Fix #8730: The icon of a module's stream entry, which links to the permalink, has an accessible name
+- Enh #8728: A deleted stream entry or comment hands the keyboard focus to the next one, an edited entry keeps it
+- Enh #8727: In the richtext editor, Tab after the last table cell and Shift+Tab before the first leave the table instead of adding a row
+- Enh #8726: Enter and Space trigger a `data-action-click` on an element that is neither a link nor a button
+- Fix #8729: The menu of a comment is reachable by keyboard: it shows while the focus is inside the comment, and always on a touch screen
+- Enh #8724: Tooltips appear on keyboard focus as on hover, hide on Escape and when the focus leaves (`humhub.ui.tooltip`)
+- Enh #8723: A dialog gives the keyboard focus back to the element that opened it, or to the dropdown toggle or the content when that element is gone (`humhub.ui.focus`)
+- Enh #8722: The top bars are a header and a navigation landmark, the active menu link carries `aria-current`
+- Enh #8721: Keyboard rules of the UI styleguide (`docs/ui/keyboard.md`), a Keyboard section in the principles
 - Enh #8718: Administration → Appearance → Accessibility sets whether the richtext editor asks for the alt text of an uploaded image: off, optional or required
 - Fix #8718: A message without translation in a JavaScript translation category was rendered empty instead of in English
 - Fix #8720: A file embedded in the text of a Vue.js form (comments) was shown a second time in the attachment list
@@ -108,6 +125,7 @@ HumHub Changelog
 1.19.4 (Unreleased)
 -------------------
 
+- Fix #8711: The mobile app settings (`/mobile-app/get-settings`) failed with a `TypeError` after the mobile settings were saved with no whitelisted URL, as the empty field was stored as an empty string instead of an empty list
 - Fix #8663: `module/remove` did nothing for an enabled module whose files are missing (e.g. no compatible version to reinstall); its enabled flag is now removed from the database
 - Fix #8665: The latest HumHub version (About page, update notification) was only refreshed after flushing the cache
 - Fix #8667: `Undefined property: Application::$user` when the `user` component sets a `returnUrl` (regression of #8657)
@@ -119,7 +137,9 @@ HumHub Changelog
 - Fix #8689: `module/update-all` reported all modules as up to date when the HumHub API could not be reached or was disabled; it now fails with an error
 - Fix #8694: Wide gap between icon and caret of dropdown buttons (e.g. space header settings menu)
 - Fix #8693: Accent border of the main menu flashed black on hover
+- Fix #8708: Browser hung in an endless loop when the top menu overflowed without its "Menu" sub dropdown
 - Fix #8706: Wide avatar column in the space member request widget
+- Fix #8712: Secrets were not masked in the context dump of log targets configured outside the core (e.g. an `EmailTarget`)
 - Fix #8705: Browser autofill of the password field in the admin user edit form caused a "must be equal to Confirm new password" error on save
 
 1.19.3 (October 27, 2026)

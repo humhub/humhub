@@ -376,6 +376,21 @@ humhub.module('action', function(module, require, $) {
             this.bindAction(document, 'change', '[data-action-change]');
             this.bindAction(document, 'keypress', '[data-action-keypress]', false);
             this.bindAction(document, 'keydown', '[data-action-keydown]', false);
+
+            // Enter and Space on a `data-action-click` element that is no link or button (`role="button"`),
+            // as the browser does for native controls (docs/ui/keyboard.md, "Reaching everything"). Only
+            // when the element itself has the focus, so a control inside it keeps its own key handling.
+            $(document).on('keydown.humhub-action-keyboard', '[data-action-click]', function(evt) {
+                if(evt.target !== this || evt.isDefaultPrevented() || evt.repeat
+                    || evt.ctrlKey || evt.metaKey || evt.altKey
+                    || (evt.key !== 'Enter' && evt.key !== ' ')
+                    || $(this).is('a, button, input, select, textarea, [contenteditable]')) {
+                    return;
+                }
+                evt.preventDefault();
+                // A native click, so listeners added with addEventListener (Bootstrap's data-api, Vue) see it too
+                this.click();
+            });
         }
 
         // Handles data-action-confirm non action based links links

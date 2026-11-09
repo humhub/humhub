@@ -14,7 +14,7 @@
             </template>
         </PageHeader>
         <div class="row">
-            <div class="col-lg-9 layout-content-container">
+            <div id="layout-content-column" class="col-lg-9 layout-content-container">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <NotificationList
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <aside class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
+            <aside id="layout-sidebar" class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <strong>{{ filterLabel }}</strong>

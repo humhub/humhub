@@ -96,6 +96,8 @@ class MenuLink extends MenuEntry
     {
         if ($this->isActive) {
             $this->getLink()->cssClass('active');
+            // The current page for assistive technology (docs/ui/keyboard.md, "Landmarks and names")
+            $this->getLink()->options(['aria-current' => 'page']);
         }
 
         if ($this->getId()) {

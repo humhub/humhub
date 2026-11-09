@@ -3,6 +3,9 @@
         v-if="comment.blocked && !revealed"
         :id="'comment_' + comment.id"
         class="d-flex comment-blocked-user"
+        role="article"
+        tabindex="0"
+        :aria-label="blockedLabel"
     >
         <div class="flex-shrink-0 me-2"></div>
         <div class="flex-grow-1 overflow-hidden">
@@ -16,6 +19,9 @@
         :id="'comment_' + comment.id"
         class="single-comment d-flex p-2"
         :class="{ 'comment-current': highlighted }"
+        role="article"
+        tabindex="0"
+        :aria-labelledby="headingId"
         v-additions
     >
         <CommentControls
@@ -36,7 +42,7 @@
         </div>
 
         <div class="flex-grow-1">
-            <h4 class="comment-heading">
+            <h4 class="comment-heading" :id="headingId">
                 <a :href="comment.author.url" :data-contentcontainer-id="comment.author.contentContainerId" :data-guid="comment.author.guid">{{ comment.author.displayName }}</a>
                 <small>
                     &middot;
@@ -95,13 +101,19 @@
 
             <div v-if="comment.replies" class="nested-comments-root">
                 <div class="bg-light p-2 mt-3 comment-container" :class="{ 'd-none': !childItems.length && !replyOpen }">
-                    <div class="comment">
+                    <div
+                        class="comment"
+                        :role="childItems.length ? 'feed' : null"
+                        :aria-label="repliesLabel"
+                        :aria-busy="busyReplies ? 'true' : null"
+                        @humhub:feed:more.self="onFeedMore"
+                    >
                         <div v-if="childHasMore" class="showMore">
                             <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
                         </div>
 
                         <template v-for="child in childItems" :key="revisionKey(child)">
-                            <hr class="comment-separator">
+                            <hr class="comment-separator" aria-hidden="true">
                             <CommentEntry
                                 :comment="child"
                                 :is-nested="true"
@@ -284,6 +296,7 @@ import CommentControls from './CommentControls.vue';
 import CommentDeleteModal from './CommentDeleteModal.vue';
 import CommentForm from './CommentForm.vue';
 import { deleteComment, fetchComment, fetchCommentPermissions, fetchWindow, isAdminDelete } from './commentApi.js';
+import { handOverFocus } from '../focusHandOver.js';
 
 // RichTextOutput/UserImage are NOT imported here — RichTextOutput lives at
 // protected/humhub/vue/ (core component set) and UserImage at
@@ -376,6 +389,13 @@ export default {
         },
         blockedLabel() {
             return i18n.t('CommentModule.base', 'Comment of blocked user.');
+        },
+        // The entry is an article named by its heading, its replies a feed of their own (docs/ui/keyboard.md, "Feeds")
+        headingId() {
+            return 'comment_heading_' + this.comment.id;
+        },
+        repliesLabel() {
+            return i18n.t('CommentModule.base', 'Replies');
         },
         showLabel() {
             return i18n.t('CommentModule.base', 'Show');
@@ -493,9 +513,16 @@ export default {
             this.ensureLikeStates([comment]);
         },
         onChildRemoved(id) {
+            const index = this.childItems.findIndex((child) => child.id === id);
+            const neighbour = index === -1 ? null : (this.childItems[index + 1] || this.childItems[index - 1] || null);
+            const removed = document.getElementById('comment_' + id);
+
             this.childItems = this.childItems.filter((child) => child.id !== id);
             this.childTotal = Math.max(0, this.childTotal - 1);
             this.pruneCommentRevision(id);
+
+            // A removed reply hands the focus to its sibling, else to this comment's author link
+            this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el.querySelector('.comment-heading a')));
         },
         onChildUpdated({ id, comment }) {
             const index = this.childItems.findIndex((child) => child.id === id);
@@ -563,6 +590,12 @@ export default {
         // from `childFirstCursorId` (the HEAD of the last SERVER-PAGINATED window), mirroring
         // CommentList's own loadPrev() exactly - a straight prepend, no dedup, no total
         // resync (see the docblock for why none of those are needed here).
+        // PageUp before the first shown reply (ui.feed): the hidden replies are the older ones, above
+        onFeedMore(evt) {
+            if (evt.detail && evt.detail.direction === 'prev' && this.childHasMore) {
+                this.loadMoreReplies();
+            }
+        },
         loadMoreReplies() {
             if (this.busyReplies || this.childItems.length === 0 || this.childFirstCursorId === null) {
                 return;

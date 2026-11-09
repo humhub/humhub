@@ -37,7 +37,7 @@ class Events extends BaseObject
                 'label' => Yii::t('FriendshipModule.base', 'Friends'),
                 'url' => ['/friendship/manage'],
                 'icon' => 'group',
-                'sortOrder' => 130,
+                'sortOrder' => 600,
                 'isActive' => ControllerHelper::isActivePath('friendship'),
             ]));
         }

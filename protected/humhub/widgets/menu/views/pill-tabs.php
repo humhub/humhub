@@ -30,10 +30,7 @@ use humhub\widgets\menu\PillTabs;
             <?php endif; ?>
             <li class="nav-item">
                 <?php // the entry adds `active` itself ?>
-                <?= $entry->render(array_filter([
-                    'class' => 'nav-link',
-                    'aria-current' => $entry->getIsActive() ? 'page' : null,
-                ])) ?>
+                <?= $entry->render(['class' => 'nav-link']) ?>
             </li>
         <?php endforeach; ?>
     <?= Html::endTag('ul') ?>

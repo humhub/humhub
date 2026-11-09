@@ -92,6 +92,54 @@ describe("Menu:accessibility", () => {
         });
     }));
 
+    it("test the toolbar is one Tab stop", () => new Promise((done) => {
+        initEditor();
+        const inTabOrder = () => $('.ProseMirror-menubar .ProseMirror-menu-trigger')
+            .not('.ProseMirror-menu-dropdown-menu .ProseMirror-menu-trigger')
+            .not('.d-none')
+            .filter((i, el) => el.getAttribute('tabindex') !== '-1');
+
+        // Before anything is focused, exactly one button is reachable by Tab: the first one
+        expect(inTabOrder().length).to.equal(1);
+        expect(inTabOrder().is('.ProseMirror-menu-type')).to.be.true;
+
+        focusMenuItem();
+        wait(() => {
+            // The arrow keys move the one Tab stop along
+            navigate(DIR_RIGHT, 'markStrong');
+            expect(inTabOrder().length).to.equal(1);
+            expect(inTabOrder().is('.ProseMirror-menu-markStrong')).to.be.true;
+            done();
+        });
+    }));
+
+    it("test the focus menu hides when the focus leaves the toolbar for the page", () => new Promise((done) => {
+        // The inline layout shows the menu while the editor has the focus
+        $('#stage').addClass('focusMenu');
+        initEditor();
+        const $menu = $('.ProseMirror-menubar');
+        expect($menu.hasClass('d-none')).to.be.true;
+
+        // jQuery derives focusout from the native blur, so the focus has to move for real
+        $('#stage .ProseMirror')[0].focus();
+        expect($menu.hasClass('d-none')).to.be.false;
+
+        // From the text into the toolbar and on to another of its buttons: the menu stays
+        focusMenuItem();
+        focusMenuItem('markStrong');
+        setTimeout(() => {
+            expect($menu.hasClass('d-none')).to.be.false;
+
+            // From the toolbar to an element outside the editor: the menu hides once its fade is over
+            $('#testContent')[0].focus();
+            setTimeout(() => {
+                expect($menu.hasClass('d-none')).to.be.true;
+                $('#stage').removeClass('focusMenu');
+                done();
+            }, 200);
+        }, 200);
+    }));
+
     it("test open dropdown on ArrowDown", () => new Promise((done) => {
         if (!canAssertFocus()) {
             done();

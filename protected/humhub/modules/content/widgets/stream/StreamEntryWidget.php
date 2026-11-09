@@ -85,6 +85,30 @@ abstract class StreamEntryWidget extends JsWidget
     }
 
     /**
+     * An entry of a feed (docs/ui/keyboard.md, "Feeds"): a Tab stop named by its title.
+     *
+     * @inheritDoc
+     */
+    protected function getAttributes()
+    {
+        return [
+            'role' => 'article',
+            'tabindex' => '0',
+            'aria-labelledby' => $this->getTitleId(),
+        ];
+    }
+
+    /**
+     * @return string the id of the element naming this entry (`aria-labelledby` of the root element); from the
+     * content, as the widget ids restart with every loaded batch
+     * @since 1.20
+     */
+    public function getTitleId(): string
+    {
+        return 'stream-entry-title-' . $this->model->getUniqueId();
+    }
+
+    /**
      * @inheritDoc
      */
     public function run()

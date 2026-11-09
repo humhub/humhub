@@ -51,6 +51,7 @@ favicon.ico
 /.settings
 /.buildpath
 /.project
+/.playwright-mcp
 /protected/vendor/
 
 # Tests

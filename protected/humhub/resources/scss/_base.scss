@@ -147,6 +147,16 @@
         }
     }
 
+    // The skip links (`View::renderBodyBeginHtml()`): to the content column while the page has one, else to the
+    // main area; to the navigation and the sidebar only while the page has one. The links sit outside the pjax
+    // container, so the page decides, not the server
+    body:has(#layout-content-column) .skip-link[href="#main-content"],
+    body:not(:has(#layout-content-column)) .skip-link[href="#layout-content-column"],
+    body:not(:has(#topbar-second)) .skip-link[href="#topbar-second"],
+    body:not(:has(#layout-sidebar)) .skip-link[href="#layout-sidebar"] {
+        display: none;
+    }
+
     // Keyboard focus: one ring for everything the keyboard reaches, see docs/ui/colours.md. Bootstrap's components
     // set `outline: 0` for their own (off) shadow ring, each gets this one back in its partial
     :focus-visible {

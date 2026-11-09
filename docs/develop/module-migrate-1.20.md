@@ -2701,3 +2701,62 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `prefers-reduced-motion` media queries would ignore a user who turned the option off.
   - New image `Yii::$app->img->logoDark`: `SiteLogo` renders it next to the logo (`.hh-logo-light`, `.hh-logo-dark`)
     while the dark mode is allowed. A theme that overrides `widgets/views/logo.php` shows only its own logo.
+- **The page frame uses landmark elements.** In `views/layouts/main.php` the first top bar is a
+  `<header>` and the second a `<nav aria-label="…">` instead of two `<div>`s; ids and classes are
+  unchanged. A theme with its own `main.php` should follow, so assistive technology can list the
+  landmarks (`docs/ui/keyboard.md`). `MenuLink` renders `aria-current="page"` on its active link.
+  JavaScript that moves the `active` class between menu links has to move `aria-current` with it (see
+  `humhub.ui.navigation`). A menu whose active entry is not the current page passes `'aria-current' => null` in
+  the render options.
+- **Tooltips moved to `humhub.ui.tooltip`.** The delegated tooltip binding left `humhub.ui.additions`.
+  Tooltips on `.tt` and `[data-bs-toggle="tooltip"]` are created with `trigger: 'hover'` and appear
+  on focus only when the focus came from the keyboard (`docs/ui/keyboard.md`). A click hides them
+  through Bootstrap (`humhub.ui.tooltip.hideAll()`) and removes tooltip elements whose trigger left
+  the document, instead of `$('.tooltip').remove()`. A module that creates its own
+  `bootstrap.Tooltip` should not set `focus` as a trigger.
+- **Stream entries are articles in a feed.** `StreamEntryWidget::getAttributes()` renders
+  `role="article"`, `tabindex="0"` and `aria-labelledby` (the id of `getTitleId()`, set on the `<h4>` of
+  `wallStreamEntryHeader.php`) on the root element; an entry widget that overrides `getAttributes()` merges
+  `parent::getAttributes()`, one with its own header view gives its heading that id. The stream content
+  (`[data-stream-content]`) is `role="feed"` while it has entries and `aria-busy` while loading. The new `humhub.ui.feed` moves
+  the focus with PageDown/PageUp and Ctrl+End/Home in every `role="feed"` and asks for more at the end
+  (`humhub:feed:more`, bubbling: a listener acts only when `evt.target` is its own feed); a module's own
+  list gets the keys by rendering the roles (`docs/ui/keyboard.md`, "Feeds"). The skip links at the top of the page lead to `#layout-content-column` (the content column beside a space,
+  profile, account or admin menu; `#main-content` when the page has none), `#topbar-second` and
+  `#layout-sidebar` (the `<aside class="layout-sidebar-container">` of the core layouts); a theme with its
+  own layout keeps these ids, a link without a target on the page is hidden by `_base.scss`.
+- **Enter and Space trigger `data-action-click`.** On an element that is neither a link nor a button,
+  `humhub.action` runs the click action on Enter and Space when the element itself has the focus. A
+  module that handles these keys itself calls `preventDefault()` in a handler bound to the element
+  (a handler delegated from `document` runs too late and the action fires twice). The element still
+  needs `tabindex="0"` and `role="button"`.
+- **The account section is regrouped** (`docs/ui/page-header.md`, "Account section"). The left menu
+  `humhub\modules\user\widgets\AccountMenu` is titled "My Settings" (also the dropdown entry and the page title)
+  and has the entries Profile 100, Account 200 (id `account-settings-settings`), Notifications & E-Mails 300,
+  Appearance & Accessibility 400 and Security & Privacy 500; the friendship module adds Friends at 600. A module
+  entry should use a sort order of 1000 or more, so it comes after the core entries.
+  - "Profile" (`/user/account/edit`) shows one category of the profile fields per page (`?category=<id>`, the
+    first one by default) and saves it alone (`HForm::$attributeNames` limits `validate()` and `save()` to the
+    fields of the category, `Profile::getFormCategories()` lists the categories with fields by id). The tags have a page of their own (`/user/account/edit-tags`, `User[tagsField]`, scenario
+    `User::SCENARIO_EDIT_PROFILE`). The tabs `AccountProfileMenu` are the categories (100, 200, …) and the tags
+    after them; the username and e-mail forms are no longer tabs of the profile page. The form no longer uses the
+    `ui.form.TabbedForm` widget.
+  - "Account" (`/user/account/edit-settings`, tabs `AccountSettingsMenu`: General 100, Modules 200, Topics 300 of
+    the topic module) replaces the "General" entry and the "Modules" entry. Its "General" tab is an accordion of
+    sections (`user\widgets\account\AccountGeneralSections`: e-mail address 100, username 200, "Other" 300 with the
+    introduction tour; modules add sections on `EVENT_INIT`); the first section starts open, or the one whose form was
+    submitted with errors. `user\models\forms\AccountSettings` keeps only `show_introduction_tour` and saves it itself
+    (`save()`).
+  - Removed: the views `@user/views/account/_userModulesLayout.php`, `changeUsername.php`,
+    `changeUsername_success.php`, `changeEmail.php`, `changeEmail_success.php` and `changeEmailValidate.php`.
+    `/user/account/change-username`, `change-email` and `change-email-validate` return to the "Account"
+    page with a status message.
+  - "Notifications & E-Mails" (`/notification/user`, tabs `notification\widgets\NotificationSettingsMenu`,
+    module pages render inside `@notification/views/user/_layout.php`): the "E-Mail Summaries" page of the
+    activity module is its second tab (sort order 200) instead of an entry of the account menu;
+    `activity\Events::onAccountMenuInit()` became `onNotificationSettingsMenuInit()`.
+  - `user\widgets\SettingsSection` and `SettingsSectionStack` are the base classes of the sections of a
+    settings tab, with the views `@user/widgets/views/settingsSection.php` (`.settings-section` instead of
+    `.security-section`) and `settingsAccordionItem.php` (a stack with `$accordion`). `security\SecuritySection`
+    extends `SettingsSection`; `SecuritySectionStack` was removed, the security stacks extend `SettingsSectionStack`.
+    `getFirstUrl()` moved from `SecuritySettingsMenu` to `PillTabs`.

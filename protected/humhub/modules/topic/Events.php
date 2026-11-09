@@ -70,7 +70,7 @@ class Events extends BaseObject
             'label' => Yii::t('TopicModule.base', 'Topics'),
             'url' => Yii::$app->user->identity->createUrl('/topic/manage'),
             'isActive' => ControllerHelper::isActivePath('topic', 'manage'),
-            'sortOrder' => 250,
+            'sortOrder' => 300,
         ]));
 
         if (ControllerHelper::isActivePath('topic', 'manage')) {

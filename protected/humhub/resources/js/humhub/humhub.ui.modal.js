@@ -23,6 +23,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var client = require('client', true);
     var Widget = require('ui.widget').Widget;
     var i18n = require('i18n');
+    var focus = require('ui.focus');
 
     //Keeps track of all initialized modals
     var modals = {};
@@ -598,6 +599,12 @@ humhub.module('ui.modal', function (module, require, $) {
         $(document).on('show.bs.modal', '.modal', function (event) {
             $(this).appendTo($('body'));
             $(this).attr('aria-hidden', 'false');
+            // The element to give the focus back to once the dialog closes (docs/ui/keyboard.md)
+            if (!this.contains(document.activeElement)) {
+                // Opened from another dialog (a confirm): keep that dialog's trigger, its button is about to vanish
+                var $from = $(document.activeElement).closest('.modal');
+                $(this).data(focus.TRIGGER_KEY, ($from.length && $from.data(focus.TRIGGER_KEY)) || document.activeElement);
+            }
         });
 
         $(document).on('shown.bs.modal', '.modal.show', function (event) {
@@ -611,6 +618,13 @@ humhub.module('ui.modal', function (module, require, $) {
         $(document).on('hidden.bs.modal', '.modal', function (event) {
             _setModalsAndBackdropsOrder();
             $(this).attr('aria-hidden', 'true');
+
+            var trigger = $(this).data(focus.TRIGGER_KEY);
+            $(this).removeData(focus.TRIGGER_KEY);
+            // A stacked dialog that is still open keeps the focus (see _setModalsAndBackdropsOrder)
+            if (!$('.modal.show').length) {
+                focus.restore(trigger, this);
+            }
         });
     };
 

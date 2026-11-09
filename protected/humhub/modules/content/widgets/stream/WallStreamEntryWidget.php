@@ -384,9 +384,9 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getAttributes()
     {
-        return [
+        return array_merge(parent::getAttributes(), [
             'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry',
-        ];
+        ]);
     }
 
     /**

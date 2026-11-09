@@ -19,6 +19,7 @@ use humhub\modules\user\services\UserSourceService;
 use Throwable;
 use Yii;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -37,11 +38,12 @@ class AccountController extends BaseAccountController
     {
         $this->setActionTitles([
             'edit' => Yii::t('UserModule.base', 'Profile'),
-            'edit-settings' => Yii::t('UserModule.base', 'Settings'),
+            'edit-tags' => Yii::t('UserModule.base', 'Profile'),
+            'edit-settings' => Yii::t('UserModule.account', 'Account'),
+            'change-username' => Yii::t('UserModule.account', 'Account'),
+            'change-email' => Yii::t('UserModule.account', 'Account'),
+            'change-email-validate' => Yii::t('UserModule.account', 'Account'),
             'edit-modules' => Yii::t('UserModule.base', 'Modules'),
-            'notification' => Yii::t('UserModule.base', 'Notifications'),
-            'change-email' => Yii::t('UserModule.base', 'Email'),
-            'change-email-validate' => Yii::t('UserModule.base', 'Email'),
         ]);
         return parent::init();
     }
@@ -60,66 +62,85 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Edit Users Profile
+     * Edit Users Profile, one category of the profile fields per page
+     *
+     * @param int|null $category the id of the category, the first one by default
      * @throws Throwable
      */
-    public function actionEdit()
+    public function actionEdit($category = null)
     {
         /** @var User $user */
         $user = Yii::$app->user->getIdentity();
         $user->profile->scenario = 'editProfile';
 
-        // Get Form Definition
-        $definition = $user->profile->getFormDefinition();
-        $definition['buttons'] = [
-            'save' => [
-                'type' => 'submit',
-                'label' => Yii::t('UserModule.account', 'Save profile'),
-                'class' => 'btn btn-primary',
-            ],
-        ];
+        $categories = $user->profile->getFormCategories();
+        $id = $category === null ? array_key_first($categories) : (int)$category;
+        if (!isset($categories[$id])) {
+            throw new NotFoundHttpException();
+        }
+        $fields = $categories[$id];
+        unset($fields['title']); // The card is titled with the category
 
-        $form = new HForm($definition, $user->profile);
+        $form = new HForm([
+            'elements' => ['category_' . $id => $fields],
+            'buttons' => [
+                'save' => [
+                    'type' => 'submit',
+                    'label' => Yii::t('UserModule.account', 'Save profile'),
+                    'class' => 'btn btn-primary',
+                ],
+            ],
+        ], $user->profile);
         $form->showErrorSummary = true;
+        // Only the fields of this category, so an empty required field of another one does not block saving
+        $form->attributeNames = array_keys($fields['elements']);
+
         if ($form->submitted('save') && $form->validate() && $form->save()) {
             // Trigger search refresh
             $user->save();
 
             $this->view->saved();
-            return $this->redirect(['edit']);
+            return $this->redirect(['edit', 'category' => $id]);
         }
 
         return $this->render('edit', ['hForm' => $form]);
     }
 
     /**
-     * Change Account
-     *
-     * @todo Add Group
+     * The tags of the profile, a page of the profile tabs
      */
-    public function actionEditSettings()
+    public function actionEditTags()
     {
         /** @var User $user */
         $user = Yii::$app->user->getIdentity();
+        $user->scenario = User::SCENARIO_EDIT_PROFILE;
+        $user->tagsField = $user->getTags();
 
-        $model = new AccountSettings(['user' => $user]);
-        $model->tags = $user->getTags();
-        $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
+        if ($user->load(Yii::$app->request->post())) {
+            // An emptied picker posts an empty string
+            $user->tagsField = is_array($user->tagsField) ? $user->tagsField : [];
+            if ($user->save()) {
+                $this->view->saved();
+                return $this->redirect(['edit-tags']);
+            }
+        }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
+        return $this->render('editTags', ['user' => $user]);
+    }
 
-            $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
-            $user->tagsField = $model->tags;
-            $user->save();
+    /**
+     * The "General" tab of the account settings: username, e-mail address and the introduction tour
+     */
+    public function actionEditSettings()
+    {
+        $model = new AccountSettings(['user' => Yii::$app->user->getIdentity()]);
 
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
             return $this->redirect(['edit-settings']);
         }
 
-        return $this->render('editSettings', [
-            'model' => $model,
-        ]);
+        return $this->render('editSettings', ['settingsModel' => $model]);
     }
 
     /**
@@ -158,8 +179,6 @@ class AccountController extends BaseAccountController
      */
     public function actionEditModules()
     {
-        $this->subLayout = '@humhub/modules/user/views/account/_userModulesLayout';
-
         /* @var User $user */
         $user = Yii::$app->user->getIdentity();
 
@@ -223,7 +242,7 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * Change Current Username
+     * Change Current Username, a section of the "General" tab
      */
     public function actionChangeUsername()
     {
@@ -234,15 +253,15 @@ class AccountController extends BaseAccountController
         $model = new AccountChangeUsername();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
-            return $this->render('changeUsername_success', ['model' => $model]);
+            $this->view->success(Yii::t('UserModule.account', 'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.'));
+            return $this->redirect(['edit-settings']);
         }
 
-        $this->view->warn(Yii::t('UserModule.account', 'Changing the username can make some links unusable, for example old links to the profile.'));
-        return $this->render('changeUsername', ['model' => $model]);
+        return $this->render('editSettings', ['usernameModel' => $model]);
     }
 
     /**
-     * Change Current E-mail
+     * Change Current E-mail, a section of the "General" tab
      */
     public function actionChangeEmail()
     {
@@ -253,10 +272,11 @@ class AccountController extends BaseAccountController
         $model = new AccountChangeEmail();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
-            return $this->render('changeEmail_success', ['model' => $model]);
+            $this->view->success(Yii::t('UserModule.account', 'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.'));
+            return $this->redirect(['edit-settings']);
         }
 
-        return $this->render('changeEmail', ['model' => $model]);
+        return $this->render('editSettings', ['emailModel' => $model]);
     }
 
     /**
@@ -288,7 +308,8 @@ class AccountController extends BaseAccountController
         $user->email = $email;
         $user->save();
 
-        return $this->render('changeEmailValidate', ['newEmail' => $email]);
+        $this->view->success(Yii::t('UserModule.account', 'Your e-mail address has been successfully changed to {email}.', ['{email}' => $email]));
+        return $this->redirect(['edit-settings']);
     }
 
     /**

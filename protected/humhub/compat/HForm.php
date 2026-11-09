@@ -49,6 +49,13 @@ class HForm extends \yii\base\Component
     public $models = [];
 
     /**
+     * @var string[]|null the attributes of the primary model that [[validate()]] checks and [[save()]] writes, all by
+     * default
+     * @since 1.20
+     */
+    public ?array $attributeNames = null;
+
+    /**
      * @var bool manually mark form as submitted
      */
     public $markedAsSubmitted = false;
@@ -115,7 +122,7 @@ class HForm extends \yii\base\Component
         $this->trigger(self::EVENT_BEFORE_VALIDATE);
 
         if ($this->primaryModel !== null) {
-            if (!$this->primaryModel->validate()) {
+            if (!$this->primaryModel->validate($this->attributeNames)) {
                 $hasErrors = true;
             }
         }
@@ -146,11 +153,11 @@ class HForm extends \yii\base\Component
     {
         $hasErrors = false;
         if ($this->primaryModel !== null) {
-            if (!$this->primaryModel->save()) {
+            if (!$this->primaryModel->save(true, $this->attributeNames)) {
                 $hasErrors = true;
             }
 
-            $this->primaryModel->save();
+            $this->primaryModel->save(true, $this->attributeNames);
         }
 
         (new FileManager(['record' => $this->primaryModel]))->attach(Yii::$app->request->post('fileList'));

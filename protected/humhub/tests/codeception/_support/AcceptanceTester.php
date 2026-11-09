@@ -1,5 +1,6 @@
 <?php
 
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverKeys;
 use tests\codeception\_pages\LoginPage;
 use yii\helpers\Url;
@@ -416,5 +417,41 @@ class AcceptanceTester extends BaseTester
     public function scrollToBottom()
     {
         $this->executeJS('window.scrollTo(0,document.body.scrollHeight);');
+    }
+
+    /**
+     * Presses keys on whatever has the focus, without focusing anything first (unlike `pressKey()`, which
+     * focuses its element). Takes `WebDriverKeys` constants and characters; a modifier (`SHIFT`, `CONTROL`,
+     * `ALT`, `META`) is held down for the keys that follow it, e.g. `pressKeyboard(WebDriverKeys::SHIFT, WebDriverKeys::TAB)`.
+     */
+    public function pressKeyboard(string ...$keys): void
+    {
+        $modifiers = [WebDriverKeys::SHIFT, WebDriverKeys::CONTROL, WebDriverKeys::ALT, WebDriverKeys::META];
+        $this->executeInSelenium(function (RemoteWebDriver $webDriver) use ($keys, $modifiers) {
+            $actions = $webDriver->action();
+            $held = [];
+            foreach ($keys as $key) {
+                if (in_array($key, $modifiers, true)) {
+                    $actions->keyDown(null, $key);
+                    $held[] = $key;
+                } else {
+                    $actions->sendKeys(null, $key);
+                }
+            }
+            foreach (array_reverse($held) as $key) {
+                $actions->keyUp(null, $key);
+            }
+            $actions->perform();
+        });
+    }
+
+    /**
+     * A short description of the focused element: tag, id and classes, then its accessible text.
+     */
+    public function grabActiveElement(): string
+    {
+        return (string)$this->executeJS('const el = document.activeElement;'
+            . ' return el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + (el.className ? "." + String(el.className).trim().split(/\\s+/).join(".") : "")'
+            . ' + " :: " + (el.getAttribute("aria-label") || el.textContent.trim().replace(/\\s+/g, " ").slice(0, 60));');
     }
 }
