@@ -32,6 +32,11 @@ class AdminGrantController extends DataTableController
     /**
      * @inheritdoc
      */
+    protected bool $administration = true;
+
+    /**
+     * @inheritdoc
+     */
     protected function createTable(): DataTable
     {
         return Yii::createObject(AdminGrantTable::class);

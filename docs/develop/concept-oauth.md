@@ -89,7 +89,8 @@ or already revoked token answers `200`, as RFC 7009 requires.
    the return URL. Every login method therefore works on the way: local, LDAP, any auth client
    (Google, SAML, company SSO). All gates (2FA, legal, forced password change …) run as for
    any browser request, and the request reaches the authorize action only once they are
-   closed.
+   closed. Then the [sudo mode](concept-sudo-mode.md) is required, since a grant is as strong
+   as a personal access token: a login on the way starts it, an older session confirms first.
 2. **Validation.** league validates the request (client, redirect URI, PKCE, `state`).
    Additional checks:
    - impersonation is not active (`Yii::$app->user->impersonation->isActive()`); otherwise `403`;

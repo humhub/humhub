@@ -22,6 +22,7 @@ use humhub\modules\oauth\models\Client;
 use humhub\modules\oauth\notifications\GrantCreatedNotification;
 use humhub\modules\oauth\repositories\ClientRepository;
 use humhub\modules\oauth\services\GrantService;
+use humhub\modules\user\components\SudoFilter;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
@@ -56,6 +57,17 @@ class AuthorizeController extends Controller
     protected function getAccessRules()
     {
         return [[ControllerAccess::RULE_LOGGED_IN_ONLY]];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        // A grant is as strong as a personal access token: authorizing an app asks for the sudo mode
+        return array_merge(parent::behaviors(), [
+            'sudo' => ['class' => SudoFilter::class],
+        ]);
     }
 
     public function actionIndex()

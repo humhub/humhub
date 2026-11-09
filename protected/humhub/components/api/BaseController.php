@@ -13,6 +13,8 @@ use humhub\components\Controller;
 use humhub\modules\oauth\components\ScopeFilter;
 use humhub\modules\oauth\components\TokenAuth;
 use humhub\modules\oauth\Module as OAuthModule;
+use humhub\modules\user\components\SudoFilter;
+use humhub\modules\user\components\SudoMode;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
@@ -145,11 +147,19 @@ abstract class BaseController extends Controller
     protected array $scopes = [];
 
     /**
+     * @var bool whether the endpoint belongs to the administration: with the setting "Require password confirmation
+     *      for the administration", the browser session reaches it only in sudo mode, like the administration's pages
+     *      (docs/develop/concept-sudo-mode.md). A token is not affected, its scopes decide.
+     * @since 1.20
+     */
+    protected bool $administration = false;
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
     {
-        return [
+        $behaviors = [
             'authenticator' => [
                 'class' => ApiAuth::class,
                 'optional' => AuthHelper::isGuestAccessEnabled() ? $this->guestAllowedActions : [],
@@ -166,6 +176,13 @@ abstract class BaseController extends Controller
                 'scopes' => $this->scopes,
             ],
         ];
+
+        // After the authenticator: the filter needs the user and passes token requests
+        if ($this->administration && SudoMode::isRequiredForAdmin()) {
+            $behaviors['sudo'] = ['class' => SudoFilter::class];
+        }
+
+        return $behaviors;
     }
 
     /**

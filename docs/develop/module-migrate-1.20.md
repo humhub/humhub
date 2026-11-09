@@ -2778,4 +2778,5 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `PersonalAccessTokenForm::$currentPassword`. Modules protect their own sensitive actions with the action filter
   `humhub\modules\user\components\SudoFilter` and mark the form with `ActiveForm::$sudo`, so the dialog opens before
   it is sent; `SudoMode::forCurrentUser()->isActive()` tells whether the user confirmed recently.
-  `RequestClass::current()` classifies the current request as the gates do.
+  `RequestClass::current()` classifies the current request as the gates do. An API controller of a module's
+  administration sets `BaseController::$administration`, so the browser session needs the sudo mode there too.

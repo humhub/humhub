@@ -60,8 +60,8 @@ answers according to the request class of the [gates](user-gates.md) (`RequestCl
 | Request | Answer |
 |---|---|
 | Full page (browser navigation) | `302` to `user/sudo/confirm` with the requested URL as return URL; a form posted without JavaScript returns to its page and has to be sent again |
-| AJAX, pjax | `401`, JSON `{"sudo": true, "url": "<confirm url>"}`, header `X-Sudo-Required: <confirm url>` |
-| API (token authenticated, no session) | Never intercepted: API access is governed by scopes, not by sudo mode |
+| AJAX, pjax, a JSON endpoint (the API with the browser session) | `401`, JSON `{"sudo": true, "url": "<confirm url>"}`, header `X-Sudo-Required: <confirm url>` |
+| API with a token | Never intercepted: API access is governed by scopes, not by sudo mode |
 | Any, while impersonating | `403`: nobody can confirm for the impersonated user |
 
 The filter is attached to:
@@ -71,7 +71,9 @@ The filter is attached to:
 | `user/account` | `change-username`, `change-email`, `change-password` |
 | `user/security` | `delete` |
 | `oauth/account` | `create-token` |
+| `oauth/authorize` | `index`: a grant is as strong as a personal access token |
 | `admin\components\Controller` (and every module controller extending it) | all, only while the setting "Require password confirmation for the administration" is on |
+| API controllers with `BaseController::$administration` (the administration's tables, OAuth clients and grants, the marketplace) | all, for the browser session, only while the same setting is on |
 
 Not protected: `user/account/change-email-validate` (the link from the confirmation e-mail
 carries its own token), the must-change-password flow (a gate with its own password check),
@@ -126,6 +128,9 @@ public function behaviors()
 }
 ```
 
+An API controller serving the module's administration sets `protected bool $administration = true;`,
+so the browser session reaches it only in sudo mode while the administration asks for it.
+
 `SudoMode::isActive()` and `SudoMode::confirm()` are public for other uses (a module that
 wants to hide a button until confirmed, a module with a flow of its own).
 
@@ -142,5 +147,8 @@ wants to hide a button until confirmed, a module with a flow of its own).
   impersonation never active, throttle, factor selection (password client / none).
 - **Functional**: filter answers per request class; the account actions and the token form
   are refused without sudo mode and pass with it; the administration only with the setting on;
-  the confirm action with right, wrong and throttled passwords.
+  the confirm action with right, wrong and throttled passwords; the OAuth authorization (also
+  with *skip consent*) only in sudo mode.
+- **API** (`AdminSudoApiCest`): with the setting on, the administration's endpoints answer the
+  browser session with `401` until sudo mode is active; a token passes.
 - **Acceptance**: the dialog on the account page and the repeated request after confirming.

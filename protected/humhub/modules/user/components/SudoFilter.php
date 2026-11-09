@@ -18,9 +18,9 @@ use yii\web\Response;
 /**
  * Protects actions with the sudo mode (docs/develop/concept-sudo-mode.md): a request of a user whose sudo mode is
  * active passes and refreshes it; otherwise the user is sent to the confirmation. A full page request is redirected
- * to the confirmation page, an AJAX or pjax request gets a 401 with the confirmation URL in the `X-Sudo-Required`
- * header, which `humhub.ui.sudo` turns into the dialog. Guests pass (access control answers them), API requests are
- * never intercepted.
+ * to the confirmation page, an AJAX or pjax request and a request to a JSON endpoint get a 401 with the confirmation
+ * URL in the `X-Sudo-Required` header, which `humhub.ui.sudo` turns into the dialog. Guests pass (access control
+ * answers them), token-authenticated API requests are never intercepted.
  *
  * ```php
  * public function behaviors()
@@ -62,7 +62,8 @@ class SudoFilter extends ActionFilter
         $confirmUrl = Url::to(['/user/sudo/confirm', 'returnUrl' => $this->getReturnUrl()]);
         $response = Yii::$app->response;
 
-        if ($requestClass === RequestClass::Ajax) {
+        // A JSON endpoint (the API with the browser session) is never answered with a page
+        if ($requestClass === RequestClass::Ajax || $response->format === Response::FORMAT_JSON) {
             $response->setStatusCode(401);
             $response->format = Response::FORMAT_JSON;
             $response->headers->set(self::HEADER, $confirmUrl);
