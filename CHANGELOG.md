@@ -4,6 +4,8 @@ HumHub Changelog
 1.19.4 (Unreleased)
 -------------------
 
+- Fix GHSA-wp2f-p7f6-j3rw: Validate the message categories requested from the JavaScript translations endpoint
+- Fix #8718: A message without translation in a JavaScript translation category was rendered empty instead of in English
 - Fix #8711: The mobile app settings (`/mobile-app/get-settings`) failed with a `TypeError` after the mobile settings were saved with no whitelisted URL, as the empty field was stored as an empty string instead of an empty list
 - Fix #8663: `module/remove` did nothing for an enabled module whose files are missing (e.g. no compatible version to reinstall); its enabled flag is now removed from the database
 - Fix #8665: The latest HumHub version (About page, update notification) was only refreshed after flushing the cache
