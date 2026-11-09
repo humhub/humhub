@@ -210,17 +210,15 @@ class Followable extends Behavior
     /**
      * Get a query of users which are followers of this object.
      *
+     * Only the followers visible to the current user are returned, use {@see getFollowersWithNotificationQuery()}
+     * to select the recipients of a notification.
+     *
      * @return ActiveQueryUser
      * @since 1.10
      */
     public function getFollowersQuery()
     {
-        return User::find()
-            ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
-                ':object_model' => $this->getOwnerObjectModel(),
-                ':object_id' => $this->owner->getPrimaryKey(),
-            ])
-            ->where('user_follow.user_id IS NOT null')
+        return $this->findFollowersQuery()
             ->active()
             ->visible();
     }
@@ -228,15 +226,29 @@ class Followable extends Behavior
     /**
      * Get a query of users which are followers with enabled notifications of this object.
      *
+     * The profile visibility of the followers is not applied: it is relative to the current user (e.g. the
+     * author of a new comment), but a follower must be notified whoever triggers the notification,
+     * even if the follower's profile is hidden.
+     *
      * @return ActiveQueryUser
      * @since 1.10
      */
     public function getFollowersWithNotificationQuery()
     {
-        return $this->getFollowersQuery()
-            ->andWhere('user_follow.send_notifications=1');
+        return $this->findFollowersQuery()
+            ->andWhere('user_follow.send_notifications=1')
+            ->active();
     }
 
+    private function findFollowersQuery(): ActiveQueryUser
+    {
+        return User::find()
+            ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
+                ':object_model' => $this->getOwnerObjectModel(),
+                ':object_id' => $this->owner->getPrimaryKey(),
+            ])
+            ->where('user_follow.user_id IS NOT null');
+    }
 
     /**
      * Get a query of objects which the owner object follows

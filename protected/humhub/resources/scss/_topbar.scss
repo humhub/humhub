@@ -376,6 +376,19 @@
                         .no-space {
                             display: inline;
                         }
+
+                        // The current space's image (acronym or picture, also when a theme renders it
+                        // without `.current-space-image`): centred in the bar, the caret beside its middle
+                        > .space-acronym,
+                        > img {
+                            vertical-align: middle;
+                            margin: 2px 0;
+                        }
+
+                        &:has(> .space-acronym, > img)::after {
+                            vertical-align: middle;
+                            margin-left: .5em;
+                        }
                     }
 
                     &#search-menu {
