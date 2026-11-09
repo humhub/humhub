@@ -135,7 +135,6 @@ class AccountSettingsCest
         $I->amUser1();
         $I->amOnRoute('/user/account/edit-settings');
         $I->submitForm('form[action*="change-username"]', [
-            'AccountChangeUsername[currentPassword]' => 'user^humhub@PASS%worD!',
             'AccountChangeUsername[newUsername]' => 'User1Renamed',
         ]);
 
@@ -150,17 +149,16 @@ class AccountSettingsCest
         $I->amUser1();
         $I->amOnRoute('/user/account/edit-settings');
         $I->submitForm('form[action*="change-username"]', [
-            'AccountChangeUsername[currentPassword]' => 'wrong',
-            'AccountChangeUsername[newUsername]' => 'User1Renamed',
+            'AccountChangeUsername[newUsername]' => 'Admin',
         ]);
 
         $I->see('Account', '.page-header-title');
-        $I->see('Your password is incorrect!', 'form[action*="change-username"]');
+        $I->see('is already in use', 'form[action*="change-username"]');
         // The section with the error starts open instead of the first one
         $I->seeElement('.accordion-collapse.show form[action*="change-username"]');
         $I->dontSeeElement('.accordion-collapse.show form[action*="change-email"]');
         $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
-        Assert::assertNull(User::findOne(['username' => 'User1Renamed']));
+        Assert::assertSame('User1', User::findOne(['id' => 2])->username);
     }
 
     public function testChangeEmailSendsAConfirmationAndItsLinkAppliesTheChange(FunctionalTester $I)
@@ -170,7 +168,6 @@ class AccountSettingsCest
 
         $I->amOnRoute('/user/account/edit-settings');
         $I->submitForm('form[action*="change-email"]', [
-            'AccountChangeEmail[currentPassword]' => 'user^humhub@PASS%worD!',
             'AccountChangeEmail[newEmail]' => 'user1-new@example.com',
         ]);
 

@@ -131,8 +131,7 @@ class SecuritySettingsCest
         ])->execute();
 
         $I->amOnRoute('/user/security/login');
-        $I->submitForm('form[action*="security%2Flogin"]', [
-            'Password[currentPassword]' => 'user^humhub@PASS%worD!',
+        $I->submitForm('form[action*="security%2Fchange-password"]', [
             'Password[newPassword]' => 'New^humhub@PASS%worD!1',
             'Password[newPasswordConfirm]' => 'New^humhub@PASS%worD!1',
         ]);

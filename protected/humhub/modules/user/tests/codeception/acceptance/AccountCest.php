@@ -24,7 +24,7 @@ class AccountCest
         $I->waitForElementVisible('#user-tagsfield');
         $I->selectFromPicker('#user-tagsfield', 'Tester');
         $I->selectFromPicker('#user-tagsfield', 'Actor');
-        $I->click('Save profile');
+        $I->click('Save', 'form[action*="edit-tags"]');
 
         /*
         $I->expectTo('see the german translation');

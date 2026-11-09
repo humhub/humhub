@@ -10,7 +10,6 @@ namespace humhub\modules\user\models\forms;
 
 use Yii;
 use yii\base\Model;
-use humhub\modules\user\components\CheckPasswordValidator;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Auth;
 use humhub\modules\user\jobs\SoftDeleteUser;
@@ -24,51 +23,18 @@ use humhub\components\db\AfterCommit;
 class AccountDelete extends Model
 {
     /**
-     * @var string the current password
-     */
-    public $currentPassword;
-
-    /**
      * @since 1.3
      * @var User the user
      */
     public $user;
 
     /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        if (!CheckPasswordValidator::hasPassword()) {
-            return [];
-        }
-
-        return [
-            ['currentPassword', 'required'],
-            ['currentPassword', CheckPasswordValidator::class, 'user' => $this->user],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'currentPassword' => Yii::t('UserModule.auth', 'Your password'),
-        ];
-    }
-
-    /**
-     * Perform user deletion
+     * Perform user deletion. The user confirmed through the sudo mode (`SudoFilter` on the delete action), so the
+     * form has no current password field.
      * @since 1.3
      */
     public function performDelete()
     {
-        if (!$this->validate()) {
-            return false;
-        }
-
         $this->user->status = User::STATUS_SOFT_DELETED;
         $this->user->save();
 

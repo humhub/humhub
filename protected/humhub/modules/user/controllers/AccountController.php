@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\components\BaseAccountController;
+use humhub\modules\user\components\SudoFilter;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountSettings;
@@ -46,6 +47,16 @@ class AccountController extends BaseAccountController
             'edit-modules' => Yii::t('UserModule.base', 'Modules'),
         ]);
         return parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return array_merge(parent::behaviors(), [
+            'sudo' => ['class' => SudoFilter::class, 'only' => ['change-username', 'change-email']],
+        ]);
     }
 
     /**

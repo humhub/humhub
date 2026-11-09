@@ -40,7 +40,7 @@ class SecuritySettingsMenu extends PillTabs
             'label' => Yii::t('UserModule.account', 'Login'),
             'url' => ['/user/security/login'],
             'sortOrder' => 100,
-            'isActive' => ControllerHelper::isActivePath('user', 'security', 'login'),
+            'isActive' => ControllerHelper::isActivePath('user', 'security', ['login', 'change-password']),
             'isVisible' => (new SecurityLoginSections())->hasVisibleSections(),
         ]));
 

@@ -10,6 +10,8 @@ namespace humhub\modules\admin\components;
 
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\user\components\SudoFilter;
+use humhub\modules\user\components\SudoMode;
 use Yii;
 
 /**
@@ -51,13 +53,20 @@ class Controller extends \humhub\components\Controller
             $this->adminOnly = false;
         }
 
-        return [
+        $behaviors = [
             'acl' => [
                 'class' => AccessControl::class,
                 'adminOnly' => $this->adminOnly,
                 'rules' => $this->getAccessRules(),
             ],
         ];
+
+        // The administration behind the password confirmation, when the setting says so (docs/develop/concept-sudo-mode.md)
+        if (SudoMode::isRequiredForAdmin()) {
+            $behaviors['sudo'] = ['class' => SudoFilter::class];
+        }
+
+        return $behaviors;
     }
 
     /**

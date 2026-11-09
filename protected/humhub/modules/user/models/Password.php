@@ -32,6 +32,14 @@ use yii\web\BadRequestHttpException;
  */
 class Password extends ActiveRecord
 {
+    public const SCENARIO_CHANGE_PASSWORD = 'changePassword';
+
+    /**
+     * The forced change after a login (`MustChangePasswordGate`), which asks for the current password as well
+     * @since 1.20
+     */
+    public const SCENARIO_MUST_CHANGE_PASSWORD = 'mustChangePassword';
+
     /**
      * Additional Fields for Scenarios
      */
@@ -98,10 +106,11 @@ class Password extends ActiveRecord
             [['password', 'salt'], 'string'],
             [['created_at'], 'safe'],
             [['algorithm'], 'string', 'max' => 20],
-            [['currentPassword'], CheckPasswordValidator::class, 'on' => 'changePassword'],
-            [['newPassword', 'newPasswordConfirm', 'currentPassword'], 'required', 'on' => 'changePassword'],
-            [['newPassword'], 'unequalsCurrentPassword', 'on' => 'changePassword'],
-            [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', 'changePassword']],
+            [['currentPassword'], CheckPasswordValidator::class, 'on' => self::SCENARIO_MUST_CHANGE_PASSWORD],
+            [['currentPassword'], 'required', 'on' => self::SCENARIO_MUST_CHANGE_PASSWORD],
+            [['newPassword', 'newPasswordConfirm'], 'required', 'on' => [self::SCENARIO_CHANGE_PASSWORD, self::SCENARIO_MUST_CHANGE_PASSWORD]],
+            [['newPassword'], 'unequalsCurrentPassword', 'on' => [self::SCENARIO_CHANGE_PASSWORD, self::SCENARIO_MUST_CHANGE_PASSWORD]],
+            [['newPasswordConfirm'], 'compare', 'compareAttribute' => 'newPassword', 'on' => ['registration', self::SCENARIO_CHANGE_PASSWORD, self::SCENARIO_MUST_CHANGE_PASSWORD]],
             [['mustChangePassword'], 'boolean'],
         ];
     }
@@ -113,7 +122,13 @@ class Password extends ActiveRecord
      */
     public function unequalsCurrentPassword($attribute)
     {
-        if ($this->newPassword === $this->currentPassword) {
+        // With the field (forced change) its value, otherwise the stored password of the user
+        $current = Yii::$app->user->getIdentity()?->currentPassword;
+        $equalsCurrent = $this->currentPassword !== null
+            ? $this->newPassword === $this->currentPassword
+            : ($current !== null && !empty($current->password) && $current->validatePassword((string)$this->newPassword));
+
+        if ($equalsCurrent) {
             $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not be equal your current password!'));
         }
     }
@@ -125,9 +140,11 @@ class Password extends ActiveRecord
     {
         $scenarios = parent::scenarios();
 
-        $scenarios['changePassword'] = ['newPassword', 'newPasswordConfirm'];
+        // A change confirmed through the sudo mode; the forced change after a login asks for the current password
+        $scenarios[self::SCENARIO_CHANGE_PASSWORD] = ['newPassword', 'newPasswordConfirm'];
+        $scenarios[self::SCENARIO_MUST_CHANGE_PASSWORD] = ['newPassword', 'newPasswordConfirm'];
         if (CheckPasswordValidator::hasPassword()) {
-            $scenarios['changePassword'][] = 'currentPassword';
+            $scenarios[self::SCENARIO_MUST_CHANGE_PASSWORD][] = 'currentPassword';
         }
 
         $scenarios['registration'] = ['newPassword', 'newPasswordConfirm', 'mustChangePassword'];

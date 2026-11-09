@@ -5,6 +5,8 @@ use humhub\commands\IntegrityController;
 use humhub\components\gates\GateManager;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\user\components\User as UserComponent;
+use humhub\modules\user\controllers\AuthController;
 use humhub\modules\user\Events;
 use humhub\modules\user\Module;
 use humhub\widgets\TopMenu;
@@ -44,5 +46,7 @@ return [
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::class, 'onHourlyCron']],
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
         ['class' => GateManager::class, 'event' => GateManager::EVENT_INIT_GATES, 'callback' => [Events::class, 'onGateInit']],
+        ['class' => UserComponent::class, 'event' => UserComponent::EVENT_AFTER_LOGIN, 'callback' => [Events::class, 'onUserAfterLogin']],
+        ['class' => AuthController::class, 'event' => AuthController::EVENT_AFTER_LOGIN, 'callback' => [Events::class, 'onAuthAfterLogin']],
     ],
 ];
