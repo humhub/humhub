@@ -65,6 +65,25 @@ class SpaceChooserCest
         $I->logout();
     }
 
+    public function testSearchReset(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure the reset button of the space search shows with a keyword and clears it');
+        $I->amAdmin();
+        $I->amOnDashboard();
+
+        $I->waitForElementVisible('#space-menu');
+        $I->click('#space-menu');
+        $I->waitForElementVisible('#space-menu-search');
+        $I->dontSeeElement('#space-search-reset');
+
+        $I->fillField('#space-menu-search', 'Space');
+        $I->waitForElementVisible('#space-search-reset');
+
+        $I->click('#space-search-reset');
+        $I->waitForElementNotVisible('#space-search-reset');
+        $I->seeInField('#space-menu-search', '');
+    }
+
     private function ensureUserWithoutSpaces(string $username): void
     {
         $user = User::findOne(['username' => $username]);

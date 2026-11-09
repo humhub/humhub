@@ -309,10 +309,15 @@
             }
         }
 
-        // Unfolds instead of appearing: long enough to read as movement, short enough that
-        // nobody waits for it. An animation rather than a transition, because Bootstrap
-        // switches `display` at the same moment.
         #space-menu-dropdown {
+            // The rows are a `.hh-list`: edge to edge with the accent bar on the left, not the
+            // inset, rounded rows of the other menus (`_dropdown.scss`)
+            --bs-dropdown-padding-x: 0;
+            --bs-dropdown-item-border-radius: 0;
+
+            // Unfolds instead of appearing: long enough to read as movement, short enough that
+            // nobody waits for it. An animation rather than a transition, because Bootstrap
+            // switches `display` at the same moment.
             &.show {
                 animation: hh-dropdown-unroll 220ms ease-out;
             }
@@ -339,6 +344,7 @@
                 padding: 10px;
             }
 
+            // Shown only while there is a keyword (`v-show` in `SpaceChooser.vue`)
             .search-reset {
                 position: absolute;
                 color: var(--bs-tertiary-color);
@@ -346,7 +352,6 @@
                 top: 0px;
                 right: 40px;
                 z-index: 10;
-                display: none;
                 cursor: pointer;
             }
         }
@@ -381,6 +386,18 @@
 
                         .no-space {
                             display: inline;
+                            margin-right: .25em; // The gap to the caret
+                        }
+
+                        // The current space's image: centred in the bar, the caret beside its middle
+                        .current-space-image {
+                            vertical-align: middle;
+                            margin: 2px 0;
+                        }
+
+                        &:has(.current-space-image)::after {
+                            vertical-align: middle;
+                            margin-left: .5em;
                         }
                     }
 
