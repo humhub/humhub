@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8738: Account settings regrouped into "My Settings": profile categories as tabs, "Account" with username and e-mail, e-mail summaries under the notifications
 - Fix: The inline richtext editor hides its toolbar when the keyboard focus leaves the toolbar for the page, not only when it leaves the text
 - Fix #8737: The test server of the CI workflows allows 60 seconds per request, so the first request, which builds the theme CSS, no longer fails on a slow runner
 - Fix #8736: "Skip to main content" lands in the content column, after the menu of a space, profile, account or admin page
