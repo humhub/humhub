@@ -33,6 +33,49 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->assertMailSent(1);
     }
 
+    /**
+     * The profile visibility is relative to the author (User2 is not an admin),
+     * it must not prevent a space follower from being notified.
+     */
+    public function testHiddenFollowerContentNotification()
+    {
+        User::updateAll(['visibility' => User::VISIBILITY_HIDDEN], ['id' => 1]);
+
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $post->save();
+
+        // Admin is following Space2 so we expect one notification mail.
+        $this->assertMailSent(1);
+    }
+
+    /**
+     * Same for a follower of a user profile.
+     */
+    public function testHiddenFollowerProfileContentNotification()
+    {
+        // Admin follows the profile of User2
+        $this->assertTrue(User::findOne(['id' => 3])->follow(1, true));
+        User::updateAll(['visibility' => User::VISIBILITY_HIDDEN], ['id' => 1]);
+
+        $this->becomeUser('User2');
+
+        $post = new Post(['message' => 'MyTestContent']);
+        $post->content->setContainer(User::findOne(['id' => 3]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $this->assertTrue($post->save());
+
+        $this->assertEquals(1, Notification::find()->where([
+            'class' => ContentCreatedNotification::class,
+            'user_id' => 1,
+            'source_class' => Post::class,
+            'source_pk' => $post->id,
+        ])->count());
+    }
+
     public function testSilentContentCreation()
     {
         $this->becomeUser('User2');
