@@ -2,7 +2,6 @@
 
 return [
     'Name' => 'Anv',
-    'Settings' => 'Reolamantoù',
     '<strong>Followers</strong>' => '',
     '<strong>Following</strong>' => '',
     '<strong>Member</strong> in these spaces' => '',
@@ -12,10 +11,7 @@ return [
     'Advanced Profile Search' => '',
     'Allow users to mention you' => '',
     'Allows access to your about page with personal information' => '',
-    'Basic Settings' => '',
     'Block user' => '',
-    'Change Email' => '',
-    'Change Username' => '',
     'Confirm new password' => '',
     'Connect account' => '',
     'Connect {provider} account' => '',
@@ -60,7 +56,6 @@ return [
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
     'Modules' => '',
-    'My Account' => '',
     'New password' => '',
     'No users found.' => '',
     'Notifications' => '',

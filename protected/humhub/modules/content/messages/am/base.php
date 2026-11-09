@@ -99,6 +99,7 @@ return [
     'Share' => '',
     'Show {i} more.' => '',
     'Specify who can see this content.' => '',
+    'Stream' => '',
     'The author of this content is not allowed to create this type of content within this space.' => '',
     'The content cannot be published!' => '',
     'The content could not be found.' => '',

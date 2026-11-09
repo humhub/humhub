@@ -84,6 +84,7 @@ return [
     'Share' => '',
     'Show {i} more.' => '',
     'Specify who can see this content.' => '',
+    'Stream' => '',
     'Tag' => '',
     'Target Space' => '',
     'The author of this content is not allowed to create private content within the selected space.' => '',

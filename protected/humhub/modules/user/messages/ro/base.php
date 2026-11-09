@@ -2,7 +2,6 @@
 
 return [
     'Action' => 'Acțiune',
-    'Change Email' => 'Schimba email',
     'Confirm new password' => 'Confirma noua password',
     'Description' => 'Descriere',
     'Edit' => 'Editează',
@@ -13,7 +12,6 @@ return [
     'Language' => 'Limbă',
     'Local' => '로컬',
     'Modules' => 'App',
-    'My Account' => 'Acount',
     'Name' => 'Nume',
     'New password' => 'Noua password',
     'No users found.' => 'Nu am gasit utilizatorul cautat',
@@ -22,7 +20,6 @@ return [
     'People' => 'Persoane',
     'Profile' => 'Profil',
     'Search' => 'Căutare',
-    'Settings' => 'Impostatii',
     'Sign in' => 'Inregistrare',
     'Sign in / up' => 'Autentificare',
     'Sign up' => 'Inregistreaza-te',
@@ -43,9 +40,7 @@ return [
     'Advanced Profile Search' => '',
     'Allow users to mention you' => '',
     'Allows access to your about page with personal information' => '',
-    'Basic Settings' => '',
     'Block user' => '',
-    'Change Username' => '',
     'Connect account' => '',
     'Connect {provider} account' => '',
     'Connected accounts' => '',

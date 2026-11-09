@@ -26,6 +26,7 @@ return [
     'Write a new comment...' => 'Új hozzászólás írása...',
     'comment' => 'hozzászólás',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];

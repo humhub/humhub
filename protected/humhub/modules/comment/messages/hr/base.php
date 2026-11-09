@@ -24,6 +24,7 @@ return [
     'Write a new comment...' => 'Napiši novi komentar...',
     'comment' => 'komentar',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     '{displayName} commented on a {contentType}.' => '',

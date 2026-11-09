@@ -16,4 +16,5 @@ return [
     'Topic' => 'Hizpide',
     'Try other keywords or remove filters.' => 'Beste hitz giltzarri batzuk probatu edo iragazkiak kendu.',
     'Contents, Comments, Tags...' => '',
+    'Search results' => '',
 ];

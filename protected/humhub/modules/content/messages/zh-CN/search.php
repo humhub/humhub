@@ -14,6 +14,7 @@ return [
     'Newest first' => '',
     'No results found!' => '',
     'Results ({count})' => '',
+    'Search results' => '',
     'Topic' => '',
     'Try other keywords or remove filters.' => '',
 ];

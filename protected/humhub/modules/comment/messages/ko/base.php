@@ -26,6 +26,7 @@ return [
     'Write a new comment...' => '새 댓글을 작성하세요...',
     'comment' => '댓글',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];

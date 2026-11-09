@@ -89,6 +89,7 @@ return [
     'Select target Space/Profile.' => '',
     'Share' => '',
     'Show {i} more.' => '',
+    'Stream' => '',
     'The content cannot be published!' => '',
     'The content could not be found.' => '',
     'The content has been successfully published.' => '',

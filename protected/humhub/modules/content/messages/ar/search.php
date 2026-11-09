@@ -16,4 +16,5 @@ return [
     'Topic' => 'موضوع',
     'Try other keywords or remove filters.' => 'جرب كلمات رئيسية أخرى أو قم بإزالة عوامل التصفية.',
     'Contents, Comments, Tags...' => '',
+    'Search results' => '',
 ];

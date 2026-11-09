@@ -14,6 +14,7 @@ return [
     'Date To' => '',
     'Newest first' => '',
     'Results ({count})' => '',
+    'Search results' => '',
     'Sorting' => '',
     'Space' => '',
 ];

@@ -16,4 +16,5 @@ return [
     'Date From' => '',
     'Date To' => '',
     'Results ({count})' => '',
+    'Search results' => '',
 ];

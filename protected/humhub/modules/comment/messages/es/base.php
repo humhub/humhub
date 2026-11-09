@@ -26,6 +26,7 @@ return [
     'Write a new comment...' => 'Escribe un nuevo comentario...',
     'comment' => 'Comentar',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];

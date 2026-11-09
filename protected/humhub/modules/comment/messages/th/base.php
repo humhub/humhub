@@ -24,6 +24,7 @@ return [
     'comment' => 'ความคิดเห็น',
     '<strong>Permalink</strong> to this comment' => '',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     '{displayName} commented on a {contentType}.' => '',

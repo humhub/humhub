@@ -11,6 +11,7 @@ return [
   'No results found!' => 'Aucun résultat !',
   'Results ({count})' => 'Résultats ({count})',
   'Search' => 'Rechercher',
+  'Search results' => 'Résultats de la recherche',
   'Sorting' => 'Tri',
   'Space' => 'Espace',
   'Topic' => 'Sujet',

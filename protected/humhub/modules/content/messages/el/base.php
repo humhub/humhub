@@ -109,6 +109,7 @@ return [
     'Select target Space.' => '',
     'Select target Space/Profile.' => '',
     'Share' => '',
+    'Stream' => '',
     'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
     'Topic already exists globally.' => '',

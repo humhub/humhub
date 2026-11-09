@@ -15,5 +15,6 @@ return [
     'Date To' => '',
     'Newest first' => '',
     'Results ({count})' => '',
+    'Search results' => '',
     'Try other keywords or remove filters.' => '',
 ];

@@ -22,6 +22,7 @@ return [
     'Confirm' => '',
     'Permalink' => '',
     'Reason' => '',
+    'Replies' => '',
     'Send a notification to author' => '',
     'Show' => '',
     'Show next {count} comments' => '',

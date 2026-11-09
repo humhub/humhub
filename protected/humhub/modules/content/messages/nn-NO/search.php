@@ -12,6 +12,7 @@ return [
     'No results found!' => '',
     'Results ({count})' => '',
     'Search' => '',
+    'Search results' => '',
     'Sorting' => '',
     'Space' => '',
     'Topic' => '',

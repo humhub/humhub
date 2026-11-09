@@ -2,8 +2,6 @@
 
 return [
     'Action' => '行动',
-    'Change Email' => '變更Email地址',
-    'Change Username' => '變更使用者名稱',
     'Confirm new password' => '再次確認新密碼',
     'Current password' => '目前的密碼',
     'Description' => '描述',
@@ -26,7 +24,6 @@ return [
     'People' => '人物',
     'Profile' => '個人檔案',
     'Search' => '搜尋',
-    'Settings' => '設定',
     'Show all' => '顯示全部',
     'Sign in' => '登入',
     'Sign up now' => '現在參加',
@@ -47,7 +44,6 @@ return [
     'Advanced Profile Search' => '',
     'Allow users to mention you' => '',
     'Allows access to your about page with personal information' => '',
-    'Basic Settings' => '',
     'Block user' => '',
     'Connect account' => '',
     'Connect {provider} account' => '',
@@ -80,7 +76,6 @@ return [
     'Mentioning' => '',
     'Missing E-Mail Attribute from AuthClient.' => '',
     'Missing ID AuthClient Attribute from AuthClient.' => '',
-    'My Account' => '',
     'No users found.' => '',
     'Offline' => '',
     'Online' => '',

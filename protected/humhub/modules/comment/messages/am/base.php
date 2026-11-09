@@ -17,6 +17,7 @@ return [
     'Do you really want to delete this comment?' => '',
     'Read full comment...' => '',
     'Reason' => '',
+    'Replies' => '',
     'Reply' => '',
     'Send a notification to author' => '',
     'Show' => '',

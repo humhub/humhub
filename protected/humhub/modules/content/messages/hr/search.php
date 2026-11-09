@@ -16,4 +16,5 @@ return [
     'Topic' => 'Naslov',
     'Try other keywords or remove filters.' => 'Pokušajte pretražiti po drugim ključnim riječima ili uklonite filtere.',
     'Contents, Comments, Tags...' => '',
+    'Search results' => '',
 ];

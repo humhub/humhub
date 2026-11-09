@@ -22,6 +22,7 @@ return [
     '<strong>Permalink</strong> to this comment' => '',
     'Comment of blocked user.' => '',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     'Reply' => '',
     'Send a notification to author' => '',
     'Show next {count} comments' => '',

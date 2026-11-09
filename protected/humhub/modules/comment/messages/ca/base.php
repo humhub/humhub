@@ -24,6 +24,7 @@ return [
     'Write a new comment...' => 'Escriu un nou comentari...',
     'comment' => 'el comentari',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     '{displayName} commented on a {contentType}.' => '',

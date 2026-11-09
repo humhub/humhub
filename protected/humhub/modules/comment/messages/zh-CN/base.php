@@ -20,6 +20,7 @@ return [
     'Comment of blocked user.' => '',
     'Comments can only be nested one level deep.' => '',
     'Reason' => '',
+    'Replies' => '',
     'Reply' => '',
     'Send a notification to author' => '',
     'Show' => '',

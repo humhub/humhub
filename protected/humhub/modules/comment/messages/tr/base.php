@@ -23,6 +23,7 @@ return [
     '<strong>Delete</strong> comment?' => '',
     '<strong>Permalink</strong> to this comment' => '',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     'Send a notification to author' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',

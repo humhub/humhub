@@ -11,6 +11,7 @@ return [
   'No results found!' => 'Geen resultaten gevonden!',
   'Results ({count})' => 'Resultaten ({count})',
   'Search' => 'Zoek',
+  'Search results' => 'Zoekresultaten',
   'Sorting' => 'Sorteer',
   'Space' => 'Ruimte',
   'Topic' => 'Rubriek',

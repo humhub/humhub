@@ -27,5 +27,6 @@ return [
     'comment' => 'Reactie',
     '{displayName} wrote a new comment {comment}.' => '{displayName} heeft een nieuwe reactie geschreven {comment}.',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     '{displayName} commented on a {contentType}.' => '',
 ];

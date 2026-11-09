@@ -78,6 +78,7 @@ return [
     'Select target Space/Profile.' => '',
     'Select type...' => '',
     'Specify who can see this content.' => '',
+    'Stream' => '',
     'Submit' => '',
     'Tag' => '',
     'Target Space' => '',

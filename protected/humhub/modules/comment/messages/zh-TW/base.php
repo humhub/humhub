@@ -26,6 +26,7 @@ return [
     'Write a new comment...' => '公開留言...',
     'comment' => '留言',
     'Comments can only be nested one level deep.' => '',
+    'Replies' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];

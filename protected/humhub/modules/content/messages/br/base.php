@@ -76,6 +76,7 @@ return [
     'Share' => '',
     'Show {i} more.' => '',
     'Specify who can see this content.' => '',
+    'Stream' => '',
     'Submit' => '',
     'Tag' => '',
     'Target Space' => '',

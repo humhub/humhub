@@ -12,6 +12,7 @@ return [
     'Newest first' => '',
     'No results found!' => '',
     'Results ({count})' => '',
+    'Search results' => '',
     'Sorting' => '',
     'Space' => '',
     'Topic' => '',
