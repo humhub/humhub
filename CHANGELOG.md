@@ -4,7 +4,7 @@ HumHub Changelog
 1.19.5 (Unreleased)
 -------------------
 
-- Fix: Followers with a hidden profile (or not visible to the commenter or author) were not notified of new comments, or of new content in a followed space, unless the author was an admin or user manager
+- Fix #8743: Followers with a hidden profile (or not visible to the commenter or author) were not notified of new comments, or of new content in a followed space, unless the author was an admin or user manager
 
 1.19.4 (November 9, 2026)
 -------------------------
