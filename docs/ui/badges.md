@@ -129,7 +129,7 @@ colours) is used for four different jobs with the same look:
 
 | Today | Job | Becomes |
 |---|---|---|
-| `AdminMenu`, `UserMenu`, `MemberMenu`, marketplace `Events`: `Badge::danger($count)` / `Badge::light($count)` in menu labels | Waiting count | **Count badge** on the menu entry, **dot** on tabs (see [Pill Tabs](tabs.md)) |
+| `MemberMenu`, marketplace `Events`: `Badge::danger($count)` / `Badge::light($count)` in menu labels; `AdminMenu` and `UserMenu` show the dot (`MenuLink::$count`) | Waiting count | **Count badge** on the menu entry, **dot** on tabs (see [Pill Tabs](tabs.md)) |
 | `oauth/views/admin/clients.php`: `Badge::success('Active')` / `Badge::light('Inactive')` | Status in a list | **Status chip** (success / neutral) |
 | `ContentActiveRecord` labels: `Badge::danger('Pinned')`, `Badge::warning('Archived')`, `Badge::info('Public')`, `Badge::light($contentName)` | Facts about content | **Chips**: Pinned and Public are neutral facts with icon, Archived is neutral (a chosen state). See Open questions. |
 | `content\widgets\StateBadge`: `Badge::danger('Draft')`, `Badge::warning('Scheduled for …')`, `Badge::danger('Deleted')` | Content state | **Status chips**: Draft and Scheduled → warning, Deleted → danger |

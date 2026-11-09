@@ -10,7 +10,6 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Application;
 use humhub\helpers\ControllerHelper;
-use humhub\helpers\Html;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
@@ -20,8 +19,7 @@ use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\widgets\menu\MenuEntry;
 use humhub\widgets\menu\MenuLink;
-use humhub\widgets\menu\LeftNavigation;
-use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\menu\SectionMenu;
 use Yii;
 
 /**
@@ -49,7 +47,7 @@ use Yii;
  *
  * @author luke
  */
-class AdminMenu extends LeftNavigation
+class AdminMenu extends SectionMenu
 {
     public const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
 
@@ -63,7 +61,7 @@ class AdminMenu extends LeftNavigation
      */
     public function init()
     {
-        $this->panelTitle = Yii::t('AdminModule.base', '<strong>Administration</strong> menu');
+        $this->title = Yii::t('AdminModule.base', 'Administration');
 
         $this->addEntry(new MenuLink([
             'id' => 'user',
@@ -94,14 +92,14 @@ class AdminMenu extends LeftNavigation
 
         $this->addEntry(new MenuLink([
             'id' => 'modules',
-            'label' => Html::encode(Yii::t('AdminModule.base', 'Modules')) . $this->getMarketplaceUpdatesBadge(),
-            'encodeLabel' => false,
+            'label' => Yii::t('AdminModule.base', 'Modules'),
             'url' => ['/admin/module'],
             'icon' => 'rocket',
             'sortOrder' => 500,
             'htmlOptions' => ['class' => 'modules'],
             'isActive' => ControllerHelper::isActivePath('admin', 'module'),
             'isVisible' => Yii::$app->user->can(ManageModules::class) || Yii::$app->user->can(ManageSettings::class),
+            'count' => (new MarketplaceService())->getPendingModuleUpdateCount(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -179,11 +177,4 @@ class AdminMenu extends LeftNavigation
 
         parent::addEntry($entry);
     }
-
-    private function getMarketplaceUpdatesBadge(): string
-    {
-        $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
-        return $updatesCount > 0 ? '&nbsp;&nbsp;' . Badge::danger($updatesCount) : '';
-    }
-
 }

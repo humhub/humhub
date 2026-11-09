@@ -26,7 +26,7 @@ return [
                 ],
             ],
             [
-                'element' => ".list-group-item.modules",
+                'element' => "#admin-menu .modules",
                 'popover' => [
                     'title' => Yii::t('TourModule.administration', '<strong>Modules</strong>'),
                     'description' => Yii::t('TourModule.administration', 'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.'),

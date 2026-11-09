@@ -80,7 +80,7 @@ class ActivitySettingsCest
 
         $I->see('Notifications & E-Mails', '.page-header-title');
         $I->see('E-Mail Summaries', '.page-header .nav-pills .nav-link.active');
-        $I->seeElement('.left-navigation [data-menu-id="account-settings-notifications"].active');
-        $I->dontSeeElement('.left-navigation [data-menu-id="account-settings-emailsummary"]');
+        $I->seeElement('.section-menu [data-menu-id="account-settings-notifications"].active');
+        $I->dontSeeElement('.section-menu [data-menu-id="account-settings-emailsummary"]');
     }
 }

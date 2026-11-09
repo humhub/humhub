@@ -28,13 +28,14 @@ class AccountSettingsCest
         $I->amUser1();
         $I->amOnRoute('/user/account/edit');
 
-        $I->see('My Settings', '.left-navigation .panel-heading');
-        $labels = array_map('trim', $I->grabMultiple('.left-navigation .list-group-item'));
+        $I->see('My Settings', '.section-menu .section-menu-title');
+        $I->dontSeeElement('.section-menu .section-menu-title strong');
+        $labels = array_map('trim', $I->grabMultiple('.section-menu .nav-section .nav-link'));
         Assert::assertSame(
             ['Profile', 'Account', 'Notifications & E-Mails', 'Appearance & Accessibility', 'Security & Privacy'],
             $labels,
         );
-        $I->seeElement('.left-navigation [data-menu-id="account-settings-profile"].active');
+        $I->seeElement('.section-menu [data-menu-id="account-settings-profile"].active');
     }
 
     public function testProfileCategoriesAreTheTabsOfThePage(FunctionalTester $I)
@@ -126,7 +127,7 @@ class AccountSettingsCest
         $I->seeElement('.accordion-item:nth-child(2) form[action*="change-username"]');
         $I->see('Your current username is User1.', '.accordion-subtitle');
         $I->dontSee('Profile Tags');
-        $I->seeElement('.left-navigation [data-menu-id="account-settings-settings"].active');
+        $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
     }
 
     public function testChangeUsernameInItsSection(FunctionalTester $I)
@@ -158,7 +159,7 @@ class AccountSettingsCest
         // The section with the error starts open instead of the first one
         $I->seeElement('.accordion-collapse.show form[action*="change-username"]');
         $I->dontSeeElement('.accordion-collapse.show form[action*="change-email"]');
-        $I->seeElement('.left-navigation [data-menu-id="account-settings-settings"].active');
+        $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
         Assert::assertNull(User::findOne(['username' => 'User1Renamed']));
     }
 
@@ -219,7 +220,7 @@ class AccountSettingsCest
         $I->seeResponseCodeIs(200);
         $I->see('Account', '.page-header-title');
         $I->see('Similar to Spaces, your personal profile also allows you to use modules');
-        $I->seeElement('.left-navigation [data-menu-id="account-settings-settings"].active');
+        $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
     }
 
     public function testTopicsPageIsATabOfTheAccountPage(FunctionalTester $I)
@@ -230,6 +231,6 @@ class AccountSettingsCest
         $I->see('Account', '.page-header-title');
         $I->see('Topics', '.page-header .nav-pills .nav-link.active');
         $I->see('General', '.page-header .nav-pills');
-        $I->seeElement('.left-navigation [data-menu-id="account-settings-settings"].active');
+        $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
     }
 }

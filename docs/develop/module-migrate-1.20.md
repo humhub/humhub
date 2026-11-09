@@ -2760,3 +2760,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `.security-section`) and `settingsAccordionItem.php` (a stack with `$accordion`). `security\SecuritySection`
     extends `SettingsSection`; `SecuritySectionStack` was removed, the security stacks extend `SettingsSectionStack`.
     `getFirstUrl()` moved from `SecuritySettingsMenu` to `PillTabs`.
+
+- **`AdminMenu` and `AccountMenu` are section menus** (`humhub\widgets\menu\SectionMenu`: a card with
+  the area's title and a vertical `.nav`), no longer `LeftNavigation` panels. Their entries are
+  `.nav-link`s in `.nav-section` instead of `.list-group-item`s, and `panelTitle` is `title`.
+  Entries added through the menus' events need no change; something waiting behind an entry is
+  the entry's `count` (shown as the dot), not badge HTML in the label. Tests, tours and themes
+  that select `.left-navigation`, `.panel-heading` or `.list-group-item` on these two menus need
+  the new classes. The space and profile menus keep the panel.

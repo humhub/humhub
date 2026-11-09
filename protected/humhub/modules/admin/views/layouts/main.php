@@ -6,7 +6,7 @@ use humhub\widgets\FooterMenu;
 /** @var $content string */
 ?>
 <div class="container">
-    <div class="row">
+    <div class="row gx-3">
         <div class="col-lg-3">
             <?= AdminMenu::widget(); ?>
         </div>

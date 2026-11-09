@@ -16,7 +16,7 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('My Settings', 30, '.left-navigation');
+        $I->waitForText('My Settings', 30, '.section-menu');
         $I->click('Tags', '.page-header');
 
         $I->amGoingTo('fill the tags of the profile form');
@@ -58,7 +58,7 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('My Settings', 30, '.left-navigation');
+        $I->waitForText('My Settings', 30, '.section-menu');
 
         $I->click('Notifications & E-Mails');
         $I->waitForText('Categories');
