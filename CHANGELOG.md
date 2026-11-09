@@ -1,8 +1,10 @@
 HumHub Changelog
 ================
 
-1.18.8 (Unreleased)
--------------------
+1.18.8 (November 9, 2026)
+-------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
 
 - Fix GHSA-8fxv-7qxv-3x3r: Labels of top menu, footer menu and People heading button entries were not HTML-encoded
 
