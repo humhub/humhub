@@ -2730,3 +2730,33 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   module that handles these keys itself calls `preventDefault()` in a handler bound to the element
   (a handler delegated from `document` runs too late and the action fires twice). The element still
   needs `tabindex="0"` and `role="button"`.
+- **The account section is regrouped** (`docs/ui/page-header.md`, "Account section"). The left menu
+  `humhub\modules\user\widgets\AccountMenu` is titled "My Settings" (also the dropdown entry and the page title)
+  and has the entries Profile 100, Account 200 (id `account-settings-settings`), Notifications & E-Mails 300,
+  Appearance & Accessibility 400 and Security & Privacy 500; the friendship module adds Friends at 600. A module
+  entry should use a sort order of 1000 or more, so it comes after the core entries.
+  - "Profile" (`/user/account/edit`) shows one category of the profile fields per page (`?category=<id>`, the
+    first one by default) and saves it alone (`HForm::$attributeNames` limits `validate()` and `save()` to the
+    fields of the category, `Profile::getFormCategories()` lists the categories with fields by id). The tags have a page of their own (`/user/account/edit-tags`, `User[tagsField]`, scenario
+    `User::SCENARIO_EDIT_PROFILE`). The tabs `AccountProfileMenu` are the categories (100, 200, …) and the tags
+    after them; the username and e-mail forms are no longer tabs of the profile page. The form no longer uses the
+    `ui.form.TabbedForm` widget.
+  - "Account" (`/user/account/edit-settings`, tabs `AccountSettingsMenu`: General 100, Modules 200, Topics 300 of
+    the topic module) replaces the "General" entry and the "Modules" entry. Its "General" tab is an accordion of
+    sections (`user\widgets\account\AccountGeneralSections`: e-mail address 100, username 200, "Other" 300 with the
+    introduction tour; modules add sections on `EVENT_INIT`); the first section starts open, or the one whose form was
+    submitted with errors. `user\models\forms\AccountSettings` keeps only `show_introduction_tour` and saves it itself
+    (`save()`).
+  - Removed: the views `@user/views/account/_userModulesLayout.php`, `changeUsername.php`,
+    `changeUsername_success.php`, `changeEmail.php`, `changeEmail_success.php` and `changeEmailValidate.php`.
+    `/user/account/change-username`, `change-email` and `change-email-validate` return to the "Account"
+    page with a status message.
+  - "Notifications & E-Mails" (`/notification/user`, tabs `notification\widgets\NotificationSettingsMenu`,
+    module pages render inside `@notification/views/user/_layout.php`): the "E-Mail Summaries" page of the
+    activity module is its second tab (sort order 200) instead of an entry of the account menu;
+    `activity\Events::onAccountMenuInit()` became `onNotificationSettingsMenuInit()`.
+  - `user\widgets\SettingsSection` and `SettingsSectionStack` are the base classes of the sections of a
+    settings tab, with the views `@user/widgets/views/settingsSection.php` (`.settings-section` instead of
+    `.security-section`) and `settingsAccordionItem.php` (a stack with `$accordion`). `security\SecuritySection`
+    extends `SettingsSection`; `SecuritySectionStack` was removed, the security stacks extend `SettingsSectionStack`.
+    `getFirstUrl()` moved from `SecuritySettingsMenu` to `PillTabs`.

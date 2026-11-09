@@ -113,6 +113,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public const SCENARIO_REGISTRATION = 'registration';
     public const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
     public const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
+    public const SCENARIO_EDIT_PROFILE = 'editProfile';
     public const SCENARIO_APPROVE = 'approve';
 
     /**
@@ -352,6 +353,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         $scenarios[self::SCENARIO_LOGIN] = ['username', 'password'];
         $scenarios[self::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
         $scenarios[self::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
+        $scenarios[self::SCENARIO_EDIT_PROFILE] = ['tagsField'];
         $scenarios[self::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
         $scenarios[self::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
@@ -373,6 +375,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             'profile.lastname' => Yii::t('UserModule.profile', 'Last name'),
             'user_source' => Yii::t('UserModule.base', 'User Source'),
             'tags' => Yii::t('UserModule.base', 'Tags'),
+            'tagsField' => Yii::t('UserModule.account', 'Profile Tags'),
             'language' => Yii::t('UserModule.base', 'Language'),
             'created_at' => Yii::t('UserModule.base', 'Created at'),
             'created_by' => Yii::t('UserModule.base', 'Created by'),

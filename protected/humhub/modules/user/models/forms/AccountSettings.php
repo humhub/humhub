@@ -8,18 +8,18 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 
 /**
- * Form Model for changing basic account settings
+ * Form model of the "Introduction tour" section of the account settings
  *
  * @since 0.9
  */
 class AccountSettings extends Model
 {
-    public $tags;
     public $show_introduction_tour;
 
     public ?User $user = null;
@@ -27,10 +27,21 @@ class AccountSettings extends Model
     /**
      * @inheritdoc
      */
+    public function init()
+    {
+        parent::init();
+
+        if ($this->user !== null) {
+            $this->show_introduction_tour = $this->getSettings()->get('hideTourPanel');
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['tags'], 'safe'],
             [['show_introduction_tour'], 'boolean'],
         ];
     }
@@ -41,20 +52,23 @@ class AccountSettings extends Model
     public function attributeLabels()
     {
         return [
-            'tags' => Yii::t('UserModule.account', 'Profile Tags'),
             'show_introduction_tour' => Yii::t('UserModule.account', 'Hide introduction tour panel on dashboard'),
         ];
     }
 
-    public function attributeHints()
+    public function save(): bool
     {
-        return [
-            'tags' => Yii::t('UserModule.account', 'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.'),
-        ];
+        if (!$this->validate()) {
+            return false;
+        }
+
+        $this->getSettings()->set('hideTourPanel', $this->show_introduction_tour);
+
+        return true;
     }
 
-    public function getTags(): array
+    private function getSettings(): ContentContainerSettingsManager
     {
-        return is_array($this->tags) ? $this->tags : [];
+        return Yii::$app->getModule('tour')->settings->contentContainer($this->user);
     }
 }

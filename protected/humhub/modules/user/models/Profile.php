@@ -273,6 +273,22 @@ class Profile extends ActiveRecord
     }
 
     /**
+     * @return array the categories of [[getFormDefinition()]] that have fields, by category id
+     * @since 1.20
+     */
+    public function getFormCategories(): array
+    {
+        $categories = [];
+        foreach ($this->getFormDefinition()['elements'] as $key => $category) {
+            if (!empty($category['elements'])) {
+                $categories[(int)substr($key, strlen('category_'))] = $category;
+            }
+        }
+
+        return $categories;
+    }
+
+    /**
      * @inheritdoc
      */
     public function beforeSave($insert)
