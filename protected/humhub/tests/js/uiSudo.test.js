@@ -80,6 +80,27 @@ describe('humhub.ui.sudo', () => {
         expect(loaderReset).toHaveBeenCalledWith(form.querySelector('button'));
     });
 
+    it('asks only when a field marked data-sudo-field was changed', async () => {
+        $(form).prepend('<input name="username" value="User1" data-sudo-field><input type="checkbox" name="tour">');
+        const [username, tour] = form.querySelectorAll('input');
+
+        // Another field changed: the form is sent as usual
+        tour.checked = true;
+        const plain = new Event('submit', { bubbles: true, cancelable: true });
+        form.dispatchEvent(plain);
+        expect(plain.defaultPrevented).toBe(false);
+        expect(dialog.load).not.toHaveBeenCalled();
+
+        username.value = 'User1Renamed';
+        const guarded = new Event('submit', { bubbles: true, cancelable: true });
+        form.dispatchEvent(guarded);
+        expect(guarded.defaultPrevented).toBe(true);
+        expect(dialog.load).toHaveBeenCalledWith('/user/sudo/confirm');
+
+        await userConfirms();
+        expect(sent).toHaveBeenCalledTimes(1);
+    });
+
     it('opens one dialog for parallel requests', async () => {
         const first = sudo.confirm('/user/sudo/confirm');
         const second = sudo.confirm('/user/sudo/confirm');

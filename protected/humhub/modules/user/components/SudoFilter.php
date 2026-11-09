@@ -38,6 +38,21 @@ class SudoFilter extends ActionFilter
     public const HEADER = 'X-Sudo-Required';
 
     /**
+     * @var callable|null narrows the filter to the requests it returns true for, e.g. a form post that changes the
+     * username but not one that only changes other settings; it gets the action
+     * @since 1.20
+     */
+    public $when = null;
+
+    /**
+     * @inheritdoc
+     */
+    protected function isActive($action)
+    {
+        return parent::isActive($action) && ($this->when === null || call_user_func($this->when, $action));
+    }
+
+    /**
      * @inheritdoc
      */
     public function beforeAction($action)

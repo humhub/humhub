@@ -9,7 +9,6 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\modules\user\widgets\account\AccountGeneralSections;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\PillTabs;
 use Yii;
@@ -32,8 +31,7 @@ class AccountSettingsMenu extends PillTabs
             'label' => Yii::t('UserModule.account', 'General'),
             'url' => ['/user/account/edit-settings'],
             'sortOrder' => 100,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', ['edit-settings', 'change-username', 'change-email', 'change-email-validate']),
-            'isVisible' => (new AccountGeneralSections())->hasVisibleSections(),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', ['edit-settings', 'change-email-validate']),
         ]));
 
         $this->addEntry(new MenuLink([

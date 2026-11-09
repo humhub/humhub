@@ -3,7 +3,8 @@
  * it, and the original request again afterwards.
  *
  * - `humhub.client` hands every `401` with the `X-Sudo-Required` header to `confirm()` and repeats the request
- * - a form marked `data-sudo-required` (`ActiveForm::$sudo`) asks before it is sent
+ * - a form marked `data-sudo-required` (`ActiveForm::$sudo`) asks before it is sent; with fields marked
+ *   `data-sudo-field` only when one of them was changed
  * - a pjax navigation into a protected page asks, then navigates again
  *
  * @since 1.20
@@ -57,10 +58,26 @@ humhub.module('ui.sudo', function (module, require, $) {
         return pending;
     };
 
+    /**
+     * Fields marked `data-sudo-field` narrow the form: it asks only when one of them was changed
+     */
+    var changesSudoField = function (form) {
+        var fields = form.querySelectorAll('[data-sudo-field]');
+        if (!fields.length) {
+            return true;
+        }
+
+        return Array.prototype.some.call(fields, function (field) {
+            return field.type === 'checkbox' || field.type === 'radio'
+                ? field.checked !== field.defaultChecked
+                : field.value !== field.defaultValue;
+        });
+    };
+
     var onFormSubmit = function (evt) {
         var form = evt.currentTarget;
         var url = form.getAttribute('data-sudo-required');
-        if (!url) {
+        if (!url || !changesSudoField(form)) {
             return;
         }
 

@@ -47,14 +47,9 @@ class SudoCest
         $this->amSignedInByCookie($I, 'User1', 'user^humhub@PASS%worD!');
 
         $I->amOnRoute('/user/account/edit-settings');
-        $I->waitForElementVisible('form[action*="change-email"]');
-
-        $I->click('Username', '.accordion');
-        $I->waitForElementVisible('input[name="AccountChangeUsername[newUsername]"]');
-        $I->seeElement('form[action*="change-username"][data-sudo-required]');
-        $I->dontSeeElementInDOM('input[name="AccountChangeUsername[currentPassword]"]');
-        $I->fillField('AccountChangeUsername[newUsername]', 'User1Confirmed');
-        $I->click('Save', 'form[action*="change-username"]');
+        $I->waitForElementVisible('form#account-settings-form[data-sudo-required]');
+        $I->fillField('AccountSettings[username]', 'User1Confirmed');
+        $I->click('Save', '#account-settings-form');
 
         $I->expectTo('see the dialog instead of the change');
         $I->waitForText('Confirm your password', 10, '.modal.show#globalModal');
@@ -76,17 +71,30 @@ class SudoCest
         $this->amSignedInByCookie($I, 'User1', 'user^humhub@PASS%worD!');
 
         $I->amOnRoute('/user/account/edit-settings');
-        $I->waitForElementVisible('form[action*="change-email"]');
-        $I->fillField('AccountChangeEmail[newEmail]', 'user1-cancelled@example.com');
-        $I->click('Save', 'form[action*="change-email"]');
+        $I->waitForElementVisible('#account-settings-form');
+        $I->fillField('AccountSettings[email]', 'user1-cancelled@example.com');
+        $I->click('Save', '#account-settings-form');
 
         $I->waitForText('Confirm your password', 10, '.modal.show#globalModal');
         $I->click('Cancel', '.modal.show#globalModal');
         $I->waitForElementNotVisible('#globalModal');
 
         $I->seeInCurrentUrl('edit-settings');
-        $I->seeElement('form[action*="change-email"][data-sudo-required]');
+        $I->seeElement('form#account-settings-form[data-sudo-required]');
         $I->dontSee('confirmation e-mail');
+    }
+
+    public function testSavingWithoutChangingTheUsernameOrTheEmailAsksNothing(AcceptanceTester $I)
+    {
+        $I->wantTo('save the form without a dialog when neither my username nor my e-mail address changes');
+        $this->amSignedInByCookie($I, 'User1', 'user^humhub@PASS%worD!');
+
+        $I->amOnRoute('/user/account/edit-settings');
+        $I->waitForElementVisible('form#account-settings-form[data-sudo-required]');
+        $I->click('Save', '#account-settings-form');
+
+        $I->seeSuccess();
+        $I->dontSeeElement('.modal.show#globalModal');
     }
 
     public function testTheAdministrationAsksWhenEnabled(AcceptanceTester $I)

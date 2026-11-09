@@ -68,7 +68,7 @@ The filter is attached to:
 
 | Where | Actions |
 |---|---|
-| `user/account` | `change-username`, `change-email`, `change-password` |
+| `user/account` | `edit-settings` when the username or the e-mail address changes (not for the other settings of the form), `change-password` |
 | `user/security` | `delete` |
 | `oauth/account` | `create-token` |
 | `oauth/authorize` | `index`: a grant is as strong as a personal access token |
@@ -79,8 +79,8 @@ Not protected: `user/account/change-email-validate` (the link from the confirmat
 carries its own token), the must-change-password flow (a gate with its own password check),
 and anything a module does not protect itself (see Extending).
 
-The forms lose their `currentPassword` attribute and field: `AccountChangeEmail`,
-`AccountChangeUsername`, `Password` (scenario `changePassword`), `AccountDelete`,
+The forms lose their `currentPassword` attribute and field: `AccountSettings` (username and
+e-mail address), `Password` (scenario `changePassword`), `AccountDelete`,
 `PersonalAccessTokenForm`. `CheckPasswordValidator` stays for the remaining users.
 
 ## The dialog and the page
@@ -126,6 +126,18 @@ public function behaviors()
         'sudo' => ['class' => SudoFilter::class, 'only' => ['delete', 'rotate-secret']],
     ]);
 }
+```
+
+A form that mixes sensitive and other values narrows the filter with `when` and marks the
+sensitive inputs with `data-sudo-field`, so `humhub.ui.sudo` asks only when one of them was
+changed (the "General" tab of the account settings does this for username and e-mail address):
+
+```php
+'sudo' => [
+    'class' => SudoFilter::class,
+    'only' => ['edit-settings'],
+    'when' => fn() => $model->load(Yii::$app->request->post()) && $model->changesCredentials(),
+],
 ```
 
 An API controller serving the module's administration sets `protected bool $administration = true;`,

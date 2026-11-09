@@ -12,8 +12,6 @@ use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\user\components\BaseAccountController;
 use humhub\modules\user\components\SudoFilter;
-use humhub\modules\user\models\forms\AccountChangeEmail;
-use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\UserSourceService;
@@ -41,8 +39,6 @@ class AccountController extends BaseAccountController
             'edit' => Yii::t('UserModule.base', 'Profile'),
             'edit-tags' => Yii::t('UserModule.base', 'Profile'),
             'edit-settings' => Yii::t('UserModule.account', 'Account'),
-            'change-username' => Yii::t('UserModule.account', 'Account'),
-            'change-email' => Yii::t('UserModule.account', 'Account'),
             'change-email-validate' => Yii::t('UserModule.account', 'Account'),
             'edit-modules' => Yii::t('UserModule.base', 'Modules'),
         ]);
@@ -55,7 +51,15 @@ class AccountController extends BaseAccountController
     public function behaviors()
     {
         return array_merge(parent::behaviors(), [
-            'sudo' => ['class' => SudoFilter::class, 'only' => ['change-username', 'change-email']],
+            // Only a change of the username or the e-mail address asks for it, not one of the other settings
+            'sudo' => [
+                'class' => SudoFilter::class,
+                'only' => ['edit-settings'],
+                'when' => function () {
+                    $model = $this->getSettingsForm();
+                    return $model->load(Yii::$app->request->post()) && $model->changesCredentials();
+                },
+            ],
         ]);
     }
 
@@ -140,18 +144,37 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * The "General" tab of the account settings: username, e-mail address and the introduction tour
+     * The "General" tab of the account settings: username, e-mail address and the introduction tour in one form
      */
     public function actionEditSettings()
     {
-        $model = new AccountSettings(['user' => Yii::$app->user->getIdentity()]);
+        $model = $this->getSettingsForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->view->saved();
-            return $this->redirect(['edit-settings']);
+        if (!$model->load(Yii::$app->request->post())) {
+            return $this->render('editSettings', ['model' => $model]);
         }
 
-        return $this->render('editSettings', ['settingsModel' => $model]);
+        // Before saving: afterwards the new username is the current one
+        $messages = [];
+        if ($model->isUsernameChanged()) {
+            $messages[] = Yii::t('UserModule.account', 'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.');
+        }
+        if ($model->isEmailChanged()) {
+            $messages[] = Yii::t('UserModule.account', 'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.');
+        }
+
+        if (!$model->save()) {
+            return $this->render('editSettings', ['model' => $model]);
+        }
+
+        $messages === [] ? $this->view->saved() : $this->view->success(implode('<br>', $messages));
+
+        return $this->redirect(['edit-settings']);
+    }
+
+    private function getSettingsForm(): AccountSettings
+    {
+        return new AccountSettings(['user' => Yii::$app->user->getIdentity()]);
     }
 
     /**
@@ -250,44 +273,6 @@ class AccountController extends BaseAccountController
     public function actionDelete()
     {
         return $this->redirect(['/user/security/delete'], 301);
-    }
-
-    /**
-     * Change Current Username, a section of the "General" tab
-     */
-    public function actionChangeUsername()
-    {
-        if (!UserSourceService::getForUser()->canChangeUsername()) {
-            throw new HttpException(500, 'Change Username is not allowed');
-        }
-
-        $model = new AccountChangeUsername();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
-            $this->view->success(Yii::t('UserModule.account', 'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.'));
-            return $this->redirect(['edit-settings']);
-        }
-
-        return $this->render('editSettings', ['usernameModel' => $model]);
-    }
-
-    /**
-     * Change Current E-mail, a section of the "General" tab
-     */
-    public function actionChangeEmail()
-    {
-        if (!UserSourceService::getForUser()->canChangeEmail()) {
-            throw new HttpException(500, 'Change E-Mail is not allowed');
-        }
-
-        $model = new AccountChangeEmail();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
-            $this->view->success(Yii::t('UserModule.account', 'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.'));
-            return $this->redirect(['edit-settings']);
-        }
-
-        return $this->render('editSettings', ['emailModel' => $model]);
     }
 
     /**

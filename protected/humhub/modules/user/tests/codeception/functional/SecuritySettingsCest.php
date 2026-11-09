@@ -115,7 +115,7 @@ class SecuritySettingsCest
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
 
         $I->amOnRoute('/user/account/edit-settings');
-        $I->see('Username', 'h3');
+        $I->see('Username', 'label');
         $I->dontSee('Profile visibility');
         $I->dontSee('Hide my online status');
         $I->dontSee('Blocked users');

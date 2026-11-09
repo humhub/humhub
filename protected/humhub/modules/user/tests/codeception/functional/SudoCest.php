@@ -25,7 +25,7 @@ class SudoCest
         $I->amOnRoute('/user/account/edit-settings');
         $I->dontSeeElement('form[data-sudo-required]');
 
-        $I->submitForm('form[action*="change-username"]', ['AccountChangeUsername[newUsername]' => 'User1Renamed']);
+        $I->submitForm('#account-settings-form', ['AccountSettings[username]' => 'User1Renamed']);
         $I->seeInSource('Your username has been successfully changed');
     }
 
@@ -34,35 +34,45 @@ class SudoCest
         // A programmatic login is no interactive one: the sudo mode is not active
         $I->amLoggedInAs(User::findOne(['id' => 2]));
         $I->amOnRoute('/user/account/edit-settings');
-        $I->seeElement('form[action*="change-username"][data-sudo-required*="sudo%2Fconfirm"]');
-        $I->seeElement('form[action*="change-email"][data-sudo-required]');
+        $I->seeElement('#account-settings-form[data-sudo-required*="sudo%2Fconfirm"]');
+        $I->seeElement('input[name="AccountSettings[username]"][data-sudo-field]');
+        $I->seeElement('input[name="AccountSettings[email]"][data-sudo-field]');
 
-        $I->amOnRoute('/user/account/change-email');
+        $I->submitForm('#account-settings-form', ['AccountSettings[username]' => 'User1Renamed']);
         $I->seeCurrentUrlMatches('~user%2Fsudo%2Fconfirm~');
         $I->see('Confirm your password');
         $I->seeElement('#sudo-confirm-form input[type="password"][autocomplete="current-password"]');
+        Assert::assertSame('User1', User::findOne(['id' => 2])->username);
 
         $I->submitForm('#sudo-confirm-form', ['SudoConfirmForm[password]' => 'wrong']);
         $I->seeCurrentUrlMatches('~user%2Fsudo%2Fconfirm~');
         $I->see('Your password is incorrect!');
 
         $I->submitForm('#sudo-confirm-form', ['SudoConfirmForm[password]' => self::PASSWORD]);
-        // Back where the user wanted to go, and the forms no longer ask
-        $I->seeCurrentUrlMatches('~user%2Faccount%2Fchange-email~');
-        $I->amOnRoute('/user/account/edit-settings');
+        // Back on the form, which no longer asks: a form posted without JavaScript is sent again
+        $I->seeCurrentUrlMatches('~user%2Faccount%2Fedit-settings~');
         $I->dontSeeElement('form[data-sudo-required]');
-        $I->submitForm('form[action*="change-username"]', ['AccountChangeUsername[newUsername]' => 'User1Renamed']);
+        $I->submitForm('#account-settings-form', ['AccountSettings[username]' => 'User1Renamed']);
         $I->seeInSource('Your username has been successfully changed');
+    }
+
+    public function testOtherSettingsAreSavedWithoutTheSudoMode(FunctionalTester $I)
+    {
+        $I->amLoggedInAs(User::findOne(['id' => 2]));
+        $I->amOnRoute('/user/account/edit-settings');
+        $I->submitForm('#account-settings-form', []);
+        $I->seeCurrentUrlMatches('~user%2Faccount%2Fedit-settings~');
+        $I->dontSee('Confirm your password');
     }
 
     public function testAnAjaxRequestWithoutTheSudoModeGetsA401WithTheConfirmUrl(FunctionalTester $I)
     {
         $I->amLoggedInAs(User::findOne(['id' => 2]));
-        $I->sendAjaxPostRequest('/index-test.php?r=user%2Faccount%2Fchange-email', ['AccountChangeEmail[newEmail]' => 'user1-new@example.com']);
+        $I->sendAjaxPostRequest('/index-test.php?r=user%2Faccount%2Fedit-settings', ['AccountSettings[email]' => 'user1-new@example.com']);
         $I->seeResponseCodeIs(401);
         Assert::assertStringContainsString('user%2Fsudo%2Fconfirm', $I->grabHttpHeader('X-Sudo-Required'));
         Assert::assertStringContainsString('"sudo":true', $I->grabPageSource());
-        Assert::assertNotSame('user1-new@example.com', User::findOne(['id' => 2])->email);
+        $I->dontSeeEmailIsSent();
     }
 
     public function testTheConfirmationDialogIsLoadedByAjax(FunctionalTester $I)

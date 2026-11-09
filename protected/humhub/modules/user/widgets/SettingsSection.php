@@ -13,23 +13,12 @@ use humhub\components\Widget;
 /**
  * A section of an account settings tab, rendered with title, description and content
  *
- * Modules add sections to a [[SettingsSectionStack]] on its `EVENT_INIT`, e.g. to
- * [[account\AccountGeneralSections]] or [[security\SecurityLoginSections]].
+ * Modules add sections to a [[SettingsSectionStack]] on its `EVENT_INIT`, e.g. to [[security\SecurityLoginSections]].
  *
  * @since 1.20
  */
 abstract class SettingsSection extends Widget
 {
-    /**
-     * @var string|null the id of the accordion the section is an item of, set by the stack; null renders a plain section
-     */
-    public ?string $accordionId = null;
-
-    /**
-     * @var bool whether the accordion item starts open
-     */
-    public bool $expanded = false;
-
     abstract public function getTitle(): string;
 
     public function getDescription(): string
@@ -54,14 +43,6 @@ abstract class SettingsSection extends Widget
         return true;
     }
 
-    /**
-     * @return bool whether the section's form was submitted with errors - an accordion opens it instead of its first item
-     */
-    public function hasErrors(): bool
-    {
-        return false;
-    }
-
     abstract protected function renderContent(): string;
 
     public function run()
@@ -70,21 +51,11 @@ abstract class SettingsSection extends Widget
             return '';
         }
 
-        $params = [
+        return $this->render('@user/widgets/views/settingsSection', [
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'actions' => $this->getActions(),
             'content' => $this->renderContent(),
-        ];
-
-        if ($this->accordionId === null) {
-            return $this->render('@user/widgets/views/settingsSection', $params);
-        }
-
-        return $this->render('@user/widgets/views/settingsAccordionItem', $params + [
-            'id' => $this->getId(),
-            'accordionId' => $this->accordionId,
-            'expanded' => $this->expanded,
         ]);
     }
 }

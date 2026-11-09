@@ -113,50 +113,44 @@ class AccountSettingsCest
         Assert::assertSame([], User::findOne(['username' => 'User1'])->getTags());
     }
 
-    public function testGeneralTabShowsTheUsernameAndEmailSections(FunctionalTester $I)
+    public function testGeneralTabIsOneFormWithTheCurrentValues(FunctionalTester $I)
     {
         $I->amUser1();
         $I->amOnRoute('/user/account/edit-settings');
 
         $I->see('Account', '.page-header-title');
-        $I->seeNumberOfElements('.accordion .accordion-item', 2);
-        $I->see('E-Mail address', '.accordion-item:first-child .accordion-button');
-        $I->see('Username', '.accordion-item:nth-child(2) .accordion-button');
-        $I->seeElement('.accordion-item:first-child .accordion-collapse.show form[action*="change-email"]');
-        $I->dontSeeElement('.accordion-item:nth-child(2) .accordion-collapse.show');
-        $I->seeElement('.accordion-item:nth-child(2) form[action*="change-username"]');
-        $I->see('Your current username is User1.', '.accordion-subtitle');
+        $I->dontSeeElement('.accordion');
+        $I->seeInField('AccountSettings[username]', 'User1');
+        $I->seeInField('AccountSettings[email]', User::findOne(['id' => 2])->email);
+        $I->see('can make some links unusable', '.field-accountsettings-username .form-text');
+        $I->see('once you have confirmed it', '.field-accountsettings-email .form-text');
+        $I->seeNumberOfElements('#account-settings-form [type="submit"]', 1);
         $I->dontSee('Profile Tags');
         $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
     }
 
-    public function testChangeUsernameInItsSection(FunctionalTester $I)
+    public function testChangeUsername(FunctionalTester $I)
     {
         $I->amUser1();
         $I->amOnRoute('/user/account/edit-settings');
-        $I->submitForm('form[action*="change-username"]', [
-            'AccountChangeUsername[newUsername]' => 'User1Renamed',
-        ]);
+        $I->submitForm('#account-settings-form', ['AccountSettings[username]' => 'User1Renamed']);
 
         $I->seeInCurrentUrl('account%2Fedit-settings');
         $I->seeInSource('Your username has been successfully changed');
-        $I->seeEmailIsSent();
+        $I->dontSeeInSource('confirmation e-mail');
+        $I->seeEmailIsSent(1);
         Assert::assertNotNull(User::findOne(['username' => 'User1Renamed']));
     }
 
-    public function testChangeUsernameErrorsStayInItsSection(FunctionalTester $I)
+    public function testChangeUsernameErrorsStayAtTheField(FunctionalTester $I)
     {
         $I->amUser1();
         $I->amOnRoute('/user/account/edit-settings');
-        $I->submitForm('form[action*="change-username"]', [
-            'AccountChangeUsername[newUsername]' => 'Admin',
-        ]);
+        $I->submitForm('#account-settings-form', ['AccountSettings[username]' => 'Admin']);
 
         $I->see('Account', '.page-header-title');
-        $I->see('is already in use', 'form[action*="change-username"]');
-        // The section with the error starts open instead of the first one
-        $I->seeElement('.accordion-collapse.show form[action*="change-username"]');
-        $I->dontSeeElement('.accordion-collapse.show form[action*="change-email"]');
+        $I->see('is already in use', '.field-accountsettings-username');
+        $I->seeInField('AccountSettings[username]', 'Admin');
         $I->seeElement('.section-menu [data-menu-id="account-settings-settings"].active');
         Assert::assertSame('User1', User::findOne(['id' => 2])->username);
     }
@@ -167,15 +161,16 @@ class AccountSettingsCest
         $oldEmail = User::findOne(['username' => 'User1'])->email;
 
         $I->amOnRoute('/user/account/edit-settings');
-        $I->submitForm('form[action*="change-email"]', [
-            'AccountChangeEmail[newEmail]' => 'user1-new@example.com',
-        ]);
+        $I->submitForm('#account-settings-form', ['AccountSettings[email]' => 'user1-new@example.com']);
 
         $I->seeInCurrentUrl('account%2Fedit-settings');
         $I->seeInSource('confirmation e-mail');
-        $I->seeEmailIsSent();
+        $I->dontSeeInSource('Your username has been successfully changed');
+        $I->seeEmailIsSent(1);
         $user = User::findOne(['username' => 'User1']);
         Assert::assertSame($oldEmail, $user->email);
+        // The field shows the current address until the new one is confirmed
+        $I->seeInField('AccountSettings[email]', $oldEmail);
 
         $token = md5(Yii::$app->settings->get('secret') . $user->guid . 'user1-new@example.com');
         $I->amOnRoute('/user/account/change-email-validate', ['email' => 'user1-new@example.com', 'token' => $token]);
@@ -185,7 +180,7 @@ class AccountSettingsCest
         Assert::assertSame('user1-new@example.com', User::findOne(['username' => 'User1'])->email);
     }
 
-    public function testOtherSectionHoldsTheIntroductionTour(FunctionalTester $I)
+    public function testTheIntroductionTourIsSavedWithTheSameButton(FunctionalTester $I)
     {
         $I->amUser1();
         $settings = Yii::$app->getModule('tour')->settings;
@@ -193,17 +188,18 @@ class AccountSettingsCest
         try {
             $settings->set('enable', 0);
             $I->amOnRoute('/user/account/edit-settings');
-            $I->dontSee('Other', '.accordion-title');
+            $I->dontSee('Hide introduction tour panel on dashboard');
 
             $settings->set('enable', 1);
             $I->amOnRoute('/user/account/edit-settings');
-            $I->see('Other', '.accordion-item:last-child .accordion-title');
-            $I->dontSeeElement('.accordion-item:last-child .accordion-collapse.show');
-            $I->see('Hide introduction tour panel on dashboard', '.accordion-item:last-child');
+            $I->see('Hide introduction tour panel on dashboard', '#account-settings-form');
             $I->submitForm('#account-settings-form', ['AccountSettings[show_introduction_tour]' => 1]);
 
+            $I->seeInCurrentUrl('account%2Fedit-settings');
+            $I->dontSeeEmailIsSent();
             $user = User::findOne(['username' => 'User1']);
             Assert::assertEquals(1, $settings->contentContainer($user)->get('hideTourPanel'));
+            Assert::assertSame('User1', $user->username);
         } finally {
             $settings->delete('enable');
         }

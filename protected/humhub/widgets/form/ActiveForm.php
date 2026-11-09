@@ -47,7 +47,8 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
 
     /**
      * @var bool whether the form's action is protected by the sudo mode: while the user's sudo mode is not active,
-     * `humhub.ui.sudo` asks for the confirmation before the form is sent (docs/develop/concept-sudo-mode.md)
+     * `humhub.ui.sudo` asks for the confirmation before the form is sent (docs/develop/concept-sudo-mode.md). Inputs
+     * with the attribute `data-sudo-field` narrow it: the form asks only when one of them was changed.
      * @since 1.20
      */
     public bool $sudo = false;
