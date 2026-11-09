@@ -96,7 +96,7 @@ final class NotificationSpaceService
 
             $query = User::find()->where(['id' => $container->id]);
             if ($public) {
-                $query->union(Follow::getFollowersQuery($container, true));
+                $query->union(Follow::getFollowersQuery($container, true, false));
             }
         }
 
@@ -112,7 +112,7 @@ final class NotificationSpaceService
     private function findFollowers(Space $container, bool $isDefault = false)
     {
         // Find all followers with send_notifications = 1
-        $query = Follow::getFollowersQuery($container, true);
+        $query = Follow::getFollowersQuery($container, true, false);
 
         if ($isDefault) {
             // Add all user with no notification setting

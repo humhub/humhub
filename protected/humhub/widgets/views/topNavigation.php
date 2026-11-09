@@ -21,7 +21,7 @@ TopNavigationAsset::register($this);
         $options['class'] = trim('nav-link ' . ($entry->getIsActive() ? 'active ' : '') . $class);
         ?>
         <?= Html::a(
-            $entry->getIcon() . '<br />' . $entry->getLabel(),
+            $entry->getIcon() . '<br />' . ($entry->getLink()->encodeLabel ? Html::encode($entry->getLabel()) : $entry->getLabel()),
             $entry->getUrl(),
             $options,
         ) ?>

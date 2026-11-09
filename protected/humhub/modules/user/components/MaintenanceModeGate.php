@@ -74,13 +74,30 @@ class MaintenanceModeGate extends UserGate
     }
 
     /**
-     * The login flow must stay reachable so admins can sign in during maintenance.
+     * The login flow must stay reachable so admins can sign in during maintenance,
+     * including the password recovery (request form, reset link and its captcha).
      *
      * @inheritdoc
      */
     public function getAllowedRoutes(): array
     {
-        return ['user/auth/password', 'user/auth/external'];
+        $routes = [
+            'user/auth/password',
+            'user/auth/external',
+            'user/password-recovery',
+            'captcha/altcha',
+            'captcha/yii',
+            'captcha/worker',
+        ];
+
+        // A custom internal recovery route (see UserModule::$passwordRecoveryRoute) replaces
+        // the "Forgot password?" target and must stay reachable as well.
+        $recoveryRoute = Yii::$app->getModule('user')->passwordRecoveryRoute;
+        if (is_array($recoveryRoute) && !empty($recoveryRoute[0])) {
+            $routes[] = $recoveryRoute[0];
+        }
+
+        return $routes;
     }
 
     /**

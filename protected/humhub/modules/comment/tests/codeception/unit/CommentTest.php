@@ -51,6 +51,26 @@ class CommentTest extends HumHubDbTestCase
         $this->assertHasNotification(NewCommentNotification::class, $comment, 3, 1);
     }
 
+    public function testHiddenFollowerIsNotifiedOfNewComment()
+    {
+        Space::findOne(['id' => 2])->addMember(1, 1, true);
+
+        // The profile visibility is relative to the commenter (User2 is not an admin),
+        // it must not prevent the follower from being notified
+        User::updateAll(['visibility' => User::VISIBILITY_HIDDEN], ['id' => 1]);
+
+        $this->becomeUser('User2');
+
+        $comment = new Comment([
+            'message' => 'User2 comment!',
+            'content_id' => 11,
+        ]);
+        $comment->save();
+
+        $this->assertMailSent(1);
+        $this->assertHasNotification(NewCommentNotification::class, $comment, 3, 1);
+    }
+
     public function testDeleteUser()
     {
         $this->becomeUser('User2');

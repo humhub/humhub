@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\components\i18n\ModuleMessageSource;
 use humhub\libs\I18NHelper;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
 
 /**
@@ -30,6 +31,11 @@ class I18nController extends Controller
         $messages = [];
 
         foreach ($categories as $cat) {
+            // A category names a message file, so it is a plain name without path segments
+            if (!preg_match('/^[A-Za-z0-9_.-]+$/', $cat) || str_contains($cat, '..')) {
+                throw new BadRequestHttpException('Invalid translation category.');
+            }
+
             try {
                 $messageSource = Yii::$app->i18n->getMessageSource($cat);
 

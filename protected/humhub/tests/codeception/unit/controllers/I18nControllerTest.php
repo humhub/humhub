@@ -1,62 +1,86 @@
 <?php
 
-/*
- * @link      https://www.humhub.org/
- * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
- * @license   https://www.humhub.com/licences
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
  */
 
 namespace humhub\tests\codeception\unit\controllers;
 
-use Codeception\Test\Unit;
 use humhub\components\i18n\PhpMessageSource;
-use humhub\controllers\I18nController;
+use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
-use yii\helpers\FileHelper;
+use yii\web\BadRequestHttpException;
 use yii\web\Response;
 
 /**
- * @since 1.20
+ * The translations endpoint hands the requested message categories to the message sources,
+ * which build the translation file path from them.
  */
-class I18nControllerTest extends Unit
+class I18nControllerTest extends HumHubDbTestCase
 {
-    private const CATEGORY = 'I18nControllerTest.test';
+    public $fixtureConfig = ['default'];
 
-    private string $language;
-
-    protected function setUp(): void
+    public static function invalidCategoryProvider(): array
     {
-        parent::setUp();
-
-        $basePath = Yii::getAlias('@runtime/i18n-controller-test');
-        FileHelper::createDirectory($basePath . '/de');
-        file_put_contents($basePath . '/de/' . self::CATEGORY . '.php', "<?php\nreturn [\n    'Translated' => 'Übersetzt',\n    'Untranslated' => '',\n];\n");
-
-        Yii::$app->i18n->translations[self::CATEGORY] = ['class' => PhpMessageSource::class, 'basePath' => $basePath];
-        $this->language = Yii::$app->language;
-        Yii::$app->language = 'de';
-    }
-
-    protected function tearDown(): void
-    {
-        Yii::$app->language = $this->language;
-        unset(Yii::$app->i18n->translations[self::CATEGORY]);
-        FileHelper::removeDirectory(Yii::getAlias('@runtime/i18n-controller-test'));
-        Yii::$app->response->format = Response::FORMAT_HTML;
-        parent::tearDown();
+        return [
+            'parent directory' => ['../base'],
+            'slash' => ['base/base'],
+            'backslash' => ['base\\base'],
+            'module prefix with path' => ['UserModule.../base'],
+            'dot-dot' => ['UserModule...'],
+            'empty' => [''],
+        ];
     }
 
     /**
-     * The client shows the source message of a message without translation, as `Yii::t()` does,
-     * so an empty translation must not reach it.
+     * @dataProvider invalidCategoryProvider
      */
-    public function testUntranslatedMessagesAreLeftOut()
+    public function testRejectsCategoryThatIsNotAPlainName(string $category)
     {
-        $controller = new I18nController('i18n', Yii::$app);
+        $this->becomeUser('User1');
 
-        $response = $controller->actionTranslations(self::CATEGORY);
+        $this->expectException(BadRequestHttpException::class);
+        $this->requestTranslations($category);
+    }
 
-        $this->assertSame('de', $response->data['locale']);
-        $this->assertSame(['Translated' => 'Übersetzt'], $response->data['messages'][self::CATEGORY]);
+    public function testDeliversTranslationsOfValidCategories()
+    {
+        $this->becomeUser('User1');
+        Yii::$app->language = 'de';
+
+        $data = $this->requestTranslations('base,UserModule.base')->data;
+
+        $this->assertSame('de', $data['locale']);
+        $this->assertSame('Speichern', $data['messages']['base']['Save']);
+        $this->assertNotEmpty($data['messages']['UserModule.base']);
+    }
+
+    public function testIsReachableWithoutLogin()
+    {
+        // The login page loads its JavaScript translations through this endpoint
+        $data = $this->requestTranslations('base')->data;
+
+        $this->assertArrayHasKey('base', $data['messages']);
+    }
+
+    public function testOmitsUntranslatedMessages()
+    {
+        $this->becomeUser('User1');
+        Yii::$app->language = 'de';
+        Yii::$app->i18n->translations['testcat'] = [
+            'class' => PhpMessageSource::class,
+            'basePath' => dirname(__DIR__, 2) . '/_data/messages',
+        ];
+
+        $messages = $this->requestTranslations('testcat')->data['messages']['testcat'];
+
+        $this->assertSame(['Hello' => 'Hallo'], $messages);
+    }
+
+    private function requestTranslations(string $category): Response
+    {
+        return Yii::$app->runAction('i18n/translations', ['category' => $category]);
     }
 }

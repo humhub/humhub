@@ -25,7 +25,7 @@ use humhub\widgets\menu\MenuLink;
     <?php foreach ($entries as $entry): ?>
         <?php if ($entry instanceof MenuLink): ?>
             <li class="d-md-none footer-nav-entry">
-                <?= Html::a($entry->getIcon() . ' ' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
+                <?= Html::a($entry->getIcon() . ' ' . ($entry->getLink()->encodeLabel ? Html::encode($entry->getLabel()) : $entry->getLabel()), $entry->getUrl(), $entry->getHtmlOptions()); ?>
             </li>
         <?php endif; ?>
     <?php endforeach; ?>
