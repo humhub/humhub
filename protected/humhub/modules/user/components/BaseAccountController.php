@@ -45,7 +45,7 @@ class BaseAccountController extends Controller
      */
     public function init()
     {
-        $this->appendPageTitle(Yii::t('UserModule.base', 'My Account'));
+        $this->appendPageTitle(Yii::t('UserModule.account', 'My Settings'));
         parent::init();
     }
 

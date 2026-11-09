@@ -200,16 +200,18 @@ $page-header-title-color: var(--bs-emphasis-color) !default;
   section layouts (Users, Spaces, Settings, Information), with their [Pill Tabs](tabs.md) in the
   body and the section's content in a panel below.
 - **Every core page that is not a space or profile page has one:** Administration › Modules
-  (`ModulesHeaderActions`, "Add more modules" as primary), the account section (Profile, General
-  incl. Topics, Security & Privacy, Modules, Notifications, E-Mail Summaries, Friends; the
-  title is the entry of the account menu, the section's tabs sit in the body), the notification
+  (`ModulesHeaderActions`, "Add more modules" as primary), the account section (Profile with a tab
+  per category of the profile fields and the tags, Account incl. Modules and Topics, Notifications &
+  E-Mails incl. E-Mail Summaries, Appearance & Accessibility, Security & Privacy, Friends; the title
+  is the entry of the account menu, the section's tabs sit in the body), the notification
   overview (`NotificationOverview.vue`), search and the licence page. Not converted: the
   dashboard (special case, see above), login/registration/installer boxes and error pages.
 - **Account section:** the layouts `@user/views/account/_userProfileLayout.php`,
-  `_userSettingsLayout.php` and `@user/views/security/_layout.php` render the page header and a
-  [content card](card.md) around `$content`; a module view rendered into one of them needs no
-  change. A page rendered directly into the account layout brings its own `PageHeader` and
-  `ContentCard`.
+  `_userSettingsLayout.php`, `@user/views/appearance/_layout.php` and `@user/views/security/_layout.php`
+  render the page header and a [content card](card.md) around `$content`, and
+  `@notification/views/user/_layout.php` the page header alone (its tabs bring their own cards); a
+  module view rendered into one of them needs no change. A page rendered directly into the account
+  layout brings its own `PageHeader` and `ContentCard`.
 - **Action menus:** `PeopleHeaderActions` and `SpacesHeaderActions` (formerly
   `PeopleHeadingButtons` and `SpaceDirectoryHeadingButtons`).
 - **Styles:** `_page-header.scss`; the icon button and ghost are in `_button.scss`, the filter bar

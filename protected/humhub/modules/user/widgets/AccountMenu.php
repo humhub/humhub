@@ -9,15 +9,19 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\LeftNavigation;
-use humhub\modules\user\models\User;
+use humhub\widgets\menu\MenuLink;
 use Yii;
 
 /**
- * AccountMenuWidget as (usally left) navigation on users account options.
+ * The left menu of the account settings
  *
- * @package humhub.modules_core.user.widgets
+ * Modules add entries on `EVENT_INIT`. Sort orders of the core entries: Profile 100, Account 200,
+ * Notifications & E-Mails 300, Appearance & Accessibility 400, Security & Privacy 500; the friendship module adds
+ * Friends at 600. A module entry should use 1000 or more, so it comes after the core entries. A module page
+ * rendered inside one of the core layouts marks its entry active by id, e.g.
+ * `AccountMenu::markAsActive('account-settings-settings')`.
+ *
  * @since 0.5
  * @author Luke
  */
@@ -28,7 +32,7 @@ class AccountMenu extends LeftNavigation
      */
     public function init()
     {
-        $this->panelTitle = Yii::t('UserModule.account', '<strong>Your</strong> Account');
+        $this->panelTitle = Yii::t('UserModule.account', '<strong>My</strong> Settings');
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Profile'),
@@ -36,25 +40,27 @@ class AccountMenu extends LeftNavigation
             'icon' => 'user',
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', ['edit', 'change-username', 'change-email']),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit'),
+        ]));
+
+        $settingsTabs = new AccountSettingsMenu();
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('UserModule.account', 'Account'),
+            'id' => 'account-settings-settings',
+            'icon' => 'settings',
+            'url' => $settingsTabs->getFirstUrl(),
+            'sortOrder' => 200,
+            'isActive' => ControllerHelper::isActivePath('user', 'account', ['edit-settings', 'edit-modules', 'change-username', 'change-email', 'change-email-validate']),
+            'isVisible' => $settingsTabs->getFirstUrl() !== null,
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'Notifications'),
+            'label' => Yii::t('UserModule.account', 'Notifications & E-Mails'),
             'id' => 'account-settings-notifications',
             'icon' => 'bell',
             'url' => ['/notification/user'],
-            'sortOrder' => 106,
-            'isActive' => ControllerHelper::isActivePath('notification'),
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'General'),
-            'id' => 'account-settings-settings',
-            'icon' => 'wrench',
-            'url' => ['/user/account/edit-settings'],
-            'sortOrder' => 110,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit-settings'),
+            'sortOrder' => 300,
+            'isActive' => ControllerHelper::isActivePath('notification', 'user'),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -62,7 +68,7 @@ class AccountMenu extends LeftNavigation
             'id' => 'account-settings-appearance',
             'icon' => 'paint-brush',
             'url' => ['/user/appearance/index'],
-            'sortOrder' => 111,
+            'sortOrder' => 400,
             'isActive' => ControllerHelper::isActivePath('user', 'appearance'),
         ]));
 
@@ -71,24 +77,11 @@ class AccountMenu extends LeftNavigation
             'id' => 'account-settings-security',
             'icon' => 'shield',
             'url' => ['/user/security/index'],
-            'sortOrder' => 112,
+            'sortOrder' => 500,
             'isActive' => ControllerHelper::isActivePath('user', 'security'),
             'isVisible' => (new SecuritySettingsMenu())->getFirstUrl() !== null,
         ]));
 
-        /* @var User $user */
-        $user = Yii::$app->user->getIdentity();
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.account', 'Modules'),
-            'id' => 'account-settings-modules',
-            'icon' => 'rocket',
-            'url' => ['/user/account/edit-modules'],
-            'sortOrder' => 120,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit-modules'),
-            'isVisible' => (count($user->moduleManager->getAvailable()) !== 0),
-        ]));
-
         parent::init();
     }
-
 }

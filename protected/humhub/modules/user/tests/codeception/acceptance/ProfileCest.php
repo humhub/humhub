@@ -21,10 +21,10 @@ class ProfileCest
         $I->amGoingTo('save access my account settings');
         $I->amUser();
         $I->clickAccountDropDown();
-        $I->click('Settings');
+        $I->click('My Settings');
         $I->expectTo('see the profile edit form');
 
-        $I->waitForElementVisible('#profile-tabs', 20);
+        $I->waitForElementVisible('#profile-firstname', 20);
         //$I->seeElement();
 
         $I->amGoingTo('fill only my firstname');

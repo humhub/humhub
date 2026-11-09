@@ -11,11 +11,13 @@ namespace humhub\modules\user\widgets;
 use humhub\helpers\ControllerHelper;
 use humhub\widgets\menu\MenuLink;
 use humhub\widgets\menu\PillTabs;
-use humhub\modules\user\services\UserSourceService;
 use Yii;
 
 /**
- * Account Settings Tab Menu
+ * Tabs of the "Profile" page of the account settings: the categories of the profile fields and the tags
+ *
+ * Sort orders: the categories 100, 200, …, the tags after them. Modules add tabs on `EVENT_INIT`; module pages
+ * render inside `@user/views/account/_userProfileLayout.php`.
  */
 class AccountProfileMenu extends PillTabs
 {
@@ -24,27 +26,25 @@ class AccountProfileMenu extends PillTabs
      */
     public function init()
     {
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Profile'),
-            'url' => ['/user/account/edit'],
-            'sortOrder' => 100,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit'),
-        ]));
+        $categories = Yii::$app->user->getIdentity()->profile->getFormCategories();
+        $current = (int)Yii::$app->request->get('category', array_key_first($categories) ?? 0);
+
+        $sortOrder = 100;
+        foreach ($categories as $id => $category) {
+            $this->addEntry(new MenuLink([
+                'label' => $category['title'],
+                'url' => ['/user/account/edit', 'category' => $id],
+                'sortOrder' => $sortOrder,
+                'isActive' => $current === $id && ControllerHelper::isActivePath('user', 'account', 'edit'),
+            ]));
+            $sortOrder += 100;
+        }
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Change Username'),
-            'url' => ['/user/account/change-username'],
-            'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-username'),
-            'isVisible' => UserSourceService::getForUser()->canChangeUsername(),
-        ]));
-
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('UserModule.base', 'Change Email'),
-            'url' => ['/user/account/change-email'],
-            'sortOrder' => 200,
-            'isActive' => ControllerHelper::isActivePath('user', 'account', ['change-email', 'change-email-validate']),
-            'isVisible' => UserSourceService::getForUser()->canChangeEmail(),
+            'label' => Yii::t('UserModule.account', 'Tags'),
+            'url' => ['/user/account/edit-tags'],
+            'sortOrder' => $sortOrder,
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit-tags'),
         ]));
 
         parent::init();

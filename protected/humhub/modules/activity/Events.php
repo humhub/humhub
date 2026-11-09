@@ -12,9 +12,9 @@ use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\notification\widgets\NotificationSettingsMenu;
 use humhub\widgets\menu\MenuLink;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\AccountMenu;
 use Throwable;
 use Yii;
 use yii\base\ActionEvent;
@@ -55,19 +55,17 @@ class Events extends BaseObject
         }
     }
 
-    public static function onAccountMenuInit($event)
+    public static function onNotificationSettingsMenuInit($event)
     {
         if (static::getModule()->enableMailSummaries) {
-            /** @var AccountMenu $menu */
+            /** @var NotificationSettingsMenu $menu */
             $menu = $event->sender;
 
             $menu->addEntry(new MenuLink([
                 'label' => Yii::t('ActivityModule.base', 'E-Mail Summaries'),
-                'id' => 'account-settings-emailsummary',
-                'icon' => 'envelope',
                 'url' => ['/activity/user'],
-                'sortOrder' => 105,
-                'isActive' => ControllerHelper::isActivePath('activity'),
+                'sortOrder' => 200,
+                'isActive' => ControllerHelper::isActivePath('activity', 'user'),
             ]));
         }
     }

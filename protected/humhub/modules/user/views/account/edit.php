@@ -9,7 +9,7 @@ use humhub\widgets\form\ActiveForm;
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php', [
     'description' => Yii::t('UserModule.account', 'Here you can edit your general profile data, which is visible in the about page of your profile.'),
 ]) ?>
-<?php $form = ActiveForm::begin(['enableClientValidation' => false, 'options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '', 'style' => 'display:none'], 'acknowledge' => true]); ?>
+<?php $form = ActiveForm::begin(['enableClientValidation' => false, 'acknowledge' => true]); ?>
 <?= $hForm->render($form) ?>
 <?php ActiveForm::end(); ?>
 <?php $this->endContent(); ?>

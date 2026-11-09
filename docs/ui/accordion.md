@@ -128,7 +128,9 @@ changed-tracking and the header actions are added on top. Class names and SCSS f
 
 ## Implementation in core
 
-**Today:** the notification settings (`NotificationSettings.vue`) render their categories as a
+**Today:** `humhub\modules\user\widgets\SettingsSectionStack` renders its sections as an accordion when
+`$accordion` is set (the "General" tab of the account settings): the first section starts open, or the one
+whose form was submitted with errors. The notification settings (`NotificationSettings.vue`) render their categories as a
 Bootstrap `.accordion` with these parts (icon, title with subtitle, `.badge` per channel, a static
 header with a lock for a category that cannot be switched off).
 `humhub\widgets\form\ActiveForm::beginCollapsibleFields($title, $isClosed)` /

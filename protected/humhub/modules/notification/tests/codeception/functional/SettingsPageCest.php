@@ -85,4 +85,15 @@ class SettingsPageCest
 
         $I->seeResponseCodeIs(403);
     }
+
+    public function testUserPageHasTheNotificationTabs(FunctionalTester $I)
+    {
+        $I->amUser2();
+        $I->amOnRoute('/notification/user');
+
+        $I->see('Notifications & E-Mails', '.page-header-title');
+        $I->see('Notifications', '.page-header .nav-pills .nav-link.active');
+        $I->see('E-Mail Summaries', '.page-header .nav-pills');
+        $I->seeElement('.left-navigation [data-menu-id="account-settings-notifications"].active');
+    }
 }

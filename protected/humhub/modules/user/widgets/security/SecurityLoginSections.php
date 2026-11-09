@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets\security;
 
+use humhub\modules\user\widgets\SettingsSectionStack;
 use humhub\modules\user\models\Password;
 
 /**
@@ -15,7 +16,7 @@ use humhub\modules\user\models\Password;
  *
  * @since 1.20
  */
-class SecurityLoginSections extends SecuritySectionStack
+class SecurityLoginSections extends SettingsSectionStack
 {
     /**
      * @var Password|null the password form model, to show validation errors after a submit
