@@ -21,9 +21,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
-            <?= $form->field($model, 'newPassword')->passwordInput(['class' => 'form-control', 'id' => 'new_password', 'maxlength' => 255, 'value' => '']) ?>
+            <?= $form->field($model, 'newPassword')->passwordInput(['class' => 'form-control', 'id' => 'new_password', 'maxlength' => 255, 'value' => '', 'autocomplete' => 'new-password']) ?>
 
-            <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['class' => 'form-control', 'maxlength' => 255, 'value' => '']) ?>
+            <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['class' => 'form-control', 'maxlength' => 255, 'value' => '', 'autocomplete' => 'new-password']) ?>
 
             <div class="row g-3">
                 <div class="col-6">

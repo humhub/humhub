@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.19.5 (Unreleased)
+-------------------
+
+- Fix #: Password recovery page redirected to the login page in maintenance mode
+
 1.19.4 (November 9, 2026)
 -------------------------
 

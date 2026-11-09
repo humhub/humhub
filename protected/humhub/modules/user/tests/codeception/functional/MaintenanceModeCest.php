@@ -50,6 +50,22 @@ class MaintenanceModeCest
         $I->see('Dashboard');
     }
 
+    public function testPasswordRecoveryIsReachableForGuests(FunctionalTester $I)
+    {
+        $I->wantTo('ensure that the password recovery page is not redirected to the login during maintenance');
+
+        Yii::$app->settings->set(MaintenanceModeGate::SETTING_MAINTENANCE_MODE, 1);
+
+        $I->amOnRoute('/user/password-recovery');
+
+        $I->seeResponseCodeIs(200);
+        $I->seeElement('#password-recovery-form');
+
+        // The captcha of the form must stay usable, otherwise the recovery cannot be submitted
+        $I->amOnRoute('/captcha/worker');
+        $I->seeResponseCodeIs(200);
+    }
+
     public function testServiceWorkerRequestIsNotRedirected(FunctionalTester $I)
     {
         $I->wantTo('ensure that non-HTML requests are answered with 403 instead of a redirect during maintenance');
