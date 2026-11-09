@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.18.8 (Unreleased)
+-------------------
+
+- Fix GHSA-8fxv-7qxv-3x3r: Labels of top menu, footer menu and People heading button entries were not HTML-encoded
+
 1.18.7 (October 26, 2026)
 -------------------------
 

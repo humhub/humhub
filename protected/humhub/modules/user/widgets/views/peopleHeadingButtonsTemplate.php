@@ -2,13 +2,13 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
 use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */
 /* @var $menu PeopleHeadingButtons */
-/* @var $entries MenuEntry[] */
+/* @var $entries MenuLink[] */
 ?>
 
 <?php foreach ($entries as $entry) : ?>
@@ -19,7 +19,7 @@ use humhub\widgets\bootstrap\Button;
     }
     ?>
     <div style="margin-left: 10px" class="float-end">
-        <?= Button::accent($entry->getIcon() . '&nbsp;&nbsp;' . Html::tag('strong', $entry->getLabel()))
+        <?= Button::accent($entry->getIcon() . '&nbsp;&nbsp;' . Html::tag('strong', $entry->getLink()->encodeLabel ? Html::encode($entry->getLabel()) : $entry->getLabel()))
             ->encodeLabel(false)
             ->link($entry->getUrl())
             ->options($htmlOptions)

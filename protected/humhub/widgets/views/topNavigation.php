@@ -5,7 +5,7 @@ use humhub\helpers\Html;
 
 /* @var $this \humhub\components\View */
 /* @var $menu \humhub\widgets\TopMenu */
-/* @var $entries \humhub\modules\ui\menu\MenuEntry[] */
+/* @var $entries \humhub\modules\ui\menu\MenuLink[] */
 
 TopNavigationAsset::register($this);
 
@@ -20,7 +20,7 @@ TopNavigationAsset::register($this);
         $options['class'] = trim('nav-link ' . ($entry->getIsActive() ? 'active ' : '') . $class);
         ?>
         <?= Html::a(
-            $entry->getIcon() . '<br />' . $entry->getLabel(),
+            $entry->getIcon() . '<br />' . ($entry->getLink()->encodeLabel ? Html::encode($entry->getLabel()) : $entry->getLabel()),
             $entry->getUrl(),
             $options,
         ) ?>

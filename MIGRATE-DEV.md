@@ -1,6 +1,12 @@
 Module Migration Guide
 ======================
 
+Version 1.18.8
+------------
+
+### Changed
+- Menu entry labels are now HTML-encoded in the core templates of `humhub\widgets\TopMenu`, `humhub\widgets\FooterMenu` (all locations) and `humhub\modules\user\widgets\PeopleHeadingButtons`, like in all other menus rendering `MenuLink` entries. A module that passes HTML as label (e.g. a badge or `<strong>`) or encodes the label itself (`Html::encode(...)`) must set `'encodeLabel' => false` on its `MenuLink` (and then encode untrusted parts itself), otherwise the markup is shown as text or encoded twice. Themes overriding `widgets/views/topNavigation.php`, `widgets/views/footerNavigation*.php` or `user/widgets/views/peopleHeadingButtonsTemplate.php` should apply the same encoding.
+
 Version 1.18.6
 ------------
 
