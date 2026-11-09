@@ -6,7 +6,7 @@ use humhub\widgets\Icon;
 
 /* @var $this \humhub\components\View */
 /* @var $menu \humhub\widgets\TopMenu */
-/* @var $entries \humhub\widgets\menu\MenuEntry[] */
+/* @var $entries \humhub\widgets\menu\MenuLink[] */
 
 TopNavigationAsset::register($this);
 
