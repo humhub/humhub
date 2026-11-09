@@ -81,12 +81,23 @@ class MaintenanceModeGate extends UserGate
      */
     public function getAllowedRoutes(): array
     {
-        return [
+        $routes = [
             'user/auth/password',
             'user/auth/external',
             'user/password-recovery',
-            'captcha',
+            'captcha/altcha',
+            'captcha/yii',
+            'captcha/worker',
         ];
+
+        // A custom internal recovery route (see UserModule::$passwordRecoveryRoute) replaces
+        // the "Forgot password?" target and must stay reachable as well.
+        $recoveryRoute = Yii::$app->getModule('user')->passwordRecoveryRoute;
+        if (is_array($recoveryRoute) && !empty($recoveryRoute[0])) {
+            $routes[] = $recoveryRoute[0];
+        }
+
+        return $routes;
     }
 
     /**
