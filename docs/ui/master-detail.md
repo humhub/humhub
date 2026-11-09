@@ -30,7 +30,8 @@ and the chosen section's page in the main pane.
   People, Spaces, Content, Communication, Security, Appearance, Integrations, Modules, System.
 - **Sub-pages are not nested in the menu.** They are [Pill Tabs](tabs.md) in the section's
   [Page Header](page-header.md).
-- The **active entry** is filled dark.
+- The **active entry** is filled with the primary colour, in both colour modes. Hover is a tint
+  of it.
 - **Count badges** show what waits inside a section, as the **sum** of its sub-pages: People ⑦ =
   4 invitations + 3 approvals. The tabs inside show only dots
   ([Badges & Status](badges.md#count-badges-one-number-per-place)).
@@ -92,23 +93,45 @@ The layout is its own component; the section menu is a Bootstrap **`.nav`**. Cla
 | `.pane-split-end` | Modifier: side pane at the end |
 | `.pane-split-side`, `.pane-split-main` | The panes |
 | `.is-showing-main` | While folded: the main pane is shown instead of the side pane |
-| `.card` > `.nav.flex-column.nav-section` | The section menu: a vertical nav in a card |
-| `.nav-section .nav-link` | An entry with icon, label and `.badge-count`; `.active` filled dark |
+| `.card.section-menu` | The section menu: a card, padded like the page header, with the title and a vertical nav |
+| `.section-menu-title` | The area's title (`h2`), with the page header title's size and weight |
+| `.nav.flex-lg-column.nav-section` | The entries: a column next to the page, a row above it when the layout stacks |
+| `.nav-section .nav-link` | An entry with icon and label; `.active` filled with the primary colour, hover a tint of it. Something waiting shows the dot (`.badge-dot.badge-dot-waiting`, as on tabs) until the count badge exists |
 
-- **Files:** `_pane-split.scss` (new) behind `$prev-pane-split`; `.nav-section` in `_nav.scss`.
-- **Sass variables:** `$pane-split-side-width` (400px), `$pane-split-side-width-slim` (280px),
-  `$pane-split-fold-width` (816px), `$pane-split-gap`; `$nav-section-link-active-bg`,
-  `$nav-section-link-active-color`.
+- **Files:** `_section-menu.scss` (new) behind `$prev-section-menu`; `_pane-split.scss` (new)
+  behind `$prev-pane-split`.
+- **Sass variables:** `$section-menu-padding` (`$spacer * .5`, as the page header),
+  `$section-menu-title-font-size` (`$font-size-lg`), `$section-menu-title-font-weight`
+  (`$font-weight-semibold`), `$section-menu-title-color` (`var(--bs-emphasis-color)`),
+  `$nav-section-link-padding` (`$spacer * .5`), `$nav-section-link-font-weight`
+  (`$font-weight-medium`), `$nav-section-link-hover-bg` (`var(--bs-primary-bg-subtle)`),
+  `$nav-section-link-active-bg` (`var(--bs-primary)`), `$nav-section-link-active-color`
+  (`var(--hh-primary-contrast)`), `$nav-section-icon-font-size` (`$font-size-lg`);
+  `$pane-split-side-width` (400px), `$pane-split-side-width-slim` (280px),
+  `$pane-split-fold-width` (816px), `$pane-split-gap`.
 
 ## Implementation in core
 
 **Today:**
 
-- **Administration menu:** `admin\widgets\AdminMenu` extends `humhub\widgets\menu\LeftNavigation`
-  (template `widgets/menu/views/left-navigation.php`, a Bootstrap panel). On small screens it
-  stacks above the content.
-- **Counts:** `Badge::danger()` concatenated into labels (`AdminMenu`, `UserMenu`).
-- **Admin layout:** `modules/admin/views/layouts/main.php`, with full page loads (pjax optional).
+- **Section menu (1.20):** `humhub\widgets\menu\SectionMenu` (`extends Menu`, template
+  `widgets/menu/views/section-menu.php`) renders the card above: `title`, then the entries as
+  `.nav-link`s (`MenuLink::render(['class' => 'nav-link'])`, so `active`, `aria-current`,
+  `data-menu-id` and a module's own classes stay). The `<nav>` is labelled by its title
+  (`aria-labelledby`). `admin\widgets\AdminMenu` and `user\widgets\AccountMenu` extend it, with
+  the plain titles "Administration" and "My Settings". Below `lg` the title is hidden and the
+  entries are a horizontally scrolling strip, as the other left menus do today.
+- **Counts:** an entry's `MenuLink::$count` shows the waiting dot with hidden "{count} waiting"
+  text, as [Pill Tabs](tabs.md) do. The Modules entry uses it for pending marketplace updates, a
+  stored setting the marketplace refreshes in the background, so rendering costs no request.
+  `UserMenu` keeps its dot on the approvals tab.
+- **Layout:** `modules/admin/views/layouts/main.php` and `modules/user/views/account/_layout.php`
+  are Bootstrap columns (`col-lg-3` / `col-lg-9`) with the `gx-3` gutter, so the gap between the
+  menu and the page is the `gap-3` between the page header and its content card. No fold yet,
+  full page loads (pjax optional).
+- **Other left menus:** the space and profile menus, and modules' own menus (hostinginfo), still
+  render through `humhub\widgets\menu\LeftNavigation` (`widgets/menu/views/left-navigation.php`,
+  a Bootstrap panel) until they become tabs ([Space & Profile Header](container-header.md)).
 - **Lists with details:** `NotificationOverview.vue` uses two Bootstrap panels. The messages UI is
   in the mail module, with its own columns.
 
@@ -118,9 +141,9 @@ The layout is its own component; the section menu is a Bootstrap **`.nav`**. Cla
   same classes. The fold is pure CSS (container query). A tiny JS helper answers "is it folded?"
   for code that must decide whether opening an entry also switches panes. That code must never
   check the window width.
-- **Section menu:** a new `SectionMenu` base (vertical card, count badges from data, `homeUrl` for
-  the folded start page). `AdminMenu` moves onto it. Its entries keep the `MenuLink` API and get a
-  `badge` instead of label HTML.
+- **Section menu:** `SectionMenu` gets `homeUrl` for the folded start page and renders `count`
+  as a count badge once [Badges & Status](badges.md) has `.badge-count`. Entries keep the
+  `MenuLink` API; modules add theirs through the menus' events as before.
 - **Admin regrouping:** the design groups today's admin menu into the sections listed above.
   That is a separate change, but the section menu makes it possible.
 

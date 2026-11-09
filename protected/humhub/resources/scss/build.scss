@@ -137,6 +137,9 @@ $prev-page-header: false !default;
 $prev-card: false !default;
 @import "card";
 
+$prev-section-menu: false !default;
+@import "section-menu";
+
 $prev-picker: false !default;
 @import "picker";
 

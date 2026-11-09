@@ -1,0 +1,126 @@
+//
+// Section menu: the card with an area's title and one entry per section, next to the section's page
+// (Administration, My Settings). PHP: humhub\widgets\menu\SectionMenu. See docs/ui/master-detail.md.
+// @since 1.20
+// --------------------------------------------------
+
+$section-menu-padding: $spacer * .5 !default; // as the page header: the title 1rem from the edge
+$section-menu-margin-bottom: 15px !default; // the margin of the `.panel` it replaces
+$section-menu-border-radius: $border-radius-lg !default;
+$section-menu-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
+$section-menu-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
+$section-menu-bg: var(--bs-body-bg) !default;
+// The title: the page header's title
+$section-menu-title-font-size: $font-size-lg !default;
+$section-menu-title-font-weight: $font-weight-semibold !default;
+$section-menu-title-color: var(--bs-emphasis-color) !default;
+// The entries: the active one filled with the primary colour, hover a tint of it
+$nav-section-link-padding: $spacer * .5 !default;
+$nav-section-link-gap: $spacer * .5 !default;
+$nav-section-link-font-weight: $font-weight-medium !default;
+$nav-section-link-color: var(--bs-body-color) !default;
+$nav-section-link-border-radius: $border-radius !default;
+$nav-section-link-hover-bg: var(--bs-primary-bg-subtle) !default;
+$nav-section-link-hover-color: var(--bs-emphasis-color) !default;
+$nav-section-link-active-bg: var(--bs-primary) !default;
+$nav-section-link-active-color: var(--hh-primary-contrast) !default;
+$nav-section-icon-font-size: $font-size-lg !default;
+
+@if not $prev-section-menu {
+    .section-menu {
+        --bs-card-border-width: 0;
+        --bs-card-border-radius: #{$section-menu-border-radius};
+        --bs-card-box-shadow: #{$section-menu-box-shadow};
+        --bs-card-bg: #{$section-menu-bg};
+        --hh-section-menu-padding: #{$section-menu-padding};
+
+        padding: var(--hh-section-menu-padding);
+        margin-bottom: $section-menu-margin-bottom;
+        // `.card` draws its shadow only with `$enable-shadows`; the menu always has one, like the content card
+        box-shadow: var(--bs-card-box-shadow);
+    }
+
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            .section-menu {
+                --bs-card-box-shadow: #{$section-menu-box-shadow-dark};
+            }
+        }
+    }
+
+    .section-menu-title {
+        margin: 0;
+        padding: var(--hh-section-menu-padding);
+        color: $section-menu-title-color;
+        font-size: $section-menu-title-font-size;
+        font-weight: $section-menu-title-font-weight;
+        line-height: $headings-line-height;
+        overflow-wrap: anywhere;
+    }
+
+    .nav-section {
+        --bs-nav-link-padding-x: #{$nav-section-link-padding};
+        --bs-nav-link-padding-y: #{$nav-section-link-padding};
+        --bs-nav-link-font-weight: #{$nav-section-link-font-weight};
+        --bs-nav-link-color: #{$nav-section-link-color};
+        --bs-nav-link-hover-color: #{$nav-section-link-hover-color};
+
+        // With the title's padding 1rem between title and first entry, as between a page header's title and its tabs
+        padding: var(--hh-section-menu-padding);
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: $nav-section-link-gap;
+            border-radius: $nav-section-link-border-radius;
+
+            // The icon in a fixed box, so the labels line up
+            > .icon-before-label {
+                flex: 0 0 var(--hh-nav-icon-width);
+                margin: 0;
+                font-size: $nav-section-icon-font-size;
+                text-align: center;
+            }
+
+            &:hover:not(.active) {
+                background-color: $nav-section-link-hover-bg;
+            }
+
+            &.active {
+                color: $nav-section-link-active-color;
+                background-color: $nav-section-link-active-bg;
+            }
+
+            // Keyboard focus: the ring inside the row, which fills its box
+            &:focus-visible {
+                @include hh-focus-ring(true);
+            }
+        }
+    }
+
+    // Below `lg` the menu stacks above the page: no title, the entries (a row, `.flex-lg-column`) as a strip that
+    // scrolls sideways
+    @include media-breakpoint-down(lg) {
+        .section-menu {
+            margin-bottom: $spacer * .5;
+        }
+
+        .section-menu-title {
+            display: none;
+        }
+
+        .nav-section {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .nav-link {
+                white-space: nowrap;
+            }
+        }
+    }
+}
