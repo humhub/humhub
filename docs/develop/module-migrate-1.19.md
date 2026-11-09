@@ -438,3 +438,11 @@ Breaking changes, new APIs and deprecations of the 1.19 release cycle.
     dependency that is not declared is not.
   - Modules that already declare `humhub.modules` get it enforced; make sure every listed module
     is really required.
+- **Since 1.19.4, menu entry labels are HTML-encoded in the core templates of `humhub\widgets\TopMenu`,
+  `humhub\widgets\FooterMenu` (all locations) and `humhub\modules\user\widgets\PeopleHeadingButtons`**,
+  like in all other menus rendering `MenuLink` entries. A module that passes HTML as label
+  (e.g. a badge or `<strong>`) or encodes the label itself (`Html::encode(...)`) must set
+  `'encodeLabel' => false` on its `MenuLink` (and then encode untrusted parts itself), otherwise the
+  markup is shown as text or encoded twice. Themes overriding `widgets/views/topNavigation.php`,
+  `widgets/views/footerNavigation*.php` or `user/widgets/views/peopleHeadingButtonsTemplate.php`
+  should apply the same encoding.

@@ -21,7 +21,7 @@ use humhub\widgets\PoweredBy;
     <small>
         <?php foreach ($entries as $k => $entry): ?>
             <?php if ($entry instanceof MenuLink): ?>
-                <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
+                <?= Html::a($entry->getLink()->encodeLabel ? Html::encode($entry->getLabel()) : $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
 
                 <?php if (!PoweredBy::isHidden() || array_key_last($entries) !== $k): ?>
                     &nbsp;&middot;&nbsp;

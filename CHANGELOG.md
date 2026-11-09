@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #8706: Wide avatar column in the space member request widget
 - Fix #8712: Secrets were not masked in the context dump of log targets configured outside the core (e.g. an `EmailTarget`)
 - Fix #8705: Browser autofill of the password field in the admin user edit form caused a "must be equal to Confirm new password" error on save
+- Fix GHSA-8fxv-7qxv-3x3r: Labels of top menu, footer menu and People heading button entries were not HTML-encoded
 
 1.19.3 (October 27, 2026)
 -------------------------
