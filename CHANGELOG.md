@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8742: Sensitive account actions, access tokens and optionally the administration ask for a password confirmation in a dialog (sudo mode)
 - Enh #8741: Administration and "My Settings" menus as section menu cards: plain titles, the active entry filled
 - Enh #8738: Account settings regrouped into "My Settings": profile categories as tabs, "Account" with username and e-mail, e-mail summaries under the notifications
 - Fix: The inline richtext editor hides its toolbar when the keyboard focus leaves the toolbar for the page, not only when it leaves the text
