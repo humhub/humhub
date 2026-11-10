@@ -15,12 +15,13 @@ use humhub\widgets\modal\ModalButton;
 ]) ?>
     <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!') ?></p>
     <?= $form->field($model, 'email')
-        ->textInput([
+        ->input('email', [
             'id' => 'email_txt',
             'placeholder' => Yii::t('UserModule.auth', 'Your email'),
+            'autocomplete' => 'email',
             'autofocus' => true,
         ])
-        ->label(false) ?>
+        ->label(null, ['class' => 'form-label fw-normal']) ?>
     <?= $form->field($model, 'captcha')
         ->widget(CaptchaField::class, ['showOnFocusElement' => '#email_txt'])
         ->label(false) ?>

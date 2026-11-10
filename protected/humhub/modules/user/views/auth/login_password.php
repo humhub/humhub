@@ -24,7 +24,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
 
     <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
         <div class="panel-heading">
-            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong>
+            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
         </div>
         <div class="panel-body pt-0">
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
@@ -43,14 +43,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
                         ]),
                     ]) ?>
                 </div>
-                <p class="mb-2"><?= $model->getAttributeLabel('password') ?></p>
                 <?= $form->field($model, 'password')->passwordInput([
                     'id' => 'login_password',
                     'placeholder' => $model->getAttributeLabel('password'),
-                    'aria-label' => $model->getAttributeLabel('password'),
                     'autocomplete' => 'current-password',
                     'autofocus' => true,
-                ])->label(false) ?>
+                ])->label(null, ['class' => 'form-label fw-normal']) ?>
 
                 <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
 

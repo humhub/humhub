@@ -168,6 +168,31 @@ class ActiveField extends \yii\bootstrap5\ActiveField
     {
         $this->setReadOnlyFromOptions($options);
         parent::addAriaAttributes($options);
+        $this->addErrorDescription($options);
+    }
+
+    /**
+     * The error message describes the input (WCAG 3.3.1). Its container is rendered without a message too, so one the
+     * client validation adds later is read as well.
+     *
+     * @param array $options the input options
+     * @since 1.20
+     */
+    protected function addErrorDescription(array &$options): void
+    {
+        if (!$this->addAriaAttributes || $this->enableError === false || !is_array($this->errorOptions)
+            || ($this->errorOptions['tag'] ?? 'div') === false || !str_contains($this->template, '{error}')) {
+            return;
+        }
+
+        $inputId = $options['id'] ?? $this->getInputId();
+        if (empty($inputId)) {
+            return;
+        }
+
+        $this->errorOptions['id'] ??= $inputId . '-error';
+        $describedBy = preg_split('/\s+/', trim(($options['aria-describedby'] ?? '') . ' ' . $this->errorOptions['id']));
+        $options['aria-describedby'] = implode(' ', array_unique($describedBy));
     }
 
     /**

@@ -26,7 +26,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
 
     <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
         <div class="panel-heading">
-            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong>
+            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
         </div>
         <div class="panel-body pt-0">
             <?php if (Yii::$app->session->hasFlash('error')): ?>
@@ -34,15 +34,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
             <?php endif; ?>
 
             <?php if ($showLoginForm): ?>
-                <p class="mb-2"><?= $model->getAttributeLabel('username') ?></p>
                 <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
                     <?= $form->field($model, 'username')->textInput([
                         'id' => 'login_username',
                         'placeholder' => $model->getAttributeLabel('username'),
-                        'aria-label' => $model->getAttributeLabel('username'),
                         'autocomplete' => 'username',
                         'autofocus' => true,
-                    ])->label(false) ?>
+                    ])->label(null, ['class' => 'form-label fw-normal']) ?>
 
                     <?= Html::submitButton(
                         Yii::t('UserModule.auth', 'Continue'),
