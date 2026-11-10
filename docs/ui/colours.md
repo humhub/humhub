@@ -17,10 +17,10 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 |---|---|---|---|---|
 | Body text | `--bs-body-color` | `.text-body` | `#555` | `#ddd` |
 | Strong text: headings, a hovered link, an active item | `--bs-emphasis-color` | `.text-body-emphasis` | `#000` | `#fff` |
-| Muted text: meta data, help text, captions, secondary icons | `--bs-secondary-color` | `.text-body-secondary` | `#7a7a7a` | `#bbb` |
+| Muted text: meta data, help text, captions, secondary icons | `--bs-secondary-color` | `.text-body-secondary` | `#767676`, darker where it is below 4.5:1 on `--bs-body-bg` | `#bbb` |
 | Faint text: a disabled item, a hint | `--bs-tertiary-color` | `.text-body-tertiary` | `#aeaeae` | `#999` |
 | A field's placeholder | `--bs-secondary-color` | | = muted | = muted |
-| Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `.text-bg-{color}` | `$color-contrast-dark` or `$color-contrast-light`, whichever reads better on the colour (black or white by default) | same |
+| Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `.text-bg-{color}` | `$color-contrast-light` (white) where it reaches `$min-contrast-ratio` (4.5:1) on the colour, otherwise `$color-contrast-dark` (black) | same |
 | A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `.text-{color}`, `.link-{color}` | the colour, darker where it is below 4.5:1 on `--bs-secondary-bg` | the colour, lighter where it is below 4.5:1 on `--bs-secondary-bg` |
 | Status text on its subtle background (an alert) | `--bs-{color}-text-emphasis` | `.text-{color}-emphasis` | | |
 
@@ -38,6 +38,13 @@ does, worked out by the Sass function `hh-readable($color, $background, $min-rat
 one of them, or raises the contrast of all by `$hh-fg-contrast-ratio`. `--hh-{color}-fg` is there
 for `primary`, `accent`, `secondary`, `info`, `success`, `warning` and `danger`. A mail, which has
 no tokens, takes `MailStyleHelper::getLinkColor()` for a link in the primary colour.
+
+The text on a theme colour as a fill (a button, a badge, the top bar) is white where white reaches
+`$min-contrast-ratio` on the colour, otherwise black; one of the two always does. The ratio is 4.5:1,
+WCAG AA for normal text and Bootstrap's default, and the default colours are just dark enough for
+white. Before 1.20 it was 3:1, which left white text at 3.1 to 3.7:1 on accent, info, success and
+danger. A theme or the Custom SCSS can set it back (`$min-contrast-ratio: 3`), below AA. A mail
+takes the same ratio through `ScssHelper::getColorContrast()`.
 
 ### A theme colour as text: class or token
 

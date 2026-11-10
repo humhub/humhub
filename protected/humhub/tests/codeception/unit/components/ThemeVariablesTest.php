@@ -169,8 +169,8 @@ class ThemeVariablesTest extends HumHubDbTestCase
         $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
 
         $this->assertSame('#435f6f', $variables->get('hh-primary-fg'));
-        $this->assertSame('#187683', $variables->get('hh-accent-fg'));
-        $this->assertSame('#45b0bf', $variables->get('hh-accent-fg-dark'));
+        $this->assertSame('#197684', $variables->get('hh-accent-fg'));
+        $this->assertSame('#69adb6', $variables->get('hh-accent-fg-dark'));
     }
 
     /**

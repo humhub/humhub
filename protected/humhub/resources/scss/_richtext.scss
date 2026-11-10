@@ -517,9 +517,12 @@
             min-width: 3em;
         }
 
-        // The editor's placeholder, in the placeholder colour of every field
+        // The editor's placeholder, in the placeholder colour of every field. Its class is also Bootstrap's loading
+        // skeleton, whose fill and half opacity it drops
         .ProseMirror .placeholder {
             color: $input-placeholder-color;
+            background-color: transparent;
+            opacity: 1;
             padding: 0;
             pointer-events: none;
             height: 0;

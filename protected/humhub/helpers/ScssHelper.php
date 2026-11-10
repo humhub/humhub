@@ -337,7 +337,7 @@ class ScssHelper
     public static function getColorContrast(?string $color, ?float $minContrast = null): ?string
     {
         if ($minContrast === null) {
-            $minContrast = (float) Yii::$app->view->theme->variable('min-contrast-ratio', 3);
+            $minContrast = (float) Yii::$app->view->theme->variable('min-contrast-ratio', 4.5);
         }
 
         $color = trim((string) $color);

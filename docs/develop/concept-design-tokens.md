@@ -44,9 +44,9 @@ Bootstrap's.
 |---|---|---|---|---|
 | Body text | `--bs-body-color` | `$body-color` | `#555` | `#ddd` |
 | Strong text: headings, hovered links | `--bs-emphasis-color` | `$body-emphasis-color` | `#000` | `#fff` |
-| Muted text: meta data, help text, captions, placeholders, icons | `--bs-secondary-color` | `$body-secondary-color` | `#7a7a7a` | `#bbb` |
+| Muted text: meta data, help text, captions, placeholders, icons | `--bs-secondary-color` | `$body-secondary-color` | `#767676` | `#bbb` |
 | Faint text: disabled items, hints | `--bs-tertiary-color` | `$body-tertiary-color` | `#aeaeae` | `#999` *new* |
-| Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `$hh-{color}-contrast` | `$color-contrast-dark` or `$color-contrast-light`, whichever reads better (black or white by default) | same |
+| Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `$hh-{color}-contrast` | `$color-contrast-light` (white) where it reaches `$min-contrast-ratio` (4.5:1), otherwise `$color-contrast-dark` (black) | same |
 | Code | `--bs-code-color` | `$code-color` | | |
 
 `--bs-secondary-color` is Bootstrap's muted text (`.text-body-secondary`, formerly `.text-muted`;

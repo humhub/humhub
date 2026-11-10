@@ -46,6 +46,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   colour is `MailStyleHelper::getLinkColor()` instead of `getColorPrimary()`. The former
   `.link-{color}` fallback to the emphasis colour in `_utilities.scss` (without effect since the
   cascade layers) is removed.
+- **The text on a theme colour as a fill reaches 4.5:1:** `$min-contrast-ratio` is `4.5`, Bootstrap's default
+  and WCAG AA for normal text, instead of `3`. `color-contrast()`, the `$hh-{color}-contrast` variables
+  (`--hh-{color}-contrast`, `.text-bg-{color}`), the buttons and `ScssHelper::getColorContrast()` take white only
+  where it reaches that ratio, black otherwise. The default `$secondary`, `$info`, `$success`, `$danger` and
+  `$accent` are darkened just enough to keep white text (`#767676`, `#0474e3`, `#438417`, `#d43e54`,
+  `#1b8291`), and the muted text `$body-secondary-color` reaches 4.5:1 on `$body-bg` (`#767676`). A theme with
+  mid-tone colours of its own gets black text on them; to keep white it darkens the colour, or sets
+  `$min-contrast-ratio: 3`, below AA.
 - **The theme colours are stored as deviations from the theme only:** a colour of *Administration →
   Appearance → Theme* equal to the theme's own is not stored, so it keeps following the theme. The
   `useDefaultTheme{Color}Color` settings and `ThemeSettingsForm::defaultAttribute()` are removed (a
@@ -2649,7 +2657,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$background4`, `$background-color-highlight`, the alert colours `${background,text,border}-color-{success,warning,danger}`
     and `$default`, `$link`, `$text-color-contrast` (deprecated since 1.18).
   - `--bs-secondary-color` and `--bs-tertiary-color` (`.text-body-secondary`, `.text-body-tertiary`, help texts,
-    placeholders) are `#7a7a7a` and `#aeaeae`, no longer a translucent body colour; `--bs-border-color`,
+    placeholders) are `#767676` and `#aeaeae`, no longer a translucent body colour; `--bs-border-color`,
     `--bs-secondary-bg` and `--bs-tertiary-bg` are the neutral HumHub greys (`#ddd`, `#ededed`, `#f9f9f9`), no
     longer Bootstrap's bluish ones.
   - **`--bs-body-bg` is the surface** (`$body-bg`, white), as Bootstrap's components expect, no longer the page

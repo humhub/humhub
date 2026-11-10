@@ -161,6 +161,6 @@ ChoiceButtons::widget(['options' => ['attend' => 'Attend', 'maybe' => 'Maybe', '
 3. **Primary vs. accent:** confirm the rule "primary confirms, accent creates", so module authors
    choose consistently.
 4. **Loading state:** spinner plus progress label as proposed, or only a spinner?
-5. **`$secondary`:** HumHub's `$secondary` (#7a7a7a) is a grey *text* colour, while the design's
+5. **`$secondary`:** HumHub's `$secondary` (#767676) is a grey *text* colour, while the design's
    secondary button is a light grey fill. Style `.btn-secondary` through button variables only, or
    change `$secondary` (which also changes `.text-secondary`, `.bg-secondary`, …)?
