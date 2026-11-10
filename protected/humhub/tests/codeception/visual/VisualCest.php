@@ -236,10 +236,10 @@ class VisualCest
         $I->amOnProfile();
         $this->screenshot($I, 'mobile-profile');
 
-        // The menu of the account settings as a list group, an entry hovered
+        // The menu of the account settings as a strip of entries, one hovered
         $I->amOnRoute(['/user/account/edit']);
         $this->waitUntilLoaded($I);
-        $I->moveMouseOver('.panel .list-group-item:not(.active)');
+        $I->moveMouseOver('.section-menu .nav-link:not(.active)');
         $this->screenshot($I, 'mobile-account');
 
         $I->amOnDashboard();

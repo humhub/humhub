@@ -7,6 +7,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   the source's users on login. Sources extending `BaseUserSource` need no change: it returns
   `true` since 1.19.4. Sources implementing the interface directly have to add the method.
 
+- **Menu entry labels are HTML-encoded in the templates of `humhub\widgets\TopMenu` and
+  `humhub\widgets\FooterMenu`** (since 1.19.4, see the 1.19 guide), as in all other menus. A module
+  that passes HTML as label or encodes it itself sets `'encodeLabel' => false` on its `MenuLink`.
+  Themes overriding `widgets/views/topNavigation.php` or `widgets/views/footerNavigation*.php`
+  apply the same encoding.
+
 - **`/api/v2` controllers are rate limited by their declared scopes.** The filter
   `humhub\components\api\ApiRateLimitFilter` is attached in `BaseController::behaviors()`;
   modules need no change. A module may add policies named `<channel>.<scope>` (`token` or
@@ -2742,21 +2748,41 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     after them; the username and e-mail forms are no longer tabs of the profile page. The form no longer uses the
     `ui.form.TabbedForm` widget.
   - "Account" (`/user/account/edit-settings`, tabs `AccountSettingsMenu`: General 100, Modules 200, Topics 300 of
-    the topic module) replaces the "General" entry and the "Modules" entry. Its "General" tab is an accordion of
-    sections (`user\widgets\account\AccountGeneralSections`: e-mail address 100, username 200, "Other" 300 with the
-    introduction tour; modules add sections on `EVENT_INIT`); the first section starts open, or the one whose form was
-    submitted with errors. `user\models\forms\AccountSettings` keeps only `show_introduction_tour` and saves it itself
-    (`save()`).
+    the topic module) replaces the "General" entry and the "Modules" entry. Its "General" tab is one form
+    (`user\models\forms\AccountSettings`, saved by `save()`): username and e-mail address, filled with the current
+    values, and the introduction tour. A changed username is saved at once, a changed e-mail address once confirmed
+    by the link sent to it. `AccountSettings` has no `language`, `timeZone` etc. any more (see above).
   - Removed: the views `@user/views/account/_userModulesLayout.php`, `changeUsername.php`,
-    `changeUsername_success.php`, `changeEmail.php`, `changeEmail_success.php` and `changeEmailValidate.php`.
-    `/user/account/change-username`, `change-email` and `change-email-validate` return to the "Account"
-    page with a status message.
+    `changeUsername_success.php`, `changeEmail.php`, `changeEmail_success.php` and `changeEmailValidate.php`,
+    the actions `/user/account/change-username` and `change-email` (the "General" form posts to `edit-settings`)
+    and the form models `user\models\forms\AccountChangeUsername` and `AccountChangeEmail` (now part of
+    `AccountSettings`). `/user/account/change-email-validate` returns to the "Account" page with a status message.
   - "Notifications & E-Mails" (`/notification/user`, tabs `notification\widgets\NotificationSettingsMenu`,
     module pages render inside `@notification/views/user/_layout.php`): the "E-Mail Summaries" page of the
     activity module is its second tab (sort order 200) instead of an entry of the account menu;
     `activity\Events::onAccountMenuInit()` became `onNotificationSettingsMenuInit()`.
   - `user\widgets\SettingsSection` and `SettingsSectionStack` are the base classes of the sections of a
-    settings tab, with the views `@user/widgets/views/settingsSection.php` (`.settings-section` instead of
-    `.security-section`) and `settingsAccordionItem.php` (a stack with `$accordion`). `security\SecuritySection`
+    settings tab, with the view `@user/widgets/views/settingsSection.php` (`.settings-section` instead of
+    `.security-section`). `security\SecuritySection`
     extends `SettingsSection`; `SecuritySectionStack` was removed, the security stacks extend `SettingsSectionStack`.
     `getFirstUrl()` moved from `SecuritySettingsMenu` to `PillTabs`.
+
+- **`AdminMenu` and `AccountMenu` are section menus** (`humhub\widgets\menu\SectionMenu`: a card with
+  the area's title and a vertical `.nav`), no longer `LeftNavigation` panels. Their entries are
+  `.nav-link`s in `.nav-section` instead of `.list-group-item`s, and `panelTitle` is `title`.
+  Entries added through the menus' events need no change; something waiting behind an entry is
+  the entry's `count` (shown as the dot), not badge HTML in the label. Tests, tours and themes
+  that select `.left-navigation`, `.panel-heading` or `.list-group-item` on these two menus need
+  the new classes. The space and profile menus keep the panel.
+
+- **Sudo mode** (`docs/develop/concept-sudo-mode.md`): changing the e-mail address, the username or the password,
+  deleting the account and creating a personal access token ask for a recent confirmation instead of a "current
+  password" field. `AccountDelete` has no `currentPassword` attribute any more; `Password`'s scenario `changePassword` neither (the forced change after a login uses the new
+  scenario `mustChangePassword`, which still asks for it). The password change posts to `user/security/change-password`
+  (was `user/security/login`). `humhub\modules\oauth\components\RecentAuthentication` was removed, as was
+  `PersonalAccessTokenForm::$currentPassword`. Modules protect their own sensitive actions with the action filter
+  `humhub\modules\user\components\SudoFilter` and mark the form with `ActiveForm::$sudo`, so the dialog opens before
+  it is sent; `SudoFilter::$when` and inputs marked `data-sudo-field` narrow both to the changes that need it.
+  `SudoMode::forCurrentUser()->isActive()` tells whether the user confirmed recently.
+  `RequestClass::current()` classifies the current request as the gates do. An API controller of a module's
+  administration sets `BaseController::$administration`, so the browser session needs the sudo mode there too.

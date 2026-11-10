@@ -231,11 +231,15 @@ class Follow extends ActiveRecord
      * Returns all active users following the given $target record.
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
+     * By default only the followers visible to the current user are returned. Set $applyVisibility to false
+     * to select the recipients of a notification, which must not depend on who triggers it.
+     *
      * @param ActiveRecord $target
      * @param bool $withNotifications
+     * @param bool $applyVisibility Since 1.19.5
      * @return ActiveQueryUser
      */
-    public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)
+    public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null, bool $applyVisibility = true)
     {
         $subQuery = self::find()
             ->where(['user_follow.object_model' => $target::class, 'user_follow.object_id' => $target->getPrimaryKey()])
@@ -247,7 +251,9 @@ class Follow extends ActiveRecord
             $subQuery->andWhere(['user_follow.send_notifications' => 0]);
         }
 
-        return User::find()->visible()->andWhere(['exists', $subQuery]);
+        $query = User::find();
+
+        return ($applyVisibility ? $query->visible() : $query->active())->andWhere(['exists', $subQuery]);
     }
 
 }

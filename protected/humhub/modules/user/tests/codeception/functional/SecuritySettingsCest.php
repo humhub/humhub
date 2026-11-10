@@ -115,7 +115,7 @@ class SecuritySettingsCest
         Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', 1);
 
         $I->amOnRoute('/user/account/edit-settings');
-        $I->see('Username', 'h3');
+        $I->see('Username', 'label');
         $I->dontSee('Profile visibility');
         $I->dontSee('Hide my online status');
         $I->dontSee('Blocked users');
@@ -131,8 +131,7 @@ class SecuritySettingsCest
         ])->execute();
 
         $I->amOnRoute('/user/security/login');
-        $I->submitForm('form[action*="security%2Flogin"]', [
-            'Password[currentPassword]' => 'user^humhub@PASS%worD!',
+        $I->submitForm('form[action*="security%2Fchange-password"]', [
             'Password[newPassword]' => 'New^humhub@PASS%worD!1',
             'Password[newPasswordConfirm]' => 'New^humhub@PASS%worD!1',
         ]);

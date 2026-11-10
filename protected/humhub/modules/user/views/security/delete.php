@@ -14,19 +14,7 @@ use humhub\widgets\form\ActiveForm;
 <br>
 <?= Alert::danger(Yii::t('UserModule.account', 'All your personal data will be irrevocably deleted.'))->closeButton(false) ?>
 
-<?php $form = ActiveForm::begin() ?>
-
-<?php if ($model->isAttributeRequired('currentPassword')): ?>
-    <?= $form->field($model, 'currentPassword')->passwordInput([
-        'maxlength' => 45,
-        'placeholder' => Yii::t('UserModule.account', 'Enter your password to continue'),
-        'autocomplete' => 'current-password',
-    ]) ?>
-<?php else: ?>
-    <?= $form->field($model, 'currentPassword')->hiddenInput()->label(false); ?>
-<?php endif ?>
-
-<br>
+<?php $form = ActiveForm::begin(['sudo' => true]) ?>
 
 <?= Button::danger(Yii::t('UserModule.account', 'Delete account'))
     ->confirm(

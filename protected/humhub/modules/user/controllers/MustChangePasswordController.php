@@ -41,7 +41,7 @@ class MustChangePasswordController extends Controller
             $model = new Password();
             $model->user_id = Yii::$app->user->id;
         }
-        $model->scenario = 'changePassword';
+        $model->scenario = Password::SCENARIO_MUST_CHANGE_PASSWORD;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $model->setPassword($model->newPassword);

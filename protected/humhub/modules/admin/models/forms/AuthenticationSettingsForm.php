@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\modules\topic\jobs\ConvertTopicsToGlobalJob;
+use humhub\modules\user\components\SudoMode;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
@@ -29,6 +30,8 @@ class AuthenticationSettingsForm extends Model
     public $blockUsers;
     public $hideOnlineStatus;
     public $defaultUserIdleTimeoutSec;
+    public $sudoAdmin;
+    public $sudoIdleMinutes;
     public $allowGuestAccess;
     public $defaultUserProfileVisibility;
     public $registrationSendMessageMailContent;
@@ -55,6 +58,8 @@ class AuthenticationSettingsForm extends Model
         $this->blockUsers = $module->allowBlockUsers();
         $this->hideOnlineStatus = $settingsManager->get('auth.hideOnlineStatus');
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec', 14400); // 4 hours by default
+        $this->sudoAdmin = $settingsManager->get('auth.sudoAdmin', false);
+        $this->sudoIdleMinutes = $settingsManager->get('auth.sudoIdleMinutes', SudoMode::DEFAULT_IDLE_MINUTES);
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationSendMessageMailContent = $settingsManager->get('auth.registrationSendMessageMailContent', ApproveUserForm::getDefaultSendMessageMailContent());
@@ -72,6 +77,8 @@ class AuthenticationSettingsForm extends Model
             [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showRegistrationUserGroup', 'blockUsers', 'hideOnlineStatus'], 'boolean'],
             ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
+            ['sudoAdmin', 'boolean'],
+            ['sudoIdleMinutes', 'integer', 'min' => 1],
             [['registrationSendMessageMailContent', 'registrationApprovalMailContent', 'registrationDenialMailContent'], 'string'],
             [['allowUserTopics'], 'boolean'],
         ];
@@ -91,6 +98,8 @@ class AuthenticationSettingsForm extends Model
             'blockUsers' => Yii::t('AdminModule.user', 'Allow users to block each other'),
             'hideOnlineStatus' => Yii::t('AdminModule.user', 'Hide online status of users'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
+            'sudoAdmin' => Yii::t('AdminModule.user', 'Require password confirmation for the administration'),
+            'sudoIdleMinutes' => Yii::t('AdminModule.user', 'Password confirmation stays valid for (minutes)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.user', 'Default user profile visibility'),
             'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
@@ -129,6 +138,8 @@ class AuthenticationSettingsForm extends Model
         $settingsManager->set('auth.blockUsers', $this->blockUsers);
         $settingsManager->set('auth.hideOnlineStatus', $this->hideOnlineStatus);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
+        $settingsManager->set('auth.sudoAdmin', $this->sudoAdmin);
+        $settingsManager->set('auth.sudoIdleMinutes', $this->sudoIdleMinutes);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
         $settingsManager->set('auth.allowUserTopics', $this->allowUserTopics);
 

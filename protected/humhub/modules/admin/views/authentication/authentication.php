@@ -32,6 +32,9 @@ $userModule = Yii::$app->getModule('user');
     <?= $form->field($model, 'defaultUserIdleTimeoutSec')
         ->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]) ?>
     <p class="text-body-secondary"><?= Yii::t('AdminModule.user', 'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.') ?></p>
+    <?= $form->field($model, 'sudoAdmin')->checkbox() ?>
+    <?= $form->field($model, 'sudoIdleMinutes')->input('number', ['min' => 1]) ?>
+    <p class="text-body-secondary"><?= Yii::t('AdminModule.user', 'Changing the e-mail address, username or password, deleting the account and creating an access token always ask for the password, unless the user confirmed it or signed in within this time.') ?></p>
     <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList(User::getVisibilityOptions(false), ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]) ?>
     <p class="text-body-secondary"><?= Yii::t('AdminModule.user', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.') ?></p>
 

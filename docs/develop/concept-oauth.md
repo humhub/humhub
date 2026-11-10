@@ -89,7 +89,8 @@ or already revoked token answers `200`, as RFC 7009 requires.
    the return URL. Every login method therefore works on the way: local, LDAP, any auth client
    (Google, SAML, company SSO). All gates (2FA, legal, forced password change …) run as for
    any browser request, and the request reaches the authorize action only once they are
-   closed.
+   closed. Then the [sudo mode](concept-sudo-mode.md) is required, since a grant is as strong
+   as a personal access token: a login on the way starts it, an older session confirms first.
 2. **Validation.** league validates the request (client, redirect URI, PKCE, `state`).
    Additional checks:
    - impersonation is not active (`Yii::$app->user->impersonation->isActive()`); otherwise `403`;
@@ -169,13 +170,9 @@ hhpat_<32 random base62 characters><6 base62 characters CRC32 of the random part
 - **Lifetime:** chosen at creation from 7 days, 30 days (default), 90 days, 1 year and
   *never*. Options beyond `patMaxLifetimeDays` are hidden. *Never* is offered only when
   `patMaxLifetimeDays` is 0.
-- **Creation requires re-authentication** (`RecentAuthentication`), since a PAT bypasses 2FA:
-  - a user with a local password (`User::getCurrentPassword()`) confirms it. Five failed
-    attempts within 15 minutes block further confirmations for that window;
-  - any other user must have signed in interactively (password, LDAP, SSO …) to the current
-    session within the last 15 minutes. The login controller records the time in the session
-    (`AuthController::EVENT_AFTER_LOGIN`), bound to the user; remember-me cookie logins and
-    impersonations do not count. Otherwise the form asks them to sign out and in again.
+- **Creation requires the [sudo mode](concept-sudo-mode.md)**, since a PAT bypasses 2FA: the
+  user confirmed their password (or signed in interactively) within the idle window, else the
+  confirmation dialog comes first. Remember-me cookie logins and impersonations do not count.
 - **Never during an impersonation:** creating a PAT is refused (`403`), like any other
   credential (client secrets).
 - **Limited per user:** at most `maxPersonalAccessTokensPerUser` (default 3, 0 = unlimited)
@@ -704,7 +701,6 @@ protected/humhub/modules/oauth/
 │   ├── AuthorizationServerFactory.php    # league AuthorizationServer / ResourceServer
 │   ├── CredentialActions.php             # impersonation guard for credential actions
 │   ├── KeyStore.php                      # read, generate, rotate keys
-│   ├── RecentAuthentication.php          # re-authentication before creating a PAT
 │   ├── TokenAuth.php
 │   ├── TokenResolver.php                 # own JWT detection, token → grant for revocation
 │   ├── ScopeFilter.php

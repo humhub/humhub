@@ -28,6 +28,7 @@ Use the right tool for the job:
 |---|---|
 | "Complete flow X, then continue" — 2FA check, terms, password change, wizard | **User gate** |
 | "You are not allowed to do this" → 403 / error page, also for single routes | `AccessControl` / `ControllerAccess` |
+| "Confirm it's you, then continue" before a sensitive action or the administration | [Sudo mode](concept-sudo-mode.md) (`SudoFilter`, scoped to actions, remembered per session) |
 | Identity switch, layout/asset tweaks, logging per request | plain `EVENT_BEFORE_ACTION` |
 
 ## Writing a gate

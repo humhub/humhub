@@ -37,6 +37,11 @@ class GroupMemberController extends DataTableController
     /**
      * @inheritdoc
      */
+    protected bool $administration = true;
+
+    /**
+     * @inheritdoc
+     */
     protected function createTable(): DataTable
     {
         $group = Group::findOne(['id' => (int)Yii::$app->request->get('id')]);

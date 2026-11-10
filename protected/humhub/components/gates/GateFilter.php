@@ -108,17 +108,7 @@ class GateFilter extends ActionFilter
      */
     protected function getRequestClass(): RequestClass
     {
-        if (!Yii::$app->user->isSessionBased()) {
-            return RequestClass::Api;
-        }
-
-        $request = Yii::$app->request;
-
-        if ($request->getIsAjax() || $request->getIsPjax()) {
-            return RequestClass::Ajax;
-        }
-
-        return RequestClass::FullPage;
+        return RequestClass::current();
     }
 
     /**

@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8742: Sensitive account actions, access tokens and optionally the administration ask for a password confirmation in a dialog (sudo mode)
+- Enh #8741: Administration and "My Settings" menus as section menu cards: plain titles, the active entry filled
 - Enh #8738: Account settings regrouped into "My Settings": profile categories as tabs, "Account" with username and e-mail, e-mail summaries under the notifications
 - Fix: The inline richtext editor hides its toolbar when the keyboard focus leaves the toolbar for the page, not only when it leaves the text
 - Fix #8737: The test server of the CI workflows allows 60 seconds per request, so the first request, which builds the theme CSS, no longer fails on a slow runner
@@ -21,7 +23,6 @@ HumHub Changelog
 - Enh #8722: The top bars are a header and a navigation landmark, the active menu link carries `aria-current`
 - Enh #8721: Keyboard rules of the UI styleguide (`docs/ui/keyboard.md`), a Keyboard section in the principles
 - Enh #8718: Administration → Appearance → Accessibility sets whether the richtext editor asks for the alt text of an uploaded image: off, optional or required
-- Fix #8718: A message without translation in a JavaScript translation category was rendered empty instead of in English
 - Fix #8720: A file embedded in the text of a Vue.js form (comments) was shown a second time in the attachment list
 - Enh #8719: One keyboard focus ring for every control, in the accent as text; a text field shows it after Tab only
 - Enh #8717: The theme colours in groups, each with the browser's colour picker beside a hex field and "Reset colours" instead of the "Default" checkboxes; a colour equal to the theme's is not stored, the light colour follows the surface
@@ -122,9 +123,20 @@ HumHub Changelog
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 - Enh #8713: Admin menu item Appearance, account page Appearance & Accessibility (dark mode, high contrast, reduced motion, readable font)
 
-1.19.4 (Unreleased)
+1.19.5 (Unreleased)
 -------------------
 
+- Fix #8740: Password recovery page redirected to the login page in maintenance mode
+- Fix #8743: Followers with a hidden profile (or not visible to the commenter or author) were not notified of new comments, or of new content in a followed space or profile, unless the author was an admin or user manager
+- Fix: The current space's image in the space chooser button sat above the centre of the top bar, and the caret beside it moved after a page change
+
+1.19.4 (November 9, 2026)
+-------------------------
+
+> This release also fixes [security](https://github.com/humhub/humhub/security/advisories) issues.
+
+- Fix GHSA-wp2f-p7f6-j3rw: Validate the message categories requested from the JavaScript translations endpoint
+- Fix #8718: A message without translation in a JavaScript translation category was rendered empty instead of in English
 - Fix #8711: The mobile app settings (`/mobile-app/get-settings`) failed with a `TypeError` after the mobile settings were saved with no whitelisted URL, as the empty field was stored as an empty string instead of an empty list
 - Fix #8663: `module/remove` did nothing for an enabled module whose files are missing (e.g. no compatible version to reinstall); its enabled flag is now removed from the database
 - Fix #8665: The latest HumHub version (About page, update notification) was only refreshed after flushing the cache
@@ -141,6 +153,7 @@ HumHub Changelog
 - Fix #8706: Wide avatar column in the space member request widget
 - Fix #8712: Secrets were not masked in the context dump of log targets configured outside the core (e.g. an `EmailTarget`)
 - Fix #8705: Browser autofill of the password field in the admin user edit form caused a "must be equal to Confirm new password" error on save
+- Fix GHSA-8fxv-7qxv-3x3r: Labels of top menu, footer menu and People heading button entries were not HTML-encoded
 
 1.19.3 (October 27, 2026)
 -------------------------

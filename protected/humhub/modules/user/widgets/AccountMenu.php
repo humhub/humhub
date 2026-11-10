@@ -9,8 +9,8 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\ControllerHelper;
-use humhub\widgets\menu\LeftNavigation;
 use humhub\widgets\menu\MenuLink;
+use humhub\widgets\menu\SectionMenu;
 use Yii;
 
 /**
@@ -25,14 +25,14 @@ use Yii;
  * @since 0.5
  * @author Luke
  */
-class AccountMenu extends LeftNavigation
+class AccountMenu extends SectionMenu
 {
     /**
      * @inheritdoc
      */
     public function init()
     {
-        $this->panelTitle = Yii::t('UserModule.account', '<strong>My</strong> Settings');
+        $this->title = Yii::t('UserModule.account', 'My Settings');
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.account', 'Profile'),

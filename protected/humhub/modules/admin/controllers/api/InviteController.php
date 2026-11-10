@@ -32,6 +32,11 @@ class InviteController extends DataTableController
     /**
      * @inheritdoc
      */
+    protected bool $administration = true;
+
+    /**
+     * @inheritdoc
+     */
     protected function createTable(): DataTable
     {
         return Yii::createObject(PendingRegistrationTable::class);

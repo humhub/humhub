@@ -8,7 +8,6 @@
 
 namespace humhub\modules\oauth\models\forms;
 
-use humhub\modules\oauth\components\RecentAuthentication;
 use humhub\modules\oauth\components\ScopeRegistry;
 use humhub\modules\oauth\Module;
 use humhub\modules\oauth\services\PersonalAccessTokenService;
@@ -33,11 +32,7 @@ class PersonalAccessTokenForm extends Model
      */
     public $lifetime;
 
-    public $currentPassword;
-
     private ?string $token = null;
-
-    private ?RecentAuthentication $recentAuthentication = null;
 
     public function __construct(private readonly User $user, $config = [])
     {
@@ -60,7 +55,6 @@ class PersonalAccessTokenForm extends Model
             ['name', 'string', 'max' => 100],
             ['scopes', 'each', 'rule' => ['in', 'range' => array_keys($this->getScopeOptions())]],
             ['lifetime', 'in', 'range' => $this->getLifetimeValues(), 'strict' => true],
-            ['currentPassword', 'validateReauthentication', 'skipOnEmpty' => false],
         ];
     }
 
@@ -70,7 +64,6 @@ class PersonalAccessTokenForm extends Model
             'name' => Yii::t('OauthModule.base', 'Name'),
             'scopes' => Yii::t('OauthModule.base', 'Access'),
             'lifetime' => Yii::t('OauthModule.base', 'Expiration'),
-            'currentPassword' => Yii::t('OauthModule.base', 'Your password'),
         ];
     }
 
@@ -86,33 +79,11 @@ class PersonalAccessTokenForm extends Model
         return parent::beforeValidate();
     }
 
-    public function requiresPassword(): bool
-    {
-        return $this->getRecentAuthentication()->requiresPassword();
-    }
-
     public function validateLimit(string $attribute): void
     {
         if ((new PersonalAccessTokenService())->hasReachedLimit($this->user)) {
             $this->addError($attribute, PersonalAccessTokenService::getLimitMessage());
         }
-    }
-
-    public function validateReauthentication(string $attribute): void
-    {
-        $authentication = $this->getRecentAuthentication();
-        if ($authentication->isThrottled()) {
-            $this->addError($attribute, Yii::t('OauthModule.base', 'Too many attempts, try again later.'));
-            return;
-        }
-
-        if ($authentication->check(is_string($this->currentPassword) ? $this->currentPassword : null)) {
-            return;
-        }
-
-        $this->addError($attribute, $this->requiresPassword()
-            ? Yii::t('OauthModule.base', 'Your password is incorrect.')
-            : Yii::t('OauthModule.base', 'Please sign out and sign in again to continue.'));
     }
 
     /**
@@ -167,11 +138,6 @@ class PersonalAccessTokenForm extends Model
     public function getToken(): ?string
     {
         return $this->token;
-    }
-
-    private function getRecentAuthentication(): RecentAuthentication
-    {
-        return $this->recentAuthentication ??= RecentAuthentication::forCurrentSession($this->user);
     }
 
     /**

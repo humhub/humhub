@@ -16,7 +16,7 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('My Settings', 30, '.left-navigation');
+        $I->waitForText('My Settings', 30, '.section-menu');
         $I->click('Tags', '.page-header');
 
         $I->amGoingTo('fill the tags of the profile form');
@@ -24,7 +24,7 @@ class AccountCest
         $I->waitForElementVisible('#user-tagsfield');
         $I->selectFromPicker('#user-tagsfield', 'Tester');
         $I->selectFromPicker('#user-tagsfield', 'Actor');
-        $I->click('Save profile');
+        $I->click('Save', 'form[action*="edit-tags"]');
 
         /*
         $I->expectTo('see the german translation');
@@ -58,7 +58,7 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('My Settings', 30, '.left-navigation');
+        $I->waitForText('My Settings', 30, '.section-menu');
 
         $I->click('Notifications & E-Mails');
         $I->waitForText('Categories');

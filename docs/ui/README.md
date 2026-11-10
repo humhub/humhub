@@ -61,7 +61,7 @@ How a page is framed and how people move between pages.
 | [Page Header](page-header.md) | The card at the top of a page: title, actions, filters or tabs | in progress | Both |
 | [Content Card](card.md) | The card below the page header that holds the content, with an optional header | in progress | Both |
 | [Pill Tabs](tabs.md) | Switch between sibling pages or views | in progress | Both (PHP exists) |
-| [Master / Detail & Section Menu](master-detail.md) | Side pane + main pane that folds on mobile; the administration menu | in review | Both (proposed) |
+| [Master / Detail & Section Menu](master-detail.md) | Side pane + main pane that folds on mobile; the administration menu | in progress | Both (proposed) |
 | [Top Bar](top-bar.md) | Search, drawers, user menu, space chooser and main navigation | in review | Both (proposed) |
 | [Space & Profile Header](container-header.md) | Cover, picture, counters, relationship buttons, tabs | in review | PHP (proposed) |
 | [Mobile Navigation](mobile-navigation.md) | Bottom bar, menu sheet and widget drawer on phones | in review | PHP (proposed) |

@@ -156,6 +156,7 @@ one widget.
 humhub\widgets\menu\Menu
  ├─ DropdownMenu
  ├─ LeftNavigation
+ ├─ SectionMenu                 ← admin\widgets\AdminMenu, user\widgets\AccountMenu
  ├─ PillTabs                    ← variant primary | secondary
  │   └─ admin\widgets\UserMenu, SpaceMenu, InformationMenu, …
  └─ PageHeaderActions           ← see Page Header

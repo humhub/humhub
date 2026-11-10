@@ -41,6 +41,11 @@ class UserController extends DataTableController
     /**
      * @inheritdoc
      */
+    protected bool $administration = true;
+
+    /**
+     * @inheritdoc
+     */
     protected function createTable(): DataTable
     {
         return Yii::createObject(UserTable::class);

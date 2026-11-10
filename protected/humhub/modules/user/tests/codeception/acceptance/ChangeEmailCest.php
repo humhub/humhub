@@ -10,50 +10,26 @@ class ChangeEmailCest
     {
         $I->wantTo('ensure that changing email works');
 
+        // A login by the form starts the sudo mode, so the change asks for no password (see SudoCest for the dialog)
         $I->amGoingTo('change email address');
         $I->amUser();
         $I->clickAccountDropDown();
-        $I->click('Settings');
-        $I->waitForElementVisible('#profile-tabs', 20);
-        $I->expectTo('see the profile edit form');
+        $I->click('My Settings');
+        $I->waitForText('My Settings', 30, '.section-menu');
+        $I->click('Account', '.section-menu');
+        $I->waitForElementVisible('#accountsettings-email');
 
-        $I->waitForElementVisible('.nav-pills', 20);
-        $I->click('Change Email');
-        $I->waitForText('Your current E-mail address is');
-
-        $I->amGoingTo('fill only new email');
-        $I->fillField('#accountchangeemail-newemail', 'new@email.com');
-        $I->fillField('#accountchangeemail-currentpassword', '');
-
-        $I->scrollToBottom();
-        $I->click('Save');
-        $I->wait(1);
-        $I->expectTo('see an error');
-        $I->see('Current password cannot be blank.');
-
-        $I->amGoingTo('fill password and not valid new email');
-        $I->fillField('#accountchangeemail-newemail', 'newemail.com');
-        $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
-
-        $I->scrollToBottom();
-        $I->click('Save');
-        $I->wait(1);
+        $I->amGoingTo('fill a not valid new email');
+        $I->fillField('#accountsettings-email', 'newemail.com');
         $I->expectTo('see an error from browser side, because email is not valid and form cannot be submitted');
-        $isValidForm = $I->executeJS('return document.querySelector("#accountchangeemail-newemail").checkValidity();');
+        $isValidForm = $I->executeJS('return document.querySelector("#accountsettings-email").checkValidity();');
         \PHPUnit\Framework\Assert::assertFalse($isValidForm);
 
-        $I->amGoingTo('fill all required fields with valid data');
-        $I->fillField('#accountchangeemail-newemail', 'new@email.com');
-        $I->fillField('#accountchangeemail-currentpassword', 'user^humhub@PASS%worD!');
-
-        $I->scrollToBottom();
-        $I->click('Save');
-        $I->wait(1);
+        $I->amGoingTo('fill a valid new email');
+        $I->fillField('#accountsettings-email', 'new@email.com');
+        $I->click('Save', '#account-settings-form');
         $I->expectTo('see no errors after saving');
-        $I->dontSee('Current password cannot be blank.');
-        $I->dontSee('New E-Mail address is not a valid email address.');
-        $I->wait(5);
-        $I->see('We´ve just sent an confirmation e-mail to your new address.');
+        $I->waitForText('We´ve just sent an confirmation e-mail to your new address.', 20);
+        $I->dontSee('E-Mail address is not a valid email address.');
     }
-
 }

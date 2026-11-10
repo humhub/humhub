@@ -16,10 +16,29 @@
         border-radius: 0 4px 4px 0;
     }
 
-    #space-menu-dropdown .input-group-text.focus {
-        border-radius: 0 4px 4px 0;
-        border: 2px solid var(--bs-accent);
-        border-left: 0;
+    // The field and the directory link read as one control: while the field has the focus, the
+    // link takes its border, and the glow (from the keyboard: the ring) goes around both
+    #space-menu-dropdown .input-group:has(> #space-menu-search:focus) {
+        border-radius: $input-border-radius;
+        box-shadow: $input-focus-box-shadow;
+
+        > .form-control {
+            box-shadow: none;
+        }
+
+        > .input-group-text {
+            border: var(--bs-border-width) solid $input-focus-border-color;
+            border-left: 0;
+        }
+    }
+
+    :root:not([data-hh-input-modality="pointer"]) #space-menu-dropdown .input-group:has(> #space-menu-search:focus-visible) {
+        @include hh-focus-ring;
+        box-shadow: none;
+
+        > .form-control {
+            outline: 0;
+        }
     }
 
     .input-group #space-menu-search {

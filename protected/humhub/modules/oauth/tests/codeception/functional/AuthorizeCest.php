@@ -277,6 +277,30 @@ class AuthorizeCest
         Assert::assertEquals(1, Grant::find()->where(['user_id' => 1])->count());
     }
 
+    public function testAuthorizingAsksForTheSudoModeFirst(FunctionalTester $I)
+    {
+        // A programmatic login is no interactive one: the sudo mode is not active
+        $I->amLoggedInAs(User::findOne(['id' => 1]));
+        $I->amOnRoute('/oauth/authorize/index', $this->params());
+        $I->seeCurrentUrlMatches('~user%2Fsudo%2Fconfirm~');
+        $I->dontSee('Sign in to the app on this device?');
+
+        $I->submitForm('#sudo-confirm-form', ['SudoConfirmForm[password]' => 'admin&humhub@PASS%worD!']);
+        $I->see('Sign in to the app on this device?');
+    }
+
+    public function testSkipConsentIssuesNoCodeWithoutTheSudoMode(FunctionalTester $I)
+    {
+        $this->createAdminClient(['skip_consent' => 1]);
+        $I->amLoggedInAs(User::findOne(['id' => 1]));
+        $I->stopFollowingRedirects();
+        $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1/callback'));
+        $I->seeResponseCodeIsRedirection();
+        Assert::assertStringContainsString('user%2Fsudo%2Fconfirm', $this->location());
+        Assert::assertStringStartsNotWith('http://127.0.0.1/callback', $this->location());
+        Assert::assertEquals(0, Grant::find()->where(['user_id' => 1])->count());
+    }
+
     private function notificationCount(): int
     {
         return (int)Notification::find()->where(['class' => GrantCreatedNotification::class, 'user_id' => 1])->count();

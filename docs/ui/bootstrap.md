@@ -177,7 +177,7 @@ The class names each component gets. Details are on the component pages.
 | [Page Header](page-header.md) | (own; laid out like `.card`) | `.page-header`, `-bar`, `-back`, `-title`, `-actions`, `-body` |
 | [Content Card](card.md) | `.card`, `.card-header`, `.card-title`, `.card-body`, `.card-footer` | `.content-card`, `.card-header-actions` |
 | [Pill Tabs](tabs.md) | `.nav.nav-pills` | `.nav-pills-secondary`, `.nav-scroller` |
-| [Master / Detail](master-detail.md) | section menu on `.nav.flex-column` in a `.card` | `.pane-split`, `-slim`, `-end`, `-side`, `-main`; `.nav-section` |
+| [Master / Detail](master-detail.md) | section menu on `.nav.flex-lg-column` in a `.card` | `.section-menu`, `-title`, `.nav-section`; `.pane-split`, `-slim`, `-end`, `-side`, `-main` |
 | [Top Bar](top-bar.md) | `.navbar` (`.navbar.topbar` today), `.dropdown-menu` | `.topbar-drawer` |
 | [Space & Profile Header](container-header.md) | tabs on `.nav-pills`, ⋮ on `.dropdown` | `.container-header`, `-compact`, `-cover`, `-image`, `-counters`, `-title`, `-subtitle`, `-actions`, `-nav` |
 | [Mobile Navigation](mobile-navigation.md) | sheet and drawer on `.offcanvas.offcanvas-bottom` | `.mobile-nav`, `-item`, `-sheet`; `.mobile-widgets` |

@@ -9,8 +9,10 @@
 namespace humhub\widgets\menu;
 
 use Exception;
+use humhub\helpers\Html;
 use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
+use Yii;
 
 /**
  * Class MenuLink
@@ -59,6 +61,24 @@ class MenuLink extends MenuEntry
     public function getCount(): ?int
     {
         return $this->count;
+    }
+
+    /**
+     * Appends the waiting dot to the label when something waits behind the entry (`count` above 0): a dot, the
+     * number for screen readers. For menus that show a dot rather than the number (pill tabs, section menus).
+     *
+     * @since 1.20
+     */
+    public function appendWaitingDot(): static
+    {
+        if ($this->getCount() > 0) {
+            $link = $this->getLink();
+            $this->setLabel(($link->encodeLabel ? Html::encode($link->label) : $link->label)
+                . Html::tag('span', Html::tag('span', ' ' . Yii::t('base', '{count} waiting', ['count' => $this->getCount()]), ['class' => 'visually-hidden']), ['class' => 'badge-dot badge-dot-waiting']));
+            $this->setEncodeLabel(false);
+        }
+
+        return $this;
     }
 
     public function setEncodeLabel(bool $encodeLabel)

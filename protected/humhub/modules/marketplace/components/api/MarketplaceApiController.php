@@ -32,6 +32,11 @@ abstract class MarketplaceApiController extends BaseController
     /**
      * @inheritdoc
      */
+    protected bool $administration = true;
+
+    /**
+     * @inheritdoc
+     */
     public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {

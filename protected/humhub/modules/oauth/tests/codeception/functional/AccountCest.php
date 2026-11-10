@@ -184,16 +184,6 @@ class AccountCest
             'PersonalAccessTokenForm[name]' => 'Backup script',
             'PersonalAccessTokenForm[scopes]' => ['content:read'],
             'PersonalAccessTokenForm[lifetime]' => '30',
-            'PersonalAccessTokenForm[currentPassword]' => 'wrong',
-        ]);
-        $I->see('Your password is incorrect.');
-        Assert::assertFalse(Grant::find()->where(['type' => Grant::TYPE_PAT])->exists());
-
-        $I->submitForm('form[action*="create-token"]', [
-            'PersonalAccessTokenForm[name]' => 'Backup script',
-            'PersonalAccessTokenForm[scopes]' => ['content:read'],
-            'PersonalAccessTokenForm[lifetime]' => '30',
-            'PersonalAccessTokenForm[currentPassword]' => self::PASSWORD,
         ]);
         Assert::assertSame(1, preg_match('/hhpat_[A-Za-z0-9]{38}/', $I->grabPageSource(), $match));
         $I->see('Copy the token now.');
@@ -233,7 +223,6 @@ class AccountCest
             'PersonalAccessTokenForm[name]' => 'Three',
             'PersonalAccessTokenForm[scopes]' => ['content:read'],
             'PersonalAccessTokenForm[lifetime]' => '30',
-            'PersonalAccessTokenForm[currentPassword]' => self::PASSWORD,
         ];
         // The form is not offered; a direct POST creates nothing either
         $I->amOnRoute('/oauth/account/create-token');
@@ -273,7 +262,6 @@ class AccountCest
                 'PersonalAccessTokenForm[name]' => 'Agent',
                 'PersonalAccessTokenForm[scopes]' => ['content:read', 'full'],
                 'PersonalAccessTokenForm[lifetime]' => '30',
-                'PersonalAccessTokenForm[currentPassword]' => self::PASSWORD,
             ]);
             $I->see('Copy the token now.');
 
@@ -282,24 +270,6 @@ class AccountCest
         } finally {
             Module::instance()->settings->delete('patScopes');
         }
-    }
-
-    public function testRepeatedWrongPasswordsAreThrottled(FunctionalTester $I)
-    {
-        $this->allowTokens($I);
-
-        $I->amUser1();
-        $I->amOnRoute('/oauth/account/create-token');
-        for ($i = 0; $i < 6; $i++) {
-            $I->submitForm('form[action*="create-token"]', [
-                'PersonalAccessTokenForm[name]' => 'Backup script',
-                'PersonalAccessTokenForm[scopes]' => ['content:read'],
-                'PersonalAccessTokenForm[currentPassword]' => $i < 5 ? 'wrong' : self::PASSWORD,
-            ]);
-        }
-
-        $I->see('Too many attempts, try again later.');
-        Assert::assertFalse(Grant::find()->where(['type' => Grant::TYPE_PAT])->exists());
     }
 
     public function testTokensCannotBeCreatedWithoutPermission(FunctionalTester $I)
