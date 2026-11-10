@@ -25,7 +25,7 @@
     --hh-background-color-secondary: var(--bs-tertiary-bg);
     --hh-background-color-highlight: var(--bs-accent-bg-subtle);
     --hh-background-color-highlight-soft: var(--hh-accent-bg-soft);
-    --hh-background3: var(--hh-border-color-strong);
+    --hh-background3: var(--bs-border-color);
     --hh-text-color-contrast: var(--bs-white); // Always white before, whatever the background
     --hh-text-color-default: var(--bs-body-color);
     --hh-text-color-soft3: var(--bs-tertiary-color);
@@ -68,8 +68,8 @@
 :root {
     // The page, behind the surfaces (`--bs-body-bg`)
     --hh-page-bg: #{$hh-page-bg};
-    // The border of a control (checkbox, radio, switch), a neutral placeholder fill
-    --hh-border-color-strong: #{$hh-border-color-strong};
+    // The border of an input (a field, select, checkbox, radio, switch): 3:1 on its fill
+    --hh-input-border-color: #{$hh-input-border-color};
     // A lighter selection than `--bs-accent-bg-subtle`: a checked choice, a hovered new item
     --hh-accent-bg-soft: #{$hh-accent-bg-soft};
     // Inline code
@@ -114,7 +114,7 @@
         color-scheme: dark;
 
         --hh-page-bg: #{$hh-page-bg-dark};
-        --hh-border-color-strong: #{$hh-border-color-strong-dark};
+        --hh-input-border-color: #{$hh-input-border-color-dark};
         --hh-accent-bg-soft: #{$hh-accent-bg-soft-dark};
         --hh-code-bg: #{$hh-code-bg-dark};
         --hh-topbar-bg: #{$hh-topbar-bg-dark};
@@ -158,7 +158,7 @@ $hh-fill-high-contrast: ();
     --bs-secondary-color: var(--bs-body-color);
     --bs-tertiary-color: var(--bs-body-color);
     --bs-border-color: #{$border-color};
-    --hh-border-color-strong: #{$border-color};
+    --hh-input-border-color: #{$border-color};
 
     @each $color, $value in $fg {
         --hh-#{$color}-fg: #{$value};

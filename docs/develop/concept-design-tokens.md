@@ -88,8 +88,8 @@ reaches a contrast of 7.2–9.4:1 on its fill, formerly 1.9–2.2:1.
 
 | Job | Token | Sass | Light | Dark |
 |---|---|---|---|---|
-| Separator, border of a box | `--bs-border-color` | `$border-color` | `#ddd` | `#3f3f3f` |
-| Border of a control: checkbox, radio, switch; a neutral placeholder fill | `--hh-border-color-strong` | `$hh-border-color-strong` | `#d7d7d7` | `#393939` |
+| Separator, border of a box, a neutral placeholder fill | `--bs-border-color` | `$border-color` | `#ddd` | `#3f3f3f` |
+| Border of an input: field, select, checkbox, radio, switch; 3:1 on its fill | `--hh-input-border-color` | `$hh-input-border-color` (Bootstrap's `$input-border-color` points to the token) | `#949494` | `#6d6d6d` |
 | Keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | `$focus-ring-color`, `$focus-ring-width`, `$hh-focus-ring-offset` | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 
 The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color)` with
@@ -115,7 +115,7 @@ Deprecated since 1.20. The core uses none of them.
 | `$background-color-secondary` | `$body-tertiary-bg` |
 | `$background-color-page` | `$hh-page-bg` |
 | `$background-color-highlight-soft` | `$hh-accent-bg-soft` |
-| `$background3` | `$hh-border-color-strong` |
+| `$background3` | `$border-color` |
 | `$text-color-{color}-contrast` | `$hh-{color}-contrast` |
 
 Each with its `-dark` variable. For the transition:
@@ -153,7 +153,7 @@ computes its `var()` where it is declared.
 | `--hh-background-color-main` | `--bs-body-bg` |
 | `--hh-background-color-page` | `--hh-page-bg` |
 | `--hh-background-color-secondary` | `--bs-tertiary-bg` |
-| `--hh-background3` | `--hh-border-color-strong` |
+| `--hh-background3` | `--bs-border-color` |
 | `--hh-background4` | `--bs-tertiary-color` |
 | `--hh-background-color-highlight` | `--bs-accent-bg-subtle` |
 | `--hh-background-color-highlight-soft` | `--hh-accent-bg-soft` |

@@ -174,6 +174,17 @@ class ThemeVariablesTest extends HumHubDbTestCase
     }
 
     /**
+     * The border of an input is the line, darkened (lightened) to 3:1 on the surface (WCAG 1.4.11)
+     */
+    public function testInputBorderReachesThreeToOne()
+    {
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#949494', $variables->get('hh-input-border-color'));
+        $this->assertSame('#6d6d6d', $variables->get('hh-input-border-color-dark'));
+    }
+
+    /**
      * A derived value is resolved whether it refers to a variable or not
      */
     public function testDerivedValueWithoutAVariableIsResolved()

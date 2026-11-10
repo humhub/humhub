@@ -12,6 +12,27 @@
         }
     }
 
+    // A link in running text is underlined, its color alone doesn't set it apart from the text around it (WCAG 1.4.1):
+    // in rendered rich text, a paragraph, the hint of a field and an alert. Not the links that are controls
+    // (`$hh-link-underline-exclude`); an icon is an inline block and stays without the line
+    .markdown-render,
+    [data-ui-markdown],
+    [data-ui-richtext],
+    p,
+    .form-text,
+    .help-block,
+    .alert {
+        a:not(#{$hh-link-underline-exclude}) {
+            text-decoration: underline;
+
+            .ti,
+            .fa,
+            svg {
+                display: inline-block;
+            }
+        }
+    }
+
     // A link in a theme color, readable on the surfaces in both color modes (Bootstrap's takes the color as it is, and
     // its `!important` has to be outdone here, in the same layer). Hovered, a step toward the emphasis color
     @each $color in $hh-fg-colors {

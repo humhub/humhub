@@ -23,8 +23,8 @@
             --bs-focus-ring-color: var(--bs-emphasis-color);
 
             // Every text link, not only those in running text ("Reply" next to "Like"), but not the controls that
-            // look like one (`$hh-high-contrast-link-exclude`). An icon is an inline block and stays without the line
-            a:not(#{$hh-high-contrast-link-exclude}) {
+            // look like one (`$hh-link-underline-exclude`). An icon is an inline block and stays without the line
+            a:not(#{$hh-link-underline-exclude}) {
                 text-decoration: underline;
 
                 .ti,

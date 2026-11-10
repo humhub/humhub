@@ -40,7 +40,7 @@
                         left: 0;
 
                         &:focus {
-                            border-color: var(--hh-border-color-strong);
+                            border-color: var(--hh-input-border-color);
 
                             &:checked {
                                 border-color: var(--bs-accent);
@@ -329,13 +329,13 @@
 
         .wall-stream-filter-head {
             padding: 5px 5px 10px 5px;
-            border-bottom: 1px solid var(--hh-border-color-strong);
+            border-bottom: 1px solid var(--bs-border-color);
         }
 
         .wall-stream-filter-body {
             overflow: hidden;
             background-color: var(--bs-tertiary-bg);
-            border: 1px solid var(--hh-border-color-strong);
+            border: 1px solid var(--bs-border-color);
             border-top: 0;
             border-radius: 0 0 4px 4px;
         }
@@ -435,7 +435,7 @@
             background-color: var(--bs-body-bg);
             padding: 5px;
             border-radius: 0 0 4px 4px;
-            border: 1px solid var(--hh-border-color-strong);
+            border: 1px solid var(--bs-border-color);
             font-size: 11px;
         }
     }

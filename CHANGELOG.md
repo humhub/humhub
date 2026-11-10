@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8747: Inputs have a border of 3:1, links in running text are underlined
 - Enh #8746: Comments, search, notifications, editor and status bar are named and announced for screen readers
 - Enh #8745: Sign-in pages have landmarks, a heading and labelled fields, inputs are described by their error message
 - Enh #8744: White text on a theme colour needs 4.5:1, the default colours are darkened just enough to keep it

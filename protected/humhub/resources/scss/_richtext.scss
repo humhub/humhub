@@ -67,7 +67,7 @@
         }
 
         .ProseMirror-menuseparator {
-            border-right: 1px solid var(--hh-border-color-strong);
+            border-right: 1px solid var(--bs-border-color);
             margin-right: 1px;
         }
 
@@ -80,7 +80,7 @@
 
         .ProseMirror-menuitem {
             .ProseMirror-menu-group {
-                border-right: 1px solid var(--hh-border-color-strong);
+                border-right: 1px solid var(--bs-border-color);
             }
 
             .ProseMirror-menu-group.last {
@@ -92,7 +92,7 @@
             }
 
             .seperator {
-                border-right: 1px solid var(--hh-border-color-strong);
+                border-right: 1px solid var(--bs-border-color);
                 border-radius: 0;
             }
         }
@@ -272,7 +272,7 @@
 
         .ProseMirror-menubar {
             background: var(--bs-body-bg);
-            border: 1px solid var(--hh-border-color-strong);
+            border: 1px solid var(--bs-border-color);
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
             box-sizing: border-box;
@@ -326,7 +326,7 @@
         .ProseMirror-menubar {
             background: var(--bs-secondary-bg);
             border: 0;
-            border-bottom: $input-border-width solid var(--hh-border-color-strong);
+            border-bottom: $input-border-width solid var(--bs-border-color);
             border-radius: $input-border-radius $input-border-radius 0 0;
             color: var(--bs-body-color);
             padding: 2px 4px;
@@ -642,14 +642,14 @@
 
         emoji-picker {
             --background: var(--bs-body-bg);
-            --border-color: var(--hh-border-color-strong);
+            --border-color: var(--bs-border-color);
             --border-radius: var(--bs-border-radius);
             --button-active-background: var(--bs-secondary-bg);
             --button-hover-background: var(--bs-tertiary-bg);
             --category-font-color: var(--bs-body-color);
             --category-font-size: 1rem;
             --indicator-color: var(--bs-accent);
-            --input-border-color: var(--bs-border-color);
+            --input-border-color: var(--hh-input-border-color);
             --input-border-radius: var(--bs-border-radius);
             --input-font-color: var(--bs-body-color);
             --input-font-size: 1rem;
