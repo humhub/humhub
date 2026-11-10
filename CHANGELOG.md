@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8747: Form controls have a border of 3:1, links in running text are underlined
 - Enh #8744: White text on a theme colour needs 4.5:1, the default colours are darkened just enough to keep it
 - Fix #8744: The richtext editor's placeholder is no longer drawn at half opacity, muted text reaches 4.5:1
 - Enh #8742: Sensitive account actions, access tokens and optionally the administration ask for a password confirmation in a dialog (sudo mode)
