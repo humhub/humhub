@@ -34,13 +34,12 @@ use humhub\widgets\modal\ModalButton;
                 ]),
             ]) ?>
         </div>
-        <p class="mb-2"><?= $model->getAttributeLabel('password') ?></p>
         <?= $form->field($model, 'password')->passwordInput([
             'id' => 'login_password',
             'placeholder' => $model->getAttributeLabel('password'),
             'autocomplete' => 'current-password',
             'autofocus' => true,
-        ])->label(false) ?>
+        ])->label(null, ['class' => 'form-label fw-normal']) ?>
         <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
 
         <div class="row g-3">

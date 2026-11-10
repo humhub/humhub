@@ -52,6 +52,19 @@ class LandmarksCest
         $I->see('Dashboard', 'h1.visually-hidden');
     }
 
+    public function testSignInPageLandmarksAndHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the sign-in page has a main landmark, one heading and a labelled field');
+
+        $I->amOnRoute('/user/auth/login');
+
+        $I->seeElement('main#main-content #login-form');
+        $I->seeElement('footer .footer-nav-login, footer .powered');
+        $I->seeNumberOfElements('h1', 1);
+        $I->see('Sign In', '#login-form .panel-heading h1');
+        $I->seeElement('label[for="login_username"]');
+    }
+
     public function testActiveMenuLinkIsTheCurrentPage(FunctionalTester $I)
     {
         $I->wantTo('ensure the active navigation link carries aria-current');

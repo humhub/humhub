@@ -11,8 +11,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
     <div class="panel panel-default animated fadeIn">
-        <div
-            class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!'); ?></div>
+        <div class="panel-heading">
+            <h1><?= Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!') ?></h1>
+        </div>
         <div class="panel-body">
             <?php if ($needApproval) : ?>
                 <p><?php echo Yii::t('UserModule.auth', 'After activating your account by the administrator, you will receive a notification by email.'); ?></p>

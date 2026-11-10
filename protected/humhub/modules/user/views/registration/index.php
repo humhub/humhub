@@ -22,7 +22,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <div id="create-account-form" class="panel panel-default animated bounceIn"
          data-has-auth-client="<?= $hasAuthClient ? '1' : '0' ?>">
         <div class="panel-heading">
-            <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
+            <h1><?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?></h1>
         </div>
         <div class="panel-body">
             <?php if (!$hasAuthClient && AuthChoice::hasClients()): ?>

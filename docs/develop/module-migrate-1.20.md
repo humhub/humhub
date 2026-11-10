@@ -23,6 +23,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
+- **The pages without a session have landmarks and a heading** (sign in, sign up, password recovery,
+  registration, maintenance). The auth layout (`user/views/layouts/main.php`) puts the content into
+  `<main id="main-content">`, the target of the skip link, and the footer menu into a `<footer>`; a theme
+  that overrides the layout should do the same. The panel title is the page's `<h1>`, and the site name
+  above the panel without a logo (`#app-title`) is a `div.h1` instead of an `<h1>`; a theme that styles
+  `h1#app-title` should select `#app-title`. The fields have a real `<label>` instead of a text above them
+  plus `aria-label`, the registration form fills in with `autocomplete` (`username`, `email`,
+  `new-password`), and `HForm` knows the element type `email`.
+- **An input is described by its error message:** `humhub\widgets\form\ActiveField` gives the error
+  container the id `{input id}-error` (unless `errorOptions['id']` is set) and adds it to the input's
+  `aria-describedby`, next to an existing value. It is left out where the field renders no error.
 - **Markup for screen readers** (WCAG 1.3.1, 4.1.2, 4.1.3). A theme that overrides one of these views or
   styles the old structure should follow:
   - The menu column of the space and profile layouts (`.layout-nav-container`) is a `div` instead of an

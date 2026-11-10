@@ -21,14 +21,14 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
     <div id="password-recovery-form" class="panel panel-default mb-4 animated bounceIn">
         <div class="panel-heading">
-            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong>
+            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
             <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
-            <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
+            <?= $form->field($model, 'email')->input('email', ['id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email'), 'autocomplete' => 'email'])->label(null, ['class' => 'form-label fw-normal']) ?>
 
             <div class="mb-3">
                 <?= $form->field($model, 'captcha')

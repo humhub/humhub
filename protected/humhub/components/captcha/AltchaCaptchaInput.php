@@ -79,6 +79,7 @@ class AltchaCaptchaInput extends InputWidget
             'workerurl' => Url::to([$this->workerAction], true),
             'name' => Html::getInputName($this->model, $this->attribute),
             'hidefooter' => true,
+            'hidelogo' => true,
             'strings' => json_encode([
                 'label' => Yii::t('base', 'I\'m not a robot'),
                 'verified' => Yii::t('base', 'Verified'),
