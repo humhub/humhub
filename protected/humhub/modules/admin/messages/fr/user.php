@@ -22,7 +22,7 @@ return [
   'All existing Profile Topics will be converted to Global Topics.' => 'Tous les sujets existants dans les profils utilisateurs seront convertis en sujets globaux.',
   'All the personal data of this user will be irrevocably deleted.' => 'Toutes les données de cet utilisateur seront irrévocablement supprimées.',
   'Allow' => 'Autoriser',
-  'Allow individual topics on profile content' => 'Autoriser les thèmes individuels dans le contenu du profil',
+  'Allow individual topics on profile content' => 'Autoriser des "sujets" individuels dans les contenus du profil',
   'Allow users to block each other' => 'Permettre aux utilisateurs de se bloquer mutuellement',
   'Allow users to set individual permissions for their own profile?' => 'Permettre aux utilisateurs de définir des autorisations individuelles pour leur propre profil ?',
   'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Autoriser un accès limité pour les utilisateurs non identifiés (visiteurs)',
