@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Administration</strong> menu' => '<strong> Administracija </strong> meni',
     '<strong>Maintenance</strong> Mode' => '<strong> Način vzdrževanja </strong>',
     '<strong>Warning</strong> incomplete setup!' => '<strong> Opozorilo </strong> Nepopolna nastavitev!',
     'About' => 'O...',

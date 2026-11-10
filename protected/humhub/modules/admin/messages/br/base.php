@@ -4,7 +4,6 @@ return [
     'Back to overview' => 'Back to overview',
     'Settings' => 'Reolamantoù',
     'Spaces' => 'Pajennoù',
-    '<strong>Administration</strong> menu' => '',
     '<strong>Maintenance</strong> Mode' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'About' => '',

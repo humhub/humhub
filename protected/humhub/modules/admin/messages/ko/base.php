@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Administration</strong> menu' => '<strong>관리</strong> 메뉴',
     '<strong>Maintenance</strong> Mode' => '<strong>유지 관리</strong> 모드',
     '<strong>Warning</strong> incomplete setup!' => '<strong>경고</strong> 설정이 완료되지 않았습니다!',
     'About' => '정보',

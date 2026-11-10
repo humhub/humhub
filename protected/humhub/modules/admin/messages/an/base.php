@@ -13,7 +13,6 @@ return [
     'Spaces' => 'Espacios',
     'User not found!' => ' Gebruikers niet gevonden!',
     'Users' => 'Usuarios',
-    '<strong>Administration</strong> menu' => '',
     '<strong>Maintenance</strong> Mode' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'Accessibility' => '',

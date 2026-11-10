@@ -60,5 +60,12 @@ return [
     'Your password is incorrect!' => 'Uw wachtwoord is onjuist!',
     'Your session expired. Please try signing in again.' => 'Uw sessie is verlopen. Probeer opnieuw in te loggen.',
     'a new user {displayName} needs approval.' => 'De nieuwe gebruiker {displayName} heeft goedkeuring nodig.',
+    'Confirm your password' => '',
+    'Please sign in again to continue.' => '',
     'Sign In as {username}' => '',
+    'Sign in again' => '',
+    'This action is not available while impersonating another user.' => '',
+    'To continue, confirm it\'s you.' => '',
+    'To continue, sign in again.' => '',
+    'Too many attempts, try again later.' => '',
 ];

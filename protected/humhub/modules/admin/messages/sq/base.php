@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Administration</strong> menu' => 'Menuja e <strong>administrimit</strong>',
     '<strong>Maintenance</strong> Mode' => 'mënyra e <strong>mirëmbajtjes</strong>',
     '<strong>Warning</strong> incomplete setup!' => '<strong>Paralajmërim</strong> konfigurimi i paplotë!',
     'About' => 'Rreth',

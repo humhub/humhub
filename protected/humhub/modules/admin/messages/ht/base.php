@@ -5,7 +5,6 @@ return [
     'Default' => 'Defo',
     'Settings' => 'Anviwònman',
     'User not found!' => 'Nou pa jwenn itilizatè a!',
-    '<strong>Administration</strong> menu' => '',
     '<strong>Maintenance</strong> Mode' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'About' => '',

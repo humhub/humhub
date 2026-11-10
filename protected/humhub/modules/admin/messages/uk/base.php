@@ -16,7 +16,6 @@ return [
     'Spaces' => 'Спільноти',
     'Topics' => 'Теми',
     'Users' => 'Користувачі',
-    '<strong>Administration</strong> menu' => '',
     '<strong>Maintenance</strong> Mode' => '',
     '<strong>Warning</strong> incomplete setup!' => '',
     'Accessibility' => '',

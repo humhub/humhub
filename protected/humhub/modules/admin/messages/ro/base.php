@@ -29,7 +29,6 @@ return [
     'Topics' => 'Argumente',
     'User not found!' => 'Utilizator negăsit!',
     'Users' => 'Utilizatori',
-    '<strong>Administration</strong> menu' => '',
     '<strong>Maintenance</strong> Mode' => '',
     'Accessibility' => '',
     'Add more modules' => '',

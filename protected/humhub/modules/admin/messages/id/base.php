@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Administration</strong> menu' => 'Menu <strong>administration</strong>',
     '<strong>Maintenance</strong> Mode' => 'Moda <strong>Pemeliharaan</strong>',
     '<strong>Warning</strong> incomplete setup!' => '<strong>Peringatan</strong> pengaturan belum selesai!',
     'About' => 'Tentang',
