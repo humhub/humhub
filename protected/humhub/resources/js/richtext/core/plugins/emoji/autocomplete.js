@@ -7,6 +7,8 @@
 import {Plugin, PluginKey} from 'prosemirror-state';
 import {encode} from '../../humhub-bridge';
 import {applySkinTone, getDatabase} from './data';
+import {translate} from '../../menu/menu-helper';
+import {setCurrentSuggestion, suggestionListId} from '../../util/suggestions';
 
 const MAX_RESULTS = 8;
 
@@ -99,9 +101,10 @@ export function rankEmojis(emojis, query) {
         .sort((a, b) => a.rank - b.rank || a.length - b.length || a.index - b.index);
 }
 
-class Autocomplete {
+export class Autocomplete {
     constructor(view) {
         this.view = view;
+        this.listId = suggestionListId();
         this.query = null;
         this.dismissed = null;
         this.items = [];
@@ -159,14 +162,15 @@ class Autocomplete {
         }
 
         if (!this.$container) {
-            this.$container = $('<div class="atwho-view humhub-richtext-provider humhub-emoji-autocomplete" role="listbox">')
+            this.$container = $('<div class="atwho-view humhub-richtext-provider humhub-emoji-autocomplete">')
                 .data('provider', {reset: () => this.close()})
                 .appendTo('body');
         }
 
-        const $list = $('<ul>');
+        const $list = $('<ul role="listbox">').attr({id: this.listId, 'aria-label': translate(this.view, 'Suggestions')});
         this.items.forEach((item, index) => {
             $('<li role="option">')
+                .attr('id', this.listId + '-' + index)
                 .toggleClass('cur', index === this.index)
                 .attr('aria-selected', index === this.index ? 'true' : 'false')
                 .html('<span class="humhub-emoji-autocomplete-emoji">' + encode(item.emoji) + '</span> ' + encode(item.label))
@@ -178,6 +182,7 @@ class Autocomplete {
                 .appendTo($list);
         });
         this.$container.empty().append($list);
+        setCurrentSuggestion(this.view, this.listId, this.listId + '-' + this.index);
 
         const coords = this.view.coordsAtPos(this.query.from);
         this.$container.css({
@@ -244,6 +249,7 @@ class Autocomplete {
             this.$container.remove();
             this.$container = null;
         }
+        setCurrentSuggestion(this.view, null, null);
     }
 
     destroy() {

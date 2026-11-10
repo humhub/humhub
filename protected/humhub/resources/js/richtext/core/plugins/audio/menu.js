@@ -17,6 +17,7 @@ const editNode = (node, context, view) => {
     };
 
     openPrompt({
+        translate: (text) => context.translate(text),
         title: context.translate("Edit audio"),
         fields: {
             src: new TextField({

@@ -53,6 +53,7 @@ const editNode = (node, context, view) => {
     };
 
     openPrompt({
+        translate: (text) => context.translate(text),
         title: context.translate("Edit video"),
         fields: {
             src: new TextField({

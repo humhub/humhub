@@ -4612,10 +4612,10 @@
         this.placed = addToFragment(this.placed, this.frontier.length, add2);
     }
   }
-  function dropFromFragment(fragment, depth, count) {
+  function dropFromFragment(fragment, depth, count2) {
     if (depth == 0)
-      return fragment.cutByIndex(count, fragment.childCount);
-    return fragment.replaceChild(0, fragment.firstChild.copy(dropFromFragment(fragment.firstChild.content, depth - 1, count)));
+      return fragment.cutByIndex(count2, fragment.childCount);
+    return fragment.replaceChild(0, fragment.firstChild.copy(dropFromFragment(fragment.firstChild.content, depth - 1, count2)));
   }
   function addToFragment(fragment, depth, content2) {
     if (depth == 0)
@@ -12560,12 +12560,12 @@
       return branch;
     }
     emptyItemCount() {
-      let count = 0;
+      let count2 = 0;
       this.items.forEach((item) => {
         if (!item.step)
-          count++;
+          count2++;
       });
-      return count;
+      return count2;
     }
     // Compressing a branch means rewriting it to push the air (map-only
     // items) out. During collaboration, these naturally accumulate
@@ -16850,14 +16850,20 @@
     wrapSourceTextMark
   }, Symbol.toStringTag, { value: "Module" }));
   const prefix = "ProseMirror-prompt";
+  let count$1 = 0;
   class Promt {
     constructor(options) {
       this.options = options;
+      this.id = prefix + "-" + ++count$1;
+      this.returnFocus = document.activeElement;
       this.render();
+    }
+    translate(text2) {
+      return this.options.translate ? this.options.translate(text2) : text2;
     }
     render() {
       $(".ProseMirror-prompt").remove();
-      this.$wrapper = $("<div>").addClass(prefix).appendTo($("body"));
+      this.$wrapper = $("<div>").addClass(prefix).attr({ role: "dialog", "aria-modal": "true" }).appendTo($("body"));
       this.buildForm();
       this.initEvents();
       this.initWrapper();
@@ -16873,7 +16879,8 @@
     buildForm() {
       this.$form = $("<form>").appendTo(this.$wrapper);
       if (this.options.title) {
-        this.$form.append("<h5>" + this.options.title + "</h5>");
+        this.$form.append($("<h5>").attr("id", this.id + "-title").html(this.options.title));
+        this.$wrapper.attr("aria-labelledby", this.id + "-title");
       }
       this.buildFormFields();
       this.domFields.forEach((field) => {
@@ -16889,19 +16896,41 @@
       this.domFields = [];
       for (let name2 in this.options.fields) {
         let field = this.options.fields[name2];
-        let $field = $("<div>").append("<label>" + (field.options.label || name2) + ":</label><br>").append(this.options.fields[name2].render());
+        let input = field.render();
+        input.id = input.id || this.id + "-" + name2;
+        let $label = $("<label>").attr("for", input.id).html(this.translate(field.options.label || name2) + ":");
+        let $field = $("<div>").append($label).append("<br>").append(input);
         this.domFields.push($field[0]);
       }
     }
     buildButtons() {
       this.$buttons = $("<div>").addClass(prefix + "-buttons");
-      $('<button type="submit" class="btn btn-primary">').addClass(prefix + "-submit").text("OK").appendTo(this.$buttons);
+      $('<button type="submit" class="btn btn-primary">').addClass(prefix + "-submit").text(this.translate("OK")).appendTo(this.$buttons);
       this.$buttons.append(document.createTextNode(" "));
-      $('<button type="button" class="btn btn-secondary">').addClass(prefix + "-cancel").text("Cancel").appendTo(this.$buttons).on("click", () => this.close());
+      $('<button type="button" class="btn btn-secondary">').addClass(prefix + "-cancel").text(this.translate("Cancel")).appendTo(this.$buttons).on("click", () => this.close());
       this.$form.append(this.$buttons);
     }
     close() {
       this.$wrapper.remove();
+      if (this.returnFocus && document.body.contains(this.returnFocus)) {
+        this.returnFocus.focus();
+      }
+    }
+    // Tab and Shift+Tab go round the fields and buttons of the dialog
+    trapFocus(e2) {
+      const focusable = this.$wrapper.find('input, select, textarea, button, [contenteditable="true"]').not('[disabled], [type="hidden"]').toArray();
+      if (!focusable.length) {
+        return;
+      }
+      const first = focusable[0];
+      const last2 = focusable[focusable.length - 1];
+      if (e2.shiftKey && document.activeElement === first) {
+        e2.preventDefault();
+        last2.focus();
+      } else if (!e2.shiftKey && document.activeElement === last2) {
+        e2.preventDefault();
+        first.focus();
+      }
     }
     submit() {
       let params = this.getValues();
@@ -16932,6 +16961,7 @@
       msg.style.left = dom.offsetLeft + dom.offsetWidth + 2 + "px";
       msg.style.top = dom.offsetTop - 5 + "px";
       msg.className = "ProseMirror-invalid";
+      msg.setAttribute("role", "alert");
       msg.textContent = message;
       setTimeout(() => parent.removeChild(msg), 1500);
     }
@@ -16939,16 +16969,13 @@
       this.$form.on("keydown", (e2) => {
         if (e2.keyCode === 27) {
           e2.preventDefault();
+          e2.stopPropagation();
           this.close();
         } else if (e2.keyCode === 13 && !(e2.ctrlKey || e2.metaKey || e2.shiftKey)) {
           e2.preventDefault();
           this.submit();
         } else if (e2.keyCode === 9) {
-          window.setTimeout(() => {
-            if (!$.contains(this.$wrapper[0], document.activeElement)) {
-              this.close();
-            }
-          }, 500);
+          this.trapFocus(e2);
         }
       }).on("mousedown", (e2) => {
         if (!$.contains(this.$wrapper[0], e2.target)) {
@@ -20754,7 +20781,7 @@
     while (pos < max && this.src.charCodeAt(pos) === marker) {
       pos++;
     }
-    const count = pos - start;
+    const count2 = pos - start;
     let nextChar = pos < max ? this.src.charCodeAt(pos) : 32;
     if ((nextChar & 64512) === 55296) {
       const lowSurr = this.src.charCodeAt(pos + 1);
@@ -20770,7 +20797,7 @@
     const right_flanking = !isLastWhiteSpace && (!isLastPunctChar || isNextWhiteSpace || isNextPunctChar);
     const can_open = left_flanking && (canSplitWord || !right_flanking || isLastPunctChar);
     const can_close = right_flanking && (canSplitWord || !left_flanking || isNextPunctChar);
-    return { can_open, can_close, length: count };
+    return { can_open, can_close, length: count2 };
   };
   StateInline.prototype.Token = Token;
   function isTerminatorChar(ch) {
@@ -40392,14 +40419,14 @@
           this.p.lastBigReductionSize = size;
         }
       }
-      let bufferBase = base2 ? this.stack[base2 - 1] : 0, count = this.bufferBase + this.buffer.length - bufferBase;
+      let bufferBase = base2 ? this.stack[base2 - 1] : 0, count2 = this.bufferBase + this.buffer.length - bufferBase;
       if (type < parser2.minRepeatTerm || action & 131072) {
         let pos = parser2.stateFlag(
           this.state,
           1
           /* StateFlag.Skipped */
         ) ? this.pos : this.reducePos;
-        this.storeNode(type, start, pos, count + 4, true);
+        this.storeNode(type, start, pos, count2 + 4, true);
       }
       if (action & 262144) {
         this.state = this.stack[base2];
@@ -44036,6 +44063,30 @@
   }
   /*
    * @link https://www.humhub.org/
+   * @copyright Copyright (c) HumHub GmbH & Co. KG
+   * @license https://www.humhub.com/licences
+   */
+  let count = 0;
+  function suggestionListId() {
+    return "richtext-suggestions-" + ++count;
+  }
+  function setCurrentSuggestion(view2, listId, optionId) {
+    const dom = view2 && view2.dom;
+    if (!dom) {
+      return;
+    }
+    if (listId && optionId) {
+      dom.setAttribute("aria-autocomplete", "list");
+      dom.setAttribute("aria-controls", listId);
+      dom.setAttribute("aria-activedescendant", optionId);
+    } else {
+      dom.removeAttribute("aria-autocomplete");
+      dom.removeAttribute("aria-controls");
+      dom.removeAttribute("aria-activedescendant");
+    }
+  }
+  /*
+   * @link https://www.humhub.org/
    * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
    * @license https://www.humhub.com/licences
    */
@@ -44098,6 +44149,7 @@
   class Autocomplete {
     constructor(view2) {
       this.view = view2;
+      this.listId = suggestionListId();
       this.query = null;
       this.dismissed = null;
       this.items = [];
@@ -44145,17 +44197,18 @@
         return;
       }
       if (!this.$container) {
-        this.$container = $('<div class="atwho-view humhub-richtext-provider humhub-emoji-autocomplete" role="listbox">').data("provider", { reset: () => this.close() }).appendTo("body");
+        this.$container = $('<div class="atwho-view humhub-richtext-provider humhub-emoji-autocomplete">').data("provider", { reset: () => this.close() }).appendTo("body");
       }
-      const $list = $("<ul>");
+      const $list = $('<ul role="listbox">').attr({ id: this.listId, "aria-label": translate$1(this.view, "Suggestions") });
       this.items.forEach((item, index) => {
-        $('<li role="option">').toggleClass("cur", index === this.index).attr("aria-selected", index === this.index ? "true" : "false").html('<span class="humhub-emoji-autocomplete-emoji">' + encode$2(item.emoji) + "</span> " + encode$2(item.label)).on("mousedown", (evt) => {
+        $('<li role="option">').attr("id", this.listId + "-" + index).toggleClass("cur", index === this.index).attr("aria-selected", index === this.index ? "true" : "false").html('<span class="humhub-emoji-autocomplete-emoji">' + encode$2(item.emoji) + "</span> " + encode$2(item.label)).on("mousedown", (evt) => {
           evt.preventDefault();
           this.index = index;
           this.select();
         }).appendTo($list);
       });
       this.$container.empty().append($list);
+      setCurrentSuggestion(this.view, this.listId, this.listId + "-" + this.index);
       const coords = this.view.coordsAtPos(this.query.from);
       this.$container.css({
         top: coords.bottom + window.scrollY + 2,
@@ -44211,6 +44264,7 @@
         this.$container.remove();
         this.$container = null;
       }
+      setCurrentSuggestion(this.view, null, null);
     }
     destroy() {
       this.close();
@@ -46514,6 +46568,7 @@
       }
     };
     openPrompt({
+      translate: (text2) => context.translate(text2),
       title,
       fields: {
         src: new TextField({
@@ -46886,6 +46941,7 @@
       }
     };
     openPrompt({
+      translate: (text2) => context.translate(text2),
       title: context.translate("Edit video"),
       fields: {
         src: new TextField({
@@ -47226,6 +47282,7 @@
       }
     };
     openPrompt({
+      translate: (text2) => context.translate(text2),
       title: context.translate("Edit audio"),
       fields: {
         src: new TextField({
@@ -47560,6 +47617,7 @@
       delete fields["text"];
     }
     openPrompt({
+      translate: (text2) => context.translate(text2),
       title,
       fields,
       callback(attrs3) {
@@ -49055,6 +49113,7 @@
       hideOnCollapse: true,
       run(state2, dispatch, view2) {
         openPrompt({
+          translate: (text2) => context.translate(text2),
           title: context.translate("Insert table"),
           fields: {
             rowCount: new TextField({ label: context.translate("Rows"), required: true, value: 1 }),
@@ -51479,6 +51538,15 @@
       this.options.minInput = 2;
     }
     this.options.minInputText = this.options.minInputText || "Please type at least " + this.options.minInput + " characters";
+    this.listId = suggestionListId();
+  };
+  MentionProvider.prototype.getView = function() {
+    return this.state ? this.state.view : null;
+  };
+  MentionProvider.prototype.setCurrent = function($item) {
+    this.$container.find('[role="option"]').removeClass("cur").attr("aria-selected", "false");
+    $item.addClass("cur").attr("aria-selected", "true");
+    setCurrentSuggestion(this.getView(), this.listId, $item.attr("id"));
   };
   MentionProvider.prototype.query = function(state2, node) {
     this.state = state2;
@@ -51512,6 +51580,7 @@
     if (this.$container) {
       this.$container.remove();
       this.$container = null;
+      setCurrentSuggestion(this.getView(), null, null);
       this.event.trigger("closed");
     }
   };
@@ -51519,16 +51588,14 @@
     let $cur = this.$container.find(".cur");
     let $prev = $cur.prev();
     if ($prev.length) {
-      $prev.addClass("cur");
-      $cur.removeClass("cur");
+      this.setCurrent($prev);
     }
   };
   MentionProvider.prototype.next = function() {
     let $cur = this.$container.find(".cur");
     let $next = $cur.next();
     if ($next.length) {
-      $next.addClass("cur");
-      $cur.removeClass("cur");
+      this.setCurrent($next);
     }
   };
   MentionProvider.prototype.select = function() {
@@ -51549,26 +51616,34 @@
     });
     const that = this;
     if (this.result && this.result.length) {
-      let $list = $('<ul style="list-style-type: none;padding:0px;margin:0px;">');
-      this.result.forEach(function(item) {
+      let $list = $('<ul role="listbox" style="list-style-type: none;padding:0px;margin:0px;">').attr({
+        id: this.listId,
+        "aria-label": this.getView() ? translate$1(this.getView(), "Suggestions") : "Suggestions"
+      });
+      this.result.forEach(function(item, index) {
         const name2 = encode$2(item.name);
         const $li = item.image ? $("<li>" + item.image + " " + name2 + "</li>") : $("<li>" + name2 + "</li>");
+        $li.find("a").contents().unwrap();
+        $li.find("img").attr("alt", "");
+        $li.attr({ role: "option", id: that.listId + "-" + index, "aria-selected": "false" });
         $li.data("item", item).on("click", () => {
-          that.$container.find(".cur").removeClass("cur");
-          $li.addClass("cur");
+          that.setCurrent($li);
           that.select();
         });
         $list.append($li);
       });
-      $list.find("li").first().addClass("cur");
       this.$container.append($list);
+      this.setCurrent($list.find("li").first());
     } else if (this.result.text) {
+      setCurrentSuggestion(this.getView(), null, null);
       const name2 = encode$2(this.result.text);
       this.$container.append($("<span>" + name2 + "</span>"));
     } else if (this.result.loader) {
+      setCurrentSuggestion(this.getView(), null, null);
       let $loader = getLoaderWidget();
       this.$container.append($('<div style="text-align:center;">').append($loader));
     } else {
+      setCurrentSuggestion(this.getView(), null, null);
       this.$container.append($("<span>No Result</span>"));
     }
     $("body").append(this.$container.show());

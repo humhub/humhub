@@ -79,6 +79,7 @@ export function promt(title, context, attrs, view, node) {
     };
 
     openPrompt({
+        translate: (text) => context.translate(text),
         title: title,
         fields: {
             src: new TextField({

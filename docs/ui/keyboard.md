@@ -134,7 +134,11 @@ feed, and a text field or editor keeps them.
 - The toolbar is a `role="toolbar"` and one Tab stop: only one of its buttons is in the tab
   order, the arrow keys move between them, Enter or ArrowDown opens a dropdown, Escape closes it,
   and Tab leaves the toolbar for the text. The mention and emoji suggestions take ↑/↓ and Enter, and
-  Escape closes them.
+  Escape closes them. They are a named `listbox`, and the editor points to the current option
+  (`aria-activedescendant`), so it is read while the focus stays in the text.
+- The dialog of a link, an image, a table, an audio or a video (`prompt.js`) is a modal
+  `role="dialog"` named by its title, with labelled fields: Tab stays inside, Escape closes it and
+  the focus returns to where it came from.
 
 ## Checking
 

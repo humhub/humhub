@@ -28,6 +28,7 @@ function wrapTableItem(context) {
         hideOnCollapse: true,
         run(state, dispatch, view) {
             openPrompt({
+                translate: (text) => context.translate(text),
                 title: context.translate("Insert table"),
                 fields: {
                     rowCount: new TextField({label: context.translate("Rows"), required: true, value: 1}),

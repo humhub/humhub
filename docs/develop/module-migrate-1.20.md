@@ -65,6 +65,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     "Offline") is read; a bare `span` can't have one.
   - `humhub\widgets\GridView` gives every header cell `scope="col"`, unless the column's `headerOptions` set
     one.
+  - The dialog of the richtext editor (`prompt.openPrompt()`: link, image, table, audio, video) is a modal
+    `role="dialog"` named by its title, its labels are linked to the fields, Tab stays inside and Escape returns
+    the focus. It takes `translate` (`(text) => context.translate(text)`) for the labels and the buttons, which
+    were English. The mention and emoji suggestions are a named `role="listbox"` (on the `<ul>`) of
+    `role="option"`s, and the editor points to the current one (`aria-activedescendant`).
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of

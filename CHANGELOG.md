@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: The dialog of the richtext editor is a labelled modal, the mention and emoji suggestions are read out
 - Enh: The hint of a form field describes its input (`aria-describedby`), the richtext editor included
 - Enh: The header cells of a grid have `scope="col"`, the online status of a user image is read out
 - Enh: The header search closes with a named button and its field has a border of 3:1, the avatar beside an author's linked name is no extra tab stop

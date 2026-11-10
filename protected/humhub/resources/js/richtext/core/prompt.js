@@ -1,18 +1,26 @@
 const prefix = "ProseMirror-prompt";
 
-let close = ($node) => {
-    $node.remove();
-};
+let count = 0;
 
+/**
+ * A modal dialog (WCAG 4.1.2, 2.4.3): named by its title, its fields by their labels; the focus stays in it, Escape
+ * closes it and the focus returns to where it came from. `options.translate` translates the labels and the buttons.
+ */
 class Promt {
     constructor(options) {
         this.options = options;
+        this.id = prefix + '-' + (++count);
+        this.returnFocus = document.activeElement;
         this.render();
+    }
+
+    translate(text) {
+        return this.options.translate ? this.options.translate(text) : text;
     }
 
     render() {
         $('.ProseMirror-prompt').remove();
-        this.$wrapper = $('<div>').addClass(prefix).appendTo($('body'));
+        this.$wrapper = $('<div>').addClass(prefix).attr({role: 'dialog', 'aria-modal': 'true'}).appendTo($('body'));
         this.buildForm();
         this.initEvents();
         this.initWrapper();
@@ -32,7 +40,8 @@ class Promt {
         this.$form = $('<form>').appendTo(this.$wrapper);
 
         if (this.options.title) {
-            this.$form.append('<h5>' + this.options.title + '</h5>');
+            this.$form.append($('<h5>').attr('id', this.id + '-title').html(this.options.title));
+            this.$wrapper.attr('aria-labelledby', this.id + '-title');
         }
 
         this.buildFormFields();
@@ -53,20 +62,22 @@ class Promt {
         this.domFields = [];
         for (let name in this.options.fields) {
             let field = this.options.fields[name];
-            let $field = $('<div>').append('<label>' + (field.options.label || name) + ':</label><br>').append(this.options.fields[name].render());
+            let input = field.render();
+            input.id = input.id || this.id + '-' + name;
+            let $label = $('<label>').attr('for', input.id).html(this.translate(field.options.label || name) + ':');
+            let $field = $('<div>').append($label).append('<br>').append(input);
             this.domFields.push($field[0]);
         }
     }
 
     buildButtons() {
         this.$buttons = $('<div>').addClass(prefix + "-buttons");
-        // TODO: translate text!
-        $('<button type="submit" class="btn btn-primary">').addClass(prefix + "-submit").text('OK').appendTo(this.$buttons);
+        $('<button type="submit" class="btn btn-primary">').addClass(prefix + "-submit").text(this.translate('OK')).appendTo(this.$buttons);
 
         this.$buttons.append(document.createTextNode(' '));
 
         $('<button type="button" class="btn btn-secondary">').addClass(prefix + "-cancel")
-            .text('Cancel').appendTo(this.$buttons)
+            .text(this.translate('Cancel')).appendTo(this.$buttons)
             .on('click', () => this.close());
 
         this.$form.append(this.$buttons);
@@ -74,6 +85,29 @@ class Promt {
 
     close() {
         this.$wrapper.remove();
+
+        if (this.returnFocus && document.body.contains(this.returnFocus)) {
+            this.returnFocus.focus();
+        }
+    }
+
+    // Tab and Shift+Tab go round the fields and buttons of the dialog
+    trapFocus(e) {
+        const focusable = this.$wrapper.find('input, select, textarea, button, [contenteditable="true"]')
+            .not('[disabled], [type="hidden"]').toArray();
+        if (!focusable.length) {
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
     }
 
     submit() {
@@ -112,6 +146,7 @@ class Promt {
         msg.style.left = (dom.offsetLeft + dom.offsetWidth + 2) + "px";
         msg.style.top = (dom.offsetTop - 5) + "px";
         msg.className = "ProseMirror-invalid";
+        msg.setAttribute('role', 'alert');
         msg.textContent = message;
         setTimeout(() => parent.removeChild(msg), 1500);
     }
@@ -119,17 +154,15 @@ class Promt {
     initEvents() {
         this.$form.on("keydown", (e) => {
             if (e.keyCode === 27) {
+                // Only this dialog, not a modal it is opened in
                 e.preventDefault();
+                e.stopPropagation();
                 this.close();
             } else if (e.keyCode === 13 && !(e.ctrlKey || e.metaKey || e.shiftKey)) {
                 e.preventDefault();
                 this.submit();
             } else if (e.keyCode === 9) {
-                window.setTimeout(() => {
-                    if (!$.contains(this.$wrapper[0], document.activeElement)) {
-                        this.close();
-                    }
-                }, 500);
+                this.trapFocus(e);
             }
         }).on('mousedown', (e) => {
             if (!$.contains(this.$wrapper[0], e.target)) {

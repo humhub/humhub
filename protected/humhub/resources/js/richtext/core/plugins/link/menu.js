@@ -88,6 +88,7 @@ export function promt(title, context, attrs, node, mark) {
     }
 
     openPrompt({
+        translate: (text) => context.translate(text),
         title,
         fields,
         callback(attrs) {
