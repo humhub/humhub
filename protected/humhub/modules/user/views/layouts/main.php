@@ -12,7 +12,7 @@ AppAsset::register($this);
 
 if (Yii::$app->img->loginBackground->exists()) {
     $this->registerCss(
-        '.login-container { background-image: url("' . Yii::$app->img->loginBackground->getUrl() . '"); }'
+        '.login-container { background-image: url("' . Yii::$app->img->loginBackground->getUrl() . '"); }',
     );
 }
 
@@ -30,9 +30,13 @@ if (Yii::$app->img->loginBackground->exists()) {
 
 <body class="login-container">
 <?php $this->beginBody() ?>
-<?= $content; ?>
+<main id="main-content">
+    <?= $content; ?>
+</main>
 <br/>
-<?= FooterMenu::widget(['location' => FooterMenu::LOCATION_LOGIN]); ?>
+<footer>
+    <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_LOGIN]); ?>
+</footer>
 <?php $this->endBody() ?>
 </body>
 

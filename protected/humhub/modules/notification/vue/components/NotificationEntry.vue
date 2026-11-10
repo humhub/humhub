@@ -35,7 +35,7 @@
         </div>
 
         <div class="flex-shrink-0 ms-2 order-last text-center">
-            <span v-if="notification.isNew" class="badge badge-new"></span>
+            <span v-if="notification.isNew" class="badge badge-new"><span class="visually-hidden">{{ unseenLabel }}</span></span>
         </div>
     </a>
 </template>
@@ -67,12 +67,18 @@
  *
  * @since 1.20
  */
+import { i18n } from '@humhub/vue';
+
 export default {
     props: {
         // Serialized notification (NotificationSerializer::notification()).
         notification: { type: Object, required: true },
     },
     computed: {
+        // The unread dot, for a screen reader
+        unseenLabel() {
+            return i18n.t('NotificationModule.base', 'Unseen');
+        },
         absoluteTime() {
             return this.notification.createdAt ? new Date(this.notification.createdAt).toLocaleString() : '';
         },

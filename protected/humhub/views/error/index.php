@@ -20,7 +20,7 @@ $this->pageTitle = Yii::t('base', 'Error');
         <div class="panel-body">
 
             <div class="error">
-                <h2><?= Html::encode($message); ?></h2>
+                <h1 class="h2"><?= Html::encode($message); ?></h1>
             </div>
 
             <hr>

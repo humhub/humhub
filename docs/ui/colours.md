@@ -96,9 +96,8 @@ tinted surface; a theme can still set each of them.
 
 | Job | Token | Utility | Light | Dark |
 |---|---|---|---|---|
-| A separator, the border of a box | `--bs-border-color` | `.border` | `#ddd` | `#3f3f3f` |
-| A stronger line (a toolbar, the edge of a list), a neutral placeholder fill | `--hh-border-color-strong` | | `#d7d7d7` | `#393939` |
-| The border of a control (form field, checkbox, radio, switch): 3:1 on its fill (WCAG 1.4.11) | `--hh-border-color-control` | | `#949494` | `#6c6c6c` |
+| A separator, the border of a box, a neutral placeholder fill | `--bs-border-color` | `.border` | `#ddd` | `#3f3f3f` |
+| The border of an input (field, select, checkbox, radio, switch): 3:1 on its fill (WCAG 1.4.11) | `--hh-input-border-color` (`$input-border-color`) | | `#949494` | `#6d6d6d` |
 | A status border | `--bs-{color}-border-subtle` | `.border-{color}-subtle` | | |
 | The keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 
@@ -150,7 +149,7 @@ Deprecated since 1.20. The former tokens still work, as aliases of their replace
 | `--hh-background-color-secondary` | `--bs-tertiary-bg` |
 | `--hh-background-color-highlight` | `--bs-accent-bg-subtle` |
 | `--hh-background-color-highlight-soft` | `--hh-accent-bg-soft` |
-| `--hh-background3` | `--hh-border-color-strong` |
+| `--hh-background3` | `--bs-border-color` |
 | `--hh-background4` | `--bs-tertiary-color` for an icon or a line |
 | `--hh-{background,text,border}-color-{success,warning,danger}` | `--bs-{color}-bg-subtle`, `--bs-{color}-text-emphasis`, `--bs-{color}-border-subtle` |
 | `--hh-text-color-contrast` | The contrast color of the background (`--hh-{color}-contrast`), or `--bs-white` on a fixed color |
@@ -165,7 +164,7 @@ Deprecated since 1.20. The former tokens still work, as aliases of their replace
 | `$background-color-secondary` | `$body-tertiary-bg` |
 | `$background-color-page` | `$hh-page-bg` |
 | `$background-color-highlight-soft` | `$hh-accent-bg-soft` |
-| `$background3` | `$hh-border-color-strong` |
+| `$background3` | `$border-color` |
 | `$text-color-{color}-contrast` | `$hh-{color}-contrast` |
 
 Each with its `-dark` variable. The other former colour variables (`$text-color-soft`,

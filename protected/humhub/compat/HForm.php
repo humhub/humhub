@@ -263,6 +263,9 @@ class HForm extends \yii\base\Component
                     case 'text':
                         $field = $this->form->field($model, $name)->textInput($options);
                         break;
+                    case 'email':
+                        $field = $this->form->field($model, $name)->input('email', $options);
+                        break;
                     case 'multiselectdropdown':
                         $field = $this->form->field($model, $name)->widget(MultiSelect::class, [
                             'items' => $definition['items'],

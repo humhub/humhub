@@ -174,14 +174,14 @@ class ThemeVariablesTest extends HumHubDbTestCase
     }
 
     /**
-     * The border of a control is the light line, darkened (lightened) to 3:1 on the surface (WCAG 1.4.11)
+     * The border of an input is the line, darkened (lightened) to 3:1 on the surface (WCAG 1.4.11)
      */
-    public function testControlBorderReachesThreeToOne()
+    public function testInputBorderReachesThreeToOne()
     {
         $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
 
-        $this->assertSame('#949494', $variables->get('hh-border-color-control'));
-        $this->assertSame('#6c6c6c', $variables->get('hh-border-color-control-dark'));
+        $this->assertSame('#949494', $variables->get('hh-input-border-color'));
+        $this->assertSame('#6d6d6d', $variables->get('hh-input-border-color-dark'));
     }
 
     /**

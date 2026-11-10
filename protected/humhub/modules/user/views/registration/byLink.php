@@ -22,7 +22,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <div id="create-account-form" class="panel panel-default animated bounceIn"
          data-has-auth-client="0">
         <div class="panel-heading">
-            <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
+            <h1><?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?></h1>
         </div>
         <div class="panel-body">
             <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
@@ -37,7 +37,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 
             <?php if ($showRegistrationForm): ?>
                 <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
-                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
+                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'autocomplete' => 'email']); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
                     <?= $form->field($invite, 'captcha')
                         ->widget(CaptchaField::class, ['showOnFocusElement' => '#register-email'])

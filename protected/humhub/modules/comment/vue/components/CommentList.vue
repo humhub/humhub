@@ -1,5 +1,11 @@
 <template>
+    <!-- The "Show more" links are beside the feed, which may only hold its articles (ARIA `feed`) -->
+    <div v-if="remainingPrev > 0 && items.length > 0" class="showMore">
+        <a href="#" :class="{ disabled: busyPrev }" @click.prevent="loadPrev">{{ prevLabel }}</a>
+    </div>
+
     <div
+        ref="feed"
         class="comment"
         :class="{ 'guest-mode': guest }"
         :id="commentsAreaId"
@@ -8,10 +14,6 @@
         :aria-busy="busyPrev || busyNext ? 'true' : null"
         @humhub:feed:more.self="onFeedMore"
     >
-        <div v-if="remainingPrev > 0 && items.length > 0" class="showMore">
-            <a href="#" :class="{ disabled: busyPrev }" @click.prevent="loadPrev">{{ prevLabel }}</a>
-        </div>
-
         <template v-for="comment in items" :key="revisionKey(comment)">
             <hr class="comment-separator" aria-hidden="true">
             <CommentEntry
@@ -23,11 +25,11 @@
                 @entry-updated="onEntryUpdated"
             />
         </template>
+    </div>
 
-        <div v-if="remainingNext > 0 && items.length > 0" class="showMore">
-            <hr class="comment-separator">
-            <a href="#" :class="{ disabled: busyNext }" @click.prevent="loadNext">{{ nextLabel }}</a>
-        </div>
+    <div v-if="remainingNext > 0 && items.length > 0" class="showMore">
+        <hr class="comment-separator">
+        <a href="#" :class="{ disabled: busyNext }" @click.prevent="loadNext">{{ nextLabel }}</a>
     </div>
 </template>
 
@@ -204,7 +206,7 @@ export default {
             this.pruneCommentRevision(id);
 
             // Once the entry is out of the DOM: to its neighbour, else to the list itself
-            this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el));
+            this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$refs.feed));
         },
         replaceRoot(id, comment) {
             const index = this.items.findIndex((item) => item.id === id);

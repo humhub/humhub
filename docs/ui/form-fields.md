@@ -124,7 +124,7 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 | Design | Bootstrap variable |
 |---|---|
 | Height 38px | `$input-padding-y` (7.5px), `$input-line-height` — done since 1.20 |
-| 1px edge, 3:1 on the field (WCAG 1.4.11) | `$input-border-width`, `$input-border-color` (`--hh-border-color-control`) — done since 1.20 |
+| 1px edge, 3:1 on the field (WCAG 1.4.11) | `$input-border-width`, `$input-border-color` (`--hh-input-border-color`) — done since 1.20 |
 | Radius 6px | `$input-border-radius` (still Bootstrap's `$border-radius`) |
 | White when filled | `$input-bg` |
 | Grey when empty | `$input-empty-bg` (new), applied with `:placeholder-shown` |
@@ -143,7 +143,9 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 
 - **PHP:** `ActiveForm` / `ActiveField` render Bootstrap 5 markup (`form-label`,
   `form-control`, `form-select`, `is-invalid`, `invalid-feedback`, `form-text`). Related pieces:
-  `ActiveForm::$acknowledge` (leave warning) and `beginCollapsibleFields()`.
+  `ActiveForm::$acknowledge` (leave warning) and `beginCollapsibleFields()`. An input is described
+  by its error container (`aria-describedby` → `{input id}-error`), which is rendered empty too, so
+  a message of the client validation is read as well. The hint is not linked yet.
 - **Vue:** the form suite (`HumHubForm`, `TextField`, `TextareaField`, `SelectField`,
   `CheckboxField`, `SubmitButton`, `UploadField`, `RichTextField`) mirrors that markup exactly. It
   shares one server-error contract (HTTP 422 `{errors: {attribute: [messages]}}`, `setErrors()`,

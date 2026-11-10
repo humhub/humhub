@@ -184,7 +184,7 @@
         }
 
         table {
-            border: 1px solid var(--hh-border-color-strong);
+            border: 1px solid var(--bs-border-color);
             margin-bottom: $md-block-spacing;
             font-size: 1em;
             width: 100%;
@@ -194,7 +194,7 @@
             }
 
             th, td {
-                border: 1px solid var(--hh-border-color-strong);
+                border: 1px solid var(--bs-border-color);
                 box-sizing: border-box;
                 position: relative;
             }

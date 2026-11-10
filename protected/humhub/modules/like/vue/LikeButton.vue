@@ -17,7 +17,7 @@
             <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()"><i class="ti ti-thumb-up" aria-hidden="true"></i>{{ likeLabel }}</a>
             <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()"><i class="ti ti-thumb-up-filled" aria-hidden="true"></i>{{ unlikeLabel }}</a>
             <!-- See the guest branch's own comment above on the `{{ ' ' }}` interpolation. -->
-            <template v-if="count > 0">{{ ' ' }}<a href="#" @click.prevent="showUserList = true">
+            <template v-if="count > 0">{{ ' ' }}<a href="#" :aria-label="userListLinkLabel" aria-haspopup="dialog" @click.prevent="showUserList = true">
                 <span class="likeCount">({{ count }})</span>
             </a></template>
         </template>
@@ -93,6 +93,10 @@ export default {
         // html encoded!" docblock on `$title`), not user input.
         userListTitle() {
             return i18n.t('LikeModule.base', '<strong>Users</strong> who like this');
+        },
+        // The count opens the list of the users: "Users who like this (2)" rather than "(2)"
+        userListLinkLabel() {
+            return this.userListTitle.replace(/<[^>]*>/g, '') + ' (' + this.count + ')';
         },
         // Used for both the header close button's aria-label and the footer Close
         // button's visible label below - 'base' is preloaded via `i18nCategories`

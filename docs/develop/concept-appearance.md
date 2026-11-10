@@ -141,7 +141,7 @@ active mode. E-mails always use the light logo.
 
 **High contrast** redefines semantic tokens only (`concept-design-tokens.md`):
 `--bs-secondary-color` and `--bs-tertiary-color` = `--bs-body-color`, `--bs-border-color` and
-`--hh-border-color-strong` and `--hh-border-color-control` = `$hh-border-color-contrast` (`#767676`, dark `#8a8a8a`, 4.5:1). Links in
+`--hh-input-border-color` = `$hh-border-color-contrast` (`#767676`, dark `#8a8a8a`, 4.5:1). Links in
 running text (`a:not([class])`, Markdown, richtext) are underlined, the focus ring is a 3px outline in
 `--bs-emphasis-color`. It works in both colour modes.
 

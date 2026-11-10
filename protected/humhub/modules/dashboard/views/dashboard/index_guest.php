@@ -9,6 +9,8 @@ use humhub\widgets\FooterMenu;
 ?>
 
 <?= Html::beginContainer(); ?>
+<?php /* The page's heading, which the dashboard does not show */ ?>
+<h1 class="visually-hidden"><?= Yii::t('DashboardModule.base', 'Dashboard') ?></h1>
 <div class="row">
     <div id="layout-content-column" class="col-lg-8 layout-content-container">
         <?= DashboardContent::widget(); ?>

@@ -196,7 +196,7 @@ $form-choice-border-radius: 4px !default;
         margin: 0 6px 0 0;
         vertical-align: middle;
         background: var(--bs-body-bg);
-        border: 2px solid var(--hh-border-color-control);
+        border: 2px solid var(--hh-input-border-color);
         border-radius: $form-choice-border-radius;
         cursor: pointer;
     }
@@ -226,7 +226,7 @@ $form-choice-border-radius: 4px !default;
         border-radius: 50%;
 
         &:checked {
-            border: 2px solid var(--hh-border-color-control);
+            border: 2px solid var(--hh-input-border-color);
 
             &::after {
                 content: ' ';
@@ -249,8 +249,8 @@ $form-choice-border-radius: 4px !default;
     // After `:checked`, so it wins without `!important`
     input[type=checkbox], input[type=radio] {
         &:disabled {
-            background: var(--hh-border-color-strong);
-            border: 2px solid var(--hh-border-color-strong);
+            background: var(--bs-border-color);
+            border: 2px solid var(--bs-border-color);
             cursor: not-allowed;
         }
     }
@@ -593,8 +593,8 @@ $form-choice-border-radius: 4px !default;
                 border-color: var(--bs-secondary-bg);
 
                 &:hover, &:focus {
-                    background: var(--hh-border-color-strong);
-                    border-color: var(--hh-border-color-strong);
+                    background: var(--bs-border-color);
+                    border-color: var(--bs-border-color);
                 }
 
                 &:active, &.active {

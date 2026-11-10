@@ -23,14 +23,48 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
-- **Controls have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1). The new
-  `--hh-border-color-control` (`$hh-border-color-control`, `-dark`; `#949494`, dark `#6c6c6c`) reaches 3:1
-  on the fill of a control. It is `$input-border-color` (instead of `--bs-secondary-bg`), the border of a
-  checkbox and a radio, `$form-check-input-border` and `$form-switch-color` (the knob of a switch that is
-  off). `--hh-border-color-strong` stays the light line of a toolbar or a list. A link in rendered rich
-  text, a `<p>`, a `.form-text` or an `.alert` is underlined, except the controls in
-  `$hh-link-underline-exclude` (formerly `$hh-high-contrast-link-exclude`, which high contrast uses as
-  well). A theme with its own field border should reach 3:1 on the field too.
+- **The pages without a session have landmarks and a heading** (sign in, sign up, password recovery,
+  registration, maintenance). The auth layout (`user/views/layouts/main.php`) puts the content into
+  `<main id="main-content">`, the target of the skip link, and the footer menu into a `<footer>`; a theme
+  that overrides the layout should do the same. The panel title is the page's `<h1>`, and the site name
+  above the panel without a logo (`#app-title`) is a `div.h1` instead of an `<h1>`; a theme that styles
+  `h1#app-title` should select `#app-title`. The fields have a real `<label>` instead of a text above them
+  plus `aria-label`, the registration form fills in with `autocomplete` (`username`, `email`,
+  `new-password`), and `HForm` knows the element type `email`.
+- **An input is described by its error message:** `humhub\widgets\form\ActiveField` gives the error
+  container the id `{input id}-error` (unless `errorOptions['id']` is set) and adds it to the input's
+  `aria-describedby`, next to an existing value. It is left out where the field renders no error.
+- **Markup for screen readers** (WCAG 1.3.1, 4.1.2, 4.1.3). A theme that overrides one of these views or
+  styles the old structure should follow:
+  - The menu column of the space and profile layouts (`.layout-nav-container`) is a `div` instead of an
+    `<aside>` named "Sidebar": the menu in it is the `<nav>`, and the sidebar on the right is the page's one
+    "Sidebar" (`space/views/space/_layout.php`, `user/views/profile/_layout.php`).
+  - A comment list is a feed of its comments only: its "Show more" links (`.showMore`) are siblings of
+    `.comment` inside `.comment-container`, so `.comment-container .showMore` selects them.
+  - The header search names its field, the results of a provider are a `role="group"` named by the
+    provider's title, and `.dropdown-search-status` (a `role="status"` region) reads out the counts
+    (`widgets/views/metaSearch.php`, `metaSearchProvider.php`).
+  - The status bar reads its messages out through two regions that are there before a message
+    (`role="status"`, `role="alert"`); the toast itself has no live role.
+  - The richtext editor is a `role="textbox"` with `aria-multiline`, named by the label of its field or else
+    by its placeholder; a disabled one has `aria-disabled`. `options.attributes` of the editor widget
+    still wins.
+  - The text of a neutral badge is `$badge-color: var(--hh-secondary-fg)`, which reads on its fill.
+  - The message of the error page is its `<h1>` (`h1.h2`, `h1.h6` on the login required page), the
+    dashboard has a visually hidden `<h1>`, and the subtitle of a profile header (`h2`) is left out when
+    it is empty.
+- **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
+  - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
+    darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of
+    `--bs-secondary-bg`), and so do the border of a checkbox and a radio, `$form-check-input-border` and
+    `$form-switch-color` (the knob of a switch that is off). A theme with its own field border should reach
+    3:1 on the field too.
+  - `--hh-border-color-strong` (`$hh-border-color-strong`, new in this cycle) is removed. Its lines and
+    fills take `--bs-border-color` (`#ddd` instead of `#d7d7d7`), the border of an input
+    `--hh-input-border-color`. The former `$background3` (`--hh-background3`) now stands for `$border-color`.
+  - A link in rendered rich text, a `<p>`, a `.form-text` or an `.alert` is underlined, except the controls
+    in `$hh-link-underline-exclude` (formerly `$hh-high-contrast-link-exclude`, which high contrast uses as
+    well).
 - **Picker filters suggest before anything is typed.** `SpaceFilter`, `UserFilter` and
   `TopicFilter` take `suggest` (`fn(ListContext $context, int $limit): int[]`, the ids worth
   suggesting, the most relevant first; `HasSuggestions`). A list answers them through an endpoint
@@ -71,8 +105,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `dark` colours are no settings any more: `$light` (the neutral button) is derived from `$body-bg`,
   `$dark` is the theme's; `ThemeSettingsForm::COLORS` lists the nine remaining ones.
 - **The surfaces are derived from `$body-bg`** (and `$body-bg-dark`), which can be set in
-  *Administration → Appearance → Theme*: `$hh-page-bg`, `$body-tertiary-bg`, `$body-secondary-bg`,
-  `$border-color` and `$hh-border-color-strong` (and their `-dark` variables, plus
+  *Administration → Appearance → Theme*: `$hh-page-bg`, `$body-tertiary-bg`, `$body-secondary-bg`
+  and `$border-color` (and their `-dark` variables, plus
   `$hh-topbar-bg-dark`) are mixed from it. The defaults are unchanged, except the dark mode's page: `#161616` instead of black. A theme that sets
   `$body-bg` gets a page that follows it; to keep a fixed one, it sets `$hh-page-bg` too.
   `ThemeVariables::get()` returns such derived variables as the `#rrggbb` they compile to.
@@ -2658,7 +2692,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$text-color-secondary` → `$body-secondary-color`, `$text-color-soft2` → `$body-tertiary-color`,
     `$background-color-main` → `$body-bg`, `$background-color-secondary` → `$body-tertiary-bg`,
     `$background-color-page` → `$hh-page-bg`, `$background-color-highlight-soft` → `$hh-accent-bg-soft`,
-    `$background3` → `$hh-border-color-strong`, `$text-color-{color}-contrast` → `$hh-{color}-contrast`, each with its
+    `$background3` → `$border-color`, `$text-color-{color}-contrast` → `$hh-{color}-contrast`, each with its
     `-dark` variable. The former names are deprecated: a theme setting one sets the new one
     (`variables-deprecated.scss`), and `Theme::variable()` with a former name returns the new one and logs a
     warning. Removed without a successor: `$text-color-default`, `$text-color-soft`, `$text-color-soft3`,
@@ -2675,8 +2709,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$nav-tabs-link-active-bg`: Bootstrap's default, the surface, is right now.
   - The alerts (`.alert-success`, `.alert-warning`, `.alert-danger`) use Bootstrap's colours (`--bs-{color}-bg-subtle`,
     `-text-emphasis`, `-border-subtle`): their text is readable now (contrast 7:1 instead of 2:1).
-  - New: `--hh-page-bg`, `--hh-border-color-strong` (border of a checkbox, radio or switch), `--hh-accent-bg-soft`
-    (a light selection), `--hh-code-bg` (inline code).
+  - New: `--hh-page-bg`, `--hh-accent-bg-soft` (a light selection), `--hh-code-bg` (inline code).
   - **Deprecated:** the colour tokens `--hh-text-color-*`, `--hh-background-color-*`, `--hh-background3`,
     `--hh-background4` and `--hh-{background,text,border}-color-{success,warning,danger}`. They keep working as aliases
     of their replacements, so a few take the core's colour: `--hh-text-color-default` `#4b4b4b` → `#555`,

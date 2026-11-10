@@ -47,9 +47,9 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 $link-color: #000000 !default;
 $link-hover-color: $link-color !default;
 $code-color: mix(black, $accent, 10%) !default;
-// Form fields: 1px border (Bootstrap's $input-border-width) in the line color of a control, 38px
+// Form fields: 1px border (Bootstrap's $input-border-width) in `--hh-input-border-color` (3:1, below), 38px
 // high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
-$input-border-color: var(--hh-border-color-control) !default;
+$input-border-color: var(--hh-input-border-color) !default;
 $input-padding-y: 7.5px !default;
 // No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
 $input-box-shadow: 0 0 0 0 transparent !default;
@@ -115,9 +115,9 @@ $body-secondary-color: hh-readable(#7a7a7a, $body-bg, $hh-fg-contrast-ratio) !de
 
 // Lines
 $border-color: mix(black, $body-bg, 13.3%) !default; // A separator, the border of a box
-$hh-border-color-strong: mix(black, $body-bg, 15.7%) !default; // A stronger line: a toolbar, the edge of a list
-// The border of a control (a form field, checkbox, radio, switch): 3:1 on the control's fill (WCAG 1.4.11)
-$hh-border-color-control: hh-readable($hh-border-color-strong, $body-bg, 3) !default;
+// The border of an input (a field, select, checkbox, radio, switch): the line, darkened to 3:1 on the input's fill (WCAG
+// 1.4.11). Bootstrap's `$input-border-color` takes it as `--hh-input-border-color`, which follows the color mode
+$hh-input-border-color: hh-readable($border-color, $body-bg, 3) !default;
 
 // The top bar and the account menu hanging from it
 $hh-topbar-bg: var(--bs-primary) !default;
@@ -206,8 +206,9 @@ $badge-font-weight: normal !default;
 $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
-// A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`
-$badge-color: var(--bs-secondary-color) !default;
+// A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`. Its text is the secondary
+// colour as text, which reads on the badge's fill (`--bs-secondary-bg`, the darkest surface)
+$badge-color: var(--hh-secondary-fg) !default;
 
 
 //
@@ -338,8 +339,8 @@ $form-check-input-checked-bg-color: var(--bs-primary) !default;
 $form-check-input-indeterminate-bg-color: var(--bs-primary) !default;
 // The track and the knob of a switch (`.form-switch`) that is off, as the border of a checkbox. The knob is drawn
 // in an SVG and takes the compiled colors, the dark one is `$form-switch-color-dark`
-$form-check-input-border: var(--bs-border-width) solid var(--hh-border-color-control) !default;
-$form-switch-color: $hh-border-color-control !default;
+$form-check-input-border: var(--bs-border-width) solid var(--hh-input-border-color) !default;
+$form-switch-color: $hh-input-border-color !default;
 
 //
 // Dark color mode (`[data-bs-theme="dark"]`)
@@ -382,9 +383,8 @@ $hh-code-bg-dark: $accent-bg-subtle-dark !default;
 $mark-bg-dark: shade-color($warning, 80%) !default;
 
 $border-color-dark: mix(white, $body-bg-dark, 13.1%) !default;
-$hh-border-color-strong-dark: mix(white, $body-bg-dark, 10.4%) !default;
-$hh-border-color-control-dark: hh-readable($hh-border-color-strong-dark, $body-bg-dark, 3) !default;
-$form-switch-color-dark: $hh-border-color-control-dark !default;
+$hh-input-border-color-dark: hh-readable($border-color-dark, $body-bg-dark, 3) !default;
+$form-switch-color-dark: $hh-input-border-color-dark !default;
 $hh-topbar-bg-dark: mix(black, $body-bg-dark, 50%) !default; // Darker than the surfaces, as the primary color in the light mode
 $hh-topbar-color-dark: var(--bs-emphasis-color) !default;
 
@@ -417,7 +417,7 @@ $background-color-main: $body-bg !default;
 $background-color-secondary: $body-tertiary-bg !default;
 $background-color-page: $hh-page-bg !default;
 $background-color-highlight-soft: $hh-accent-bg-soft !default;
-$background3: $hh-border-color-strong !default;
+$background3: $border-color !default;
 $text-color-main-dark: $body-color-dark !default;
 $text-color-highlight-dark: $body-emphasis-color-dark !default;
 $text-color-secondary-dark: $body-secondary-color-dark !default;
@@ -426,7 +426,7 @@ $background-color-main-dark: $body-bg-dark !default;
 $background-color-secondary-dark: $body-tertiary-bg-dark !default;
 $background-color-page-dark: $hh-page-bg-dark !default;
 $background-color-highlight-soft-dark: $hh-accent-bg-soft-dark !default;
-$background3-dark: $hh-border-color-strong-dark !default;
+$background3-dark: $border-color-dark !default;
 $text-color-accent-contrast: $hh-accent-contrast !default;
 $text-color-primary-contrast: $hh-primary-contrast !default;
 $text-color-secondary-contrast: $hh-secondary-contrast !default;

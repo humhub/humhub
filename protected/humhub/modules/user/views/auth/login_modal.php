@@ -24,13 +24,12 @@ use humhub\widgets\modal\ModalButton;
 
     <?php if ($showLoginForm): ?>
         <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]) ?>
-            <p class="mb-2"><?= $model->getAttributeLabel('username') ?></p>
             <?= $form->field($model, 'username')->textInput([
                 'id' => 'login_username',
                 'placeholder' => $model->getAttributeLabel('username'),
                 'autocomplete' => 'username',
                 'autofocus' => true,
-            ])->label(false) ?>
+            ])->label(null, ['class' => 'form-label fw-normal']) ?>
 
             <?= ModalButton::save(Yii::t('UserModule.auth', 'Continue'))
                 ->submit(['/user/auth/login'])

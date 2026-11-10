@@ -44,6 +44,6 @@ if (Yii::$app->img->logo->exists()) {
         </a>
         <br>
     <?php else: ?>
-        <h1 id="app-title" class="animated fadeIn"><?= Html::encode(Yii::$app->name) ?></h1>
+        <div id="app-title" class="h1 animated fadeIn"><?= Html::encode(Yii::$app->name) ?></div>
     <?php endif; ?>
 <?php endif; ?>

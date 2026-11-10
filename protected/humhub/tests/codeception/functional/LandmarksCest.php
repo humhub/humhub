@@ -30,6 +30,41 @@ class LandmarksCest
         $I->seeElement('aside.layout-sidebar-container[aria-label]');
     }
 
+    public function testSpacePageNamesEachLandmarkOnce(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the menu column of a space is its named nav, and the sidebar the only aside');
+
+        $I->amUser1();
+        $I->amOnSpace1();
+
+        $I->seeElement('.layout-nav-container nav[aria-label]');
+        $I->dontSeeElement('aside.layout-nav-container');
+        $I->seeNumberOfElements('aside[aria-label]', 1);
+    }
+
+    public function testDashboardHasOneHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the dashboard has one level-one heading, which it does not show');
+
+        $I->amUser1();
+        $I->amOnRoute('/dashboard/dashboard');
+        $I->seeNumberOfElements('h1', 1);
+        $I->see('Dashboard', 'h1.visually-hidden');
+    }
+
+    public function testSignInPageLandmarksAndHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the sign-in page has a main landmark, one heading and a labelled field');
+
+        $I->amOnRoute('/user/auth/login');
+
+        $I->seeElement('main#main-content #login-form');
+        $I->seeElement('footer .footer-nav-login, footer .powered');
+        $I->seeNumberOfElements('h1', 1);
+        $I->see('Sign In', '#login-form .panel-heading h1');
+        $I->seeElement('label[for="login_username"]');
+    }
+
     public function testActiveMenuLinkIsTheCurrentPage(FunctionalTester $I)
     {
         $I->wantTo('ensure the active navigation link carries aria-current');

@@ -8,6 +8,12 @@
     .comment-container {
         border-radius: 3px;
 
+        // Beside a comment list, not in it (it is a feed of the comments only)
+        .showMore {
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+
         .comment {
             .single-comment {
                 position: relative;
@@ -153,11 +159,6 @@
                 img[data-contentcontainer-id] {
                     filter: grayscale(100%);
                 }
-            }
-
-            .showMore {
-                padding-bottom: 1rem;
-                text-align: center;
             }
 
             .post-file-list {

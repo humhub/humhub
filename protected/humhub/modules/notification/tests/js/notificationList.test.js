@@ -68,7 +68,7 @@ describe('NotificationEntry', () => {
         expect(anchor.attributes('data-notification-id')).toBe('5');
         expect(anchor.attributes('data-notification-group')).toBe('bjE6NQ');
         expect(wrapper.find('strong').text()).toBe('Jane');
-        expect(wrapper.find('.badge.badge-new').exists()).toBe(true);
+        expect(wrapper.find('.badge.badge-new .visually-hidden').text()).toBe('Unseen');
         expect(wrapper.find('time[data-ui-addition="timeago"]').attributes('datetime'))
             .toBe('2026-08-20T10:00:00+00:00');
         expect(wrapper.find('img').attributes('src')).toBe('/uploads/jane.jpg');
