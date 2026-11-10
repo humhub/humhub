@@ -23,6 +23,8 @@ humhub.module('ui.search', function(module, require, $) {
             providerRecordText: '.search-provider-record-text',
             providerCounter: '.search-provider-title > span',
             providerShowAll: '.search-provider-show-all',
+            providerTitle: '.search-provider-title',
+            status: '.dropdown-search-status',
             backdrop: '.dropdown-backdrop',
             additionalToggler: {
                 form: 'form[data-bs-toggle="humhub.ui.search"]',
@@ -231,6 +233,7 @@ humhub.module('ui.search', function(module, require, $) {
 
         if (data.keyword === '') {
             that.getList().hide();
+            that.$.find(that.selectors.status).text('');
             that.getInput().val('');
             that.previousKeyword = '';
             if (!that.hasInput()) {
@@ -288,6 +291,7 @@ humhub.module('ui.search', function(module, require, $) {
                 } else if (newProviderContent.data('hide-on-empty') !== undefined) {
                     newProviderContent.hide();
                 }
+                that.announceResults();
             }).catch(function (e) {
                 module.log.error(e, true);
                 loader.reset(provider.find(that.selectors.providerContent));
@@ -298,7 +302,24 @@ humhub.module('ui.search', function(module, require, $) {
         });
     }
 
+    /**
+     * Reads out the result counts once the providers have answered (WCAG 4.1.3): the titles of the searched
+     * providers, e.g. "Content (5), Spaces (2)", in the status region of the panel.
+     */
+    Search.prototype.announceResults = function () {
+        const that = this;
+        clearTimeout(that.announceTimeout);
+        that.announceTimeout = setTimeout(function () {
+            const titles = that.getList().find(that.selectors.providerSearched + ' ' + that.selectors.providerTitle)
+                .map(function () {
+                    return $(this).text().replace(/\s+/g, ' ').trim();
+                }).get();
+            that.$.find(that.selectors.status).text(titles.join(', '));
+        }, 500);
+    }
+
     Search.prototype.reset = function () {
+        this.$.find(this.selectors.status).text('');
         this.getCurrentInput().val('');
         this.getProviders().hide();
         this.hidePanel();

@@ -92,6 +92,15 @@ describe('NotificationMenu', () => {
         expect(wrapper.findAll('.hh-list > a')).toHaveLength(1);
     });
 
+    it('names the bell with the unread count, which the badge only shows', () => {
+        wrapper = mount(NotificationMenu, { ...mountOptions(), props: menuProps() });
+
+        const bell = wrapper.find('#icon-notifications');
+        expect(bell.attributes('aria-expanded')).toBe('false');
+        expect(bell.find('.visually-hidden').text()).toBe('Open the notification dropdown menu, 2 Unseen');
+        expect(wrapper.find('#badge-notifications').attributes('aria-hidden')).toBe('true');
+    });
+
     it('hides the badge and the mark-as-seen action without unread notifications', () => {
         wrapper = mount(NotificationMenu, {
             ...mountOptions(),
@@ -260,6 +269,13 @@ const overviewProps = (overrides = {}) => ({
 });
 
 describe('NotificationOverview', () => {
+    it('names the group of the category filters', () => {
+        wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
+
+        const group = wrapper.find('#notification-filter-all').element.closest('[role="group"]');
+        expect(group.getAttribute('aria-label')).toBe('Categories');
+    });
+
     it('renders the page panels with the inlined first page and the filter', () => {
         wrapper = mount(NotificationOverview, { ...mountOptions(), props: overviewProps() });
 

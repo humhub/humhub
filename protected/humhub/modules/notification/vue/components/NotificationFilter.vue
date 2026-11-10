@@ -12,7 +12,7 @@
             ><span v-if="option.icon" v-html="option.icon"></span> {{ option.label }}</button>
         </div>
 
-        <div style="padding-left:5px">
+        <div style="padding-left:5px" role="group" :aria-label="categoriesLabel">
             <div class="form-check">
                 <input
                     id="notification-filter-all"
@@ -81,6 +81,9 @@ export default {
         },
         seenFilterLabel() {
             return i18n.t('NotificationModule.base', 'Filter');
+        },
+        categoriesLabel() {
+            return i18n.t('NotificationModule.base', 'Categories');
         },
         allLabel() {
             return i18n.t('NotificationModule.base', 'All');

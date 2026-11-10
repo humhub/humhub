@@ -1,12 +1,14 @@
 <template>
+    <!-- What a screen reader reads out (WCAG 4.1.3): live regions that are there before the message, so that only
+         their text changes, an error assertively. The card below is what is seen -->
+    <div class="visually-hidden" role="status" aria-atomic="true">{{ entry && !isError ? entry.message : '' }}</div>
+    <div class="visually-hidden" role="alert" aria-atomic="true">{{ entry && isError ? entry.message : '' }}</div>
+
     <div v-if="entry" class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
         <div
             ref="toast"
             class="toast fade show"
             :class="[toneClass, { showing: !visible }]"
-            :role="isError ? 'alert' : 'status'"
-            :aria-live="isError ? 'assertive' : 'polite'"
-            aria-atomic="true"
             @mouseenter="interact('hovered', true)"
             @mouseleave="interact('hovered', false)"
             @focusin="interact('focused', true)"

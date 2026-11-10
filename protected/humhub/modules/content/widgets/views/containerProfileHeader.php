@@ -57,7 +57,9 @@ $profileImageHeight = $container->image->defaultOptions['height'];
         <!-- show user name and title -->
         <div class="img-profile-data">
             <h1 class="<?= $classPrefix ?>"><?= Link::to($title)->link($container->getUrl())->encodeLabel(false) ?></h1>
-            <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
+            <?php if ($subTitle !== null && $subTitle !== '') : ?>
+                <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
+            <?php endif; ?>
         </div>
 
 

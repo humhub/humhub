@@ -23,6 +23,25 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
+- **Markup for screen readers** (WCAG 1.3.1, 4.1.2, 4.1.3). A theme that overrides one of these views or
+  styles the old structure should follow:
+  - The menu column of the space and profile layouts (`.layout-nav-container`) is a `div` instead of an
+    `<aside>` named "Sidebar": the menu in it is the `<nav>`, and the sidebar on the right is the page's one
+    "Sidebar" (`space/views/space/_layout.php`, `user/views/profile/_layout.php`).
+  - A comment list is a feed of its comments only: its "Show more" links (`.showMore`) are siblings of
+    `.comment` inside `.comment-container`, so `.comment-container .showMore` selects them.
+  - The header search names its field, the results of a provider are a `role="group"` named by the
+    provider's title, and `.dropdown-search-status` (a `role="status"` region) reads out the counts
+    (`widgets/views/metaSearch.php`, `metaSearchProvider.php`).
+  - The status bar reads its messages out through two regions that are there before a message
+    (`role="status"`, `role="alert"`); the toast itself has no live role.
+  - The richtext editor is a `role="textbox"` with `aria-multiline`, named by the label of its field or else
+    by its placeholder; a disabled one has `aria-disabled`. `options.attributes` of the editor widget
+    still wins.
+  - The text of a neutral badge is `$badge-color: var(--hh-secondary-fg)`, which reads on its fill.
+  - The message of the error page is its `<h1>` (`h1.h2`, `h1.h6` on the login required page), the
+    dashboard has a visually hidden `<h1>`, and the subtitle of a profile header (`h2`) is left out when
+    it is empty.
 - **Picker filters suggest before anything is typed.** `SpaceFilter`, `UserFilter` and
   `TopicFilter` take `suggest` (`fn(ListContext $context, int $limit): int[]`, the ids worth
   suggesting, the most relevant first; `HasSuggestions`). A list answers them through an endpoint

@@ -48,6 +48,7 @@ SearchAsset::register($this);
         <?= Html::input('text', 'keyword', '', [
             'class' => 'dropdown-search-keyword form-control',
             'autocomplete' => 'off',
+            'aria-label' => Yii::t('base', 'Search'),
         ]) ?>
     </div>
     <ul class="dropdown-search-list d-none">
@@ -55,5 +56,7 @@ SearchAsset::register($this);
             <?= MetaSearchProviderWidget::widget(['provider' => $provider]) ?>
         <?php endforeach; ?>
     </ul>
+    <?php /* The result counts of the providers, read out once they are in (`ui.search`) */ ?>
+    <div class="dropdown-search-status visually-hidden" role="status"></div>
 </div>
 <?= Html::endTag('li') ?>

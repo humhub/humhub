@@ -85,6 +85,22 @@ describe('StatusBar', () => {
         expect(content().find('button.toast-close').exists()).toBe(true);
     });
 
+    it.each([
+        ['info', 'status'],
+        ['error', 'alert'],
+    ])('reads a %s message out through the %s region that was there before it', async (level, role) => {
+        mountBar();
+        const region = () => wrapper.find(`.visually-hidden[role="${role}"]`);
+        expect(region().exists()).toBe(true);
+        expect(region().text()).toBe('');
+
+        vueModule.status(level, 'the message');
+        await vi.runOnlyPendingTimersAsync();
+
+        expect(region().text()).toBe('the message');
+        expect(content().attributes('role')).toBeUndefined();
+    });
+
     it('renders the message as text, never as markup', async () => {
         mountBar();
         vueModule.status('info', '<b>bold</b> & fun');

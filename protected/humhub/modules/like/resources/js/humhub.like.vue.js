@@ -65,6 +65,10 @@
       userListTitle() {
         return vue$1.i18n.t("LikeModule.base", "<strong>Users</strong> who like this");
       },
+      // The count opens the list of the users: "Users who like this (2)" rather than "(2)"
+      userListLinkLabel() {
+        return this.userListTitle.replace(/<[^>]*>/g, "") + " (" + this.count + ")";
+      },
       // Used for both the header close button's aria-label and the footer Close
       // button's visible label below - 'base' is preloaded via `i18nCategories`
       // above precisely so this reads translated on a cold cache too.
@@ -115,9 +119,10 @@
   };
   const _hoisted_2 = ["href"];
   const _hoisted_3 = { class: "likeCount" };
-  const _hoisted_4 = { class: "likeCount" };
-  const _hoisted_5 = ["id", "innerHTML"];
-  const _hoisted_6 = ["aria-label"];
+  const _hoisted_4 = ["aria-label"];
+  const _hoisted_5 = { class: "likeCount" };
+  const _hoisted_6 = ["id", "innerHTML"];
+  const _hoisted_7 = ["aria-label"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserList = vue.resolveComponent("UserList");
     const _component_UiModal = vue.resolveComponent("UiModal");
@@ -229,16 +234,18 @@
               )),
               vue.createElementVNode("a", {
                 href: "#",
+                "aria-label": $options.userListLinkLabel,
+                "aria-haspopup": "dialog",
                 onClick: _cache[2] || (_cache[2] = vue.withModifiers(($event) => $data.showUserList = true, ["prevent"]))
               }, [
                 vue.createElementVNode(
                   "span",
-                  _hoisted_4,
+                  _hoisted_5,
                   "(" + vue.toDisplayString($data.count) + ")",
                   1
                   /* TEXT */
                 )
-              ])
+              ], 8, _hoisted_4)
             ],
             64
             /* STABLE_FRAGMENT */
@@ -256,13 +263,13 @@
             class: "modal-title",
             id: titleId,
             innerHTML: $options.userListTitle
-          }, null, 8, _hoisted_5),
+          }, null, 8, _hoisted_6),
           vue.createElementVNode("button", {
             type: "button",
             class: "btn-close",
             "aria-label": $options.closeLabel,
             onClick: _cache[3] || (_cache[3] = ($event) => $data.showUserList = false)
-          }, null, 8, _hoisted_6)
+          }, null, 8, _hoisted_7)
         ]),
         footer: vue.withCtx(() => [
           vue.createElementVNode(

@@ -132,6 +132,8 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             };
         }
 
+        this.options.attributes = $.extend(this.getAccessibilityAttributes(), this.options.attributes);
+
         if (this.options.disabled) {
             setTimeout($.proxy(this.disable, this), 50);
         }
@@ -234,10 +236,36 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
         this.editor.view.focus();
     };
 
+    /**
+     * The editor is a text box of several lines (WCAG 4.1.2), named by the label of its field, or else by its
+     * placeholder, which is gone once something is typed
+     *
+     * @returns {Object} the attributes of the editable element
+     */
+    RichTextEditor.prototype.getAccessibilityAttributes = function () {
+        const attributes = {role: 'textbox', 'aria-multiline': 'true'};
+        const ids = [this.getInput().attr('id'), this.$.attr('id')].filter(Boolean);
+        const label = $(ids.map(function (id) {
+            return 'label[for="' + id + '"]';
+        }).join(', ')).first();
+
+        if (label.length) {
+            if (!label.attr('id')) {
+                label.attr('id', ids[0] + '-label');
+            }
+            attributes['aria-labelledby'] = label.attr('id');
+        } else if (this.options.placeholder && this.options.placeholder.text) {
+            attributes['aria-label'] = this.options.placeholder.text;
+        }
+
+        return attributes;
+    };
+
     RichTextEditor.prototype.disable = function (tooltip) {
         tooltip = tooltip || this.options.disabledText;
         $(this.editor.view.dom).removeAttr('contenteditable').attr({
             disabled: 'disabled',
+            'aria-disabled': 'true',
             title: tooltip,
         }).tooltip({
             placement: 'bottom'
