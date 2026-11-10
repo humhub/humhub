@@ -452,7 +452,9 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStreamFilter.prototype.toggleFilterPanel = function () {
         const filters = this.$.find('.wall-stream-filter-body');
-        Url.updateParam('filters_visible', filters.is(':visible') ? 0 : 1);
+        const visible = filters.is(':visible');
+        Url.updateParam('filters_visible', visible ? 0 : 1);
+        this.$.find('.wall-stream-filter-toggle').attr('aria-expanded', visible ? 'false' : 'true');
         filters.slideToggle();
     };
 

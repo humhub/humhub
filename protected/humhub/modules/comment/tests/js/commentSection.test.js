@@ -489,14 +489,14 @@ describe('CommentSection', () => {
             // like the real humhub.i18n.t(), see protected/humhub/tests/js/support/setup.mjs).
             expect(nested.find('.showMore a').text()).toBe('Show previous 2 comments');
 
-            // The link is the FIRST child of `.comment` - i.e. rendered ABOVE the replies
+            // The link is the FIRST child of the container - i.e. rendered ABOVE the replies
             // (chronologically correct: older, hidden replies belong above the newest-first
-            // preview) - not after them the way the old next-direction UI had it.
-            const commentChildren = [...nested.find('.comment').element.children];
-            const showMoreIndex = commentChildren.findIndex((el) => el.classList.contains('showMore'));
-            const firstReplyIndex = commentChildren.findIndex((el) => el.id === 'comment_15');
+            // preview) - and before their feed, which holds its articles only.
+            const containerChildren = [...nested.find('.comment-container').element.children];
+            const showMoreIndex = containerChildren.findIndex((el) => el.classList.contains('showMore'));
+            const feedIndex = containerChildren.findIndex((el) => el.classList.contains('comment'));
             expect(showMoreIndex).toBe(0);
-            expect(showMoreIndex).toBeLessThan(firstReplyIndex);
+            expect(showMoreIndex).toBeLessThan(feedIndex);
 
             await nested.find('.showMore a').trigger('click');
 
@@ -654,6 +654,25 @@ describe('CommentSection', () => {
             expect(replies.attributes('role')).toBe('feed');
             expect(replies.attributes('aria-label')).toBe('Replies');
             expect(wrapper.find('#comment_15').attributes('role')).toBe('article');
+        });
+
+        it('keeps the "Show more" links beside the feeds, which may only hold their articles', () => {
+            const reply = makeComment({ id: 15, parentCommentId: 4, replies: null });
+            const root = makeComment({ id: 4, replies: { total: 3, items: [reply], hasMore: true } });
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [root], prevCount: 2, nextCount: 2, total: 7, rootTotal: 5 } },
+            });
+
+            const links = wrapper.findAll('.showMore');
+            expect(links.length).toBe(3);
+            // Owned by an article (the replies' link is in the content of its comment) or by no feed at all
+            links.forEach((link) => {
+                const owner = link.element.closest('[role="feed"], [role="article"]');
+                expect(owner === null || owner.getAttribute('role') === 'article').toBe(true);
+            });
+            const list = wrapper.find('.comment-container > .comment').element;
+            expect([...list.children].every((child) => child.matches('hr, [role="article"]'))).toBe(true);
         });
 
         it('drops the feed role while the list has no entries', () => {

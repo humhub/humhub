@@ -14,9 +14,7 @@ use yii\helpers\Url;
         </div>
         <div class="panel-body">
 
-            <strong><?= Html::encode($message); ?></strong>
-
-            <br>
+            <h1 class="h6 fw-bold"><?= Html::encode($message); ?></h1>
             <hr>
             <button class="btn btn-accent" data-action-click="ui.modal.load"
                     data-action-url="<?= Url::to(Yii::$app->user->loginUrl) ?>" data-ui-loader>

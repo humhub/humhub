@@ -101,6 +101,10 @@
 
             <div v-if="comment.replies" class="nested-comments-root">
                 <div class="bg-light p-2 mt-3 comment-container" :class="{ 'd-none': !childItems.length && !replyOpen }">
+                    <div v-if="childHasMore" class="showMore">
+                        <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
+                    </div>
+
                     <div
                         class="comment"
                         :role="childItems.length ? 'feed' : null"
@@ -108,10 +112,6 @@
                         :aria-busy="busyReplies ? 'true' : null"
                         @humhub:feed:more.self="onFeedMore"
                     >
-                        <div v-if="childHasMore" class="showMore">
-                            <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
-                        </div>
-
                         <template v-for="child in childItems" :key="revisionKey(child)">
                             <hr class="comment-separator" aria-hidden="true">
                             <CommentEntry

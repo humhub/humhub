@@ -12,14 +12,15 @@ use humhub\widgets\bootstrap\Button;
 /* @var array $options */
 /* @var MetaSearchProviderInterface $provider */
 ?>
+<?php $titleId = $this->context->getId() . '-title' ?>
 <?= Html::beginTag('li', $options) ?>
-    <div class="search-provider-title">
+    <div class="search-provider-title" id="<?= $titleId ?>">
         <?= $provider->getName() ?>
         <?php if ($provider->getService()->isSearched()) : ?>
             <?= Html::tag('span', '(' . Yii::$app->formatter->asShortInteger($provider->getService()->getTotal()) . ')') ?>
         <?php endif; ?>
     </div>
-    <div class="search-provider-content">
+    <div class="search-provider-content" role="group" aria-labelledby="<?= $titleId ?>">
         <?php if ($provider->getService()->isSearched()) : ?>
             <?php if ($provider->getService()->hasResults()) : ?>
                 <?php foreach ($provider->getService()->getResults() as $record) : ?>

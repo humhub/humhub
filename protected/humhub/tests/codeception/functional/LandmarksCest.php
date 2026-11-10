@@ -30,6 +30,28 @@ class LandmarksCest
         $I->seeElement('aside.layout-sidebar-container[aria-label]');
     }
 
+    public function testSpacePageNamesEachLandmarkOnce(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the menu column of a space is its named nav, and the sidebar the only aside');
+
+        $I->amUser1();
+        $I->amOnSpace1();
+
+        $I->seeElement('.layout-nav-container nav[aria-label]');
+        $I->dontSeeElement('aside.layout-nav-container');
+        $I->seeNumberOfElements('aside[aria-label]', 1);
+    }
+
+    public function testDashboardHasOneHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the dashboard has one level-one heading, which it does not show');
+
+        $I->amUser1();
+        $I->amOnRoute('/dashboard/dashboard');
+        $I->seeNumberOfElements('h1', 1);
+        $I->see('Dashboard', 'h1.visually-hidden');
+    }
+
     public function testSignInPageLandmarksAndHeading(FunctionalTester $I)
     {
         $I->wantTo('ensure the sign-in page has a main landmark, one heading and a labelled field');

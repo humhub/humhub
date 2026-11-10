@@ -928,11 +928,11 @@
     key: 0,
     class: "nested-comments-root"
   };
-  const _hoisted_14 = ["role", "aria-label", "aria-busy"];
-  const _hoisted_15 = {
+  const _hoisted_14 = {
     key: 0,
     class: "showMore"
   };
+  const _hoisted_15 = ["role", "aria-label", "aria-busy"];
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CommentControls = vue$1.resolveComponent("CommentControls");
     const _component_UserImage = vue$1.resolveComponent("UserImage");
@@ -1145,6 +1145,19 @@
               class: vue$1.normalizeClass(["bg-light p-2 mt-3 comment-container", { "d-none": !$data.childItems.length && !$data.replyOpen }])
             },
             [
+              $options.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_14, [
+                vue$1.createElementVNode(
+                  "a",
+                  {
+                    href: "#",
+                    class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
+                    onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
+                  },
+                  vue$1.toDisplayString($options.moreRepliesLabel),
+                  3
+                  /* TEXT, CLASS */
+                )
+              ])) : vue$1.createCommentVNode("v-if", true),
               vue$1.createElementVNode("div", {
                 class: "comment",
                 role: $data.childItems.length ? "feed" : null,
@@ -1152,19 +1165,6 @@
                 "aria-busy": $data.busyReplies ? "true" : null,
                 "onHumhub:feed:more": _cache[4] || (_cache[4] = vue$1.withModifiers((...args) => $options.onFeedMore && $options.onFeedMore(...args), ["self"]))
               }, [
-                $options.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_15, [
-                  vue$1.createElementVNode(
-                    "a",
-                    {
-                      href: "#",
-                      class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
-                      onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
-                    },
-                    vue$1.toDisplayString($options.moreRepliesLabel),
-                    3
-                    /* TEXT, CLASS */
-                  )
-                ])) : vue$1.createCommentVNode("v-if", true),
                 (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
                   null,
@@ -1201,9 +1201,9 @@
                   128
                   /* KEYED_FRAGMENT */
                 ))
-              ], 40, _hoisted_14),
+              ], 40, _hoisted_15),
               $data.replyOpen ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
-                key: 0,
+                key: 1,
                 ref: "replyForm",
                 "content-id": $props.comment.contentId,
                 "parent-comment-id": $props.comment.id,
@@ -1336,7 +1336,7 @@
         const removed = document.getElementById("comment_" + id);
         this.items = this.items.filter((comment) => comment.id !== id);
         this.pruneCommentRevision(id);
-        this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$el));
+        this.$nextTick(() => handOverFocus(removed, neighbour ? neighbour.id : null, this.$refs.feed));
       },
       replaceRoot(id, comment) {
         const index = this.items.findIndex((item) => item.id === id);
@@ -1424,95 +1424,105 @@
       }
     }
   };
-  const _hoisted_1 = ["id", "role", "aria-label", "aria-busy"];
-  const _hoisted_2 = {
+  const _hoisted_1 = {
     key: 0,
     class: "showMore"
   };
+  const _hoisted_2 = ["id", "role", "aria-label", "aria-busy"];
   const _hoisted_3 = {
     key: 1,
     class: "showMore"
   };
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CommentEntry = vue$1.resolveComponent("CommentEntry");
-    return vue$1.openBlock(), vue$1.createElementBlock("div", {
-      class: vue$1.normalizeClass(["comment", { "guest-mode": $options.guest }]),
-      id: $options.commentsAreaId,
-      role: $data.items.length ? "feed" : null,
-      "aria-label": $options.feedLabel,
-      "aria-busy": $data.busyPrev || $data.busyNext ? "true" : null,
-      "onHumhub:feed:more": _cache[2] || (_cache[2] = vue$1.withModifiers((...args) => $options.onFeedMore && $options.onFeedMore(...args), ["self"]))
-    }, [
-      $data.remainingPrev > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2, [
-        vue$1.createElementVNode(
-          "a",
-          {
-            href: "#",
-            class: vue$1.normalizeClass({ disabled: $data.busyPrev }),
-            onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.loadPrev && $options.loadPrev(...args), ["prevent"]))
-          },
-          vue$1.toDisplayString($options.prevLabel),
-          3
-          /* TEXT, CLASS */
-        )
-      ])) : vue$1.createCommentVNode("v-if", true),
-      (vue$1.openBlock(true), vue$1.createElementBlock(
-        vue$1.Fragment,
-        null,
-        vue$1.renderList($data.items, (comment) => {
-          return vue$1.openBlock(), vue$1.createElementBlock(
-            vue$1.Fragment,
+    return vue$1.openBlock(), vue$1.createElementBlock(
+      vue$1.Fragment,
+      null,
+      [
+        vue$1.createCommentVNode(' The "Show more" links are beside the feed, which may only hold its articles (ARIA `feed`) '),
+        $data.remainingPrev > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
+          vue$1.createElementVNode(
+            "a",
             {
-              key: $options.revisionKey(comment)
+              href: "#",
+              class: vue$1.normalizeClass({ disabled: $data.busyPrev }),
+              onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.loadPrev && $options.loadPrev(...args), ["prevent"]))
             },
-            [
-              _cache[3] || (_cache[3] = vue$1.createElementVNode(
-                "hr",
+            vue$1.toDisplayString($options.prevLabel),
+            3
+            /* TEXT, CLASS */
+          )
+        ])) : vue$1.createCommentVNode("v-if", true),
+        vue$1.createElementVNode("div", {
+          ref: "feed",
+          class: vue$1.normalizeClass(["comment", { "guest-mode": $options.guest }]),
+          id: $options.commentsAreaId,
+          role: $data.items.length ? "feed" : null,
+          "aria-label": $options.feedLabel,
+          "aria-busy": $data.busyPrev || $data.busyNext ? "true" : null,
+          "onHumhub:feed:more": _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.onFeedMore && $options.onFeedMore(...args), ["self"]))
+        }, [
+          (vue$1.openBlock(true), vue$1.createElementBlock(
+            vue$1.Fragment,
+            null,
+            vue$1.renderList($data.items, (comment) => {
+              return vue$1.openBlock(), vue$1.createElementBlock(
+                vue$1.Fragment,
                 {
-                  class: "comment-separator",
-                  "aria-hidden": "true"
+                  key: $options.revisionKey(comment)
                 },
-                null,
-                -1
-                /* CACHED */
-              )),
-              vue$1.createVNode(_component_CommentEntry, {
-                comment,
-                "can-comment": $props.canComment,
-                "page-size": $props.pageSize,
-                highlighted: $props.anchorCommentId !== null && comment.id === $props.anchorCommentId,
-                onEntryRemoved: $options.removeRoot,
-                onEntryUpdated: $options.onEntryUpdated
-              }, null, 8, ["comment", "can-comment", "page-size", "highlighted", "onEntryRemoved", "onEntryUpdated"])
-            ],
-            64
-            /* STABLE_FRAGMENT */
-          );
-        }),
-        128
-        /* KEYED_FRAGMENT */
-      )),
-      $options.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3, [
-        _cache[4] || (_cache[4] = vue$1.createElementVNode(
-          "hr",
-          { class: "comment-separator" },
-          null,
-          -1
-          /* CACHED */
-        )),
-        vue$1.createElementVNode(
-          "a",
-          {
-            href: "#",
-            class: vue$1.normalizeClass({ disabled: $data.busyNext }),
-            onClick: _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.loadNext && $options.loadNext(...args), ["prevent"]))
-          },
-          vue$1.toDisplayString($options.nextLabel),
-          3
-          /* TEXT, CLASS */
-        )
-      ])) : vue$1.createCommentVNode("v-if", true)
-    ], 42, _hoisted_1);
+                [
+                  _cache[3] || (_cache[3] = vue$1.createElementVNode(
+                    "hr",
+                    {
+                      class: "comment-separator",
+                      "aria-hidden": "true"
+                    },
+                    null,
+                    -1
+                    /* CACHED */
+                  )),
+                  vue$1.createVNode(_component_CommentEntry, {
+                    comment,
+                    "can-comment": $props.canComment,
+                    "page-size": $props.pageSize,
+                    highlighted: $props.anchorCommentId !== null && comment.id === $props.anchorCommentId,
+                    onEntryRemoved: $options.removeRoot,
+                    onEntryUpdated: $options.onEntryUpdated
+                  }, null, 8, ["comment", "can-comment", "page-size", "highlighted", "onEntryRemoved", "onEntryUpdated"])
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              );
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ], 42, _hoisted_2),
+        $options.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3, [
+          _cache[4] || (_cache[4] = vue$1.createElementVNode(
+            "hr",
+            { class: "comment-separator" },
+            null,
+            -1
+            /* CACHED */
+          )),
+          vue$1.createElementVNode(
+            "a",
+            {
+              href: "#",
+              class: vue$1.normalizeClass({ disabled: $data.busyNext }),
+              onClick: _cache[2] || (_cache[2] = vue$1.withModifiers((...args) => $options.loadNext && $options.loadNext(...args), ["prevent"]))
+            },
+            vue$1.toDisplayString($options.nextLabel),
+            3
+            /* TEXT, CLASS */
+          )
+        ])) : vue$1.createCommentVNode("v-if", true)
+      ],
+      64
+      /* STABLE_FRAGMENT */
+    );
   }
   const CommentList = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
   const LIVE_NEW_COMMENT = "humhub:modules:comment:live:NewComment";

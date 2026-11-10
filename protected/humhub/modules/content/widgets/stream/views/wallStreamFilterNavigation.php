@@ -21,7 +21,7 @@ $panelColumn1Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_1] ?? nul
 $panelColumn2Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_2] ?? null;
 $panelColumn3Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_3] ?? null;
 $panelColumn4Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] ?? null;
-
+$filterBodyId = $this->context->getId() . '-filter-body';
 ?>
 
 <?= Html::beginTag('div', $options) ?>
@@ -32,9 +32,10 @@ $panelColumn4Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] ?? nul
         <?= Link::to(Yii::t('ContentModule.base', 'Filter'))
             ->cssClass('wall-stream-filter-toggle filter-toggle-link')
             ->icon('filter')
+            ->options(['aria-expanded' => $isCollapsed ? 'false' : 'true', 'aria-controls' => $filterBodyId])
             ->sm() ?>
     </div>
-    <div class="wall-stream-filter-body<?= $isCollapsed ? ' d-none' : '' ?>">
+    <div id="<?= $filterBodyId ?>" class="wall-stream-filter-body<?= $isCollapsed ? ' d-none' : '' ?>">
         <div class="filter-root container">
             <div class="row">
                 <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks]) ?>

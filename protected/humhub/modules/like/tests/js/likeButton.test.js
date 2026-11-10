@@ -73,6 +73,9 @@ describe('LikeButton', () => {
         // opens the Vue-native UiModal locally (see the "user-list modal" describe block
         // below).
         const countLink = wrapper.find('.likeCount').element.closest('a');
+        // Named after the list it opens, not just the number
+        expect(countLink.getAttribute('aria-label')).toBe('Users who like this (2)');
+        expect(countLink.getAttribute('aria-haspopup')).toBe('dialog');
         expect(countLink.getAttribute('data-bs-target')).toBeNull();
         expect(countLink.getAttribute('href')).toBe('#');
         expect(globalThis.humhubStubs.client.get).not.toHaveBeenCalled();

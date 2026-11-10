@@ -204,8 +204,9 @@ $badge-font-weight: normal !default;
 $badge-padding-y: 3px !default;
 $badge-padding-x: 5px !default;
 $badge-border-radius: 2px !default;
-// A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`
-$badge-color: var(--bs-secondary-color) !default;
+// A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`. Its text is the secondary
+// colour as text, which reads on the badge's fill (`--bs-secondary-bg`, the darkest surface)
+$badge-color: var(--hh-secondary-fg) !default;
 
 
 //

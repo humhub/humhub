@@ -4,14 +4,17 @@
         href="#"
         id="icon-notifications"
         data-bs-toggle="dropdown"
-        :aria-label="openLabel"
+        aria-expanded="false"
         @click.prevent
-    ><span :class="{ 'animated swing': animate }" v-html="bellIconHtml"></span></a>
+    ><span :class="{ 'animated swing': animate }" v-html="bellIconHtml"></span><!--
+        The name, with the unread count the badge shows beside it
+    --><span class="visually-hidden">{{ openLabel }}<template v-if="unseenCount > 0">, {{ unseenCount }} {{ unseenLabel }}</template></span></a>
 
     <span
         v-if="unseenCount > 0"
         id="badge-notifications"
         class="text-bg-danger badge badge-notifications"
+        aria-hidden="true"
     >{{ unseenCount }}</span>
 
     <ul id="dropdown-notifications" class="dropdown-menu">
@@ -145,6 +148,9 @@ export default {
         },
         headerLabel() {
             return i18n.t('NotificationModule.base', 'Notifications');
+        },
+        unseenLabel() {
+            return i18n.t('NotificationModule.base', 'Unseen');
         },
         markSeenLabel() {
             return i18n.t('NotificationModule.base', 'Mark all as seen');
