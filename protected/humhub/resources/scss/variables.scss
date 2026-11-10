@@ -47,9 +47,9 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 $link-color: #000000 !default;
 $link-hover-color: $link-color !default;
 $code-color: mix(black, $accent, 10%) !default;
-// Form fields: 1px border (Bootstrap's $input-border-width) in a light separator color, 38px
+// Form fields: 1px border (Bootstrap's $input-border-width) in the line color of a control, 38px
 // high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
-$input-border-color: var(--bs-secondary-bg) !default;
+$input-border-color: var(--hh-border-color-control) !default;
 $input-padding-y: 7.5px !default;
 // No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
 $input-box-shadow: 0 0 0 0 transparent !default;
@@ -115,7 +115,9 @@ $body-secondary-color: hh-readable(#7a7a7a, $body-bg, $hh-fg-contrast-ratio) !de
 
 // Lines
 $border-color: mix(black, $body-bg, 13.3%) !default; // A separator, the border of a box
-$hh-border-color-strong: mix(black, $body-bg, 15.7%) !default; // The border of a control (checkbox, radio, switch)
+$hh-border-color-strong: mix(black, $body-bg, 15.7%) !default; // A stronger line: a toolbar, the edge of a list
+// The border of a control (a form field, checkbox, radio, switch): 3:1 on the control's fill (WCAG 1.4.11)
+$hh-border-color-control: hh-readable($hh-border-color-strong, $body-bg, 3) !default;
 
 // The top bar and the account menu hanging from it
 $hh-topbar-bg: var(--bs-primary) !default;
@@ -334,6 +336,10 @@ $component-active-color: $hh-primary-contrast !default; // Because $component-ac
 // As a token, not compiled in: a checked box follows `--bs-primary` wherever that is redefined (high contrast)
 $form-check-input-checked-bg-color: var(--bs-primary) !default;
 $form-check-input-indeterminate-bg-color: var(--bs-primary) !default;
+// The track and the knob of a switch (`.form-switch`) that is off, as the border of a checkbox. The knob is drawn
+// in an SVG and takes the compiled colors, the dark one is `$form-switch-color-dark`
+$form-check-input-border: var(--bs-border-width) solid var(--hh-border-color-control) !default;
+$form-switch-color: $hh-border-color-control !default;
 
 //
 // Dark color mode (`[data-bs-theme="dark"]`)
@@ -377,6 +383,8 @@ $mark-bg-dark: shade-color($warning, 80%) !default;
 
 $border-color-dark: mix(white, $body-bg-dark, 13.1%) !default;
 $hh-border-color-strong-dark: mix(white, $body-bg-dark, 10.4%) !default;
+$hh-border-color-control-dark: hh-readable($hh-border-color-strong-dark, $body-bg-dark, 3) !default;
+$form-switch-color-dark: $hh-border-color-control-dark !default;
 $hh-topbar-bg-dark: mix(black, $body-bg-dark, 50%) !default; // Darker than the surfaces, as the primary color in the light mode
 $hh-topbar-color-dark: var(--bs-emphasis-color) !default;
 
@@ -391,8 +399,9 @@ $hh-border-color-contrast-dark: #8a8a8a !default; // 4.5:1 on $body-bg-dark
 $hh-high-contrast-ratio: 7 !default;
 // The edge of a surface (a panel, a card, the page header) instead of its soft shadow
 $hh-surface-box-shadow-contrast: 0 0 0 1px var(--bs-border-color) !default;
-// Links that are controls (a button, a menu item, a tab, a chip) and stay without an underline
-$hh-high-contrast-link-exclude: ".btn, .dropdown-item, .dropdown-toggle, .nav-link, .navbar-brand, .list-group-item, .page-link, .badge, .link-topic, [role=tab], [role=button], [role=menuitem]" !default;
+// Links that are controls (a button, a menu item, a tab, a chip) and stay without an underline, in running text and
+// in high contrast
+$hh-link-underline-exclude: ".btn, .dropdown-item, .dropdown-toggle, .nav-link, .navbar-brand, .list-group-item, .page-link, .badge, .link-topic, [role=tab], [role=button], [role=menuitem]" !default;
 
 
 //

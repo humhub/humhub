@@ -89,7 +89,8 @@ reaches a contrast of 7.2–9.4:1 on its fill, formerly 1.9–2.2:1.
 | Job | Token | Sass | Light | Dark |
 |---|---|---|---|---|
 | Separator, border of a box | `--bs-border-color` | `$border-color` | `#ddd` | `#3f3f3f` |
-| Border of a control: checkbox, radio, switch; a neutral placeholder fill | `--hh-border-color-strong` | `$hh-border-color-strong` | `#d7d7d7` | `#393939` |
+| A stronger line: a toolbar, the edge of a list; a neutral placeholder fill | `--hh-border-color-strong` | `$hh-border-color-strong` | `#d7d7d7` | `#393939` |
+| Border of a control: form field, checkbox, radio, switch; 3:1 on its fill | `--hh-border-color-control` | `$hh-border-color-control` | `#949494` | `#6c6c6c` |
 | Keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | `$focus-ring-color`, `$focus-ring-width`, `$hh-focus-ring-offset` | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 
 The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color)` with

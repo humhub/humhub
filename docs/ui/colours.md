@@ -27,6 +27,12 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 `{color}` is one of the theme colours: `primary`, `accent`, `secondary`, `info`, `success`,
 `warning`, `danger`, `light`, `dark`.
 
+A link is black next to the grey body text, below 3:1. In running text it is underlined, so its
+colour is not the only thing that sets it apart (WCAG 1.4.1): in rendered rich text, a paragraph,
+the hint of a field and an alert (`_link.scss`). Links that are controls (a button, a menu item, a
+tab, a chip: `$hh-link-underline-exclude`) stay without the line; high contrast underlines every
+other link too.
+
 Bootstrap's `light` theme colour, the neutral button (`Button::light()`), is a step of the surface
 too (`$light`), so it follows a surface chosen in the settings; `dark` stays the theme's.
 
@@ -91,7 +97,8 @@ tinted surface; a theme can still set each of them.
 | Job | Token | Utility | Light | Dark |
 |---|---|---|---|---|
 | A separator, the border of a box | `--bs-border-color` | `.border` | `#ddd` | `#3f3f3f` |
-| The border of a control (checkbox, radio, switch), a neutral placeholder fill | `--hh-border-color-strong` | | `#d7d7d7` | `#393939` |
+| A stronger line (a toolbar, the edge of a list), a neutral placeholder fill | `--hh-border-color-strong` | | `#d7d7d7` | `#393939` |
+| The border of a control (form field, checkbox, radio, switch): 3:1 on its fill (WCAG 1.4.11) | `--hh-border-color-control` | | `#949494` | `#6c6c6c` |
 | A status border | `--bs-{color}-border-subtle` | `.border-{color}-subtle` | | |
 | The keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 

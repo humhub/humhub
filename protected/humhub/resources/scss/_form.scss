@@ -196,7 +196,7 @@ $form-choice-border-radius: 4px !default;
         margin: 0 6px 0 0;
         vertical-align: middle;
         background: var(--bs-body-bg);
-        border: 2px solid var(--hh-border-color-strong);
+        border: 2px solid var(--hh-border-color-control);
         border-radius: $form-choice-border-radius;
         cursor: pointer;
     }
@@ -226,7 +226,7 @@ $form-choice-border-radius: 4px !default;
         border-radius: 50%;
 
         &:checked {
-            border: 2px solid var(--hh-border-color-strong);
+            border: 2px solid var(--hh-border-color-control);
 
             &::after {
                 content: ' ';

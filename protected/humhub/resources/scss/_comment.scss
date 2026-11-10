@@ -70,8 +70,10 @@
                     }
                 }
 
+                // The author's name is set apart from the time by its weight and size, not by its color only (WCAG 1.4.1)
                 h4.comment-heading {
                     font-size: 13px;
+                    font-weight: 400;
                     padding-top: 1px;
                     margin-bottom: 3px;
 

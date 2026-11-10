@@ -169,6 +169,7 @@ class IncompleteSetupWarning extends Widget
             ->icon('external-link')
             ->loader(false)
             ->options(['target' => '_blank'])
+            ->cssClass('text-decoration-underline') // In the running text of a warning (WCAG 1.4.1)
             ->sm();
     }
 }

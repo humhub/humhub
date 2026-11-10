@@ -23,6 +23,14 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
 
+- **Controls have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1). The new
+  `--hh-border-color-control` (`$hh-border-color-control`, `-dark`; `#949494`, dark `#6c6c6c`) reaches 3:1
+  on the fill of a control. It is `$input-border-color` (instead of `--bs-secondary-bg`), the border of a
+  checkbox and a radio, `$form-check-input-border` and `$form-switch-color` (the knob of a switch that is
+  off). `--hh-border-color-strong` stays the light line of a toolbar or a list. A link in rendered rich
+  text, a `<p>`, a `.form-text` or an `.alert` is underlined, except the controls in
+  `$hh-link-underline-exclude` (formerly `$hh-high-contrast-link-exclude`, which high contrast uses as
+  well). A theme with its own field border should reach 3:1 on the field too.
 - **Picker filters suggest before anything is typed.** `SpaceFilter`, `UserFilter` and
   `TopicFilter` take `suggest` (`fn(ListContext $context, int $limit): int[]`, the ids worth
   suggesting, the most relevant first; `HasSuggestions`). A list answers them through an endpoint

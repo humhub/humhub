@@ -141,10 +141,10 @@
             font-size: .8em;
         }
 
+        // Underlined as running text, see `_link.scss`
         a,
         a:visited {
             background-color: inherit;
-            text-decoration: none;
         }
 
         a.header-anchor {

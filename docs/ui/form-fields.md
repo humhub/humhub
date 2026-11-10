@@ -124,7 +124,7 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 | Design | Bootstrap variable |
 |---|---|
 | Height 38px | `$input-padding-y` (7.5px), `$input-line-height` — done since 1.20 |
-| 1px edge in the page background colour | `$input-border-width`, `$input-border-color` — done since 1.20 |
+| 1px edge, 3:1 on the field (WCAG 1.4.11) | `$input-border-width`, `$input-border-color` (`--hh-border-color-control`) — done since 1.20 |
 | Radius 6px | `$input-border-radius` (still Bootstrap's `$border-radius`) |
 | White when filled | `$input-bg` |
 | Grey when empty | `$input-empty-bg` (new), applied with `:placeholder-shown` |
