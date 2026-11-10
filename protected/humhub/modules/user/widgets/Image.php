@@ -88,6 +88,7 @@ class Image extends BaseImage
             $userIsOnline = $isOnlineService->getStatus();
             $html .= Html::tag('span', '', [
                 'class' => ['tt user-online-status', $userIsOnline ? 'user-is-online' : 'user-is-offline'],
+                'role' => 'img', // So that its name is read, a bare span can't have one
                 'aria-label' => $userIsOnline
                     ? Yii::t('UserModule.base', 'Online')
                     : Yii::t('UserModule.base', 'Offline'),

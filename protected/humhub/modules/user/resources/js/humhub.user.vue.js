@@ -77,6 +77,7 @@
         $options.hasOnlineIndicator ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
           class: vue.normalizeClass(["tt user-online-status", $props.online ? "user-is-online" : "user-is-offline"]),
+          role: "img",
           "aria-label": $options.onlineLabel,
           title: $options.onlineLabel
         }, null, 10, _hoisted_2$3)) : vue.createCommentVNode("v-if", true)

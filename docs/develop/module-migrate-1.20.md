@@ -58,6 +58,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - The avatar next to the linked name of its author (stream entry header, comment) is out of the tab
     order (`tabindex="-1"`): one tab stop per author. It stays in the accessibility tree, with its online
     status.
+  - The online status on a user image (`.user-online-status`) is a `role="img"`, so its name ("Online",
+    "Offline") is read; a bare `span` can't have one.
+  - `humhub\widgets\GridView` gives every header cell `scope="col"`, unless the column's `headerOptions` set
+    one.
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of

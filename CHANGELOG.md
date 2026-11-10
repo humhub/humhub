@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: The header cells of a grid have `scope="col"`, the online status of a user image is read out
 - Enh: The header search closes with a named button and its field has a border of 3:1, the avatar beside an author's linked name is no extra tab stop
 - Enh #8747: Inputs have a border of 3:1, links in running text are underlined
 - Enh #8746: Comments, search, notifications, editor and status bar are named and announced for screen readers

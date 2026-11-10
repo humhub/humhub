@@ -23,6 +23,19 @@ class GridView extends \yii\grid\GridView
     /**
      * @inheritdoc
      */
+    protected function initColumns()
+    {
+        parent::initColumns();
+
+        // A header cell heads its column (WCAG 1.3.1), unless a column says otherwise
+        foreach ($this->columns as $column) {
+            $column->headerOptions['scope'] ??= 'col';
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         GridViewAsset::register($this->view);

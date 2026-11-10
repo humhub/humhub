@@ -120,6 +120,7 @@ describe('UserImage', () => {
             const overlay = wrapper.find('.user-online-status');
             expect(overlay.exists()).toBe(true);
             expect(overlay.classes()).toEqual(expect.arrayContaining(['tt', 'user-online-status', 'user-is-online']));
+            expect(overlay.attributes('role')).toBe('img');
             expect(overlay.attributes('aria-label')).toBe('Online');
             expect(overlay.attributes('title')).toBe('Online');
             expect(wrapper.find('a').classes()).toContain('has-online-status');

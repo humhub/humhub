@@ -16,6 +16,7 @@
             v-if="hasOnlineIndicator"
             class="tt user-online-status"
             :class="online ? 'user-is-online' : 'user-is-offline'"
+            role="img"
             :aria-label="onlineLabel"
             :title="onlineLabel"
         ></span>
