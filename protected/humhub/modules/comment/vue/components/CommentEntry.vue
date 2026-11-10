@@ -38,7 +38,8 @@
         />
 
         <div class="flex-shrink-0 comment-header-image">
-            <UserImage v-bind="comment.author" :size="25" />
+            <!-- The name next to it is the same link: one tab stop per author -->
+            <UserImage v-bind="comment.author" :size="25" tabindex="-1" />
         </div>
 
         <div class="flex-grow-1">

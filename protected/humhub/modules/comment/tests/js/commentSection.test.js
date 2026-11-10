@@ -1102,6 +1102,16 @@ describe('CommentSection', () => {
             expect(authorLink.attributes('data-contentcontainer-id')).toBe('7');
             expect(authorLink.attributes('data-guid')).toBe('user-guid-7');
         });
+
+        it('keeps the avatar link out of the tab order, the name next to it is the same link', () => {
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial: { results: [makeComment()], prevCount: 0, nextCount: 0, total: 1, rootTotal: 1 } },
+            });
+
+            expect(wrapper.find('.comment-header-image a').attributes('tabindex')).toBe('-1');
+            expect(wrapper.find('.comment-heading a').attributes('tabindex')).toBeUndefined();
+        });
     });
 
     describe('online-status overlay (item 4)', () => {

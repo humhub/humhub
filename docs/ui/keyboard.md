@@ -45,6 +45,8 @@ messages are announced (4.1.3).
   reader can tell them apart. In the Enterprise theme the sidebar is the `<nav>`. The pages without
   a session (sign in, sign up, password recovery) put their panel into the same
   `<main id="main-content">` and the footer menu into a `<footer>`; the panel title is their `<h1>`.
+- An avatar next to the linked name of the same person (a stream entry, a comment) is out of the tab
+  order (`tabindex="-1"`), so a person is one tab stop; it stays in the accessibility tree.
 - One `<h1>` per page, rendered by the [Page Header](page-header.md). A widget's title is a
   heading below it, never an `<h1>`.
 - The current page in a navigation carries `aria-current="page"`.

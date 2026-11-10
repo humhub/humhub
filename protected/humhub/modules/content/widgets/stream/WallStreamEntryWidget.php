@@ -279,6 +279,8 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return UserImage::widget([
             'user' => $this->model->content->createdBy,
             'width' => 40,
+            // The name next to it is the same link: one tab stop per author
+            'linkOptions' => ['tabindex' => '-1'],
         ]);
     }
 

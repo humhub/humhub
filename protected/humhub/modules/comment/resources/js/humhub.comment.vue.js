@@ -998,9 +998,13 @@
         onAdminDelete: $options.onAdminDelete
       }, null, 8, ["comment", "permalink", "can-edit", "can-delete", "can-admin-delete", "loading-permissions", "onOpen", "onEdit", "onDelete", "onAdminDelete"]),
       vue$1.createElementVNode("div", _hoisted_4, [
+        vue$1.createCommentVNode(" The name next to it is the same link: one tab stop per author "),
         vue$1.createVNode(
           _component_UserImage,
-          vue$1.mergeProps($props.comment.author, { size: 25 }),
+          vue$1.mergeProps($props.comment.author, {
+            size: 25,
+            tabindex: "-1"
+          }),
           null,
           16
           /* FULL_PROPS */

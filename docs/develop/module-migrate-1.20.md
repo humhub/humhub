@@ -53,12 +53,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - The message of the error page is its `<h1>` (`h1.h2`, `h1.h6` on the login required page), the
     dashboard has a visually hidden `<h1>`, and the subtitle of a profile header (`h2`) is left out when
     it is empty.
+  - The close control of the header search is a `<button id="dropdown-search-close">` named "Close"
+    instead of a bare icon.
+  - The avatar next to the linked name of its author (stream entry header, comment) is out of the tab
+    order (`tabindex="-1"`): one tab stop per author. It stays in the accessibility tree, with its online
+    status.
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of
     `--bs-secondary-bg`), and so do the border of a checkbox and a radio, `$form-check-input-border` and
-    `$form-switch-color` (the knob of a switch that is off). A theme with its own field border should reach
-    3:1 on the field too.
+    `$form-switch-color` (the knob of a switch that is off). The header search field keeps its grey fill
+    and takes that border too. A theme with its own field border should reach 3:1 on the field too.
   - `--hh-border-color-strong` (`$hh-border-color-strong`, new in this cycle) is removed. Its lines and
     fills take `--bs-border-color` (`#ddd` instead of `#d7d7d7`), the border of an input
     `--hh-input-border-color`. The former `$background3` (`--hh-background3`) now stands for `$border-color`.

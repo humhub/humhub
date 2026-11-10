@@ -35,7 +35,11 @@ SearchAsset::register($this);
         <div class="dropdown-header">
             <div class="arrow"></div>
             <?= Yii::t('base', 'Search') ?>
-            <?= Icon::get('close', ['id' => 'dropdown-search-close']) ?>
+            <?= Html::button(Icon::get('close'), [
+                'id' => 'dropdown-search-close',
+                'aria-label' => Yii::t('base', 'Close'),
+                'title' => Yii::t('base', 'Close'),
+            ]) ?>
         </div>
     </div>
     <div class="dropdown-search-form">

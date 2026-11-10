@@ -62,7 +62,12 @@
 
             #dropdown-search-close {
                 float: right;
+                padding: 0;
+                border: 0;
+                background: none;
+                color: inherit;
                 font-size: 18px;
+                line-height: 1;
                 cursor: pointer;
             }
         }
@@ -74,7 +79,6 @@
 
             .dropdown-search-keyword {
                 background: var(--bs-tertiary-bg);
-                border-color: var(--bs-tertiary-bg);
                 border-radius: 6px;
                 padding-left: 32px;
                 font-weight: 500;

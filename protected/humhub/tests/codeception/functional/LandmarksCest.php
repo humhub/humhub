@@ -75,4 +75,15 @@ class LandmarksCest
         $I->seeElement('#topbar-second a.nav-link.active[aria-current="page"]');
         $I->dontSeeElement('#topbar-second a.nav-link[aria-current]:not(.active)');
     }
+
+    public function testHeaderSearchControlsAreNamedButtons(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the header search can be closed with a named button');
+
+        $I->amUser1();
+        $I->amOnRoute('/dashboard/dashboard');
+
+        $I->seeElement('#dropdown-search button#dropdown-search-close[type="button"][aria-label="Close"]');
+        $I->seeElement('#dropdown-search .dropdown-search-keyword[aria-label="Search"]');
+    }
 }
