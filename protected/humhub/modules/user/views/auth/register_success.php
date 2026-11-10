@@ -18,7 +18,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Almost there!');
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Almost there!') ?></strong>
+            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Almost there!') ?></strong></h1>
         </div>
         <div class="panel-body">
             <p><?= Yii::t('UserModule.auth', 'An email has been sent to {emailAddress}. Please check your inbox to complete the registration.', [

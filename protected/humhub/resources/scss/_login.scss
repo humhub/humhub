@@ -29,7 +29,8 @@
         }
 
         h1,
-        h2 {
+        h2,
+        #app-title {
             color: var(--hh-primary-contrast);
         }
 
@@ -44,6 +45,15 @@
             h1,
             h2 {
                 color: var(--bs-body-color);
+            }
+
+            // The panel title is the page's heading, in the look of the panel heading
+            .panel-heading h1 {
+                margin: 0;
+                font-size: inherit;
+                font-weight: inherit;
+                line-height: inherit;
+                color: inherit;
             }
         }
 

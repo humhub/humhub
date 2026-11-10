@@ -143,6 +143,7 @@ class Registration extends HForm
             'type' => 'text',
             'class' => 'form-control',
             'maxlength' => 25,
+            'htmlOptions' => ['autocomplete' => 'username'],
             'readonly' => in_array('username', $managed, true),
         ];
         $form['elements']['time_zone'] = [
@@ -151,8 +152,9 @@ class Registration extends HForm
         ];
         if ($this->enableEmailField) {
             $form['elements']['email'] = [
-                'type' => 'text',
+                'type' => 'email',
                 'class' => 'form-control',
+                'htmlOptions' => ['autocomplete' => 'email'],
                 'readonly' => in_array('email', $managed, true),
             ];
         }
@@ -195,11 +197,13 @@ class Registration extends HForm
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
+                    'htmlOptions' => ['autocomplete' => 'new-password'],
                 ],
                 'newPasswordConfirm' => [
                     'type' => 'password',
                     'class' => 'form-control',
                     'maxlength' => 255,
+                    'htmlOptions' => ['autocomplete' => 'new-password'],
                 ],
             ],
         ];

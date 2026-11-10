@@ -42,7 +42,9 @@ messages are announced (4.1.3).
 - The page frame uses the HTML landmarks: the first top bar (`#topbar-first`) is a `<header>`, the
   second (`#topbar-second`, the main navigation) a `<nav>` with an `aria-label`, the content
   `<main id="main-content">`, the widget column an `<aside>`. Every `<nav>` has a name, so a screen
-  reader can tell them apart. In the Enterprise theme the sidebar is the `<nav>`.
+  reader can tell them apart. In the Enterprise theme the sidebar is the `<nav>`. The pages without
+  a session (sign in, sign up, password recovery) put their panel into the same
+  `<main id="main-content">` and the footer menu into a `<footer>`; the panel title is their `<h1>`.
 - One `<h1>` per page, rendered by the [Page Header](page-header.md). A widget's title is a
   heading below it, never an `<h1>`.
 - The current page in a navigation carries `aria-current="page"`.

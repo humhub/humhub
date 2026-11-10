@@ -15,7 +15,7 @@ $loginRoute = MaintenanceModeGate::isActive() ? ['/user/auth/login', 'maintenanc
 
     <div class="panel panel-default animated fadeIn">
         <div class="panel-heading">
-            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password changed!') ?></strong>
+            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password changed!') ?></strong></h1>
         </div>
         <div class="panel-body">
             <p><?= Yii::t('UserModule.auth', 'Your password has been successfully changed!') ?></p>

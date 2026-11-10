@@ -143,7 +143,9 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 
 - **PHP:** `ActiveForm` / `ActiveField` render Bootstrap 5 markup (`form-label`,
   `form-control`, `form-select`, `is-invalid`, `invalid-feedback`, `form-text`). Related pieces:
-  `ActiveForm::$acknowledge` (leave warning) and `beginCollapsibleFields()`.
+  `ActiveForm::$acknowledge` (leave warning) and `beginCollapsibleFields()`. An input is described
+  by its error container (`aria-describedby` → `{input id}-error`), which is rendered empty too, so
+  a message of the client validation is read as well. The hint is not linked yet.
 - **Vue:** the form suite (`HumHubForm`, `TextField`, `TextareaField`, `SelectField`,
   `CheckboxField`, `SubmitButton`, `UploadField`, `RichTextField`) mirrors that markup exactly. It
   shares one server-error contract (HTTP 422 `{errors: {attribute: [messages]}}`, `setErrors()`,

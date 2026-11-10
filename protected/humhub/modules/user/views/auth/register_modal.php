@@ -23,7 +23,7 @@ use humhub\widgets\modal\ModalButton;
             'placeholder' => 'example@example.com',
             'autocomplete' => 'email',
             'autofocus' => true,
-        ])->label(false) ?>
+        ])->label(null, ['class' => 'form-label fw-normal']) ?>
 
         <?php if ($invite->showCaptureInRegisterForm()): ?>
             <?= $form->field($invite, 'captcha')

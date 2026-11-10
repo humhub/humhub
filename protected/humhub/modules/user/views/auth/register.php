@@ -24,7 +24,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
 
     <div class="panel panel-default mb-4 animated bounceIn" id="register-form">
         <div class="panel-heading">
-            <strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong>
+            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong></h1>
         </div>
         <div class="panel-body pt-0">
             <?php if (Yii::$app->session->hasFlash('error')): ?>
@@ -37,10 +37,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
                 <?= $form->field($invite, 'email')->input('email', [
                     'id' => 'register-email',
                     'placeholder' => 'example@example.com',
-                    'aria-label' => $invite->getAttributeLabel('email'),
                     'autocomplete' => 'email',
                     'autofocus' => true,
-                ])->label(false) ?>
+                ])->label(null, ['class' => 'form-label fw-normal']) ?>
 
                 <?php if ($invite->showCaptureInRegisterForm()): ?>
                     <?= $form->field($invite, 'captcha')
