@@ -35,6 +35,12 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public $preventRendering = false;
 
+    /**
+     * @var array|false|null the arguments of the last `hint()` call (`[content, options]`), `false` for no hint, `null`
+     * when it was not called: the hint is rendered again with its id once the input is known, see `render()`
+     */
+    private array|false|null $hintArguments = null;
+
     public function isPreventRendering(): bool
     {
         return $this->preventRendering
@@ -81,7 +87,28 @@ class ActiveField extends \yii\bootstrap5\ActiveField
      */
     public function render($content = null): string
     {
-        return $this->isPreventRendering() ? '' : parent::render($content);
+        if ($this->isPreventRendering()) {
+            return '';
+        }
+
+        if ($content === null) {
+            if (!isset($this->parts['{input}'])) {
+                $this->textInput();
+            }
+            $this->addHintDescription();
+        }
+
+        return parent::render($content);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hint($content, $options = [])
+    {
+        $this->hintArguments = $content === false ? false : [$content, $options];
+
+        return parent::hint($content, $options);
     }
 
     /**
@@ -193,6 +220,50 @@ class ActiveField extends \yii\bootstrap5\ActiveField
         $this->errorOptions['id'] ??= $inputId . '-error';
         $describedBy = preg_split('/\s+/', trim(($options['aria-describedby'] ?? '') . ' ' . $this->errorOptions['id']));
         $options['aria-describedby'] = implode(' ', array_unique($describedBy));
+    }
+
+    /**
+     * The hint describes the input, before its error message (WCAG 1.3.1, 3.3.2), as in the Vue form fields. A hint is
+     * often set after the input (`->textInput()->hint()`), so the input is rendered already: the hint gets its id
+     * `{input id}-hint` here, and the rendered input the reference.
+     *
+     * @since 1.20
+     */
+    protected function addHintDescription(): void
+    {
+        if (!$this->addAriaAttributes || $this->hintArguments === false || !str_contains($this->template, '{hint}')) {
+            return;
+        }
+
+        $inputId = $this->getInputId();
+        if (empty($inputId)) {
+            return;
+        }
+
+        [$content, $options] = $this->hintArguments ?? [null, []];
+        $options['id'] ??= $this->hintOptions['id'] ?? $inputId . '-hint';
+        parent::hint($content, $options);
+        if ($this->parts['{hint}'] === '') {
+            return;
+        }
+
+        // The opening tag of the input: the element of the rendered input that carries its id
+        $input = $this->parts['{input}'];
+        $idAttribute = 'id="' . Html::encode($inputId) . '"';
+        if (!preg_match('/<[a-z][^>]*\s' . preg_quote($idAttribute, '/') . '[^>]*>/i', $input, $match, PREG_OFFSET_CAPTURE)) {
+            return;
+        }
+
+        [$tag, $offset] = $match[0];
+        $hintId = Html::encode($options['id']);
+        if (preg_match('/\saria-describedby="([^"]*)"/', $tag, $describedBy)) {
+            $ids = array_unique(array_merge([$hintId], preg_split('/\s+/', trim($describedBy[1]))));
+            $newTag = str_replace($describedBy[0], ' aria-describedby="' . implode(' ', $ids) . '"', $tag);
+        } else {
+            $newTag = preg_replace('/\s*(\/?)>$/', ' aria-describedby="' . $hintId . '"$1>', $tag, 1);
+        }
+
+        $this->parts['{input}'] = substr_replace($input, $newTag, $offset, strlen($tag));
     }
 
     /**

@@ -258,6 +258,13 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             attributes['aria-label'] = this.options.placeholder.text;
         }
 
+        // The hint and the error message of the field describe its container or the hidden input, the editor is what
+        // is read
+        const describedBy = [this.$.attr('aria-describedby'), this.getInput().attr('aria-describedby')].join(' ').trim();
+        if (describedBy) {
+            attributes['aria-describedby'] = [...new Set(describedBy.split(/\s+/))].join(' ');
+        }
+
         return attributes;
     };
 

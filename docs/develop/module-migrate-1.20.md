@@ -31,9 +31,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `h1#app-title` should select `#app-title`. The fields have a real `<label>` instead of a text above them
   plus `aria-label`, the registration form fills in with `autocomplete` (`username`, `email`,
   `new-password`), and `HForm` knows the element type `email`.
-- **An input is described by its error message:** `humhub\widgets\form\ActiveField` gives the error
-  container the id `{input id}-error` (unless `errorOptions['id']` is set) and adds it to the input's
-  `aria-describedby`, next to an existing value. It is left out where the field renders no error.
+- **An input is described by its hint and its error message:** `humhub\widgets\form\ActiveField` gives the
+  error container the id `{input id}-error` (unless `errorOptions['id']` is set) and adds it to the input's
+  `aria-describedby`, next to an existing value. It is left out where the field renders no error. A hint gets
+  the id `{input id}-hint` (unless `hintOptions['id']` is set) and comes first in `aria-describedby`, as in the
+  Vue form fields; since a hint is often set after the input (`->textInput()->hint()`), the field adds it to
+  the rendered input in `render()`. The richtext editor takes the description of its field.
 - **Markup for screen readers** (WCAG 1.3.1, 4.1.2, 4.1.3). A theme that overrides one of these views or
   styles the old structure should follow:
   - The menu column of the space and profile layouts (`.layout-nav-container`) is a `div` instead of an

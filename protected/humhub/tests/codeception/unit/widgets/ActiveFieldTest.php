@@ -11,9 +11,11 @@ namespace humhub\tests\codeception\unit\widgets;
 use humhub\widgets\form\ActiveForm;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\DynamicModel;
+use yii\base\Model;
 
 /**
- * An input is described by its error message (WCAG 3.3.1), so a screen reader reads the message with the field
+ * An input is described by its hint and its error message (WCAG 1.3.1, 3.3.1), so a screen reader reads them with the
+ * field
  */
 class ActiveFieldTest extends HumHubDbTestCase
 {
@@ -54,6 +56,65 @@ class ActiveFieldTest extends HumHubDbTestCase
         $html = $this->render(fn(ActiveForm $form) => $form->field($this->model(), 'email', ['enableError' => false])->textInput());
 
         $this->assertStringNotContainsString('aria-describedby', $html);
+    }
+
+    /**
+     * The hint describes the input too, before the error message, as in the Vue form fields
+     */
+    public function testTheHintOfTheModelDescribesTheInput()
+    {
+        $model = new class extends Model {
+            public $email = '';
+
+            public function formName()
+            {
+                return 'Test';
+            }
+
+            public function attributeHints()
+            {
+                return ['email' => 'We never share it.'];
+            }
+        };
+
+        $html = $this->render(fn(ActiveForm $form) => $form->field($model, 'email')->textInput());
+
+        $this->assertMatchesRegularExpression('/<input[^>]*aria-describedby="test-email-hint test-email-error"/', $html);
+        $this->assertMatchesRegularExpression('/<div[^>]*id="test-email-hint"[^>]*>We never share it.<\/div>/', $html);
+    }
+
+    public function testAHintSetAfterTheInputDescribesIt()
+    {
+        $html = $this->render(fn(ActiveForm $form) => $form->field($this->model(), 'email')
+            ->textInput(['id' => 'login_email'])
+            ->hint('We never share it.'));
+
+        $this->assertMatchesRegularExpression('/<input[^>]*aria-describedby="login_email-hint login_email-error"/', $html);
+        $this->assertMatchesRegularExpression('/<div[^>]*id="login_email-hint"[^>]*>We never share it.<\/div>/', $html);
+    }
+
+    public function testAFieldWithoutAHintIsNotDescribedByOne()
+    {
+        $withoutHint = $this->render(fn(ActiveForm $form) => $form->field($this->model(), 'email')->textInput());
+        $hintTurnedOff = $this->render(fn(ActiveForm $form) => $form->field($this->model(), 'email')
+            ->hint('We never share it.')
+            ->textInput()
+            ->hint(false));
+
+        foreach ([$withoutHint, $hintTurnedOff] as $html) {
+            $this->assertStringNotContainsString('-hint', $html);
+            $this->assertMatchesRegularExpression('/<input[^>]*aria-describedby="dynamicmodel-email-error"/', $html);
+        }
+    }
+
+    public function testTheHintOfACheckboxDescribesIt()
+    {
+        $model = (new DynamicModel(['accept' => false]))->addRule('accept', 'boolean');
+
+        $html = $this->render(fn(ActiveForm $form) => $form->field($model, 'accept')->checkbox()->hint('Optional.'));
+
+        $this->assertMatchesRegularExpression('/<input type="checkbox"[^>]*aria-describedby="dynamicmodel-accept-hint dynamicmodel-accept-error"/', $html);
+        $this->assertStringContainsString('id="dynamicmodel-accept-hint"', $html);
     }
 
     private function model(): DynamicModel
