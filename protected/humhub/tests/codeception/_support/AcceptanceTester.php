@@ -207,7 +207,7 @@ class AcceptanceTester extends BaseTester
         }
 
         $this->jsClick('.toast-close');
-        $this->waitForElementNotVisible('#status-bar');
+        $this->waitForElementNotVisible('#status-bar .toast');
     }
 
     public function seeWarning($text = null)
@@ -222,7 +222,7 @@ class AcceptanceTester extends BaseTester
         $this->waitForElementVisible('#status-bar .toast-close');
         $this->wait(1);
         $this->click('#status-bar .toast-close');
-        $this->waitForElementNotVisible('#status-bar');
+        $this->waitForElementNotVisible('#status-bar .toast');
     }
 
     public function seeError($text = null)
@@ -236,7 +236,7 @@ class AcceptanceTester extends BaseTester
         $this->waitForElementVisible('#status-bar .toast-close');
         $this->wait(1);
         $this->click('#status-bar .toast-close');
-        $this->waitForElementNotVisible('#status-bar');
+        $this->waitForElementNotVisible('#status-bar .toast');
     }
 
     public function seeInfo($text = null)
@@ -251,7 +251,7 @@ class AcceptanceTester extends BaseTester
         $this->waitForElementVisible('#status-bar .toast-close');
         $this->wait(1);
         $this->click('#status-bar .toast-close');
-        $this->waitForElementNotVisible('#status-bar');
+        $this->waitForElementNotVisible('#status-bar .toast');
     }
 
     public function amUser($user = null, $password = null, $logout = false)
