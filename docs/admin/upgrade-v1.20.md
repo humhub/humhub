@@ -443,6 +443,21 @@ Custom SCSS. Pagination, display name, "My Spaces" sorting, stream order and pos
 it. Users find their language, time zone, editor, colour mode and the accessibility options (high
 contrast, reduced motion, readable font) under *Account → Appearance & Accessibility*.
 
+**Text on coloured buttons needs 4.5:1 now.** White text on a theme colour as a fill (a button, a
+badge, the top bar) has to reach a contrast of 4.5:1, the WCAG AA level for normal text; before it
+was 3:1. On a colour where white does not reach it, the text turns black. The default colours are
+darkened just enough to keep white text, so nothing changes for an installation that uses them. If
+you chose your own colours under *Administration → Appearance → Theme*, look at your buttons after
+the update: a slightly darker colour keeps the text white. To bring back the former behaviour, add
+this line under *Administration → Appearance → Custom SCSS*:
+
+```scss
+$min-contrast-ratio: 3;
+```
+
+White text then shows again from 3:1 on, which is below the AA level and may be flagged by
+accessibility checks.
+
 ## Modules
 
 Module code that used the `@webroot` alias may need updating — it now resolves to `public/`, and the

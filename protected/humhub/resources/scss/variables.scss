@@ -18,11 +18,11 @@ $isFluid: false !default;
 // --------------------------------------------------
 
 $primary: #435f6f !default;
-$secondary: #7a7a7a !default;
-$info: #0582FF !default;
-$success: #52a11c !default;
+$secondary: #767676 !default;
+$info: #0474e3 !default;
+$success: #438417 !default;
 $warning: #FFC107 !default;
-$danger: #FC4A64 !default;
+$danger: #d43e54 !default;
 $dark: #333 !default;
 // `$light`, the neutral button, is derived from the surface below
 
@@ -31,7 +31,7 @@ $dark: #333 !default;
 // HumHub Accent color (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
 
-$accent: #21A1B3 !default;
+$accent: #1b8291 !default;
 $accent-text-emphasis: shade-color($accent, 60%) !default;
 $accent-bg-subtle: tint-color($accent, 80%) !default;
 $accent-border-subtle: tint-color($accent, 60%) !default;
@@ -73,7 +73,7 @@ $hh-focus-ring-offset: 2px !default;
 // Text
 $body-color: #555 !default;
 $body-emphasis-color: #000 !default; // Headings, a hovered link, an active item
-$body-secondary-color: #7a7a7a !default; // Muted: meta data, help text, captions, placeholders
+// Muted: `$body-secondary-color`, below the surfaces it has to read on
 $body-tertiary-color: #aeaeae !default; // Faint: a disabled item, a hint
 
 // Surfaces
@@ -110,6 +110,8 @@ $hh-fg: (
     warning: $hh-warning-fg,
     danger: $hh-danger-fg,
 ) !default;
+// Muted text (meta data, help text, captions, placeholders): a grey that reaches the same ratio on a surface
+$body-secondary-color: hh-readable(#7a7a7a, $body-bg, $hh-fg-contrast-ratio) !default;
 
 // Lines
 $border-color: mix(black, $body-bg, 13.3%) !default; // A separator, the border of a box
@@ -136,7 +138,7 @@ $form-floating-label-disabled-color: var(--bs-secondary-color) !default;
 // Acceptable values for WCAG 2.2 are 3, 4.5 and 7.
 // See https://www.w3.org/TR/WCAG/#contrast-minimum
 //
-$min-contrast-ratio: 3 !default;
+$min-contrast-ratio: 4.5 !default; // WCAG 2.2 AA for normal text: white below it turns black, which always reaches it
 
 // Required for color-contrast():
 $white: #fff !default;

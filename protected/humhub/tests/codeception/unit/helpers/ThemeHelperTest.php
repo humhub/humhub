@@ -3,6 +3,7 @@
 namespace humhub\tests\codeception\unit\helpers;
 
 use humhub\components\Theme;
+use humhub\helpers\ScssHelper;
 use humhub\helpers\ThemeHelper;
 use humhub\modules\file\libs\FileHelper;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -82,7 +83,7 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertTrue(ThemeHelper::buildCss($theme, false));
 
         $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
-        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-accent-fg: ?#187683/', $css);
+        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-accent-fg: ?#197684/', $css);
         $this->assertMatchesRegularExpression('/\.text-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
         $this->assertMatchesRegularExpression('/\.link-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
         $this->assertMatchesRegularExpression('/\.btn-ghost-danger\{[^}]*--bs-btn-color: ?var\(--hh-danger-fg\)/', $css);
@@ -91,6 +92,57 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\]\{[^}]*--bs-body-color: ?#[0-9a-f]{6};--bs-body-color-rgb: ?\d/', $css);
         $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\]\{[^}]*--bs-danger-rgb: ?\d/', $css);
         $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\] \.btn-danger\{[^}]*--bs-btn-active-bg: ?color-mix\(in srgb, ?var\(--bs-danger\)/', $css);
+    }
+
+    /**
+     * The text on a theme colour as a fill (a button, a badge, the top bar) reaches 4.5:1: white where it does, black
+     * otherwise, the fill stays as chosen. The muted text reaches 4.5:1 on a surface
+     */
+    public function testBuildCssKeepsTheTextOnAFillReadable()
+    {
+        $theme = $this->createTheme('ReadableFills');
+        $this->assertTrue(ThemeHelper::buildCss($theme, false));
+
+        $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
+        // White reaches 4.6:1 on success, 1.6:1 on warning
+        $this->assertMatchesRegularExpression('/:root,\[data-bs-theme=light\]\{[^}]*--bs-success: ?#438417\b/', $css);
+        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-success-contrast: ?#fff\b/', $css);
+        $this->assertMatchesRegularExpression('/:root,\[data-bs-theme=light\]\{[^}]*--bs-warning: ?#ffc107\b/i', $css);
+        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-warning-contrast: ?#000\b/', $css);
+        foreach (['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'danger'] as $color) {
+            $this->assertMatchesRegularExpression('/:root,\[data-bs-theme=light\]\{[^}]*--bs-' . $color . ': ?(#[0-9a-f]{3,6})\b/i', $css);
+            preg_match('/:root,\[data-bs-theme=light\]\{[^}]*--bs-' . $color . ': ?(#[0-9a-f]{3,6})\b/i', $css, $fill);
+            preg_match('/:root\{[^}]*--hh-' . $color . '-contrast: ?(#[0-9a-f]{3,6})\b/i', $css, $text);
+            $this->assertGreaterThanOrEqual(4.5, ScssHelper::getContrastRatio($fill[1], $text[1]), "$text[1] on $color $fill[1]");
+            $this->assertMatchesRegularExpression('/\.btn-' . $color . '\{--bs-btn-color: ?' . $text[1] . ';--bs-btn-bg: ?' . $fill[1] . '\b/i', $css);
+        }
+
+        preg_match('/:root,\[data-bs-theme=light\]\{[^}]*--bs-secondary-color: ?(#[0-9a-f]{3,6})\b/i', $css, $muted);
+        $this->assertGreaterThanOrEqual(4.5, ScssHelper::getContrastRatio($muted[1], '#fff'), "muted text $muted[1]");
+    }
+
+    /**
+     * The Custom SCSS brings back white text from 3:1 on (docs/admin/upgrade-v1.20.md)
+     */
+    public function testCustomScssLowersTheContrastRatioOfTheTextOnAFill()
+    {
+        $theme = $this->createTheme('LowerContrastRatio');
+        $successContrast = function (string $customScss) use ($theme): string {
+            Yii::$app->settings->set('themeCustomScss', $customScss);
+            $this->assertTrue(ThemeHelper::buildCss($theme));
+            $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
+            $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-success-contrast: ?(#[0-9a-f]{3,6})\b/', $css);
+            preg_match('/:root\{[^}]*--hh-success-contrast: ?(#[0-9a-f]{3,6})\b/', $css, $match);
+            return $match[1];
+        };
+
+        try {
+            // The former default: white reaches 3.2:1
+            $this->assertEquals('#000', $successContrast('$success: #52a11c;'));
+            $this->assertEquals('#fff', $successContrast("\$success: #52a11c;\n\$min-contrast-ratio: 3;"));
+        } finally {
+            Yii::$app->settings->delete('themeCustomScss');
+        }
     }
 
     public function testGetThemeByPathIgnoresThemeWithoutVariablesFile()
