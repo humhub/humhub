@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: The colour field of a space (and of other colour groups) has a name for screen readers again
 - Enh: The dialog of the richtext editor is a labelled modal, the mention and emoji suggestions are read out
 - Enh: The hint of a form field describes its input (`aria-describedby`), the richtext editor included
 - Enh: The header cells of a grid have `scope="col"`, the online status of a user image is read out

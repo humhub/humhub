@@ -20,7 +20,9 @@ if ($model->color === null) {
 <?= Html::activeLabel($model, 'name') ?>
 <div class="input-group input-color-group">
     <?= $form->field($model, 'color')->colorInput() ?>
+    <?php /* The label above the group names this field */ ?>
     <?= $form->field($model, 'name')
+        ->label(false)
         ->textInput(array_merge(
             [
                 'placeholder' => Yii::t('SpaceModule.manage', 'Space name'),

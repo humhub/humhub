@@ -65,6 +65,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     "Offline") is read; a bare `span` can't have one.
   - `humhub\widgets\GridView` gives every header cell `scope="col"`, unless the column's `headerOptions` set
     one.
+  - The labels inside an `.input-color-group` (a colour field next to a name or title) are visually hidden
+    instead of `display: none`, so they name their fields again; the colour field had no other name. A view
+    with a visible label above the group for one of the fields drops that field's inner one (`->label(false)`),
+    as the space name in `space/widgets/views/spaceNameColorInput.php`.
   - The dialog of the richtext editor (`prompt.openPrompt()`: link, image, table, audio, video) is a modal
     `role="dialog"` named by its title, its labels are linked to the fields, Tab stays inside and Escape returns
     the focus. It takes `translate` (`(text) => context.translate(text)`) for the labels and the buttons, which
