@@ -132,6 +132,7 @@ HumHub Changelog
 - Enh #8403: The control links of the content menu (`EditLink`, `DeleteLink`, `PermaLink`, … and `ContentTopicButton`) are `MenuLink`s instead of widgets and describe themselves to the `/api/v2/content/<id>/controls` endpoint; `WallEntryControlLink` is deprecated, `DescribableWidget` removed
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 - Enh #8713: Admin menu item Appearance, account page Appearance & Accessibility (dark mode, high contrast, reduced motion, readable font)
+- Fix #8748: Fix pickers not mounted in content forms loaded via the form menu on stream
 
 1.19.5 (Unreleased)
 -------------------

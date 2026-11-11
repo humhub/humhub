@@ -13,6 +13,7 @@ humhub.module('content.form', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var loader = require('ui.loader');
     var modal = require('ui.modal');
+    var additions = require('ui.additions');
     var i18n = require('i18n');
 
     var instance;
@@ -396,6 +397,8 @@ humhub.module('content.form', function (module, require, $) {
         client.get(evt).then(function (response) {
             that.formPanel.replaceWith(response.html);
             that.formPanel = that.$.parent().find('.panel');
+            // The loaded form is not part of the page ready sweep: mount its pickers and other additions
+            additions.applyTo(that.formPanel);
             that.formPanel.find('[data-action-component], [data-ui-widget]').each(function () {
                 Widget.instance($(this));
             });
