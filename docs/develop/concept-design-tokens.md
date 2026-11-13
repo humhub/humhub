@@ -1,15 +1,20 @@
 # Design tokens
 
 **Since 1.20.** Every colour of the core SCSS is a token: a CSS variable named after its job. A
-component never writes a colour. A colour mode (`[data-bs-theme]`) redefines the semantic tokens
-only, and so does a later contrast mode.
+component never writes a colour. A colour mode (`[data-bs-theme]`) and high contrast
+(`[data-hh-contrast]`) redefine the semantic tokens only.
 
 Bootstrap 5.3 already has such a semantic layer. HumHub stays as close to Bootstrap as possible:
 it uses a Bootstrap variable wherever Bootstrap has the role, in the meaning Bootstrap gives it,
 and adds its own only for roles Bootstrap lacks.
 
-Out of scope: spacing, radius, elevation and type tokens; a contrast mode; colour scales per brand
-colour (`--primary-50` … `--primary-1000` in the dsv2 prototype).
+A theme sets a few base colours. Every other colour is derived from them by one rule (see
+*Derivation*), so a colour that reads in the light mode reads in the dark mode, in high contrast
+and with the colours an administrator picks. The dsv2 prototype works the same way
+(`readable()`, `legible()`).
+
+Out of scope: spacing, radius, elevation and type tokens; colour scales per brand colour
+(`--primary-50` … `--primary-1000` in the dsv2 prototype).
 
 ## Levels
 
@@ -31,43 +36,85 @@ colour (`--primary-50` … `--primary-1000` in the dsv2 prototype).
   variables, which `variables.scss` sets. A component variable whose grey shows in the core is set
   to a semantic token, e.g. `$dropdown-header-color: var(--bs-secondary-color)`.
 
+## Derivation
+
+The base colours, set by a theme's `variables.scss` or the *Appearance* settings, each with its
+`-dark` variable where the mode differs:
+
+- the theme colours `$primary`, `$accent`, `$secondary`, `$info`, `$success`, `$warning`, `$danger`;
+- the surface `$body-bg` (light) and `$body-bg-dark`;
+- the text colours `$body-color` and `$body-emphasis-color`.
+
+`variables.scss` derives every other colour from them, once for the light and once for the dark
+mode. A theme may still set a derived variable itself (they are `!default`). An ink it sets passes
+`hh-readable()` all the same: the core checks the result after the theme's variables, so a theme
+can lower the ratio (`$hh-fg-contrast-ratio`) but not skip it. A surface or a line it sets is
+taken as it is.
+
+- **A surface or a line** is the surface mixed with black (light mode) or white (dark mode), e.g.
+  the page `mix(black, $body-bg, 7%)`. It follows a surface the administrator picks.
+- **An ink**, a colour drawn as text or as an icon, is its base colour moved toward black or white
+  by `hh-readable($color, $background, $min-ratio)` (`_functions.scss`) until it reaches its ratio
+  on the surface it is checked against. A colour that reads already stays as it is.
+- **The reference surface** of an ink is the darkest surface it is drawn on in the light mode, the
+  lightest in the dark mode: `$body-secondary-bg` (`-dark`), the fill of a hovered item. An ink
+  drawn on one surface only is checked against that one: a field's placeholder against the field.
+- **The ratios:** text 4.5:1 (`$hh-fg-contrast-ratio`), the border of a control 3:1, text in high
+  contrast 7:1 (`$hh-high-contrast-ratio`). A disabled control is exempt (WCAG 1.4.3, 1.4.11).
+- **A fill in a theme colour** carries white or black text, whichever reaches
+  `$min-contrast-ratio` (4.5:1) on it (`--hh-{color}-contrast`).
+
+No token value is picked by hand for one mode.
+
 ## Semantic tokens
 
-The light values are the current ones. A dark value marked *new* corrects a value of the dark
-mode, which no core screen switches on yet. The Sass variable has the token's name; a `$hh-*`
+The values are those of the core theme. The Sass variable has the token's name; a `$hh-*`
 variable becomes the `--hh-*` token in `_root.scss`, a Bootstrap one the `--bs-*` token in
 Bootstrap's.
 
 ### Text
 
-| Job | Token | Sass | Light | Dark |
-|---|---|---|---|---|
-| Body text | `--bs-body-color` | `$body-color` | `#555` | `#ddd` |
-| Strong text: headings, hovered links | `--bs-emphasis-color` | `$body-emphasis-color` | `#000` | `#fff` |
-| Muted text: meta data, help text, captions, placeholders, icons | `--bs-secondary-color` | `$body-secondary-color` | `#767676` | `#bbb` |
-| Faint text: disabled items, hints | `--bs-tertiary-color` | `$body-tertiary-color` | `#aeaeae` | `#999` *new* |
-| Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `$hh-{color}-contrast` | `$color-contrast-light` (white) where it reaches `$min-contrast-ratio` (4.5:1), otherwise `$color-contrast-dark` (black) | same |
-| Code | `--bs-code-color` | `$code-color` | | |
+Text that has to be read has one of two colours: the body colour, or the strong colour for
+headings, links and the active item. Meta data, help text, captions and hints are body text too; a
+smaller size or a lighter weight sets them back, not a lighter grey. Two greys are no text colours:
+the placeholder, lighter than the value of a field so that an empty field doesn't look filled, and
+the disabled colour, which is exempt from contrast and holds no text that has to be read.
+
+| Job | Token | Sass | Light | Dark | Derived |
+|---|---|---|---|---|---|
+| Strong text: headings, a link, a hovered or active item | `--bs-emphasis-color` | `$body-emphasis-color` | `#000` | `#fff` | the base colour, readable (4.5:1) on the reference surface |
+| Body text, also meta data, help text, captions, hints, secondary icons | `--bs-body-color` | `$body-color` | `#555` | `#ddd` | the base colour, readable (4.5:1) on the reference surface |
+| Muted text (Bootstrap's role, see below) | `--bs-secondary-color` | `$body-secondary-color` | = body text | = body text | `$body-color`; a lighter grey a theme sets is made readable (4.5:1) on the reference surface |
+| A field's placeholder | `--hh-input-placeholder-color` (Bootstrap's `$input-placeholder-color` points to the token) | `$hh-input-placeholder-color` | `#757575` | `#898989` | the middle between the body colour and the surface, made readable (4.5:1) on the surface: `hh-readable(mix($body-color, $body-bg, 50%), $body-bg, $hh-fg-contrast-ratio)` |
+| Disabled: the text and the icon of a disabled item | `--bs-tertiary-color` | `$body-tertiary-color` | `#aaa` | `#808080` | the middle between the body colour and the surface: `mix($body-color, $body-bg, 50%)`; exempt from contrast |
+| A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `$hh-{color}-fg` | the colour, darker where needed | the colour, lighter where needed | the theme colour, readable (4.5:1) on the reference surface |
+| Text on a fill in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `$hh-{color}-contrast` | `$color-contrast-light` (white) where it reaches `$min-contrast-ratio` (4.5:1) on the fill, otherwise `$color-contrast-dark` (black) | same | |
+| Inline code | `--bs-code-color` | `$code-color` | `#176f7c` | the accent, lighter where needed | the accent, readable (4.5:1) on `--hh-code-bg` |
+
+In high contrast the emphasis, body, muted and `-fg` colours reach 7:1 on the reference surface;
+the placeholder stays at 4.5:1 on the field.
 
 `--bs-secondary-color` is Bootstrap's muted text (`.text-body-secondary`, formerly `.text-muted`;
-`.form-text`, a field's placeholder through `$input-placeholder-color`, table captions, the
-breadcrumb). It is unrelated to the theme colour `$secondary`. Muted text in markup uses
-`.text-body-secondary`, faint text `.text-body-tertiary`.
+`.form-text`, table captions, the breadcrumb). It is unrelated to the theme colour `$secondary`.
+The token stays, so that Bootstrap's components and the 62 modules using `.text-body-secondary`
+keep working, and has the body colour. Bootstrap also draws a field's placeholder in it; HumHub
+points `$input-placeholder-color` to `--hh-input-placeholder-color` instead (as `$input-border-color`
+to `--hh-input-border-color`), which has a value per mode.
 
-Both were Bootstrap's translucent body colour (75 % and 50 %). They become the HumHub greys, which
-the `.text-body-secondary` utility used in 62 modules then shows.
+`--bs-tertiary-color` is the disabled colour only, as in Bootstrap's own disabled dropdown items.
+Text that has to be read never takes it, nor `.text-body-tertiary`.
 
 ### Surfaces
 
 | Job | Token | Sass | Light | Dark |
 |---|---|---|---|---|
-| Page, behind the surfaces | `--hh-page-bg` | `$hh-page-bg` | `#ededed` | `#000` |
+| Page, behind the surfaces | `--hh-page-bg` | `$hh-page-bg` | `#ededed` | `#161616` |
 | Surface: panel, card, dropdown, modal, popover, field, table | `--bs-body-bg` | `$body-bg` | `#fff` | `#222` |
 | Sunken area in a surface: comments, tabs, filter | `--bs-tertiary-bg` | `$body-tertiary-bg` | `#f9f9f9` | `#333` |
 | Fill of a hovered or active item, a neutral badge; a light separator | `--bs-secondary-bg` | `$body-secondary-bg` | `#ededed` | `#393939` |
-| Selected or new item, current day | `--bs-accent-bg-subtle` | `$accent-bg-subtle` | `#d3ecf0` | Bootstrap's |
-| Lighter selection: a checked choice, a hovered new item | `--hh-accent-bg-soft` | `$hh-accent-bg-soft` | `#f2f9fb` | `#223538` *new* |
-| Inline code | `--hh-code-bg` | `$hh-code-bg` | `#dbf5f8` | `$accent-bg-subtle-dark` |
+| Selected or new item, current day | `--bs-accent-bg-subtle` | `$accent-bg-subtle` | `#d1e6e9` | Bootstrap's |
+| Lighter selection: a checked choice, a hovered new item | `--hh-accent-bg-soft` | `$hh-accent-bg-soft` | `#d3ebf1` | `#213033` |
+| Inline code | `--hh-code-bg` | `$hh-code-bg` | `#b9ebf2` | `$accent-bg-subtle-dark` |
 | Marked text: `<mark>`, a matched suggestion | `--bs-highlight-bg` | `$mark-bg` | `#fff4d3` | the warning's subtle background |
 | Status: alert, notice | `--bs-{color}-bg-subtle`, `--bs-{color}-text-emphasis`, `--bs-{color}-border-subtle` | Bootstrap's | Bootstrap's | Bootstrap's |
 
@@ -168,6 +215,9 @@ changes the modules that read it, not the core: it sets the Sass variable instea
 
 ## Rules
 
+- Text that has to be read takes `--bs-body-color` or `--bs-emphasis-color` (`.text-body-secondary`
+  is the same colour). A smaller size or a lighter weight sets it back, never `--bs-tertiary-color`
+  or `.text-body-tertiary`, which are for a disabled item only.
 - A core partial writes no hex colour and no `darken()` or `lighten()`. A colour is a token, or a
   `color-mix()` of tokens. Stylelint enforces it (`color-no-hex`, `function-disallowed-list`)
   outside `variables.scss`, `variables-deprecated.scss` and `_root.scss`.
@@ -188,3 +238,12 @@ changes the modules that read it, not the core: it sets the Sass variable instea
    write CSS variables of the core.
 4. The modules move to the new tokens and Sass variable names: hex colours, `darken()` and
    `lighten()` become tokens. custom-pages, calendar, tour-maker, meeting and tasks have the most.
+5. The text colours follow *Derivation* and *Text*: `$body-color` and `$body-emphasis-color` are
+   checked against the reference surface, `$body-secondary-color` is `$body-color`,
+   `$input-placeholder-color` points to the new `--hh-input-placeholder-color`, and
+   `$body-tertiary-color`, `$code-color` and their `-dark` variables are derived instead of picked.
+   The core's readable texts in `--bs-tertiary-color` take `--bs-body-color`: the version of a
+   module (`_modules.scss`), the summary of a grid, `.hint-block`, the hint of a mention list, the
+   heading of a list item (`_list.scss`), the installer's "Powered by" and the reset icon of the
+   space menu search. A module does the same with `.text-body-tertiary` and `--bs-tertiary-color`
+   on readable text.
