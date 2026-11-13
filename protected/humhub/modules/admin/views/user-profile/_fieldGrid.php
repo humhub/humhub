@@ -25,7 +25,8 @@ use yii\helpers\Url;
 
 <?= GridView::widget([
     'dataProvider' => new ArrayDataProvider(['allModels' => $category->fields, 'pagination' => ['pageSize' => 0]]),
-    'layout' => '{items}',
+    // The table scrolls on its own on a narrow screen (WCAG 1.4.10)
+    'layout' => '<div class="table-responsive">{items}</div>',
     'columns' => [
         [
             'attribute' => 'title',
@@ -81,7 +82,7 @@ use yii\helpers\Url;
             'attribute' => 'sort_order',
         ],
         [
-            'header' => '&nbsp;',
+            'header' => Html::tag('span', Yii::t('base', 'Actions'), ['class' => 'visually-hidden']),
             'class' => ActionColumn::class,
             'options' => ['style' => 'width:56px;'],
             'contentOptions' => ['class' => 'text-center'],

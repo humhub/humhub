@@ -272,6 +272,14 @@ describe('nativeSelect', () => {
         expect(wrapper.find('input[role="combobox"]').attributes('aria-label')).toBe('Wrapper text');
     });
 
+    it('names the picker after the aria-label of a select without a label', () => {
+        const form = render('<select id="l3" data-ui-picker aria-label="Module"><option value="a">A</option></select>');
+        const select = form.querySelector('select');
+        expect(readConfig(select).label).toBe('Module');
+        const wrapper = mountOn(select);
+        expect(wrapper.find('input[role="combobox"]').attributes('aria-label')).toBe('Module');
+    });
+
     it('keeps a click inside the picker from reaching the select of a wrapping label', () => {
         const form = render('<label>Wrapper <select id="l2" data-ui-picker><option value="a">A</option></select></label>');
         const select = form.querySelector('select');

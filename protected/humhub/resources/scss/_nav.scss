@@ -38,6 +38,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     // Pill tabs (`humhub\widgets\menu\PillTabs`): Bootstrap's nav pills in a strip that scrolls
     // sideways instead of wrapping. See docs/ui/tabs.md.
     .nav-scroller {
+        // Holds what is positioned inside, such as the visually hidden text of a badge: otherwise it sticks out of
+        // the strip and widens the page on a narrow screen (WCAG 1.4.10)
+        position: relative;
         overflow-x: auto;
         scrollbar-width: none;
 

@@ -53,6 +53,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             'Toggle strong style': i18n.t('ContentModule.richtexteditor', 'Toggle strong style'),
             'Create table': i18n.t('ContentModule.richtexteditor', 'Create table'),
             'Delete table': i18n.t('ContentModule.richtexteditor', 'Delete table'),
+            'Table options': i18n.t('ContentModule.richtexteditor', 'Table options'),
             'Insert table': i18n.t('ContentModule.richtexteditor', 'Insert table'),
             'Rows': i18n.t('ContentModule.richtexteditor', 'Rows'),
             'Columns': i18n.t('ContentModule.richtexteditor', 'Columns'),

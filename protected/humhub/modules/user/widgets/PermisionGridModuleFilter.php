@@ -49,6 +49,7 @@ class PermisionGridModuleFilter extends JsWidget
         return [
             'class' => 'form-control',
             'style' => 'width:150px',
+            'aria-label' => Yii::t('UserModule.base', 'Filter by module'),
         ];
     }
 

@@ -241,6 +241,14 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         }
     }
 
+    // In a table on a narrow screen the input gives up its default width of 20 characters, so that the
+    // table fits (WCAG 1.4.10); the chosen value is cut off then, as in a native select
+    @include media-breakpoint-down(sm) {
+        td .picker-input {
+            width: 0;
+        }
+    }
+
     // One line high whatever the chips wrap to: the chevron, the clear X and the spinner stay at
     // the first line.
     .picker .select-menu-chevron,

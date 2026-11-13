@@ -74,6 +74,21 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the focus. It takes `translate` (`(text) => context.translate(text)`) for the labels and the buttons, which
     were English. The mention and emoji suggestions are a named `role="listbox"` (on the `<ul>`) of
     `role="option"`s, and the editor points to the current one (`aria-activedescendant`).
+  - A picker over a `<select>` without a `<label>` takes the select's `aria-label` as its name.
+    `humhub\libs\DropDownGridColumn` takes `ariaLabel` (a string, or a callable with the arguments of
+    `renderDataCellContent()`) for each dropdown; the permission grid names them after the permission. Its
+    `htmlOptions['class']` is added to `editableCell form-control` instead of being glued to it.
+  - `humhub\modules\admin\grid\CheckboxColumn` shows a set flag as a check mark and both states as text for
+    screen readers ("Yes", "No"), instead of a disabled checkbox without a name. With `disabled = false` it
+    still renders a checkbox, named by the column's label.
+  - The icon-only links of `humhub\widgets\bootstrap\LinkPager` (first, previous, next, last page) carry
+    their name as visually hidden text.
+  - A CodeMirror field (`CodeMirrorInputWidget`) takes the label and the description of its textarea.
+  - The profile fields on the "About" page are a description list (`<dl>`, the value a `<dd>` instead of
+    a `div.field-value`).
+  - `.nav-scroller` is `position: relative`, so what is positioned inside it (the visually hidden number of
+    a waiting dot) no longer widens the page. A picker in a table cell gives up the default width of its
+    input below the `sm` breakpoint.
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of

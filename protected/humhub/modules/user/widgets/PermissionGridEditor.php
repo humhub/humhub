@@ -83,6 +83,7 @@ class PermissionGridEditor extends GridView
                     'readonly' => fn($data) => !($data['changeable']),
                     'submitAttributes' => ['permissionId', 'moduleId'],
                     'dropDownOptions' => 'states',
+                    'ariaLabel' => fn($data) => $data['title'],
                 ],
             ],
         ]);

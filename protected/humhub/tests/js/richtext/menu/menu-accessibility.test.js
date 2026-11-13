@@ -92,6 +92,16 @@ describe("Menu:accessibility", () => {
         });
     }));
 
+    it("test every toolbar control is named", () => {
+        initEditor();
+        const unnamed = $('.ProseMirror-menubar .ProseMirror-menu-trigger').filter((i, el) => {
+            const name = el.getAttribute('aria-label') || el.getAttribute('title') || el.textContent.trim();
+            return !name || name === 'undefined';
+        }).map((i, el) => el.className).get();
+        expect(unnamed).to.deep.equal([]);
+        expect($('.ProseMirror-menu-tableOptions').attr('title')).to.equal('Table options');
+    });
+
     it("test the toolbar is one Tab stop", () => new Promise((done) => {
         initEditor();
         const inTabOrder = () => $('.ProseMirror-menubar .ProseMirror-menu-trigger')

@@ -11,6 +11,7 @@ namespace humhub\modules\file\widgets;
 use humhub\components\Widget;
 use humhub\helpers\Html;
 use humhub\modules\file\handler\BaseFileHandler;
+use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -81,7 +82,7 @@ class FileHandlerButtonDropdown extends Widget
         }
 
         if ($this->isDropdown()) {
-            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">Toggle Dropdown</span></button>';
+            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' btn-icon-only dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="visually-hidden">' . Yii::t('base', 'More actions') . '</span></button>';
 
             $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
 

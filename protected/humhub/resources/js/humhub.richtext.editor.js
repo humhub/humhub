@@ -49154,6 +49154,7 @@
         node: "table",
         item: new Dropdown(buildTableMenu(context), {
           icon: icons.table,
+          title: context.translate("Table options"),
           sortOrder: 301
         })
       }
@@ -50187,6 +50188,12 @@
     }
     if (!$textarea.length) {
       $textarea = $('<textarea class="ProseMirror-editor-source"></textarea>');
+      ["aria-label", "aria-labelledby", "aria-describedby"].forEach((name2) => {
+        const value = $stage.attr(name2);
+        if (value) {
+          $textarea.attr(name2, value);
+        }
+      });
       $editor.append($textarea);
       context.$source = $textarea;
     }

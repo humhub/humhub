@@ -76,6 +76,7 @@ export function menu(context) {
             node: 'table',
             item: new Dropdown(buildTableMenu(context), {
                 icon: icons.table,
+                title: context.translate("Table options"),
                 sortOrder: 301
             })
         }

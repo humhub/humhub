@@ -54,6 +54,15 @@ describe("Plugin:source", () => {
         expect(serialize()).to.equal('Test source mode')
     });
 
+    it("test the source is named as the editor", () => {
+        initEditor({edit: true, attributes: {'aria-label': 'Post text', 'aria-describedby': 'post-hint'}}, 'Test');
+        clickMenuItem('source');
+        const $textarea = $('#stage .ProseMirror-editor-source');
+        expect($textarea.attr('aria-label')).to.equal('Post text');
+        expect($textarea.attr('aria-describedby')).to.equal('post-hint');
+        clickMenuItem('source');
+    });
+
     it("test editor focus on switch mode", () => new Promise((done) => {
         const editor = initEditor('Test source mode');
         clickMenuItem('resizeNav');

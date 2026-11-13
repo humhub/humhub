@@ -42,6 +42,13 @@ class DropDownGridColumn extends DataColumn
     public $readonly = false;
 
     /**
+     * @var string|callable|null the accessible name of each dropdown, e.g. the title of its row;
+     * a callable gets `($model, $key, $index, $column)` (WCAG 4.1.2)
+     * @since 1.20
+     */
+    public $ariaLabel;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -71,21 +78,25 @@ class DropDownGridColumn extends DataColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        if (isset($this->htmlOptions['class'])) {
-            $this->htmlOptions['class'] .= 'editableCell form-control';
-        } else {
-            $this->htmlOptions['class'] = 'editableCell form-control';
-        }
+        $htmlOptions = $this->htmlOptions;
+        Html::addCssClass($htmlOptions, ['editableCell', 'form-control']);
 
         // Fixes: https://github.com/yiisoft/yii2/issues/19534
-        $this->htmlOptions['strict'] = true;
+        $htmlOptions['strict'] = true;
 
         // We need to number the submit attributes because data attribute is not case sensitive
-        $this->htmlOptions['data-submit-attributes'] = implode(', ', $this->submitAttributes);
+        $htmlOptions['data-submit-attributes'] = implode(', ', $this->submitAttributes);
         $i = 0;
         foreach ($this->submitAttributes as $attribute) {
-            $this->htmlOptions['data-attribute' . $i] = $model[$attribute];
+            $htmlOptions['data-attribute' . $i] = $model[$attribute];
             $i++;
+        }
+
+        $ariaLabel = is_callable($this->ariaLabel)
+            ? call_user_func($this->ariaLabel, $model, $key, $index, $this)
+            : $this->ariaLabel;
+        if ($ariaLabel !== null && $ariaLabel !== '') {
+            $htmlOptions['aria-label'] = $ariaLabel;
         }
 
         if (is_array($this->dropDownOptions)) {
@@ -103,11 +114,11 @@ class DropDownGridColumn extends DataColumn
 
         if ($readonly) {
             if (isset($options[$model[$this->attribute]])) {
-                return Html::dropDownList($inputName, $model[$this->attribute], $options, array_merge($this->htmlOptions, ['readonly' => true, 'disabled' => true]));
+                return Html::dropDownList($inputName, $model[$this->attribute], $options, array_merge($htmlOptions, ['readonly' => true, 'disabled' => true]));
             }
             return $model[$this->attribute];
         }
 
-        return Html::dropDownList($inputName, $model[$this->attribute], $options, $this->htmlOptions);
+        return Html::dropDownList($inputName, $model[$this->attribute], $options, $htmlOptions);
     }
 }

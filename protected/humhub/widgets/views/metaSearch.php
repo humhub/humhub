@@ -27,6 +27,8 @@ SearchAsset::register($this);
     ->action('menu')
     ->options([
         'data-bs-toggle' => 'dropdown',
+        'role' => 'button',
+        'aria-controls' => 'dropdown-search',
         'aria-label' => Yii::t('base', 'Search'),
     ])
     ->cssClass('nav-link dropdown-toggle') ?>
@@ -42,7 +44,7 @@ SearchAsset::register($this);
             ]) ?>
         </div>
     </div>
-    <div class="dropdown-search-form">
+    <div class="dropdown-search-form" role="search">
         <?= Button::light()
             ->icon('search')
             ->action('search')

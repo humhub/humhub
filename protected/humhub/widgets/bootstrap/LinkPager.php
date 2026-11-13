@@ -8,7 +8,9 @@
 
 namespace humhub\widgets\bootstrap;
 
+use humhub\helpers\Html;
 use humhub\widgets\Icon;
+use Yii;
 
 /**
  * @inheritdoc
@@ -22,11 +24,17 @@ class LinkPager extends \yii\bootstrap5\LinkPager
 
     public function init(): void
     {
-        $this->nextPageLabel = (string)Icon::get('step-forward');
-        $this->prevPageLabel = (string)Icon::get('step-backward');
-        $this->firstPageLabel = (string)Icon::get('fast-backward');
-        $this->lastPageLabel = (string)Icon::get('fast-forward');
+        // Icon-only links, named for screen readers (WCAG 2.4.4, 4.1.2)
+        $this->nextPageLabel = static::iconLabel('step-forward', Yii::t('base', 'Next page'));
+        $this->prevPageLabel = static::iconLabel('step-backward', Yii::t('base', 'Previous page'));
+        $this->firstPageLabel = static::iconLabel('fast-backward', Yii::t('base', 'First page'));
+        $this->lastPageLabel = static::iconLabel('fast-forward', Yii::t('base', 'Last page'));
 
         parent::init();
+    }
+
+    private static function iconLabel(string $icon, string $text): string
+    {
+        return Icon::get($icon) . Html::tag('span', $text, ['class' => 'visually-hidden']);
     }
 }

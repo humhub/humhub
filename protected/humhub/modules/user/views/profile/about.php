@@ -42,18 +42,20 @@ $categories = $user->profile->getProfileFieldCategories();
                      id="profile-category-<?= $category->id ?>"
                      role="tabpanel"
                      aria-labelledby="profile-category-tab-<?= $category->id ?>">
+                    <dl class="mb-0">
                     <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
                         <div class="profile-item row mt-3" data-profile-field-internal-name="<?= $field->internal_name ?>">
                             <dt class="col-md-3 field-title text-lg-end">
                                 <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
                             </dt>
-                            <div class="col-md-9 field-value">
+                            <dd class="col-md-9 field-value mb-0">
                                 <?= ($field->field_type_class === MarkdownEditor::class) ?
                                     RichText::output($field->getUserValue($user, true, false)) :
                                     $field->getUserValue($user, false) ?>
-                            </div>
+                            </dd>
                         </div>
                     <?php endforeach; ?>
+                    </dl>
                 </div>
                 <?php $isFirst = false; ?>
             <?php endforeach; ?>
