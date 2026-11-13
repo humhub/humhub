@@ -266,4 +266,76 @@ describe('ui.focus', () => {
             expect(document.activeElement.id).toBe('other');
         });
     });
+
+    describe('controls()', () => {
+        it('lists the shown controls that Tab reaches, in document order', () => {
+            html('<div id="d"><a id="a" href="#">a</a><button id="off" tabindex="-1">x</button>'
+                + '<select id="s" tabindex="-1"></select><div hidden><input id="h"></div>'
+                + '<input id="i"><button id="dis" disabled>x</button><div id="ce" contenteditable="true"></div></div>');
+            expect(focus.controls(byId('d')).map((el) => el.id)).toEqual(['a', 'i', 'ce']);
+        });
+    });
+
+    describe('trap()', () => {
+        const tab = (shiftKey = false) => new KeyboardEvent('keydown', {key: 'Tab', shiftKey, cancelable: true});
+        const dialog = '<button id="before">x</button><div id="dlg" class="modal show" tabindex="-1">'
+            + '<button id="first">1</button><input id="middle"><button id="last">3</button></div>';
+
+        it('goes from the last control to the first and back', () => {
+            html(dialog);
+            byId('last').focus();
+            const forward = tab();
+            expect(focus.trap(forward, byId('dlg'))).toBe(true);
+            expect(forward.defaultPrevented).toBe(true);
+            expect(document.activeElement.id).toBe('first');
+
+            expect(focus.trap(tab(true), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('last');
+        });
+
+        it('lets Tab move between the controls inside', () => {
+            html(dialog);
+            byId('first').focus();
+            const evt = tab();
+            expect(focus.trap(evt, byId('dlg'))).toBe(false);
+            expect(evt.defaultPrevented).toBe(false);
+        });
+
+        it('takes Shift+Tab from the dialog itself to the last control', () => {
+            html(dialog);
+            byId('dlg').focus();
+            expect(focus.trap(tab(true), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('last');
+        });
+
+        it('brings the focus back from the page behind', () => {
+            html(dialog);
+            byId('before').focus();
+            expect(focus.trap(tab(), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('first');
+
+            loseFocus();
+            expect(focus.trap(tab(true), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('last');
+        });
+
+        it('leaves the focus to another dialog opened on top', () => {
+            html(dialog + '<div role="dialog" aria-label="Emoji picker"><input id="search"></div>');
+            byId('search').focus();
+            const evt = tab();
+            expect(focus.trap(evt, byId('dlg'))).toBe(false);
+            expect(evt.defaultPrevented).toBe(false);
+            expect(document.activeElement.id).toBe('search');
+        });
+
+        it('ignores other keys and a Tab handled already', () => {
+            html(dialog);
+            byId('last').focus();
+            expect(focus.trap(new KeyboardEvent('keydown', {key: 'Enter'}), byId('dlg'))).toBe(false);
+            const handled = tab();
+            handled.preventDefault();
+            expect(focus.trap(handled, byId('dlg'))).toBe(false);
+            expect(document.activeElement.id).toBe('last');
+        });
+    });
 });

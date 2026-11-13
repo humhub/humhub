@@ -129,6 +129,25 @@ describe('LikeButton', () => {
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 
+    it('keeps the focus on the same button when it switches, and toggles with Space', async () => {
+        const wrapper = mount(LikeButton, {
+            ...mountOptions(),
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+            attachTo: document.body,
+        });
+
+        const button = wrapper.find('a.likeAnchor');
+        expect(button.attributes('role')).toBe('button');
+        button.element.focus();
+
+        await button.trigger('keydown', { key: ' ', code: 'Space' });
+        await vi.waitFor(() => expect(wrapper.find('a.unlike').exists()).toBe(true));
+
+        expect(wrapper.find('a.likeAnchor').element).toBe(button.element);
+        expect(document.activeElement).toBe(button.element);
+        wrapper.unmount();
+    });
+
     it('sends DELETE to the like url when already liked', async () => {
         const wrapper = mount(LikeButton, {
             ...mountOptions(),

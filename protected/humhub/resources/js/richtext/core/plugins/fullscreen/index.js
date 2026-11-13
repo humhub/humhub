@@ -4,7 +4,7 @@
  * @license https://www.humhub.com/licences
  */
 
-import {menu, minimize, maximize} from "./menu";
+import {menu, minimize, maximize, leaveFullScreen} from "./menu";
 import {isSmallView} from "../../humhub-bridge";
 
 const fullscreen = {
@@ -22,6 +22,10 @@ const fullscreen = {
             minimize(context);
         });
     },
+    // Before the base keymap, which takes Escape to select the parent node
+    keymap: (context) => ({
+        'Escape': () => leaveFullScreen(context),
+    }),
     menu: (context) => {
         let fullScreenMenu = menu(context);
         context.fullScreenMenuItem = fullScreenMenu[0].item;

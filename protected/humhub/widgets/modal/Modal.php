@@ -98,7 +98,8 @@ class Modal extends \yii\bootstrap5\Modal
     {
         $this->options['data-bs-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
         $this->options['data-bs-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
-        // Disable autofocus on click outside the modal to avoid issues with the picker's listbox rendered outside
+        // Bootstrap's focus trap pulls the focus back from what a dialog opens outside of itself (the editor's
+        // dialog, the emoji picker); `humhub.ui.modal` keeps Tab inside the dialog instead
         $this->options['data-bs-focus'] = 'false';
 
         // If `clientOptions` property is false, `registerJs()` will not be called on the view to initialize the module.

@@ -45635,6 +45635,8 @@
     }
     const container = document.createElement("div");
     container.className = "humhub-richtext-provider humhub-emoji-picker";
+    container.setAttribute("role", "dialog");
+    container.setAttribute("aria-label", options.translate ? options.translate("Emoji picker") : "Emoji picker");
     const picker = new PickerElement(Object.assign(getPickerOptions(), {
       i18n: getPickerI18n(options.translate)
     }));
@@ -49845,11 +49847,69 @@
    * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
    * @license https://www.humhub.com/licences
    */
+  class FullScreenMenuItem extends MenuItem {
+    render(view2, renderOptions) {
+      const dom = super.render(view2, renderOptions);
+      this.setPressed(this.options.isFullScreen());
+      return dom;
+    }
+    // Menu wrappers give every item an `active` state, which drops `aria-pressed` while it is off
+    setActiveItemState() {
+      this.active = false;
+      this.setPressed(this.options.isFullScreen());
+    }
+    setPressed(pressed) {
+      if (this.dom) {
+        this.dom.setAttribute("aria-pressed", pressed ? "true" : "false");
+      }
+    }
+  }
+  function onFullScreenKeydown(context, e2) {
+    if (e2.isDefaultPrevented()) {
+      return;
+    }
+    if (e2.key === "Escape") {
+      if (leaveFullScreen(context)) {
+        e2.preventDefault();
+      }
+      return;
+    }
+    if (e2.key !== "Tab" || e2.altKey || e2.ctrlKey || e2.metaKey) {
+      return;
+    }
+    const controls = context.editor.$.find('button, a[href], input, select, textarea, [tabindex], [contenteditable="true"]').filter((i2, el) => el.getAttribute("tabindex") !== "-1" && !el.disabled && $(el).is(":visible")).toArray();
+    if (!controls.length) {
+      return;
+    }
+    const first = controls[0];
+    const last2 = controls[controls.length - 1];
+    if (e2.shiftKey && document.activeElement === first) {
+      e2.preventDefault();
+      last2.focus();
+    } else if (!e2.shiftKey && document.activeElement === last2) {
+      e2.preventDefault();
+      first.focus();
+    }
+  }
+  function leaveFullScreen(context) {
+    if (!context.editor.$.is(".fullscreen") || $(".humhub-richtext-provider:visible").length) {
+      return false;
+    }
+    minimize(context);
+    const button = context.fullScreenMenuItem && context.fullScreenMenuItem.dom;
+    if (button && $(button).is(":visible")) {
+      button.focus();
+    } else {
+      context.editor.view.focus();
+    }
+    return true;
+  }
   function fullScreen(context) {
-    return new MenuItem({
+    return new FullScreenMenuItem({
       id: "fullscreen",
       title: "Fullscreen",
       icon: icons.enlarge,
+      isFullScreen: () => context.editor.$.is(".fullscreen"),
       sortOrder: 300,
       hideOnCollapse: true,
       run: () => {
@@ -49880,8 +49940,10 @@
     if ($editor.is(".fullscreen")) {
       $("body").removeClass("modal-open");
       $editor.removeClass("fullscreen");
+      $editor.off("keydown.fullscreen");
       $editor.find(".Prosemirror").blur();
       context.fullScreenMenuItem.switchIcon(icons.enlarge);
+      context.fullScreenMenuItem.setPressed(false);
     }
   }
   function maximize(context, menuItem) {
@@ -49893,7 +49955,9 @@
       }, 200);
       $("body").addClass("modal-open");
       $editor.addClass("fullscreen");
+      $editor.off("keydown.fullscreen").on("keydown.fullscreen", (e2) => onFullScreenKeydown(context, e2));
       context.fullScreenMenuItem.switchIcon(icons.shrink);
+      context.fullScreenMenuItem.setPressed(true);
     }
   }
   function menu$3(context) {
@@ -49924,6 +49988,10 @@
         minimize(context);
       });
     },
+    // Before the base keymap, which takes Escape to select the parent node
+    keymap: (context) => ({
+      "Escape": () => leaveFullScreen(context)
+    }),
     menu: (context) => {
       let fullScreenMenu = menu$3(context);
       context.fullScreenMenuItem = fullScreenMenu[0].item;

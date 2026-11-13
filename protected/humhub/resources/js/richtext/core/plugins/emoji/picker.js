@@ -25,6 +25,9 @@ export function openEmojiPicker(anchor, options = {}) {
 
     const container = document.createElement('div');
     container.className = 'humhub-richtext-provider humhub-emoji-picker';
+    // A named dialog, which keeps the focus also when its editor sits in a modal (`ui.modal`)
+    container.setAttribute('role', 'dialog');
+    container.setAttribute('aria-label', options.translate ? options.translate('Emoji picker') : 'Emoji picker');
 
     const picker = new Picker(Object.assign(getPickerOptions(), {
         i18n: getPickerI18n(options.translate),

@@ -89,6 +89,21 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - `.nav-scroller` is `position: relative`, so what is positioned inside it (the visually hidden number of
     a waiting dot) no longer widens the page. A picker in a table cell gives up the default width of its
     input below the `sm` breakpoint.
+- **The focus stays where the keyboard user is** (WCAG 2.4.3).
+  - Tab and Shift+Tab go round the controls of the topmost open dialog, legacy and Vue (`UiModal`) alike
+    (`humhub.ui.focus.trap()`, wired by `humhub.ui.modal`; `ui.focus.controls()` lists what Tab reaches).
+    Bootstrap's own trap stays off (`data-bs-focus="false"`). Something a dialog opens outside of itself
+    keeps the focus when it is a `role="dialog"` (the editor's dialog, now also the emoji picker, named
+    "Emoji picker"). The dead Bootstrap 3 `enforceFocus` override is gone.
+  - The confirmation dialog (`ui.modal.confirm()`) focuses "Cancel" when it opens. A dialog is focused on
+    `shown` only when no control in it holds the focus yet.
+  - The like button is one `<a role="button">` that changes its class (`like` / `unlike`), icon and text,
+    and toggles with Space, instead of two links swapped by `v-if`.
+  - `StreamEntry.loader()` moves a focus in the entry's menu to the entry before it hides the menu, so the
+    reloaded entry gets it (visibility, lock comments, …).
+  - The editor's full screen button is a toggle (`aria-pressed`, title translated); in full screen Tab
+    goes round the editor's toolbar and text, Escape leaves it and focuses the button (after a list of
+    suggestions is closed).
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of

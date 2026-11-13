@@ -26,6 +26,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             'Wrap in bullet list': i18n.t('ContentModule.richtexteditor', 'Wrap in bullet list'),
             'Toggle code font': i18n.t('ContentModule.richtexteditor', 'Toggle code font'),
             'Switch editor mode': i18n.t('ContentModule.richtexteditor', 'Switch editor mode'),
+            'Fullscreen': i18n.t('ContentModule.richtexteditor', 'Fullscreen'),
             'Change to code block': i18n.t('ContentModule.richtexteditor', 'Change to code block'),
             'Code': i18n.t('ContentModule.richtexteditor', 'Code'),
             'Toggle emphasis': i18n.t('ContentModule.richtexteditor', 'Toggle emphasis'),
