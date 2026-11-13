@@ -118,7 +118,7 @@ return [
   'Show topic widget in Stream sidebar' => 'Afficher le widget « Sujets » dans la barre latérale du fil d\'actualités',
   'Shown on About Page.' => 'Affiché sur la page "À propos"',
   'Sorry, you are not allowed to leave this space!' => 'Désolé, vous n\'êtes pas autorisé à quitter cet espace.',
-  'Sort' => '',
+  'Sort' => 'Trier',
   'Space' => 'Espace',
   'Space Name' => 'Nom de l’espace',
   'Space Visibility' => 'Visibilité de l’espace',
