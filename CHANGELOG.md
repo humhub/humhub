@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: Indexes on `activity.created_at` and `user_auth (source, source_id)`: the mail summary and every auth client login no longer scan the whole table
 - Fix: The colour field of a space (and of other colour groups) has a name for screen readers again
 - Enh: The dialog of the richtext editor is a labelled modal, the mention and emoji suggestions are read out
 - Enh: The hint of a form field describes its input (`aria-describedby`), the richtext editor included
