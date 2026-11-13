@@ -1,9 +1,8 @@
 <?php
-
 return [
-    'Contents' => 'Publications',
-    'Whenever a new content (e.g. post) has been created.' => 'Chaque fois qu\'un nouveau contenu a été publié.',
-    '{displayName} created a new {content} and {groupCount} more.' => '{displayName} a créé un nouveau {content} et {groupCount} autres.',
-    '{displayName} created a new {content}.' => '{displayName} a créé un nouveau {content}.',
-    '{groupCount, plural, =1{{displayName} created a new {contentType}.} other{{displayName} created # new entries.}}' => '',
+  'Contents' => 'Publications',
+  'Whenever a new content (e.g. post) has been created.' => 'Chaque fois qu\'un nouveau contenu a été publié.',
+  '{displayName} created a new {content} and {groupCount} more.' => '{displayName} a créé un nouveau {content} et {groupCount} autres.',
+  '{displayName} created a new {content}.' => '{displayName} a créé un nouveau {content}.',
+  '{groupCount, plural, =1{{displayName} created a new {contentType}.} other{{displayName} created # new entries.}}' => '{groupCount, plural, =1{{displayName} a créé un nouveau {contentType}.} other{{displayName} a créé # nouvelles entrées.}}',
 ];
