@@ -70,10 +70,10 @@
     --hh-page-bg: #{$hh-page-bg};
     // The border of an input (a field, select, checkbox, radio, switch): 3:1 on its fill
     --hh-input-border-color: #{$hh-input-border-color};
-    // A lighter selection than `--bs-accent-bg-subtle`: a checked choice, a hovered new item
+    // A field's placeholder: lighter than a value, 4.5:1 on the field
+    --hh-input-placeholder-color: #{$hh-input-placeholder-color};
+    // A lighter selection than `--bs-accent-bg-subtle`: a checked choice, a hovered new item; inline code
     --hh-accent-bg-soft: #{$hh-accent-bg-soft};
-    // Inline code
-    --hh-code-bg: #{$hh-code-bg};
     // The top bar and the account menu hanging from it
     --hh-topbar-bg: #{$hh-topbar-bg};
     --hh-topbar-color: #{$hh-topbar-color};
@@ -115,8 +115,8 @@
 
         --hh-page-bg: #{$hh-page-bg-dark};
         --hh-input-border-color: #{$hh-input-border-color-dark};
+        --hh-input-placeholder-color: #{$hh-input-placeholder-color-dark};
         --hh-accent-bg-soft: #{$hh-accent-bg-soft-dark};
-        --hh-code-bg: #{$hh-code-bg-dark};
         --hh-topbar-bg: #{$hh-topbar-bg-dark};
         --hh-topbar-color: #{$hh-topbar-color-dark};
         --bs-focus-ring-color: #{$focus-ring-color}; // Computed here, so a dark scope reads its own `--hh-accent-fg`
@@ -132,8 +132,8 @@
 }
 
 // High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes.
-// The body text and a theme color as text reach `$hh-high-contrast-ratio` on the darkest (lightest) surface, a theme
-// color as a fill is darkened (lightened) until its text does. Worked out once here: the mixin below is output twice
+// The body text and a theme color as text reach `$hh-high-contrast-ratio` on the darkest (lightest) surface and a theme
+// color as text also on its subtle fill, a theme color as a fill is darkened (lightened) until its text does. Worked out once here: the mixin below is output twice
 // (the user's option and the system setting), and _button.scss reads the fills too
 $hh-body-color-high-contrast: hh-readable($body-color, $body-secondary-bg, $hh-high-contrast-ratio);
 $hh-body-color-high-contrast-dark: hh-readable($body-color-dark, $body-secondary-bg-dark, $hh-high-contrast-ratio);
@@ -142,10 +142,10 @@ $hh-fg-high-contrast-dark: ();
 $hh-fill-high-contrast: ();
 @each $color in $hh-fg-colors {
     $hh-fg-high-contrast: map-merge($hh-fg-high-contrast, (
-        $color: hh-readable(map-get($hh-fg, $color), $body-secondary-bg, $hh-high-contrast-ratio),
+        $color: hh-readable(map-get($hh-fg, $color), ($body-secondary-bg, map-get($theme-colors-bg-subtle, $color)), $hh-high-contrast-ratio),
     ));
     $hh-fg-high-contrast-dark: map-merge($hh-fg-high-contrast-dark, (
-        $color: hh-readable(map-get($hh-fg-dark, $color), $body-secondary-bg-dark, $hh-high-contrast-ratio),
+        $color: hh-readable(map-get($hh-fg-dark, $color), ($body-secondary-bg-dark, map-get($theme-colors-bg-subtle-dark, $color)), $hh-high-contrast-ratio),
     ));
     $hh-fill-high-contrast: map-merge($hh-fill-high-contrast, (
         $color: hh-readable(map-get($theme-colors, $color), map-get($hh-contrast-colors, $color), $hh-high-contrast-ratio),
@@ -156,7 +156,8 @@ $hh-fill-high-contrast: ();
     --bs-body-color: #{$body-color};
     --bs-body-color-rgb: #{to-rgb($body-color)};
     --bs-secondary-color: var(--bs-body-color);
-    --bs-tertiary-color: var(--bs-body-color);
+    // A disabled item: set apart from the body text, but readable
+    --bs-tertiary-color: var(--hh-input-placeholder-color);
     --bs-border-color: #{$border-color};
     --hh-input-border-color: #{$border-color};
 

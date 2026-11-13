@@ -33,11 +33,8 @@ $dark: #333 !default;
 
 $accent: #1b8291 !default;
 $accent-text-emphasis: shade-color($accent, 60%) !default;
-$accent-bg-subtle: tint-color($accent, 80%) !default;
-$accent-border-subtle: tint-color($accent, 60%) !default;
 $accent-text-emphasis-dark: tint-color($accent, 60%) !default;
-$accent-bg-subtle-dark: shade-color($accent, 80%) !default;
-$accent-border-subtle-dark: shade-color($accent, 60%) !default;
+// Its subtle fill and border are mixed from the surface, as the other theme colors' (below)
 
 
 //
@@ -46,10 +43,11 @@ $accent-border-subtle-dark: shade-color($accent, 60%) !default;
 
 $link-color: #000000 !default;
 $link-hover-color: $link-color !default;
-$code-color: mix(black, $accent, 10%) !default;
+$code-color: $accent !default; // Made readable on the fill of inline code, see "Inks" below
 // Form fields: 1px border (Bootstrap's $input-border-width) in `--hh-input-border-color` (3:1, below), 38px
 // high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
 $input-border-color: var(--hh-input-border-color) !default;
+$input-placeholder-color: var(--hh-input-placeholder-color) !default; // Has a value per mode, see "Inks" below
 $input-padding-y: 7.5px !default;
 // No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
 $input-box-shadow: 0 0 0 0 transparent !default;
@@ -67,14 +65,14 @@ $hh-focus-ring-offset: 2px !default;
 //
 // Colors of text, surfaces and lines: Bootstrap's semantic variables, and `$hh-*` for the roles Bootstrap lacks.
 // They become the CSS variables of the same name (`--bs-body-color`, `--hh-page-bg`, ...), see _root.scss and
-// docs/ui/colours.md. A `$hh-*` variable is HumHub's, any other one Bootstrap's.
+// docs/ui/colours.md. A `$hh-*` variable is HumHub's, any other one Bootstrap's. A theme sets the base colors (the
+// theme colors, `$body-bg`, `$body-color`, `$body-emphasis-color`); the others are derived from them, see
+// docs/develop/concept-design-tokens.md, "Derivation".
 // --------------------------------------------------
 
-// Text
+// Text that has to be read is the body or the emphasis color; a smaller size or weight sets it back (see "Inks")
 $body-color: #555 !default;
-$body-emphasis-color: #000 !default; // Headings, a hovered link, an active item
-// Muted: `$body-secondary-color`, below the surfaces it has to read on
-$body-tertiary-color: #aeaeae !default; // Faint: a disabled item, a hint
+$body-emphasis-color: #000 !default; // Headings, a link, a hovered or active item
 
 // Surfaces
 // `$body-bg` can be set in Administration → Appearance → Theme. The page, the other surfaces and the lines are mixed
@@ -84,22 +82,60 @@ $hh-page-bg: mix(black, $body-bg, 7%) !default; // The page, behind the surfaces
 $body-tertiary-bg: mix(black, $body-bg, 2.4%) !default; // A sunken area in a surface: comments, tabs, a filter
 $body-secondary-bg: mix(black, $body-bg, 7%) !default; // The fill of a hovered or active item, a neutral badge; a light separator
 $light: mix(black, $body-bg, 9.4%) !default; // Bootstrap's `light` theme color: the neutral button (`Button::light()`), a light edge
-$hh-accent-bg-soft: lighten(desaturate(adjust-hue($accent, 6), 16%), 55%) !default; // Lighter than `$accent-bg-subtle`
-$hh-code-bg: lighten($accent, 50%) !default; // Inline code
-$mark-bg: lighten($warning, 40%) !default; // Marked text
 
-// A theme color as text (a link, an icon, a label) reaches this contrast on the surfaces, see `--hh-{color}-fg`.
-// `fg` (foreground) is the name Bootstrap 6 gives this role, next to `bg`, `bg-subtle` and `contrast`
+// A tinted surface is its color mixed into the surface, so it follows the surface. A theme color's subtle fill (an
+// alert, a selected item) and its border; on white the same as Bootstrap's `tint-color()`
+$primary-bg-subtle: mix($primary, $body-bg, 20%) !default;
+$secondary-bg-subtle: mix($secondary, $body-bg, 20%) !default;
+$accent-bg-subtle: mix($accent, $body-bg, 20%) !default;
+$info-bg-subtle: mix($info, $body-bg, 20%) !default;
+$success-bg-subtle: mix($success, $body-bg, 20%) !default;
+$warning-bg-subtle: mix($warning, $body-bg, 20%) !default;
+$danger-bg-subtle: mix($danger, $body-bg, 20%) !default;
+$primary-border-subtle: mix($primary, $body-bg, 40%) !default;
+$secondary-border-subtle: mix($secondary, $body-bg, 40%) !default;
+$accent-border-subtle: mix($accent, $body-bg, 40%) !default;
+$info-border-subtle: mix($info, $body-bg, 40%) !default;
+$success-border-subtle: mix($success, $body-bg, 40%) !default;
+$warning-border-subtle: mix($warning, $body-bg, 40%) !default;
+$danger-border-subtle: mix($danger, $body-bg, 40%) !default;
+$hh-accent-bg-soft: mix($accent, $body-bg, 8%) !default; // A lighter selection: a checked choice, a hovered new item; inline code
+$mark-bg: mix($warning, $body-bg, 20%) !default; // Marked text
+
+// Inks: a color drawn as text or as an icon reads on the surfaces it is drawn on, the darkest of them (`hh-readable()`).
+// A theme's own value passes the check too: the lines without `!default` come after the theme's variables
 $hh-fg-contrast-ratio: 4.5 !default; // WCAG 2.2 AA for normal text
+$body-color: hh-readable($body-color, $body-secondary-bg, $hh-fg-contrast-ratio);
+$body-emphasis-color: hh-readable($body-emphasis-color, $body-secondary-bg, $hh-fg-contrast-ratio);
+// Muted text (Bootstrap's `.text-body-secondary`, `.form-text`) is the body text; a lighter grey a theme sets reads too
+$body-secondary-color: $body-color !default;
+$body-secondary-color: hh-readable($body-secondary-color, $body-secondary-bg, $hh-fg-contrast-ratio);
+// A field's placeholder: halfway between the body text and the field, darkened until it reads on the field, so it is
+// lighter than a value. Bootstrap's `$input-placeholder-color` takes it as `--hh-input-placeholder-color`
+$hh-input-placeholder-color: mix($body-color, $body-bg, 50%) !default;
+$hh-input-placeholder-color: hh-readable($hh-input-placeholder-color, $body-bg, $hh-fg-contrast-ratio);
+// Disabled: the text and the icon of a disabled item, never text that has to be read (exempt from contrast)
+$body-tertiary-color: mix($body-color, $body-bg, 50%) !default;
+$code-color: hh-readable($code-color, $hh-accent-bg-soft, $hh-fg-contrast-ratio);
+
+// A theme color as text (a link, an icon, a label), see `--hh-{color}-fg`. `fg` (foreground) is the name Bootstrap 6
+// gives this role, next to `bg`, `bg-subtle` and `contrast`. The color itself where it reads on the darkest surface and
+// on its own subtle fill, otherwise darker
 $hh-fg-colors: primary, secondary, accent, info, success, warning, danger !default; // Those with a `--hh-{color}-fg`
-// The shade of each: the color itself where it reads on the darkest surface, otherwise darker. A theme can set one
-$hh-primary-fg: hh-readable($primary, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
-$hh-secondary-fg: hh-readable($secondary, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
-$hh-accent-fg: hh-readable($accent, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
-$hh-info-fg: hh-readable($info, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
-$hh-success-fg: hh-readable($success, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
-$hh-warning-fg: hh-readable($warning, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
-$hh-danger-fg: hh-readable($danger, $body-secondary-bg, $hh-fg-contrast-ratio) !default;
+$hh-primary-fg: $primary !default;
+$hh-secondary-fg: $secondary !default;
+$hh-accent-fg: $accent !default;
+$hh-info-fg: $info !default;
+$hh-success-fg: $success !default;
+$hh-warning-fg: $warning !default;
+$hh-danger-fg: $danger !default;
+$hh-primary-fg: hh-readable($hh-primary-fg, ($body-secondary-bg, $primary-bg-subtle), $hh-fg-contrast-ratio);
+$hh-secondary-fg: hh-readable($hh-secondary-fg, ($body-secondary-bg, $secondary-bg-subtle), $hh-fg-contrast-ratio);
+$hh-accent-fg: hh-readable($hh-accent-fg, ($body-secondary-bg, $accent-bg-subtle), $hh-fg-contrast-ratio);
+$hh-info-fg: hh-readable($hh-info-fg, ($body-secondary-bg, $info-bg-subtle), $hh-fg-contrast-ratio);
+$hh-success-fg: hh-readable($hh-success-fg, ($body-secondary-bg, $success-bg-subtle), $hh-fg-contrast-ratio);
+$hh-warning-fg: hh-readable($hh-warning-fg, ($body-secondary-bg, $warning-bg-subtle), $hh-fg-contrast-ratio);
+$hh-danger-fg: hh-readable($hh-danger-fg, ($body-secondary-bg, $danger-bg-subtle), $hh-fg-contrast-ratio);
 // By the names of `$hh-fg-colors`, for the loops
 $hh-fg: (
     primary: $hh-primary-fg,
@@ -110,9 +146,6 @@ $hh-fg: (
     warning: $hh-warning-fg,
     danger: $hh-danger-fg,
 ) !default;
-// Muted text (meta data, help text, captions, placeholders): a grey that reaches the same ratio on a surface
-$body-secondary-color: hh-readable(#7a7a7a, $body-bg, $hh-fg-contrast-ratio) !default;
-
 // Lines
 $border-color: mix(black, $body-bg, 13.3%) !default; // A separator, the border of a box
 // The border of an input (a field, select, checkbox, radio, switch): the line, darkened to 3:1 on the input's fill (WCAG
@@ -348,12 +381,10 @@ $form-switch-color: $hh-input-border-color !default;
 
 $link-color-dark: #fff !default; // As the light mode's black: the emphasis color
 $link-hover-color-dark: $link-color-dark !default;
-$code-color-dark: mix(white, $accent, 10%) !default;
+$code-color-dark: $accent !default;
 
 $body-color-dark: #ddd !default;
 $body-emphasis-color-dark: #fff !default;
-$body-secondary-color-dark: #bbb !default;
-$body-tertiary-color-dark: #999 !default;
 
 // As in the light mode, from `$body-bg-dark`: the page and the top bar mixed with black, the other surfaces and the lines
 // with white. The page stays a soft dark of the surface's hue, not black
@@ -361,14 +392,47 @@ $body-bg-dark: #222 !default;
 $hh-page-bg-dark: mix(black, $body-bg-dark, 35%) !default;
 $body-tertiary-bg-dark: mix(white, $body-bg-dark, 7.7%) !default;
 $body-secondary-bg-dark: mix(white, $body-bg-dark, 10.4%) !default;
-// A theme color as text, lighter where the color itself doesn't read on the lightest dark surface (see `$hh-{color}-fg`)
-$hh-primary-fg-dark: hh-readable($primary, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
-$hh-secondary-fg-dark: hh-readable($secondary, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
-$hh-accent-fg-dark: hh-readable($accent, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
-$hh-info-fg-dark: hh-readable($info, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
-$hh-success-fg-dark: hh-readable($success, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
-$hh-warning-fg-dark: hh-readable($warning, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
-$hh-danger-fg-dark: hh-readable($danger, $body-secondary-bg-dark, $hh-fg-contrast-ratio) !default;
+// The tinted surfaces, mixed into the dark surface as in the light mode: lighter than a card, not darker
+$primary-bg-subtle-dark: mix($primary, $body-bg-dark, 20%) !default;
+$secondary-bg-subtle-dark: mix($secondary, $body-bg-dark, 20%) !default;
+$accent-bg-subtle-dark: mix($accent, $body-bg-dark, 20%) !default;
+$info-bg-subtle-dark: mix($info, $body-bg-dark, 20%) !default;
+$success-bg-subtle-dark: mix($success, $body-bg-dark, 20%) !default;
+$warning-bg-subtle-dark: mix($warning, $body-bg-dark, 20%) !default;
+$danger-bg-subtle-dark: mix($danger, $body-bg-dark, 20%) !default;
+$primary-border-subtle-dark: mix($primary, $body-bg-dark, 40%) !default;
+$secondary-border-subtle-dark: mix($secondary, $body-bg-dark, 40%) !default;
+$accent-border-subtle-dark: mix($accent, $body-bg-dark, 40%) !default;
+$info-border-subtle-dark: mix($info, $body-bg-dark, 40%) !default;
+$success-border-subtle-dark: mix($success, $body-bg-dark, 40%) !default;
+$warning-border-subtle-dark: mix($warning, $body-bg-dark, 40%) !default;
+$danger-border-subtle-dark: mix($danger, $body-bg-dark, 40%) !default;
+$hh-accent-bg-soft-dark: mix($accent, $body-bg-dark, 8%) !default;
+$mark-bg-dark: mix($warning, $body-bg-dark, 20%) !default;
+
+// The inks, readable on the lightest dark surface they are drawn on (see "Inks" above)
+$body-color-dark: hh-readable($body-color-dark, $body-secondary-bg-dark, $hh-fg-contrast-ratio);
+$body-emphasis-color-dark: hh-readable($body-emphasis-color-dark, $body-secondary-bg-dark, $hh-fg-contrast-ratio);
+$body-secondary-color-dark: $body-color-dark !default;
+$body-secondary-color-dark: hh-readable($body-secondary-color-dark, $body-secondary-bg-dark, $hh-fg-contrast-ratio);
+$hh-input-placeholder-color-dark: mix($body-color-dark, $body-bg-dark, 50%) !default;
+$hh-input-placeholder-color-dark: hh-readable($hh-input-placeholder-color-dark, $body-bg-dark, $hh-fg-contrast-ratio);
+$body-tertiary-color-dark: mix($body-color-dark, $body-bg-dark, 50%) !default;
+$code-color-dark: hh-readable($code-color-dark, $hh-accent-bg-soft-dark, $hh-fg-contrast-ratio);
+$hh-primary-fg-dark: $primary !default;
+$hh-secondary-fg-dark: $secondary !default;
+$hh-accent-fg-dark: $accent !default;
+$hh-info-fg-dark: $info !default;
+$hh-success-fg-dark: $success !default;
+$hh-warning-fg-dark: $warning !default;
+$hh-danger-fg-dark: $danger !default;
+$hh-primary-fg-dark: hh-readable($hh-primary-fg-dark, ($body-secondary-bg-dark, $primary-bg-subtle-dark), $hh-fg-contrast-ratio);
+$hh-secondary-fg-dark: hh-readable($hh-secondary-fg-dark, ($body-secondary-bg-dark, $secondary-bg-subtle-dark), $hh-fg-contrast-ratio);
+$hh-accent-fg-dark: hh-readable($hh-accent-fg-dark, ($body-secondary-bg-dark, $accent-bg-subtle-dark), $hh-fg-contrast-ratio);
+$hh-info-fg-dark: hh-readable($hh-info-fg-dark, ($body-secondary-bg-dark, $info-bg-subtle-dark), $hh-fg-contrast-ratio);
+$hh-success-fg-dark: hh-readable($hh-success-fg-dark, ($body-secondary-bg-dark, $success-bg-subtle-dark), $hh-fg-contrast-ratio);
+$hh-warning-fg-dark: hh-readable($hh-warning-fg-dark, ($body-secondary-bg-dark, $warning-bg-subtle-dark), $hh-fg-contrast-ratio);
+$hh-danger-fg-dark: hh-readable($hh-danger-fg-dark, ($body-secondary-bg-dark, $danger-bg-subtle-dark), $hh-fg-contrast-ratio);
 $hh-fg-dark: (
     primary: $hh-primary-fg-dark,
     secondary: $hh-secondary-fg-dark,
@@ -378,9 +442,6 @@ $hh-fg-dark: (
     warning: $hh-warning-fg-dark,
     danger: $hh-danger-fg-dark,
 ) !default;
-$hh-accent-bg-soft-dark: mix($accent, $body-bg-dark, 15%) !default;
-$hh-code-bg-dark: $accent-bg-subtle-dark !default;
-$mark-bg-dark: shade-color($warning, 80%) !default;
 
 $border-color-dark: mix(white, $body-bg-dark, 13.1%) !default;
 $hh-input-border-color-dark: hh-readable($border-color-dark, $body-bg-dark, 3) !default;
@@ -393,8 +454,9 @@ $hh-topbar-color-dark: var(--bs-emphasis-color) !default;
 // High contrast (`[data-hh-contrast="more"]` or `prefers-contrast: more`), see _root.scss
 // --------------------------------------------------
 
-$hh-border-color-contrast: #767676 !default; // 4.5:1 on white
-$hh-border-color-contrast-dark: #8a8a8a !default; // 4.5:1 on $body-bg-dark
+// The lines, 4.5:1 on the surface
+$hh-border-color-contrast: hh-readable($border-color, $body-bg, 4.5) !default;
+$hh-border-color-contrast-dark: hh-readable($border-color-dark, $body-bg-dark, 4.5) !default;
 // The body text, a theme color as text and the text on a theme color fill reach this contrast (WCAG 2.2 AAA)
 $hh-high-contrast-ratio: 7 !default;
 // The edge of a surface (a panel, a card, the page header) instead of its soft shadow

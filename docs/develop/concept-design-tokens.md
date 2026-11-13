@@ -53,6 +53,9 @@ taken as it is.
 
 - **A surface or a line** is the surface mixed with black (light mode) or white (dark mode), e.g.
   the page `mix(black, $body-bg, 7%)`. It follows a surface the administrator picks.
+- **A tinted surface** (a selection, a status, marked text) is its colour mixed into the surface:
+  `mix($accent, $body-bg, 20%)`, in the dark mode into `$body-bg-dark`. On white that is Bootstrap's
+  `tint-color()`; in the dark mode it is lighter than a card, not darker.
 - **An ink**, a colour drawn as text or as an icon, is its base colour moved toward black or white
   by `hh-readable($color, $background, $min-ratio)` (`_functions.scss`) until it reaches its ratio
   on the surface it is checked against. A colour that reads already stays as it is.
@@ -87,12 +90,14 @@ the disabled colour, which is exempt from contrast and holds no text that has to
 | Muted text (Bootstrap's role, see below) | `--bs-secondary-color` | `$body-secondary-color` | = body text | = body text | `$body-color`; a lighter grey a theme sets is made readable (4.5:1) on the reference surface |
 | A field's placeholder | `--hh-input-placeholder-color` (Bootstrap's `$input-placeholder-color` points to the token) | `$hh-input-placeholder-color` | `#757575` | `#898989` | the middle between the body colour and the surface, made readable (4.5:1) on the surface: `hh-readable(mix($body-color, $body-bg, 50%), $body-bg, $hh-fg-contrast-ratio)` |
 | Disabled: the text and the icon of a disabled item | `--bs-tertiary-color` | `$body-tertiary-color` | `#aaa` | `#808080` | the middle between the body colour and the surface: `mix($body-color, $body-bg, 50%)`; exempt from contrast |
-| A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `$hh-{color}-fg` | the colour, darker where needed | the colour, lighter where needed | the theme colour, readable (4.5:1) on the reference surface |
+| A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `$hh-{color}-fg` | the colour, darker where needed | the colour, lighter where needed | the theme colour, readable (4.5:1) on the reference surface and on its own subtle fill (`--bs-{color}-bg-subtle`) |
 | Text on a fill in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `$hh-{color}-contrast` | `$color-contrast-light` (white) where it reaches `$min-contrast-ratio` (4.5:1) on the fill, otherwise `$color-contrast-dark` (black) | same | |
-| Inline code | `--bs-code-color` | `$code-color` | `#176f7c` | the accent, lighter where needed | the accent, readable (4.5:1) on `--hh-code-bg` |
+| Status text on its subtle fill (an alert) | `--bs-{color}-text-emphasis` | Bootstrap's `${color}-text-emphasis` | Bootstrap's (`shade-color($color, 60%)`) | Bootstrap's (`tint-color($color, 40%)`) | made readable (4.5:1) on `--bs-{color}-bg-subtle` (`maps.scss`) |
+| Inline code | `--bs-code-color` | `$code-color` | `#197a88` | `#499ba7` | the accent, readable (4.5:1) on its fill `--hh-accent-bg-soft` |
 
-In high contrast the emphasis, body, muted and `-fg` colours reach 7:1 on the reference surface;
-the placeholder stays at 4.5:1 on the field.
+In high contrast the emphasis, body, muted and `-fg` colours reach 7:1 on the reference surface (a
+`-fg` colour also on its subtle fill); the placeholder stays at 4.5:1 on the field, and a disabled
+item takes the placeholder colour, so it is readable and still set apart.
 
 `--bs-secondary-color` is Bootstrap's muted text (`.text-body-secondary`, formerly `.text-muted`;
 `.form-text`, table captions, the breadcrumb). It is unrelated to the theme colour `$secondary`.
@@ -112,11 +117,10 @@ Text that has to be read never takes it, nor `.text-body-tertiary`.
 | Surface: panel, card, dropdown, modal, popover, field, table | `--bs-body-bg` | `$body-bg` | `#fff` | `#222` |
 | Sunken area in a surface: comments, tabs, filter | `--bs-tertiary-bg` | `$body-tertiary-bg` | `#f9f9f9` | `#333` |
 | Fill of a hovered or active item, a neutral badge; a light separator | `--bs-secondary-bg` | `$body-secondary-bg` | `#ededed` | `#393939` |
-| Selected or new item, current day | `--bs-accent-bg-subtle` | `$accent-bg-subtle` | `#d1e6e9` | Bootstrap's |
-| Lighter selection: a checked choice, a hovered new item | `--hh-accent-bg-soft` | `$hh-accent-bg-soft` | `#d3ebf1` | `#213033` |
-| Inline code | `--hh-code-bg` | `$hh-code-bg` | `#b9ebf2` | `$accent-bg-subtle-dark` |
-| Marked text: `<mark>`, a matched suggestion | `--bs-highlight-bg` | `$mark-bg` | `#fff4d3` | the warning's subtle background |
-| Status: alert, notice | `--bs-{color}-bg-subtle`, `--bs-{color}-text-emphasis`, `--bs-{color}-border-subtle` | Bootstrap's | Bootstrap's | Bootstrap's |
+| Selected or new item, current day, a hovered row | `--bs-accent-bg-subtle` | `$accent-bg-subtle` | `#d1e6e9`: the accent, 20 % in the surface | `#213538`: the same in `$body-bg-dark` |
+| Lighter selection: a checked choice, a hovered new item; inline code | `--hh-accent-bg-soft` | `$hh-accent-bg-soft` | `#edf5f6`: the accent, 8 % | `#212a2b` |
+| Marked text: `<mark>`, a matched suggestion | `--bs-highlight-bg` | `$mark-bg` | `#fff3cd`: the warning colour, 20 % | `#4e421d` |
+| Status: alert, notice; a theme colour's subtle fill and border | `--bs-{color}-bg-subtle`, `--bs-{color}-border-subtle` | `${color}-bg-subtle`, `${color}-border-subtle` | the colour, 20 % (fill) and 40 % (border) in the surface | the same in `$body-bg-dark` |
 
 Bootstrap's components take `--bs-body-bg` as their surface. `--bs-body-bg` therefore is the
 surface colour, and the `<body>` sets its background to `--hh-page-bg`; no other rule uses
@@ -129,6 +133,12 @@ translucent.
 The alerts use Bootstrap's variants (`.alert-success`, …) and their status colours. Their text
 reaches a contrast of 7.2–9.4:1 on its fill, formerly 1.9–2.2:1.
 
+The subtle fills of the theme colours (`primary`, `secondary`, `accent`, `info`, `success`,
+`warning`, `danger`) are set in `variables.scss` instead of Bootstrap's `tint-color()` and
+`shade-color()`: on a white surface the light values are the same, in the dark mode Bootstrap's
+are darker than a card. Bootstrap's `light` and `dark` keep theirs. Inline code has no fill of its
+own: it takes the lighter selection.
+
 `--bs-highlight-bg` is Bootstrap's name for marked text, not for an informative highlight.
 
 ### Lines and focus
@@ -137,6 +147,7 @@ reaches a contrast of 7.2–9.4:1 on its fill, formerly 1.9–2.2:1.
 |---|---|---|---|---|
 | Separator, border of a box, a neutral placeholder fill | `--bs-border-color` | `$border-color` | `#ddd` | `#3f3f3f` |
 | Border of an input: field, select, checkbox, radio, switch; 3:1 on its fill | `--hh-input-border-color` | `$hh-input-border-color` (Bootstrap's `$input-border-color` points to the token) | `#949494` | `#6d6d6d` |
+| A line in high contrast: separator and border of an input, 4.5:1 on the surface | `--bs-border-color`, `--hh-input-border-color` | `$hh-border-color-contrast` | `#757575` | `#8a8a8a` |
 | Keyboard focus ring | `--bs-focus-ring-color`, `--bs-focus-ring-width`, `--hh-focus-ring-offset` | `$focus-ring-color`, `$focus-ring-width`, `$hh-focus-ring-offset` | accent as text (`--hh-accent-fg`), `2px`, `2px` | same |
 
 The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring-color)` with
@@ -242,8 +253,15 @@ changes the modules that read it, not the core: it sets the Sass variable instea
    checked against the reference surface, `$body-secondary-color` is `$body-color`,
    `$input-placeholder-color` points to the new `--hh-input-placeholder-color`, and
    `$body-tertiary-color`, `$code-color` and their `-dark` variables are derived instead of picked.
-   The core's readable texts in `--bs-tertiary-color` take `--bs-body-color`: the version of a
+   The core's readable texts in `--bs-tertiary-color` take `--bs-secondary-color`: the version of a
    module (`_modules.scss`), the summary of a grid, `.hint-block`, the hint of a mention list, the
    heading of a list item (`_list.scss`), the installer's "Powered by" and the reset icon of the
    space menu search. A module does the same with `.text-body-tertiary` and `--bs-tertiary-color`
-   on readable text.
+   on readable text. A line in `--bs-tertiary-color` takes `--bs-border-color`, or
+   `--hh-input-border-color` where it marks a state (the active editor button, today in the date
+   picker).
+6. The tinted surfaces follow *Derivation*: the theme colours' subtle fills and borders, `$hh-accent-bg-soft`
+   and `$mark-bg` are mixed into the surface, in both modes. `--hh-code-bg` (new in 1.20) is removed,
+   inline code takes `--hh-accent-bg-soft`. `hh-readable()` takes a list of backgrounds.
+   `ThemeHelper::getAllVariables()` resolves what the core derives also where a theme sets it, so PHP
+   (a mail) gets the checked text colours too.

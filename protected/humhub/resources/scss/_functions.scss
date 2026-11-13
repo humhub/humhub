@@ -2,8 +2,16 @@
 
 // A color as text on a background: the color itself where it reaches `$min-ratio` (WCAG 2.2 contrast) on it, otherwise
 // mixed with black (on a light background) or white (on a dark one) until it does. Anything that is not a color, e.g.
-// a `var()`, comes back as it is
+// a `var()`, comes back as it is. `$background` may be a list of backgrounds, all light or all dark: the color reads
+// on each of them, e.g. `hh-readable($accent, ($body-secondary-bg, $accent-bg-subtle))`
 @function hh-readable($color, $background, $min-ratio: 4.5) {
+    @if type-of($background) == list {
+        @each $each in $background {
+            $color: hh-readable($color, $each, $min-ratio);
+        }
+        @return $color;
+    }
+
     @if type-of($color) != color or type-of($background) != color {
         @return $color;
     }

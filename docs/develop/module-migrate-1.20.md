@@ -123,9 +123,28 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   the definition's `props.suggestionsUrl`; `PickerFilterControl` requests it when the empty field
   first gets the focus. The `user` and `space` filter controls no longer lead with an icon, the
   `topic` one shows a star per topic instead of a colour dot.
-- **One placeholder colour:** Bootstrap's `$input-placeholder-color` (`var(--bs-secondary-color)`) for
+- **One placeholder colour:** Bootstrap's `$input-placeholder-color` (`var(--hh-input-placeholder-color)`) for
   every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
   `--hh-text-color-soft3` for text fields and the icon colour for selects.
+- **Two text colours, every colour derived** (see [Design tokens](concept-design-tokens.md), "Derivation"):
+  - Text that has to be read is the body colour (`--bs-body-color`) or the strong colour. Muted text
+    (`--bs-secondary-color`, `.text-body-secondary`, `.text-muted`) has the body colour (`#555`, dark `#ddd`) instead
+    of `#767676` (`#bbb`): it reads on every surface. `--bs-tertiary-color` (`.text-body-tertiary`) is for a disabled
+    item only (`#aaa`, dark `#808080`); a module that sets readable text in it takes `--bs-secondary-color`.
+  - The placeholder has its own token `--hh-input-placeholder-color` (`#757575`, dark `#898989`), lighter than a
+    value and 4.5:1 on the field. A module styling a placeholder with `--bs-secondary-color` takes it.
+  - The text colours are checked against the surfaces, also the ones a theme sets: `$body-color`,
+    `$body-emphasis-color`, `$body-secondary-color`, `$hh-input-placeholder-color`, `$code-color` and
+    `$hh-{color}-fg` pass `hh-readable()` after the theme's variables. `$hh-{color}-fg` also reads on the colour's own
+    subtle fill (accent as text: `#176e7b` instead of `#197684`), and the status text (`--bs-{color}-text-emphasis`)
+    on its fill. `hh-readable($color, $background, $min-ratio)` takes a list of backgrounds.
+  - The tinted backgrounds are their colour mixed into the surface, in both modes: the subtle fill and border of
+    each theme colour (`$primary-bg-subtle` …, 20 % and 40 %), `$hh-accent-bg-soft` (8 %, `#edf5f6`) and `$mark-bg`
+    (20 %). On white the subtle fills are Bootstrap's; in the dark mode they are lighter than a card instead of
+    almost black.
+  - `--hh-code-bg` and `$hh-code-bg` are removed: inline code takes `--hh-accent-bg-soft`.
+  - `ThemeHelper::getAllVariables()` (and `Theme::variable()`) resolve what the core derives also where a theme
+    sets it, so a mail gets the checked colours; a core colour comes as `#rrggbb` (`#555555`, not `#555`).
 - **A theme colour as text is `--hh-{color}-fg`**, not `var(--bs-{color})`: the colour itself
   where it reaches 4.5:1 (`$hh-fg-contrast-ratio`) on the surfaces, otherwise a darker shade, a
   lighter one in the dark mode. `.text-{color}` and `.link-{color}` (`primary`, `accent`,
@@ -2749,8 +2768,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     warning. Removed without a successor: `$text-color-default`, `$text-color-soft`, `$text-color-soft3`,
     `$background4`, `$background-color-highlight`, the alert colours `${background,text,border}-color-{success,warning,danger}`
     and `$default`, `$link`, `$text-color-contrast` (deprecated since 1.18).
-  - `--bs-secondary-color` and `--bs-tertiary-color` (`.text-body-secondary`, `.text-body-tertiary`, help texts,
-    placeholders) are `#767676` and `#aeaeae`, no longer a translucent body colour; `--bs-border-color`,
+  - `--bs-secondary-color` and `--bs-tertiary-color` (`.text-body-secondary`, `.text-body-tertiary`, help texts)
+    are HumHub greys, no longer a translucent body colour (see "Two text colours" above); `--bs-border-color`,
     `--bs-secondary-bg` and `--bs-tertiary-bg` are the neutral HumHub greys (`#ddd`, `#ededed`, `#f9f9f9`), no
     longer Bootstrap's bluish ones.
   - **`--bs-body-bg` is the surface** (`$body-bg`, white), as Bootstrap's components expect, no longer the page
@@ -2760,7 +2779,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$nav-tabs-link-active-bg`: Bootstrap's default, the surface, is right now.
   - The alerts (`.alert-success`, `.alert-warning`, `.alert-danger`) use Bootstrap's colours (`--bs-{color}-bg-subtle`,
     `-text-emphasis`, `-border-subtle`): their text is readable now (contrast 7:1 instead of 2:1).
-  - New: `--hh-page-bg`, `--hh-accent-bg-soft` (a light selection), `--hh-code-bg` (inline code).
+  - New: `--hh-page-bg`, `--hh-accent-bg-soft` (a light selection, inline code).
   - **Deprecated:** the colour tokens `--hh-text-color-*`, `--hh-background-color-*`, `--hh-background3`,
     `--hh-background4` and `--hh-{background,text,border}-color-{success,warning,danger}`. They keep working as aliases
     of their replacements, so a few take the core's colour: `--hh-text-color-default` `#4b4b4b` → `#555`,

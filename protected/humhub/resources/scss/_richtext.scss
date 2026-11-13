@@ -204,7 +204,7 @@
             padding: 0 5px;
 
             &.ProseMirror-menu-active {
-                border-color: var(--bs-tertiary-color);
+                border-color: var(--hh-input-border-color);
             }
         }
 
@@ -653,7 +653,7 @@
             --input-border-radius: var(--bs-border-radius);
             --input-font-color: var(--bs-body-color);
             --input-font-size: 1rem;
-            --input-placeholder-color: var(--bs-secondary-color);
+            --input-placeholder-color: var(--hh-input-placeholder-color);
             --outline-color: var(--bs-accent);
         }
 
