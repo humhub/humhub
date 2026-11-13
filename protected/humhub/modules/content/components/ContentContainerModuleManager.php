@@ -57,7 +57,7 @@ class ContentContainerModuleManager extends Component
             $moduleState = $this->getModuleStateRecord($id);
             if ($moduleState instanceof ContentContainerModuleState) {
                 $moduleState->module_state = ContentContainerModuleState::STATE_DISABLED;
-                return $moduleState->save();
+                return $this->saveModuleState($moduleState);
             }
         }
 
@@ -79,11 +79,27 @@ class ContentContainerModuleManager extends Component
             $moduleState = $this->getModuleStateRecord($id);
             if ($moduleState instanceof ContentContainerModuleState) {
                 $moduleState->module_state = ContentContainerModuleState::STATE_ENABLED;
-                return $moduleState->save();
+                return $this->saveModuleState($moduleState);
             }
         }
 
         return false;
+    }
+
+    /**
+     * Saves a module state and drops the states cached by this manager, so that `isEnabled()`
+     * and `getEnabled()` reflect the change right away.
+     */
+    private function saveModuleState(ContentContainerModuleState $moduleState): bool
+    {
+        if (!$moduleState->save()) {
+            return false;
+        }
+
+        $this->_states = null;
+        Yii::$app->runtimeCache->delete(self::class . '::getContentClasses' . $this->contentContainer->contentcontainer_id);
+
+        return true;
     }
 
     /**
