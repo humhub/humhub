@@ -23,7 +23,7 @@ class m261108_100200_user_auth_source_index extends Migration
      */
     public function safeUp()
     {
-        $this->safeCreateIndex('idx-user_auth-source', 'user_auth', ['source', 'source_id']);
+        $this->safeCreateIndex('idx_user_auth_source', 'user_auth', ['source', 'source_id']);
     }
 
     /**
@@ -31,6 +31,6 @@ class m261108_100200_user_auth_source_index extends Migration
      */
     public function safeDown()
     {
-        $this->safeDropIndex('idx-user_auth-source', 'user_auth');
+        $this->safeDropIndex('idx_user_auth_source', 'user_auth');
     }
 }

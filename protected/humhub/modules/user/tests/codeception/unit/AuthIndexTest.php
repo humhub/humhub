@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\codeception\unit;
+namespace humhub\modules\user\tests\codeception\unit;
 
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -19,7 +19,7 @@ class AuthIndexTest extends HumHubDbTestCase
             'SELECT COLUMN_NAME FROM information_schema.STATISTICS'
             . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table AND INDEX_NAME = :name'
             . ' ORDER BY SEQ_IN_INDEX',
-            [':table' => 'user_auth', ':name' => 'idx-user_auth-source'],
+            [':table' => 'user_auth', ':name' => 'idx_user_auth_source'],
         )->queryColumn();
 
         $this->assertSame(['source', 'source_id'], $columns);
