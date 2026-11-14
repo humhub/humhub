@@ -76,4 +76,12 @@ describe('SpaceImage', () => {
         expect(mountImage({ link: true }).find('a').attributes('href'))
             .toBe('https://example.com/s/product-team/');
     });
+
+    it('hides the initials from screen readers and names the link by the space', () => {
+        const wrapper = mountImage({ link: true });
+
+        expect(wrapper.find('.space-acronym').attributes('aria-hidden')).toBe('true');
+        expect(wrapper.find('a').attributes('aria-label')).toBe('Product Team');
+        expect(mountImage().find('span').attributes('aria-label')).toBeUndefined();
+    });
 });

@@ -1466,13 +1466,16 @@
   const _hoisted_2$1 = ["src", "alt", "data-contentcontainer-id"];
   function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createBlock(vue$1.resolveDynamicComponent($props.link ? "a" : "span"), {
-      href: $props.link ? $props.url : void 0
+      href: $props.link ? $props.url : void 0,
+      "aria-label": $props.link ? $props.name : void 0
     }, {
       default: vue$1.withCtx(() => [
+        vue$1.createCommentVNode(" The initials are decoration: the link is named by the space, as in `Image` "),
         vue$1.createElementVNode("div", {
           class: vue$1.normalizeClass(["space-acronym d-inline-flex justify-content-center align-items-center", [$options.acronymIdClass, { "d-none-space-image": $options.hasImage }]]),
           style: vue$1.normalizeStyle($options.acronymStyle),
-          "data-contentcontainer-id": $props.contentContainerId
+          "data-contentcontainer-id": $props.contentContainerId,
+          "aria-hidden": "true"
         }, [
           vue$1.createElementVNode(
             "span",
@@ -1493,7 +1496,7 @@
       ]),
       _: 1
       /* STABLE */
-    }, 8, ["href"]);
+    }, 8, ["href", "aria-label"]);
   }
   const __vite_glob_0_5 = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["render", _sfc_render$6]]);
   const _sfc_main$5 = {

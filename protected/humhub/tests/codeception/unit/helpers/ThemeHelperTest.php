@@ -65,11 +65,11 @@ class ThemeHelperTest extends HumHubDbTestCase
     {
         $variables = ThemeHelper::getAllVariables(ThemeHelper::getThemeByName(Theme::CORE_THEME_NAME), false);
 
-        $this->assertEquals('#555', $variables['body-color']);
+        $this->assertEquals('#555555', $variables['body-color']); // Checked against the surfaces, so compiled
         $this->assertEquals('#fff', $variables['body-bg']);
         $this->assertEquals('#ededed', $variables['hh-page-bg']);
         // The former names (deprecated since 1.20)
-        $this->assertEquals('#555', $variables['text-color-main']);
+        $this->assertEquals('#555555', $variables['text-color-main']);
         $this->assertEquals('#ededed', $variables['background-color-page']);
         $this->assertEquals('#fff', $variables['background-color-main']);
     }
@@ -83,7 +83,7 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertTrue(ThemeHelper::buildCss($theme, false));
 
         $css = Yii::$app->fs->getAssetsMount()->read(Yii::$app->assetManager->normalizePath($this->getThemeCssPath($theme)));
-        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-accent-fg: ?#197684/', $css);
+        $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-accent-fg: ?#176e7b/', $css);
         $this->assertMatchesRegularExpression('/\.text-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
         $this->assertMatchesRegularExpression('/\.link-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
         $this->assertMatchesRegularExpression('/\.btn-ghost-danger\{[^}]*--bs-btn-color: ?var\(--hh-danger-fg\)/', $css);

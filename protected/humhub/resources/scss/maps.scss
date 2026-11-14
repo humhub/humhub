@@ -38,6 +38,20 @@ $theme-colors-border-subtle: map-merge($theme-colors-border-subtle, (
     ));
 }
 
+// The text of a theme color on its subtle fill (an alert) reads there, also a theme's own (see "Inks" in variables.scss)
+@each $color, $value in $theme-colors-text {
+    $theme-colors-text: map-merge($theme-colors-text, (
+        $color: hh-readable($value, map-get($theme-colors-bg-subtle, $color), $hh-fg-contrast-ratio),
+    ));
+}
+@if $enable-dark-mode {
+    @each $color, $value in $theme-colors-text-dark {
+        $theme-colors-text-dark: map-merge($theme-colors-text-dark, (
+            $color: hh-readable($value, map-get($theme-colors-bg-subtle-dark, $color), $hh-fg-contrast-ratio),
+        ));
+    }
+}
+
 // Merge accent into utilities maps (no !default since we're overriding existing maps)
 $utilities-text-emphasis-colors: map-merge($utilities-text-emphasis-colors, (
     "accent-emphasis": var(--#{$prefix}accent-text-emphasis),
