@@ -37,6 +37,12 @@ class Image extends BaseImage
             $this->linkOptions['href'] = $this->space->getUrl();
         }
 
+        // The initials are decoration (hidden for screen readers), so the link is named by the space, whether it shows
+        // the image or the initials
+        if (!isset($this->linkOptions['aria-label'])) {
+            $this->linkOptions['aria-label'] = $this->space->name;
+        }
+
         if ($this->space->color != null) {
             $color = Html::encode($this->space->color);
         } else {
@@ -58,6 +64,7 @@ class Image extends BaseImage
         $acronymHtmlOptions['style'] .= " background-color: " . $color . "; " . static::getSizeStyle($this->width, $this->height);
         $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
+        $acronymHtmlOptions['aria-hidden'] = 'true';
 
         $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " rounded profile-user-photo";
         $imageHtmlOptions['style'] .= " " . static::getSizeStyle($this->width, $this->height);

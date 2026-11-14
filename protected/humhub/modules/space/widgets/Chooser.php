@@ -91,6 +91,8 @@ class Chooser extends Widget
                 'id' => 'space-menu',
                 'class' => 'nav-link dropdown-toggle',
                 'data-bs-toggle' => 'dropdown',
+                // Its content is an image or decorative initials inside a space
+                'aria-label' => Yii::t('SpaceModule.chooser', 'My spaces'),
             ],
         );
     }
