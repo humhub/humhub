@@ -150,12 +150,6 @@
                     font-size: 12px;
                 }
 
-                // The author and the space in the meta line, next to plain text: underlined, the accent alone doesn't set
-                // them apart (WCAG 1.4.1)
-                .wall-entry-container-link {
-                    text-decoration: underline;
-                }
-
                 i.archived {
                     color: var(--hh-warning-fg);
                 }
