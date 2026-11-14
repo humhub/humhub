@@ -162,15 +162,59 @@ class ThemeVariablesTest extends HumHubDbTestCase
     }
 
     /**
-     * A theme colour as text comes as the shade that reads on the surfaces, e.g. for the links of a mail
+     * A theme colour as text comes as the shade that reads on the surfaces and on its own subtle fill, e.g. for the
+     * links of a mail
      */
     public function testThemeColorsAsTextAreResolved()
     {
         $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
 
         $this->assertSame('#435f6f', $variables->get('hh-primary-fg'));
-        $this->assertSame('#197684', $variables->get('hh-accent-fg'));
+        $this->assertSame('#176e7b', $variables->get('hh-accent-fg'));
         $this->assertSame('#69adb6', $variables->get('hh-accent-fg-dark'));
+    }
+
+    /**
+     * Muted text is the body text, the placeholder and the disabled colour are greys between the body text and the
+     * surface, and the code reads on its fill (docs/develop/concept-design-tokens.md, "Text")
+     */
+    public function testTextColorsAreDerived()
+    {
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#555555', $variables->get('body-secondary-color'));
+        $this->assertSame('#757575', $variables->get('hh-input-placeholder-color'));
+        $this->assertSame('#898989', $variables->get('hh-input-placeholder-color-dark'));
+        $this->assertSame('#aaaaaa', $variables->get('body-tertiary-color'));
+        $this->assertSame('#808080', $variables->get('body-tertiary-color-dark'));
+        $this->assertSame('#197a88', $variables->get('code-color'));
+    }
+
+    /**
+     * A text colour a theme sets is made readable all the same
+     */
+    public function testInkOfTheCustomScssIsMadeReadable()
+    {
+        Yii::$app->settings->set('themeCustomScss', '$body-secondary-color: #aaa; $hh-accent-fg: #8fd0da;');
+        ActiveThemeService::flush();
+
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#6b6b6b', $variables->get('body-secondary-color'));
+        $this->assertSame('#496a70', $variables->get('hh-accent-fg'));
+    }
+
+    /**
+     * A tinted surface is its colour mixed into the surface, in the dark mode as in the light one
+     */
+    public function testTintedSurfacesFollowTheSurface()
+    {
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+
+        $this->assertSame('#d1e6e9', $variables->get('accent-bg-subtle'));
+        $this->assertSame('#213538', $variables->get('accent-bg-subtle-dark'));
+        $this->assertSame('#edf5f6', $variables->get('hh-accent-bg-soft'));
+        $this->assertSame('#fff3cd', $variables->get('mark-bg'));
     }
 
     /**

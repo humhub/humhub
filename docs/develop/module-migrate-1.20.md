@@ -74,6 +74,39 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the focus. It takes `translate` (`(text) => context.translate(text)`) for the labels and the buttons, which
     were English. The mention and emoji suggestions are a named `role="listbox"` (on the `<ul>`) of
     `role="option"`s, and the editor points to the current one (`aria-activedescendant`).
+  - The initials of a space without an image are decoration (`aria-hidden`, `space\widgets\Image` and
+    `SpaceImage.vue`); the link around a space image is named by the space (`aria-label`, unless `linkOptions`
+    set one).
+  - A picker over a `<select>` without a `<label>` takes the select's `aria-label` as its name.
+    `humhub\libs\DropDownGridColumn` takes `ariaLabel` (a string, or a callable with the arguments of
+    `renderDataCellContent()`) for each dropdown; the permission grid names them after the permission. Its
+    `htmlOptions['class']` is added to `editableCell form-control` instead of being glued to it.
+  - `humhub\modules\admin\grid\CheckboxColumn` shows a set flag as a check mark and both states as text for
+    screen readers ("Yes", "No"), instead of a disabled checkbox without a name. With `disabled = false` it
+    still renders a checkbox, named by the column's label.
+  - The icon-only links of `humhub\widgets\bootstrap\LinkPager` (first, previous, next, last page) carry
+    their name as visually hidden text.
+  - A CodeMirror field (`CodeMirrorInputWidget`) takes the label and the description of its textarea.
+  - The profile fields on the "About" page are a description list (`<dl>`, the value a `<dd>` instead of
+    a `div.field-value`).
+  - `.nav-scroller` is `position: relative`, so what is positioned inside it (the visually hidden number of
+    a waiting dot) no longer widens the page. A picker in a table cell gives up the default width of its
+    input below the `sm` breakpoint.
+- **The focus stays where the keyboard user is** (WCAG 2.4.3).
+  - Tab and Shift+Tab go round the controls of the topmost open dialog, legacy and Vue (`UiModal`) alike
+    (`humhub.ui.focus.trap()`, wired by `humhub.ui.modal`; `ui.focus.controls()` lists what Tab reaches).
+    Bootstrap's own trap stays off (`data-bs-focus="false"`). Something a dialog opens outside of itself
+    keeps the focus when it is a `role="dialog"` (the editor's dialog, now also the emoji picker, named
+    "Emoji picker"). The dead Bootstrap 3 `enforceFocus` override is gone.
+  - The confirmation dialog (`ui.modal.confirm()`) focuses "Cancel" when it opens. A dialog is focused on
+    `shown` only when no control in it holds the focus yet.
+  - The like button is one `<a role="button">` that changes its class (`like` / `unlike`), icon and text,
+    and toggles with Space, instead of two links swapped by `v-if`.
+  - `StreamEntry.loader()` moves a focus in the entry's menu to the entry before it hides the menu, so the
+    reloaded entry gets it (visibility, lock comments, …).
+  - The editor's full screen button is a toggle (`aria-pressed`, title translated); in full screen Tab
+    goes round the editor's toolbar and text, Escape leaves it and focuses the button (after a list of
+    suggestions is closed).
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of
@@ -93,9 +126,28 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   the definition's `props.suggestionsUrl`; `PickerFilterControl` requests it when the empty field
   first gets the focus. The `user` and `space` filter controls no longer lead with an icon, the
   `topic` one shows a star per topic instead of a colour dot.
-- **One placeholder colour:** Bootstrap's `$input-placeholder-color` (`var(--bs-secondary-color)`) for
+- **One placeholder colour:** Bootstrap's `$input-placeholder-color` (`var(--hh-input-placeholder-color)`) for
   every `::placeholder`, a select's "nothing chosen" and the richtext editor's placeholder; it was
   `--hh-text-color-soft3` for text fields and the icon colour for selects.
+- **Two text colours, every colour derived** (see [Design tokens](concept-design-tokens.md), "Derivation"):
+  - Text that has to be read is the body colour (`--bs-body-color`) or the strong colour. Muted text
+    (`--bs-secondary-color`, `.text-body-secondary`, `.text-muted`) has the body colour (`#555`, dark `#ddd`) instead
+    of `#767676` (`#bbb`): it reads on every surface. `--bs-tertiary-color` (`.text-body-tertiary`) is for a disabled
+    item only (`#aaa`, dark `#808080`); a module that sets readable text in it takes `--bs-secondary-color`.
+  - The placeholder has its own token `--hh-input-placeholder-color` (`#757575`, dark `#898989`), lighter than a
+    value and 4.5:1 on the field. A module styling a placeholder with `--bs-secondary-color` takes it.
+  - The text colours are checked against the surfaces, also the ones a theme sets: `$body-color`,
+    `$body-emphasis-color`, `$body-secondary-color`, `$hh-input-placeholder-color`, `$code-color` and
+    `$hh-{color}-fg` pass `hh-readable()` after the theme's variables. `$hh-{color}-fg` also reads on the colour's own
+    subtle fill (accent as text: `#176e7b` instead of `#197684`), and the status text (`--bs-{color}-text-emphasis`)
+    on its fill. `hh-readable($color, $background, $min-ratio)` takes a list of backgrounds.
+  - The tinted backgrounds are their colour mixed into the surface, in both modes: the subtle fill and border of
+    each theme colour (`$primary-bg-subtle` …, 20 % and 40 %), `$hh-accent-bg-soft` (8 %, `#edf5f6`) and `$mark-bg`
+    (20 %). On white the subtle fills are Bootstrap's; in the dark mode they are lighter than a card instead of
+    almost black.
+  - `--hh-code-bg` and `$hh-code-bg` are removed: inline code takes `--hh-accent-bg-soft`.
+  - `ThemeHelper::getAllVariables()` (and `Theme::variable()`) resolve what the core derives also where a theme
+    sets it, so a mail gets the checked colours; a core colour comes as `#rrggbb` (`#555555`, not `#555`).
 - **A theme colour as text is `--hh-{color}-fg`**, not `var(--bs-{color})`: the colour itself
   where it reaches 4.5:1 (`$hh-fg-contrast-ratio`) on the surfaces, otherwise a darker shade, a
   lighter one in the dark mode. `.text-{color}` and `.link-{color}` (`primary`, `accent`,
@@ -2719,8 +2771,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     warning. Removed without a successor: `$text-color-default`, `$text-color-soft`, `$text-color-soft3`,
     `$background4`, `$background-color-highlight`, the alert colours `${background,text,border}-color-{success,warning,danger}`
     and `$default`, `$link`, `$text-color-contrast` (deprecated since 1.18).
-  - `--bs-secondary-color` and `--bs-tertiary-color` (`.text-body-secondary`, `.text-body-tertiary`, help texts,
-    placeholders) are `#767676` and `#aeaeae`, no longer a translucent body colour; `--bs-border-color`,
+  - `--bs-secondary-color` and `--bs-tertiary-color` (`.text-body-secondary`, `.text-body-tertiary`, help texts)
+    are HumHub greys, no longer a translucent body colour (see "Two text colours" above); `--bs-border-color`,
     `--bs-secondary-bg` and `--bs-tertiary-bg` are the neutral HumHub greys (`#ddd`, `#ededed`, `#f9f9f9`), no
     longer Bootstrap's bluish ones.
   - **`--bs-body-bg` is the surface** (`$body-bg`, white), as Bootstrap's components expect, no longer the page
@@ -2730,7 +2782,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$nav-tabs-link-active-bg`: Bootstrap's default, the surface, is right now.
   - The alerts (`.alert-success`, `.alert-warning`, `.alert-danger`) use Bootstrap's colours (`--bs-{color}-bg-subtle`,
     `-text-emphasis`, `-border-subtle`): their text is readable now (contrast 7:1 instead of 2:1).
-  - New: `--hh-page-bg`, `--hh-accent-bg-soft` (a light selection), `--hh-code-bg` (inline code).
+  - New: `--hh-page-bg`, `--hh-accent-bg-soft` (a light selection, inline code).
   - **Deprecated:** the colour tokens `--hh-text-color-*`, `--hh-background-color-*`, `--hh-background3`,
     `--hh-background4` and `--hh-{background,text,border}-color-{success,warning,danger}`. They keep working as aliases
     of their replacements, so a few take the core's colour: `--hh-text-color-default` `#4b4b4b` → `#555`,

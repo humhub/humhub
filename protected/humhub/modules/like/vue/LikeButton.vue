@@ -14,8 +14,17 @@
             <template v-if="count > 0">{{ ' ' }}<span class="likeCount">({{ count }})</span></template>
         </template>
         <template v-else>
-            <a v-if="!liked" href="#" class="like likeAnchor" @click.prevent="toggle()"><i class="ti ti-thumb-up" aria-hidden="true"></i>{{ likeLabel }}</a>
-            <a v-else href="#" class="unlike likeAnchor" @click.prevent="toggle()"><i class="ti ti-thumb-up-filled" aria-hidden="true"></i>{{ unlikeLabel }}</a>
+            <!--
+                One element for both states: it keeps the keyboard focus when its text changes (WCAG
+                2.4.3). A button to the screen reader, which a link with `href="#"` would not be.
+            -->
+            <a
+                href="#"
+                role="button"
+                :class="[liked ? 'unlike' : 'like', 'likeAnchor']"
+                @click.prevent="toggle()"
+                @keydown.space.prevent="toggle()"
+            ><i :class="['ti', liked ? 'ti-thumb-up-filled' : 'ti-thumb-up']" aria-hidden="true"></i>{{ liked ? unlikeLabel : likeLabel }}</a>
             <!-- See the guest branch's own comment above on the `{{ ' ' }}` interpolation. -->
             <template v-if="count > 0">{{ ' ' }}<a href="#" :aria-label="userListLinkLabel" aria-haspopup="dialog" @click.prevent="showUserList = true">
                 <span class="likeCount">({{ count }})</span>

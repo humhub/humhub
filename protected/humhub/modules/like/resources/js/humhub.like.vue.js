@@ -179,55 +179,42 @@
         vue.Fragment,
         { key: 1 },
         [
-          !$data.liked ? (vue.openBlock(), vue.createElementBlock("a", {
-            key: 0,
-            href: "#",
-            class: "like likeAnchor",
-            onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => $options.toggle(), ["prevent"]))
-          }, [
-            _cache[9] || (_cache[9] = vue.createElementVNode(
-              "i",
-              {
-                class: "ti ti-thumb-up",
-                "aria-hidden": "true"
-              },
-              null,
-              -1
-              /* CACHED */
-            )),
-            vue.createTextVNode(
-              vue.toDisplayString($options.likeLabel),
-              1
-              /* TEXT */
-            )
-          ])) : (vue.openBlock(), vue.createElementBlock("a", {
-            key: 1,
-            href: "#",
-            class: "unlike likeAnchor",
-            onClick: _cache[1] || (_cache[1] = vue.withModifiers(($event) => $options.toggle(), ["prevent"]))
-          }, [
-            _cache[10] || (_cache[10] = vue.createElementVNode(
-              "i",
-              {
-                class: "ti ti-thumb-up-filled",
-                "aria-hidden": "true"
-              },
-              null,
-              -1
-              /* CACHED */
-            )),
-            vue.createTextVNode(
-              vue.toDisplayString($options.unlikeLabel),
-              1
-              /* TEXT */
-            )
-          ])),
+          vue.createCommentVNode('\n                One element for both states: it keeps the keyboard focus when its text changes (WCAG\n                2.4.3). A button to the screen reader, which a link with `href="#"` would not be.\n            '),
+          vue.createElementVNode(
+            "a",
+            {
+              href: "#",
+              role: "button",
+              class: vue.normalizeClass([$data.liked ? "unlike" : "like", "likeAnchor"]),
+              onClick: _cache[0] || (_cache[0] = vue.withModifiers(($event) => $options.toggle(), ["prevent"])),
+              onKeydown: _cache[1] || (_cache[1] = vue.withKeys(vue.withModifiers(($event) => $options.toggle(), ["prevent"]), ["space"]))
+            },
+            [
+              vue.createElementVNode(
+                "i",
+                {
+                  class: vue.normalizeClass(["ti", $data.liked ? "ti-thumb-up-filled" : "ti-thumb-up"]),
+                  "aria-hidden": "true"
+                },
+                null,
+                2
+                /* CLASS */
+              ),
+              vue.createTextVNode(
+                vue.toDisplayString($data.liked ? $options.unlikeLabel : $options.likeLabel),
+                1
+                /* TEXT */
+              )
+            ],
+            34
+            /* CLASS, NEED_HYDRATION */
+          ),
           vue.createCommentVNode(" See the guest branch's own comment above on the `{{ ' ' }}` interpolation. "),
           $data.count > 0 ? (vue.openBlock(), vue.createElementBlock(
             vue.Fragment,
-            { key: 2 },
+            { key: 0 },
             [
-              _cache[11] || (_cache[11] = vue.createTextVNode(
+              _cache[9] || (_cache[9] = vue.createTextVNode(
                 vue.toDisplayString(" "),
                 -1
                 /* CACHED */

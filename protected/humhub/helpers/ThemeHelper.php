@@ -212,7 +212,8 @@ class ThemeHelper
         $treeThemes = static::getThemeTree($theme);
 
         // Get variables from theme files
-        $variables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
+        $coreVariables = ScssHelper::getVariables(Yii::getAlias('@humhub/resources/scss/variables.scss'));
+        $variables = $coreVariables;
         foreach (array_reverse($treeThemes) as $treeTheme) {
             $variables = ArrayHelper::merge(
                 $variables,
@@ -237,6 +238,8 @@ class ThemeHelper
             $treeThemes,
             $customVariables,
             $customMaps,
+            // What the core derives, also where a theme sets it: the core makes a text colour readable all the same
+            array_keys(array_filter($coreVariables, fn($value) => static::isDerivedValue($value))),
         );
     }
 
@@ -250,15 +253,15 @@ class ThemeHelper
      *
      * @param array $variables the variables as read from the SCSS files
      * @param Theme[] $treeThemes the theme and its parents, child first
+     * @param string[] $derived names to resolve whatever their value, those the core derives
      * @throws SassException if the SCSS doesn't compile and a custom SCSS is involved
      * @since 1.20
      */
-    protected static function resolveVariables(array $variables, array $treeThemes, string $customVariables, string $customMaps): array
+    protected static function resolveVariables(array $variables, array $treeThemes, string $customVariables, string $customMaps, array $derived = []): array
     {
-        // Whatever is not a literal: a variable, a function (`darken(#fff, 7%)`), but not a `var()`
-        $names = array_keys(array_filter(
-            $variables,
-            fn($value) => preg_match('/[$(]/', (string)$value) && !str_starts_with(trim((string)$value), 'var('),
+        $names = array_unique(array_merge(
+            array_keys(array_filter($variables, fn($value) => static::isDerivedValue($value))),
+            array_values(array_intersect($derived, array_keys($variables))),
         ));
         if ($names === []) {
             return $variables;
@@ -290,6 +293,14 @@ class ThemeHelper
         }
 
         return $variables;
+    }
+
+    /**
+     * Whether a value is not a literal: a variable, a function (`darken(#fff, 7%)`), but not a `var()`
+     */
+    private static function isDerivedValue($value): bool
+    {
+        return preg_match('/[$(]/', (string)$value) && !str_starts_with(trim((string)$value), 'var(');
     }
 
     /**

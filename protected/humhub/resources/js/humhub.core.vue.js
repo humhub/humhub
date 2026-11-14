@@ -6392,7 +6392,7 @@
     config.invalid = select.classList.contains("is-invalid");
     config.required = config.required || select.required || select.getAttribute("aria-required") === "true";
     config.autofocus = select.autofocus;
-    config.label = config.label || (label ? labelText(label, select) : "");
+    config.label = config.label || (label ? labelText(label, select) : "") || select.getAttribute("aria-label") || "";
     config.options = hasSource ? [] : [...select.options].map(readOption);
     config.initialItems = selection;
     config.modelValue = select.multiple ? selection.map((item) => item.id) : ((_a = selection[0]) == null ? void 0 : _a.id) ?? "";

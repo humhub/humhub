@@ -13,16 +13,22 @@ Most tokens are Bootstrap's (`--bs-*`), in the meaning Bootstrap gives them. Hum
 
 ## Text
 
+Text that has to be read has one of two colours: the body colour, or the strong colour for headings,
+links and the active item. Meta data, help text, captions and hints are body text too; a smaller
+size (`.small`, `$font-size-sm`) or a lighter weight sets them back, never a lighter grey. Only the
+placeholder and a disabled item are lighter.
+
 | Job | Token | Utility | Light | Dark |
 |---|---|---|---|---|
-| Body text | `--bs-body-color` | `.text-body` | `#555` | `#ddd` |
-| Strong text: headings, a hovered link, an active item | `--bs-emphasis-color` | `.text-body-emphasis` | `#000` | `#fff` |
-| Muted text: meta data, help text, captions, secondary icons | `--bs-secondary-color` | `.text-body-secondary` | `#767676`, darker where it is below 4.5:1 on `--bs-body-bg` | `#bbb` |
-| Faint text: a disabled item, a hint | `--bs-tertiary-color` | `.text-body-tertiary` | `#aeaeae` | `#999` |
-| A field's placeholder | `--bs-secondary-color` | | = muted | = muted |
+| Body text, also meta data, help text, captions, hints, secondary icons | `--bs-body-color` | `.text-body` | `#555` | `#ddd` |
+| Strong text: headings, a link, a hovered or active item | `--bs-emphasis-color` | `.text-body-emphasis` | `#000` | `#fff` |
+| Muted text: Bootstrap's role, the body colour (a theme may set a lighter grey, which is made readable) | `--bs-secondary-color` | `.text-body-secondary` | `#555` | `#ddd` |
+| A field's placeholder: lighter than a value, 4.5:1 on the field | `--hh-input-placeholder-color` | | `#757575` | `#898989` |
+| A disabled item's text and icon; never text that has to be read | `--bs-tertiary-color` | `.text-body-tertiary` | `#aaa` | `#808080` |
+| Inline code | `--bs-code-color` | | `#197a88` | `#499ba7` |
 | Text on a background in a theme colour: a primary button, an accent badge, the topbar | `--hh-{color}-contrast` | `.text-bg-{color}` | `$color-contrast-light` (white) where it reaches `$min-contrast-ratio` (4.5:1) on the colour, otherwise `$color-contrast-dark` (black) | same |
-| A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `.text-{color}`, `.link-{color}` | the colour, darker where it is below 4.5:1 on `--bs-secondary-bg` | the colour, lighter where it is below 4.5:1 on `--bs-secondary-bg` |
-| Status text on its subtle background (an alert) | `--bs-{color}-text-emphasis` | `.text-{color}-emphasis` | | |
+| A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `.text-{color}`, `.link-{color}` | the colour, darker where it is below 4.5:1 on `--bs-secondary-bg` or on its own subtle background | the colour, lighter where it is below 4.5:1 on `--bs-secondary-bg` or on its own subtle background |
+| Status text on its subtle background (an alert) | `--bs-{color}-text-emphasis` | `.text-{color}-emphasis` | Bootstrap's, darker where it is below 4.5:1 on the background | Bootstrap's, lighter where needed |
 
 `{color}` is one of the theme colours: `primary`, `accent`, `secondary`, `info`, `success`,
 `warning`, `danger`, `light`, `dark`.
@@ -80,17 +86,18 @@ it too; the buttons follow. Panels, cards and the page header get the same 1px e
 | A surface: panel, card, dropdown, dialog, popover, field, table | `--bs-body-bg` | `.bg-body` | `#fff` | `#222` |
 | A sunken area in a surface: comments, tabs, a filter | `--bs-tertiary-bg` | `.bg-body-tertiary` | `#f9f9f9` | `#333` |
 | The fill of a hovered or active item, a neutral badge; a light separator | `--bs-secondary-bg` | `.bg-body-secondary` | `#ededed` | `#393939` |
-| A selected or new item, the current day | `--bs-accent-bg-subtle` | `.bg-accent-subtle` | `#d3ecf0` | |
-| A lighter selection: a checked choice, a hovered new item | `--hh-accent-bg-soft` | | `#f2f9fb` | `#223538` |
-| Marked text: `<mark>`, the matched part of a suggestion | `--bs-highlight-bg` | `.mark` | `#fff4d3` | |
-| Inline code | `--hh-code-bg` | | `#dbf5f8` | |
+| A selected or new item, the current day, a hovered row | `--bs-accent-bg-subtle` | `.bg-accent-subtle` | `#d1e6e9` | `#213538` |
+| A lighter selection: a checked choice, a hovered new item; inline code | `--hh-accent-bg-soft` | | `#edf5f6` | `#212a2b` |
+| Marked text: `<mark>`, the matched part of a suggestion | `--bs-highlight-bg` | `.mark` | `#fff3cd` | `#4e421d` |
 | The top bar and the account menu hanging from it; their text | `--hh-topbar-bg`, `--hh-topbar-color` | | primary, its contrast colour | `#111`, `#fff` |
 | Status: alert, notice | `--bs-{color}-bg-subtle` | `.bg-{color}-subtle` | | |
 
 `--bs-body-bg` is the surface, not the page: Bootstrap's components take it as their background.
 It can be set for each mode in *Administration → Appearance → Theme*. The page, the other surfaces
 and the lines are mixed from it (`mix(black, $body-bg, 7%)` for the page), so they follow a
-tinted surface; a theme can still set each of them.
+tinted surface; a theme can still set each of them. A tinted background (a selection, a status,
+marked text) is its colour mixed into the surface: 20 % for a subtle background, 40 % for its
+border, 8 % for the lighter selection. In the dark mode it is lighter than a card.
 
 ## Lines and focus
 
@@ -124,6 +131,9 @@ can also be set in the *Appearance* settings.
 
 ## Rules
 
+- **Text that has to be read** is `--bs-body-color` (`.text-body-secondary` is the same colour) or
+  `--bs-emphasis-color`. Never `--bs-tertiary-color` or `.text-body-tertiary`: they are for a
+  disabled item only.
 - **Use the token of the job**, not the one with the right look: a hovered item is
   `--bs-secondary-bg`, not `--hh-page-bg`, although both are `#ededed` in the light mode.
 - **No literal colour.** No hex value, no `darken()` or `lighten()` of a Sass variable: they are
@@ -143,14 +153,14 @@ Deprecated since 1.20. The former tokens still work, as aliases of their replace
 | `--hh-text-color-main`, `--hh-text-color-default`, `--hh-text-color-soft` | `--bs-body-color` |
 | `--hh-text-color-highlight` | `--bs-emphasis-color` |
 | `--hh-text-color-secondary` | `--bs-secondary-color` |
-| `--hh-text-color-soft2`, `--hh-text-color-soft3` | `--bs-tertiary-color` |
+| `--hh-text-color-soft2`, `--hh-text-color-soft3` | `--bs-secondary-color` for text, `--bs-tertiary-color` for a disabled item |
 | `--hh-background-color-main` | `--bs-body-bg` |
 | `--hh-background-color-page` | `--hh-page-bg` for the page, `--bs-secondary-bg` for a fill or a light separator |
 | `--hh-background-color-secondary` | `--bs-tertiary-bg` |
 | `--hh-background-color-highlight` | `--bs-accent-bg-subtle` |
 | `--hh-background-color-highlight-soft` | `--hh-accent-bg-soft` |
 | `--hh-background3` | `--bs-border-color` |
-| `--hh-background4` | `--bs-tertiary-color` for an icon or a line |
+| `--hh-background4` | `--bs-border-color` for a line, `--bs-secondary-color` for an icon |
 | `--hh-{background,text,border}-color-{success,warning,danger}` | `--bs-{color}-bg-subtle`, `--bs-{color}-text-emphasis`, `--bs-{color}-border-subtle` |
 | `--hh-text-color-contrast` | The contrast color of the background (`--hh-{color}-contrast`), or `--bs-white` on a fixed color |
 

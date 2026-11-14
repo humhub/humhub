@@ -552,6 +552,10 @@ humhub.module('ui.modal', function (module, require, $) {
             that.setHeader(cfg['header']);
             that.setBody(cfg['body']);
             that.initButtons(cfg);
+            // The safe choice takes the focus (WCAG 2.4.3), not the dialog around it
+            that.$.one('shown.bs.modal', function () {
+                focus.focus(that.$.find('[data-modal-cancel]:visible').first()) || focus.focus(focus.controls(that.$)[0]);
+            });
             that.show();
         });
     };
@@ -593,7 +597,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         module.globalConfirm = ConfirmModal.instance('#globalModalConfirm');
 
-        _setModalEnforceFocus();
+        _setModalFocusTrap();
         _setGlobalModalTargetHandler();
 
         $(document).on('show.bs.modal', '.modal', function (event) {
@@ -634,42 +638,26 @@ humhub.module('ui.modal', function (module, require, $) {
             $(this).css('zIndex', ++modalZIndex);
         });
         $('.modal-backdrop.show').css('zIndex', modalZIndex - 1);
-        $('.modal.show:visible:last').focus();
+        // The topmost dialog takes the focus, unless a control in it already has it
+        var $top = $('.modal.show:visible:last');
+        if ($top.length && !$top[0].contains(document.activeElement)) {
+            $top.focus();
+        }
     };
 
     /**
-     * To allow other frameworks to overlay focusable nodes over an active modal we have
-     * to explicitly allow it within this overwritten function.
-     *
+     * Tab and Shift+Tab go round the controls of the topmost open dialog (WCAG 2.4.3), the Vue ones
+     * (`UiModal`) included. Bootstrap's own trap is off (`data-bs-focus="false"`, see Modal.php): it pulls
+     * the focus back from what a dialog opens outside of itself, such as the editor's dialog or the emoji
+     * picker. Those are `role="dialog"`s and keep their own focus.
      */
-    var _setModalEnforceFocus = function () {
-        $.fn.modal.Constructor.prototype.enforceFocus = function () {
-            var that = this;
-            $(document).on('focusin.modal', function (e) {
-                var $target = $(e.target);
-                if ($target.hasClass('picker-input') || $target.hasClass('hexInput')) {
-                    return true;
-                }
-
-                var $parent = $(e.target.parentNode);
-                if ($parent.hasClass('cke_dialog_ui_input_select') || $parent.hasClass('cke_dialog_ui_input_text')) {
-                    return true;
-                }
-
-                if ($target.closest('.ProseMirror-prompt').length) {
-                    return true;
-                }
-
-                // Allow stacking of modals
-                if ($target.closest('.modal.in').length) {
-                    return true;
-                }
-
-                if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
-                    that.$element.focus();
-                }
-            });
-        };
+    var _setModalFocusTrap = function () {
+        $(document).on('keydown.humhub:modal:trap', function (evt) {
+            var $modal = $('.modal.show').last();
+            if ($modal.length) {
+                focus.trap(evt, $modal);
+            }
+        });
     };
 
     var _setGlobalModalTargetHandler = function () {

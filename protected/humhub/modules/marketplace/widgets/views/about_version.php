@@ -15,7 +15,7 @@ use humhub\widgets\bootstrap\Button;
         <?= Html::img(Yii::$app->assetManager->getPublishedUrl('@humhub/resources') . '/img/hh_community.png', ['class' => 'hh-about-logo rounded-1']) ?>
     </div>
     <div class="pe-3 mb-3 flex-grow-1">
-        <h4>HumHub Community Edition</h4>
+        <h3 class="h4">HumHub Community Edition</h3>
         <div class="text-muted"><?= Yii::t('MarketplaceModule.base', 'Version:') . ' ' . Html::encode(Yii::$app->version) ?></div>
     </div>
     <div class="ms-auto mb-3 flex-sm-grow-0 flex-grow-1">

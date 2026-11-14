@@ -77,6 +77,19 @@ class LogFilterForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'term' => Yii::t('AdminModule.information', 'Search term'),
+            'day' => Yii::t('AdminModule.information', 'Day'),
+            'levels' => Yii::t('AdminModule.information', 'Level'),
+            'category' => Yii::t('AdminModule.information', 'Category'),
+        ];
+    }
+
+    /**
      * @return Log[]
      */
     public function findEntries()

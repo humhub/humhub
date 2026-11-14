@@ -231,8 +231,15 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             return;
         }
 
+        // A focused menu item hides with the menu: the entry holds the focus meanwhile, and replace() hands it to
+        // the reloaded entry (docs/ui/keyboard.md, "Moving the focus")
+        var $preferences = this.$.find('.preferences');
+        if ($preferences.length && $preferences[0].contains(document.activeElement)) {
+            focus.focus(this.$);
+        }
+
         this.$.find('.wallentry-badges').hide();
-        this.$.find('.preferences').hide();
+        $preferences.hide();
         loader.set($loader, {
             'position': 'left',
             'size': '8px',

@@ -1,10 +1,12 @@
 <template>
-    <component :is="link ? 'a' : 'span'" :href="link ? url : undefined">
+    <component :is="link ? 'a' : 'span'" :href="link ? url : undefined" :aria-label="link ? name : undefined">
+        <!-- The initials are decoration: the link is named by the space, as in `Image` -->
         <div
             class="space-acronym d-inline-flex justify-content-center align-items-center"
             :class="[acronymIdClass, { 'd-none-space-image': hasImage }]"
             :style="acronymStyle"
             :data-contentcontainer-id="contentContainerId"
+            aria-hidden="true"
         ><span>{{ acronym }}</span></div>
         <img
             v-if="hasImage"

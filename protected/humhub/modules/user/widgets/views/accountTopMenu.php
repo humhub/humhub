@@ -32,7 +32,11 @@ $userModel = Yii::$app->user->identity;
     <?= Html::beginTag('ul', $options) ?>
     <li class="dropdown account">
         <a href="#" id="account-dropdown-link" class="dropdown-toggle" data-bs-toggle="dropdown"
-           aria-label="<?= Yii::t('base', 'Profile dropdown') ?>">
+           aria-label="<?= Html::encode(implode(', ', array_filter([
+               $userModel->displayName,
+               $this->context->showUserName ? $userModel->displayNameSub : '',
+               Yii::t('base', 'Profile dropdown'),
+           ]))) ?>">
 
             <?php if ($this->context->showUserName): ?>
                 <div class="user-title float-start d-none d-sm-block">

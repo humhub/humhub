@@ -73,6 +73,66 @@ humhub.module('ui.focus', function (module, require, $) {
     };
 
     /**
+     * The shown controls inside an element that Tab reaches, in document order.
+     *
+     * @param {Element|jQuery} el
+     * @returns {Element[]}
+     */
+    var controls = function (el) {
+        el = element(el);
+        if (!el) {
+            return [];
+        }
+        return $(el).find(CONTROLS + ', [contenteditable="true"]').filter(function () {
+            return this.getAttribute('tabindex') !== '-1' && !this.closest('[inert]') && isFocusable(this);
+        }).toArray();
+    };
+
+    /**
+     * Keeps Tab and Shift+Tab inside a dialog: from its last control to its first and back, and into it
+     * when the focus is outside of it. Another dialog holding the focus (`role="dialog"`, `.modal`) keeps
+     * it, such as what the dialog opened on top of itself.
+     *
+     * @param {KeyboardEvent|jQuery.Event} evt a keydown
+     * @param {Element|jQuery} dialog
+     * @returns {boolean} whether the focus was moved
+     */
+    var trap = function (evt, dialog) {
+        dialog = element(dialog);
+        if (!dialog || evt.key !== 'Tab' || evt.altKey || evt.ctrlKey || evt.metaKey || evt.defaultPrevented
+            || (typeof evt.isDefaultPrevented === 'function' && evt.isDefaultPrevented())) {
+            return false;
+        }
+
+        var active = document.activeElement;
+        var inside = !!active && dialog.contains(active);
+        if (!inside && active && active !== document.body
+            && $(active).closest('[role="dialog"], [role="alertdialog"], .modal').length) {
+            return false;
+        }
+
+        var all = controls(dialog);
+        var target = null;
+        if (!all.length) {
+            evt.preventDefault();
+            return false;
+        }
+        if (!inside) {
+            target = evt.shiftKey ? all[all.length - 1] : all[0];
+        } else if (evt.shiftKey && (active === all[0] || active === dialog)) {
+            target = all[all.length - 1];
+        } else if (!evt.shiftKey && active === all[all.length - 1]) {
+            target = all[0];
+        }
+        if (!target) {
+            return false;
+        }
+        evt.preventDefault();
+        target.focus();
+        return true;
+    };
+
+    /**
      * The content container, the target the focus takes after a pjax swap as well.
      *
      * @returns {Element|null}
@@ -167,6 +227,8 @@ humhub.module('ui.focus', function (module, require, $) {
         TRIGGER_KEY: TRIGGER_KEY,
         isFocusable: isFocusable,
         focus: focus,
+        controls: controls,
+        trap: trap,
         focusContent: focusContent,
         restore: restore,
         handOver: handOver,

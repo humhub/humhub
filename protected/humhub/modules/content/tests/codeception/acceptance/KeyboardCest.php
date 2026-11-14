@@ -140,6 +140,35 @@ class KeyboardCest
             'the focus is back on the menu toggle, was: ' . $I->grabActiveElement());
     }
 
+    public function testDialogKeepsTabInsideAndConfirmFocusesCancel(AcceptanceTester $I)
+    {
+        $I->wantToTest('that Tab goes round the controls of an open dialog and a confirmation focuses "Cancel"');
+        $this->openSpaceStream($I);
+
+        $this->focus($I, self::POST_MENU_TOGGLE);
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementVisible(self::POST . ' .dropdown-menu.show', 5);
+        $this->focus($I, self::POST . ' [data-content-permalink]');
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementVisible('.modal.show#globalModal', 5);
+        $I->waitForJS('return document.getElementById("globalModal").contains(document.activeElement);', 5);
+
+        for ($i = 0; $i < 6; $i++) {
+            $I->pressKeyboard(WebDriverKeys::TAB);
+            Assert::assertTrue((bool)$I->executeJS('return document.getElementById("globalModal").contains(document.activeElement);'),
+                'Tab ' . ($i + 1) . ' stays in the dialog, was: ' . $I->grabActiveElement());
+        }
+        $I->pressKeyboard(WebDriverKeys::ESCAPE);
+        $I->waitForElementNotVisible('#globalModal', 5);
+
+        $I->executeJS('humhub.modules.ui.modal.confirm({body: "Sure?"});');
+        $I->waitForElementVisible('.modal.show#globalModalConfirm', 5);
+        $I->waitForJS('return !!document.activeElement && document.activeElement.matches("#globalModalConfirm [data-modal-cancel]");', 5);
+
+        $I->pressKeyboard(WebDriverKeys::ENTER);
+        $I->waitForElementNotVisible('#globalModalConfirm', 5);
+    }
+
     public function testTooltipShowsOnKeyboardFocusAndHidesOnEscape(AcceptanceTester $I)
     {
         $I->wantToTest('that a tooltip appears on keyboard focus and Escape hides it');

@@ -48,6 +48,8 @@ use humhub\modules\marketplace\widgets\AboutVersion;
 <?php endif; ?>
 
 <hr>
-© <?= date("Y") ?> HumHub GmbH & Co. KG
-&middot;
-<?= Html::a(Yii::t('AdminModule.information', 'Licences'), "https://www.humhub.org/licences", ['target' => '_blank']); ?>
+<p>
+    © <?= date("Y") ?> HumHub GmbH & Co. KG
+    &middot;
+    <?= Html::a(Yii::t('AdminModule.information', 'Licences'), "https://www.humhub.org/licences", ['target' => '_blank']); ?>
+</p>

@@ -154,7 +154,7 @@ A source is `{ search(term) → Promise<item[]>, newImage? }`. `newImage`, an im
 | `listed` | `Boolean` | `false` | Show the chosen items as rows below the field instead of chips |
 | `lockedIds`, `disabledIds` | `Array` | `[]` | Not removable / not selectable |
 | `placeholder`, `placeholderMore` | `String` | — | Input placeholder; with items chosen, `placeholderMore`; an enhanced select's empty option (`prompt`) is its placeholder |
-| `label` | `String` | the placeholder | Accessible name (`aria-label` of the input; the bridge reads it from the `<label for>` of the `<select>`, whose click focuses the input) |
+| `label` | `String` | the placeholder | Accessible name (`aria-label` of the input; the bridge reads it from the `<label for>` of the `<select>`, whose click focuses the input, else from its `aria-label`) |
 | `describedBy` | `String` | `null` | `aria-describedby` of the input (`PickerField` passes its hint and error ids) |
 | `disabled`, `required`, `invalid` | `Boolean` | `false` | States (`invalid` = `is-invalid`) |
 | `autofocus` | `Boolean` | `false` | Focus the input when mounted (`BasePicker::$focus`, `autofocus` on the `<select>`) |

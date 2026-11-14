@@ -67,6 +67,13 @@ export function switchToSourceMode(context, focus = true) {
 
     if (!$textarea.length) {
         $textarea = $('<textarea class="ProseMirror-editor-source"></textarea>');
+        // The source is read as the editor it stands in for (WCAG 4.1.2)
+        ['aria-label', 'aria-labelledby', 'aria-describedby'].forEach((name) => {
+            const value = $stage.attr(name);
+            if (value) {
+                $textarea.attr(name, value);
+            }
+        });
         $editor.append($textarea);
         context.$source = $textarea;
     }
