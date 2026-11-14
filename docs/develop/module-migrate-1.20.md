@@ -74,6 +74,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the focus. It takes `translate` (`(text) => context.translate(text)`) for the labels and the buttons, which
     were English. The mention and emoji suggestions are a named `role="listbox"` (on the `<ul>`) of
     `role="option"`s, and the editor points to the current one (`aria-activedescendant`).
+  - The initials of a space without an image are decoration (`aria-hidden`, `space\widgets\Image` and
+    `SpaceImage.vue`); the link around a space image is named by the space (`aria-label`, unless `linkOptions`
+    set one).
   - A picker over a `<select>` without a `<label>` takes the select's `aria-label` as its name.
     `humhub\libs\DropDownGridColumn` takes `ariaLabel` (a string, or a callable with the arguments of
     `renderDataCellContent()`) for each dropdown; the permission grid names them after the permission. Its
