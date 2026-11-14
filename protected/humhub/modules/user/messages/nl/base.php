@@ -120,6 +120,7 @@ return [
     'or' => 'of',
     'Could not load the user list.' => '',
     'Enter a search, or name users or a space.' => '',
+    'Filter by module' => '',
     'Filter by {tag}' => '',
     'Person' => '',
     'Search people...' => '',

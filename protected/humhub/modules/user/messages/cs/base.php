@@ -105,6 +105,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enter a search, or name users or a space.' => '',
+    'Filter by module' => '',
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',
     'Mentioning' => '',

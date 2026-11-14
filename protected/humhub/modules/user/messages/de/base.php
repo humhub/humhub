@@ -126,4 +126,5 @@ return [
     'or' => 'oder',
     '{count} Followers' => '{count} Follower',
     '{count} Friends' => '{count} Freunde',
+    'Filter by module' => '',
 ];

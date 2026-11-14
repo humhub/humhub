@@ -113,6 +113,7 @@ return [
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
     'Enter a search, or name users or a space.' => '',
+    'Filter by module' => '',
     'Filter by {tag}' => '',
     'Person' => '',
     'Provider' => '',

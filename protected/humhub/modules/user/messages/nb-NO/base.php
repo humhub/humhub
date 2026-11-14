@@ -85,6 +85,7 @@ return [
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
     'Enter a search, or name users or a space.' => '',
+    'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',
     'Force password change upon first login' => '',
