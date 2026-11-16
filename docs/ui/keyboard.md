@@ -182,7 +182,8 @@ comment island does the same in its `focusHandOver.js`), while an edited entry k
 as on hover and hides them on Escape; the comment menu in the tab order, shown while its comment
 holds the focus; Enter and Space on a `data-action-click` element that is no link or button; Tab
 leaving an editor table; the focus after a pjax swap and after "Show more" in the stream; the Vue
-dialog, the pickers, the space chooser and the item browser following the rules; the editor toolbar
+dialog, the pickers, the space chooser and the item browser following the rules; the frame of the image crop
+dialog, which the arrow keys move (Shift: ten steps) and + and - resize; the editor toolbar
 with keyboard tests; icon-only buttons deriving their `aria-label` from the tooltip; the create form expanding when the keyboard
 focus enters it.
 

@@ -82,7 +82,8 @@ the tabs (`.nav.nav-pills`). Class names and SCSS follow [Styling with Bootstrap
 - **Header widgets:** `space\widgets\Header` and `user\widgets\ProfileHeader`, with controls
   (`HeaderControls`, `ProfileHeaderControls` as widget stacks), counters (`HeaderCounterSet`,
   `ProfileHeaderCounterSet`) and a controls menu (`HeaderControlsMenu`).
-- **Image upload and crop:** `ContainerProfileHeader` (JS).
+- **Image upload and crop:** `ContainerProfileHeader` (JS). The crop dialog is `humhub\widgets\CropImage`
+  (`ui.cropImage` on Cropper.js): the frame moves over the image, also with the keyboard.
 - **Relationship buttons:** already Vue islands (`MembershipButton`, `FollowButton`,
   `FriendshipButton`, `UserFollowButton`).
 - **Navigation:** the space's pages are a **left menu** (`space\widgets\Menu` extends

@@ -51,22 +51,6 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
     'form' => ['id' => 'profile-image-crop-modal-form'],
 ]) ?>
 
-    <style>
-        /* Dirty Workaround against bootstrap and jcrop */
-        #profile-image-crop-modal img {
-            max-width: none;
-        }
-
-        #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
-            opacity: 0
-        }
-
-        #cropimage > .jcrop-holder {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
-
     <?= $form->errorSummary($model); ?>
     <?= $form->field($model, 'cropX')->hiddenInput(['id' => 'cropX'])->label(false) ?>
     <?= $form->field($model, 'cropY')->hiddenInput(['id' => 'cropY'])->label(false) ?>
