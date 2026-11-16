@@ -2912,3 +2912,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 - **`jbroadway/urlify` is no longer a dependency** (and with it `voku/portable-ascii` and `voku/stop-words`).
   Space URLs are generated with `yii\helpers\Inflector::slug()`. A module that uses `URLify` switches to
   `Inflector::slug()` or requires the package in its own `composer.json`.
+
+- **`humhub\widgets\CropImage` runs on Cropper.js instead of Jcrop.** The package `raoul2000/yii2-jcrop-widget` is
+  gone: `CropImage` no longer extends `raoul2000\jcrop\JCropWidget`, `raoul2000\jcrop\JCropAsset` no longer exists, and
+  `.jcrop-*` styles have nothing to apply to. `selector` and `pluginOptions` stay, and the options keep their Jcrop
+  names: `aspectRatio`, `minSize`, `setSelect`, `bgColor`, `bgOpacity`, `boxWidth`, `keySupport` and `onChange`, which
+  gets `{x, y, w, h, x2, y2}` in pixels of the image. Other Jcrop options are ignored. The widget renders the hint for
+  the keyboard, so it belongs below the image.
