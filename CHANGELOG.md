@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8757: A new space gets a colour its white initials are readable on, `mistic100/randomcolor` is deprecated, `behat/gherkin` no longer pinned
 - Enh #8756: The image crop dialog runs on Cropper.js instead of Jcrop and works with the keyboard
 - Enh #8755: Removed the dependency `jbroadway/urlify`, new space URLs follow the language of their creator (`ueber-uns`, `l-equipe`)
 - Enh #8750: Indexes on `activity.created_at` and `user_auth (source, source_id)`: the mail summary and every auth client login no longer scan the whole table

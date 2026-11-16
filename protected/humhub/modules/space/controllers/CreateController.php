@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\controllers;
 
-use Colors\RandomColor;
 use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
+use humhub\helpers\ScssHelper;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -128,7 +128,7 @@ class CreateController extends Controller
         $model->scenario = Space::SCENARIO_CREATE;
         $model->visibility = $module->settings->get('defaultVisibility', Space::VISIBILITY_REGISTERED_ONLY);
         $model->join_policy = $module->settings->get('defaultJoinPolicy', Space::JOIN_POLICY_APPLICATION);
-        $model->color = RandomColor::one(['luminosity' => 'dark']);
+        $model->color = ScssHelper::getRandomColor();
 
         return $model;
     }

@@ -379,6 +379,49 @@ class ScssHelper
     }
 
     /**
+     * A random colour that white text is readable on, e.g. the colour of a new space (its initials are white):
+     * a random hue, darkened until it reaches the contrast
+     *
+     * @param float|null $minContrast the contrast to white, by default the theme's `min-contrast-ratio`
+     * @return string `#rrggbb`
+     * @since 1.20
+     */
+    public static function getRandomColor(?float $minContrast = null): string
+    {
+        if ($minContrast === null) {
+            $minContrast = (float) Yii::$app->view->theme->variable('min-contrast-ratio', 4.5);
+        }
+
+        $hue = random_int(0, 359);
+        for ($lightness = 45; $lightness > 0; $lightness--) {
+            $color = static::hslToHex($hue, 60, $lightness);
+            if (static::getContrastRatio($color, '#ffffff') >= $minContrast) {
+                return $color;
+            }
+        }
+
+        return '#000000';
+    }
+
+    /**
+     * @param int $hue 0 to 359
+     * @param int $saturation 0 to 100
+     * @param int $lightness 0 to 100
+     * @return string `#rrggbb`
+     */
+    private static function hslToHex(int $hue, int $saturation, int $lightness): string
+    {
+        $s = $saturation / 100;
+        $l = $lightness / 100;
+        $channel = function (int $n) use ($hue, $s, $l): int {
+            $k = fmod($n + $hue / 30, 12);
+            return (int) round(255 * ($l - $s * min($l, 1 - $l) * max(-1, min($k - 3, 9 - $k, 1))));
+        };
+
+        return sprintf('#%02x%02x%02x', $channel(0), $channel(8), $channel(4));
+    }
+
+    /**
      * WCAG 2.2 relative luminance of a color, from 0 (black) to 1 (white)
      *
      * @param string $color `#rrggbb` or `#rgb`

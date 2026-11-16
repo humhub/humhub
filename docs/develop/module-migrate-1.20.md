@@ -2919,3 +2919,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   names: `aspectRatio`, `minSize`, `setSelect`, `bgColor`, `bgOpacity`, `boxWidth`, `keySupport` and `onChange`, which
   gets `{x, y, w, h, x2, y2}` in pixels of the image. Other Jcrop options are ignored. The widget renders the hint for
   the keyboard, so it belongs below the image.
+
+- **`mistic100/randomcolor` is deprecated and will be removed in 1.21.** The core no longer uses it: a new space gets
+  its colour from `humhub\helpers\ScssHelper::getRandomColor()`, which keeps the contrast to its white initials. A
+  module that uses `Colors\RandomColor` switches to that method for colours under white text, or requires the package
+  in its own `composer.json`. `behat/gherkin` is no longer pinned in the core, Codeception brings it along for the tests.

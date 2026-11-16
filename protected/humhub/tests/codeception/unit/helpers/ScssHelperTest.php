@@ -743,4 +743,25 @@ SCSS;
         $this->assertNotEquals($variables['secondLinkedColor'], $variables['anotherSecondLinkedColor']);
         $this->assertNotEquals($variables['secondLinked2Color'], $variables['anotherFirstLinkedColor']);
     }
+
+    public function testRandomColorIsReadableUnderWhiteText()
+    {
+        $colors = [];
+        for ($i = 0; $i < 200; $i++) {
+            $color = ScssHelper::getRandomColor();
+            $this->assertMatchesRegularExpression('/^#[0-9a-f]{6}$/', $color);
+            $this->assertGreaterThanOrEqual(4.5, ScssHelper::getContrastRatio($color, '#ffffff'), $color);
+            $colors[$color] = true;
+        }
+
+        // Not the same few colours over and over
+        $this->assertGreaterThan(50, count($colors));
+    }
+
+    public function testRandomColorFollowsTheGivenContrast()
+    {
+        for ($i = 0; $i < 50; $i++) {
+            $this->assertGreaterThanOrEqual(7, ScssHelper::getContrastRatio(ScssHelper::getRandomColor(7), '#ffffff'));
+        }
+    }
 }
