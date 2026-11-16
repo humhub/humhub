@@ -2908,3 +2908,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `SudoMode::forCurrentUser()->isActive()` tells whether the user confirmed recently.
   `RequestClass::current()` classifies the current request as the gates do. An API controller of a module's
   administration sets `BaseController::$administration`, so the browser session needs the sudo mode there too.
+
+- **`jbroadway/urlify` is no longer a dependency** (and with it `voku/portable-ascii` and `voku/stop-words`).
+  Space URLs are generated with `yii\helpers\Inflector::slug()`. A module that uses `URLify` switches to
+  `Inflector::slug()` or requires the package in its own `composer.json`.

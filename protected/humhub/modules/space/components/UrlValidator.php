@@ -10,8 +10,9 @@ namespace humhub\modules\space\components;
 
 use humhub\modules\space\Module;
 use Yii;
+use yii\helpers\Inflector;
+use yii\validators\StringValidator;
 use yii\validators\Validator;
-use URLify;
 use humhub\modules\space\models\Space;
 
 /**
@@ -37,7 +38,7 @@ class UrlValidator extends Validator
         /** @var Module $module */
         $module = Yii::$app->getModule('space');
 
-        $stringValidator = new yii\validators\StringValidator([
+        $stringValidator = new StringValidator([
             'max' => $module->maximumSpaceUrlLength,
             'min' => $module->minimumSpaceUrlLength,
         ]);
@@ -46,7 +47,7 @@ class UrlValidator extends Validator
             return;
         }
 
-        if ($value !== URLify::filter($value, 45)) {
+        if (!preg_match('/^[a-z0-9]+(-[a-z0-9]+)*$/', $value)) {
             $this->addError($model, $attribute, Yii::t('SpaceModule.manage', 'The url contains illegal characters!'));
         }
 
@@ -70,7 +71,17 @@ class UrlValidator extends Validator
     {
         $maxUrlLength = 45;
 
-        $url = URLify::filter($name, $maxUrlLength - 4);
+        $name = (string) $name;
+        $language = explode('-', Yii::$app->language)[0];
+        if ($language === 'de') {
+            // German is the only language with its own ASCII rule in ICU: ä → ae, ö → oe, ü → ue
+            $name = Inflector::transliterate($name, 'de-ASCII');
+        } elseif (in_array($language, ['fr', 'it', 'ca'], true)) {
+            // An elided article stays a word of its own: l'équipe → l-equipe
+            $name = str_replace(["'", '’'], ' ', $name);
+        }
+
+        $url = trim(substr(Inflector::slug($name), 0, $maxUrlLength - 4), '-');
 
         // Get a list of all similar space urls
         $existingSpaceUrls = [];
