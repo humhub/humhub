@@ -31,7 +31,6 @@
         "directorytree/ldaprecord": "^4.0",
         "firebase/php-jwt": "^7.0",
         "guzzlehttp/psr7": "^2.13",
-        "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "^3.4",
         "laminas/laminas-escaper": "^2.6",
         "lcobucci/jwt": "^5.6",
