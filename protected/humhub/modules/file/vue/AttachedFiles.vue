@@ -105,10 +105,10 @@
  * `docs/develop/module-migrate-1.20.md`:
  *  - Audio renders as native, individually labelled `<audio controls>` players instead
  *    of the jPlayer playlist widget `showFiles.php` used (jPlayer is gone from the
- *    platform with it).
- *  - `excludeMedia` really removes media entries from the list. The legacy widget only
- *    added a `hiddenFile` class for which no rule has existed since the Bootstrap 5
- *    migration, so the setting silently did nothing.
+ *    platform with it), and besides MP3 also for WAV, M4A, AAC and FLAC.
+ *  - `excludeMedia` really removes the files the media grid renders from the list. The
+ *    legacy widget only added a `hiddenFile` class to every file with a media icon, for
+ *    which no rule has existed since the Bootstrap 5 migration.
  *  - File sizes are formatted client-side (locale-aware number, plain unit symbol)
  *    rather than through `Yii::$app->formatter->asShortSize()`.
  *  - The media grid no longer carries a `post-files-<uniqueId>` id (nothing referenced it).
@@ -123,11 +123,8 @@ const VIDEO_TYPES = {
     mov: 'video/quicktime',
 };
 const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
-const AUDIO_EXTENSIONS = ['mp3'];
-
-// Mime icon classes of files the media grid renders a preview for - `excludeMedia`
-// drops exactly these from the trailing list (`MimeHelper::getMimeIconClassByExtension()`).
-const MEDIA_MIME_ICONS = ['mime-image', 'mime-video', 'mime-audio'];
+// Formats every current browser plays in `<audio>` - Ogg is left out, Safari's support is unreliable
+const AUDIO_EXTENSIONS = ['mp3', 'wav', 'm4a', 'aac', 'flac'];
 
 const SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB'];
 
@@ -167,10 +164,16 @@ export default {
         hasMedia() {
             return this.images.length > 0 || this.videos.length > 0 || this.audios.length > 0;
         },
+        // Without `excludeMedia` all files, otherwise those the media grid doesn't render -
+        // a media file it has no preview for (an AVI video, an Ogg audio) stays in the list.
         listed() {
-            return this.excludeMedia
-                ? this.files.filter((file) => !MEDIA_MIME_ICONS.includes(file.mimeIcon))
-                : this.files;
+            if (!this.excludeMedia) {
+                return this.files;
+            }
+
+            const rendered = new Set([...this.images, ...this.videos, ...this.audios]);
+
+            return this.files.filter((file) => !rendered.has(file));
         },
     },
     methods: {
