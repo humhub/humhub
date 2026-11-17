@@ -4,6 +4,7 @@ HumHub Changelog
 1.19.5 (Unreleased)
 -------------------
 
+- Fix #8758: Attached media files without a preview (e.g. WAV audio or AVI video) were not shown on a post or comment if media files are excluded from the attachment list
 - Fix #8753: Logins via LDAP or an auth client and the LDAP sync no longer scan the whole `user_auth` table, which holds the LDAP identities since 1.19
 - Fix #8751: `ContentContainerModuleManager::isEnabled()` still reported the previous state right after `enable()` or `disable()` on the same container
 - Fix #8740: Password recovery page redirected to the login page in maintenance mode

@@ -3,6 +3,7 @@
 use humhub\components\ActiveRecord;
 use humhub\helpers\Html;
 use humhub\helpers\ThemeHelper;
+use humhub\libs\MimeHelper;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\widgets\FilePreview;
@@ -20,6 +21,7 @@ $videoTypes = [
     'ogv' => 'video/ogg',
     'mov' => 'video/quicktime',
 ];
+$mediaIcons = [MimeHelper::ICON_IMAGE, MimeHelper::ICON_VIDEO, MimeHelper::ICON_AUDIO];
 $images = [];
 $videos = [];
 $audios = [];
@@ -31,6 +33,10 @@ foreach ($files as $file) {
         $videos[] = $file;
     } elseif (FileHelper::getExtension($file->file_name) === 'mp3') {
         $audios[] = $file;
+    } elseif (in_array(MimeHelper::getMimeIconClassByExtension($file), $mediaIcons, true)) {
+        // The file list hides media files (see `file.Preview.isMedia()`), so it must keep them
+        // if one has no preview above (e.g. WAV audio or AVI video), or it would not be shown at all
+        $excludeMediaFilesPreview = false;
     }
 }
 
