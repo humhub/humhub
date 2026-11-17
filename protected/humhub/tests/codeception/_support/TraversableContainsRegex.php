@@ -42,13 +42,10 @@ final class TraversableContainsRegex extends TraversableContains
         $value = $this->value();
 
         foreach ($other as $element) {
-            while (!is_string($element)) {
-                if ($element instanceof \Stringable || (is_object($element) && !method_exists($element, '__toString'))) {
-                    $element = $element->__toString();
-                    break;
-                }
-
-                continue 2;
+            if ($element instanceof \Stringable) {
+                $element = (string)$element;
+            } elseif (!is_string($element)) {
+                continue;
             }
 
             $match = RegularExpressionUtil::safeMatch($value, $element);
@@ -59,7 +56,9 @@ final class TraversableContainsRegex extends TraversableContains
                 );
             }
 
-            return $match === 1;
+            if ($match === 1) {
+                return true;
+            }
         }
 
         return false;
