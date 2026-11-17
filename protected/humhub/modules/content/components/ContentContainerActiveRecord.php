@@ -139,6 +139,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($this->_image === null) {
             $this->_image = $this->triggerInitImageEvent(self::EVENT_INIT_PROFILE_IMAGE, [
                 'file' => '/profile_image/' . $this->guid . '.jpg',
+                // Images uploaded before 1.19 keep their cropped version only as the variant of
+                // these options, other options show the center of their original, see m261118_080000_container_image_originals
                 'defaultOptions' => [
                     'width' => 150,
                     'height' => 150,
@@ -160,6 +162,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($this->_bannerImage === null) {
             $this->_bannerImage = $this->triggerInitImageEvent(self::EVENT_INIT_BANNER_IMAGE, [
                 'file' => '/profile_image/banner/' . $this->guid . '.jpg',
+                // See the default options of getImage()
                 'defaultOptions' => [
                     'width' => 1134,
                     'height' => 192,
