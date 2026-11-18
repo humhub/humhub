@@ -211,6 +211,9 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
         static::assertNotLogRegex('@Oo@');
         static::assertLogRegex('@Oo@i');
         static::assertLogRegexCount(1, '@foo|Ba@');
+        // Not only the first message is checked
+        static::assertLogRegex('@^Bar$@');
+        static::assertNotLogRegex('@^Baz$@');
 
         static::assertEquals(
             [
@@ -312,6 +315,23 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
         $this->expectExceptionMessage("Invalid regex given: '@Oo'");
 
         static::assertLogRegexCount(1, '@Oo');
+    }
+
+    public function testContainsRegex()
+    {
+        $stringable = new class implements \Stringable {
+            public function __toString(): string
+            {
+                return 'Baz';
+            }
+        };
+
+        static::assertContainsRegex('@^Bar$@', ['Foo', 'Bar']);
+        static::assertNotContainsRegex('@^Bar$@', ['Foo', 'Foo']);
+
+        // Elements that are neither strings nor Stringable are ignored
+        static::assertContainsRegex('@^Baz$@', [1, null, new \stdClass(), $stringable]);
+        static::assertNotContainsRegex('@^1$@', [1, new \stdClass()]);
     }
 
     public static function get(): ?string

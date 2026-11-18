@@ -19,8 +19,7 @@
     mov: "video/quicktime"
   };
   const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
-  const AUDIO_EXTENSIONS = ["mp3"];
-  const MEDIA_MIME_ICONS = ["mime-image", "mime-video", "mime-audio"];
+  const AUDIO_EXTENSIONS = ["mp3", "wav", "m4a", "aac", "flac"];
   const SIZE_UNITS$1 = ["B", "KB", "MB", "GB", "TB"];
   function escapeHtml(value) {
     return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -53,8 +52,14 @@
       hasMedia() {
         return this.images.length > 0 || this.videos.length > 0 || this.audios.length > 0;
       },
+      // Without `excludeMedia` all files, otherwise those the media grid doesn't render -
+      // a media file it has no preview for (an AVI video, an Ogg audio) stays in the list.
       listed() {
-        return this.excludeMedia ? this.files.filter((file) => !MEDIA_MIME_ICONS.includes(file.mimeIcon)) : this.files;
+        if (!this.excludeMedia) {
+          return this.files;
+        }
+        const rendered = /* @__PURE__ */ new Set([...this.images, ...this.videos, ...this.audios]);
+        return this.files.filter((file) => !rendered.has(file));
       }
     },
     methods: {

@@ -1554,13 +1554,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
       module (with its entry in `CoreExtensionAsset`) and the `npm-asset/jplayer` +
       `xj/yii2-jplayer-widget` composer dependencies. `ShowFiles` was the only user of any of
       it (module-search: no external ones) — **attached audio now plays in native, individually
-      labelled `<audio controls>` players instead of a jPlayer playlist**, and the `.jp-*`
-      theme rules in `_file.scss`/`_comment.scss` are gone.
+      labelled `<audio controls>` players instead of a jPlayer playlist**, besides MP3 also for
+      WAV, M4A, AAC and FLAC, and the `.jp-*` theme rules in `_file.scss`/`_comment.scss` are
+      gone.
     - **Fixed**: the `excludeMediaFilesPreview` setting of the file module ("Exclude media
       files from stream attachment list", on by default for new installations) works again.
       The `file.Preview` JsWidget only added a `hiddenFile` class to those entries, and no rule
       for it has existed since the Bootstrap 5 migration, so media files stayed in the list
-      below the preview grid. They are now really left out.
+      below the preview grid. The files the preview grid renders are now really left out;
+      media files it has no preview for (e.g. Ogg audio, AVI video) stay in the list.
     - The `file.Preview` JsWidget itself is untouched and still renders the file list of the
       upload/edit paths (`wallCreateContentFormFooter.php`, `post/edit.php`,
       `file\widgets\Upload`, `file\widgets\ActiveFileUpload`), where it doubles as the live

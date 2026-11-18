@@ -129,6 +129,31 @@ describe('AttachedFiles', () => {
         expect(wrapper.find('.post-file-list li').attributes('data-preview-guid')).toBe('doc');
     });
 
+    it('renders the audio formats browsers play natively as audio players', () => {
+        const files = ['a.mp3', 'b.wav', 'c.m4a', 'd.aac', 'e.FLAC'].map((fileName) =>
+            file({ guid: fileName, fileName, mimeIcon: 'mime-audio' }));
+
+        const wrapper = render(files, { excludeMedia: true });
+
+        expect(wrapper.findAll('.post-files-audio audio')).toHaveLength(5);
+        expect(wrapper.find('.post-file-list').exists()).toBe(false);
+    });
+
+    it('keeps media files without a preview in the list when excludeMedia is set', () => {
+        const files = [
+            file({ guid: 'mp3', fileName: 'a.mp3', mimeIcon: 'mime-audio' }),
+            file({ guid: 'ogg', fileName: 'b.ogg', mimeIcon: 'mime-audio' }),
+            file({ guid: 'avi', fileName: 'c.avi', mimeIcon: 'mime-video' }),
+            file({ guid: 'img', fileName: 'd.tiff', mimeIcon: 'mime-image', previewUrl: null }),
+        ];
+
+        const wrapper = render(files, { excludeMedia: true });
+
+        expect(wrapper.findAll('.post-files-audio audio')).toHaveLength(1);
+        expect(wrapper.findAll('.post-file-list li').map((item) => item.attributes('data-preview-guid')))
+            .toEqual(['ogg', 'avi', 'img']);
+    });
+
     it('renders no media grid at all when preview is off, and lists everything', () => {
         const files = [
             file({ guid: 'img', fileName: 'a.png', mimeIcon: 'mime-image', previewUrl: '/p/a.png' }),
