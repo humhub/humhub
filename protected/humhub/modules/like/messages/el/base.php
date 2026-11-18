@@ -9,5 +9,6 @@ return [
     'You like this.' => 'Σας αρέσει.',
     'and {count} more like this.' => 'και {count} ακόμα πατήσατε "μου αρέσει".',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName} πάτησε "μου αρέσει".',
     '{displayName} likes {content}.' => '',
 ];

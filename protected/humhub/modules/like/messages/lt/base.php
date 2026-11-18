@@ -9,5 +9,6 @@ return [
     'You like this.' => 'Tau tai patinka',
     'and {count} more like this.' => 'ir {count} daugiau tokių, kaip šis.',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName} mėgsta tai.',
     '{displayName} likes {content}.' => '',
 ];

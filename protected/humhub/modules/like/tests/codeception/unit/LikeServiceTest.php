@@ -89,4 +89,27 @@ class LikeServiceTest extends HumHubDbTestCase
         $this->assertCount(1, $mutex->acquiredLocks);
         $this->assertCount(0, $mutex->releasedLocks);
     }
+
+    /**
+     * The name of a single other liker must be separated from the text in every
+     * language, not only where the translation keeps a leading space.
+     */
+    public function testLikeTitleTextOfSingleOtherUser()
+    {
+        $post = Post::findOne(['id' => 1]);
+        $this->becomeUser('User2');
+        $this->assertTrue((new LikeService($post))->like());
+        $likerName = Yii::$app->user->identity->displayName;
+
+        $this->becomeUser('User1');
+        $this->assertEquals($likerName . ' likes this.', (new LikeService($post))->generateLikeTitleText());
+
+        $currentLanguage = Yii::$app->language;
+        Yii::$app->setLanguage('de');
+        try {
+            $this->assertEquals($likerName . ' gefällt das.', (new LikeService($post))->generateLikeTitleText());
+        } finally {
+            Yii::$app->setLanguage($currentLanguage);
+        }
+    }
 }

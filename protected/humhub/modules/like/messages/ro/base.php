@@ -9,5 +9,6 @@ return [
     'You like this.' => 'Apreciezi asta.',
     'and {count} more like this.' => 'și încă {count} alții apreciați asta.',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName} apreciază asta.',
     '{displayName} likes {content}.' => '',
 ];

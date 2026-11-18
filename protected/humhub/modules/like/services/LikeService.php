@@ -225,7 +225,11 @@ class LikeService
             if (count($otherUsers) === 0) {
                 $this->_titleText = $this->hasLiked() ? Yii::t('LikeModule.base', 'You like this.') : '';
             } elseif (count($otherUsers) === 1 && !$this->hasLiked()) {
-                $this->_titleText = $otherUsers[0]->displayName . Yii::t('LikeModule.base', ' likes this.');
+                $this->_titleText = Yii::t(
+                    'LikeModule.base',
+                    '{displayName} likes this.',
+                    ['displayName' => $otherUsers[0]->displayName],
+                );
             } else {
                 $title = ($this->hasLiked()) ? Yii::t('LikeModule.base', 'You') . "\n" : '';
                 foreach ($otherUsers as $user) {

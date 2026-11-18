@@ -9,5 +9,6 @@ return [
     'You like this.' => 'Vama se sviđa ovo.',
     'and {count} more like this.' => 'i {count} više sviđa se ovo.',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => 'Osobi {displayName} se sviđa ovo.',
     '{displayName} likes {content}.' => '',
 ];

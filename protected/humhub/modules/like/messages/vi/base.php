@@ -9,5 +9,6 @@ return [
     'You like this.' => 'Bạn like điều này',
     'and {count} more like this.' => 'và thêm {count} người like điều này.',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName} like điều này.',
     '{displayName} likes {content}.' => '',
 ];
