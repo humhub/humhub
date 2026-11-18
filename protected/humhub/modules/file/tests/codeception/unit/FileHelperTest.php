@@ -278,6 +278,41 @@ class FileHelperTest extends HumHubDbTestCase
         static::assertEquals($expected, FileHelper::getFileInfos($file));
     }
 
+    public function testExistsStreamFile()
+    {
+        $hidden = $this->createStreamFile(['show_in_stream' => 0, 'created_by' => 3]);
+        $visible = $this->createStreamFile(['show_in_stream' => 1, 'created_by' => 3]);
+
+        static::assertFalse(FileHelper::existsStreamFile(null, 3));
+        static::assertFalse(FileHelper::existsStreamFile([], 3));
+        static::assertFalse(FileHelper::existsStreamFile('', 3));
+        static::assertFalse(FileHelper::existsStreamFile([''], 3));
+        static::assertFalse(FileHelper::existsStreamFile([$hidden->guid], 3));
+        static::assertFalse(FileHelper::existsStreamFile($hidden->guid, 3));
+        static::assertTrue(FileHelper::existsStreamFile([$hidden->guid, $visible->guid], 3));
+        static::assertTrue(FileHelper::existsStreamFile($hidden->guid . ', ' . $visible->guid, 3));
+    }
+
+    public function testExistsStreamFileOfAnotherUserOrGuest()
+    {
+        $file = $this->createStreamFile(['show_in_stream' => 1, 'created_by' => 2]);
+
+        static::assertTrue(FileHelper::existsStreamFile([$file->guid], 2));
+        static::assertFalse(FileHelper::existsStreamFile([$file->guid], 3));
+        // Without a user ID the current user is used, which is a guest here
+        static::assertFalse(FileHelper::existsStreamFile([$file->guid]));
+    }
+
+    private function createStreamFile(array $attributes): File
+    {
+        $file = new File();
+        $file->file_name = 'test.txt';
+        static::assertTrue($file->save());
+        $file->updateAttributes($attributes);
+
+        return $file;
+    }
+
     public static function hasExtension1(string $file): bool
     {
         return pathinfo($file, PATHINFO_FILENAME) && pathinfo($file, PATHINFO_EXTENSION);

@@ -15,6 +15,7 @@ use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\widgets\Form;
@@ -79,7 +80,7 @@ class PostController extends ContentContainerController
 
         $post->load(Yii::$app->request->post(), 'Post');
 
-        if (!empty(Yii::$app->request->post('fileList'))) {
+        if (FileHelper::existsStreamFile(Yii::$app->request->post('fileList'))) {
             $post->scenario = Post::SCENARIO_HAS_FILES;
         }
 
