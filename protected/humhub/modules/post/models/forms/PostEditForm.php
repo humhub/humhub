@@ -8,6 +8,7 @@
 
 namespace humhub\modules\post\models\forms;
 
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\post\models\Post;
 use Yii;
 use yii\web\ServerErrorHttpException;
@@ -77,15 +78,16 @@ class PostEditForm extends yii\base\Model
     }
 
     /**
-     * Checks if the post has file attachments, either newly uploaded ones pending attach
-     * or ones already attached to an existing post.
+     * Checks if the post has file attachments shown in the stream, either newly uploaded ones pending attach
+     * or ones already attached to an existing post. Files hidden in the stream (uploaded by the rich text
+     * editor) are not counted, they are shown only when they are referenced in the message.
      *
      * @return bool
      * @since 1.18.6
      */
     protected function hasAttachments(): bool
     {
-        return !empty($this->fileList) || (!$this->post->isNewRecord && $this->post->fileManager->find()->count());
+        return FileHelper::existsStreamFile($this->fileList) || (!$this->post->isNewRecord && $this->post->fileManager->findStreamFiles());
     }
 
     /**

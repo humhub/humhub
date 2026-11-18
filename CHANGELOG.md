@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #8740: Password recovery page redirected to the login page in maintenance mode
 - Fix #8743: Followers with a hidden profile (or not visible to the commenter or author) were not notified of new comments, or of new content in a followed space or profile, unless the author was an admin or user manager
 - Fix: The current space's image in the space chooser button sat above the centre of the top bar, and the caret beside it moved after a page change
+- Fix #8749: Posts with an empty message could be saved when only a file uploaded by the rich text editor was attached
 
 1.19.4 (November 9, 2026)
 -------------------------
