@@ -49543,6 +49543,9 @@
     const linkMark = schema2.marks.link.create({ href: file.url, fileGuid: file.guid });
     return schema2.text(file.name, [linkMark]);
   };
+  const canUpload = function(context) {
+    return typeof context.options.upload === "function" || !!isHumhub() && !!humhub.require("ui.widget.Widget").instance($("#" + context.id + "-file-upload"));
+  };
   const triggerUpload = function(state2, view2, context, files) {
     let id2 = {};
     if (typeof context.options.upload === "function") {
@@ -49669,11 +49672,32 @@
               triggerUpload(view2.state, view2, context, e2.clipboardData.files);
               e2.preventDefault();
             }
+          },
+          drop: (view2, e2) => {
+            const files = e2.dataTransfer && e2.dataTransfer.files;
+            if (!files || !files.length || !canUpload(context)) {
+              return false;
+            }
+            selectDropPosition(view2, e2);
+            triggerUpload(view2.state, view2, context, files);
+            e2.preventDefault();
+            e2.stopPropagation();
+            return true;
           }
         }
       }
     });
   };
+  function selectDropPosition(view2, e2) {
+    try {
+      const coords = view2.posAtCoords({ left: e2.clientX, top: e2.clientY });
+      if (coords) {
+        view2.dispatch(view2.state.tr.setSelection(Selection.near(view2.state.doc.resolve(coords.pos))));
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
   function getSelectionMarks(context) {
     if (context.editor.view.state.storedMarks && context.editor.view.state.storedMarks.length) {
       return context.editor.view.state.storedMarks;

@@ -141,6 +141,7 @@ HumHub Changelog
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 - Enh #8713: Admin menu item Appearance, account page Appearance & Accessibility (dark mode, high contrast, reduced motion, readable font)
 - Fix #8748: Fix pickers not mounted in content forms loaded via the form menu on stream
+- Enh #8762: Files dropped onto the rich text editor are inserted into the text instead of being attached under the form
 
 1.19.5 (Unreleased)
 -------------------
