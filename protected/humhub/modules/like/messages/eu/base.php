@@ -9,5 +9,6 @@ return [
     'You like this.' => 'Hau gustatzen zaizu.',
     'and {count} more like this.' => 'eta honelako {count} gehiago.',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName} erabiltzaileari hau gustatzen zaio.',
     '{displayName} likes {content}.' => '',
 ];

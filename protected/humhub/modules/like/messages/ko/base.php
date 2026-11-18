@@ -9,5 +9,6 @@ return [
     'You like this.' => '마음에 드시나요?',
     'and {count} more like this.' => '그리고 {count} 더 많이 입력합니다.',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName}님이 좋아합니다.',
     '{displayName} likes {content}.' => '',
 ];

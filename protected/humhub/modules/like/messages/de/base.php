@@ -8,5 +8,6 @@ return [
   'You like this.' => 'Dir gefällt das.',
   'and {count} more like this.' => 'und {count} anderen gefällt das.',
   '{displayNames} like {content}.' => '{displayNames} gefällt {content}.',
+  '{displayName} likes this.' => '{displayName} gefällt das.',
   '{displayName} likes {content}.' => '{displayName} gefällt {content}.',
 ];

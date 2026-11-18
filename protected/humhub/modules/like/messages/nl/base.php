@@ -8,5 +8,6 @@ return [
   'You like this.' => 'Jij vindt dit leuk.',
   'and {count} more like this.' => 'en nog {count} andere.',
   '{displayNames} like {content}.' => '{displayNames} vindt {content} leuk.',
+  '{displayName} likes this.' => '{displayName} vindt dit leuk.',
   '{displayName} likes {content}.' => '{displayName} vindt {content} leuk.',
 ];

@@ -9,5 +9,6 @@ return [
     'You like this.' => 'あなたは「いいね！」しています。',
     'and {count} more like this.' => '他{count}人が「いいね！」しています。',
     '{displayNames} like {content}.' => '',
+    '{displayName} likes this.' => '{displayName}さんが「いいね！」しました。',
     '{displayName} likes {content}.' => '',
 ];
