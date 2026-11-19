@@ -3,9 +3,12 @@
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\helpers\Html;
+use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\widgets\form\JsInputWidget;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\web\Application as WebApplication;
 
 /**
  * Abstract class for RichTextEditor implementations.
@@ -113,6 +116,13 @@ class AbstractRichTextEditor extends JsInputWidget
     public $pluginOptions = [];
 
     /**
+     * @var string|null id naming where the text lives, e.g. `post`, `comment` or `<module-id>.<field>`.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     * @since 1.20
+     */
+    public $contextId = null;
+
+    /**
      * Options for field of active form
      * @var array
      */
@@ -166,6 +176,10 @@ class AbstractRichTextEditor extends JsInputWidget
             // No reason to back up a content with random input ID,
             // because on next page reloading we cannot know previous input ID
             $this->backupInterval = 0;
+        }
+
+        if (Yii::$app instanceof WebApplication) {
+            ProseMirrorRichTextAsset::register($this->view);
         }
 
         return parent::beforeRun();
@@ -256,6 +270,7 @@ class AbstractRichTextEditor extends JsInputWidget
             'include' => $this->include,
             'pluginOptions' => $this->pluginOptions,
             'preset' => $this->preset,
+            'contextId' => $this->contextId,
         ];
 
         $config = ArrayHelper::merge(static::$renderer, $params);
@@ -280,6 +295,10 @@ class AbstractRichTextEditor extends JsInputWidget
 
         if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
+        }
+
+        if (!empty($this->contextId)) {
+            $result['context-id'] = $this->contextId;
         }
 
         if (!empty($this->placeholder)) {

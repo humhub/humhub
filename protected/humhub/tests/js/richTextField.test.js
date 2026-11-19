@@ -64,6 +64,7 @@ describe('RichTextField', () => {
             placeholder: 'Write…',
             mentioningUrl: '/mentioning?id=42',
             pluginOptions: { maxHeight: '300px' },
+            contextId: 'wiki.page',
             exclude: ['emoji'],
         });
         const node = editorNode(wrapper);
@@ -75,6 +76,7 @@ describe('RichTextField', () => {
         expect(node.dataset.mentioningUrl).toBe('/mentioning?id=42');
         expect(node.dataset.placeholder).toBe('Write…');
         expect(JSON.parse(node.dataset.pluginOptions)).toEqual({ maxHeight: '300px' });
+        expect(node.dataset.contextId).toBe('wiki.page');
         // The editor's upload and file handlers are left out unless the field is given them
         expect(JSON.parse(node.dataset.exclude)).toEqual(['emoji', 'upload', 'file_handler']);
         // The editor's input, which keys its draft backup

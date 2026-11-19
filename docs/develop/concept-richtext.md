@@ -289,6 +289,40 @@ humhub.module('mymodule.richtext', function (module, require, $) {
 `registerPlugin(plugin)` without a preset makes the plugin known so a preset callback or a
 widget's `include` can pick it up.
 
+### Contexts
+
+A rich text can name where it lives with a **context id**: `contextId` on `RichTextField` and on
+`RichText::output()` (`['contextId' => 'comment']`), the `context-id` prop of the Vue `RichTextField`
+and `RichTextOutput`, and `context.getContextId()` for a plugin. The core uses `post`, `comment` and
+`space.about`; a module picks `<module-id>` or `<module-id>.<field>` (e.g. `wiki.page`) and keeps to its
+own namespace. A text without a context id has none (`null`).
+
+A plugin registered with `contexts` is only active in these contexts: in the editor, the renderer and
+the schema, also when a widget includes it explicitly. Without `contexts` it is active everywhere. A
+plugin with `contexts` is never active in a text without context id.
+
+```js
+// Only for comments and posts
+richtext.plugin.registerPlugin(myPlugin, { preset: 'normal', contexts: ['post', 'comment'] });
+```
+
+### Loading the assets of a plugin
+
+Add the module's asset bundle to `ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS`, e.g. in
+the `events` of `config.php`. The core registers it once per request, wherever the editor bundle is
+registered: on full pages, in Ajax responses (modals, Pjax) and wherever a rich text widget is rendered,
+not only where the module's own widgets are.
+
+```php
+[
+    'class' => ProseMirrorRichTextAsset::class,
+    'event' => ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS,
+    'callback' => static fn(RichTextPluginAssetsEvent $event) => $event->assets[] = MyPluginAsset::class,
+],
+```
+
+The bundle has to depend on `ProseMirrorRichTextAsset`, see above.
+
 ## Extension and plugin side by side
 
 | Feature | Extension (PHP) | Plugin (JavaScript) |

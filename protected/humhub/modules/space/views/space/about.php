@@ -20,7 +20,7 @@ use humhub\widgets\Icon;
         <?php if ($space->about || $space->description): ?>
             <div>
                 <div data-ui-markdown data-ui-show-more data-collapse-at="600">
-                    <?= RichText::output(empty($space->about) ? $space->description : $space->about) ?>
+                    <?= RichText::output(empty($space->about) ? $space->description : $space->about, ['contextId' => 'space.about']) ?>
                 </div>
             </div>
             <br>

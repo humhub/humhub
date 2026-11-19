@@ -8,6 +8,7 @@
                     class="mb-3"
                     attribute="message"
                     layout="inline"
+                    context-id="comment"
                     :instance-key="formInstanceKey"
                     :placeholder="placeholder"
                     :mentioning-url="mentioningUrl"

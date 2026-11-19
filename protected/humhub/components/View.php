@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
+use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\components\assets\AssetBundle;
 use humhub\helpers\Html;
 use humhub\services\PwaService;
@@ -253,6 +254,10 @@ class View extends \yii\web\View
     public function registerAssetBundle($name, $position = null)
     {
         $bundle = parent::registerAssetBundle($name, $position);
+
+        if ($name === ProseMirrorRichTextAsset::class) {
+            ProseMirrorRichTextAsset::registerPluginAssets($this);
+        }
 
         if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
             static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);

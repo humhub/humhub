@@ -15,6 +15,7 @@
             :data-include="JSON.stringify(include)"
             :data-exclude="JSON.stringify(editorExclude)"
             :data-plugin-options="JSON.stringify(pluginOptions)"
+            :data-context-id="contextId"
             :data-mentioning-url="mentioningUrl"
             :data-placeholder="placeholder"
             :data-focus="autofocus ? 'true' : null"
@@ -137,6 +138,9 @@ export default {
         include: { type: Array, default: () => [] },
         exclude: { type: Array, default: () => [] },
         pluginOptions: { type: Object, default: () => ({}) },
+        // Names where the text lives (`post`, `comment`, `<module-id>.<field>`), plugins registered
+        // with `contexts` are only active in the listed ones
+        contextId: { type: String, default: null },
         mentioningUrl: { type: String, default: null },
         layout: { type: String, default: 'block' },
         autofocus: { type: Boolean, default: false },

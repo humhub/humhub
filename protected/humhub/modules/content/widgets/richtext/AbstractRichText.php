@@ -6,11 +6,13 @@ use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\helpers\Html;
+use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
+use yii\web\Application as WebApplication;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.
@@ -148,6 +150,14 @@ abstract class AbstractRichText extends JsWidget
     public $pluginOptions = [];
 
     /**
+     * @var string|null id naming where the text lives, e.g. `post`, `comment` or `<module-id>.<field>`.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     * @see ProsemirrorRichText
+     * @since 1.20
+     */
+    public $contextId = null;
+
+    /**
      * @var string [[AbstractRichTextEditor]] subclass, used for rendering the editor widget.
      * @see editorWidget
      */
@@ -182,6 +192,10 @@ abstract class AbstractRichText extends JsWidget
         if (!static::$editorClass) {
             throw new InvalidArgumentException('No editor class set for rich text ' . static::class);
         }
+
+        if (Yii::$app instanceof WebApplication) {
+            ProseMirrorRichTextAsset::register($this->view);
+        }
     }
 
     /**
@@ -199,6 +213,10 @@ abstract class AbstractRichText extends JsWidget
 
         if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
+        }
+
+        if (!empty($this->contextId)) {
+            $result['context-id'] = $this->contextId;
         }
 
         return $result;

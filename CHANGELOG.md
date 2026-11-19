@@ -144,6 +144,8 @@ HumHub Changelog
 - Enh: A rich text link of an extension nobody handles (`<extension>:<url>`, e.g. of a disabled module) stays as it is in the editor and leads to its url
 - Fix: The editor no longer drops the title of a link (`[text](url "title")`) when files can be attached to the text
 - Fix: `oembed.load()` no longer requests an url twice when it is called for the same url again while the first request is open
+- Enh: A rich text has a `contextId` (`post`, `comment`, `space.about`), rich text plugins can be registered for given contexts only (`contexts`)
+- Enh: Modules load the assets of their rich text plugins with `EVENT_REGISTER_PLUGIN_ASSETS`, so the plugins are there wherever a rich text appears
 
 1.19.5 (Unreleased)
 -------------------

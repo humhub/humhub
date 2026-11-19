@@ -68,6 +68,18 @@ describe('RichTextOutput', () => {
     });
 
     describe('envelope (the element RichText::output() renders around a message)', () => {
+        it('puts the context id on the envelope, as RichText::output() does', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, { message: 'hello world', contextId: 'comment' });
+
+            expect(wrapper.element.children[0].dataset.contextId).toBe('comment');
+        });
+
+        it('leaves the context id off the envelope if none is given', () => {
+            const wrapper = mountWithAdditions(RichTextOutput, { message: 'hello world' });
+
+            expect(wrapper.element.children[0].hasAttribute('data-context-id')).toBe(false);
+        });
+
         it('renders the markdown text as a direct child div the richtext display widget boots on', () => {
             const wrapper = mountWithAdditions(RichTextOutput, { message: 'hello world' });
 

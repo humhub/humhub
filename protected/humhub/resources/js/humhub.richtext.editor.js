@@ -50456,6 +50456,7 @@
     constructor() {
       this.plugins = [];
       this.pluginMap = {};
+      this.pluginContexts = {};
       this.presets = new PresetRegistry(this);
       this.editorPresets = new PresetRegistry(this);
     }
@@ -50467,9 +50468,20 @@
       this.plugins.push(plugin);
       this.pluginMap[plugin.id] = plugin;
       options = typeof options === "string" ? { preset: options } : options;
+      if (Array.isArray(options.contexts)) {
+        this.pluginContexts[plugin.id] = options.contexts;
+      }
       if (options.preset) {
         this.addToPreset(plugin, options.preset, options);
       }
+    }
+    /**
+     * Whether a plugin is active in the given context: plugins registered with a `contexts` list
+     * are only active in the contexts of that list, all others everywhere.
+     */
+    isAvailableInContext(plugin, contextId) {
+      const contexts = this.pluginContexts[plugin.id];
+      return !contexts || !!contextId && contexts.includes(contextId);
     }
     registerPreset(id2, plugins) {
       this.presets.register(id2, plugins);
@@ -50828,8 +50840,11 @@
       this.map = {};
       this.options = options;
     }
+    static cacheKey(options) {
+      return options.preset + (options.contextId ? "|" + options.contextId : "");
+    }
     add(options, value) {
-      this.map[options.preset] = value;
+      this.map[PresetManager.cacheKey(options)] = value;
     }
     create(context) {
       return this.options.create.apply(null, [context]);
@@ -50843,8 +50858,8 @@
         return context[this.options.name];
       }
       let result = [];
-      if (!PresetManager.isCustomPluginSet(options) && this.map[options.preset]) {
-        result = this.map[options.preset];
+      if (!PresetManager.isCustomPluginSet(options) && this.map[PresetManager.cacheKey(options)]) {
+        result = this.map[PresetManager.cacheKey(options)];
       }
       if (!result || Array.isArray(result) && !result.length) {
         result = this.create(context);
@@ -50859,10 +50874,13 @@
     }
   }
   const getPlugins = (context) => {
-    const options = context.options;
-    if (context.plugins) {
-      return context.plugins;
+    if (!context.plugins) {
+      context.plugins = resolvePlugins(context).filter((plugin) => registry.isAvailableInContext(plugin, context.getContextId()));
     }
+    return context.plugins;
+  };
+  const resolvePlugins = (context) => {
+    const options = context.options;
     const presetMap = registry.getPresetRegistry(context);
     const toExtend = presetMap.get(options.preset) ? presetMap.get(options.preset) : registry.plugins;
     if (!PresetManager.isCustomPluginSet(options)) {
@@ -51767,6 +51785,7 @@
       }
       this.options = options;
       this.options.preset = options.preset || "full";
+      this.options.contextId = typeof options.contextId === "string" && options.contextId ? options.contextId : null;
       if (Array.isArray(this.options.exclude) && !this.options.exclude.length) {
         this.options.exclude = void 0;
       }
@@ -51787,6 +51806,16 @@
     }
     clear() {
       this.event.trigger("clear");
+    }
+    /**
+     * The id naming where the text of this editor/renderer lives (e.g. `post`, `comment`, `wiki.page`),
+     * set by whoever renders the field or the output, or `null` if none was given.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     *
+     * @returns {string|null}
+     */
+    getContextId() {
+      return this.options.contextId;
     }
     getGlobalOption(id2, option, defaultValue) {
       let globalOptions = this.getGlobalOptions();
