@@ -68,6 +68,30 @@ class RichTextLinkExtension extends RichTextContentExtension
     }
 
     /**
+     * The url of a link `<extension>:<http(s) url>`, e.g. `https://example.com` of `my-extension:https://example.com`.
+     *
+     * A reader whose rich text has no extension for such a link (e.g. its module is disabled) gets a link to this url
+     * instead of a dead link.
+     *
+     * @param string|null $url the link url
+     * @return string|null the http(s) url the extension link leads to, null if the url is not an extension link of this form
+     * @since 1.20
+     */
+    public static function getExtensionTargetUrl(?string $url): ?string
+    {
+        if (!preg_match('/^([a-z][a-z0-9_-]+):(https?:\/\/.+)$/is', (string) $url, $match)) {
+            return null;
+        }
+
+        // The protocols of a link, no extension
+        if (in_array(strtolower($match[1]), ['http', 'https', 'ftp', 'ftps', 'mailto', 'javascript', 'data', 'vbscript', 'file', 'blob'], true)) {
+            return null;
+        }
+
+        return $match[2];
+    }
+
+    /**
      * @param array $match
      * @return string
      */

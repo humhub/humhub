@@ -141,6 +141,9 @@ HumHub Changelog
 - Fix #8403: The `excludeMediaFilesPreview` setting really excludes media files from the attachment list again
 - Enh #8713: Admin menu item Appearance, account page Appearance & Accessibility (dark mode, high contrast, reduced motion, readable font)
 - Fix #8748: Fix pickers not mounted in content forms loaded via the form menu on stream
+- Enh: A rich text link of an extension nobody handles (`<extension>:<url>`, e.g. of a disabled module) stays as it is in the editor and leads to its url
+- Fix: The editor no longer drops the title of a link (`[text](url "title")`) when files can be attached to the text
+- Fix: `oembed.load()` no longer requests an url twice when it is called for the same url again while the first request is open
 
 1.19.5 (Unreleased)
 -------------------

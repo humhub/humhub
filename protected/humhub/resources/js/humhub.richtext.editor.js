@@ -17166,6 +17166,16 @@
     cfg = cfg || {};
     return /^https?:\/\//i.test(href) || /^mailto:/i.test(href) || /^ftps?:\/\//i.test(href) || cfg.anchor && validateAnchor(href) || cfg.relative && validateRelative(href);
   }
+  const EXTENSION_HREF = /^([a-z][a-z0-9_-]+):/i;
+  const UNSAFE_SCHEMES = ["javascript", "data", "vbscript", "file", "blob"];
+  function isExtensionHref(href) {
+    const match = EXTENSION_HREF.exec(href || "");
+    return !!match && !UNSAFE_SCHEMES.includes(match[1].toLowerCase());
+  }
+  function extensionTargetUrl(href) {
+    const match = /^([a-z][a-z0-9_-]+):(https?:\/\/.+)$/i.exec(href || "");
+    return match && !UNSAFE_SCHEMES.includes(match[1].toLowerCase()) ? match[2] : null;
+  }
   function validateRelative(href) {
     return /^\/[^\/].*$/i.test(href);
   }
@@ -47525,13 +47535,14 @@
         }],
         toDOM(node) {
           let { href, title } = node.attrs;
+          href = extensionTargetUrl(href) || href;
           return ["a", { href, title }, 0];
         },
         parseMarkdown: {
           mark: "link",
           getAttrs: function(tok) {
             let { url, guid } = filterFileUrl(tok.attrGet("href"), "view");
-            if (!validateHref(url, { relative: true })) {
+            if (!validateHref(url, { relative: true }) && !isExtensionHref(url)) {
               url = "#";
             }
             return {
@@ -47674,7 +47685,7 @@
       this.dom.addEventListener("click", (e2) => editNode(this.dom, context));
     }
     createDom(mark) {
-      this.dom = $(buildLink(mark.attrs.href, {
+      this.dom = $(buildLink(extensionTargetUrl(mark.attrs.href) || mark.attrs.href, {
         "data-file-guid": mark.attrs.fileGuid,
         target: mark.attrs.target || "_blank"
       }, null, { relative: true }))[0];
@@ -47736,6 +47747,7 @@
       md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
         const hrefIndex = tokens[idx].attrIndex("href");
         let { url, guid } = filterFileUrl(tokens[idx].attrs[hrefIndex][1], "view");
+        url = extensionTargetUrl(url) || url;
         tokens[idx].attrs[hrefIndex][1] = url;
         if (guid) {
           tokens[idx].attrPush(["data-file-guid", guid]);
@@ -50677,6 +50689,7 @@
       link: {
         attrs: {
           href: {},
+          title: { default: null },
           fileGuid: { default: null }
         },
         inclusive: false,
@@ -50689,23 +50702,26 @@
             }
             return {
               href,
+              title: dom.getAttribute("title"),
               fileGuid: dom.getAttribute("data-file-guid")
             };
           }
         }],
         toDOM(node) {
-          let { href } = node.attrs;
-          return ["a", { href }, 0];
+          let { href, title } = node.attrs;
+          href = extensionTargetUrl(href) || href;
+          return ["a", { href, title }, 0];
         },
         parseMarkdown: {
           mark: "link",
           getAttrs: function(tok) {
             let { url, guid } = filterFileUrl(tok.attrGet("href"), "view");
-            if (!validateHref(url, { relative: true })) {
+            if (!validateHref(url, { relative: true }) && !isExtensionHref(url)) {
               url = "#";
             }
             return {
               href: url,
+              title: tok.attrGet("title") || null,
               fileGuid: guid
             };
           }
@@ -50714,7 +50730,7 @@
           open: "[",
           close: function close2(state2, mark) {
             let href = mark.attrs.fileGuid ? "file-guid:" + mark.attrs.fileGuid : mark.attrs.href;
-            return "](" + state2.esc(href) + ")";
+            return "](" + state2.esc(href) + (mark.attrs.title ? " " + state2.quote(mark.attrs.title) : "") + ")";
           }
         }
       }

@@ -117,6 +117,18 @@ class RichTextLinkExtensionTest extends HumHubDbTestCase
         static::assertEquals('150x150', $matches[0]->getAddition());
     }
 
+    public function testExtensionTargetUrl()
+    {
+        static::assertEquals('https://example.com/a?b=c', RichTextLinkExtension::getExtensionTargetUrl('my-extension:https://example.com/a?b=c'));
+        static::assertEquals('http://example.com', RichTextLinkExtension::getExtensionTargetUrl('my-extension:http://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('my-extension:some-id'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('https://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('javascript:https://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('mailto:https://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(''));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(null));
+    }
+
     public function testBuildSimpleLinkExtensionString()
     {
         $result = MentioningExtension::buildExtensionLink('Text', 'extensionId', 'title');
