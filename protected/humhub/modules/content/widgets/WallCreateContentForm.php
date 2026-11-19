@@ -111,9 +111,12 @@ abstract class WallCreateContentForm extends Widget
      * [See guide section](guide:dev-module-stream.md#CreateContentForm)
      *
      * @param ContentActiveRecord $record
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @param array|null $fileList GUIDs of the files to attach, default are all submitted with `fileList`
      * @return array json
+     * @since 1.20 the `$fileList` parameter
      */
-    public static function create(ContentActiveRecord $record, ?ContentContainerActiveRecord $contentContainer = null)
+    public static function create(ContentActiveRecord $record, ?ContentContainerActiveRecord $contentContainer = null, ?array $fileList = null)
     {
         Yii::$app->response->format = 'json';
 
@@ -148,7 +151,7 @@ abstract class WallCreateContentForm extends Widget
                 Topic::attach($record->content, $topics);
             }
 
-            $record->fileManager->attach(Yii::$app->request->post('fileList'));
+            $record->fileManager->attach($fileList ?? Yii::$app->request->post('fileList'));
             return StreamEntryResponse::getAsArray($record->content);
         }
 

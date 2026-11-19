@@ -84,7 +84,10 @@ class PostController extends ContentContainerController
             $post->scenario = Post::SCENARIO_HAS_FILES;
         }
 
-        return Post::getDb()->transaction(fn($db) => WallCreateContentForm::create($post, $this->contentContainer));
+        // Files hidden in the stream (uploaded by the rich text editor) are attached only when the message references them
+        $fileList = FileHelper::filterStreamFiles(Yii::$app->request->post('fileList'));
+
+        return Post::getDb()->transaction(fn($db) => WallCreateContentForm::create($post, $this->contentContainer, $fileList));
     }
 
     public function actionEdit($id)

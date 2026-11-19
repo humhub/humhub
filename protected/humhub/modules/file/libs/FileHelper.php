@@ -22,6 +22,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\helpers\Inflector;
 use yii\helpers\Url;
 
@@ -262,9 +263,6 @@ class FileHelper extends \yii\helpers\FileHelper
     }
 
     /**
-     * Checks in the database if the given file GUIDs contain at least one file shown in the stream
-     * which was created by the given user. This does not check the file system.
-     *
      * Files uploaded by the rich text editor are hidden in the stream: they are attached to a record only when
      * they are referenced in the text. So they must not allow to save a record with an empty message.
      *
@@ -275,8 +273,29 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function existsStreamFile(array|string|null $fileGuids, ?int $userId = null): bool
     {
+        return static::findStreamFiles($fileGuids, $userId)?->exists() ?? false;
+    }
+
+    /**
+     * Returns the GUIDs of the given files, which are shown in the stream, and drops the ones hidden there.
+     *
+     * Files uploaded by the rich text editor are hidden: they are attached to a record only while the text
+     * references them, so they must not be attached just because they are submitted with `fileList`.
+     *
+     * @param array|string|null $fileGuids GUIDs as array or comma separated string, as submitted with `fileList`
+     * @param int|null $userId ID of the user who created the files, default is the current user
+     * @return string[]
+     * @since 1.20
+     */
+    public static function filterStreamFiles(array|string|null $fileGuids, ?int $userId = null): array
+    {
+        return static::findStreamFiles($fileGuids, $userId)?->select('guid')->column() ?? [];
+    }
+
+    private static function findStreamFiles(array|string|null $fileGuids, ?int $userId): ?ActiveQuery
+    {
         if (empty($fileGuids)) {
-            return false;
+            return null;
         }
 
         if (is_string($fileGuids)) {
@@ -286,12 +305,14 @@ class FileHelper extends \yii\helpers\FileHelper
         $fileGuids = array_filter(array_map('trim', array_filter($fileGuids, 'is_string')));
         $userId ??= Yii::$app->user->id;
         if ($fileGuids === [] || $userId === null) {
-            return false;
+            return null;
         }
 
-        return File::find()
-            ->where(['guid' => $fileGuids, 'show_in_stream' => 1, 'created_by' => $userId])
-            ->exists();
+        return File::find()->where([
+            'guid' => $fileGuids,
+            'show_in_stream' => 1,
+            'created_by' => $userId,
+        ]);
     }
 
 }

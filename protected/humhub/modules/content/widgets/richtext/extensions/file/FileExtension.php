@@ -40,6 +40,27 @@ class FileExtension extends RichTextLinkExtension
         $linkBlock->setBlock($linkBlock->getParsedText(), $file->getUrl(), null, $file->id);
     }
 
+    /**
+     * Returns the GUIDs of the files a rich text references
+     *
+     * @param string|null $text rich text
+     * @return string[]
+     * @since 1.20
+     */
+    public static function getFileGuids(?string $text): array
+    {
+        $guids = [];
+        if (!empty($text)) {
+            foreach (static::scanLinkExtension($text, 'file-guid') as $match) {
+                if ($match->getExtensionId()) {
+                    $guids[] = $match->getExtensionId();
+                }
+            }
+        }
+
+        return array_values(array_unique($guids));
+    }
+
     public static function buildFileLink(File $file): string
     {
 
