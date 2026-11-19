@@ -42,8 +42,11 @@ const clipboardPlugin = (context) => {
                 },
                 drop: (view, e) => {
                     // Moving content inside the editor: Chrome may carry a dragged image as a file too,
-                    // which would upload a copy of the image instead of moving it
+                    // which would upload a copy of the image instead of moving it. ProseMirror handles
+                    // the move itself; the event must not reach the form's upload widget either, as it
+                    // would attach that file under the post.
                     if (view.dragging) {
+                        e.stopPropagation();
                         return false;
                     }
 

@@ -49678,6 +49678,7 @@
           },
           drop: (view2, e2) => {
             if (view2.dragging) {
+              e2.stopPropagation();
               return false;
             }
             const files = e2.dataTransfer && e2.dataTransfer.files;

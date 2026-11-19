@@ -72,7 +72,7 @@ describe("Plugin:clipboard, dropped files", () => {
 
         expect(upload).not.toHaveBeenCalled();
         expect(event.defaultPrevented).to.be.false;
-        expect(reachedBody).to.be.true;
+        expect(reachedBody).to.be.false;
     });
 
     it("leaves a drop without files to the editor", () => {
