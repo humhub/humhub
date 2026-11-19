@@ -58,12 +58,18 @@ const createNodeFromFile = function (context, file) {
 };
 
 /**
+ * The upload widget of the upload button rendered next to the editor
+ */
+const getUploadWidget = function(context) {
+    return isHumhub() ? humhub.require('ui.widget.Widget').instance($('#' + context.id + '-file-upload')) : null;
+}
+
+/**
  * Whether the editor is able to upload files: the host uploads itself with the `upload` option, or
  * the upload button of the editor is rendered next to it.
  */
 const canUpload = function(context) {
-    return typeof context.options.upload === 'function'
-        || (!!isHumhub() && !!humhub.require('ui.widget.Widget').instance($('#' + context.id + '-file-upload')));
+    return typeof context.options.upload === 'function' || !!getUploadWidget(context);
 }
 
 const triggerUpload = function(state, view, context, files) {
@@ -75,7 +81,7 @@ const triggerUpload = function(state, view, context, files) {
         return;
     }
 
-    let uploadWidget = humhub.require('ui.widget.Widget').instance($('#'+context.id+'-file-upload'));
+    let uploadWidget = getUploadWidget(context);
 
     if (uploadWidget) {
         uploadWidget.off('uploadStart.richtext').on('uploadStart.richtext', (evt, response) => {

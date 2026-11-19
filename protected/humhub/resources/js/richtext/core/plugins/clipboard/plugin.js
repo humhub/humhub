@@ -41,6 +41,12 @@ const clipboardPlugin = (context) => {
                     }
                 },
                 drop: (view, e) => {
+                    // Moving content inside the editor: Chrome may carry a dragged image as a file too,
+                    // which would upload a copy of the image instead of moving it
+                    if (view.dragging) {
+                        return false;
+                    }
+
                     const files = e.dataTransfer && e.dataTransfer.files;
                     if (!files || !files.length || !canUpload(context)) {
                         return false;

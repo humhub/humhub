@@ -49543,8 +49543,11 @@
     const linkMark = schema2.marks.link.create({ href: file.url, fileGuid: file.guid });
     return schema2.text(file.name, [linkMark]);
   };
+  const getUploadWidget = function(context) {
+    return isHumhub() ? humhub.require("ui.widget.Widget").instance($("#" + context.id + "-file-upload")) : null;
+  };
   const canUpload = function(context) {
-    return typeof context.options.upload === "function" || !!isHumhub() && !!humhub.require("ui.widget.Widget").instance($("#" + context.id + "-file-upload"));
+    return typeof context.options.upload === "function" || !!getUploadWidget(context);
   };
   const triggerUpload = function(state2, view2, context, files) {
     let id2 = {};
@@ -49552,7 +49555,7 @@
       uploadThroughOption(context, id2, files);
       return;
     }
-    let uploadWidget = humhub.require("ui.widget.Widget").instance($("#" + context.id + "-file-upload"));
+    let uploadWidget = getUploadWidget(context);
     if (uploadWidget) {
       uploadWidget.off("uploadStart.richtext").on("uploadStart.richtext", (evt, response) => {
         loaderStart(context, id2, true);
@@ -49674,6 +49677,9 @@
             }
           },
           drop: (view2, e2) => {
+            if (view2.dragging) {
+              return false;
+            }
             const files = e2.dataTransfer && e2.dataTransfer.files;
             if (!files || !files.length || !canUpload(context)) {
               return false;

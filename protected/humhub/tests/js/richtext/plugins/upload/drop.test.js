@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 
+import {Slice} from 'prosemirror-model';
+
 import {initEditor, serialize} from '../../testEditor.js';
 
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
@@ -59,6 +61,18 @@ describe("Plugin:clipboard, dropped files", () => {
 
         await flush();
         expect(serialize()).to.equal('Te[b.pdf](file-guid:g2)xt');
+    });
+
+    it("leaves moving of the editor's own content to the editor, even when the browser carries it as a file", () => {
+        const upload = vi.fn();
+        const editor = initEditor({upload});
+        editor.view.dragging = {slice: Slice.empty, move: true};
+
+        const {event, reachedBody} = dispatchDrop(editor, [file()]);
+
+        expect(upload).not.toHaveBeenCalled();
+        expect(event.defaultPrevented).to.be.false;
+        expect(reachedBody).to.be.true;
     });
 
     it("leaves a drop without files to the editor", () => {
