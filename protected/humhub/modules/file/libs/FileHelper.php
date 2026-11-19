@@ -261,4 +261,37 @@ class FileHelper extends \yii\helpers\FileHelper
         return tempnam($tempDir, 'tmf');
     }
 
+    /**
+     * Checks in the database if the given file GUIDs contain at least one file shown in the stream
+     * which was created by the given user. This does not check the file system.
+     *
+     * Files uploaded by the rich text editor are hidden in the stream: they are attached to a record only when
+     * they are referenced in the text. So they must not allow to save a record with an empty message.
+     *
+     * @param array|string|null $fileGuids GUIDs as array or comma separated string, as submitted with `fileList`
+     * @param int|null $userId ID of the user who created the files, default is the current user
+     * @return bool
+     * @since 1.19.5
+     */
+    public static function existsStreamFile(array|string|null $fileGuids, ?int $userId = null): bool
+    {
+        if (empty($fileGuids)) {
+            return false;
+        }
+
+        if (is_string($fileGuids)) {
+            $fileGuids = explode(',', $fileGuids);
+        }
+
+        $fileGuids = array_filter(array_map('trim', array_filter($fileGuids, 'is_string')));
+        $userId ??= Yii::$app->user->id;
+        if ($fileGuids === [] || $userId === null) {
+            return false;
+        }
+
+        return File::find()
+            ->where(['guid' => $fileGuids, 'show_in_stream' => 1, 'created_by' => $userId])
+            ->exists();
+    }
+
 }
