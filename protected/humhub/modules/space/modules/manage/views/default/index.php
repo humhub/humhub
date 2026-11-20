@@ -26,7 +26,7 @@ use humhub\widgets\form\ActiveForm;
 
     <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
     <?= $form->field($model, 'description')->textInput(['maxlength' => 100]); ?>
-    <?= $form->field($model, 'about')->widget(RichTextField::class); ?>
+    <?= $form->field($model, 'about')->widget(RichTextField::class, ['contextId' => 'space.about']); ?>
     <?= $form->field($model, 'tagsField')->widget(ContainerTagPicker::class, ['minInput' => 2]); ?>
     <?php if (Yii::$app->getModule('user')->allowBlockUsers()) : ?>
         <?= $form->field($model, 'blockedUsersField')->widget(UserPickerField::class, ['minInput' => 2]); ?>

@@ -54,6 +54,19 @@ use yii\web\AssetBundle as BaseAssetBundle;
 class AssetBundle extends BaseAssetBundle
 {
     /**
+     * Called by the view once the bundle, with its dependencies, is registered in it for the first time, again after
+     * the view cleared its bundles (e.g. `View::clear()` after `renderAjaxPartial()`).
+     *
+     * A bundle can override it to register further bundles, depending on it, that other modules add by an event.
+     *
+     * @param View $view the view the bundle is registered in
+     * @since 1.20
+     */
+    public function afterRegister(View $view): void
+    {
+    }
+
+    /**
      * Default publish options for all bundles publishing the whole `@humhub/resources`
      * tree. The AssetManager keys the published copy by source path, so every bundle
      * sharing this sourcePath must publish with identical options — whichever bundle

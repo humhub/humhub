@@ -137,7 +137,7 @@
     }
   };
   const _hoisted_1$y = { class: "form-check" };
-  const _hoisted_2$t = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_2$u = ["id", "name", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
   const _hoisted_3$q = ["for"];
   const _hoisted_4$m = ["id"];
   const _hoisted_5$i = ["id"];
@@ -161,7 +161,7 @@
             "aria-invalid": _ctx.hasError ? "true" : null,
             "aria-describedby": _ctx.describedBy,
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
-          }, null, 10, _hoisted_2$t), [
+          }, null, 10, _hoisted_2$u), [
             [vue.vModelCheckbox, $options.internalValue]
           ]),
           _ctx.label ? (vue.openBlock(), vue.createElementBlock("label", {
@@ -439,7 +439,7 @@
     ref: "root",
     class: "input-group color-input"
   };
-  const _hoisted_2$s = ["value", "disabled", "aria-label", "title"];
+  const _hoisted_2$t = ["value", "disabled", "aria-label", "title"];
   const _hoisted_3$p = ["id", "name", "value", "placeholder", "disabled", "aria-label", "aria-invalid", "aria-describedby"];
   function _sfc_render$A(_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createElementBlock(
@@ -456,7 +456,7 @@
           title: $options.swatchLabel,
           onInput: _cache[0] || (_cache[0] = (...args) => $options.onPick && $options.onPick(...args)),
           onChange: _cache[1] || (_cache[1] = (...args) => $options.onCommit && $options.onCommit(...args))
-        }, null, 40, _hoisted_2$s),
+        }, null, 40, _hoisted_2$t),
         vue.createElementVNode("input", {
           ref: "input",
           id: $options.textId,
@@ -503,7 +503,7 @@
     }
   };
   const _hoisted_1$w = ["for"];
-  const _hoisted_2$r = ["id"];
+  const _hoisted_2$s = ["id"];
   const _hoisted_3$o = ["id"];
   function _sfc_render$z(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ColorInput = vue.resolveComponent("ColorInput");
@@ -535,7 +535,7 @@
           key: 1,
           id: _ctx.hintId,
           class: "form-text text-muted"
-        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_2$r)) : vue.createCommentVNode("v-if", true),
+        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_2$s)) : vue.createCommentVNode("v-if", true),
         _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 2,
           id: _ctx.errorId,
@@ -733,7 +733,7 @@
     }
   };
   const _hoisted_1$v = { class: "nav-item dropdown" };
-  const _hoisted_2$q = ["aria-label", "title"];
+  const _hoisted_2$r = ["aria-label", "title"];
   const _hoisted_3$n = { key: 0 };
   const _hoisted_4$l = { class: "dropdown-item disabled d-flex align-items-center gap-2" };
   const _hoisted_5$h = { role: "status" };
@@ -766,7 +766,7 @@
             title: $props.toggleTitle
           }, [
             vue.renderSlot(_ctx.$slots, "toggle")
-          ], 10, _hoisted_2$q),
+          ], 10, _hoisted_2$r),
           vue.createElementVNode(
             "ul",
             {
@@ -919,7 +919,7 @@
     }
   };
   const _hoisted_1$u = ["href", "aria-label", "title", "data-action-id", "onClick"];
-  const _hoisted_2$p = ["href", "aria-label", "title", "data-action-id"];
+  const _hoisted_2$q = ["href", "aria-label", "title", "data-action-id"];
   function _sfc_render$x(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_DropdownMenu = vue.resolveComponent("DropdownMenu");
     return vue.openBlock(), vue.createElementBlock(
@@ -976,7 +976,7 @@
             2
             /* CLASS */
           )
-        ], 16, _hoisted_2$p)) : vue.createCommentVNode("v-if", true),
+        ], 16, _hoisted_2$q)) : vue.createCommentVNode("v-if", true),
         $props.menu.length ? (vue.openBlock(), vue.createBlock(_component_DropdownMenu, {
           key: 1,
           "menu-id": $data.menuId,
@@ -1036,7 +1036,7 @@
     key: 0,
     class: "card-header"
   };
-  const _hoisted_2$o = {
+  const _hoisted_2$p = {
     key: 0,
     class: "card-heading"
   };
@@ -1057,7 +1057,7 @@
     }, {
       default: vue.withCtx(() => [
         $options.hasHeader() ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_1$t, [
-          $props.title ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$o, [
+          $props.title ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$p, [
             (vue.openBlock(), vue.createBlock(vue.resolveDynamicComponent($props.titleTag), {
               id: $data.titleId,
               class: "card-title"
@@ -1616,7 +1616,7 @@
     }
   };
   const _hoisted_1$s = { class: "picker-chip-label" };
-  const _hoisted_2$n = ["disabled", "aria-label", "title", "onClick"];
+  const _hoisted_2$o = ["disabled", "aria-label", "title", "onClick"];
   const _hoisted_3$l = ["id", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-label", "aria-busy", "placeholder", "value", "disabled"];
   const _hoisted_4$j = {
     key: 0,
@@ -1694,7 +1694,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_2$n)
+                  ])], 8, _hoisted_2$o)
                 ]);
               }),
               128
@@ -2045,7 +2045,7 @@
     }
   };
   const _hoisted_1$r = ["id", "aria-expanded", "aria-controls", "aria-label", "aria-busy", "disabled"];
-  const _hoisted_2$m = { class: "select-menu-value" };
+  const _hoisted_2$n = { class: "select-menu-value" };
   const _hoisted_3$k = ["aria-label"];
   const _hoisted_4$i = {
     key: 1,
@@ -2084,7 +2084,7 @@
         }, [
           vue.createElementVNode(
             "span",
-            _hoisted_2$m,
+            _hoisted_2$n,
             vue.toDisplayString($options.displayLabel),
             1
             /* TEXT */
@@ -2198,7 +2198,7 @@
     key: 0,
     class: "search-field"
   };
-  const _hoisted_2$l = ["id", "value", "placeholder", "aria-label"];
+  const _hoisted_2$m = ["id", "value", "placeholder", "aria-label"];
   const _hoisted_3$j = ["aria-label"];
   const _hoisted_4$h = {
     key: 0,
@@ -2235,7 +2235,7 @@
         placeholder: $props.filter.placeholder || $props.filter.label || "",
         "aria-label": $props.filter.label || $props.filter.placeholder || null,
         onInput: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("update:modelValue", $event.target.value))
-      }, null, 40, _hoisted_2$l)
+      }, null, 40, _hoisted_2$m)
     ])) : $props.filter.type === "select" ? (vue.openBlock(), vue.createBlock(_component_FilterSelect, {
       key: 1,
       id: $props.inputId,
@@ -2777,7 +2777,7 @@
     }
   };
   const _hoisted_1$p = { class: "filter-bar" };
-  const _hoisted_2$k = ["id"];
+  const _hoisted_2$l = ["id"];
   const _hoisted_3$i = ["data-filter-bar-keep"];
   const _hoisted_4$g = ["aria-expanded", "aria-controls", "aria-label", "title"];
   const _hoisted_5$c = { class: "filter-bar-toggle-label" };
@@ -2978,7 +2978,7 @@
             /* KEYED_FRAGMENT */
           ))
         ], 40, _hoisted_9$7)) : vue.createCommentVNode("v-if", true)
-      ], 42, _hoisted_2$k)
+      ], 42, _hoisted_2$l)
     ]);
   }
   const C11 = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["render", _sfc_render$s]]);
@@ -3004,7 +3004,7 @@
     key: 0,
     class: "data-table-main"
   };
-  const _hoisted_2$j = ["src"];
+  const _hoisted_2$k = ["src"];
   const _hoisted_3$h = { class: "data-table-main-text" };
   const _hoisted_4$f = ["href"];
   const _hoisted_5$b = {
@@ -3030,7 +3030,7 @@
         class: "data-table-main-image",
         alt: "",
         "aria-hidden": "true"
-      }, null, 8, _hoisted_2$j)) : $props.cell.icon ? (vue.openBlock(), vue.createElementBlock(
+      }, null, 8, _hoisted_2$k)) : $props.cell.icon ? (vue.openBlock(), vue.createElementBlock(
         "span",
         {
           key: 1,
@@ -3234,7 +3234,7 @@
     }
   };
   const _hoisted_1$n = ["aria-labelledby"];
-  const _hoisted_2$i = { class: "modal-content" };
+  const _hoisted_2$j = { class: "modal-content" };
   const _hoisted_3$g = { class: "modal-header" };
   const _hoisted_4$e = ["id"];
   const _hoisted_5$a = { class: "modal-body" };
@@ -3262,7 +3262,7 @@
             class: vue.normalizeClass(["modal-dialog", [$options.sizeClass, $props.dialogClass]])
           },
           [
-            vue.createElementVNode("div", _hoisted_2$i, [
+            vue.createElementVNode("div", _hoisted_2$j, [
               vue.createElementVNode("div", _hoisted_3$g, [
                 vue.renderSlot(_ctx.$slots, "header", { titleId: $data.titleId }, () => [
                   vue.createElementVNode("h5", {
@@ -4050,7 +4050,7 @@
     }
   };
   const _hoisted_1$m = ["id", "aria-labelledby"];
-  const _hoisted_2$h = {
+  const _hoisted_2$i = {
     key: 0,
     class: "card-header"
   };
@@ -4184,7 +4184,7 @@
       class: vue.normalizeClass(["content-card data-table", $props.embedded ? "data-table-embedded" : "card"]),
       "aria-labelledby": $props.title ? $options.titleId : null
     }, [
-      $props.title || $props.backUrl || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser || $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$h, [
+      $props.title || $props.backUrl || $props.headerActions.length || $props.headerMenu.length || $options.hasChooser || $options.hasBulk ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$i, [
         $props.backUrl ? (vue.openBlock(), vue.createElementBlock("a", {
           key: 0,
           href: $props.backUrl,
@@ -5117,7 +5117,7 @@
     }
   };
   const _hoisted_1$k = ["aria-busy"];
-  const _hoisted_2$g = ["data-id"];
+  const _hoisted_2$h = ["data-id"];
   const _hoisted_3$e = {
     key: 1,
     class: "entity-grid-message entity-grid-message-error"
@@ -5174,7 +5174,7 @@
                   item,
                   index: $options.staggerIndex(index)
                 })
-              ], 14, _hoisted_2$g);
+              ], 14, _hoisted_2$h);
             }),
             128
             /* KEYED_FRAGMENT */
@@ -5329,7 +5329,7 @@
     }
   };
   const _hoisted_1$j = ["aria-labelledby"];
-  const _hoisted_2$f = {
+  const _hoisted_2$g = {
     key: 0,
     class: "page-header-bar"
   };
@@ -5344,7 +5344,7 @@
       class: "page-header",
       "aria-labelledby": $props.title ? $data.titleId : null
     }, [
-      $props.title || $props.actions.length || $props.menu.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$f, [
+      $props.title || $props.actions.length || $props.menu.length || _ctx.$slots.actions ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$g, [
         $props.backUrl ? (vue.openBlock(), vue.createElementBlock("a", {
           key: 0,
           href: $props.backUrl,
@@ -5606,7 +5606,7 @@
     }
   };
   const _hoisted_1$i = { class: "entity-browser" };
-  const _hoisted_2$e = {
+  const _hoisted_2$f = {
     key: 0,
     class: "entity-browser-notice"
   };
@@ -5658,7 +5658,7 @@
           key: "0"
         } : void 0
       ]), 1032, ["title", "title-tag", "actions"]),
-      _ctx.$slots.notice ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$e, [
+      _ctx.$slots.notice ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_2$f, [
         vue.renderSlot(_ctx.$slots, "notice", {
           meta: $data.meta,
           total: $data.total
@@ -5912,7 +5912,7 @@
     }
   };
   const _hoisted_1$g = ["for"];
-  const _hoisted_2$d = ["id", "name", "type", "placeholder", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
+  const _hoisted_2$e = ["id", "name", "type", "placeholder", "disabled", "aria-required", "aria-invalid", "aria-describedby"];
   const _hoisted_3$c = ["id"];
   const _hoisted_4$a = ["id"];
   function _sfc_render$i(_ctx, _cache, $props, $setup, $data, $options) {
@@ -5939,7 +5939,7 @@
           "aria-invalid": _ctx.hasError ? "true" : null,
           "aria-describedby": _ctx.describedBy,
           "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $options.internalValue = $event)
-        }, null, 10, _hoisted_2$d), [
+        }, null, 10, _hoisted_2$e), [
           [vue.vModelDynamic, $options.internalValue]
         ]),
         _ctx.hint ? (vue.openBlock(), vue.createElementBlock("div", {
@@ -6036,7 +6036,7 @@
     }
   };
   const _hoisted_1$f = ["id"];
-  const _hoisted_2$c = ["src"];
+  const _hoisted_2$d = ["src"];
   function _sfc_render$h(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_TextField = vue.resolveComponent("TextField");
     const _component_HumHubForm = vue.resolveComponent("HumHubForm");
@@ -6080,7 +6080,7 @@
           src: $props.src,
           alt: "",
           class: "image-alt-text-preview"
-        }, null, 8, _hoisted_2$c)) : vue.createCommentVNode("v-if", true),
+        }, null, 8, _hoisted_2$d)) : vue.createCommentVNode("v-if", true),
         vue.createVNode(_component_HumHubForm, {
           ref: "form",
           "model-name": "ImageAltText",
@@ -6185,7 +6185,7 @@
     }
   };
   const _hoisted_1$e = { class: "path-bar" };
-  const _hoisted_2$b = ["aria-label", "title"];
+  const _hoisted_2$c = ["aria-label", "title"];
   const _hoisted_3$b = ["aria-label"];
   const _hoisted_4$9 = { class: "breadcrumb" };
   const _hoisted_5$7 = ["href", "aria-label", "title", "aria-current"];
@@ -6212,7 +6212,7 @@
           -1
           /* CACHED */
         )
-      ])], 8, _hoisted_2$b)) : vue.createCommentVNode("v-if", true),
+      ])], 8, _hoisted_2$c)) : vue.createCommentVNode("v-if", true),
       vue.createElementVNode("nav", {
         class: "path-bar-nav",
         "aria-label": $options.navLabel
@@ -7389,7 +7389,7 @@
     }
   };
   const _hoisted_1$c = ["data-value", "title"];
-  const _hoisted_2$a = { class: "picker-chip-label" };
+  const _hoisted_2$b = { class: "picker-chip-label" };
   const _hoisted_3$a = ["aria-label", "title", "onClick"];
   const _hoisted_4$8 = ["id", "aria-expanded", "aria-controls", "aria-activedescendant", "aria-label", "aria-describedby", "aria-busy", "aria-invalid", "aria-required", "placeholder", "value", "readonly", "disabled", "autofocus", "maxlength"];
   const _hoisted_5$6 = {
@@ -7474,7 +7474,7 @@
                   }, null, 8, ["image"])) : vue.createCommentVNode("v-if", true),
                   vue.createElementVNode(
                     "span",
-                    _hoisted_2$a,
+                    _hoisted_2$b,
                     vue.toDisplayString(item.text),
                     1
                     /* TEXT */
@@ -7777,7 +7777,7 @@
     }
   };
   const _hoisted_1$b = ["for"];
-  const _hoisted_2$9 = ["id"];
+  const _hoisted_2$a = ["id"];
   const _hoisted_3$9 = ["id"];
   function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PickerInput = vue.resolveComponent("PickerInput");
@@ -7808,7 +7808,7 @@
           key: 1,
           id: _ctx.hintId,
           class: "form-text text-muted"
-        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_2$9)) : vue.createCommentVNode("v-if", true),
+        }, vue.toDisplayString(_ctx.hint), 9, _hoisted_2$a)) : vue.createCommentVNode("v-if", true),
         _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 2,
           id: _ctx.errorId,
@@ -8216,7 +8216,7 @@
     }
   };
   const _hoisted_1$a = ["title"];
-  const _hoisted_2$8 = { class: "picker-chip-label" };
+  const _hoisted_2$9 = { class: "picker-chip-label" };
   const _hoisted_3$8 = ["aria-label", "title", "onClick"];
   const _hoisted_4$7 = ["title", "aria-label"];
   const _hoisted_5$5 = { class: "picker-chip-label" };
@@ -8295,7 +8295,7 @@
                       ),
                       vue.createElementVNode(
                         "span",
-                        _hoisted_2$8,
+                        _hoisted_2$9,
                         vue.toDisplayString(chip.label),
                         1
                         /* TEXT */
@@ -8648,6 +8648,9 @@
       include: { type: Array, default: () => [] },
       exclude: { type: Array, default: () => [] },
       pluginOptions: { type: Object, default: () => ({}) },
+      // Names where the text lives (`post`, `comment`, `<module-id>.<field>`), plugins registered
+      // with `contexts` are only active in the listed ones
+      contextId: { type: String, default: null },
       mentioningUrl: { type: String, default: null },
       layout: { type: String, default: "block" },
       autofocus: { type: Boolean, default: false },
@@ -8769,8 +8772,8 @@
       }
     }
   };
-  const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-cookie-key"];
-  const _hoisted_2$7 = ["accept"];
+  const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-cookie-key"];
+  const _hoisted_2$8 = ["accept"];
   const _hoisted_3$7 = {
     key: 1,
     ref: "handlers",
@@ -8799,6 +8802,7 @@
           "data-include": JSON.stringify($props.include),
           "data-exclude": JSON.stringify($options.editorExclude),
           "data-plugin-options": JSON.stringify($props.pluginOptions),
+          "data-context-id": $props.contextId,
           "data-mentioning-url": $props.mentioningUrl,
           "data-placeholder": _ctx.placeholder,
           "data-focus": $props.autofocus ? "true" : null,
@@ -8819,7 +8823,7 @@
           accept: $data.pickerAccept,
           onChange: _cache[0] || (_cache[0] = (...args) => $options.onPicked && $options.onPicked(...args)),
           onCancel: _cache[1] || (_cache[1] = (...args) => $options.onPicked && $options.onPicked(...args))
-        }, null, 40, _hoisted_2$7)) : vue.createCommentVNode("v-if", true),
+        }, null, 40, _hoisted_2$8)) : vue.createCommentVNode("v-if", true),
         vue.createCommentVNode(" The file handlers the editor's menu offers (its `fileHandlers` option) "),
         $props.handlers.length ? (vue.openBlock(), vue.createElementBlock(
           "ul",
@@ -8887,7 +8891,9 @@
   };
   const _sfc_main$8 = {
     props: {
-      message: { type: String, default: null }
+      message: { type: String, default: null },
+      // Names where the text lives, as `RichText::output()`'s `contextId`
+      contextId: { type: String, default: null }
     },
     data() {
       return {
@@ -8920,16 +8926,11 @@
     }
   };
   const _hoisted_1$7 = { key: 0 };
+  const _hoisted_2$7 = ["data-context-id"];
   function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
     return $props.message && $data.ready ? vue.withDirectives((vue.openBlock(), vue.createElementBlock("div", _hoisted_1$7, [
-      (vue.openBlock(), vue.createElementBlock(
-        "div",
-        vue.mergeProps({ key: $props.message }, $data.ENVELOPE_ATTRS),
-        vue.toDisplayString($props.message),
-        17
-        /* TEXT, FULL_PROPS */
-      ))
+      (vue.openBlock(), vue.createElementBlock("div", vue.mergeProps({ key: $props.message }, $data.ENVELOPE_ATTRS, { "data-context-id": $props.contextId }), vue.toDisplayString($props.message), 17, _hoisted_2$7))
     ])), [
       [_directive_additions]
     ]) : vue.createCommentVNode("v-if", true);

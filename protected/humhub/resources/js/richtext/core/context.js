@@ -39,6 +39,7 @@ export default class Context {
 
         this.options = options;
         this.options.preset = options.preset || 'full';
+        this.options.contextId = (typeof options.contextId === 'string' && options.contextId) ? options.contextId : null;
 
         if (Array.isArray(this.options.exclude) && !this.options.exclude.length) {
             this.options.exclude = undefined;
@@ -66,6 +67,17 @@ export default class Context {
 
     clear() {
         this.event.trigger('clear');
+    }
+
+    /**
+     * The id naming where the text of this editor/renderer lives (e.g. `post`, `comment`, `wiki.page`),
+     * set by whoever renders the field or the output, or `null` if none was given.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     *
+     * @returns {string|null}
+     */
+    getContextId() {
+        return this.options.contextId;
     }
 
     getGlobalOption(id, option, defaultValue) {

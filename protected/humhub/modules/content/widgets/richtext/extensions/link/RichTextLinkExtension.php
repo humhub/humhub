@@ -10,6 +10,14 @@ use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 class RichTextLinkExtension extends RichTextContentExtension
 {
     /**
+     * The schemes of ordinary links and those a browser would execute or open as a document, a link with one of them
+     * is never a link of an extension. Keep in sync with `NON_EXTENSION_SCHEMES` of `linkUtil.js`.
+     *
+     * @since 1.20
+     */
+    public const NON_EXTENSION_SCHEMES = ['http', 'https', 'ftp', 'ftps', 'mailto', 'javascript', 'data', 'vbscript', 'file', 'blob'];
+
+    /**
      * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.
      *
@@ -65,6 +73,29 @@ class RichTextLinkExtension extends RichTextContentExtension
         }
 
         return false;
+    }
+
+    /**
+     * The url of a link `<extension>:<http(s) url>`, e.g. `https://example.com` of `my-extension:https://example.com`.
+     *
+     * A reader whose rich text has no extension for such a link (e.g. its module is disabled) gets a link to this url
+     * instead of a dead link.
+     *
+     * @param string|null $url the link url
+     * @return string|null the http(s) url the extension link leads to, null if the url is not an extension link of this form
+     * @since 1.20
+     */
+    public static function getExtensionTargetUrl(?string $url): ?string
+    {
+        if (!preg_match('/^([a-z][a-z0-9_-]+):(https?:\/\/.+)$/is', (string) $url, $match)) {
+            return null;
+        }
+
+        if (in_array(strtolower($match[1]), self::NON_EXTENSION_SCHEMES, true)) {
+            return null;
+        }
+
+        return $match[2];
     }
 
     /**

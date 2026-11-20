@@ -113,6 +113,13 @@ class AbstractRichTextEditor extends JsInputWidget
     public $pluginOptions = [];
 
     /**
+     * @var string|null id naming where the text lives, e.g. `post`, `comment` or `<module-id>.<field>`.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     * @since 1.20
+     */
+    public $contextId = null;
+
+    /**
      * Options for field of active form
      * @var array
      */
@@ -256,6 +263,7 @@ class AbstractRichTextEditor extends JsInputWidget
             'include' => $this->include,
             'pluginOptions' => $this->pluginOptions,
             'preset' => $this->preset,
+            'contextId' => $this->contextId,
         ];
 
         $config = ArrayHelper::merge(static::$renderer, $params);
@@ -280,6 +288,10 @@ class AbstractRichTextEditor extends JsInputWidget
 
         if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
+        }
+
+        if (!empty($this->contextId)) {
+            $result['context-id'] = $this->contextId;
         }
 
         if (!empty($this->placeholder)) {

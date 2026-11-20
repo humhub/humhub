@@ -148,6 +148,14 @@ abstract class AbstractRichText extends JsWidget
     public $pluginOptions = [];
 
     /**
+     * @var string|null id naming where the text lives, e.g. `post`, `comment` or `<module-id>.<field>`.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     * @see ProsemirrorRichText
+     * @since 1.20
+     */
+    public $contextId = null;
+
+    /**
      * @var string [[AbstractRichTextEditor]] subclass, used for rendering the editor widget.
      * @see editorWidget
      */
@@ -199,6 +207,10 @@ abstract class AbstractRichText extends JsWidget
 
         if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
+        }
+
+        if (!empty($this->contextId)) {
+            $result['context-id'] = $this->contextId;
         }
 
         return $result;

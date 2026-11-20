@@ -35,6 +35,12 @@ The scheme in front of the colon is the **key** of the extension that owns the l
 the platform re-resolves them on output (see below), the snapshot keeps the text readable and
 gives a plain markdown renderer something to show.
 
+A link of an extension that is not available (a module that is disabled, say) is not lost: the editor
+keeps the link as it is (title included) when the text is edited, and a reader gets a link to its
+URL where the value after the scheme is an `http(s)` URL (`[Title](my-extension:https://example.com)`
+leads to `https://example.com`; `RichTextLinkExtension::getExtensionTargetUrl()`, `extensionTargetUrl()`
+in `linkUtil.js`). Schemes a browser would execute (`javascript:`, `data:`, …) are never kept.
+
 Texts written before HumHub 1.20 store emojis as shortcodes (`:smile:`), which
 `RichTextEmojiExtension` converts to Unicode on output, conversion and save. Texts written before
 HumHub 1.3 use an older syntax (`;smile;` emoji, `@-<guid>` mentions, bare URLs for embeds). `RichTextCompatibilityExtension` rewrites them on the fly whenever a text
@@ -282,6 +288,48 @@ humhub.module('mymodule.richtext', function (module, require, $) {
 
 `registerPlugin(plugin)` without a preset makes the plugin known so a preset callback or a
 widget's `include` can pick it up.
+
+### Contexts
+
+A rich text can name where it lives with a **context id**: `contextId` on `RichTextField` and on
+`RichText::output()` (`['contextId' => 'comment']`), the `context-id` prop of the Vue `RichTextField`
+and `RichTextOutput`, and `context.getContextId()` for a plugin. The core uses `post`, `comment` and
+`space.about`; a module picks `<module-id>` or `<module-id>.<field>` (e.g. `wiki.page`) and keeps to its
+own namespace. A text without a context id has none (`null`).
+
+A plugin registered with `contexts` is only active in these contexts: in the editor, the renderer and
+the schema, also when a widget includes it explicitly. Without `contexts` it is active everywhere. A
+plugin with `contexts` is never active in a text without context id.
+
+```js
+// Only for comments and posts
+richtext.plugin.registerPlugin(myPlugin, { preset: 'normal', contexts: ['post', 'comment'] });
+```
+
+### Loading the assets of a plugin
+
+Add the module's asset bundle to `ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS`, e.g. in
+the `events` of `config.php`. The core registers it whenever the editor bundle is registered in a
+view (it is part of `CoreBundleAsset`): on full pages and in the Ajax responses that
+register it, not only where the module's own widgets are. After a view cleared its bundles (e.g.
+`View::clear()` after `renderAjaxPartial()`) the event fires again with the next registration. It is the
+`AssetBundle::afterRegister(View $view)` hook of the bundle, which the view calls when a bundle is
+registered in it.
+
+The theme registers `CoreBundleAsset` during the application bootstrap (`ThemeLoader`), which is after the
+modules registered their events and before any controller runs. So on a web request the event fires early,
+for any request that registers the theme, not only for those that render a rich text: a handler only adds
+class names, it must not rely on the user, the controller or other request state.
+
+```php
+[
+    'class' => ProseMirrorRichTextAsset::class,
+    'event' => ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS,
+    'callback' => static fn(RichTextPluginAssetsEvent $event) => $event->assets[] = MyPluginAsset::class,
+],
+```
+
+The bundle has to depend on `ProseMirrorRichTextAsset`, see above.
 
 ## Extension and plugin side by side
 

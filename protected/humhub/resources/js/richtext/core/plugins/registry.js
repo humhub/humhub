@@ -2,6 +2,7 @@ export class PluginRegistry {
     constructor() {
         this.plugins = [];
         this.pluginMap = {};
+        this.pluginContexts = {};
         this.presets = new PresetRegistry(this);
         this.editorPresets = new PresetRegistry(this);
     }
@@ -18,9 +19,22 @@ export class PluginRegistry {
 
         options = (typeof options === 'string') ? {preset: options} : options;
 
+        if (Array.isArray(options.contexts)) {
+            this.pluginContexts[plugin.id] = options.contexts;
+        }
+
         if (options.preset) {
             this.addToPreset(plugin, options.preset, options);
         }
+    }
+
+    /**
+     * Whether a plugin is active in the given context: plugins registered with a `contexts` list
+     * are only active in the contexts of that list, all others everywhere.
+     */
+    isAvailableInContext(plugin, contextId) {
+        const contexts = this.pluginContexts[plugin.id];
+        return !contexts || (!!contextId && contexts.includes(contextId));
     }
 
     registerPreset(id, plugins) {

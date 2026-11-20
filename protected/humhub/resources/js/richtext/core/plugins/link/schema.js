@@ -4,7 +4,7 @@
  * @license https://www.humhub.com/licences
  */
 
-import {validateHref, DEFAULT_LINK_REL} from "../../util/linkUtil";
+import {validateHref, isExtensionHref, extensionTargetUrl, DEFAULT_LINK_REL} from "../../util/linkUtil";
 import {filterFileUrl} from "../../humhub-bridge";
 
 const schema = {
@@ -35,12 +35,18 @@ const schema = {
                         }
                     }
                 }],
-            toDOM(node) { let {href, title} = node.attrs; return ["a", {href, title}, 0] },
+            toDOM(node) {
+                let {href, title} = node.attrs;
+                // The link of an extension that is not available leads to its url, as it does for a reader
+                href = extensionTargetUrl(href) || href;
+                return ["a", {href, title}, 0]
+            },
             parseMarkdown: {
                 mark: "link", getAttrs: function (tok) {
                     let {url, guid} = filterFileUrl(tok.attrGet("href"), 'view');
 
-                    if (!validateHref(url, {relative: true}))  {
+                    // An unknown extension link (`<extension>:<value>`) stays as it is, so editing the text does not lose it
+                    if (!validateHref(url, {relative: true}) && !isExtensionHref(url))  {
                         url = '#';
                     }
 

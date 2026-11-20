@@ -252,10 +252,18 @@ class View extends \yii\web\View
      */
     public function registerAssetBundle($name, $position = null)
     {
+        $isNew = !isset($this->assetBundles[$name]);
+
         $bundle = parent::registerAssetBundle($name, $position);
 
-        if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
-            static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
+        if ($bundle instanceof AssetBundle) {
+            if (!empty($bundle->preload)) {
+                static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
+            }
+
+            if ($isNew) {
+                $bundle->afterRegister($this);
+            }
         }
 
         return $bundle;
