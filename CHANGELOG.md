@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8768: Images and videos open in an accessible media viewer (PhotoSwipe instead of blueimp Gallery) with zoom, video, download and a downscaled display version
 - Enh #8759: Attached WAV, M4A, AAC and FLAC audio plays in the stream, media files without a preview (e.g. Ogg audio or AVI video) stay in the attachment list
 - Enh #8757: A new space gets a colour its white initials are readable on, `mistic100/randomcolor` is deprecated, `behat/gherkin` no longer pinned
 - Enh #8756: The image crop dialog runs on Cropper.js instead of Jcrop and works with the keyboard

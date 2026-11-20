@@ -37,6 +37,12 @@ const image = {
 
             if (srcFilter.guid) {
                 imageToken.attrPush(['data-file-guid', srcFilter.guid]); // add new attribute
+
+                // The media viewer shows the display version of the file, the original stays the download
+                let displayFilter = filterFileUrl('file-guid:' + srcFilter.guid, 'display');
+                if (displayFilter.url !== srcFilter.url && validateHref(displayFilter.url)) {
+                    imageToken.attrPush(['data-ui-gallery-src', displayFilter.url]);
+                }
             }
 
             if (env && env.context && env.context.uuid) {

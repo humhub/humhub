@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2026 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,22 +11,23 @@ namespace humhub\assets;
 use humhub\components\assets\AssetBundle;
 
 /**
- * jQery Blueimp File Upload
+ * The stylesheet of PhotoSwipe, not in a cascade layer: the core's rules for it are in `_vendor.scss`
  *
- * @author luke
+ * @see PhotoSwipeAsset
+ * @since 1.20
  */
-class BlueimpGalleryStyleAsset extends AssetBundle
+class PhotoSwipeStyleAsset extends AssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@npm/blueimp-gallery';
+    public $sourcePath = '@npm/photoswipe/dist';
 
     /**
      * @inheritdoc
      */
     public $css = [
-        'css/blueimp-gallery.min.css',
+        'photoswipe.css',
     ];
 
     /**
@@ -34,8 +35,7 @@ class BlueimpGalleryStyleAsset extends AssetBundle
      */
     public $publishOptions = [
         'only' => [
-            'css/*',
-            'img/*',
+            'photoswipe.css',
         ],
     ];
 }

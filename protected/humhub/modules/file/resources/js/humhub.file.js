@@ -502,6 +502,9 @@ humhub.module('file', function (module, require, $) {
                 url = module.config.url.download
             } else if (mode === 'view') {
                 url = module.config.url.view;
+            } else if (mode === 'display' && module.config.url.display) {
+                // What the media viewer shows of an image (the display version)
+                url = module.config.url.display;
             }
         }
 

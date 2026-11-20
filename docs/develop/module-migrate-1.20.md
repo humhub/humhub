@@ -2,6 +2,28 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **The media viewer replaces blueimp Gallery** (see [Media viewer](ui-js-gallery.md)). Images and videos marked with
+  `data-ui-gallery` open in an accessible dialog built on PhotoSwipe, with zoom, a video player, a caption and a
+  download button. The markup stays: `data-ui-gallery`, `href`/`src` and `type="video/…"` work as before; the
+  `#.jpeg` / `#.mp4` hash blueimp needed is no longer necessary.
+  - New: `data-ui-gallery-src` (what the viewer shows instead of `href`/`src`), `humhub.modules.ui.gallery.open()` and the
+    events `humhub:ui:gallery:opened` / `humhub:ui:gallery:closed`. PhotoSwipe itself is internal: a module doesn't
+    use it, its options or its `.pswp*` classes.
+  - Removed: `humhub\widgets\BlueimpGallery` (and its view), `humhub\assets\BlueimpGalleryAsset`,
+    `humhub\assets\BlueimpGalleryStyleAsset`, the global `blueimp.Gallery`, the `#blueimp-gallery` element and the
+    Composer package `npm-asset/blueimp-gallery`, as well as the unused copies of its files in
+    `protected/humhub/resources` (`js/blueimp-gallery.min.js`, `css/blueimp-gallery.min.css` and its images
+    `img/error.*`, `img/loading.gif`, `img/play-pause.*`, `img/video-play.*`). A module that drives `blueimp.Gallery`
+    itself (e.g. a carousel) switches to `ui.gallery.open()` or `data-ui-gallery`.
+  - New converter `humhub\modules\file\converter\DisplayImage` (variant `display-image`): a JPEG, PNG or WebP image
+    larger than `imageDisplayMaxWidth` × `imageDisplayMaxHeight` (new file module options, 2048 px) is scaled down on
+    the first request of the variant; otherwise the variant URL serves the original. `getUrl()` doesn't convert.
+    `PreviewImage::renderGalleryLink()`, `AttachedFiles` and rich text images of uploaded files point the viewer to it.
+  - The file serializer (`FileSerializer::file()`, also `/api/v2`) has the new key `displayUrl` (`null` for files the
+    display version doesn't apply to), `humhub.modules.file.getFileUrl(guid, 'display')` the URL of a guid.
+  - `humhub.ui.focus.controls()` counts a `video[controls]` and an `audio[controls]` as a control, so a dialog keeps
+    a media player in its Tab cycle.
+
 - **A post no longer attaches files hidden in the stream (`show_in_stream = 0`) submitted with `fileList`.**
   `PostController::actionPost()` and `PostEditForm::save()` attach only files shown in the stream
   (`FileHelper::filterStreamFiles()` is new); files uploaded by the rich text editor belong to the post

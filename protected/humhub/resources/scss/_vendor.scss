@@ -1,7 +1,7 @@
 //
 // Third-party libraries
 // --------------------------------------------------
-// Styles of the core for the CSS of third-party libraries (jQuery UI's date picker, blueimp Gallery, NProgress, the icon
+// Styles of the core for the CSS of third-party libraries (jQuery UI's date picker, PhotoSwipe, NProgress, the icon
 // fonts). The library CSS is not in a cascade layer, so these rules are not either: in a layer they would lose
 // against it whatever their specificity. Imported by \humhub\helpers\ThemeHelper after the layers.
 
@@ -36,8 +36,66 @@ $prev-richtext: false !default;
 }
 
 @if not $prev-media {
-    #blueimp-gallery .slide img {
-        max-height: 80%;
+    // The media viewer (`humhub.ui.gallery`, PhotoSwipe): dark in both colour modes, white controls
+    .pswp {
+        --pswp-bg: var(--bs-black);
+        --pswp-icon-color: var(--bs-white);
+        --pswp-icon-color-secondary: var(--bs-black);
+        --pswp-icon-stroke-color: var(--bs-black);
+        --pswp-error-text-color: var(--bs-white);
+    }
+
+    // The focus ring of the core is drawn for light surfaces: white here, inside the control so the edge of the
+    // screen doesn't cut it
+    .pswp__button:focus-visible,
+    .pswp a:focus-visible {
+        outline: 2px solid var(--bs-white);
+        outline-offset: -4px;
+        box-shadow: none;
+    }
+
+    // Below the image, in the room `paddingFn` keeps free for it
+    .hh-gallery-caption {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 64px;
+        padding: $spacer * 0.5 $spacer;
+        color: var(--bs-white);
+        text-align: center;
+        overflow-wrap: anywhere;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    // A video fills its slide below the top bar, in its own aspect ratio
+    .hh-gallery-video {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px $spacer;
+
+        video {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .hh-gallery-error {
+        padding: $spacer;
+        line-height: $line-height-base;
+        text-align: center;
+
+        a {
+            color: var(--bs-white);
+            text-decoration: underline;
+        }
     }
 }
 

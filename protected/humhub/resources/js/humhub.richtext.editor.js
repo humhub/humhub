@@ -46728,6 +46728,10 @@
         imageToken.attrs[srcIndex][1] = validateHref(srcFilter.url) ? srcFilter.url : "#";
         if (srcFilter.guid) {
           imageToken.attrPush(["data-file-guid", srcFilter.guid]);
+          let displayFilter = filterFileUrl("file-guid:" + srcFilter.guid, "display");
+          if (displayFilter.url !== srcFilter.url && validateHref(displayFilter.url)) {
+            imageToken.attrPush(["data-ui-gallery-src", displayFilter.url]);
+          }
         }
         if (env && env.context && env.context.uuid) {
           imageToken.attrPush(["data-ui-gallery", env.context.uuid]);

@@ -81,6 +81,7 @@ class FileApiCest
                     'mimeType' => 'text/plain',
                     'size' => 12,
                     'previewUrl' => null,
+                    'displayUrl' => null,
                 ],
             ],
         ]);

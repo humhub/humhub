@@ -91,7 +91,7 @@ A later layer wins against an earlier one whatever the specificity of the select
 ```
 
 - Bootstrap and the core share the `core` layer, so the specificity decides between them as before.
-- The CSS of modules and of third-party libraries (jQuery UI, blueimp Gallery, …) is not in a layer, it wins against the core and the theme. The core's rules for these libraries are in `_vendor.scss`, outside of the layers too.
+- The CSS of modules and of third-party libraries (jQuery UI, PhotoSwipe, …) is not in a layer, it wins against the core and the theme. The core's rules for these libraries are in `_vendor.scss`, outside of the layers too.
 - The utilities (`.d-none`, `.mt-2`, …) stay outside of the layers and keep winning (`!important`).
 - For `!important` the order of the layers is reversed: an `!important` of the core wins against an `!important` of the theme or of a module. Override such a declaration in the custom SCSS of the Appearance settings, which is not in a layer.
 - The variables a core partial declares (e.g. `$data-table-gap` in `_data-table.scss`) can still be set in the theme's `variables.scss`, but a theme's `build.scss` can't read them: they are only defined within the `core` layer. The variables of the core's `variables.scss` and of Bootstrap, and the mixins of `_mixins.scss`, are available everywhere.

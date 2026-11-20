@@ -11,7 +11,7 @@
             <div v-for="file in videos" :key="file.guid" :class="columnClass(videos.length, true)">
                 <a
                     :data-ui-gallery="galleryId"
-                    :href="file.url + '#.' + extension(file)"
+                    :href="file.url"
                     :type="videoType(file)"
                     :title="file.fileName"
                     class="d-flex align-items-center justify-content-center h-100 w-100"
@@ -23,7 +23,7 @@
 
         <div v-if="images.length" class="post-files-images d-flex flex-wrap justify-content-center">
             <div v-for="file in images" :key="file.guid" :class="columnClass(images.length)">
-                <a :data-ui-gallery="galleryId" :href="file.url + '#.jpeg'" :title="file.fileName">
+                <a :data-ui-gallery="galleryId" :href="file.url" :data-ui-gallery-src="file.displayUrl || null" :title="file.fileName">
                     <img class="animated fadeIn" :src="file.previewUrl" :alt="file.fileName">
                 </a>
             </div>
@@ -115,7 +115,7 @@
  *
  * @since 1.20
  */
-// The gallery needs the type, otherwise it loads a video as an image
+// The media viewer needs the type, otherwise it shows a video as an image
 const VIDEO_TYPES = {
     webm: 'video/webm',
     mp4: 'video/mp4',

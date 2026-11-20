@@ -150,7 +150,7 @@
     key: 2,
     class: "post-files-images d-flex flex-wrap justify-content-center"
   };
-  const _hoisted_9$1 = ["data-ui-gallery", "href", "title"];
+  const _hoisted_9$1 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title"];
   const _hoisted_10$1 = ["src", "alt"];
   const _hoisted_11$1 = {
     key: 1,
@@ -210,7 +210,7 @@
                   [
                     vue.createElementVNode("a", {
                       "data-ui-gallery": $props.galleryId,
-                      href: file.url + "#." + $options.extension(file),
+                      href: file.url,
                       type: $options.videoType(file),
                       title: file.fileName,
                       class: "d-flex align-items-center justify-content-center h-100 w-100"
@@ -245,7 +245,8 @@
                   [
                     vue.createElementVNode("a", {
                       "data-ui-gallery": $props.galleryId,
-                      href: file.url + "#.jpeg",
+                      href: file.url,
+                      "data-ui-gallery-src": file.displayUrl || null,
                       title: file.fileName
                     }, [
                       vue.createElementVNode("img", {

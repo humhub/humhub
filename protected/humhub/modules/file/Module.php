@@ -102,6 +102,19 @@ class Module extends \humhub\components\Module
     public $imagePreviewMaxWidth = 400;
 
     /**
+     * @since 1.20
+     * @var int The maximum width in px of the display version of an image, which the media viewer shows instead of a
+     * larger original (`DisplayImage`).
+     */
+    public $imageDisplayMaxWidth = 2048;
+
+    /**
+     * @since 1.20
+     * @var int The maximum height in px of the display version of an image (`DisplayImage`).
+     */
+    public $imageDisplayMaxHeight = 2048;
+
+    /**
      * @since 1.10
      * @var int The maximum megapixels(width*height) of processing image files.
      */
