@@ -22,9 +22,14 @@ humhub.module('ui.gallery', function (module, require, $) {
     };
 
     /**
-     * The open viewer (if any), closed on browser back navigation
+     * The open viewer (if any)
      */
     var current = null;
+
+    /**
+     * Whether the open viewer has its own history entry on top, see pushHistory()
+     */
+    var historyPushed = false;
 
     var text = function (key, params) {
         var value = (module.config.text || {})[key] || key;
@@ -121,6 +126,34 @@ humhub.module('ui.gallery', function (module, require, $) {
         } else if (trigger && trigger.isConnected) {
             trigger.focus();
         }
+    };
+
+    var isOwnHistory = function () {
+        var state = window.history.state;
+        return historyPushed && !!state && state.humhubGallery === true;
+    };
+
+    // While the viewer is open, Back (the browser's, a gesture, the Android button of the app) closes it and the page
+    // stays. The entry keeps the page's state, so pjax takes it for the page.
+    var pushHistory = function () {
+        if (isOwnHistory()) {
+            // A viewer replacing another one keeps its entry
+            return;
+        }
+        try {
+            window.history.pushState($.extend({}, window.history.state, {humhubGallery: true}), '', window.location.href);
+            historyPushed = true;
+        } catch (e) {
+            module.log.warn('No history entry for the media viewer', e);
+        }
+    };
+
+    // Closed with its own controls: the entry goes, so Back leaves the page again
+    var popHistory = function () {
+        if (isOwnHistory()) {
+            window.history.back();
+        }
+        historyPushed = false;
     };
 
     var pauseVideos = function (pswp, except) {
@@ -227,7 +260,10 @@ humhub.module('ui.gallery', function (module, require, $) {
             return null;
         }
         if (current) {
-            current.close();
+            // Its destroy leaves the history entry to the new viewer
+            var previous = current;
+            current = null;
+            previous.close();
         }
 
         var $elements = $(elements);
@@ -315,20 +351,24 @@ humhub.module('ui.gallery', function (module, require, $) {
 
         pswp.on('destroy', function () {
             restoreFocus(trigger, pswp.element);
+            // Not when a new viewer has replaced this one
             if (current === pswp) {
                 current = null;
+                popHistory();
             }
             event.trigger('humhub:ui:gallery:closed');
         });
 
         current = pswp;
+        pushHistory();
         pswp.init();
         return pswp;
     };
 
     var init = function () {
-        // Close an open viewer when the user navigates with the browser back/forward buttons
+        // Back closes an open viewer, its history entry is gone then
         $(window).off('popstate.humhub:ui:gallery').on('popstate.humhub:ui:gallery', function () {
+            historyPushed = false;
             if (current) {
                 current.close();
             }

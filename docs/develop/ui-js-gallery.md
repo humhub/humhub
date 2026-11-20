@@ -79,5 +79,7 @@ Events, through `humhub.modules.event`:
 - Every control is a named button (Close, Previous, Next, Zoom, Download). Each slide is labelled with its position,
   and a change of the slide is announced with the caption.
 - A video keeps its keys: ←/→ and Space control the player while the focus is in it, Escape still closes.
+- Back (the browser's, a gesture, the Android button of the app) closes the viewer and the page stays: the open
+  viewer has a history entry of its own, which closing it with Escape or Close removes again.
 - With reduced motion (the user's appearance setting or the system's) the viewer opens and closes without
   animation.

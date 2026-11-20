@@ -144,6 +144,8 @@ const click = (el) => {
     return event;
 };
 const viewer = () => instances[instances.length - 1];
+// The popstate of a history traversal, which jsdom runs on a timer like a browser
+const popped = () => new Promise((resolve) => window.addEventListener('popstate', resolve, { once: true }));
 const groupMarkup = `
     <a id="a1" href="/file/1.jpg" data-ui-gallery="g" data-ui-gallery-src="/file/1-display.jpg" title="First">
         <img src="/file/1-preview.png" alt="A cat">
@@ -160,8 +162,11 @@ describe('ui.gallery', () => {
         delete globalThis.humhub.modules['ui.appearance'];
     });
 
-    afterEach(() => {
+    afterEach(async () => {
+        // A viewer closing with its own controls goes back in the history: wait for it, it must not close the next one
+        const back = window.history.state?.humhubGallery ? popped() : null;
         instances.forEach((pswp) => pswp.element.isConnected && pswp.destroy());
+        await back;
         document.body.replaceChildren();
     });
 
@@ -432,6 +437,58 @@ describe('ui.gallery', () => {
 
             viewer().close();
             expect(document.activeElement).toBe(link);
+        });
+    });
+
+    describe('history', () => {
+        it('closes with Back, the page stays', async () => {
+            html(groupMarkup);
+            click(byId('a1'));
+
+            expect(window.history.state.humhubGallery).toBe(true);
+
+            const back = popped();
+            window.history.back();
+            await back;
+
+            expect(viewer().element.isConnected).toBe(false);
+            expect(window.history.state?.humhubGallery).toBeUndefined();
+            expect(byId('a1').isConnected).toBe(true);
+        });
+
+        it('keeps the state of the page for pjax', () => {
+            window.history.replaceState({ id: 7, url: window.location.href, container: '#layout-content' }, '');
+            html(groupMarkup);
+            click(byId('a1'));
+
+            expect(window.history.state).toMatchObject({ id: 7, container: '#layout-content', humhubGallery: true });
+        });
+
+        it('removes its entry when closed with its own controls', async () => {
+            html(groupMarkup);
+            click(byId('a1'));
+
+            const back = popped();
+            viewer().close();
+            await back;
+
+            expect(window.history.state?.humhubGallery).toBeUndefined();
+        });
+
+        it('keeps the one entry when a viewer replaces another', () => {
+            html(groupMarkup);
+            const back = vi.spyOn(window.history, 'back');
+            click(byId('a1'));
+            const length = window.history.length;
+            const first = viewer();
+
+            click(byId('other'));
+
+            expect(first.element.isConnected).toBe(false);
+            expect(viewer()).not.toBe(first);
+            expect(window.history.length).toBe(length);
+            expect(back).not.toHaveBeenCalled();
+            back.mockRestore();
         });
     });
 });
