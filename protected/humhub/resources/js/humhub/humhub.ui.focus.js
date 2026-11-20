@@ -7,7 +7,7 @@
  */
 humhub.module('ui.focus', function (module, require, $) {
     var FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]';
-    var CONTROLS = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    var CONTROLS = 'a[href], button, input, select, textarea, video[controls], audio[controls], [tabindex]:not([tabindex="-1"])';
     var CONTENT = ['.layout-content-container', '#main-content'];
 
     /**

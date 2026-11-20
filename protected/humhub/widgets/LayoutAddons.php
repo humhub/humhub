@@ -41,12 +41,9 @@ class LayoutAddons extends BaseStack
 
             $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);
             $this->addWidget(StatusBar::class);
-            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-                $this->addWidget(BlueimpGallery::class);
-
-                if (Yii::$app->params['enablePjax']) {
-                    $this->addWidget(PjaxLayoutContent::class);
-                }
+            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)
+                && Yii::$app->params['enablePjax']) {
+                $this->addWidget(PjaxLayoutContent::class);
             }
         }
 

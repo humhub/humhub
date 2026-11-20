@@ -59,6 +59,7 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 - [JavaScript components](ui-js-components.md) — `Component` and `Widget`
 - [JavaScript UI additions](ui-js-uiadditions.md)
 - [JavaScript modals](ui-js-modals.md)
+- [Media viewer](ui-js-gallery.md)
 - [JavaScript stream](ui-js-stream.md)
 - [JavaScript client](ui-js-client.md) — REST/AJAX wrapper
 - [Vue.js integration](ui-js-vuejs.md) — island components on server-rendered pages

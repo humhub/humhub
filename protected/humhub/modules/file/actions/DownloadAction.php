@@ -13,6 +13,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use humhub\components\fs\LocalMountConfig;
 use humhub\components\fs\MountConfigInterface;
+use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -63,7 +64,7 @@ class DownloadAction extends Action
     {
         $this->loadFile(Yii::$app->request->get('guid'), Yii::$app->request->get('token'));
         $this->download = (bool)Yii::$app->request->get('download', false);
-        $this->loadVariant(Yii::$app->request->get('variant'));
+        $this->loadVariant($this->prepareVariant(Yii::$app->request->get('variant')));
 
         if (!$this->file->store->has($this->variant)) {
             throw new HttpException(404, Yii::t('FileModule.base', 'Could not find requested file!'));
@@ -183,6 +184,23 @@ class DownloadAction extends Action
         return $file->canView($user);
     }
 
+
+    /**
+     * Creates a variant made on its first request: the display version of an image ([[DisplayImage]]), or its
+     * original where it gets none
+     *
+     * @param string|null $variant the requested variant
+     * @return string|null the variant to serve
+     * @since 1.20
+     */
+    protected function prepareVariant(?string $variant): ?string
+    {
+        if ($variant !== DisplayImage::VARIANT) {
+            return $variant;
+        }
+
+        return (new DisplayImage(['file' => $this->file]))->prepare() ? $variant : null;
+    }
 
     /**
      * Loads a variant and verifies

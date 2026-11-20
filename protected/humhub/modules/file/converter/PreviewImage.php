@@ -133,13 +133,20 @@ class PreviewImage extends BaseConverter
     }
 
     /**
-     * Returns the gallery link to the original file
+     * Returns the gallery link to the original file, which the media viewer shows in its display version
      *
      * @param array $htmlOptions optional link html options
      * @return string the link
      */
     public function renderGalleryLink($htmlOptions = [])
     {
-        return Html::a($this->render(), $this->file->getUrl(), array_merge($htmlOptions, ['data-ui-gallery' => 'gallery-' . $this->file->guid]));
+        $galleryOptions = ['data-ui-gallery' => 'gallery-' . $this->file->guid];
+
+        $displayImage = new DisplayImage();
+        if ($displayImage->applyFile($this->file)) {
+            $galleryOptions['data-ui-gallery-src'] = $displayImage->getUrl();
+        }
+
+        return Html::a($this->render(), $this->file->getUrl(), array_merge($htmlOptions, $galleryOptions));
     }
 }

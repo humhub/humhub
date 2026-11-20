@@ -274,6 +274,11 @@ describe('ui.focus', () => {
                 + '<input id="i"><button id="dis" disabled>x</button><div id="ce" contenteditable="true"></div></div>');
             expect(focus.controls(byId('d')).map((el) => el.id)).toEqual(['a', 'i', 'ce']);
         });
+
+        it('counts a media player with controls, not one without', () => {
+            html('<div id="d"><video id="v" controls></video><video id="plain"></video><audio id="au" controls></audio></div>');
+            expect(focus.controls(byId('d')).map((el) => el.id)).toEqual(['v', 'au']);
+        });
     });
 
     describe('trap()', () => {

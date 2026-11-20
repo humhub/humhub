@@ -25,13 +25,18 @@ const render = (files, props = {}) =>
 
 describe('AttachedFiles', () => {
     it('renders images as a gallery-linked preview grid', () => {
-        const image = file({ guid: 'img-1', fileName: 'photo.jpg', mimeType: 'image/jpeg', mimeIcon: 'mime-image', previewUrl: '/preview/img-1.jpg' });
+        const image = file({
+            guid: 'img-1', fileName: 'photo.jpg', mimeType: 'image/jpeg', mimeIcon: 'mime-image',
+            previewUrl: '/preview/img-1.jpg', displayUrl: '/display/img-1.jpg',
+        });
 
         const wrapper = render([image]);
 
         const link = wrapper.find('.post-files-images a');
         expect(link.attributes('data-ui-gallery')).toBe('gallery-post-7');
-        expect(link.attributes('href')).toBe(image.url + '#.jpeg');
+        // The original is the link and the download, the media viewer shows the display version
+        expect(link.attributes('href')).toBe(image.url);
+        expect(link.attributes('data-ui-gallery-src')).toBe('/display/img-1.jpg');
         expect(link.find('img').attributes('src')).toBe('/preview/img-1.jpg');
         expect(link.find('img').attributes('alt')).toBe('photo.jpg');
         // Single image → full-width column bucket
@@ -47,8 +52,9 @@ describe('AttachedFiles', () => {
         const videoEl = wrapper.find('.post-files-videos video');
         expect(videoEl.attributes('src')).toBe(video.url + '#t=0.001');
         expect(videoEl.attributes('controls')).toBeDefined();
-        // without the type the gallery loads the video as an image
+        // without the type the media viewer shows the video as an image
         expect(wrapper.find('.post-files-videos a').attributes('type')).toBe('video/mp4');
+        expect(wrapper.find('.post-files-videos a').attributes('href')).toBe(video.url);
 
         const audioBucket = wrapper.find('.post-files-audio .col-media');
         expect(audioBucket.find('audio').attributes('src')).toBe(audio.url);

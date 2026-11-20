@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\api\Format;
 use humhub\libs\MimeHelper;
 use humhub\modules\content\models\Content;
+use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
@@ -59,11 +60,13 @@ class FileSerializer
      *     url: string,
      *     downloadUrl: string,
      *     previewUrl: string|null,
+     *     displayUrl: string|null,
      * }
      */
     public static function file(File $file): array
     {
         $previewImage = new PreviewImage();
+        $displayImage = new DisplayImage();
 
         return [
             'id' => $file->id,
@@ -87,6 +90,9 @@ class FileSerializer
             // Converted preview variant for image files (the same converter the web UI uses
             // for attachment thumbnails); `null` for anything that has no image preview.
             'previewUrl' => $previewImage->applyFile($file) ? Url::to($previewImage->getUrl(), true) : null,
+            // What the media viewer shows of an image: the display version (`DisplayImage`, the original when it is
+            // small enough), `null` for files it doesn't apply to. @since 1.20
+            'displayUrl' => $displayImage->applyFile($file) ? $displayImage->getUrl() : null,
         ];
     }
 

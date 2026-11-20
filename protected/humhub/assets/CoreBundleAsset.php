@@ -40,7 +40,7 @@ class CoreBundleAsset extends AssetBundle
         NProgressAsset::class,
         JqueryNiceScrollAsset::class,
         BlueimpFileUploadAsset::class,
-        BlueimpGalleryAsset::class,
+        PhotoSwipeAsset::class,
         ClipboardJsAsset::class,
         ImagesLoadedAsset::class,
         HighlightJsAsset::class,

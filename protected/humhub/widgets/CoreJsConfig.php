@@ -11,6 +11,7 @@ namespace humhub\widgets;
 use humhub\components\api\ApiRules;
 use humhub\helpers\EmojiHelper;
 use humhub\modules\admin\libs\CacheHelper;
+use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\serializers\FileHandlerSerializer;
 use humhub\modules\file\validators\FileValidator;
 use humhub\widgets\Icon;
@@ -91,6 +92,8 @@ class CoreJsConfig extends Widget
                     'url' => [
                         'download' => Url::to(['/file/file/download', 'download' => true, 'guid' => '-guid-'], true),
                         'load' => Url::to(['/file/file/download', 'guid' => '-guid-'], true),
+                        // What the media viewer shows of an image. @since 1.20
+                        'display' => Url::to(['/file/file/download', 'guid' => '-guid-', 'variant' => DisplayImage::VARIANT], true),
                         'view' => Url::to(['/file/view', 'guid' => '-guid-'], true),
                     ],
                     'text' => [
@@ -173,6 +176,19 @@ class CoreJsConfig extends Widget
                         404 => Yii::t('base', 'The requested resource could not be found.'),
                         405 => Yii::t('base', 'Error while running your last action (Invalid request method).'),
                         500 => Yii::t('base', 'An unexpected server error occurred. If this keeps happening, please contact a site administrator.'),
+                    ],
+                ],
+                'ui.gallery' => [
+                    'text' => [
+                        'dialog' => Yii::t('base', 'Media viewer'),
+                        'close' => Yii::t('base', 'Close'),
+                        'prev' => Yii::t('base', 'Previous'),
+                        'next' => Yii::t('base', 'Next'),
+                        'zoom' => Yii::t('base', 'Zoom'),
+                        'download' => Yii::t('base', 'Download'),
+                        'position' => Yii::t('base', '{index} of {count}'),
+                        'imageError' => Yii::t('base', 'The image cannot be loaded.'),
+                        'videoError' => Yii::t('base', 'The video cannot be played in this browser.'),
                     ],
                 ],
                 'ui.status' => [

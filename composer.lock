@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3d537c8a22e29a5557ab8f6d2595292",
+    "content-hash": "836c8ccbc88822a67f14a253e53ce6c1",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4524,18 +4524,6 @@
             ]
         },
         {
-            "name": "npm-asset/blueimp-gallery",
-            "version": "2.44.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/blueimp-gallery/-/blueimp-gallery-2.44.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "npm-asset/blueimp-load-image",
             "version": "2.12.2",
             "dist": {
@@ -5332,6 +5320,19 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/parseuri/-/parseuri-0.0.6.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/photoswipe",
+            "version": "5.4.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/photoswipe/-/photoswipe-5.4.4.tgz",
+                "shasum": "e045dc036453493188d5c8665b0e8f1000ac4d6e"
             },
             "type": "npm-asset",
             "license": [

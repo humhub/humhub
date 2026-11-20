@@ -266,3 +266,8 @@ components:
         previewUrl:
           type: [string, 'null']
           description: Absolute preview image URL, when the file has one
+        displayUrl:
+          type: [string, 'null']
+          description: |
+            Absolute URL of what a media viewer shows of a JPEG, PNG or WebP image: a version scaled down to
+            2048 px (created on its first request), or the original when it is not larger. `null` for other files.

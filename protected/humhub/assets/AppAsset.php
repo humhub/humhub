@@ -72,7 +72,7 @@ class AppAsset extends AssetBundle
          */
         HighlightJsStyleAsset::class,
         NProgressStyleAsset::class,
-        BlueimpGalleryStyleAsset::class,
+        PhotoSwipeStyleAsset::class,
 
 
         /**
