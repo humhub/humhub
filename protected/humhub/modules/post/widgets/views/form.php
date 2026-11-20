@@ -59,6 +59,7 @@ $this->registerCss($css);
     'id' => 'contentForm_message' . ($wallCreateContentForm->isModal ? 'Modal' : ''),
     'form' => $form,
     'layout' => RichTextField::LAYOUT_BLOCK,
+    'contextId' => 'post',
     'pluginOptions' => ['maxHeight' => '300px'],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',

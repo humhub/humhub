@@ -2,7 +2,7 @@ import {Plugin} from 'prosemirror-state';
 import {Slice, Fragment} from "prosemirror-model";
 
 import {editNode} from './menu';
-import {buildLink} from "../../util/linkUtil";
+import {buildLink, extensionTargetUrl} from "../../util/linkUtil";
 
 let linkPlugin = (context) => {
     return new Plugin({
@@ -25,7 +25,8 @@ class LinkView {
     }
 
     createDom(mark) {
-        this.dom = $(buildLink(mark.attrs.href, {
+        // The link of an extension that is not available leads to its url, as it does for a reader
+        this.dom = $(buildLink(extensionTargetUrl(mark.attrs.href) || mark.attrs.href, {
             'data-file-guid': mark.attrs.fileGuid,
             target: mark.attrs.target || '_blank'
         }, null, {relative: true}))[0];

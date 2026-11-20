@@ -529,6 +529,7 @@
                   class: "mb-3",
                   attribute: "message",
                   layout: "inline",
+                  "context-id": "comment",
                   "instance-key": $options.formInstanceKey,
                   placeholder: $options.placeholder,
                   "mentioning-url": $options.mentioningUrl,
@@ -1091,7 +1092,8 @@
                 "data-ui-markdown": "",
                 "data-ui-show-more": "",
                 "data-read-more-text": $options.readMoreLabel,
-                message: $props.comment.message
+                message: $props.comment.message,
+                "context-id": "comment"
               }, null, 8, ["data-read-more-text", "message"]),
               $props.comment.files.length ? (vue$1.openBlock(), vue$1.createBlock(_component_AttachedFiles, {
                 key: 0,

@@ -28,6 +28,6 @@ $isDetailView = $renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTE
             data-collapse-at="<?= $collapsedPostHeight ?>"
         <?php endif; ?>
     >
-        <?= RichText::output($post->message, ['record' => $post]) ?>
+        <?= RichText::output($post->message, ['record' => $post, 'contextId' => 'post']) ?>
     </div>
 </div>

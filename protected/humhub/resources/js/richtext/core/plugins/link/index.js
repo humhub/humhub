@@ -7,7 +7,7 @@
 import {schema} from './schema'
 import {linkPlugin} from './plugin'
 import {menu} from './menu'
-import {DEFAULT_LINK_REL} from "../../util/linkUtil";
+import {DEFAULT_LINK_REL, extensionTargetUrl} from "../../util/linkUtil";
 import {filterFileUrl} from "../../humhub-bridge";
 
 const link = {
@@ -23,6 +23,9 @@ const link = {
             const hrefIndex = tokens[idx].attrIndex('href');
 
             let {url, guid} = filterFileUrl(tokens[idx].attrs[hrefIndex][1], 'view');
+
+            // An extension link that no plugin handles (e.g. the module is disabled) leads to its url
+            url = extensionTargetUrl(url) || url;
 
             tokens[idx].attrs[hrefIndex][1] = url;
 

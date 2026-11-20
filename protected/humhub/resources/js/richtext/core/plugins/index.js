@@ -48,6 +48,12 @@ import file_handler from "./file_handler";
 
 const registry = new PluginRegistry();
 
+/**
+ * Registers a plugin.
+ *
+ * `options` is either the id of a preset or an object with the preset (`preset`), its position in the preset
+ * (`before`/`after`) and the ids of the contexts the plugin is active in (`contexts`, default: all contexts).
+ */
 const registerPlugin = (plugin, options) => {
     registry.register(plugin, options);
 };
@@ -131,8 +137,12 @@ class PresetManager {
         this.options = options;
     }
 
+    static cacheKey(options) {
+        return options.preset + (options.contextId ? '|' + options.contextId : '');
+    }
+
     add(options, value) {
-        this.map[options.preset] = value;
+        this.map[PresetManager.cacheKey(options)] = value;
     }
 
     create(context) {
@@ -152,8 +162,8 @@ class PresetManager {
 
         let result = [];
 
-        if (!PresetManager.isCustomPluginSet(options) && this.map[options.preset]) {
-            result = this.map[options.preset];
+        if (!PresetManager.isCustomPluginSet(options) && this.map[PresetManager.cacheKey(options)]) {
+            result = this.map[PresetManager.cacheKey(options)];
         }
 
         if (!result || (Array.isArray(result) && !result.length)) {
@@ -173,11 +183,15 @@ class PresetManager {
 }
 
 const getPlugins = (context) => {
-    const options = context.options;
-
-    if (context.plugins) {
-        return context.plugins;
+    if (!context.plugins) {
+        context.plugins = resolvePlugins(context).filter(plugin => registry.isAvailableInContext(plugin, context.getContextId()));
     }
+
+    return context.plugins;
+};
+
+const resolvePlugins = (context) => {
+    const options = context.options;
 
     const presetMap = registry.getPresetRegistry(context);
     const toExtend = presetMap.get(options.preset) ? presetMap.get(options.preset) : registry.plugins;

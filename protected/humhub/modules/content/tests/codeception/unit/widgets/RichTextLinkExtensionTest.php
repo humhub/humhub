@@ -12,6 +12,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class RichTextLinkExtensionTest extends HumHubDbTestCase
 {
@@ -115,6 +116,33 @@ class RichTextLinkExtensionTest extends HumHubDbTestCase
         static::assertEmpty($matches[0]->getExtensionId());
         static::assertEmpty($matches[0]->getTitle());
         static::assertEquals('150x150', $matches[0]->getAddition());
+    }
+
+    public function testExtensionTargetUrl()
+    {
+        static::assertEquals('https://example.com/a?b=c', RichTextLinkExtension::getExtensionTargetUrl('my-extension:https://example.com/a?b=c'));
+        static::assertEquals('http://example.com', RichTextLinkExtension::getExtensionTargetUrl('my-extension:http://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('my-extension:some-id'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('https://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('javascript:https://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('mailto:https://example.com'));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(''));
+        static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(null));
+
+        foreach (RichTextLinkExtension::NON_EXTENSION_SCHEMES as $scheme) {
+            static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(strtoupper($scheme) . ':https://example.com'));
+        }
+    }
+
+    public function testNonExtensionSchemesMatchTheEditor()
+    {
+        $source = file_get_contents(Yii::getAlias('@humhub/resources/js/richtext/core/util/linkUtil.js'));
+        static::assertSame(1, preg_match('/NON_EXTENSION_SCHEMES = \[([^\]]+)\]/', $source, $match));
+
+        static::assertSame(
+            RichTextLinkExtension::NON_EXTENSION_SCHEMES,
+            array_map(static fn($scheme) => trim($scheme, " '"), explode(',', $match[1])),
+        );
     }
 
     public function testBuildSimpleLinkExtensionString()

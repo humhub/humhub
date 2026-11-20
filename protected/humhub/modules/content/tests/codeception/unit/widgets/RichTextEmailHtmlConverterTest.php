@@ -26,6 +26,17 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
         );
     }
 
+    public function testConvertUnknownExtensionLinkToHtml()
+    {
+        // A link of an extension nobody handles (e.g. a disabled module) leads to the url it carries
+        foreach ([RichTextToHtmlConverter::class, RichTextToEmailHtmlConverter::class] as $converter) {
+            $result = $converter::process('Test[Link](my-extension:https://www.humhub.com/de "Title")Test');
+
+            static::assertStringContainsString('href="https://www.humhub.com/de"', $result);
+            static::assertStringNotContainsString('my-extension', $result);
+        }
+    }
+
     public function testConvertLinkAsTextToHtml()
     {
         $this->assertConversionResult(

@@ -1,6 +1,6 @@
 <template>
     <div v-if="message && ready" v-additions>
-        <div :key="message" v-bind="ENVELOPE_ATTRS">{{ message }}</div>
+        <div :key="message" v-bind="ENVELOPE_ATTRS" :data-context-id="contextId">{{ message }}</div>
     </div>
 </template>
 
@@ -73,6 +73,8 @@ const oembedUrls = (message) => {
 export default {
     props: {
         message: { type: String, default: null },
+        // Names where the text lives, as `RichText::output()`'s `contextId`
+        contextId: { type: String, default: null },
     },
     data() {
         return {

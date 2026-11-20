@@ -17166,6 +17166,16 @@
     cfg = cfg || {};
     return /^https?:\/\//i.test(href) || /^mailto:/i.test(href) || /^ftps?:\/\//i.test(href) || cfg.anchor && validateAnchor(href) || cfg.relative && validateRelative(href);
   }
+  const EXTENSION_HREF = /^([a-z][a-z0-9_-]+):/i;
+  const NON_EXTENSION_SCHEMES = ["http", "https", "ftp", "ftps", "mailto", "javascript", "data", "vbscript", "file", "blob"];
+  function isExtensionHref(href) {
+    const match = EXTENSION_HREF.exec(href || "");
+    return !!match && !NON_EXTENSION_SCHEMES.includes(match[1].toLowerCase());
+  }
+  function extensionTargetUrl(href) {
+    const match = /^([a-z][a-z0-9_-]+):(https?:\/\/.+)$/i.exec(href || "");
+    return match && !NON_EXTENSION_SCHEMES.includes(match[1].toLowerCase()) ? match[2] : null;
+  }
   function validateRelative(href) {
     return /^\/[^\/].*$/i.test(href);
   }
@@ -47525,13 +47535,14 @@
         }],
         toDOM(node) {
           let { href, title } = node.attrs;
+          href = extensionTargetUrl(href) || href;
           return ["a", { href, title }, 0];
         },
         parseMarkdown: {
           mark: "link",
           getAttrs: function(tok) {
             let { url, guid } = filterFileUrl(tok.attrGet("href"), "view");
-            if (!validateHref(url, { relative: true })) {
+            if (!validateHref(url, { relative: true }) && !isExtensionHref(url)) {
               url = "#";
             }
             return {
@@ -47674,7 +47685,7 @@
       this.dom.addEventListener("click", (e2) => editNode(this.dom, context));
     }
     createDom(mark) {
-      this.dom = $(buildLink(mark.attrs.href, {
+      this.dom = $(buildLink(extensionTargetUrl(mark.attrs.href) || mark.attrs.href, {
         "data-file-guid": mark.attrs.fileGuid,
         target: mark.attrs.target || "_blank"
       }, null, { relative: true }))[0];
@@ -47736,6 +47747,7 @@
       md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
         const hrefIndex = tokens[idx].attrIndex("href");
         let { url, guid } = filterFileUrl(tokens[idx].attrs[hrefIndex][1], "view");
+        url = extensionTargetUrl(url) || url;
         tokens[idx].attrs[hrefIndex][1] = url;
         if (guid) {
           tokens[idx].attrPush(["data-file-guid", guid]);
@@ -50444,6 +50456,7 @@
     constructor() {
       this.plugins = [];
       this.pluginMap = {};
+      this.pluginContexts = {};
       this.presets = new PresetRegistry(this);
       this.editorPresets = new PresetRegistry(this);
     }
@@ -50455,9 +50468,20 @@
       this.plugins.push(plugin);
       this.pluginMap[plugin.id] = plugin;
       options = typeof options === "string" ? { preset: options } : options;
+      if (Array.isArray(options.contexts)) {
+        this.pluginContexts[plugin.id] = options.contexts;
+      }
       if (options.preset) {
         this.addToPreset(plugin, options.preset, options);
       }
+    }
+    /**
+     * Whether a plugin is active in the given context: plugins registered with a `contexts` list
+     * are only active in the contexts of that list, all others everywhere.
+     */
+    isAvailableInContext(plugin, contextId) {
+      const contexts = this.pluginContexts[plugin.id];
+      return !contexts || !!contextId && contexts.includes(contextId);
     }
     registerPreset(id2, plugins) {
       this.presets.register(id2, plugins);
@@ -50677,6 +50701,7 @@
       link: {
         attrs: {
           href: {},
+          title: { default: null },
           fileGuid: { default: null }
         },
         inclusive: false,
@@ -50689,23 +50714,26 @@
             }
             return {
               href,
+              title: dom.getAttribute("title"),
               fileGuid: dom.getAttribute("data-file-guid")
             };
           }
         }],
         toDOM(node) {
-          let { href } = node.attrs;
-          return ["a", { href }, 0];
+          let { href, title } = node.attrs;
+          href = extensionTargetUrl(href) || href;
+          return ["a", { href, title }, 0];
         },
         parseMarkdown: {
           mark: "link",
           getAttrs: function(tok) {
             let { url, guid } = filterFileUrl(tok.attrGet("href"), "view");
-            if (!validateHref(url, { relative: true })) {
+            if (!validateHref(url, { relative: true }) && !isExtensionHref(url)) {
               url = "#";
             }
             return {
               href: url,
+              title: tok.attrGet("title") || null,
               fileGuid: guid
             };
           }
@@ -50714,7 +50742,7 @@
           open: "[",
           close: function close2(state2, mark) {
             let href = mark.attrs.fileGuid ? "file-guid:" + mark.attrs.fileGuid : mark.attrs.href;
-            return "](" + state2.esc(href) + ")";
+            return "](" + state2.esc(href) + (mark.attrs.title ? " " + state2.quote(mark.attrs.title) : "") + ")";
           }
         }
       }
@@ -50812,8 +50840,11 @@
       this.map = {};
       this.options = options;
     }
+    static cacheKey(options) {
+      return options.preset + (options.contextId ? "|" + options.contextId : "");
+    }
     add(options, value) {
-      this.map[options.preset] = value;
+      this.map[PresetManager.cacheKey(options)] = value;
     }
     create(context) {
       return this.options.create.apply(null, [context]);
@@ -50827,8 +50858,8 @@
         return context[this.options.name];
       }
       let result = [];
-      if (!PresetManager.isCustomPluginSet(options) && this.map[options.preset]) {
-        result = this.map[options.preset];
+      if (!PresetManager.isCustomPluginSet(options) && this.map[PresetManager.cacheKey(options)]) {
+        result = this.map[PresetManager.cacheKey(options)];
       }
       if (!result || Array.isArray(result) && !result.length) {
         result = this.create(context);
@@ -50843,10 +50874,13 @@
     }
   }
   const getPlugins = (context) => {
-    const options = context.options;
-    if (context.plugins) {
-      return context.plugins;
+    if (!context.plugins) {
+      context.plugins = resolvePlugins(context).filter((plugin) => registry.isAvailableInContext(plugin, context.getContextId()));
     }
+    return context.plugins;
+  };
+  const resolvePlugins = (context) => {
+    const options = context.options;
     const presetMap = registry.getPresetRegistry(context);
     const toExtend = presetMap.get(options.preset) ? presetMap.get(options.preset) : registry.plugins;
     if (!PresetManager.isCustomPluginSet(options)) {
@@ -51751,6 +51785,7 @@
       }
       this.options = options;
       this.options.preset = options.preset || "full";
+      this.options.contextId = typeof options.contextId === "string" && options.contextId ? options.contextId : null;
       if (Array.isArray(this.options.exclude) && !this.options.exclude.length) {
         this.options.exclude = void 0;
       }
@@ -51771,6 +51806,16 @@
     }
     clear() {
       this.event.trigger("clear");
+    }
+    /**
+     * The id naming where the text of this editor/renderer lives (e.g. `post`, `comment`, `wiki.page`),
+     * set by whoever renders the field or the output, or `null` if none was given.
+     * Plugins registered with the `contexts` option are only active in the listed contexts.
+     *
+     * @returns {string|null}
+     */
+    getContextId() {
+      return this.options.contextId;
     }
     getGlobalOption(id2, option, defaultValue) {
       let globalOptions = this.getGlobalOptions();

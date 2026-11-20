@@ -35,6 +35,7 @@ $titleMode = Yii::$app->getModule('post')->getTitleMode();
         <?= $form->field($model->post, 'message')->widget(RichTextField::class, [
             'id' => 'post_input_' . $model->post->id,
             'layout' => RichTextField::LAYOUT_BLOCK,
+            'contextId' => 'post',
             'focus' => true,
             'pluginOptions' => ['maxHeight' => '300px'],
             'placeholder' => Yii::t('PostModule.base', 'Edit your post...'),

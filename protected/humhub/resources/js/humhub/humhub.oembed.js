@@ -9,6 +9,7 @@ humhub.module('oembed', function(module, require, $) {
     var util = require('util');
     var status = require('ui.status');
     var cache = {};
+    var inFlight = {}; // requests that are not answered yet, by consent mode and url
 
     /**
      * Loads the previews of the given oembed urls, from the client cache or the server.
@@ -20,6 +21,10 @@ humhub.module('oembed', function(module, require, $) {
      * else wrote (see `RichTextOutput.vue`). `options.silent` skips the status warning about urls
      * whose provider could not be reached; such urls are left out of the result.
      *
+     * An url that is already being requested (by a previous call, e.g. of another plugin of the
+     * same text) is not requested again: the call waits for that request. The status warning about
+     * an unreachable url is shown by the call that made the request.
+     *
      * @param {string[]} urls
      * @param {{consent?: boolean, silent?: boolean}} [options]
      * @returns {Promise<Object<string, string>>} preview html by url
@@ -27,45 +32,75 @@ humhub.module('oembed', function(module, require, $) {
     var load = function(urls, options) {
         options = options || {};
 
+        // The answer for an url depends on the consent setting
+        var keyPrefix = options.consent ? 'consent:' : 'embed:';
+
         return new Promise(function(resolve, reject) {
             var result = {};
             var requestUrls = [];
+            var pending = [];
             urls.forEach(function(url) {
-                if (!cache[url]) {
-                    requestUrls.push(url);
-                } else {
+                if (cache[url]) {
                     result[url] = cache[url];
+                } else if (inFlight[keyPrefix + url]) {
+                    pending.push(inFlight[keyPrefix + url]);
+                } else if (requestUrls.indexOf(url) === -1) {
+                    requestUrls.push(url);
                 }
             });
 
-            if (!requestUrls.length) {
+            if (requestUrls.length) {
+                var data = {urls: requestUrls};
+                if (options.consent) {
+                    data.consent = 1;
+                }
+
+                var request = client.post(module.config.loadUrl, {data: data}).then(function(response) {
+                    const fetchedUrls = {};
+                    const brokenUrls = [];
+                    $.each(response.data, function(url, oembed) {
+                        if (oembed) {
+                            fetchedUrls[url] = oembed;
+                        } else {
+                            brokenUrls.push(url);
+                        }
+                    });
+
+                    $.extend(cache, fetchedUrls);
+                    if (brokenUrls.length > 0 && !options.silent) {
+                        status.warn(module.text('brokenUrl').replace('{urls}',  brokenUrls.join(', ')));
+                    }
+
+                    return fetchedUrls;
+                });
+
+                var done = function() {
+                    requestUrls.forEach(function(url) {
+                        delete inFlight[keyPrefix + url];
+                    });
+                };
+                request.then(done, done);
+                requestUrls.forEach(function(url) {
+                    inFlight[keyPrefix + url] = request;
+                });
+                pending.push(request);
+            }
+
+            if (!pending.length) {
                 resolve(result);
                 return;
             }
 
-            var data = {urls: requestUrls};
-            if (options.consent) {
-                data.consent = 1;
-            }
-
-            client.post(module.config.loadUrl, {data: data}).then(function(response) {
-                const fetchedUrls = {};
-                const brokenUrls = [];
-                $.each(response.data, function(url, oembed) {
-                    if (oembed) {
-                        fetchedUrls[url] = oembed;
-                    } else {
-                        brokenUrls.push(url);
-                    }
+            Promise.all(pending).then(function(fetched) {
+                fetched.forEach(function(fetchedUrls) {
+                    urls.forEach(function(url) {
+                        if (fetchedUrls[url]) {
+                            result[url] = fetchedUrls[url];
+                        }
+                    });
                 });
 
-                $.extend(cache, fetchedUrls);
-                const resolveUrls = $.extend(result, fetchedUrls);
-                if (brokenUrls.length > 0 && !options.silent) {
-                    status.warn(module.text('brokenUrl').replace('{urls}',  brokenUrls.join(', ')));
-                }
-
-                resolve(resolveUrls);
+                resolve(result);
             }).catch(reject);
         });
     };
