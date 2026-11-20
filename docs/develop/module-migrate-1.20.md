@@ -2,6 +2,15 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **A post no longer attaches files hidden in the stream (`show_in_stream = 0`) submitted with `fileList`.**
+  `PostController::actionPost()` and `PostEditForm::save()` attach only files shown in the stream
+  (`FileHelper::filterStreamFiles()` is new); files uploaded by the rich text editor belong to the post
+  only while its message references them, and one removed from the message is deleted on edit. A module
+  that uploads hidden files to render them itself and relied on `fileList` to attach them to a post has to
+  reference the file in the message or attach it itself (`$post->fileManager->attach()`), otherwise the daily
+  cron deletes it. `WallCreateContentForm::create()` has a new optional `$fileList` argument for this,
+  `FileExtension::getFileGuids()` returns the files a message references.
+
 - **`UserSourceInterface::isAttributeSyncAllowed(ClientInterface $authClient): bool` is new.**
   It decides whether an auth client allowed to log in may also write the managed attributes of
   the source's users on login. Sources extending `BaseUserSource` need no change: it returns

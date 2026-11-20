@@ -263,6 +263,9 @@ class FileHelper extends \yii\helpers\FileHelper
     }
 
     /**
+     * Checks in the database if the given file GUIDs contain at least one file shown in the stream
+     * which was created by the given user. This does not check the file system.
+     *
      * Files uploaded by the rich text editor are hidden in the stream: they are attached to a record only when
      * they are referenced in the text. So they must not allow to save a record with an empty message.
      *
