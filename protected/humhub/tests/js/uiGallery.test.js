@@ -359,7 +359,10 @@ describe('ui.gallery', () => {
         const loadVideo = () => {
             const content = { type: 'video', data: viewer().getItemData(2), index: 2 };
             const event = viewer().dispatch('contentLoad', { content });
-            viewer().currSlide.container.appendChild(content.element);
+            // As PhotoSwipe appends custom content: only an element without a parent
+            if (!content.element.parentNode) {
+                viewer().currSlide.container.appendChild(content.element);
+            }
             return { content, event, video: content.element.querySelector('video') };
         };
 
@@ -370,6 +373,7 @@ describe('ui.gallery', () => {
 
             expect(event.defaultPrevented).toBe(true);
             expect(content.element.classList.contains('hh-gallery-video')).toBe(true);
+            expect(content.element.parentNode).toBe(viewer().currSlide.container);
             expect(video.controls).toBe(true);
             expect(video.hasAttribute('playsinline')).toBe(true);
             expect(video.getAttribute('src')).toBe('/file/3.mp4');

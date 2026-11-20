@@ -165,7 +165,9 @@ humhub.module('ui.gallery', function (module, require, $) {
     };
 
     var videoElement = function (data) {
-        var $wrapper = $('<div class="hh-gallery-video">');
+        // Without a parent: PhotoSwipe appends custom content only then, jQuery would leave it in a fragment
+        var wrapper = document.createElement('div');
+        wrapper.className = 'hh-gallery-video';
         var video = document.createElement('video');
         video.controls = true;
         video.preload = 'metadata';
@@ -179,9 +181,10 @@ humhub.module('ui.gallery', function (module, require, $) {
             evt.stopPropagation();
         });
         video.addEventListener('error', function () {
-            $wrapper.empty().append(errorElement(text('videoError'), data.download));
+            wrapper.replaceChildren(errorElement(text('videoError'), data.download));
         });
-        return $wrapper.append(video)[0];
+        wrapper.appendChild(video);
+        return wrapper;
     };
 
     // The dialog's name, our controls (download, caption, announcement), slide labels
