@@ -309,9 +309,17 @@ richtext.plugin.registerPlugin(myPlugin, { preset: 'normal', contexts: ['post', 
 ### Loading the assets of a plugin
 
 Add the module's asset bundle to `ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS`, e.g. in
-the `events` of `config.php`. The core registers it once per request, wherever the editor bundle is
-registered: on full pages, in Ajax responses (modals, Pjax) and wherever a rich text widget is rendered,
-not only where the module's own widgets are.
+the `events` of `config.php`. The core registers it whenever the editor bundle is registered in a
+view (it is part of `CoreBundleAsset`): on full pages and in the Ajax responses that
+register it, not only where the module's own widgets are. After a view cleared its bundles (e.g.
+`View::clear()` after `renderAjaxPartial()`) the event fires again with the next registration. It is the
+`AssetBundle::afterRegister(View $view)` hook of the bundle, which the view calls when a bundle is
+registered in it.
+
+The theme registers `CoreBundleAsset` during the application bootstrap (`ThemeLoader`), which is after the
+modules registered their events and before any controller runs. So on a web request the event fires early,
+for any request that registers the theme, not only for those that render a rich text: a handler only adds
+class names, it must not rely on the user, the controller or other request state.
 
 ```php
 [

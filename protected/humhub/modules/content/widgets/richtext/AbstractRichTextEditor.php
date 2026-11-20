@@ -3,12 +3,9 @@
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\helpers\Html;
-use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\widgets\form\JsInputWidget;
-use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\web\Application as WebApplication;
 
 /**
  * Abstract class for RichTextEditor implementations.
@@ -176,10 +173,6 @@ class AbstractRichTextEditor extends JsInputWidget
             // No reason to back up a content with random input ID,
             // because on next page reloading we cannot know previous input ID
             $this->backupInterval = 0;
-        }
-
-        if (Yii::$app instanceof WebApplication) {
-            ProseMirrorRichTextAsset::register($this->view);
         }
 
         return parent::beforeRun();

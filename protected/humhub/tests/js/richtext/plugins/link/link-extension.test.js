@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {initEditor, initView, viewToHtml, serialize} from '../../testEditor.js';
-import {isExtensionHref, extensionTargetUrl} from '../../../../../resources/js/richtext/core/util/linkUtil.js';
+import {isExtensionHref, extensionTargetUrl, NON_EXTENSION_SCHEMES} from '../../../../../resources/js/richtext/core/util/linkUtil.js';
 
 describe("Plugin:link, links of unknown extensions", () => {
     it("recognizes an extension href", () => {
@@ -12,6 +12,15 @@ describe("Plugin:link, links of unknown extensions", () => {
         expect(isExtensionHref('c:\\path')).to.equal(false);
         expect(isExtensionHref('')).to.equal(false);
         expect(isExtensionHref(null)).to.equal(false);
+    });
+
+    it("does not take the scheme of an ordinary link for an extension", () => {
+        NON_EXTENSION_SCHEMES.forEach((scheme) => {
+            expect(isExtensionHref(scheme + ':https://example.com')).to.equal(false);
+            expect(extensionTargetUrl(scheme.toUpperCase() + ':https://example.com')).to.equal(null);
+        });
+        expect(isExtensionHref('tel:+123')).to.equal(true);
+        expect(isExtensionHref('skype:user')).to.equal(true);
     });
 
     it("takes the url out of an extension href", () => {

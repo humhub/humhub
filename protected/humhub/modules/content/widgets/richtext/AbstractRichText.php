@@ -6,13 +6,11 @@ use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\helpers\Html;
-use humhub\modules\content\assets\ProseMirrorRichTextAsset;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
-use yii\web\Application as WebApplication;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.
@@ -191,10 +189,6 @@ abstract class AbstractRichText extends JsWidget
         parent::init();
         if (!static::$editorClass) {
             throw new InvalidArgumentException('No editor class set for rich text ' . static::class);
-        }
-
-        if (Yii::$app instanceof WebApplication) {
-            ProseMirrorRichTextAsset::register($this->view);
         }
     }
 

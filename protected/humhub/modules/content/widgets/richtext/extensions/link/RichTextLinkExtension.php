@@ -10,6 +10,14 @@ use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 class RichTextLinkExtension extends RichTextContentExtension
 {
     /**
+     * The schemes of ordinary links and those a browser would execute or open as a document, a link with one of them
+     * is never a link of an extension. Keep in sync with `NON_EXTENSION_SCHEMES` of `linkUtil.js`.
+     *
+     * @since 1.20
+     */
+    public const NON_EXTENSION_SCHEMES = ['http', 'https', 'ftp', 'ftps', 'mailto', 'javascript', 'data', 'vbscript', 'file', 'blob'];
+
+    /**
      * Can be used to scan for link extensions of the form [<text>](<extension>:<url> "<title>") in which the actual meaning
      * of the placeholders is up to the extension itself.
      *
@@ -83,8 +91,7 @@ class RichTextLinkExtension extends RichTextContentExtension
             return null;
         }
 
-        // The protocols of a link, no extension
-        if (in_array(strtolower($match[1]), ['http', 'https', 'ftp', 'ftps', 'mailto', 'javascript', 'data', 'vbscript', 'file', 'blob'], true)) {
+        if (in_array(strtolower($match[1]), self::NON_EXTENSION_SCHEMES, true)) {
             return null;
         }
 

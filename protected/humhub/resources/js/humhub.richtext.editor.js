@@ -17167,14 +17167,14 @@
     return /^https?:\/\//i.test(href) || /^mailto:/i.test(href) || /^ftps?:\/\//i.test(href) || cfg.anchor && validateAnchor(href) || cfg.relative && validateRelative(href);
   }
   const EXTENSION_HREF = /^([a-z][a-z0-9_-]+):/i;
-  const UNSAFE_SCHEMES = ["javascript", "data", "vbscript", "file", "blob"];
+  const NON_EXTENSION_SCHEMES = ["http", "https", "ftp", "ftps", "mailto", "javascript", "data", "vbscript", "file", "blob"];
   function isExtensionHref(href) {
     const match = EXTENSION_HREF.exec(href || "");
-    return !!match && !UNSAFE_SCHEMES.includes(match[1].toLowerCase());
+    return !!match && !NON_EXTENSION_SCHEMES.includes(match[1].toLowerCase());
   }
   function extensionTargetUrl(href) {
     const match = /^([a-z][a-z0-9_-]+):(https?:\/\/.+)$/i.exec(href || "");
-    return match && !UNSAFE_SCHEMES.includes(match[1].toLowerCase()) ? match[2] : null;
+    return match && !NON_EXTENSION_SCHEMES.includes(match[1].toLowerCase()) ? match[2] : null;
   }
   function validateRelative(href) {
     return /^\/[^\/].*$/i.test(href);

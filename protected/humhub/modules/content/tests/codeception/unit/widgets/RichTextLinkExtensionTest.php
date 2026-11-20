@@ -12,6 +12,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class RichTextLinkExtensionTest extends HumHubDbTestCase
 {
@@ -127,6 +128,21 @@ class RichTextLinkExtensionTest extends HumHubDbTestCase
         static::assertNull(RichTextLinkExtension::getExtensionTargetUrl('mailto:https://example.com'));
         static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(''));
         static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(null));
+
+        foreach (RichTextLinkExtension::NON_EXTENSION_SCHEMES as $scheme) {
+            static::assertNull(RichTextLinkExtension::getExtensionTargetUrl(strtoupper($scheme) . ':https://example.com'));
+        }
+    }
+
+    public function testNonExtensionSchemesMatchTheEditor()
+    {
+        $source = file_get_contents(Yii::getAlias('@humhub/resources/js/richtext/core/util/linkUtil.js'));
+        static::assertSame(1, preg_match('/NON_EXTENSION_SCHEMES = \[([^\]]+)\]/', $source, $match));
+
+        static::assertSame(
+            RichTextLinkExtension::NON_EXTENSION_SCHEMES,
+            array_map(static fn($scheme) => trim($scheme, " '"), explode(',', $match[1])),
+        );
     }
 
     public function testBuildSimpleLinkExtensionString()

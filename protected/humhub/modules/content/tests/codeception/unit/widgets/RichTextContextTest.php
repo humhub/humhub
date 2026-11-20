@@ -67,6 +67,26 @@ class RichTextContextTest extends HumHubDbTestCase
         }
     }
 
+    public function testPluginAssetsAreRegisteredAgainAfterTheViewIsCleared()
+    {
+        $count = 0;
+        $handler = static function () use (&$count) {
+            $count++;
+        };
+        Event::on(ProseMirrorRichTextAsset::class, ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS, $handler);
+
+        try {
+            $view = new View();
+            ProseMirrorRichTextAsset::register($view);
+            $view->clear();
+            ProseMirrorRichTextAsset::register($view);
+
+            $this->assertSame(2, $count);
+        } finally {
+            Event::off(ProseMirrorRichTextAsset::class, ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS, $handler);
+        }
+    }
+
     public function testPluginAssetsEventIsTriggeredOncePerView()
     {
         $count = 0;

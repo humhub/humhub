@@ -25,6 +25,10 @@ use yii\base\Event;
  * );
  * ```
  *
+ * The event is triggered early, as the theme registers the core bundle during the application bootstrap, before a
+ * controller runs: a handler only adds class names and must not rely on the user, the controller or other request
+ * state.
+ *
  * The asset bundle has to depend on {@see \humhub\modules\content\assets\ProseMirrorRichTextAsset}.
  *
  * @see \humhub\modules\content\assets\ProseMirrorRichTextAsset::EVENT_REGISTER_PLUGIN_ASSETS
