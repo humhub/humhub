@@ -144,6 +144,8 @@ HumHub Changelog
 - Enh #8767: A rich text link of an extension nobody handles stays as it is in the editor and leads to its url, the editor keeps the title of a link
 - Enh #8767: Rich text `contextId` and plugin `contexts`, `EVENT_REGISTER_PLUGIN_ASSETS` loads rich text plugin assets, `AssetBundle::afterRegister()`
 - Fix #8767: `oembed.load()` no longer requests an url twice while the first request for it is open
+- Enh #8762: Files dropped onto the rich text editor are inserted into the text instead of being attached under the form
+- Enh #8762: Files hidden in the stream (uploaded by the rich text editor) stay attached to a post only while its message references them
 
 1.19.5 (Unreleased)
 -------------------

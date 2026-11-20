@@ -49555,13 +49555,19 @@
     const linkMark = schema2.marks.link.create({ href: file.url, fileGuid: file.guid });
     return schema2.text(file.name, [linkMark]);
   };
+  const getUploadWidget = function(context) {
+    return isHumhub() ? humhub.require("ui.widget.Widget").instance($("#" + context.id + "-file-upload")) : null;
+  };
+  const canUpload = function(context) {
+    return typeof context.options.upload === "function" || !!getUploadWidget(context);
+  };
   const triggerUpload = function(state2, view2, context, files) {
     let id2 = {};
     if (typeof context.options.upload === "function") {
       uploadThroughOption(context, id2, files);
       return;
     }
-    let uploadWidget = humhub.require("ui.widget.Widget").instance($("#" + context.id + "-file-upload"));
+    let uploadWidget = getUploadWidget(context);
     if (uploadWidget) {
       uploadWidget.off("uploadStart.richtext").on("uploadStart.richtext", (evt, response) => {
         loaderStart(context, id2, true);
@@ -49681,11 +49687,36 @@
               triggerUpload(view2.state, view2, context, e2.clipboardData.files);
               e2.preventDefault();
             }
+          },
+          drop: (view2, e2) => {
+            if (view2.dragging) {
+              e2.stopPropagation();
+              return false;
+            }
+            const files = e2.dataTransfer && e2.dataTransfer.files;
+            if (!files || !files.length || !canUpload(context)) {
+              return false;
+            }
+            selectDropPosition(view2, e2);
+            triggerUpload(view2.state, view2, context, files);
+            e2.preventDefault();
+            e2.stopPropagation();
+            return true;
           }
         }
       }
     });
   };
+  function selectDropPosition(view2, e2) {
+    try {
+      const coords = view2.posAtCoords({ left: e2.clientX, top: e2.clientY });
+      if (coords) {
+        view2.dispatch(view2.state.tr.setSelection(Selection.near(view2.state.doc.resolve(coords.pos))));
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
   function getSelectionMarks(context) {
     if (context.editor.view.state.storedMarks && context.editor.view.state.storedMarks.length) {
       return context.editor.view.state.storedMarks;

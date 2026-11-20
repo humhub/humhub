@@ -8,6 +8,7 @@
 
 namespace humhub\modules\post\models\forms;
 
+use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\post\models\Post;
 use Yii;
@@ -102,13 +103,39 @@ class PostEditForm extends yii\base\Model
             return false;
         }
 
+        $removedFileGuids = array_diff(
+            FileExtension::getFileGuids($this->post->getOldAttribute('message')),
+            FileExtension::getFileGuids($this->post->message),
+        );
+
         if ($this->post->save()) {
-            $this->post->fileManager->attach($this->fileList);
+            // Files hidden in the stream (uploaded by the rich text editor) are attached only when the message references them
+            $this->post->fileManager->attach(FileHelper::filterStreamFiles($this->fileList));
+            $this->deleteRemovedFiles($removedFileGuids);
             return true;
         }
 
         $this->post->addError('message', Yii::t('PostModule.base', 'Post could not be saved!'));
         return false;
+    }
+
+    /**
+     * Deletes the files, which are hidden in the stream and were removed from the message, they are not
+     * shown anywhere anymore.
+     *
+     * @param string[] $fileGuids GUIDs of the files removed from the message
+     */
+    private function deleteRemovedFiles(array $fileGuids): void
+    {
+        if ($fileGuids === []) {
+            return;
+        }
+
+        foreach ($this->post->fileManager->findAll() as $file) {
+            if (!$file->show_in_stream && in_array($file->guid, $fileGuids, true)) {
+                $file->delete();
+            }
+        }
     }
 
     /**

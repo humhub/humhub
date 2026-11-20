@@ -303,6 +303,22 @@ class FileHelperTest extends HumHubDbTestCase
         static::assertFalse(FileHelper::existsStreamFile([$file->guid]));
     }
 
+    public function testFilterStreamFiles()
+    {
+        $hidden = $this->createStreamFile(['show_in_stream' => 0, 'created_by' => 3]);
+        $visible = $this->createStreamFile(['show_in_stream' => 1, 'created_by' => 3]);
+        $other = $this->createStreamFile(['show_in_stream' => 1, 'created_by' => 2]);
+
+        static::assertSame([], FileHelper::filterStreamFiles(null, 3));
+        static::assertSame([], FileHelper::filterStreamFiles([], 3));
+        static::assertSame([], FileHelper::filterStreamFiles('', 3));
+        static::assertSame([], FileHelper::filterStreamFiles([$hidden->guid, 'unknown'], 3));
+        static::assertSame([$visible->guid], FileHelper::filterStreamFiles([$hidden->guid, $visible->guid, $other->guid], 3));
+        static::assertSame([$visible->guid], FileHelper::filterStreamFiles($hidden->guid . ', ' . $visible->guid, 3));
+        // Without a user ID the current user is used, which is a guest here
+        static::assertSame([], FileHelper::filterStreamFiles([$visible->guid]));
+    }
+
     private function createStreamFile(array $attributes): File
     {
         $file = new File();

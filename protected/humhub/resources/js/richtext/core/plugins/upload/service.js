@@ -7,6 +7,7 @@
 
 import {loaderStart, replaceLoader, removeLoader} from "../loader/plugin";
 import {requestAltText} from "../image/alt-text";
+import {isHumhub} from "../../humhub-bridge";
 
 const isVideoFile = (file) => {
     return !!((file.mimeIcon && file.mimeIcon.indexOf('mime-video') === 0) ||
@@ -56,6 +57,21 @@ const createNodeFromFile = function (context, file) {
     return schema.text(file.name, [linkMark]);
 };
 
+/**
+ * The upload widget of the upload button rendered next to the editor
+ */
+const getUploadWidget = function(context) {
+    return isHumhub() ? humhub.require('ui.widget.Widget').instance($('#' + context.id + '-file-upload')) : null;
+}
+
+/**
+ * Whether the editor is able to upload files: the host uploads itself with the `upload` option, or
+ * the upload button of the editor is rendered next to it.
+ */
+const canUpload = function(context) {
+    return typeof context.options.upload === 'function' || !!getUploadWidget(context);
+}
+
 const triggerUpload = function(state, view, context, files) {
     // A fresh object to act as the ID for this upload
     let id = {};
@@ -65,7 +81,7 @@ const triggerUpload = function(state, view, context, files) {
         return;
     }
 
-    let uploadWidget = humhub.require('ui.widget.Widget').instance($('#'+context.id+'-file-upload'));
+    let uploadWidget = getUploadWidget(context);
 
     if (uploadWidget) {
         uploadWidget.off('uploadStart.richtext').on('uploadStart.richtext', (evt, response) => {
@@ -140,6 +156,7 @@ const createNodesFromResponse = function(context, response) {
 
 export {
     triggerUpload,
+    canUpload,
     uploadThroughOption,
     insertUploaded,
     createNodesFromResponse,

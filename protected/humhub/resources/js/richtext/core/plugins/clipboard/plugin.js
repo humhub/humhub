@@ -4,10 +4,10 @@
  * @license https://www.humhub.com/licences
  */
 
-import {Plugin} from 'prosemirror-state';
+import {Plugin, Selection} from 'prosemirror-state';
 import {Node, Slice} from 'prosemirror-model';
 import {getParser} from "../../../markdown";
-import {triggerUpload} from "../upload/service";
+import {triggerUpload, canUpload} from "../upload/service";
 import {$node} from "../../util/node";
 
 const clipboardPlugin = (context) => {
@@ -39,11 +39,46 @@ const clipboardPlugin = (context) => {
                         triggerUpload(view.state, view, context, e.clipboardData.files);
                         e.preventDefault();
                     }
+                },
+                drop: (view, e) => {
+                    // Moving content inside the editor: Chrome may carry a dragged image as a file too,
+                    // which would upload a copy of the image instead of moving it. ProseMirror handles
+                    // the move itself; the event must not reach the form's upload widget either, as it
+                    // would attach that file under the post.
+                    if (view.dragging) {
+                        e.stopPropagation();
+                        return false;
+                    }
+
+                    const files = e.dataTransfer && e.dataTransfer.files;
+                    if (!files || !files.length || !canUpload(context)) {
+                        return false;
+                    }
+
+                    // Insert the dropped files into the text at the drop position, as pasted ones, instead of
+                    // letting the upload widget of the form attach them under the form.
+                    selectDropPosition(view, e);
+                    triggerUpload(view.state, view, context, files);
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    return true;
                 }
             }
         },
     });
 };
+
+function selectDropPosition(view, e) {
+    try {
+        const coords = view.posAtCoords({left: e.clientX, top: e.clientY});
+        if (coords) {
+            view.dispatch(view.state.tr.setSelection(Selection.near(view.state.doc.resolve(coords.pos))));
+        }
+    } catch (err) {
+        console.warn(err);
+    }
+}
 
 function getSelectionMarks(context) {
     if (context.editor.view.state.storedMarks && context.editor.view.state.storedMarks.length) {
