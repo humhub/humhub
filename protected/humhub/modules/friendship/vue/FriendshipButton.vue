@@ -166,7 +166,7 @@ export default {
             return i18n.t('FriendshipModule.base', 'Pending');
         },
         toggleDropdownLabel() {
-            return i18n.t('base', 'Toggle Dropdown');
+            return i18n.t('base', 'More actions');
         },
     },
     created() {

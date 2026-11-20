@@ -3182,10 +3182,7 @@
       document.removeEventListener("keydown", this.onKeydown);
       if (this.show) {
         document.body.classList.remove("modal-open");
-        if (this.previouslyFocused && typeof this.previouslyFocused.focus === "function") {
-          this.previouslyFocused.focus();
-        }
-        this.previouslyFocused = null;
+        this.restoreFocus();
       }
     },
     methods: {
@@ -3196,8 +3193,10 @@
         this.$nextTick(() => {
           this.visible = true;
           this.$nextTick(() => {
-            if (this.$refs.dialog) {
-              this.$refs.dialog.focus();
+            const dialog = this.$refs.dialog;
+            if (dialog) {
+              const initial = dialog.querySelector("[autofocus]:not(:disabled)");
+              (initial || dialog).focus();
             }
             this.$emit("opened");
           });
@@ -3207,11 +3206,21 @@
         this.visible = false;
         document.body.classList.remove("modal-open");
         document.removeEventListener("keydown", this.onKeydown);
-        if (this.previouslyFocused && typeof this.previouslyFocused.focus === "function") {
-          this.previouslyFocused.focus();
-        }
-        this.previouslyFocused = null;
+        this.restoreFocus();
         this.$emit("closed");
+      },
+      // Back to the element that had the focus before opening, through `ui.focus` where the legacy
+      // runtime is there: it hands a trigger that is gone or hidden on to a sensible element
+      restoreFocus() {
+        const trigger = this.previouslyFocused;
+        this.previouslyFocused = null;
+        const ui = window.humhub && window.humhub.modules && window.humhub.modules.ui;
+        const focus = ui && ui.focus;
+        if (focus && typeof focus.restore === "function") {
+          focus.restore(trigger, this.$refs.dialog);
+        } else if (trigger && trigger.isConnected && typeof trigger.focus === "function") {
+          trigger.focus();
+        }
       },
       onKeydown(event) {
         if (event.key === "Escape" && this.keyboard) {
@@ -9897,7 +9906,7 @@
         return this.title || vue$1.i18n.t("FileModule.base", "Upload files");
       },
       toggleLabel() {
-        return vue$1.i18n.t("base", "Toggle Dropdown");
+        return vue$1.i18n.t("base", "More actions");
       },
       removeLabel() {
         return vue$1.i18n.t("base", "Delete");

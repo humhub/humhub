@@ -84,7 +84,7 @@
         return vue$1.i18n.t("FriendshipModule.base", "Pending");
       },
       toggleDropdownLabel() {
-        return vue$1.i18n.t("base", "Toggle Dropdown");
+        return vue$1.i18n.t("base", "More actions");
       }
     },
     created() {

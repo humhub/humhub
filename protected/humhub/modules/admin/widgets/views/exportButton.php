@@ -14,7 +14,7 @@ use humhub\widgets\Icon;
         <?= Icon::get('download') ?> <?= Yii::t('base', 'Export') ?>
     </button>
     <button type="button" class="btn btn-accent btn-icon-only dropdown-toggle" data-bs-toggle="dropdown">
-        <span class="visually-hidden">Toggle Dropdown</span>
+        <span class="visually-hidden"><?= Yii::t('base', 'More actions') ?></span>
     </button>
     <ul class="dropdown-menu">
         <li><?= Link::to('csv', $csv, false)

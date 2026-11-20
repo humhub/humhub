@@ -24,7 +24,7 @@ class MailStyleHelper
     public const DEFAULT_COLOR_INFO = '#0474e3';
     public const DEFAULT_TEXT_COLOR_MAIN = '#555555';
     public const DEFAULT_TEXT_COLOR_SOFT = '#555555';
-    public const DEFAULT_TEXT_COLOR_SOFT2 = '#aeaeae';
+    public const DEFAULT_TEXT_COLOR_SOFT2 = '#555555';
     public const DEFAULT_TEXT_COLOR_HIGHLIGHT = '#000000';
     public const DEFAULT_TEXT_COLOR_CONTRAST = '#ffffff';
     public const DEFAULT_BACKGROUND_COLOR_MAIN = '#ffffff';
@@ -61,9 +61,13 @@ class MailStyleHelper
         return static::getVariable('body-color', self::DEFAULT_TEXT_COLOR_SOFT);
     }
 
+    /**
+     * Quieter text of a mail (a footer link, an info line): the muted text colour, readable as any text. The
+     * disabled grey (`$body-tertiary-color`) is no text colour (WCAG 1.4.3)
+     */
     public static function getTextColorSoft2(): string
     {
-        return static::getVariable('body-tertiary-color', self::DEFAULT_TEXT_COLOR_SOFT2);
+        return static::getVariable('body-secondary-color', self::DEFAULT_TEXT_COLOR_SOFT2);
     }
 
     public static function getTextColorMain(): string

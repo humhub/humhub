@@ -106,7 +106,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (`humhub.ui.focus.trap()`, wired by `humhub.ui.modal`; `ui.focus.controls()` lists what Tab reaches).
     Bootstrap's own trap stays off (`data-bs-focus="false"`). Something a dialog opens outside of itself
     keeps the focus when it is a `role="dialog"` (the editor's dialog, now also the emoji picker, named
-    "Emoji picker"). The dead Bootstrap 3 `enforceFocus` override is gone.
+    "Emoji picker"). The dead Bootstrap 3 `enforceFocus` override is gone. A focus left in a dialog below
+    the topmost one is pulled into the topmost. A radio group is one stop, its checked radio, as for Tab.
+  - `UiModal` focuses the enabled `[autofocus]` element in it when it opens, otherwise the dialog, and hands the
+    focus back through `humhub.ui.focus.restore()` (a trigger in a closed dropdown goes to the dropdown's
+    toggle). The comment's delete dialog focuses "Cancel".
   - The confirmation dialog (`ui.modal.confirm()`) focuses "Cancel" when it opens. A dialog is focused on
     `shown` only when no control in it holds the focus yet.
   - The like button is one `<a role="button">` that changes its class (`like` / `unlike`), icon and text,
@@ -114,8 +118,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - `StreamEntry.loader()` moves a focus in the entry's menu to the entry before it hides the menu, so the
     reloaded entry gets it (visibility, lock comments, …).
   - The editor's full screen button is a toggle (`aria-pressed`, title translated); in full screen Tab
-    goes round the editor's toolbar and text, Escape leaves it and focuses the button (after a list of
-    suggestions is closed).
+    goes round the editor's toolbar and text (a link in the text is no stop of its own), Escape leaves it and
+    focuses the button (after a list of suggestions is closed). That Escape no longer reaches a dialog around
+    the editor, which stays open.
 - **Inputs have a border of 3:1, links in running text are underlined** (WCAG 1.4.11, 1.4.1).
   - `--hh-input-border-color` (`$hh-input-border-color`, `-dark`; `#949494`, dark `#6d6d6d`) is the line
     darkened to 3:1 on the fill of an input. Bootstrap's `$input-border-color` points to it (instead of
@@ -150,6 +155,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `$hh-{color}-fg` pass `hh-readable()` after the theme's variables. `$hh-{color}-fg` also reads on the colour's own
     subtle fill (accent as text: `#176e7b` instead of `#197684`), and the status text (`--bs-{color}-text-emphasis`)
     on its fill. `hh-readable($color, $background, $min-ratio)` takes a list of backgrounds.
+  - The body, strong and muted text read on every surface text is drawn on, `$hh-text-surfaces` (`-dark`): the
+    fill of a hovered item, the subtle fills, `$hh-accent-bg-soft` and `$mark-bg`. A theme's light body colour is
+    darkened until it reads on an alert too.
+  - `--hh-text-color-soft2` and `--hh-text-color-soft3` point to `--bs-secondary-color` instead of the disabled grey
+    `--bs-tertiary-color`: modules use them for text that has to be read. `MailStyleHelper::getTextColorSoft2()`
+    returns the muted text colour (`#555555` instead of `#aeaeae`).
   - The tinted backgrounds are their colour mixed into the surface, in both modes: the subtle fill and border of
     each theme colour (`$primary-bg-subtle` …, 20 % and 40 %), `$hh-accent-bg-soft` (8 %, `#edf5f6`) and `$mark-bg`
     (20 %). On white the subtle fills are Bootstrap's; in the dark mode they are lighter than a card instead of

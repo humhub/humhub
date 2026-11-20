@@ -335,7 +335,7 @@
         return vue.i18n.t("SpaceModule.base", "Owner");
       },
       toggleDropdownLabel() {
-        return vue.i18n.t("base", "Toggle Dropdown");
+        return vue.i18n.t("base", "More actions");
       },
       requestTitle() {
         return vue.i18n.t("SpaceModule.base", "<strong>Request</strong> Membership");

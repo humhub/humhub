@@ -49907,20 +49907,12 @@
       }
     }
   }
+  const isShown = (el) => typeof el.checkVisibility === "function" ? el.checkVisibility({ visibilityProperty: true }) : $(el).is(":visible");
   function onFullScreenKeydown(context, e2) {
-    if (e2.isDefaultPrevented()) {
+    if (e2.isDefaultPrevented() || e2.key !== "Tab" || e2.altKey || e2.ctrlKey || e2.metaKey) {
       return;
     }
-    if (e2.key === "Escape") {
-      if (leaveFullScreen(context)) {
-        e2.preventDefault();
-      }
-      return;
-    }
-    if (e2.key !== "Tab" || e2.altKey || e2.ctrlKey || e2.metaKey) {
-      return;
-    }
-    const controls = context.editor.$.find('button, a[href], input, select, textarea, [tabindex], [contenteditable="true"]').filter((i2, el) => el.getAttribute("tabindex") !== "-1" && !el.disabled && $(el).is(":visible")).toArray();
+    const controls = context.editor.$.find('button, a[href], input, select, textarea, [tabindex], [contenteditable="true"]').filter((i2, el) => el.getAttribute("tabindex") !== "-1" && !el.disabled && !(el.parentElement && el.parentElement.closest('[contenteditable="true"]')) && isShown(el)).toArray();
     if (!controls.length) {
       return;
     }
@@ -49932,6 +49924,12 @@
     } else if (!e2.shiftKey && document.activeElement === last2) {
       e2.preventDefault();
       first.focus();
+    }
+  }
+  function onFullScreenEscape(context, e2) {
+    if (e2.key === "Escape" && !e2.defaultPrevented && leaveFullScreen(context)) {
+      e2.preventDefault();
+      e2.stopPropagation();
     }
   }
   function leaveFullScreen(context) {
@@ -49981,9 +49979,15 @@
   function minimize(context, menuItem) {
     let $editor = context.editor.$;
     if ($editor.is(".fullscreen")) {
-      $("body").removeClass("modal-open");
+      if (!$(".modal.show").length) {
+        $("body").removeClass("modal-open");
+      }
       $editor.removeClass("fullscreen");
       $editor.off("keydown.fullscreen");
+      if (context.fullScreenEscapeHandler) {
+        $editor[0].removeEventListener("keydown", context.fullScreenEscapeHandler, true);
+        context.fullScreenEscapeHandler = null;
+      }
       $editor.find(".Prosemirror").blur();
       context.fullScreenMenuItem.switchIcon(icons.enlarge);
       context.fullScreenMenuItem.setPressed(false);
@@ -49999,6 +50003,8 @@
       $("body").addClass("modal-open");
       $editor.addClass("fullscreen");
       $editor.off("keydown.fullscreen").on("keydown.fullscreen", (e2) => onFullScreenKeydown(context, e2));
+      context.fullScreenEscapeHandler = (e2) => onFullScreenEscape(context, e2);
+      $editor[0].addEventListener("keydown", context.fullScreenEscapeHandler, true);
       context.fullScreenMenuItem.switchIcon(icons.shrink);
       context.fullScreenMenuItem.setPressed(true);
     }
@@ -50031,10 +50037,6 @@
         minimize(context);
       });
     },
-    // Before the base keymap, which takes Escape to select the parent node
-    keymap: (context) => ({
-      "Escape": () => leaveFullScreen(context)
-    }),
     menu: (context) => {
       let fullScreenMenu = menu$3(context);
       context.fullScreenMenuItem = fullScreenMenu[0].item;

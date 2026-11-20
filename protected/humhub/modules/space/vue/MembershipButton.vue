@@ -245,7 +245,7 @@ export default {
             return i18n.t('SpaceModule.base', 'Owner');
         },
         toggleDropdownLabel() {
-            return i18n.t('base', 'Toggle Dropdown');
+            return i18n.t('base', 'More actions');
         },
         requestTitle() {
             return i18n.t('SpaceModule.base', '<strong>Request</strong> Membership');

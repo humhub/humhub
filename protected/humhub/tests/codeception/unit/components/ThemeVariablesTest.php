@@ -10,6 +10,7 @@ namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\Theme;
 use humhub\components\ThemeVariables;
+use humhub\helpers\ScssHelper;
 use humhub\services\ActiveThemeService;
 use ReflectionProperty;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -200,8 +201,25 @@ class ThemeVariablesTest extends HumHubDbTestCase
 
         $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
 
-        $this->assertSame('#6b6b6b', $variables->get('body-secondary-color'));
+        $this->assertSame('#626262', $variables->get('body-secondary-color')); // Readable on the darkest tint too
         $this->assertSame('#496a70', $variables->get('hh-accent-fg'));
+    }
+
+    /**
+     * A lighter body colour a theme sets reads on every surface text is drawn on, the tinted ones included
+     */
+    public function testBodyColorOfTheCustomScssReadsOnTheTints()
+    {
+        Yii::$app->settings->set('themeCustomScss', '$body-color: #777;');
+        ActiveThemeService::flush();
+
+        $variables = new ThemeVariables(['theme' => ActiveThemeService::getTheme()]);
+        $body = $variables->get('body-color');
+
+        $this->assertNotSame('#777777', $body);
+        foreach (['body-secondary-bg', 'accent-bg-subtle', 'info-bg-subtle', 'danger-bg-subtle', 'mark-bg'] as $surface) {
+            $this->assertGreaterThanOrEqual(4.5, ScssHelper::getContrastRatio($body, $variables->get($surface)), $surface);
+        }
     }
 
     /**

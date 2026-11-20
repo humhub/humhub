@@ -212,7 +212,7 @@ export default {
             return this.title || i18n.t('FileModule.base', 'Upload files');
         },
         toggleLabel() {
-            return i18n.t('base', 'Toggle Dropdown');
+            return i18n.t('base', 'More actions');
         },
         removeLabel() {
             return i18n.t('base', 'Delete');

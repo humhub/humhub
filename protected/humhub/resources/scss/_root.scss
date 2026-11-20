@@ -19,7 +19,7 @@
     --hh-text-color-highlight: var(--bs-emphasis-color);
     --hh-text-color-secondary: var(--bs-secondary-color);
     --hh-text-color-soft: var(--bs-body-color);
-    --hh-text-color-soft2: var(--bs-tertiary-color);
+    --hh-text-color-soft2: var(--bs-secondary-color); // Text that has to be read, no longer a faint grey
     --hh-background-color-main: var(--bs-body-bg);
     --hh-background-color-page: var(--hh-page-bg);
     --hh-background-color-secondary: var(--bs-tertiary-bg);
@@ -28,7 +28,7 @@
     --hh-background3: var(--bs-border-color);
     --hh-text-color-contrast: var(--bs-white); // Always white before, whatever the background
     --hh-text-color-default: var(--bs-body-color);
-    --hh-text-color-soft3: var(--bs-tertiary-color);
+    --hh-text-color-soft3: var(--bs-secondary-color);
     --hh-background4: var(--bs-tertiary-color);
     --hh-background-color-success: var(--bs-success-bg-subtle);
     --hh-text-color-success: var(--bs-success-text-emphasis);
@@ -132,11 +132,11 @@
 }
 
 // High contrast (see `hh-high-contrast` in _mixins.scss): redefines semantic tokens only, in both colour modes.
-// The body text and a theme color as text reach `$hh-high-contrast-ratio` on the darkest (lightest) surface and a theme
-// color as text also on its subtle fill, a theme color as a fill is darkened (lightened) until its text does. Worked out once here: the mixin below is output twice
+// The body text reaches `$hh-high-contrast-ratio` on the surfaces text is drawn on (`$hh-text-surfaces`), a theme color as
+// text on the darkest (lightest) surface and its subtle fill, a theme color as a fill is darkened (lightened) until its text does. Worked out once here: the mixin below is output twice
 // (the user's option and the system setting), and _button.scss reads the fills too
-$hh-body-color-high-contrast: hh-readable($body-color, $body-secondary-bg, $hh-high-contrast-ratio);
-$hh-body-color-high-contrast-dark: hh-readable($body-color-dark, $body-secondary-bg-dark, $hh-high-contrast-ratio);
+$hh-body-color-high-contrast: hh-readable($body-color, $hh-text-surfaces, $hh-high-contrast-ratio);
+$hh-body-color-high-contrast-dark: hh-readable($body-color-dark, $hh-text-surfaces-dark, $hh-high-contrast-ratio);
 $hh-fg-high-contrast: ();
 $hh-fg-high-contrast-dark: ();
 $hh-fill-high-contrast: ();

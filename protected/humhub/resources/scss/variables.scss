@@ -105,11 +105,13 @@ $mark-bg: mix($warning, $body-bg, 20%) !default; // Marked text
 // Inks: a color drawn as text or as an icon reads on the surfaces it is drawn on, the darkest of them (`hh-readable()`).
 // A theme's own value passes the check too: the lines without `!default` come after the theme's variables
 $hh-fg-contrast-ratio: 4.5 !default; // WCAG 2.2 AA for normal text
-$body-color: hh-readable($body-color, $body-secondary-bg, $hh-fg-contrast-ratio);
-$body-emphasis-color: hh-readable($body-emphasis-color, $body-secondary-bg, $hh-fg-contrast-ratio);
+// The surfaces text is drawn on: the fill of a hovered item and the tinted ones. A text color reads on each of them
+$hh-text-surfaces: ($body-secondary-bg, $primary-bg-subtle, $secondary-bg-subtle, $accent-bg-subtle, $info-bg-subtle, $success-bg-subtle, $warning-bg-subtle, $danger-bg-subtle, $hh-accent-bg-soft, $mark-bg) !default;
+$body-color: hh-readable($body-color, $hh-text-surfaces, $hh-fg-contrast-ratio);
+$body-emphasis-color: hh-readable($body-emphasis-color, $hh-text-surfaces, $hh-fg-contrast-ratio);
 // Muted text (Bootstrap's `.text-body-secondary`, `.form-text`) is the body text; a lighter grey a theme sets reads too
 $body-secondary-color: $body-color !default;
-$body-secondary-color: hh-readable($body-secondary-color, $body-secondary-bg, $hh-fg-contrast-ratio);
+$body-secondary-color: hh-readable($body-secondary-color, $hh-text-surfaces, $hh-fg-contrast-ratio);
 // A field's placeholder: halfway between the body text and the field, darkened until it reads on the field, so it is
 // lighter than a value. Bootstrap's `$input-placeholder-color` takes it as `--hh-input-placeholder-color`
 $hh-input-placeholder-color: mix($body-color, $body-bg, 50%) !default;
@@ -411,10 +413,11 @@ $hh-accent-bg-soft-dark: mix($accent, $body-bg-dark, 8%) !default;
 $mark-bg-dark: mix($warning, $body-bg-dark, 20%) !default;
 
 // The inks, readable on the lightest dark surface they are drawn on (see "Inks" above)
-$body-color-dark: hh-readable($body-color-dark, $body-secondary-bg-dark, $hh-fg-contrast-ratio);
-$body-emphasis-color-dark: hh-readable($body-emphasis-color-dark, $body-secondary-bg-dark, $hh-fg-contrast-ratio);
+$hh-text-surfaces-dark: ($body-secondary-bg-dark, $primary-bg-subtle-dark, $secondary-bg-subtle-dark, $accent-bg-subtle-dark, $info-bg-subtle-dark, $success-bg-subtle-dark, $warning-bg-subtle-dark, $danger-bg-subtle-dark, $hh-accent-bg-soft-dark, $mark-bg-dark) !default;
+$body-color-dark: hh-readable($body-color-dark, $hh-text-surfaces-dark, $hh-fg-contrast-ratio);
+$body-emphasis-color-dark: hh-readable($body-emphasis-color-dark, $hh-text-surfaces-dark, $hh-fg-contrast-ratio);
 $body-secondary-color-dark: $body-color-dark !default;
-$body-secondary-color-dark: hh-readable($body-secondary-color-dark, $body-secondary-bg-dark, $hh-fg-contrast-ratio);
+$body-secondary-color-dark: hh-readable($body-secondary-color-dark, $hh-text-surfaces-dark, $hh-fg-contrast-ratio);
 $hh-input-placeholder-color-dark: mix($body-color-dark, $body-bg-dark, 50%) !default;
 $hh-input-placeholder-color-dark: hh-readable($hh-input-placeholder-color-dark, $body-bg-dark, $hh-fg-contrast-ratio);
 $body-tertiary-color-dark: mix($body-color-dark, $body-bg-dark, 50%) !default;

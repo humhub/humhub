@@ -60,8 +60,11 @@ taken as it is.
   by `hh-readable($color, $background, $min-ratio)` (`_functions.scss`) until it reaches its ratio
   on the surface it is checked against. A colour that reads already stays as it is.
 - **The reference surface** of an ink is the darkest surface it is drawn on in the light mode, the
-  lightest in the dark mode: `$body-secondary-bg` (`-dark`), the fill of a hovered item. An ink
-  drawn on one surface only is checked against that one: a field's placeholder against the field.
+  lightest in the dark mode: `$body-secondary-bg` (`-dark`), the fill of a hovered item. The text
+  colours (strong, body, muted) are drawn on the tinted surfaces too and read on each of
+  `$hh-text-surfaces` (`-dark`): the hover fill, the subtle fills of the theme colours,
+  `$hh-accent-bg-soft` and `$mark-bg`. An ink drawn on one surface only is checked against that
+  one: a field's placeholder against the field.
 - **The ratios:** text 4.5:1 (`$hh-fg-contrast-ratio`), the border of a control 3:1, text in high
   contrast 7:1 (`$hh-high-contrast-ratio`). A disabled control is exempt (WCAG 1.4.3, 1.4.11).
 - **A fill in a theme colour** carries white or black text, whichever reaches
@@ -85,9 +88,9 @@ the disabled colour, which is exempt from contrast and holds no text that has to
 
 | Job | Token | Sass | Light | Dark | Derived |
 |---|---|---|---|---|---|
-| Strong text: headings, a link, a hovered or active item | `--bs-emphasis-color` | `$body-emphasis-color` | `#000` | `#fff` | the base colour, readable (4.5:1) on the reference surface |
-| Body text, also meta data, help text, captions, hints, secondary icons | `--bs-body-color` | `$body-color` | `#555` | `#ddd` | the base colour, readable (4.5:1) on the reference surface |
-| Muted text (Bootstrap's role, see below) | `--bs-secondary-color` | `$body-secondary-color` | = body text | = body text | `$body-color`; a lighter grey a theme sets is made readable (4.5:1) on the reference surface |
+| Strong text: headings, a link, a hovered or active item | `--bs-emphasis-color` | `$body-emphasis-color` | `#000` | `#fff` | the base colour, readable (4.5:1) on the text surfaces |
+| Body text, also meta data, help text, captions, hints, secondary icons | `--bs-body-color` | `$body-color` | `#555` | `#ddd` | the base colour, readable (4.5:1) on the text surfaces |
+| Muted text (Bootstrap's role, see below) | `--bs-secondary-color` | `$body-secondary-color` | = body text | = body text | `$body-color`; a lighter grey a theme sets is made readable (4.5:1) on the text surfaces |
 | A field's placeholder | `--hh-input-placeholder-color` (Bootstrap's `$input-placeholder-color` points to the token) | `$hh-input-placeholder-color` | `#757575` | `#898989` | the middle between the body colour and the surface, made readable (4.5:1) on the surface: `hh-readable(mix($body-color, $body-bg, 50%), $body-bg, $hh-fg-contrast-ratio)` |
 | Disabled: the text and the icon of a disabled item | `--bs-tertiary-color` | `$body-tertiary-color` | `#aaa` | `#808080` | the middle between the body colour and the surface: `mix($body-color, $body-bg, 50%)`; exempt from contrast |
 | A theme colour as text on a surface: a link, an icon, a label, a status message | `--hh-{color}-fg` | `$hh-{color}-fg` | the colour, darker where needed | the colour, lighter where needed | the theme colour, readable (4.5:1) on the reference surface and on its own subtle fill (`--bs-{color}-bg-subtle`) |
@@ -95,8 +98,8 @@ the disabled colour, which is exempt from contrast and holds no text that has to
 | Status text on its subtle fill (an alert) | `--bs-{color}-text-emphasis` | Bootstrap's `${color}-text-emphasis` | Bootstrap's (`shade-color($color, 60%)`) | Bootstrap's (`tint-color($color, 40%)`) | made readable (4.5:1) on `--bs-{color}-bg-subtle` (`maps.scss`) |
 | Inline code | `--bs-code-color` | `$code-color` | `#197a88` | `#499ba7` | the accent, readable (4.5:1) on its fill `--hh-accent-bg-soft` |
 
-In high contrast the emphasis, body, muted and `-fg` colours reach 7:1 on the reference surface (a
-`-fg` colour also on its subtle fill); the placeholder stays at 4.5:1 on the field, and a disabled
+In high contrast the body and muted colours reach 7:1 on the text surfaces, a `-fg` colour on the
+reference surface and its subtle fill; the placeholder stays at 4.5:1 on the field, and a disabled
 item takes the placeholder colour, so it is readable and still set apart.
 
 `--bs-secondary-color` is Bootstrap's muted text (`.text-body-secondary`, formerly `.text-muted`;
@@ -207,7 +210,7 @@ computes its `var()` where it is declared.
 | `--hh-text-color-main`, `--hh-text-color-default`, `--hh-text-color-soft` | `--bs-body-color` |
 | `--hh-text-color-highlight` | `--bs-emphasis-color` |
 | `--hh-text-color-secondary` | `--bs-secondary-color` |
-| `--hh-text-color-soft2`, `--hh-text-color-soft3` | `--bs-tertiary-color` |
+| `--hh-text-color-soft2`, `--hh-text-color-soft3` | `--bs-secondary-color` (text that has to be read) |
 | `--hh-background-color-main` | `--bs-body-bg` |
 | `--hh-background-color-page` | `--hh-page-bg` |
 | `--hh-background-color-secondary` | `--bs-tertiary-bg` |
@@ -265,3 +268,7 @@ changes the modules that read it, not the core: it sets the Sass variable instea
    inline code takes `--hh-accent-bg-soft`. `hh-readable()` takes a list of backgrounds.
    `ThemeHelper::getAllVariables()` resolves what the core derives also where a theme sets it, so PHP
    (a mail) gets the checked text colours too.
+7. The text colours read on the tinted surfaces as well (`$hh-text-surfaces`), also a body colour a
+   theme sets. `--hh-text-color-soft2` and `--hh-text-color-soft3` point to `--bs-secondary-color`,
+   and `MailStyleHelper::getTextColorSoft2()` returns the muted text colour: modules use them for
+   text that has to be read.

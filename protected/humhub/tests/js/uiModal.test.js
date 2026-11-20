@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import { h } from 'vue';
 import UiModal from '../../vue/UiModal.vue';
@@ -202,6 +202,48 @@ describe('UiModal', () => {
         expect(document.activeElement).toBe(trigger);
 
         trigger.remove();
+    });
+
+    it('focuses the element marked autofocus instead of the dialog', async () => {
+        mountModal({
+            props: { show: true, title: 'T' },
+            slots: { footer: () => [h('button', { type: 'button', class: 'other' }, 'Delete'), h('button', { type: 'button', class: 'cancel', autofocus: true }, 'Cancel')] },
+        });
+        await flushPromises();
+
+        expect(document.activeElement).toBe(dialog().querySelector('.cancel'));
+    });
+
+    it('hands the focus back through ui.focus, which knows what to do with a trigger that is gone', async () => {
+        const modules = ((globalThis.humhub ||= {}).modules ||= {});
+        const restore = vi.fn();
+        modules.ui = { focus: { restore } };
+        const trigger = document.createElement('button');
+        document.body.appendChild(trigger);
+        trigger.focus();
+
+        mountModal({ props: { show: true, title: 'T' } });
+        await flushPromises();
+        const root = dialog();
+        trigger.remove();
+        await wrapper.setProps({ show: false });
+
+        expect(restore).toHaveBeenCalledWith(trigger, root);
+        delete modules.ui;
+    });
+
+    it('does not focus a trigger that is gone without ui.focus', async () => {
+        const trigger = document.createElement('button');
+        document.body.appendChild(trigger);
+        trigger.focus();
+        const focusSpy = vi.spyOn(trigger, 'focus');
+
+        mountModal({ props: { show: true, title: 'T' } });
+        await flushPromises();
+        trigger.remove();
+        await wrapper.setProps({ show: false });
+
+        expect(focusSpy).not.toHaveBeenCalled();
     });
 
     it('restores focus to the previously focused element when unmounted while open', async () => {

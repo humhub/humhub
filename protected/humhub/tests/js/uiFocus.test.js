@@ -319,6 +319,27 @@ describe('ui.focus', () => {
             expect(document.activeElement.id).toBe('last');
         });
 
+        it('pulls the focus from a dialog below into the topmost one', () => {
+            html('<div class="modal show" id="lower"><button id="below">x</button></div>' + dialog);
+            byId('below').focus();
+            expect(focus.trap(tab(), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('first');
+        });
+
+        it('takes a radio group as one stop, by its checked radio', () => {
+            html('<div id="dlg" class="modal show"><button id="first">1</button>'
+                + '<input type="radio" name="r" id="r1"><input type="radio" name="r" id="r2" checked>'
+                + '<input type="radio" name="r" id="r3"></div>');
+            expect(focus.controls(byId('dlg')).map((el) => el.id)).toEqual(['first', 'r2']);
+
+            byId('r3').focus();
+            expect(focus.trap(tab(), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('first');
+
+            expect(focus.trap(tab(true), byId('dlg'))).toBe(true);
+            expect(document.activeElement.id).toBe('r2');
+        });
+
         it('leaves the focus to another dialog opened on top', () => {
             html(dialog + '<div role="dialog" aria-label="Emoji picker"><input id="search"></div>');
             byId('search').focus();

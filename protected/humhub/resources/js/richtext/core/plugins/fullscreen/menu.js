@@ -27,27 +27,22 @@ class FullScreenMenuItem extends MenuItem {
     }
 }
 
-// In full screen the editor covers the page: Tab and Shift+Tab go round its toolbar and text, Escape leaves the
-// full screen and gives the focus back to the button (WCAG 2.4.3, 2.1.2)
+const isShown = (el) => (typeof el.checkVisibility === 'function'
+    ? el.checkVisibility({visibilityProperty: true})
+    : $(el).is(':visible'));
+
+// In full screen the editor covers the page: Tab and Shift+Tab go round its toolbar and text (WCAG 2.4.3, 2.1.2).
+// After the editor's own keys: Tab in a list indents
 function onFullScreenKeydown(context, e) {
-    if (e.isDefaultPrevented()) {
+    if (e.isDefaultPrevented() || e.key !== 'Tab' || e.altKey || e.ctrlKey || e.metaKey) {
         return;
     }
 
-    if (e.key === 'Escape') {
-        if (leaveFullScreen(context)) {
-            e.preventDefault();
-        }
-        return;
-    }
-
-    if (e.key !== 'Tab' || e.altKey || e.ctrlKey || e.metaKey) {
-        return;
-    }
-
+    // The text is one stop: a link in it is no control of its own
     const controls = context.editor.$
         .find('button, a[href], input, select, textarea, [tabindex], [contenteditable="true"]')
-        .filter((i, el) => el.getAttribute('tabindex') !== '-1' && !el.disabled && $(el).is(':visible'))
+        .filter((i, el) => el.getAttribute('tabindex') !== '-1' && !el.disabled
+            && !(el.parentElement && el.parentElement.closest('[contenteditable="true"]')) && isShown(el))
         .toArray();
     if (!controls.length) {
         return;
@@ -61,6 +56,15 @@ function onFullScreenKeydown(context, e) {
     } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
         first.focus();
+    }
+}
+
+// Escape leaves the full screen and gives the focus back to the button. Caught before the editor (whose base keymap
+// selects the parent node on Escape) and before a dialog around the editor, which would close as well
+function onFullScreenEscape(context, e) {
+    if (e.key === 'Escape' && !e.defaultPrevented && leaveFullScreen(context)) {
+        e.preventDefault();
+        e.stopPropagation();
     }
 }
 
@@ -124,9 +128,16 @@ export function minimize(context, menuItem) {
     let $editor = context.editor.$;
 
     if ($editor.is('.fullscreen')) {
-        $('body').removeClass('modal-open');
+        // A dialog around the editor keeps the page from scrolling
+        if (!$('.modal.show').length) {
+            $('body').removeClass('modal-open');
+        }
         $editor.removeClass('fullscreen');
         $editor.off('keydown.fullscreen');
+        if (context.fullScreenEscapeHandler) {
+            $editor[0].removeEventListener('keydown', context.fullScreenEscapeHandler, true);
+            context.fullScreenEscapeHandler = null;
+        }
         $editor.find('.Prosemirror').blur();
 
         context.fullScreenMenuItem.switchIcon(icons.enlarge);
@@ -147,6 +158,8 @@ export function maximize(context, menuItem) {
         $('body').addClass('modal-open');
         $editor.addClass('fullscreen');
         $editor.off('keydown.fullscreen').on('keydown.fullscreen', (e) => onFullScreenKeydown(context, e));
+        context.fullScreenEscapeHandler = (e) => onFullScreenEscape(context, e);
+        $editor[0].addEventListener('keydown', context.fullScreenEscapeHandler, true);
 
         context.fullScreenMenuItem.switchIcon(icons.shrink);
         context.fullScreenMenuItem.setPressed(true);

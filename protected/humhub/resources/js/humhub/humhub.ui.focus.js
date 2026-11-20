@@ -72,8 +72,15 @@ humhub.module('ui.focus', function (module, require, $) {
         return control || (isFocusable(el) ? el : null);
     };
 
+    // Radios of one group (same name and form) are one Tab stop
+    var sameStop = function (a, b) {
+        return a === b || (!!a && !!b && a.type === 'radio' && b.type === 'radio' && !!a.name
+            && a.name === b.name && a.form === b.form);
+    };
+
     /**
-     * The shown controls inside an element that Tab reaches, in document order.
+     * The shown controls inside an element that Tab reaches, in document order. A radio group counts once,
+     * by its checked radio.
      *
      * @param {Element|jQuery} el
      * @returns {Element[]}
@@ -83,15 +90,28 @@ humhub.module('ui.focus', function (module, require, $) {
         if (!el) {
             return [];
         }
-        return $(el).find(CONTROLS + ', [contenteditable="true"]').filter(function () {
-            return this.getAttribute('tabindex') !== '-1' && !this.closest('[inert]') && isFocusable(this);
-        }).toArray();
+        var result = [];
+        $(el).find(CONTROLS + ', [contenteditable="true"]').each(function () {
+            if (this.getAttribute('tabindex') === '-1' || this.closest('[inert]') || !isFocusable(this)) {
+                return;
+            }
+            var control = this;
+            var index = result.findIndex(function (other) {
+                return sameStop(other, control);
+            });
+            if (index < 0) {
+                result.push(control);
+            } else if (control.checked) {
+                result[index] = control;
+            }
+        });
+        return result;
     };
 
     /**
      * Keeps Tab and Shift+Tab inside a dialog: from its last control to its first and back, and into it
-     * when the focus is outside of it. Another dialog holding the focus (`role="dialog"`, `.modal`) keeps
-     * it, such as what the dialog opened on top of itself.
+     * when the focus is outside of it, in a dialog below it included. A popup the dialog opened on top of
+     * itself (a `role="dialog"` that is no `.modal`: the editor's dialog, the emoji picker) keeps its focus.
      *
      * @param {KeyboardEvent|jQuery.Event} evt a keydown
      * @param {Element|jQuery} dialog
@@ -106,8 +126,8 @@ humhub.module('ui.focus', function (module, require, $) {
 
         var active = document.activeElement;
         var inside = !!active && dialog.contains(active);
-        if (!inside && active && active !== document.body
-            && $(active).closest('[role="dialog"], [role="alertdialog"], .modal').length) {
+        var $other = active && !inside ? $(active).closest('[role="dialog"], [role="alertdialog"], .modal') : $();
+        if ($other.length && !$other.is('.modal')) {
             return false;
         }
 
@@ -119,9 +139,9 @@ humhub.module('ui.focus', function (module, require, $) {
         }
         if (!inside) {
             target = evt.shiftKey ? all[all.length - 1] : all[0];
-        } else if (evt.shiftKey && (active === all[0] || active === dialog)) {
+        } else if (evt.shiftKey && (sameStop(active, all[0]) || active === dialog)) {
             target = all[all.length - 1];
-        } else if (!evt.shiftKey && active === all[all.length - 1]) {
+        } else if (!evt.shiftKey && sameStop(active, all[all.length - 1])) {
             target = all[0];
         }
         if (!target) {

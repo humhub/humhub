@@ -102,8 +102,11 @@ let uidSeq = 0;
  * - `keyboard` (default `true`): Escape requests a close. The listener is added to
  *   `document` only while `show` is true and removed the moment it becomes false (or
  *   the component unmounts) - never a lingering global listener.
- * - Focus: the dialog root (`tabindex="-1"`) is focused once it finishes opening;
- *   whatever had focus before opening is restored once it finishes closing.
+ * - Focus: an element of the dialog marked `autofocus` (the safe choice of a confirmation,
+ *   e.g. "Cancel") is focused once it finishes opening, otherwise the dialog root
+ *   (`tabindex="-1"`). Closing hands the focus back to whatever had it before
+ *   (`humhub.ui.focus.restore()`: a trigger in a closed dropdown hands over to its toggle,
+ *   a removed one to the content). Tab stays inside the topmost dialog (`humhub.ui.modal`).
  * - Scroll-lock: adds/removes Bootstrap's own `body.modal-open` class (the exact class
  *   `_modal.scss` already themes) while open. Stacking with the legacy `#globalModal`
  *   (or another `UiModal`) at the same time is out of scope - this component does not
@@ -181,10 +184,7 @@ export default {
         document.removeEventListener('keydown', this.onKeydown);
         if (this.show) {
             document.body.classList.remove('modal-open');
-            if (this.previouslyFocused && typeof this.previouslyFocused.focus === 'function') {
-                this.previouslyFocused.focus();
-            }
-            this.previouslyFocused = null;
+            this.restoreFocus();
         }
     },
     methods: {
@@ -196,8 +196,10 @@ export default {
             this.$nextTick(() => {
                 this.visible = true;
                 this.$nextTick(() => {
-                    if (this.$refs.dialog) {
-                        this.$refs.dialog.focus();
+                    const dialog = this.$refs.dialog;
+                    if (dialog) {
+                        const initial = dialog.querySelector('[autofocus]:not(:disabled)');
+                        (initial || dialog).focus();
                     }
                     this.$emit('opened');
                 });
@@ -207,13 +209,22 @@ export default {
             this.visible = false;
             document.body.classList.remove('modal-open');
             document.removeEventListener('keydown', this.onKeydown);
-
-            if (this.previouslyFocused && typeof this.previouslyFocused.focus === 'function') {
-                this.previouslyFocused.focus();
-            }
-            this.previouslyFocused = null;
+            this.restoreFocus();
 
             this.$emit('closed');
+        },
+        // Back to the element that had the focus before opening, through `ui.focus` where the legacy
+        // runtime is there: it hands a trigger that is gone or hidden on to a sensible element
+        restoreFocus() {
+            const trigger = this.previouslyFocused;
+            this.previouslyFocused = null;
+            const ui = window.humhub && window.humhub.modules && window.humhub.modules.ui;
+            const focus = ui && ui.focus;
+            if (focus && typeof focus.restore === 'function') {
+                focus.restore(trigger, this.$refs.dialog);
+            } else if (trigger && trigger.isConnected && typeof trigger.focus === 'function') {
+                trigger.focus();
+            }
         },
         onKeydown(event) {
             if (event.key === 'Escape' && this.keyboard) {

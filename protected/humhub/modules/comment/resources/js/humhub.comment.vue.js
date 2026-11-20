@@ -201,11 +201,13 @@
         }, null, 8, _hoisted_2$3)
       ]),
       footer: vue$1.withCtx(() => [
+        vue$1.createCommentVNode(" The safe choice takes the focus when the dialog opens (WCAG 2.4.3) "),
         vue$1.createElementVNode(
           "button",
           {
             type: "button",
             class: "btn btn-light",
+            autofocus: "",
             onClick: _cache[3] || (_cache[3] = (...args) => $options.close && $options.close(...args))
           },
           vue$1.toDisplayString($options.cancelLabel),

@@ -29,7 +29,8 @@
         <p v-else>{{ bodyLabel }}</p>
 
         <template #footer>
-            <button type="button" class="btn btn-light" @click="close">{{ cancelLabel }}</button>
+            <!-- The safe choice takes the focus when the dialog opens (WCAG 2.4.3) -->
+            <button type="button" class="btn btn-light" autofocus @click="close">{{ cancelLabel }}</button>
             <button
                 type="button"
                 class="btn btn-danger"
