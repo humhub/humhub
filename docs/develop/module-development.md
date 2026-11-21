@@ -94,7 +94,7 @@ Marketplace metadata.
 | `description` | yes      | One-line description                                                       |
 | `humhub`      | no       | `minVersion` and `maxVersion` core compatibility, `modules` [dependencies](#module-dependencies) |
 | `keywords`    | no       | Array of keywords for marketplace search                                   |
-| `screenshots` | no       | Screenshot file names, relative to [`Module::$resourcesPath`](module-base-class.md#resourcespath) |
+| `screenshots` | no       | Screenshot file paths, relative to the module root (e.g. `resources/screen_1.jpg`) |
 | `homepage`    | no       | Module homepage URL                                                        |
 | `authors`     | no       | `[{name, email, homepage, role}]`                                          |
 | `licence`     | no       | [SPDX](https://spdx.org/licenses/) identifier, or `proprietary`            |
@@ -111,7 +111,7 @@ Example:
         "minVersion": "1.16"
     },
     "keywords": ["my", "cool", "module"],
-    "screenshots": ["assets/screen_1.jpg"],
+    "screenshots": ["resources/screen_1.jpg"],
     "homepage": "https://www.example.com",
     "authors": [
         {
@@ -186,7 +186,7 @@ Common directories beyond the minimal three files:
 
 ## Module icon
 
-Each module should ship a `module_image.png` — square, at least 128×128 px — in the [`resourcesPath`](module-base-class.md#resourcespath) (defaults to `assets/`). Override `Module::getImage()` to point elsewhere.
+Each module should ship a `module_image.png` — square, at least 128×128 px — in the [`resourcesPath`](module-base-class.md#resourcespath) (defaults to `resources/`). Override `Module::getImage()` to point elsewhere.
 
 ## Lifecycle
 
