@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "936770f4355484a618754e31d5c9c6e6",
+    "content-hash": "d30618b978751b540eac5a464ab73402",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -14370,16 +14370,16 @@
         },
         {
             "name": "mspirkov/yii2-phpstan",
-            "version": "0.18.0",
+            "version": "0.19.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mspirkov/yii2-phpstan.git",
-                "reference": "019a7701d9bd2bbab5f00258fbcb17d232ae95c6"
+                "reference": "af626fdffccb4bc194bbfa474570f9b53599bca5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mspirkov/yii2-phpstan/zipball/019a7701d9bd2bbab5f00258fbcb17d232ae95c6",
-                "reference": "019a7701d9bd2bbab5f00258fbcb17d232ae95c6",
+                "url": "https://api.github.com/repos/mspirkov/yii2-phpstan/zipball/af626fdffccb4bc194bbfa474570f9b53599bca5",
+                "reference": "af626fdffccb4bc194bbfa474570f9b53599bca5",
                 "shasum": ""
             },
             "require": {
@@ -14441,9 +14441,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mspirkov/yii2-phpstan/issues",
-                "source": "https://github.com/mspirkov/yii2-phpstan/tree/0.18.0"
+                "source": "https://github.com/mspirkov/yii2-phpstan/tree/0.19.0"
             },
-            "time": "2026-11-16T19:54:38+00:00"
+            "time": "2026-11-22T17:00:27+00:00"
         },
         {
             "name": "php-webdriver/webdriver",
