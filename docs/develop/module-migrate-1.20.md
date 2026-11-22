@@ -50,6 +50,15 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `session`, e.g. `token.calendar:write`) to the `rateLimiter` component, see
   `docs/develop/concept-rate-limiting.md`. `ScopeFilter::resolveScope()` is new.
 
+- **WebDAV at `/dav/`** (see [WebDAV](concept-webdav.md)). A module serves a Sabre collection
+  there by adding a `humhub\modules\dav\components\Mount` in `dav\Module::EVENT_COLLECT_MOUNTS`,
+  with a read and a write scope of its own. Core ships `sabre/dav` ^4.7 with `sabre/vobject`,
+  `sabre/xml`, `sabre/uri`, `sabre/http` and `sabre/event`; a module requiring core 1.20 drops
+  these from its own `composer.json`. A module's `vendor/autoload.php` registers in front of
+  core's, so its copies would replace core's in every request, `/dav/` included.
+  New: `file\models\File::setStoredFileByPath()` stores a new version from a path on the local
+  disk, streamed (`setStoredFile()` with an `UploadedFile` stores only real HTTP uploads).
+
 - **`humhub.log` skips the status message for a `client.Response` flagged `statusShown`.** The
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
