@@ -90,8 +90,12 @@ abstract class BaseContentActivity extends BaseActivity
 
     protected function getMessageParamsMailHtml(): array
     {
+        // Only the type of the content is bold, not its preview text
+        $contentName = Html::strong(Html::encode($this->content->getContentName()));
+        $preview = ContentHelper::getContentPreview($this->content, $this->mailContentLength);
+
         return array_merge(parent::getMessageParamsMailHtml(), [
-            'content' => Html::strong(ContentHelper::getContentInfo($this->content, true, $this->mailContentLength)),
+            'content' => empty($preview) ? $contentName : $contentName . ' "' . $preview . '"',
             'contentTitle' => ContentHelper::getContentInfo($this->content, false, $this->mailContentLength),
         ]);
     }

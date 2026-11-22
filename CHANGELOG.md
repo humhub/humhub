@@ -4,6 +4,8 @@ HumHub Changelog
 1.19.5 (Unreleased)
 -------------------
 
+- Fix #8770: Activity mails (e.g. the mail summary) showed the whole preview text of a content in bold, not only its type
+- Fix #8769: German text of the content created activity used the article of a neuter noun for every content type (e.g. "ein neues Datei")
 - Fix #8765: Like tooltip of a single like showed no space between the name and the text in some languages (e.g. German)
 - Fix #8760: Profile and banner images uploaded before 1.19 showed only their small cropped version in the full-size view and became blurry when cropped again; the update makes their originals the source again and keeps the cropped version where the image is displayed
 - Fix #8758: Attached media files without a preview (e.g. WAV audio or AVI video) were not shown on a post or comment if media files are excluded from the attachment list
