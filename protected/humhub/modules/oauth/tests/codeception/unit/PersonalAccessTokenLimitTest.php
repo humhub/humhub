@@ -29,7 +29,7 @@ class PersonalAccessTokenLimitTest extends HumHubDbTestCase
     public function testPrecedence()
     {
         $module = Module::instance();
-        $this->assertSame(3, $module->getMaxPersonalAccessTokensPerUser());
+        $this->assertSame(10, $module->getMaxPersonalAccessTokensPerUser());
 
         $module->settings->set('maxPersonalAccessTokensPerUser', 5);
         $this->assertSame(5, $module->getMaxPersonalAccessTokensPerUser());
@@ -49,12 +49,12 @@ class PersonalAccessTokenLimitTest extends HumHubDbTestCase
         $module = Module::instance();
         $module->settings->set('maxPersonalAccessTokensPerUser', 7);
         $module->maxPersonalAccessTokensPerUser = -1;
-        $this->assertSame(3, $module->getMaxPersonalAccessTokensPerUser());
+        $this->assertSame(10, $module->getMaxPersonalAccessTokensPerUser());
         static::assertLog('Invalid maxPersonalAccessTokensPerUser -1, using the default.', Logger::LEVEL_WARNING, ['oauth']);
 
         $module->maxPersonalAccessTokensPerUser = null;
         $module->settings->set('maxPersonalAccessTokensPerUser', -5);
-        $this->assertSame(3, $module->getMaxPersonalAccessTokensPerUser());
+        $this->assertSame(10, $module->getMaxPersonalAccessTokensPerUser());
     }
 
     public function testTheEnvironmentVariableSetsTheProperty()

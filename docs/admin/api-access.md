@@ -34,7 +34,7 @@ The *Settings* tab:
 | *Allow personal access tokens* | off | Tokens work, and users with the group permission may create them. |
 | *Scopes available to personal access tokens* | all read scopes | The upper bound of what a token can do. Empty means no access. *Full access* can only be added or removed by a system administrator. |
 | *Maximum lifetime of personal access tokens (days)* | 365 | Users choose 7, 30 or 90 days, a year or *never*; longer choices are hidden. 0 means unlimited and offers *never*. |
-| *Maximum personal access tokens per user* | 3 | Tokens that have not expired; at the limit a user has to revoke one first. 0 means unlimited. |
+| *Maximum personal access tokens per user* | 10 | Tokens that have not expired; at the limit a user has to revoke one first. 0 means unlimited. |
 | *Refresh token lifetime (days)* | 90 | An app or client that does not refresh its token for this long has to sign in again. Every refresh renews it, so an app in regular use stays signed in. |
 | *Maximum lifetime of a grant (days)* | 0 | After this, an app or a connected client has to sign in again, in use or not. Counted from the sign-in; a change applies to later sign-ins. 0 means unlimited. |
 | *Revoke access when the password changes* | off | A password change ends all grants of the user, except the app session the change was made in. |

@@ -402,7 +402,7 @@ of the app needs its app ID entered there. See [Apps & API access](api-access.md
 for the platform's own frontend, per IP for guests). Defaults: reading 300 requests per minute
 and 5000 per hour for tokens (600 and 10000 for the frontend), writing 60 and 1000 (120 and
 2000). Refused requests answer `429` with a `Retry-After` header. Personal access tokens are
-capped at 3 unexpired tokens per user (`maxPersonalAccessTokensPerUser`, 0 = unlimited; also
+capped at 10 unexpired tokens per user (`maxPersonalAccessTokensPerUser`, 0 = unlimited; also
 under *Apps & API Access*).
 
 Override the policies in `config/common.php` or per environment variable, which takes the

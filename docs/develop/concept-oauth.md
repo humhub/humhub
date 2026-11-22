@@ -175,7 +175,7 @@ hhpat_<32 random base62 characters><6 base62 characters CRC32 of the random part
   confirmation dialog comes first. Remember-me cookie logins and impersonations do not count.
 - **Never during an impersonation:** creating a PAT is refused (`403`), like any other
   credential (client secrets).
-- **Limited per user:** at most `maxPersonalAccessTokensPerUser` (default 3, 0 = unlimited)
+- **Limited per user:** at most `maxPersonalAccessTokensPerUser` (default 10, 0 = unlimited)
   PATs that have not expired. At the limit the form refuses creation; revoking a token frees
   its slot. See [Rate limiting](concept-rate-limiting.md#personal-access-tokens-per-user).
 
@@ -571,7 +571,7 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 | `allowPersonalAccessTokens` | off | PATs authenticate; creating them requires `CreatePersonalAccessToken` |
 | `patScopes` | all `*:read` core scopes | upper bound for PATs; `full` only by system administrators |
 | `patMaxLifetimeDays` | 365 | 0 = unlimited, offers *never* |
-| `maxPersonalAccessTokensPerUser` | 3 | 0 = unlimited; counts unexpired PATs of a user |
+| `maxPersonalAccessTokensPerUser` | 10 | 0 = unlimited; counts unexpired PATs of a user |
 | `refreshTokenLifetimeDays` | 90 | |
 | `grantMaxLifetimeDays` | 0 | 0 = unlimited |
 | `revokeOnPasswordChange` | off | a password change deletes all grants of the user except the app session the change was made in |

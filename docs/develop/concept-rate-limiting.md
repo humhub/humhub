@@ -264,11 +264,11 @@ error). Nothing in this concept depends on the API, except `ApiRateLimitFilter`.
 
 ## Personal access tokens per user
 
-New module property and setting of `oauth`, `maxPersonalAccessTokensPerUser` (default `3`,
+New module property and setting of `oauth`, `maxPersonalAccessTokensPerUser` (default `10`,
 `0` = unlimited):
 
 - It counts the user's PATs that have not expired.
-- A negative value is invalid: it is logged as a warning and the default `3` applies.
+- A negative value is invalid: it is logged as a warning and the default `10` applies.
 - It is configurable via config/ENV (`HUMHUB_CONFIG__MODULES__OAUTH__MAX_PERSONAL_ACCESS_TOKENS_PER_USER`).
 - The admin settings page shows it in the "Personal access tokens" group, next to the
   maximum lifetime.
