@@ -48,6 +48,52 @@ class RecordMap extends ActiveRecord
     }
 
     /**
+     * The record ids of many records at once - one query per model for the known ones, one
+     * insert per record that has none yet - instead of one query per record the way repeated
+     * {@see self::getId()} calls would. Later `getId()` calls for them are answered from the
+     * per-request cache.
+     *
+     * @param ActiveRecord[] $records saved records, of any models
+     * @return array<int|string, int> the record id of each record, under its key
+     * @since 1.20
+     */
+    public static function getIds(array $records): array
+    {
+        // model => [pk => record id]
+        $known = [];
+        foreach ($records as $record) {
+            if ($record->isNewRecord) {
+                throw new Exception('Could not get the record id of a new record!');
+            }
+            $known[$record::class][(int)$record->getPrimaryKey()] = null;
+        }
+
+        foreach ($known as $model => $pks) {
+            $rows = static::find()
+                ->select(['id', 'pk'])
+                ->where(['model' => $model, 'pk' => array_keys($pks)])
+                ->asArray()
+                ->all();
+            foreach ($rows as $row) {
+                $known[$model][(int)$row['pk']] = (int)$row['id'];
+            }
+        }
+
+        $ids = [];
+        foreach ($records as $key => $record) {
+            $pk = (int)$record->getPrimaryKey();
+            // getId() inserts the missing ones, and caches every one of them
+            $id = $known[$record::class][$pk];
+            if ($id !== null) {
+                Yii::$app->runtimeCache->set('rm_' . $record::class . $pk, $id);
+            }
+            $ids[$key] = $id ?? static::getId($record);
+        }
+
+        return $ids;
+    }
+
+    /**
      * Resolves one record id; `null` for an unknown id or a record of another type (logged as
      * a warning unless `$logError` is `false`). Cached per request.
      *
