@@ -59,6 +59,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   New: `file\models\File::setStoredFileByPath()` stores a new version from a path on the local
   disk, streamed (`setStoredFile()` with an `UploadedFile` stores only real HTTP uploads).
 
+- **Lists without a query or a conversion per row.** `humhub\models\RecordMap::getIds()` gives the
+  record ids of many records at once and answers the later `getId()` calls for them from the
+  per-request cache. `file\converter\PreviewImage::getLazyUrl()` is the URL of a preview without
+  creating it; the download action creates it on its first request (`variant=preview-image`),
+  as for the display version. `FileSerializer::file()` hands out that URL as `previewUrl`.
+
 - **Device connections** (see [OAuth](concept-oauth.md#device-connections)). A module that
   serves a device (a network drive, a calendar app) offers a
   `humhub\modules\oauth\components\DeviceConnection` in

@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh: WebDAV endpoint `/dav/` for the files of modules, authenticated by personal access tokens, with locks and its own rate limits
+- Enh: Lists of many records: `RecordMap::getIds()` looks up their record ids at once, and the preview of an image is created on its first request rather than while the list is built
 - Enh: Device connections: a module offers a dialog that creates a personal access token as the password of a device (network drive, calendar app), without the group permission to create tokens; personal access tokens are allowed by default
 - Enh #8768: Images and videos open in an accessible media viewer (PhotoSwipe instead of blueimp Gallery) with zoom, video, download and a downscaled display version
 - Enh #8759: Attached WAV, M4A, AAC and FLAC audio plays in the stream, media files without a preview (e.g. Ogg audio or AVI video) stay in the attachment list
