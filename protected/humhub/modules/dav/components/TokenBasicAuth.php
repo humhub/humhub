@@ -23,22 +23,34 @@ use yii\web\Request;
  * The token must be usable as for the API (`GrantService::isUsable()`): not expired, its
  * user enabled, personal access tokens allowed.
  *
+ * Endpoints of their own use it too, e.g. CalDAV of the calendar module: with an issuer, it also
+ * accepts the passwords that issuer imported as tokens.
+ *
  * @since 1.20
  */
 final class TokenBasicAuth
 {
     /**
+     * @param string|null $importedIssuer also accept a password imported by this issuer of
+     * device connections (`PersonalAccessTokenService::import()`), for an endpoint of its own
+     * that took such passwords before, e.g. CalDAV of the calendar
      * @return Grant|null the grant of the token, null when the credentials do not authenticate
      */
-    public function authenticate(Request $request): ?Grant
+    public function authenticate(Request $request, ?string $importedIssuer = null): ?Grant
     {
         [$username, $token] = $request->getAuthCredentials();
 
-        if (!is_string($token) || !str_starts_with($token, PersonalAccessTokenService::PREFIX)) {
+        if (!is_string($token) || $token === '') {
             return null;
         }
 
-        $grant = (new PersonalAccessTokenService())->find($token);
+        $service = new PersonalAccessTokenService();
+        if (str_starts_with($token, PersonalAccessTokenService::PREFIX)) {
+            $grant = $service->find($token);
+        } else {
+            $grant = $importedIssuer === null ? null : $service->findImported($token, $importedIssuer);
+        }
+
         if ($grant === null || !(new GrantService())->isUsable($grant)) {
             return null;
         }

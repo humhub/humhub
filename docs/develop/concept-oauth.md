@@ -213,6 +213,10 @@ A module that handed out passwords of its own before can keep them working:
 connection (only its SHA-256, no `token_hint`, no notification), `findImported()` finds it by
 secret and issuer. `find()` never does: such a secret is not shaped like a PAT.
 
+An endpoint of a module that serves a device itself (CalDAV of the calendar) authenticates
+HTTP Basic with `dav\components\TokenBasicAuth::authenticate($request, $issuer)`: a PAT, or a
+password the issuer imported, with the owner's username or e-mail address.
+
 ### Keys
 
 Three secrets, stored in the module settings:

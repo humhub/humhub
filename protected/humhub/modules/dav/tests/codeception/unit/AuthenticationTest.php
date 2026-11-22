@@ -8,6 +8,7 @@
 
 namespace humhub\modules\dav\tests\codeception\unit;
 
+use humhub\modules\dav\components\TokenBasicAuth;
 use humhub\modules\dav\controllers\ServerController;
 use humhub\modules\dav\Module;
 use humhub\modules\oauth\models\Grant;
@@ -107,6 +108,19 @@ class AuthenticationTest extends HumHubDbTestCase
 
         $this->grant->updateAttributes(['expires_at' => time() - 1]);
         $this->assertRefused($this->authenticate('User1', $this->token));
+    }
+
+    public function testAnImportedPasswordAuthenticatesOnlyWhereItsIssuerAsksForIt()
+    {
+        $user = User::findOne(['id' => 2]);
+        $grant = (new PersonalAccessTokenService())->import($user, 'test-calendar', 'Earlier password', ['content:read'], 'an-earlier-password', null);
+        $_SERVER['PHP_AUTH_USER'] = $user->username;
+        $_SERVER['PHP_AUTH_PW'] = 'an-earlier-password';
+
+        $this->assertSame($grant->id, (new TokenBasicAuth())->authenticate(Yii::$app->request, 'test-calendar')?->id);
+        $this->assertNull((new TokenBasicAuth())->authenticate(Yii::$app->request, 'other'));
+        // Not at /dav/
+        $this->assertRefused($this->authenticate($user->username, 'an-earlier-password'));
     }
 
     public function testNoTokenWorksWhileTokensAreNotAllowed()
