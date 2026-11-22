@@ -13,9 +13,12 @@ use humhub\modules\activity\services\RenderService;
 use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\comment\activities\NewCommentActivity;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\activities\ContentCreatedActivity;
+use humhub\modules\content\models\Content;
 use humhub\modules\live\components\LiveEvent;
 use humhub\modules\live\models\Live;
 use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\activities\FollowActivity;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -179,6 +182,21 @@ class ActivityTest extends HumHubDbTestCase
         $record = Live::find()->orderBy(['id' => SORT_DESC])->one();
 
         return $record === null ? null : LiveEvent::fromSerialized($record->serialized_data);
+    }
+
+    public function testContentInMailHtmlHasOnlyTheTypeInBold()
+    {
+        $this->becomeUser('User2');
+        $post = new Post(Space::findOne(['id' => 2]), Content::VISIBILITY_PUBLIC, ['message' => 'Hello World!']);
+        $this->assertTrue($post->save());
+
+        $record = Activity::findOne(['class' => ContentCreatedActivity::class, 'content_id' => $post->content->id]);
+        $this->assertNotNull($record, 'Activity record persisted');
+
+        $this->assertEquals(
+            '<strong>Sara Tester</strong> created a new <strong>post</strong> "Hello World!".',
+            ActivityManager::load($record)->asMailHtml(),
+        );
     }
 
     public function testDeleteRecord()

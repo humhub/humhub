@@ -103,7 +103,7 @@ abstract class BaseContentActivity extends BaseActivity
     }
 
     /**
-     * Adds `content` (type and preview of the content, in `<strong>` in an HTML mail) and
+     * Adds `content` (type and preview of the content, the type in `<strong>` in an HTML mail) and
      * `contentTitle` (the preview alone).
      *
      * @inheritdoc

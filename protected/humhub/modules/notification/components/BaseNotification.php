@@ -574,7 +574,7 @@ abstract class BaseNotification extends BaseObject
      * The built-in parameters and those of {@see getMessageParams()}, rendered for a channel.
      *
      * @param int $previewLength max length of the content preview
-     * @param bool $strongContent whether the `content` parameter is wrapped in `<strong>` (HTML mails)
+     * @param bool $strongContent whether the type of the `content` parameter is wrapped in `<strong>` (HTML mails)
      */
     private function renderParams(MessageFormat $format, int $previewLength, bool $strongContent = false): array
     {

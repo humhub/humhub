@@ -16,6 +16,17 @@ $privacy ??= NotificationPrivacy::Full;
 $lineStyle = 'font-size: 14px; line-height: 22px; font-family: ' . MailStyleHelper::getFontFamily() . '; color: ' . MailStyleHelper::getTextColorMain() . '; font-weight: 300;';
 $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getLinkColor() . '; font-weight: bold;';
 ?>
+<?php
+// Outlook on Windows may leave a gap of a pixel between the stacked containers of the heading and the
+// activities (e.g. with a display scaling of 125%), which shows the page background as a grey line.
+// Outlook therefore gets them inside one more container with their background.
+?>
+<!--[if mso]>
+<tr>
+    <td align="center" valign="top">
+        <table width="600" align="center" border="0" cellspacing="0" cellpadding="0"
+               bgcolor="<?= MailStyleHelper::getBackgroundColorMain() ?>" style="background-color: <?= MailStyleHelper::getBackgroundColorMain() ?>;">
+<![endif]-->
 
 <tr>
     <td align="center" valign="top" class="fix-box">
@@ -148,3 +159,9 @@ $linkStyle = 'text-decoration: none; color: ' . MailStyleHelper::getLinkColor() 
 <?php endif ?>
 
 <?= $activities ?>
+
+<!--[if mso]>
+        </table>
+    </td>
+</tr>
+<![endif]-->

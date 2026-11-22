@@ -76,7 +76,7 @@ class MessageParamTest extends HumHubDbTestCase
         $param = MessageParam::content($post);
         $this->assertSame('post "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html));
         $this->assertSame('post "Tom & <Jerry> are friends"', $param->render(MessageFormat::Text));
-        $this->assertSame('<strong>post "Tom &amp; &lt;Jerry&gt; are friends"</strong>', $param->render(MessageFormat::Html, emphasizeContent: true));
+        $this->assertSame('<strong>post</strong> "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html, emphasizeContent: true));
         $this->assertSame('post "Tom & <Jerry>..."', $param->render(MessageFormat::Text, 13));
         $this->assertSame('Tom & <Jerry> are friends', MessageParam::content($post, withType: false)->render(MessageFormat::Text));
     }

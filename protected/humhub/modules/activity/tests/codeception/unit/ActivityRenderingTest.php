@@ -78,7 +78,7 @@ class ActivityRenderingTest extends HumHubDbTestCase
         $activity = TestLegacyContentActivity::send($post);
 
         $this->assertSame('<strong>Sara Tester</strong> post "Tom &amp; Jerry" [web]', $activity->asWeb());
-        $this->assertSame('<strong>Sara Tester</strong> <strong>post "Tom &amp; Jerry"</strong> [html]', $activity->asMailHtml());
+        $this->assertSame('<strong>Sara Tester</strong> <strong>post</strong> "Tom &amp; Jerry" [html]', $activity->asMailHtml());
         // decoded since 1.20, like notifications
         $this->assertSame('Sara Tester post "Tom & Jerry" [text]', $activity->asMailText());
     }

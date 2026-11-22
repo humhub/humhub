@@ -131,7 +131,7 @@ final readonly class MessageParam
 
     /**
      * @param int $contentLength the max length of the preview of a {@see content()}
-     * @param bool $emphasizeContent whether a {@see content()} is wrapped in `<strong>` for HTML (in a mail)
+     * @param bool $emphasizeContent whether the type of a {@see content()} is wrapped in `<strong>` for HTML (in a mail)
      * @param bool $redacted whether a {@see content()} is rendered as its type alone, see {@see renderRedacted()}
      */
     public function render(
@@ -165,7 +165,7 @@ final readonly class MessageParam
      *
      * @param array<string, MessageParam|string|int|float|bool|null> $params
      * @param int $contentLength the max length of the preview of a {@see content()}
-     * @param bool $emphasizeContent whether a {@see content()} is wrapped in `<strong>` for HTML (in a mail)
+     * @param bool $emphasizeContent whether the type of a {@see content()} is wrapped in `<strong>` for HTML (in a mail)
      * @return array<string, string|int|float|bool|null>
      */
     public static function renderAll(
@@ -207,16 +207,23 @@ final readonly class MessageParam
 
     private function renderContent(MessageFormat $format, int $length, bool $emphasize, bool $redacted): string
     {
-        // getContentInfo() returns HTML; its plain text twin is the decoded HTML
-        $html = $redacted
-            ? Html::encode($this->text)
-            : ContentHelper::getContentInfo($this->content, $this->withType, $length);
+        // The preview is HTML; its plain text twin is the decoded HTML
+        $preview = $redacted ? '' : ContentHelper::getContentPreview($this->content, $length);
+        $type = Html::encode($this->text);
 
-        if ($format === MessageFormat::Html) {
-            return $emphasize ? Html::tag('strong', $html) : $html;
+        if ($format === MessageFormat::Html && $emphasize) {
+            // Only the type is emphasized, not the preview text
+            $type = Html::tag('strong', $type);
         }
 
-        return html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
+        // As ContentHelper::getContentInfo(): the type alone when there is no preview text
+        $html = match (true) {
+            empty($preview) => $type,
+            $this->withType => $type . ' "' . $preview . '"',
+            default => $preview,
+        };
+
+        return $format === MessageFormat::Html ? $html : html_entity_decode($html, ENT_QUOTES | ENT_HTML5);
     }
 
     private function truncate(string $text): string
