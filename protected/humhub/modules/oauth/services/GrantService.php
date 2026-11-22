@@ -124,7 +124,8 @@ class GrantService
         $scopes = array_values(array_filter($grant->getScopeIds(), [ScopeRegistry::class, 'has']));
 
         if ($grant->type === Grant::TYPE_PAT) {
-            return array_values(array_intersect($scopes, $this->module->getPatScopes()));
+            // A device connection of a module decides itself what its tokens do.
+            return $grant->issuer !== null ? $scopes : array_values(array_intersect($scopes, $this->module->getPatScopes()));
         }
 
         if ($grant->type !== Grant::TYPE_OAUTH) {

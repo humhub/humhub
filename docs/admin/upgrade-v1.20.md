@@ -392,16 +392,20 @@ stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome gly
 
 1.20 brings an OAuth 2.0 server and personal access tokens: the HumHub app signs in through the
 system browser, administrators can register clients for integrations, and users can create
-tokens for scripts. Only the app is allowed after the update; clients and tokens stay off until
-you allow them under *Administration → Users → Settings → Apps & API Access*. A white-label build
-of the app needs its app ID entered there. See [Apps & API access](api-access.md).
+tokens for scripts. The app and personal access tokens are allowed after the update; clients
+stay off until you allow them under *Administration → Users → Settings → Apps & API Access*.
+Users create tokens of their own only with the group permission *Create personal access
+tokens*, which no group has by default; modules create tokens as passwords for devices (see
+below). A white-label build of the app needs its app ID entered there. See
+[Apps & API access](api-access.md).
 
 ## WebDAV
 
 HumHub 1.20 serves the files of modules over WebDAV at `/dav/`: users connect them as a network
-drive with a personal access token as the password. It is off as long as personal access tokens
-are not allowed. See [Apps & API access](api-access.md#webdav) for how to offer it and what the
-web server must pass on.
+drive, with a password the module creates for the device in a dialog (a personal access
+token). It is off while personal access tokens are not allowed. See
+[Apps & API access](api-access.md#devices) for how it works and what the web server must pass
+on.
 
 ## Rate limiting of the API
 

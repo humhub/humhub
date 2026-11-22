@@ -47,7 +47,7 @@ use yii\helpers\Url;
     <?= $form->field($model, 'allowPersonalAccessTokens')->checkbox() ?>
     <div id="oauth-pat-settings"<?= $model->allowPersonalAccessTokens ? '' : ' class="d-none"' ?>>
         <?php if ($model->allowPersonalAccessTokens && !$model->isGrantedToAnyGroup(CreatePersonalAccessToken::class)): ?>
-            <?= Alert::warning(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet, so no user can use this. Allow it under <a href="{url}">Groups → Permissions</a>.', [
+            <?= Alert::info(Yii::t('OauthModule.base', 'No group has the permission "{permission}" yet: users connect only the devices modules offer, e.g. a network drive, and create no tokens of their own. Allow it under <a href="{url}">Groups → Permissions</a>.', [
                 'permission' => Html::encode((new CreatePersonalAccessToken())->getTitle()),
                 'url' => Html::encode(Url::to(['/admin/group'])),
             ]))->closeButton(false) ?>

@@ -9,8 +9,6 @@
 namespace humhub\modules\dav;
 
 use humhub\modules\dav\components\LockBackend;
-use humhub\modules\dav\widgets\DavSection;
-use humhub\modules\user\widgets\security\SecuritySessionSections;
 use Yii;
 use yii\base\Event;
 use yii\db\Expression;
@@ -20,16 +18,6 @@ use yii\db\Expression;
  */
 class Events
 {
-    /**
-     * Adds the address of the endpoint to the "Devices & Access" tab, after the tokens.
-     */
-    public static function onSecuritySessionSectionsInit(Event $event): void
-    {
-        /** @var SecuritySessionSections $sections */
-        $sections = $event->sender;
-        $sections->addWidget(DavSection::class, [], ['sortOrder' => 450]);
-    }
-
     /**
      * Removes the expired locks, and the clients' own files no request asked for in a while
      * (see `TemporaryFilePlugin`).

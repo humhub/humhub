@@ -113,6 +113,15 @@ class GrantServiceTest extends HumHubDbTestCase
         $this->assertTrue($service->isUsable($grant));
     }
 
+    public function testATokenIssuedByAModuleIsNotBoundedByTheScopesForTokens()
+    {
+        Module::instance()->settings->set('patScopes', json_encode(['content:read']));
+        $grant = $this->createPatGrant(['content:read', 'content:write']);
+        $grant->updateAttributes(['issuer' => 'test-drive']);
+
+        $this->assertSame(['content:read', 'content:write'], (new GrantService())->getEffectiveScopes($grant));
+    }
+
     public function testTouchIsThrottled()
     {
         $service = new GrantService();

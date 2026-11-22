@@ -81,6 +81,7 @@ class AdminCest
 
     public function testTokenSettingsAreHiddenWhileTokensAreOff(FunctionalTester $I)
     {
+        Module::instance()->settings->set('allowPersonalAccessTokens', false);
         $I->amAdmin();
         $I->amOnRoute('/oauth/admin/index');
         $I->seeElement('#oauth-pat-settings.d-none');

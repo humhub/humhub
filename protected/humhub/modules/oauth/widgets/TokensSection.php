@@ -30,7 +30,7 @@ class TokensSection extends GrantSection
 
     public function getDescription(): string
     {
-        return Yii::t('OauthModule.base', 'Tokens for scripts and agents that access your account via the API.');
+        return Yii::t('OauthModule.base', 'Passwords of your devices, e.g. for a network drive or a calendar app, and tokens for scripts and agents that use the API.');
     }
 
     /**

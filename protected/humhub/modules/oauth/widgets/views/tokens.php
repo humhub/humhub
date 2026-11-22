@@ -26,13 +26,14 @@ use humhub\modules\oauth\services\PersonalAccessTokenService;
                 'title' => $grant->name,
                 'titleHint' => null,
                 'details' => [
-                    Html::tag('span', Html::encode(PersonalAccessTokenService::PREFIX . '…' . $grant->token_hint), ['class' => 'font-monospace']),
+                    // An imported password (`PersonalAccessTokenService::import()`) has no hint
+                    ...($grant->token_hint === null ? [] : [Html::tag('span', Html::encode(PersonalAccessTokenService::PREFIX . '…' . $grant->token_hint), ['class' => 'font-monospace'])]),
                     ...array_map([Html::class, 'encode'], $scopeLabels[$grant->id] ?? []),
                     $grant->isExpired() ? Html::tag('span', Html::encode($expiry), ['class' => 'text-danger']) : Html::encode($expiry),
                 ],
                 'actionLabel' => Yii::t('OauthModule.base', 'Revoke'),
                 'confirmTitle' => Yii::t('OauthModule.base', 'Revoke this token?'),
-                'confirm' => Yii::t('OauthModule.base', 'Scripts and agents using this token lose access to your account.'),
+                'confirm' => Yii::t('OauthModule.base', 'Devices, scripts and agents using this token lose access to your account.'),
             ]) ?>
         <?php endforeach ?>
     </ul>

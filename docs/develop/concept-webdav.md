@@ -67,6 +67,32 @@ public static function onDavCollectMounts(MountsEvent $event): void
 The root `/dav/` lists the mounts whose read scope the token holds. Nothing can be created
 there.
 
+### Connecting a device
+
+The user gets the address and the password where the module's content is, not from a page of
+the endpoint: the module offers a [device connection](concept-oauth.md#device-connections) for
+its mount, whose dialog shows the address and the username and creates a token with the
+mount's scopes. `Module::getMountUrl()` is the address of a mount:
+
+```php
+public static function onCollectDeviceConnections(DeviceConnectionsEvent $event): void
+{
+    $event->connections[] = new DeviceConnection(
+        'cfiles-webdav',
+        Yii::t('CfilesModule.base', 'Connect as network drive'),
+        Yii::t('CfilesModule.base', 'Your files in Finder, Windows Explorer or any WebDAV client.'),
+        Yii::t('CfilesModule.base', 'WebDAV – Files'),
+        ['cfiles:read', 'cfiles:write'],
+        [
+            Yii::t('CfilesModule.base', 'Address') => DavModule::instance()->getMountUrl('files'),
+            Yii::t('CfilesModule.base', 'Username') => $event->user->username,
+        ],
+    );
+}
+```
+
+The module links the dialog (`DeviceConnection::getUrl()`, `ui.modal.load`) from its pages.
+
 ## Scopes
 
 A plugin of the server (`AccessPlugin`) checks every request before any other plugin:
@@ -201,4 +227,5 @@ $this->assertSame(201, $response->statusCode);
 - `sabre/dav` ^4.7 in `composer.json`.
 - `file\models\File::setStoredFileByPath()`.
 - `config/common.php`: the `dav.*` policies of the `rateLimiter`.
-- `oauth`: `maxPersonalAccessTokensPerUser` defaults to 10 instead of 3, a token per device.
+- `oauth`: `maxPersonalAccessTokensPerUser` defaults to 10 instead of 3, a token per device;
+  [device connections](concept-oauth.md#device-connections) give a device its token.

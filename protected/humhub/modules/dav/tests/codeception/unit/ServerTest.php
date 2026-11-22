@@ -103,6 +103,11 @@ class ServerTest extends HumHubDbTestCase
         $this->assertStringNotContainsString('/dav/other/', $body);
     }
 
+    public function testTheAddressOfAMountIsAbsolute()
+    {
+        $this->assertMatchesRegularExpression('#^https?://[^/]+/.*dav/files/$#', Module::instance()->getMountUrl('files'));
+    }
+
     public function testFullReachesEveryMount()
     {
         OAuthModule::instance()->settings->set('patScopes', json_encode([ScopeRegistry::FULL]));

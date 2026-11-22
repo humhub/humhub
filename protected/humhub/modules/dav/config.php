@@ -3,7 +3,6 @@
 use humhub\commands\CronController;
 use humhub\modules\dav\Events;
 use humhub\modules\dav\Module;
-use humhub\modules\user\widgets\security\SecuritySessionSections;
 
 return [
     'id' => 'dav',
@@ -16,6 +15,5 @@ return [
     ],
     'events' => [
         [CronController::class, CronController::EVENT_ON_DAILY_RUN, [Events::class, 'onCronDailyRun']],
-        [SecuritySessionSections::class, SecuritySessionSections::EVENT_INIT, [Events::class, 'onSecuritySessionSectionsInit']],
     ],
 ];

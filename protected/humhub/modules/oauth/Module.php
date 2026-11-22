@@ -123,7 +123,7 @@ class Module extends \humhub\components\Module
 
     public function allowsPersonalAccessTokens(): bool
     {
-        return (bool)$this->settings->get('allowPersonalAccessTokens', false);
+        return (bool)$this->settings->get('allowPersonalAccessTokens', true);
     }
 
     /**

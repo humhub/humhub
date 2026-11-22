@@ -9,10 +9,12 @@
 namespace humhub\modules\dav;
 
 use humhub\modules\dav\components\Mount;
+use humhub\modules\dav\controllers\ServerController;
 use humhub\modules\dav\events\MountsEvent;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Event;
+use yii\helpers\Url;
 
 /**
  * The WebDAV endpoint `/dav/`, see `docs/develop/concept-webdav.md`.
@@ -78,6 +80,15 @@ class Module extends \humhub\components\Module
         }
 
         return $mounts;
+    }
+
+    /**
+     * The address a client connects a mount at, e.g. `https://example.org/dav/files/`; for the
+     * fields of a device connection (`oauth\components\DeviceConnection`).
+     */
+    public function getMountUrl(string $name): string
+    {
+        return Url::to(ServerController::baseUri() . $name . '/', true);
     }
 
     /**

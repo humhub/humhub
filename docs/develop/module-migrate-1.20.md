@@ -59,6 +59,16 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   New: `file\models\File::setStoredFileByPath()` stores a new version from a path on the local
   disk, streamed (`setStoredFile()` with an `UploadedFile` stores only real HTTP uploads).
 
+- **Device connections** (see [OAuth](concept-oauth.md#device-connections)). A module that
+  serves a device (a network drive, a calendar app) offers a
+  `humhub\modules\oauth\components\DeviceConnection` in
+  `DeviceConnectionRegistry::EVENT_COLLECT_CONNECTIONS` and links its dialog
+  (`DeviceConnection::getUrl()`): it shows the address and the username and creates a personal
+  access token with the connection's scopes, as the device's password. Passwords a module
+  handed out before can be kept as such tokens (`PersonalAccessTokenService::import()`,
+  `findImported()`). `oauth_grant.issuer` is new; `allowPersonalAccessTokens` is on by
+  default. `dav\Module::getMountUrl()` is the address of a mount.
+
 - **`humhub.log` skips the status message for a `client.Response` flagged `statusShown`.** The
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.

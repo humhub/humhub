@@ -31,8 +31,8 @@ The *Settings* tab:
 | *Allow the HumHub app to sign in* | on | The app and the white-label apps may sign in. |
 | *Additional app IDs* | none | See [White-label apps](#white-label-apps). System administrators only. |
 | *Allow clients created by administrators* | off | Clients may be authorized and their grants work. |
-| *Allow personal access tokens* | off | Tokens work, and users with the group permission may create them. |
-| *Scopes available to personal access tokens* | all read scopes | The upper bound of what a token can do. Empty means no access. *Full access* can only be added or removed by a system administrator. |
+| *Allow personal access tokens* | on | Tokens work: the passwords modules create for devices (see [Devices](#devices)), and the tokens of users with the group permission. |
+| *Scopes available to personal access tokens* | all read scopes | The upper bound of what a token a user creates can do. Empty means no access. *Full access* can only be added or removed by a system administrator. A device password has the scopes of its module. |
 | *Maximum lifetime of personal access tokens (days)* | 365 | Users choose 7, 30 or 90 days, a year or *never*; longer choices are hidden. 0 means unlimited and offers *never*. |
 | *Maximum personal access tokens per user* | 10 | Tokens that have not expired; at the limit a user has to revoke one first. 0 means unlimited. |
 | *Refresh token lifetime (days)* | 90 | An app or client that does not refresh its token for this long has to sign in again. Every refresh renews it, so an app in regular use stays signed in. |
@@ -50,9 +50,10 @@ create tokens or client secrets while impersonating a user.
 
 ### The group permission
 
-Users need the group permission *Create personal access tokens* (*Administration → Users →
-Groups → Permissions*), which is not granted to any group by default. While tokens are allowed
-but no group has the permission, the settings page shows a warning: nobody can create one.
+To create tokens of their own, users need the group permission *Create personal access
+tokens* (*Administration → Users → Groups → Permissions*), which is not granted to any group by
+default. While no group has it, the settings page says so: users then only connect the devices
+modules offer.
 
 Taking the permission away only stops creating new tokens; existing tokens keep working. To
 stop them, switch *Allow personal access tokens* off or revoke them under *Grants*.
@@ -253,23 +254,28 @@ retried automatically. Every limited response also carries `RateLimit-Policy` an
 headers with the remaining requests. The first refusal per grant or user and window is logged
 as a warning (category `rateLimit`).
 
-## WebDAV
+## Devices
 
-Users can connect the files of modules (e.g. *Files*) as a network drive: Finder, Windows
-Explorer, Linux file managers or any WebDAV client, at `https://<your host>/dav/`. They sign in
-with their username (or e-mail address) and a personal access token as the password. The
-account password does not work there, so users without one (SSO, LDAP) can connect too.
+Modules let users connect devices: *Files* as a network drive (WebDAV), *Calendar* to calendar
+apps (CalDAV). The user opens the dialog where the content is, e.g. *Connect as network drive*
+in *Files*. It shows the address and the username and creates a password for the device: a
+personal access token with the scopes of the module, named after the device (the name can be
+changed). The user copies it once; it is listed under *Account → Security & Privacy → Devices &
+Access*, where revoking it disconnects that device. The account password does not work there,
+so users without one (SSO, LDAP) can connect too.
 
-To offer it:
+It needs only *Allow personal access tokens* (on by default) and the module's own switch (on by
+default). Neither the group permission *Create personal access tokens* nor the *Scopes
+available to personal access tokens* apply: the module decides what its device passwords do,
+and a device sees no more than its user does in the web interface. The passwords count towards
+the *Maximum personal access tokens per user* and live as long as the *Maximum lifetime of
+personal access tokens* allows.
 
-1. Switch on *Allow personal access tokens*.
-2. Give the users the group permission *Create personal access tokens*.
-3. Add the scopes of the modules to *Scopes available to personal access tokens*: for *Files*,
-   *Read files and folders* (`cfiles:read`) and, for changes, *Add, change, move and delete
-   files and folders* (`cfiles:write`).
+### WebDAV
 
-A user then creates a token with these scopes under *Account → Security & Privacy → Devices &
-Access*, one per device. Revoking the token disconnects that device.
+Clients connect to `https://<your host>/dav/` or to a module's folder in it, e.g.
+`https://<your host>/dav/files/`, with their username (or e-mail address) and the password of
+the dialog.
 
 What a user sees and may change over WebDAV is exactly what they see and may change in the web
 interface. Uploads follow the same rules: allowed file extensions, maximum file size (`PUT`

@@ -61,12 +61,25 @@ class PersonalAccessTokenService
             throw new InvalidArgumentException('Lifetime not allowed.');
         }
 
+        [$token, $grant] = $this->store($user, $name, $scopeIds, $lifetimeDays, null);
+
+        GrantCreatedNotification::send($user, payload: ['type' => 'pat', 'name' => $grant->name], dedupe: false);
+
+        return [$token, $grant];
+    }
+
+    /**
+     * @return array{0: string, 1: Grant}
+     */
+    private function store(User $user, string $name, array $scopeIds, ?int $lifetimeDays, ?string $issuer): array
+    {
         $random = self::randomBase62(self::RANDOM_LENGTH);
         $token = self::PREFIX . $random . self::checksum($random);
 
         $grant = new Grant([
             'user_id' => $user->id,
             'type' => Grant::TYPE_PAT,
+            'issuer' => $issuer,
             'name' => mb_substr($name, 0, 100),
             'token_hash' => hash('sha256', $token),
             'token_hint' => substr($token, -4),
@@ -75,9 +88,56 @@ class PersonalAccessTokenService
         $grant->setScopeIds($scopeIds);
         $grant->save(false);
 
+        return [$token, $grant];
+    }
+
+    /**
+     * A token for a device connection of a module (`DeviceConnection`): its scopes are the
+     * connection's, not bounded by the scopes for tokens, and it lives as long as allowed.
+     * The caller checks the limit ([[hasReachedLimit()]]).
+     *
+     * @param string[] $scopeIds
+     * @return array{0: string, 1: Grant} the token (shown once) and its grant
+     */
+    public function issue(User $user, string $issuer, string $name, array $scopeIds): array
+    {
+        [$token, $grant] = $this->store($user, $name, $scopeIds, $this->getLongestLifetime(), $issuer);
+
         GrantCreatedNotification::send($user, payload: ['type' => 'pat', 'name' => $grant->name], dedupe: false);
 
         return [$token, $grant];
+    }
+
+    /**
+     * Keeps a secret a device already signs in with as a token of a device connection, e.g. a
+     * password a module handed out before it used tokens. Only its hash is stored, and it has
+     * no hint: it is not shaped like a token. Found by [[findImported()]], never by [[find()]].
+     *
+     * @param string[] $scopeIds
+     * @param int|null $expiresAt null = never expires
+     */
+    public function import(User $user, string $issuer, string $name, array $scopeIds, string $secret, ?int $expiresAt): Grant
+    {
+        $grant = new Grant([
+            'user_id' => $user->id,
+            'type' => Grant::TYPE_PAT,
+            'issuer' => $issuer,
+            'name' => mb_substr($name, 0, 100),
+            'token_hash' => hash('sha256', $secret),
+            'expires_at' => $expiresAt,
+        ]);
+        $grant->setScopeIds($scopeIds);
+        $grant->save(false);
+
+        return $grant;
+    }
+
+    /**
+     * The token a secret was imported as ([[import()]]) by the issuer.
+     */
+    public function findImported(string $secret, string $issuer): ?Grant
+    {
+        return Grant::findOne(['type' => Grant::TYPE_PAT, 'issuer' => $issuer, 'token_hash' => hash('sha256', $secret)]);
     }
 
     public function find(string $token): ?Grant
@@ -101,6 +161,16 @@ class PersonalAccessTokenService
 
         $options = array_values(array_filter(self::LIFETIMES, static fn(int $days) => $days <= $max));
         return $options !== [] ? $options : [$max];
+    }
+
+    /**
+     * @return int|null the longest lifetime in days the settings allow; null = never expires
+     */
+    public function getLongestLifetime(): ?int
+    {
+        $options = $this->getLifetimeOptions();
+
+        return in_array(null, $options, true) ? null : max($options);
     }
 
     public static function isWellFormed(string $token): bool
