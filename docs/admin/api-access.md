@@ -183,6 +183,9 @@ against the policy of the scope it needs, in a short and a long window:
 | `session.*:read` | the web interface and guests, reading | 600 | 10000 |
 | `session.*:write` | the web interface and guests, writing | 120 | 2000 |
 | `session.full` | the web interface and guests, other endpoints | 600 | 10000 |
+| `dav.*:read` | [WebDAV](#webdav), reading | 3000 | 50000 |
+| `dav.*:write` | [WebDAV](#webdav), writing | 1200 | 20000 |
+| `dav.full` | [WebDAV](#webdav), the root | 3000 | 50000 |
 
 Reading and writing are counted separately. A module's scopes ending in `:read` or `:write`
 (`calendar:read`, …) fall under the `*:read` and `*:write` policies. A single scope can get a policy of its own, e.g.
@@ -249,6 +252,39 @@ In the web interface, users see this message once at the bottom of the window; n
 retried automatically. Every limited response also carries `RateLimit-Policy` and `RateLimit`
 headers with the remaining requests. The first refusal per grant or user and window is logged
 as a warning (category `rateLimit`).
+
+## WebDAV
+
+Users can connect the files of modules (e.g. *Files*) as a network drive: Finder, Windows
+Explorer, Linux file managers or any WebDAV client, at `https://<your host>/dav/`. They sign in
+with their username (or e-mail address) and a personal access token as the password. The
+account password does not work there, so users without one (SSO, LDAP) can connect too.
+
+To offer it:
+
+1. Switch on *Allow personal access tokens*.
+2. Give the users the group permission *Create personal access tokens*.
+3. Add the scopes of the modules to *Scopes available to personal access tokens*: for *Files*,
+   *Read files and folders* (`cfiles:read`) and, for changes, *Add, change, move and delete
+   files and folders* (`cfiles:write`).
+
+A user then creates a token with these scopes under *Account → Security & Privacy → Devices &
+Access*, one per device. Revoking the token disconnects that device.
+
+What a user sees and may change over WebDAV is exactly what they see and may change in the web
+interface. Uploads follow the same rules: allowed file extensions, maximum file size (`PUT`
+bodies are also bounded by PHP's `upload_max_filesize`), and file names without the characters
+the platform replaces. A name with such a character is refused rather than changed.
+
+WebDAV has its own [rate limits](#rate-limiting) (`dav.*`). They are high, because clients send
+many requests (a copy of a folder with 300 files sends well over a thousand), and clients do
+not retry when they are refused.
+
+The web server must pass every HTTP method to HumHub, also `PROPFIND`, `MKCOL`, `MOVE`, `COPY`,
+`LOCK` and `UNLOCK`, as well as the `Authorization` header (Apache with PHP-FPM, as for the
+API). Large uploads may need a higher `client_max_body_size` (nginx) or `LimitRequestBody`
+(Apache), and a longer timeout. Windows Explorer signs in with Basic authentication over HTTPS
+only.
 
 ## Troubleshooting
 

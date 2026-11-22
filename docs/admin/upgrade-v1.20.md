@@ -396,6 +396,13 @@ tokens for scripts. Only the app is allowed after the update; clients and tokens
 you allow them under *Administration → Users → Settings → Apps & API Access*. A white-label build
 of the app needs its app ID entered there. See [Apps & API access](api-access.md).
 
+## WebDAV
+
+HumHub 1.20 serves the files of modules over WebDAV at `/dav/`: users connect them as a network
+drive with a personal access token as the password. It is off as long as personal access tokens
+are not allowed. See [Apps & API access](api-access.md#webdav) for how to offer it and what the
+web server must pass on.
+
 ## Rate limiting of the API
 
 `/api/v2` is rate limited as of 1.20, by the OAuth scope of each action and per token (per user

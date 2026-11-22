@@ -1,0 +1,9 @@
+{
+    "id": "dav",
+    "name": "WebDAV",
+    "description": "WebDAV endpoint for the files of modules",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}
