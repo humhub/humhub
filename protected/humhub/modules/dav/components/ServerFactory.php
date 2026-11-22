@@ -12,6 +12,7 @@ use humhub\modules\dav\Module;
 use humhub\modules\oauth\models\Grant;
 use humhub\modules\oauth\services\GrantService;
 use Sabre\DAV\Exception as DavException;
+use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Locks\Plugin as LocksPlugin;
 use Sabre\DAV\Server;
 use Throwable;
@@ -44,10 +45,12 @@ final class ServerFactory
         $server->addPlugin(new AccessPlugin($grant, $mounts, $access));
         $server->addPlugin(new LocksPlugin(new LockBackend(Yii::$app->db)));
         $server->addPlugin(new TemporaryFilePlugin($module->getTempPath((int)$user->id)));
+        $server->addPlugin(new FolderGetPlugin());
 
-        // Sabre answers every exception itself; one that is not a DAV status is an error.
+        // Sabre answers every exception itself; one that is not a DAV status is an error. A
+        // method or report no plugin implements is the client's choice, not a fault.
         $server->on('exception', static function (Throwable $e) {
-            if (!$e instanceof DavException || $e->getHTTPCode() >= 500) {
+            if (!$e instanceof DavException || ($e->getHTTPCode() >= 500 && !$e instanceof NotImplemented)) {
                 Yii::error($e, 'dav');
             }
         });

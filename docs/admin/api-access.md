@@ -264,7 +264,7 @@ changed). The user copies it once; it is listed under *Account → Security & Pr
 Access*, where revoking it disconnects that device. The account password does not work there,
 so users without one (SSO, LDAP) can connect too.
 
-It needs only *Allow personal access tokens* (on by default) and the module's own switch (on by
+Both need pretty URLs (`urlManager.enablePrettyUrl`, see the installation guide); without them the switches are disabled. Then it needs only *Allow personal access tokens* (on by default) and the module's own switch (on by
 default). Neither the group permission *Create personal access tokens* nor the *Scopes
 available to personal access tokens* apply: the module decides what its device passwords do,
 and a device sees no more than its user does in the web interface. The passwords count towards

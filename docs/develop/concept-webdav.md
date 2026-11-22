@@ -177,7 +177,11 @@ like any other:
   origin, so an uploaded HTML file must not run its scripts there.
 - **Server errors.** A `5xx` says no more than its status. Sabre would put the exception's
   message into the body, whatever it was thrown with (SQL included). The exception is logged
-  (category `dav`).
+  (category `dav`), except a `501` for a method or report no plugin implements.
+- **`GET` of a folder.** A browser opening `/dav/` gets a line of text on what the address is
+  for (`FolderGetPlugin`), not Sabre's `501`.
+- **Entry script.** A client that addresses `/index.php/dav/` is served too
+  (`ServerController::requestBaseUri()`); the dialogs show the address without it.
 - **Version.** Sabre's version is not exposed.
 
 ## Storing uploads

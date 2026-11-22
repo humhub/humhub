@@ -10,6 +10,7 @@ namespace humhub\modules\dav\tests\codeception\unit;
 
 use humhub\components\rateLimit\RateLimiter;
 use humhub\modules\dav\components\Mount;
+use humhub\modules\dav\controllers\ServerController;
 use humhub\modules\dav\events\MountsEvent;
 use humhub\modules\dav\Module;
 use humhub\modules\dav\tests\codeception\_support\DavTestClient;
@@ -28,6 +29,8 @@ use yii\base\Event;
 use yii\caching\ArrayCache;
 use yii\db\Query;
 use yii\helpers\FileHelper;
+use yii\log\Logger;
+use yii\web\Request;
 
 /**
  * The endpoint once a token authenticated: what a token may reach, the limits, and what the
@@ -106,6 +109,47 @@ class ServerTest extends HumHubDbTestCase
     public function testTheAddressOfAMountIsAbsolute()
     {
         $this->assertMatchesRegularExpression('#^https?://[^/]+/.*dav/files/$#', Module::instance()->getMountUrl('files'));
+    }
+
+    public function testABrowserGetsAHintAtAFolder()
+    {
+        $client = DavTestClient::forUser(User::findOne(['id' => 2]), ['test:read']);
+
+        $response = $client->request('GET', '');
+        $this->assertSame(200, $response->statusCode);
+        $this->assertStringStartsWith('text/plain', (string)$response->headers->get('Content-Type'));
+        $this->assertStringContainsString('WebDAV', DavTestClient::body($response));
+
+        $this->assertSame(200, $client->request('HEAD', '')->statusCode);
+    }
+
+    public function testAMethodNoPluginKnowsIsNoServerError()
+    {
+        $client = DavTestClient::forUser(User::findOne(['id' => 2]), ['full']);
+        $logger = Yii::getLogger();
+        Yii::setLogger(new Logger(['flushInterval' => 0]));
+
+        try {
+            $this->assertSame(501, $client->request('FOO', '')->statusCode);
+            $messages = Yii::getLogger()->messages;
+        } finally {
+            Yii::setLogger($logger);
+        }
+
+        $errors = array_filter($messages, static fn($message) => $message[1] === Logger::LEVEL_ERROR && $message[2] === 'dav');
+        $this->assertSame([], $errors);
+    }
+
+    public function testAnAddressWithTheEntryScriptIsServedToo()
+    {
+        $script = Yii::$app->urlManager->getScriptUrl();
+        $request = new Request();
+
+        $request->setUrl($script . '/dav/files/');
+        $this->assertSame($script . '/dav/', ServerController::requestBaseUri($request));
+
+        $request->setUrl(ServerController::baseUri() . 'files/');
+        $this->assertSame(ServerController::baseUri(), ServerController::requestBaseUri($request));
     }
 
     public function testFullReachesEveryMount()

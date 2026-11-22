@@ -18,6 +18,7 @@ use humhub\modules\user\components\User;
 use humhub\modules\user\models\User as UserModel;
 use Yii;
 use yii\web\Controller;
+use yii\web\Request;
 use yii\web\Response;
 
 /**
@@ -90,7 +91,7 @@ class ServerController extends Controller
 
     public function actionIndex(): Response
     {
-        $server = ServerFactory::create(OAuthModule::instance()->activeGrant, self::baseUri());
+        $server = ServerFactory::create(OAuthModule::instance()->activeGrant, self::requestBaseUri(Yii::$app->request));
         $server->httpRequest = HttpBridge::request(Yii::$app->request);
         $server->start();
 
@@ -106,5 +107,17 @@ class ServerController extends Controller
         $urlManager = Yii::$app->urlManager;
 
         return ($urlManager->showScriptName ? $urlManager->getScriptUrl() : $urlManager->getBaseUrl()) . '/dav/';
+    }
+
+    /**
+     * The path of `/dav/` for this request: [[baseUri()]], or below the entry script for a
+     * client that put it into the address (`/index.php/dav/`), which the URL rules route here too.
+     */
+    public static function requestBaseUri(Request $request): string
+    {
+        $scriptUri = Yii::$app->urlManager->getScriptUrl() . '/dav';
+        $path = (string)parse_url($request->getUrl(), PHP_URL_PATH);
+
+        return $path === $scriptUri || str_starts_with($path, $scriptUri . '/') ? $scriptUri . '/' : self::baseUri();
     }
 }
