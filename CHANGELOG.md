@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Long names wrap in the profile header, names cut off in the top bar show in full as tooltip
 - Enh: Tooltips stay while hovered, and the date and the state icons of a stream entry show theirs on keyboard focus
 - Enh: Profile fields say their purpose for autofill (`autocomplete`) in the own profile and at registration
 - Enh: Screen readers are told about a new comment, a like and a changed visibility (`humhub.ui.status.announce()`)

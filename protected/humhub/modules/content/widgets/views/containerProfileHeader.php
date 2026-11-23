@@ -64,7 +64,7 @@ $profileImageHeight = $container->image->defaultOptions['height'];
                 ['class' => ['h1', $classPrefix]],
             ) ?>
             <?php if ($subTitle !== null && $subTitle !== '') : ?>
-                <div class="h2 <?= $classPrefix ?>"><?= $subTitle ?></div>
+                <div class="h2 <?= $classPrefix ?>" data-tooltip="overflow"><?= $subTitle ?></div>
             <?php endif; ?>
         </div>
 

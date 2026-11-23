@@ -33,7 +33,7 @@ AppAsset::register($this);
         <!-- start: first top navigation bar -->
         <header id="topbar-first" class="topbar fixed-top navbar">
             <div class="container position-relative">
-                <div class="topbar-brand d-none d-md-block">
+                <div class="topbar-brand d-none d-md-block" data-tooltip="overflow">
                     <?= SiteLogo::widget() ?>
                 </div>
 

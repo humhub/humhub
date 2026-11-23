@@ -54,8 +54,10 @@ own. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
   JS), `trigger: 'hover'` plus the keyboard focus from `humhub.ui.tooltip`, which shows a tooltip
   on `focusin` only while `humhub.ui.appearance` reports keyboard modality, hides it on `focusout`
   and on Escape ([Keyboard](keyboard.md#popups-and-escape)); no tooltip on touch.
-- **Truncated text:** `data-tooltip="overflow"` creates the tooltip only while the text is cut
-  off.
+- **Truncated text:** `data-tooltip="overflow"` on the element that cuts its text off with an ellipsis
+  shows the full text as tooltip, only while it is cut off; a focused link or button around it shows
+  it too (the name in the top bar's account menu, the site name, the space description in its
+  header). Text that has room wraps instead (the name in the profile header).
 - **File:** `_tooltip.scss`, behind `$prev-tooltip`.
 - **Sass variables:** Bootstrap's `$tooltip-font-size` (already set), `$tooltip-max-width`,
   `$tooltip-bg`, `$tooltip-color`, `$tooltip-padding-x/y`, `$tooltip-border-radius`,
@@ -74,7 +76,6 @@ native `title` attribute instead (e.g. `PageToolbar` actions).
 | Initialised on `mouseover` only, so a keyboard user never sees one | `humhub.ui.tooltip`: the same delegated binding on hover and on keyboard focus, hidden on `focusout` and Escape ([Keyboard](keyboard.md#popups-and-escape)) |
 | Delay, quick follow-up, no touch | One shared tooltip, bound by delegation, that reads `data-tooltip` (or the existing Bootstrap attributes) from PHP and Vue markup alike |
 | Vue uses native `title` | Switch to the shared tooltip, so icon buttons look the same everywhere |
-| Truncated text | `data-tooltip="overflow"`: show only when the text is cut off |
 
 ## Open questions
 

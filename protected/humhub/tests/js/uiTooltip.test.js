@@ -13,8 +13,13 @@ class TooltipStub {
         return this.shown;
     }
 
+    // As Bootstrap: a cancelable show event on the trigger first
     show() {
-        this.shown = true;
+        const event = new Event('show.bs.tooltip', { bubbles: true, cancelable: true });
+        this.el.dispatchEvent(event);
+        if (!event.defaultPrevented) {
+            this.shown = true;
+        }
     }
 
     // As Bootstrap: a cancelable hide event on the trigger first
@@ -192,6 +197,53 @@ describe('ui.tooltip', () => {
         it('shows none for a link with several', () => {
             pressTab();
             fire(byId('two'), 'focusin');
+            expect(TooltipStub.instances.size).toBe(0);
+        });
+    });
+
+    describe('a text cut off (data-tooltip="overflow", WCAG 1.4.12)', () => {
+        // jsdom lays nothing out: the sizes say whether the text is cut off
+        const size = (el, scrollWidth, clientWidth) => {
+            Object.defineProperty(el, 'scrollWidth', { value: scrollWidth, configurable: true });
+            Object.defineProperty(el, 'clientWidth', { value: clientWidth, configurable: true });
+        };
+
+        beforeEach(() => {
+            html('<a id="toggle" href="#"><div id="name" data-tooltip="overflow"><strong>Maximiliane Wolkenstein</strong><br>'
+                + '<span>System Administration</span></div><span id="dot" class="tt" title="Online"></span></a>');
+        });
+
+        it('shows its full text as tooltip while it is cut off', () => {
+            size(byId('name'), 274, 200);
+            fire(byId('name'), 'mouseover');
+
+            const tooltip = TooltipStub.getInstance(byId('name'));
+            expect(tooltip.shown).toBe(true);
+            // The text itself; a browser's innerText also turns the line break into a space, jsdom has none
+            expect(tooltip.config.title.call(byId('name'))).toBe('Maximiliane WolkensteinSystem Administration');
+        });
+
+        it('shows none when the text fits', () => {
+            size(byId('name'), 150, 200);
+            fire(byId('name'), 'mouseover');
+
+            expect(TooltipStub.getInstance(byId('name')).shown).toBe(false);
+        });
+
+        it('wins over the other triggers of a focused link while it is cut off', () => {
+            size(byId('name'), 274, 200);
+            pressTab();
+            fire(byId('toggle'), 'focusin');
+
+            expect(TooltipStub.getInstance(byId('name')).shown).toBe(true);
+            expect(TooltipStub.getInstance(byId('dot'))).toBeNull();
+        });
+
+        it('leaves a focused link without tooltip when the text fits and it has other triggers', () => {
+            size(byId('name'), 150, 200);
+            pressTab();
+            fire(byId('toggle'), 'focusin');
+
             expect(TooltipStub.instances.size).toBe(0);
         });
     });

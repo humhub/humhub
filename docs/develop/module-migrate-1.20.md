@@ -15,7 +15,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `humhub\widgets\Icon::focusable()`: an icon with a tooltip that says something becomes a tab stop named by its
   tooltip (`tabindex="0"`, `aria-label`) instead of being hidden with a visually hidden text. Use it only for an
   icon that is not inside a link or button. The state icons of a stream entry (`VisibilityIcon`, `UpdatedIcon`,
-  `HiddenIcon`, `LockCommentsIcon`, `ArchivedIcon`, pinned) are focusable.
+  `HiddenIcon`, `LockCommentsIcon`, `ArchivedIcon`, pinned) are focusable. `data-tooltip="overflow"` on an element
+  that cuts its text off with an ellipsis shows the full text as tooltip while it is cut off (WCAG 1.4.12).
+- **The name in the profile header wraps** instead of being cut off; the banner grows with it. The banner image and
+  `.img-profile-data` share one grid cell of `.profile-banner-image-container`, `.img-profile-data` is no longer
+  positioned absolutely.
 - **Profile fields say their purpose** (`autocomplete`, WCAG 1.3.5): the fields the installation creates get the
   token of `humhub\modules\user\models\ProfileField::AUTOCOMPLETE` by internal name (`firstname` → `given-name`,
   …), in the own profile and at registration, not when an admin edits someone else.

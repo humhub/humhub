@@ -39,7 +39,7 @@ $userModel = Yii::$app->user->identity;
            ]))) ?>">
 
             <?php if ($this->context->showUserName): ?>
-                <div class="user-title float-start d-none d-sm-block">
+                <div class="user-title float-start d-none d-sm-block" data-tooltip="overflow">
                     <strong><?= Html::encode($userModel->displayName); ?></strong><br/><span
                         class="truncate"><?= Html::encode($userModel->displayNameSub); ?></span>
                 </div>
