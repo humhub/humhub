@@ -31,7 +31,7 @@
   const _hoisted_2$5 = { class: "flex-shrink-0 me-3 pt-1 img-profile-space" };
   const _hoisted_3$5 = { class: "flex-grow-1" };
   const _hoisted_4$5 = ["innerHTML"];
-  const _hoisted_5$4 = ["datetime", "title"];
+  const _hoisted_5$5 = ["datetime", "title"];
   const _hoisted_6$4 = { class: "flex-shrink-0 ms-2 order-last text-center" };
   const _hoisted_7$4 = {
     key: 0,
@@ -87,7 +87,7 @@
           "data-ui-addition": "timeago",
           datetime: $props.notification.createdAt,
           title: $options.absoluteTime
-        }, vue$1.toDisplayString($options.absoluteTime), 9, _hoisted_5$4)
+        }, vue$1.toDisplayString($options.absoluteTime), 9, _hoisted_5$5)
       ]),
       vue$1.createElementVNode("div", _hoisted_6$4, [
         $props.notification.isNew ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_7$4, [
@@ -248,18 +248,23 @@
   };
   const _hoisted_1$4 = {
     key: 0,
-    class: "info"
+    class: "list-unstyled m-0",
+    role: "list"
   };
   const _hoisted_2$4 = {
     key: 1,
-    class: "text-center p-2"
+    class: "info"
   };
   const _hoisted_3$4 = {
+    key: 2,
+    class: "text-center p-2"
+  };
+  const _hoisted_4$4 = {
     class: "visually-hidden",
     role: "status"
   };
-  const _hoisted_4$4 = {
-    key: 2,
+  const _hoisted_5$4 = {
+    key: 3,
     class: "text-center p-2"
   };
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
@@ -273,26 +278,30 @@
         onScroll: _cache[1] || (_cache[1] = (...args) => $options.onScroll && $options.onScroll(...args))
       },
       [
-        (vue$1.openBlock(true), vue$1.createElementBlock(
-          vue$1.Fragment,
-          null,
-          vue$1.renderList($data.items, (entry) => {
-            return vue$1.openBlock(), vue$1.createBlock(_component_NotificationEntry, {
-              key: entry.id,
-              notification: entry
-            }, null, 8, ["notification"]);
-          }),
-          128
-          /* KEYED_FRAGMENT */
-        )),
+        vue$1.createCommentVNode(" A list for screen readers (WCAG 1.3.1); `role` because Safari drops it with `list-style: none` "),
+        $data.items.length ? (vue$1.openBlock(), vue$1.createElementBlock("ul", _hoisted_1$4, [
+          (vue$1.openBlock(true), vue$1.createElementBlock(
+            vue$1.Fragment,
+            null,
+            vue$1.renderList($data.items, (entry) => {
+              return vue$1.openBlock(), vue$1.createElementBlock("li", {
+                key: entry.id
+              }, [
+                vue$1.createVNode(_component_NotificationEntry, { notification: entry }, null, 8, ["notification"])
+              ]);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ])) : vue$1.createCommentVNode("v-if", true),
         !$data.items.length && !$data.loading ? (vue$1.openBlock(), vue$1.createElementBlock(
           "div",
-          _hoisted_1$4,
+          _hoisted_2$4,
           vue$1.toDisplayString($options.emptyLabel),
           1
           /* TEXT */
         )) : vue$1.createCommentVNode("v-if", true),
-        $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$4, [
+        $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3$4, [
           _cache[2] || (_cache[2] = vue$1.createElementVNode(
             "span",
             {
@@ -305,13 +314,13 @@
           )),
           vue$1.createElementVNode(
             "span",
-            _hoisted_3$4,
+            _hoisted_4$4,
             vue$1.toDisplayString($options.loadingLabel),
             1
             /* TEXT */
           )
         ])) : vue$1.createCommentVNode("v-if", true),
-        $props.showMoreButton && $options.hasMore && !$data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_4$4, [
+        $props.showMoreButton && $options.hasMore && !$data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_5$4, [
           vue$1.createElementVNode(
             "button",
             {

@@ -364,4 +364,50 @@ describe('ui.focus', () => {
             expect(document.activeElement.id).toBe('last');
         });
     });
+
+    describe('NiceScroll', () => {
+        // Like jquery.nicescroll: an element without a tabindex gets a counted one, positive from the second on;
+        // the page itself (html, body) gets none
+        let counter = 0;
+        const fakeNiceScroll = function () {
+            return this.each(function () {
+                if (!/^(HTML|BODY)$/.test(this.nodeName) && !this.getAttribute('tabindex')) {
+                    this.setAttribute('tabindex', String(counter++));
+                }
+            });
+        };
+
+        beforeEach(() => {
+            counter = 1;
+            globalThis.$.fn.niceScroll = fakeNiceScroll;
+            focus.init();
+        });
+
+        it('keeps a scroll container in the order of the page', () => {
+            html('<div id="a"></div><div id="b"></div>');
+
+            $('#a').niceScroll({});
+            $('#b').niceScroll({});
+
+            expect(byId('a').getAttribute('tabindex')).toBe('0');
+            expect(byId('b').getAttribute('tabindex')).toBe('0');
+        });
+
+        it('leaves a tabindex of its own and the page itself alone', () => {
+            html('<div id="a" tabindex="-1"></div>');
+
+            $('#a').niceScroll({});
+            $(document.body).niceScroll({});
+
+            expect(byId('a').getAttribute('tabindex')).toBe('-1');
+            expect(document.body.hasAttribute('tabindex')).toBe(false);
+        });
+
+        it('wraps NiceScroll once', () => {
+            const wrapped = globalThis.$.fn.niceScroll;
+            focus.init();
+
+            expect(globalThis.$.fn.niceScroll).toBe(wrapped);
+        });
+    });
 });

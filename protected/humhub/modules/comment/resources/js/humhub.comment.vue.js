@@ -1014,8 +1014,9 @@
         )
       ]),
       vue$1.createElementVNode("div", _hoisted_5, [
-        vue$1.createElementVNode("h4", {
-          class: "comment-heading",
+        vue$1.createCommentVNode(" Below the entry's h2 "),
+        vue$1.createElementVNode("h3", {
+          class: "h4 comment-heading",
           id: $options.headingId
         }, [
           vue$1.createElementVNode("a", {

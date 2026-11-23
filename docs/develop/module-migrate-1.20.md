@@ -110,8 +110,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     still wins.
   - The text of a neutral badge is `$badge-color: var(--hh-secondary-fg)`, which reads on its fill.
   - The message of the error page is its `<h1>` (`h1.h2`, `h1.h6` on the login required page), the
-    dashboard has a visually hidden `<h1>`, and the subtitle of a profile header (`h2`) is left out when
-    it is empty.
+    dashboard has a visually hidden `<h1>`, and the subtitle of a profile header is left out when it is
+    empty.
+  - The heading of a stream entry is an `<h2 class="h4 wall-entry-title">` (was `h4`), the line below it a
+    `div.h5.wall-entry-meta` (was `h5`), and the heading of a comment an `<h3 class="h4 comment-heading">`
+    (was `h4`). The Bootstrap classes keep the look; style them by these classes.
+  - The name in the header of a space or profile (`containerProfileHeader.php`) is the page's `<h1>`
+    unless the page has a `humhub\widgets\PageHeader`: its title is the `<h1>` then
+    (`PageHeader::VIEW_PARAM_H1`), and the name a `div.h1`. The subtitle is a `div.h2` instead of an `h2`.
+    Style them by `.h1` and `.h2`.
+  - The notifications are a list (`ul[role="list"] > li > a`); `.hh-list` styles `> ul > li > a` as a row
+    like `> a`.
   - The close control of the header search is a `<button id="dropdown-search-close">` named "Close"
     instead of a bare icon.
   - The avatar next to the linked name of its author (stream entry header, comment) is out of the tab
@@ -164,6 +173,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     and toggles with Space, instead of two links swapped by `v-if`.
   - `StreamEntry.loader()` moves a focus in the entry's menu to the entry before it hides the menu, so the
     reloaded entry gets it (visibility, lock comments, …).
+  - A scroll container of NiceScroll stays in the order of the page: `humhub.ui.focus` gives one without a
+    `tabindex` `tabindex="0"` before NiceScroll would set a counted, positive one. That covers the
+    `niceScroll()` calls of modules too.
   - The editor's full screen button is a toggle (`aria-pressed`, title translated); in full screen Tab
     goes round the editor's toolbar and text (a link in the text is no stop of its own), Escape leaves it and
     focuses the button (after a list of suggestions is closed). That Escape no longer reaches a dialog around

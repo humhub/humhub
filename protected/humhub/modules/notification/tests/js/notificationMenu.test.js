@@ -89,7 +89,7 @@ describe('NotificationMenu', () => {
         expect(wrapper.find('#mark-seen-link').exists()).toBe(true);
         // The inlined page means no request for the first paint.
         expect(getCalls).toHaveLength(0);
-        expect(wrapper.findAll('.hh-list > a')).toHaveLength(1);
+        expect(wrapper.findAll('.hh-list li > a')).toHaveLength(1);
     });
 
     it('names the bell with the unread count, which the badge only shows', () => {

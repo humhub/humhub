@@ -72,7 +72,7 @@
                 color: var(--bs-white);
                 background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
-                h1 {
+                .h1 {
                     margin-bottom: 7px;
                     max-width: 600px;
                     white-space: nowrap;
@@ -85,19 +85,19 @@
                     }
                 }
 
-                h2 {
+                .h2 {
                     font-size: 16px;
                     font-weight: 400;
                     margin-top: 0;
                 }
 
-                h1.space {
+                .h1.space {
                     a {
                         font-weight: 700;
                     }
                 }
 
-                h2.space {
+                .h2.space {
                     font-size: 13px;
                     font-weight: 300;
                     max-width: 600px;
@@ -135,7 +135,7 @@
             padding-left: 100px;
         }
 
-        .panel-profile .panel-profile-header .img-profile-data h1 {
+        .panel-profile .panel-profile-header .img-profile-data .h1 {
             font-size: 20px;
             line-height: 20px;
             margin-bottom: 2px;

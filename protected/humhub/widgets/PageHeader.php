@@ -34,6 +34,12 @@ use Yii;
 class PageHeader extends Widget implements Stringable
 {
     /**
+     * The view param set once a page header has rendered the page's `h1`: the header of a space or profile shows
+     * its name without a heading then
+     */
+    public const VIEW_PARAM_H1 = 'pageHeaderH1';
+
+    /**
      * @var string the page title
      */
     public string $title = '';
@@ -111,6 +117,10 @@ class PageHeader extends Widget implements Stringable
      */
     public function run()
     {
+        if ($this->titleTag === 'h1') {
+            $this->getView()->params[self::VIEW_PARAM_H1] = true;
+        }
+
         return $this->render('pageHeader', [
             'id' => $this->getId(),
             'title' => $this->title,
