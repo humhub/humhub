@@ -5721,6 +5721,9 @@
       context: { type: Object, default: () => ({}) }
     },
     computed: {
+      readonlyContext() {
+        return vue.readonly(this.context);
+      },
       visibleEntries() {
         return vue$1.getSlotComponents(this.name).filter((entry) => vue$1.isRegistered(entry.component));
       }
@@ -5735,7 +5738,7 @@
           vue.resolveDynamicComponent(entry.component),
           vue.mergeProps({
             key: entry.id
-          }, { ref_for: true }, $props.context),
+          }, { ref_for: true }, $options.readonlyContext),
           null,
           16
           /* FULL_PROPS */

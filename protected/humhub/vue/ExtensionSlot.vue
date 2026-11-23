@@ -3,7 +3,7 @@
         v-for="entry in visibleEntries"
         :is="entry.component"
         :key="entry.id"
-        v-bind="context"
+        v-bind="readonlyContext"
     />
 </template>
 
@@ -68,8 +68,15 @@
  *   `isRegistered()` from inside this computed is what makes late component registration
  *   visible here too, not just late slot registration.
  *
+ * ## Read-only context
+ *
+ * An entry gets the context to read, not to change: its objects are handed down read-only
+ * (`readonly()`), so an extension cannot change the host's state behind its back. It reports
+ * what it wants changed with an event, as the card actions do (`follow-change`).
+ *
  * @since 1.20
  */
+import { readonly } from 'vue';
 import { getSlotComponents, isRegistered } from '@humhub/vue';
 
 export default {
@@ -79,6 +86,9 @@ export default {
         context: { type: Object, default: () => ({}) },
     },
     computed: {
+        readonlyContext() {
+            return readonly(this.context);
+        },
         visibleEntries() {
             return getSlotComponents(this.name).filter((entry) => isRegistered(entry.component));
         },
