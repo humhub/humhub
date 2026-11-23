@@ -10,6 +10,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - To migrate, drop the calls and give the container `overflow-y: auto`, and `overscroll-behavior: contain`
     to keep the page behind it from scrolling along. A native scrollbar takes room from the width of the
     container, where NiceScroll drew over the content.
+- **Status messages stay long enough to be read** (WCAG 2.2.1). A message of `humhub.ui.status` (`success()`,
+  `info()`, `warn()`) closes after 5 s at the earliest, 60 ms per character for a longer one; a shorter
+  `closeAfter` is raised to that, success messages took 2 s before. With the new user setting "Keep messages
+  open" (`humhub\components\Appearance::MESSAGES`) no message closes by itself.
 - **The media viewer replaces blueimp Gallery** (see [Media viewer](ui-js-gallery.md)). Images and videos marked with
   `data-ui-gallery` open in an accessible dialog built on PhotoSwipe, with zoom, a video player, a caption and a
   download button. The markup stays: `data-ui-gallery`, `href`/`src` and `type="video/…"` work as before; the

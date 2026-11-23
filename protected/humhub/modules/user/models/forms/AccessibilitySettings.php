@@ -23,6 +23,7 @@ class AccessibilitySettings extends Model
     public $contrast;
     public $motion;
     public $font;
+    public $messages;
 
     public User $user;
 
@@ -37,6 +38,7 @@ class AccessibilitySettings extends Model
         $this->contrast = $appearance->get(Appearance::CONTRAST, $this->user);
         $this->motion = $appearance->get(Appearance::MOTION, $this->user);
         $this->font = $appearance->get(Appearance::FONT, $this->user) === Appearance::ON;
+        $this->messages = $appearance->get(Appearance::MESSAGES, $this->user) === Appearance::ON;
     }
 
     /**
@@ -46,7 +48,7 @@ class AccessibilitySettings extends Model
     {
         return [
             [['contrast', 'motion'], 'in', 'range' => array_keys($this->getOptions())],
-            ['font', 'boolean'],
+            [['font', 'messages'], 'boolean'],
         ];
     }
 
@@ -59,6 +61,7 @@ class AccessibilitySettings extends Model
             'contrast' => Yii::t('UserModule.account', 'High contrast'),
             'motion' => Yii::t('UserModule.account', 'Reduce motion'),
             'font' => Yii::t('UserModule.account', 'Readable font'),
+            'messages' => Yii::t('UserModule.account', 'Keep messages open'),
         ];
     }
 
@@ -77,6 +80,8 @@ class AccessibilitySettings extends Model
                 . ' ' . Yii::t('UserModule.account', 'Default: {value}', ['value' => $options[$appearance->getDefault(Appearance::MOTION)]]),
             'font' => Yii::t('UserModule.account', 'Lexend, a font designed for easier reading, also with dyslexia.')
                 . ' ' . Yii::t('UserModule.account', 'Default: {value}', ['value' => $options[$appearance->getDefault(Appearance::FONT)]]),
+            'messages' => Yii::t('UserModule.account', 'Messages such as "Saved" stay until you close them, instead of disappearing after a few seconds.')
+                . ' ' . Yii::t('UserModule.account', 'Default: {value}', ['value' => $options[$appearance->getDefault(Appearance::MESSAGES)]]),
         ];
     }
 
@@ -99,6 +104,7 @@ class AccessibilitySettings extends Model
         $appearance->set(Appearance::CONTRAST, $this->contrast, $this->user);
         $appearance->set(Appearance::MOTION, $this->motion, $this->user);
         $appearance->set(Appearance::FONT, $this->font ? Appearance::ON : Appearance::OFF, $this->user);
+        $appearance->set(Appearance::MESSAGES, $this->messages ? Appearance::ON : Appearance::OFF, $this->user);
 
         return true;
     }

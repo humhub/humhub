@@ -9114,10 +9114,12 @@
   const TRANSITION_MS = 150;
   const AUTOCLOSE = {
     info: 6e3,
-    success: 2e3,
+    success: 5e3,
     warn: 1e4,
     error: 0
   };
+  const MIN_READING_MS = 5e3;
+  const READING_MS_PER_CHAR = 60;
   const ICONS = {
     info: "ti ti-info-circle",
     success: "ti ti-circle-check",
@@ -9153,7 +9155,9 @@
   const _sfc_main$5 = {
     props: {
       closeLabel: { type: String, default: "Close" },
-      detailsLabel: { type: String, default: "Show more" }
+      detailsLabel: { type: String, default: "Show more" },
+      // Account → Appearance & Accessibility → "Keep messages open": none closes by itself
+      keepOpen: { type: Boolean, default: false }
     },
     data() {
       return {
@@ -9246,10 +9250,16 @@
       /**
        * `closeAfter || default` - the legacy expression, quirk included: for
        * info/success/warn a 0 or undefined value means "use the default", and
-       * only `error` (whose default is 0) stays until dismissed.
+       * only `error` (whose default is 0) stays until dismissed. Never shorter
+       * than the time to read the message.
        */
       autoCloseDelay(entry) {
-        return entry.closeAfter || AUTOCLOSE[entry.level] || 0;
+        const delay = entry.closeAfter || AUTOCLOSE[entry.level] || 0;
+        if (this.keepOpen || delay <= 0) {
+          return 0;
+        }
+        const length = String(entry.message || "").length;
+        return Math.max(delay, MIN_READING_MS, length * READING_MS_PER_CHAR);
       },
       startHide(after) {
         this.clearTimers();

@@ -200,6 +200,10 @@ globalThis.humhub = {
         const instance = {
             id,
             config: globalThis.humhub.config.module(id),
+            // As humhub.core.js: the module's translated texts from its config
+            text(key) {
+                return (instance.config.text || {})[key];
+            },
             export(exports) {
                 Object.assign(instance, exports);
             },

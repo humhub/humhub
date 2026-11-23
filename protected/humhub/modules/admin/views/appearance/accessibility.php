@@ -20,6 +20,7 @@ use humhub\widgets\form\ActiveForm;
 <?= $form->field($model, 'contrast')->dropDownList($model->getOptions()) ?>
 <?= $form->field($model, 'motion')->dropDownList($model->getOptions()) ?>
 <?= $form->field($model, 'font')->checkbox() ?>
+<?= $form->field($model, 'messages')->checkbox() ?>
 
 <hr>
 <?= $form->field($model, 'imageAltText')->dropDownList($model->getImageAltTextOptions()) ?>
