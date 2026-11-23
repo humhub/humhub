@@ -920,6 +920,8 @@
       createSpaceUrl: { type: String, default: "" },
       // Where the directory link points, empty when the caller may not access it.
       directoryUrl: { type: String, default: "" },
+      // The name of the directory link, the directory's own title.
+      directoryLabel: { type: String, default: "" },
       // Rendered icons - the icon provider is pluggable, so a client cannot build them.
       directoryIconHtml: { type: String, default: "" },
       resetIconHtml: { type: String, default: "" }
@@ -1165,13 +1167,13 @@
     }
   };
   const _hoisted_1$5 = { ref: "root" };
-  const _hoisted_2$3 = ["placeholder", "title"];
+  const _hoisted_2$3 = ["placeholder", "title", "aria-label"];
   const _hoisted_3$2 = {
     key: 0,
     id: "space-directory-link",
     class: "input-group-text"
   };
-  const _hoisted_4$1 = ["href", "innerHTML"];
+  const _hoisted_4$1 = ["href", "title", "aria-label", "innerHTML"];
   const _hoisted_5$1 = ["innerHTML"];
   const _hoisted_6$1 = {
     id: "space-menu-spaces",
@@ -1234,6 +1236,7 @@
                   autocomplete: "off",
                   placeholder: $options.searchLabel,
                   title: $options.searchTitle,
+                  "aria-label": $options.searchTitle,
                   onKeydown: [
                     _cache[1] || (_cache[1] = vue$1.withKeys(vue$1.withModifiers(($event) => $options.move(1), ["prevent"]), ["down"])),
                     _cache[2] || (_cache[2] = vue$1.withKeys(vue$1.withModifiers(($event) => $options.move(-1), ["prevent"]), ["up"])),
@@ -1247,6 +1250,8 @@
                   vue$1.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock "),
                   vue$1.createElementVNode("a", {
                     href: $props.directoryUrl,
+                    title: $props.directoryLabel,
+                    "aria-label": $props.directoryLabel,
                     innerHTML: $props.directoryIconHtml
                   }, null, 8, _hoisted_4$1)
                 ])) : vue$1.createCommentVNode("v-if", true),

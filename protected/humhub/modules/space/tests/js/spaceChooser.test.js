@@ -93,11 +93,13 @@ afterEach(() => {
 
 describe('SpaceChooser', () => {
     it('renders the menu without asking for anything until it is opened', () => {
-        wrapper = mountInDropdown({ createSpaceUrl: '/space/create', directoryUrl: '/spaces' });
+        wrapper = mountInDropdown({ createSpaceUrl: '/space/create', directoryUrl: '/spaces', directoryLabel: 'Spaces' });
 
-        expect(wrapper.find('#space-menu-search').exists()).toBe(true);
+        expect(wrapper.find('#space-menu-search').attributes('aria-label')).toBe('Search for spaces');
         expect(wrapper.find('#space-menu-spaces.hh-list').exists()).toBe(true);
         expect(wrapper.find('#space-directory-link a').attributes('href')).toBe('/spaces');
+        // An icon only: the link is named for screen readers
+        expect(wrapper.find('#space-directory-link a').attributes('aria-label')).toBe('Spaces');
         expect(wrapper.find('.dropdown-footer a').attributes('data-action-url')).toBe('/space/create');
         // Lazy: a page whose menu is never opened costs no space queries.
         expect(getCalls).toHaveLength(0);

@@ -26,7 +26,8 @@ class GlobalConfirmModal extends \yii\base\Widget
     {
         return \humhub\widgets\modal\JsModal::widget([
             'id' => 'globalModalConfirm',
-            'title' => ' ', // Force creation of the title element
+            // The title `ui.modal.ConfirmModal` falls back to, so the heading is never empty
+            'title' => Yii::t('base', '<strong>Confirm</strong> Action'),
             'jsWidget' => 'ui.modal.ConfirmModal',
             'backdrop' => false,
             'keyboard' => false,

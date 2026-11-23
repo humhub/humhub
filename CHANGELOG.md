@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: The search field and the directory link of the space chooser have a name, the confirm dialog's title is never empty
 - Fix: Hidden skip links have no `href`, so accessibility checkers no longer report them as broken
 - Fix: The hidden file pickers of the comment form have a name, the upload button's tooltip is translated
 - Enh: Removed jQuery NiceScroll, lists scroll natively

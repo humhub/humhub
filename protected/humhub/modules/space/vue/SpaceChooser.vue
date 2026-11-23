@@ -11,6 +11,7 @@
                     autocomplete="off"
                     :placeholder="searchLabel"
                     :title="searchTitle"
+                    :aria-label="searchTitle"
                     @keydown.down.prevent="move(1)"
                     @keydown.up.prevent="move(-1)"
                     @keydown.enter.prevent="open"
@@ -19,7 +20,7 @@
 
                 <span v-if="directoryUrl" id="space-directory-link" class="input-group-text">
                     <!-- eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock -->
-                    <a :href="directoryUrl" v-html="directoryIconHtml"></a>
+                    <a :href="directoryUrl" :title="directoryLabel" :aria-label="directoryLabel" v-html="directoryIconHtml"></a>
                 </span>
 
                 <!-- eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock -->
@@ -126,6 +127,8 @@ export default {
         createSpaceUrl: { type: String, default: '' },
         // Where the directory link points, empty when the caller may not access it.
         directoryUrl: { type: String, default: '' },
+        // The name of the directory link, the directory's own title.
+        directoryLabel: { type: String, default: '' },
         // Rendered icons - the icon provider is pluggable, so a client cannot build them.
         directoryIconHtml: { type: String, default: '' },
         resetIconHtml: { type: String, default: '' },

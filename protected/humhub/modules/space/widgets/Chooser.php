@@ -117,6 +117,7 @@ class Chooser extends Widget
                 'directoryUrl' => Yii::$app->user->can(SpaceDirectoryAccess::class)
                     ? Url::to(['/space/spaces'])
                     : '',
+                'directoryLabel' => Yii::t('SpaceModule.base', 'Spaces'),
                 'directoryIconHtml' => Icon::get('directory')->asString(),
                 'resetIconHtml' => Icon::get('times-circle')->asString(),
             ],
