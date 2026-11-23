@@ -2,6 +2,14 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **jQuery NiceScroll is removed** (unmaintained since 2017). Lists scroll natively, with the browser's scrollbar.
+  - The results of the header search and the richtext editor at its maximum height scroll natively.
+  - Removed: `humhub\assets\JqueryNiceScrollAsset` (also from `CoreBundleAsset`) and
+    `protected/humhub/resources/js/jquery.nicescroll.min.js`. `$.fn.niceScroll()` and `$.fn.getNiceScroll()` no
+    longer exist, a module calling them fails with a `TypeError`.
+  - To migrate, drop the calls and give the container `overflow-y: auto`, and `overscroll-behavior: contain`
+    to keep the page behind it from scrolling along. A native scrollbar takes room from the width of the
+    container, where NiceScroll drew over the content.
 - **The media viewer replaces blueimp Gallery** (see [Media viewer](ui-js-gallery.md)). Images and videos marked with
   `data-ui-gallery` open in an accessible dialog built on PhotoSwipe, with zoom, a video player, a caption and a
   download button. The markup stays: `data-ui-gallery`, `href`/`src` and `type="video/…"` work as before; the
@@ -173,9 +181,6 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     and toggles with Space, instead of two links swapped by `v-if`.
   - `StreamEntry.loader()` moves a focus in the entry's menu to the entry before it hides the menu, so the
     reloaded entry gets it (visibility, lock comments, …).
-  - A scroll container of NiceScroll stays in the order of the page: `humhub.ui.focus` gives one without a
-    `tabindex` `tabindex="0"` before NiceScroll would set a counted, positive one. That covers the
-    `niceScroll()` calls of modules too.
   - The editor's full screen button is a toggle (`aria-pressed`, title translated); in full screen Tab
     goes round the editor's toolbar and text (a link in the text is no stop of its own), Escape leaves it and
     focuses the button (after a list of suggestions is closed). That Escape no longer reaches a dialog around

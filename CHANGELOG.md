@@ -3,7 +3,8 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh: Headings and lists for screen readers: stream entries are h2 and comments h3, one h1 on space and profile pages with a page header, notifications as a list, no positive tabindex from NiceScroll
+- Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Headings and lists for screen readers: stream entries are h2 and comments h3, one h1 on space and profile pages with a page header, notifications as a list
 - Enh: WebDAV endpoint `/dav/` for the files of modules, authenticated by personal access tokens, with locks and its own rate limits
 - Enh: Lists of many records: `RecordMap::getIds()` looks up their record ids at once, and the preview of an image is created on its first request rather than while the list is built
 - Enh: Device connections: a module offers a dialog that creates a personal access token as the password of a device (network drive, calendar app), without the group permission to create tokens; personal access tokens are allowed by default

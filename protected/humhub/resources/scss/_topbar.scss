@@ -183,6 +183,7 @@
                 .hh-list {
                     max-height: 400px;
                     overflow: auto;
+                    overscroll-behavior: contain;
 
                     > div.d-flex, > a.d-flex, > ul > li > a.d-flex {
                         position: relative;

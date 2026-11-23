@@ -1,7 +1,7 @@
 /**
  * Keeps the keyboard focus from falling to <body>: hands it on when the element that holds it is
  * removed, and gives it back to the trigger when a dialog closes (docs/ui/keyboard.md, "Moving the
- * focus"). Keeps NiceScroll's scroll containers in the tab order of the page.
+ * focus").
  *
  * @since 1.20
  */
@@ -243,30 +243,7 @@ humhub.module('ui.focus', function (module, require, $) {
         return focus(target);
     };
 
-    // NiceScroll gives a scroll container without a tabindex a counted, positive one, which takes it out of the
-    // order of the page (WCAG 2.4.3): 0 instead, set before it looks. Covers modules using it too.
-    var guardNiceScroll = function () {
-        var niceScroll = $.fn.niceScroll;
-        if (typeof niceScroll !== 'function' || niceScroll.hhTabindexGuard) {
-            return;
-        }
-        $.fn.niceScroll = function () {
-            this.each(function () {
-                if (this.nodeType === 1 && !/^(HTML|BODY)$/.test(this.nodeName) && !this.hasAttribute('tabindex')) {
-                    this.setAttribute('tabindex', '0');
-                }
-            });
-            return niceScroll.apply(this, arguments);
-        };
-        $.fn.niceScroll.hhTabindexGuard = true;
-    };
-
-    var init = function () {
-        guardNiceScroll();
-    };
-
     module.export({
-        init: init,
         TRIGGER_KEY: TRIGGER_KEY,
         isFocusable: isFocusable,
         focus: focus,

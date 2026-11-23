@@ -63,15 +63,6 @@ humhub.module('ui.search', function(module, require, $) {
             return that.switchFocus(e.currentTarget.tagName, e.which);
         });
 
-        that.getList().niceScroll({
-            cursorwidth: '7',
-            cursorborder: '',
-            cursorcolor: '#555',
-            cursoropacitymax: '0.2',
-            nativeparentscrolling: false,
-            railpadding: {top: 0, right: 0, left: 0, bottom: 0}
-        });
-
         that.$.on('shown.bs.dropdown', function () {
             if (that.getBackdrop().length === 0) {
                 // Add the backdrop
@@ -81,10 +72,6 @@ humhub.module('ui.search', function(module, require, $) {
                         that.getBsMenuDropdown().hide();
                     });
                 });
-            }
-            if (that.getList().is(':visible')) {
-                // refresh NiceScroll after reopen it with searched results
-                that.getList().hide().show();
             }
             if (that.getInput().is(':visible')) {
                 that.getInput().focus();

@@ -112,6 +112,9 @@
             list-style: none;
             padding: 0 16px 24px;
             flex: 0 1 auto;
+            // The results scroll in the dropdown, the page behind stays
+            overflow-y: auto;
+            overscroll-behavior: contain;
 
             > li:first-child {
                 margin-top: 0;
