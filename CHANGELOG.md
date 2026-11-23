@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: The hidden file pickers of the comment form have a name, the upload button's tooltip is translated
 - Enh: Removed jQuery NiceScroll, lists scroll natively
 - Enh: Editor: Home and End in the toolbar, the number of suggestions is said, the link dialog marks its required field
 - Enh: Screen readers read the follow, archive and unread marks of the space chooser

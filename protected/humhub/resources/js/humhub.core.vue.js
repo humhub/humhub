@@ -8694,6 +8694,9 @@
           exclude.push("file_handler");
         }
         return exclude;
+      },
+      uploadLabel() {
+        return vue$1.i18n.t("FileModule.base", "Upload files");
       }
     },
     mounted() {
@@ -8785,7 +8788,7 @@
     }
   };
   const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-cookie-key"];
-  const _hoisted_2$8 = ["accept"];
+  const _hoisted_2$8 = ["accept", "aria-label"];
   const _hoisted_3$7 = {
     key: 1,
     ref: "handlers",
@@ -8833,6 +8836,7 @@
           class: "d-none",
           multiple: "",
           accept: $data.pickerAccept,
+          "aria-label": $options.uploadLabel,
           onChange: _cache[0] || (_cache[0] = (...args) => $options.onPicked && $options.onPicked(...args)),
           onCancel: _cache[1] || (_cache[1] = (...args) => $options.onPicked && $options.onPicked(...args))
         }, null, 40, _hoisted_2$8)) : vue.createCommentVNode("v-if", true),
@@ -10098,7 +10102,7 @@
   };
   const _hoisted_1$1 = { class: "btn-group btn-group-sm" };
   const _hoisted_2$1 = ["aria-disabled", "title", "data-bs-title"];
-  const _hoisted_3$1 = ["multiple", "accept", "disabled"];
+  const _hoisted_3$1 = ["multiple", "accept", "aria-label", "disabled"];
   const _hoisted_4$1 = {
     type: "button",
     class: "btn btn-light btn-icon-only dropdown-toggle",
@@ -10170,6 +10174,7 @@
                 class: "d-none",
                 multiple: $props.multiple,
                 accept: $data.pickerAccept || $props.accept || null,
+                "aria-label": $options.triggerTitle,
                 disabled: _ctx.isDisabled,
                 onChange: _cache[0] || (_cache[0] = (...args) => $options.onInputChange && $options.onInputChange(...args)),
                 onClick: _cache[1] || (_cache[1] = vue.withModifiers(() => {

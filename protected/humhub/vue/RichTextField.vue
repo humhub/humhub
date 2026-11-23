@@ -29,6 +29,7 @@
             class="d-none"
             multiple
             :accept="pickerAccept"
+            :aria-label="uploadLabel"
             @change="onPicked"
             @cancel="onPicked"
         >
@@ -106,7 +107,7 @@
  *
  * @since 1.20
  */
-import { log } from '@humhub/vue';
+import { i18n, log } from '@humhub/vue';
 import fieldMixin from './form/fieldMixin.js';
 import { uploadFiles } from './upload/uploadClient.js';
 import FileHandlerItems from './upload/FileHandlerItems.vue';
@@ -174,6 +175,9 @@ export default {
                 exclude.push('file_handler');
             }
             return exclude;
+        },
+        uploadLabel() {
+            return i18n.t('FileModule.base', 'Upload files');
         },
     },
     mounted() {

@@ -84,6 +84,8 @@ describe('UploadField', () => {
         const input = wrapper.find('input[type="file"]');
         expect(input.exists()).toBe(true);
         expect(input.attributes('multiple')).toBeDefined();
+        // Hidden, but accessibility checkers inspect it: named like its trigger
+        expect(input.attributes('aria-label')).toBe('Upload files');
     });
 
     it('uploads added files as one multipart request and emits the API shapes', async () => {

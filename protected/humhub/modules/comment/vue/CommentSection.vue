@@ -154,8 +154,9 @@ export default {
     // of a CommentModule.base key. 'UserModule.base' is preloaded the same
     // way for CommentEntry's online-status overlay label (`onlineLabel`), and 'base'
     // for the profile-image alt phrase `UserImage` builds itself (see its docblock),
-    // matching the exact keys `user\widgets\Image::run()` uses.
-    i18nCategories: ['CommentModule.base', 'ContentModule.base', 'UserModule.base', 'base'],
+    // matching the exact keys `user\widgets\Image::run()` uses. 'FileModule.base' for the
+    // upload button and the file pickers of the comment form.
+    i18nCategories: ['CommentModule.base', 'ContentModule.base', 'FileModule.base', 'UserModule.base', 'base'],
     components: { CommentList, CommentForm },
     props: {
         contentId: { type: Number, required: true },
