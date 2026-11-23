@@ -139,6 +139,9 @@ describe('SpaceChooser', () => {
         expect(item.attributes('data-space-member')).toBeDefined();
         expect(item.find('.space-name').text()).toBe('Product Team');
         expect(item.find('[data-message-count]').text()).toBe('2');
+        // The count in words for a screen reader, the bare number is hidden from it
+        expect(item.find('[data-message-count]').attributes('aria-hidden')).toBe('true');
+        expect(item.find('.visually-hidden').text()).toContain('since your last visit');
     });
 
     it('marks a space the caller only follows', async () => {
@@ -149,6 +152,8 @@ describe('SpaceChooser', () => {
         const item = wrapper.find('[data-space-chooser-item]');
         expect(item.attributes('data-space-following')).toBeDefined();
         expect(item.find('.ti-star-filled').exists()).toBe(true);
+        // ... in words for a screen reader too
+        expect(item.find('.visually-hidden').text()).toBe('You are following this space');
         // No count without a membership - "new since your last visit" has no meaning then.
         expect(item.find('[data-message-count]').exists()).toBe(false);
     });

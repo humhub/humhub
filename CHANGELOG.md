@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Screen readers read the follow, archive and unread marks of the space chooser
 - Enh: Profile fields and permission pages fit a 320 px screen, permissions show their state below them there
 - Enh: Long names wrap in the profile header, names cut off in the top bar show in full as tooltip
 - Enh: Tooltips stay while hovered, and the date and the state icons of a stream entry show theirs on keyboard focus
