@@ -230,6 +230,26 @@ class ServerTest extends HumHubDbTestCase
         $this->assertFileExists($this->dir . '/hello.txt');
     }
 
+    public function testTheWin32PropertiesOfWindowsAreConfirmedNotStored()
+    {
+        $client = $this->client(['test:read', 'test:write']);
+        $update = static fn(string $namespace, string $props) => '<?xml version="1.0" encoding="utf-8"?>'
+            . '<D:propertyupdate xmlns:D="DAV:" xmlns:Z="' . $namespace . '"><D:set><D:prop>' . $props . '</D:prop></D:set></D:propertyupdate>';
+
+        // Windows takes a refusal for a failed copy; nothing on the server reads them
+        $response = $client->request('PROPPATCH', 'test/hello.txt', ['Content-Type' => 'application/xml'], $update(
+            'urn:schemas-microsoft-com:',
+            '<Z:Win32LastModifiedTime>Sun, 22 Nov 2026 10:00:00 GMT</Z:Win32LastModifiedTime><Z:Win32FileAttributes>00000020</Z:Win32FileAttributes>',
+        ));
+        $this->assertSame(207, $response->statusCode);
+        $this->assertStringContainsString('<d:status>HTTP/1.1 200 OK</d:status>', DavTestClient::body($response));
+        $this->assertStringNotContainsString('403', DavTestClient::body($response));
+
+        // Any other property is still refused: a client would expect to read it back
+        $response = $client->request('PROPPATCH', 'test/hello.txt', ['Content-Type' => 'application/xml'], $update('urn:example', '<Z:color>red</Z:color>'));
+        $this->assertStringContainsString('<d:status>HTTP/1.1 403 Forbidden</d:status>', DavTestClient::body($response));
+    }
+
     public function testPostIsRefused()
     {
         $response = $this->client(['test:read', 'test:write'])->request('POST', 'test/', ['Content-Type' => 'application/x-www-form-urlencoded'], 'sabreAction=mkcol&name=x');

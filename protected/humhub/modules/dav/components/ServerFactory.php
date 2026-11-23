@@ -46,6 +46,7 @@ final class ServerFactory
         $server->addPlugin(new LocksPlugin(new LockBackend(Yii::$app->db)));
         $server->addPlugin(new TemporaryFilePlugin($module->getTempPath((int)$user->id)));
         $server->addPlugin(new FolderGetPlugin());
+        $server->addPlugin(new Win32PropertiesPlugin());
 
         // Sabre answers every exception itself; one that is not a DAV status is an error. A
         // method or report no plugin implements is the client's choice, not a fault.

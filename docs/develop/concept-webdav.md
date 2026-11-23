@@ -178,6 +178,9 @@ like any other:
 - **Server errors.** A `5xx` says no more than its status. Sabre would put the exception's
   message into the body, whatever it was thrown with (SQL included). The exception is logged
   (category `dav`), except a `501` for a method or report no plugin implements.
+- **Properties.** No dead property is stored. The `Win32…` properties Windows Explorer sets
+  after an upload are confirmed (`200`, `Win32PropertiesPlugin`), since Windows takes a refusal
+  for a failed copy; any other `PROPPATCH` is refused (`403`).
 - **`GET` of a folder.** A browser opening `/dav/` gets a line of text on what the address is
   for (`FolderGetPlugin`), not Sabre's `501`.
 - **Entry script.** A client that addresses `/index.php/dav/` is served too
