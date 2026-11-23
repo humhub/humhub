@@ -205,6 +205,9 @@
     }
 
     .table-responsive {
+        // Holds the visually hidden texts of its table (`position: absolute`), which would otherwise widen the page
+        // past the scrolling table (WCAG 1.4.10)
+        position: relative;
         overflow-wrap: normal;
         word-break: normal;
         hyphens: none;

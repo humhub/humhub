@@ -17,6 +17,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   icon that is not inside a link or button. The state icons of a stream entry (`VisibilityIcon`, `UpdatedIcon`,
   `HiddenIcon`, `LockCommentsIcon`, `ArchivedIcon`, pinned) are focusable. `data-tooltip="overflow"` on an element
   that cuts its text off with an ellipsis shows the full text as tooltip while it is cut off (WCAG 1.4.12).
+- **`.table-responsive` is `position: relative`**, so the visually hidden texts of its table stay inside the scrolling
+  area instead of widening the page (WCAG 1.4.10). An absolutely positioned element in such a table now places itself
+  against the scrolling area. The permission grid stacks the state below its permission on screens below `sm`.
 - **The name in the profile header wraps** instead of being cut off; the banner grows with it. The banner image and
   `.img-profile-data` share one grid cell of `.profile-banner-image-container`, `.img-profile-data` is no longer
   positioned absolutely.
