@@ -42,8 +42,11 @@ if ($user !== null) {
 }
 
 if ($tourSpace === null) {
-    // If user is not member of any space, try to find a public space to run Tour in
-    $tourSpace = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['status' => Space::STATUS_ENABLED]]);
+    // If user doesn't manage any space, try to find a visible space to run Tour in
+    $tourSpace = Space::find()
+        ->where(['!=', 'visibility', Space::VISIBILITY_NONE])
+        ->andWhere(['status' => Space::STATUS_ENABLED])
+        ->one();
 }
 
 return [
