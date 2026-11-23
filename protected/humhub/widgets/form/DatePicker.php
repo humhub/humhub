@@ -80,7 +80,8 @@ class DatePicker extends BaseDatePicker
          * to load a fallback language e.g. for `en-GB` -> 'en'.
          */
 
-        $this->options['autocomplete'] = 'off';
+        // No suggestions of the browser over the picker, unless the field says its purpose (WCAG 1.3.5)
+        $this->options['autocomplete'] ??= 'off';
 
         $language = $this->language ?: Yii::$app->language;
 

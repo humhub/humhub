@@ -10,6 +10,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - To migrate, drop the calls and give the container `overflow-y: auto`, and `overscroll-behavior: contain`
     to keep the page behind it from scrolling along. A native scrollbar takes room from the width of the
     container, where NiceScroll drew over the content.
+- **Profile fields say their purpose** (`autocomplete`, WCAG 1.3.5): the fields the installation creates get the
+  token of `humhub\modules\user\models\ProfileField::AUTOCOMPLETE` by internal name (`firstname` → `given-name`,
+  …), in the own profile and at registration, not when an admin edits someone else.
+  `humhub\widgets\form\DatePicker` keeps an `autocomplete` given in its `options`; it was always `off`.
 - **`humhub.ui.status.announce(message)`** tells screen readers about a change without showing a toast
   (WCAG 4.1.3): for a result the page already shows away from the focus, like a new entry in a list or a
   changed count. In Vue: `import { announce } from '@humhub/vue'`. The core uses it for comments, likes and

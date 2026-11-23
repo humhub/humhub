@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Profile fields say their purpose for autofill (`autocomplete`) in the own profile and at registration
 - Enh: Screen readers are told about a new comment, a like and a changed visibility (`humhub.ui.status.announce()`)
 - Enh: A warning before the session ends lets the user stay signed in; messages stay at least 5 s, or open with the new setting "Keep messages open"
 - Enh: Editor: the type menu is a menu with the current block type checked, Tab leaves a list where it can't indent and the editor says how to leave it

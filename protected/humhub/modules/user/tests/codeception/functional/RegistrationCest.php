@@ -57,6 +57,9 @@ class RegistrationCest
 
         $I->amOnPage(trim($matches[0]));
         $I->see('Account registration');
+        // The profile fields say their purpose (WCAG 1.3.5)
+        $I->seeElement('#profile-firstname', ['autocomplete' => 'given-name']);
+        $I->seeElement('#profile-lastname', ['autocomplete' => 'family-name']);
 
         $I->fillField('#user-username', 'RegistrationUser');
         $I->fillField('#password-newpassword', 'MyPassword');
