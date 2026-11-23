@@ -24,6 +24,7 @@ class ModuleAutoLoaderTest extends Unit
         'humhub\modules\comment\Module' => 'comment',
         'humhub\modules\content\Module' => 'content',
         'humhub\modules\dashboard\Module' => 'dashboard',
+        'humhub\modules\dav\Module' => 'dav',
         'humhub\modules\file\Module' => 'file',
         'humhub\modules\friendship\Module' => 'friendship',
         'humhub\modules\installer\Module' => 'installer',
