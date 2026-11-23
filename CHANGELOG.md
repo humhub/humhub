@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Screen readers are told about a new comment, a like and a changed visibility (`humhub.ui.status.announce()`)
 - Enh: A warning before the session ends lets the user stay signed in; messages stay at least 5 s, or open with the new setting "Keep messages open"
 - Enh: Editor: the type menu is a menu with the current block type checked, Tab leaves a list where it can't indent and the editor says how to leave it
 - Enh: Headings and lists for screen readers: stream entries are h2 and comments h3, one h1 on space and profile pages with a page header, notifications as a list

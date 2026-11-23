@@ -14,6 +14,8 @@ Don't use a toast for:
 - **Errors at a field:** see [Form Fields](form-fields.md).
 - **Decisions:** use a [Dialog](dialog.md).
 - **Lasting state:** use a notice in the page.
+- **A change the page shows by itself** (a new comment in the list, a like): tell only screen
+  readers, with `humhub.ui.status.announce()` (see [Keyboard](keyboard.md#announcing)).
 
 ![Toast](images/toast.svg)
 

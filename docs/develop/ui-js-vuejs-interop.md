@@ -94,7 +94,11 @@ The bridge (`humhub.vue.js`) **queues** messages until an island registers itsel
 ```js
 status(level, message, details, closeAfter)   // callers
 setStatusHandler(fn | null)                   // StatusBar.vue, on mount / unmount
+announce(message)                             // screen readers only, no toast
 ```
+
+`announce()` is no message of the bar: it forwards to `humhub.ui.status.announce()`, which writes into a
+live region of its own (`#status-announcer`) for a change the page already shows away from the focus.
 
 That queue is what makes the flash-message path work at all: the inline snippet runs at `POS_END`, long before `ui.additions` sweeps the document and mounts the island. It replaces the `module.initState` hand-off the legacy module did internally. A page without the island (the installer layout renders no `LayoutAddons`) simply accumulates messages nobody shows — the same net effect the legacy module had without its markup present.
 

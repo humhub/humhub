@@ -199,6 +199,7 @@ describe('Comment mutations + live updates', () => {
             const submitButton = wrapper.find('.btn-comment-submit');
             expect(submitButton.exists()).toBe(true);
             expect(submitButton.attributes('disabled')).toBeUndefined();
+            const announce = vi.spyOn(vueModule, 'announce');
 
             await submitButton.trigger('click');
 
@@ -222,6 +223,9 @@ describe('Comment mutations + live updates', () => {
             expect(clearHandler).toHaveBeenCalledTimes(1);
             expect(countHandler).toHaveBeenCalledTimes(1);
             expect(countHandler.mock.calls[0][0].detail).toEqual({ contentId: 42, total: 2 });
+            // Said to a screen reader: the comment shows in the list, not where the focus is
+            expect(announce).toHaveBeenCalledExactlyOnceWith('Your comment has been added.');
+            announce.mockRestore();
 
             // Busy guard released — the button is re-enabled and a further click goes through.
             expect(wrapper.find('.btn-comment-submit').attributes('disabled')).toBeUndefined();
@@ -858,6 +862,7 @@ describe('Comment mutations + live updates', () => {
             globalThis.humhubStubs.client.ajax = vi.fn(() => Promise.resolve(
                 makeComment({ id: 1, message: 'after' }),
             ));
+            const announce = vi.spyOn(vueModule, 'announce');
 
             await editSubmit.trigger('click');
 
@@ -870,6 +875,8 @@ describe('Comment mutations + live updates', () => {
             );
 
             await vi.waitFor(() => expect(wrapper.text()).toContain('after'));
+            expect(announce).toHaveBeenCalledExactlyOnceWith('Your comment has been saved.');
+            announce.mockRestore();
             expect(wrapper.find('#comment_editarea_1 form').exists()).toBe(false); // back to read view
             expect(wrapper.text()).not.toContain('before');
 

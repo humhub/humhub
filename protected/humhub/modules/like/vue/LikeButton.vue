@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { apiUrl, client, getConfig, i18n, log } from '@humhub/vue';
+import { announce, apiUrl, client, getConfig, i18n, log } from '@humhub/vue';
 
 export default {
     // `UserModule.base` and `base` are needed here, not just `LikeModule.base`, because the
@@ -120,6 +120,23 @@ export default {
         }
     },
     methods: {
+        // What a screen reader says after a toggle: the new state and the count, both shown away from
+        // the focus (WCAG 4.1.3)
+        stateMessage() {
+            if (this.liked) {
+                return i18n.t(
+                    'LikeModule.base',
+                    '{others,plural,=0{You like this.} =1{You and one other person like this.} other{You and # others like this.}}',
+                    { others: Math.max(this.count - 1, 0) },
+                );
+            }
+
+            return i18n.t(
+                'LikeModule.base',
+                '{count,plural,=0{You no longer like this.} =1{You no longer like this. One person likes this.} other{You no longer like this. # people like this.}}',
+                { count: this.count },
+            );
+        },
         load() {
             client.get(apiUrl(`like/${this.recordId}`)).then((response) => {
                 this.liked = response.liked;
@@ -148,6 +165,7 @@ export default {
                 this.liked = response.liked;
                 this.count = response.total;
                 this.busy = false;
+                announce(this.stateMessage());
                 if (this.liked) {
                     // Legacy bridge: StreamEntry toggles its notification links on this event
                     jQuery(this.$el).trigger('humhub:like:liked');

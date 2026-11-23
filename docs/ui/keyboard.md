@@ -117,6 +117,9 @@ feed, and a text field or editor keeps them.
 
 - What an action changes somewhere the focus is not, the status bar announces (`humhub.ui.status`,
   `aria-live="polite"`, errors assertive). See [Toast](toast.md).
+- When the page shows the change by itself (a new comment in the list, the count of a like, the
+  visibility badge), only a screen reader is told, without a toast: `humhub.ui.status.announce()`,
+  in Vue `announce` from `@humhub/vue`.
 - Loading, empty and error states carry `role="status"` or `role="alert"`. See
   [Loading, Empty & Error States](loading-empty-error.md).
 - A counter that updates live (unread notifications) updates its control's name. It does not

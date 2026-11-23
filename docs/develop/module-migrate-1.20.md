@@ -10,6 +10,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - To migrate, drop the calls and give the container `overflow-y: auto`, and `overscroll-behavior: contain`
     to keep the page behind it from scrolling along. A native scrollbar takes room from the width of the
     container, where NiceScroll drew over the content.
+- **`humhub.ui.status.announce(message)`** tells screen readers about a change without showing a toast
+  (WCAG 4.1.3): for a result the page already shows away from the focus, like a new entry in a list or a
+  changed count. In Vue: `import { announce } from '@humhub/vue'`. The core uses it for comments, likes and
+  the visibility of a content.
 - **Status messages stay long enough to be read** (WCAG 2.2.1). A message of `humhub.ui.status` (`success()`,
   `info()`, `warn()`) closes after 5 s at the earliest, 60 ms per character for a longer one; a shorter
   `closeAfter` is raised to that, success messages took 2 s before. With the new user setting "Keep messages

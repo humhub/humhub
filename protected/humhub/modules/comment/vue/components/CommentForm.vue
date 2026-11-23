@@ -112,7 +112,7 @@
  *  - Removing an entry before submitting means it is never attached; the uploaded
  *    file stays behind unattached and the file module's own cron job cleans it up.
  */
-import { getConfig, i18n, log, url } from '@humhub/vue';
+import { announce, getConfig, i18n, log, url } from '@humhub/vue';
 import { createComment, extractFieldErrors, updateComment } from './commentApi.js';
 
 // HumHubForm/RichTextField/SubmitButton/UploadField are NOT
@@ -243,6 +243,10 @@ export default {
                 // unmount and would resurface the just-saved text as a draft later.
                 this.clear();
                 this.$emit(isEdit ? 'updated' : 'created', comment);
+                // The comment shows in the list, away from the form (WCAG 4.1.3)
+                announce(isEdit
+                    ? i18n.t('CommentModule.base', 'Your comment has been saved.')
+                    : i18n.t('CommentModule.base', 'Your comment has been added.'));
             }).catch((response) => {
                 this.busy = false;
                 // The API answers a validation failure with

@@ -432,6 +432,7 @@
           this.busy = false;
           this.clear();
           this.$emit(isEdit ? "updated" : "created", comment);
+          vue.announce(isEdit ? vue.i18n.t("CommentModule.base", "Your comment has been saved.") : vue.i18n.t("CommentModule.base", "Your comment has been added."));
         }).catch((response) => {
           this.busy = false;
           const fieldErrors = extractFieldErrors(response);

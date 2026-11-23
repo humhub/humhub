@@ -27,6 +27,7 @@ export const apiUrl = (...args) => vueModule().apiUrl(...args);
 export const pageTitle = (...args) => vueModule().pageTitle(...args);
 export const status = (...args) => vueModule().status(...args);
 export const setStatusHandler = (...args) => vueModule().setStatusHandler(...args);
+export const announce = (...args) => vueModule().announce(...args);
 
 export const client = {
     post: (...args) => vueModule().client.post(...args),

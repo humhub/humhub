@@ -129,6 +129,30 @@ describe('LikeButton', () => {
         expect(wrapper.find('.likeCount').text()).toBe('(3)');
     });
 
+    it('tells a screen reader the new state and the count after a toggle', async () => {
+        const announce = vi.spyOn(vueModule, 'announce');
+        const t = vi.spyOn(globalThis.humhubStubs.i18n, 't');
+        const wrapper = mount(LikeButton, {
+            ...mountOptions(),
+            props: { recordId: 7, likeCount: 2, currentUserLiked: false },
+        });
+
+        await wrapper.find('a.like').trigger('click');
+        await vi.waitFor(() => expect(announce).toHaveBeenCalledTimes(1));
+        // Liked, 3 in all: "You and 2 others like this." (the test's i18n leaves the plural unformatted)
+        expect(t).toHaveBeenCalledWith('LikeModule.base', expect.stringContaining('other{You and # others like this.}'), { others: 2 });
+        expect(announce).toHaveBeenLastCalledWith(expect.stringContaining('You and # others like this.'));
+
+        await wrapper.find('a.unlike').trigger('click');
+        await vi.waitFor(() => expect(announce).toHaveBeenCalledTimes(2));
+        // Unliked, 1 left: "You no longer like this. One person likes this."
+        expect(t).toHaveBeenCalledWith('LikeModule.base', expect.stringContaining('=1{You no longer like this. One person likes this.}'), { count: 1 });
+        expect(announce).toHaveBeenLastCalledWith(expect.stringContaining('You no longer like this.'));
+
+        announce.mockRestore();
+        t.mockRestore();
+    });
+
     it('keeps the focus on the same button when it switches, and toggles with Space', async () => {
         const wrapper = mount(LikeButton, {
             ...mountOptions(),
