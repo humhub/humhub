@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix: The current space's image in the space chooser button sat above the centre of the top bar, and the caret beside it moved after a page change
 - Fix: The `assertLogRegex()` and `assertContainsRegex()` test assertions only checked the first message or element, and `assertNotLogRegex()` and `assertNotContainsRegex()` passed even if a later one matched
 - Fix #8749: Posts with an empty message could be saved when only a file uploaded by the rich text editor was attached
+- Fix #xxxx: Long top navigation entries briefly wrapped into a second row on page load before being moved into the "Menu" dropdown
 
 1.19.4 (November 9, 2026)
 -------------------------

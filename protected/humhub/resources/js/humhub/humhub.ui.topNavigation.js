@@ -4,20 +4,31 @@ humhub.module('ui.topNavigation', function (module, require, $) {
     var $topSub = $('#top-menu-sub');
 
     var init = function () {
-        $(window).on('resize', function () {
-            // Prevent overflow on to start with
-            $topBarSecond.css('overflow', 'hidden');
-            // Start with hidden pulldown menu
-            $topSub.hide();
-            // Bring items in the MenuDropdown back in the menu
-            $('#top-menu-sub-dropdown').children().appendTo('#top-menu-nav').find('i').after('<br>');
-            // move pulldown menu to last position
-            $topNav.append($topSub);
+        $(window).on('resize', rebuild);
 
+        setTimeout(function () {
             fixNavigationOverflow();
-        });
+            // Until now the second row of wrapped items is clipped by CSS
+            $topBarSecond.addClass('top-nav-ready');
+        }, 50);
 
-        setTimeout(fixNavigationOverflow, 50);
+        // Late loaded (theme) web fonts change the item widths after the first calculation
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(rebuild);
+        }
+    };
+
+    var rebuild = function () {
+        // Prevent overflow on to start with
+        $topBarSecond.css('overflow', 'hidden');
+        // Start with hidden pulldown menu
+        $topSub.hide();
+        // Bring items in the MenuDropdown back in the menu
+        $('#top-menu-sub-dropdown').children().appendTo('#top-menu-nav').find('i').after('<br>');
+        // move pulldown menu to last position
+        $topNav.append($topSub);
+
+        fixNavigationOverflow();
     };
 
     var fixNavigationOverflow = function () {
