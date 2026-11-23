@@ -13,7 +13,7 @@
 
     @include media-breakpoint-down(lg) {
         .layout-sidebar-container,
-        .skip-link[href="#layout-sidebar"] {
+        .skip-link[data-skip-target="#layout-sidebar"] {
             display: none;
         }
     }

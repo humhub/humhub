@@ -32,7 +32,7 @@ messages are announced (4.1.3).
   `@media (hover: hover)` only: a touch screen always shows the control.
 - **The order is the visual order.** No positive `tabindex`. After a full page load the first
   stops are the skip links (to the content, the navigation and the sidebar; a link whose target
-  the page lacks is hidden), then the top bar, then the content. The content is the column beside
+  the page lacks is hidden and has no `href` then, `ui.focus`), then the top bar, then the content. The content is the column beside
   the page's own menu (`#layout-content-column` in a space, a profile, the account and the administration),
   else the main area (`#main-content`), so the link skips that menu as well. After a pjax swap the
   focus is on the loaded content, so Tab continues there instead of at the top of the page.

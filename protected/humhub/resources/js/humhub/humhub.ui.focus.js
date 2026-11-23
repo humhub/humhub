@@ -243,7 +243,44 @@ humhub.module('ui.focus', function (module, require, $) {
         return focus(target);
     };
 
+    /**
+     * The skip links (`View::renderBodyBeginHtml()`) are in every page frame, CSS hides those whose target
+     * the page lacks or hides (`_base.scss`, `_sidebar.scss`). A hidden one also loses its `href` until it
+     * shows again: checkers such as WAVE report a hidden in-page link named "skip" as broken, a link
+     * without `href` is none.
+     */
+    var updateSkipLinks = function () {
+        document.querySelectorAll('.skip-link').forEach(function (link) {
+            if (!link.dataset.skipTarget && link.hasAttribute('href')) {
+                link.dataset.skipTarget = link.getAttribute('href');
+            }
+            if (isShown(link)) {
+                link.setAttribute('href', link.dataset.skipTarget);
+            } else {
+                link.removeAttribute('href');
+            }
+        });
+    };
+
+    var resizeFrame = null;
+
+    // The links sit outside the pjax container, the page beneath them changes
+    module.initOnPjaxLoad = true;
+
+    var init = function (isPjax) {
+        updateSkipLinks();
+        if (!isPjax) {
+            // The sidebar and its skip link are hidden below the lg breakpoint
+            window.addEventListener('resize', function () {
+                cancelAnimationFrame(resizeFrame);
+                resizeFrame = requestAnimationFrame(updateSkipLinks);
+            });
+        }
+    };
+
     module.export({
+        init: init,
+        updateSkipLinks: updateSkipLinks,
         TRIGGER_KEY: TRIGGER_KEY,
         isFocusable: isFocusable,
         focus: focus,

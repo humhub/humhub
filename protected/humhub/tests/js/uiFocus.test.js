@@ -364,4 +364,36 @@ describe('ui.focus', () => {
             expect(document.activeElement.id).toBe('last');
         });
     });
+    describe('updateSkipLinks()', () => {
+        const links = '<a id="content" class="skip-link" href="#layout-content-column" data-skip-target="#layout-content-column">x</a>'
+            + '<a id="main" class="skip-link" href="#main-content" data-skip-target="#main-content" style="display: none">x</a>';
+
+        it('takes the href of a hidden skip link and leaves the shown ones', () => {
+            html(links);
+            focus.updateSkipLinks();
+            expect(byId('content').getAttribute('href')).toBe('#layout-content-column');
+            expect(byId('main').hasAttribute('href')).toBe(false);
+            expect(byId('main').dataset.skipTarget).toBe('#main-content');
+        });
+
+        it('gives the href back once the link shows again, as after a pjax swap', () => {
+            html(links);
+            focus.updateSkipLinks();
+            byId('main').style.display = '';
+            byId('content').style.display = 'none';
+            focus.updateSkipLinks();
+            expect(byId('main').getAttribute('href')).toBe('#main-content');
+            expect(byId('content').hasAttribute('href')).toBe(false);
+        });
+
+        it('keeps the href of a skip link without data-skip-target as its target', () => {
+            // e.g. a theme's own skip link
+            html('<a id="own" class="skip-link" href="#sidebar-wrapper" style="display: none">x</a>');
+            focus.updateSkipLinks();
+            expect(byId('own').hasAttribute('href')).toBe(false);
+            byId('own').style.display = '';
+            focus.updateSkipLinks();
+            expect(byId('own').getAttribute('href')).toBe('#sidebar-wrapper');
+        });
+    });
 });

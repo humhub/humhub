@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: Hidden skip links have no `href`, so accessibility checkers no longer report them as broken
 - Fix: The hidden file pickers of the comment form have a name, the upload button's tooltip is translated
 - Enh: Removed jQuery NiceScroll, lists scroll natively
 - Enh: Editor: Home and End in the toolbar, the number of suggestions is said, the link dialog marks its required field
