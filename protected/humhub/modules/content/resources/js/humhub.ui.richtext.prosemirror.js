@@ -267,12 +267,28 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
 
         // The hint and the error message of the field describe its container or the hidden input, the editor is what
         // is read
-        const describedBy = [this.$.attr('aria-describedby'), this.getInput().attr('aria-describedby')].join(' ').trim();
-        if (describedBy) {
-            attributes['aria-describedby'] = [...new Set(describedBy.split(/\s+/))].join(' ');
-        }
+        const describedBy = [this.$.attr('aria-describedby'), this.getInput().attr('aria-describedby'), this.getKeyboardHint().attr('id')]
+            .join(' ').trim();
+        attributes['aria-describedby'] = [...new Set(describedBy.split(/\s+/))].join(' ');
 
         return attributes;
+    };
+
+    /**
+     * Tab indents in a list, so the editor says how to leave it (WCAG 2.1.2)
+     *
+     * @returns {jQuery} the visually hidden hint
+     */
+    RichTextEditor.prototype.getKeyboardHint = function () {
+        const id = this.$.attr('id') + '-keyboard-hint';
+        let $hint = this.$.children('#' + id);
+        if (!$hint.length) {
+            $hint = $('<span class="visually-hidden">').attr('id', id)
+                .text(i18n.t('ContentModule.richtexteditor', 'In a list, Tab indents the item. Press Escape, then Tab, to leave the editor.'))
+                .appendTo(this.$);
+        }
+
+        return $hint;
     };
 
     RichTextEditor.prototype.disable = function (tooltip) {
@@ -311,7 +327,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
         document.execCommand('enableInlineTableEditing', false, 'false');
     };
 
-    HumHubMentionProvider = function (options) {
+    const HumHubMentionProvider = function (options) {
         MentionProvider.call(this, options);
     };
 

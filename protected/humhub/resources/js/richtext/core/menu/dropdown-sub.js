@@ -17,7 +17,7 @@ export class DropdownSubmenu extends Dropdown {
     }
 
     initTrigger(view) {
-        this.trigger = $('<a tabindex="0" aria-haspopup="listbox" aria-expanded="false"></a>')
+        this.trigger = $('<a tabindex="0" role="menuitem" aria-haspopup="menu" aria-expanded="false"></a>')
             .text(translate(view, this.options.label))[0];
         setAttributesFromOptions(this.trigger, this.options);
     }
@@ -37,7 +37,7 @@ export class DropdownSubmenu extends Dropdown {
         $(this.trigger).addClass('dropdown-item');
         let label = $('<div>').addClass(buildMenuClass('submenu-label')).html(this.trigger)[0];
 
-        this.menu = crelt("div", {class: buildMenuClass("submenu") + " dropdown-menu"},  this.getContentDom(view));
+        this.menu = crelt("div", {class: buildMenuClass("submenu") + " dropdown-menu", role: "menu"}, this.getContentDom(view));
 
         this.dom = crelt("div", {class: buildMenuClass("submenu-wrap")}, label, this.menu);
 

@@ -58,7 +58,7 @@ export class Dropdown extends MenuItemGroup {
 
         addMenuClass(this.trigger, 'dropdown');
 
-        this.trigger.setAttribute('aria-haspopup', 'true');
+        this.trigger.setAttribute('aria-haspopup', 'menu');
         this.trigger.setAttribute('aria-expanded', 'false');
 
         setTitle(this.trigger, this.options, view);
@@ -288,7 +288,9 @@ export class Dropdown extends MenuItemGroup {
             let dom = item.render(view, {htmlNode: 'a', tabindex: 0});
             // Bootstrap's row, styled like every other context menu of the platform
             dom.classList.add('dropdown-item');
-            let itemDom = crelt("div", {}, dom);
+            // An entry of the menu; one with a state (the block types) is one choice of several (WCAG 4.1.2)
+            (item.trigger || dom).setAttribute('role', item.hasState ? 'menuitemradio' : 'menuitem');
+            let itemDom = crelt("div", {role: 'none'}, dom);
             addMenuClass(itemDom, 'dropdown-item');
             rendered.push(itemDom);
         });
@@ -313,8 +315,11 @@ export class Dropdown extends MenuItemGroup {
 
     expand(dom) {
 
-        // Bootstrap's `.dropdown-menu`, shown while it exists
-        let menuDOM = crelt("div", {class: "dropdown-menu show"}, this.getContentDom());
+        // Bootstrap's `.dropdown-menu`, shown while it exists, named like its button
+        let menuDOM = crelt("div", {class: "dropdown-menu show", role: "menu"}, this.getContentDom());
+        if (this.trigger.getAttribute('title')) {
+            menuDOM.setAttribute('aria-label', this.trigger.getAttribute('title'));
+        }
         addMenuClass(menuDOM, 'dropdown-menu');
 
         let done = false;

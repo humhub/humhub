@@ -126,14 +126,19 @@ feed, and a text field or editor keeps them.
 
 - Tab leaves the richtext editor to the next control (the submit button), Shift+Tab to the
   previous one.
-- In a list, Tab indents the item and Shift+Tab outdents it. Enter on an empty item leaves the
-  list, then Tab leaves the editor.
+- In a list, Tab indents the item and Shift+Tab outdents it. Where it can't indent (the first item
+  of a list), Tab leaves the editor, so pressing it again and again always gets out. Escape, then
+  Tab leaves from anywhere in the text, and the editor's description (`aria-describedby`) says so.
+  Enter on an empty item leaves the list.
 - In a table, Tab moves to the next cell and Shift+Tab to the previous one. After the last cell,
   Tab places the cursor after the table; before the first cell, Shift+Tab places it before. A
   row is added from the table menu, not by Tab.
 - The toolbar is a `role="toolbar"` and one Tab stop: only one of its buttons is in the tab
   order, the arrow keys move between them, Enter or ArrowDown opens a dropdown, Escape closes it,
-  and Tab leaves the toolbar for the text. The mention and emoji suggestions take ↑/↓ and Enter, and
+  and Tab leaves the toolbar for the text. A dropdown is a `role="menu"` named like its button; the
+  block types in it are `menuitemradio`s, the current one `aria-checked`, the other entries
+  `menuitem`s. A toolbar button with a state (bold, the editor mode) is a toggle with
+  `aria-pressed`. The mention and emoji suggestions take ↑/↓ and Enter, and
   Escape closes them. They are a named `listbox`, and the editor points to the current option
   (`aria-activedescendant`), so it is read while the focus stays in the text.
 - The dialog of a link, an image, a table, an audio or a video (`prompt.js`) is a modal

@@ -15666,6 +15666,7 @@
       this.options = options || {};
       this.sortOrder = this.options.sortOrder;
       this.options.htmlNode = "button";
+      this.hasState = typeof this.options.active === "function";
     }
     // :: (EditorView) → {dom: dom.Node, update: (EditorState) → bool}
     // Renders the icon according to its [display
@@ -15731,7 +15732,10 @@
       if (this.options.active) {
         this.active = this.options.active(state2) || forceActive || false;
         setClass(this.dom, buildMenuClass("active"), this.active);
-        setAttribute(this.dom, "aria-pressed", "true", this.active);
+        if (this.hasState) {
+          const stateAttribute = this.dom.getAttribute("role") === "menuitemradio" ? "aria-checked" : "aria-pressed";
+          this.dom.setAttribute(stateAttribute, this.active ? "true" : "false");
+        }
       }
     }
     setEnabledItemState(state2, forceEnable) {
@@ -15885,7 +15889,7 @@
         throw new RangeError("Dropdown without icon or label property");
       }
       addMenuClass(this.trigger, "dropdown");
-      this.trigger.setAttribute("aria-haspopup", "true");
+      this.trigger.setAttribute("aria-haspopup", "menu");
       this.trigger.setAttribute("aria-expanded", "false");
       setTitle(this.trigger, this.options, view2);
     }
@@ -16069,7 +16073,8 @@
       this.content.items.forEach((item) => {
         let dom = item.render(view2, { htmlNode: "a", tabindex: 0 });
         dom.classList.add("dropdown-item");
-        let itemDom = crelt("div", {}, dom);
+        (item.trigger || dom).setAttribute("role", item.hasState ? "menuitemradio" : "menuitem");
+        let itemDom = crelt("div", { role: "none" }, dom);
         addMenuClass(itemDom, "dropdown-item");
         rendered.push(itemDom);
       });
@@ -16087,7 +16092,10 @@
       return contentUpdateResult;
     }
     expand(dom) {
-      let menuDOM = crelt("div", { class: "dropdown-menu show" }, this.getContentDom());
+      let menuDOM = crelt("div", { class: "dropdown-menu show", role: "menu" }, this.getContentDom());
+      if (this.trigger.getAttribute("title")) {
+        menuDOM.setAttribute("aria-label", this.trigger.getAttribute("title"));
+      }
       addMenuClass(menuDOM, "dropdown-menu");
       let done = false;
       function close2() {
@@ -16121,7 +16129,7 @@
       this.options.bubbleActive = true;
     }
     initTrigger(view2) {
-      this.trigger = $('<a tabindex="0" aria-haspopup="listbox" aria-expanded="false"></a>').text(translate$1(view2, this.options.label))[0];
+      this.trigger = $('<a tabindex="0" role="menuitem" aria-haspopup="menu" aria-expanded="false"></a>').text(translate$1(view2, this.options.label))[0];
       setAttributesFromOptions(this.trigger, this.options);
     }
     /**
@@ -16138,7 +16146,7 @@
     initWrapper(view2) {
       $(this.trigger).addClass("dropdown-item");
       let label = $("<div>").addClass(buildMenuClass("submenu-label")).html(this.trigger)[0];
-      this.menu = crelt("div", { class: buildMenuClass("submenu") + " dropdown-menu" }, this.getContentDom(view2));
+      this.menu = crelt("div", { class: buildMenuClass("submenu") + " dropdown-menu", role: "menu" }, this.getContentDom(view2));
       this.dom = crelt("div", { class: buildMenuClass("submenu-wrap") }, label, this.menu);
       this.$ = $(this.dom);
     }
@@ -50452,8 +50460,7 @@
     };
     const tab = (dir) => (state2, dispatch) => {
       const listItemType = getListItemType(state2);
-      if (listItemType) {
-        (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state2, dispatch);
+      if (listItemType && (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state2, dispatch)) {
         return true;
       }
       const tableDepth = getTableDepth(state2.selection.$from);
