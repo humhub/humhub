@@ -37,6 +37,28 @@ class TablerIconProviderTest extends HumHubDbTestCase
         $this->assertStringContainsString('<span class="visually-hidden">Edit</span>', $html);
     }
 
+    public function testRendersAFocusableTooltipIconNamedByItsTooltip()
+    {
+        $html = (string)Icon::get('users')->tooltip('Visible to all Space members')->focusable();
+
+        // A tab stop named like an image, so keyboard users get the tooltip too (WCAG 1.4.13)
+        $this->assertStringContainsString('role="img"', $html);
+        $this->assertStringContainsString('tabindex="0"', $html);
+        $this->assertStringContainsString('aria-label="Visible to all Space members"', $html);
+        $this->assertStringContainsString('data-bs-title="Visible to all Space members"', $html);
+        // Not hidden, and not named twice
+        $this->assertStringNotContainsString('aria-hidden', $html);
+        $this->assertStringNotContainsString('visually-hidden', $html);
+    }
+
+    public function testAnIconWithoutTooltipIsNotFocusable()
+    {
+        $html = (string)Icon::get('users')->focusable();
+
+        $this->assertStringNotContainsString('tabindex', $html);
+        $this->assertStringContainsString('aria-hidden="true"', $html);
+    }
+
     public function testResolvesFontAwesomeNames()
     {
         $this->assertStringContainsString('ti ti-settings', (string)Icon::get('cog'));

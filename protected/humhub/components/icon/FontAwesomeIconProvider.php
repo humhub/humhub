@@ -58,15 +58,22 @@ class FontAwesomeIconProvider implements IconProvider
             Html::addCssClass($options, 'fa-border');
         }
 
-        $options['aria-hidden'] = 'true';
-
         $ariaElement = '';
 
-        if ($icon->tooltip) {
+        if ($icon->tooltip && $icon->focusable) {
+            // A tab stop of its own, so keyboard users get the tooltip too (WCAG 1.4.13)
+            $options['role'] = 'img';
+            $options['tabindex'] = 0;
+            $options['aria-label'] = $icon->ariaLabel ?? $icon->tooltip;
+            Html::addTooltip($options, $icon->tooltip);
+        } elseif ($icon->tooltip) {
+            $options['aria-hidden'] = 'true';
             $options['role'] = 'img';
             Html::addTooltip($options, $icon->tooltip);
             $ariaLabel = $icon->ariaLabel ?? $icon->tooltip;
             $ariaElement = Html::tag('span', $ariaLabel, ['class' => 'visually-hidden']);
+        } else {
+            $options['aria-hidden'] = 'true';
         }
 
         if ($icon->color) {

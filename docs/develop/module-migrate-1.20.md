@@ -10,6 +10,12 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - To migrate, drop the calls and give the container `overflow-y: auto`, and `overscroll-behavior: contain`
     to keep the page behind it from scrolling along. A native scrollbar takes room from the width of the
     container, where NiceScroll drew over the content.
+- **Tooltips can be hovered and reached by keyboard** (WCAG 1.4.13). A tooltip stays while the pointer is on it,
+  and a focused link or button shows the tooltip of the one element inside it that has one. New
+  `humhub\widgets\Icon::focusable()`: an icon with a tooltip that says something becomes a tab stop named by its
+  tooltip (`tabindex="0"`, `aria-label`) instead of being hidden with a visually hidden text. Use it only for an
+  icon that is not inside a link or button. The state icons of a stream entry (`VisibilityIcon`, `UpdatedIcon`,
+  `HiddenIcon`, `LockCommentsIcon`, `ArchivedIcon`, pinned) are focusable.
 - **Profile fields say their purpose** (`autocomplete`, WCAG 1.3.5): the fields the installation creates get the
   token of `humhub\modules\user\models\ProfileField::AUTOCOMPLETE` by internal name (`firstname` → `given-name`,
   …), in the own profile and at registration, not when an admin edits someone else.

@@ -1,8 +1,10 @@
 /**
  * Bootstrap tooltips on `.tt` and `[data-bs-toggle="tooltip"]`, bound by delegation so elements
  * added later get one too. A tooltip shows on hover, and on focus when the focus moves by keyboard
- * (`ui.appearance.keyboardModality()`), not after a click. It hides when the focus leaves and on
- * Escape, which then closes nothing else (docs/ui/keyboard.md, docs/ui/tooltip.md).
+ * (`ui.appearance.keyboardModality()`), not after a click; a link or button shows the tooltip of the
+ * one trigger inside it (the date in a permalink). It stays while the pointer is on it, and hides
+ * when the focus leaves and on Escape, which then closes nothing else (WCAG 1.4.13,
+ * docs/ui/keyboard.md, docs/ui/tooltip.md).
  *
  * @since 1.20
  */
@@ -11,8 +13,27 @@ humhub.module('ui.tooltip', function (module, require, $) {
 
     var SELECTOR = '[data-bs-toggle="tooltip"], .tt';
 
+    // The time to move the pointer from the trigger onto its tooltip
+    var HIDE_DELAY = 150;
+
+    // Set while a tooltip is hidden whatever the pointer is on: Escape, a click
+    var dismissing = false;
+
     var target = function (node) {
         return node && typeof node.closest === 'function' ? node.closest(SELECTOR) : null;
+    };
+
+    /**
+     * The trigger a focused element shows: itself or its ancestor, or the one trigger inside a link or button
+     */
+    var focusTarget = function (node) {
+        var el = target(node);
+        if (el || !node || typeof node.matches !== 'function' || !node.matches('a[href], button')) {
+            return el;
+        }
+
+        var inner = node.querySelectorAll(SELECTOR);
+        return inner.length === 1 ? inner[0] : null;
     };
 
     var get = function (el) {
@@ -20,7 +41,7 @@ humhub.module('ui.tooltip', function (module, require, $) {
     };
 
     var create = function (el) {
-        return bootstrap.Tooltip.getOrCreateInstance(el, {trigger: 'hover'});
+        return bootstrap.Tooltip.getOrCreateInstance(el, {trigger: 'hover', delay: {show: 0, hide: HIDE_DELAY}});
     };
 
     var isShown = function (tooltip) {
@@ -32,6 +53,7 @@ humhub.module('ui.tooltip', function (module, require, $) {
      */
     var hideAll = function () {
         var hidden = false;
+        dismissing = true;
         // Bootstrap marks any element whose tooltip is shown with aria-describedby, so tooltips
         // created by other modules outside the selector are dismissed too
         document.querySelectorAll(SELECTOR + ', [aria-describedby]').forEach(function (el) {
@@ -41,7 +63,32 @@ humhub.module('ui.tooltip', function (module, require, $) {
                 hidden = true;
             }
         });
+        dismissing = false;
         return hidden;
+    };
+
+    /**
+     * Keeps a tooltip while the pointer is on it (hoverable, WCAG 1.4.13): Bootstrap hides it once the
+     * pointer left its trigger. It goes when the pointer leaves it for somewhere else than the trigger.
+     */
+    var keepWhileHovered = function (e) {
+        var trigger = e.target;
+        var tooltip = get(trigger);
+        var tip = tooltip && tooltip.tip;
+        if (dismissing || !tip || !tip.matches(':hover')) {
+            return;
+        }
+
+        e.preventDefault();
+        if (!tip.dataset.hhKeep) {
+            tip.dataset.hhKeep = '1';
+            tip.addEventListener('mouseleave', function () {
+                delete tip.dataset.hhKeep;
+                if (!trigger.matches(':hover')) {
+                    tooltip.hide();
+                }
+            }, {once: true});
+        }
     };
 
     /**
@@ -67,18 +114,20 @@ humhub.module('ui.tooltip', function (module, require, $) {
 
         // Shown at once, without Bootstrap's hover delay
         document.addEventListener('focusin', function (e) {
-            var el = target(e.target);
+            var el = focusTarget(e.target);
             if (el && appearance.keyboardModality()) {
                 create(el).show();
             }
         });
 
         document.addEventListener('focusout', function (e) {
-            var tooltip = get(target(e.target));
+            var tooltip = get(focusTarget(e.target));
             if (tooltip) {
                 tooltip.hide();
             }
         });
+
+        document.addEventListener('hide.bs.tooltip', keepWhileHovered);
 
         // Capturing, so Escape dismisses any visible tooltip first (WCAG 1.4.13) and then closes nothing else
         document.addEventListener('keydown', function (e) {

@@ -40,7 +40,8 @@ class ArchivedIcon extends Icon
         }
 
         return static::get(static::ICON_NAME)
-            ->tooltip(Yii::t('ContentModule.base', 'Archived'), Yii::t('ContentModule.aria', 'This content is archived'));
+            ->tooltip(Yii::t('ContentModule.base', 'Archived'), Yii::t('ContentModule.aria', 'This content is archived'))
+            ->focusable();
     }
 
 }

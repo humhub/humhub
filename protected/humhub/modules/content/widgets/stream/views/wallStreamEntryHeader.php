@@ -29,7 +29,7 @@ $container = $model->content->container;
     <?php if ($model->content->isArchived()) : ?>
         <?= ArchivedIcon::getByModel($model) ?>
     <?php elseif ($renderOptions->isPinned($model)) : ?>
-        <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin tt', 'title' => Yii::t('ContentModule.base', 'Pinned')]]) ?>
+        <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin']])->tooltip(Yii::t('ContentModule.base', 'Pinned'))->focusable() ?>
     <?php endif; ?>
     <?= StateBadge::widget(['model' => $model]); ?>
 </div>

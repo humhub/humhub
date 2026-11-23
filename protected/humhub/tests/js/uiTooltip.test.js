@@ -17,8 +17,13 @@ class TooltipStub {
         this.shown = true;
     }
 
+    // As Bootstrap: a cancelable hide event on the trigger first
     hide() {
-        this.shown = false;
+        const event = new Event('hide.bs.tooltip', { bubbles: true, cancelable: true });
+        this.el.dispatchEvent(event);
+        if (!event.defaultPrevented) {
+            this.shown = false;
+        }
     }
 
     static getInstance(el) {
@@ -56,6 +61,8 @@ describe('ui.tooltip', () => {
         const tooltip = TooltipStub.getInstance(byId('b'));
         expect(tooltip.shown).toBe(true);
         expect(tooltip.config.trigger).toBe('hover');
+        // Time to move the pointer onto the tooltip
+        expect(tooltip.config.delay).toEqual({ show: 0, hide: 150 });
     });
 
     it('ignores elements without a tooltip', () => {
@@ -115,5 +122,77 @@ describe('ui.tooltip', () => {
         document.body.addEventListener('keydown', () => { reachedBody = true; }, { once: true });
         byId('b').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
         expect(reachedBody).toBe(true);
+    });
+
+    describe('hoverable (WCAG 1.4.13)', () => {
+        // jsdom keeps the hover state of the last mouseover, as a browser does of the pointer
+        const showWithTip = () => {
+            fire(byId('b'), 'mouseover');
+            const tooltip = TooltipStub.getInstance(byId('b'));
+            tooltip.tip = document.createElement('div');
+            document.body.appendChild(tooltip.tip);
+            return tooltip;
+        };
+
+        it('keeps the tooltip while the pointer is on it, and hides it when the pointer leaves it', () => {
+            const tooltip = showWithTip();
+
+            // Bootstrap hides it when the pointer left the trigger for the tooltip
+            fire(tooltip.tip, 'mouseover');
+            tooltip.hide();
+            expect(tooltip.shown).toBe(true);
+
+            fire(byId('plain'), 'mouseover');
+            tooltip.tip.dispatchEvent(new Event('mouseleave'));
+            expect(tooltip.shown).toBe(false);
+        });
+
+        it('keeps it when the pointer goes back from the tooltip to the trigger', () => {
+            const tooltip = showWithTip();
+            fire(tooltip.tip, 'mouseover');
+            tooltip.hide();
+
+            fire(byId('b'), 'mouseover');
+            tooltip.tip.dispatchEvent(new Event('mouseleave'));
+            expect(tooltip.shown).toBe(true);
+        });
+
+        it('hides the tooltip when the pointer is elsewhere', () => {
+            const tooltip = showWithTip();
+            fire(byId('plain'), 'mouseover');
+
+            tooltip.hide();
+            expect(tooltip.shown).toBe(false);
+        });
+
+        it('still hides it on Escape while the pointer is on it', () => {
+            const tooltip = showWithTip();
+            fire(tooltip.tip, 'mouseover');
+
+            byId('b').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }));
+            expect(tooltip.shown).toBe(false);
+        });
+    });
+
+    describe('a trigger inside a link or button', () => {
+        beforeEach(() => {
+            html('<a id="link" href="/perma"><time id="time" class="tt" title="Created at: 21 Nov">21 Nov</time></a>'
+                + '<a id="two" href="/x"><span class="tt" title="A">a</span><span class="tt" title="B">b</span></a>');
+        });
+
+        it('shows its tooltip when the link gets the keyboard focus, and hides it when the focus leaves', () => {
+            pressTab();
+            fire(byId('link'), 'focusin');
+            expect(TooltipStub.getInstance(byId('time')).shown).toBe(true);
+
+            fire(byId('link'), 'focusout');
+            expect(TooltipStub.getInstance(byId('time')).shown).toBe(false);
+        });
+
+        it('shows none for a link with several', () => {
+            pressTab();
+            fire(byId('two'), 'focusin');
+            expect(TooltipStub.instances.size).toBe(0);
+        });
     });
 });
