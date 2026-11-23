@@ -415,11 +415,9 @@ class PermissionManager extends Component
 
         $this->permissions = [];
 
-        // Loop over all active modules
-        foreach (Yii::$app->getModules() as $id => $module) {
-            // Ensure module is instanciated
-            $module = Yii::$app->getModule($id);
-
+        // Loop over all active HumHub modules, other Yii modules (e.g. `gii`) provide no permissions
+        // and must not be instantiated, as their classes may not be installed
+        foreach (Yii::$app->moduleManager->getEnabledModules(['includeCoreModules' => true]) as $module) {
             $this->permissions = array_merge($this->permissions, $this->getModulePermissions($module));
         }
 

@@ -4,6 +4,7 @@ HumHub Changelog
 1.19.5 (Unreleased)
 -------------------
 
+- Fix #8772: Permission pages failed to load if a configured non-HumHub module was not installed (e.g. a `gii` module without the `yiisoft/yii2-gii` package)
 - Fix #8770: Activity mails (e.g. the mail summary) showed the whole preview text of a content in bold, not only its type
 - Fix #8769: German text of the content created activity used the article of a neuter noun for every content type (e.g. "ein neues Datei")
 - Fix #8765: Like tooltip of a single like showed no space between the name and the text in some languages (e.g. German)
