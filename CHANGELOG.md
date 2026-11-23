@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Editor: Home and End in the toolbar, the number of suggestions is said, the link dialog marks its required field
 - Enh: Screen readers read the follow, archive and unread marks of the space chooser
 - Enh: Profile fields and permission pages fit a 320 px screen, permissions show their state below them there
 - Enh: Long names wrap in the profile header, names cut off in the top bar show in full as tooltip

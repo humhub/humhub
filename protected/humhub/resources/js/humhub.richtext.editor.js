@@ -16677,6 +16677,14 @@
             e2.preventDefault();
             this.focusPrev();
             break;
+          case 36:
+          // Home
+          case 35:
+            if (this.getToolbarButtons().is(e2.target)) {
+              e2.preventDefault();
+              this.focusEdge(keyCode === 36);
+            }
+            break;
         }
       });
       this.$.data("menuBarInstance", this);
@@ -16717,9 +16725,7 @@
      * come and go with the selection.
      */
     applyRovingTabindex() {
-      const trigger = "." + buildMenuClass("trigger");
-      const $buttons = this.$.find(trigger).not("." + buildMenuClass("dropdown-menu") + " " + trigger).not("." + buildMenuClass("submenu") + " " + trigger);
-      const $shown = $buttons.not(".d-none");
+      const $shown = this.getToolbarButtons().not(".d-none");
       if (!$shown.length) {
         return;
       }
@@ -16732,6 +16738,27 @@
       }
       $shown.attr("tabindex", -1);
       $active.attr("tabindex", 0);
+    }
+    /**
+     * @returns {jQuery} the buttons of the toolbar itself, not the entries of its dropdowns
+     */
+    getToolbarButtons() {
+      const trigger = "." + buildMenuClass("trigger");
+      return this.$.find(trigger).not("." + buildMenuClass("dropdown-menu") + " " + trigger).not("." + buildMenuClass("submenu") + " " + trigger);
+    }
+    /**
+     * Focuses the first or the last button shown (Home, End, as the ARIA toolbar pattern has it)
+     *
+     * @param {boolean} first
+     */
+    focusEdge(first) {
+      const $shown = this.getToolbarButtons().filter(":visible");
+      if (!$shown.length) {
+        return;
+      }
+      const $target = first ? $shown.first() : $shown.last();
+      $shown.attr("tabindex", -1);
+      $target.attr("tabindex", 0).focus();
     }
     focusPrev() {
       let $prev = null;
@@ -16906,6 +16933,9 @@
         let field = this.options.fields[name2];
         let input = field.render();
         input.id = input.id || this.id + "-" + name2;
+        if (field.options.required) {
+          input.setAttribute("aria-required", "true");
+        }
         let $label = $("<label>").attr("for", input.id).html(this.translate(field.options.label || name2) + ":");
         let $field = $("<div>").append($label).append("<br>").append(input);
         this.domFields.push($field[0]);
@@ -16963,15 +16993,30 @@
       }
       return result;
     }
+    /**
+     * Shows the error below its field until the field is changed: the field is `aria-invalid` and described by the
+     * error, which is said once as an alert, and gets the focus (WCAG 3.3.1, 3.3.2)
+     *
+     * @param {HTMLElement} dom the field's wrapper
+     * @param {string} message
+     */
     reportInvalid(dom, message) {
-      let parent = dom.parentNode;
-      let msg = parent.appendChild(document.createElement("div"));
-      msg.style.left = dom.offsetLeft + dom.offsetWidth + 2 + "px";
-      msg.style.top = dom.offsetTop - 5 + "px";
-      msg.className = "ProseMirror-invalid";
+      const input = $(dom).find("input, select, textarea")[0];
+      const id2 = (input ? input.id : this.id) + "-error";
+      $(dom).find(".ProseMirror-invalid").remove();
+      const msg = document.createElement("div");
+      msg.id = id2;
+      msg.className = "ProseMirror-invalid invalid-feedback d-block";
       msg.setAttribute("role", "alert");
-      msg.textContent = message;
-      setTimeout(() => parent.removeChild(msg), 1500);
+      msg.textContent = this.translate(message);
+      dom.appendChild(msg);
+      if (!input) {
+        return;
+      }
+      $(input).addClass("is-invalid").attr("aria-invalid", "true").attr("aria-describedby", id2).focus().one("input change", () => {
+        msg.remove();
+        $(input).removeClass("is-invalid").removeAttr("aria-invalid aria-describedby");
+      });
     }
     initEvents() {
       this.$form.on("keydown", (e2) => {
@@ -17097,6 +17142,13 @@
       humhub.modules.ui.status.success(message);
     }
   };
+  function announce(message) {
+    const modules = window.humhub && window.humhub.modules;
+    const status = modules && modules.ui && modules.ui.status;
+    if (status && typeof status.announce === "function") {
+      status.announce(message);
+    }
+  }
   function getEmojiConfig() {
     if (!window.humhub || !window.humhub.config) {
       return {};
@@ -44085,6 +44137,7 @@
    * @license https://www.humhub.com/licences
    */
   let count = 0;
+  const announced = /* @__PURE__ */ new WeakMap();
   function suggestionListId() {
     return "richtext-suggestions-" + ++count;
   }
@@ -44102,6 +44155,19 @@
       dom.removeAttribute("aria-controls");
       dom.removeAttribute("aria-activedescendant");
     }
+  }
+  function closeSuggestions(view2) {
+    setCurrentSuggestion(view2, null, null);
+    if (view2) {
+      announced.delete(view2);
+    }
+  }
+  function announceSuggestions(view2, number2) {
+    if (!view2 || announced.get(view2) === number2) {
+      return;
+    }
+    announced.set(view2, number2);
+    announce(number2 > 0 ? translate$1(view2, "Suggestions") + ": " + number2 : translate$1(view2, "No results"));
   }
   /*
    * @link https://www.humhub.org/
@@ -44227,6 +44293,7 @@
       });
       this.$container.empty().append($list);
       setCurrentSuggestion(this.view, this.listId, this.listId + "-" + this.index);
+      announceSuggestions(this.view, this.items.length);
       const coords = this.view.coordsAtPos(this.query.from);
       this.$container.css({
         top: coords.bottom + window.scrollY + 2,
@@ -44282,7 +44349,7 @@
         this.$container.remove();
         this.$container = null;
       }
-      setCurrentSuggestion(this.view, null, null);
+      closeSuggestions(this.view);
     }
     destroy() {
       this.close();
@@ -51720,7 +51787,7 @@
     if (this.$container) {
       this.$container.remove();
       this.$container = null;
-      setCurrentSuggestion(this.getView(), null, null);
+      closeSuggestions(this.getView());
       this.event.trigger("closed");
     }
   };
@@ -51774,6 +51841,7 @@
       });
       this.$container.append($list);
       this.setCurrent($list.find("li").first());
+      announceSuggestions(this.getView(), this.result.length);
     } else if (this.result.text) {
       setCurrentSuggestion(this.getView(), null, null);
       const name2 = encode$2(this.result.text);
@@ -51784,7 +51852,9 @@
       this.$container.append($('<div style="text-align:center;">').append($loader));
     } else {
       setCurrentSuggestion(this.getView(), null, null);
-      this.$container.append($("<span>No Result</span>"));
+      const noResults = this.getView() ? translate$1(this.getView(), "No results") : "No results";
+      this.$container.append($("<span>").text(noResults));
+      announceSuggestions(this.getView(), 0);
     }
     $("body").append(this.$container.show());
   };

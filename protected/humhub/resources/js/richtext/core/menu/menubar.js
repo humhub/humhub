@@ -378,6 +378,14 @@ class MenuBarView {
                     e.preventDefault();
                     this.focusPrev();
                     break;
+                case 36: // Home
+                case 35: // End
+                    // The first and last button of the toolbar; in an open dropdown the keys are the dropdown's
+                    if (this.getToolbarButtons().is(e.target)) {
+                        e.preventDefault();
+                        this.focusEdge(keyCode === 36);
+                    }
+                    break;
             }
         });
 
@@ -425,11 +433,7 @@ class MenuBarView {
      * come and go with the selection.
      */
     applyRovingTabindex() {
-        const trigger = '.' + buildMenuClass('trigger');
-        const $buttons = this.$.find(trigger)
-            .not('.' + buildMenuClass('dropdown-menu') + ' ' + trigger)
-            .not('.' + buildMenuClass('submenu') + ' ' + trigger);
-        const $shown = $buttons.not('.d-none');
+        const $shown = this.getToolbarButtons().not('.d-none');
         if (!$shown.length) {
             return;
         }
@@ -444,6 +448,32 @@ class MenuBarView {
 
         $shown.attr('tabindex', -1);
         $active.attr('tabindex', 0);
+    }
+
+    /**
+     * @returns {jQuery} the buttons of the toolbar itself, not the entries of its dropdowns
+     */
+    getToolbarButtons() {
+        const trigger = '.' + buildMenuClass('trigger');
+        return this.$.find(trigger)
+            .not('.' + buildMenuClass('dropdown-menu') + ' ' + trigger)
+            .not('.' + buildMenuClass('submenu') + ' ' + trigger);
+    }
+
+    /**
+     * Focuses the first or the last button shown (Home, End, as the ARIA toolbar pattern has it)
+     *
+     * @param {boolean} first
+     */
+    focusEdge(first) {
+        const $shown = this.getToolbarButtons().filter(':visible');
+        if (!$shown.length) {
+            return;
+        }
+
+        const $target = first ? $shown.first() : $shown.last();
+        $shown.attr('tabindex', -1);
+        $target.attr('tabindex', 0).focus();
     }
 
     focusPrev() {

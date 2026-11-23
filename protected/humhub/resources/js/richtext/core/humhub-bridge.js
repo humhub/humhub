@@ -10,6 +10,19 @@ export const showSuccessNotify = (message) => {
     }
 }
 
+/**
+ * Says a message to screen readers without showing it (`humhub.ui.status.announce()`, WCAG 4.1.3), nothing outside HumHub
+ *
+ * @param {string} message
+ */
+export function announce(message) {
+    const modules = window.humhub && window.humhub.modules;
+    const status = modules && modules.ui && modules.ui.status;
+    if (status && typeof status.announce === 'function') {
+        status.announce(message);
+    }
+}
+
 export function onDocumentReady(callback) {
     if (!window.humhub) {
         return $(document).ready(() => {

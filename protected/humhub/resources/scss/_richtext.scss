@@ -617,15 +617,6 @@
         font-size: 12px;
     }
 
-    .ProseMirror-invalid {
-        background: var(--bs-highlight-bg);
-        border: 1px solid var(--bs-warning-border-subtle);
-        border-radius: 4px;
-        padding: 5px 10px;
-        position: absolute;
-        min-width: 10em;
-    }
-
     .ProseMirror-prompt-buttons {
         margin: 15px 0;
         text-align: center;

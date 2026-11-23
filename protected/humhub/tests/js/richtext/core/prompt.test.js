@@ -68,4 +68,31 @@ describe("Core:prompt", () => {
         expect($('.ProseMirror-prompt').length).toBe(0);
         expect(document.activeElement).toBe($opener[0]);
     });
+
+    it("marks a required field, and an empty one as invalid with its error until it is changed", () => {
+        const prompt = openPrompt({
+            title: 'Create a link',
+            translate: (text) => ({'Required field': 'Pflichtfeld'}[text] || text),
+            fields: {href: new TextField({label: 'Link', required: true})},
+            callback() {},
+        });
+        const $input = prompt.$wrapper.find('input[type="text"]');
+        expect($input.attr('aria-required')).toBe('true');
+
+        prompt.submit();
+
+        // Still open, the field invalid and described by the error, which stays
+        expect($('.ProseMirror-prompt').length).toBe(1);
+        expect($input.attr('aria-invalid')).toBe('true');
+        const $error = $('#' + $input.attr('aria-describedby'));
+        expect($error.text()).toBe('Pflichtfeld');
+        expect($error.attr('role')).toBe('alert');
+        expect(document.activeElement).toBe($input[0]);
+
+        $input.val('https://humhub.com').trigger('input');
+        expect($input.attr('aria-invalid')).toBeUndefined();
+        expect($input.attr('aria-describedby')).toBeUndefined();
+        expect($error[0].isConnected).toBe(false);
+        prompt.close();
+    });
 });

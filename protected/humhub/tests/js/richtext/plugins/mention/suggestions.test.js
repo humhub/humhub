@@ -66,4 +66,37 @@ describe("Plugin:suggestions", () => {
         autocomplete.close();
         expect(view.dom.hasAttribute('aria-activedescendant')).toBe(false);
     });
+
+    it("says how many suggestions there are, once per number, and when there are none", () => {
+        // Outside HumHub nothing is said: the editor's tests run it standalone
+        const said = [];
+        window.humhub = {modules: {
+            ui: {status: {announce: (message) => said.push(message)}},
+            util: {string: {encode: (text) => text}},
+        }};
+
+        try {
+            const view = fakeView();
+            const provider = new MentionProvider({minInput: 0});
+            provider.state = {view};
+            provider.$node = $('<span>').appendTo('body');
+
+            provider.result = [{name: 'Alice'}, {name: 'Bob'}];
+            provider.update();
+            // Typing on, the same number: not said again
+            provider.update();
+            provider.result = [];
+            provider.update();
+            expect(said).toEqual(['Vorschläge: 2', 'No results']);
+            expect(provider.$container.text()).toBe('No results');
+
+            // A new list after the old one closed is said again
+            provider.reset();
+            provider.result = [{name: 'Alice'}, {name: 'Bob'}];
+            provider.update();
+            expect(said).toEqual(['Vorschläge: 2', 'No results', 'Vorschläge: 2']);
+        } finally {
+            delete window.humhub;
+        }
+    });
 });

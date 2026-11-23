@@ -92,6 +92,19 @@ describe("Menu:accessibility", () => {
         });
     }));
 
+    it("test Home and End jump to the first and the last button", () => new Promise((done) => {
+        initEditor();
+        focusMenuItem('markEm');
+        wait(() => {
+            navigate(35, 'resizeNav');
+            navigate(36, 'type');
+            // One Tab stop: the button reached carries it
+            expect($('.ProseMirror-menu-type').attr('tabindex')).toBe('0');
+            expect($('.ProseMirror-menu-markEm').attr('tabindex')).toBe('-1');
+            done();
+        });
+    }));
+
     it("test every toolbar control is named", () => {
         initEditor();
         const unnamed = $('.ProseMirror-menubar .ProseMirror-menu-trigger').filter((i, el) => {

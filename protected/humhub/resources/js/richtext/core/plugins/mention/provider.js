@@ -6,7 +6,7 @@
 
 import {encode, getLoaderWidget} from "../../humhub-bridge";
 import {translate} from "../../menu/menu-helper";
-import {setCurrentSuggestion, suggestionListId} from "../../util/suggestions";
+import {announceSuggestions, closeSuggestions, setCurrentSuggestion, suggestionListId} from "../../util/suggestions";
 
 let MentionProvider = function (options) {
     this.event = $({});
@@ -69,7 +69,7 @@ MentionProvider.prototype.reset = function (query, node) {
     if (this.$container) {
         this.$container.remove();
         this.$container = null;
-        setCurrentSuggestion(this.getView(), null, null);
+        closeSuggestions(this.getView());
         this.event.trigger('closed');
     }
 };
@@ -134,6 +134,7 @@ MentionProvider.prototype.update = function (loading) {
 
         this.$container.append($list);
         this.setCurrent($list.find('li').first());
+        announceSuggestions(this.getView(), this.result.length);
     } else if (this.result.text) {
         setCurrentSuggestion(this.getView(), null, null);
         const name = encode(this.result.text);
@@ -145,7 +146,9 @@ MentionProvider.prototype.update = function (loading) {
         this.$container.append($('<div style="text-align:center;">').append($loader));
     } else {
         setCurrentSuggestion(this.getView(), null, null);
-        this.$container.append($('<span>No Result</span>'));
+        const noResults = this.getView() ? translate(this.getView(), 'No results') : 'No results';
+        this.$container.append($('<span>').text(noResults));
+        announceSuggestions(this.getView(), 0);
     }
 
     $('body').append(this.$container.show());

@@ -41,6 +41,8 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             'OK': i18n.t('ContentModule.richtexteditor', 'OK'),
             'Cancel': i18n.t('base', 'Cancel'),
             'Suggestions': i18n.t('ContentModule.richtexteditor', 'Suggestions'),
+            'No results': i18n.t('ContentModule.richtexteditor', 'No results'),
+            'Required field': i18n.t('ContentModule.richtexteditor', 'Required field'),
             'Text Formatting': i18n.t('ContentModule.richtexteditor', 'Text Formatting'),
             'Width': i18n.t('ContentModule.richtexteditor', 'Width'),
             'Height': i18n.t('ContentModule.richtexteditor', 'Height'),

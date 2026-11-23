@@ -137,16 +137,20 @@ feed, and a text field or editor keeps them.
   Tab places the cursor after the table; before the first cell, Shift+Tab places it before. A
   row is added from the table menu, not by Tab.
 - The toolbar is a `role="toolbar"` and one Tab stop: only one of its buttons is in the tab
-  order, the arrow keys move between them, Enter or ArrowDown opens a dropdown, Escape closes it,
-  and Tab leaves the toolbar for the text. A dropdown is a `role="menu"` named like its button; the
+  order, the arrow keys move between them, Home and End go to the first and the last, Enter or
+  ArrowDown opens a dropdown, Escape closes it, and Tab leaves the toolbar for the text. A dropdown is a `role="menu"` named like its button; the
   block types in it are `menuitemradio`s, the current one `aria-checked`, the other entries
   `menuitem`s. A toolbar button with a state (bold, the editor mode) is a toggle with
   `aria-pressed`. The mention and emoji suggestions take ↑/↓ and Enter, and
   Escape closes them. They are a named `listbox`, and the editor points to the current option
-  (`aria-activedescendant`), so it is read while the focus stays in the text.
+  (`aria-activedescendant`), so it is read while the focus stays in the text. How many there are is
+  said ("Suggestions: 3", "No results"). The editor stays a `textbox`: a multi-line text is no
+  `combobox` and has no `aria-expanded`.
 - The dialog of a link, an image, a table, an audio or a video (`prompt.js`) is a modal
   `role="dialog"` named by its title, with labelled fields: Tab stays inside, Escape closes it and
-  the focus returns to where it came from.
+  the focus returns to where it came from. A required field is `aria-required`; when it is left
+  empty, the error stays below it until it is changed, linked with `aria-describedby`, and the field
+  is `aria-invalid` and gets the focus.
 
 ## Checking
 
