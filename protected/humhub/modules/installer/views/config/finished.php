@@ -4,9 +4,9 @@ use humhub\helpers\Html;
 use yii\helpers\Url;
 
 ?>
-<div class="panel panel-default animated fadeIn">
+<div class="card content-card animated fadeIn">
 
-    <div class="panel-body text-center">
+    <div class="card-body text-center">
         <br>
         <p class="lead"><?= Yii::t('InstallerModule.base', "<strong>Congratulations</strong>. You're done."); ?></p>
 

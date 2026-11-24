@@ -9,12 +9,12 @@ use humhub\widgets\form\ActiveForm;
 /* @var string $errorMessage */
 ?>
 
-<div id="database-form" class="panel panel-default animated fadeIn">
-    <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', '<strong>Database</strong> Configuration'); ?>
+<div id="database-form" class="card content-card animated fadeIn">
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('InstallerModule.base', '<strong>Database</strong> Configuration'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.'); ?></p>
 
         <?php $form = ActiveForm::begin(); ?>

@@ -780,7 +780,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     tab menu through the redirect below; a handler on a concrete menu class keeps working. The
     administration's section layouts (`@admin/views/layouts/user`, `space`, `setting`,
     `information`) render the section's title and tabs as a `humhub\widgets\PageHeader` above
-    the content panel; a view rendered into them still sits inside `.panel`, so it needs no change.
+    the content card; a view rendered into them still sits inside it, so it needs no change.
   - **Every old name stays available as a deprecated subclass. The shims are removed in 1.21** —
     migrate during the 1.20 cycle. Checking an object against an old name does not work, see
     *References to a deprecated shim class have to be changed* below.
@@ -2200,8 +2200,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   theme that styled menus through the removed selectors restyles them through the
   `$dropdown-*` variables.
 
-- **The legacy list group look applies inside a `.panel` only** (the left navigation and other
-  menus in a panel: rows as the section menu's, the accent bar, horizontal scrolling on small screens). A
+- **The legacy list group look applies inside `.left-navigation` and a module's `.panel` only** (the space and
+  profile menus and other menus in a panel: rows as the section menu's, the accent bar, horizontal scrolling on small
+  screens). A
   `.list-group` elsewhere — in a `.card`, a dialog — is plain Bootstrap. The selectors keep their
   specificity (`:where(.panel)`), so theme overrides of `.list-group-item` still apply.
 
@@ -3006,7 +3007,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   Entries added through the menus' events need no change; something waiting behind an entry is
   the entry's `count` (shown as the dot), not badge HTML in the label. Tests, tours and themes
   that select `.left-navigation`, `.panel-heading` or `.list-group-item` on these two menus need
-  the new classes. The space and profile menus keep the panel.
+  the new classes. The space and profile menus stay `LeftNavigation`s, as content cards.
 
 - **Sudo mode** (`docs/develop/concept-sudo-mode.md`): changing the e-mail address, the username or the password,
   deleting the account and creating a personal access token ask for a recent confirmation instead of a "current
@@ -3065,3 +3066,28 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     the old 8px padding (`pt-0` on the `.panel-body` below a heading, negative margins) drops that.
   - `_bootstrap3.scss` (the styles for Bootstrap 3 markup such as `.panel` and `.well`) is deprecated and will be
     removed in 1.21.
+
+- **Core renders content cards instead of Bootstrap 3 panels** (`docs/ui/card.md`): the stream entries and the form
+  above them, the sidebar widgets, the space and profile header and menu, the about pages, the sign-in, registration
+  and password pages, the installer, the error pages, the notification overview and the wrapper of the section
+  layouts.
+
+  | Panel | Card |
+  |---|---|
+  | `.panel.panel-default` | `.card.content-card` |
+  | `.panel-heading` | `.card-header` with the title in `.card-title` (the same tag: `h3.panel-title` → `h3.card-title`, text in a `div.card-title`) |
+  | `.panel-body`, `.panel-footer` | `.card-body`, `.card-footer` |
+  | `.panel-danger` | `.card.content-card.content-card-danger` |
+  | `.btn-panel-title-action` | `.card-title-action` |
+
+  - Kept: hook classes and ids (`.panel-profile*`, `#panel-activities.panel-activities`, `#space-members-panel`,
+    `.panel-tour`, `.left-navigation`, `.wall_<id>`, …), `LeftNavigation::$panelTitle` and `PanelMenu`: the ⋮ of a
+    sidebar card with its collapse option, in the card's corner as in a panel (`ui.panel.PanelMenu` finds a `.card`
+    as well as a `.panel`).
+  - A module's `.panel` keeps its look until 1.21 (`_bootstrap3.scss`), and so do the `.panel-heading` and
+    `.panel-body` of a module view inside the card of a section layout. To match core, a sidebar widget writes the card
+    markup above, a page `ContentCard`.
+  - A content card has `$content-card-margin-bottom` (16px) below it, as a panel had; in a stack with a gap
+    (`.d-flex.flex-column.gap-3`) the gap separates the cards.
+  - Themes, tests and scripts that select `.panel`, `.panel-heading` or `.panel-body` in core's views (a stream entry,
+    a sidebar widget, `#login-form .panel-heading`, `.closest('.panel')`) select the card classes.

@@ -12,17 +12,16 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     //
     // Panel
     //
+    // A panel of a module. Core renders content cards since 1.20 (`_card.scss`)
     .panel {
         @include text-break();
-        // Not redundant: a panel is not always a div. An island mounts into a custom element
-        // (`<activity-box class="panel">`), and a custom element is inline by default - an
-        // inline box paints its background only behind its line boxes, so the panel's own
-        // background would not cover its block contents.
+        // Not redundant: a panel is not always a div. A custom element is inline by default - an
+        // inline box paints its background only behind its line boxes
         display: block;
         border: none;
         background-color: var(--bs-body-bg);
         box-shadow: 0 0 3px var(--bs-border-color);
-        // As a content card (`_card.scss`): its radius, and the paddings of Bootstrap's card it keeps
+        // As a content card: its radius, and the paddings of Bootstrap's card it keeps
         border-radius: $border-radius-lg;
         position: relative;
         margin-bottom: $spacer;
@@ -31,7 +30,10 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
             margin-top: 0;
             color: var(--bs-emphasis-color);
         }
+    }
 
+    // The parts of a panel, also in the content card a core layout puts around a module's older view
+    :is(.panel, .content-card) {
         // A title, as a card's header: 1rem above it, with the body's padding 1.5rem between it and the content
         .panel-heading {
             @include hh-text-style(title);

@@ -5,14 +5,14 @@
 @if not $prev-list-group {
     // Bootstrap overwrite: see the list group Sass variables in variables.scss
 
-    // The legacy look of the left navigation and other menus in a `.panel`; a list group
+    // The look of the left navigation (`.left-navigation`) and of the menus in a module's `.panel`; a list group
     // anywhere else (in a `.card`, a dialog) keeps Bootstrap's. More specific than Bootstrap's
     // states (`.list-group-horizontal > .list-group-item + .list-group-item.active`, …); a theme overrides it
     // by its cascade layer. The left border keeps `!important`: the Enterprise Theme (enterprise-white) sets it with
     // `!important` on every `.list-group-item`, the active entry's border still has to win against it.
-    // Rows as the section menu's (`_section-menu.scss`), in line with the panel's title: the accent border takes its
+    // Rows as the section menu's (`_section-menu.scss`), in line with the card's title: the accent border takes its
     // 3px from the padding
-    .panel .list-group .list-group-item {
+    :is(.panel, .left-navigation) .list-group .list-group-item {
         display: flex;
         align-items: center;
         gap: $spacer * .5;
@@ -30,7 +30,7 @@
         }
     }
 
-    .panel .list-group a.list-group-item {
+    :is(.panel, .left-navigation) .list-group a.list-group-item {
 
         &.active {
             @include listGroupItemActive();
@@ -55,7 +55,7 @@
         @include hh-focus-ring(true);
     }
 
-    .panel a.list-group-item {
+    :is(.panel, .left-navigation) a.list-group-item {
         &:first-child {
             border-top-left-radius: 0;
             border-top-right-radius: 0;
@@ -108,8 +108,8 @@
             }
         }
 
-        // The first chip on the panel's content edge, as pills in a card; with their margin 8px above and below
-        .panel .list-group {
+        // The first chip on the card's content edge, as pills in a card; with their margin 8px above and below
+        :is(.panel, .left-navigation) .list-group {
             padding: $spacer * .25 $card-spacer-x;
             gap: $spacer * .25;
             flex-direction: row;
@@ -122,7 +122,7 @@
                 padding: $spacer * .5;
                 margin: $spacer * .25 0;
 
-                // Also above `.panel a.list-group-item:first-child` and `:last-child`
+                // Also above `a.list-group-item:first-child` and `:last-child`
                 &, &:first-child, &:last-child {
                     border-radius: $border-radius-sm;
                 }
@@ -156,12 +156,13 @@
         }
 
         // Below the title as far as the section menu's entries below theirs
-        .panel > .panel-heading + .list-group {
+        // (a theme's own `left-navigation.php` may still render a `.panel-heading`)
+        :is(.panel, .left-navigation) > :is(.card-header, .panel-heading) + .list-group {
             margin-top: $spacer * .5;
         }
 
-        // With the last row's padding, its label as far from the panel's edge as the title above
-        .panel > .list-group:last-child {
+        // With the last row's padding, its label as far from the card's edge as the title above
+        :is(.panel, .left-navigation) > .list-group:last-child {
             padding-bottom: $spacer * .5;
         }
     }

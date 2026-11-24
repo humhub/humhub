@@ -18,7 +18,7 @@ if (!FriendshipButton::isVisibleForUser($container)) {
 $controls[] = [FriendshipButton::class, ['user' => $container]];
 $controls[] = [HeaderControlsMenu::class, ['user' => $container]];
 ?>
-<div class="panel-body">
+<div class="card-body">
     <div class="panel-profile-controls">
         <div class="container">
             <div class="row">

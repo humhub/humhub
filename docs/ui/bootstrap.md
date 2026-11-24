@@ -263,8 +263,8 @@ The class names each component gets. Details are on the component pages.
 | [Item Browser](item-browser.md) | path bar on `.breadcrumb`, view switch on `.btn-check`, checkbox `.form-check-input`, skeleton `.placeholder` | `.path-bar`, `.selection-menu`, `.tile-grid`, `.tile`, `.drop-zone`, `.progress-frame` |
 | [Settings Page](settings-page.md) | `.card`, `.accordion`, `.alert` | `.settings-page`, `.settings-control` |
 
-The content card is Bootstrap's `.card`. It replaces the Bootstrap 3 `.panel` / `.panel-heading`
-that core still renders through `_bootstrap3.scss` (see [Content Card](card.md)).
+The content card is Bootstrap's `.card`. It replaces the Bootstrap 3 `.panel` / `.panel-heading`,
+which only modules still render, styled by `_bootstrap3.scss` until 1.21 (see [Content Card](card.md)).
 
 ## Migrating the 1.20 classes
 

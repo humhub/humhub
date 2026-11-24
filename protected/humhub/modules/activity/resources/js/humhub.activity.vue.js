@@ -294,21 +294,22 @@
     }
   };
   const _hoisted_1$1 = ["innerHTML"];
-  const _hoisted_2$1 = ["innerHTML"];
-  const _hoisted_3$1 = { class: "panel-body p-0 pb-1 collapse show" };
-  const _hoisted_4$1 = {
+  const _hoisted_2$1 = { class: "card-header" };
+  const _hoisted_3$1 = ["innerHTML"];
+  const _hoisted_4$1 = { class: "card-body p-0 pb-1 collapse show" };
+  const _hoisted_5$1 = {
     key: 0,
     class: "p-3 m-0"
   };
-  const _hoisted_5$1 = {
+  const _hoisted_6$1 = {
     key: 1,
     class: "text-center p-2"
   };
-  const _hoisted_6$1 = {
+  const _hoisted_7 = {
     class: "visually-hidden",
     role: "status"
   };
-  const _hoisted_7 = {
+  const _hoisted_8 = {
     key: 2,
     ref: "sentinel",
     class: "stream-end"
@@ -328,11 +329,13 @@
           [_directive_additions]
         ]) : vue.createCommentVNode("v-if", true),
         vue.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock "),
-        vue.createElementVNode("div", {
-          class: "panel-heading",
-          innerHTML: $options.headingLabel
-        }, null, 8, _hoisted_2$1),
-        vue.createElementVNode("div", _hoisted_3$1, [
+        vue.createElementVNode("div", _hoisted_2$1, [
+          vue.createElementVNode("div", {
+            class: "card-title",
+            innerHTML: $options.headingLabel
+          }, null, 8, _hoisted_3$1)
+        ]),
+        vue.createElementVNode("div", _hoisted_4$1, [
           vue.withDirectives((vue.openBlock(), vue.createElementBlock(
             "div",
             {
@@ -351,7 +354,7 @@
               )),
               !$data.entries.length && !$data.loading ? (vue.openBlock(), vue.createElementBlock(
                 "p",
-                _hoisted_4$1,
+                _hoisted_5$1,
                 vue.toDisplayString($options.emptyLabel),
                 1
                 /* TEXT */
@@ -369,7 +372,7 @@
                 128
                 /* KEYED_FRAGMENT */
               )),
-              $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_5$1, [
+              $data.loading ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_6$1, [
                 _cache[1] || (_cache[1] = vue.createElementVNode(
                   "span",
                   {
@@ -382,7 +385,7 @@
                 )),
                 vue.createElementVNode(
                   "span",
-                  _hoisted_6$1,
+                  _hoisted_7,
                   vue.toDisplayString($options.loadingLabel),
                   1
                   /* TEXT */
@@ -390,7 +393,7 @@
               ])) : vue.createCommentVNode("v-if", true),
               $options.hasMore ? (vue.openBlock(), vue.createElementBlock(
                 "div",
-                _hoisted_7,
+                _hoisted_8,
                 null,
                 512
                 /* NEED_PATCH */

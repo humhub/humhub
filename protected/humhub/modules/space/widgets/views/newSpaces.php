@@ -9,15 +9,15 @@ use humhub\widgets\PanelMenu;
 /* @var $showMoreButton bool */
 ?>
 
-<div class="panel panel-default spaces" id="new-spaces-panel">
+<div class="card content-card spaces" id="new-spaces-panel">
 
     <!-- Display panel menu widget -->
     <?= PanelMenu::widget() ?>
 
-    <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces') ?>
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces') ?></div>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <?php foreach ($newSpaces as $space) : ?>
             <?= Image::widget([
                 'space' => $space,

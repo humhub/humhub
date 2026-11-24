@@ -15,8 +15,8 @@
         </PageHeader>
         <div class="row">
             <div id="layout-content-column" class="col-lg-9 layout-content-container">
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="card content-card">
+                    <div class="card-body">
                         <NotificationList
                             ref="list"
                             id="notification_overview_list"
@@ -32,12 +32,14 @@
                 </div>
             </div>
             <aside id="layout-sidebar" class="col-lg-3 layout-sidebar-container" :aria-label="sidebarLabel">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>{{ filterLabel }}</strong>
-                        <hr style="margin-bottom:0">
+                <div class="card content-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <strong>{{ filterLabel }}</strong>
+                            <hr style="margin-bottom:0">
+                        </div>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <NotificationFilter
                             :filters="filters"
                             :selected="selectedCategories"
@@ -59,7 +61,7 @@
  * top-menu dropdown is the other).
  *
  * The island covers both columns of the page, because the filter in the sidebar and the list in
- * the main panel are one piece of state: a filter change is a new query. A `PageHeader` with the
+ * the main card are one piece of state: a filter change is a new query. A `PageHeader` with the
  * settings link and "Mark all as seen" sits above both columns; the legacy element ids
  * (`#notification_overview_list`, `#notification_overview_markseen`) are kept for theme CSS.
  *

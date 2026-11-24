@@ -9,13 +9,13 @@ use humhub\widgets\bootstrap\Alert;
  */
 
 ?>
-<div id="pretty-urls" class="panel panel-default animated fadeIn">
+<div id="pretty-urls" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', '<strong>Pretty URLs</strong>') ?>
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('InstallerModule.base', '<strong>Pretty URLs</strong>') ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?= $problem ? Alert::danger($info)->closeButton(false) : Alert::success($info)->closeButton(false) ?>
         <p><?= Yii::t('InstallerModule.base', 'In the installation folder, locate the <strong>.env.example</strong> file and copy its contents into the <strong>.env</strong> file. Next, find the <strong>Pretty URLs</strong> block and uncomment it by removing the <strong>#</strong> symbol.'); ?></p>
 

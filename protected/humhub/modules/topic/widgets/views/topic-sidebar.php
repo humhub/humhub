@@ -12,13 +12,13 @@ use humhub\widgets\PanelMenu;
 
 /* @var Topic[] $topics */
 ?>
-<div class="panel panel-default panel-topic-sidebar" id="panel-topic-sidebar" data-ui-widget="topic.sidebar.Sidebar" data-ui-init>
+<div class="card content-card panel-topic-sidebar" id="panel-topic-sidebar" data-ui-widget="topic.sidebar.Sidebar" data-ui-init>
     <?= PanelMenu::widget(['id' => 'panel-topic-sidebar']) ?>
-    <div class="panel-heading">
-        <?= Icon::get('star') . ' ' . Yii::t('TopicModule.base', '<strong>Popular</strong> topics') ?>
+    <div class="card-header">
+        <div class="card-title"><?= Icon::get('star') . ' ' . Yii::t('TopicModule.base', '<strong>Popular</strong> topics') ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <div class="topic-label-list d-flex gap-1 flex-wrap m-0">
             <?php foreach ($topics as $topic) : ?>
                 <?= TopicBadge::forTopic($topic) ?>

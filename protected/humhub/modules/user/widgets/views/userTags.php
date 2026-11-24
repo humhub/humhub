@@ -6,12 +6,12 @@ use yii\helpers\Url;
 
 ?>
 <?php if ($user->hasTags()) : ?>
-    <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
+    <div id="user-tags-panel" class="card content-card" style="position: relative;">
 
         <?= PanelMenu::widget() ?>
 
-        <div class="panel-heading"><?= Yii::t('UserModule.base', '<strong>User</strong> tags') ?></div>
-        <div class="panel-body">
+        <div class="card-header"><div class="card-title"><?= Yii::t('UserModule.base', '<strong>User</strong> tags') ?></div></div>
+        <div class="card-body">
             <!-- start: tags for user skills -->
             <ul class="tags list-unstyled d-flex flex-wrap gap-1">
                 <?php foreach ($user->getTags() as $tag): ?>

@@ -13,7 +13,7 @@ use humhub\modules\space\widgets\MembershipButton;
 
 ?>
 
-<div class="panel-body">
+<div class="card-body">
     <div class="panel-profile-controls">
         <div class="container">
             <div class="row">

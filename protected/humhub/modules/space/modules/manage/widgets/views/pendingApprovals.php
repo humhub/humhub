@@ -12,9 +12,9 @@ use humhub\widgets\bootstrap\Link;
 $buttonStyle = '--bs-btn-padding-y: .125rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem';
 ?>
 
-<div class="panel panel-danger">
-    <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>New</strong> member request'); ?></div>
-    <div class="panel-body">
+<div class="card content-card content-card-danger">
+    <div class="card-header"><div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>New</strong> member request'); ?></div></div>
+    <div class="card-body">
         <div class="d-flex flex-column gap-3">
             <?php foreach ($applicants as $membership) : ?>
                 <div class="d-flex">

@@ -19,12 +19,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 <div id="user-registration" class="container container-registration">
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br/>
-    <div id="create-account-form" class="panel panel-default animated bounceIn"
+    <div id="create-account-form" class="card content-card animated bounceIn"
          data-has-auth-client="<?= $hasAuthClient ? '1' : '0' ?>">
-        <div class="panel-heading">
-            <h1 class="panel-title"><?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?></h1>
+        <div class="card-header">
+            <h1 class="card-title"><?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?php if (!$hasAuthClient && AuthChoice::hasClients()): ?>
                 <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
             <?php endif; ?>

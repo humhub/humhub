@@ -5,13 +5,13 @@ use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\widgets\Icon;
 
 ?>
-<div class="panel panel-default animated fadeIn">
+<div class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', '<strong>System</strong> Check'); ?>
+    <div class="card-header">
+        <div class="card-title"><?php echo Yii::t('InstallerModule.base', '<strong>System</strong> Check'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?php echo Yii::t('InstallerModule.base', 'This overview shows all system requirements of HumHub.'); ?></p>
 
         <hr/>

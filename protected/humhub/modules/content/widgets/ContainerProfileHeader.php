@@ -122,7 +122,7 @@ class ContainerProfileHeader extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => 'panel panel-default panel-profile',
+            'class' => 'card content-card panel-profile',
         ];
     }
 }

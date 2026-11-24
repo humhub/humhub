@@ -13,11 +13,11 @@ $loginRoute = MaintenanceModeGate::isActive() ? ['/user/auth/login', 'maintenanc
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated fadeIn">
-        <div class="panel-heading">
-            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Password changed!') ?></strong></h1>
+    <div class="card content-card animated fadeIn">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Password changed!') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <p><?= Yii::t('UserModule.auth', 'Your password has been successfully changed!') ?></p>
             <br>
             <?= Button::primary(Yii::t('UserModule.auth', 'Sign In'))

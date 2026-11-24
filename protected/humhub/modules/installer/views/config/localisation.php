@@ -12,13 +12,13 @@ use humhub\widgets\form\ActiveForm;
 
 /* @var LocalisationForm $model */
 ?>
-<div id="localisation" class="panel panel-default animated fadeIn">
+<div id="localisation" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <strong><?= Yii::t('InstallerModule.base', 'Localisation') ?></strong>
+    <div class="card-header">
+        <div class="card-title"><strong><?= Yii::t('InstallerModule.base', 'Localisation') ?></strong></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.') ?></p>
 
         <?php $form = ActiveForm::begin() ?>

@@ -11,7 +11,7 @@ use humhub\widgets\VueWidget;
 use Yii;
 
 /**
- * The "Latest activities" panel of the dashboard sidebar and of a container's profile.
+ * The "Latest activities" card of the dashboard sidebar and of a container's profile.
  *
  * A Vue island (`ActivityBox`, see `docs/develop/ui-js-vuejs-components.md`) since 1.20 — this
  * widget renders its mount point and hands over what only the server knows: the first page of
@@ -22,7 +22,7 @@ use Yii;
  * someone scrolls: a shorter page would leave the island's load-more sentinel inside the
  * 400px-high box and have it fetch the rest immediately.
  *
- * The mount point IS the panel (`#panel-activities.panel.panel-activities`), so the element
+ * The mount point IS the card (`#panel-activities.card.content-card.panel-activities`), so the element
  * exists before the island mounts - theme CSS, the product tour and tests address it - and the
  * island renders its contents. `#activity-box-content.activities` and the markup of an entry
  * are unchanged for the same reason.
@@ -32,7 +32,7 @@ use Yii;
 class ActivityBox extends VueWidget
 {
     /**
-     * @var string id of the element the panel menu collapses - see the `collapse` class in
+     * @var string id of the element the card's menu collapses - see the `collapse` class in
      * `ActivityBox.vue`, which is what `ui.panel.PanelMenu` looks for first.
      */
     public const COLLAPSE_ID = 'panel-activities-body';
@@ -47,20 +47,20 @@ class ActivityBox extends VueWidget
     /**
      * @inheritdoc
      *
-     * The panel element is the mount point, so it exists in the server's HTML rather than only
+     * The card element is the mount point, so it exists in the server's HTML rather than only
      * after the island mounts: theme CSS, the product tour (`.panel-activities`) and tests that
-     * assert the panel's presence address it directly.
+     * assert the card's presence address it directly.
      */
     protected function getOptions(): array
     {
-        return ['id' => 'panel-activities', 'class' => 'panel panel-default panel-activities'];
+        return ['id' => 'panel-activities', 'class' => 'card content-card panel-activities'];
     }
 
     /**
      * @inheritdoc
      *
-     * Until the island mounts the panel would be an empty element - no size, and therefore not
-     * "visible" to anything asking (theme CSS, the product tour, a test asserting the panel is
+     * Until the island mounts the card would be an empty element - no size, and therefore not
+     * "visible" to anything asking (theme CSS, the product tour, a test asserting the card is
      * there). The heading is rendered ahead of it, from the very string the island renders a
      * moment later.
      */
@@ -68,8 +68,8 @@ class ActivityBox extends VueWidget
     {
         return Html::tag(
             'div',
-            Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'),
-            ['class' => 'panel-heading'],
+            Html::tag('div', Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'), ['class' => 'card-title']),
+            ['class' => 'card-header'],
         );
     }
 

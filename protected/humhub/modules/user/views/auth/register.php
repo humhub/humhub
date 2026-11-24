@@ -22,11 +22,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default mb-4 animated bounceIn" id="register-form">
-        <div class="panel-heading">
-            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong></h1>
+    <div class="card content-card mb-4 animated bounceIn" id="register-form">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?php if (Yii::$app->session->hasFlash('error')): ?>
                 <?= Alert::danger(Yii::$app->session->getFlash('error'))->closeButton(false) ?>
             <?php endif; ?>

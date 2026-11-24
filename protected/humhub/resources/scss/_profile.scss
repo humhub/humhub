@@ -44,7 +44,7 @@ $container-header-count-font-size: $font-size-base * 1.5 !default; // 21px: a sp
         .panel-profile-header {
             position: relative;
             border: 3px solid var(--bs-body-bg);
-            // The panel's corners; the cover inside the 3px frame a step less rounded
+            // The card's corners; the cover inside the 3px frame a step less rounded
             border-top-right-radius: $border-radius-lg;
             border-top-left-radius: $border-radius-lg;
 
@@ -55,7 +55,7 @@ $container-header-count-font-size: $font-size-base * 1.5 !default; // 21px: a sp
 
             // Without an uploaded banner: a background color, not the pixels of the default image (a light grey
             // in every color mode). In the dark mode lighter than the surface, so that the gradient behind the
-            // name ends lighter than the panel below, as in the light mode.
+            // name ends lighter than the card below, as in the light mode.
             .img-profile-header-default {
                 background-color: var(--bs-secondary-bg);
                 object-position: -10000px 0;
@@ -138,14 +138,14 @@ $container-header-count-font-size: $font-size-base * 1.5 !default; // 21px: a sp
             }
         }
 
-        // Beside the image: with the panel's padding, the counters in line with the name (`.img-profile-data`)
+        // Beside the image: with the card's padding, the counters in line with the name (`.img-profile-data`)
         .panel-profile-controls {
             padding-left: 139px;
         }
 
-        // The strip with counters and buttons below the cover, not a card's body: half the panel's padding above and
+        // The strip with counters and buttons below the cover, not a card's body: half the card's padding above and
         // below
-        > .panel-body:has(> .panel-profile-controls) {
+        > .card-body:has(> .panel-profile-controls) {
             padding-block: $spacer * .5;
         }
     }

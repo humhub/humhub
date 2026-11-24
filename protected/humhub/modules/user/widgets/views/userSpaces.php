@@ -11,12 +11,12 @@ use humhub\widgets\PanelMenu;
 /* @var $showMoreLink bool */
 ?>
 <?php if (count($spaces) > 0) : ?>
-    <div id="user-spaces-panel" class="panel panel-default members">
+    <div id="user-spaces-panel" class="card content-card members">
         <?= PanelMenu::widget() ?>
-        <div class="panel-heading">
-            <?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?>
+        <div class="card-header">
+            <div class="card-title"><?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <div class="d-flex gap-2 flex-wrap">
             <?php foreach ($spaces as $space): ?>
                 <?= Image::widget([

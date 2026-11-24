@@ -3,9 +3,9 @@
     <div v-if="panelMenuHtml" v-additions v-html="panelMenuHtml"></div>
 
     <!-- eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock -->
-    <div class="panel-heading" v-html="headingLabel"></div>
+    <div class="card-header"><div class="card-title" v-html="headingLabel"></div></div>
 
-    <div class="panel-body p-0 pb-1 collapse show">
+    <div class="card-body p-0 pb-1 collapse show">
         <div id="activity-box-content" ref="list" class="hh-list activities" v-additions @scroll="onScroll">
             <hr class="m-0">
 
@@ -30,9 +30,9 @@
 
 <script>
 /**
- * The "Latest activities" box — the whole panel's contents, replacing
- * `activity\widgets\views\activity-box.php` and `humhub.activity.js`. The panel element
- * itself is the mount point the widget renders (`#panel-activities.panel.panel-activities`),
+ * The "Latest activities" box — the whole card's contents, replacing
+ * `activity\widgets\views\activity-box.php` and `humhub.activity.js`. The card element
+ * itself is the mount point the widget renders (`#panel-activities.card.content-card.panel-activities`),
  * so it is in the server's HTML before this component mounts.
  *
  * The widget rendering this island hands over the first page (so the first paint costs no
@@ -46,10 +46,10 @@
  * server-side — it stays a server concern and is mounted as-is, with `v-additions` so its own
  * legacy enhancers (the `ui.panel.PanelMenu` widget behind `[data-ui-init]`, dropdown,
  * tooltips) boot exactly as they do anywhere else. The heading is localized markup
- * (`<strong>Latest</strong> activities`), the same string the panel always used.
+ * (`<strong>Latest</strong> activities`), the same string the box always used.
  *
- * That menu collapses the panel body, and it finds the body through the `collapse` class
- * below: `ui.panel.PanelMenu` looks for `.collapse` inside the panel FIRST and only walks
+ * That menu collapses the card body, and it finds the body through the `collapse` class
+ * below: `ui.panel.PanelMenu` looks for `.collapse` inside the card FIRST and only walks
  * siblings of its own `<ul>` if there is none — and that walk cannot work here, because the
  * `<ul>` is mounted inside the element carrying `v-html` rather than as a direct sibling of
  * the heading. The class comes with `show`, so the body is visible before the widget boots;

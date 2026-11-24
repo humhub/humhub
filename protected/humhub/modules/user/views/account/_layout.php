@@ -9,7 +9,7 @@ use humhub\widgets\FooterMenu;
  * @var View $this
  * @var string $content
  *
- * A page without a content card of its own (older module pages) gets a panel around it.
+ * A page without a content card of its own (older module pages) gets a card around it.
  */
 ?>
 <div class="container">
@@ -22,7 +22,7 @@ use humhub\widgets\FooterMenu;
             <?php if (ContentCard::isRendered($this)) : ?>
                 <?= $content ?>
             <?php else : ?>
-                <div class="panel panel-default">
+                <div class="card content-card">
                     <?= $content ?>
                 </div>
             <?php endif; ?>

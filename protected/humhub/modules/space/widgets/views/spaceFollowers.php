@@ -14,16 +14,16 @@ use humhub\widgets\PanelMenu;
 /* @var int $totalFollowerCount */
 /* @var array $showListOptions */
 ?>
-<div class="panel panel-default follower" id="space-follower-panel">
+<div class="card content-card follower" id="space-follower-panel">
     <?= PanelMenu::widget([
         'extraMenus' => Html::tag('li', Link::to(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]) ?>
 
-    <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
-        <?= Yii::t('SpaceModule.base', '<strong>Space</strong> followers') ?> (<?= $totalFollowerCount ?>)
+    <div class="card-header"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
+        <div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> followers') ?> (<?= $totalFollowerCount ?>)</div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?php foreach ($followers as $follower): ?>
             <?= $follower->getProfileImage()->render(32, [
                 'class' => 'rounded tt img_margin',

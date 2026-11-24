@@ -5,14 +5,16 @@ use humhub\widgets\PanelMenu;
 
 ?>
 <?php if (count($friends) > 0) { ?>
-    <div class="panel panel-default profile-friends-panel" id="profile-friends-panel">
+    <div class="card content-card profile-friends-panel" id="profile-friends-panel">
         <?= PanelMenu::widget() ?>
 
-        <div class="panel-heading"><strong><?= Yii::t('FriendshipModule.base', 'Friends') ?></strong>
-            (<?php echo $totalCount; ?>)
+        <div class="card-header">
+            <div class="card-title"><strong><?= Yii::t('FriendshipModule.base', 'Friends') ?></strong>
+                (<?php echo $totalCount; ?>)
+            </div>
         </div>
 
-        <div class="panel-body">
+        <div class="card-body">
             <div class="d-flex gap-2 flex-wrap">
                 <?php foreach ($friends as $friend): ?>
                     <a href="<?= $friend->getUrl() ?>">

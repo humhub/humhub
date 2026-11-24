@@ -13,7 +13,9 @@ use humhub\widgets\menu\MenuEntry;
 
 <?= Html::beginTag('nav', $options) ?>
 <?php if (!empty($menu->panelTitle)) : ?>
-    <h2 class="panel-heading"><?= $menu->panelTitle ?></h2>
+    <div class="card-header">
+        <h2 class="card-title"><?= $menu->panelTitle ?></h2>
+    </div>
 <?php endif; ?>
 
 <div class="list-group list-group-horizontal list-group-vertical-lg">

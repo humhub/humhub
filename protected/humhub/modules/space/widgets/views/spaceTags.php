@@ -9,12 +9,12 @@ use yii\helpers\Url;
 
 ?>
 <?php if (!empty($space->getTags())) : ?>
-    <div id="user-tags-panel" class="panel panel-default">
+    <div id="user-tags-panel" class="card content-card">
 
         <?= PanelMenu::widget() ?>
 
-        <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> tags') ?></div>
-        <div class="panel-body">
+        <div class="card-header"><div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> tags') ?></div></div>
+        <div class="card-body">
             <div class="tags">
                 <?php foreach ($space->getTags() as $tag): ?>
                     <?= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'q' => $tag]), ['class' => 'btn btn-light btn-sm tag']) ?>
