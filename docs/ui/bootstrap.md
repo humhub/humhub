@@ -182,6 +182,7 @@ browser's font size, as the Bootstrap docs assume. These are all the size overri
 | `$headings-font-weight`, `$headings-color` (`-dark`) | 600, `var(--bs-emphasis-color)` | 500, `inherit` | A heading tag has the weight and colour of the title styles. |
 | `$table-th-font-weight` | 600 | none (the browser's bold) | A column's header, at Meta's size ([Typography](typography.md#special-cases-of-components)). |
 | `$badge-font-size` | `.875em` | `.75em` | As secondary text; Bootstrap's 10.5px is below the smallest text. |
+| `$badge-font-weight`, `$badge-border-radius` | 600, `50rem` (`$border-radius-pill`) | 700, `$border-radius` | A chip is semibold, one of the three weights, and fully rounded ([Badges](badges.md)). |
 | `$dropdown-padding-x` | `.5rem` | `0` | A menu's rows are inset, with rounded corners. |
 | `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (37px), their content half a spacer from the row's rounded edge. |
 | `$dropdown-min-width` | `15rem` | `10rem` | Menus hold labels with icons and hints. |
@@ -216,9 +217,9 @@ A value between two steps is not written; take the nearer step.
 
 ### Radii
 
-`$border-radius-sm` (4px): chips, checkboxes, small controls, legacy panels. `$border-radius`
-(6px): buttons, fields, dropdowns, badges. `$border-radius-lg` (8px): cards, dialogs, popovers.
-`$border-radius-pill`: pill tabs, avatars, counters.
+`$border-radius-sm` (4px): checkboxes, small controls, legacy panels. `$border-radius`
+(6px): buttons, fields, dropdowns. `$border-radius-lg` (8px): cards, dialogs, popovers.
+`$border-radius-pill`: badges and chips, pill tabs, avatars, counters.
 
 ### What stays in px
 

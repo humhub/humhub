@@ -93,7 +93,7 @@ These belong to one component and are documented with it, not used elsewhere:
 | [Top bar](top-bar.md) | The network's name | 21px (`$topbar-brand-font-size`) |
 | [Top bar](top-bar.md) | The labels of the main navigation | 12.25px, 600, capitals |
 | Table ([Data table](data-table.md), grid view, `.table`) | A column's header (`th`) | Meta, but 600 (`$table-th-font-weight`); in a data table, the sorted column's in the emphasis colour |
-| [Badges & status](badges.md) | A badge | `$badge-font-size` (`.875em`) |
+| [Badges & status](badges.md) | A badge | `.875em`, 600, capitals (`$badge-font-size`, `$badge-font-weight`) |
 
 ## Content: rich text and Markdown
 
