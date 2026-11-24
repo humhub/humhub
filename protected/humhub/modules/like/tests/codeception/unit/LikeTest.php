@@ -58,7 +58,7 @@ class LikeTest extends HumHubDbTestCase
         $this->assertTrue($record->save());
         $html = NotificationManager::fromRecord($record)->asWeb();
 
-        $this->assertStringEndsWith('likes post.', $html);
+        $this->assertStringEndsWith('likes your post.', $html);
     }
 
     public function testLikesOnOnePostGroup()
