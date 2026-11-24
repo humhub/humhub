@@ -90,8 +90,8 @@ class DefaultStreamFilter extends StreamQueryFilter
 
         if ($this->isFilterActive(self::FILTER_HIDDEN)) {
             $this->filterHidden();
-        } elseif (!$this->streamQuery->isSingleContentQuery()) {
-            // Only omit hidden content by default when we load more than one entry
+        } elseif (!$this->streamQuery->isSingleContentQuery() && !$this->isTopicFilterActive()) {
+            // Only omit hidden content by default when we load more than one entry and don't filter by topic
             $this->unFilterHidden();
         }
 
@@ -178,5 +178,12 @@ class DefaultStreamFilter extends StreamQueryFilter
     {
         $this->query->andWhere(['content.hidden' => 0]);
         return $this;
+    }
+
+    private function isTopicFilterActive(): bool
+    {
+        $topicFilter = $this->streamQuery->getFilterHandler(TopicStreamFilter::class);
+
+        return $topicFilter instanceof TopicStreamFilter && !empty($topicFilter->topics);
     }
 }
