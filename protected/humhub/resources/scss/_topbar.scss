@@ -99,7 +99,6 @@ $topbar-brand-font-size: $h4-font-size !default;
                 display: flex;
                 align-items: center;
                 padding: $spacer * .25;
-                line-height: $line-height-sm; // The name and the role close together
                 text-align: left;
 
                 span {

@@ -3044,7 +3044,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - A theme that set `$font-size-root` sets `$font-size-base` instead.
   - These overrides are gone, Bootstrap's defaults apply: `$grid-gutter-width` (`1.5rem`), `$btn-padding-*`,
     `$btn-font-size-lg`, `$btn-border-radius*` (6px), `$input-padding-y`, `$badge-font-weight`, `$badge-padding-*`,
-    `$badge-border-radius`, `$dropdown-padding-y`, `$dropdown-item-padding-*`, `$popover-border-radius`,
+    `$badge-border-radius`, `$dropdown-padding-y`, `$popover-border-radius`,
     `$progress-height`, `$progress-border-radius`, `$toast-font-size`, `$tooltip-font-size`, `$line-height-base`.
     Buttons and fields are 39px high (`$input-btn-padding-y: .5rem`).
   - Removed: `$select-menu-option-padding-y`, `$data-table-actions-toggle-size`, `$data-table-actions-toggle-icon-size`,

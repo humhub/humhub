@@ -264,6 +264,10 @@ $btn-transition: color 0.3s, background-color 0.3s, border-color 0.3s !default;
 // a light accent fill on hover and while pressed
 $dropdown-min-width: 15rem !default;
 $dropdown-padding-x: .5rem !default; // $spacer * .5 (not defined yet here): the rows are inset, with rounded corners
+// Rows as high as a button (37px) and their content half a spacer from the row's rounded edge; Bootstrap's rows are
+// 29px and made for a menu without inset
+$dropdown-item-padding-x: .5rem !default;
+$dropdown-item-padding-y: .5rem !default;
 $dropdown-link-hover-bg: var(--bs-accent-bg-subtle) !default;
 $dropdown-link-hover-color: var(--bs-emphasis-color) !default;
 $dropdown-link-active-bg: $dropdown-link-hover-bg !default;

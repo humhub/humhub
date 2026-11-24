@@ -180,6 +180,7 @@ browser's font size, as the Bootstrap docs assume. These are all the size overri
 | `$btn-font-weight` | 600 | 400 | A button's label reads as a control. |
 | `$badge-font-size` | `.875em` | `.75em` | As secondary text; Bootstrap's 10.5px is below the smallest text. |
 | `$dropdown-padding-x` | `.5rem` | `0` | A menu's rows are inset, with rounded corners. |
+| `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (37px), their content half a spacer from the row's rounded edge. |
 | `$dropdown-min-width` | `15rem` | `10rem` | Menus hold labels with icons and hints. |
 | `$tooltip-max-width` | `400px` | `200px` | Tooltips show cut-off text in full. |
 | `$form-check-padding-start` | `2em` | `1.5em` | Labels with several lines. |
