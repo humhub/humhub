@@ -177,7 +177,10 @@ browser's font size, as the Bootstrap docs assume. These are all the size overri
 |---|---|---|---|
 | `$font-size-base` | `.875rem` | `1rem` | 14px text: the density of the UI. The one knob for a theme's text size. |
 | `$input-btn-padding-y` | `.5rem` | `.375rem` | Buttons and fields 39px high instead of 35px. |
-| `$btn-font-weight` | 600 | 400 | A button's label reads as a control. |
+| `$btn-font-weight`, `$nav-link-font-weight` | 500 | 400, none | The Control text style of a button's, tab's or menu entry's label. |
+| `$h5-font-size`, `$h4-font-size` | `1rem`, `$font-size-lg` | `$font-size-lg`, `$font-size-base * 1.5` | `h5`/`.fs-5` give the Title and `h4`/`.fs-4` the Large title text style ([Typography](typography.md#bootstraps-names)). |
+| `$headings-font-weight`, `$headings-color` (`-dark`) | 600, `var(--bs-emphasis-color)` | 500, `inherit` | A heading tag has the weight and colour of the title styles. |
+| `$table-th-font-weight` | 600 | none (the browser's bold) | A column's header, at Meta's size ([Typography](typography.md#special-cases-of-components)). |
 | `$badge-font-size` | `.875em` | `.75em` | As secondary text; Bootstrap's 10.5px is below the smallest text. |
 | `$dropdown-padding-x` | `.5rem` | `0` | A menu's rows are inset, with rounded corners. |
 | `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (37px), their content half a spacer from the row's rounded edge. |
@@ -190,8 +193,8 @@ Own additions:
 - A component sets the size of its title (`.card-title`, `.modal-title`, the page header's title,
   see [Typography](typography.md)).
 - Rendered rich text has a heading scale of its own (`_richtext.scss`).
-- The titles of the side column's widgets are `1rem` (`$sidebar-title-font-size`, `_sidebar.scss`): between
-  text and a title, where Bootstrap has no step.
+- Six text styles (`$hh-text-styles`, `hh-text-style()`, see [Typography](typography.md)): size, weight, line
+  height and colour together, taken by the components instead of single properties.
 - `--hh-topbar-height` (`3.5rem`, as Bootstrap's navbar) is the height of one top bar; `--hh-fixed-header-height` is
   derived from it.
 

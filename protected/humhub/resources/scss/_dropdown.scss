@@ -29,7 +29,9 @@ $dropdown-item-transition: color .15s ease-in-out, background-color .15s ease-in
         @extend .dropdown-item;
     }
 
+    // A menu entry is a control; Bootstrap sets its weight to 400
     .dropdown-item {
+        @include hh-text-style(control, $color: false);
         cursor: pointer;
         @include transition($dropdown-item-transition);
 

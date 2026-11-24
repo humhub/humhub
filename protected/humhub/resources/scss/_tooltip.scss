@@ -6,9 +6,10 @@
     // Bootstrap overwrite: see the tooltip Sass variables in variables.scss.
     // The arrow colors are derived from `$tooltip-bg` by Bootstrap itself.
 
+    // A hint, in the tooltip's colour on its dark surface
     .tooltip-inner {
         text-align: left;
-        font-weight: $font-weight-bold;
+        @include hh-text-style(meta, $color: false);
         white-space: pre-wrap;
     }
 

@@ -2,9 +2,6 @@
 // Stream (wall)
 // --------------------------------------------------
 
-// The title of a piece of content, from Bootstrap's type scale (`.fs-4`)
-$post-title-font-size: $h4-font-size !default;
-
 @if not $prev-stream {
     // Content create form
     .contentForm_options {
@@ -167,8 +164,9 @@ $post-title-font-size: $h4-font-size !default;
             .wall-entry-content {
                 margin-bottom: $spacer * .25;
 
+                // A short post's text as large as a content's title: content, not a text style
                 .post-short-text {
-                    font-size: $post-title-font-size;
+                    font-size: $h4-font-size;
                 }
             }
         }
@@ -185,18 +183,16 @@ $post-title-font-size: $h4-font-size !default;
 
         // A post's own title is the title of a piece of content
         .post-title {
-            font-size: $post-title-font-size;
+            @include hh-text-style(title-lg);
         }
 
-        // The author's name on a post, the content's title on a module's entry: text size (over the view's `.h4`),
-        // set off by its weight
+        // The author's name on a post, the content's title on a module's entry (over the view's `.h4`)
         .wall-entry-title {
-            font-size: $font-size-base;
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong);
             margin-bottom: $spacer * .25;
 
             small {
-                font-weight: $font-weight-normal;
+                @include hh-text-style(meta);
             }
 
             // Clear of the ⋮ menu
@@ -205,7 +201,7 @@ $post-title-font-size: $h4-font-size !default;
             }
 
             .viaLink {
-                font-size: $font-size-sm;
+                @include hh-text-style(meta, $color: false);
 
                 i {
                     color: var(--bs-body-color);
@@ -216,9 +212,9 @@ $post-title-font-size: $h4-font-size !default;
 
         }
 
+        // Over the view's `.h5`
         .wall-entry-meta {
-            color: var(--bs-body-color);
-            font-size: $font-size-sm;
+            @include hh-text-style(meta);
 
             a .time {
                 color: var(--bs-body-color);
@@ -248,9 +244,9 @@ $post-title-font-size: $h4-font-size !default;
         align-items: center;
         column-gap: $spacer * .5;
         margin-top: $spacer;
-        // Secondary text. On the row, not only on its links: a wrapped link (the like button's
+        // Secondary details. On the row, not only on its links: a wrapped link (the like button's
         // `span.likeLinkContainer`) would otherwise sit on the baseline of a taller line box and drop below the bare ones
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
 
         a {
             color: var(--bs-body-color);
@@ -265,7 +261,7 @@ $post-title-font-size: $h4-font-size !default;
     }
 
     #wall-stream-filter-nav {
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
         margin-bottom: $spacer * .5;
         border-radius: 0 0 $border-radius-sm $border-radius-sm;
 
@@ -346,7 +342,7 @@ $post-title-font-size: $h4-font-size !default;
 
                     // Direct items only: the listbox of a picker filter is a list too.
                     > li {
-                        font-size: $font-size-sm;
+                        @include hh-text-style(meta, $color: false);
                         padding: $spacer * .25;
                     }
                 }
@@ -382,7 +378,7 @@ $post-title-font-size: $h4-font-size !default;
             padding: $spacer * .25;
             border-radius: 0 0 $border-radius-sm $border-radius-sm;
             border: 1px solid var(--bs-border-color);
-            font-size: $font-size-sm;
+            @include hh-text-style(meta, $color: false);
         }
     }
 

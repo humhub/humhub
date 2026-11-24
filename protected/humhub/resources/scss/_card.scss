@@ -15,13 +15,9 @@ $content-card-header-gap: $spacer * .5 !default;
 $content-card-header-padding-top: $spacer !default;
 $content-card-header-padding-bottom: $spacer * .5 !default;
 $content-card-tabs-padding-top: $spacer * .5 !default;
-// Titles: the card's title (as large as the page header's) > the title of a section in its body
-$content-card-title-font-size: $font-size-lg !default;
-$content-card-title-font-weight: $font-weight-semibold !default;
+// Titles (text styles, docs/ui/typography.md): the card's title a Title, the title of a section in its body Strong text
 $content-card-title-badges-gap: $spacer * .5 !default;
 $content-card-subtitle-margin-top: $spacer * .5 !default;
-$content-card-section-title-font-size: $font-size-base !default;
-$content-card-section-title-font-weight: $font-weight-semibold !default;
 $content-card-section-title-margin-top: $spacer * 1.5 !default;
 $content-card-section-title-margin-bottom: $spacer * .5 !default;
 $content-card-margin-bottom: $spacer !default; // about the margin of the `.panel` it replaces
@@ -29,8 +25,7 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
 @if not $prev-card {
     // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
     .card-title {
-        font-size: $font-size-lg;
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(title);
     }
 
     .content-card {
@@ -76,12 +71,10 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
         min-width: 0;
     }
 
+    // A Title, also where the title has a class of its own (e.g. `.notification-settings-subtitle`)
     .content-card > .card-header .card-title {
         margin: 0;
-        color: var(--bs-emphasis-color);
-        font-size: $content-card-title-font-size;
-        font-weight: $content-card-title-font-weight;
-        line-height: $headings-line-height;
+        @include hh-text-style(title);
         overflow-wrap: anywhere;
     }
 
@@ -96,17 +89,13 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
     // The description: ordinary text below the title
     .content-card > .card-header .card-subtitle {
         margin: $content-card-subtitle-margin-top 0 0;
-        color: var(--bs-body-color);
-        font-size: inherit;
+        @include hh-text-style(text);
     }
 
     // A title in the body is that of a section of the card's content, a step below the card's title
     :where(.content-card > .card-body) .card-title {
         margin: 0 0 $content-card-section-title-margin-bottom;
-        color: var(--bs-emphasis-color);
-        font-size: $content-card-section-title-font-size;
-        font-weight: $content-card-section-title-font-weight;
-        line-height: $headings-line-height;
+        @include hh-text-style(strong);
 
         &:not(:first-child) {
             margin-top: $content-card-section-title-margin-top;

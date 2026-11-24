@@ -24,8 +24,10 @@ $form-choice-border-radius: $border-radius-sm !default;
     }
 
 
+    // The weight of a control's label (Control, docs/ui/typography.md); its size is that of where it stands, e.g. a
+    // small filter
     label {
-        font-weight: $font-weight-bold;
+        font-weight: $font-weight-medium;
 
         &[required]:after {
             content: " *";
@@ -41,13 +43,6 @@ $form-choice-border-radius: $border-radius-sm !default;
     div.required > label:after {
         content: " *";
         color: var(--hh-accent-fg);
-    }
-
-    .form-checkboxes-normal {
-        .radio label,
-        .checkbox label {
-            font-weight: $font-weight-medium;
-        }
     }
 
     // Border, padding, size and focus come from Bootstrap's `$input-*` variables (variables.scss)
@@ -140,7 +135,12 @@ $form-choice-border-radius: $border-radius-sm !default;
         color: $input-placeholder-color;
     }
 
-    .form-text, .text-body-secondary {
+    .form-text {
+        @include hh-text-style(meta);
+    }
+
+    // A colour utility used for hints: Meta's size, the weight and line height of where it stands
+    .text-body-secondary {
         color: var(--bs-body-color);
         font-size: $font-size-sm;
     }
@@ -151,16 +151,15 @@ $form-choice-border-radius: $border-radius-sm !default;
     }
 
     .hint-block {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .hint-block:hover {
-        color: var(--bs-secondary-color);
+        color: var(--bs-body-color);
     }
 
     a.input-field-addon-sm {
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
         float: right;
         margin-top: $spacer * -.5;
     }
@@ -318,7 +317,7 @@ $form-choice-border-radius: $border-radius-sm !default;
         border: var(--bs-border-width) solid var(--bs-border-color);
         border-radius: var(--bs-border-radius);
         background: var(--bs-body-bg);
-        font-weight: $font-weight-normal; // not the bold of a HumHub `label`
+        @include hh-text-style(text); // Not a label's: the card holds a title and a text
         cursor: pointer;
 
         &:hover {
@@ -364,13 +363,11 @@ $form-choice-border-radius: $border-radius-sm !default;
     }
 
     .form-check-card-title {
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
     }
 
     .form-check-card-text {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     @include media-breakpoint-down(sm) {
@@ -418,7 +415,7 @@ $form-choice-border-radius: $border-radius-sm !default;
         div.radio {
             flex: 1;
             text-align: center;
-            font-size: $font-size-sm;
+            @include hh-text-style(control, $color: false);
             border-radius: $border-radius-sm;
             background: var(--bs-body-bg);
             box-shadow: none;
@@ -438,7 +435,6 @@ $form-choice-border-radius: $border-radius-sm !default;
             }
 
             label {
-                font-weight: $font-weight-semibold;
                 padding: $spacer * .25 $spacer;
             }
 
@@ -511,8 +507,7 @@ $form-choice-border-radius: $border-radius-sm !default;
 
         // Like `.accordion-title` of the notification settings
         .accordion-button {
-            color: var(--bs-emphasis-color);
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong);
             cursor: pointer;
 
             label {

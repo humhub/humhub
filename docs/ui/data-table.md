@@ -248,8 +248,8 @@ The table sits in a content card: Bootstrap's **`.card`** with **`.table`** insi
 | `.data-table-bulk`, `.data-table-bulk-toggle` | The selection menu ("2 ⋮") in place of the header's ⋮ |
 
 - **File:** `_data-table.scss`, behind `$prev-data-table`.
-- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-main-initials-bg|color|font-size`, `$data-table-main-icon-bg|color|font-size`, `$data-table-hover-bg`,
-  `$data-table-head-color`, `$data-table-head-font-size`; the rest is Bootstrap's `.table`,
+- **Sass variables:** `$data-table-gap`, `$data-table-main-image-size`, `$data-table-main-initials-bg|color|font-size`, `$data-table-main-icon-bg|color|font-size`,
+  `$data-table-hover-bg`; the column headers are every table's (Meta's size at 600, [Typography](typography.md#special-cases-of-components)); the rest is Bootstrap's `.table`,
   `.pagination` and `.form-select`.
 
 ## Implementation in core

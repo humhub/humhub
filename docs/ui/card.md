@@ -25,9 +25,8 @@ card: boards, grids, tables, lists, forms, key figures.
 The page header names the page (`h1`), the card names its part (`h2`), sub-sections inside a card
 are `h3`. All three are short, plain titles without `<strong>`.
 
-- **Sizes:** page title and card title `$font-size-lg` (the title role, see
-  [Typography](typography.md)), section (`.card-title` in the body) `$font-size-base`; all semibold, in the highlight
-  colour. A section heading has more space above than below.
+- **Text styles** ([Typography](typography.md)): page title and card title a Title, a section
+  (`.card-title` in the body) Strong text. A section heading has more space above than below.
 - **Below tabs, the active tab names the card.** Settings › General → card "General",
   Users › Groups → card "Groups". With secondary tabs in the card, the card title is the section
   (Users › Settings → card "Settings" with General / LDAP / … below it).
@@ -110,11 +109,9 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 - **Older views inside a card:** a `.panel-body` directly in the card body (module views rendered
   into a layout that is now a card) adds no padding of its own; two of them are spaced by `$spacer`.
 - **File:** `_card.scss`, behind `$prev-card`, with `$content-card-header-gap`,
-  `$content-card-title-font-size`, `$content-card-title-font-weight`,
   `$content-card-header-padding-top` / `-bottom` (1rem above the title as in the page header,
   1.5rem from title to content), `$content-card-tabs-padding-top`,
-  `$content-card-subtitle-margin-top`, `$content-card-section-title-font-size`, `-font-weight`,
-  `-margin-top`, `-margin-bottom` and
+  `$content-card-subtitle-margin-top`, `$content-card-section-title-margin-top`, `-margin-bottom` and
   `$content-card-margin-bottom` (the last card's distance to the footer, as a panel's).
 
 ## Implementation in core

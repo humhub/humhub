@@ -2,6 +2,30 @@
 // Mixins
 // --------------------------------------------------
 
+// The text styles of docs/ui/typography.md: size, weight, line height and colour together. A component takes one with
+// `hh-text-style()` instead of setting these properties itself. `color: null` leaves the colour to the element
+$hh-text-styles: (
+    text: (font-size: $font-size-base, font-weight: $font-weight-normal, line-height: $line-height-base, color: var(--bs-body-color)),
+    strong: (font-size: $font-size-base, font-weight: $font-weight-semibold, line-height: $line-height-base, color: var(--bs-emphasis-color)),
+    control: (font-size: $font-size-base, font-weight: $font-weight-medium, line-height: $line-height-base, color: null),
+    meta: (font-size: $font-size-sm, font-weight: $font-weight-normal, line-height: $line-height-base, color: var(--bs-body-color)),
+    title: (font-size: $h5-font-size, font-weight: $font-weight-semibold, line-height: $headings-line-height, color: var(--bs-emphasis-color)),
+    title-lg: (font-size: $h4-font-size, font-weight: $font-weight-semibold, line-height: $headings-line-height, color: var(--bs-emphasis-color)),
+) !default;
+
+// `$color: false` where the element has a colour of its own (a link, a button, a menu entry)
+@mixin hh-text-style($name, $color: true) {
+    $style: map-get($hh-text-styles, $name);
+    @if not $style {
+        @error "Unknown text style `#{$name}`, see $hh-text-styles";
+    }
+    @each $property, $value in $style {
+        @if $value != null and ($property != color or $color) {
+            #{$property}: $value;
+        }
+    }
+}
+
 @mixin text-break {
     overflow-wrap: anywhere;
     hyphens: auto;

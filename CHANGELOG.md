@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: Six text styles for the interface (`hh-text-style()`, docs/ui/typography.md)
 - Fix: The like notification says "likes your post" in the web list and mail text, as in the mail subject
 - Enh #8777: Sizes in rem on Bootstrap's defaults; text follows the browser's font size
 - Fix #8778: Picker chips sit as far from the start of the field as from its top and bottom

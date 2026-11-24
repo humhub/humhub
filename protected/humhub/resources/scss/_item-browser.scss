@@ -128,8 +128,9 @@ $tile-border-radius: var(--bs-border-radius) !default;
         }
     }
 
+    // The current level's name, in the breadcrumb's colour for the current item
     .path-bar .breadcrumb-item.active > span {
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong, $color: false);
     }
 
     // The crumbs clip anything drawn outside them, so the ring is inset. `:focus-visible` rather than `:focus`:
@@ -247,7 +248,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
             background: none;
             color: $item-browser-strong;
             font: inherit;
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong, $color: false);
             text-align: center;
             text-decoration: none;
             overflow-wrap: anywhere;
@@ -284,8 +285,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
     // so a long line is held to the tile and can be cut there
     .tile-meta {
         width: 100%;
-        color: $item-browser-muted;
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     // The checkbox (`.form-check-input`, in the platform's checkbox look), shown on hover or
@@ -491,7 +491,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
         border-radius: var(--bs-border-radius);
         background: var(--bs-body-bg);
         color: $item-browser-accent-fg;
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong, $color: false);
 
         .is-refused & {
             color: $item-browser-muted;

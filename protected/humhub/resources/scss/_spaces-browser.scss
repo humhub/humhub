@@ -14,7 +14,6 @@
         gap: $spacer * .25;
         margin: 0;
         color: var(--bs-warning-text-emphasis);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(meta, $color: false);
     }
 }

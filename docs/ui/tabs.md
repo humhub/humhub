@@ -118,7 +118,7 @@ and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 - **File:** `_nav.scss` (pill variants on top of Bootstrap's nav), behind `$prev-nav`.
 - **Sass variables:** Bootstrap's `$nav-pills-border-radius` (pill, in `variables.scss`),
   `$nav-link-padding-x/y` (height and padding stay Bootstrap's: 2.5rem); plus, in `_nav.scss`,
-  `$nav-pills-gap`, `$nav-pills-font-weight` (`$font-weight-medium`), `$nav-pills-color`,
+  `$nav-pills-gap`, `$nav-pills-color`,
   `$nav-pills-hover-color`, `$nav-pills-hover-bg` (`--bs-tertiary-bg`), `$nav-pills-active-color`,
   `$nav-pills-active-bg` (`--bs-secondary-bg`), `$nav-pills-border-width`,
   `$nav-pills-border-color` (`--bs-border-color`), `$nav-pills-active-border-color` (the

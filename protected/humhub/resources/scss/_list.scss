@@ -6,6 +6,11 @@
     .hh-list {
         padding: 0;
 
+        // A list in a menu (the notifications) is no menu entry: its rows are text
+        &.dropdown-item {
+            @include hh-text-style(text, $color: false);
+        }
+
         &.dropdown-item:hover {
             background-color: inherit;
             color: inherit;
@@ -67,8 +72,7 @@
 
                 small,
                 small a {
-                    font-size: $font-size-sm;
-                    color: var(--bs-body-color);
+                    @include hh-text-style(meta);
                 }
 
                 .content {
@@ -92,8 +96,7 @@
             }
 
             .time {
-                font-size: $font-size-sm;
-                color: var(--bs-body-color);
+                @include hh-text-style(meta);
             }
 
             .content .files a {

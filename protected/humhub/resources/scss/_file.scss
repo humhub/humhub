@@ -3,8 +3,6 @@
 // --------------------------------------------------
 
 $file-version-gap: $spacer * .5 !default;
-$file-version-meta-color: var(--bs-secondary-color) !default;
-$file-version-meta-font-size: $font-size-sm !default;
 
 @if not $prev-file {
     .files {
@@ -255,7 +253,6 @@ $file-version-meta-font-size: $font-size-sm !default;
     }
 
     .file-version-meta {
-        color: $file-version-meta-color;
-        font-size: $file-version-meta-font-size;
+        @include hh-text-style(meta);
     }
 }

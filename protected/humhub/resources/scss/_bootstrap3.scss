@@ -34,10 +34,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
 
         // A title, as a card's header: 1rem above it, with the body's padding 1.5rem between it and the content
         .panel-heading {
-            font-size: $font-size-lg;
-            font-weight: $font-weight-semibold;
-            line-height: $headings-line-height;
-            color: var(--bs-emphasis-color);
+            @include hh-text-style(title);
             background-color: var(--bs-body-bg);
             border: none;
             padding: $card-spacer-y $card-cap-padding-x $card-cap-padding-y;
@@ -132,8 +129,9 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
             border-top: 1px solid var(--bs-tertiary-bg);
         }
 
+        // Header row: Meta's size, as the column headers (`_table.scss`)
         table > thead {
-            font-size: $font-size-sm;
+            @include hh-text-style(meta, $color: false);
         }
     }
 

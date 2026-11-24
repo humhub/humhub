@@ -18,6 +18,8 @@
         gap: $spacer * .5;
         padding-left: calc(var(--bs-list-group-item-padding-x) - 3px);
         border-left: 3px solid var(--bs-body-bg) !important;
+        // Menu entries, as the section menu's
+        @include hh-text-style(control, $color: false);
 
         // The icon in a fixed box, so the labels line up
         > .icon-before-label {
@@ -32,7 +34,6 @@
 
         &.active {
             @include listGroupItemActive();
-            font-weight: $font-weight-semibold;
         }
 
         // Hover effect only on desktop

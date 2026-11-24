@@ -3041,8 +3041,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   (`$font-size-base: .875rem`).
   - rem values written against 14px are 14 % larger now. Use Bootstrap's steps instead (`$spacer * .5`, `p-2`,
     `$font-size-sm`, `.small`). px values keep working but don't follow the browser's font size.
-  - A module's own stylesheet (not compiled with the core's variables) sizes text with `var(--hh-font-size-sm)`
-    (secondary text) and `var(--hh-font-size-lg)` (titles); see "In a module or theme" in `docs/ui/typography.md`.
+  - The interface has six text styles (`docs/ui/typography.md`). The core's SCSS takes one with
+    `@include hh-text-style(<name>)`; `h5`/`.fs-5` is a title (16px) and `h4`/`.fs-4` a large title (17.5px), one step
+    below Bootstrap's sizes. A module's own stylesheet takes a style's size from `var(--hh-font-size-meta)`,
+    `var(--hh-font-size-title)` or `var(--hh-font-size-title-lg)`. Buttons, tabs, menu entries (`.nav-link`,
+    `.dropdown-item`) and form labels are weight 500; heading tags are 600 in the emphasis colour, `strong`/`b` 600.
   - A theme that set `$font-size-root` sets `$font-size-base` instead.
   - These overrides are gone, Bootstrap's defaults apply: `$grid-gutter-width` (`1.5rem`), `$btn-padding-*`,
     `$btn-font-size-lg`, `$btn-border-radius*` (6px), `$input-padding-y`, `$badge-font-weight`, `$badge-padding-*`,

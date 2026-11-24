@@ -28,11 +28,10 @@ $notification-settings-gap: $spacer !default;
         gap: $spacer * .5;
     }
 
+    // A section of the card
     .notification-settings-subtitle {
         margin: 0;
-        color: var(--bs-emphasis-color);
-        font-size: $font-size-base;
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
     }
 
     // The autosave state, right of the title
@@ -41,8 +40,7 @@ $notification-settings-gap: $spacer !default;
         align-items: center;
         gap: $spacer * .25;
         margin-left: auto;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
 
         &.is-saved {
             color: var(--hh-success-fg);
@@ -62,7 +60,8 @@ $notification-settings-gap: $spacer !default;
         margin-bottom: $spacer * .5;
     }
 
-    // "From modules": the heading between the core's and the modules' accordion
+    // "From modules": the heading between the core's and the modules' accordion. Small capitals as the top menu's
+    // labels: no text style has them
     .notification-settings-divider {
         margin: 0;
         padding: $spacer * .5 var(--bs-accordion-btn-padding-x, #{$accordion-button-padding-x});
@@ -112,8 +111,7 @@ $notification-settings-gap: $spacer !default;
         display: flex;
         align-items: center;
         gap: $spacer * .5;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .notification-settings-privacy-example {
@@ -121,8 +119,7 @@ $notification-settings-gap: $spacer !default;
         padding: $spacer * .25 $spacer * .5;
         border-radius: var(--bs-border-radius-sm);
         background: var(--bs-secondary-bg);
-        color: var(--bs-body-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .notification-settings-footer {
@@ -134,8 +131,7 @@ $notification-settings-gap: $spacer !default;
 
     .notification-settings-autosave {
         flex: 1 1 auto;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     // Phones: the badges move under the title, the description gives way

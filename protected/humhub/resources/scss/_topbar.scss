@@ -3,7 +3,7 @@
 // --------------------------------------------------
 
 // The network's name where there is no logo image, from Bootstrap's type scale (`.fs-4`): it stands alone in the bar
-$topbar-brand-font-size: $h4-font-size !default;
+$topbar-brand-font-size: $font-size-base * 1.5 !default; // 21px: the network's name, a special case of the bar
 
 @if not $prev-topbar {
     .navbar.topbar {
@@ -32,11 +32,10 @@ $topbar-brand-font-size: $h4-font-size !default;
             margin: $spacer * .5;
         }
 
+        // The menu's title
         .dropdown-header {
-            font-size: $font-size-lg;
+            @include hh-text-style(title);
             margin-bottom: $spacer * .5;
-            font-weight: $font-weight-semibold;
-            color: var(--bs-emphasis-color);
 
             .dropdown-header-actions {
                 float: right;
@@ -101,8 +100,9 @@ $topbar-brand-font-size: $h4-font-size !default;
                 padding: $spacer * .25;
                 text-align: left;
 
+                // The line below the name
                 span {
-                    font-size: $font-size-sm;
+                    @include hh-text-style(meta, $color: false);
                 }
 
                 .user-title {
@@ -270,7 +270,7 @@ $topbar-brand-font-size: $h4-font-size !default;
                 }
 
                 time {
-                    font-size: $font-size-sm;
+                    @include hh-text-style(meta);
                 }
 
                 i.accepted {
@@ -368,6 +368,7 @@ $topbar-brand-font-size: $h4-font-size !default;
                     padding: calc((var(--hh-topbar-height) - #{$font-size-lg + $spacer * .5 + $font-size-sm}) / 2) $spacer 0;
                     text-decoration: none;
                     text-shadow: none;
+                    // A special case of the top bar (docs/ui/typography.md): small capitals
                     font-weight: $font-weight-semibold;
                     font-size: $font-size-sm;
                     // A label of one line in capitals: no room for descenders below it, which would lift icon and label
@@ -469,10 +470,8 @@ $topbar-brand-font-size: $h4-font-size !default;
         }
 
         #space-menu-dropdown p.space-description {
-            color: var(--bs-body-color);
-            font-size: $font-size-sm;
+            @include hh-text-style(meta);
             margin: 0;
-            font-weight: $font-weight-normal;
         }
     }
 }

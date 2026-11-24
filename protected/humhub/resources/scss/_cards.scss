@@ -59,9 +59,10 @@
                 bottom: $spacer * .5;
             }
 
+            // The label of a filter field
             .form-search-field-info {
                 display: block;
-                font-weight: $font-weight-medium;
+                @include hh-text-style(control, $color: false);
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;

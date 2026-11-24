@@ -67,7 +67,7 @@ $toast-tones: (
         max-height: $toast-details-max-height;
         padding: 0 var(--bs-toast-padding-x) var(--bs-toast-padding-x);
         overflow: auto;
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
 
         pre {
             margin: 0;

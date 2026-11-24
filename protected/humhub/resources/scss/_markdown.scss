@@ -171,6 +171,8 @@
                 background-color: var(--bs-primary);
                 color: var(--hh-primary-contrast) !important;
                 font-size: 1em;
+                // Content's scale, not the interface's column header
+                font-weight: $font-weight-normal;
 
                 p {
                     color: var(--hh-primary-contrast) !important;

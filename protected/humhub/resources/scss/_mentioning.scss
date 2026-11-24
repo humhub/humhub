@@ -40,8 +40,7 @@
     .atwho-view ul li.hint {
         background: var(--bs-body-bg);
         border-left: 3px solid transparent;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .atwho-input.form-control {
@@ -70,8 +69,9 @@
         color: var(--hh-danger-fg);
     }
 
+    // The match is marked by its background, not by its weight
     .atwho-view strong, .atwho-view b {
-        font-weight: $font-weight-normal;
+        font-weight: inherit;
     }
 
     .atwho-view span {

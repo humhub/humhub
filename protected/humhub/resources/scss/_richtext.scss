@@ -538,9 +538,9 @@
         min-width: $modal-sm;
         z-index: 999999;
 
-        // Its title: an `h5` has a title's size already
+        // Its title (an `h5` of the editor's library)
         h5 {
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(title);
             margin-bottom: $spacer;
         }
 

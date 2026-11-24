@@ -12,9 +12,6 @@ $page-header-bg: var(--bs-body-bg) !default;
 $page-header-border-radius: $border-radius-lg !default;
 $page-header-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $page-header-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
-$page-header-title-font-size: $font-size-lg !default;
-$page-header-title-font-weight: $font-weight-semibold !default;
-$page-header-title-color: var(--bs-emphasis-color) !default;
 
 @if not $prev-page-header {
     .page-header {
@@ -24,9 +21,6 @@ $page-header-title-color: var(--bs-emphasis-color) !default;
         --hh-page-header-bg: #{$page-header-bg};
         --hh-page-header-border-radius: #{$page-header-border-radius};
         --hh-page-header-box-shadow: #{$page-header-box-shadow};
-        --hh-page-header-title-font-size: #{$page-header-title-font-size};
-        --hh-page-header-title-font-weight: #{$page-header-title-font-weight};
-        --hh-page-header-title-color: #{$page-header-title-color};
 
         display: flex;
         flex-direction: column;
@@ -65,10 +59,7 @@ $page-header-title-color: var(--bs-emphasis-color) !default;
     .page-header-title {
         flex: 1 0 0;
         margin: 0;
-        color: var(--hh-page-header-title-color);
-        font-size: var(--hh-page-header-title-font-size);
-        font-weight: var(--hh-page-header-title-font-weight);
-        line-height: $headings-line-height;
+        @include hh-text-style(title);
         overflow-wrap: anywhere;
     }
 

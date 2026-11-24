@@ -23,8 +23,6 @@ $data-table-hover-transition: box-shadow .15s ease-in-out !default;
 $data-table-details-bg: var(--bs-tertiary-bg) !default;
 // A selected row (Bootstrap's `.table-active`)
 $data-table-selected-bg: rgba(var(--bs-accent-rgb), .08) !default;
-$data-table-head-color: var(--bs-secondary-color) !default;
-$data-table-head-font-size: $font-size-sm !default;
 // Cells: Bootstrap's padding around each (1rem between columns), the side columns (checkbox, details,
 // actions) fixed, the main column twice as wide as each of the others (DataTable.vue `mainColumnStyle`).
 // The widths are plain rem or px values: DataTable.vue reads them
@@ -142,15 +140,12 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
         }
     }
 
-    // Column header: sticky below the fixed top bar
+    // Column header: sticky below the fixed top bar; its text as every table's (`_table.scss`)
     .data-table thead th {
         position: sticky;
         top: var(--hh-fixed-header-height, 0);
         z-index: 1;
         background: var(--bs-card-bg);
-        color: $data-table-head-color;
-        font-size: $data-table-head-font-size;
-        font-weight: $font-weight-semibold;
         white-space: nowrap;
     }
 
@@ -258,6 +253,7 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
         justify-content: center;
         background-color: $data-table-main-initials-bg;
         color: $data-table-main-initials-color;
+        // A picture of the record, not text: no text style
         font-size: $data-table-main-initials-font-size;
         font-weight: $font-weight-bold;
         line-height: 1;
@@ -296,8 +292,7 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
         // As wide as its text, not the cell: the link colours only under the pointer on the name
         align-self: flex-start;
         max-width: 100%;
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
         text-decoration: none;
 
         &:is(a):hover,
@@ -307,9 +302,7 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
     }
 
     .data-table-main-subtitle {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
+        @include hh-text-style(meta);
     }
 
     .data-table-chips {
@@ -342,8 +335,7 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
         }
 
         dt {
-            color: var(--bs-secondary-color);
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong);
         }
 
         dd {
@@ -385,8 +377,7 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
 
     .data-table-count {
         grid-column: 1;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .data-table-pager {
@@ -424,7 +415,7 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
             min-width: $data-table-pager-size;
             height: $data-table-pager-size;
             border-radius: var(--bs-pagination-border-radius);
-            font-weight: $font-weight-medium;
+            @include hh-text-style(control, $color: false);
         }
     }
 
@@ -466,16 +457,15 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
         }
     }
 
+    // The column's name; the note below it is a `.form-text`
     .data-table-columns-label {
         flex: 1 1 auto;
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
     }
 
     .data-table-columns-folded {
         display: block;
         margin-top: 0;
-        font-weight: $font-weight-normal;
     }
 
     // Phones: the count and the rows per page on one line, the pager centred below

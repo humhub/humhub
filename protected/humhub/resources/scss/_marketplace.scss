@@ -174,8 +174,7 @@
         margin: 0;
 
         b {
-            color: var(--bs-emphasis-color);
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong);
         }
     }
 
@@ -229,8 +228,7 @@
     }
 
     .install-dialog-name {
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
         overflow-wrap: anywhere;
     }
 
@@ -286,8 +284,7 @@
 
     .marketplace-settings-installation {
         margin: 0;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
         text-align: center;
         overflow-wrap: anywhere;
     }
@@ -298,7 +295,8 @@
         gap: $spacer * .25;
         align-self: flex-start;
         color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        // A link to another page, with its icon as a button's
+        @include hh-text-style(control, $color: false);
         text-decoration: none;
 
         // As large as a button's icon
@@ -367,14 +365,11 @@
     }
 
     .licence-list-name {
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
     }
 
     .licence-list-key {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-medium;
+        @include hh-text-style(meta);
         font-variant-numeric: tabular-nums;
     }
 
@@ -396,9 +391,9 @@
         }
     }
 
+    // The setting's name, with a hint below
     .marketplace-setting-title {
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
         cursor: pointer;
     }
 
