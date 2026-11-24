@@ -20,6 +20,10 @@ $select-menu-max-height: 384px !default;
 $select-menu-option-padding-y: 8.5px !default;
 
 $picker-chip-height: 30px !default; // a 38px field: 3px above and below
+// The chips' inset from the field's border, the same on every side
+$picker-field-padding: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5) !default;
+// What a text placed first still needs to start where the text of every `.form-control` starts
+$picker-field-text-indent: calc(#{$input-padding-x} - #{$picker-field-padding}) !default;
 // The `:size` PickerInput gives a chip picture
 $picker-chip-image-size: 22px !default;
 $picker-chip-bg: var(--bs-accent) !default;
@@ -189,16 +193,15 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
     // Searchable picker (FilterPicker, PickerInput): a `.select-menu` whose button is a `.form-control` field
     // holding the chips and the combobox input; listbox, chevron, clear X and spinner are the select's.
-    // Vertical padding shrinks to the chip height, so the field keeps the height of a `.form-control`.
+    // The padding shrinks to the chip height, so the field keeps the height of a `.form-control`;
+    // the chips sit as far from the start as from the top and bottom.
     .picker-field {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: $spacer * .25;
         min-height: $select-menu-field-height;
-        padding-top: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5);
-        padding-bottom: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5);
-        padding-right: $select-menu-icon-space;
+        padding: $picker-field-padding $select-menu-icon-space $picker-field-padding $picker-field-padding;
         cursor: text;
 
         &:focus-within {
@@ -239,6 +242,11 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         &:disabled {
             cursor: default;
         }
+    }
+
+    // Without a chip before it, the text (and a single value's picture) starts where the text of a `.form-control` does
+    .picker-field > :is(.picker-input, .picker-value-image):first-child {
+        margin-left: $picker-field-text-indent;
     }
 
     // In a table on a narrow screen the input gives up its default width of 20 characters, so that the
