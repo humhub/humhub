@@ -189,6 +189,8 @@ Own additions:
 - A component sets the size of its title (`.card-title`, `.modal-title`, the page header's title,
   see [Typography](typography.md)).
 - Rendered rich text has a heading scale of its own (`_richtext.scss`).
+- The titles of the side column's widgets are `1rem` (`$sidebar-title-font-size`, `_sidebar.scss`): between
+  text and a title, where Bootstrap has no step.
 - `--hh-topbar-height` (`3.5rem`, as Bootstrap's navbar) is the height of one top bar; `--hh-fixed-header-height` is
   derived from it.
 

@@ -19,6 +19,10 @@ them are twice as large. Never write a `font-size` or `line-height` in px; Style
 
 In markup the same roles are `.small` and `.fs-5`.
 
+The side column is secondary to the page. Its lists of short notes (the latest activities) are
+secondary text, and the titles of its widgets are `$sidebar-title-font-size` (`1rem`, 16px), between
+text and a title.
+
 ### Larger sizes
 
 A few places need more than a title: the title of a piece of content (a post with a title, a wiki
