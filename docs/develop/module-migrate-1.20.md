@@ -3041,6 +3041,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   (`$font-size-base: .875rem`).
   - rem values written against 14px are 14 % larger now. Use Bootstrap's steps instead (`$spacer * .5`, `p-2`,
     `$font-size-sm`, `.small`). px values keep working but don't follow the browser's font size.
+  - A module's own stylesheet (not compiled with the core's variables) sizes text with `var(--hh-font-size-sm)`
+    (secondary text) and `var(--hh-font-size-lg)` (titles); see "In a module or theme" in `docs/ui/typography.md`.
   - A theme that set `$font-size-root` sets `$font-size-base` instead.
   - These overrides are gone, Bootstrap's defaults apply: `$grid-gutter-width` (`1.5rem`), `$btn-padding-*`,
     `$btn-font-size-lg`, `$btn-border-radius*` (6px), `$input-padding-y`, `$badge-font-weight`, `$badge-padding-*`,

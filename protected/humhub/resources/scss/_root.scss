@@ -99,6 +99,10 @@
 
     // Fonts
     --hh-mail-font-family: #{$mail-font-family};
+    // The text sizes of docs/ui/typography.md for CSS that is not compiled with these variables (a module's own
+    // stylesheet); the text itself is Bootstrap's `--bs-body-font-size`
+    --hh-font-size-sm: #{$font-size-sm};
+    --hh-font-size-lg: #{$font-size-lg};
 
     // Dimensions
     // The height of each of the two top bars (`_topbar.scss`), a minimum; in rem, so it follows the browser's font

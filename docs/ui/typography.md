@@ -74,5 +74,25 @@ stream entry h1 1.45em and h2 1.3em).
 
 - A theme changes the text size with `$font-size-base`. Don't set `$font-size-root`: it fixes the
   root size in px and switches off the browser's setting.
-- Use Bootstrap's variables and utilities (`$font-size-sm`, `.small`, `.fs-5`, `.fw-semibold`).
+- A theme's SCSS is compiled with the core's, so it uses the Sass variables (`$font-size-sm`,
+  `$spacer`, `$border-radius`, `$font-weight-semibold`).
 - Icons beside text are sized in `em`, so that they grow with it.
+
+A module's own stylesheet is compiled on its own, without the core's variables. If it imports
+Bootstrap's variables, `$font-size-sm` and `$font-size-lg` there are Bootstrap's (14px and 20px), not
+these. So a module:
+
+- Puts the look in the markup where it can: Bootstrap's utilities (`.small`, `.fs-5`, `.fs-6`,
+  `.fw-semibold`, `.p-2`, `.gap-2`) and the core's component classes (`.card-title`, `.panel-title`).
+- Sizes text in its CSS by the role, never in px and not in `em` (which depends on where the rule
+  lands):
+
+  | Role | CSS variable |
+  |---|---|
+  | Text | `var(--bs-body-font-size)` (inherited, so mostly not written) |
+  | Secondary text | `var(--hh-font-size-sm)` |
+  | Title | `var(--hh-font-size-lg)` |
+
+- Writes spacing in rem on Bootstrap's steps (`.25rem`, `.5rem`, `1rem`, `1.5rem`, `3rem`, see
+  [Styling with Bootstrap 5](bootstrap.md#spacing)), radii as `var(--bs-border-radius-sm)`,
+  `var(--bs-border-radius)`, `var(--bs-border-radius-lg)`, weights as 400, 500 or 600.
