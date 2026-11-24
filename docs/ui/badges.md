@@ -38,6 +38,9 @@ meaningful across 100 pages.
   gets the neutral tone, not danger.
 - No other colours. A module that needs a new meaning maps it to one of these five.
 - Chips are real text. The uppercase comes from CSS, so screen readers read normal case.
+- One component for every chip: `.badge` with a tone. An icon beside the text is centred on it; an
+  icon alone is `.badge.badge-icon-only`, a circle as high as a chip with text (the Marketplace's
+  featured star). Modules never size or shape a badge themselves.
 
 ### A chip after a title
 

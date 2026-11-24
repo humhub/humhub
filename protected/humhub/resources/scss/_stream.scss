@@ -69,10 +69,6 @@ $post-title-font-size: $h4-font-size !default;
         z-index: 9999;
         margin-bottom: $spacer;
         margin-top: $spacer;
-
-        .badge {
-            border-radius: $border-radius-lg;
-        }
     }
 
     #wallStream {

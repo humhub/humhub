@@ -1167,7 +1167,7 @@
           $props.module.featured ? (vue$1.openBlock(), vue$1.createElementBlock("button", {
             key: 0,
             type: "button",
-            class: "badge badge-danger rounded-pill module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star",
+            class: "badge badge-danger badge-icon-only module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star",
             "aria-label": $options.labels.featuredFilter,
             title: $options.labels.featured,
             onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("filter-type", "featured"))

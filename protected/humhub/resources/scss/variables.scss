@@ -239,6 +239,10 @@ $container-max-widths: (
 
 // As secondary text (12.25px beside 14px text); Bootstrap's .75em is 10.5px, below the smallest text
 $badge-font-size: .875em !default;
+// A chip is semibold and fully rounded (docs/ui/badges.md): Bootstrap's $font-weight-semibold and $border-radius-pill
+// (neither defined yet here)
+$badge-font-weight: 600 !default;
+$badge-border-radius: 50rem !default;
 // A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`. Its text is the secondary
 // colour as text, which reads on the badge's fill (`--bs-secondary-bg`, the darkest surface)
 $badge-color: var(--hh-secondary-fg) !default;

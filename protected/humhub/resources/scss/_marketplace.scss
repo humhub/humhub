@@ -78,24 +78,6 @@
         min-width: 0;
     }
 
-    .module-card-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: $spacer * .25;
-        white-space: nowrap;
-    }
-
-    // The round featured star
-    .module-card-badge-star {
-        justify-content: center;
-        aspect-ratio: 1;
-    }
-
-    // A version number, not a word
-    .module-card-badge-update {
-        text-transform: none;
-    }
-
     .module-card-message {
         margin: 0;
         overflow-wrap: anywhere;
