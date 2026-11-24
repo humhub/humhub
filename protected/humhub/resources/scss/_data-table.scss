@@ -29,10 +29,11 @@ $data-table-head-font-size: $font-size-sm !default;
 $data-table-cell-padding-y: $spacer * .5 !default;
 $data-table-cell-padding-x: $spacer * .5 !default;
 $data-table-side-column-width: 2.5rem !default;
-$data-table-actions-column-width: 3rem !default;
 // The row menu's ⋮: a square ghost button, grey while its menu is open
 $data-table-actions-toggle-size: 2.375rem !default;
 $data-table-actions-toggle-icon-size: 1.375rem !default;
+// The ⋮ and the cell's padding, so the button keeps the same space to the row's edge as the cells
+$data-table-actions-column-width: $data-table-actions-toggle-size + $data-table-cell-padding-x * 2 !default;
 // A column of short values (`ColumnDefinition::$narrow`), e.g. a version
 $data-table-narrow-column-width: 8rem !default;
 $data-table-row-border-radius: var(--bs-border-radius) !default;
