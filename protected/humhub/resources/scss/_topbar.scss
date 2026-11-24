@@ -163,11 +163,15 @@ $topbar-brand-font-size: $h4-font-size !default;
                 text-align: left;
             }
 
-            // The count on the button's corner
+            // The count on the button's corner, small enough to leave the icon's middle free: a click on the icon
+            // must reach the button (the acceptance tests click it there)
             .btn-group > .badge {
+                --bs-badge-padding-x: #{$spacer * .25};
+                --bs-badge-padding-y: #{$spacer * .25};
                 position: absolute;
-                top: -$spacer * .25;
-                right: -$spacer * .25;
+                top: -$spacer * .5;
+                right: -$spacer * .5;
+                font-size: $font-size-sm;
             }
 
             .dropdown-toggle::after {
