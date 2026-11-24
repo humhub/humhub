@@ -43,7 +43,8 @@
         </div>
 
         <div class="flex-grow-1">
-            <h4 class="comment-heading" :id="headingId">
+            <!-- Below the entry's h2 -->
+            <h3 class="h4 comment-heading" :id="headingId">
                 <a :href="comment.author.url" :data-contentcontainer-id="comment.author.contentContainerId" :data-guid="comment.author.guid">{{ comment.author.displayName }}</a>
                 <small>
                     &middot;
@@ -52,7 +53,7 @@
                         &middot; <i class="tt ti ti-clock text-body-secondary" :title="updatedAtTitle" aria-hidden="true"></i>
                     </template>
                 </small>
-            </h4>
+            </h3>
 
             <!-- class comment_edit_content required since v1.2 -->
             <div class="content comment_edit_content" :id="'comment_editarea_' + comment.id">

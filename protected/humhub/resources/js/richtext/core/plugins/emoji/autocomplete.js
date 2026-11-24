@@ -8,7 +8,7 @@ import {Plugin, PluginKey} from 'prosemirror-state';
 import {encode} from '../../humhub-bridge';
 import {applySkinTone, getDatabase} from './data';
 import {translate} from '../../menu/menu-helper';
-import {setCurrentSuggestion, suggestionListId} from '../../util/suggestions';
+import {announceSuggestions, closeSuggestions, setCurrentSuggestion, suggestionListId} from '../../util/suggestions';
 
 const MAX_RESULTS = 8;
 
@@ -183,6 +183,7 @@ export class Autocomplete {
         });
         this.$container.empty().append($list);
         setCurrentSuggestion(this.view, this.listId, this.listId + '-' + this.index);
+        announceSuggestions(this.view, this.items.length);
 
         const coords = this.view.coordsAtPos(this.query.from);
         this.$container.css({
@@ -249,7 +250,7 @@ export class Autocomplete {
             this.$container.remove();
             this.$container = null;
         }
-        setCurrentSuggestion(this.view, null, null);
+        closeSuggestions(this.view);
     }
 
     destroy() {

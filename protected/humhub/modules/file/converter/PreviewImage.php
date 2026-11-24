@@ -28,6 +28,13 @@ use yii\imagine\Image;
 class PreviewImage extends BaseConverter
 {
     /**
+     * The variant of the preview, see [[getId()]].
+     *
+     * @since 1.20
+     */
+    public const VARIANT = 'preview-image';
+
+    /**
      * @var ImageInterface
      */
     private $_image;
@@ -58,7 +65,19 @@ class PreviewImage extends BaseConverter
      */
     public function getId()
     {
-        return 'preview-image';
+        return self::VARIANT;
+    }
+
+    /**
+     * The URL of the preview without creating it: the download action creates it on its first
+     * request. For a list of many images, whose previews [[getUrl()]] would all create while the
+     * list is built.
+     *
+     * @since 1.20
+     */
+    public function getLazyUrl(): string
+    {
+        return $this->file === null ? '' : $this->file->getUrl(self::VARIANT);
     }
 
     /**

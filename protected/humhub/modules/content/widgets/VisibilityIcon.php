@@ -50,7 +50,7 @@ class VisibilityIcon extends Icon
      */
     public static function getByModel(ContentActiveRecord $model)
     {
-        return static::get(static::getVisibilityIcon($model))->tooltip(static::getVisibilityTitle($model));
+        return static::get(static::getVisibilityIcon($model))->tooltip(static::getVisibilityTitle($model))->focusable();
     }
 
     /**

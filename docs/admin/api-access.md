@@ -31,10 +31,10 @@ The *Settings* tab:
 | *Allow the HumHub app to sign in* | on | The app and the white-label apps may sign in. |
 | *Additional app IDs* | none | See [White-label apps](#white-label-apps). System administrators only. |
 | *Allow clients created by administrators* | off | Clients may be authorized and their grants work. |
-| *Allow personal access tokens* | off | Tokens work, and users with the group permission may create them. |
-| *Scopes available to personal access tokens* | all read scopes | The upper bound of what a token can do. Empty means no access. *Full access* can only be added or removed by a system administrator. |
+| *Allow personal access tokens* | on | Tokens work: the passwords modules create for devices (see [Devices](#devices)), and the tokens of users with the group permission. |
+| *Scopes available to personal access tokens* | all read scopes | The upper bound of what a token a user creates can do. Empty means no access. *Full access* can only be added or removed by a system administrator. A device password has the scopes of its module. |
 | *Maximum lifetime of personal access tokens (days)* | 365 | Users choose 7, 30 or 90 days, a year or *never*; longer choices are hidden. 0 means unlimited and offers *never*. |
-| *Maximum personal access tokens per user* | 3 | Tokens that have not expired; at the limit a user has to revoke one first. 0 means unlimited. |
+| *Maximum personal access tokens per user* | 10 | Tokens that have not expired; at the limit a user has to revoke one first. 0 means unlimited. |
 | *Refresh token lifetime (days)* | 90 | An app or client that does not refresh its token for this long has to sign in again. Every refresh renews it, so an app in regular use stays signed in. |
 | *Maximum lifetime of a grant (days)* | 0 | After this, an app or a connected client has to sign in again, in use or not. Counted from the sign-in; a change applies to later sign-ins. 0 means unlimited. |
 | *Revoke access when the password changes* | off | A password change ends all grants of the user, except the app session the change was made in. |
@@ -50,9 +50,10 @@ create tokens or client secrets while impersonating a user.
 
 ### The group permission
 
-Users need the group permission *Create personal access tokens* (*Administration → Users →
-Groups → Permissions*), which is not granted to any group by default. While tokens are allowed
-but no group has the permission, the settings page shows a warning: nobody can create one.
+To create tokens of their own, users need the group permission *Create personal access
+tokens* (*Administration → Users → Groups → Permissions*), which is not granted to any group by
+default. While no group has it, the settings page says so: users then only connect the devices
+modules offer.
 
 Taking the permission away only stops creating new tokens; existing tokens keep working. To
 stop them, switch *Allow personal access tokens* off or revoke them under *Grants*.
@@ -183,6 +184,9 @@ against the policy of the scope it needs, in a short and a long window:
 | `session.*:read` | the web interface and guests, reading | 600 | 10000 |
 | `session.*:write` | the web interface and guests, writing | 120 | 2000 |
 | `session.full` | the web interface and guests, other endpoints | 600 | 10000 |
+| `dav.*:read` | [WebDAV](#webdav), reading | 3000 | 50000 |
+| `dav.*:write` | [WebDAV](#webdav), writing | 1200 | 20000 |
+| `dav.full` | [WebDAV](#webdav), the root | 3000 | 50000 |
 
 Reading and writing are counted separately. A module's scopes ending in `:read` or `:write`
 (`calendar:read`, …) fall under the `*:read` and `*:write` policies. A single scope can get a policy of its own, e.g.
@@ -249,6 +253,44 @@ In the web interface, users see this message once at the bottom of the window; n
 retried automatically. Every limited response also carries `RateLimit-Policy` and `RateLimit`
 headers with the remaining requests. The first refusal per grant or user and window is logged
 as a warning (category `rateLimit`).
+
+## Devices
+
+Modules let users connect devices: *Files* as a network drive (WebDAV), *Calendar* to calendar
+apps (CalDAV). The user opens the dialog where the content is, e.g. *Connect as network drive*
+in *Files*. It shows the address and the username and creates a password for the device: a
+personal access token with the scopes of the module, named after the device (the name can be
+changed). The user copies it once; it is listed under *Account → Security & Privacy → Devices &
+Access*, where revoking it disconnects that device. The account password does not work there,
+so users without one (SSO, LDAP) can connect too.
+
+Both need pretty URLs (`urlManager.enablePrettyUrl`, see the installation guide); without them the switches are disabled. Then it needs only *Allow personal access tokens* (on by default) and the module's own switch (on by
+default). Neither the group permission *Create personal access tokens* nor the *Scopes
+available to personal access tokens* apply: the module decides what its device passwords do,
+and a device sees no more than its user does in the web interface. The passwords count towards
+the *Maximum personal access tokens per user* and live as long as the *Maximum lifetime of
+personal access tokens* allows.
+
+### WebDAV
+
+Clients connect to `https://<your host>/dav/` or to a module's folder in it, e.g.
+`https://<your host>/dav/files/`, with their username (or e-mail address) and the password of
+the dialog.
+
+What a user sees and may change over WebDAV is exactly what they see and may change in the web
+interface. Uploads follow the same rules: allowed file extensions, maximum file size (`PUT`
+bodies are also bounded by PHP's `upload_max_filesize`), and file names without the characters
+the platform replaces. A name with such a character is refused rather than changed.
+
+WebDAV has its own [rate limits](#rate-limiting) (`dav.*`). They are high, because clients send
+many requests (a copy of a folder with 300 files sends well over a thousand), and clients do
+not retry when they are refused.
+
+The web server must pass every HTTP method to HumHub, also `PROPFIND`, `MKCOL`, `MOVE`, `COPY`,
+`LOCK` and `UNLOCK`, as well as the `Authorization` header (Apache with PHP-FPM, as for the
+API). Large uploads may need a higher `client_max_body_size` (nginx) or `LimitRequestBody`
+(Apache), and a longer timeout. Windows Explorer signs in with Basic authentication over HTTPS
+only.
 
 ## Troubleshooting
 

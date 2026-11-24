@@ -8,13 +8,15 @@ use humhub\widgets\bootstrap\Button;
  * A credential shown once, with copy buttons.
  *
  * @var View $this
- * @var string $hint
+ * @var string|null $hint
  * @var array<array{id: string, label: string, value: string, copy?: bool}> $fields
  * @var string $copied status message after copying
- * @var array|string $doneUrl
+ * @var array|string|null $doneUrl null for none, e.g. in a dialog that has its own
  */
 ?>
-<p class="text-body-secondary"><?= Html::encode($hint) ?></p>
+<?php if (!empty($hint)): ?>
+    <p class="text-body-secondary"><?= Html::encode($hint) ?></p>
+<?php endif ?>
 
 <?php foreach ($fields as $field): ?>
     <div class="mb-3">
@@ -33,7 +35,9 @@ use humhub\widgets\bootstrap\Button;
     </div>
 <?php endforeach ?>
 
-<?= Button::primary(Yii::t('OauthModule.base', 'Done'))->link($doneUrl) ?>
+<?php if (!empty($doneUrl)): ?>
+    <?= Button::primary(Yii::t('OauthModule.base', 'Done'))->link($doneUrl) ?>
+<?php endif ?>
 
 <script <?= Html::nonce() ?>>
     $(function () {

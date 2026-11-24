@@ -327,8 +327,7 @@ class HForm extends \yii\base\Component
                                 'changeMonth' => true,
                                 'disabled' => (isset($options['readOnly']) && $options['readOnly']),
                             ],
-                            'options' => [
-                                'class' => 'form-control'],
+                            'options' => array_merge(['class' => 'form-control'], $definition['htmlOptions'] ?? []),
                         ]);
                         break;
                     case 'markdown':

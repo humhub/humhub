@@ -183,8 +183,9 @@
                 .hh-list {
                     max-height: 400px;
                     overflow: auto;
+                    overscroll-behavior: contain;
 
-                    > div.d-flex, > a.d-flex {
+                    > div.d-flex, > a.d-flex, > ul > li > a.d-flex {
                         position: relative;
 
                         i.approval {
@@ -241,7 +242,7 @@
         }
 
         .hh-list {
-            > div, > a {
+            > div, > a, > ul > li > a {
                 padding: 8px 16px;
                 border-bottom: none;
                 color: var(--bs-emphasis-color);

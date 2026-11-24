@@ -22,6 +22,8 @@ use yii\db\ActiveQuery;
  * @property string $guid
  * @property int $user_id
  * @property string $type
+ * @property string|null $issuer of a personal access token: the `DeviceConnection` it was issued for, whose
+ * scopes it has regardless of the scopes for tokens; null for one the user put together
  * @property int|null $client_id
  * @property string $name
  * @property string $scopes JSON list

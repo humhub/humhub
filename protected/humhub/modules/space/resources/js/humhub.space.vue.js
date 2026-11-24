@@ -502,11 +502,11 @@
   const _hoisted_6$3 = ["innerHTML"];
   const _hoisted_7$3 = ["id", "innerHTML"];
   const _hoisted_8$3 = ["aria-label"];
-  const _hoisted_9$2 = {
+  const _hoisted_9$3 = {
     key: 0,
     class: "text-center"
   };
-  const _hoisted_10$2 = ["disabled"];
+  const _hoisted_10$3 = ["disabled"];
   function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_TextareaField = vue$1.resolveComponent("TextareaField");
     const _component_HumHubForm = vue$1.resolveComponent("HumHubForm");
@@ -691,7 +691,7 @@
                   class: "btn btn-primary",
                   disabled: $data.busy,
                   onClick: _cache[9] || (_cache[9] = (...args) => $options.sendRequest && $options.sendRequest(...args))
-                }, vue$1.toDisplayString($options.sendLabel), 9, _hoisted_10$2)
+                }, vue$1.toDisplayString($options.sendLabel), 9, _hoisted_10$3)
               ],
               64
               /* STABLE_FRAGMENT */
@@ -700,7 +700,7 @@
           default: vue$1.withCtx(() => [
             $data.requestSent ? (vue$1.openBlock(), vue$1.createElementBlock(
               "div",
-              _hoisted_9$2,
+              _hoisted_9$3,
               vue$1.toDisplayString($options.requestSentLabel),
               1
               /* TEXT */
@@ -793,10 +793,18 @@
   const _hoisted_3$3 = { class: "flex-grow-1" };
   const _hoisted_4$2 = { class: "space-name" };
   const _hoisted_5$2 = ["title"];
-  const _hoisted_6$2 = ["data-message-count", "title"];
-  const _hoisted_7$2 = { class: "space-description" };
+  const _hoisted_6$2 = {
+    key: 1,
+    class: "visually-hidden"
+  };
+  const _hoisted_7$2 = ["data-message-count", "title"];
   const _hoisted_8$2 = {
-    key: 2,
+    key: 3,
+    class: "visually-hidden"
+  };
+  const _hoisted_9$2 = { class: "space-description" };
+  const _hoisted_10$2 = {
+    key: 4,
     class: "space-tags d-none"
   };
   function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
@@ -827,18 +835,34 @@
           1
           /* TEXT */
         ),
+        vue$1.createCommentVNode(" The star, the clock and the bare count say something only by their tooltip: a screen reader\n                 reads the words instead, as part of the entry's name (WCAG 1.1.1, 1.3.1) "),
         $options.badge ? (vue$1.openBlock(), vue$1.createElementBlock("i", {
           key: 0,
           class: vue$1.normalizeClass(["fa badge-space float-end type tt", $options.badge.icon]),
           title: $options.badge.title,
           "aria-hidden": "true"
         }, null, 10, _hoisted_5$2)) : vue$1.createCommentVNode("v-if", true),
+        $options.badge ? (vue$1.openBlock(), vue$1.createElementBlock(
+          "span",
+          _hoisted_6$2,
+          vue$1.toDisplayString($options.badge.title),
+          1
+          /* TEXT */
+        )) : vue$1.createCommentVNode("v-if", true),
         $props.newItems > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
-          key: 1,
+          key: 2,
           "data-message-count": $props.newItems,
           class: "badge badge-space messageCount float-end tt",
-          title: $options.newItemsTitle
-        }, vue$1.toDisplayString($props.newItems), 9, _hoisted_6$2)) : vue$1.createCommentVNode("v-if", true),
+          title: $options.newItemsTitle,
+          "aria-hidden": "true"
+        }, vue$1.toDisplayString($props.newItems), 9, _hoisted_7$2)) : vue$1.createCommentVNode("v-if", true),
+        $props.newItems > 0 ? (vue$1.openBlock(), vue$1.createElementBlock(
+          "span",
+          _hoisted_8$2,
+          vue$1.toDisplayString($options.newItemsTitle),
+          1
+          /* TEXT */
+        )) : vue$1.createCommentVNode("v-if", true),
         _cache[0] || (_cache[0] = vue$1.createElementVNode(
           "br",
           null,
@@ -848,12 +872,12 @@
         )),
         vue$1.createElementVNode(
           "p",
-          _hoisted_7$2,
+          _hoisted_9$2,
           vue$1.toDisplayString($options.shortDescription),
           1
           /* TEXT */
         ),
-        $props.space.tags && $props.space.tags.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_8$2, [
+        $props.space.tags && $props.space.tags.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_10$2, [
           (vue$1.openBlock(true), vue$1.createElementBlock(
             vue$1.Fragment,
             null,
@@ -896,6 +920,8 @@
       createSpaceUrl: { type: String, default: "" },
       // Where the directory link points, empty when the caller may not access it.
       directoryUrl: { type: String, default: "" },
+      // The name of the directory link, the directory's own title.
+      directoryLabel: { type: String, default: "" },
       // Rendered icons - the icon provider is pluggable, so a client cannot build them.
       directoryIconHtml: { type: String, default: "" },
       resetIconHtml: { type: String, default: "" }
@@ -1141,13 +1167,13 @@
     }
   };
   const _hoisted_1$5 = { ref: "root" };
-  const _hoisted_2$3 = ["placeholder", "title"];
+  const _hoisted_2$3 = ["placeholder", "title", "aria-label"];
   const _hoisted_3$2 = {
     key: 0,
     id: "space-directory-link",
     class: "input-group-text"
   };
-  const _hoisted_4$1 = ["href", "innerHTML"];
+  const _hoisted_4$1 = ["href", "title", "aria-label", "innerHTML"];
   const _hoisted_5$1 = ["innerHTML"];
   const _hoisted_6$1 = {
     id: "space-menu-spaces",
@@ -1210,6 +1236,7 @@
                   autocomplete: "off",
                   placeholder: $options.searchLabel,
                   title: $options.searchTitle,
+                  "aria-label": $options.searchTitle,
                   onKeydown: [
                     _cache[1] || (_cache[1] = vue$1.withKeys(vue$1.withModifiers(($event) => $options.move(1), ["prevent"]), ["down"])),
                     _cache[2] || (_cache[2] = vue$1.withKeys(vue$1.withModifiers(($event) => $options.move(-1), ["prevent"]), ["up"])),
@@ -1223,6 +1250,8 @@
                   vue$1.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock "),
                   vue$1.createElementVNode("a", {
                     href: $props.directoryUrl,
+                    title: $props.directoryLabel,
+                    "aria-label": $props.directoryLabel,
                     innerHTML: $props.directoryIconHtml
                   }, null, 8, _hoisted_4$1)
                 ])) : vue$1.createCommentVNode("v-if", true),

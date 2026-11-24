@@ -59,12 +59,24 @@
                 object-position: -10000px 0;
             }
 
+            // The banner and the name share one grid cell: the banner grows with a name that needs more lines than it
+            // has room for, instead of cutting it off (WCAG 1.4.10, 1.4.12)
+            .profile-banner-image-container {
+                display: grid;
+
+                > .img-profile-header-background,
+                > .img-profile-data {
+                    grid-area: 1 / 1;
+                }
+
+                > .img-profile-header-background {
+                    height: 100%;
+                }
+            }
+
             .img-profile-data {
-                position: absolute;
-                height: 100px;
-                width: 100%;
-                bottom: 0;
-                left: 0;
+                align-self: end;
+                min-height: 100px;
                 padding-left: 180px;
                 padding-top: 30px;
                 border-bottom-right-radius: 3px;
@@ -72,11 +84,11 @@
                 color: var(--bs-white);
                 background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
-                h1 {
+                .h1 {
                     margin-bottom: 7px;
                     max-width: 600px;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
+                    // The whole name, wrapped: the header has no other place for it
+                    overflow-wrap: anywhere;
 
                     a {
                         font-size: 30px;
@@ -85,19 +97,19 @@
                     }
                 }
 
-                h2 {
+                .h2 {
                     font-size: 16px;
                     font-weight: 400;
                     margin-top: 0;
                 }
 
-                h1.space {
+                .h1.space {
                     a {
                         font-weight: 700;
                     }
                 }
 
-                h2.space {
+                .h2.space {
                     font-size: 13px;
                     font-weight: 300;
                     max-width: 600px;
@@ -135,10 +147,15 @@
             padding-left: 100px;
         }
 
-        .panel-profile .panel-profile-header .img-profile-data h1 {
+        .panel-profile .panel-profile-header .img-profile-data .h1 {
             font-size: 20px;
             line-height: 20px;
             margin-bottom: 2px;
+
+            // The name is the link: the smaller size is its own, so a name fits the narrow header
+            a {
+                font-size: inherit;
+            }
         }
     }
 

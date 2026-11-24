@@ -71,6 +71,8 @@ export class MenuItem {
         this.options = options || {};
         this.sortOrder = this.options.sortOrder;
         this.options.htmlNode = 'button';
+        // A state of its own (a mark, a block type), told apart before menu wrappers give every item an `active`
+        this.hasState = typeof this.options.active === 'function';
     }
 
     // :: (EditorView) → {dom: dom.Node, update: (EditorState) → bool}
@@ -152,7 +154,11 @@ export class MenuItem {
         if (this.options.active) {
             this.active = (this.options.active(state) || forceActive) || false;
             setClass(this.dom, buildMenuClass('active'), this.active);
-            setAttribute(this.dom, 'aria-pressed', 'true', this.active);
+            if (this.hasState) {
+                // A button of the toolbar is pressed or not, an entry of a menu (the block types) checked or not
+                const stateAttribute = this.dom.getAttribute('role') === 'menuitemradio' ? 'aria-checked' : 'aria-pressed';
+                this.dom.setAttribute(stateAttribute, this.active ? 'true' : 'false');
+            }
         }
     }
 

@@ -59,6 +59,18 @@ class KeyboardCest
             'the stop after the skip link is inside the sidebar, was: ' . $I->grabActiveElement());
     }
 
+    public function testHiddenSkipLinksHaveNoHref(AcceptanceTester $I)
+    {
+        $I->wantToTest('that a skip link hidden for lack of its target has no href, which checkers would report as broken');
+        $this->openSpaceStream($I);
+
+        // The space page has a content column, so the link to the main area is hidden
+        Assert::assertTrue((bool)$I->executeJS('var link = document.querySelector(\'.skip-link[data-skip-target="#main-content"]\');'
+            . ' return !!link && !link.hasAttribute("href");'), 'the hidden skip link to the main area has no href');
+        Assert::assertTrue((bool)$I->executeJS('return document.querySelector(\'.skip-link[data-skip-target="#layout-content-column"]\')'
+            . '.getAttribute("href") === "#layout-content-column";'), 'the shown skip link to the content column keeps its href');
+    }
+
     public function testFeedKeysMoveBetweenStreamEntriesAndLeaveTheStream(AcceptanceTester $I)
     {
         $I->wantToTest('that PageDown moves to the next stream entry, PageUp back, and Ctrl+End leaves the stream');

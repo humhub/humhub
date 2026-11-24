@@ -50,6 +50,7 @@ class CoreJsConfig extends Widget
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
+                'user.session' => $this->getSessionConfig(),
                 'live' => [
                     'client' => Yii::$app->live->driver->getJsConfig(),
                     'isActive' => Yii::$app->getModule('live')->isActive && !Yii::$app->user->isGuest,
@@ -234,6 +235,34 @@ class CoreJsConfig extends Widget
                 ],
             ],
         );
+    }
+
+    /**
+     * The time limit of the session, for the warning before it ends (`humhub.user.session.js`, WCAG 2.2.1). None
+     * for a remembered login: its cookie signs the user in again.
+     *
+     * @since 1.20
+     */
+    private function getSessionConfig(): array
+    {
+        $user = Yii::$app->user;
+        if ($user->isGuest || !$user->enableSession || !$user->authTimeout
+            || ($user->enableAutoLogin && Yii::$app->request->cookies->has($user->identityCookie['name'] ?? '_identity'))) {
+            return ['timeout' => 0];
+        }
+
+        return [
+            'timeout' => (int)$user->authTimeout,
+            'keepAliveUrl' => Url::to(['/user/session/keep-alive']),
+            'text' => [
+                'warningTitle' => Yii::t('UserModule.auth', 'Are you still there?'),
+                'warning' => Yii::t('UserModule.auth', 'Nothing has happened for a while. For your security, you will be signed out in {time} minutes.'),
+                'stay' => Yii::t('UserModule.auth', 'Stay signed in'),
+                'endedTitle' => Yii::t('UserModule.auth', 'You have been signed out'),
+                'ended' => Yii::t('UserModule.auth', 'Nothing has happened for a while, so you have been signed out for your security.'),
+                'signIn' => Yii::t('UserModule.auth', 'Sign in again'),
+            ],
+        ];
     }
 
     /**

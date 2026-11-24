@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // `ui.status` is legacy JS, but it is now the façade in front of the status island
 // (StatusBar.vue) that 18 external modules and View::endBody() call into - so its
@@ -136,5 +136,64 @@ describe('ui.status façade', () => {
         // A success message never carries a trace block, matching the legacy switch.
         expect(sent[3][2]).toBeUndefined();
         expect(sent[0][2]).toBe('trace');
+    });
+});
+
+describe('ui.status announce()', () => {
+    const region = () => document.getElementById('status-announcer');
+
+    beforeEach(() => vi.useFakeTimers());
+    afterEach(() => {
+        vi.clearAllTimers();
+        vi.useRealTimers();
+    });
+
+    it('has its live region on the page before the first announcement', () => {
+        expect(region()).not.toBeNull();
+        expect(region().getAttribute('role')).toBe('status');
+        expect(region().getAttribute('aria-atomic')).toBe('true');
+        expect(region().className).toBe('visually-hidden');
+        expect(region().textContent).toBe('');
+    });
+
+    it('says the message without a toast', () => {
+        status.announce('Your comment has been added.');
+        vi.advanceTimersByTime(100);
+
+        expect(region().textContent).toBe('Your comment has been added.');
+        expect(sent).toEqual([]);
+    });
+
+    it('says the same message again', () => {
+        status.announce('You like this.');
+        vi.advanceTimersByTime(100);
+
+        status.announce('You like this.');
+        // Emptied first, so that setting the same text is a change
+        expect(region().textContent).toBe('');
+        vi.advanceTimersByTime(100);
+        expect(region().textContent).toBe('You like this.');
+    });
+
+    it('clears the message after a while, so it is not found at the end of the page', () => {
+        status.announce('The content is public now.');
+        vi.advanceTimersByTime(100 + 10000);
+
+        expect(region().textContent).toBe('');
+    });
+
+    it('puts the message in as text', () => {
+        status.announce('<img src=x onerror=alert(1)> &amp; more');
+        vi.advanceTimersByTime(100);
+
+        expect(region().textContent).toBe('<img src=x onerror=alert(1)> & more');
+        expect(region().children.length).toBe(0);
+    });
+
+    it('is reached from Vue through the bridge', () => {
+        vueModule.announce('From an island');
+        vi.advanceTimersByTime(100);
+
+        expect(region().textContent).toBe('From an island');
     });
 });

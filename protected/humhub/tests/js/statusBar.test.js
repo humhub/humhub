@@ -10,14 +10,14 @@ await import('../../resources/js/humhub/humhub.vue.js');
 const vueModule = globalThis.humhub.modules.vue;
 
 // Mirrors the constants in StatusBar.vue - the duration of the CSS transition in
-// Bootstrap's `.fade` the toast enters and exits with, and the legacy AUTOCLOSE_* values.
+// Bootstrap's `.fade` the toast enters and exits with, and the AUTOCLOSE values of the levels.
 const TRANSITION = 150;
-const AUTOCLOSE = { info: 6000, success: 2000, warn: 10000, error: 0 };
+const AUTOCLOSE = { info: 6000, success: 5000, warn: 10000, error: 0 };
 
 let wrapper;
 
-const mountBar = () => {
-    wrapper = mount(StatusBar, { attachTo: document.body });
+const mountBar = (props = {}) => {
+    wrapper = mount(StatusBar, { attachTo: document.body, props });
     return wrapper;
 };
 
@@ -154,8 +154,10 @@ describe('StatusBar', () => {
 
     it('honours an explicit closeAfter, and falls back to the level default for a falsy one', async () => {
         mountBar();
-        vueModule.status('info', 'quick', undefined, 1000);
-        await vi.advanceTimersByTimeAsync(TRANSITION + 1000);
+        vueModule.status('info', 'slow', undefined, 8000);
+        await vi.advanceTimersByTimeAsync(TRANSITION + 8000 - 1);
+        expect(shown()).toBe(true);
+        await vi.advanceTimersByTimeAsync(1);
         expect(shown()).toBe(false);
         await vi.advanceTimersByTimeAsync(TRANSITION);
 
@@ -166,6 +168,35 @@ describe('StatusBar', () => {
         expect(shown()).toBe(true);
         await vi.advanceTimersByTimeAsync(1);
         expect(shown()).toBe(false);
+    });
+
+    it('keeps a message long enough to be read (WCAG 2.2.1)', async () => {
+        mountBar();
+        // Shorter than the 5 s it takes at least
+        vueModule.status('success', 'quick', undefined, 1000);
+        await vi.advanceTimersByTimeAsync(TRANSITION + 5000 - 1);
+        expect(shown()).toBe(true);
+        await vi.advanceTimersByTimeAsync(1);
+        expect(shown()).toBe(false);
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+
+        // 200 characters: 60 ms each
+        vueModule.status('success', 'x'.repeat(200));
+        await vi.advanceTimersByTimeAsync(TRANSITION + 12000 - 1);
+        expect(shown()).toBe(true);
+        await vi.advanceTimersByTimeAsync(1);
+        expect(shown()).toBe(false);
+    });
+
+    it('closes no message by itself when the user keeps them open', async () => {
+        mountBar({ keepOpen: true });
+        vueModule.status('success', 'Saved');
+        await vi.advanceTimersByTimeAsync(TRANSITION + 60000);
+        expect(shown()).toBe(true);
+
+        await content().find('button.toast-close').trigger('click');
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+        expect(body().exists()).toBe(false);
     });
 
     it('replaces a visible message: the old one fades out before the new one appears', async () => {

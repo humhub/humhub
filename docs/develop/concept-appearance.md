@@ -57,6 +57,7 @@ settings (`user` module), so `getInherit()` falls back to them:
 | High contrast | `a11y.contrast` | `system`, `off`, `on` | `system` |
 | Reduced motion | `a11y.motion` | `system`, `off`, `on` | `system` |
 | Readable font | `a11y.font` | `off`, `on` | `off` |
+| Keep messages open | `a11y.messages` | `off`, `on` | `off` |
 
 Below them, a setting of the richtext editor rather than a default of a user option:
 
@@ -107,6 +108,7 @@ A new entry in `AccountMenu`:
 | High contrast | user setting `a11y.contrast` (`user` module) | Use system setting, Off, On |
 | Reduce motion | user setting `a11y.motion` (`user` module) | Use system setting, Off, On |
 | Readable font | user setting `a11y.font` (`user` module) | switch |
+| Keep messages open | user setting `a11y.messages` (`user` module) | switch |
 
 Each control shows the instance default ("Default: Use system setting"). A user value equal to the
 default is deleted, so a changed admin default reaches every user who never chose. Reads use
@@ -154,3 +156,7 @@ read `data-hh-motion` before the media query.
 woff2 from `npm-asset/fontsource-variable--lexend` (Composer, as Open Sans), registered by
 `ReadableFontAsset` only while the option is on. It sets `--bs-body-font-family`; code blocks keep
 their monospace font.
+
+**Keep messages open**: no message of the status bar (`StatusBar.vue`) closes by itself, the user
+closes it (WCAG 2.2.1). `humhub\widgets\StatusBar` hands the value to the island as its `keepOpen`
+prop; nothing is written to `<html>`.

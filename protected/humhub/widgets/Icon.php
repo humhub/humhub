@@ -707,6 +707,13 @@ class Icon extends Widget implements \Stringable
     public $tooltip;
 
     /**
+     * @var bool whether keyboard users reach the tooltip: the icon is a tab stop of its own, named by its
+     * tooltip (WCAG 1.4.13). For an icon with a tooltip that says something and is not inside a link or button.
+     * @since 1.20
+     */
+    public $focusable = false;
+
+    /**
      * @var string explicitly define a icon library, if not defined the default icon provider is used
      */
     public $lib;
@@ -897,6 +904,17 @@ class Icon extends Widget implements \Stringable
     }
 
     /**
+     * @param bool $focusable whether keyboard users reach the tooltip, see [[focusable]]
+     * @return $this
+     * @since 1.20
+     */
+    public function focusable(bool $focusable = true)
+    {
+        $this->focusable = $focusable;
+        return $this;
+    }
+
+    /**
      * @param bool $active
      * @return $this
      */
@@ -1011,6 +1029,7 @@ class Icon extends Widget implements \Stringable
             'right' => $this->right,
             'left' => $this->left,
             'tooltip' => $this->tooltip,
+            'focusable' => $this->focusable,
             'ariaLabel' => $this->ariaLabel,
             'border' => $this->border,
             'htmlOptions' => $this->htmlOptions,

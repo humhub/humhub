@@ -29,7 +29,7 @@ $container = $model->content->container;
     <?php if ($model->content->isArchived()) : ?>
         <?= ArchivedIcon::getByModel($model) ?>
     <?php elseif ($renderOptions->isPinned($model)) : ?>
-        <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin tt', 'title' => Yii::t('ContentModule.base', 'Pinned')]]) ?>
+        <?= Icon::get('map-pin', ['htmlOptions' => ['class' => 'icon-pin']])->tooltip(Yii::t('ContentModule.base', 'Pinned'))->focusable() ?>
     <?php endif; ?>
     <?= StateBadge::widget(['model' => $model]); ?>
 </div>
@@ -50,7 +50,8 @@ $container = $model->content->container;
 
 <div class="wall-entry-header-info flex-grow-1">
 
-    <h4 class="mt-0" id="<?= Html::encode($this->context->getTitleId()) ?>">
+    <?php // The entry's heading below the page's h1; the line below it is no heading (WCAG 1.3.1) ?>
+    <h2 class="h4 mt-0 wall-entry-title" id="<?= Html::encode($this->context->getTitleId()) ?>">
         <?= $title ?>
 
         <?php if ($renderOptions->isShowContainerInformationInTitle($model)) : ?>
@@ -59,9 +60,9 @@ $container = $model->content->container;
                 <?= Html::containerLink($model->content->container) ?>
             </span>
         <?php endif; ?>
-    </h4>
+    </h2>
 
-    <h5>
+    <div class="h5 wall-entry-meta">
         <?php $containerLinkOptions = ['class' => 'wall-entry-container-link link-accent']; ?>
         <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
             <?= Html::containerLink($model->content->createdBy, $containerLinkOptions) ?>
@@ -92,5 +93,5 @@ $container = $model->content->container;
             <?= HiddenIcon::getByModel($model) ?>
             <?= LockCommentsIcon::getByModel($model) ?>
         </div>
-    </h5>
+    </div>
 </div>

@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\components\Appearance;
 use Yii;
 
 /**
@@ -34,6 +35,8 @@ class StatusBar extends VueWidget
         return [
             'closeLabel' => Yii::t('base', 'Close'),
             'detailsLabel' => Yii::t('base', 'Show more'),
+            // The user's choice (Account → Appearance & Accessibility), WCAG 2.2.1
+            'keepOpen' => Yii::$app->appearance->get(Appearance::MESSAGES) === Appearance::ON,
         ];
     }
 

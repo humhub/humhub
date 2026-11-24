@@ -3,6 +3,23 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: The search field and the directory link of the space chooser have a name, the confirm dialog's title is never empty
+- Fix: Hidden skip links have no `href`, so accessibility checkers no longer report them as broken
+- Fix: The hidden file pickers of the comment form have a name, the upload button's tooltip is translated
+- Enh: Removed jQuery NiceScroll, lists scroll natively
+- Enh: Editor: Home and End in the toolbar, the number of suggestions is said, the link dialog marks its required field
+- Enh: Screen readers read the follow, archive and unread marks of the space chooser
+- Enh: Profile fields and permission pages fit a 320 px screen, permissions show their state below them there
+- Enh: Long names wrap in the profile header, names cut off in the top bar show in full as tooltip
+- Enh: Tooltips stay while hovered, and the date and the state icons of a stream entry show theirs on keyboard focus
+- Enh: Profile fields say their purpose for autofill (`autocomplete`) in the own profile and at registration
+- Enh: Screen readers are told about a new comment, a like and a changed visibility (`humhub.ui.status.announce()`)
+- Enh: A warning before the session ends lets the user stay signed in; messages stay at least 5 s, or open with the new setting "Keep messages open"
+- Enh: Editor: the type menu is a menu with the current block type checked, Tab leaves a list where it can't indent and the editor says how to leave it
+- Enh: Headings and lists for screen readers: stream entries are h2 and comments h3, one h1 on space and profile pages with a page header, notifications as a list
+- Enh: WebDAV endpoint `/dav/` for the files of modules, authenticated by personal access tokens, with locks and its own rate limits
+- Enh: Lists of many records: `RecordMap::getIds()` looks up their record ids at once, and the preview of an image is created on its first request rather than while the list is built
+- Enh: Device connections: a module offers a dialog that creates a personal access token as the password of a device (network drive, calendar app), without the group permission to create tokens; personal access tokens are allowed by default
 - Enh #8768: Images and videos open in an accessible media viewer (PhotoSwipe instead of blueimp Gallery) with zoom, video, download and a downscaled display version
 - Enh #8759: Attached WAV, M4A, AAC and FLAC audio plays in the stream, media files without a preview (e.g. Ogg audio or AVI video) stay in the attachment list
 - Enh #8757: A new space gets a colour its white initials are readable on, `mistic100/randomcolor` is deprecated, `behat/gherkin` no longer pinned

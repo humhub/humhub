@@ -69,9 +69,11 @@ class PermissionGridEditor extends GridView
                     'attribute' => 'title',
                     'content' => function ($data) {
                         $module = Yii::$app->getModule($data['moduleId']);
+                        // A space, not `&nbsp;`: the title's last word and the badge would be one piece that keeps
+                        // the column from getting narrower (WCAG 1.4.10)
                         return Html::tag('strong', $data['title'])
-                            . '&nbsp;&nbsp;'
-                            . Html::tag('span', $module->getName(), ['class' => 'badge', 'data-module-id' => $data['moduleId']])
+                            . ' '
+                            . Html::tag('span', $module->getName(), ['class' => 'badge ms-1', 'data-module-id' => $data['moduleId']])
                             . Html::tag('br')
                             . $data['description'];
                     },

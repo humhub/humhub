@@ -1,10 +1,11 @@
 <template>
     <div ref="list" class="hh-list" v-additions @scroll="onScroll">
-        <NotificationEntry
-            v-for="entry in items"
-            :key="entry.id"
-            :notification="entry"
-        />
+        <!-- A list for screen readers (WCAG 1.3.1); `role` because Safari drops it with `list-style: none` -->
+        <ul v-if="items.length" class="list-unstyled m-0" role="list">
+            <li v-for="entry in items" :key="entry.id">
+                <NotificationEntry :notification="entry" />
+            </li>
+        </ul>
         <div v-if="!items.length && !loading" class="info">{{ emptyLabel }}</div>
 
         <div v-if="loading" class="text-center p-2">

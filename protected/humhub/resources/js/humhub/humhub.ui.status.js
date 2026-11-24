@@ -122,10 +122,55 @@ humhub.module('ui.status', function (module, require, $) {
         require('vue').status(level, decodeEntities(message), normalizeDetails(details), closeAfter);
     };
 
+    // An announcement: said after this delay, so that the same text twice is a change, and cleared later,
+    // so that it is not found at the end of the page
+    var ANNOUNCE_DELAY = 100;
+    var ANNOUNCE_CLEAR_AFTER = 10000;
+    var announcer = null;
+    var announceTimer = null;
+
+    /**
+     * The live region of announce(): there before the first announcement, so that only its text changes
+     */
+    var getAnnouncer = function () {
+        if (!announcer || !document.body.contains(announcer)) {
+            announcer = document.createElement('div');
+            announcer.id = 'status-announcer';
+            announcer.className = 'visually-hidden';
+            announcer.setAttribute('role', 'status');
+            announcer.setAttribute('aria-atomic', 'true');
+            document.body.appendChild(announcer);
+        }
+
+        return announcer;
+    };
+
+    /**
+     * Says a message to screen readers without showing it (WCAG 4.1.3). For the result of an action that
+     * the page already shows where the focus is not: a new comment in the list, the count of a like, the
+     * visibility of a content. Use success() etc. instead for a message everybody should see.
+     *
+     * @param {string} message
+     */
+    var announce = function (message) {
+        var region = getAnnouncer();
+
+        clearTimeout(announceTimer);
+        region.textContent = '';
+        announceTimer = setTimeout(function () {
+            region.textContent = decodeEntities(message);
+            announceTimer = setTimeout(function () {
+                region.textContent = '';
+            }, ANNOUNCE_CLEAR_AFTER);
+        }, ANNOUNCE_DELAY);
+    };
+
     var init = function ($pjax) {
         if ($pjax) {
             return;
         }
+
+        getAnnouncer();
 
         event.on('humhub:modules:log:setStatus', function (evt, msg, details, level) {
             switch (level) {
@@ -161,5 +206,6 @@ humhub.module('ui.status', function (module, require, $) {
         error: function (msg, error, closeAfter) {
             send('error', msg, error, closeAfter);
         },
+        announce: announce,
     });
 });

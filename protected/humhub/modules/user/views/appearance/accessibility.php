@@ -12,6 +12,7 @@ use humhub\widgets\form\ActiveForm;
 <?= $form->field($model, 'contrast')->dropDownList($model->getOptions()) ?>
 <?= $form->field($model, 'motion')->dropDownList($model->getOptions()) ?>
 <?= $form->field($model, 'font')->checkbox() ?>
+<?= $form->field($model, 'messages')->checkbox() ?>
 
 <button class="btn btn-primary" type="submit" data-ui-loader><?= Yii::t('UserModule.account', 'Save') ?></button>
 

@@ -1,0 +1,15 @@
+# Codeception Test Suite Configuration
+
+# suite for unit (internal) tests.
+# RUN `build` COMMAND AFTER ADDING/REMOVING MODULES.
+
+actor: UnitTester
+modules:
+    enabled:
+        - tests\codeception\_support\CodeHelper
+        - Yii2
+    config:
+        Yii2:
+            configFile: 'codeception/config/unit.php'
+            transaction: true
+            cleanup: false

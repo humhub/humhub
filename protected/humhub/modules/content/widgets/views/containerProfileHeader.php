@@ -29,6 +29,7 @@ use humhub\modules\file\widgets\Upload;
 use humhub\modules\space\models\Space;
 use humhub\widgets\BaseImage;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\PageHeader;
 
 ContainerHeaderAsset::register($this);
 
@@ -56,9 +57,14 @@ $profileImageHeight = $container->image->defaultOptions['height'];
 
         <!-- show user name and title -->
         <div class="img-profile-data">
-            <h1 class="<?= $classPrefix ?>"><?= Link::to($title)->link($container->getUrl())->encodeLabel(false) ?></h1>
+            <?php // The page's own title is its h1 if it has one, the name is the context then; the subtitle is no heading ?>
+            <?= Html::tag(
+                ($this->params[PageHeader::VIEW_PARAM_H1] ?? false) ? 'div' : 'h1',
+                Link::to($title)->link($container->getUrl())->encodeLabel(false),
+                ['class' => ['h1', $classPrefix]],
+            ) ?>
             <?php if ($subTitle !== null && $subTitle !== '') : ?>
-                <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
+                <div class="h2 <?= $classPrefix ?>" data-tooltip="overflow"><?= $subTitle ?></div>
             <?php endif; ?>
         </div>
 

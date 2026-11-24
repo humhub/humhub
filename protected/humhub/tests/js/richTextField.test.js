@@ -167,6 +167,12 @@ describe('RichTextField', () => {
             expect(await pending).toEqual([]);
             expect(upload).not.toHaveBeenCalled();
         });
+
+        it('names the picker, which accessibility checkers inspect although it is hidden', () => {
+            const picker = field({ upload: true }).find('input[type="file"]');
+
+            expect(picker.attributes('aria-label')).toBe('Upload files');
+        });
     });
 
     it('offers the file handlers in the editor\'s menu, only when given some', () => {

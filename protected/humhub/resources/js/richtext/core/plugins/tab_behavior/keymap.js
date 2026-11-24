@@ -48,10 +48,11 @@ let keymap = () => {
         return true;
     };
 
+    // In a list Tab indents the item and Shift+Tab outdents it. Where it can't (the first item of a list), Tab is not
+    // ours and leaves the editor, so pressing it again and again always gets out (WCAG 2.1.2)
     const tab = (dir) => (state, dispatch) => {
         const listItemType = getListItemType(state);
-        if (listItemType) {
-            (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state, dispatch);
+        if (listItemType && (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state, dispatch)) {
             return true;
         }
 

@@ -2,6 +2,39 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **jQuery NiceScroll is removed** (unmaintained since 2017). Lists scroll natively, with the browser's scrollbar.
+  - The results of the header search and the richtext editor at its maximum height scroll natively.
+  - Removed: `humhub\assets\JqueryNiceScrollAsset` (also from `CoreBundleAsset`) and
+    `protected/humhub/resources/js/jquery.nicescroll.min.js`. `$.fn.niceScroll()` and `$.fn.getNiceScroll()` no
+    longer exist, a module calling them fails with a `TypeError`.
+  - To migrate, drop the calls and give the container `overflow-y: auto`, and `overscroll-behavior: contain`
+    to keep the page behind it from scrolling along. A native scrollbar takes room from the width of the
+    container, where NiceScroll drew over the content.
+- **Tooltips can be hovered and reached by keyboard** (WCAG 1.4.13). A tooltip stays while the pointer is on it,
+  and a focused link or button shows the tooltip of the one element inside it that has one. New
+  `humhub\widgets\Icon::focusable()`: an icon with a tooltip that says something becomes a tab stop named by its
+  tooltip (`tabindex="0"`, `aria-label`) instead of being hidden with a visually hidden text. Use it only for an
+  icon that is not inside a link or button. The state icons of a stream entry (`VisibilityIcon`, `UpdatedIcon`,
+  `HiddenIcon`, `LockCommentsIcon`, `ArchivedIcon`, pinned) are focusable. `data-tooltip="overflow"` on an element
+  that cuts its text off with an ellipsis shows the full text as tooltip while it is cut off (WCAG 1.4.12).
+- **`.table-responsive` is `position: relative`**, so the visually hidden texts of its table stay inside the scrolling
+  area instead of widening the page (WCAG 1.4.10). An absolutely positioned element in such a table now places itself
+  against the scrolling area. The permission grid stacks the state below its permission on screens below `sm`.
+- **The name in the profile header wraps** instead of being cut off; the banner grows with it. The banner image and
+  `.img-profile-data` share one grid cell of `.profile-banner-image-container`, `.img-profile-data` is no longer
+  positioned absolutely.
+- **Profile fields say their purpose** (`autocomplete`, WCAG 1.3.5): the fields the installation creates get the
+  token of `humhub\modules\user\models\ProfileField::AUTOCOMPLETE` by internal name (`firstname` → `given-name`,
+  …), in the own profile and at registration, not when an admin edits someone else.
+  `humhub\widgets\form\DatePicker` keeps an `autocomplete` given in its `options`; it was always `off`.
+- **`humhub.ui.status.announce(message)`** tells screen readers about a change without showing a toast
+  (WCAG 4.1.3): for a result the page already shows away from the focus, like a new entry in a list or a
+  changed count. In Vue: `import { announce } from '@humhub/vue'`. The core uses it for comments, likes and
+  the visibility of a content.
+- **Status messages stay long enough to be read** (WCAG 2.2.1). A message of `humhub.ui.status` (`success()`,
+  `info()`, `warn()`) closes after 5 s at the earliest, 60 ms per character for a longer one; a shorter
+  `closeAfter` is raised to that, success messages took 2 s before. With the new user setting "Keep messages
+  open" (`humhub\components\Appearance::MESSAGES`) no message closes by itself.
 - **The media viewer replaces blueimp Gallery** (see [Media viewer](ui-js-gallery.md)). Images and videos marked with
   `data-ui-gallery` open in an accessible dialog built on PhotoSwipe, with zoom, a video player, a caption and a
   download button. The markup stays: `data-ui-gallery`, `href`/`src` and `type="video/…"` work as before; the
@@ -50,6 +83,31 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `session`, e.g. `token.calendar:write`) to the `rateLimiter` component, see
   `docs/develop/concept-rate-limiting.md`. `ScopeFilter::resolveScope()` is new.
 
+- **WebDAV at `/dav/`** (see [WebDAV](concept-webdav.md)). A module serves a Sabre collection
+  there by adding a `humhub\modules\dav\components\Mount` in `dav\Module::EVENT_COLLECT_MOUNTS`,
+  with a read and a write scope of its own. Core ships `sabre/dav` ^4.7 with `sabre/vobject`,
+  `sabre/xml`, `sabre/uri`, `sabre/http` and `sabre/event`; a module requiring core 1.20 drops
+  these from its own `composer.json`. A module's `vendor/autoload.php` registers in front of
+  core's, so its copies would replace core's in every request, `/dav/` included.
+  New: `file\models\File::setStoredFileByPath()` stores a new version from a path on the local
+  disk, streamed (`setStoredFile()` with an `UploadedFile` stores only real HTTP uploads).
+
+- **Lists without a query or a conversion per row.** `humhub\models\RecordMap::getIds()` gives the
+  record ids of many records at once and answers the later `getId()` calls for them from the
+  per-request cache. `file\converter\PreviewImage::getLazyUrl()` is the URL of a preview without
+  creating it; the download action creates it on its first request (`variant=preview-image`),
+  as for the display version. `FileSerializer::file()` hands out that URL as `previewUrl`.
+
+- **Device connections** (see [OAuth](concept-oauth.md#device-connections)). A module that
+  serves a device (a network drive, a calendar app) offers a
+  `humhub\modules\oauth\components\DeviceConnection` in
+  `DeviceConnectionRegistry::EVENT_COLLECT_CONNECTIONS` and links its dialog
+  (`DeviceConnection::getUrl()`): it shows the address and the username and creates a personal
+  access token with the connection's scopes, as the device's password. Passwords a module
+  handed out before can be kept as such tokens (`PersonalAccessTokenService::import()`,
+  `findImported()`). `oauth_grant.issuer` is new; `allowPersonalAccessTokens` is on by
+  default. `dav\Module::getMountUrl()` is the address of a mount.
+
 - **`humhub.log` skips the status message for a `client.Response` flagged `statusShown`.** The
   client sets the flag on a `429` after showing the rate limit message itself, so
   `log.error(response, true)` only logs to the console for it.
@@ -85,8 +143,17 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     still wins.
   - The text of a neutral badge is `$badge-color: var(--hh-secondary-fg)`, which reads on its fill.
   - The message of the error page is its `<h1>` (`h1.h2`, `h1.h6` on the login required page), the
-    dashboard has a visually hidden `<h1>`, and the subtitle of a profile header (`h2`) is left out when
-    it is empty.
+    dashboard has a visually hidden `<h1>`, and the subtitle of a profile header is left out when it is
+    empty.
+  - The heading of a stream entry is an `<h2 class="h4 wall-entry-title">` (was `h4`), the line below it a
+    `div.h5.wall-entry-meta` (was `h5`), and the heading of a comment an `<h3 class="h4 comment-heading">`
+    (was `h4`). The Bootstrap classes keep the look; style them by these classes.
+  - The name in the header of a space or profile (`containerProfileHeader.php`) is the page's `<h1>`
+    unless the page has a `humhub\widgets\PageHeader`: its title is the `<h1>` then
+    (`PageHeader::VIEW_PARAM_H1`), and the name a `div.h1`. The subtitle is a `div.h2` instead of an `h2`.
+    Style them by `.h1` and `.h2`.
+  - The notifications are a list (`ul[role="list"] > li > a`); `.hh-list` styles `> ul > li > a` as a row
+    like `> a`.
   - The close control of the header search is a `<button id="dropdown-search-close">` named "Close"
     instead of a bare icon.
   - The avatar next to the linked name of its author (stream entry header, comment) is out of the tab

@@ -175,7 +175,7 @@ hhpat_<32 random base62 characters><6 base62 characters CRC32 of the random part
   confirmation dialog comes first. Remember-me cookie logins and impersonations do not count.
 - **Never during an impersonation:** creating a PAT is refused (`403`), like any other
   credential (client secrets).
-- **Limited per user:** at most `maxPersonalAccessTokensPerUser` (default 3, 0 = unlimited)
+- **Limited per user:** at most `maxPersonalAccessTokensPerUser` (default 10, 0 = unlimited)
   PATs that have not expired. At the limit the form refuses creation; revoking a token frees
   its slot. See [Rate limiting](concept-rate-limiting.md#personal-access-tokens-per-user).
 
@@ -183,6 +183,39 @@ The CRC32 suffix lets `TokenAuth` reject a mistyped token without a database que
 `hhpat_` prefix makes leaked tokens recognizable to secret scanners.
 
 PATs are core code; league is not involved.
+
+### Device connections
+
+A module can offer the user a ready-made PAT for one device, e.g. a network drive (Files,
+WebDAV) or a calendar app (Calendar, CalDAV), instead of sending them to the token form:
+
+- **`DeviceConnection`** (`components/`): an ID, the dialog's title and description, the
+  default name of the token, its scopes and the values the device asks for (address,
+  username), each shown with a copy button.
+- **`DeviceConnectionRegistry::EVENT_COLLECT_CONNECTIONS`** collects them per user
+  (`DeviceConnectionsEvent`). A module adds its connection only while it offers the service.
+  There are none while `allowPersonalAccessTokens` is off. Invalid IDs, duplicates and
+  unknown scopes are ignored with a warning.
+- **The dialog** `oauth/connect/index?id=<id>` (`DeviceConnection::getUrl()`, for
+  `ui.modal.load`) shows the values and a name field, prefilled with the default name.
+  *Create password* posts to `oauth/connect/create`: sudo mode, refused while impersonating,
+  limited by `maxPersonalAccessTokensPerUser`. It issues the token
+  (`PersonalAccessTokenService::issue()`) and shows it once with the values again
+  (`Cache-Control: no-store`).
+
+Such a token is an ordinary PAT of the user's list, revoked like the others. Its `issuer` is
+the connection's ID, and the module, not the administrator's token settings, decides what it
+does: it needs neither `CreatePersonalAccessToken` nor its scopes in `patScopes`, only
+`allowPersonalAccessTokens`. It lives as long as `patMaxLifetimeDays` allows (*never* when 0).
+
+A module that handed out passwords of its own before can keep them working:
+`PersonalAccessTokenService::import()` stores a secret a device already uses as a PAT of the
+connection (only its SHA-256, no `token_hint`, no notification), `findImported()` finds it by
+secret and issuer. `find()` never does: such a secret is not shaped like a PAT.
+
+An endpoint of a module that serves a device itself (CalDAV of the calendar) authenticates
+HTTP Basic with `dav\components\TokenBasicAuth::authenticate($request, $issuer)`: a PAT, or a
+password the issuer imported, with the owner's username or e-mail address.
 
 ### Keys
 
@@ -335,7 +368,8 @@ existing grants immediately:
 |---|---|
 | system client | `full` |
 | admin client | grant ∩ client's allowed scopes |
-| PAT | grant ∩ `patScopes` |
+| PAT a user created | grant ∩ `patScopes` |
+| PAT of a [device connection](#device-connections) (`issuer` set) | grant |
 
 `full` can be held by:
 
@@ -462,11 +496,12 @@ All timestamps are Unix integers.
 | `guid` | char(36) unique | league user identifier |
 | `user_id` | int, FK `user` cascade | |
 | `type` | varchar(10) | `oauth`, `pat` |
+| `issuer` | varchar(100) null | PAT of a [device connection](#device-connections): its ID |
 | `client_id` | int null, FK `oauth_client` cascade | `oauth` grants |
 | `name` | varchar(100) | client name, or the PAT name the user typed |
 | `scopes` | text | JSON list |
 | `token_hash` | char(64) null unique | PAT |
-| `token_hint` | char(4) null | PAT |
+| `token_hint` | char(4) null | PAT; none for an imported secret |
 | `user_agent` | varchar(255) null | of the code exchange (app: its device) |
 | `created_at`, `last_used_at`, `expires_at` | int, int null, int null | |
 
@@ -537,7 +572,9 @@ The sections:
   *Disconnect*.
 - **Personal access tokens** (400). Name, `hhpat_…<hint>`, scopes, expiry, last used,
   *Revoke*. Then *Create token* (name, scopes from `patScopes`, lifetime,
-  re-authentication). The token is shown once.
+  re-authentication). The token is shown once. The passwords of
+  [device connections](#device-connections) are listed here too; a module offers their
+  dialog where its service is, there is no section of its own.
 
 The HumHub app and connected apps sections are shown when they list a grant: one that has
 been used (`last_used_at` set); grants whose code was never exchanged are not listed. Personal
@@ -568,10 +605,10 @@ A new tab in `AuthenticationMenu` (Users → Settings):
 | `allowApp` | on | the HumHub app may sign in |
 | `appIds` | empty | additional app IDs of white-label apps ([White-label apps](#white-label-apps)); system administrators only |
 | `allowClients` | off | admin clients may authorize |
-| `allowPersonalAccessTokens` | off | PATs authenticate; creating them requires `CreatePersonalAccessToken` |
+| `allowPersonalAccessTokens` | on | PATs authenticate; users create their own with `CreatePersonalAccessToken`, the passwords of [device connections](#device-connections) without it |
 | `patScopes` | all `*:read` core scopes | upper bound for PATs; `full` only by system administrators |
 | `patMaxLifetimeDays` | 365 | 0 = unlimited, offers *never* |
-| `maxPersonalAccessTokensPerUser` | 3 | 0 = unlimited; counts unexpired PATs of a user |
+| `maxPersonalAccessTokensPerUser` | 10 | 0 = unlimited; counts unexpired PATs of a user |
 | `refreshTokenLifetimeDays` | 90 | |
 | `grantMaxLifetimeDays` | 0 | 0 = unlimited |
 | `revokeOnPasswordChange` | off | a password change deletes all grants of the user except the app session the change was made in |
@@ -580,7 +617,7 @@ Each `allow…` switch also takes effect on existing grants: `TokenAuth` and `is
 reject grants of a disallowed kind.
 
 The settings of personal access tokens (`patScopes`, `patMaxLifetimeDays`,
-`maxPersonalAccessTokensPerUser` and the warning about
+`maxPersonalAccessTokensPerUser` and the note about
 a missing group permission) are only shown while `allowPersonalAccessTokens` is checked; the
 form toggles them on the client. Hidden fields are still submitted, so their values are kept.
 
@@ -700,6 +737,8 @@ protected/humhub/modules/oauth/
 ├── components/
 │   ├── AuthorizationServerFactory.php    # league AuthorizationServer / ResourceServer
 │   ├── CredentialActions.php             # impersonation guard for credential actions
+│   ├── DeviceConnection.php              # what a module offers for a device
+│   ├── DeviceConnectionRegistry.php      # collects them per user
 │   ├── KeyStore.php                      # read, generate, rotate keys
 │   ├── TokenAuth.php
 │   ├── TokenResolver.php                 # own JWT detection, token → grant for revocation
@@ -711,15 +750,16 @@ protected/humhub/modules/oauth/
 │   ├── MetadataController.php
 │   ├── WebSessionController.php
 │   ├── AccountController.php
+│   ├── ConnectController.php             # the dialog of a device connection
 │   ├── AdminController.php
 │   └── api/WebSessionController.php
 ├── entities/                   # league entity implementations
 ├── repositories/               # league repository implementations
 ├── services/
 │   ├── GrantService.php                  # create, usability, effective scopes, revoke
-│   ├── PersonalAccessTokenService.php    # create, find, lifetimes
+│   ├── PersonalAccessTokenService.php    # create, issue, import, find, lifetimes
 │   └── WebSessionService.php             # web session codes, session binding
-├── events/ScopesEvent.php
+├── events/                     # ScopesEvent, DeviceConnectionsEvent
 ├── models/                     # Client, Grant, GrantSearch (admin filter), AccessToken,
 │                               # RefreshToken, AuthCode, WebSessionCode, Scope, forms
 ├── notifications/

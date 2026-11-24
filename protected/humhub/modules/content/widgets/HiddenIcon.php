@@ -28,7 +28,7 @@ class HiddenIcon extends Icon
     public static function getByModel(ContentActiveRecord $model)
     {
         if ($model->content->hidden) {
-            return static::get('eye-slash')->tooltip(Yii::t('ContentModule.base', 'Hidden'));
+            return static::get('eye-slash')->tooltip(Yii::t('ContentModule.base', 'Hidden'))->focusable();
         }
 
         return '';

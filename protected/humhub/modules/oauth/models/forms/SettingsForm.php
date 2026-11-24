@@ -129,8 +129,8 @@ class SettingsForm extends Model
             // Hints are not encoded
             'appIds' => Html::encode(Yii::t('OauthModule.base', 'Customer-specific apps that sign in as the HumHub app. Each app signs in with the redirect URI <app ID>:/oauth/callback.')),
             'allowClients' => $off,
-            'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Users additionally need the group permission "Create personal access tokens".'),
-            'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a personal access token can do. An empty selection means no access.'),
+            'allowPersonalAccessTokens' => $off . ' ' . Yii::t('OauthModule.base', 'Modules such as Files or Calendar create them as passwords for devices. To create tokens of their own, users additionally need the group permission "Create personal access tokens".'),
+            'patScopes' => Yii::t('OauthModule.base', 'The upper bound of what a token a user creates can do. An empty selection means no access. A device password of a module has the scopes of that module.'),
             'patMaxLifetimeDays' => Yii::t('OauthModule.base', '0 means unlimited and offers "never" as a lifetime.'),
             'maxPersonalAccessTokensPerUser' => Yii::t('OauthModule.base', '0 means unlimited. Expired tokens do not count.'),
             'refreshTokenLifetimeDays' => Yii::t('OauthModule.base', 'Idle lifetime: renewed on every refresh, so an app in regular use stays signed in.'),

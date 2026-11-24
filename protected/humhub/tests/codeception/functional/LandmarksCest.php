@@ -9,6 +9,8 @@
 namespace humhub\tests\codeception\functional;
 
 use FunctionalTester;
+use humhub\modules\post\models\Post;
+use PHPUnit\Framework\Assert;
 
 /**
  * The landmarks of the page frame (docs/ui/keyboard.md, "Landmarks and names").
@@ -50,6 +52,45 @@ class LandmarksCest
         $I->amOnRoute('/dashboard/dashboard');
         $I->seeNumberOfElements('h1', 1);
         $I->see('Dashboard', 'h1.visually-hidden');
+    }
+
+    public function testSpaceHomeHasTheSpaceNameAsHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure the name in the space header is the h1 of the space home, the entries are h2');
+
+        $I->amAdmin();
+        $I->amOnSpace1();
+        $I->seeNumberOfElements('h1', 1);
+        $I->seeElement('.img-profile-data h1');
+    }
+
+    public function testStreamEntryIsAHeadingBelowThePageHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure a stream entry is named by an h2, its meta line is no heading');
+
+        $I->amAdmin();
+        $post = new Post();
+        $post->message = 'Heading test';
+        $post->content->setContainer($I->getFixtureSpace(0));
+        Assert::assertTrue($post->save(), json_encode($post->getErrors()));
+        $I->amOnSpace1('/space/space/stream');
+        $html = implode('', array_column(json_decode($I->grabPageSource(), true)['content'] ?? [], 'output'));
+
+        Assert::assertStringContainsString('<h2 class="h4 mt-0 wall-entry-title"', $html);
+        Assert::assertStringContainsString('<div class="h5 wall-entry-meta">', $html);
+        Assert::assertStringNotContainsString('<h4 class="mt-0"', $html);
+        Assert::assertStringNotContainsString('<h5>', $html);
+    }
+
+    public function testSpaceSettingsPageHasOneHeading(FunctionalTester $I)
+    {
+        $I->wantTo('ensure a space settings page has its own title as the one h1, the space name is context');
+
+        $I->amAdmin();
+        $I->amOnSpace1('/space/manage/default/index');
+        $I->seeNumberOfElements('h1', 1);
+        $I->seeElement('.page-header h1');
+        $I->seeElement('.img-profile-data div.h1');
     }
 
     public function testSignInPageLandmarksAndHeading(FunctionalTester $I)

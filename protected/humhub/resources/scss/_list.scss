@@ -11,7 +11,8 @@
             color: inherit;
         }
 
-        > div:not(.stream-end), > a:not(.stream-end) {
+        // Rows: an entry, or a link in a list (`ul > li`, e.g. the notifications)
+        > div:not(.stream-end), > a:not(.stream-end), > ul > li > a {
             padding: 10px;
             border-bottom: 1px solid var(--bs-secondary-bg);
             position: relative;

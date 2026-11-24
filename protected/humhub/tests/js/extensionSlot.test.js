@@ -141,4 +141,31 @@ describe('ExtensionSlot', () => {
         expect(el.querySelector('i')).not.toBeNull();
         expect(el.querySelector('i').textContent).toBe('now-here');
     });
+    it('hands an extension the context to read, not to change', async () => {
+        vueModule.register('TestExtSlotItemReadOnly', {
+            props: { item: Object },
+            mounted() {
+                // An extension must not change the host's state behind its back
+                this.item.title = 'Changed';
+            },
+            render() {
+                return Vue.h('span', { class: 'ext-readonly' }, this.item.title);
+            },
+        });
+        vueModule.registerSlotComponent('test.ext.readonly', 'TestExtSlotItemReadOnly');
+
+        const item = Vue.reactive({ title: 'Original' });
+        vueModule.register('TestExtSlotHostReadOnly', {
+            components: { ExtensionSlot },
+            render() {
+                return Vue.h(ExtensionSlot, { name: 'test.ext.readonly', context: { item } });
+            },
+        });
+
+        const el = createTag('test-ext-slot-host-read-only');
+        await vueModule.mountElement(el);
+
+        expect(el.querySelector('.ext-readonly').textContent).toBe('Original');
+        expect(item.title).toBe('Original');
+    });
 });

@@ -1,18 +1,48 @@
 /**
  * Bootstrap tooltips on `.tt` and `[data-bs-toggle="tooltip"]`, bound by delegation so elements
- * added later get one too. A tooltip shows on hover, and on focus when the focus moves by keyboard
- * (`ui.appearance.keyboardModality()`), not after a click. It hides when the focus leaves and on
- * Escape, which then closes nothing else (docs/ui/keyboard.md, docs/ui/tooltip.md).
+ * added later get one too. A text cut off with an ellipsis (`data-tooltip="overflow"`) shows its full
+ * text as tooltip, only while it is cut off (WCAG 1.4.12). A tooltip shows on hover, and on focus when the focus moves by keyboard
+ * (`ui.appearance.keyboardModality()`), not after a click; a link or button shows the tooltip of the
+ * one trigger inside it (the date in a permalink). It stays while the pointer is on it, and hides
+ * when the focus leaves and on Escape, which then closes nothing else (WCAG 1.4.13,
+ * docs/ui/keyboard.md, docs/ui/tooltip.md).
  *
  * @since 1.20
  */
 humhub.module('ui.tooltip', function (module, require, $) {
     var appearance = require('ui.appearance');
 
-    var SELECTOR = '[data-bs-toggle="tooltip"], .tt';
+    var OVERFLOW = '[data-tooltip="overflow"]';
+    var SELECTOR = '[data-bs-toggle="tooltip"], .tt, ' + OVERFLOW;
+
+    // The time to move the pointer from the trigger onto its tooltip
+    var HIDE_DELAY = 150;
+
+    // Set while a tooltip is hidden whatever the pointer is on: Escape, a click
+    var dismissing = false;
 
     var target = function (node) {
         return node && typeof node.closest === 'function' ? node.closest(SELECTOR) : null;
+    };
+
+    /**
+     * The trigger a focused element shows: itself or its ancestor, or inside a link or button the text cut off
+     * in it, else its one trigger
+     */
+    var focusTarget = function (node) {
+        var el = target(node);
+        if (el || !node || typeof node.matches !== 'function' || !node.matches('a[href], button')) {
+            return el;
+        }
+
+        var inner = node.querySelectorAll(SELECTOR);
+        var cutOff = Array.prototype.filter.call(inner, function (trigger) {
+            return trigger.matches(OVERFLOW) && isCutOff(trigger);
+        });
+        if (cutOff.length === 1) {
+            return cutOff[0];
+        }
+        return inner.length === 1 ? inner[0] : null;
     };
 
     var get = function (el) {
@@ -20,7 +50,27 @@ humhub.module('ui.tooltip', function (module, require, $) {
     };
 
     var create = function (el) {
-        return bootstrap.Tooltip.getOrCreateInstance(el, {trigger: 'hover'});
+        var config = {trigger: 'hover', delay: {show: 0, hide: HIDE_DELAY}};
+        if (el.matches(OVERFLOW)) {
+            // The text itself, its lines joined
+            config.title = function () {
+                return (this.innerText || this.textContent).replace(/\s+/g, ' ').trim();
+            };
+        }
+        return bootstrap.Tooltip.getOrCreateInstance(el, config);
+    };
+
+    var isCutOff = function (el) {
+        return el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1;
+    };
+
+    /**
+     * A text that is not cut off (any more, the window may have grown) shows no tooltip
+     */
+    var showOnlyWhenCutOff = function (e) {
+        if (e.target.matches && e.target.matches(OVERFLOW) && !isCutOff(e.target)) {
+            e.preventDefault();
+        }
     };
 
     var isShown = function (tooltip) {
@@ -32,6 +82,7 @@ humhub.module('ui.tooltip', function (module, require, $) {
      */
     var hideAll = function () {
         var hidden = false;
+        dismissing = true;
         // Bootstrap marks any element whose tooltip is shown with aria-describedby, so tooltips
         // created by other modules outside the selector are dismissed too
         document.querySelectorAll(SELECTOR + ', [aria-describedby]').forEach(function (el) {
@@ -41,7 +92,32 @@ humhub.module('ui.tooltip', function (module, require, $) {
                 hidden = true;
             }
         });
+        dismissing = false;
         return hidden;
+    };
+
+    /**
+     * Keeps a tooltip while the pointer is on it (hoverable, WCAG 1.4.13): Bootstrap hides it once the
+     * pointer left its trigger. It goes when the pointer leaves it for somewhere else than the trigger.
+     */
+    var keepWhileHovered = function (e) {
+        var trigger = e.target;
+        var tooltip = get(trigger);
+        var tip = tooltip && tooltip.tip;
+        if (dismissing || !tip || !tip.matches(':hover')) {
+            return;
+        }
+
+        e.preventDefault();
+        if (!tip.dataset.hhKeep) {
+            tip.dataset.hhKeep = '1';
+            tip.addEventListener('mouseleave', function () {
+                delete tip.dataset.hhKeep;
+                if (!trigger.matches(':hover')) {
+                    tooltip.hide();
+                }
+            }, {once: true});
+        }
     };
 
     /**
@@ -67,18 +143,21 @@ humhub.module('ui.tooltip', function (module, require, $) {
 
         // Shown at once, without Bootstrap's hover delay
         document.addEventListener('focusin', function (e) {
-            var el = target(e.target);
+            var el = focusTarget(e.target);
             if (el && appearance.keyboardModality()) {
                 create(el).show();
             }
         });
 
         document.addEventListener('focusout', function (e) {
-            var tooltip = get(target(e.target));
+            var tooltip = get(focusTarget(e.target));
             if (tooltip) {
                 tooltip.hide();
             }
         });
+
+        document.addEventListener('hide.bs.tooltip', keepWhileHovered);
+        document.addEventListener('show.bs.tooltip', showOnlyWhenCutOff);
 
         // Capturing, so Escape dismisses any visible tooltip first (WCAG 1.4.13) and then closes nothing else
         document.addEventListener('keydown', function (e) {

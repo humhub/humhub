@@ -14,6 +14,8 @@
         <div class="flex-grow-1">
             <strong class="space-name">{{ space.name }}</strong>
 
+            <!-- The star, the clock and the bare count say something only by their tooltip: a screen reader
+                 reads the words instead, as part of the entry's name (WCAG 1.1.1, 1.3.1) -->
             <i
                 v-if="badge"
                 class="fa badge-space float-end type tt"
@@ -21,13 +23,16 @@
                 :title="badge.title"
                 aria-hidden="true"
             ></i>
+            <span v-if="badge" class="visually-hidden">{{ badge.title }}</span>
 
             <div
                 v-if="newItems > 0"
                 :data-message-count="newItems"
                 class="badge badge-space messageCount float-end tt"
                 :title="newItemsTitle"
+                aria-hidden="true"
             >{{ newItems }}</div>
+            <span v-if="newItems > 0" class="visually-hidden">{{ newItemsTitle }}</span>
 
             <br>
             <p class="space-description">{{ shortDescription }}</p>

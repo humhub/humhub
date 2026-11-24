@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 /* jshint -W024 */
 /* jshint expr:true */
 
-import {initEditor, pressKey, toHtml} from '../testEditor.js';
+import {clickMenuItem, initEditor, pressKey, toHtml} from '../testEditor.js';
 
 describe("Menu:accessibility", () => {
     const DIR_RIGHT = 39;
@@ -92,6 +92,19 @@ describe("Menu:accessibility", () => {
         });
     }));
 
+    it("test Home and End jump to the first and the last button", () => new Promise((done) => {
+        initEditor();
+        focusMenuItem('markEm');
+        wait(() => {
+            navigate(35, 'resizeNav');
+            navigate(36, 'type');
+            // One Tab stop: the button reached carries it
+            expect($('.ProseMirror-menu-type').attr('tabindex')).toBe('0');
+            expect($('.ProseMirror-menu-markEm').attr('tabindex')).toBe('-1');
+            done();
+        });
+    }));
+
     it("test every toolbar control is named", () => {
         initEditor();
         const unnamed = $('.ProseMirror-menubar .ProseMirror-menu-trigger').filter((i, el) => {
@@ -100,6 +113,49 @@ describe("Menu:accessibility", () => {
         }).map((i, el) => el.className).get();
         expect(unnamed).to.deep.equal([]);
         expect($('.ProseMirror-menu-tableOptions').attr('title')).to.equal('Table options');
+    });
+
+    it("test a toggle button says whether it is pressed", () => {
+        initEditor();
+        const $strong = $('.ProseMirror-menu-markStrong');
+
+        expect($strong.attr('aria-pressed')).to.equal('false');
+        clickMenuItem('markStrong');
+        expect($strong.attr('aria-pressed')).to.equal('true');
+
+        // A button without a state of its own is no toggle
+        expect($('.ProseMirror-menu-insertEmoji').attr('aria-pressed')).to.be.undefined;
+    });
+
+    it("test the type menu is a menu of choices, the current one checked", () => {
+        initEditor('# Title');
+        const $trigger = $('.ProseMirror-menu-type');
+        expect($trigger.attr('aria-haspopup')).to.equal('menu');
+
+        clickMenuItem('type');
+        const $menu = $('.ProseMirror-menu-dropdown-menu');
+        expect($menu.attr('role')).to.equal('menu');
+        expect($menu.attr('aria-label')).to.equal($trigger.attr('title'));
+        expect($menu.children().map((i, el) => el.getAttribute('role')).get()).to.satisfy((roles) => roles.every((role) => role === 'none'));
+
+        const $entries = $menu.find('[role="menuitemradio"]');
+        expect($entries.length).to.equal($menu.children().length);
+        expect($entries.filter('[aria-pressed]').length).to.equal(0);
+        expect($('.ProseMirror-menu-makeHeading1').attr('aria-checked')).to.equal('true');
+        expect($('.ProseMirror-menu-makeParagraph').attr('aria-checked')).to.equal('false');
+        clickMenuItem('type');
+    });
+
+    it("test the entries of a menu without a state are menu items", () => {
+        initEditor();
+        clickMenuItem('resizeNav');
+        clickMenuItem('insert-dropdown');
+
+        const $entries = $('.ProseMirror-menu-insert-dropdown').closest('.ProseMirror-menu-dropdown-wrapper')
+            .find('.ProseMirror-menu-dropdown-menu .dropdown-item.ProseMirror-menu-trigger');
+        expect($entries.length).to.be.above(0);
+        expect($entries.filter('[role="menuitem"]').length).to.equal($entries.length);
+        clickMenuItem('insert-dropdown');
     });
 
     it("test the toolbar is one Tab stop", () => new Promise((done) => {

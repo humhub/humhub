@@ -70,9 +70,12 @@
  *
  *  - one message at a time; a new one takes the current one out first, then
  *    appears (the legacy `hide(() => setContent().show())` chain).
- *  - the same auto-close timings (`AUTOCLOSE_*`), including the legacy quirk
- *    that a falsy `closeAfter` falls back to the level default rather than
- *    meaning "stay" — only `error` stays by default.
+ *  - the auto-close timings of the levels (`AUTOCLOSE`), including the legacy
+ *    quirk that a falsy `closeAfter` falls back to the level default rather
+ *    than meaning "stay" — only `error` stays by default. A message stays at
+ *    least long enough to be read: 5 s, more for a longer one (WCAG 2.2.1).
+ *    With `keepOpen` (the user's "Keep messages open" setting) none closes by
+ *    itself.
  *  - a level icon, the message, a close button and — for a message with
  *    details — a chevron toggle plus a `.toast-details > pre` block. Clicking
  *    the message text toggles the details too, as it did before.
@@ -109,13 +112,17 @@
 // its exit) - the two values have to stay in sync.
 const TRANSITION_MS = 150;
 
-// Legacy AUTOCLOSE_* values; 0 means "never auto-close" (error only).
+// Per level; 0 means "never auto-close" (error only).
 const AUTOCLOSE = {
     info: 6000,
-    success: 2000,
+    success: 5000,
     warn: 10000,
     error: 0,
 };
+
+// The time to read a message: at least 5 s, 60 ms per character beyond that (about 200 words a minute)
+const MIN_READING_MS = 5000;
+const READING_MS_PER_CHAR = 60;
 
 // Tabler names, the same four `humhub.ui.status.js` rendered before it forwarded to this island.
 const ICONS = {
@@ -172,6 +179,8 @@ export default {
     props: {
         closeLabel: { type: String, default: 'Close' },
         detailsLabel: { type: String, default: 'Show more' },
+        // Account → Appearance & Accessibility → "Keep messages open": none closes by itself
+        keepOpen: { type: Boolean, default: false },
     },
     data() {
         return {
@@ -279,10 +288,17 @@ export default {
         /**
          * `closeAfter || default` - the legacy expression, quirk included: for
          * info/success/warn a 0 or undefined value means "use the default", and
-         * only `error` (whose default is 0) stays until dismissed.
+         * only `error` (whose default is 0) stays until dismissed. Never shorter
+         * than the time to read the message.
          */
         autoCloseDelay(entry) {
-            return entry.closeAfter || AUTOCLOSE[entry.level] || 0;
+            const delay = entry.closeAfter || AUTOCLOSE[entry.level] || 0;
+            if (this.keepOpen || delay <= 0) {
+                return 0;
+            }
+
+            const length = String(entry.message || '').length;
+            return Math.max(delay, MIN_READING_MS, length * READING_MS_PER_CHAR);
         },
         startHide(after) {
             this.clearTimers();

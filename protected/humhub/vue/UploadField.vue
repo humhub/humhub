@@ -22,6 +22,7 @@
                         class="d-none"
                         :multiple="multiple"
                         :accept="pickerAccept || accept || null"
+                        :aria-label="triggerTitle"
                         :disabled="isDisabled"
                         @change="onInputChange"
                         @click.stop

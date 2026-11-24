@@ -14,6 +14,8 @@ Don't use a toast for:
 - **Errors at a field:** see [Form Fields](form-fields.md).
 - **Decisions:** use a [Dialog](dialog.md).
 - **Lasting state:** use a notice in the page.
+- **A change the page shows by itself** (a new comment in the list, a like): tell only screen
+  readers, with `humhub.ui.status.announce()` (see [Keyboard](keyboard.md#announcing)).
 
 ![Toast](images/toast.svg)
 
@@ -32,8 +34,10 @@ deleted."). There are no buttons inside the toast.
 
 ## Behaviour
 
-- **Auto-hide:** after about 3 seconds (longer for longer texts). Hovering or keyboard focus
-  pauses the timer.
+- **Auto-hide:** after 5 seconds or more: 60 ms per character for a longer text, longer for info
+  (6 s) and warning (10 s) messages, never for an error. Hovering or keyboard focus pauses the
+  timer. With "Keep messages open" (Account → Appearance & Accessibility) no toast hides by itself
+  (WCAG 2.2.1).
 - **Grouping:** similar messages (same source and tone, e.g. several deleted files) **stack**. The
   newest is in front with "2 more", and up to two peek beneath. At most 5 groups are on screen, and
   the oldest leaves first.

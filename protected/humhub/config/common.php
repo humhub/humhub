@@ -91,6 +91,10 @@ $config = [
                 'session.*:read' => ['burst' => ['limit' => 600, 'span' => 60], 'long' => ['limit' => 10000, 'span' => 3600]],
                 'session.*:write' => ['burst' => ['limit' => 120, 'span' => 60], 'long' => ['limit' => 2000, 'span' => 3600]],
                 'session.full' => ['burst' => ['limit' => 600, 'span' => 60], 'long' => ['limit' => 10000, 'span' => 3600]],
+                // WebDAV clients are chatty (a PROPFIND per folder, LOCK/PUT/UNLOCK per file) and do not retry on 429.
+                'dav.*:read' => ['burst' => ['limit' => 3000, 'span' => 60], 'long' => ['limit' => 50000, 'span' => 3600]],
+                'dav.*:write' => ['burst' => ['limit' => 1200, 'span' => 60], 'long' => ['limit' => 20000, 'span' => 3600]],
+                'dav.full' => ['burst' => ['limit' => 3000, 'span' => 60], 'long' => ['limit' => 50000, 'span' => 3600]],
             ],
         ],
         'gateManager' => [

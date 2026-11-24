@@ -14,6 +14,7 @@ use Firebase\JWT\Key;
 use humhub\components\fs\LocalMountConfig;
 use humhub\components\fs\MountConfigInterface;
 use humhub\modules\file\converter\DisplayImage;
+use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
@@ -186,8 +187,8 @@ class DownloadAction extends Action
 
 
     /**
-     * Creates a variant made on its first request: the display version of an image ([[DisplayImage]]), or its
-     * original where it gets none
+     * Creates a variant made on its first request: the display version of an image ([[DisplayImage]]) or its
+     * preview ([[PreviewImage]]), or its original where it gets none
      *
      * @param string|null $variant the requested variant
      * @return string|null the variant to serve
@@ -195,6 +196,12 @@ class DownloadAction extends Action
      */
     protected function prepareVariant(?string $variant): ?string
     {
+        if ($variant === PreviewImage::VARIANT) {
+            $preview = new PreviewImage();
+
+            return $preview->applyFile($this->file) ? $preview->getFilename() : null;
+        }
+
         if ($variant !== DisplayImage::VARIANT) {
             return $variant;
         }

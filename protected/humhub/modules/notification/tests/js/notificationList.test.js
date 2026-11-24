@@ -118,14 +118,27 @@ describe('NotificationList', () => {
             props: { initial: windowPayload([notification(), notification({ id: 6 })]) },
         });
 
-        expect(wrapper.findAll('.hh-list > a')).toHaveLength(2);
+        expect(wrapper.findAll('.hh-list li > a')).toHaveLength(2);
         expect(getCalls).toHaveLength(0);
+    });
+
+    it('is a list for screen readers, one item per notification', () => {
+        wrapper = mount(NotificationList, {
+            ...mountOptions(),
+            props: { initial: windowPayload([notification(), notification({ id: 6 })]) },
+        });
+
+        const list = wrapper.find('ul[role="list"]');
+        expect(list.exists()).toBe(true);
+        expect(list.findAll(':scope > li')).toHaveLength(2);
+        expect(list.findAll(':scope > li > a[data-notification-id]')).toHaveLength(2);
     });
 
     it('shows the empty state when there is nothing to list', () => {
         wrapper = mount(NotificationList, { ...mountOptions(), props: { initial: windowPayload([]) } });
 
         expect(wrapper.find('.hh-list .info').text()).toBe('There are no notifications yet.');
+        expect(wrapper.find('ul').exists()).toBe(false);
     });
 
     it('fetches the first page on reload, with the page size and filters', async () => {
@@ -142,7 +155,7 @@ describe('NotificationList', () => {
         expect(getCalls[0]).toContain('limit=20');
         expect(getCalls[0]).toContain('seen=unseen');
         expect(decodeURIComponent(getCalls[0])).toContain('categories[]=social');
-        expect(wrapper.findAll('.hh-list > a')).toHaveLength(1);
+        expect(wrapper.findAll('.hh-list li > a')).toHaveLength(1);
     });
 
     it('appends the next page and stops when the cursor is exhausted', async () => {
@@ -163,7 +176,7 @@ describe('NotificationList', () => {
         await flushPromises();
 
         expect(getCalls[1]).toContain('cursor=bjE6NQ');
-        expect(wrapper.findAll('.hh-list > a').map((entry) => entry.attributes('data-notification-id')))
+        expect(wrapper.findAll('.hh-list li > a').map((entry) => entry.attributes('data-notification-id')))
             .toEqual(['5', '3']);
         // The second page had no cursor of its own, so there is nothing more to load.
         expect(wrapper.find('button').exists()).toBe(false);
@@ -247,6 +260,6 @@ describe('NotificationList', () => {
 
         expect(errors).toHaveLength(1);
         // The previously listed entries stay - a failed refresh is not an empty list.
-        expect(wrapper.findAll('.hh-list > a')).toHaveLength(1);
+        expect(wrapper.findAll('.hh-list li > a')).toHaveLength(1);
     });
 });

@@ -64,6 +64,10 @@ class Promt {
             let field = this.options.fields[name];
             let input = field.render();
             input.id = input.id || this.id + '-' + name;
+            if (field.options.required) {
+                // Not `required`: the browser would check the field itself and only on a click on OK
+                input.setAttribute('aria-required', 'true');
+            }
             let $label = $('<label>').attr('for', input.id).html(this.translate(field.options.label || name) + ':');
             let $field = $('<div>').append($label).append('<br>').append(input);
             this.domFields.push($field[0]);
@@ -139,16 +143,34 @@ class Promt {
         return result;
     }
 
+    /**
+     * Shows the error below its field until the field is changed: the field is `aria-invalid` and described by the
+     * error, which is said once as an alert, and gets the focus (WCAG 3.3.1, 3.3.2)
+     *
+     * @param {HTMLElement} dom the field's wrapper
+     * @param {string} message
+     */
     reportInvalid(dom, message) {
-        // FIXME this is awful and needs a lot more work
-        let parent = dom.parentNode;
-        let msg = parent.appendChild(document.createElement("div"));
-        msg.style.left = (dom.offsetLeft + dom.offsetWidth + 2) + "px";
-        msg.style.top = (dom.offsetTop - 5) + "px";
-        msg.className = "ProseMirror-invalid";
+        const input = $(dom).find('input, select, textarea')[0];
+        const id = (input ? input.id : this.id) + '-error';
+        $(dom).find('.ProseMirror-invalid').remove();
+
+        const msg = document.createElement('div');
+        msg.id = id;
+        msg.className = 'ProseMirror-invalid invalid-feedback d-block';
         msg.setAttribute('role', 'alert');
-        msg.textContent = message;
-        setTimeout(() => parent.removeChild(msg), 1500);
+        msg.textContent = this.translate(message);
+        dom.appendChild(msg);
+
+        if (!input) {
+            return;
+        }
+
+        $(input).addClass('is-invalid').attr('aria-invalid', 'true').attr('aria-describedby', id).focus()
+            .one('input change', () => {
+                msg.remove();
+                $(input).removeClass('is-invalid').removeAttr('aria-invalid aria-describedby');
+            });
     }
 
     initEvents() {

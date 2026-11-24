@@ -290,8 +290,9 @@ class View extends \yii\web\View
 
         if (!Yii::$app->request->isAjax) {
             // The skip links (docs/ui/keyboard.md, "Reaching everything"); `_base.scss` hides one whose target the
-            // page lacks. The content is the column beside the page's own menu (space, profile, account, admin)
-            // when there is one, else the main area, so only one of the first two shows
+            // page lacks, `ui.focus` takes its `href` then. The content is the column beside the page's own menu
+            // (space, profile, account, admin) when there is one, else the main area, so only one of the first
+            // two shows
             $skipLinks = [
                 '#layout-content-column' => Yii::t('base', 'Skip to main content'),
                 '#main-content' => Yii::t('base', 'Skip to main content'),
@@ -301,6 +302,7 @@ class View extends \yii\web\View
             foreach ($skipLinks as $target => $label) {
                 $lines[] = Button::primary($label)
                     ->link($target)
+                    ->options(['data-skip-target' => $target])
                     ->cssClass('skip-link visually-hidden-focusable position-absolute start-50 translate-middle-x')
                     ->style('z-index:100000')
                     ->sm()

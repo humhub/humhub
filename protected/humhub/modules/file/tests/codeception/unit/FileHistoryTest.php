@@ -47,6 +47,23 @@ class FileHistoryTest extends HumHubDbTestCase
     }
 
 
+    public function testANewVersionFromAPathOnDiskIsAVersionLikeAnyOther()
+    {
+        $file = $this->prepareFile();
+        $file->getPolymorphicRelation()->fileManagerEnableHistory = true;
+        $file->setStoredFileContent('V1');
+
+        $path = tempnam(sys_get_temp_dir(), 'history');
+        file_put_contents($path, 'Version 2');
+        $file->setStoredFileByPath($path);
+        unlink($path);
+
+        $this->assertSame('Version 2', $file->store->getContent());
+        $this->assertSame(9, (int)$file->size);
+        $this->assertSame(sha1('Version 2'), $file->hash_sha1);
+        $this->assertEquals(1, count($file->historyFiles));
+    }
+
     public function testRecordWithDisabledHistory()
     {
         $file = $this->prepareFile();

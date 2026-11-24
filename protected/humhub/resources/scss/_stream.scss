@@ -140,13 +140,13 @@
                 padding-right: 30px;
                 width: 100%;
 
-                h4 {
+                .wall-entry-title {
                     font-size: 15px;
                     padding-top: 1px;
                     margin-bottom: 3px;
                 }
 
-                h5 {
+                .wall-entry-meta {
                     font-size: 12px;
                 }
 
@@ -161,7 +161,7 @@
                 top: 0;
             }
 
-            h4, h5 {
+            .wall-entry-title, .wall-entry-meta {
                 i.ti-caret-right-filled {
                     margin: 0 2px;
                 }
@@ -209,7 +209,7 @@
             }
         }
 
-        h4 {
+        h4, .wall-entry-title {
             font-size: 14px;
             padding-top: 1px;
             margin-bottom: 3px;
@@ -235,7 +235,7 @@
 
         }
 
-        h5 {
+        h5, .wall-entry-meta {
             color: var(--bs-body-color);
             font-size: 12px;
 

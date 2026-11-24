@@ -51,7 +51,7 @@ class LockCommentsIcon extends Icon
             return '';
         }
 
-        return static::get(static::getCommentsStatusIcon($model))->tooltip(static::getCommentsStatusIconTitle($model));
+        return static::get(static::getCommentsStatusIcon($model))->tooltip(static::getCommentsStatusIconTitle($model))->focusable();
     }
 
     /**

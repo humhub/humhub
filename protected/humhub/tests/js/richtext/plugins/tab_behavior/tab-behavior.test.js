@@ -35,6 +35,24 @@ const cursorInLastCellOfFirstTable = (editor) => {
     setSelection(pos, null, editor);
 };
 
+// Puts the cursor at the end of the given text
+const cursorAfter = (text, editor) => {
+    let pos = null;
+    editor.view.state.doc.descendants((node, nodePos) => {
+        if (node.isText && node.text === text) {
+            pos = nodePos + node.nodeSize;
+        }
+    });
+    setSelection(pos, null, editor);
+};
+
+// Whether the editor took the key: it prevents the browser's default, else Tab moves the focus on
+const editorTakes = (key, options = {}) => {
+    const event = new KeyboardEvent('keydown', {key, cancelable: true, bubbles: true, ...options});
+    $('.ProseMirror')[0].dispatchEvent(event);
+    return event.defaultPrevented;
+};
+
 describe("Plugin:tab_behavior", () => {
     it("test tab in paragraph", () => {
         const editor = initEditor();
@@ -192,6 +210,37 @@ describe("Plugin:tab_behavior", () => {
         expect($from.parent.type.name).to.equal('paragraph');
         expect($from.depth).to.equal(1);
         expect(toHtml()).to.equal(TABLE_HTML + P_EMPTY + TABLE_HTML);
+    });
+
+    it("test tab on the first item of a list leaves the editor", () => {
+        const editor = initEditor('- first item\n- second item');
+        cursorAfter('first item', editor);
+
+        // There is no item to indent it under: Tab is the browser's and moves the focus on
+        expect(editorTakes('Tab')).to.be.false;
+        expect(serialize()).to.equal('- first item\n- second item');
+    });
+
+    it("test tab leaves the editor once an item can't go deeper", () => {
+        const editor = initEditor('- first item\n- second item');
+        cursorAfter('second item', editor);
+
+        expect(editorTakes('Tab')).to.be.true;
+        expect(serialize()).to.equal('- first item\n  - second item');
+
+        // Now the first item of its list
+        expect(editorTakes('Tab')).to.be.false;
+        expect(serialize()).to.equal('- first item\n  - second item');
+    });
+
+    it("test escape, then tab leaves the editor from a list item", () => {
+        const editor = initEditor('- first item\n- second item');
+        cursorAfter('second item', editor);
+
+        editorTakes('Escape');
+
+        expect(editorTakes('Tab')).to.be.false;
+        expect(serialize()).to.equal('- first item\n- second item');
     });
 
     it("test tab in code block", () => {

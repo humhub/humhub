@@ -29,6 +29,7 @@ class AppearanceTest extends HumHubDbTestCase
         $this->assertSame(Appearance::SYSTEM, $appearance->getDefault(Appearance::CONTRAST));
         $this->assertSame(Appearance::SYSTEM, $appearance->getDefault(Appearance::MOTION));
         $this->assertSame(Appearance::OFF, $appearance->getDefault(Appearance::FONT));
+        $this->assertSame(Appearance::OFF, $appearance->getDefault(Appearance::MESSAGES));
     }
 
     public function testUserInheritsTheInstanceDefault()

@@ -986,6 +986,16 @@ humhub.module('vue', function (module, require, $) {
         }
     };
 
+    // A message for screen readers only, no toast (WCAG 4.1.3): `humhub.ui.status`'s announce(), resolved
+    // per call like `ui.modal` above
+    var announce = function (message) {
+        var uiStatus = require('ui.status');
+
+        if (uiStatus && uiStatus.announce) {
+            uiStatus.announce(message);
+        }
+    };
+
     // --- HTTP API helpers -------------------------------------------------
     // The islands are fed by the platform's HTTP API (/api/v2, see
     // docs/develop/concept-api.md) — these helpers cover what the route-based
@@ -1073,6 +1083,7 @@ humhub.module('vue', function (module, require, $) {
         events: events,
         status: status,
         setStatusHandler: setStatusHandler,
+        announce: announce,
         pageTitle: pageTitle,
     });
 });

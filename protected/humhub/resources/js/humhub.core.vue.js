@@ -5721,6 +5721,9 @@
       context: { type: Object, default: () => ({}) }
     },
     computed: {
+      readonlyContext() {
+        return vue.readonly(this.context);
+      },
       visibleEntries() {
         return vue$1.getSlotComponents(this.name).filter((entry) => vue$1.isRegistered(entry.component));
       }
@@ -5735,7 +5738,7 @@
           vue.resolveDynamicComponent(entry.component),
           vue.mergeProps({
             key: entry.id
-          }, { ref_for: true }, $props.context),
+          }, { ref_for: true }, $options.readonlyContext),
           null,
           16
           /* FULL_PROPS */
@@ -8691,6 +8694,9 @@
           exclude.push("file_handler");
         }
         return exclude;
+      },
+      uploadLabel() {
+        return vue$1.i18n.t("FileModule.base", "Upload files");
       }
     },
     mounted() {
@@ -8782,7 +8788,7 @@
     }
   };
   const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-cookie-key"];
-  const _hoisted_2$8 = ["accept"];
+  const _hoisted_2$8 = ["accept", "aria-label"];
   const _hoisted_3$7 = {
     key: 1,
     ref: "handlers",
@@ -8830,6 +8836,7 @@
           class: "d-none",
           multiple: "",
           accept: $data.pickerAccept,
+          "aria-label": $options.uploadLabel,
           onChange: _cache[0] || (_cache[0] = (...args) => $options.onPicked && $options.onPicked(...args)),
           onCancel: _cache[1] || (_cache[1] = (...args) => $options.onPicked && $options.onPicked(...args))
         }, null, 40, _hoisted_2$8)) : vue.createCommentVNode("v-if", true),
@@ -9111,10 +9118,12 @@
   const TRANSITION_MS = 150;
   const AUTOCLOSE = {
     info: 6e3,
-    success: 2e3,
+    success: 5e3,
     warn: 1e4,
     error: 0
   };
+  const MIN_READING_MS = 5e3;
+  const READING_MS_PER_CHAR = 60;
   const ICONS = {
     info: "ti ti-info-circle",
     success: "ti ti-circle-check",
@@ -9150,7 +9159,9 @@
   const _sfc_main$5 = {
     props: {
       closeLabel: { type: String, default: "Close" },
-      detailsLabel: { type: String, default: "Show more" }
+      detailsLabel: { type: String, default: "Show more" },
+      // Account → Appearance & Accessibility → "Keep messages open": none closes by itself
+      keepOpen: { type: Boolean, default: false }
     },
     data() {
       return {
@@ -9243,10 +9254,16 @@
       /**
        * `closeAfter || default` - the legacy expression, quirk included: for
        * info/success/warn a 0 or undefined value means "use the default", and
-       * only `error` (whose default is 0) stays until dismissed.
+       * only `error` (whose default is 0) stays until dismissed. Never shorter
+       * than the time to read the message.
        */
       autoCloseDelay(entry) {
-        return entry.closeAfter || AUTOCLOSE[entry.level] || 0;
+        const delay = entry.closeAfter || AUTOCLOSE[entry.level] || 0;
+        if (this.keepOpen || delay <= 0) {
+          return 0;
+        }
+        const length = String(entry.message || "").length;
+        return Math.max(delay, MIN_READING_MS, length * READING_MS_PER_CHAR);
       },
       startHide(after) {
         this.clearTimers();
@@ -10085,7 +10102,7 @@
   };
   const _hoisted_1$1 = { class: "btn-group btn-group-sm" };
   const _hoisted_2$1 = ["aria-disabled", "title", "data-bs-title"];
-  const _hoisted_3$1 = ["multiple", "accept", "disabled"];
+  const _hoisted_3$1 = ["multiple", "accept", "aria-label", "disabled"];
   const _hoisted_4$1 = {
     type: "button",
     class: "btn btn-light btn-icon-only dropdown-toggle",
@@ -10157,6 +10174,7 @@
                 class: "d-none",
                 multiple: $props.multiple,
                 accept: $data.pickerAccept || $props.accept || null,
+                "aria-label": $options.triggerTitle,
                 disabled: _ctx.isDisabled,
                 onChange: _cache[0] || (_cache[0] = (...args) => $options.onInputChange && $options.onInputChange(...args)),
                 onClick: _cache[1] || (_cache[1] = vue.withModifiers(() => {

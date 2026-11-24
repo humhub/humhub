@@ -48,6 +48,30 @@ use yii\helpers\ArrayHelper;
 class ProfileField extends ActiveRecord
 {
     /**
+     * The purpose of the fields the installation creates, by internal name: the `autocomplete` of their input,
+     * for the browser's autofill and assistive technology (WCAG 1.3.5)
+     *
+     * @since 1.20
+     */
+    public const AUTOCOMPLETE = [
+        'firstname' => 'given-name',
+        'lastname' => 'family-name',
+        'title' => 'organization-title',
+        'gender' => 'sex',
+        'street' => 'address-line1',
+        'zip' => 'postal-code',
+        'city' => 'address-level2',
+        'state' => 'address-level1',
+        'country' => 'country',
+        'birthday' => 'bday',
+        'phone_private' => 'home tel',
+        'phone_work' => 'work tel',
+        'mobile' => 'mobile tel',
+        'fax' => 'fax tel',
+        'url' => 'url',
+    ];
+
+    /**
      * Field Type Instance
      *
      * @var BaseType
@@ -325,6 +349,15 @@ class ProfileField extends ActiveRecord
     public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         return $this->fieldType->getUserValue($user, $raw, $encode);
+    }
+
+    /**
+     * @return string|null the `autocomplete` of the field's input, see [[AUTOCOMPLETE]]
+     * @since 1.20
+     */
+    public function getAutocomplete(): ?string
+    {
+        return static::AUTOCOMPLETE[$this->internal_name] ?? null;
     }
 
     /**

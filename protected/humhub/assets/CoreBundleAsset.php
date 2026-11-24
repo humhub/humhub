@@ -38,7 +38,6 @@ class CoreBundleAsset extends AssetBundle
         JqueryAutosizeAsset::class,
         JqueryWidgetAsset::class,
         NProgressAsset::class,
-        JqueryNiceScrollAsset::class,
         BlueimpFileUploadAsset::class,
         PhotoSwipeAsset::class,
         ClipboardJsAsset::class,

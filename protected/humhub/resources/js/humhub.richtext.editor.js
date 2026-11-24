@@ -15666,6 +15666,7 @@
       this.options = options || {};
       this.sortOrder = this.options.sortOrder;
       this.options.htmlNode = "button";
+      this.hasState = typeof this.options.active === "function";
     }
     // :: (EditorView) → {dom: dom.Node, update: (EditorState) → bool}
     // Renders the icon according to its [display
@@ -15731,7 +15732,10 @@
       if (this.options.active) {
         this.active = this.options.active(state2) || forceActive || false;
         setClass(this.dom, buildMenuClass("active"), this.active);
-        setAttribute(this.dom, "aria-pressed", "true", this.active);
+        if (this.hasState) {
+          const stateAttribute = this.dom.getAttribute("role") === "menuitemradio" ? "aria-checked" : "aria-pressed";
+          this.dom.setAttribute(stateAttribute, this.active ? "true" : "false");
+        }
       }
     }
     setEnabledItemState(state2, forceEnable) {
@@ -15885,7 +15889,7 @@
         throw new RangeError("Dropdown without icon or label property");
       }
       addMenuClass(this.trigger, "dropdown");
-      this.trigger.setAttribute("aria-haspopup", "true");
+      this.trigger.setAttribute("aria-haspopup", "menu");
       this.trigger.setAttribute("aria-expanded", "false");
       setTitle(this.trigger, this.options, view2);
     }
@@ -16069,7 +16073,8 @@
       this.content.items.forEach((item) => {
         let dom = item.render(view2, { htmlNode: "a", tabindex: 0 });
         dom.classList.add("dropdown-item");
-        let itemDom = crelt("div", {}, dom);
+        (item.trigger || dom).setAttribute("role", item.hasState ? "menuitemradio" : "menuitem");
+        let itemDom = crelt("div", { role: "none" }, dom);
         addMenuClass(itemDom, "dropdown-item");
         rendered.push(itemDom);
       });
@@ -16087,7 +16092,10 @@
       return contentUpdateResult;
     }
     expand(dom) {
-      let menuDOM = crelt("div", { class: "dropdown-menu show" }, this.getContentDom());
+      let menuDOM = crelt("div", { class: "dropdown-menu show", role: "menu" }, this.getContentDom());
+      if (this.trigger.getAttribute("title")) {
+        menuDOM.setAttribute("aria-label", this.trigger.getAttribute("title"));
+      }
       addMenuClass(menuDOM, "dropdown-menu");
       let done = false;
       function close2() {
@@ -16121,7 +16129,7 @@
       this.options.bubbleActive = true;
     }
     initTrigger(view2) {
-      this.trigger = $('<a tabindex="0" aria-haspopup="listbox" aria-expanded="false"></a>').text(translate$1(view2, this.options.label))[0];
+      this.trigger = $('<a tabindex="0" role="menuitem" aria-haspopup="menu" aria-expanded="false"></a>').text(translate$1(view2, this.options.label))[0];
       setAttributesFromOptions(this.trigger, this.options);
     }
     /**
@@ -16138,7 +16146,7 @@
     initWrapper(view2) {
       $(this.trigger).addClass("dropdown-item");
       let label = $("<div>").addClass(buildMenuClass("submenu-label")).html(this.trigger)[0];
-      this.menu = crelt("div", { class: buildMenuClass("submenu") + " dropdown-menu" }, this.getContentDom(view2));
+      this.menu = crelt("div", { class: buildMenuClass("submenu") + " dropdown-menu", role: "menu" }, this.getContentDom(view2));
       this.dom = crelt("div", { class: buildMenuClass("submenu-wrap") }, label, this.menu);
       this.$ = $(this.dom);
     }
@@ -16669,6 +16677,14 @@
             e2.preventDefault();
             this.focusPrev();
             break;
+          case 36:
+          // Home
+          case 35:
+            if (this.getToolbarButtons().is(e2.target)) {
+              e2.preventDefault();
+              this.focusEdge(keyCode === 36);
+            }
+            break;
         }
       });
       this.$.data("menuBarInstance", this);
@@ -16709,9 +16725,7 @@
      * come and go with the selection.
      */
     applyRovingTabindex() {
-      const trigger = "." + buildMenuClass("trigger");
-      const $buttons = this.$.find(trigger).not("." + buildMenuClass("dropdown-menu") + " " + trigger).not("." + buildMenuClass("submenu") + " " + trigger);
-      const $shown = $buttons.not(".d-none");
+      const $shown = this.getToolbarButtons().not(".d-none");
       if (!$shown.length) {
         return;
       }
@@ -16724,6 +16738,27 @@
       }
       $shown.attr("tabindex", -1);
       $active.attr("tabindex", 0);
+    }
+    /**
+     * @returns {jQuery} the buttons of the toolbar itself, not the entries of its dropdowns
+     */
+    getToolbarButtons() {
+      const trigger = "." + buildMenuClass("trigger");
+      return this.$.find(trigger).not("." + buildMenuClass("dropdown-menu") + " " + trigger).not("." + buildMenuClass("submenu") + " " + trigger);
+    }
+    /**
+     * Focuses the first or the last button shown (Home, End, as the ARIA toolbar pattern has it)
+     *
+     * @param {boolean} first
+     */
+    focusEdge(first) {
+      const $shown = this.getToolbarButtons().filter(":visible");
+      if (!$shown.length) {
+        return;
+      }
+      const $target = first ? $shown.first() : $shown.last();
+      $shown.attr("tabindex", -1);
+      $target.attr("tabindex", 0).focus();
     }
     focusPrev() {
       let $prev = null;
@@ -16898,6 +16933,9 @@
         let field = this.options.fields[name2];
         let input = field.render();
         input.id = input.id || this.id + "-" + name2;
+        if (field.options.required) {
+          input.setAttribute("aria-required", "true");
+        }
         let $label = $("<label>").attr("for", input.id).html(this.translate(field.options.label || name2) + ":");
         let $field = $("<div>").append($label).append("<br>").append(input);
         this.domFields.push($field[0]);
@@ -16955,15 +16993,30 @@
       }
       return result;
     }
+    /**
+     * Shows the error below its field until the field is changed: the field is `aria-invalid` and described by the
+     * error, which is said once as an alert, and gets the focus (WCAG 3.3.1, 3.3.2)
+     *
+     * @param {HTMLElement} dom the field's wrapper
+     * @param {string} message
+     */
     reportInvalid(dom, message) {
-      let parent = dom.parentNode;
-      let msg = parent.appendChild(document.createElement("div"));
-      msg.style.left = dom.offsetLeft + dom.offsetWidth + 2 + "px";
-      msg.style.top = dom.offsetTop - 5 + "px";
-      msg.className = "ProseMirror-invalid";
+      const input = $(dom).find("input, select, textarea")[0];
+      const id2 = (input ? input.id : this.id) + "-error";
+      $(dom).find(".ProseMirror-invalid").remove();
+      const msg = document.createElement("div");
+      msg.id = id2;
+      msg.className = "ProseMirror-invalid invalid-feedback d-block";
       msg.setAttribute("role", "alert");
-      msg.textContent = message;
-      setTimeout(() => parent.removeChild(msg), 1500);
+      msg.textContent = this.translate(message);
+      dom.appendChild(msg);
+      if (!input) {
+        return;
+      }
+      $(input).addClass("is-invalid").attr("aria-invalid", "true").attr("aria-describedby", id2).focus().one("input change", () => {
+        msg.remove();
+        $(input).removeClass("is-invalid").removeAttr("aria-invalid aria-describedby");
+      });
     }
     initEvents() {
       this.$form.on("keydown", (e2) => {
@@ -17089,6 +17142,13 @@
       humhub.modules.ui.status.success(message);
     }
   };
+  function announce(message) {
+    const modules = window.humhub && window.humhub.modules;
+    const status = modules && modules.ui && modules.ui.status;
+    if (status && typeof status.announce === "function") {
+      status.announce(message);
+    }
+  }
   function getEmojiConfig() {
     if (!window.humhub || !window.humhub.config) {
       return {};
@@ -44077,6 +44137,7 @@
    * @license https://www.humhub.com/licences
    */
   let count = 0;
+  const announced = /* @__PURE__ */ new WeakMap();
   function suggestionListId() {
     return "richtext-suggestions-" + ++count;
   }
@@ -44094,6 +44155,19 @@
       dom.removeAttribute("aria-controls");
       dom.removeAttribute("aria-activedescendant");
     }
+  }
+  function closeSuggestions(view2) {
+    setCurrentSuggestion(view2, null, null);
+    if (view2) {
+      announced.delete(view2);
+    }
+  }
+  function announceSuggestions(view2, number2) {
+    if (!view2 || announced.get(view2) === number2) {
+      return;
+    }
+    announced.set(view2, number2);
+    announce(number2 > 0 ? translate$1(view2, "Suggestions") + ": " + number2 : translate$1(view2, "No results"));
   }
   /*
    * @link https://www.humhub.org/
@@ -44219,6 +44293,7 @@
       });
       this.$container.empty().append($list);
       setCurrentSuggestion(this.view, this.listId, this.listId + "-" + this.index);
+      announceSuggestions(this.view, this.items.length);
       const coords = this.view.coordsAtPos(this.query.from);
       this.$container.css({
         top: coords.bottom + window.scrollY + 2,
@@ -44274,7 +44349,7 @@
         this.$container.remove();
         this.$container = null;
       }
-      setCurrentSuggestion(this.view, null, null);
+      closeSuggestions(this.view);
     }
     destroy() {
       this.close();
@@ -50136,7 +50211,6 @@
       this.context = options.context;
       this.oldStageHeight = 0;
       this.scrollActive = false;
-      this.niceScrollInit = false;
       this.initialized = false;
     }
     update() {
@@ -50146,18 +50220,6 @@
       }
       this.oldStageHeight = stageHeight;
       if (!this.scrollActive && this.context.editor.getStage()[0].scrollHeight > stageHeight) {
-        if (!this.niceScrollInit && !isSmallView() && this.context.editor.getStage().niceScroll) {
-          this.context.editor.getStage().niceScroll({
-            cursorwidth: "7",
-            cursorborder: "",
-            cursorcolor: "#606572",
-            cursoropacitymax: "0.3",
-            nativeparentscrolling: false,
-            autohidemode: false,
-            railpadding: { top: 2, right: 3, left: 0, bottom: 2 }
-          });
-        }
-        this.niceScrollInit = true;
         this.scrollActive = true;
         this.context.editor.trigger("scrollActive");
       } else if (!this.initialized || this.scrollActive) {
@@ -50465,8 +50527,7 @@
     };
     const tab = (dir) => (state2, dispatch) => {
       const listItemType = getListItemType(state2);
-      if (listItemType) {
-        (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state2, dispatch);
+      if (listItemType && (dir > 0 ? sinkListItem : liftListItem)(listItemType)(state2, dispatch)) {
         return true;
       }
       const tableDepth = getTableDepth(state2.selection.$from);
@@ -51726,7 +51787,7 @@
     if (this.$container) {
       this.$container.remove();
       this.$container = null;
-      setCurrentSuggestion(this.getView(), null, null);
+      closeSuggestions(this.getView());
       this.event.trigger("closed");
     }
   };
@@ -51780,6 +51841,7 @@
       });
       this.$container.append($list);
       this.setCurrent($list.find("li").first());
+      announceSuggestions(this.getView(), this.result.length);
     } else if (this.result.text) {
       setCurrentSuggestion(this.getView(), null, null);
       const name2 = encode$2(this.result.text);
@@ -51790,7 +51852,9 @@
       this.$container.append($('<div style="text-align:center;">').append($loader));
     } else {
       setCurrentSuggestion(this.getView(), null, null);
-      this.$container.append($("<span>No Result</span>"));
+      const noResults = this.getView() ? translate$1(this.getView(), "No results") : "No results";
+      this.$container.append($("<span>").text(noResults));
+      announceSuggestions(this.getView(), 0);
     }
     $("body").append(this.$container.show());
   };

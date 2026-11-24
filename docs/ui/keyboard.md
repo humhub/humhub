@@ -32,7 +32,7 @@ messages are announced (4.1.3).
   `@media (hover: hover)` only: a touch screen always shows the control.
 - **The order is the visual order.** No positive `tabindex`. After a full page load the first
   stops are the skip links (to the content, the navigation and the sidebar; a link whose target
-  the page lacks is hidden), then the top bar, then the content. The content is the column beside
+  the page lacks is hidden and has no `href` then, `ui.focus`), then the top bar, then the content. The content is the column beside
   the page's own menu (`#layout-content-column` in a space, a profile, the account and the administration),
   else the main area (`#main-content`), so the link skips that menu as well. After a pjax swap the
   focus is on the loaded content, so Tab continues there instead of at the top of the page.
@@ -117,6 +117,9 @@ feed, and a text field or editor keeps them.
 
 - What an action changes somewhere the focus is not, the status bar announces (`humhub.ui.status`,
   `aria-live="polite"`, errors assertive). See [Toast](toast.md).
+- When the page shows the change by itself (a new comment in the list, the count of a like, the
+  visibility badge), only a screen reader is told, without a toast: `humhub.ui.status.announce()`,
+  in Vue `announce` from `@humhub/vue`.
 - Loading, empty and error states carry `role="status"` or `role="alert"`. See
   [Loading, Empty & Error States](loading-empty-error.md).
 - A counter that updates live (unread notifications) updates its control's name. It does not
@@ -126,19 +129,28 @@ feed, and a text field or editor keeps them.
 
 - Tab leaves the richtext editor to the next control (the submit button), Shift+Tab to the
   previous one.
-- In a list, Tab indents the item and Shift+Tab outdents it. Enter on an empty item leaves the
-  list, then Tab leaves the editor.
+- In a list, Tab indents the item and Shift+Tab outdents it. Where it can't indent (the first item
+  of a list), Tab leaves the editor, so pressing it again and again always gets out. Escape, then
+  Tab leaves from anywhere in the text, and the editor's description (`aria-describedby`) says so.
+  Enter on an empty item leaves the list.
 - In a table, Tab moves to the next cell and Shift+Tab to the previous one. After the last cell,
   Tab places the cursor after the table; before the first cell, Shift+Tab places it before. A
   row is added from the table menu, not by Tab.
 - The toolbar is a `role="toolbar"` and one Tab stop: only one of its buttons is in the tab
-  order, the arrow keys move between them, Enter or ArrowDown opens a dropdown, Escape closes it,
-  and Tab leaves the toolbar for the text. The mention and emoji suggestions take ↑/↓ and Enter, and
+  order, the arrow keys move between them, Home and End go to the first and the last, Enter or
+  ArrowDown opens a dropdown, Escape closes it, and Tab leaves the toolbar for the text. A dropdown is a `role="menu"` named like its button; the
+  block types in it are `menuitemradio`s, the current one `aria-checked`, the other entries
+  `menuitem`s. A toolbar button with a state (bold, the editor mode) is a toggle with
+  `aria-pressed`. The mention and emoji suggestions take ↑/↓ and Enter, and
   Escape closes them. They are a named `listbox`, and the editor points to the current option
-  (`aria-activedescendant`), so it is read while the focus stays in the text.
+  (`aria-activedescendant`), so it is read while the focus stays in the text. How many there are is
+  said ("Suggestions: 3", "No results"). The editor stays a `textbox`: a multi-line text is no
+  `combobox` and has no `aria-expanded`.
 - The dialog of a link, an image, a table, an audio or a video (`prompt.js`) is a modal
   `role="dialog"` named by its title, with labelled fields: Tab stays inside, Escape closes it and
-  the focus returns to where it came from.
+  the focus returns to where it came from. A required field is `aria-required`; when it is left
+  empty, the error stays below it until it is changed, linked with `aria-describedby`, and the field
+  is `aria-invalid` and gets the focus.
 
 ## Checking
 

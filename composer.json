@@ -66,6 +66,7 @@
         "npm-asset/timeago": "^1.6.3",
         "npm-asset/vue": "~3.5.13",
         "phpoffice/phpspreadsheet": "^5.0",
+        "sabre/dav": "^4.7",
         "scssphp/scssphp": "^2.0.1",
         "symfony/amazon-mailer": "^7.0",
         "symfony/google-mailer": "^7.0",

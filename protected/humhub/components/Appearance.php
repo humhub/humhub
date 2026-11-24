@@ -31,6 +31,10 @@ class Appearance extends Component
     public const CONTRAST = 'a11y.contrast';
     public const MOTION = 'a11y.motion';
     public const FONT = 'a11y.font';
+    /**
+     * Messages of the status bar stay until they are closed (WCAG 2.2.1)
+     */
+    public const MESSAGES = 'a11y.messages';
 
     public const SYSTEM = 'system';
     public const LIGHT = 'light';
@@ -53,6 +57,7 @@ class Appearance extends Component
             self::CONTRAST => [self::SYSTEM, self::OFF, self::ON],
             self::MOTION => [self::SYSTEM, self::OFF, self::ON],
             self::FONT => [self::OFF, self::ON],
+            self::MESSAGES => [self::OFF, self::ON],
         ];
     }
 
@@ -63,7 +68,7 @@ class Appearance extends Component
     {
         return match ($option) {
             self::COLOR_MODE => self::LIGHT,
-            self::FONT => self::OFF,
+            self::FONT, self::MESSAGES => self::OFF,
             default => self::SYSTEM,
         };
     }

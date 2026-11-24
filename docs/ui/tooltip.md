@@ -21,7 +21,11 @@ person or space, use the [Hover Card](hover-card.md).
 - **Mouse:** appears after a short pause (about 250ms). Moving to the next control shortly after
   shows its tooltip at once, so scanning a toolbar is quick.
 - **Keyboard:** appears on focus, but only when focus came from the keyboard (Tab), not after a
-  click.
+  click. A link or button shows the tooltip of the one element inside it that has one (the date in
+  a permalink). An icon whose tooltip says something (visibility, "Last updated") is a tab stop of its
+  own: `Icon::focusable()`, named by its tooltip.
+- **Hoverable:** the tooltip stays while the pointer is on it, so it can be read and enlarged. It hides
+  150ms after the pointer left the control, time enough to move onto the tooltip (WCAG 1.4.13).
 - **Touch:** no tooltips. A tap triggers the control.
 - **Closes** on leaving, on a click, on Escape and on scrolling.
 - **Placement:** above the control by default, otherwise where there is room, and always inside
@@ -46,12 +50,14 @@ own. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 
 - **Markup:** `data-bs-toggle="tooltip"` with `data-bs-title` (or `title`), as today. Icon
   buttons get it from `Button::iconOnly()` and `IconButton.vue`.
-- **Options:** `delay: { show: 500, hide: 0 }` (`$tooltip-delay` as a CSS variable read by the
+- **Options:** `delay: { show: 0, hide: 150 }` today, `{ show: 500, hide: 150 }` planned (`$tooltip-delay` as a CSS variable read by the
   JS), `trigger: 'hover'` plus the keyboard focus from `humhub.ui.tooltip`, which shows a tooltip
   on `focusin` only while `humhub.ui.appearance` reports keyboard modality, hides it on `focusout`
   and on Escape ([Keyboard](keyboard.md#popups-and-escape)); no tooltip on touch.
-- **Truncated text:** `data-tooltip="overflow"` creates the tooltip only while the text is cut
-  off.
+- **Truncated text:** `data-tooltip="overflow"` on the element that cuts its text off with an ellipsis
+  shows the full text as tooltip, only while it is cut off; a focused link or button around it shows
+  it too (the name in the top bar's account menu, the site name, the space description in its
+  header). Text that has room wraps instead (the name in the profile header).
 - **File:** `_tooltip.scss`, behind `$prev-tooltip`.
 - **Sass variables:** Bootstrap's `$tooltip-font-size` (already set), `$tooltip-max-width`,
   `$tooltip-bg`, `$tooltip-color`, `$tooltip-padding-x/y`, `$tooltip-border-radius`,
@@ -70,7 +76,6 @@ native `title` attribute instead (e.g. `PageToolbar` actions).
 | Initialised on `mouseover` only, so a keyboard user never sees one | `humhub.ui.tooltip`: the same delegated binding on hover and on keyboard focus, hidden on `focusout` and Escape ([Keyboard](keyboard.md#popups-and-escape)) |
 | Delay, quick follow-up, no touch | One shared tooltip, bound by delegation, that reads `data-tooltip` (or the existing Bootstrap attributes) from PHP and Vue markup alike |
 | Vue uses native `title` | Switch to the shared tooltip, so icon buttons look the same everywhere |
-| Truncated text | `data-tooltip="overflow"`: show only when the text is cut off |
 
 ## Open questions
 

@@ -46,6 +46,7 @@ The systems modules plug into. Read the ones relevant to what your module does.
 - [Internationalization](concept-i18n.md)
 - [HTTP API framework](concept-api.md) — `/api/v2`, the auth model, endpoint and serializer ownership (the endpoint reference itself lives in [`docs/api/`](../api/) — open `docs/api/index.html` in a browser)
 - [OAuth and personal access tokens](concept-oauth.md) — core authorization server (app, admin and user clients), PATs, scopes, WebView sessions for the app
+- [WebDAV](concept-webdav.md) — the `/dav/` endpoint, token authentication, mounts of modules, locks and limits
 
 ## UI & frontend
 

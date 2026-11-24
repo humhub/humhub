@@ -24,6 +24,7 @@ class AccessibilitySettingsForm extends Model
     public $contrast;
     public $motion;
     public $font;
+    public $messages;
     public $imageAltText;
 
     /**
@@ -37,6 +38,7 @@ class AccessibilitySettingsForm extends Model
         $this->contrast = $appearance->getDefault(Appearance::CONTRAST);
         $this->motion = $appearance->getDefault(Appearance::MOTION);
         $this->font = $appearance->getDefault(Appearance::FONT) === Appearance::ON;
+        $this->messages = $appearance->getDefault(Appearance::MESSAGES) === Appearance::ON;
         $this->imageAltText = Yii::$app->getModule('content')->getImageAltTextMode();
     }
 
@@ -47,7 +49,7 @@ class AccessibilitySettingsForm extends Model
     {
         return [
             [['contrast', 'motion'], 'in', 'range' => [Appearance::SYSTEM, Appearance::OFF, Appearance::ON]],
-            ['font', 'boolean'],
+            [['font', 'messages'], 'boolean'],
             ['imageAltText', 'in', 'range' => array_keys($this->getImageAltTextOptions())],
         ];
     }
@@ -61,6 +63,7 @@ class AccessibilitySettingsForm extends Model
             'contrast' => Yii::t('AdminModule.settings', 'High contrast'),
             'motion' => Yii::t('AdminModule.settings', 'Reduce motion'),
             'font' => Yii::t('AdminModule.settings', 'Readable font'),
+            'messages' => Yii::t('AdminModule.settings', 'Keep messages open'),
             'imageAltText' => Yii::t('AdminModule.settings', 'Alternative text for images'),
         ];
     }
@@ -74,6 +77,7 @@ class AccessibilitySettingsForm extends Model
             'contrast' => Yii::t('AdminModule.settings', 'Stronger text and border colours, underlined links and a clearly visible focus.'),
             'motion' => Yii::t('AdminModule.settings', 'Turns off animations and transitions.'),
             'font' => Yii::t('AdminModule.settings', 'Lexend, a font designed for easier reading, also with dyslexia.'),
+            'messages' => Yii::t('AdminModule.settings', 'Messages such as "Saved" stay until they are closed, instead of disappearing after a few seconds.'),
             'imageAltText' => Yii::t('AdminModule.settings', 'Whether the editor asks to describe an uploaded image for people who cannot see it. If required, the image is only inserted with a description.'),
         ];
     }
@@ -106,6 +110,7 @@ class AccessibilitySettingsForm extends Model
         $appearance->setDefault(Appearance::CONTRAST, $this->contrast);
         $appearance->setDefault(Appearance::MOTION, $this->motion);
         $appearance->setDefault(Appearance::FONT, $this->font ? Appearance::ON : Appearance::OFF);
+        $appearance->setDefault(Appearance::MESSAGES, $this->messages ? Appearance::ON : Appearance::OFF);
         Yii::$app->getModule('content')->setImageAltTextMode($this->imageAltText);
 
         return true;

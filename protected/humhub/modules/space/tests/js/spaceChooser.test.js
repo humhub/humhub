@@ -93,11 +93,13 @@ afterEach(() => {
 
 describe('SpaceChooser', () => {
     it('renders the menu without asking for anything until it is opened', () => {
-        wrapper = mountInDropdown({ createSpaceUrl: '/space/create', directoryUrl: '/spaces' });
+        wrapper = mountInDropdown({ createSpaceUrl: '/space/create', directoryUrl: '/spaces', directoryLabel: 'Spaces' });
 
-        expect(wrapper.find('#space-menu-search').exists()).toBe(true);
+        expect(wrapper.find('#space-menu-search').attributes('aria-label')).toBe('Search for spaces');
         expect(wrapper.find('#space-menu-spaces.hh-list').exists()).toBe(true);
         expect(wrapper.find('#space-directory-link a').attributes('href')).toBe('/spaces');
+        // An icon only: the link is named for screen readers
+        expect(wrapper.find('#space-directory-link a').attributes('aria-label')).toBe('Spaces');
         expect(wrapper.find('.dropdown-footer a').attributes('data-action-url')).toBe('/space/create');
         // Lazy: a page whose menu is never opened costs no space queries.
         expect(getCalls).toHaveLength(0);
@@ -139,6 +141,9 @@ describe('SpaceChooser', () => {
         expect(item.attributes('data-space-member')).toBeDefined();
         expect(item.find('.space-name').text()).toBe('Product Team');
         expect(item.find('[data-message-count]').text()).toBe('2');
+        // The count in words for a screen reader, the bare number is hidden from it
+        expect(item.find('[data-message-count]').attributes('aria-hidden')).toBe('true');
+        expect(item.find('.visually-hidden').text()).toContain('since your last visit');
     });
 
     it('marks a space the caller only follows', async () => {
@@ -149,6 +154,8 @@ describe('SpaceChooser', () => {
         const item = wrapper.find('[data-space-chooser-item]');
         expect(item.attributes('data-space-following')).toBeDefined();
         expect(item.find('.ti-star-filled').exists()).toBe(true);
+        // ... in words for a screen reader too
+        expect(item.find('.visually-hidden').text()).toBe('You are following this space');
         // No count without a membership - "new since your last visit" has no meaning then.
         expect(item.find('[data-message-count]').exists()).toBe(false);
     });

@@ -88,8 +88,9 @@ class FileSerializer
             // browser display it inline - what a client renders behind a "download" action.
             'downloadUrl' => $file->getUrl(['download' => true], true),
             // Converted preview variant for image files (the same converter the web UI uses
-            // for attachment thumbnails); `null` for anything that has no image preview.
-            'previewUrl' => $previewImage->applyFile($file) ? Url::to($previewImage->getUrl(), true) : null,
+            // for attachment thumbnails), created on its first request; `null` for anything
+            // that has no image preview.
+            'previewUrl' => $previewImage->applyFile($file) ? Url::to($previewImage->getLazyUrl(), true) : null,
             // What the media viewer shows of an image: the display version (`DisplayImage`, the original when it is
             // small enough), `null` for files it doesn't apply to. @since 1.20
             'displayUrl' => $displayImage->applyFile($file) ? $displayImage->getUrl() : null,

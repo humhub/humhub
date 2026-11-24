@@ -224,6 +224,9 @@ class Profile extends ActiveRecord
 
         $safeAttributes = $this->safeAttributes();
 
+        // Autofill fills in the data of the one using the browser: not when an admin edits someone else
+        $ownProfile = $this->isOwnProfile();
+
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $profileFieldCategory) {
             $category = [
                 'type' => 'form',
@@ -261,6 +264,11 @@ class Profile extends ActiveRecord
                     $fieldDefinition[$profileField->internal_name]['hint'] = Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
+                $autocomplete = $ownProfile ? $profileField->getAutocomplete() : null;
+                if ($autocomplete !== null && isset($fieldDefinition[$profileField->internal_name])) {
+                    $fieldDefinition[$profileField->internal_name]['htmlOptions']['autocomplete'] = $autocomplete;
+                }
+
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
 
                 $profileField->fieldType->loadDefaults($this);
@@ -270,6 +278,20 @@ class Profile extends ActiveRecord
         }
 
         return $definition;
+    }
+
+    /**
+     * @return bool whether the profile is the one of the signed in user, or of a guest signing up
+     */
+    private function isOwnProfile(): bool
+    {
+        if (!Yii::$app->has('user')) {
+            return false;
+        }
+
+        $webUser = Yii::$app->user;
+
+        return $webUser->isGuest || ($this->user_id !== null && (int)$this->user_id === (int)$webUser->id);
     }
 
     /**

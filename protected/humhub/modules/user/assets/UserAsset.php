@@ -23,6 +23,7 @@ class UserAsset extends AssetBundle
     public $js = [
         'js/humhub.user.js',
         'js/humhub.user.login.js',
+        'js/humhub.user.session.js',
     ];
 
 }

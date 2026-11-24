@@ -257,13 +257,14 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     var updateContentByActionUrl = function (evt) {
         this.loader();
         var that = this;
-        client.post(evt).then(function (response) {
+        return client.post(evt).then(function (response) {
             if (response.success) {
                 that.reload();
             } else {
                 module.log.error(response, true);
                 that.loader(false);
             }
+            return response;
         }).catch(function (e) {
             that.loader(false);
             module.log.error(e, true);
@@ -271,10 +272,19 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     };
 
     /**
-     * Changes the visibility (private/public) of this entry
+     * Changes the visibility (private/public) of this entry. The badge changes away from the focus, so a
+     * screen reader is told (WCAG 4.1.3).
      * @param evt
      */
-    StreamEntry.prototype.toggleVisibility = updateContentByActionUrl;
+    StreamEntry.prototype.toggleVisibility = function (evt) {
+        updateContentByActionUrl.call(this, evt).then(function (response) {
+            if (response && response.success) {
+                require('ui.status').announce(response.state
+                    ? i18n.t('ContentModule.base', 'The content is public now.')
+                    : i18n.t('ContentModule.base', 'The content is private now.'));
+            }
+        });
+    };
 
     /**
      * Lock comments for the content

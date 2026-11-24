@@ -491,6 +491,32 @@ class File extends ActiveRecord implements ViewableInterface
 
 
     /**
+     * Sets a new file content from a file on the local disk, streamed: a large file is never
+     * read into memory. Unlike [[setStoredFile()]] with an `UploadedFile`, the file need not
+     * come from an HTTP upload (e.g. the body of a WebDAV `PUT`).
+     *
+     * The caller validates the file (type, size) before, e.g. with the `FileValidator`.
+     *
+     * @param string $path a readable file
+     * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @since 1.20
+     */
+    public function setStoredFileByPath(string $path, bool $skipHistoryEntry = false): void
+    {
+        if (!is_file($path) || !is_readable($path)) {
+            throw new InvalidArgumentException('Not a readable file: ' . $path);
+        }
+
+        $this->beforeNewStoredFile($skipHistoryEntry);
+        $this->getStore()->setByPath($path);
+        $this->afterNewStoredFile();
+    }
+
+    /**
      * Sets a new file content by a given string.
      *
      * @param string $content

@@ -205,10 +205,13 @@ humhub.module('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.changeVisibility = function () {
+        // The badge shows it next to the menu, a screen reader is told (WCAG 4.1.3)
         if (!this.$.find('.contentForm_visibility').prop('checked')) {
             this.setPublicVisibility();
+            require('ui.status').announce(i18n.t('ContentModule.base', 'The content will be public.'));
         } else {
             this.setPrivateVisibility();
+            require('ui.status').announce(i18n.t('ContentModule.base', 'The content will be private.'));
         }
     };
 

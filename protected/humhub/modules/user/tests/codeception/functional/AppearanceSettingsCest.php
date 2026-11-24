@@ -60,6 +60,7 @@ class AppearanceSettingsCest
             'AccessibilitySettings[contrast]' => 'on',
             'AccessibilitySettings[motion]' => 'off',
             'AccessibilitySettings[font]' => 1,
+            'AccessibilitySettings[messages]' => 1,
         ]);
         $I->seeResponseCodeIs(200);
 
@@ -68,6 +69,20 @@ class AppearanceSettingsCest
         Assert::assertSame(Appearance::ON, $appearance->get(Appearance::CONTRAST, $user));
         Assert::assertSame(Appearance::OFF, $appearance->get(Appearance::MOTION, $user));
         Assert::assertSame(Appearance::ON, $appearance->get(Appearance::FONT, $user));
+        Assert::assertSame(Appearance::ON, $appearance->get(Appearance::MESSAGES, $user));
+    }
+
+    public function testMessagesStayOpenWhenTheUserChoseSo(FunctionalTester $I)
+    {
+        $I->amUser1();
+        $user = User::findOne(['username' => 'User1']);
+
+        $I->amOnRoute('/dashboard/dashboard');
+        $I->seeElement('#status-bar[keep-open="false"]');
+
+        Yii::$app->appearance->set(Appearance::MESSAGES, Appearance::ON, $user);
+        $I->amOnRoute('/dashboard/dashboard');
+        $I->seeElement('#status-bar[keep-open="true"]');
     }
 
     public function testReadableFontIsLoaded(FunctionalTester $I)

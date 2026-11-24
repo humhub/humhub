@@ -392,9 +392,20 @@ stops applying and becomes `.panel-heading .ti { color: … }`. Font Awesome gly
 
 1.20 brings an OAuth 2.0 server and personal access tokens: the HumHub app signs in through the
 system browser, administrators can register clients for integrations, and users can create
-tokens for scripts. Only the app is allowed after the update; clients and tokens stay off until
-you allow them under *Administration → Users → Settings → Apps & API Access*. A white-label build
-of the app needs its app ID entered there. See [Apps & API access](api-access.md).
+tokens for scripts. The app and personal access tokens are allowed after the update; clients
+stay off until you allow them under *Administration → Users → Settings → Apps & API Access*.
+Users create tokens of their own only with the group permission *Create personal access
+tokens*, which no group has by default; modules create tokens as passwords for devices (see
+below). A white-label build of the app needs its app ID entered there. See
+[Apps & API access](api-access.md).
+
+## WebDAV
+
+HumHub 1.20 serves the files of modules over WebDAV at `/dav/`: users connect them as a network
+drive, with a password the module creates for the device in a dialog (a personal access
+token). It is off while personal access tokens are not allowed. See
+[Apps & API access](api-access.md#devices) for how it works and what the web server must pass
+on.
 
 ## Rate limiting of the API
 
@@ -402,7 +413,7 @@ of the app needs its app ID entered there. See [Apps & API access](api-access.md
 for the platform's own frontend, per IP for guests). Defaults: reading 300 requests per minute
 and 5000 per hour for tokens (600 and 10000 for the frontend), writing 60 and 1000 (120 and
 2000). Refused requests answer `429` with a `Retry-After` header. Personal access tokens are
-capped at 3 unexpired tokens per user (`maxPersonalAccessTokensPerUser`, 0 = unlimited; also
+capped at 10 unexpired tokens per user (`maxPersonalAccessTokensPerUser`, 0 = unlimited; also
 under *Apps & API Access*).
 
 Override the policies in `config/common.php` or per environment variable, which takes the
