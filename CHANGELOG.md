@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix: The like notification says "likes your post" in the web list and mail text, as in the mail subject
 - Enh #8777: Sizes in rem on Bootstrap's defaults; text follows the browser's font size
 - Fix #8778: Picker chips sit as far from the start of the field as from its top and bottom
+- Fix #8783: Badges are one component, fully rounded and semibold as chips in the design system; `.badge-icon-only` is as high as a badge with text
 - Fix: The search field and the directory link of the space chooser have a name, the confirm dialog's title is never empty
 - Fix: Hidden skip links have no `href`, so accessibility checkers no longer report them as broken
 - Fix: The hidden file pickers of the comment form have a name, the upload button's tooltip is translated

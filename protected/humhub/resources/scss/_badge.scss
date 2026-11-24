@@ -35,6 +35,13 @@ $badge-dot-size: .5rem !default; // 8px, grows with the text it stands beside
             cursor: pointer;
         }
 
+        // An icon beside the text (e.g. ↑ 1.4.2), centred on it
+        &:has(> i) {
+            display: inline-flex;
+            align-items: center;
+            gap: $spacer * .25;
+        }
+
         &.badge-new {
             width: 14px;
             height: 14px;
@@ -45,6 +52,14 @@ $badge-dot-size: .5rem !default; // 8px, grows with the text it stands beside
                 display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
             }
         }
+    }
+
+    // Icon-only badge (`.badge.badge-icon-only`, e.g. the Marketplace's featured star): a circle as high as a badge
+    // with text, the same padding on every side
+    .badge-icon-only {
+        --bs-badge-padding-x: var(--bs-badge-padding-y);
+        justify-content: center;
+        aspect-ratio: 1;
     }
 
     // Tones (docs/ui/badges.md): the subtle fill and text of a theme colour, e.g. `.badge-success`.

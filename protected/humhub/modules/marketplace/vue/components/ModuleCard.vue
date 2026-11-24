@@ -9,7 +9,7 @@
                 <button
                     v-if="module.featured"
                     type="button"
-                    class="badge badge-danger rounded-pill module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star"
+                    class="badge badge-danger badge-icon-only module-card-badge module-card-badge-filter module-card-badge-featured module-card-badge-star"
                     :aria-label="labels.featuredFilter"
                     :title="labels.featured"
                     @click="$emit('filter-type', 'featured')"
