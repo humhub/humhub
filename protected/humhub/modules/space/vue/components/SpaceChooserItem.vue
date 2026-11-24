@@ -8,7 +8,7 @@
         v-bind="relationAttribute"
     >
         <div class="flex-shrink-0 me-2">
-            <SpaceImage v-bind="space" :width="24" :link="false" />
+            <SpaceImage v-bind="space" :width="32" :link="false" />
         </div>
 
         <div class="flex-grow-1">
@@ -53,7 +53,7 @@
  * `a.dropdown-item.d-flex` carrying `data-space-chooser-item` and `data-space-guid`, one of the
  * four mutually exclusive relation attributes (`data-space-member`, `data-space-following`,
  * `data-space-archived`, `data-space-none` — `_space.scss` and the legacy remote-search
- * selectors address them), the 24px image, the name, the star/history badge, the unread count
+ * selectors address them), the 32px image, the name, the star/history badge, the unread count
  * and the truncated description.
  *
  * The relation is the caller's business, not the payload's: `/api/v2/space` answers the same

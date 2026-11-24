@@ -7,8 +7,15 @@
         color: var(--bs-secondary-color);
     }
 
+    // Rows with the menu's inset on both sides (less the accent border on the left) and a picture of two lines
     #space-menu-spaces [data-space-chooser-item] {
         cursor: pointer;
+        align-items: center; // A name without description beside the middle of its picture
+        padding: $spacer * .5 $spacer $spacer * .5 calc(#{$spacer} - 3px);
+    }
+
+    #space-menu-dropdown .dropdown-footer {
+        margin: $spacer;
     }
 
     // Rounded like the field: Bootstrap rounds only the group's last child, here the reset icon after it

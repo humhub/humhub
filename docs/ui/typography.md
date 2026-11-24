@@ -26,8 +26,8 @@ text and a title.
 ### Larger sizes
 
 A few places need more than a title: the title of a piece of content (a post with a title, a wiki
-page) and the name and the counters on a space's or profile's header, which stand on or beside
-the cover image. They take a step of Bootstrap's type scale, the one behind `.fs-1` … `.fs-6`.
+page), the name on a space's or profile's header, which stands on the cover image, and the numbers of
+the header's counters (above labels as secondary text). They take a step of Bootstrap's type scale, the one behind `.fs-1` … `.fs-6`.
 Bootstrap names its variables `$h1-font-size` … `$h6-font-size`, but they are steps of a scale,
 not the sizes of tags: an `h1` may well have step 4.
 

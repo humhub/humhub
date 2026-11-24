@@ -340,7 +340,7 @@ $topbar-brand-font-size: $h4-font-size !default;
 
             form.dropdown-header {
                 margin: 0;
-                padding: $spacer * .5;
+                padding: $spacer $spacer $spacer * .5;
             }
 
             // Shown only while there is a keyword (`v-show` in `SpaceChooser.vue`)
@@ -362,7 +362,7 @@ $topbar-brand-font-size: $h4-font-size !default;
                 > a.nav-link {
                     display: block;
                     // Icon, gap and label in the middle of the bar, whatever its height
-                    padding: calc((var(--hh-topbar-height) - #{$font-size-lg + $spacer * .25 + $font-size-sm}) / 2) $spacer 0;
+                    padding: calc((var(--hh-topbar-height) - #{$font-size-lg + $spacer * .5 + $font-size-sm}) / 2) $spacer 0;
                     text-decoration: none;
                     text-shadow: none;
                     font-weight: $font-weight-semibold;
@@ -410,40 +410,13 @@ $topbar-brand-font-size: $h4-font-size !default;
                             padding-top: 0;
                         }
 
-                        // Inside a space the entry is as wide as outside: below the image, on a line of no height,
-                        // stands the "My spaces" label. So the entries after it stay where they are
-                        space-chooser-toggle:has(.current-space-image) {
-                            display: inline-grid;
-                            grid-template-columns: auto 1fr;
-                            align-items: center;
-                            justify-items: start;
-
-                            // The caret beside the image, not at the end of the reserved width
-                            &::after {
-                                content: "";
-                                grid-area: 1 / 2;
-                                margin-left: .5em;
-                                border-top: $caret-width solid;
-                                border-right: $caret-width solid transparent;
-                                border-left: $caret-width solid transparent;
-                            }
-                        }
-
                         // No line box around the image, which would add the room of descenders below it
                         .current-space {
                             display: flex;
                         }
 
-                        .space-menu-sizer {
-                            grid-area: 2 / 1 / auto / -1;
-                            height: 0;
-                            padding-right: 1em; // The caret and its gap in the "My spaces" state
-                            overflow: hidden;
-                            visibility: hidden;
-                        }
-
                         &:has(.current-space-image)::after {
-                            display: none; // Drawn beside the image, above
+                            margin-left: .5em;
                         }
                     }
 
@@ -471,7 +444,7 @@ $topbar-brand-font-size: $h4-font-size !default;
                     i {
                         display: inline-block;
                         height: 1em;
-                        margin-bottom: $spacer * .25;
+                        margin-bottom: $spacer * .5;
                         font-size: $font-size-lg;
                         vertical-align: top;
                     }
