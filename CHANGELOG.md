@@ -4,7 +4,7 @@ HumHub Changelog
 1.19.5 (Unreleased)
 -------------------
 
-- Fix: Topics used only on hidden content (e.g. wiki pages) were missing from the topic sidebar, and filtering the stream by a topic left out hidden content
+- Fix #8782: Topics used only on hidden content (e.g. wiki pages) were missing from the topic sidebar, and filtering the stream by a topic left out hidden content
 - Fix #8780: The first login via LDAP or an auth client with its own user source (e.g. Keycloak) could be assigned to an existing user whose ID matched the external user ID
 - Fix #8774: "Guide: Spaces" was not available for users who don't manage a space, and the dashboard guide led back to the dashboard instead of starting it
 - Fix #8772: Permission pages failed to load if a configured non-HumHub module was not installed (e.g. a `gii` module without the `yiisoft/yii2-gii` package)
