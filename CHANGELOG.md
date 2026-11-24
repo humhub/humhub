@@ -4,7 +4,7 @@ HumHub Changelog
 1.19.5 (Unreleased)
 -------------------
 
-- Fix: The first login via LDAP or an auth client with its own user source (e.g. Keycloak) could be assigned to an existing user whose ID matched the external user ID
+- Fix #8780: The first login via LDAP or an auth client with its own user source (e.g. Keycloak) could be assigned to an existing user whose ID matched the external user ID
 - Fix #8774: "Guide: Spaces" was not available for users who don't manage a space, and the dashboard guide led back to the dashboard instead of starting it
 - Fix #8772: Permission pages failed to load if a configured non-HumHub module was not installed (e.g. a `gii` module without the `yiisoft/yii2-gii` package)
 - Fix #8770: Activity mails (e.g. the mail summary) showed the whole preview text of a content in bold, not only its type
