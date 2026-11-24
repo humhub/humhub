@@ -18,9 +18,10 @@
             justify-self: start;
         }
 
+        // Takes back the gap of the page header's actions before it
         &.is-collapsed {
             grid-template-columns: minmax(0, 0fr);
-            margin-inline-start: -8px;
+            margin-inline-start: calc(var(--hh-page-header-gap) * -1);
             opacity: 0;
             transform: translateX(8px);
             visibility: hidden;
@@ -54,7 +55,7 @@
 
     .marketplace-alert-text {
         display: flex;
-        flex: 1 1 200px;
+        flex: 1 1 12.5rem; // The narrowest the text gets before the action wraps below it
         flex-direction: column;
         gap: $spacer * .5;
         min-width: 0;
@@ -121,22 +122,20 @@
         color: inherit;
     }
 
-    // Dialogs (`InstallDialog`, `SettingsDialog`): 400px / 600px wide, 16px padding, title
-    // 16/600, 14px text, equal footer buttons
+    // Dialogs (`InstallDialog`, `SettingsDialog`): 400px / 600px wide, one padding around header, body
+    // and footer, equal footer buttons
     .marketplace-dialog {
         --bs-modal-width: 400px;
-        --bs-modal-header-padding: 0 0 16px;
+        --bs-modal-header-padding: 0 0 #{$spacer};
         --bs-modal-padding: 0;
-        --bs-modal-footer-gap: 8px;
 
         .modal-content {
-            padding: 16px;
-            border-radius: 8px;
+            padding: $spacer;
         }
 
         // `.modal .modal-content .modal-header` centres the title
         .modal-content .modal-header {
-            gap: 8px;
+            gap: $spacer * .5;
             align-items: center;
             text-align: start;
         }
@@ -144,8 +143,6 @@
         .modal-title {
             flex: 1 1 auto;
             min-width: 0;
-            font-size: 16px;
-            line-height: 24px;
         }
 
         .modal-header .btn-close {
@@ -155,14 +152,12 @@
         .modal-body {
             padding: 0;
             color: var(--bs-body-color);
-            font-size: 14px;
-            line-height: 22px;
         }
 
         .modal-footer {
             flex-wrap: nowrap;
-            gap: 8px;
-            padding: 16px 0 0;
+            gap: $spacer * .5;
+            padding: $spacer 0 0;
 
             > * {
                 flex: 1 1 0;
@@ -180,7 +175,7 @@
 
         b {
             color: var(--bs-emphasis-color);
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
         }
     }
 
@@ -190,11 +185,6 @@
     }
 
     .marketplace-dialog-busy {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-
         &:disabled {
             cursor: progress;
         }
@@ -210,25 +200,25 @@
     .install-dialog-content {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: $spacer;
     }
 
     .install-dialog-step {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: $spacer * .5;
         animation: hh-marketplace-step-in 0.2s ease;
     }
 
     .install-dialog-module {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: $spacer;
     }
 
     .install-dialog-image {
         flex: 0 0 auto;
-        border-radius: 6px;
+        border-radius: $border-radius;
         object-fit: cover;
     }
 
@@ -240,7 +230,7 @@
 
     .install-dialog-name {
         color: var(--bs-emphasis-color);
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         overflow-wrap: anywhere;
     }
 
@@ -259,19 +249,6 @@
         --bs-btn-active-border-color: transparent;
         --bs-btn-box-shadow: none;
         --bs-btn-active-shadow: none;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        min-height: 38px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 600;
-
-        > .ti {
-            font-size: 18px;
-        }
     }
 
     // Installation progress: Bootstrap's `.progress`, in the success colours
@@ -295,14 +272,14 @@
     .marketplace-settings-panel {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: $spacer * .5;
         animation: hh-marketplace-step-in 0.2s ease;
     }
 
     .marketplace-settings-loading,
     .marketplace-settings-empty {
         margin: 0;
-        padding: 16px 0;
+        padding: $spacer 0;
         color: var(--bs-secondary-color);
         text-align: center;
     }
@@ -310,8 +287,7 @@
     .marketplace-settings-installation {
         margin: 0;
         color: var(--bs-secondary-color);
-        font-size: 12px;
-        line-height: 18px;
+        font-size: $font-size-sm;
         text-align: center;
         overflow-wrap: anywhere;
     }
@@ -319,14 +295,15 @@
     .marketplace-settings-admin {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        gap: $spacer * .25;
         align-self: flex-start;
         color: var(--bs-emphasis-color);
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         text-decoration: none;
 
+        // As large as a button's icon
         > .ti {
-            font-size: 18px;
+            font-size: $btn-icon-size;
         }
 
         &:hover,
@@ -363,8 +340,8 @@
     .licence-list-row {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 4px;
+        gap: $spacer * .5;
+        padding: $spacer * .25;
         min-width: 0;
     }
 
@@ -372,7 +349,7 @@
         flex: 0 0 auto;
         width: 40px;
         height: 40px;
-        border-radius: 6px;
+        border-radius: $border-radius;
         object-fit: cover;
     }
 
@@ -391,30 +368,27 @@
 
     .licence-list-name {
         color: var(--bs-emphasis-color);
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
     }
 
     .licence-list-key {
         color: var(--bs-secondary-color);
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 18px;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
         font-variant-numeric: tabular-nums;
     }
 
+    // Install and Installed equally wide, so the rows line up
     .licence-list-action {
         flex: 0 0 auto;
-        width: 90px;
-        min-height: 38px;
-        border-radius: 6px;
-        font-weight: 600;
+        min-width: 6rem;
     }
 
     // Setting rows (a checkbox with its title and hint; the risk acknowledgement expands below)
     .marketplace-setting {
-        padding: 8px;
+        padding: $spacer * .5;
         border: 1px dashed var(--bs-border-color);
-        border-radius: 6px;
+        border-radius: $border-radius;
         background: var(--bs-tertiary-bg);
 
         .form-check {
@@ -424,7 +398,7 @@
 
     .marketplace-setting-title {
         color: var(--bs-emphasis-color);
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         cursor: pointer;
     }
 
@@ -450,7 +424,7 @@
     }
 
     .marketplace-setting.is-expanded .marketplace-setting-more-inner {
-        padding-top: 8px;
+        padding-top: $spacer * .5;
     }
 
     // Motion

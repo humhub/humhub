@@ -19,7 +19,7 @@ $customInfo = trim((string)Yii::$app->settings->get('maintenanceModeInfo', ''));
 
     <div class="panel panel-default animated bounceIn">
         <div class="panel-heading">
-            <h1><?= Yii::t('UserModule.auth', 'Maintenance mode is active.') ?></h1>
+            <h1 class="panel-title"><?= Yii::t('UserModule.auth', 'Maintenance mode is active.') ?></h1>
         </div>
         <div class="panel-body">
 

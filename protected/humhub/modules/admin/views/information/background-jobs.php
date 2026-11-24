@@ -31,14 +31,14 @@ if (empty($lastRunDaily)) {
 ]) ?>
 <div class="row gy-3">
     <section class="col-lg-6">
-        <h3><?= strip_tags(Yii::t('AdminModule.information', '<strong>CronJob</strong> Status')) ?></h3>
+        <h3 class="card-title"><?= strip_tags(Yii::t('AdminModule.information', '<strong>CronJob</strong> Status')) ?></h3>
         <strong><?= Yii::t('AdminModule.information', 'Last run (hourly):') ?></strong><br> <?= $lastRunHourly ?>
         <br/><br/>
         <strong><?= Yii::t('AdminModule.information', 'Last run (daily):') ?></strong><br> <?= $lastRunDaily ?>
     </section>
 
     <section class="col-lg-6">
-        <h3>
+        <h3 class="card-title">
             <?= strip_tags(Yii::t('AdminModule.information', '<strong>Queue</strong> Status')) ?>
             <?php if ($canClearQueue): ?>
                 <?= Button::danger('Clear queue')

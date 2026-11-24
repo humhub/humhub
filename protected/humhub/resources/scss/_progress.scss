@@ -6,7 +6,7 @@
     // Bootstrap overwrite: see the progress Sass variables in variables.scss
 
     .progress {
-        margin-bottom: 15px;
+        margin-bottom: $spacer;
     }
 
     .progress-bar-info {

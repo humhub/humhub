@@ -134,7 +134,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
     .entity-card-title {
         color: var(--bs-emphasis-color);
         font-size: $entity-card-title-font-size;
-        font-weight: $font-weight-bold;
+        font-weight: $font-weight-semibold;
         line-height: $headings-line-height;
         text-decoration: none;
         overflow-wrap: anywhere;
@@ -264,7 +264,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
     }
 
     .entity-card-skeleton .entity-card-skeleton-tag {
-        width: 4rem;
+        width: 4rem; // About a short tag
         font-size: $font-size-sm;
     }
 

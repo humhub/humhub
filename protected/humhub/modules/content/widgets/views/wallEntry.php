@@ -54,7 +54,7 @@ use yii\helpers\Url;
             </div>
 
             <div class="flex-grow-1">
-                <h4 class="mt-0">
+                <h4 class="mt-0 wall-entry-title">
                     <?= Html::containerLink($user); ?>
                     <?php if ($container && $showContentContainer): ?>
                         <span class="viaLink">
@@ -68,7 +68,7 @@ use yii\helpers\Url;
                     </div>
                 </h4>
 
-                <h5>
+                <h5 class="wall-entry-meta">
                     <a href="<?= Url::to(['/content/perma', 'id' => $object->content->id], true) ?>">
                         <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
                     </a>

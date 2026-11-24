@@ -9,7 +9,6 @@
 // defined within the `core` layer.
 $prev-button: false !default;
 $prev-form: false !default;
-$prev-oembed: false !default;
 $prev-media: false !default;
 $prev-progress: false !default;
 $prev-datepicker: false !default;
@@ -26,12 +25,6 @@ $prev-richtext: false !default;
 @if not $prev-form {
     .radio-pills div.radio.active .fa.radio-pill-active-icon {
         display: inline;
-    }
-}
-
-@if not $prev-oembed {
-    .oembed_confirmation i.ti {
-        line-height: 25px;
     }
 }
 
@@ -114,7 +107,7 @@ $prev-richtext: false !default;
         border: none;
         background: var(--bs-body-bg);
         color: var(--bs-secondary-color);
-        font-weight: 300;
+        font-weight: $font-weight-normal;
     }
 
     .ui-widget-content,

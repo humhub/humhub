@@ -1,6 +1,6 @@
 <template>
     <div class="form-checkboxes-normal">
-        <div class="btn-group w-100 mb-3" role="group" :aria-label="seenFilterLabel">
+        <div class="btn-group flex-wrap w-100 mb-3" role="group" :aria-label="seenFilterLabel">
             <button
                 v-for="option in seenOptions"
                 :key="option.value || 'all'"
@@ -12,7 +12,7 @@
             ><span v-if="option.icon" v-html="option.icon"></span> {{ option.label }}</button>
         </div>
 
-        <div style="padding-left:5px" role="group" :aria-label="categoriesLabel">
+        <div class="ps-1" role="group" :aria-label="categoriesLabel">
             <div class="form-check">
                 <input
                     id="notification-filter-all"

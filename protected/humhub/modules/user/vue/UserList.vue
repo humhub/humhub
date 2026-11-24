@@ -8,7 +8,7 @@
                     <UserImage v-bind="user" :size="50" :link="false" class="m-0" />
                 </div>
                 <div class="flex-grow-1">
-                    <h4 class="mt-0">{{ user.displayName }}</h4>
+                    <h4 class="mt-0 fs-6">{{ user.displayName }}</h4>
                 </div>
             </a>
         </div>

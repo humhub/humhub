@@ -10,13 +10,13 @@
         margin-bottom: 0;
 
         th {
-            font-size: 11px;
+            font-size: $font-size-sm;
             color: var(--bs-body-color);
-            font-weight: normal;
+            font-weight: $font-weight-normal;
         }
 
         .time {
-            font-size: 12px;
+            font-size: $font-size-sm;
         }
     }
 
@@ -26,12 +26,13 @@
     .table > thead > tr > td,
     .table > tbody > tr > td,
     .table > tfoot > tr > td {
-        padding: 10px 10px 10px 0;
+        // The rest of the cell's padding is Bootstrap's
+        padding-left: 0;
 
+        // A small field, as `.form-select-sm`
         select {
-            font-size: 12px;
-            padding: 4px 8px;
-            height: 30px;
+            font-size: $input-font-size-sm;
+            padding: $input-padding-y-sm $input-padding-x-sm;
             margin: 0;
         }
     }

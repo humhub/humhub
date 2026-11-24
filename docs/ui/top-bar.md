@@ -84,7 +84,7 @@ The top bar is Bootstrap's **`.navbar`** (`.navbar.topbar` today); drawers and m
 
 - **File:** `_topbar.scss`, behind `$prev-topbar`.
 - **Sass variables:** Bootstrap's `$navbar-padding-y`, `$navbar-nav-link-padding-x`,
-  `$navbar-light-*`; plus `$topbar-height`, `$topbar-drawer-width`.
+  `$navbar-light-*`; plus `--hh-topbar-height` (`_root.scss`, the bar's minimum height in rem) and `$topbar-drawer-width`.
 
 ## Implementation in core
 

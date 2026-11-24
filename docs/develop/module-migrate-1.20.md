@@ -2201,7 +2201,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `$dropdown-*` variables.
 
 - **The legacy list group look applies inside a `.panel` only** (the left navigation and other
-  menus in a panel: 12px, semibold, the accent bar, horizontal scrolling on small screens). A
+  menus in a panel: rows as the section menu's, the accent bar, horizontal scrolling on small screens). A
   `.list-group` elsewhere — in a `.card`, a dialog — is plain Bootstrap. The selectors keep their
   specificity (`:where(.panel)`), so theme overrides of `.list-group-item` still apply.
 
@@ -3035,3 +3035,28 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   its colour from `humhub\helpers\ScssHelper::getRandomColor()`, which keeps the contrast to its white initials. A
   module that uses `Colors\RandomColor` switches to that method for colours under white text, or requires the package
   in its own `composer.json`. `behat/gherkin` is no longer pinned in the core, Codeception brings it along for the tests.
+
+- **Sizes are in rem on Bootstrap's defaults** (`docs/ui/typography.md`, `docs/ui/bootstrap.md`).
+  `$font-size-root` is no longer set: `1rem` is the browser's font size (16px by default), not 14px. Text stays 14px
+  (`$font-size-base: .875rem`).
+  - rem values written against 14px are 14 % larger now. Use Bootstrap's steps instead (`$spacer * .5`, `p-2`,
+    `$font-size-sm`, `.small`). px values keep working but don't follow the browser's font size.
+  - A theme that set `$font-size-root` sets `$font-size-base` instead.
+  - These overrides are gone, Bootstrap's defaults apply: `$grid-gutter-width` (`1.5rem`), `$btn-padding-*`,
+    `$btn-font-size-lg`, `$btn-border-radius*` (6px), `$input-padding-y`, `$badge-font-weight`, `$badge-padding-*`,
+    `$badge-border-radius`, `$dropdown-padding-y`, `$popover-border-radius`,
+    `$progress-height`, `$progress-border-radius`, `$toast-font-size`, `$tooltip-font-size`, `$line-height-base`.
+    Buttons and fields are 39px high (`$input-btn-padding-y: .5rem`).
+  - Removed: `$select-menu-option-padding-y`, `$data-table-actions-toggle-size`, `$data-table-actions-toggle-icon-size`,
+    `.badge-space-chooser`, `.module-controls`.
+  - No rule sizes `h1`–`h6` by their context any more (`.panel h1`, `.hh-list h4`, `.wall-entry h4`/`h5`, a plain `h3`
+    in a content card, the global `h4` and `h5`): a heading has Bootstrap's size unless it is the title of a component
+    (`.card-title`, `.modal-title`, `.panel-heading`, `.panel-title`, `.wall-entry-title`) or carries `.fs-*`.
+  - Text in a `.panel-body` and in a dialog is 14px (was 13px). Each top bar is `min-height: var(--hh-topbar-height)`
+    (`3.5rem`, 56px) instead of `height: 50px`; `--hh-fixed-header-height` is derived from it. The account picture and the
+    current space's image in the bars are 40px (were 32px).
+  - A `.panel` looks like a content card: 16px padding (the heading `1rem 1rem .5rem`, as a card's header), 8px
+    radius, a semibold heading in one tone (a `<strong>` in it takes the heading's weight). A view that made up for
+    the old 8px padding (`pt-0` on the `.panel-body` below a heading, negative margins) drops that.
+  - `_bootstrap3.scss` (the styles for Bootstrap 3 markup such as `.panel` and `.well`) is deprecated and will be
+    removed in 1.21.

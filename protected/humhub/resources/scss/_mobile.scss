@@ -14,12 +14,13 @@
     @include media-breakpoint-down(md) {
 
         :root {
-            --hh-fixed-header-height: 105px;
+            --hh-fixed-header-height: calc(var(--hh-topbar-height) * 2 + #{$spacer * .25});
         }
 
+        // Panels nearly from edge to edge
         #layout-content > .container {
             &, & > .row {
-                --bs-gutter-x: 2px;
+                --bs-gutter-x: #{$spacer * .25};
             }
         }
 
@@ -43,22 +44,22 @@
 
                 &::-webkit-scrollbar-thumb {
                     background-color: color-mix(in srgb, var(--bs-emphasis-color) 50%, transparent);
-                    border-radius: 10px;
+                    border-radius: $border-radius-lg;
                     border: 2px solid var(--bs-body-bg);
                 }
 
                 &::-webkit-scrollbar-track {
-                    border-radius: 10px;
+                    border-radius: $border-radius-lg;
                     background-color: var(--bs-body-bg);
                 }
             }
 
             .panel {
-                margin-bottom: 5px;
+                margin-bottom: $spacer * .25;
 
                 .statistics {
                     .entry {
-                        margin-left: 10px;
+                        margin-left: $spacer * .5;
                     }
                 }
             }
@@ -87,19 +88,14 @@
                 }
             }
 
-            .image-upload-container .image-upload-buttons {
-                right: 2px;
-            }
-
-
             // Space
             .panel-profile .panel-profile-header .img-profile-header-background {
                 min-height: 80px;
             }
 
+            // Beside the 100px picture
             .panel-profile .panel-profile-header .img-profile-data {
                 min-height: 80px;
-                padding-top: 30px;
                 padding-left: 125px;
             }
         }
@@ -114,20 +110,16 @@
             }
         }
 
+        // Room for the arrow (`_form.scss`)
         select.form-control:not([multiple]) {
-            padding-right: 23px;
+            padding-right: $spacer * 1.5;
             width: auto;
         }
 
-        // STREAM
+        // STREAM: over the smaller gap between the entries (`.panel` above), as on larger screens
         .load-suppressed {
-            margin-top: -8px;
-            margin-bottom: 5px;
-        }
-
-        // Richtext
-        .ProsemirrorEditor .ProseMirror-menuitem {
-            font-size: 1.2em;
+            margin-top: -$spacer * .25;
+            margin-bottom: $spacer * .25;
         }
     }
 }

@@ -93,7 +93,7 @@ class SpaceController extends Behavior
                 'archived' => $this->space->isArchived(),
                 'image' => Image::widget([
                     'space' => $this->owner->contentContainer,
-                    'width' => 32,
+                    'width' => 40,
                     'htmlOptions' => [
                         'class' => 'current-space-image',
                     ],

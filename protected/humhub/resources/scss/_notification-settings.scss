@@ -25,7 +25,7 @@ $notification-settings-gap: $spacer !default;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: $spacer * .5 $spacer * .75;
+        gap: $spacer * .5;
     }
 
     .notification-settings-subtitle {
@@ -59,7 +59,7 @@ $notification-settings-gap: $spacer !default;
 
     // Global scope (no cards): the head above a bordered accordion
     .notification-settings-global .notification-settings-head {
-        margin-bottom: $spacer * .75;
+        margin-bottom: $spacer * .5;
     }
 
     // "From modules": the heading between the core's and the modules' accordion
@@ -87,7 +87,7 @@ $notification-settings-gap: $spacer !default;
         flex-wrap: wrap;
         justify-content: flex-end;
         gap: $spacer * .25;
-        margin: 0 $spacer * .75;
+        margin: 0 $spacer * .5;
     }
 
     .notification-settings-category-body {
@@ -129,7 +129,7 @@ $notification-settings-gap: $spacer !default;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: $spacer * .75 $spacer;
+        gap: $spacer * .5 $spacer;
     }
 
     .notification-settings-autosave {

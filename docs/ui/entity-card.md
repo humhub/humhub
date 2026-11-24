@@ -21,7 +21,7 @@ install) directly on the card.
 | 3 | **Title and subtitle** | The name links to the profile, space or marketplace page. The subtitle is the job title, the module version, or for spaces what a module adds through the `space.card-subtitle` slot (the Enterprise theme shows the space category there). |
 | 4 | **Body** | People: the profile fields chosen by the admin. Spaces and modules: the description. The body always keeps room for 3 lines, so cards in a row stay aligned. Descriptions are cut after 3 lines, and each profile field is one line with an ellipsis. |
 | 5 | **Tags** | Up to 5 uppercase chips. Each one filters the directory by that tag. |
-| 6 | **Footer** | The card's actions, sharing the full width. Icon-only actions (send message, changelog) are square and 38px high. |
+| 6 | **Footer** | The card's actions, sharing the full width. Icon-only actions (send message, changelog) are square and 39px high. |
 | 7 | **Badges** | Modules only, top right of the cover: featured ★, update available (↑ 1.4.2) or the type (Official, Partner, Community, Professional). Featured and type filter the marketplace. |
 
 ## Variants

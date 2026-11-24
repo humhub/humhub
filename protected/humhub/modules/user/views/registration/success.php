@@ -12,7 +12,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <br/>
     <div class="panel panel-default animated fadeIn">
         <div class="panel-heading">
-            <h1><?= Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!') ?></h1>
+            <h1 class="panel-title"><?= Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!') ?></h1>
         </div>
         <div class="panel-body">
             <?php if ($needApproval) : ?>

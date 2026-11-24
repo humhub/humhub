@@ -380,9 +380,9 @@ pagers.
   the outline joins Bootstrap's inset cell fill). The pager is Bootstrap's `.pagination` as square ghost buttons (`--bs-pagination-*`,
   `$data-table-pager-size`, `$data-table-pager-gap`), the current page filled; ‹ / › are hidden
   (`.invisible`, keeping their place) on the first / last page.
-- **Layout:** `table-layout: fixed` with a `<colgroup>`: checkbox and details 2.5rem, actions
-  3rem, a narrow column (`ColumnDefinition::$narrow`, short values like a version)
-  `$data-table-narrow-column-width` (8rem); of what these fixed columns leave, the main column
+- **Layout:** `table-layout: fixed` with a `<colgroup>`: checkbox and details 2rem, actions
+  3.5rem, a narrow column (`ColumnDefinition::$narrow`, short values like a version)
+  `$data-table-narrow-column-width` (7rem); of what these fixed columns leave, the main column
   gets twice as much as each other column (computed in pixels from the measured table and the
   `--hh-data-table-*-column-width` variables, as a table column ignores a `calc()` with
   percentages; with only narrow columns, the main column takes the rest); cells have `.5rem`

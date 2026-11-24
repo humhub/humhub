@@ -16,7 +16,10 @@
         width: 100vw;
         z-index: 9998;
 
+        // The text takes the height the menu bar leaves, on one row or more
         .ProseMirror-menubar-wrapper {
+            display: flex;
+            flex-direction: column;
             height: 100%;
         }
 
@@ -25,7 +28,7 @@
         }
 
         .ProseMirror {
-            height: calc(100% - 26px);
+            flex: 1;
             position: static;
             overflow: auto;
         }
@@ -43,15 +46,13 @@
      */
     .ProsemirrorEditor {
         .ProseMirror {
-            padding-right: 12px;
-
             &.form-control {
                 font-size: inherit;
             }
         }
 
         .ProseMirror-menu {
-            margin: 0 -4px;
+            margin: 0 ($spacer * -.25);
             line-height: 1;
         }
 
@@ -68,14 +69,12 @@
 
         .ProseMirror-menuseparator {
             border-right: 1px solid var(--bs-border-color);
-            margin-right: 1px;
         }
 
         .ProseMirror-menu-group {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            min-height: 22px;
         }
 
         .ProseMirror-menuitem {
@@ -112,7 +111,7 @@
         .ProseMirror-menu-dropdown {
             cursor: pointer;
             position: relative;
-            padding-right: 14px !important;
+            padding-right: $spacer !important;
         }
 
         .ProseMirror-menu-dropdown-wrap {
@@ -134,7 +133,7 @@
             border-top: 4px solid currentColor;
             opacity: .6;
             position: absolute;
-            right: 4px;
+            right: $spacer * .25;
             top: calc(50% - 2px);
         }
 
@@ -143,7 +142,7 @@
         .ProseMirror-menu-dropdown-menu {
             top: 100%;
             left: 0;
-            margin-top: 2px;
+            margin-top: var(--bs-dropdown-spacer);
             z-index: 15;
         }
 
@@ -174,7 +173,7 @@
             content: "";
             opacity: .6;
             position: absolute;
-            right: 8px;
+            right: $spacer * .5;
             top: calc(50% - 4px);
         }
 
@@ -194,14 +193,12 @@
 
         .ProseMirror-icon {
             border: 1px solid transparent;
-            border-radius: 4px;
+            border-radius: $border-radius-sm;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-width: 28px;
-            height: 24px;
-            padding: 0 5px;
+            padding: $spacer * .25;
 
             &.ProseMirror-menu-active {
                 border-color: var(--hh-input-border-color);
@@ -217,10 +214,10 @@
             height: 20px;
         }
 
-        // The menu's Tabler icons (humhub-prosemirror-richtext 2.4)
+        // The menu's Tabler icons (humhub-prosemirror-richtext 2.4), at the size of an icon beside a title
         .ProseMirror-icon .ti {
             display: block;
-            font-size: 18px;
+            font-size: $font-size-lg;
             line-height: 1;
         }
 
@@ -230,14 +227,14 @@
 
         .ProseMirror-editor-source {
             border: 2px solid var(--bs-secondary-bg);
-            border-radius: 0 4px 4px 4px;
+            border-radius: 0 $border-radius-sm $border-radius-sm;
             box-sizing: border-box;
             display: block;
-            min-height: 36px;
+            min-height: $input-height;
             resize: none;
             overflow: auto;
             outline: none;
-            padding: 7px 12px;
+            padding: $input-padding-y $input-padding-x;
             width: 100%;
         }
 
@@ -254,33 +251,24 @@
             border-top-left-radius: 0;
             border-top-right-radius: 0;
             border-top-width: 1px;
-            min-height: 100px;
+            // Room for a few lines
+            min-height: 6.25rem;
         }
 
         .ProseMirror-menu-group,
         .ProseMirror-menuitem .ProseMirror-menu-group {
-            padding: 2px;
+            padding: 0 ($spacer * .25);
         }
 
         .ProseMirror-menubar ~ .ProseMirror-focused {
             border-color: var(--bs-accent);
         }
 
-        .ProseMirror-textblock-dropdown {
-            min-width: 3em;
-        }
-
+        // Frame, colours and padding: in the block below, shared with `.focusMenu`
         .ProseMirror-menubar {
-            background: var(--bs-body-bg);
-            border: 1px solid var(--bs-border-color);
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
             box-sizing: border-box;
-            color: var(--bs-body-color);
-            position: relative;
             min-height: 1em;
             overflow: visible;
-            padding: 2px 0;
             top: 0;
             left: 0;
             right: 0;
@@ -329,16 +317,9 @@
             border-bottom: $input-border-width solid var(--bs-border-color);
             border-radius: $input-border-radius $input-border-radius 0 0;
             color: var(--bs-body-color);
-            padding: 2px 4px;
+            padding: $spacer * .25;
             position: relative;
             z-index: 10;
-        }
-
-        // One row high in both layouts: the groups keep their side spacing only
-        .ProseMirror-menu-group,
-        .ProseMirror-menuitem .ProseMirror-menu-group {
-            padding-top: 0;
-            padding-bottom: 0;
         }
 
         .ProseMirror-menubar:not(.d-none) ~ .ProseMirror.form-control {
@@ -385,10 +366,11 @@
             outline: none;
         }
 
+        // Around the marker too: the list's indent (Reboot's 2rem) and the 2px border
         li.ProseMirror-selectednode:after {
             content: "";
             position: absolute;
-            left: -32px;
+            left: calc(-2rem - 2px);
             right: -2px;
             top: -2px;
             bottom: -2px;
@@ -398,16 +380,6 @@
 
         .ProseMirror-textblock-dropdown {
             min-width: 3em;
-        }
-
-        .ProseMirror-menu {
-            margin: 0 -4px;
-            line-height: 1;
-        }
-
-        .ProseMirror-tooltip .ProseMirror-menu {
-            width: fit-content;
-            white-space: pre;
         }
 
         .ProseMirror-gapcursor {
@@ -439,7 +411,7 @@
         /* Add space around the hr to make clicking it easier */
 
         .ProseMirror-example-setup-style hr {
-            padding: 2px 10px;
+            padding: ($spacer * .25) ($spacer * .5);
             border: none;
             margin: 1em 0;
         }
@@ -449,7 +421,6 @@
             display: block;
             height: 1px;
             background-color: silver;
-            line-height: 2px;
         }
 
         .ProseMirror-example-setup-style img {
@@ -471,27 +442,6 @@
             margin-top: 1.2em;
         }
 
-        .ProsemirrorEditor {
-            position: relative;
-
-            .ProseMirror {
-                padding-right: 12px;
-            }
-        }
-
-        .ProsemirrorEditor img {
-            max-width: 100%;
-        }
-
-        .ProseMirror h1:first-child,
-        .ProseMirror h2:first-child,
-        .ProseMirror h3:first-child,
-        .ProseMirror h4:first-child,
-        .ProseMirror h5:first-child,
-        .ProseMirror h6:first-child {
-            margin-top: 10px;
-        }
-
         .ProseMirror [data-mention] {
             color: var(--hh-accent-fg);
         }
@@ -511,10 +461,6 @@
 
         .ProseMirror p {
             margin-bottom: 1em;
-        }
-
-        .ProseMirror-textblock-dropdown {
-            min-width: 3em;
         }
 
         // The editor's placeholder, in the placeholder colour of every field. Its class is also Bootstrap's loading
@@ -581,24 +527,25 @@
         }
     }
 
+    // A small dialog (the link's or the image's)
     .ProseMirror-prompt {
         background: var(--bs-body-bg);
         border: 1px solid var(--bs-border-color);
-        border-radius: 3px;
+        border-radius: $border-radius-lg;
         box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);
-        padding: 5px 10px 5px 15px;
+        padding: $spacer;
         position: fixed;
-        min-width: 300px;
+        min-width: $modal-sm;
         z-index: 999999;
 
+        // Its title: an `h5` has a title's size already
         h5 {
-            font-weight: bold;
-            font-size: 100%;
-            margin: 15px 0;
+            font-weight: $font-weight-semibold;
+            margin-bottom: $spacer;
         }
 
         input {
-            margin-bottom: 5px;
+            margin-bottom: $spacer * .25;
         }
     }
 
@@ -607,18 +554,18 @@
         color: var(--bs-body-color);
         padding: 0;
         position: absolute;
-        left: 2px;
-        top: 1px;
+        left: $spacer * .25;
+        top: $spacer * .25;
         border: none;
     }
 
     .ProseMirror-prompt-close:after {
         content: "✕";
-        font-size: 12px;
+        font-size: $font-size-sm;
     }
 
     .ProseMirror-prompt-buttons {
-        margin: 15px 0;
+        margin-top: $spacer;
         text-align: center;
     }
 
@@ -638,12 +585,13 @@
             --button-active-background: var(--bs-secondary-bg);
             --button-hover-background: var(--bs-tertiary-bg);
             --category-font-color: var(--bs-body-color);
-            --category-font-size: 1rem;
+            // The text size; the picker's own `1rem` is larger
+            --category-font-size: #{$font-size-base};
             --indicator-color: var(--bs-accent);
             --input-border-color: var(--hh-input-border-color);
             --input-border-radius: var(--bs-border-radius);
             --input-font-color: var(--bs-body-color);
-            --input-font-size: 1rem;
+            --input-font-size: #{$font-size-base};
             --input-placeholder-color: var(--hh-input-placeholder-color);
             --outline-color: var(--bs-accent);
         }
@@ -663,7 +611,6 @@
 
     // The inline autocomplete of `:smi`
     .atwho-view.humhub-emoji-autocomplete {
-        margin-top: 0;
         max-width: none;
         white-space: nowrap;
 
@@ -680,6 +627,45 @@
 
         a {
             color: var(--hh-accent-fg);
+        }
+    }
+
+    // Headings of rendered content have a scale of their own, in `em` of the content's text: Bootstrap's h1 (2.5 ×)
+    // is a page title, too large inside a post. This is the only place that sizes h1–h6 (docs/ui/typography.md)
+    .markdown-render, [data-ui-markdown], [data-ui-richtext] {
+        h1 {
+            font-size: 1.7em;
+        }
+
+        h2 {
+            font-size: 1.5em;
+        }
+
+        h3 {
+            font-size: 1.2em;
+        }
+
+        h4 {
+            font-size: 1.1em;
+        }
+
+        h5 {
+            font-size: 1em;
+        }
+
+        h6 {
+            font-size: .85em;
+        }
+    }
+
+    // In a stream entry, below the entry's own title, the two largest levels are smaller
+    .wall-entry [data-ui-richtext] {
+        h1 {
+            font-size: 1.45em;
+        }
+
+        h2 {
+            font-size: 1.3em;
         }
     }
 
@@ -732,7 +718,7 @@
         display: block;
         max-width: 100%;
         max-height: 200px;
-        margin: 0 auto 1rem;
+        margin: 0 auto $spacer;
         border-radius: var(--bs-border-radius);
     }
 }

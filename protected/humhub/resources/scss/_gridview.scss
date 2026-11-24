@@ -13,46 +13,42 @@
     .grid-view .filters input,
     .grid-view .filters select {
         @extend %form-control-base;
-        border-radius: 4px;
-        font-size: 12px;
-        padding: 4px;
+        // A small field (`.form-control-sm`)
+        border-radius: $input-border-radius-sm;
+        font-size: $input-font-size-sm;
+        padding: $input-padding-y-sm $input-padding-x-sm;
     }
 
     .grid-view {
-        padding: 15px 0 0;
+        padding: $spacer 0 0;
 
         img {
-            border-radius: 3px;
+            border-radius: $border-radius-sm;
         }
 
         table {
             th {
-                font-size: 13px;
-                font-weight: bold;
+                font-weight: $font-weight-bold;
             }
 
             td {
                 vertical-align: middle;
             }
 
-            tr {
-                font-size: 13px;
-            }
-
             thead {
                 tr {
                     th:first-of-type {
-                        padding-left: 5px;
+                        padding-left: $spacer * .25;
                     }
                 }
             }
 
             tbody {
                 tr {
-                    height: 50px;
+                    height: 3.125rem; // A minimum: rows with room around their text
 
                     td:first-of-type {
-                        padding-left: 5px;
+                        padding-left: $spacer * .25;
                     }
 
                     &:last-of-type td {
@@ -63,7 +59,7 @@
         }
 
         .summary {
-            font-size: 12px;
+            font-size: $font-size-sm;
             color: var(--bs-secondary-color);
         }
     }
@@ -95,7 +91,7 @@
 
             // In line with the permission's text
             td:last-child {
-                padding-left: 5px;
+                padding-left: $spacer * .25;
             }
         }
     }
@@ -103,10 +99,6 @@
 
     // Detail View
     .detail-view td, .detail-view th {
-        padding: 8px;
-    }
-
-    .detail-view th {
-        font-size: 13px;
+        padding: $table-cell-padding-y $table-cell-padding-x;
     }
 }

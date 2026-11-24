@@ -11,7 +11,7 @@ use humhub\widgets\form\ActiveForm;
 ?>
 <?php $this->beginContent('@user/views/security/_layout.php') ?>
 <section class="settings-section mb-4">
-    <h3><?= Yii::t('OauthModule.base', 'Create token') ?></h3>
+    <h3 class="card-title"><?= Yii::t('OauthModule.base', 'Create token') ?></h3>
     <p>
         <?= Yii::t('OauthModule.base', 'A personal access token lets a script or agent use the API with your account. Only grant the access it needs.') ?>
     </p>

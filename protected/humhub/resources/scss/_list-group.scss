@@ -10,14 +10,21 @@
     // states (`.list-group-horizontal > .list-group-item + .list-group-item.active`, …); a theme overrides it
     // by its cascade layer. The left border keeps `!important`: the Enterprise Theme (enterprise-white) sets it with
     // `!important` on every `.list-group-item`, the active entry's border still has to win against it.
+    // Rows as the section menu's (`_section-menu.scss`), in line with the panel's title: the accent border takes its
+    // 3px from the padding
     .panel .list-group .list-group-item {
-        padding: 6px 8px;
+        display: flex;
+        align-items: center;
+        gap: $spacer * .5;
+        padding-left: calc(var(--bs-list-group-item-padding-x) - 3px);
         border-left: 3px solid var(--bs-body-bg) !important;
-        font-size: 12px;
-        font-weight: 600;
 
-        i {
-            font-size: 14px;
+        // The icon in a fixed box, so the labels line up
+        > .icon-before-label {
+            flex: 0 0 var(--hh-nav-icon-width);
+            margin: 0;
+            font-size: $font-size-lg;
+            text-align: center;
         }
     }
 
@@ -25,6 +32,7 @@
 
         &.active {
             @include listGroupItemActive();
+            font-weight: $font-weight-semibold;
         }
 
         // Hover effect only on desktop
@@ -99,20 +107,23 @@
             }
         }
 
+        // The first chip on the panel's content edge, as pills in a card; with their margin 8px above and below
         .panel .list-group {
-            margin-left: 4px;
-            gap: 4px;
+            padding: $spacer * .25 $card-spacer-x;
+            gap: $spacer * .25;
             flex-direction: row;
             overflow-x: auto;
 
+            // Chips as the section menu's on a small screen, without the accent border
             .list-group-item {
                 white-space: nowrap;
                 border-left: none !important;
-                margin: 4px 0;
+                padding: $spacer * .5;
+                margin: $spacer * .25 0;
 
                 // Also above `.panel a.list-group-item:first-child` and `:last-child`
                 &, &:first-child, &:last-child {
-                    border-radius: 3px;
+                    border-radius: $border-radius-sm;
                 }
             }
 
@@ -141,6 +152,16 @@
             > .list-group-item:first-child:not(:last-child) {
                 border-bottom-left-radius: 0;
             }
+        }
+
+        // Below the title as far as the section menu's entries below theirs
+        .panel > .panel-heading + .list-group {
+            margin-top: $spacer * .5;
+        }
+
+        // With the last row's padding, its label as far from the panel's edge as the title above
+        .panel > .list-group:last-child {
+            padding-bottom: $spacer * .5;
         }
     }
 }

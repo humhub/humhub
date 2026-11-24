@@ -828,7 +828,7 @@
   const _hoisted_4 = ["href", "onClick"];
   const _hoisted_5 = { class: "flex-shrink-0 me-2" };
   const _hoisted_6 = { class: "flex-grow-1" };
-  const _hoisted_7 = { class: "mt-0" };
+  const _hoisted_7 = { class: "mt-0 fs-6" };
   const _hoisted_8 = {
     key: 2,
     class: "text-danger"

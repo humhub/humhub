@@ -69,7 +69,7 @@ class Chooser extends Widget
             ? ''
             : Image::widget([
                 'space' => $currentSpace,
-                'width' => 32,
+                'width' => 40,
                 'htmlOptions' => ['class' => 'current-space-image'],
             ]);
 

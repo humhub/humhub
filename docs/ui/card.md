@@ -25,8 +25,8 @@ card: boards, grids, tables, lists, forms, key figures.
 The page header names the page (`h1`), the card names its part (`h2`), sub-sections inside a card
 are `h3`. All three are short, plain titles without `<strong>`.
 
-- **Sizes:** page title (`h1`) `$font-size-lg`, card title (`h2`) a touch smaller
-  (`$font-size-base * 1.125`), section (`h3`) `$font-size-base`; all semibold, in the highlight
+- **Sizes:** page title and card title `$font-size-lg` (the title role, see
+  [Typography](typography.md)), section (`.card-title` in the body) `$font-size-base`; all semibold, in the highlight
   colour. A section heading has more space above than below.
 - **Below tabs, the active tab names the card.** Settings › General → card "General",
   Users › Groups → card "Groups". With secondary tabs in the card, the card title is the section

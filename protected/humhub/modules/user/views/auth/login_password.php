@@ -24,9 +24,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
 
     <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
         <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
+            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
         </div>
-        <div class="panel-body pt-0">
+        <div class="panel-body">
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
                 <div class="d-flex align-items-baseline gap-1 mb-3 text-nowrap">
                     <?= Yii::t('UserModule.auth', 'Sign In as {username}', [

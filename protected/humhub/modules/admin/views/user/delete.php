@@ -20,7 +20,7 @@ use humhub\widgets\Icon;
             <?= UserImage::widget(['user' => $model->user, 'width' => 38, 'link' => true]) ?>
         </div>
         <div class="flex-grow-1">
-            <h4 class="mt-0"><?= Html::containerLink($model->user) ?></h4>
+            <h4 class="mt-0 fs-6"><?= Html::containerLink($model->user) ?></h4>
             <?= Html::encode($model->user->email) ?>
         </div>
     </div>
@@ -39,7 +39,7 @@ use humhub\widgets\Icon;
                     <?= SpaceImage::widget(['space' => $space, 'width' => 38, 'link' => true]) ?>
                 </div>
                 <div class="flex-grow-1">
-                    <h4 class="mt-0"><?= Html::containerLink($space) ?></h4>
+                    <h4 class="mt-0 fs-6"><?= Html::containerLink($space) ?></h4>
                     <?= Yii::t('SpaceModule.base', '{count} members', ['count' => $space->getMemberships()->count()]) ?>
                 </div>
             </div>
