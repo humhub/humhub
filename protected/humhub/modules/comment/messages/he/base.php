@@ -26,6 +26,8 @@ return [
     'The comment must not be empty!' => '',
     'Whenever a new comment was written.' => '',
     'Write a new comment...' => '',
+    'Your comment has been added.' => '',
+    'Your comment has been saved.' => '',
     'comment' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',

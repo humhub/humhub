@@ -30,6 +30,7 @@ return [
     'No file was uploaded.' => '',
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
+    'The name "{name}" contains characters that are not allowed.' => '',
     'The versions could not be loaded.' => '',
     '{name} uploaded {version}' => '',
 ];

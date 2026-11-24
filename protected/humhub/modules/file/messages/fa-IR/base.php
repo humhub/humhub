@@ -28,6 +28,7 @@ return [
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+    'The name "{name}" contains characters that are not allowed.' => '',
     'The uploaded image is not a squared.' => '',
     'The versions could not be loaded.' => '',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',

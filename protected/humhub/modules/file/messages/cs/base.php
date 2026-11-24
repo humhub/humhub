@@ -30,6 +30,7 @@ return [
     'Share as Post' => '',
     'Share in {targetDisplayName}' => '',
     'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+    'The name "{name}" contains characters that are not allowed.' => '',
     'The versions could not be loaded.' => '',
     '{name} uploaded {version}' => '',
 ];

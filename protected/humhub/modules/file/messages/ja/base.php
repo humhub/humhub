@@ -30,6 +30,7 @@ return [
     'Current' => '',
     'Download version {version}' => '',
     'No file was uploaded.' => '',
+    'The name "{name}" contains characters that are not allowed.' => '',
     'The versions could not be loaded.' => '',
     '{name} uploaded {version}' => '',
 ];

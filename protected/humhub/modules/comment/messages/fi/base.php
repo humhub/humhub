@@ -27,6 +27,8 @@ return [
     'Show' => '',
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
+    'Your comment has been added.' => '',
+    'Your comment has been saved.' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];

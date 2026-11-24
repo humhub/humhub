@@ -27,6 +27,8 @@ return [
     'comment' => 'Kommentar',
     'Comments can only be nested one level deep.' => '',
     'Replies' => '',
+    'Your comment has been added.' => '',
+    'Your comment has been saved.' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];

@@ -27,6 +27,8 @@ return [
     'Show next {count} comments' => '',
     'Show previous {count} comments' => '',
     'The comment must not be empty!' => '',
+    'Your comment has been added.' => '',
+    'Your comment has been saved.' => '',
     '{displayName} commented on a {contentType}.' => '',
     '{displayName} wrote a new comment {comment}.' => '',
 ];
