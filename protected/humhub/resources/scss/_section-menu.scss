@@ -11,7 +11,7 @@ $section-menu-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $section-menu-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
 $section-menu-bg: var(--bs-body-bg) !default;
 // The title: the page header's title
-$section-menu-title-font-size: $h5-font-size !default;
+$section-menu-title-font-size: $font-size-lg !default;
 $section-menu-title-font-weight: $font-weight-semibold !default;
 $section-menu-title-color: var(--bs-emphasis-color) !default;
 // The entries: the active one filled with the primary colour, hover a tint of it

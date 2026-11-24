@@ -3,7 +3,7 @@
 // --------------------------------------------------
 
 // The header of a full screen modal (`Modal::SIZE_FULL_SCREEN`): its body takes the rest of the screen
-$modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $modal-title-line-height * $h5-font-size !default;
+$modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $modal-title-line-height * $font-size-lg !default;
 
 @if not $prev-modal {
     .modal {
@@ -26,7 +26,7 @@ $modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $modal-title-l
 
         // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
         .modal-title {
-            font-size: $h5-font-size;
+            font-size: $font-size-lg;
             color: var(--bs-emphasis-color);
 
             &, & strong {

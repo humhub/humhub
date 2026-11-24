@@ -2201,7 +2201,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   `$dropdown-*` variables.
 
 - **The legacy list group look applies inside a `.panel` only** (the left navigation and other
-  menus in a panel: 12px, semibold, the accent bar, horizontal scrolling on small screens). A
+  menus in a panel: rows as the section menu's, the accent bar, horizontal scrolling on small screens). A
   `.list-group` elsewhere — in a `.card`, a dialog — is plain Bootstrap. The selectors keep their
   specificity (`:where(.panel)`), so theme overrides of `.list-group-item` still apply.
 
@@ -3054,5 +3054,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (`.card-title`, `.modal-title`, `.panel-heading`, `.panel-title`, `.wall-entry-title`) or carries `.fs-*`.
   - Text in a `.panel-body` and in a dialog is 14px (was 13px). The top bar is `min-height: var(--hh-topbar-height)`
     (`3.125rem`) instead of `height: 50px`; `--hh-fixed-header-height` is derived from it.
+  - A `.panel` looks like a content card: 16px padding (the heading `1rem 1rem .5rem`, as a card's header), 8px
+    radius, a semibold heading in one tone (a `<strong>` in it takes the heading's weight). A view that made up for
+    the old 8px padding (`pt-0` on the `.panel-body` below a heading, negative margins) drops that.
   - `_bootstrap3.scss` (the styles for Bootstrap 3 markup such as `.panel` and `.well`) is deprecated and will be
     removed in 1.21.

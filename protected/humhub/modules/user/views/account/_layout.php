@@ -13,7 +13,7 @@ use humhub\widgets\FooterMenu;
  */
 ?>
 <div class="container">
-    <div class="row gx-3">
+    <div class="row">
         <div class="col-lg-3">
             <?php
             echo AccountMenu::widget(); ?>

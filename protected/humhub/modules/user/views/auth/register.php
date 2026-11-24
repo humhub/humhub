@@ -26,7 +26,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign Up');
         <div class="panel-heading">
             <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Sign Up') ?></strong></h1>
         </div>
-        <div class="panel-body pt-0">
+        <div class="panel-body">
             <?php if (Yii::$app->session->hasFlash('error')): ?>
                 <?= Alert::danger(Yii::$app->session->getFlash('error'))->closeButton(false) ?>
             <?php endif; ?>

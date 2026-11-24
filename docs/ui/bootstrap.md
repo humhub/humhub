@@ -75,7 +75,7 @@ New classes follow Bootstrap's naming, so they read like the classes around them
   override them in their `variables.scss` like any Bootstrap variable (`!default` keeps theirs).
 - Variables are **derived from Bootstrap's and HumHub's existing values**: `$spacer` and its
   steps, `$border-radius`, `$border-radius-lg`, `$box-shadow-sm`, `$font-weight-semibold`,
-  `$h*-font-size`, `$body-bg`, `$border-color`.
+  `$font-size-sm`, `$font-size-lg`, `$body-bg`, `$border-color`.
 - **When in doubt, stay with Bootstrap and the current HumHub design.** The prototype's exact
   pixel values (8px grid, 6px radii, its shadows) are not a reason to deviate. A component takes
   the **nearest existing value**, e.g. `$spacer * .5` for the prototype's 8px. Only structure, behaviour and the parts of a component come from the

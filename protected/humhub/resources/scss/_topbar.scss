@@ -30,7 +30,7 @@
         }
 
         .dropdown-header {
-            font-size: $h5-font-size;
+            font-size: $font-size-lg;
             margin-bottom: $spacer * .5;
             font-weight: $font-weight-semibold;
             color: var(--bs-emphasis-color);
@@ -359,6 +359,8 @@
                     text-shadow: none;
                     font-weight: $font-weight-semibold;
                     font-size: $font-size-sm;
+                    // A label of one line: icon, label and the active underline within the bar's height
+                    line-height: $line-height-sm;
                     min-height: var(--hh-topbar-height);
                     text-transform: uppercase;
                     text-align: center;
@@ -410,9 +412,14 @@
                         border-top-color: var(--bs-secondary-color);
                     }
 
-                    // Above the label, at the size of the text
+                    // Above the label, larger than it and apart from it: a box at the top of its line, so that the
+                    // margin is part of the line, with or without a glyph
                     i {
-                        font-size: $font-size-base;
+                        display: inline-block;
+                        height: 1em;
+                        margin-bottom: $spacer * .25;
+                        font-size: $font-size-lg;
+                        vertical-align: top;
                     }
                 }
 

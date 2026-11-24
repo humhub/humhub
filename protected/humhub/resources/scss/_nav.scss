@@ -109,8 +109,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         --hh-nav-pills-hover-bg: #{$nav-pills-secondary-hover-bg};
     }
 
+    // Between a panel's heading and body, as between a content card's header and body (`.card-tabs`)
     .panel > .nav-scroller {
-        padding: 0 $spacer * .5 $spacer * .5;
+        padding: $spacer * .5 $card-spacer-x 0;
     }
 
     .tab-sub-menu {
@@ -211,8 +212,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     // menus of headers and tables (`.btn.btn-ghost.btn-icon-only`)
     .nav-pills.preferences {
         position: absolute;
-        right: $spacer * .5;
-        top: $spacer * .5;
+        // In a panel's corner, centred on the first line of its title (the line of a legacy entry's author is as high)
+        right: $card-spacer-x;
+        top: $card-spacer-y + ($font-size-lg * $headings-line-height - $preferences-toggle-size) * .5;
 
         .dropdown .dropdown-toggle {
             display: inline-flex;

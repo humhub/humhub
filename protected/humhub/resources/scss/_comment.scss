@@ -24,7 +24,9 @@
                     min-width: 0; // Allow shrinking to fit the flex container
                 }
 
+                // Centred on the author's line, inside the comment's own padding (not a panel's, `_nav.scss`)
                 > .nav-pills.preferences {
+                    top: $spacer * .25;
                     right: $spacer * .25;
 
                     // Hidden until the comment is hovered or holds the focus (see below). Opacity, not
@@ -51,10 +53,6 @@
                 // nested reply (docs/ui/keyboard.md, "What hover shows, focus shows")
                 &:focus-within:not(:has(.single-comment:focus-within)) > .nav-pills.preferences > .dropdown > .dropdown-toggle {
                     opacity: 1;
-                }
-
-                &:first-of-type > .nav-pills.preferences {
-                    top: $spacer * .25;
                 }
 
                 .comment-message {

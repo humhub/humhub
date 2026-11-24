@@ -9,16 +9,32 @@ Sizes are in rem, and `1rem` is the font size people set in their browser (16px 
 HumHub sets no root font size. With a default font of 32px, text, controls and the spacing around
 them are twice as large. Never write a `font-size` or `line-height` in px; Stylelint rejects it.
 
-## Four roles
+## Three sizes
 
 | Role | Variable | At the default | Use it for |
 |---|---|---|---|
 | Text | `$font-size-base` | 14px | Body text, fields, buttons, menus, tables. It is inherited: don't set it. |
 | Secondary text | `$font-size-sm` | 12.25px | Meta lines, timestamps, hints below fields, badges, counters. Nothing is smaller. |
-| Title | `$h5-font-size` | 17.5px | The title of a page, dialog, card, panel, widget or menu. |
-| Content title | `$h4-font-size` | 21px | The title of a piece of content: a post with a title, a wiki page; the name on a space's or profile's header. |
+| Title | `$font-size-lg` | 17.5px | The title of a page, dialog, card, panel, widget or menu. |
 
-In markup the same roles are `.small`, `.fs-5` and `.fs-4`.
+In markup the same roles are `.small` and `.fs-5`.
+
+### Larger sizes
+
+A few places need more than a title: the title of a piece of content (a post with a title, a wiki
+page) and the name and the counters on a space's or profile's header, which stand on or beside
+the cover image. They take a step of Bootstrap's type scale, the one behind `.fs-1` … `.fs-6`.
+Bootstrap names its variables `$h1-font-size` … `$h6-font-size`, but they are steps of a scale,
+not the sizes of tags: an `h1` may well have step 4.
+
+So that a rule says what it styles, a component names its own variable at the head of its file
+and takes the step there, once:
+
+```scss
+$post-title-font-size: $h4-font-size !default;              // 21px, `.fs-4`
+$container-header-title-font-size: $h3-font-size !default;  // 24.5px, `.fs-3`
+$container-header-count-font-size: $h4-font-size !default;
+```
 
 A section inside a card (a group of fields, an accordion's row) is text size in semibold: a
 weight, not a fifth size.
@@ -38,8 +54,8 @@ never a number.
 - A component sets the size of its title: `.card-title`, `.modal-title`, the page header's title
   and a legacy `.panel-heading` are titles on any tag. `<h1 class="card-title">` and
   `<h2 class="card-title">` look the same.
-- Outside such a component, give the heading `.fs-5` (title), `.fs-4` (content title) or `.fs-6`
-  (text size).
+- Outside such a component, give the heading `.fs-5` (title) or `.fs-6` (text size); `.fs-4` for
+  the title of a piece of content.
 - Bootstrap's own way works too: a utility in the markup wins over the component's size, so
   `<h1 class="modal-title fs-4">` behaves as in the Bootstrap docs.
 

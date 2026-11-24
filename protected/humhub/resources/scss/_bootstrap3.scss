@@ -22,7 +22,8 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         border: none;
         background-color: var(--bs-body-bg);
         box-shadow: 0 0 3px var(--bs-border-color);
-        border-radius: $border-radius-sm;
+        // As a content card (`_card.scss`): its radius, and the paddings of Bootstrap's card it keeps
+        border-radius: $border-radius-lg;
         position: relative;
         margin-bottom: $spacer;
 
@@ -31,17 +32,23 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
             color: var(--bs-emphasis-color);
         }
 
-        // A title, in a normal weight: the `<strong>` part of a heading like "<strong>Latest</strong> activities"
-        // stands out
+        // A title, as a card's header: 1rem above it, with the body's padding 1.5rem between it and the content
         .panel-heading {
-            font-size: $h5-font-size;
-            font-weight: $font-weight-normal;
+            font-size: $font-size-lg;
+            font-weight: $font-weight-semibold;
+            line-height: $headings-line-height;
             color: var(--bs-emphasis-color);
             background-color: var(--bs-body-bg);
             border: none;
-            padding: $spacer * .5;
+            padding: $card-spacer-y $card-cap-padding-x $card-cap-padding-y;
             margin: 0;
-            border-radius: $border-radius-sm;
+            border-radius: $border-radius-lg $border-radius-lg 0 0;
+
+            // One tone: translations still bold a heading's first word ("<strong>Latest</strong> activities")
+            strong,
+            b {
+                font-weight: inherit;
+            }
 
             // A heading in the panel's heading takes its look, whatever its tag (h1–h6)
             .panel-title {
@@ -62,7 +69,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         }
 
         .panel-body {
-            padding: $spacer * .5;
+            padding: $card-spacer-y $card-spacer-x;
 
             p {
                 color: var(--bs-body-color);
@@ -100,10 +107,15 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         animation-duration: 200ms;
     }
 
-    // Over the panel body's padding, to its edges
+    // Over the panel body's padding, to its edges; the first tab in line with the content
     .panel-body > .tab-menu {
-        margin-left: -$spacer * .5;
-        margin-right: -$spacer * .5;
+        margin-left: -$card-spacer-x;
+        margin-right: -$card-spacer-x;
+
+        &.nav-tabs,
+        > .nav-tabs {
+            padding-left: $card-spacer-x;
+        }
     }
 
     //

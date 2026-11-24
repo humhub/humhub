@@ -13,8 +13,9 @@ $content-activity-entry-padding-y: $spacer * .5 !default;
             padding: 0;
         }
 
+        // Rows from edge to edge, their content in line with the panel's title
         .d-flex {
-            padding: $spacer * .5;
+            padding: $spacer * .5 $card-spacer-x;
         }
     }
 

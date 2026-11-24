@@ -42,7 +42,7 @@ come from (Sass variables, local CSS variables).
 **Colours:** [Colours](colours.md). Which colour token to use for which job: text, backgrounds,
 lines, in the light and the dark mode.
 
-**Typography:** [Typography](typography.md). The four text roles, the weights, and how headings
+**Typography:** [Typography](typography.md). The three text sizes, the weights, and how headings
 get their size.
 
 **Keyboard:** [Keyboard](keyboard.md). How everything works without a mouse: what Tab reaches,

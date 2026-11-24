@@ -6,7 +6,8 @@
     // A column (`.col-lg-3`, `.col-lg-4`): its side padding is Bootstrap's half gutter
     .layout-sidebar-container {
         > .panel > .panel-heading {
-            padding-right: $preferences-toggle-size + $spacer * .5; // Space for the PanelMenu widget dropdown menu
+            // Clear of the PanelMenu's ⋮ in the corner (`_nav.scss`)
+            padding-right: $card-spacer-x + $preferences-toggle-size + $spacer * .5;
         }
     }
 

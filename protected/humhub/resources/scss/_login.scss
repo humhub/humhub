@@ -37,24 +37,9 @@
         .panel {
             box-shadow: 0 0 15px color-mix(in srgb, var(--bs-primary), white 20%);
 
-            .panel-heading,
-            .panel-body {
-                padding: $spacer;
-            }
-
             h1,
             h2 {
                 color: var(--bs-body-color);
-            }
-
-            // The panel title is the page's heading, in the look of a title
-            .panel-heading .panel-title {
-                margin: 0;
-                font-size: $h5-font-size;
-
-                &, & strong {
-                    font-weight: $font-weight-semibold;
-                }
             }
         }
 

@@ -2,6 +2,9 @@
 // Stream (wall)
 // --------------------------------------------------
 
+// The title of a piece of content, from Bootstrap's type scale (`.fs-4`)
+$post-title-font-size: $h4-font-size !default;
+
 @if not $prev-stream {
     // Content create form
     .contentForm_options {
@@ -143,10 +146,11 @@
                 }
             }
 
+            // Centred on the author's line, as a panel's ⋮ on its title (`_nav.scss`)
             .preferences {
                 position: absolute;
                 right: 0;
-                top: 0;
+                top: ($font-size-base * $line-height-base - $preferences-toggle-size) * .5;
             }
 
             .wall-entry-title, .wall-entry-meta {
@@ -164,7 +168,7 @@
                 margin-bottom: $spacer * .25;
 
                 .post-short-text {
-                    font-size: $h4-font-size;
+                    font-size: $post-title-font-size;
                 }
             }
         }
@@ -181,7 +185,7 @@
 
         // A post's own title is the title of a piece of content
         .post-title {
-            font-size: $h4-font-size;
+            font-size: $post-title-font-size;
         }
 
         // The author's name on a post, the content's title on a module's entry: text size (over the view's `.h4`),

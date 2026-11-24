@@ -16,7 +16,7 @@ $content-card-header-padding-top: $spacer !default;
 $content-card-header-padding-bottom: $spacer * .5 !default;
 $content-card-tabs-padding-top: $spacer * .5 !default;
 // Titles: the card's title (as large as the page header's) > the title of a section in its body
-$content-card-title-font-size: $h5-font-size !default;
+$content-card-title-font-size: $font-size-lg !default;
 $content-card-title-font-weight: $font-weight-semibold !default;
 $content-card-title-badges-gap: $spacer * .5 !default;
 $content-card-subtitle-margin-top: $spacer * .5 !default;
@@ -29,7 +29,7 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
 @if not $prev-card {
     // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
     .card-title {
-        font-size: $h5-font-size;
+        font-size: $font-size-lg;
         font-weight: $font-weight-semibold;
     }
 

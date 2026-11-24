@@ -101,7 +101,7 @@ The layout is its own component; the section menu is a Bootstrap **`.nav`**. Cla
 - **Files:** `_section-menu.scss` (new) behind `$prev-section-menu`; `_pane-split.scss` (new)
   behind `$prev-pane-split`.
 - **Sass variables:** `$section-menu-padding` (`$spacer * .5`, as the page header),
-  `$section-menu-title-font-size` (`$h5-font-size`), `$section-menu-title-font-weight`
+  `$section-menu-title-font-size` (`$font-size-lg`), `$section-menu-title-font-weight`
   (`$font-weight-semibold`), `$section-menu-title-color` (`var(--bs-emphasis-color)`),
   `$nav-section-link-padding` (`$spacer * .5`), `$nav-section-link-font-weight`
   (`$font-weight-medium`), `$nav-section-link-hover-bg` (`var(--bs-primary-bg-subtle)`),
@@ -126,9 +126,10 @@ The layout is its own component; the section menu is a Bootstrap **`.nav`**. Cla
   stored setting the marketplace refreshes in the background, so rendering costs no request.
   `UserMenu` keeps its dot on the approvals tab.
 - **Layout:** `modules/admin/views/layouts/main.php` and `modules/user/views/account/_layout.php`
-  are Bootstrap columns (`col-lg-3` / `col-lg-9`) with the `gx-3` gutter, so the gap between the
-  menu and the page is the `gap-3` between the page header and its content card. No fold yet,
-  full page loads (pjax optional).
+  are Bootstrap columns (`col-lg-3` / `col-lg-9`) with Bootstrap's gutter: 24px between the menu
+  and the page, as between the columns of the dashboard, a space and a profile. The page header
+  and its content cards are stacked with `gap-3` (16px). No fold yet, full page loads (pjax
+  optional).
 - **Other left menus:** the space and profile menus, and modules' own menus (hostinginfo), still
   render through `humhub\widgets\menu\LeftNavigation` (`widgets/menu/views/left-navigation.php`,
   a Bootstrap panel) until they become tabs ([Space & Profile Header](container-header.md)).
