@@ -154,6 +154,11 @@
             }
         }
 
+        // Below the title as far as the section menu's entries below theirs
+        .panel > .panel-heading + .list-group {
+            margin-top: $spacer * .5;
+        }
+
         // With the last row's padding, its label as far from the panel's edge as the title above
         .panel > .list-group:last-child {
             padding-bottom: $spacer * .5;

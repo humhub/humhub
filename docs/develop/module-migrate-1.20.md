@@ -3052,8 +3052,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - No rule sizes `h1`–`h6` by their context any more (`.panel h1`, `.hh-list h4`, `.wall-entry h4`/`h5`, a plain `h3`
     in a content card, the global `h4` and `h5`): a heading has Bootstrap's size unless it is the title of a component
     (`.card-title`, `.modal-title`, `.panel-heading`, `.panel-title`, `.wall-entry-title`) or carries `.fs-*`.
-  - Text in a `.panel-body` and in a dialog is 14px (was 13px). The top bar is `min-height: var(--hh-topbar-height)`
-    (`3.125rem`) instead of `height: 50px`; `--hh-fixed-header-height` is derived from it.
+  - Text in a `.panel-body` and in a dialog is 14px (was 13px). Each top bar is `min-height: var(--hh-topbar-height)`
+    (`3.5rem`, 56px) instead of `height: 50px`; `--hh-fixed-header-height` is derived from it. The account picture and the
+    current space's image in the bars are 40px (were 32px).
   - A `.panel` looks like a content card: 16px padding (the heading `1rem 1rem .5rem`, as a card's header), 8px
     radius, a semibold heading in one tone (a `<strong>` in it takes the heading's weight). A view that made up for
     the old 8px padding (`pt-0` on the `.panel-body` below a heading, negative margins) drops that.

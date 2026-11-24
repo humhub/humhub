@@ -101,8 +101,9 @@
     --hh-mail-font-family: #{$mail-font-family};
 
     // Dimensions
-    // The height of each of the two top bars (`_topbar.scss`), a minimum; in rem, so it follows the browser's font size
-    --hh-topbar-height: 3.125rem;
+    // The height of each of the two top bars (`_topbar.scss`), a minimum; in rem, so it follows the browser's font
+    // size. Bootstrap's navbar is as high
+    --hh-topbar-height: 3.5rem;
     // The two top bars and the gutter below them: the offset of the page and of anything sticky
     --hh-fixed-header-height: calc(var(--hh-topbar-height) * 2 + #{$spacer * 1.5});
     --hh-fixed-footer-height: 0px; // Force keeping `px` after CSS compilation (required for `calc()` function)

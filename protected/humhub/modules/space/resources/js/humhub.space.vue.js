@@ -497,7 +497,7 @@
   const _hoisted_1$7 = { class: "visually-hidden" };
   const _hoisted_2$5 = { class: "dropdown-menu" };
   const _hoisted_3$4 = ["innerHTML"];
-  const _hoisted_4$3 = ["innerHTML"];
+  const _hoisted_4$4 = ["innerHTML"];
   const _hoisted_5$3 = ["href"];
   const _hoisted_6$3 = ["innerHTML"];
   const _hoisted_7$3 = ["id", "innerHTML"];
@@ -614,7 +614,7 @@
                 onClick: _cache[4] || (_cache[4] = vue$1.withModifiers((...args) => $options.leave && $options.leave(...args), ["prevent"]))
               },
               [
-                vue$1.createElementVNode("span", { innerHTML: $props.checkIconHtml }, null, 8, _hoisted_4$3),
+                vue$1.createElementVNode("span", { innerHTML: $props.checkIconHtml }, null, 8, _hoisted_4$4),
                 vue$1.createTextVNode(
                   vue$1.toDisplayString($options.memberLabel),
                   1
@@ -791,7 +791,7 @@
   const _hoisted_1$6 = ["href", "data-space-guid"];
   const _hoisted_2$4 = { class: "flex-shrink-0 me-2" };
   const _hoisted_3$3 = { class: "flex-grow-1" };
-  const _hoisted_4$2 = { class: "space-name" };
+  const _hoisted_4$3 = { class: "space-name" };
   const _hoisted_5$2 = ["title"];
   const _hoisted_6$2 = {
     key: 1,
@@ -830,7 +830,7 @@
       vue$1.createElementVNode("div", _hoisted_3$3, [
         vue$1.createElementVNode(
           "strong",
-          _hoisted_4$2,
+          _hoisted_4$3,
           vue$1.toDisplayString($props.space.name),
           1
           /* TEXT */
@@ -1173,7 +1173,7 @@
     id: "space-directory-link",
     class: "input-group-text"
   };
-  const _hoisted_4$1 = ["href", "title", "aria-label", "innerHTML"];
+  const _hoisted_4$2 = ["href", "title", "aria-label", "innerHTML"];
   const _hoisted_5$1 = ["innerHTML"];
   const _hoisted_6$1 = {
     id: "space-menu-spaces",
@@ -1253,7 +1253,7 @@
                     title: $props.directoryLabel,
                     "aria-label": $props.directoryLabel,
                     innerHTML: $props.directoryIconHtml
-                  }, null, 8, _hoisted_4$1)
+                  }, null, 8, _hoisted_4$2)
                 ])) : vue$1.createCommentVNode("v-if", true),
                 vue$1.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock "),
                 vue$1.withDirectives(vue$1.createElementVNode("div", {
@@ -1398,9 +1398,14 @@
   const _hoisted_1$4 = ["innerHTML"];
   const _hoisted_2$2 = {
     key: 1,
+    class: "space-menu-sizer",
+    "aria-hidden": "true"
+  };
+  const _hoisted_3$1 = {
+    key: 2,
     class: "no-space"
   };
-  const _hoisted_3$1 = ["innerHTML"];
+  const _hoisted_4$1 = ["innerHTML"];
   function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
@@ -1411,9 +1416,17 @@
           key: 0,
           class: "current-space",
           innerHTML: $data.imageHtml
-        }, null, 8, _hoisted_1$4)) : (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$2, [
+        }, null, 8, _hoisted_1$4)) : vue$1.createCommentVNode("v-if", true),
+        vue$1.createCommentVNode(` As wide as the "My spaces" state, so that the menu's other entries stay where they are `),
+        $data.imageHtml ? (vue$1.openBlock(), vue$1.createElementBlock(
+          "span",
+          _hoisted_2$2,
+          vue$1.toDisplayString($options.noSpaceLabel),
+          1
+          /* TEXT */
+        )) : (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3$1, [
           vue$1.createCommentVNode(" eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock "),
-          vue$1.createElementVNode("span", { innerHTML: $props.noSpaceIconHtml }, null, 8, _hoisted_3$1),
+          vue$1.createElementVNode("span", { innerHTML: $props.noSpaceIconHtml }, null, 8, _hoisted_4$1),
           _cache[0] || (_cache[0] = vue$1.createElementVNode(
             "br",
             null,
@@ -1428,8 +1441,8 @@
           )
         ]))
       ],
-      2112
-      /* STABLE_FRAGMENT, DEV_ROOT_FRAGMENT */
+      64
+      /* STABLE_FRAGMENT */
     );
   }
   const __vite_glob_0_3 = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["render", _sfc_render$7]]);

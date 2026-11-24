@@ -69,7 +69,7 @@ class Chooser extends Widget
             ? ''
             : Image::widget([
                 'space' => $currentSpace,
-                'width' => 32,
+                'width' => 40,
                 'htmlOptions' => ['class' => 'current-space-image'],
             ]);
 
@@ -83,7 +83,7 @@ class Chooser extends Widget
                     'noSpaceIconHtml' => $noSpaceIconHtml,
                 ],
                 'content' => $imageHtml !== ''
-                    ? $imageHtml
+                    ? $imageHtml . Html::tag('span', Yii::t('SpaceModule.chooser', 'My spaces'), ['class' => 'space-menu-sizer', 'aria-hidden' => 'true'])
                     : Html::tag('div', $noSpaceIconHtml . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces'), ['class' => 'no-space']),
             ]),
             '#',

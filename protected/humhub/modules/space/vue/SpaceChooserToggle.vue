@@ -1,6 +1,8 @@
 <template>
     <!-- eslint-disable-next-line vue/no-v-html -- server-rendered image or icon, see docblock -->
     <span v-if="imageHtml" class="current-space" v-html="imageHtml"></span>
+    <!-- As wide as the "My spaces" state, so that the menu's other entries stay where they are -->
+    <span v-if="imageHtml" class="space-menu-sizer" aria-hidden="true">{{ noSpaceLabel }}</span>
 
     <div v-else class="no-space">
         <!-- eslint-disable-next-line vue/no-v-html -- server-rendered icon, see docblock -->

@@ -2,6 +2,9 @@
 // Topbar
 // --------------------------------------------------
 
+// The network's name where there is no logo image, from Bootstrap's type scale (`.fs-4`): it stands alone in the bar
+$topbar-brand-font-size: $h4-font-size !default;
+
 @if not $prev-topbar {
     .navbar.topbar {
         --bs-navbar-padding-x: 0;
@@ -70,6 +73,7 @@
 
         a.navbar-brand {
             padding: $spacer * .25;
+            font-size: $topbar-brand-font-size;
 
             img#img-logo,
             img.hh-logo-dark {
@@ -149,8 +153,11 @@
                 text-align: left;
             }
 
+            // An icon as large as the top menu's, in a button with even padding
             .btn-group > a {
-                padding: $spacer * .25 $spacer * .5;
+                padding: $spacer * .5;
+                font-size: $font-size-lg;
+                line-height: 1;
                 display: inline-block;
                 border-radius: $border-radius-sm;
                 text-decoration: none;
@@ -354,13 +361,15 @@
                 // The icon above the label, as high as the bar: the active underline on its edge
                 > a.nav-link {
                     display: block;
-                    padding: $spacer * .5 $spacer 0;
+                    // Icon, gap and label in the middle of the bar, whatever its height
+                    padding: calc((var(--hh-topbar-height) - #{$font-size-lg + $spacer * .25 + $font-size-sm}) / 2) $spacer 0;
                     text-decoration: none;
                     text-shadow: none;
                     font-weight: $font-weight-semibold;
                     font-size: $font-size-sm;
-                    // A label of one line: icon, label and the active underline within the bar's height
-                    line-height: $line-height-sm;
+                    // A label of one line in capitals: no room for descenders below it, which would lift icon and label
+                    // above the bar's middle
+                    line-height: 1;
                     min-height: var(--hh-topbar-height);
                     text-transform: uppercase;
                     text-align: center;
@@ -381,6 +390,8 @@
                     }
 
                     &#space-menu {
+                        // Starts where the logo above it starts (`a.navbar-brand`)
+                        padding-left: $spacer * .25;
                         border-right: 1px solid var(--bs-secondary-bg);
 
                         .no-space {
@@ -393,15 +404,58 @@
                             vertical-align: middle;
                         }
 
+                        &:has(.current-space-image) {
+                            display: flex;
+                            align-items: center;
+                            padding-top: 0;
+                        }
+
+                        // Inside a space the entry is as wide as outside: below the image, on a line of no height,
+                        // stands the "My spaces" label. So the entries after it stay where they are
+                        space-chooser-toggle:has(.current-space-image) {
+                            display: inline-grid;
+                            grid-template-columns: auto 1fr;
+                            align-items: center;
+                            justify-items: start;
+
+                            // The caret beside the image, not at the end of the reserved width
+                            &::after {
+                                content: "";
+                                grid-area: 1 / 2;
+                                margin-left: .5em;
+                                border-top: $caret-width solid;
+                                border-right: $caret-width solid transparent;
+                                border-left: $caret-width solid transparent;
+                            }
+                        }
+
+                        // No line box around the image, which would add the room of descenders below it
+                        .current-space {
+                            display: flex;
+                        }
+
+                        .space-menu-sizer {
+                            grid-area: 2 / 1 / auto / -1;
+                            height: 0;
+                            padding-right: 1em; // The caret and its gap in the "My spaces" state
+                            overflow: hidden;
+                            visibility: hidden;
+                        }
+
                         &:has(.current-space-image)::after {
-                            vertical-align: middle;
-                            margin-left: .5em;
+                            display: none; // Drawn beside the image, above
                         }
                     }
 
                     // Only the icon: in the middle of the bar
                     &#search-menu {
-                        padding-top: $spacer;
+                        display: flex;
+                        align-items: center;
+                        padding-top: 0;
+
+                        i {
+                            margin-bottom: 0; // No label below it
+                        }
 
                         &::after {
                             display: none; // Remove Bootstrap dropdown arrow
