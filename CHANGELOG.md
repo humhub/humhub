@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh: Sizes in rem on Bootstrap's defaults; text follows the browser's font size
+- Enh #8777: Sizes in rem on Bootstrap's defaults; text follows the browser's font size
 - Fix: The search field and the directory link of the space chooser have a name, the confirm dialog's title is never empty
 - Fix: Hidden skip links have no `href`, so accessibility checkers no longer report them as broken
 - Fix: The hidden file pickers of the comment form have a name, the upload button's tooltip is translated
