@@ -2,6 +2,9 @@
 // Modal
 // --------------------------------------------------
 
+// The header of a full screen modal (`Modal::SIZE_FULL_SCREEN`): its body takes the rest of the screen
+$modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $modal-title-line-height * $h5-font-size !default;
+
 @if not $prev-modal {
     .modal {
         --hh-modal-content-padding: calc(var(--bs-modal-padding) * 0.8);
@@ -21,12 +24,13 @@
             z-index: 999999 !important;
         }
 
+        // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
         .modal-title {
-            font-size: 20px;
+            font-size: $h5-font-size;
             color: var(--bs-emphasis-color);
 
             &, & strong {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
             }
         }
 
@@ -47,10 +51,6 @@
             .modal-header {
                 border-bottom: none;
                 text-align: center;
-            }
-
-            .modal-body {
-                font-size: 13px;
             }
 
             .modal-footer, .modal-body-footer {
@@ -84,7 +84,7 @@
             display: flex;
             align-items: center;
             max-width: 100%;
-            margin: 0 30px;
+            margin: 0 $spacer * 1.5;
             height: 100vh;
 
             .modal-content {
@@ -93,7 +93,7 @@
             }
 
             .modal-body {
-                height: calc(100vh - 110px);
+                height: calc(100vh - #{$modal-hh-fullscreen-header-height + $spacer * 3});
                 padding: 0;
 
                 > div, > iframe, > div > iframe {
@@ -111,7 +111,7 @@
                     border-radius: 0;
                 }
                 .modal-body {
-                    height: calc(100vh - 57px);
+                    height: calc(100vh - #{$modal-hh-fullscreen-header-height});
                 }
             }
         }

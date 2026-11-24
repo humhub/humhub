@@ -10,7 +10,7 @@ use humhub\modules\oauth\models\Client;
 ?>
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 <?= $this->render('_tabs') ?>
-<h3><?= Yii::t('OauthModule.base', 'Secret of “{name}”', ['name' => Html::encode($client->name)]) ?></h3>
+<h3 class="card-title"><?= Yii::t('OauthModule.base', 'Secret of “{name}”', ['name' => Html::encode($client->name)]) ?></h3>
 <?= $this->render('@oauth/views/common/_credential', [
     'hint' => Yii::t('OauthModule.base', 'Copy the secret now. You won\'t be able to see it again.'),
     'fields' => [

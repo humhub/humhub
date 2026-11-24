@@ -8,24 +8,23 @@
 // docs/develop/ui-js-vuejs-picker.md.
 // @since 1.20
 
-// One field high: a `.form-control` (`$input-*` in variables.scss: two 1px borders)
-$select-menu-field-borders: 2px !default;
+// One field high: a `.form-control`, from Bootstrap's `$input-*` (its line in rem, not `1em`: the chevron has
+// a font size of its own)
+$select-menu-field-borders: $input-height-border !default;
 $select-menu-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, $select-menu-field-borders, false)) !default;
 $select-menu-icon-size: $font-size-lg !default;
 $select-menu-icon-color: var(--bs-secondary-color) !default;
 $select-menu-icon-space: $input-padding-x + $select-menu-icon-size + $spacer * .5 !default;
 $select-menu-max-height: 384px !default;
-// A select list row as high as a field (≈38px: 21px line + 2 × 8.5px); context menus keep
-// Bootstrap's `$dropdown-item-padding-y`
-$select-menu-option-padding-y: 8.5px !default;
 
-$picker-chip-height: 30px !default; // a 38px field: 3px above and below
+// A line of text and `.25rem` above and below it, inside the field's padding
+$picker-chip-height: $input-line-height * $input-font-size + $spacer * .5 !default;
 // The `:size` PickerInput gives a chip picture
 $picker-chip-image-size: 22px !default;
 $picker-chip-bg: var(--bs-accent) !default;
 $picker-chip-color: var(--hh-accent-contrast) !default;
 $picker-chip-font-size: inherit !default;
-$picker-color-size: .75rem !default;
+$picker-color-size: .75em !default; // A dot beside the text
 $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
 @if not $prev-picker {
@@ -136,7 +135,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
     .select-menu-spinner {
         position: absolute;
-        top: calc(50% - .5rem);
+        top: calc(50% - #{$spinner-height-sm * .5});
         right: $input-padding-x;
         color: $select-menu-icon-color;
     }
@@ -163,8 +162,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     .select-menu-option {
         display: flex;
         align-items: center;
-        padding-top: $select-menu-option-padding-y;
-        padding-bottom: $select-menu-option-padding-y;
         gap: $spacer * .5;
         white-space: normal;
         overflow-wrap: anywhere;
@@ -257,14 +254,14 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker .select-menu-spinner {
-        top: calc(#{$select-menu-field-height} * .5 - .5rem);
+        top: calc(#{$select-menu-field-height} * .5 - #{$spinner-height-sm * .5});
     }
 
     // A chosen value: a filled tag as high as the input
     .picker-chip {
         display: inline-flex;
         align-items: center;
-        gap: $spacer * .375;
+        gap: $spacer * .25;
         max-width: 100%;
         min-width: 0;
         height: $picker-chip-height;

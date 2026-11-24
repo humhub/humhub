@@ -18,10 +18,9 @@
         color: var(--bs-emphasis-color);
         background-color: var(--bs-tertiary-bg);
         border-color: var(--bs-secondary-bg);
-        font-size: 13px;
 
         .info {
-            margin: 10px 0;
+            margin: $spacer * .5 0;
         }
     }
 
@@ -29,7 +28,7 @@
     // data-saved feedback Deprecated since 1.2
     // --------------------------------------------------
     .data-saved {
-        padding-left: 10px;
+        padding-left: $spacer * .5;
     }
 
     img.bounceIn {

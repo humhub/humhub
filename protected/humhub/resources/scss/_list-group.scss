@@ -11,13 +11,13 @@
     // by its cascade layer. The left border keeps `!important`: the Enterprise Theme (enterprise-white) sets it with
     // `!important` on every `.list-group-item`, the active entry's border still has to win against it.
     .panel .list-group .list-group-item {
-        padding: 6px 8px;
+        padding: $spacer * .25 $spacer * .5;
         border-left: 3px solid var(--bs-body-bg) !important;
-        font-size: 12px;
-        font-weight: 600;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
 
         i {
-            font-size: 14px;
+            font-size: $font-size-base;
         }
     }
 
@@ -100,19 +100,19 @@
         }
 
         .panel .list-group {
-            margin-left: 4px;
-            gap: 4px;
+            margin-left: $spacer * .25;
+            gap: $spacer * .25;
             flex-direction: row;
             overflow-x: auto;
 
             .list-group-item {
                 white-space: nowrap;
                 border-left: none !important;
-                margin: 4px 0;
+                margin: $spacer * .25 0;
 
                 // Also above `.panel a.list-group-item:first-child` and `:last-child`
                 &, &:first-child, &:last-child {
-                    border-radius: 3px;
+                    border-radius: $border-radius-sm;
                 }
             }
 

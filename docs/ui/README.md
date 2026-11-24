@@ -42,6 +42,9 @@ come from (Sass variables, local CSS variables).
 **Colours:** [Colours](colours.md). Which colour token to use for which job: text, backgrounds,
 lines, in the light and the dark mode.
 
+**Typography:** [Typography](typography.md). The four text roles, the weights, and how headings
+get their size.
+
 **Keyboard:** [Keyboard](keyboard.md). How everything works without a mouse: what Tab reaches,
 what hover and focus share, where the focus goes after a dialog, a deletion or a reload, and what
 Escape closes.

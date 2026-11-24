@@ -3,28 +3,29 @@
 // --------------------------------------------------
 
 @if not $prev-comment {
-    $commentLeftMargin: 35px;
+    // The avatar's 25px and the gap beside it (px, as the avatar)
+    $commentLeftMargin: 33px;
 
     .comment-container {
-        border-radius: 3px;
+        border-radius: $border-radius-sm;
 
         // Beside a comment list, not in it (it is a feed of the comments only)
         .showMore {
-            padding-bottom: 1rem;
+            padding-bottom: $spacer;
             text-align: center;
         }
 
         .comment {
             .single-comment {
                 position: relative;
-                margin: -0.5rem;
+                margin: $spacer * -.5; // Out by its padding (`p-2`)
 
                 &.d-flex > .flex-grow-1 {
                     min-width: 0; // Allow shrinking to fit the flex container
                 }
 
                 > .nav-pills.preferences {
-                    right: 6px;
+                    right: $spacer * .25;
 
                     // Hidden until the comment is hovered or holds the focus (see below). Opacity, not
                     // visibility: the toggle stays in the tab order and shows the moment it takes the
@@ -53,7 +54,7 @@
                 }
 
                 &:first-of-type > .nav-pills.preferences {
-                    top: 6px;
+                    top: $spacer * .25;
                 }
 
                 .comment-message {
@@ -62,7 +63,7 @@
                 }
 
                 .comment-header-image {
-                    margin-right: 10px;
+                    margin-right: $spacer * .5;
                 }
 
                 .richtext-create-input-group {
@@ -70,26 +71,17 @@
                     .mb-3 {
                         margin-bottom: 0 !important;
                     }
-
-                    &.scrollActive .richtext-create-buttons {
-                        right: 22px;
-                    }
                 }
 
-                // The author's name is set apart from the time by its weight and size, not by its color only (WCAG 1.4.1)
+                // The author's name is set apart from the time by its weight and size, not by its color only (WCAG 1.4.1).
+                // Text size over the view's `.h4`; the time is a `small`
                 .comment-heading {
-                    font-size: 13px;
-                    font-weight: 400;
-                    padding-top: 1px;
-                    margin-bottom: 3px;
+                    font-size: $font-size-base;
+                    font-weight: $font-weight-normal;
+                    margin-bottom: $spacer * .25;
 
                     a {
-                        font-weight: 500;
-                    }
-
-                    small {
-                        font-weight: 400;
-                        font-size: 11px;
+                        font-weight: $font-weight-semibold;
                     }
                 }
 
@@ -107,7 +99,7 @@
                     }
 
                     .showMore {
-                        margin-top: 10px;
+                        margin-top: $spacer * .5;
                     }
 
                     div.comment {
@@ -119,23 +111,23 @@
 
                 &.comment-current {
                     background: var(--bs-accent-bg-subtle);
-                    border-radius: 3px;
+                    border-radius: $border-radius-sm;
 
                     hr {
                         position: relative;
-                        top: -6px;
+                        top: $spacer * -.25;
                     }
 
                     &:first-of-type {
-                        padding-top: 5px;
-                        margin-top: -5px;
+                        padding-top: $spacer * .25;
+                        margin-top: $spacer * -.25;
                     }
 
                     .nested-comments-root {
                         .comment-container {
                             .showMore {
                                 margin-top: 0;
-                                padding-top: 5px;
+                                padding-top: $spacer * .25;
                             }
                         }
                     }
@@ -187,8 +179,8 @@
             }
         }
 
+        // The margins are those of any `hr` (`_base.scss`)
         hr {
-            margin: 10px 0;
             border-top: 1px solid var(--bs-tertiary-bg);
         }
 

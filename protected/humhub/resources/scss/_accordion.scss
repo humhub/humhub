@@ -5,8 +5,8 @@
 // @since 1.20
 // --------------------------------------------------
 
-$accordion-icon-box-size: 2.5rem !default;
 $accordion-icon-box-font-size: $font-size-lg !default;
+$accordion-icon-box-size: $accordion-icon-box-font-size * 2 !default; // Twice its icon
 $accordion-header-gap: $spacer * .75 !default;
 
 @if not $prev-accordion {

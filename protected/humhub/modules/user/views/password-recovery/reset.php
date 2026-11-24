@@ -15,7 +15,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
 
     <div id="password-recovery-form" class="panel panel-default animated bounceIn">
         <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Change your password') ?></strong></h1>
+            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Change your password') ?></strong></h1>
         </div>
         <div class="panel-body">
 

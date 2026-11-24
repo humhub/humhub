@@ -15,8 +15,8 @@ $content-card-header-gap: $spacer * .5 !default;
 $content-card-header-padding-top: $spacer !default;
 $content-card-header-padding-bottom: $spacer * .5 !default;
 $content-card-tabs-padding-top: $spacer * .5 !default;
-// Headings: the page header's title (`h1`, $font-size-lg) > card title (`h2`) > section (`h3`)
-$content-card-title-font-size: $font-size-base * 1.125 !default;
+// Titles: the card's title (as large as the page header's) > the title of a section in its body
+$content-card-title-font-size: $h5-font-size !default;
 $content-card-title-font-weight: $font-weight-semibold !default;
 $content-card-title-badges-gap: $spacer * .5 !default;
 $content-card-subtitle-margin-top: $spacer * .5 !default;
@@ -24,9 +24,15 @@ $content-card-section-title-font-size: $font-size-base !default;
 $content-card-section-title-font-weight: $font-weight-semibold !default;
 $content-card-section-title-margin-top: $spacer * 1.5 !default;
 $content-card-section-title-margin-bottom: $spacer * .5 !default;
-$content-card-margin-bottom: 15px !default; // the margin of the `.panel` it replaces
+$content-card-margin-bottom: $spacer !default; // about the margin of the `.panel` it replaces
 
 @if not $prev-card {
+    // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
+    .card-title {
+        font-size: $h5-font-size;
+        font-weight: $font-weight-semibold;
+    }
+
     .content-card {
         --bs-card-border-width: 0;
         --bs-card-border-radius: #{$content-card-border-radius};
@@ -94,8 +100,8 @@ $content-card-margin-bottom: 15px !default; // the margin of the `.panel` it rep
         font-size: inherit;
     }
 
-    // A section of the card's content; `:where()` keeps it below the styles of rich text
-    :where(.content-card > .card-body) h3:not(.accordion-header) {
+    // A title in the body is that of a section of the card's content, a step below the card's title
+    :where(.content-card > .card-body) .card-title {
         margin: 0 0 $content-card-section-title-margin-bottom;
         color: var(--bs-emphasis-color);
         font-size: $content-card-section-title-font-size;

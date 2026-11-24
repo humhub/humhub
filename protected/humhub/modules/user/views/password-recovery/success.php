@@ -15,7 +15,7 @@ $loginRoute = MaintenanceModeGate::isActive() ? ['/user/auth/login', 'maintenanc
 
     <div class="panel panel-default animated fadeIn">
         <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
+            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
         </div>
         <div class="panel-body">
             <p><?= Yii::t('UserModule.auth', 'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.') ?></p>

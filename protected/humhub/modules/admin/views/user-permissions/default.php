@@ -47,7 +47,7 @@ $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePerm
 <br/>
 <br/>
 
-<h3><?= Yii::t('AdminModule.user', 'Default Profile Permissions') ?></h3>
+<h3 class="card-title"><?= Yii::t('AdminModule.user', 'Default Profile Permissions') ?></h3>
 <div>
     <?= Yii::t('AdminModule.user', 'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:'); ?>
 </div>

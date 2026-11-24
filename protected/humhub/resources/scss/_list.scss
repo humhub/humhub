@@ -13,7 +13,7 @@
 
         // Rows: an entry, or a link in a list (`ul > li`, e.g. the notifications)
         > div:not(.stream-end), > a:not(.stream-end), > ul > li > a {
-            padding: 10px;
+            padding: $spacer * .5;
             border-bottom: 1px solid var(--bs-secondary-bg);
             position: relative;
             border-left: 3px solid var(--bs-body-bg);
@@ -41,7 +41,6 @@
             }
 
             &.placeholder {
-                font-size: 14px;
                 border-bottom: none;
             }
 
@@ -55,37 +54,33 @@
                 background-color: var(--bs-tertiary-bg);
                 border: 1px solid var(--bs-border-color);
                 color: var(--bs-secondary-color);
-                padding: 3px 3px 2px 3px;
             }
 
             .flex-grow-1 {
-                font-size: 13px;
                 white-space: normal;
                 @include text-break();
             }
 
+            // The row's name and the line below it; their size is the view's (`.fs-6`)
             h4 {
-                font-size: 14px;
-                font-weight: 500;
                 color: var(--bs-emphasis-color);
 
                 small,
                 small a {
-                    font-size: 11px;
+                    font-size: $font-size-sm;
                     color: var(--bs-body-color);
                 }
 
                 .content {
-                    margin-right: 35px;
+                    margin-right: $spacer * 1.5;
                 }
             }
 
             h5 {
                 color: var(--bs-secondary-color);
-                font-weight: 300;
-                margin-top: 5px;
-                margin-bottom: 5px;
-                min-height: 15px;
+                margin-top: $spacer * .25;
+                margin-bottom: $spacer * .25;
+                min-height: 1lh; // A line, also when empty
             }
 
             .content a {
@@ -97,12 +92,8 @@
             }
 
             .time {
-                font-size: 11px;
+                font-size: $font-size-sm;
                 color: var(--bs-body-color);
-            }
-
-            .module-controls {
-                font-size: 85%;
             }
 
             .content .files a {

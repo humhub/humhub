@@ -29,7 +29,7 @@ use humhub\widgets\modal\ModalButton;
 
     <img src="<?= $thumbnailUrl; ?>" class="float-start" style="padding-right:12px">
 
-    <h3 style="padding-top:0px;margin-top:0px"><?= Html::encode($file->file_name); ?></h3>
+    <h3 class="fs-5 pt-0 mt-0"><?= Html::encode($file->file_name); ?></h3>
     <br/>
 
     <p style="line-height:20px">

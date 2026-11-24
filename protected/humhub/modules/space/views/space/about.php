@@ -31,7 +31,7 @@ use humhub\widgets\Icon;
                 <div class="col-lg-4">
                     <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
                         <div class="d-flex">
-                            <h5 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
+                            <h5 class="mt-0 fs-5"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
                                 </p></h5>
                             <div class="flex-grow-1">
                                 <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) : ?>
@@ -52,7 +52,7 @@ use humhub\widgets\Icon;
                 <div class="col-lg-8">
                     <?php if (!empty($userGroups[Space::USERGROUP_ADMIN])): ?>
                         <div class="d-flex">
-                            <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p></h4>
+                            <h4 class="mt-0 fs-5"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p></h4>
                             <div class="flex-grow-1">
                                 <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) : ?>
                                     <?= Image::widget([
@@ -72,7 +72,7 @@ use humhub\widgets\Icon;
 
         <?php if (!empty($userGroups[Space::USERGROUP_MODERATOR])): ?>
             <div class="d-flex">
-                <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Moderator'); ?></strong></p></h4>
+                <h4 class="mt-0 fs-5"><p><strong><?= Yii::t('SpaceModule.base', 'Moderator'); ?></strong></p></h4>
                 <div class="flex-grow-1">
                     <?php foreach ($userGroups[Space::USERGROUP_MODERATOR] as $user) : ?>
                         <?= Image::widget([

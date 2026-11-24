@@ -21,7 +21,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
     <div id="password-recovery-form" class="panel panel-default mb-4 animated bounceIn">
         <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
+            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>

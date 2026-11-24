@@ -20,15 +20,16 @@ $nav-pills-secondary-hover-bg: $nav-pills-hover-bg !default;
 $nav-link-dot-size: 6px !default;
 $nav-link-dot-gap: $spacer * .5 !default;
 
-// The ⋮ of a legacy `.nav-pills.preferences` menu
-$preferences-toggle-size: 2rem !default;
+// The ⋮ of a legacy `.nav-pills.preferences` menu: 28px, the size of a small icon-only button
+$preferences-toggle-size: 1.75rem !default;
 $preferences-toggle-icon-size: $font-size-lg !default;
 
 @if not $prev-nav {
     // Bootstrap overwrite: see the nav Sass variables in variables.scss
 
+    // The icon's fixed-width box (as `.icon-fw`), so the labels line up
     .nav, .list-group {
-        --hh-nav-icon-width: 20px;
+        --hh-nav-icon-width: 1.25em;
     }
 
     .nav .nav-item > .nav-link > i {
@@ -109,11 +110,11 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     }
 
     .panel > .nav-scroller {
-        padding: 0 10px 10px;
+        padding: 0 $spacer * .5 $spacer * .5;
     }
 
     .tab-sub-menu {
-        padding-left: 10px;
+        padding-left: $spacer * .5;
 
         .nav-link {
             &:hover,
@@ -129,23 +130,23 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
     }
 
+    // Legacy tabs (`Tabs`, `SettingsTabs`): a hovered or active tab's top border is 3px, it takes the 2px it adds
+    // from the padding, so the tab keeps its height
     .tab-menu {
-        padding-top: 10px;
+        padding-top: $spacer * .5;
         background-color: var(--bs-body-bg);
 
         .nav-tabs {
-            padding-left: 10px;
+            padding-left: $spacer * .5;
 
             .nav-link {
-                padding-top: 12px;
                 border-color: var(--bs-nav-tabs-border-color);
                 border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
                 background-color: var(--bs-tertiary-bg);
-                max-height: 41px;
 
                 &:hover,
                 &:focus {
-                    padding-top: 10px;
+                    padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                     border-top: 3px solid var(--bs-nav-tabs-border-color);
                 }
 
@@ -154,7 +155,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 }
 
                 &.active {
-                    padding-top: 10px;
+                    padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                     border-top: 3px solid var(--bs-accent);
                     background-color: var(--bs-body-bg);
                     border-bottom-color: transparent;
@@ -164,23 +165,21 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     }
 
     ul.tab-menu {
-        padding-top: 10px;
+        padding-top: $spacer * .5;
         background-color: var(--bs-body-bg);
 
-        padding-left: 10px;
+        padding-left: $spacer * .5;
     }
 
     ul.tab-menu-settings {
         .nav-link {
-            padding-top: 12px;
             border-color: var(--bs-nav-tabs-border-color);
             border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
             background-color: var(--bs-tertiary-bg);
-            max-height: 41px;
 
             &:hover,
             &:focus {
-                padding-top: 10px;
+                padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                 border-top: 3px solid var(--bs-nav-tabs-border-color) !important;
             }
 
@@ -189,7 +188,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             }
 
             &.active {
-                padding-top: 10px;
+                padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                 border-top: 3px solid var(--bs-accent) !important;
                 background-color: var(--bs-body-bg);
                 border-bottom-color: transparent !important;
@@ -201,9 +200,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     .nav-tabs,
     .account {
         .nav-link.dropdown-toggle {
-            font-size: 16px; // Size of the dropdown caret
-            padding-top: 0.2em;
-            padding-bottom: 0.2em;
+            font-size: $font-size-lg; // Size of the dropdown caret
+            padding-top: $spacer * .25;
+            padding-bottom: $spacer * .25;
         }
     }
 
@@ -212,8 +211,8 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     // menus of headers and tables (`.btn.btn-ghost.btn-icon-only`)
     .nav-pills.preferences {
         position: absolute;
-        right: 10px;
-        top: 10px;
+        right: $spacer * .5;
+        top: $spacer * .5;
 
         .dropdown .dropdown-toggle {
             display: inline-flex;
@@ -266,7 +265,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     // Nav-Tabs
     .nav-tabs {
-        margin-bottom: 10px;
+        margin-bottom: $spacer * .5;
 
         &.tabs-center {
             li {
@@ -276,13 +275,13 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
 
         > li.nav-item {
-            font-weight: 600;
-            font-size: 12px;
+            font-weight: $font-weight-semibold;
+            font-size: $font-size-sm;
 
             > a.nav-link {
                 &,
                 &[data-bs-toggle] {
-                    margin-right: 2px;
+                    margin-right: $spacer * .25;
                     color: var(--bs-body-color);
                 }
 
@@ -301,12 +300,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         a [class*=" fa-"] {
             display: inline-block;
             width: var(--hh-nav-icon-width);
-        }
-    }
-
-    .tab-content .tab-pane {
-        .mb-3 {
-            margin-bottom: 5px;
         }
     }
 
@@ -339,7 +332,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     .footer-nav {
         filter: opacity(.6);
-        font-size: 12px;
+        font-size: $font-size-sm;
         text-align: center;
 
         .picker {
@@ -358,7 +351,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         display: none;
 
         &.menu-without-form a {
-            border-radius: 4px;
+            border-radius: $border-radius-sm;
         }
 
         .nav-tabs {
@@ -389,13 +382,11 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
 
         .content-create-menu-more {
-            padding-right: 3px;
-
             > i {
-                border-radius: 4px 4px 0 0;
+                border-radius: $border-radius-sm $border-radius-sm 0 0;
                 background: var(--bs-body-bg);
-                padding: 10px 15px 11px;
-                font-size: 18px;
+                padding: $spacer * .5 $spacer;
+                font-size: $font-size-lg;
 
                 &:hover {
                     color: color-mix(in srgb, var(--bs-emphasis-color) 80%, var(--bs-body-bg)); // #333 on white

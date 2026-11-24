@@ -35,19 +35,15 @@
         }
     }
 
-    .profile-item {
-        margin-top: 15px;
-    }
-
     .panel-profile {
         .panel-profile-header {
             position: relative;
             border: 3px solid var(--bs-body-bg);
-            border-top-right-radius: 3px;
-            border-top-left-radius: 3px;
+            border-top-right-radius: $border-radius-sm;
+            border-top-left-radius: $border-radius-sm;
 
             .img-profile-header-background {
-                border-radius: 3px;
+                border-radius: $border-radius-sm;
                 min-height: 110px;
             }
 
@@ -76,42 +72,39 @@
 
             .img-profile-data {
                 align-self: end;
+                // A grid item is as wide as its content by default: the subtitle's `nowrap` would stretch the cell
+                // over a phone's width instead of showing its ellipsis
+                min-width: 0;
                 min-height: 100px;
+                // Name and subtitle at the bottom, also when they need less room than the gradient's height
+                align-content: end;
                 padding-left: 180px;
-                padding-top: 30px;
-                border-bottom-right-radius: 3px;
-                border-bottom-left-radius: 3px;
+                padding-top: $spacer * 1.5;
+                border-bottom-right-radius: $border-radius-sm;
+                border-bottom-left-radius: $border-radius-sm;
                 color: var(--bs-white);
                 background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
+                // The name is a content title, whatever its tag (`h1`, or `div` below a page's own `h1`)
                 .h1 {
-                    margin-bottom: 7px;
+                    font-size: $h4-font-size;
                     max-width: 600px;
                     // The whole name, wrapped: the header has no other place for it
                     overflow-wrap: anywhere;
 
                     a {
-                        font-size: 30px;
-                        font-weight: 100;
                         color: var(--bs-white);
                     }
                 }
 
+                // The subtitle is text, not a heading
                 .h2 {
-                    font-size: 16px;
-                    font-weight: 400;
+                    font-size: $font-size-base;
+                    font-weight: $font-weight-normal;
                     margin-top: 0;
                 }
 
-                .h1.space {
-                    a {
-                        font-weight: 700;
-                    }
-                }
-
                 .h2.space {
-                    font-size: 13px;
-                    font-weight: 300;
                     max-width: 600px;
                     white-space: nowrap;
                     overflow: hidden;
@@ -126,7 +119,7 @@
 
                 .profile-user-photo {
                     border: 3px solid var(--bs-body-bg);
-                    border-radius: 5px;
+                    border-radius: $border-radius;
 
                     // Force position of the online status because of the 3px border on the photo
                     + .user-online-status {
@@ -142,20 +135,24 @@
         }
     }
 
+    // The counters of a profile's or space's header (`CounterSet`): the number in the text's size, its label
+    // below as secondary text
+    .statistics .entry {
+        margin-left: $spacer;
+        color: var(--bs-emphasis-color);
+
+        .count {
+            font-weight: $font-weight-semibold;
+        }
+
+        .title {
+            font-size: $font-size-sm;
+        }
+    }
+
     @include media-breakpoint-down(md) {
         .panel-profile .panel-profile-controls {
             padding-left: 100px;
-        }
-
-        .panel-profile .panel-profile-header .img-profile-data .h1 {
-            font-size: 20px;
-            line-height: 20px;
-            margin-bottom: 2px;
-
-            // The name is the link: the smaller size is its own, so a name fits the narrow header
-            a {
-                font-size: inherit;
-            }
         }
     }
 

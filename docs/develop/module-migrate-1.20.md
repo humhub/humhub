@@ -3035,3 +3035,24 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   its colour from `humhub\helpers\ScssHelper::getRandomColor()`, which keeps the contrast to its white initials. A
   module that uses `Colors\RandomColor` switches to that method for colours under white text, or requires the package
   in its own `composer.json`. `behat/gherkin` is no longer pinned in the core, Codeception brings it along for the tests.
+
+- **Sizes are in rem on Bootstrap's defaults** (`docs/ui/typography.md`, `docs/ui/bootstrap.md`).
+  `$font-size-root` is no longer set: `1rem` is the browser's font size (16px by default), not 14px. Text stays 14px
+  (`$font-size-base: .875rem`).
+  - rem values written against 14px are 14 % larger now. Use Bootstrap's steps instead (`$spacer * .5`, `p-2`,
+    `$font-size-sm`, `.small`). px values keep working but don't follow the browser's font size.
+  - A theme that set `$font-size-root` sets `$font-size-base` instead.
+  - These overrides are gone, Bootstrap's defaults apply: `$grid-gutter-width` (`1.5rem`), `$btn-padding-*`,
+    `$btn-font-size-lg`, `$btn-border-radius*` (6px), `$input-padding-y`, `$badge-font-weight`, `$badge-padding-*`,
+    `$badge-border-radius`, `$dropdown-padding-y`, `$dropdown-item-padding-*`, `$popover-border-radius`,
+    `$progress-height`, `$progress-border-radius`, `$toast-font-size`, `$tooltip-font-size`, `$line-height-base`.
+    Buttons and fields are 39px high (`$input-btn-padding-y: .5rem`).
+  - Removed: `$select-menu-option-padding-y`, `$data-table-actions-toggle-size`, `$data-table-actions-toggle-icon-size`,
+    `.badge-space-chooser`, `.module-controls`.
+  - No rule sizes `h1`–`h6` by their context any more (`.panel h1`, `.hh-list h4`, `.wall-entry h4`/`h5`, a plain `h3`
+    in a content card, the global `h4` and `h5`): a heading has Bootstrap's size unless it is the title of a component
+    (`.card-title`, `.modal-title`, `.panel-heading`, `.panel-title`, `.wall-entry-title`) or carries `.fs-*`.
+  - Text in a `.panel-body` and in a dialog is 14px (was 13px). The top bar is `min-height: var(--hh-topbar-height)`
+    (`3.125rem`) instead of `height: 50px`; `--hh-fixed-header-height` is derived from it.
+  - `_bootstrap3.scss` (the styles for Bootstrap 3 markup such as `.panel` and `.well`) is deprecated and will be
+    removed in 1.21.

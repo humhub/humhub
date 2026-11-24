@@ -5,16 +5,16 @@
 @if not $prev-stream {
     // Content create form
     .contentForm_options {
-        margin-top: 10px;
-        min-height: 29px;
+        margin-top: $spacer * .5;
 
         .btn_container {
             position: relative;
 
+            // Left of the cog menu (its link with the caret), centred on the buttons
             .badge-container {
                 position: absolute;
-                right: 50px;
-                top: 6px;
+                right: 3.5rem;
+                top: $spacer * .5;
             }
         }
     }
@@ -29,14 +29,15 @@
 
         .contentForm_options {
             .mb-3 {
-                margin-bottom: 15px !important;
+                margin-bottom: $spacer !important;
 
+                // Past the checkbox and its gap (`_form.scss`)
                 .checkbox label {
-                    padding-left: 22px;
+                    padding-left: $form-choice-size + $spacer * .25;
 
                     input[type=checkbox] {
                         position: absolute;
-                        top: 4px;
+                        top: $spacer * .25;
                         left: 0;
 
                         &:focus {
@@ -52,7 +53,7 @@
         }
     }
 
-    // Empty stream info
+    // Empty stream info: an arrow image (57px) pointing at the post form, so px
     .placeholder-empty-stream {
         background-image: url("../img/placeholder-postform-arrow.png");
         background-repeat: no-repeat;
@@ -63,33 +64,29 @@
     #streamUpdateBadge {
         text-align: center;
         z-index: 9999;
-        margin-bottom: 15px;
-        margin-top: 15px;
+        margin-bottom: $spacer;
+        margin-top: $spacer;
 
         .badge {
-            border-radius: 10px;
-            font-size: 0.8em;
-            padding: 5px 10px;
+            border-radius: $border-radius-lg;
         }
     }
 
     #wallStream {
         .back_button_holder {
-            padding-bottom: 15px;
+            padding-bottom: $spacer;
         }
     }
 
-    $wallEntryInnerPadding: 10px;
-    $wallEntryContentLeftPadding: 50px;
+    // Inside the header; the entry's own padding is a panel's (`.panel .panel-body`)
+    $wallEntryInnerPadding: $spacer * .5;
+    // The body below the avatar's 40px and the gap beside it (px, as the avatar)
+    $wallEntryContentLeftPadding: 48px;
     $wallEntryContentLeftPaddingMobile: 0;
 
     // Wall-Entries
     .wall-entry {
         position: relative;
-
-        .panel .panel-body {
-            padding: $wallEntryInnerPadding;
-        }
 
         .wall-entry-header {
 
@@ -99,20 +96,21 @@
             margin-bottom: $wallEntryInnerPadding;
             border-bottom: 1px solid var(--bs-secondary-bg);
 
+            // On the avatar (px, as the images)
             .img-space {
                 top: 25px;
                 left: 25px;
             }
 
+            // Beside the ⋮ menu
             .stream-entry-icon-list {
                 position: absolute;
                 top: 0;
-                right: 25px;
+                right: $preferences-toggle-size;
                 display: inline-block;
-                padding-top: 2px;
 
                 i {
-                    padding-right: 5px;
+                    padding-right: $spacer * .25;
                 }
 
                 .icon-pin {
@@ -129,7 +127,7 @@
 
                 .ti {
                     font-size: 2.39em;
-                    margin-top: 5px;
+                    margin-top: $spacer * .25;
 
                     color: var(--hh-accent-fg);
                 }
@@ -137,18 +135,8 @@
 
             .wall-entry-header-info {
                 display: table-cell;
-                padding-right: 30px;
+                padding-right: $preferences-toggle-size; // Room for the ⋮ menu
                 width: 100%;
-
-                .wall-entry-title {
-                    font-size: 15px;
-                    padding-top: 1px;
-                    margin-bottom: 3px;
-                }
-
-                .wall-entry-meta {
-                    font-size: 12px;
-                }
 
                 i.archived {
                     color: var(--hh-warning-fg);
@@ -162,20 +150,8 @@
             }
 
             .wall-entry-title, .wall-entry-meta {
-                i.ti-caret-right-filled {
-                    margin: 0 2px;
-                }
-
                 .wall-entry-icons {
                     display: inline-block;
-
-                    i {
-                        margin-right: 2px;
-                    }
-                }
-
-                .time, i, span {
-                    font-size: 11px;
                 }
             }
         }
@@ -185,10 +161,10 @@
             padding-right: $wallEntryContentLeftPadding;
 
             .wall-entry-content {
-                margin-bottom: 5px;
+                margin-bottom: $spacer * .25;
 
                 .post-short-text {
-                    font-size: 1.6em;
+                    font-size: $h4-font-size;
                 }
             }
         }
@@ -201,80 +177,48 @@
 
         .well {
             margin-bottom: 0;
-
-            .comment {
-                .showMore a {
-                    font-size: 12px;
-                }
-            }
         }
 
-        h4, .wall-entry-title {
-            font-size: 14px;
-            padding-top: 1px;
-            margin-bottom: 3px;
+        // A post's own title is the title of a piece of content
+        .post-title {
+            font-size: $h4-font-size;
+        }
+
+        // The author's name on a post, the content's title on a module's entry: text size (over the view's `.h4`),
+        // set off by its weight
+        .wall-entry-title {
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            margin-bottom: $spacer * .25;
 
             small {
-                font-weight: 400;
-                font-size: 11px;
+                font-weight: $font-weight-normal;
             }
 
+            // Clear of the ⋮ menu
             .labels {
-                padding-right: 32px;
+                padding-right: $preferences-toggle-size + $spacer * .25;
             }
 
             .viaLink {
-                font-size: 13px;
+                font-size: $font-size-sm;
 
                 i {
                     color: var(--bs-body-color);
-                    padding-left: 4px;
-                    padding-right: 4px;
+                    padding-left: $spacer * .25;
+                    padding-right: $spacer * .25;
                 }
             }
 
         }
 
-        h5, .wall-entry-meta {
+        .wall-entry-meta {
             color: var(--bs-body-color);
-            font-size: 12px;
+            font-size: $font-size-sm;
 
             a .time {
                 color: var(--bs-body-color);
-                font-size: 12px;
                 white-space: nowrap;
-            }
-        }
-
-        [data-ui-richtext] {
-            h1 {
-                font-size: 1.45em;
-                font-weight: normal;
-            }
-
-            h2 {
-                font-size: 1.3em;
-                font-weight: normal;
-            }
-
-            h3 {
-                font-size: 1.2em;
-                font-weight: normal;
-            }
-
-            h4 {
-                font-size: 1.1em;
-                font-weight: normal;
-            }
-
-            h5 {
-                font-size: 1.0em;
-                font-weight: normal;
-            }
-
-            h6 {
-                font-size: .85em;
-                font-weight: normal;
             }
         }
     }
@@ -287,7 +231,7 @@
 
         #wallStream {
             .back_button_holder {
-                padding-bottom: 5px;
+                padding-bottom: $spacer * .25;
                 text-align: center;
             }
         }
@@ -298,11 +242,11 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        column-gap: 10px;
-        margin-top: 14px;
-        // On the row, not only on its links: a wrapped link (the like button's `span.likeLinkContainer`)
-        // would otherwise sit on the baseline of a taller line box and drop below the bare ones
-        font-size: 12px; // below the 13px of the content text
+        column-gap: $spacer * .5;
+        margin-top: $spacer;
+        // Secondary text. On the row, not only on its links: a wrapped link (the like button's
+        // `span.likeLinkContainer`) would otherwise sit on the baseline of a taller line box and drop below the bare ones
+        font-size: $font-size-sm;
 
         a {
             color: var(--bs-body-color);
@@ -311,16 +255,15 @@
             // `.link` too, so the generic icon gap of `a.link` does not win over this one
             > i.ti, &.link > i.ti {
                 font-size: 1.33333em;
-                margin-right: 0.25rem;
+                margin-right: $spacer * .25;
             }
         }
     }
 
     #wall-stream-filter-nav {
-        font-size: 12px;
-        margin-bottom: 10px;
-        padding-top: 2px;
-        border-radius: 0 0 4px 4px;
+        font-size: $font-size-sm;
+        margin-bottom: $spacer * .5;
+        border-radius: 0 0 $border-radius-sm $border-radius-sm;
 
         .wall-stream-filter-root {
             margin: 0;
@@ -328,7 +271,7 @@
         }
 
         .wall-stream-filter-head {
-            padding: 5px 5px 10px 5px;
+            padding: $spacer * .25 $spacer * .25 $spacer * .5;
             border-bottom: 1px solid var(--bs-border-color);
         }
 
@@ -337,11 +280,11 @@
             background-color: var(--bs-tertiary-bg);
             border: 1px solid var(--bs-border-color);
             border-top: 0;
-            border-radius: 0 0 4px 4px;
+            border-radius: 0 0 $border-radius-sm $border-radius-sm;
         }
 
         hr {
-            margin: 5px 0 0 0;
+            margin: $spacer * .25 0 0 0;
         }
 
         .topic-remove-label {
@@ -349,7 +292,7 @@
         }
 
         .topic-remove-label, .content-type-remove-label {
-            margin-right: 6px;
+            margin-right: $spacer * .25;
         }
 
         .wall-stream-filter-bar {
@@ -358,8 +301,6 @@
             white-space: normal;
 
             .badge {
-                height: 18px;
-                padding-top: 4px;
                 background-color: var(--bs-body-bg);
             }
 
@@ -379,7 +320,7 @@
                 overflow: auto;
             }
 
-            margin-bottom: 5px;
+            margin-bottom: $spacer * .25;
         }
     }
 
@@ -391,18 +332,18 @@
 
             .filter-block {
                 strong {
-                    margin-bottom: 5px;
+                    margin-bottom: $spacer * .25;
                 }
 
                 ul.filter-list {
                     list-style: none;
                     padding: 0;
-                    margin: 0 0 5px;
+                    margin: 0 0 $spacer * .25;
 
                     // Direct items only: the listbox of a picker filter is a list too.
                     > li {
-                        font-size: 12px;
-                        padding: 2px;
+                        font-size: $font-size-sm;
+                        padding: $spacer * .25;
                     }
                 }
             }
@@ -422,21 +363,22 @@
 
     .stream-entry-loader {
         float: right;
-        margin-top: 5px;
+        margin-top: $spacer * .25;
     }
 
+    // A tab below the entry before it, over the space between the two
     .load-suppressed {
-        margin-top: -17px;
-        margin-bottom: 15px;
+        margin-top: -$spacer;
+        margin-bottom: $spacer;
         text-align: center;
 
         a {
             display: inline-block;
             background-color: var(--bs-body-bg);
-            padding: 5px;
-            border-radius: 0 0 4px 4px;
+            padding: $spacer * .25;
+            border-radius: 0 0 $border-radius-sm $border-radius-sm;
             border: 1px solid var(--bs-border-color);
-            font-size: 11px;
+            font-size: $font-size-sm;
         }
     }
 
@@ -451,11 +393,8 @@
         }
     }
 
+    // The gap between the topics is the view's (`gap-1`)
     .topic-label-list {
-        margin-bottom: 10px;
-
-        a {
-            margin-right: 4px;
-        }
+        margin-bottom: $spacer * .5;
     }
 }

@@ -10,6 +10,10 @@
         "declaration-property-value-disallowed-list": [
             {"/^(color|--bs-(?!.*border).*-color)$/": ["/var\\(--bs-(primary|secondary|accent|info|success|warning|danger)\\)/"]},
             {"message": "A theme colour as text is var(--hh-{color}-fg) (docs/ui/colours.md)"}
+        ],
+        "declaration-property-unit-disallowed-list": [
+            {"font-size": ["px"], "line-height": ["px"]},
+            {"message": "Use a Bootstrap type variable; sizes are in rem (docs/ui/typography.md)"}
         ]
     },
     "overrides": [

@@ -44,11 +44,10 @@ $accent-text-emphasis-dark: tint-color($accent, 60%) !default;
 $link-color: #000000 !default;
 $link-hover-color: $link-color !default;
 $code-color: $accent !default; // Made readable on the fill of inline code, see "Inks" below
-// Form fields: 1px border (Bootstrap's $input-border-width) in `--hh-input-border-color` (3:1, below), 38px
-// high (21px line + 2 × 7.5px + 2 × 1px), focus = accent border + a 2px accent ring
+// Form fields: 1px border (Bootstrap's $input-border-width) in `--hh-input-border-color` (3:1, below),
+// focus = accent border + a 2px accent ring. Their height comes from $input-btn-padding-y (see "Buttons")
 $input-border-color: var(--hh-input-border-color) !default;
 $input-placeholder-color: var(--hh-input-placeholder-color) !default; // Has a value per mode, see "Inks" below
-$input-padding-y: 7.5px !default;
 // No inner shadow ($enable-shadows is on); not `none`, which Bootstrap would combine with the focus ring
 $input-box-shadow: 0 0 0 0 transparent !default;
 $input-hover-border-color: var(--bs-accent) !default; // HumHub: an editable field under the pointer
@@ -212,7 +211,9 @@ $hh-contrast-colors: (
 // and uses the emojis of the operating system
 $font-family-base: 'Open Sans', 'HumHub Emoji', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 $font-family-sans-serif: $font-family-base !default;
-$font-size-root: 14px !default; // affects the value of `rem`, which is used for as well font sizes, paddings, and margins
+// 14px at the browser's default font size. No $font-size-root: `1rem` is the browser's font size, as in
+// Bootstrap. This is the one variable a theme sets for its text size (docs/ui/typography.md)
+$font-size-base: .875rem !default;
 $font-weight-base: 400 !default;
 $mail-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', ’Helvetica Neue’, Helvetica, Arial, sans-serif !default;
 
@@ -236,11 +237,8 @@ $container-max-widths: (
 // Badges
 //
 
-$badge-font-size: 0.75rem !default;
-$badge-font-weight: normal !default;
-$badge-padding-y: 3px !default;
-$badge-padding-x: 5px !default;
-$badge-border-radius: 2px !default;
+// As secondary text (12.25px beside 14px text); Bootstrap's .75em is 10.5px, below the smallest text
+$badge-font-size: .875em !default;
 // A plain `.badge` is the neutral one (background in _badge.scss); tones: `.badge-<tone>`. Its text is the secondary
 // colour as text, which reads on the badge's fill (`--bs-secondary-bg`, the darkest surface)
 $badge-color: var(--hh-secondary-fg) !default;
@@ -250,19 +248,12 @@ $badge-color: var(--hh-secondary-fg) !default;
 // Buttons
 // --------------------------------------------------
 
-$btn-padding-y: 7.5px !default; // 38px high, as a form field
-$btn-padding-x: 1.1rem !default;
-$btn-padding-y-sm: 0.2rem !default;
-$btn-padding-x-sm: 0.5rem !default;
-$btn-padding-y-lg: 0.9rem !default;
-$btn-padding-x-lg: 1.75rem !default;
-$btn-font-size-lg: 1.1rem !default;
-$btn-font-weight: 600 !default;
+// Buttons and form fields are 39px high (1.5 × 14px line + 2 × .5rem + 2 × 1px border); Bootstrap's .375rem
+// gives 35px at 14px text
+$input-btn-padding-y: .5rem !default;
+$btn-font-weight: 600 !default; // A button's label reads as a control, not as text
 $btn-white-space: nowrap !default;
 $btn-transition: color 0.3s, background-color 0.3s, border-color 0.3s !default;
-$btn-border-radius: 3px !default;
-$btn-border-radius-sm: $btn-border-radius !default;
-$btn-border-radius-lg: $btn-border-radius !default;
 
 
 //
@@ -271,11 +262,8 @@ $btn-border-radius-lg: $btn-border-radius !default;
 
 // One look for every menu, wherever it sits (_dropdown.scss): rows inset with rounded corners,
 // a light accent fill on hover and while pressed
-$dropdown-min-width: 17rem !default;
-$dropdown-padding-x: divide(8px, $font-size-root) * 1rem !default;
-$dropdown-padding-y: divide(8px, $font-size-root) * 1rem !default;
-$dropdown-item-padding-x: divide(8px, $font-size-root) * 1rem !default;
-$dropdown-item-padding-y: divide(8px, $font-size-root) * 1rem !default;
+$dropdown-min-width: 15rem !default;
+$dropdown-padding-x: .5rem !default; // $spacer * .5 (not defined yet here): the rows are inset, with rounded corners
 $dropdown-link-hover-bg: var(--bs-accent-bg-subtle) !default;
 $dropdown-link-hover-color: var(--bs-emphasis-color) !default;
 $dropdown-link-active-bg: $dropdown-link-hover-bg !default;
@@ -306,7 +294,6 @@ $nav-pills-border-radius: 50rem !default;
 
 $popover-border-width: 1px !default;
 $popover-border-color: rgba(0, 0, 0, 0.15) !default;
-$popover-border-radius: 4px !default;
 $popover-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175) !default;
 
 
@@ -314,9 +301,7 @@ $popover-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175) !default;
 // Progress bars
 // --------------------------------------------------
 
-$progress-height: 10px !default;
 $progress-bg: var(--bs-secondary-bg) !default;
-$progress-border-radius: 10px !default;
 $progress-box-shadow: none !default;
 
 
@@ -332,8 +317,6 @@ $accordion-button-active-color: var(--bs-emphasis-color) !default;
 // Toasts (the status messages, see _toast.scss)
 // --------------------------------------------------
 
-// Body text size; Bootstrap's .875rem is small at HumHub's 14px root
-$toast-font-size: 1rem !default;
 // Solid; Bootstrap's is translucent
 $toast-background-color: var(--bs-body-bg) !default;
 
@@ -350,10 +333,6 @@ $table-color: var(--bs-body-color) !default;
 // --------------------------------------------------
 
 $tooltip-max-width: 400px !default;
-// 12px. Bootstrap passes font sizes through RFS, which converts `px` to `rem`
-// assuming a 16px root font size, so font sizes must be expressed in `rem`
-// relatively to $font-size-root.
-$tooltip-font-size: divide(12px, $font-size-root) * 1rem !default;
 $tooltip-color: var(--hh-primary-contrast) !default;
 $tooltip-bg: var(--bs-primary) !default;
 
@@ -364,8 +343,6 @@ $tooltip-bg: var(--bs-primary) !default;
 
 $enable-shadows: true !default;
 $enable-reduced-motion: false !default; // The user's option decides, see `hh-reduced-motion` and _accessibility.scss
-$grid-gutter-width: 30px !default;
-$line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default; // The ring is an outline (`hh-focus-ring`), not Bootstrap's shadow
 $component-active-color: $hh-primary-contrast !default; // Because $component-active-bg has Primary color

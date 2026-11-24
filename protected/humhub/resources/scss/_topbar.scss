@@ -8,8 +8,9 @@
         --bs-navbar-padding-y: 0;
     }
 
+    // A minimum (`--hh-topbar-height`, `_root.scss`), so that it grows with its content; its items are centred
     .topbar {
-        height: 50px;
+        min-height: var(--hh-topbar-height);
         width: 100%;
 
         ul.nav {
@@ -21,20 +22,17 @@
         }
 
         ul.nav > li > a {
-            padding-top: 15px;
-            padding-bottom: 15px;
-            line-height: 20px;
+            padding-block: $spacer;
         }
 
         .dropdown-footer {
-            margin: 10px;
+            margin: $spacer * .5;
         }
 
         .dropdown-header {
-            font-size: 18px;
-            padding: 6px 16px;
-            margin-bottom: 10px;
-            font-weight: 600;
+            font-size: $h5-font-size;
+            margin-bottom: $spacer * .5;
+            font-weight: $font-weight-semibold;
             color: var(--bs-emphasis-color);
 
             .dropdown-header-actions {
@@ -71,8 +69,7 @@
         }
 
         a.navbar-brand {
-            height: 50px;
-            padding: 5px;
+            padding: $spacer * .25;
 
             img#img-logo,
             img.hh-logo-dark {
@@ -81,31 +78,28 @@
 
         }
 
-        a.navbar-brand-text {
-            padding-top: 15px;
-        }
-
         .nav > li > a:hover,
         .nav > .open > a {
             background-color: color-mix(in srgb, var(--hh-topbar-bg), white 10%);
         }
 
         .nav > .account {
-            height: 50px;
-            margin-left: 20px;
+            margin-left: $spacer;
 
             img {
-                margin-left: 10px;
+                margin-left: $spacer * .5;
             }
 
+            // The name with the role below, the picture and the caret, centred on one another
             .dropdown-toggle {
-                display: block;
-                padding: 8px 5px;
-                line-height: 1.1em;
+                display: flex;
+                align-items: center;
+                padding: $spacer * .25;
+                line-height: $line-height-sm; // The name and the role close together
                 text-align: left;
 
                 span {
-                    font-size: 12px;
+                    font-size: $font-size-sm;
                 }
 
                 .user-title {
@@ -113,24 +107,21 @@
                     overflow: hidden;
                     text-overflow: ellipsis;
                     max-width: 200px;
-                    min-height: 22px; // https://github.com/humhub/humhub/issues/8043
+                    // A full line, so that `overflow` does not cut the descenders of a name without role (#8043)
+                    min-height: $line-height-base * 1em;
                 }
 
                 #user-account-image {
                     margin-bottom: 0;
-
-                    + .caret { // Temp fix for Mac Safari browser
-                        float: right;
-                        margin: 12px 0 0 6px;
-                    }
                 }
             }
         }
 
         .dropdown-menu {
             border: none;
-            border-radius: 8px;
-            top: 105%;
+            border-radius: $border-radius-lg;
+            // Below the bar, whatever the height of the toggle centred in it
+            top: calc(50% + var(--hh-topbar-height) * .5 + #{$spacer * .25});
 
             .arrow {
                 position: absolute;
@@ -150,7 +141,8 @@
         }
 
         .notifications {
-            text-align: center;
+            display: flex;
+            gap: $spacer * .25;
 
             .btn-group {
                 position: relative;
@@ -158,18 +150,18 @@
             }
 
             .btn-group > a {
-                padding: 5px 10px;
-                margin: 10px 2px;
+                padding: $spacer * .25 $spacer * .5;
                 display: inline-block;
-                border-radius: 2px;
+                border-radius: $border-radius-sm;
                 text-decoration: none;
                 text-align: left;
             }
 
+            // The count on the button's corner
             .btn-group > .badge {
                 position: absolute;
-                top: 4px;
-                right: -2px;
+                top: -$spacer * .25;
+                right: -$spacer * .25;
             }
 
             .dropdown-toggle::after {
@@ -188,11 +180,11 @@
                     > div.d-flex, > a.d-flex, > ul > li > a.d-flex {
                         position: relative;
 
+                        // On the picture's corner
                         i.approval {
                             position: absolute;
                             left: 2px;
                             top: 36px;
-                            font-size: 14px;
                         }
 
                         &.new {
@@ -213,7 +205,7 @@
         }
 
         .dropdown-footer {
-            margin: 24px 16px 19px;
+            margin: $spacer * 1.5 $spacer $spacer;
 
             .btn {
                 width: 100%;
@@ -234,7 +226,6 @@
 
         .btn-enter {
             background-color: color-mix(in srgb, var(--hh-topbar-bg), white 8%);
-            margin: 6px 0;
         }
 
         .btn-enter:hover {
@@ -243,7 +234,7 @@
 
         .hh-list {
             > div, > a, > ul > li > a {
-                padding: 8px 16px;
+                padding: $spacer * .5 $spacer;
                 border-bottom: none;
                 color: var(--bs-emphasis-color);
 
@@ -269,7 +260,7 @@
                 }
 
                 time {
-                    font-size: 10px;
+                    font-size: $font-size-sm;
                 }
 
                 i.accepted {
@@ -294,7 +285,7 @@
         }
     }
     #topbar-second {
-        top: 50px;
+        top: var(--hh-topbar-height);
         background-color: var(--bs-body-bg);
         z-index: 1029;
         background-image: none;
@@ -342,16 +333,16 @@
 
             form.dropdown-header {
                 margin: 0;
-                padding: 10px;
+                padding: $spacer * .5;
             }
 
             // Shown only while there is a keyword (`v-show` in `SpaceChooser.vue`)
             .search-reset {
                 position: absolute;
                 color: var(--bs-secondary-color);
-                margin: 4px;
-                top: 0px;
-                right: 40px;
+                margin: $spacer * .25;
+                top: 0;
+                right: 2.5rem; // Beside the directory link (`.input-group-text`, its padding and icon)
                 z-index: 10;
                 cursor: pointer;
             }
@@ -360,18 +351,24 @@
         .nav {
             > li.nav-item {
 
+                // The icon above the label, as high as the bar: the active underline on its edge
                 > a.nav-link {
                     display: block;
-                    padding: 7px 13px 0;
+                    padding: $spacer * .5 $spacer 0;
                     text-decoration: none;
                     text-shadow: none;
-                    font-weight: 600;
-                    font-size: 10px;
-                    min-height: 50px;
+                    font-weight: $font-weight-semibold;
+                    font-size: $font-size-sm;
+                    min-height: var(--hh-topbar-height);
                     text-transform: uppercase;
                     text-align: center;
                     // Bootstrap fades the border color in; without this it starts from the text color
                     border-bottom-color: transparent;
+
+                    // Narrower on a phone, so that three entries fit beside the space chooser and the search
+                    @include media-breakpoint-down(md) {
+                        padding-inline: $spacer * .5;
+                    }
 
                     &.active,
                     &:hover,
@@ -382,7 +379,6 @@
                     }
 
                     &#space-menu {
-                        padding-right: 13px;
                         border-right: 1px solid var(--bs-secondary-bg);
 
                         .no-space {
@@ -393,7 +389,6 @@
                         // The current space's image: centred in the bar, the caret beside its middle
                         .current-space-image {
                             vertical-align: middle;
-                            margin: 2px 0;
                         }
 
                         &:has(.current-space-image)::after {
@@ -402,8 +397,9 @@
                         }
                     }
 
+                    // Only the icon: in the middle of the bar
                     &#search-menu {
-                        padding-top: 15px;
+                        padding-top: $spacer;
 
                         &::after {
                             display: none; // Remove Bootstrap dropdown arrow
@@ -414,8 +410,9 @@
                         border-top-color: var(--bs-secondary-color);
                     }
 
+                    // Above the label, at the size of the text
                     i {
-                        font-size: 14px;
+                        font-size: $font-size-base;
                     }
                 }
 
@@ -436,9 +433,9 @@
 
         #space-menu-dropdown p.space-description {
             color: var(--bs-body-color);
-            font-size: 11px;
+            font-size: $font-size-sm;
             margin: 0;
-            font-weight: 400;
+            font-weight: $font-weight-normal;
         }
     }
 }

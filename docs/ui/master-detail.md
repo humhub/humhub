@@ -101,7 +101,7 @@ The layout is its own component; the section menu is a Bootstrap **`.nav`**. Cla
 - **Files:** `_section-menu.scss` (new) behind `$prev-section-menu`; `_pane-split.scss` (new)
   behind `$prev-pane-split`.
 - **Sass variables:** `$section-menu-padding` (`$spacer * .5`, as the page header),
-  `$section-menu-title-font-size` (`$font-size-lg`), `$section-menu-title-font-weight`
+  `$section-menu-title-font-size` (`$h5-font-size`), `$section-menu-title-font-weight`
   (`$font-weight-semibold`), `$section-menu-title-color` (`var(--bs-emphasis-color)`),
   `$nav-section-link-padding` (`$spacer * .5`), `$nav-section-link-font-weight`
   (`$font-weight-medium`), `$nav-section-link-hover-bg` (`var(--bs-primary-bg-subtle)`),

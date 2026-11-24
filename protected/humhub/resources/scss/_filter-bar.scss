@@ -214,8 +214,8 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
     // `keepPlaceholder`: the placeholder stays next to the chips, the input never narrower than it
     // (its length in characters, set inline by the control) unless the field itself is.
     .picker-filter.keeps-placeholder .picker-input {
-        flex-basis: min(100%, calc(var(--hh-picker-placeholder-chars) * 1ch + 4px));
-        min-width: min(100%, calc(var(--hh-picker-placeholder-chars) * 1ch + 4px));
+        flex-basis: min(100%, calc(var(--hh-picker-placeholder-chars) * 1ch + #{$spacer * .25}));
+        min-width: min(100%, calc(var(--hh-picker-placeholder-chars) * 1ch + #{$spacer * .25}));
     }
 
     .picker-filter.is-loading .picker-field {

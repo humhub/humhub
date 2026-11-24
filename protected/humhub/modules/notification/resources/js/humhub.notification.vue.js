@@ -691,7 +691,7 @@
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$2, [
       vue$1.createElementVNode("div", {
-        class: "btn-group w-100 mb-3",
+        class: "btn-group flex-wrap w-100 mb-3",
         role: "group",
         "aria-label": $options.seenFilterLabel
       }, [
@@ -722,7 +722,7 @@
         ))
       ], 8, _hoisted_2$2),
       vue$1.createElementVNode("div", {
-        style: { "padding-left": "5px" },
+        class: "ps-1",
         role: "group",
         "aria-label": $options.categoriesLabel
       }, [

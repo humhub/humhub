@@ -47,7 +47,7 @@
     }
 
     b, strong {
-        font-weight: 700;
+        font-weight: $font-weight-bold;
     }
 
     a:hover {
@@ -55,8 +55,8 @@
     }
 
     hr {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: $spacer * .5;
+        margin-bottom: $spacer * .5;
         opacity: 0.1;
     }
 
@@ -84,9 +84,8 @@
         position: inherit;
     }
 
+    // A column (`.col-lg-2`): its side padding is Bootstrap's half gutter
     .layout-nav-container {
-        padding: 0 15px;
-
         .left-navigation {
             margin-bottom: 0;
         }
@@ -94,20 +93,10 @@
 
     @include media-breakpoint-up(md) {
         .layout-nav-container {
-            padding: 0 0 0 15px;
-
             .left-navigation {
-                margin-bottom: 15px;
+                margin-bottom: $spacer;
             }
         }
-    }
-
-    h4 {
-        font-size: 150%;
-    }
-
-    h5, .h5 {
-        font-size: 1rem;
     }
 
     input[type=text],
@@ -132,12 +121,8 @@
     }
 
     @include media-breakpoint-only(md) {
-        .layout-nav-container {
-            padding: 0 15px;
-        }
-
         :root {
-            --hh-fixed-header-height: 120px;
+            --hh-fixed-header-height: calc(var(--hh-topbar-height) * 2 + #{$spacer});
         }
     }
 
@@ -187,11 +172,11 @@
     }
 
     .showMore {
-        font-size: 13px;
+        font-size: $font-size-sm;
     }
 
     .filter-toggle-link {
-        font-size: 12px;
+        font-size: $font-size-sm;
         // Right caret
         &::after {
             display: inline-block;

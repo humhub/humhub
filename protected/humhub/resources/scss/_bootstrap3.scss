@@ -1,3 +1,5 @@
+// Deprecated since 1.20, removed in 1.21: styles for Bootstrap 3 markup
+
 /**
 Compatibility with Bootstrap 3
 
@@ -20,72 +22,59 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         border: none;
         background-color: var(--bs-body-bg);
         box-shadow: 0 0 3px var(--bs-border-color);
-        border-radius: 4px;
+        border-radius: $border-radius-sm;
         position: relative;
-        margin-bottom: 15px;
+        margin-bottom: $spacer;
 
         h1 {
-            font-size: 16px;
-            font-weight: 300;
             margin-top: 0;
             color: var(--bs-emphasis-color);
         }
 
+        // A title, in a normal weight: the `<strong>` part of a heading like "<strong>Latest</strong> activities"
+        // stands out
         .panel-heading {
-            font-size: 16px;
-            font-weight: 300;
+            font-size: $h5-font-size;
+            font-weight: $font-weight-normal;
             color: var(--bs-emphasis-color);
             background-color: var(--bs-body-bg);
             border: none;
-            padding: 10px;
+            padding: $spacer * .5;
             margin: 0;
-            border-radius: 4px;
+            border-radius: $border-radius-sm;
 
+            // A heading in the panel's heading takes its look, whatever its tag (h1–h6)
             .panel-title {
-                margin: -4px 0 0;
-                line-height: 1;
+                margin: 0;
+                font-size: inherit;
+                font-weight: inherit;
+                line-height: inherit;
+                color: inherit;
                 > button.btn-panel-title-action {
                     background: none;
                     border: none;
-                    font-size: 16px;
                     padding: 0;
                     text-decoration: none;
-                    font-weight: 300;
+                    font-weight: inherit;
                     display: inline;
-                    vertical-align: middle;
                 }
             }
         }
 
         .panel-body {
-            padding: 10px;
-            font-size: 13px;
+            padding: $spacer * .5;
 
             p {
                 color: var(--bs-body-color);
             }
 
             .spacesearch-visibilities {
-                padding-top: 5px;
-                padding-bottom: 5px;
+                padding-top: $spacer * .25;
+                padding-bottom: $spacer * .25;
                 @include media-breakpoint-up(lg) {
                     padding-top: 0;
                     padding-bottom: 0;
                     padding-left: 0;
-                }
-            }
-        }
-
-        .statistics {
-            .entry {
-                margin-left: 20px;
-                font-size: 12px;
-                color: var(--bs-emphasis-color);
-
-                .count {
-                    font-weight: 600;
-                    font-size: 20px;
-                    line-height: 0.8em;
                 }
             }
         }
@@ -102,7 +91,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     .panel.groups,
     .panel.spaces {
         .panel-body a img {
-            margin-bottom: 5px;
+            margin-bottom: $spacer * .25;
         }
     }
 
@@ -111,9 +100,10 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         animation-duration: 200ms;
     }
 
+    // Over the panel body's padding, to its edges
     .panel-body > .tab-menu {
-        margin-left: -10px;
-        margin-right: -10px
+        margin-left: -$spacer * .5;
+        margin-right: -$spacer * .5;
     }
 
     //
@@ -123,15 +113,15 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         border: none;
         box-shadow: none;
         background-color: var(--bs-tertiary-bg);
+        // A separator line between stacked wells
         margin-bottom: 1px;
 
         hr {
-            margin: 10px 0;
             border-top: 1px solid var(--bs-tertiary-bg);
         }
 
         table > thead {
-            font-size: 11px;
+            font-size: $font-size-sm;
         }
     }
 
@@ -142,7 +132,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
 
     // Ajax loader (still rendered by the richtext editor's image placeholder)
     .loader {
-        padding: 30px 0;
+        padding: ($spacer * 1.5) 0;
     }
 
     //
