@@ -21,6 +21,7 @@ use yii\i18n\Formatter;
 
 /**
  * @property-read InstallationState $installationState
+ * @property-read \humhub\components\health\HealthService $health
  * @property-read GateManager $gateManager
  * @property-read RateLimiter $rateLimiter
  */

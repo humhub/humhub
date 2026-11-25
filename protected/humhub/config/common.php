@@ -95,7 +95,12 @@ $config = [
                 'dav.*:read' => ['burst' => ['limit' => 3000, 'span' => 60], 'long' => ['limit' => 50000, 'span' => 3600]],
                 'dav.*:write' => ['burst' => ['limit' => 1200, 'span' => 60], 'long' => ['limit' => 20000, 'span' => 3600]],
                 'dav.full' => ['burst' => ['limit' => 3000, 'span' => 60], 'long' => ['limit' => 50000, 'span' => 3600]],
+                // Failed attempts with the health check token, per client IP.
+                'health.auth' => ['burst' => ['limit' => 10, 'span' => 60], 'long' => ['limit' => 100, 'span' => 3600]],
             ],
+        ],
+        'health' => [
+            'class' => \humhub\components\health\HealthService::class,
         ],
         'gateManager' => [
             'class' => \humhub\components\gates\GateManager::class,
