@@ -39,7 +39,8 @@ A link of an extension that is not available (a module that is disabled, say) is
 keeps the link as it is (title included) when the text is edited, and a reader gets a link to its
 URL where the value after the scheme is an `http(s)` URL (`[Title](my-extension:https://example.com)`
 leads to `https://example.com`; `RichTextLinkExtension::getExtensionTargetUrl()`, `extensionTargetUrl()`
-in `linkUtil.js`). Schemes a browser would execute (`javascript:`, `data:`, …) are never kept.
+in `linkUtil.js`). What the title means is up to the extension, so a reader without it does not get
+the title as a tooltip (the editor still keeps it). Schemes a browser would execute (`javascript:`, `data:`, …) are never kept.
 
 Texts written before HumHub 1.20 store emojis as shortcodes (`:smile:`), which
 `RichTextEmojiExtension` converts to Unicode on output, conversion and save. Texts written before

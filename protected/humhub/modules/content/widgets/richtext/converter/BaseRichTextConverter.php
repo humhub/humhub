@@ -510,10 +510,14 @@ REGEXP;
         $targetAttr = !$this->getOption(static::OPTION_PREV_LINK_TARGET, false) ? " target=\"$target\"" : '';
 
         // The link of an extension that is not available (e.g. its module is disabled) leads to its url
-        $url = RichTextLinkExtension::getExtensionTargetUrl($block['url']) ?? $block['url'];
+        $extensionUrl = RichTextLinkExtension::getExtensionTargetUrl($block['url']);
+        $url = $extensionUrl ?? $block['url'];
+
+        // The meaning of the title of an extension link is up to the extension, so it is not shown without it
+        $showTitle = $extensionUrl === null && !empty($block['title']);
 
         return '<a href="' . htmlspecialchars((string) $url, ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"' . $targetAttr
-            . (empty($block['title']) ? '' : ' title="' . htmlspecialchars((string) $block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
+            . (!$showTitle ? '' : ' title="' . htmlspecialchars((string) $block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
             . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
 

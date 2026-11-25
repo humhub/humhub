@@ -34,6 +34,18 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 
             static::assertStringContainsString('href="https://www.humhub.com/de"', $result);
             static::assertStringNotContainsString('my-extension', $result);
+            // The meaning of the title is up to the extension
+            static::assertStringNotContainsString('title=', $result);
+        }
+    }
+
+    public function testConvertLinkTitleToHtml()
+    {
+        foreach ([RichTextToHtmlConverter::class, RichTextToEmailHtmlConverter::class] as $converter) {
+            static::assertStringContainsString(
+                'title="Title"',
+                $converter::process('Test[Link](https://www.humhub.com/de "Title")Test'),
+            );
         }
     }
 

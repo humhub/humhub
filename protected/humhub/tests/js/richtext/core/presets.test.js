@@ -102,4 +102,21 @@ describe("Core:presets", () => {
         clickMenuItem('testItem');
         expect(toHtml()).to.equal('<p>test!</p>');
     });
+
+    it("test plugin added to a preset is added to the presets extending it", () => {
+        window.humhub.richtext.plugin.registerPlugin({id: 'derivedTest'}, 'normal');
+
+        ['normal', 'full', 'document'].forEach(preset => {
+            expectContextContainsPlugin(initEditor({preset: preset}), 'derivedTest');
+        });
+        expectContextNotContainsPlugin(initEditor({preset: 'markdown'}), 'derivedTest');
+    });
+
+    it("test plugin added to a preset is not added to a preset excluding it", () => {
+        window.humhub.richtext.plugin.registerPreset('derivedExcluding', {extend: 'normal', exclude: ['derivedExcludedTest']});
+        window.humhub.richtext.plugin.registerPlugin({id: 'derivedExcludedTest'}, 'normal');
+
+        expectContextContainsPlugin(initEditor({preset: 'normal'}), 'derivedExcludedTest');
+        expectContextNotContainsPlugin(initEditor({preset: 'derivedExcluding'}), 'derivedExcludedTest');
+    });
 });

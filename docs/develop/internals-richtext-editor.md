@@ -126,7 +126,8 @@ window.prosemirror.plugin.registerPlugin({
 }, 'markdown');
 ```
 
-Register before the first editor is created, or the presets extending that one miss the plugin.
+A plugin added to a preset is added to the presets extending it as well (`full` and `document` for
+`normal`), unless they exclude it. Register before the first editor is created.
 `registerPlugin(plugin, {preset, contexts: [...]})` limits the plugin to the given contexts (`contextId`
 option, `context.getContextId()`); the plugin sets of a preset are cached per preset and context id.
 How a module does it, and the plugin object itself: [Rich text](concept-richtext.md).

@@ -25,7 +25,8 @@ const link = {
             let {url, guid} = filterFileUrl(tokens[idx].attrs[hrefIndex][1], 'view');
 
             // An extension link that no plugin handles (e.g. the module is disabled) leads to its url
-            url = extensionTargetUrl(url) || url;
+            const extensionUrl = extensionTargetUrl(url);
+            url = extensionUrl || url;
 
             tokens[idx].attrs[hrefIndex][1] = url;
 
@@ -53,6 +54,12 @@ const link = {
                 }
             } else if (!tokens[idx].attrs[aIndex][1]) {
                 tokens[idx].attrs[aIndex][1] = '_blank'; // replace value of existing attr
+            }
+
+            // The meaning of the title of an extension link is up to the extension, so it is not shown without it
+            const titleIndex = tokens[idx].attrIndex('title');
+            if (extensionUrl && titleIndex >= 0) {
+                tokens[idx].attrs.splice(titleIndex, 1);
             }
 
             tokens[idx].attrPush(['rel', DEFAULT_LINK_REL]);

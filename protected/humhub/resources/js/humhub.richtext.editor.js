@@ -47826,7 +47826,8 @@
       md.renderer.rules.link_open = function(tokens, idx, options, env, self) {
         const hrefIndex = tokens[idx].attrIndex("href");
         let { url, guid } = filterFileUrl(tokens[idx].attrs[hrefIndex][1], "view");
-        url = extensionTargetUrl(url) || url;
+        const extensionUrl = extensionTargetUrl(url);
+        url = extensionUrl || url;
         tokens[idx].attrs[hrefIndex][1] = url;
         if (guid) {
           tokens[idx].attrPush(["data-file-guid", guid]);
@@ -47847,6 +47848,10 @@
           }
         } else if (!tokens[idx].attrs[aIndex][1]) {
           tokens[idx].attrs[aIndex][1] = "_blank";
+        }
+        const titleIndex = tokens[idx].attrIndex("title");
+        if (extensionUrl && titleIndex >= 0) {
+          tokens[idx].attrs.splice(titleIndex, 1);
         }
         tokens[idx].attrPush(["rel", DEFAULT_LINK_REL]);
         return defaultRender(tokens, idx, options, env, self);
@@ -50609,6 +50614,7 @@
     constructor(pluginRegistry) {
       this.pluginRegistry = pluginRegistry;
       this.map = {};
+      this.extensions = {};
     }
     get(presetId) {
       return this.map[presetId];
@@ -50648,6 +50654,11 @@
         }
       }
       this.map[id2] = result;
+      if (!Array.isArray(plugins) && plugins.extend) {
+        this.extensions[id2] = { extend: plugins.extend, exclude: Array.isArray(plugins.exclude) ? plugins.exclude : [] };
+      } else {
+        delete this.extensions[id2];
+      }
     }
     add(presetId, plugin, options) {
       options = options || {};
@@ -50672,6 +50683,12 @@
         preset.push(plugin);
       }
       this.map[presetId] = preset;
+      Object.keys(this.extensions).forEach((derivedId) => {
+        const { extend, exclude } = this.extensions[derivedId];
+        if (extend === presetId && !exclude.includes(plugin.id) && !(this.map[derivedId] || []).includes(plugin)) {
+          this.add(derivedId, plugin, options);
+        }
+      });
     }
   }
   /*
