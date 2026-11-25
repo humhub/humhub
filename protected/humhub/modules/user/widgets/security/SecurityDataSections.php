@@ -11,12 +11,17 @@ namespace humhub\modules\user\widgets\security;
 use humhub\modules\user\widgets\SettingsSectionStack;
 
 /**
- * Sections of the "My Data" tab, e.g. a data export of a module and the account deletion
+ * Sections of the "My Data" tab, e.g. a data export of a module and the account deletion, as an accordion
  *
  * @since 1.20
  */
 class SecurityDataSections extends SettingsSectionStack
 {
+    /**
+     * @inheritdoc
+     */
+    public bool $accordion = true;
+
     public function init()
     {
         $this->addWidget(DeleteAccountSection::class, [], ['sortOrder' => 900]);

@@ -2999,7 +2999,9 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     settings tab, with the view `@user/widgets/views/settingsSection.php` (`.settings-section` instead of
     `.security-section`). `security\SecuritySection`
     extends `SettingsSection`; `SecuritySectionStack` was removed, the security stacks extend `SettingsSectionStack`.
-    `getFirstUrl()` moved from `SecuritySettingsMenu` to `PillTabs`.
+    `getFirstUrl()` moved from `SecuritySettingsMenu` to `PillTabs`. A stack with `$accordion = true` renders its
+    sections as the groups of an accordion (`SettingsSection::renderAccordionItem()`, the view
+    `settingsSectionAccordionItem.php`), as the "My Data" tab (`SecurityDataSections`) does.
 
 - **`AdminMenu` and `AccountMenu` are section menus** (`humhub\widgets\menu\SectionMenu`: a card with
   the area's title and a vertical `.nav`), no longer `LeftNavigation` panels. Their entries are

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
 use humhub\widgets\BaseStack;
 use Yii;
 
@@ -25,6 +26,34 @@ abstract class SettingsSectionStack extends BaseStack
      * @inheritdoc
      */
     public $seperator = '<hr>';
+
+    /**
+     * @var bool whether the sections are the groups of an accordion (one open at a time, the first one open) instead
+     * of headed blocks below each other
+     */
+    public bool $accordion = false;
+
+    /**
+     * @inheritdoc
+     */
+    public function run()
+    {
+        if (!$this->accordion) {
+            return parent::run();
+        }
+
+        $this->trigger(self::EVENT_RUN);
+
+        $items = '';
+        foreach ($this->getWidgets() as $i => [$class, $params]) {
+            $section = $this->createSection($class, $params);
+            if ($section->isVisible()) {
+                $items .= $section->renderAccordionItem($this->getId(), $this->getId() . '-' . $i, $items === '');
+            }
+        }
+
+        return $items === '' ? '' : Html::tag('div', $items, ['class' => 'accordion', 'id' => $this->getId()]);
+    }
 
     public function hasVisibleSections(): bool
     {
