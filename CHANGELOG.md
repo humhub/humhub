@@ -175,9 +175,14 @@ HumHub Changelog
 - Enh #8762: Files dropped onto the rich text editor are inserted into the text instead of being attached under the form
 - Enh #8762: Files hidden in the stream (uploaded by the rich text editor) stay attached to a post only while its message references them
 
-1.19.5 (Unreleased)
--------------------
+1.19.5 (November 25, 2026)
+--------------------------
 
+- Fix #8782: Topics used only on hidden content (e.g. wiki pages) were missing from the topic sidebar, and filtering the stream by a topic left out hidden content
+- Fix #8781: Empty registration page instead of an error message if a user of an auth client could not be created automatically and the registration form is not visible
+- Fix #8780: The first login via LDAP or an auth client with its own user source (e.g. Keycloak) could be assigned to an existing user whose ID matched the external user ID
+- Fix #8774: "Guide: Spaces" was not available for users who don't manage a space, and the dashboard guide led back to the dashboard instead of starting it
+- Fix #8772: Permission pages failed to load if a configured non-HumHub module was not installed (e.g. a `gii` module without the `yiisoft/yii2-gii` package)
 - Fix #8770: Activity mails (e.g. the mail summary) showed the whole preview text of a content in bold, not only its type
 - Fix #8769: German text of the content created activity used the article of a neuter noun for every content type (e.g. "ein neues Datei")
 - Fix #8765: Like tooltip of a single like showed no space between the name and the text in some languages (e.g. German)
@@ -191,6 +196,7 @@ HumHub Changelog
 - Fix: The current space's image in the space chooser button sat above the centre of the top bar, and the caret beside it moved after a page change
 - Fix: The `assertLogRegex()` and `assertContainsRegex()` test assertions only checked the first message or element, and `assertNotLogRegex()` and `assertNotContainsRegex()` passed even if a later one matched
 - Fix #8749: Posts with an empty message could be saved when only a file uploaded by the rich text editor was attached
+- Fix #8775: Long top navigation entries briefly wrapped into a second row on page load before being moved into the "Menu" dropdown
 
 1.19.4 (November 9, 2026)
 -------------------------

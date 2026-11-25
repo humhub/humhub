@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit;
 
+use Error;
 use humhub\components\listing\ListContext;
 use humhub\libs\BasePermission;
 use humhub\modules\admin\models\UserApprovalSearch;
@@ -17,6 +18,7 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\components\UserList;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupSpace;
@@ -131,6 +133,28 @@ class PermissionManagerTest extends HumHubDbTestCase
             ->select('user.username')
             ->column();
         $this->assertEqualsCanonicalizing([$unapprovedSubGroupUser->username], $people);
+    }
+
+    public function testPermissionsIgnoreNonHumHubModules()
+    {
+        $getPermissionClasses = static fn() => array_map(
+            static fn($permission) => $permission::class,
+            (new PermissionManager())->getPermissions(),
+        );
+        $permissionClasses = $getPermissionClasses();
+        $this->assertContains(ManageUsers::class, $permissionClasses);
+
+        // E.g. a configured `gii` module while the `yiisoft/yii2-gii` dev dependency is not installed
+        Yii::$app->setModule('notInstalled', ['class' => 'humhub\modules\notInstalled\Module']);
+        // E.g. a configured subclass of it (`humhub\modules\devtools\gii\Module`): loading the class fails with an `Error`
+        Yii::$app->setModule('notInstalledParent', static fn() => throw new Error('Class "yii\gii\Module" not found'));
+
+        try {
+            $this->assertSame($permissionClasses, $getPermissionClasses());
+        } finally {
+            Yii::$app->setModule('notInstalled', null);
+            Yii::$app->setModule('notInstalledParent', null);
+        }
     }
 
     private function assertUserGroups($hasGroups = [], $hasNotGroups = []): void

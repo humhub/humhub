@@ -302,6 +302,11 @@ $topbar-brand-font-size: $font-size-base * 1.5 !default; // 21px: the network's 
         box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
         border-bottom: 1px solid var(--bs-border-color);
 
+        // Clip wrapped menu items until humhub.ui.topNavigation has moved them into the "Menu" dropdown
+        &:not(.top-nav-ready) {
+            overflow: hidden;
+        }
+
         .dropdown-menu {
             padding-top: 0;
             padding-bottom: 0;

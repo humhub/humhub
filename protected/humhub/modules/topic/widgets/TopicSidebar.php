@@ -83,13 +83,12 @@ class TopicSidebar extends Widget
                     'name' => SORT_ASC,
                 ]);
 
-            // Count only content visible in a stream by default: published, not archived and not hidden
+            // Count only content the stream shows when filtered by a topic: published and not archived
             $contentCondition = [
                 'and',
                 'content.id = content_tag_relation.content_id',
                 ['content.state' => Content::STATE_PUBLISHED],
                 ['content.archived' => 0],
-                ['content.hidden' => 0],
             ];
 
             // Topics without any content in this specific container (e.g. global topics only used elsewhere)
