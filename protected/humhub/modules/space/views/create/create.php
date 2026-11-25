@@ -23,11 +23,11 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
     <?= $form->field($model, 'description') ?>
 
-    <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
+    <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" class="small">
         <?= Icon::get('caret-right-filled')->class('icon-before-label') ?><?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
     </a>
 
-    <div id="collapse-access-settings" class="panel-collapse collapse">
+    <div id="collapse-access-settings" class="collapse">
         <br>
         <div class="row">
             <div class="col-lg-6">

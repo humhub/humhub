@@ -45,6 +45,26 @@ abstract class SettingsSection extends Widget
 
     abstract protected function renderContent(): string;
 
+    /**
+     * Renders the section as a group of the accordion of its stack ({@see SettingsSectionStack::$accordion})
+     *
+     * @param string $accordionId the id of the accordion
+     * @param string $id the id of the group's body
+     * @param bool $open whether the group is open
+     */
+    public function renderAccordionItem(string $accordionId, string $id, bool $open): string
+    {
+        return $this->render('@user/widgets/views/settingsSectionAccordionItem', [
+            'accordionId' => $accordionId,
+            'id' => $id,
+            'open' => $open,
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'actions' => $this->getActions(),
+            'content' => $this->renderContent(),
+        ]);
+    }
+
     public function run()
     {
         if (!$this->isVisible()) {

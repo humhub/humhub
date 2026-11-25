@@ -270,8 +270,7 @@ $filter-bar-field-icon-space: $select-menu-icon-space !default;
         flex: 0 1 auto;
         min-width: 0;
         overflow: hidden;
-        color: var(--bs-body-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
         text-overflow: ellipsis;
         white-space: nowrap;
     }

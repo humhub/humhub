@@ -3,6 +3,12 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: The sections of the "My Data" account settings as an accordion
+- Enh: The container widths of Bootstrap 5 (up to 1320px on large screens) instead of Bootstrap 3's
+- Enh: Sidebar widgets are `SidebarCard`s with a ⋮ menu that collapses them; `PanelMenu` is deprecated
+- Enh: Core renders content cards instead of Bootstrap 3 panels
+- Enh: Six text styles for the interface (`hh-text-style()`, docs/ui/typography.md)
+- Fix: The like notification says "likes your post" in the web list and mail text, as in the mail subject
 - Enh #8777: Sizes in rem on Bootstrap's defaults; text follows the browser's font size
 - Fix #8778: Picker chips sit as far from the start of the field as from its top and bottom
 - Fix #8783: Badges are one component, fully rounded and semibold as chips in the design system; `.badge-icon-only` is as high as a badge with text

@@ -1,6 +1,8 @@
 /**
  * Collapsible panel
  *
+ * @deprecated since 1.20, removed in 1.21 with `humhub\widgets\PanelMenu`: see `humhub.ui.sidebarCard`
+ *
  * @namespace humhub.modules.ui.panel
  **/
 
@@ -28,18 +30,18 @@ humhub.module('ui.panel', function (module, require, $) {
             throw new Error('Collapse ID ' + collapseId + ' not found.');
         }
 
-        // Get parent element
-        const $parent = this.$.closest('.panel');
+        // Get parent element: the card (or a module's panel)
+        const $parent = this.$.closest('.card, .panel');
         if (!$parent.length) {
-            throw new Error('Panel for ' + collapseId + ' not found.');
+            throw new Error('Card for ' + collapseId + ' not found.');
         }
 
         // Get HTML element to collapse (next if it is not a heading)
         let $collapseElement = $parent.find('.collapse');
         if (!$collapseElement.length) {
             $collapseElement = this.$.next();
-            if ($collapseElement.hasClass('panel-heading')) {
-                // Use next element (usually it is .panel-body)
+            if ($collapseElement.is('.card-header, .panel-heading')) {
+                // Use next element (usually it is .card-body)
                 $collapseElement = $collapseElement.next();
             }
         }

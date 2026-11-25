@@ -5,11 +5,11 @@
 $content-activity-entry-padding-y: $spacer * .5 !default;
 
 @if not $prev-activities {
-    // A side list of short notes, not the page's content: secondary text
+    // A side list of short notes, not the page's content: secondary details
     .activities {
         max-height: 400px;
         overflow: auto;
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
 
         div.activity-entry {
             padding: 0;

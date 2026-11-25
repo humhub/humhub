@@ -57,7 +57,7 @@ final class NewLikeNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('LikeModule.notifications', '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} {content}.', $params);
+        return Yii::t('LikeModule.notifications', '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {content}.', $params);
     }
 
     /**
@@ -66,13 +66,5 @@ final class NewLikeNotification extends BaseNotification
     protected function getRedactedMessage(array $params): ?string
     {
         return Yii::t('LikeModule.notifications', '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {contentType}.', $params);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getMailSubject(array $params): string
-    {
-        return Yii::t('LikeModule.notifications', '{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {content}.', $params);
     }
 }

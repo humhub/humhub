@@ -1,18 +1,14 @@
 <?php
 
 use humhub\helpers\Html;
-use humhub\widgets\PanelMenu;
+use humhub\widgets\SidebarCard;
 
 ?>
 <?php if (count($friends) > 0) { ?>
-    <div class="panel panel-default profile-friends-panel" id="profile-friends-panel">
-        <?= PanelMenu::widget() ?>
-
-        <div class="panel-heading"><strong><?= Yii::t('FriendshipModule.base', 'Friends') ?></strong>
-            (<?php echo $totalCount; ?>)
-        </div>
-
-        <div class="panel-body">
+    <?php SidebarCard::begin([
+        'title' => Yii::t('FriendshipModule.base', 'Friends') . ' (' . $totalCount . ')',
+        'options' => ['id' => 'profile-friends-panel', 'class' => 'profile-friends-panel'],
+    ]) ?>
             <div class="d-flex gap-2 flex-wrap">
                 <?php foreach ($friends as $friend): ?>
                     <a href="<?= $friend->getUrl() ?>">
@@ -27,6 +23,5 @@ use humhub\widgets\PanelMenu;
             <?php if ($totalCount > $limit): ?>
                 <?= Html::a(Yii::t('FriendshipModule.base', 'Show all friends'), ['/friendship/list/popup', 'userId' => $user->id], ['class' => 'btn btn-sm mt-2', 'data-bs-target' => '#globalModal']) ?>
             <?php endif; ?>
-        </div>
-    </div>
+    <?php SidebarCard::end() ?>
 <?php } ?>

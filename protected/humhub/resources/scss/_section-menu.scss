@@ -10,14 +10,9 @@ $section-menu-border-radius: $border-radius-lg !default;
 $section-menu-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $section-menu-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
 $section-menu-bg: var(--bs-body-bg) !default;
-// The title: the page header's title
-$section-menu-title-font-size: $font-size-lg !default;
-$section-menu-title-font-weight: $font-weight-semibold !default;
-$section-menu-title-color: var(--bs-emphasis-color) !default;
 // The entries: the active one filled with the primary colour, hover a tint of it
 $nav-section-link-padding: $spacer * .5 !default;
 $nav-section-link-gap: $spacer * .5 !default;
-$nav-section-link-font-weight: $font-weight-medium !default;
 $nav-section-link-color: var(--bs-body-color) !default;
 $nav-section-link-border-radius: $border-radius !default;
 $nav-section-link-hover-bg: var(--bs-primary-bg-subtle) !default;
@@ -48,20 +43,17 @@ $nav-section-icon-font-size: $font-size-lg !default;
         }
     }
 
+    // As the page header's title
     .section-menu-title {
         margin: 0;
         padding: var(--hh-section-menu-padding);
-        color: $section-menu-title-color;
-        font-size: $section-menu-title-font-size;
-        font-weight: $section-menu-title-font-weight;
-        line-height: $headings-line-height;
+        @include hh-text-style(title);
         overflow-wrap: anywhere;
     }
 
     .nav-section {
         --bs-nav-link-padding-x: #{$nav-section-link-padding};
         --bs-nav-link-padding-y: #{$nav-section-link-padding};
-        --bs-nav-link-font-weight: #{$nav-section-link-font-weight};
         --bs-nav-link-color: #{$nav-section-link-color};
         --bs-nav-link-hover-color: #{$nav-section-link-hover-color};
 

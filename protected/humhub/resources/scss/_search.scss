@@ -78,7 +78,6 @@
             .dropdown-search-keyword {
                 background: var(--bs-tertiary-bg);
                 padding-left: $spacer * 2; // Past the search button's icon
-                font-weight: $font-weight-medium;
 
                 &:-webkit-autofill,
                 &:-webkit-autofill:hover,
@@ -123,11 +122,9 @@
 
             .search-provider-title {
                 padding: $spacer * .5;
-                font-weight: $font-weight-semibold;
-                font-size: $font-size-lg;
-                color: var(--bs-emphasis-color);
+                @include hh-text-style(title);
 
-                // The count, at text size
+                // The count, a step below the title: no text style of its own
                 > span {
                     font-size: $font-size-base;
                 }
@@ -197,13 +194,12 @@
                             overflow: hidden;
                             white-space: nowrap;
 
-                            &:first-child { //Title
-                                font-weight: $font-weight-semibold;
+                            &:first-child { // The record's name
+                                @include hh-text-style(strong, $color: false);
                             }
 
                             &:last-child { // Description
-                                font-size: $font-size-sm;
-                                color: var(--bs-body-color);
+                                @include hh-text-style(meta);
                             }
                         }
                     }
@@ -219,7 +215,7 @@
 
                 .btn {
                     width: 100%;
-                    font-size: $font-size-sm;
+                    font-size: $btn-font-size-sm; // A small button's
                 }
             }
         }
@@ -259,9 +255,9 @@
     }
 
     // Search results page list:
+    // The count of the results
     .search-results-header {
-        color: var(--bs-emphasis-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
         padding: $spacer * .5 0 $spacer;
         margin-bottom: $spacer * .5;
         border-bottom: 1px solid var(--bs-border-color);

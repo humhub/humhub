@@ -6,13 +6,13 @@ use humhub\widgets\form\ActiveForm;
 
 /* @var SampleDataForm $model */
 ?>
-<div id="name-form" class="panel panel-default animated fadeIn">
+<div id="name-form" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', '<strong>Example</strong> contents'); ?>
+    <div class="card-header">
+        <div class="card-title"><?php echo Yii::t('InstallerModule.base', '<strong>Example</strong> contents'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <p><?php echo Yii::t('InstallerModule.base', 'To avoid a blank dashboard after your initial login, HumHub can install example contents for you. Those will give you a nice general view of how HumHub works. You can always delete the individual contents.'); ?></p>
         <br>

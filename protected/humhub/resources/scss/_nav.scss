@@ -5,7 +5,6 @@
 // Pill tabs (`.nav-scroller > .nav-pills`, see docs/ui/tabs.md): outlined pills, the active one
 // filled and with a darker outline; the secondary variant without outlines
 $nav-pills-gap: $spacer * .5 !default;
-$nav-pills-font-weight: $font-weight-medium !default;
 $nav-pills-color: var(--bs-body-color) !default;
 $nav-pills-hover-color: var(--bs-emphasis-color) !default;
 $nav-pills-hover-bg: var(--bs-tertiary-bg) !default;
@@ -63,7 +62,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     .nav-scroller > .nav-pills {
         --bs-nav-link-color: #{$nav-pills-color};
         --bs-nav-link-hover-color: #{$nav-pills-hover-color};
-        --bs-nav-link-font-weight: #{$nav-pills-font-weight};
         --bs-nav-pills-link-active-color: #{$nav-pills-active-color};
         --bs-nav-pills-link-active-bg: #{$nav-pills-active-bg};
         --hh-nav-pills-border-color: #{$nav-pills-border-color};
@@ -109,7 +107,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         --hh-nav-pills-hover-bg: #{$nav-pills-secondary-hover-bg};
     }
 
-    // Between a panel's heading and body, as between a content card's header and body (`.card-tabs`)
+    // Between a module panel's heading and body, as between a content card's header and body (`.card-tabs`)
     .panel > .nav-scroller {
         padding: $spacer * .5 $card-spacer-x 0;
     }
@@ -212,9 +210,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     // menus of headers and tables (`.btn.btn-ghost.btn-icon-only`)
     .nav-pills.preferences {
         position: absolute;
-        // In a panel's corner, centred on the first line of its title (the line of a legacy entry's author is as high)
+        // In a card's corner, centred on the first line of its title (the line of a legacy entry's author is as high)
         right: $card-spacer-x;
-        top: $card-spacer-y + ($font-size-lg * $headings-line-height - $preferences-toggle-size) * .5;
+        top: $card-spacer-y + ($h5-font-size * $headings-line-height - $preferences-toggle-size) * .5;
 
         .dropdown .dropdown-toggle {
             display: inline-flex;
@@ -277,8 +275,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
 
         > li.nav-item {
-            font-weight: $font-weight-semibold;
-            font-size: $font-size-sm;
+            @include hh-text-style(control, $color: false);
 
             > a.nav-link {
                 &,
@@ -334,7 +331,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     .footer-nav {
         filter: opacity(.6);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
         text-align: center;
 
         .picker {

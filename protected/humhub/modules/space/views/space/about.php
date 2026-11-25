@@ -12,11 +12,11 @@ use humhub\widgets\Icon;
  */
 ?>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>About</strong> the Space') ?>
+<div class="card content-card">
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>About</strong> the Space') ?></div>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <?php if ($space->about || $space->description): ?>
             <div>
                 <div data-ui-markdown data-ui-show-more data-collapse-at="600">

@@ -4,8 +4,8 @@ use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
-use humhub\widgets\bootstrap\Link;
-use humhub\widgets\PanelMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\SidebarCard;
 
 /* @var User[] $users */
 /* @var bool $showListButton */
@@ -15,18 +15,13 @@ use humhub\widgets\PanelMenu;
 /* @var array $showListOptions */
 
 ?>
-<div class="panel panel-default members" id="space-members-panel">
-    <?= PanelMenu::widget([
-        'extraMenus' => Html::tag('li', Link::to(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
-    ]) ?>
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <button class="btn-panel-title-action" <?= Html::renderTagAttributes($showListOptions) ?>>
-                <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members') ?> (<?= $totalMemberCount ?>)
-            </button>
-        </h3>
-    </div>
-    <div class="panel-body">
+<?php SidebarCard::begin([
+    'title' => Yii::t('SpaceModule.base', '<strong>Space</strong> members') . ' (' . $totalMemberCount . ')',
+    'encodeTitle' => false,
+    'titleAction' => $showListOptions,
+    'menu' => [new MenuLink(['label' => Yii::t('SpaceModule.base', 'Show as List'), 'icon' => 'list', 'url' => '#', 'htmlOptions' => $showListOptions])],
+    'options' => ['id' => 'space-members-panel', 'class' => 'members'],
+]) ?>
         <div class="d-flex gap-2 flex-wrap">
             <?php foreach ($users as $user) : ?>
                 <?php
@@ -68,6 +63,4 @@ use humhub\widgets\PanelMenu;
                 <?= Yii::t('SpaceModule.base', 'Show all') ?>
             </a>
         <?php endif; ?>
-
-    </div>
-</div>
+<?php SidebarCard::end() ?>

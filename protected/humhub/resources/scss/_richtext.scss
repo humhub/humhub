@@ -56,11 +56,6 @@
             line-height: 1;
         }
 
-        .ProseMirror-tooltip .ProseMirror-menu {
-            width: fit-content;
-            white-space: pre;
-        }
-
         .ProseMirror-menuitem {
             display: flex;
             align-items: center;
@@ -378,10 +373,6 @@
             pointer-events: none;
         }
 
-        .ProseMirror-textblock-dropdown {
-            min-width: 3em;
-        }
-
         .ProseMirror-gapcursor {
             display: none;
             pointer-events: none;
@@ -406,25 +397,6 @@
 
         .ProseMirror-focused .ProseMirror-gapcursor {
             display: block;
-        }
-
-        /* Add space around the hr to make clicking it easier */
-
-        .ProseMirror-example-setup-style hr {
-            padding: ($spacer * .25) ($spacer * .5);
-            border: none;
-            margin: 1em 0;
-        }
-
-        .ProseMirror-example-setup-style hr:after {
-            content: "";
-            display: block;
-            height: 1px;
-            background-color: silver;
-        }
-
-        .ProseMirror-example-setup-style img {
-            cursor: default;
         }
 
         .ProseMirror p {
@@ -538,30 +510,15 @@
         min-width: $modal-sm;
         z-index: 999999;
 
-        // Its title: an `h5` has a title's size already
+        // Its title (an `h5` of the editor's library)
         h5 {
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(title);
             margin-bottom: $spacer;
         }
 
         input {
             margin-bottom: $spacer * .25;
         }
-    }
-
-    .ProseMirror-prompt-close {
-        background: transparent;
-        color: var(--bs-body-color);
-        padding: 0;
-        position: absolute;
-        left: $spacer * .25;
-        top: $spacer * .25;
-        border: none;
-    }
-
-    .ProseMirror-prompt-close:after {
-        content: "✕";
-        font-size: $font-size-sm;
     }
 
     .ProseMirror-prompt-buttons {

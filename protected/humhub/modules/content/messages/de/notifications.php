@@ -1,7 +1,7 @@
 <?php
 return [
   'Your content has been deleted by {displayName}.' => 'Dein Inhalt wurde von {displayName} gelöscht.',
-  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => 'Dein {contentTitle} wurde von {displayName} gelöscht. Grund: {reason}',
+  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => '{displayName} hat {contentTitle} von Dir gelöscht. Grund: {reason}',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} hat {contentTitle} in deinem Benutzerprofil erstellt.',
   '{displayName} posted on your profile.' => '{displayName} hat auf Deinem Profil gepostet.',
   '{groupCount, plural, =1{{displayName} created a new {contentType}.} other{{displayName} created # new entries.}}' => '{groupCount, plural, =1{{displayName} hat {contentType} erstellt.} other{{displayName} hat # neue Einträge erstellt.}}',

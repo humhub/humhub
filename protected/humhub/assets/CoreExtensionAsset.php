@@ -20,6 +20,7 @@ class CoreExtensionAsset extends AssetBundle
         'js/humhub/humhub.ui.form.js',
         'js/humhub/humhub.ui.showMore.js',
         'js/humhub/humhub.ui.panel.js',
+        'js/humhub/humhub.ui.sidebarCard.js',
         'js/humhub/humhub.ui.gallery.js',
         'js/humhub/humhub.ui.picker.js',
         'js/humhub/humhub.ui.codemirror.js',

@@ -17,7 +17,7 @@
             --hh-fixed-header-height: calc(var(--hh-topbar-height) * 2 + #{$spacer * .25});
         }
 
-        // Panels nearly from edge to edge
+        // Cards nearly from edge to edge
         #layout-content > .container {
             &, & > .row {
                 --bs-gutter-x: #{$spacer * .25};
@@ -54,6 +54,9 @@
                 }
             }
 
+            // Cards (and the panels of modules) nearly without gap between them; the cards of a page's stack keep the
+            // stack's gap and their distance to the footer (`_card.scss`)
+            .content-card:not(:where(.flex-column.gap-3, .vstack.gap-3) > *),
             .panel {
                 margin-bottom: $spacer * .25;
 
@@ -68,6 +71,7 @@
                 padding-left: 0;
                 padding-right: 0;
 
+                .card-header,
                 .panel-heading {
                     display: none;
                 }
@@ -116,7 +120,7 @@
             width: auto;
         }
 
-        // STREAM: over the smaller gap between the entries (`.panel` above), as on larger screens
+        // STREAM: over the smaller gap between the entries (`.content-card` above), as on larger screens
         .load-suppressed {
             margin-top: -$spacer * .25;
             margin-bottom: $spacer * .25;

@@ -2,8 +2,9 @@
 // Modal
 // --------------------------------------------------
 
-// The header of a full screen modal (`Modal::SIZE_FULL_SCREEN`): its body takes the rest of the screen
-$modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $modal-title-line-height * $font-size-lg !default;
+// The header of a full screen modal (`Modal::SIZE_FULL_SCREEN`): its body takes the rest of the screen. Its title is a
+// line of the Title text style
+$modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $headings-line-height * $h5-font-size !default;
 
 @if not $prev-modal {
     .modal {
@@ -26,11 +27,11 @@ $modal-hh-fullscreen-header-height: $modal-header-padding-y * 2 + $modal-title-l
 
         // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
         .modal-title {
-            font-size: $font-size-lg;
-            color: var(--bs-emphasis-color);
+            @include hh-text-style(title);
 
-            &, & strong {
-                font-weight: $font-weight-semibold;
+            // One tone: translations still bold a title's first word ("<strong>Delete</strong> content?")
+            strong {
+                font-weight: inherit;
             }
         }
 

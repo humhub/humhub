@@ -3,6 +3,11 @@
 // --------------------------------------------------
 
 @if not $prev-space {
+    // The pictures of the "New spaces" card, a row apart when they wrap
+    #new-spaces-panel .card-body a img {
+        margin-bottom: $spacer * .25;
+    }
+
     #space-menu-dropdown i.type {
         color: var(--bs-secondary-color);
     }

@@ -16,11 +16,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Almost there!');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Almost there!') ?></strong></h1>
+    <div class="card content-card">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Almost there!') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <p><?= Yii::t('UserModule.auth', 'An email has been sent to {emailAddress}. Please check your inbox to complete the registration.', [
                 'emailAddress' => $model->email,
             ]) ?></p>

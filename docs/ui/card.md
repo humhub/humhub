@@ -3,7 +3,7 @@
 > Found in the design: below the page header on every page: the board on Tasks, the grid on Files,
 > the users table on Admin › People, the key figures on Admin › Overview, settings pages
 > · Core: `humhub\widgets\ContentCard`, `ContentCard.vue` (since 1.20); `.panel` (Bootstrap 3
-> compatibility) in older views
+> compatibility, until 1.21) in modules
 > · Technology: **Both**
 
 The card that holds a page's content. A page has one [Page Header](page-header.md) and below it one
@@ -25,9 +25,8 @@ card: boards, grids, tables, lists, forms, key figures.
 The page header names the page (`h1`), the card names its part (`h2`), sub-sections inside a card
 are `h3`. All three are short, plain titles without `<strong>`.
 
-- **Sizes:** page title and card title `$font-size-lg` (the title role, see
-  [Typography](typography.md)), section (`.card-title` in the body) `$font-size-base`; all semibold, in the highlight
-  colour. A section heading has more space above than below.
+- **Text styles** ([Typography](typography.md)): page title and card title a Title, a section
+  (`.card-title` in the body) Strong text. A section heading has more space above than below.
 - **Below tabs, the active tab names the card.** Settings › General → card "General",
   Users › Groups → card "Groups". With secondary tabs in the card, the card title is the section
   (Users › Settings → card "Settings" with General / LDAP / … below it).
@@ -98,6 +97,8 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 | `.card-heading` | Title and description, taking the header's free width |
 | `.card-header-actions` | Header buttons, the actions and the ⋮ menu, right-aligned |
 | `.card-tabs` | The secondary tabs between header and body |
+| `.content-card-danger` | A card for a problem that needs action (an incomplete setup, open requests): a danger border and title |
+| `.card-title-action` | A title that opens something (a space's members), a plain button in the title's look |
 
 - A card without title is a `<div>`; without title, header content and actions it has no header.
 - **Look:** `.content-card` sets the card's `--bs-card-*` variables: no border,
@@ -109,13 +110,15 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
   `.card` and expect Bootstrap's look. Changing `$card-*` globally would restyle all of them.
 - **Older views inside a card:** a `.panel-body` directly in the card body (module views rendered
   into a layout that is now a card) adds no padding of its own; two of them are spaced by `$spacer`.
+  A module view's `.panel-heading` and `.panel-body` directly in a card (the wrapper of a section
+  layout) keep a panel's look until 1.21.
 - **File:** `_card.scss`, behind `$prev-card`, with `$content-card-header-gap`,
-  `$content-card-title-font-size`, `$content-card-title-font-weight`,
   `$content-card-header-padding-top` / `-bottom` (1rem above the title as in the page header,
   1.5rem from title to content), `$content-card-tabs-padding-top`,
-  `$content-card-subtitle-margin-top`, `$content-card-section-title-font-size`, `-font-weight`,
-  `-margin-top`, `-margin-bottom` and
-  `$content-card-margin-bottom` (the last card's distance to the footer, as a panel's).
+  `$content-card-subtitle-margin-top`, `$content-card-section-title-margin-top`, `-margin-bottom` and
+  `$content-card-margin-bottom` (below every card, as below a panel: between stacked cards in the
+  sidebar and the stream; in a stack with a gap, `.d-flex.flex-column.gap-3`, the gap instead),
+  `$content-card-danger-border-width`.
 
 ## Implementation in core
 
@@ -134,9 +137,14 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
   `ContentCard::markRendered($view)`. The account layouts, `_authenticationLayout`,
   `_advancedLayout` and the group's `_manageLayout` render the card themselves, so the views
   inside them only bring the content; the Information layout renders one when the view does not.
-- **Where:** the administration (Users, Spaces, Modules, Settings, Information, LDAP, Apps & API
-  Access, E-Mail Summaries, Notifications), the account section, search and the licence page.
-  Space and profile pages, the stream and module pages such as the wiki are not converted.
+- **Where:** every card of core. `ContentCard` on the pages below a page header: the
+  administration (Users, Spaces, Modules, Settings, Information, LDAP, Apps & API Access, E-Mail
+  Summaries, Notifications), the account section, search and the licence page. The card markup
+  in views: the stream entries and the form above them, the space and profile header and menu
+  (`LeftNavigation`), the about pages, sign-in, registration and password pages, the installer,
+  error pages. Module pages such as the wiki still render panels.
+- **Sidebar cards** (the widgets beside the stream) are their own component with the same look:
+  [Sidebar Card](sidebar-card.md) (`humhub\widgets\SidebarCard`).
 - **Vue:** `ContentCard.vue` (`<content-card>`): props `title`, `titleTag`, `description`, `actions`, `menu`;
   slots `header` (e.g. the content navigation of a card without title), `actions`, default (the
   body) and `footer`.
@@ -167,15 +175,13 @@ The component is called `ContentCard`, not `Card`: a Vue component's tag needs a
 
 | Today | Becomes |
 |---|---|
-| `.panel.panel-default` with `.panel-heading` and `.panel-body`, written by hand in views, styled by `_bootstrap3.scss` | `ContentCard`. Done for the administration and the account; module pages, the stream, space and profile pages follow. The section layouts still wrap a view without card in a `.panel`. |
+| `.panel.panel-default` with `.panel-heading` and `.panel-body`, written by hand in views, styled by `_bootstrap3.scss` | `ContentCard` or the card markup. Done for core; modules follow. |
 | `h4` page titles inside panels (larger than the page title) | The card title; sections `h3` |
-| `humhub\widgets\PanelMenu`: a ⋮ menu with a collapse option in panel headings | The ⋮ `DropdownMenu` of the card header |
+| `humhub\widgets\PanelMenu`: a ⋮ menu with a collapse option in panel headings | `SidebarCard` in the sidebar ([Sidebar Card](sidebar-card.md)); a page's card takes the ⋮ `DropdownMenu` of the card header. Deprecated, removed in 1.21 |
 | Headings with `<strong>` for the emphasised word ("**User** administration") | Plain titles |
 
 ## Open questions
 
-1. **`PanelMenu`:** its collapse option (fold a panel) is not in the design. Keep it as an
-   optional card feature, or drop it?
-2. **Card without header:** the design has cards that are only content (the Tasks board). Is a
+1. **Card without header:** the design has cards that are only content (the Tasks board). Is a
    header-less card the default, or should every card have a title for accessibility (visually
    hidden if needed)?

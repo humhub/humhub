@@ -72,14 +72,13 @@
                 }
 
                 // The author's name is set apart from the time by its weight and size, not by its color only (WCAG 1.4.1).
-                // Text size over the view's `.h4`; the time is a `small`
+                // Text over the view's `.h4`: the name Strong text, the time a `small`
                 .comment-heading {
-                    font-size: $font-size-base;
-                    font-weight: $font-weight-normal;
+                    @include hh-text-style(text);
                     margin-bottom: $spacer * .25;
 
                     a {
-                        font-weight: $font-weight-semibold;
+                        @include hh-text-style(strong, $color: false);
                     }
                 }
 

@@ -17,6 +17,8 @@ use yii\helpers\BaseInflector;
  * @package humhub.widgets
  * @since 0.5
  * @author Andreas Strobel
+ * @deprecated since 1.20, removed in 1.21: a sidebar widget renders a {@see SidebarCard}, whose `menu` takes the
+ * entries and which brings the collapse option
  */
 class PanelMenu extends Widget
 {

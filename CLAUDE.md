@@ -198,3 +198,21 @@ When adding new shared CI behaviour (e.g. Claude workflows), add the reusable wo
 - No inline event handler logic — always delegate to `Events.php`
 - Module settings: `$module->settings->get('key')` / `$module->settings->set('key', $value)`
 - Resources (JS, CSS, images): `resources/` directory, served via Yii2 AssetBundles
+
+## UI and styles
+
+Before changing views, SCSS or Vue components, read the UI documentation in `docs/ui/` and keep it in sync with the
+code:
+
+- `docs/ui/README.md` — the index of components (page header, content card, sidebar card, tabs, data table, …).
+- `docs/ui/bootstrap.md` — Bootstrap 5 first: class names, spacing and radius steps, and the table of the few
+  Bootstrap variables core overrides (and why). A new override is added there.
+- `docs/ui/typography.md` — the text styles (`@include hh-text-style(...)`, `$hh-text-styles` in `_mixins.scss`) and
+  their CSS variables for modules; `docs/ui/colours.md` for colours.
+- `docs/ui/principles.md` and `docs/ui/keyboard.md` — accessibility rules.
+
+Rules: change looks through Bootstrap's variables (`protected/humhub/resources/scss/variables.scss`) and the
+component's own variables, not with new special-case classes. Sizes in rem, never px font sizes or line heights
+(Stylelint: `npm run lint:scss`). The theme CSS is compiled at runtime: after an SCSS change, delete the compiled
+`theme.css` under `public/assets/` so the next request rebuilds it. Check a change of the look with the visual suite
+(`docs/develop/intro-testing.md`, section on the visual comparison).

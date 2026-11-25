@@ -17,9 +17,10 @@
             margin-bottom: $spacer * 1.5;
         }
 
+        // On the primary colour
         .text {
             color: var(--hh-primary-contrast);
-            font-size: $font-size-sm;
+            @include hh-text-style(meta, $color: false);
             margin-bottom: $spacer;
 
             a {
@@ -34,6 +35,8 @@
             color: var(--hh-primary-contrast);
         }
 
+        // The box of the form (a module's own pages may still bring a panel)
+        .content-card,
         .panel {
             box-shadow: 0 0 15px color-mix(in srgb, var(--bs-primary), white 20%);
 
@@ -58,6 +61,7 @@
                 padding-right: $spacer * .5;
             }
 
+            .content-card,
             .panel {
                 text-align: left;
             }
@@ -97,10 +101,11 @@
         position: relative;
     }
 
+    // A secondary detail below the page's card
     .language-chooser-toggle {
         color: var(--bs-link-color);
         text-decoration: none;
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
         padding: $spacer * .25 $spacer * .5;
         border-radius: $border-radius-sm;
         transition: background-color 0.3s ease;
@@ -135,7 +140,6 @@
                 background-color: transparent;
                 color: var(--bs-body-color);
                 border-left-color: var(--bs-primary);
-                font-weight: $font-weight-medium;
             }
 
             &:hover:not(.active),

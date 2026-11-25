@@ -15,22 +15,36 @@ $content-card-header-gap: $spacer * .5 !default;
 $content-card-header-padding-top: $spacer !default;
 $content-card-header-padding-bottom: $spacer * .5 !default;
 $content-card-tabs-padding-top: $spacer * .5 !default;
-// Titles: the card's title (as large as the page header's) > the title of a section in its body
-$content-card-title-font-size: $font-size-lg !default;
-$content-card-title-font-weight: $font-weight-semibold !default;
+// Titles (text styles, docs/ui/typography.md): the card's title a Title, the title of a section in its body Strong text
 $content-card-title-badges-gap: $spacer * .5 !default;
 $content-card-subtitle-margin-top: $spacer * .5 !default;
-$content-card-section-title-font-size: $font-size-base !default;
-$content-card-section-title-font-weight: $font-weight-semibold !default;
 $content-card-section-title-margin-top: $spacer * 1.5 !default;
 $content-card-section-title-margin-bottom: $spacer * .5 !default;
-$content-card-margin-bottom: $spacer !default; // about the margin of the `.panel` it replaces
+$content-card-margin-bottom: $spacer !default; // Between stacked cards (sidebar, stream) and to what follows
+// A card for a problem that needs action (an incomplete setup, open approvals)
+$content-card-danger-border-width: 2px !default;
 
 @if not $prev-card {
     // A title's size comes from its component, so that its tag (h1–h6) is free to say the outline
     .card-title {
-        font-size: $font-size-lg;
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(title);
+
+        // One weight: translations still bold a title's first word ("<strong>Latest</strong> activities")
+        strong,
+        b {
+            font-weight: inherit;
+        }
+    }
+
+    // A title that opens something (the members of a space): a plain button in the title's look
+    .card-title-action {
+        display: inline;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: inherit;
     }
 
     .content-card {
@@ -41,15 +55,29 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
         --bs-card-bg: #{$content-card-bg};
         --bs-card-cap-bg: transparent;
         --hh-content-card-header-gap: #{$content-card-header-gap};
+        @include text-break();
+        // Stacked cards (the sidebar, the stream) and the last one to what follows
+        margin-bottom: $content-card-margin-bottom;
 
         // `.card` draws its shadow only with `$enable-shadows`; a content card always has one
         box-shadow: var(--bs-card-box-shadow);
     }
 
-    // Like a panel, the last card keeps its distance to what follows (the footer); between
-    // cards the stack's gap applies
-    .content-card:last-child {
-        margin-bottom: $content-card-margin-bottom;
+    // The sign-in and installer cards (animate.css): a short animation
+    .content-card.pulse,
+    .content-card.fadeIn {
+        animation-duration: 200ms;
+    }
+
+    // In a stack with a gap (the section layouts' `.d-flex.flex-column.gap-3`) the gap separates the cards
+    :where(.flex-column.gap-3, .vstack.gap-3) > .content-card:not(:last-child) {
+        margin-bottom: 0;
+    }
+
+    // A problem that needs action: a danger border (not Bootstrap's border width, which would also draw the header's
+    // bottom border) and title (below)
+    .content-card-danger {
+        border: $content-card-danger-border-width solid var(--bs-danger);
     }
 
     @if $enable-dark-mode {
@@ -76,13 +104,15 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
         min-width: 0;
     }
 
+    // A Title, also where the title has a class of its own (e.g. `.notification-settings-subtitle`)
     .content-card > .card-header .card-title {
         margin: 0;
-        color: var(--bs-emphasis-color);
-        font-size: $content-card-title-font-size;
-        font-weight: $content-card-title-font-weight;
-        line-height: $headings-line-height;
+        @include hh-text-style(title);
         overflow-wrap: anywhere;
+    }
+
+    .content-card-danger > .card-header .card-title {
+        color: var(--hh-danger-fg);
     }
 
     // The title with badges next to it
@@ -96,19 +126,17 @@ $content-card-margin-bottom: $spacer !default; // about the margin of the `.pane
     // The description: ordinary text below the title
     .content-card > .card-header .card-subtitle {
         margin: $content-card-subtitle-margin-top 0 0;
-        color: var(--bs-body-color);
-        font-size: inherit;
+        @include hh-text-style(text);
     }
 
-    // A title in the body is that of a section of the card's content, a step below the card's title
-    :where(.content-card > .card-body) .card-title {
+    // A title in the body is that of a section of the card's content, a step below the card's title; also in a body
+    // further down (a tab pane's) of a page's card
+    :where(.content-card .card-body) .card-title {
         margin: 0 0 $content-card-section-title-margin-bottom;
-        color: var(--bs-emphasis-color);
-        font-size: $content-card-section-title-font-size;
-        font-weight: $content-card-section-title-font-weight;
-        line-height: $headings-line-height;
+        @include hh-text-style(strong);
 
-        &:not(:first-child) {
+        // Below other content; a form's hidden CSRF input before it is not content
+        &:not(:first-child, input[type="hidden"]:first-child + *) {
             margin-top: $content-card-section-title-margin-top;
         }
     }

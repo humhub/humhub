@@ -107,7 +107,7 @@ $prev-richtext: false !default;
         border: none;
         background: var(--bs-body-bg);
         color: var(--bs-secondary-color);
-        font-weight: $font-weight-normal;
+        font-weight: $font-weight-normal; // Not jQuery UI's bold: the header holds the month's and year's fields
     }
 
     .ui-widget-content,

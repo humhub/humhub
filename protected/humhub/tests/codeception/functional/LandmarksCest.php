@@ -102,7 +102,7 @@ class LandmarksCest
         $I->seeElement('main#main-content #login-form');
         $I->seeElement('footer .footer-nav-login, footer .powered');
         $I->seeNumberOfElements('h1', 1);
-        $I->see('Sign In', '#login-form .panel-heading h1');
+        $I->see('Sign In', '#login-form .card-header h1');
         $I->seeElement('label[for="login_username"]');
     }
 

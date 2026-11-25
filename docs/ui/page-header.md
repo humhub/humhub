@@ -176,16 +176,14 @@ $page-header-bg: var(--bs-body-bg) !default;
 $page-header-border-radius: $border-radius-lg !default;
 $page-header-box-shadow: 0 0 4px 1px rgba(150, 150, 150, .16) !default;
 $page-header-box-shadow-dark: 0 0 4px 1px rgba(0, 0, 0, .48) !default;
-$page-header-title-font-size: $font-size-lg !default;
-$page-header-title-font-weight: $font-weight-semibold !default;
-$page-header-title-color: var(--bs-emphasis-color) !default;
 ```
 
 - **Width:** at most `$page-header-max-width` (1440px), centred; what follows the page header in
   the same container (its content cards, a data table, a hint) is limited and centred alike, so
   in a wide layout (e.g. the Enterprise Theme) header and cards stay aligned.
 - **CSS variables** on `.page-header`: `--hh-page-header-max-width`, `-padding`, `-gap`, `-bg`,
-  `-border-radius`, `-box-shadow`, `-title-font-size`, `-title-font-weight`, `-title-color`.
+  `-border-radius`, `-box-shadow`.
+- **Title:** the Title text style ([Typography](typography.md)).
 
 ## Implementation in core
 

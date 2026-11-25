@@ -373,7 +373,7 @@ humhub.module('content.form', function (module, require, $) {
     CreateFormMenu.prototype.init = function () {
         this.topMenu = this.$.find('ul.nav');
         this.subMenu = this.$.find('li.content-create-menu-more');
-        this.formPanel = this.$.parent().find('.panel');
+        this.formPanel = this.$.parent().find('.content-card, .panel').first();
         if (!this.formPanel.find('form').length) {
             this.$.fadeIn();
             this.$.addClass('menu-without-form');
@@ -399,7 +399,7 @@ humhub.module('content.form', function (module, require, $) {
 
         client.get(evt).then(function (response) {
             that.formPanel.replaceWith(response.html);
-            that.formPanel = that.$.parent().find('.panel');
+            that.formPanel = that.$.parent().find('.content-card, .panel').first();
             // The loaded form is not part of the page ready sweep: mount its pickers and other additions
             additions.applyTo(that.formPanel);
             that.formPanel.find('[data-action-component], [data-ui-widget]').each(function () {

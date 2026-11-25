@@ -27,10 +27,6 @@
         }
 
         table {
-            th {
-                font-weight: $font-weight-bold;
-            }
-
             td {
                 vertical-align: middle;
             }
@@ -59,8 +55,7 @@
         }
 
         .summary {
-            font-size: $font-size-sm;
-            color: var(--bs-secondary-color);
+            @include hh-text-style(meta);
         }
     }
 

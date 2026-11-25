@@ -22,11 +22,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
-        <div class="panel-heading">
-            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
+    <div class="card content-card mb-4 animated bounceIn" id="login-form">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
                 <div class="d-flex align-items-baseline gap-1 mb-3 text-nowrap">
                     <?= Yii::t('UserModule.auth', 'Sign In as {username}', [

@@ -6,9 +6,9 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="panel panel-default animated fadeIn">
+<div class="card content-card animated fadeIn">
 
-    <div class="panel-body text-center">
+    <div class="card-body text-center">
         <br>
         <br>
         <p class="lead"><?php echo Yii::t('InstallerModule.base', '<strong>Welcome</strong> to HumHub<br>Your Social Network Toolbox'); ?></p>

@@ -15,9 +15,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div id="must-change-password-form" class="panel panel-default animated bounceIn">
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Change</strong> Password'); ?></div>
-        <div class="panel-body">
+    <div id="must-change-password-form" class="card content-card animated bounceIn">
+        <div class="card-header"><div class="card-title"><?= Yii::t('UserModule.auth', '<strong>Change</strong> Password'); ?></div></div>
+        <div class="card-body">
 
             <?php $form = ActiveForm::begin(); ?>
 

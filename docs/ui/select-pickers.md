@@ -102,7 +102,7 @@ button is a field with chips and an input. Class names and SCSS follow
 - **Sass variables:** `$select-menu-field-height`, `$select-menu-icon-size`,
   `$select-menu-icon-color`, `$select-menu-icon-space`, `$select-menu-max-height` (the listbox's
   height before it scrolls), `$picker-chip-height`, `$picker-chip-image-size`, `$picker-chip-bg`,
-  `$picker-chip-color`, `$picker-chip-font-size`,
+  `$picker-chip-color`,
   `$picker-color-size`, `$picker-list-item-bg`; the rest is `$input-*` and `$dropdown-*` (a list
   row has Bootstrap's `$dropdown-item-padding-y`).
 

@@ -9,13 +9,13 @@ use humhub\widgets\form\ActiveForm;
  */
 
 ?>
-<div id="name-form" class="panel panel-default animated fadeIn">
+<div id="name-form" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', 'Social Network <strong>Name</strong>'); ?>
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('InstallerModule.base', 'Social Network <strong>Name</strong>'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)'); ?></p>
 
         <?php $form = ActiveForm::begin(); ?>

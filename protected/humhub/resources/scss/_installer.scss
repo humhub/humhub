@@ -8,15 +8,14 @@
             text-align: center;
         }
 
-        .panel {
+        .content-card {
             margin-top: $spacer * 3;
         }
 
         .powered,
         .powered a {
-            color: var(--bs-secondary-color) !important;
             margin-top: $spacer * .5;
-            font-size: $font-size-sm;
+            @include hh-text-style(meta);
         }
 
         .check-ok {

@@ -115,8 +115,9 @@ follow [Styling with Bootstrap 5](bootstrap.md).
 
 - **File:** `_entity-card.scss`, behind `$prev-entity-card`, with `$entity-card-border-radius`,
   `$entity-card-padding`, `$entity-card-gap`, `$entity-card-image-size` (80px),
-  `$entity-card-image-border-radius`, `$entity-card-cover-bg`, `$entity-card-title-font-size` and
-  `$entity-card-action-height` (a button's height); the module card's parts in
+  `$entity-card-image-border-radius`, `$entity-card-cover-bg` and
+  `$entity-card-action-height` (a button's height); the title is a Large title
+  ([Typography](typography.md)); the module card's parts in
   `_marketplace.scss`, the people and space card's own parts in `_people-browser.scss` and
   `_spaces-browser.scss`.
 - The `.card-body` / `.card-title` parts of Bootstrap are not used: the entity card's parts have a

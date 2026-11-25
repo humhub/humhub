@@ -8,15 +8,19 @@
 
 use humhub\components\View;
 use humhub\modules\admin\widgets\IncompleteSetupWarning;
+use humhub\widgets\SidebarCard;
 
 /* @var $this View */
 /* @var $problems array */
 
 ?>
 
-<div class="panel panel-danger panel-invalid">
-    <div class="panel-heading"><?= Yii::t('AdminModule.base', '<strong>Warning</strong> incomplete setup!'); ?></div>
-    <div class="panel-body">
+<?php SidebarCard::begin([
+    'title' => Yii::t('AdminModule.base', '<strong>Warning</strong> incomplete setup!'),
+    'encodeTitle' => false,
+    'collapsible' => false,
+    'options' => ['class' => 'content-card-danger panel-invalid'],
+]) ?>
         <ul>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_QUEUE_RUNNER, $problems)): ?>
                 <li>
@@ -49,5 +53,4 @@ use humhub\modules\admin\widgets\IncompleteSetupWarning;
                 </li>
             <?php endif; ?>
         </ul>
-    </div>
-</div>
+<?php SidebarCard::end() ?>

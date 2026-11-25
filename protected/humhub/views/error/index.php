@@ -13,11 +13,11 @@ $this->pageTitle = Yii::t('base', 'Error');
 
 ?>
 <div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <?= Yii::t('base', 'Oooops...'); ?> <?= Yii::t('base', 'It looks like you may have taken the wrong turn.'); ?>
+    <div class="card content-card">
+        <div class="card-header">
+            <div class="card-title"><?= Yii::t('base', 'Oooops...'); ?> <?= Yii::t('base', 'It looks like you may have taken the wrong turn.'); ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 
             <div class="error">
                 <h1 class="h2"><?= Html::encode($message); ?></h1>

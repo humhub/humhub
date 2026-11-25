@@ -11,12 +11,12 @@ use humhub\modules\user\models\fieldtype\MarkdownEditor;
  */
 $categories = $user->profile->getProfileFieldCategories();
 ?>
-<div id="user-profile-about" class="panel panel-default">
-    <div class="panel-heading">
-        <?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?>
+<div id="user-profile-about" class="card content-card">
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?php $isFirst = true; ?>
         <?php if (count($categories) > 1): ?>
             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs" role="tablist">

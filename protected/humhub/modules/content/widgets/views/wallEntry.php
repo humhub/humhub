@@ -22,8 +22,8 @@ use yii\helpers\Url;
 ?>
 
 
-<div class="panel panel-default wall_<?= $object->getUniqueId(); ?>">
-    <div class="panel-body">
+<div class="card content-card wall_<?= $object->getUniqueId(); ?>">
+    <div class="card-body">
 
         <div class="d-flex">
             <!-- since v1.2 -->

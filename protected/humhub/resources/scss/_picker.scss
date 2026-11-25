@@ -27,7 +27,6 @@ $picker-field-text-indent: calc(#{$input-padding-x} - #{$picker-field-padding}) 
 $picker-chip-image-size: 22px !default;
 $picker-chip-bg: var(--bs-accent) !default;
 $picker-chip-color: var(--hh-accent-contrast) !default;
-$picker-chip-font-size: inherit !default;
 $picker-color-size: .75em !default; // A dot beside the text
 $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
@@ -277,7 +276,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         border-radius: var(--bs-border-radius-sm);
         background: $picker-chip-bg;
         color: $picker-chip-color;
-        font-size: $picker-chip-font-size;
     }
 
     // The input text keeps the field's left padding from the last chip (at a line end, if the input
@@ -326,9 +324,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
     .picker-option-count {
         flex: 0 0 auto;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
+        @include hh-text-style(meta);
     }
 
     // PickerInput: the island ui.picker mounts right after a native <select>
@@ -416,15 +412,15 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker-option-subtext {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
+    // The part of the label that matches the keyword
     .picker-option mark {
         padding: 0;
         background: transparent;
         color: inherit;
-        font-weight: $font-weight-bold;
+        @include hh-text-style(strong, $color: false);
     }
 
     .picker-option.is-new {
@@ -466,8 +462,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker-list-item-subtext {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .picker-list-item-remove {

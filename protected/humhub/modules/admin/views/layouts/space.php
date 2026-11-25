@@ -17,8 +17,8 @@ AdminMenu::markAsActive('spaces');
     <?php if (ContentCard::isRendered($this)) : ?>
         <?= $content ?>
     <?php else : ?>
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card content-card">
+            <div class="card-body">
                 <?= $content ?>
             </div>
         </div>

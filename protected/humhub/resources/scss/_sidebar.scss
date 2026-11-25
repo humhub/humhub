@@ -2,20 +2,45 @@
 // Sidebar
 // --------------------------------------------------
 
-// The titles of the side column's widgets: between text and a title (`$font-size-lg`). Bootstrap has no step there,
-// so it is the root size, 16px at the browser's default
-$sidebar-title-font-size: 1rem !default;
-
 @if not $prev-sidebar {
     // A column (`.col-lg-3`, `.col-lg-4`): its side padding is Bootstrap's half gutter
     .layout-sidebar-container {
+        // A module's panel: clear of its PanelMenu's ⋮ in the corner (`_nav.scss`)
         > .panel > .panel-heading {
-            // The side column's widgets are secondary to the page: their titles are smaller than a title. The same
-            // line height as a title's, so the ⋮ stays centred on it
-            font-size: $sidebar-title-font-size;
-            line-height: $font-size-lg * $headings-line-height;
-            // Clear of the PanelMenu's ⋮ in the corner (`_nav.scss`)
             padding-right: $card-spacer-x + $preferences-toggle-size + $spacer * .5;
+        }
+    }
+
+    // A card in the sidebar (`humhub\widgets\SidebarCard`, docs/ui/sidebar-card.md). Its ⋮ as small as a stream
+    // entry's (`_nav.scss`), as the sidebar is narrow, and reaching over the header's padding instead of making the header
+    // higher than the title's line
+    .sidebar-card > .card-header > .card-header-actions {
+        margin-block: ($h5-font-size * $headings-line-height - $preferences-toggle-size) * .5;
+
+        .btn-icon-only {
+            width: $preferences-toggle-size;
+            height: $preferences-toggle-size;
+
+            > .ti {
+                font-size: $preferences-toggle-icon-size;
+            }
+        }
+    }
+
+    // The label of the ⋮ menu's collapse entry follows the body's state (Bootstrap's `.collapsed`)
+    .sidebar-card-collapse {
+        .sidebar-card-collapse-show {
+            display: none;
+        }
+
+        &.collapsed {
+            .sidebar-card-collapse-hide {
+                display: none;
+            }
+
+            .sidebar-card-collapse-show {
+                display: inline;
+            }
         }
     }
 

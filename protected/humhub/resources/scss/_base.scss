@@ -46,8 +46,9 @@
         }
     }
 
+    // The weight of Strong text only: size and colour stay those of the text around it (a name in a meta line, in a link)
     b, strong {
-        font-weight: $font-weight-bold;
+        font-weight: $font-weight-semibold;
     }
 
     a:hover {
@@ -171,12 +172,13 @@
         color: lightgrey;
     }
 
+    // "Show more" below a list: a secondary detail, its link keeps its colour
     .showMore {
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
     }
 
     .filter-toggle-link {
-        font-size: $font-size-sm;
+        @include hh-text-style(meta, $color: false);
         // Right caret
         &::after {
             display: inline-block;

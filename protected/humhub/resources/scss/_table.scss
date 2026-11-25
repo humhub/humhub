@@ -9,14 +9,15 @@
     table, .table {
         margin-bottom: 0;
 
+        // Column headers: Meta's size and colour in the weight of a name, a special case of the table
+        // (docs/ui/typography.md)
         th {
-            font-size: $font-size-sm;
-            color: var(--bs-body-color);
-            font-weight: $font-weight-normal;
+            @include hh-text-style(meta);
+            font-weight: $table-th-font-weight;
         }
 
         .time {
-            font-size: $font-size-sm;
+            @include hh-text-style(meta);
         }
     }
 

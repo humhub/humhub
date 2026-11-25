@@ -63,6 +63,7 @@ How a page is framed and how people move between pages.
 |---|---|---|---|
 | [Page Header](page-header.md) | The card at the top of a page: title, actions, filters or tabs | in progress | Both |
 | [Content Card](card.md) | The card below the page header that holds the content, with an optional header | in progress | Both |
+| [Sidebar Card](sidebar-card.md) | A card in the sidebar of the dashboard, a space or a profile, with a ⋮ menu that can collapse it | in progress | PHP |
 | [Pill Tabs](tabs.md) | Switch between sibling pages or views | in progress | Both (PHP exists) |
 | [Master / Detail & Section Menu](master-detail.md) | Side pane + main pane that folds on mobile; the administration menu | in progress | Both (proposed) |
 | [Top Bar](top-bar.md) | Search, drawers, user menu, space chooser and main navigation | in review | Both (proposed) |
@@ -139,6 +140,7 @@ How components combine into a whole page.
 | …switch between sibling pages of a section | [Pill Tabs](tabs.md) (primary) |
 | …switch between sections of one dialog or card | [Pill Tabs](tabs.md) (secondary) |
 | …show the same data differently (grid / list, board / list) | View switch (see [Item Browser](item-browser.md)) |
+| …add a box to the sidebar of the dashboard, a space or a profile | [Sidebar Card](sidebar-card.md) |
 | …give an area with 5–12 sections a menu | [Section Menu](master-detail.md#section-menu) |
 | …show records people compare and act on in bulk | [Data Table](data-table.md) |
 | …let people browse and pick people, spaces or modules | [Entity Browser](entity-browser.md) |

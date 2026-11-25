@@ -13,11 +13,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div id="password-recovery-form" class="panel panel-default animated bounceIn">
-        <div class="panel-heading">
-            <h1 class="panel-title"><strong><?= Yii::t('UserModule.auth', 'Change your password') ?></strong></h1>
+    <div id="password-recovery-form" class="card content-card animated bounceIn">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Change your password') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 

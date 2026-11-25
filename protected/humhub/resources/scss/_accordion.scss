@@ -39,14 +39,12 @@ $accordion-header-gap: $spacer * .75 !default;
         flex: 1 1 auto;
         flex-direction: column;
         min-width: 0;
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        // A section of the card or dialog
+        @include hh-text-style(strong);
     }
 
     .accordion-subtitle {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
+        @include hh-text-style(meta);
     }
 
     // The dot of a group with unsaved changes, after the title
