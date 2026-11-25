@@ -32,6 +32,23 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         );
     }
 
+    public function testConvertUnknownExtensionLinkToText()
+    {
+        // A link of an extension nobody handles (e.g. a disabled module) leads to the url it carries
+        $this->assertConversionResult(
+            'Test [Link](my-extension:https://www.humhub.com/de "Title")',
+            "Test Link(https://www.humhub.com/de)",
+        );
+    }
+
+    public function testConvertExtensionLinkWithoutUrlToText()
+    {
+        $this->assertConversionResult(
+            'Test [Link](my-extension:some-id)',
+            "Test Link",
+        );
+    }
+
     public function testConvertLinkWithSpecialCharToText()
     {
         $this->assertConversionResult(

@@ -174,6 +174,9 @@ HumHub Changelog
 - Fix #8767: `oembed.load()` no longer requests an url twice while the first request for it is open
 - Enh #8762: Files dropped onto the rich text editor are inserted into the text instead of being attached under the form
 - Enh #8762: Files hidden in the stream (uploaded by the rich text editor) stay attached to a post only while its message references them
+- Fix #8784: A plugin added to a rich text preset is also added to the presets extending it (`full`, `document`), but only once
+- Fix #8784: The title of a link of an unavailable rich text extension is not shown as a tooltip
+- Fix #8784: The plain text of a link of an unavailable rich text extension contains the url it carries
 
 1.19.5 (November 25, 2026)
 --------------------------

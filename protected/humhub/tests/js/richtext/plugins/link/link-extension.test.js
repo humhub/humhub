@@ -75,7 +75,14 @@ describe("Plugin:link, links of unknown extensions", () => {
         const $link = $('#result a');
         expect($link.length).to.equal(1);
         expect($link.attr('href')).to.equal('https://example.com/a');
-        expect($link.attr('title')).to.equal('Description');
+        // The meaning of the title is up to the extension
+        expect($link.attr('title')).to.equal(undefined);
         expect($link.text()).to.equal('Title');
+    });
+
+    it("keeps the title of an ordinary link of the view", () => {
+        initView({exclude: ['oembed']}, '[Title](https://example.com/a "Description")');
+
+        expect($('#result a').attr('title')).to.equal('Description');
     });
 });

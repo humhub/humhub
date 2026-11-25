@@ -56,6 +56,9 @@ class RichTextLinkExtension extends RichTextContentExtension
 
     public static function convertToPlainText($text, $url)
     {
+        // The link of an extension that is not available (e.g. its module is disabled) leads to the url it carries
+        $url = static::getExtensionTargetUrl($url) ?? $url;
+
         if (!static::validateNonExtensionUrl($url)) {
             return $text;
         }
