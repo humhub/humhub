@@ -159,7 +159,7 @@ class AcceptanceTester extends BaseTester
     public function createTopics($guid, $topics = [])
     {
         $this->amOnSpace($guid, '/topic/manage');
-        $this->waitForText('Topics', 10, '.content-card .card-title');
+        $this->waitForText('Topics', 10, '#layout-content-column .content-card .card-title');
 
         if (is_string($topics)) {
             $topics = [$topics];
