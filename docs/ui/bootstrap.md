@@ -183,6 +183,7 @@ browser's font size, as the Bootstrap docs assume. These are all the size overri
 | `$table-th-font-weight` | 600 | none (the browser's bold) | A column's header, at Meta's size ([Typography](typography.md#special-cases-of-components)). |
 | `$badge-font-size` | `.875em` | `.75em` | As secondary text; Bootstrap's 10.5px is below the smallest text. |
 | `$badge-font-weight`, `$badge-border-radius` | 600, `50rem` (`$border-radius-pill`) | 700, `$border-radius` | A chip is semibold, one of the three weights, and fully rounded ([Badges](badges.md)). |
+| `$container-max-widths` | Bootstrap's, without `sm` | with `sm: 540px` | The full width below `md` (phones, also in landscape), as the mobile layout's cards from edge to edge. |
 | `$dropdown-padding-x` | `.5rem` | `0` | A menu's rows are inset, with rounded corners. |
 | `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (37px), their content half a spacer from the row's rounded edge. |
 | `$dropdown-min-width` | `15rem` | `10rem` | Menus hold labels with icons and hints. |
@@ -199,7 +200,6 @@ Own additions:
 - `--hh-topbar-height` (`3.5rem`, as Bootstrap's navbar) is the height of one top bar; `--hh-fixed-header-height` is
   derived from it.
 
-Not Bootstrap's yet: the container widths (`$container-max-widths`).
 
 ### Spacing
 

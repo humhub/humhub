@@ -3109,3 +3109,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     (`collapsible`); `PanelMenu`'s `collapseId` is `SidebarCard`'s, so a remembered state carries over.
   - `ActivityBox` renders a `SidebarCard` around its island; the island (`ActivityBox.vue`) renders the list only, its
     props `panelMenuHtml` and the heading are gone.
+
+- **The container widths are Bootstrap's** (`$container-max-widths`: `md` 720px, `lg` 960px, `xl` 1140px, `xxl`
+  1320px) instead of Bootstrap 3's 770/970/1170/1200px; below `md` the container keeps the full width. A theme or
+  module that lined something up with the old widths (e.g. a fixed `width: 1170px`) takes the container's width instead.
