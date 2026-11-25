@@ -191,6 +191,46 @@ class HealthServiceTest extends HumHubDbTestCase
         $this->assertSame(0, $check->calls);
     }
 
+    public function testModuleCheckCacheIsSeparatedPerModule(): void
+    {
+        Event::on(HealthService::class, HealthService::EVENT_COLLECT_CHECKS, function (CollectChecksEvent $event) {
+            $event->addCheck('user', $this->check('same', HealthLevel::All, HealthResult::warning('from user')));
+            $event->addCheck('space', $this->check('same', HealthLevel::All, HealthResult::warning('from space')));
+        });
+        $service = $this->service([]);
+
+        for ($i = 0; $i < 2; $i++) {
+            $results = $service->run(HealthLevel::All)->results;
+            $this->assertSame('from user', $results['module:user:same']->output);
+            $this->assertSame('from space', $results['module:space:same']->output);
+        }
+    }
+
+    public function testModuleChecksDoNotRunWhenTheDatabaseCheckFails(): void
+    {
+        $check = $this->check('x', HealthLevel::All, HealthResult::ok());
+        Event::on(HealthService::class, HealthService::EVENT_COLLECT_CHECKS, fn(CollectChecksEvent $e) => $e->addCheck('user', $check));
+
+        $report = $this->service([
+            $this->check('database', HealthLevel::Ready, HealthResult::failure('down')),
+        ])->run(HealthLevel::All);
+
+        $this->assertSame(0, $check->calls);
+        $this->assertArrayNotHasKey('module:user:x', $report->results);
+    }
+
+    public function testAThrowingModuleCheckIsAWarning(): void
+    {
+        Event::on(HealthService::class, HealthService::EVENT_COLLECT_CHECKS, function (CollectChecksEvent $event) {
+            $event->addCheck('user', $this->check('boom', HealthLevel::All, fn() => throw new RuntimeException('kaputt')));
+        });
+
+        $result = $this->service([])->run(HealthLevel::All)->results['module:user:boom'];
+
+        $this->assertSame(HealthStatus::Warning, $result->status);
+        $this->assertSame('kaputt', $result->output);
+    }
+
     public function testToken(): void
     {
         $token = str_repeat('a', 32);

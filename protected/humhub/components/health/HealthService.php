@@ -41,6 +41,8 @@ class HealthService extends Component
      */
     public ?string $token = null;
 
+    private bool $tokenWarningLogged = false;
+
     /**
      * @var string[] ids of checks not to run, e.g. `['queue', 'filesystem:modules']`
      */
@@ -71,7 +73,7 @@ class HealthService extends Component
             if (!$level->includes($check->level) || $this->isDisabled($check->id)) {
                 continue;
             }
-            $results[$check->id] = $this->execute($check, $state, $databaseOk, $level, false);
+            $results[$check->id] = $this->execute($check, $check->id, $state, $databaseOk, $level, false);
             if ($check->id === 'database' && $results[$check->id]->status !== HealthStatus::Ok) {
                 $databaseOk = false;
             }
@@ -82,7 +84,7 @@ class HealthService extends Component
         }
 
         if ($level === HealthLevel::All && $databaseOk && HealthState::isInstalled($state)) {
-            $results += $this->runModuleChecks($state, $results);
+            $results += $this->runModuleChecks($state);
         }
 
         return new HealthReport($level, $state, Yii::$app->version, time(), $results);
@@ -102,7 +104,7 @@ class HealthService extends Component
         $state = $this->resolveState();
         foreach ($this->getCoreChecks($state) as $check) {
             if ($check->id === $id) {
-                return $this->execute($check, $state, true, HealthLevel::Ready, false);
+                return $this->execute($check, $check->id, $state, true, HealthLevel::Ready, false);
             }
         }
 
@@ -116,7 +118,10 @@ class HealthService extends Component
         }
 
         if (strlen($this->token) < self::MIN_TOKEN_LENGTH) {
-            Yii::warning('Health check token ignored: it must have at least ' . self::MIN_TOKEN_LENGTH . ' characters.', 'health');
+            if (!$this->tokenWarningLogged) {
+                $this->tokenWarningLogged = true;
+                Yii::warning('Health check token ignored: it must have at least ' . self::MIN_TOKEN_LENGTH . ' characters.', 'health');
+            }
             return false;
         }
 
@@ -191,10 +196,9 @@ class HealthService extends Component
     }
 
     /**
-     * @param array<string, HealthResult> $coreResults
      * @return array<string, HealthResult>
      */
-    private function runModuleChecks(string $state, array $coreResults): array
+    private function runModuleChecks(string $state): array
     {
         $event = new CollectChecksEvent();
         try {
@@ -210,7 +214,7 @@ class HealthService extends Component
                 continue;
             }
 
-            if (isset($results[$id]) || isset($coreResults[$id])) {
+            if (isset($results[$id])) {
                 Yii::warning("Health check '$id' is registered more than once.", 'health');
                 $results[$id] = HealthResult::warning('Check id registered more than once');
                 continue;
@@ -226,7 +230,7 @@ class HealthService extends Component
                 continue;
             }
 
-            $result = $this->execute($check, $state, true, HealthLevel::All, true);
+            $result = $this->execute($check, $id, $state, true, HealthLevel::All, true);
             if ($result->status->severity() > HealthStatus::Warning->severity()) {
                 $result = $result->withStatus(HealthStatus::Warning);
             }
@@ -236,7 +240,7 @@ class HealthService extends Component
         return $results;
     }
 
-    private function execute(HealthCheck $check, string $state, bool $databaseOk, HealthLevel $level, bool $isModuleCheck): HealthResult
+    private function execute(HealthCheck $check, string $reportId, string $state, bool $databaseOk, HealthLevel $level, bool $isModuleCheck): HealthResult
     {
         if ($check->requiresInstallation || $isModuleCheck) {
             if ($state === HealthState::INVALID) {
@@ -253,7 +257,7 @@ class HealthService extends Component
         $ttl = $level === HealthLevel::All
             ? ($check->cacheTtl ?? ($isModuleCheck ? self::MODULE_CHECK_CACHE_TTL : 0))
             : 0;
-        $cacheKey = 'health:' . ($isModuleCheck ? 'module:' : '') . $check::class . ':' . $check->id . ':' . Yii::$app->version;
+        $cacheKey = 'health:' . $reportId . ':' . Yii::$app->version;
 
         if ($ttl > 0) {
             try {
