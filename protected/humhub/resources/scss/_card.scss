@@ -146,16 +146,6 @@ $content-card-danger-border-width: 2px !default;
         padding: $content-card-tabs-padding-top var(--bs-card-spacer-x) 0;
     }
 
-    // Older (module) views rendered into a card bring a `.panel-body` of their own: the card body
-    // already pads them
-    .content-card > .card-body > .panel-body {
-        padding: 0;
-
-        & + .panel-body {
-            margin-top: $spacer;
-        }
-    }
-
     .card-header-actions {
         display: flex;
         align-items: center;

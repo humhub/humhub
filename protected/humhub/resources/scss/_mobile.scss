@@ -54,10 +54,9 @@
                 }
             }
 
-            // Cards (and the panels of modules) nearly without gap between them; the cards of a page's stack keep the
-            // stack's gap and their distance to the footer (`_card.scss`)
-            .content-card:not(:where(.flex-column.gap-3, .vstack.gap-3) > *),
-            .panel {
+            // Cards nearly without gap between them; the cards of a page's stack keep the stack's gap and their distance
+            // to the footer (`_card.scss`)
+            .content-card:not(:where(.flex-column.gap-3, .vstack.gap-3) > *) {
                 margin-bottom: $spacer * .25;
 
                 .statistics {
@@ -71,8 +70,7 @@
                 padding-left: 0;
                 padding-right: 0;
 
-                .card-header,
-                .panel-heading {
+                .card-header {
                     display: none;
                 }
             }

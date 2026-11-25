@@ -145,11 +145,6 @@ $form-choice-border-radius: $border-radius-sm !default;
         font-size: $font-size-sm;
     }
 
-    .panel-body > .text-body-secondary {
-        padding-right: $spacer;
-        margin-bottom: $spacer;
-    }
-
     .hint-block {
         @include hh-text-style(meta);
     }

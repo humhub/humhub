@@ -202,12 +202,6 @@ class CoreJsConfig extends Widget
                 'ui.picker' => [
                     'addImage' => Yii::getAlias($this->view->theme->getBaseUrl() . '/img/picker_add.png'),
                 ],
-                'ui.panel' => [
-                    'icon' => [
-                        'up' => Icon::get('minus-square')->asString(),
-                        'down' => Icon::get('plus-square')->asString(),
-                    ],
-                ],
                 'content' => [
                     'modal' => [
                         'permalink' => [

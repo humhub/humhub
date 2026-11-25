@@ -74,7 +74,7 @@
         }
     }
 
-    // Inside the header; the entry's own padding is a panel's (`.panel .panel-body`)
+    // Inside the header; the entry's own padding is its card body's
     $wallEntryInnerPadding: $spacer * .5;
     // The body below the avatar's 40px and the gap beside it (px, as the avatar)
     $wallEntryContentLeftPadding: 48px;

@@ -499,6 +499,11 @@
         }
     }
 
+    // The placeholder of an image while it uploads (`humhub-bridge.js`)
+    .loader {
+        padding: ($spacer * 1.5) 0;
+    }
+
     // A small dialog (the link's or the image's)
     .ProseMirror-prompt {
         background: var(--bs-body-bg);

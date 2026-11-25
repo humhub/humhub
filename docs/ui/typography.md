@@ -42,7 +42,7 @@ Rules:
 | Strong text | `@include hh-text-style(strong)` | `<strong>`, `.fw-semibold`: the weight, in the colour around it; standing alone (a name in a list) also `.text-body-emphasis` |
 | Control | `@include hh-text-style(control, $color: false)`; Bootstrap's buttons, tabs, menus and labels have it already | (the component) |
 | Meta | `@include hh-text-style(meta)` | `.small` |
-| Title | `@include hh-text-style(title)`; `.card-title`, `.modal-title`, `.panel-heading`, the page header's and the section menu's title have it | `h5`, or `.fs-5` on another heading tag |
+| Title | `@include hh-text-style(title)`; `.card-title`, `.modal-title`, the page header's and the section menu's title have it | `h5`, or `.fs-5` on another heading tag |
 | Large title | `@include hh-text-style(title-lg)` | `h4`, or `.fs-4` on another heading tag |
 
 The styles are one Sass map, `$hh-text-styles` (`_mixins.scss`); `hh-text-style()` writes a style's
@@ -128,7 +128,7 @@ Bootstrap's variables, `$font-size-sm` and `$font-size-lg` there are Bootstrap's
 not these. So a module:
 
 - Takes a style in the markup where it can: the core's components (`.card-title`,
-  `.panel-title`, `.modal-title`), `.small`, `.fw-semibold`, `.fs-5`, `.fs-4`.
+  `.modal-title`), `.small`, `.fw-semibold`, `.fs-5`, `.fs-4`.
 - In its CSS, takes a style's size from the core's CSS variables, never a px or `em` value:
 
   | Style | CSS variable |

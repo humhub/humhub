@@ -8,6 +8,7 @@ release line it targets — never to this page, which only links the files.
 
 ## Release lines
 
+- [Version 1.21](module-migrate-1.21.md) — Bootstrap 3 panels removed
 - [Version 1.20](module-migrate-1.20.md) — in development on `next`
 - [Version 1.19](module-migrate-1.19.md) — in development on `develop`
 - [Version 1.18](module-migrate-1.18.md) — captcha framework, Codeception 5, mailer config keys

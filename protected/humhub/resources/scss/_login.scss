@@ -35,9 +35,8 @@
             color: var(--hh-primary-contrast);
         }
 
-        // The box of the form (a module's own pages may still bring a panel)
-        .content-card,
-        .panel {
+        // The box of the form
+        .content-card {
             box-shadow: 0 0 15px color-mix(in srgb, var(--bs-primary), white 20%);
 
             h1,
@@ -61,8 +60,7 @@
                 padding-right: $spacer * .5;
             }
 
-            .content-card,
-            .panel {
+            .content-card {
                 text-align: left;
             }
         }
