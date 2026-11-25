@@ -106,8 +106,9 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         animation-duration: 200ms;
     }
 
-    // Over the panel body's padding, to its edges; the first tab in line with the content
-    .panel-body > .tab-menu {
+    // Over the body's padding, to its edges; the first tab in line with the content (a module's legacy tabs, also in a
+    // card)
+    :is(.panel-body, .card-body) > .tab-menu {
         margin-left: -$card-spacer-x;
         margin-right: -$card-spacer-x;
 

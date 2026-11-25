@@ -129,8 +129,9 @@ $content-card-danger-border-width: 2px !default;
         @include hh-text-style(text);
     }
 
-    // A title in the body is that of a section of the card's content, a step below the card's title
-    :where(.content-card > .card-body) .card-title {
+    // A title in the body is that of a section of the card's content, a step below the card's title; also in a body
+    // further down (a tab pane's) of a page's card
+    :where(.content-card .card-body) .card-title {
         margin: 0 0 $content-card-section-title-margin-bottom;
         @include hh-text-style(strong);
 
