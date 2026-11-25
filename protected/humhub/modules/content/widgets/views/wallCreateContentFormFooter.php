@@ -40,6 +40,7 @@ use humhub\widgets\bootstrap\Link;
         'maxSelection' => 10,
         'disabledItems' => [Yii::$app->user->guid],
         'placeholder' => Yii::t('ContentModule.base', 'Add a member to notify'),
+        'options' => ['aria-label' => Yii::t('ContentModule.base', 'Notify members')],
     ]) ?>
 </div>
 
@@ -48,6 +49,7 @@ use humhub\widgets\bootstrap\Link;
         'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',
         'contentContainer' => $contentContainer,
+        'options' => ['aria-label' => Yii::t('ContentModule.base', 'Topics')],
     ]) ?>
     <div class="invalid-feedback"></div>
 </div>
@@ -72,7 +74,7 @@ use humhub\widgets\bootstrap\Link;
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-light']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm d-none', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm d-none', 'aria-hidden' => 'true', 'aria-label' => Yii::t('ContentModule.base', 'Public')]); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>

@@ -41,7 +41,7 @@
             :id="editorId + '_input'"
             :name="fieldName"
             class="d-none"
-            :title="placeholder"
+            :aria-label="placeholder"
             :aria-describedby="describedBy"
         ></textarea>
         <div v-if="hasError" :id="errorId" class="invalid-feedback d-block">

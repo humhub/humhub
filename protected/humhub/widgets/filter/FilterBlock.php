@@ -58,8 +58,14 @@ class FilterBlock extends Widget
 
         Html::addCssClass($this->options, 'filter-block');
 
+        // A filter without a title of its own (a field below the block's title) is named by the block's
+        $filters = array_map(function ($filter) {
+            $filter['title'] ??= $this->title;
+            return $filter;
+        }, $this->filters);
+
         return $this->render($this->view, [
-            'filters' => $this->filters,
+            'filters' => $filters,
             'title' => $this->title,
             'options' => $this->options,
         ]);

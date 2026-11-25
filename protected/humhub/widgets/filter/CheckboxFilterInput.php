@@ -37,6 +37,12 @@ class CheckboxFilterInput extends FilterInput
 
     /**
      * @inheritdoc
+     * Its title is its text.
+     */
+    protected bool $nameByTitle = false;
+
+    /**
+     * @inheritdoc
      */
     protected function initFromRequest()
     {

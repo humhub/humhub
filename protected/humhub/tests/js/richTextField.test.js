@@ -84,6 +84,13 @@ describe('RichTextField', () => {
         expect(wrapper.find('form').exists()).toBe(false);
     });
 
+    it('names its hidden input, which accessibility checkers inspect too', () => {
+        const input = field({ placeholder: 'Write…' }).find('textarea');
+
+        expect(input.attributes('aria-label')).toBe('Write…');
+        expect(input.attributes('title')).toBeUndefined();
+    });
+
     it('leaves out the resize handle in block layout, as the PHP widget does', () => {
         const node = editorNode(field({ upload: true }));
 

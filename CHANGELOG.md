@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: Form fields without a name (WAVE): filter fields by their block's title, the post form's pickers, hidden upload and editor inputs
 - Enh: The sections of the "My Data" account settings as an accordion
 - Enh: The container widths of Bootstrap 5 (up to 1320px on large screens) instead of Bootstrap 3's
 - Enh: Sidebar widgets are `SidebarCard`s with a ⋮ menu that collapses them; `PanelMenu` is deprecated
