@@ -134,7 +134,8 @@ $content-card-danger-border-width: 2px !default;
         margin: 0 0 $content-card-section-title-margin-bottom;
         @include hh-text-style(strong);
 
-        &:not(:first-child) {
+        // Below other content; a form's hidden CSRF input before it is not content
+        &:not(:first-child, input[type="hidden"]:first-child + *) {
             margin-top: $content-card-section-title-margin-top;
         }
     }
