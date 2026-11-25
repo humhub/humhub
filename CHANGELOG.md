@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.19.5 (Unreleased)
--------------------
+1.19.5 (November 25, 2026)
+--------------------------
 
 - Fix #8782: Topics used only on hidden content (e.g. wiki pages) were missing from the topic sidebar, and filtering the stream by a topic left out hidden content
 - Fix #8781: Empty registration page instead of an error message if a user of an auth client could not be created automatically and the registration form is not visible
