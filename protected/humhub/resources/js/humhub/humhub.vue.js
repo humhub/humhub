@@ -996,6 +996,43 @@ humhub.module('vue', function (module, require, $) {
         }
     };
 
+    // The ratio of `$min-contrast-ratio`'s default. A theme's own ratio does not reach the islands
+    var MIN_CONTRAST_RATIO = 4.5;
+
+    /**
+     * The text colour readable on a colour picked at runtime, e.g. a space's (WCAG 1.4.3): white where white reaches
+     * 4.5:1 on it, else black, which then always does. As `ScssHelper::getColorContrast()`.
+     *
+     * @param {string|null} color `#rrggbb`, `#rgb` or `rgb()`/`rgba()`
+     * @returns {string|null} `#FFFFFF` or `#000000`, `null` for anything else
+     * @since 1.20
+     */
+    var colorContrast = function (color) {
+        var value = String(color || '').trim();
+        var hex = value.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+        var rgb = value.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        var channels;
+
+        if (hex) {
+            var digits = hex[1].length === 3 ? hex[1].replace(/(.)/g, '$1$1') : hex[1];
+            channels = [0, 2, 4].map(function (index) {
+                return parseInt(digits.substr(index, 2), 16);
+            });
+        } else if (rgb) {
+            channels = [rgb[1], rgb[2], rgb[3]].map(Number);
+        } else {
+            return null;
+        }
+
+        // As `ScssHelper::getRelativeLuminance()`
+        var luminance = [0.2126, 0.7152, 0.0722].reduce(function (sum, weight, index) {
+            var channel = channels[index] / 255;
+            return sum + weight * (channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4));
+        }, 0);
+
+        return (1.05 / (luminance + 0.05)) >= MIN_CONTRAST_RATIO ? '#FFFFFF' : '#000000';
+    };
+
     // --- HTTP API helpers -------------------------------------------------
     // The islands are fed by the platform's HTTP API (/api/v2, see
     // docs/develop/concept-api.md) — these helpers cover what the route-based
@@ -1084,6 +1121,7 @@ humhub.module('vue', function (module, require, $) {
         status: status,
         setStatusHandler: setStatusHandler,
         announce: announce,
+        colorContrast: colorContrast,
         pageTitle: pageTitle,
     });
 });

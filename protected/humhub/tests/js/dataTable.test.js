@@ -114,6 +114,25 @@ describe('DataTable', () => {
         expect(wrapper.find('tr[data-id="3"] .data-table-main-initials').text()).toBe('T');
     });
 
+    it('writes on the record\'s colour in white or black, whichever is readable', async () => {
+        const withName = (id, name) => {
+            const r = row(id, 'x');
+            r.cells.name = name;
+            return r;
+        };
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve(envelope([
+            withName(1, { text: 'Team', initials: 'T', color: '#123456' }),
+            withName(2, { text: 'Teal', initials: 'T', color: '#028c8e' }),
+            withName(3, { text: 'Bugs', icon: 'bug', color: '#028c8e' }),
+        ])));
+        wrapper = mountTable();
+        await flushPromises();
+
+        expect(wrapper.find('tr[data-id="1"] .data-table-main-initials').attributes('style')).toMatch(/(^|; )color: rgb\(255, 255, 255\)/);
+        expect(wrapper.find('tr[data-id="2"] .data-table-main-initials').attributes('style')).toMatch(/(^|; )color: rgb\(0, 0, 0\)/);
+        expect(wrapper.find('tr[data-id="3"] .data-table-main-icon').attributes('style')).toMatch(/(^|; )color: rgb\(0, 0, 0\)/);
+    });
+
     it('sorts by a column: ascending, descending, then the default order, back on page 1', async () => {
         wrapper = mountTable();
         await flushPromises();

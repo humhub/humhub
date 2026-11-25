@@ -764,4 +764,14 @@ SCSS;
             $this->assertGreaterThanOrEqual(7, ScssHelper::getContrastRatio(ScssHelper::getRandomColor(7), '#ffffff'));
         }
     }
+
+    public function testColorContrastIsWhiteOrBlackWhicheverIsReadable()
+    {
+        // Shared with colorContrast() of @humhub/vue, which must give the same
+        $table = json_decode(file_get_contents(codecept_data_dir('color-contrast.json')), true);
+
+        foreach ($table['colors'] as $color => $expected) {
+            $this->assertSame($expected, ScssHelper::getColorContrast($color, 4.5), $color);
+        }
+    }
 }

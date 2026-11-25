@@ -10,7 +10,7 @@ $data-table-gap: $spacer * .5 !default;
 // An image (px, as every picture): as high as the name and the subtitle beside it
 $data-table-main-image-size: 40px !default;
 $data-table-main-initials-bg: var(--bs-secondary-bg) !default;
-$data-table-main-initials-color: var(--bs-white) !default;
+$data-table-main-initials-color: var(--bs-body-color) !default; // On a record's own colour white or black, whichever is readable (`TableCell.vue`)
 $data-table-main-initials-font-size: $font-size-sm !default;
 // A record shown by an icon (e.g. an app): on a light accent tile, or white on its own colour
 $data-table-main-icon-bg: var(--bs-accent-bg-subtle) !default;

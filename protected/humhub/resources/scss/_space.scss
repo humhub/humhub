@@ -69,7 +69,7 @@
     }
 
     .space-acronym {
-        color: var(--bs-white); // TODO auto-contrast via PHP from the background color
+        color: var(--bs-white); // `Image` and `SpaceImage.vue` set white or black, whichever is readable on the colour
         container-type: size; // allow dynamic font size to adjust the container
         overflow: hidden;
 

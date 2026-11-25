@@ -238,6 +238,7 @@ import { apiUrl, client, events, getConfig, i18n, log, modal, oembed, pageTitle,
 | `log.error()`/`warn()`/`info()`/`debug()`, `status()` | `humhub.log` and the status bar |
 | `oembed.load(urls, options)` | `humhub.oembed.js` — the previews `RichTextOutput` loads before rendering |
 | `pageTitle()` | `ui.view` — the platform's per-page title state |
+| `colorContrast(color)` | `ScssHelper::getColorContrast()`'s rule in JS: `#FFFFFF` or `#000000`, the text colour readable on a colour picked at runtime (a space's), at 4.5:1 |
 
 The older `use*()` composable names of the concept draft were never introduced; the plain exports above are the API.
 

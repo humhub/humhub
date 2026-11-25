@@ -1,0 +1,17 @@
+{
+    "description": "The text colour readable on a colour, for ScssHelper::getColorContrast() (ScssHelperTest) and colorContrast() of @humhub/vue (bridge.test.js), which must agree. The first four are space colours at 4.08 to 4.49:1 under white; #767676 and #777777 lie either side of 4.5:1.",
+    "colors": {
+        "#028c8e": "#000000",
+        "#008e21": "#000000",
+        "#d34a00": "#000000",
+        "#0b8944": "#000000",
+        "#777777": "#000000",
+        "#767676": "#FFFFFF",
+        "#228722": "#FFFFFF",
+        "#093875": "#FFFFFF",
+        "#fff": "#000000",
+        "#000": "#FFFFFF",
+        "rgb(2, 140, 142)": "#000000",
+        "rgba(9, 56, 117, 0.5)": "#FFFFFF"
+    }
+}

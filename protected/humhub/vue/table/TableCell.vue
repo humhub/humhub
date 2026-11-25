@@ -5,13 +5,13 @@
             v-else-if="cell.icon"
             class="data-table-main-image data-table-main-icon"
             :class="{ 'has-color': !!cell.color }"
-            :style="cell.color ? { backgroundColor: cell.color } : null"
+            :style="tileStyle"
             aria-hidden="true"
         ><i :class="'ti ti-' + cell.icon"></i></span>
         <span
             v-else-if="cell.initials"
             class="data-table-main-image data-table-main-initials"
-            :style="cell.color ? { backgroundColor: cell.color } : null"
+            :style="tileStyle"
             aria-hidden="true"
         >{{ cell.initials }}</span>
         <span class="data-table-main-text">
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { i18n } from '@humhub/vue';
+import { colorContrast, i18n } from '@humhub/vue';
 
 /**
  * One cell of a `DataTable` (internal, see `DataTable.vue`), rendered by its column's type: the
@@ -58,6 +58,12 @@ export default {
     computed: {
         chips() {
             return Array.isArray(this.cell) ? this.cell : [this.cell];
+        },
+        // The icon or the initials on the record's colour: in white or black, whichever is readable (WCAG 1.4.3)
+        tileStyle() {
+            return this.cell.color
+                ? { backgroundColor: this.cell.color, color: colorContrast(this.cell.color) || undefined }
+                : null;
         },
     },
     methods: {

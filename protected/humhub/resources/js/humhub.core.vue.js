@@ -2992,6 +2992,10 @@
     computed: {
       chips() {
         return Array.isArray(this.cell) ? this.cell : [this.cell];
+      },
+      // The icon or the initials on the record's colour: in white or black, whichever is readable (WCAG 1.4.3)
+      tileStyle() {
+        return this.cell.color ? { backgroundColor: this.cell.color, color: vue$1.colorContrast(this.cell.color) || void 0 } : null;
       }
     },
     methods: {
@@ -3035,7 +3039,7 @@
         {
           key: 1,
           class: vue.normalizeClass(["data-table-main-image data-table-main-icon", { "has-color": !!$props.cell.color }]),
-          style: vue.normalizeStyle($props.cell.color ? { backgroundColor: $props.cell.color } : null),
+          style: vue.normalizeStyle($options.tileStyle),
           "aria-hidden": "true"
         },
         [
@@ -3056,7 +3060,7 @@
         {
           key: 2,
           class: "data-table-main-image data-table-main-initials",
-          style: vue.normalizeStyle($props.cell.color ? { backgroundColor: $props.cell.color } : null),
+          style: vue.normalizeStyle($options.tileStyle),
           "aria-hidden": "true"
         },
         vue.toDisplayString($props.cell.initials),

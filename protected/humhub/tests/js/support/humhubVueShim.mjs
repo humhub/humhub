@@ -28,6 +28,7 @@ export const pageTitle = (...args) => vueModule().pageTitle(...args);
 export const status = (...args) => vueModule().status(...args);
 export const setStatusHandler = (...args) => vueModule().setStatusHandler(...args);
 export const announce = (...args) => vueModule().announce(...args);
+export const colorContrast = (...args) => vueModule().colorContrast(...args);
 
 export const client = {
     post: (...args) => vueModule().client.post(...args),

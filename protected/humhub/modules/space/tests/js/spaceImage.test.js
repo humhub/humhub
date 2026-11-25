@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import SpaceImage from '../../vue/SpaceImage.vue';
 
+// colorContrast() of @humhub/vue
+await import('../../../../resources/js/humhub/humhub.url.js');
+await import('../../../../resources/js/humhub/humhub.vue.js');
+
 // The serialized space shape (space\serializers\SpaceSerializer::short()).
 const space = (overrides = {}) => ({
     id: 7,
@@ -42,10 +46,17 @@ describe('SpaceImage', () => {
         expect(wrapper.find('.space-acronym').classes()).toContain('d-none-space-image');
     });
 
-    it('falls back to the theme background when the space has no colour', () => {
-        const wrapper = mountImage({ color: null });
+    it('falls back to the theme background and the text colour when the space has no colour', () => {
+        const style = mountImage({ color: null }).find('.space-acronym').attributes('style');
 
-        expect(wrapper.find('.space-acronym').attributes('style')).toContain('background-color: var(--bs-border-color)');
+        expect(style).toContain('background-color: var(--bs-border-color)');
+        expect(style).toContain('color: var(--bs-body-color)');
+    });
+
+    it('writes the initials in white or black, whichever is readable on the colour, as the PHP widget', () => {
+        // White reaches 4.5:1 on a dark colour, only 4.08:1 on this teal
+        expect(mountImage({ color: '#123456' }).find('.space-acronym').attributes('style')).toMatch(/(^|; )color: rgb\(255, 255, 255\)/);
+        expect(mountImage({ color: '#028c8e' }).find('.space-acronym').attributes('style')).toMatch(/(^|; )color: rgb\(0, 0, 0\)/);
     });
 
     it('applies the size to both variants and picks the border radius by width', () => {
