@@ -3,30 +3,31 @@
 // --------------------------------------------------
 
 @if not $prev-cards {
+    // The grid of entity cards (`.cards` of a directory); a content card in the page (a header, a hint) is no grid cell
     .container-cards {
         &.container-fluid {
             @media (min-width: 500px) {
-                .card {
+                .card:not(.content-card) {
                     width: 50%;
                 }
             }
             @media (min-width: 1000px) {
-                .card {
+                .card:not(.content-card) {
                     width: 33.33333333%;
                 }
             }
             @media (min-width: 1300px) {
-                .card {
+                .card:not(.content-card) {
                     width: 25%;
                 }
             }
             @media (min-width: 1600px) {
-                .card {
+                .card:not(.content-card) {
                     width: 20%;
                 }
             }
             @media (min-width: 1900px) {
-                .card {
+                .card:not(.content-card) {
                     width: 16.66666667%;
                 }
             }
@@ -107,7 +108,7 @@
             flex-wrap: wrap;
         }
 
-        .card {
+        .card:not(.content-card) {
             border: none;
             display: flex;
             flex-direction: row;

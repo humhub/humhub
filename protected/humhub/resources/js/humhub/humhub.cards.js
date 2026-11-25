@@ -152,7 +152,7 @@ humhub.module('cards', function(module, require, $) {
         $('.cards-end').data('isLoading', true);
         loader.append(cardsEndIndicator);
         client.get(module.config.loadMoreUrl, {data: urlParams}).then(function (response) {
-            $('.container-cards .card:hidden').show();
+            $('.container-cards .card:not(.content-card):hidden').show();
             $('.container-cards .cards').append(response.response);
             if (urlParams.page == cardsEndIndicator.data('total-pages')) {
                 // Remove the directory end indicator because the last page was loaded
@@ -171,7 +171,7 @@ humhub.module('cards', function(module, require, $) {
     }
 
     const hideLastNotCompletedRow = function() {
-        const cardsNum = $('.container-cards .card').length;
+        const cardsNum = $('.container-cards .card:not(.content-card)').length;
         if (!cardsNum) {
             return;
         }
@@ -182,11 +182,11 @@ humhub.module('cards', function(module, require, $) {
             return;
         }
 
-        const cardsPerRow = Math.floor($('.container-cards .row').outerWidth() / $('.container-cards .card:first').width());
+        const cardsPerRow = Math.floor($('.container-cards .row').outerWidth() / $('.container-cards .card:not(.content-card):first').width());
         const hideLastCardsNum = cardsNum % cardsPerRow;
         if (hideLastCardsNum > 0 && cardsNum > cardsPerRow) {
             // Hide cards from not completed row
-            $('.container-cards .card').slice(-hideLastCardsNum).hide();
+            $('.container-cards .card:not(.content-card)').slice(-hideLastCardsNum).hide();
         }
     }
 
