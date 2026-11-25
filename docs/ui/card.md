@@ -140,13 +140,11 @@ Bootstrap's **`.card`** with the modifier **`.content-card`**. Class names and S
 - **Where:** every card of core. `ContentCard` on the pages below a page header: the
   administration (Users, Spaces, Modules, Settings, Information, LDAP, Apps & API Access, E-Mail
   Summaries, Notifications), the account section, search and the licence page. The card markup
-  in views: the stream entries and the form above them, the sidebar widgets, the space and
-  profile header and menu (`LeftNavigation`), the about pages, sign-in, registration and password
-  pages, the installer, error pages. Module pages such as the wiki still render panels.
-- **Sidebar cards:** a title in `.card-header` > `.card-title` (the text in a `div` or, where it
-  is one, a heading), the content in `.card-body`. Their ⋮ is `humhub\widgets\PanelMenu`, rendered
-  before the header and placed in the card's corner, with the option to collapse the body
-  (remembered per browser); modules add entries through its `extraMenus`.
+  in views: the stream entries and the form above them, the space and profile header and menu
+  (`LeftNavigation`), the about pages, sign-in, registration and password pages, the installer,
+  error pages. Module pages such as the wiki still render panels.
+- **Sidebar cards** (the widgets beside the stream) are their own component with the same look:
+  [Sidebar Card](sidebar-card.md) (`humhub\widgets\SidebarCard`).
 - **Vue:** `ContentCard.vue` (`<content-card>`): props `title`, `titleTag`, `description`, `actions`, `menu`;
   slots `header` (e.g. the content navigation of a card without title), `actions`, default (the
   body) and `footer`.
@@ -179,7 +177,7 @@ The component is called `ContentCard`, not `Card`: a Vue component's tag needs a
 |---|---|
 | `.panel.panel-default` with `.panel-heading` and `.panel-body`, written by hand in views, styled by `_bootstrap3.scss` | `ContentCard` or the card markup. Done for core; modules follow. |
 | `h4` page titles inside panels (larger than the page title) | The card title; sections `h3` |
-| `humhub\widgets\PanelMenu`: a ⋮ menu with a collapse option in panel headings | Stays the ⋮ of a sidebar card; a page's card takes the ⋮ `DropdownMenu` of the card header |
+| `humhub\widgets\PanelMenu`: a ⋮ menu with a collapse option in panel headings | `SidebarCard` in the sidebar ([Sidebar Card](sidebar-card.md)); a page's card takes the ⋮ `DropdownMenu` of the card header. Deprecated, removed in 1.21 |
 | Headings with `<strong>` for the emphasised word ("**User** administration") | Plain titles |
 
 ## Open questions

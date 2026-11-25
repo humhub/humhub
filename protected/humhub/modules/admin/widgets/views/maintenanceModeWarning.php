@@ -8,17 +8,20 @@
 
 use humhub\components\access\ControllerAccess;
 use humhub\helpers\Html;
+use humhub\widgets\SidebarCard;
 use yii\helpers\Url;
 
 ?>
 
-<div class="card content-card content-card-danger panel-invalid">
-    <div class="card-header"><div class="card-title"><?= Yii::t('AdminModule.base', '<strong>Maintenance</strong> Mode'); ?></div></div>
-    <div class="card-body">
+<?php SidebarCard::begin([
+    'title' => Yii::t('AdminModule.base', '<strong>Maintenance</strong> Mode'),
+    'encodeTitle' => false,
+    'collapsible' => false,
+    'options' => ['class' => 'content-card-danger panel-invalid'],
+]) ?>
         <p><?= ControllerAccess::getMaintenanceModeWarningText('<br>') ?></p>
         <br>
         <?php if (Yii::$app->user->isAdmin()): ?>
             <?= Html::a(Yii::t('AdminModule.base', 'Settings'), Url::toRoute(['/admin/setting']), ['class' => 'btn btn-danger']); ?>
         <?php endif; ?>
-    </div>
-</div>
+<?php SidebarCard::end() ?>

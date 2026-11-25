@@ -43,7 +43,6 @@ const windowPayload = (results = [activity()], nextCursor = null) => ({ results,
 const boxProps = (overrides = {}) => ({
     initial: windowPayload(),
     pageSize: 10,
-    panelMenuHtml: '<div class="panel-menu">menu</div>',
     ...overrides,
 });
 
@@ -106,13 +105,12 @@ const triggerLive = async (containerGuid = null) => {
 };
 
 describe('ActivityBox', () => {
-    it('renders the panel from the inlined first page without a request', () => {
+    it('renders the list from the inlined first page without a request', () => {
         wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
 
-        // The panel element itself is the widget's mount point (see `ActivityBox::run()`),
-        // so the component renders its contents rather than the panel.
-        expect(wrapper.find('.panel-menu').text()).toBe('menu');
-        expect(wrapper.find('.card-header').text()).toContain('activities');
+        // The card with title and menu is the server's `SidebarCard` (see `ActivityBox::run()`),
+        // the component renders its body's list only.
+        expect(wrapper.find('.card-header').exists()).toBe(false);
         expect(wrapper.find('#activity-box-content.activities').exists()).toBe(true);
         expect(getCalls).toHaveLength(0);
 
@@ -122,21 +120,6 @@ describe('ActivityBox', () => {
         expect(entry.find('.activity-box-entry').html()).toContain('<strong>Jane</strong> created a new post');
         expect(entry.find('time[data-ui-addition="timeago"]').attributes('datetime'))
             .toBe('2026-08-20T10:00:00+00:00');
-    });
-
-    it('marks the card body as the collapse target of the card menu', () => {
-        wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
-
-        // `ui.panel.PanelMenu` collapses the first `.collapse` inside the card and only walks
-        // the siblings of its own <ul> when there is none - a walk that cannot work here,
-        // because the menu is mounted inside the element carrying `v-html`. Without this class
-        // the widget throws on init and the card's menu stays dead (the throw is swallowed by
-        // `Component.instance()`).
-        const body = wrapper.find('.card-body');
-        expect(body.classes()).toContain('collapse');
-        // `show` keeps the body visible until the widget applies the remembered state.
-        expect(body.classes()).toContain('show');
-        expect(body.find('#activity-box-content').exists()).toBe(true);
     });
 
     it('renders the space badge on the dashboard and hides it inside a container', () => {

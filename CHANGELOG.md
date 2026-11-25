@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: Sidebar widgets are `SidebarCard`s with a ⋮ menu that collapses them; `PanelMenu` is deprecated
 - Enh: Core renders content cards instead of Bootstrap 3 panels
 - Enh: Six text styles for the interface (`hh-text-style()`, docs/ui/typography.md)
 - Fix: The like notification says "likes your post" in the web list and mail text, as in the mail subject

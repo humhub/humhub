@@ -2,11 +2,10 @@
 
 namespace humhub\modules\activity\widgets;
 
-use humhub\helpers\Html;
 use humhub\modules\activity\assets\ActivityVueAsset;
 use humhub\modules\activity\services\ActivityListService;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\widgets\PanelMenu;
+use humhub\widgets\SidebarCard;
 use humhub\widgets\VueWidget;
 use Yii;
 
@@ -14,26 +13,25 @@ use Yii;
  * The "Latest activities" card of the dashboard sidebar and of a container's profile.
  *
  * A Vue island (`ActivityBox`, see `docs/develop/ui-js-vuejs-components.md`) since 1.20 — this
- * widget renders its mount point and hands over what only the server knows: the first page of
- * activities, the container the box is scoped to and the rendered `PanelMenu`, whose entries
- * modules contribute server-side.
+ * widget renders the sidebar card (title and ⋮ menu) with the island's mount point as its body
+ * and hands over what only the server knows: the first page of activities and the container the
+ * box is scoped to.
  *
  * That page is a full one (`$initLimit`), which is what keeps the box request-free until
  * someone scrolls: a shorter page would leave the island's load-more sentinel inside the
  * 400px-high box and have it fetch the rest immediately.
  *
- * The mount point IS the card (`#panel-activities.card.content-card.panel-activities`), so the element
- * exists before the island mounts - theme CSS, the product tour and tests address it - and the
- * island renders its contents. `#activity-box-content.activities` and the markup of an entry
- * are unchanged for the same reason.
+ * The card (`#panel-activities.sidebar-card.panel-activities`) exists before the island mounts -
+ * theme CSS, the product tour and tests address it - and the island renders the list.
+ * `#activity-box-content.activities` and the markup of an entry are unchanged for the same reason.
  *
  * @since 1.1
  */
 class ActivityBox extends VueWidget
 {
     /**
-     * @var string id of the element the card's menu collapses - see the `collapse` class in
-     * `ActivityBox.vue`, which is what `ui.panel.PanelMenu` looks for first.
+     * @var string id of the card's body, which its ⋮ menu collapses; also the key of the
+     * remembered state, the same as of the former panel
      */
     public const COLLAPSE_ID = 'panel-activities-body';
 
@@ -47,30 +45,32 @@ class ActivityBox extends VueWidget
     /**
      * @inheritdoc
      *
-     * The card element is the mount point, so it exists in the server's HTML rather than only
-     * after the island mounts: theme CSS, the product tour (`.panel-activities`) and tests that
-     * assert the card's presence address it directly.
+     * The sidebar card around the island's mount point
      */
-    protected function getOptions(): array
+    public function run()
     {
-        return ['id' => 'panel-activities', 'class' => 'card content-card panel-activities'];
+        ob_start();
+        SidebarCard::begin([
+            'title' => Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'),
+            'encodeTitle' => false,
+            'collapseId' => self::COLLAPSE_ID,
+            'options' => ['id' => 'panel-activities', 'class' => 'panel-activities'],
+            'bodyOptions' => ['class' => 'p-0 pb-1'],
+        ]);
+        echo parent::run();
+        SidebarCard::end();
+
+        return ob_get_clean();
     }
 
     /**
      * @inheritdoc
      *
-     * Until the island mounts the card would be an empty element - no size, and therefore not
-     * "visible" to anything asking (theme CSS, the product tour, a test asserting the card is
-     * there). The heading is rendered ahead of it, from the very string the island renders a
-     * moment later.
+     * A block, as the list it holds (a custom element is inline)
      */
-    protected function getPlaceholder(): string
+    protected function getOptions(): array
     {
-        return Html::tag(
-            'div',
-            Html::tag('div', Yii::t('ActivityModule.base', '<strong>Latest</strong> activities'), ['class' => 'card-title']),
-            ['class' => 'card-header'],
-        );
+        return ['class' => 'd-block'];
     }
 
     /**
@@ -89,11 +89,6 @@ class ActivityBox extends VueWidget
             'containerId' => (int)($this->contentContainer?->contentcontainer_id ?? 0),
             'containerGuid' => $this->contentContainer?->guid ?? '',
             'pageSize' => ActivityListService::PAGE_SIZE,
-            // `PanelMenu` derives its collapse id from the view context, which used to be
-            // this widget's own view and is now whatever view renders the island's mount
-            // point - so it is given explicitly. The id lands on the element the menu
-            // collapses and keys its remembered state in local storage.
-            'panelMenuHtml' => PanelMenu::widget(['collapseId' => self::COLLAPSE_ID]),
         ];
     }
 }

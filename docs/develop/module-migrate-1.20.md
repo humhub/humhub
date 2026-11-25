@@ -3081,13 +3081,31 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   | `.btn-panel-title-action` | `.card-title-action` |
 
   - Kept: hook classes and ids (`.panel-profile*`, `#panel-activities.panel-activities`, `#space-members-panel`,
-    `.panel-tour`, `.left-navigation`, `.wall_<id>`, …), `LeftNavigation::$panelTitle` and `PanelMenu`: the ⋮ of a
-    sidebar card with its collapse option, in the card's corner as in a panel (`ui.panel.PanelMenu` finds a `.card`
-    as well as a `.panel`).
+    `.panel-tour`, `.left-navigation`, `.wall_<id>`, …) and `LeftNavigation::$panelTitle`.
   - A module's `.panel` keeps its look until 1.21 (`_bootstrap3.scss`), and so do the `.panel-heading` and
-    `.panel-body` of a module view inside the card of a section layout. To match core, a sidebar widget writes the card
-    markup above, a page `ContentCard`.
+    `.panel-body` of a module view inside the card of a section layout. To match core, a sidebar widget renders a
+    `SidebarCard` (below), a page a `ContentCard`.
   - A content card has `$content-card-margin-bottom` (16px) below it, as a panel had; in a stack with a gap
     (`.d-flex.flex-column.gap-3`) the gap separates the cards.
   - Themes, tests and scripts that select `.panel`, `.panel-heading` or `.panel-body` in core's views (a stream entry,
     a sidebar widget, `#login-form .panel-heading`, `.closest('.panel')`) select the card classes.
+
+- **A sidebar widget is a `humhub\widgets\SidebarCard`** (`docs/ui/sidebar-card.md`): the card beside the stream of
+  the dashboard, a space or a profile, with its title, a ⋮ menu and the option to collapse it. Every sidebar widget of
+  core renders one.
+  - **Deprecated (removed in 1.21):** `humhub\widgets\PanelMenu` and its JS widget `ui.panel.PanelMenu`
+    (`humhub.ui.panel.js`). A module's panel with `PanelMenu` keeps working until then.
+  - To match core, a widget's view replaces the `.panel` and `PanelMenu` with:
+    ```php
+    <?php SidebarCard::begin([
+        'title' => Yii::t('MyModule.base', 'Upcoming events'),
+        'menu' => [new MenuLink(['label' => Yii::t('MyModule.base', 'Settings'), 'url' => $url, 'icon' => 'cog'])],
+        'options' => ['id' => 'my-module-snippet'],
+    ]) ?>
+        …
+    <?php SidebarCard::end() ?>
+    ```
+    `extraMenus` HTML becomes `menu` entries (`MenuLink`, or a `DropdownMenu`). The collapse option is on by default
+    (`collapsible`); `PanelMenu`'s `collapseId` is `SidebarCard`'s, so a remembered state carries over.
+  - `ActivityBox` renders a `SidebarCard` around its island; the island (`ActivityBox.vue`) renders the list only, its
+    props `panelMenuHtml` and the heading are gone.

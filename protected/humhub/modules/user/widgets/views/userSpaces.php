@@ -4,19 +4,18 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\user\models\User;
 use humhub\widgets\modal\ModalButton;
-use humhub\widgets\PanelMenu;
+use humhub\widgets\SidebarCard;
 
 /* @var $spaces Space[] */
 /* @var $user User */
 /* @var $showMoreLink bool */
 ?>
 <?php if (count($spaces) > 0) : ?>
-    <div id="user-spaces-panel" class="card content-card members">
-        <?= PanelMenu::widget() ?>
-        <div class="card-header">
-            <div class="card-title"><?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?></div>
-        </div>
-        <div class="card-body">
+    <?php SidebarCard::begin([
+        'title' => Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces'),
+        'encodeTitle' => false,
+        'options' => ['id' => 'user-spaces-panel', 'class' => 'members'],
+    ]) ?>
             <div class="d-flex gap-2 flex-wrap">
             <?php foreach ($spaces as $space): ?>
                 <?= Image::widget([
@@ -36,6 +35,5 @@ use humhub\widgets\PanelMenu;
                         ->sm() ?>
                 </div>
             <?php endif; ?>
-        </div>
-    </div>
+    <?php SidebarCard::end() ?>
 <?php endif; ?>

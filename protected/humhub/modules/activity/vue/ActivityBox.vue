@@ -1,59 +1,34 @@
 <template>
-    <!-- eslint-disable-next-line vue/no-v-html -- server-rendered PanelMenu, see docblock -->
-    <div v-if="panelMenuHtml" v-additions v-html="panelMenuHtml"></div>
+    <div id="activity-box-content" ref="list" class="hh-list activities" v-additions @scroll="onScroll">
+        <hr class="m-0">
 
-    <!-- eslint-disable-next-line vue/no-v-html -- localized heading with markup, see docblock -->
-    <div class="card-header"><div class="card-title" v-html="headingLabel"></div></div>
+        <p v-if="!entries.length && !loading" class="p-3 m-0">{{ emptyLabel }}</p>
 
-    <div class="card-body p-0 pb-1 collapse show">
-        <div id="activity-box-content" ref="list" class="hh-list activities" v-additions @scroll="onScroll">
-            <hr class="m-0">
+        <ActivityEntry
+            v-for="entry in entries"
+            :key="entry.key"
+            :activity="entry"
+            :show-space="!containerId"
+        />
 
-            <p v-if="!entries.length && !loading" class="p-3 m-0">{{ emptyLabel }}</p>
-
-            <ActivityEntry
-                v-for="entry in entries"
-                :key="entry.key"
-                :activity="entry"
-                :show-space="!containerId"
-            />
-
-            <div v-if="loading" class="text-center p-2">
-                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                <span class="visually-hidden" role="status">{{ loadingLabel }}</span>
-            </div>
-
-            <div v-if="hasMore" ref="sentinel" class="stream-end"></div>
+        <div v-if="loading" class="text-center p-2">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            <span class="visually-hidden" role="status">{{ loadingLabel }}</span>
         </div>
+
+        <div v-if="hasMore" ref="sentinel" class="stream-end"></div>
     </div>
 </template>
 
 <script>
 /**
- * The "Latest activities" box — the whole card's contents, replacing
- * `activity\widgets\views\activity-box.php` and `humhub.activity.js`. The card element
- * itself is the mount point the widget renders (`#panel-activities.card.content-card.panel-activities`),
- * so it is in the server's HTML before this component mounts.
+ * The list of the "Latest activities" box, replacing `activity\widgets\views\activity-box.php`
+ * and `humhub.activity.js`. The card around it (`#panel-activities.sidebar-card`, its title and
+ * ⋮ menu with the collapse option) is the server's `SidebarCard`; this island is its body.
  *
  * The widget rendering this island hands over the first page (so the first paint costs no
- * request), the container it is scoped to and the rendered `PanelMenu`; everything after that
- * is the island's: paging, the empty state and, in a container, hiding the redundant space
- * badge.
- *
- * ## Two pieces of server markup
- *
- * `panelMenuHtml` is the platform's `PanelMenu` widget, whose entries modules contribute
- * server-side — it stays a server concern and is mounted as-is, with `v-additions` so its own
- * legacy enhancers (the `ui.panel.PanelMenu` widget behind `[data-ui-init]`, dropdown,
- * tooltips) boot exactly as they do anywhere else. The heading is localized markup
- * (`<strong>Latest</strong> activities`), the same string the box always used.
- *
- * That menu collapses the card body, and it finds the body through the `collapse` class
- * below: `ui.panel.PanelMenu` looks for `.collapse` inside the card FIRST and only walks
- * siblings of its own `<ul>` if there is none — and that walk cannot work here, because the
- * `<ul>` is mounted inside the element carrying `v-html` rather than as a direct sibling of
- * the heading. The class comes with `show`, so the body is visible before the widget boots;
- * the widget replaces that with the state it remembers.
+ * request) and the container it is scoped to; everything after that is the island's: paging,
+ * the empty state and, in a container, hiding the redundant space badge.
  *
  * ## Paging
  *
@@ -114,8 +89,6 @@ export default {
         containerGuid: { type: String, default: '' },
         // Entries requested per page after the first.
         pageSize: { type: Number, default: 10 },
-        // Rendered `PanelMenu` widget.
-        panelMenuHtml: { type: String, default: '' },
     },
     data() {
         return {
@@ -132,9 +105,6 @@ export default {
     computed: {
         hasMore() {
             return this.cursor !== null;
-        },
-        headingLabel() {
-            return i18n.t('ActivityModule.base', '<strong>Latest</strong> activities');
         },
         emptyLabel() {
             return i18n.t('ActivityModule.base', 'There are no activities yet.');

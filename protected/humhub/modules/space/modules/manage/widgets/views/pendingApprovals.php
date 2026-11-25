@@ -5,6 +5,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\bootstrap\Link;
+use humhub\widgets\SidebarCard;
 
 /* @var $applicants Membership[] */
 /* @var $space Space */
@@ -12,9 +13,12 @@ use humhub\widgets\bootstrap\Link;
 $buttonStyle = '--bs-btn-padding-y: .125rem; --bs-btn-padding-x: .4rem; --bs-btn-font-size: .75rem';
 ?>
 
-<div class="card content-card content-card-danger">
-    <div class="card-header"><div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>New</strong> member request'); ?></div></div>
-    <div class="card-body">
+<?php SidebarCard::begin([
+    'title' => Yii::t('SpaceModule.base', '<strong>New</strong> member request'),
+    'encodeTitle' => false,
+    'collapsible' => false,
+    'options' => ['class' => 'content-card-danger'],
+]) ?>
         <div class="d-flex flex-column gap-3">
             <?php foreach ($applicants as $membership) : ?>
                 <div class="d-flex">
@@ -37,5 +41,4 @@ $buttonStyle = '--bs-btn-padding-y: .125rem; --bs-btn-padding-x: .4rem; --bs-btn
                 </div>
             <?php endforeach; ?>
         </div>
-    </div>
-</div>
+<?php SidebarCard::end() ?>

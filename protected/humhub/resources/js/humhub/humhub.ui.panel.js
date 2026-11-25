@@ -1,6 +1,8 @@
 /**
  * Collapsible panel
  *
+ * @deprecated since 1.20, removed in 1.21 with `humhub\widgets\PanelMenu`: see `humhub.ui.sidebarCard`
+ *
  * @namespace humhub.modules.ui.panel
  **/
 

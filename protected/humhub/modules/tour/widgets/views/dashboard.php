@@ -7,7 +7,8 @@ use humhub\modules\tour\assets\TourAsset;
 use humhub\modules\tour\TourConfig;
 use humhub\widgets\Icon;
 use humhub\widgets\bootstrap\Link;
-use humhub\widgets\PanelMenu;
+use humhub\widgets\menu\MenuLink;
+use humhub\widgets\SidebarCard;
 use yii\helpers\Url;
 
 TourAsset::register($this);
@@ -18,9 +19,8 @@ TourAsset::register($this);
  * @var bool $showWelcome
  */
 
-$removeOptionHtml = Html::tag(
-    'li',
-    Link::to(
+$removeEntry = new MenuLink([
+    'link' => Link::to(
         Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
         ["/tour/tour/hide-panel", "ajax" => 1],
     )
@@ -32,21 +32,16 @@ $removeOptionHtml = Html::tag(
             Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings {icon} Settings.', ['icon' => Icon::get('caret-right-filled')]),
             Yii::t('TourModule.base', 'Ok'),
             Yii::t('TourModule.base', 'Cancel'),
-        )
-        ->cssClass(['dropdown-item']),
-);
+        ),
+]);
 ?>
 
-<div class="card content-card panel-tour" id="getting-started-panel">
-    <?= PanelMenu::widget([
-        'extraMenus' => $removeOptionHtml,
-    ]) ?>
-
-    <div class="card-header">
-        <div class="card-title"><?= Yii::t('TourModule.base', '<strong>Getting</strong> Started') ?></div>
-    </div>
-
-    <div class="card-body">
+<?php SidebarCard::begin([
+    'title' => Yii::t('TourModule.base', '<strong>Getting</strong> Started'),
+    'encodeTitle' => false,
+    'menu' => [$removeEntry],
+    'options' => ['id' => 'getting-started-panel', 'class' => 'panel-tour'],
+]) ?>
         <p>
             <?= Yii::t('TourModule.base', 'Get to know your way around the site\'s most important features with the following guides:') ?>
         </p>
@@ -61,8 +56,7 @@ $removeOptionHtml = Html::tag(
                 </li>
             <?php endforeach; ?>
         </ul>
-    </div>
-</div>
+<?php SidebarCard::end() ?>
 
 <?php if ($showWelcome): ?>
     <script <?= Html::nonce() ?>>

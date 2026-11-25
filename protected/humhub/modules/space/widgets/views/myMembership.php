@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\PanelMenu;
+use humhub\widgets\SidebarCard;
 
 /**
  * @var string $role
@@ -8,12 +8,11 @@ use humhub\widgets\PanelMenu;
  */
 ?>
 
-<div class="card content-card panel-my-membership" id="my-membership-panel">
-    <?= PanelMenu::widget() ?>
-    <div class="card-header">
-        <div class="card-title"><?= Yii::t('SpaceModule.base', '<strong>About</strong> your membership') ?></div>
-    </div>
-    <div class="card-body">
+<?php SidebarCard::begin([
+    'title' => Yii::t('SpaceModule.base', '<strong>About</strong> your membership'),
+    'encodeTitle' => false,
+    'options' => ['id' => 'my-membership-panel', 'class' => 'panel-my-membership'],
+]) ?>
         <p>
             <b><?= Yii::t('SpaceModule.base', 'Role') ?>: </b>
             <?= Yii::t('SpaceModule.base', ucfirst($role)) ?>
@@ -21,5 +20,4 @@ use humhub\widgets\PanelMenu;
         <?php if (!empty($memberSince)): ?>
             <p><b><?= Yii::t('SpaceModule.base', 'Member since') ?>: </b><?= $memberSince ?></p>
         <?php endif; ?>
-    </div>
-</div>
+<?php SidebarCard::end() ?>
