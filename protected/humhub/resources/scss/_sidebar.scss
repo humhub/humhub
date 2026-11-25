@@ -3,11 +3,12 @@
 // --------------------------------------------------
 
 @if not $prev-sidebar {
+    // A column (`.col-lg-3`, `.col-lg-4`): its side padding is Bootstrap's half gutter
     .layout-sidebar-container {
-        padding: 0 15px 0 0;
-
+        > .content-card > .card-header,
         > .panel > .panel-heading {
-            padding-right: 30px; // Space for the PanelMenu widget dropdown menu
+            // Clear of the PanelMenu's ⋮ in the corner (`_nav.scss`)
+            padding-right: $card-spacer-x + $preferences-toggle-size + $spacer * .5;
         }
     }
 

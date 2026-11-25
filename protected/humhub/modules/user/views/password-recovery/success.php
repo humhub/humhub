@@ -13,11 +13,11 @@ $loginRoute = MaintenanceModeGate::isActive() ? ['/user/auth/login', 'maintenanc
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated fadeIn">
-        <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
+    <div class="card content-card animated fadeIn">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <p><?= Yii::t('UserModule.auth', 'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.') ?></p>
             <br>
             <?= Button::light(Yii::t('UserModule.auth', 'Back'))

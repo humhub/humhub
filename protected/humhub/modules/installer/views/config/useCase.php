@@ -5,13 +5,13 @@ use humhub\modules\installer\controllers\ConfigController;
 use humhub\widgets\form\ActiveForm;
 
 ?>
-<div id="name-form" class="panel panel-default animated fadeIn">
+<div id="name-form" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', '<strong>Configuration</strong>'); ?>
+    <div class="card-header">
+        <div class="card-title"><?php echo Yii::t('InstallerModule.base', '<strong>Configuration</strong>'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <p><?php echo Yii::t('InstallerModule.base', 'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.'); ?></p>
         <br>

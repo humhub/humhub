@@ -16,7 +16,7 @@ $item-browser-muted: var(--bs-secondary-color) !default;
 $item-browser-strong: var(--bs-emphasis-color) !default;
 
 $path-bar-bg: var(--bs-secondary-bg) !default;
-$path-bar-root-size: 30px !default;
+$path-bar-root-size: 1.75em !default; // A square around the icon ($font-size-lg), within the bar
 
 $tile-min-width: 136px !default;
 $tile-thumb-height: 100px !default;
@@ -111,7 +111,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
     // An ancestor (link) or the current level (text), cut at the bar's width
     .path-bar .breadcrumb-item + .breadcrumb-item > :is(a, span) {
         min-width: 0;
-        padding: 2px $spacer * .25;
+        padding: $spacer * .25;
         border-radius: var(--bs-border-radius-sm);
         overflow: hidden;
         text-overflow: ellipsis;
@@ -128,8 +128,9 @@ $tile-border-radius: var(--bs-border-radius) !default;
         }
     }
 
+    // The current level's name, in the breadcrumb's colour for the current item
     .path-bar .breadcrumb-item.active > span {
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong, $color: false);
     }
 
     // The crumbs clip anything drawn outside them, so the ring is inset. `:focus-visible` rather than `:focus`:
@@ -247,7 +248,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
             background: none;
             color: $item-browser-strong;
             font: inherit;
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong, $color: false);
             text-align: center;
             text-decoration: none;
             overflow-wrap: anywhere;
@@ -284,8 +285,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
     // so a long line is held to the tile and can be cut there
     .tile-meta {
         width: 100%;
-        color: $item-browser-muted;
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     // The checkbox (`.form-check-input`, in the platform's checkbox look), shown on hover or
@@ -360,7 +360,7 @@ $tile-border-radius: var(--bs-border-radius) !default;
 
     // Skeleton tile: Bootstrap placeholders in the tile's geometry
     .tile-skeleton {
-        gap: $spacer * .75;
+        gap: $spacer * .5;
         cursor: wait;
 
         &:hover {
@@ -379,9 +379,9 @@ $tile-border-radius: var(--bs-border-radius) !default;
         margin-block: $item-browser-gap;
     }
 
+    // Bootstrap's placeholder height: `1em` of the text it stands in for
     .tile-skeleton-name {
         width: 80%;
-        height: 14px;
     }
 
     // New tiles fade in, removed ones out, the rest move. A leaving tile fades in its own cell
@@ -487,11 +487,11 @@ $tile-border-radius: var(--bs-border-radius) !default;
         align-items: center;
         gap: $spacer * .5;
         max-width: 100%;
-        padding: $spacer * .5 $spacer * .75;
+        padding: $spacer * .5;
         border-radius: var(--bs-border-radius);
         background: var(--bs-body-bg);
         color: $item-browser-accent-fg;
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong, $color: false);
 
         .is-refused & {
             color: $item-browser-muted;

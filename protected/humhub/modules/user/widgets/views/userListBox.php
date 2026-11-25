@@ -36,8 +36,8 @@ use yii\data\Pagination;
                 </div>
 
                 <div class="flex-grow-1">
-                    <h4 class="mt-0"><?= Html::encode($user->displayName) ?></h4>
-                    <h5><?= Html::encode($user->displayNameSub) ?></h5>
+                    <h4 class="mt-0 fs-6"><?= Html::encode($user->displayName) ?></h4>
+                    <h5 class="fs-6 fw-normal"><?= Html::encode($user->displayNameSub) ?></h5>
                 </div>
             </a>
         <?php endforeach; ?>

@@ -10,11 +10,11 @@ use humhub\helpers\Html;
 <section class="settings-section mb-4">
     <?php if ($actions !== ''): ?>
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
-            <h3 class="m-0"><?= Html::encode($title) ?></h3>
+            <h3 class="card-title m-0"><?= Html::encode($title) ?></h3>
             <div class="d-flex gap-2"><?= $actions ?></div>
         </div>
     <?php else: ?>
-        <h3><?= Html::encode($title) ?></h3>
+        <h3 class="card-title"><?= Html::encode($title) ?></h3>
     <?php endif ?>
     <?php if ($description !== ''): ?>
         <p><?= Html::encode($description) ?></p>

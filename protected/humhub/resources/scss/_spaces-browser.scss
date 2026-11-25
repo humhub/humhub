@@ -11,15 +11,9 @@
     .space-card-archived {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: $spacer * .25;
         margin: 0;
         color: var(--bs-warning-text-emphasis);
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 18px;
-
-        > .ti {
-            font-size: 14px;
-        }
+        @include hh-text-style(meta, $color: false);
     }
 }

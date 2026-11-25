@@ -14,9 +14,9 @@ use humhub\modules\admin\widgets\IncompleteSetupWarning;
 
 ?>
 
-<div class="panel panel-danger panel-invalid">
-    <div class="panel-heading"><?= Yii::t('AdminModule.base', '<strong>Warning</strong> incomplete setup!'); ?></div>
-    <div class="panel-body">
+<div class="card content-card content-card-danger panel-invalid">
+    <div class="card-header"><div class="card-title"><?= Yii::t('AdminModule.base', '<strong>Warning</strong> incomplete setup!'); ?></div></div>
+    <div class="card-body">
         <ul>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_QUEUE_RUNNER, $problems)): ?>
                 <li>

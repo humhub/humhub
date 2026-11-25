@@ -15,7 +15,7 @@ $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client
 ?>
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 <?= $this->render('_tabs') ?>
-<h3>
+<h3 class="card-title">
     <?= $client->isNewRecord
         ? Yii::t('OauthModule.base', 'Add client')
         : Yii::t('OauthModule.base', 'Edit client “{name}”', ['name' => Html::encode($client->name)]) ?>
@@ -60,7 +60,7 @@ $action = $client->isNewRecord ? ['/oauth/admin/client'] : ['/oauth/admin/client
 
 <?php if ($client->isConfidential()): ?>
     <hr>
-    <h3><?= Yii::t('OauthModule.base', 'Client secret') ?></h3>
+    <h3 class="card-title"><?= Yii::t('OauthModule.base', 'Client secret') ?></h3>
     <p>
         <?= Yii::t('OauthModule.base', 'A new secret replaces the current one immediately. The client has to be updated with it.') ?>
     </p>

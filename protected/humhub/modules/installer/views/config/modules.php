@@ -6,13 +6,13 @@ use humhub\widgets\bootstrap\Button;
 
 /* @var array $modules */
 ?>
-<div id="name-form" class="panel panel-default animated fadeIn">
+<div id="name-form" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', 'Recommended <strong>Modules</strong>'); ?>
+    <div class="card-header">
+        <div class="card-title"><?php echo Yii::t('InstallerModule.base', 'Recommended <strong>Modules</strong>'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <p><?php echo Yii::t('InstallerModule.base', 'HumHub is very flexible and can be adjusted and/or expanded for various different applications thanks to its’ different modules.  The following modules are just a few examples and the ones we thought are most important for your chosen application.<br><br>You can always install or remove modules later. You can find more available modules after installation in the admin area.'); ?></p>
         <br>

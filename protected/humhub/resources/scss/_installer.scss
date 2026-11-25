@@ -8,27 +8,14 @@
             text-align: center;
         }
 
-        h2 {
-            font-weight: 100;
-        }
-
-        .panel {
-            margin-top: 50px;
-
-            h3 {
-                margin-top: 0;
-            }
+        .content-card {
+            margin-top: $spacer * 3;
         }
 
         .powered,
         .powered a {
-            color: var(--bs-secondary-color) !important;
-            margin-top: 10px;
-            font-size: 12px;
-        }
-
-        .ti {
-            width: 18px;
+            margin-top: $spacer * .5;
+            @include hh-text-style(meta);
         }
 
         .check-ok {
@@ -46,10 +33,10 @@
         .prerequisites-list {
             ul {
                 list-style: none;
-                padding-left: 15px;
+                padding-left: $spacer;
 
                 li {
-                    padding-bottom: 5px;
+                    padding-bottom: $spacer * .25;
                 }
             }
         }

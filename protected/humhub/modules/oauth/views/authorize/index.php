@@ -20,15 +20,17 @@ $isApp = $client->type === Client::TYPE_SYSTEM;
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default mb-4">
-        <div class="panel-heading">
-            <strong class="fw-bolder">
-                <?= $isApp
-                    ? Yii::t('OauthModule.base', 'Sign in to the app on this device?')
-                    : Yii::t('OauthModule.base', '{app} wants to access your account', ['app' => Html::encode($client->name)]) ?>
-            </strong>
+    <div class="card content-card mb-4">
+        <div class="card-header">
+            <div class="card-title">
+                <strong class="fw-bolder">
+                    <?= $isApp
+                        ? Yii::t('OauthModule.base', 'Sign in to the app on this device?')
+                        : Yii::t('OauthModule.base', '{app} wants to access your account', ['app' => Html::encode($client->name)]) ?>
+                </strong>
+            </div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?php if ($isApp): ?>
                 <p class="text-muted"><?= Html::encode(Yii::$app->name) ?></p>
             <?php else: ?>

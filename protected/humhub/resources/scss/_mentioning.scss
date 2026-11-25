@@ -3,19 +3,18 @@
 //
 
 @if not $prev-mentioning {
+    // A child of `body`: its type is the body's. The providers place it themselves (`margin-top`, `top`, `left`)
     .atwho-view {
         background: var(--bs-body-bg);
         color: var(--bs-body-color);
         border: 1px solid var(--bs-border-color);
-        border-radius: 4px;
+        border-radius: $border-radius-sm;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
         display: none;
-        font-size: 14px;
-        font-weight: 400;
-        margin-top: 18px;
+        // Widths stay px, as `$tooltip-max-width`
         min-width: 120px;
         max-width: 265px;
-        padding: 5px 0;
+        padding: $spacer * .25 0;
         position: absolute;
         top: 0;
         left: 0;
@@ -35,20 +34,16 @@
         border-left: 3px solid transparent;
         cursor: pointer;
         display: block;
-        padding: 4px 15px 4px 8px;
+        padding: $spacer * .25 $spacer $spacer * .25 $spacer * .5;
     }
 
     .atwho-view ul li.hint {
         background: var(--bs-body-bg);
         border-left: 3px solid transparent;
-        color: var(--bs-secondary-color);
-        font-size: 12px;
+        @include hh-text-style(meta);
     }
 
     .atwho-input.form-control {
-        height: auto;
-        min-height: 36px;
-        padding-right: 95px;
         overflow-wrap: break-word;
     }
 
@@ -67,20 +62,19 @@
     }
 
     .atwho-view small {
-        font-size: smaller;
         color: var(--bs-secondary-color);
-        font-weight: normal;
     }
 
     .atwho-view .cur small {
         color: var(--hh-danger-fg);
     }
 
+    // The match is marked by its background, not by its weight
     .atwho-view strong, .atwho-view b {
-        font-weight: normal;
+        font-weight: inherit;
     }
 
     .atwho-view span {
-        padding: 5px;
+        padding: $spacer * .25;
     }
 }

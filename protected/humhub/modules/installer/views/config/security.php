@@ -6,13 +6,13 @@ use humhub\widgets\form\ActiveForm;
 
 /* @var SecurityForm $model */
 ?>
-<div id="name-form" class="panel panel-default animated fadeIn">
+<div id="name-form" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?php echo Yii::t('InstallerModule.base', 'Security <strong>Settings</strong>'); ?>
+    <div class="card-header">
+        <div class="card-title"><?php echo Yii::t('InstallerModule.base', 'Security <strong>Settings</strong>'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
 
         <p><?php echo Yii::t('InstallerModule.base', 'Here you can decide how new, unregistered users can access HumHub.'); ?></p>
         <br>

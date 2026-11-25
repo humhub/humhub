@@ -6,15 +6,16 @@
 // @since 1.20
 // --------------------------------------------------
 
-$data-table-gap: $spacer * .75 !default;
-$data-table-main-image-size: 2.5rem !default;
+$data-table-gap: $spacer * .5 !default;
+// An image (px, as every picture): as high as the name and the subtitle beside it
+$data-table-main-image-size: 40px !default;
 $data-table-main-initials-bg: var(--bs-secondary-bg) !default;
 $data-table-main-initials-color: var(--bs-white) !default;
-$data-table-main-initials-font-size: .875rem !default;
+$data-table-main-initials-font-size: $font-size-sm !default;
 // A record shown by an icon (e.g. an app): on a light accent tile, or white on its own colour
 $data-table-main-icon-bg: var(--bs-accent-bg-subtle) !default;
 $data-table-main-icon-color: var(--hh-accent-fg) !default;
-$data-table-main-icon-font-size: 1.25rem !default;
+$data-table-main-icon-font-size: $font-size-lg !default;
 // A hovered row: a light accent fill with an accent outline
 $data-table-hover-bg: var(--bs-accent-bg-subtle) !default;
 $data-table-hover-border-color: var(--bs-accent) !default;
@@ -22,24 +23,20 @@ $data-table-hover-transition: box-shadow .15s ease-in-out !default;
 $data-table-details-bg: var(--bs-tertiary-bg) !default;
 // A selected row (Bootstrap's `.table-active`)
 $data-table-selected-bg: rgba(var(--bs-accent-rgb), .08) !default;
-$data-table-head-color: var(--bs-secondary-color) !default;
-$data-table-head-font-size: $font-size-sm !default;
-// Cells: .5rem around each (1rem between columns), the side columns (checkbox, details, actions)
-// fixed, the main column twice as wide as each of the others (DataTable.vue `mainColumnStyle`)
-$data-table-cell-padding-y: $spacer * .5 !default;
-$data-table-cell-padding-x: $spacer * .5 !default;
-$data-table-side-column-width: 2.5rem !default;
-$data-table-actions-column-width: 3rem !default;
-// The row menu's ⋮: a square ghost button, grey while its menu is open
-$data-table-actions-toggle-size: 2.375rem !default;
-$data-table-actions-toggle-icon-size: 1.375rem !default;
+// Cells: Bootstrap's padding around each (1rem between columns), the side columns (checkbox, details,
+// actions) fixed, the main column twice as wide as each of the others (DataTable.vue `mainColumnStyle`).
+// The widths are plain rem or px values: DataTable.vue reads them
+$data-table-cell-padding-y: $table-cell-padding-y !default;
+$data-table-cell-padding-x: $table-cell-padding-x !default;
+$data-table-side-column-width: 2rem !default; // A checkbox, or the small details button
+$data-table-actions-column-width: 3.5rem !default; // The row menu's button and the cell's padding
 // A column of short values (`ColumnDefinition::$narrow`), e.g. a version
-$data-table-narrow-column-width: 8rem !default;
+$data-table-narrow-column-width: 7rem !default;
 $data-table-row-border-radius: var(--bs-border-radius) !default;
-// Footer: the pager's pages as square ghost buttons, the current one filled
-$data-table-pager-size: 2.5rem !default;
+// Footer: the pager's pages as square ghost buttons, the current one filled, as high as the rows per page beside them
+$data-table-pager-size: calc(#{$btn-line-height * $btn-font-size} + #{$btn-padding-y * 2} + #{$btn-border-width} * 2) !default;
 $data-table-pager-gap: $spacer * .25 !default;
-$data-table-page-size-width: 5.5rem !default;
+$data-table-page-size-width: 5rem !default; // Three digits and the chevron
 
 @if not $prev-data-table {
     .data-table > .card-body {
@@ -143,15 +140,12 @@ $data-table-page-size-width: 5.5rem !default;
         }
     }
 
-    // Column header: sticky below the fixed top bar
+    // Column header: sticky below the fixed top bar; its text as every table's (`_table.scss`)
     .data-table thead th {
         position: sticky;
         top: var(--hh-fixed-header-height, 0);
         z-index: 1;
         background: var(--bs-card-bg);
-        color: $data-table-head-color;
-        font-size: $data-table-head-font-size;
-        font-weight: $font-weight-semibold;
         white-space: nowrap;
     }
 
@@ -224,16 +218,9 @@ $data-table-page-size-width: 5.5rem !default;
         overflow: visible;
     }
 
+    // The row menu's ⋮: a square ghost button (`.btn-icon-only`)
     .data-table .btn.data-table-actions-toggle {
         --bs-btn-color: var(--bs-secondary-color);
-        width: $data-table-actions-toggle-size;
-        height: $data-table-actions-toggle-size;
-        padding: 0;
-
-        // Over the icon size of `.btn-icon-only`
-        > .ti {
-            font-size: $data-table-actions-toggle-icon-size;
-        }
     }
 
     .data-table-col-number {
@@ -266,6 +253,7 @@ $data-table-page-size-width: 5.5rem !default;
         justify-content: center;
         background-color: $data-table-main-initials-bg;
         color: $data-table-main-initials-color;
+        // A picture of the record, not text: no text style
         font-size: $data-table-main-initials-font-size;
         font-weight: $font-weight-bold;
         line-height: 1;
@@ -304,8 +292,7 @@ $data-table-page-size-width: 5.5rem !default;
         // As wide as its text, not the cell: the link colours only under the pointer on the name
         align-self: flex-start;
         max-width: 100%;
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
         text-decoration: none;
 
         &:is(a):hover,
@@ -315,9 +302,7 @@ $data-table-page-size-width: 5.5rem !default;
     }
 
     .data-table-main-subtitle {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
+        @include hh-text-style(meta);
     }
 
     .data-table-chips {
@@ -350,8 +335,7 @@ $data-table-page-size-width: 5.5rem !default;
         }
 
         dt {
-            color: var(--bs-secondary-color);
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong);
         }
 
         dd {
@@ -366,7 +350,7 @@ $data-table-page-size-width: 5.5rem !default;
     }
 
     .data-table-message > td {
-        padding: $spacer * 2 $spacer;
+        padding: $spacer * 1.5 $spacer;
         color: var(--bs-secondary-color);
         text-align: center;
     }
@@ -393,8 +377,7 @@ $data-table-page-size-width: 5.5rem !default;
 
     .data-table-count {
         grid-column: 1;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .data-table-pager {
@@ -432,7 +415,7 @@ $data-table-page-size-width: 5.5rem !default;
             min-width: $data-table-pager-size;
             height: $data-table-pager-size;
             border-radius: var(--bs-pagination-border-radius);
-            font-weight: $font-weight-medium;
+            @include hh-text-style(control, $color: false);
         }
     }
 
@@ -444,13 +427,10 @@ $data-table-page-size-width: 5.5rem !default;
     }
 
     // The columns chooser: a list group, a row per column with its switch at the end. HumHub's
-    // `$list-group-*` serve the side menus (no borders, small text); here Bootstrap's look.
+    // `$list-group-border-width` serves the side menus (no borders); here Bootstrap's look.
     .data-table-columns-list {
         --bs-list-group-border-width: var(--bs-border-width);
         --bs-list-group-border-color: var(--bs-border-color);
-        --bs-list-group-item-padding-x: #{$spacer};
-        --bs-list-group-item-padding-y: #{$spacer * .75};
-        font-size: $font-size-base;
     }
 
     .data-table-columns-option {
@@ -477,16 +457,15 @@ $data-table-page-size-width: 5.5rem !default;
         }
     }
 
+    // The column's name; the note below it is a `.form-text`
     .data-table-columns-label {
         flex: 1 1 auto;
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
     }
 
     .data-table-columns-folded {
         display: block;
         margin-top: 0;
-        font-weight: $font-weight-normal;
     }
 
     // Phones: the count and the rows per page on one line, the pager centred below

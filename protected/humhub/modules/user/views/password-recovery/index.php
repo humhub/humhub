@@ -19,11 +19,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div id="password-recovery-form" class="panel panel-default mb-4 animated bounceIn">
-        <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
+    <div id="password-recovery-form" class="card content-card mb-4 animated bounceIn">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Password recovery') ?></strong></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
             <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
             <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>

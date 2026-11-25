@@ -21,7 +21,7 @@ install) directly on the card.
 | 3 | **Title and subtitle** | The name links to the profile, space or marketplace page. The subtitle is the job title, the module version, or for spaces what a module adds through the `space.card-subtitle` slot (the Enterprise theme shows the space category there). |
 | 4 | **Body** | People: the profile fields chosen by the admin. Spaces and modules: the description. The body always keeps room for 3 lines, so cards in a row stay aligned. Descriptions are cut after 3 lines, and each profile field is one line with an ellipsis. |
 | 5 | **Tags** | Up to 5 uppercase chips. Each one filters the directory by that tag. |
-| 6 | **Footer** | The card's actions, sharing the full width. Icon-only actions (send message, changelog) are square and 38px high. |
+| 6 | **Footer** | The card's actions, sharing the full width. Icon-only actions (send message, changelog) are square and 39px high. |
 | 7 | **Badges** | Modules only, top right of the cover: featured ★, update available (↑ 1.4.2) or the type (Official, Partner, Community, Professional). Featured and type filter the marketplace. |
 
 ## Variants
@@ -115,8 +115,9 @@ follow [Styling with Bootstrap 5](bootstrap.md).
 
 - **File:** `_entity-card.scss`, behind `$prev-entity-card`, with `$entity-card-border-radius`,
   `$entity-card-padding`, `$entity-card-gap`, `$entity-card-image-size` (80px),
-  `$entity-card-image-border-radius`, `$entity-card-cover-bg`, `$entity-card-title-font-size` and
-  `$entity-card-action-height` (a button's height); the module card's parts in
+  `$entity-card-image-border-radius`, `$entity-card-cover-bg` and
+  `$entity-card-action-height` (a button's height); the title is a Large title
+  ([Typography](typography.md)); the module card's parts in
   `_marketplace.scss`, the people and space card's own parts in `_people-browser.scss` and
   `_spaces-browser.scss`.
 - The `.card-body` / `.card-title` parts of Bootstrap are not used: the entity card's parts have a

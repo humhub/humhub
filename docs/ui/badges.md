@@ -38,6 +38,9 @@ meaningful across 100 pages.
   gets the neutral tone, not danger.
 - No other colours. A module that needs a new meaning maps it to one of these five.
 - Chips are real text. The uppercase comes from CSS, so screen readers read normal case.
+- One component for every chip: `.badge` with a tone. An icon beside the text is centred on it; an
+  icon alone is `.badge.badge-icon-only`, a circle as high as a chip with text (the Marketplace's
+  featured star). Modules never size or shape a badge themselves.
 
 ### A chip after a title
 
@@ -119,7 +122,7 @@ so `accent` and custom brand colours work. The look never depends on utilities s
   badges of the notification settings (`badge-accent` on, plain off), the tags and the stat pill
   of the entity cards, the space tags in the space chooser.
 - **Sass variables:** Bootstrap's `$badge-font-size`, `$badge-font-weight`, `$badge-padding-x/y`,
-  `$badge-border-radius` (HumHub's 2px stays until the open question is decided); plus
+  `$badge-border-radius` (HumHub: 600 and fully rounded, [Bootstrap overrides](bootstrap.md)); plus
   `$badge-count-min-width`, `$badge-dot-size`.
 
 ## Implementation in core
@@ -171,5 +174,3 @@ Dot::unsaved();
 4. **Marketplace badges:** for now on the tones (official accent, PRO warning, partner success,
    update info, featured star danger, others neutral). Keep it so, or turn types into neutral
    chips with a brand-coloured edge?
-5. **`$badge-border-radius`:** HumHub sets 2px today, while the design's chips and counts are
-   rounder. Change the global value (affects every `.badge`) or only the new modifiers?

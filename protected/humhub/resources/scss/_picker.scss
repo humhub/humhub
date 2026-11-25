@@ -8,24 +8,26 @@
 // docs/develop/ui-js-vuejs-picker.md.
 // @since 1.20
 
-// One field high: a `.form-control` (`$input-*` in variables.scss: two 1px borders)
-$select-menu-field-borders: 2px !default;
+// One field high: a `.form-control`, from Bootstrap's `$input-*` (its line in rem, not `1em`: the chevron has
+// a font size of its own)
+$select-menu-field-borders: $input-height-border !default;
 $select-menu-field-height: add($input-line-height * $input-font-size, add($input-padding-y * 2, $select-menu-field-borders, false)) !default;
 $select-menu-icon-size: $font-size-lg !default;
 $select-menu-icon-color: var(--bs-secondary-color) !default;
 $select-menu-icon-space: $input-padding-x + $select-menu-icon-size + $spacer * .5 !default;
 $select-menu-max-height: 384px !default;
-// A select list row as high as a field (≈38px: 21px line + 2 × 8.5px); context menus keep
-// Bootstrap's `$dropdown-item-padding-y`
-$select-menu-option-padding-y: 8.5px !default;
 
-$picker-chip-height: 30px !default; // a 38px field: 3px above and below
+// A line of text and `.25rem` above and below it, inside the field's padding
+$picker-chip-height: $input-line-height * $input-font-size + $spacer * .5 !default;
+// The chips' inset from the field's border, the same on every side
+$picker-field-padding: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5) !default;
+// What a text placed first still needs to start where the text of every `.form-control` starts
+$picker-field-text-indent: calc(#{$input-padding-x} - #{$picker-field-padding}) !default;
 // The `:size` PickerInput gives a chip picture
 $picker-chip-image-size: 22px !default;
 $picker-chip-bg: var(--bs-accent) !default;
 $picker-chip-color: var(--hh-accent-contrast) !default;
-$picker-chip-font-size: inherit !default;
-$picker-color-size: .75rem !default;
+$picker-color-size: .75em !default; // A dot beside the text
 $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
 @if not $prev-picker {
@@ -136,7 +138,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
     .select-menu-spinner {
         position: absolute;
-        top: calc(50% - .5rem);
+        top: calc(50% - #{$spinner-height-sm * .5});
         right: $input-padding-x;
         color: $select-menu-icon-color;
     }
@@ -163,8 +165,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     .select-menu-option {
         display: flex;
         align-items: center;
-        padding-top: $select-menu-option-padding-y;
-        padding-bottom: $select-menu-option-padding-y;
         gap: $spacer * .5;
         white-space: normal;
         overflow-wrap: anywhere;
@@ -189,16 +189,15 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
     // Searchable picker (FilterPicker, PickerInput): a `.select-menu` whose button is a `.form-control` field
     // holding the chips and the combobox input; listbox, chevron, clear X and spinner are the select's.
-    // Vertical padding shrinks to the chip height, so the field keeps the height of a `.form-control`.
+    // The padding shrinks to the chip height, so the field keeps the height of a `.form-control`;
+    // the chips sit as far from the start as from the top and bottom.
     .picker-field {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         gap: $spacer * .25;
         min-height: $select-menu-field-height;
-        padding-top: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5);
-        padding-bottom: calc((#{$select-menu-field-height} - #{$select-menu-field-borders} - #{$picker-chip-height}) * .5);
-        padding-right: $select-menu-icon-space;
+        padding: $picker-field-padding $select-menu-icon-space $picker-field-padding $picker-field-padding;
         cursor: text;
 
         &:focus-within {
@@ -241,6 +240,11 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         }
     }
 
+    // Without a chip before it, the text (and a single value's picture) starts where the text of a `.form-control` does
+    .picker-field > :is(.picker-input, .picker-value-image):first-child {
+        margin-left: $picker-field-text-indent;
+    }
+
     // In a table on a narrow screen the input gives up its default width of 20 characters, so that the
     // table fits (WCAG 1.4.10); the chosen value is cut off then, as in a native select
     @include media-breakpoint-down(sm) {
@@ -257,14 +261,14 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker .select-menu-spinner {
-        top: calc(#{$select-menu-field-height} * .5 - .5rem);
+        top: calc(#{$select-menu-field-height} * .5 - #{$spinner-height-sm * .5});
     }
 
     // A chosen value: a filled tag as high as the input
     .picker-chip {
         display: inline-flex;
         align-items: center;
-        gap: $spacer * .375;
+        gap: $spacer * .25;
         max-width: 100%;
         min-width: 0;
         height: $picker-chip-height;
@@ -272,7 +276,6 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
         border-radius: var(--bs-border-radius-sm);
         background: $picker-chip-bg;
         color: $picker-chip-color;
-        font-size: $picker-chip-font-size;
     }
 
     // The input text keeps the field's left padding from the last chip (at a line end, if the input
@@ -321,9 +324,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
 
     .picker-option-count {
         flex: 0 0 auto;
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
-        font-weight: $font-weight-normal;
+        @include hh-text-style(meta);
     }
 
     // PickerInput: the island ui.picker mounts right after a native <select>
@@ -411,15 +412,15 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker-option-subtext {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
+    // The part of the label that matches the keyword
     .picker-option mark {
         padding: 0;
         background: transparent;
         color: inherit;
-        font-weight: $font-weight-bold;
+        @include hh-text-style(strong, $color: false);
     }
 
     .picker-option.is-new {
@@ -461,8 +462,7 @@ $picker-list-item-bg: var(--bs-tertiary-bg) !default;
     }
 
     .picker-list-item-subtext {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     .picker-list-item-remove {

@@ -5,16 +5,54 @@
 $content-activity-entry-padding-y: $spacer * .5 !default;
 
 @if not $prev-activities {
+    // A side list of short notes, not the page's content: secondary details
     .activities {
         max-height: 400px;
         overflow: auto;
+        @include hh-text-style(meta);
 
         div.activity-entry {
             padding: 0;
         }
 
+        // Rows from edge to edge: the picture in line with the panel's title (the row has a 3px accent border on the
+        // left), the text up to half the padding from the right edge
         .d-flex {
-            padding: 10px;
+            padding: $spacer * .5 $spacer * .5 $spacer * .5 calc(#{$card-spacer-x} - 3px);
+        }
+
+        // The time at the end of the sentence, not on a line of its own, which a narrow list has no room for
+        .activity-box-entry .flex-grow-1 > br {
+            display: none;
+        }
+
+        // The time is a box of its own, so it moves to the next line as a whole and alone. The separator before it
+        // shows only while it follows the sentence on a line: the box reaches a separator's width to the left, into
+        // the room the sentence leaves after its last word, and at the start of a line that part is cut off
+        .activity-box-entry .flex-grow-1 {
+            overflow-x: clip;
+
+            > span::after {
+                content: "";
+                display: inline-block;
+                width: .75em;
+            }
+        }
+
+        .time {
+            position: relative;
+            display: inline-block;
+            margin-left: -.75em;
+            padding-left: .75em;
+            color: var(--bs-secondary-color);
+
+            &::before {
+                content: "·";
+                position: absolute;
+                left: 0;
+                width: .75em;
+                text-align: center;
+            }
         }
     }
 

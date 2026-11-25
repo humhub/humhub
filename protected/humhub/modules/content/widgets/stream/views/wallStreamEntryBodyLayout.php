@@ -14,8 +14,8 @@ use humhub\modules\topic\widgets\TopicBadge;
 
 ?>
 
-<div class="panel panel-default wall_<?= $model->getUniqueId() ?>">
-    <div class="panel-body">
+<div class="card content-card wall_<?= $model->getUniqueId() ?>">
+    <div class="card-body">
         <div class="d-flex wall-entry-header">
             <?= $header ?>
         </div>

@@ -17,7 +17,7 @@ AdminMenu::markAsActive('settings');
     <?php if (ContentCard::isRendered($this)) : ?>
         <?= $content ?>
     <?php else : ?>
-        <div class="panel panel-default">
+        <div class="card content-card">
             <?= $content ?>
         </div>
     <?php endif; ?>

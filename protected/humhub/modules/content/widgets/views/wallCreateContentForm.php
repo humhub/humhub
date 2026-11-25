@@ -22,14 +22,14 @@ $this->registerJsConfig('content.form', [
 ?>
 
 <?php if (WallCreateContentMenu::canCreateEntry($contentContainer, 'form')) : ?>
-    <div class="panel panel-default clearfix">
-        <div class="panel-body content-form-body" id="contentFormBody<?= $wallCreateContentForm->isModal ? 'Modal' : '' ?>" style="display:none;"
+    <div class="card content-card clearfix">
+        <div class="card-body content-form-body" id="contentFormBody<?= $wallCreateContentForm->isModal ? 'Modal' : '' ?>" style="display:none;"
              data-action-component="content.form.CreateForm">
             <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
             <?= $wallCreateContentForm->renderActiveForm($form) ?>
 
             <?php ActiveForm::end(); ?>
-        </div><!-- /panel body -->
-    </div><!-- /panel -->
+        </div>
+    </div>
 <?php endif; ?>

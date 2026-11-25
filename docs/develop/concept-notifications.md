@@ -140,7 +140,7 @@ keeps the translations together:
 // the same verb: pick the subject
 '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.'
 // a verb that agrees with the number of people
-'{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} {content}.'
+'{namedCount, plural, =2{{displayNames} like} other{{displayName} likes}} your {content}.'
 ```
 
 Branching on `$this->groupCount` in `getMessage()` and returning two messages is valid as well.

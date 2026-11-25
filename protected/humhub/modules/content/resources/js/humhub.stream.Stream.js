@@ -739,7 +739,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     };
 
     Stream.templates = {
-        streamMessage: '<div class="streamMessage {cssClass}"><div class="panel"><div class="panel-body">{message}</div></div></div>'
+        streamMessage: '<div class="streamMessage {cssClass}"><div class="card content-card"><div class="card-body">{message}</div></div></div>'
     };
 
     /**

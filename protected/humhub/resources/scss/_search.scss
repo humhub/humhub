@@ -7,10 +7,10 @@
         left: auto;
         right: 0;
         max-width: 100%;
-        min-width: 400px;
+        min-width: 400px; // A panel's width, as the notifications' (`_topbar.scss`); the full width on a phone
         padding: 0;
         border: none;
-        border-radius: 8px;
+        border-radius: $border-radius-lg;
         top: 115%;
 
         &.show {
@@ -19,18 +19,17 @@
             max-height: calc(100vh - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
 
             @include media-breakpoint-down(md) {
-                max-height: calc(100vh - 15px - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
+                max-height: calc(100vh - #{$spacer} - var(--hh-fixed-header-height) - var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)));
             }
         }
 
+        // Type and colour are those of a top bar menu's header (`_topbar.scss`)
         .dropdown-header {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--bs-emphasis-color);
-            padding: 24px 24px 16px;
+            padding: $spacer * 1.5 $spacer * 1.5 $spacer;
             margin: 0;
             flex: 0 0 auto;
 
+            // A drawn shape: px
             .arrow {
                 position: absolute;
                 display: block;
@@ -66,7 +65,6 @@
                 border: 0;
                 background: none;
                 color: inherit;
-                font-size: 18px;
                 line-height: 1;
                 cursor: pointer;
             }
@@ -74,14 +72,12 @@
 
         .dropdown-search-form {
             position: relative;
-            padding: 0 16px 16px;
+            padding: 0 $spacer $spacer;
             flex: 0 1 auto;
 
             .dropdown-search-keyword {
                 background: var(--bs-tertiary-bg);
-                border-radius: 6px;
-                padding-left: 32px;
-                font-weight: 500;
+                padding-left: $spacer * 2; // Past the search button's icon
 
                 &:-webkit-autofill,
                 &:-webkit-autofill:hover,
@@ -94,11 +90,9 @@
 
             .dropdown-search-button {
                 position: absolute;
-                padding: 5px 10px;
+                padding: $spacer * .25 $spacer * .5;
                 background: none;
                 border: 0;
-                font-size: 16px;
-                font-weight: 600;
                 color: var(--bs-secondary-color);
                 box-shadow: none;
 
@@ -110,7 +104,7 @@
 
         .dropdown-search-list {
             list-style: none;
-            padding: 0 16px 24px;
+            padding: 0 $spacer $spacer * 1.5;
             flex: 0 1 auto;
             // The results scroll in the dropdown, the page behind stays
             overflow-y: auto;
@@ -124,16 +118,15 @@
 
         .search-provider {
             display: none;
-            padding-top: 16px;
+            padding-top: $spacer;
 
             .search-provider-title {
-                padding: 8px;
-                font-weight: 600;
-                font-size: 18px;
-                color: var(--bs-emphasis-color);
+                padding: $spacer * .5;
+                @include hh-text-style(title);
 
+                // The count, a step below the title: no text style of its own
                 > span {
-                    font-size: 14px;
+                    font-size: $font-size-base;
                 }
             }
 
@@ -153,33 +146,34 @@
 
             .search-provider-content {
                 > .hh-loader {
-                    margin-top: 10px;
+                    margin-top: $spacer * .5;
 
                     .spinner-border {
-                        width: 1rem;
-                        height: 1rem;
+                        width: $spinner-width-sm;
+                        height: $spinner-height-sm;
                     }
                 }
 
                 a.search-provider-record {
                     display: flex;
                     align-items: center;
-                    padding: 8px;
+                    padding: $spacer * .5;
 
                     &:hover, &:focus {
                         background: var(--bs-tertiary-bg);
-                        border-radius: 3px;
+                        border-radius: $border-radius-sm;
                     }
 
+                    // As the record images (px)
                     .search-provider-record-image {
                         width: 36px;
                         flex: 0 0 36px;
 
                         > i.ti {
-                            font-size: 25px;
+                            font-size: 1.75em;
                             color: var(--hh-accent-fg);
                             background: var(--bs-tertiary-bg);
-                            border-radius: 4px;
+                            border-radius: $border-radius-sm;
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -190,7 +184,7 @@
                     }
 
                     .search-provider-record-text {
-                        padding-left: 16px;
+                        padding-left: $spacer;
                         flex: 1;
                         min-width: 0;
 
@@ -200,15 +194,12 @@
                             overflow: hidden;
                             white-space: nowrap;
 
-                            &:first-child { //Title
-                                font-size: 14px;
-                                font-weight: 500;
+                            &:first-child { // The record's name
+                                @include hh-text-style(strong, $color: false);
                             }
 
                             &:last-child { // Description
-                                font-size: 12px;
-                                font-weight: 400;
-                                color: var(--bs-body-color);
+                                @include hh-text-style(meta);
                             }
                         }
                     }
@@ -216,15 +207,15 @@
             }
 
             .search-provider-no-results {
-                padding: 8px;
+                padding: $spacer * .5;
             }
 
             .search-provider-actions {
-                padding: 16px 8px 0;
+                padding: $spacer $spacer * .5 0;
 
                 .btn {
                     width: 100%;
-                    font-size: 12px;
+                    font-size: $btn-font-size-sm; // A small button's
                 }
             }
         }
@@ -264,12 +255,11 @@
     }
 
     // Search results page list:
+    // The count of the results
     .search-results-header {
-        color: var(--bs-emphasis-color);
-        font-size: 12px;
-        line-height: 1.5;
-        padding: 10px 0 15px;
-        margin-bottom: 10px;
+        @include hh-text-style(meta);
+        padding: $spacer * .5 0 $spacer;
+        margin-bottom: $spacer * .5;
         border-bottom: 1px solid var(--bs-border-color);
     }
 }

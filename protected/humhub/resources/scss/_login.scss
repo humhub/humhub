@@ -8,19 +8,20 @@
         background-image: linear-gradient(to right, var(--bs-primary) 0%, color-mix(in srgb, var(--bs-primary), white 15%) 50%, color-mix(in srgb, var(--bs-primary), white 15%) 100%), linear-gradient(to right, color-mix(in srgb, var(--bs-primary), white 8%) 0%, color-mix(in srgb, var(--bs-primary), white 38%) 51%, color-mix(in srgb, var(--bs-primary), white 30%) 100%);
         background-size: 100% 100%;
         position: relative;
-        padding-top: 40px;
+        padding-top: $spacer * 3;
 
         #img-logo,
         .hh-logo-dark {
             max-width: 100%;
-            padding: 0 16px;
-            margin-bottom: 32px;
+            padding: 0 $spacer;
+            margin-bottom: $spacer * 1.5;
         }
 
+        // On the primary colour
         .text {
             color: var(--hh-primary-contrast);
-            font-size: 12px;
-            margin-bottom: 15px;
+            @include hh-text-style(meta, $color: false);
+            margin-bottom: $spacer;
 
             a {
                 color: var(--hh-primary-contrast);
@@ -34,26 +35,14 @@
             color: var(--hh-primary-contrast);
         }
 
+        // The box of the form (a module's own pages may still bring a panel)
+        .content-card,
         .panel {
             box-shadow: 0 0 15px color-mix(in srgb, var(--bs-primary), white 20%);
-
-            .panel-heading,
-            .panel-body {
-                padding: 15px;
-            }
 
             h1,
             h2 {
                 color: var(--bs-body-color);
-            }
-
-            // The panel title is the page's heading, in the look of the panel heading
-            .panel-heading h1 {
-                margin: 0;
-                font-size: inherit;
-                font-weight: inherit;
-                line-height: inherit;
-                color: inherit;
             }
         }
 
@@ -68,10 +57,11 @@
             &.container-login,
             &.container-password {
                 max-width: 500px;
-                padding-left: 7px;
-                padding-right: 7px;
+                padding-left: $spacer * .5;
+                padding-right: $spacer * .5;
             }
 
+            .content-card,
             .panel {
                 text-align: left;
             }
@@ -89,14 +79,8 @@
         }
     }
 
-    #account-login-form {
-        .mb-3 {
-            margin-bottom: 10px;
-        }
-    }
-
     .login-container .language-chooser {
-        margin-top: 15px;
+        margin-top: $spacer;
 
         .language-chooser-toggle {
             color: var(--hh-primary-contrast);
@@ -117,12 +101,13 @@
         position: relative;
     }
 
+    // A secondary detail below the page's card
     .language-chooser-toggle {
         color: var(--bs-link-color);
         text-decoration: none;
-        font-size: 12px;
-        padding: 4px 8px;
-        border-radius: 4px;
+        @include hh-text-style(meta, $color: false);
+        padding: $spacer * .25 $spacer * .5;
+        border-radius: $border-radius-sm;
         transition: background-color 0.3s ease;
 
         &:hover,
@@ -132,14 +117,13 @@
         }
 
         .ti-world {
-            margin-right: 4px;
+            margin-right: $spacer * .25;
         }
     }
 
     .language-chooser-menu {
-        width: 280px;
-        max-width: calc(100vw - 30px);
-        margin-top: 8px;
+        max-width: calc(100vw - #{$spacer * 2});
+        margin-top: $spacer * .5;
         left: 50%;
         right: auto;
         transform: translateX(-50%);
@@ -150,15 +134,12 @@
         }
 
         .language-chooser-item {
-            padding: 6px 12px;
-            font-size: 13px;
             border-left: 3px solid transparent;
 
             &.active {
                 background-color: transparent;
                 color: var(--bs-body-color);
                 border-left-color: var(--bs-primary);
-                font-weight: 500;
             }
 
             &:hover:not(.active),

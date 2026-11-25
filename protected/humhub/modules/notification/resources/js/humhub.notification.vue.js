@@ -505,7 +505,7 @@
   const _hoisted_8$3 = ["innerHTML"];
   const _hoisted_9$3 = ["href", "aria-label", "title"];
   const _hoisted_10$3 = ["innerHTML"];
-  const _hoisted_11$1 = { class: "dropdown-footer" };
+  const _hoisted_11$2 = { class: "dropdown-footer" };
   const _hoisted_12$1 = ["href"];
   function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_NotificationList = vue$1.resolveComponent("NotificationList");
@@ -609,7 +609,7 @@
             }, null, 8, ["initial", "page-size", "onLoaded"])
           ]),
           vue$1.createElementVNode("li", null, [
-            vue$1.createElementVNode("div", _hoisted_11$1, [
+            vue$1.createElementVNode("div", _hoisted_11$2, [
               vue$1.createElementVNode("a", {
                 class: "btn btn-light col-lg-12",
                 href: $props.overviewUrl
@@ -691,7 +691,7 @@
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$2, [
       vue$1.createElementVNode("div", {
-        class: "btn-group w-100 mb-3",
+        class: "btn-group flex-wrap w-100 mb-3",
         role: "group",
         "aria-label": $options.seenFilterLabel
       }, [
@@ -722,7 +722,7 @@
         ))
       ], 8, _hoisted_2$2),
       vue$1.createElementVNode("div", {
-        style: { "padding-left": "5px" },
+        class: "ps-1",
         role: "group",
         "aria-label": $options.categoriesLabel
       }, [
@@ -862,12 +862,13 @@
     id: "layout-content-column",
     class: "col-lg-9 layout-content-container"
   };
-  const _hoisted_5$1 = { class: "panel panel-default" };
-  const _hoisted_6$1 = { class: "panel-body" };
+  const _hoisted_5$1 = { class: "card content-card" };
+  const _hoisted_6$1 = { class: "card-body" };
   const _hoisted_7$1 = ["aria-label"];
-  const _hoisted_8$1 = { class: "panel panel-default" };
-  const _hoisted_9$1 = { class: "panel-heading" };
-  const _hoisted_10$1 = { class: "panel-body" };
+  const _hoisted_8$1 = { class: "card content-card" };
+  const _hoisted_9$1 = { class: "card-header" };
+  const _hoisted_10$1 = { class: "card-title" };
+  const _hoisted_11$1 = { class: "card-body" };
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PageHeader = vue$1.resolveComponent("PageHeader");
     const _component_NotificationList = vue$1.resolveComponent("NotificationList");
@@ -927,22 +928,24 @@
         }, [
           vue$1.createElementVNode("div", _hoisted_8$1, [
             vue$1.createElementVNode("div", _hoisted_9$1, [
-              vue$1.createElementVNode(
-                "strong",
-                null,
-                vue$1.toDisplayString($options.filterLabel),
-                1
-                /* TEXT */
-              ),
-              _cache[2] || (_cache[2] = vue$1.createElementVNode(
-                "hr",
-                { style: { "margin-bottom": "0" } },
-                null,
-                -1
-                /* CACHED */
-              ))
+              vue$1.createElementVNode("div", _hoisted_10$1, [
+                vue$1.createElementVNode(
+                  "strong",
+                  null,
+                  vue$1.toDisplayString($options.filterLabel),
+                  1
+                  /* TEXT */
+                ),
+                _cache[2] || (_cache[2] = vue$1.createElementVNode(
+                  "hr",
+                  { style: { "margin-bottom": "0" } },
+                  null,
+                  -1
+                  /* CACHED */
+                ))
+              ])
             ]),
-            vue$1.createElementVNode("div", _hoisted_10$1, [
+            vue$1.createElementVNode("div", _hoisted_11$1, [
               vue$1.createVNode(_component_NotificationFilter, {
                 filters: $props.filters,
                 selected: $data.selectedCategories,

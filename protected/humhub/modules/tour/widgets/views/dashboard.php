@@ -37,16 +37,16 @@ $removeOptionHtml = Html::tag(
 );
 ?>
 
-<div class="panel panel-default panel-tour" id="getting-started-panel">
+<div class="card content-card panel-tour" id="getting-started-panel">
     <?= PanelMenu::widget([
         'extraMenus' => $removeOptionHtml,
     ]) ?>
 
-    <div class="panel-heading">
-        <?= Yii::t('TourModule.base', '<strong>Getting</strong> Started') ?>
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('TourModule.base', '<strong>Getting</strong> Started') ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p>
             <?= Yii::t('TourModule.base', 'Get to know your way around the site\'s most important features with the following guides:') ?>
         </p>

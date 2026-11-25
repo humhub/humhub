@@ -6,13 +6,14 @@
     ul.tour-list {
         list-style: none;
         margin-bottom: 0;
-        padding-left: 10px;
+        padding-left: $spacer * .5;
 
         li {
-            padding-top: 5px;
+            padding-top: $spacer * .25;
 
+            // A fixed-width box, so the titles line up (as `.icon-fw`)
             a .ti {
-                width: 16px;
+                width: 1.25em;
             }
         }
 

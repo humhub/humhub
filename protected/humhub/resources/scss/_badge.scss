@@ -5,16 +5,11 @@
 // The theme colours that are badge tones (no `light`, `dark`, `primary`, `secondary`)
 $badge-tones: accent, success, info, warning, danger !default;
 
-$badge-dot-size: .5rem !default;
+$badge-dot-size: .5rem !default; // 8px, grows with the text it stands beside
 
 @if not $prev-badge {
     .badge-space {
-        margin-top: 6px;
-    }
-
-    .badge-space-chooser {
-        padding: 3px 5px;
-        margin-left: 1px;
+        margin-top: $spacer * .25;
     }
 
     .badge {
@@ -23,7 +18,6 @@ $badge-dot-size: .5rem !default;
         white-space: nowrap;
         text-shadow: none;
         background-color: var(--bs-secondary-bg);
-        line-height: 1;
 
         // Clickable badges: links (eg. Button::asBadge()->link()) and buttons (the tags of the
         // entity cards, the marketplace's type filters). An edge in the badge's colour on hover,
@@ -41,6 +35,13 @@ $badge-dot-size: .5rem !default;
             cursor: pointer;
         }
 
+        // An icon beside the text (e.g. ↑ 1.4.2), centred on it
+        &:has(> i) {
+            display: inline-flex;
+            align-items: center;
+            gap: $spacer * .25;
+        }
+
         &.badge-new {
             width: 14px;
             height: 14px;
@@ -51,6 +52,14 @@ $badge-dot-size: .5rem !default;
                 display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
             }
         }
+    }
+
+    // Icon-only badge (`.badge.badge-icon-only`, e.g. the Marketplace's featured star): a circle as high as a badge
+    // with text, the same padding on every side
+    .badge-icon-only {
+        --bs-badge-padding-x: var(--bs-badge-padding-y);
+        justify-content: center;
+        aspect-ratio: 1;
     }
 
     // Tones (docs/ui/badges.md): the subtle fill and text of a theme colour, e.g. `.badge-success`.

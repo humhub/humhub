@@ -28,11 +28,12 @@ class CoreMessagesTest extends HumHubDbTestCase
 
     public function testNewLike()
     {
-        $this->assertStringStartsWith($this->name(2) . ' likes ', $this->load(NewLikeNotification::class, [2])->asMailText());
+        $this->assertStringStartsWith($this->name(2) . ' likes your ', $this->load(NewLikeNotification::class, [2])->asMailText());
         $grouped = $this->load(NewLikeNotification::class, [3, 2]);
-        $this->assertStringStartsWith($this->name(2) . ' and ' . $this->name(3) . ' like ', $grouped->asMailText());
+        $this->assertStringStartsWith($this->name(2) . ' and ' . $this->name(3) . ' like your ', $grouped->asMailText());
         $this->assertStringStartsWith($this->name(2) . ' and ' . $this->name(3) . ' like your ', $grouped->asMailSubject());
         $this->assertStringStartsWith('<strong>', $grouped->asWeb());
+        $this->assertStringContainsString(' like your ', $grouped->asWeb());
 
         // the sentences without content
         $this->assertSame($this->name(2) . ' likes your post.', $this->load(NewLikeNotification::class, [2])->asRedactedText());

@@ -1,3 +1,5 @@
+// Deprecated since 1.20, removed in 1.21: styles for Bootstrap 3 markup
+
 /**
 Compatibility with Bootstrap 3
 
@@ -10,82 +12,75 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     //
     // Panel
     //
+    // A panel of a module. Core renders content cards since 1.20 (`_card.scss`)
     .panel {
         @include text-break();
-        // Not redundant: a panel is not always a div. An island mounts into a custom element
-        // (`<activity-box class="panel">`), and a custom element is inline by default - an
-        // inline box paints its background only behind its line boxes, so the panel's own
-        // background would not cover its block contents.
+        // Not redundant: a panel is not always a div. A custom element is inline by default - an
+        // inline box paints its background only behind its line boxes
         display: block;
         border: none;
         background-color: var(--bs-body-bg);
         box-shadow: 0 0 3px var(--bs-border-color);
-        border-radius: 4px;
+        // As a content card: its radius, and the paddings of Bootstrap's card it keeps
+        border-radius: $border-radius-lg;
         position: relative;
-        margin-bottom: 15px;
+        margin-bottom: $spacer;
 
         h1 {
-            font-size: 16px;
-            font-weight: 300;
             margin-top: 0;
             color: var(--bs-emphasis-color);
         }
+    }
 
+    // The parts of a panel, also in the content card a core layout puts around a module's older view
+    :is(.panel, .content-card) {
+        // A title, as a card's header: 1rem above it, with the body's padding 1.5rem between it and the content
         .panel-heading {
-            font-size: 16px;
-            font-weight: 300;
-            color: var(--bs-emphasis-color);
+            @include hh-text-style(title);
             background-color: var(--bs-body-bg);
             border: none;
-            padding: 10px;
+            padding: $card-spacer-y $card-cap-padding-x $card-cap-padding-y;
             margin: 0;
-            border-radius: 4px;
+            border-radius: $border-radius-lg $border-radius-lg 0 0;
 
+            // One tone: translations still bold a heading's first word ("<strong>Latest</strong> activities")
+            strong,
+            b {
+                font-weight: inherit;
+            }
+
+            // A heading in the panel's heading takes its look, whatever its tag (h1–h6)
             .panel-title {
-                margin: -4px 0 0;
-                line-height: 1;
+                margin: 0;
+                font-size: inherit;
+                font-weight: inherit;
+                line-height: inherit;
+                color: inherit;
                 > button.btn-panel-title-action {
                     background: none;
                     border: none;
-                    font-size: 16px;
                     padding: 0;
                     text-decoration: none;
-                    font-weight: 300;
+                    font-weight: inherit;
                     display: inline;
-                    vertical-align: middle;
                 }
             }
         }
 
         .panel-body {
-            padding: 10px;
-            font-size: 13px;
+            padding: $card-spacer-y $card-spacer-x;
 
             p {
                 color: var(--bs-body-color);
             }
 
             .spacesearch-visibilities {
-                padding-top: 5px;
-                padding-bottom: 5px;
+                padding-top: $spacer * .25;
+                padding-bottom: $spacer * .25;
                 @include media-breakpoint-up(lg) {
                     padding-top: 0;
                     padding-bottom: 0;
                     padding-left: 0;
-                }
-            }
-        }
-
-        .statistics {
-            .entry {
-                margin-left: 20px;
-                font-size: 12px;
-                color: var(--bs-emphasis-color);
-
-                .count {
-                    font-weight: 600;
-                    font-size: 20px;
-                    line-height: 0.8em;
                 }
             }
         }
@@ -102,7 +97,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     .panel.groups,
     .panel.spaces {
         .panel-body a img {
-            margin-bottom: 5px;
+            margin-bottom: $spacer * .25;
         }
     }
 
@@ -111,9 +106,15 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         animation-duration: 200ms;
     }
 
+    // Over the panel body's padding, to its edges; the first tab in line with the content
     .panel-body > .tab-menu {
-        margin-left: -10px;
-        margin-right: -10px
+        margin-left: -$card-spacer-x;
+        margin-right: -$card-spacer-x;
+
+        &.nav-tabs,
+        > .nav-tabs {
+            padding-left: $card-spacer-x;
+        }
     }
 
     //
@@ -123,15 +124,16 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
         border: none;
         box-shadow: none;
         background-color: var(--bs-tertiary-bg);
+        // A separator line between stacked wells
         margin-bottom: 1px;
 
         hr {
-            margin: 10px 0;
             border-top: 1px solid var(--bs-tertiary-bg);
         }
 
+        // Header row: Meta's size, as the column headers (`_table.scss`)
         table > thead {
-            font-size: 11px;
+            @include hh-text-style(meta, $color: false);
         }
     }
 
@@ -142,7 +144,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
 
     // Ajax loader (still rendered by the richtext editor's image placeholder)
     .loader {
-        padding: 30px 0;
+        padding: ($spacer * 1.5) 0;
     }
 
     //

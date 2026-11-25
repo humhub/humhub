@@ -15,18 +15,18 @@ use humhub\widgets\PanelMenu;
 /* @var array $showListOptions */
 
 ?>
-<div class="panel panel-default members" id="space-members-panel">
+<div class="card content-card members" id="space-members-panel">
     <?= PanelMenu::widget([
         'extraMenus' => Html::tag('li', Link::to(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]) ?>
-    <div class="panel-heading">
-        <h3 class="panel-title">
-            <button class="btn-panel-title-action" <?= Html::renderTagAttributes($showListOptions) ?>>
+    <div class="card-header">
+        <h3 class="card-title">
+            <button class="card-title-action" <?= Html::renderTagAttributes($showListOptions) ?>>
                 <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members') ?> (<?= $totalMemberCount ?>)
             </button>
         </h3>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <div class="d-flex gap-2 flex-wrap">
             <?php foreach ($users as $user) : ?>
                 <?php

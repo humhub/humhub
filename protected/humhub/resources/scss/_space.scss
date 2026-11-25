@@ -3,17 +3,29 @@
 // --------------------------------------------------
 
 @if not $prev-space {
+    // The pictures of the "New spaces" card, a row apart when they wrap
+    #new-spaces-panel .card-body a img {
+        margin-bottom: $spacer * .25;
+    }
+
     #space-menu-dropdown i.type {
-        font-size: 16px;
         color: var(--bs-secondary-color);
     }
 
+    // Rows with the menu's inset on both sides (less the accent border on the left) and a picture of two lines
     #space-menu-spaces [data-space-chooser-item] {
         cursor: pointer;
+        align-items: center; // A name without description beside the middle of its picture
+        padding: $spacer * .5 $spacer $spacer * .5 calc(#{$spacer} - 3px);
     }
 
+    #space-menu-dropdown .dropdown-footer {
+        margin: $spacer;
+    }
+
+    // Rounded like the field: Bootstrap rounds only the group's last child, here the reset icon after it
     #space-menu-dropdown .input-group-text {
-        border-radius: 0 4px 4px 0;
+        border-radius: 0 $input-border-radius $input-border-radius 0;
     }
 
     // The field and the directory link read as one control: while the field has the focus, the
@@ -48,8 +60,8 @@
 
     // Above the position of `_topbar.scss`
     #topbar-second #space-menu-dropdown div:not(.input-group) > .search-reset {
-        top: 10px;
-        right: 15px;
+        top: $spacer * .5;
+        right: $spacer;
     }
 
     #space-directory-link i {

@@ -9,14 +9,15 @@
     table, .table {
         margin-bottom: 0;
 
+        // Column headers: Meta's size and colour in the weight of a name, a special case of the table
+        // (docs/ui/typography.md)
         th {
-            font-size: 11px;
-            color: var(--bs-body-color);
-            font-weight: normal;
+            @include hh-text-style(meta);
+            font-weight: $table-th-font-weight;
         }
 
         .time {
-            font-size: 12px;
+            @include hh-text-style(meta);
         }
     }
 
@@ -26,12 +27,13 @@
     .table > thead > tr > td,
     .table > tbody > tr > td,
     .table > tfoot > tr > td {
-        padding: 10px 10px 10px 0;
+        // The rest of the cell's padding is Bootstrap's
+        padding-left: 0;
 
+        // A small field, as `.form-select-sm`
         select {
-            font-size: 12px;
-            padding: 4px 8px;
-            height: 30px;
+            font-size: $input-font-size-sm;
+            padding: $input-padding-y-sm $input-padding-x-sm;
             margin: 0;
         }
     }

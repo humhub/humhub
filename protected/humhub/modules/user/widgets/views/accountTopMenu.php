@@ -48,7 +48,7 @@ $userModel = Yii::$app->user->identity;
             <?= Image::widget([
                 'user' => $userModel,
                 'link' => false,
-                'width' => 32,
+                'width' => 40,
                 'htmlOptions' => ['id' => 'user-account-image'],
                 'showSelfOnlineStatus' => true,
             ]) ?>

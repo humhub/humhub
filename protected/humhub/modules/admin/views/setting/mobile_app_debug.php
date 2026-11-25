@@ -51,9 +51,9 @@ use yii\helpers\Url;
     ->options(['data-message' => Json::encode(['type' => 'openNativeConsole'])])
     ->loader(false) ?>
 
-<div class="panel panel-default mt-3">
-    <div class="panel-body">
-        <h4>Test Push Notification</h4>
+<div class="card content-card mt-3">
+    <div class="card-body">
+        <h4 class="fs-6">Test Push Notification</h4>
         <p>
             Make sure the <code>Mobile</code> checkbox is enabled for
             <?= Link::to('Administrative Notifications!', ['/notification/user']) ?>.
@@ -64,9 +64,9 @@ use yii\helpers\Url;
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <h4>Test Update Notification Count</h4>
+<div class="card content-card">
+    <div class="card-body">
+        <h4 class="fs-6">Test Update Notification Count</h4>
         <p>Set Notification Count to a number between 100 and 200.</p>
         <p><code><?= $message = Json::encode(['type' => 'updateNotificationCount', 'count' => random_int(100, 200)]) ?></code></p>
         <?= Button::primary('Execute via JS Channel')
@@ -76,16 +76,16 @@ use yii\helpers\Url;
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <h4>Headers</h4>
+<div class="card content-card">
+    <div class="card-body">
+        <h4 class="fs-6">Headers</h4>
         <pre><?php print_r($_SERVER) ?></pre>
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <h4>Send <code>registerFcmDevice</code> message </h4>
+<div class="card content-card">
+    <div class="card-body">
+        <h4 class="fs-6">Send <code>registerFcmDevice</code> message </h4>
         <p><code><?= $message = Json::encode(['type' => 'registerFcmDevice', 'url' => Url::to(['/fcm-push/token/update-mobile-app'], true)]) ?></code></p>
         <p>The POST to given URL request must contain a `token` field in the payload.</p>
         <hr>
@@ -102,9 +102,9 @@ use yii\helpers\Url;
             ->loader(false) ?>
     </div>
 </div>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <h4>Send <code>unregisterFcmDevice</code> message </h4>
+<div class="card content-card">
+    <div class="card-body">
+        <h4 class="fs-6">Send <code>unregisterFcmDevice</code> message </h4>
         <p><code><?= $message = Json::encode(['type' => 'unregisterFcmDevice', 'url' => Url::to(['/fcm-push/token/delete-mobile-app'], true)]) ?></code></p>
         <p>The POST to given URL request must contain a `token` field in the payload.</p>
         <hr>

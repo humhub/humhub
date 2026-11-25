@@ -9,7 +9,7 @@ use humhub\helpers\Html;
 ?>
 <?php $this->beginContent('@user/views/security/_layout.php') ?>
 <section class="settings-section mb-4">
-    <h3><?= Yii::t('OauthModule.base', 'Token “{name}” created', ['name' => Html::encode($name)]) ?></h3>
+    <h3 class="card-title"><?= Yii::t('OauthModule.base', 'Token “{name}” created', ['name' => Html::encode($name)]) ?></h3>
     <?= $this->render('@oauth/views/common/_credential', [
         'hint' => Yii::t('OauthModule.base', 'Copy the token now. You won\'t be able to see it again.'),
         'fields' => [

@@ -74,7 +74,7 @@ JS, View::POS_LOAD);
             'url' => ['setting/oembed'],
             'label' => Yii::t('AdminModule.settings', 'Back to overview'),
         ]) ?>
-        <h3 class="m-0">
+        <h3 class="card-title m-0">
             <?= empty($name)
                 ? Yii::t('AdminModule.settings', 'Add OEmbed provider')
                 : Yii::t('AdminModule.settings', 'Edit OEmbed provider') ?>

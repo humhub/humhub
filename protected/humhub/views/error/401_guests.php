@@ -8,11 +8,11 @@ use yii\helpers\Url;
 /* @var string $message */
 ?>
 <div class="container">
-    <div class="panel panel-danger">
-        <div class="panel-heading">
-            <?= Yii::t('error', "<strong>Login</strong> required"); ?>
+    <div class="card content-card content-card-danger">
+        <div class="card-header">
+            <div class="card-title"><?= Yii::t('error', "<strong>Login</strong> required"); ?></div>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 
             <h1 class="h6 fw-bold"><?= Html::encode($message); ?></h1>
             <hr>

@@ -72,7 +72,7 @@ $entity-grid-box-shadow-dark: $page-header-box-shadow-dark !default;
 
     .entity-grid-message {
         grid-column: 1 / -1;
-        padding: $spacer * 2 $spacer;
+        padding: $spacer * 1.5 $spacer;
         border-radius: var(--bs-border-radius-lg);
         background: var(--bs-body-bg);
         box-shadow: var(--hh-surface-shadow);

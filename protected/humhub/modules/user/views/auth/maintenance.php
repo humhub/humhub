@@ -17,11 +17,11 @@ $customInfo = trim((string)Yii::$app->settings->get('maintenanceModeInfo', ''));
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn">
-        <div class="panel-heading">
-            <h1><?= Yii::t('UserModule.auth', 'Maintenance mode is active.') ?></h1>
+    <div class="card content-card animated bounceIn">
+        <div class="card-header">
+            <h1 class="card-title"><?= Yii::t('UserModule.auth', 'Maintenance mode is active.') ?></h1>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 
             <?php if (Yii::$app->session->hasFlash('error')): ?>
                 <div class="alert alert-danger" role="alert">

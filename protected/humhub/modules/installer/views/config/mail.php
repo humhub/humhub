@@ -18,13 +18,13 @@ use yii\helpers\Url;
 $transportTypeIsFixed = $settings->isFixed('mailerTransportType');
 $testUrl = Url::to(['/installer/config/mail-test']);
 ?>
-<div id="mail-form" class="panel panel-default animated fadeIn">
+<div id="mail-form" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', 'E-Mail <strong>Delivery</strong>'); ?>
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('InstallerModule.base', 'E-Mail <strong>Delivery</strong>'); ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'Working email delivery is required for account activation, invitations, notifications and password recovery. Configure it now, or keep the default and adjust it later in the administration.'); ?></p>
 
         <?php $form = ActiveForm::begin(['id' => 'installer-mail-form']); ?>

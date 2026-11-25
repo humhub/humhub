@@ -3,8 +3,6 @@
 // --------------------------------------------------
 
 $file-version-gap: $spacer * .5 !default;
-$file-version-meta-color: var(--bs-secondary-color) !default;
-$file-version-meta-font-size: $font-size-sm !default;
 
 @if not $prev-file {
     .files {
@@ -13,14 +11,15 @@ $file-version-meta-font-size: $font-size-sm !default;
 
     ul.files {
         list-style: none;
-        margin: 0 0 5px;
+        margin: 0 0 $spacer * .25;
         padding: 0;
 
+        // Room for the 20px icon and the gap beside it (px, as the image)
         li.file-preview-item {
             padding-left: 24px;
 
             .file-fileInfo {
-                padding-right: 20px;
+                padding-right: $spacer;
             }
         }
     }
@@ -30,7 +29,7 @@ $file-version-meta-font-size: $font-size-sm !default;
         padding-left: 0;
 
         li:first-child {
-            margin-top: 10px;
+            margin-top: $spacer * .5;
         }
     }
 
@@ -46,16 +45,16 @@ $file-version-meta-font-size: $font-size-sm !default;
     }
 
     .post-files {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: $spacer * .5;
+        margin-bottom: $spacer * .5;
 
         .col-media {
-            padding: 4px;
+            padding: $spacer * .25;
         }
 
         img, video {
             vertical-align: top;
-            border-radius: 4px;
+            border-radius: $border-radius-sm;
             width: 100%;
             height: 100%;
         }
@@ -101,10 +100,10 @@ $file-version-meta-font-size: $font-size-sm !default;
 
     }
 
+    // At the bottom the margin of the list and the padding of its rows
     .post-file-list {
-        padding: 10px;
-        padding-bottom: 1px;
-        margin-bottom: 10px;
+        padding: $spacer * .5 $spacer * .5 0;
+        margin-bottom: $spacer * .5;
 
         a, a:active, a:focus, a:hover {
             color: var(--hh-accent-fg);
@@ -114,7 +113,7 @@ $file-version-meta-font-size: $font-size-sm !default;
 
     body.device-mobile #wallStream {
         .post-files {
-            margin-top: 10px;
+            margin-top: $spacer * .5;
             display: flex;
             overflow-x: auto;
 
@@ -138,8 +137,8 @@ $file-version-meta-font-size: $font-size-sm !default;
 
         .image-upload-buttons {
             position: absolute;
-            right: 5px;
-            bottom: 5px;
+            right: $spacer * .25;
+            bottom: $spacer * .25;
             display: none;
 
             // The upload control is a <span class="btn"> wrapping an invisible (opacity: 0) native
@@ -170,17 +169,17 @@ $file-version-meta-font-size: $font-size-sm !default;
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 20px;
+            padding: $spacer;
             background: var(--bs-tertiary-bg);
         }
     }
 
 
-    // Mime-Types
+    // Mime-Types: room for the 20px icon and the gap beside it (px, as the image)
     .mime {
         background-repeat: no-repeat;
         background-position: 0 0;
-        padding: 1px 0 4px 26px;
+        padding: 0 0 $spacer * .25 24px;
     }
 
     .mime-word {
@@ -254,7 +253,6 @@ $file-version-meta-font-size: $font-size-sm !default;
     }
 
     .file-version-meta {
-        color: $file-version-meta-color;
-        font-size: $file-version-meta-font-size;
+        @include hh-text-style(meta);
     }
 }

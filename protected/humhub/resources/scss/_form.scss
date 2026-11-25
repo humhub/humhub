@@ -2,8 +2,9 @@
 // Forms
 // --------------------------------------------------
 
-$form-choice-size: 20px !default;
-$form-choice-border-radius: 4px !default;
+// 20px at the browser's default font size, grows with it like the label beside it
+$form-choice-size: 1.25rem !default;
+$form-choice-border-radius: $border-radius-sm !default;
 
 @if not $prev-form {
     // Fix input lists (radio, checkboxes, dropdown) for Bootstrap 5
@@ -23,8 +24,10 @@ $form-choice-border-radius: 4px !default;
     }
 
 
+    // The weight of a control's label (Control, docs/ui/typography.md); its size is that of where it stands, e.g. a
+    // small filter
     label {
-        font-weight: 700;
+        font-weight: $font-weight-medium;
 
         &[required]:after {
             content: " *";
@@ -42,17 +45,9 @@ $form-choice-border-radius: 4px !default;
         color: var(--hh-accent-fg);
     }
 
-    .form-checkboxes-normal {
-        .radio label,
-        .checkbox label {
-            font-weight: 500;
-        }
-    }
-
-    // Border, padding and focus come from Bootstrap's `$input-*` variables (variables.scss)
+    // Border, padding, size and focus come from Bootstrap's `$input-*` variables (variables.scss)
     %form-control-base {
         background-color: var(--bs-body-bg);
-        font-size: 14px;
 
         &:focus {
             outline: 0;
@@ -64,9 +59,10 @@ $form-choice-border-radius: 4px !default;
             opacity: 1;
         }
 
+        // Room for the icon of `.form-group-search`
         &.form-search {
-            border-radius: 30px;
-            padding-left: 34px;
+            border-radius: $border-radius-pill;
+            padding-left: $input-padding-x + $input-font-size + $spacer * .5;
         }
     }
 
@@ -89,20 +85,21 @@ $form-choice-border-radius: 4px !default;
     .form-group-search {
         position: relative;
 
+        // On the field's line of text, where the text would start
         &:before {
-            font: 14px 'tabler-icons';
+            font: #{$input-font-size}/#{$input-line-height} 'tabler-icons';
             content: "\eb1c"; /* Tabler search */
             color: var(--bs-secondary-bg);
             position: absolute;
-            top: 10px;
-            left: 13px;
+            top: calc(#{$input-padding-y} + #{$input-border-width});
+            left: $input-padding-x;
         }
 
         .form-button-search {
             position: absolute;
-            top: 4px;
-            right: 4px;
-            border-radius: 30px;
+            top: $spacer * .25;
+            right: $spacer * .25;
+            border-radius: $border-radius-pill;
         }
     }
 
@@ -110,7 +107,7 @@ $form-choice-border-radius: 4px !default;
         appearance: none;
         background-image: url("../img/select_arrow.png");
         background-repeat: no-repeat;
-        background-position: right 16px;
+        background-position: right center;
         overflow: hidden;
     }
 
@@ -127,49 +124,48 @@ $form-choice-border-radius: 4px !default;
 
     // Placeholder text for empty content
     .placeholder {
-        padding: 10px;
+        padding: $spacer * .5;
         color: var(--bs-secondary-color);
     }
 
     // HTML5 Placeholder jQuery Plugin
     input.placeholder,
     textarea.placeholder {
-        padding: 0 0 0 10px;
+        padding: 0 0 0 $spacer * .5;
         color: $input-placeholder-color;
     }
 
-    .invalid-feedback {
-        font-size: 12px;
+    .form-text {
+        @include hh-text-style(meta);
     }
 
-    .form-text, .text-body-secondary {
+    // A colour utility used for hints: Meta's size, the weight and line height of where it stands
+    .text-body-secondary {
         color: var(--bs-body-color);
-        font-size: 13px;
+        font-size: $font-size-sm;
     }
 
     .panel-body > .text-body-secondary {
-        padding-right: 20px;
-        margin-bottom: 20px;
+        padding-right: $spacer;
+        margin-bottom: $spacer;
     }
 
     .hint-block {
-        color: var(--bs-secondary-color);
-        font-size: 12px;
+        @include hh-text-style(meta);
     }
 
     .hint-block:hover {
-        color: var(--bs-secondary-color);
-        font-size: 12px;
+        color: var(--bs-body-color);
     }
 
     a.input-field-addon-sm {
-        font-size: 11px;
+        @include hh-text-style(meta, $color: false);
         float: right;
-        margin-top: -10px;
+        margin-top: $spacer * -.5;
     }
 
     .timeZoneInputContainer {
-        padding-top: 10px;
+        padding-top: $spacer * .5;
     }
 
     .timeZoneInputContainer ~ .form-text {
@@ -193,7 +189,7 @@ $form-choice-border-radius: 4px !default;
         height: $form-choice-size;
         min-height: auto;
         padding: 0;
-        margin: 0 6px 0 0;
+        margin: 0 $spacer * .25 0 0;
         vertical-align: middle;
         background: var(--bs-body-bg);
         border: 2px solid var(--hh-input-border-color);
@@ -210,7 +206,7 @@ $form-choice-border-radius: 4px !default;
             &::after {
                 content: '\ea5e'; /* Tabler check */
                 font-family: 'tabler-icons';
-                font-size: 14px;
+                font-size: $font-size-base; // In rem as the box, so it fits at any font size
                 line-height: 1;
                 position: absolute;
                 inset: 0;
@@ -313,16 +309,15 @@ $form-choice-border-radius: 4px !default;
     .form-check-card {
         position: relative;
         display: flex;
-        flex: 1 1 10rem;
+        flex: 1 1 10rem; // The narrowest a card gets before the row wraps
         align-items: flex-start;
         gap: $spacer * .75;
-        min-height: 56px;
         margin: 0;
         padding: $spacer * .75 $spacer;
         border: var(--bs-border-width) solid var(--bs-border-color);
         border-radius: var(--bs-border-radius);
         background: var(--bs-body-bg);
-        font-weight: $font-weight-normal; // not the bold of a HumHub `label`
+        @include hh-text-style(text); // Not a label's: the card holds a title and a text
         cursor: pointer;
 
         &:hover {
@@ -364,18 +359,15 @@ $form-choice-border-radius: 4px !default;
     .form-check-card-body {
         display: flex;
         flex-direction: column;
-        gap: 2px;
         min-width: 0;
     }
 
     .form-check-card-title {
-        color: var(--bs-emphasis-color);
-        font-weight: $font-weight-semibold;
+        @include hh-text-style(strong);
     }
 
     .form-check-card-text {
-        color: var(--bs-secondary-color);
-        font-size: $font-size-sm;
+        @include hh-text-style(meta);
     }
 
     @include media-breakpoint-down(sm) {
@@ -389,8 +381,9 @@ $form-choice-border-radius: 4px !default;
             align-items: center;
             padding: $spacer * .5 $spacer;
 
+            // Back in the flow; still the box its dot (`::after`) is placed in
             > .form-check-input {
-                position: static;
+                position: relative;
                 flex: 0 0 auto;
                 opacity: 1;
             }
@@ -399,8 +392,9 @@ $form-choice-border-radius: 4px !default;
 
     div.mb-3 {
         div.checkbox {
+            // Under the label, past the checkbox
             .form-text {
-                margin-left: 23px;
+                margin-left: $form-choice-size + $spacer * .25;
             }
 
             // avoid spacing between checkbox and hint
@@ -415,14 +409,14 @@ $form-choice-border-radius: 4px !default;
         display: flex;
         flex-wrap: wrap;
         border: 1px solid var(--bs-light);
-        border-radius: 4px;
+        border-radius: $border-radius-sm;
         width: fit-content;
 
         div.radio {
             flex: 1;
             text-align: center;
-            font-size: 12px;
-            border-radius: 3px;
+            @include hh-text-style(control, $color: false);
+            border-radius: $border-radius-sm;
             background: var(--bs-body-bg);
             box-shadow: none;
             margin: 0 !important;
@@ -433,7 +427,7 @@ $form-choice-border-radius: 4px !default;
             }
 
             .ti {
-                margin-right: 5px;
+                margin-right: $spacer * .25;
 
                 &.radio-pill-active-icon {
                     display: none;
@@ -441,9 +435,7 @@ $form-choice-border-radius: 4px !default;
             }
 
             label {
-                font-weight: 600;
-                padding: 2px 12px;
-                line-height: 21px;
+                padding: $spacer * .25 $spacer;
             }
 
             &::after {
@@ -486,7 +478,7 @@ $form-choice-border-radius: 4px !default;
     //
     .errorMessage {
         color: var(--hh-danger-fg);
-        padding: 10px 0;
+        padding: $spacer * .5 0;
     }
 
     // Errror handling
@@ -497,7 +489,7 @@ $form-choice-border-radius: 4px !default;
     // The show/hide password icon (appended in humhub.ui.form.elements.js): the ring inside its own box, so it
     // never pokes out past the input's border
     .humhub-pw-show {
-        border-radius: 4px;
+        border-radius: $border-radius-sm;
 
         &:focus-visible {
             @include hh-focus-ring(true);
@@ -515,8 +507,7 @@ $form-choice-border-radius: 4px !default;
 
         // Like `.accordion-title` of the notification settings
         .accordion-button {
-            color: var(--bs-emphasis-color);
-            font-weight: $font-weight-semibold;
+            @include hh-text-style(strong);
             cursor: pointer;
 
             label {
@@ -581,10 +572,10 @@ $form-choice-border-radius: 4px !default;
         // fileupload button
         .richtext-create-buttons {
             white-space: nowrap;
-            padding-top: 6px;
+            padding-top: $spacer * .25;
 
             .btn:not(.dropdown-toggle) {
-                margin-left: 6px;
+                margin-left: $spacer * .25;
             }
 
             .btn.fileinput-button, .fileinput-button + .dropdown-toggle {

@@ -2,6 +2,11 @@
 // Profile
 // --------------------------------------------------
 
+// The name on the header of a space or profile, from Bootstrap's type scale (`.fs-3`): it stands on the cover image
+$container-header-title-font-size: $h3-font-size !default;
+// The numbers of the header's counters, a step below the name (`.fs-4`), above their labels as secondary text
+$container-header-count-font-size: $font-size-base * 1.5 !default; // 21px: a special case of the header
+
 @if not $prev-profile {
     .panel-profile {
         .panel-profile-header {
@@ -35,25 +40,22 @@
         }
     }
 
-    .profile-item {
-        margin-top: 15px;
-    }
-
     .panel-profile {
         .panel-profile-header {
             position: relative;
             border: 3px solid var(--bs-body-bg);
-            border-top-right-radius: 3px;
-            border-top-left-radius: 3px;
+            // The card's corners; the cover inside the 3px frame a step less rounded
+            border-top-right-radius: $border-radius-lg;
+            border-top-left-radius: $border-radius-lg;
 
             .img-profile-header-background {
-                border-radius: 3px;
+                border-radius: $border-radius;
                 min-height: 110px;
             }
 
             // Without an uploaded banner: a background color, not the pixels of the default image (a light grey
             // in every color mode). In the dark mode lighter than the surface, so that the gradient behind the
-            // name ends lighter than the panel below, as in the light mode.
+            // name ends lighter than the card below, as in the light mode.
             .img-profile-header-default {
                 background-color: var(--bs-secondary-bg);
                 object-position: -10000px 0;
@@ -76,42 +78,41 @@
 
             .img-profile-data {
                 align-self: end;
+                // A grid item is as wide as its content by default: the subtitle's `nowrap` would stretch the cell
+                // over a phone's width instead of showing its ellipsis
+                min-width: 0;
                 min-height: 100px;
+                // Name and subtitle at the bottom, also when they need less room than the gradient's height
+                align-content: end;
                 padding-left: 180px;
-                padding-top: 30px;
-                border-bottom-right-radius: 3px;
-                border-bottom-left-radius: 3px;
+                padding-top: $spacer * 1.5;
+                border-bottom-right-radius: $border-radius;
+                border-bottom-left-radius: $border-radius;
                 color: var(--bs-white);
+                // Name and subtitle are heading classes: white on the picture, not a title's colour
+                --bs-heading-color: var(--bs-white);
                 background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
+                // The name, whatever its tag (`h1`, or `div` below a page's own `h1`): a step above a content title, as it
+                // stands on the cover image
                 .h1 {
-                    margin-bottom: 7px;
+                    font-size: $container-header-title-font-size;
                     max-width: 600px;
                     // The whole name, wrapped: the header has no other place for it
                     overflow-wrap: anywhere;
 
                     a {
-                        font-size: 30px;
-                        font-weight: 100;
                         color: var(--bs-white);
                     }
                 }
 
+                // The subtitle is text, not a heading; white on the picture
                 .h2 {
-                    font-size: 16px;
-                    font-weight: 400;
+                    @include hh-text-style(text, $color: false);
                     margin-top: 0;
                 }
 
-                .h1.space {
-                    a {
-                        font-weight: 700;
-                    }
-                }
-
                 .h2.space {
-                    font-size: 13px;
-                    font-weight: 300;
                     max-width: 600px;
                     white-space: nowrap;
                     overflow: hidden;
@@ -121,12 +122,12 @@
 
             .profile-user-photo-container {
                 position: absolute;
-                bottom: -60px;
+                bottom: -44px; // Into the strip below the cover, 8px above its lower edge
                 left: 15px;
 
                 .profile-user-photo {
                     border: 3px solid var(--bs-body-bg);
-                    border-radius: 5px;
+                    border-radius: $border-radius;
 
                     // Force position of the online status because of the 3px border on the photo
                     + .user-online-status {
@@ -137,32 +138,63 @@
             }
         }
 
+        // Beside the image: with the card's padding, the counters in line with the name (`.img-profile-data`)
         .panel-profile-controls {
-            padding-left: 148px;
+            padding-left: 139px;
+        }
+
+        // The strip with counters and buttons below the cover, not a card's body: half the card's padding above and
+        // below
+        > .card-body:has(> .panel-profile-controls) {
+            padding-block: $spacer * .5;
+        }
+    }
+
+    // The counters of a profile's or space's header (`CounterSet`)
+    .statistics .entry {
+        margin-left: $spacer;
+        color: var(--bs-emphasis-color);
+
+        // A large number above a small label, as high together as the buttons beside them (the number on a line
+        // of its own height), so the counters don't make the header higher
+        .count, .title {
+            display: block;
+        }
+
+        br {
+            display: none;
+        }
+
+        // A special case of the header (docs/ui/typography.md)
+        .count {
+            font-size: $container-header-count-font-size;
+            font-weight: $font-weight-semibold;
+            line-height: 1;
+        }
+
+        // The label of a count
+        .title {
+            @include hh-text-style(meta);
+        }
+    }
+
+    // Between two counters (a counter may be wrapped in its link)
+    .statistics > :not(:first-child) {
+        &.entry, .entry {
+            margin-left: $spacer * 1.5;
         }
     }
 
     @include media-breakpoint-down(md) {
         .panel-profile .panel-profile-controls {
-            padding-left: 100px;
-        }
-
-        .panel-profile .panel-profile-header .img-profile-data .h1 {
-            font-size: 20px;
-            line-height: 20px;
-            margin-bottom: 2px;
-
-            // The name is the link: the smaller size is its own, so a name fits the narrow header
-            a {
-                font-size: inherit;
-            }
+            padding-left: 92px;
         }
     }
 
     @include media-breakpoint-down(sm) {
         .panel-profile .panel-profile-controls {
             padding-left: 0;
-            padding-top: 50px;
+            padding-top: 44px; // Below the picture, which reaches 44px into the strip
         }
     }
 

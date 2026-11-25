@@ -112,7 +112,7 @@ describe('ActivityBox', () => {
         // The panel element itself is the widget's mount point (see `ActivityBox::run()`),
         // so the component renders its contents rather than the panel.
         expect(wrapper.find('.panel-menu').text()).toBe('menu');
-        expect(wrapper.find('.panel-heading').text()).toContain('activities');
+        expect(wrapper.find('.card-header').text()).toContain('activities');
         expect(wrapper.find('#activity-box-content.activities').exists()).toBe(true);
         expect(getCalls).toHaveLength(0);
 
@@ -124,15 +124,15 @@ describe('ActivityBox', () => {
             .toBe('2026-08-20T10:00:00+00:00');
     });
 
-    it('marks the panel body as the collapse target of the panel menu', () => {
+    it('marks the card body as the collapse target of the card menu', () => {
         wrapper = mount(ActivityBox, { ...mountOptions(), props: boxProps() });
 
-        // `ui.panel.PanelMenu` collapses the first `.collapse` inside the panel and only walks
+        // `ui.panel.PanelMenu` collapses the first `.collapse` inside the card and only walks
         // the siblings of its own <ul> when there is none - a walk that cannot work here,
         // because the menu is mounted inside the element carrying `v-html`. Without this class
-        // the widget throws on init and the panel menu stays dead (the throw is swallowed by
+        // the widget throws on init and the card's menu stays dead (the throw is swallowed by
         // `Component.instance()`).
-        const body = wrapper.find('.panel-body');
+        const body = wrapper.find('.card-body');
         expect(body.classes()).toContain('collapse');
         // `show` keeps the body visible until the widget applies the remembered state.
         expect(body.classes()).toContain('show');

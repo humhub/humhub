@@ -24,11 +24,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
     <?= SiteLogo::widget(['place' => SiteLogo::PLACE_LOGIN]) ?>
     <br>
 
-    <div class="panel panel-default mb-4 animated bounceIn" id="login-form">
-        <div class="panel-heading">
-            <h1><strong class="fw-bolder"><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
+    <div class="card content-card mb-4 animated bounceIn" id="login-form">
+        <div class="card-header">
+            <h1 class="card-title"><strong><?= Yii::t('UserModule.auth', 'Sign In') ?></strong></h1>
         </div>
-        <div class="panel-body pt-0">
+        <div class="card-body">
             <?php if (Yii::$app->session->hasFlash('error')): ?>
                 <?= Alert::danger(Yii::$app->session->getFlash('error'))->closeButton(false) ?>
             <?php endif; ?>
@@ -60,8 +60,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Sign In');
     </div>
 
     <?php if (AuthChoice::hasClients()): ?>
-        <div class="panel panel-default mb-4 animated bounceIn" id="auth-choice-panel">
-            <div class="panel-body">
+        <div class="card content-card mb-4 animated bounceIn" id="auth-choice-panel">
+            <div class="card-body">
                 <?php if ($showLoginForm): ?>
                     <p class="text-center mb-2">
                         <?= Yii::t('UserModule.auth', 'Or continue with') ?>

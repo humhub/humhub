@@ -42,26 +42,27 @@
             .form-search-filter-keyword {
                 position: relative;
                 input[type=text] {
-                    padding-right: 26px;
+                    padding-right: $spacer * 1.5;
                 }
                 .form-button-search {
                     position: absolute;
-                    right: 3px;
-                    bottom: 6px;
+                    right: $spacer * .25;
+                    bottom: $spacer * .25;
                 }
             }
 
             .form-button-search {
                 background: none;
                 border: 0;
-                font-size: 16px;
+                font-size: $font-size-lg;
                 top: initial;
-                bottom: 9px;
+                bottom: $spacer * .5;
             }
 
+            // The label of a filter field
             .form-search-field-info {
                 display: block;
-                font-weight: 500;
+                @include hh-text-style(control, $color: false);
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -86,15 +87,9 @@
             }
         }
 
+        // Its icon-only button is as high as the search field beside it (`.btn-icon-only`, `_button.scss`)
         .form-search-action {
             margin-top: auto;
-            // As high as the search field beside it
-            .btn {
-                width: $input-height;
-                height: $input-height;
-                padding: 0;
-                font-size: 20px;
-            }
             &.form-search-action-toggle-more {
                 display: none;
                 .btn:not(.collapsed) {
@@ -122,8 +117,8 @@
                 width: 100%;
                 display: flex;
                 flex-direction: column;
-                margin: 15px 0;
-                border-radius: 4px;
+                margin: $spacer 0;
+                border-radius: $border-radius-sm;
                 box-shadow: 0 0 3px var(--bs-border-color);
                 background-color: var(--bs-body-bg);
             }
@@ -134,12 +129,12 @@
                 background-color: var(--bs-border-color);
                 background-size: cover;
                 background-position: center;
-                border-radius: 4px 4px 0 0;
+                border-radius: $border-radius-sm $border-radius-sm 0 0;
             }
 
             .card-header {
                 position: absolute;
-                padding: 16px;
+                padding: $spacer;
                 display: table;
                 width: 100%;
                 border-bottom: none;
@@ -153,24 +148,19 @@
 
             .card-body {
                 flex-grow: 1;
-                padding: 44px 16px 24px 16px;
+                // At the top room for the picture reaching down from the header
+                padding: $spacer * 3 $spacer $spacer * 1.5;
                 overflow: auto;
-
-                .card-title {
-                    font-size: 16px;
-                    font-weight: bold;
-                    line-height: 24px;
-                }
             }
 
             .card-footer {
-                padding: 0 16px 20px;
+                padding: 0 $spacer $spacer;
                 border-top: none;
                 background-color: transparent;
 
                 a.btn {
                     float: left;
-                    margin: 0 8px 4px 0;
+                    margin: 0 $spacer * .5 $spacer * .25 0;
                     white-space: normal;
                     hyphens: none;
 
@@ -180,7 +170,7 @@
                 }
 
                 .btn-group {
-                    margin: 0 8px 4px 0;
+                    margin: 0 $spacer * .5 $spacer * .25 0;
                     a.btn {
                         margin: 0;
                     }

@@ -819,7 +819,7 @@
         vue$1.createVNode(
           _component_SpaceImage,
           vue$1.mergeProps($props.space, {
-            width: 24,
+            width: 32,
             link: false
           }),
           null,

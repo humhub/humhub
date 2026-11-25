@@ -25,15 +25,12 @@
     .img-profile-space {
         position: relative;
 
+        // On the avatar (px, as the images)
         .img-space {
             position: absolute;
             top: 15px;
             left: 15px;
         }
-    }
-
-    .rounded {
-        border-radius: 3px;
     }
 
     .has-online-status {

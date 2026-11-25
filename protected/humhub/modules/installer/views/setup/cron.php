@@ -5,13 +5,13 @@ use humhub\helpers\Html;
 /** @var string $systemUser */
 
 ?>
-<div id="cron" class="panel panel-default animated fadeIn">
+<div id="cron" class="card content-card animated fadeIn">
 
-    <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', '<strong>Scheduled jobs</strong>') ?>
+    <div class="card-header">
+        <div class="card-title"><?= Yii::t('InstallerModule.base', '<strong>Scheduled jobs</strong>') ?></div>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'HumHub uses cron jobs to execute scheduled or to run potentially heavy tasks such as sending out email summaries and notifications or optimizing the search index.'); ?></p>
         <p>
             <strong><?= Yii::t('InstallerModule.base', 'Installation Example:') ?></strong>

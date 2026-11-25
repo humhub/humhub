@@ -75,11 +75,10 @@ New classes follow Bootstrap's naming, so they read like the classes around them
   override them in their `variables.scss` like any Bootstrap variable (`!default` keeps theirs).
 - Variables are **derived from Bootstrap's and HumHub's existing values**: `$spacer` and its
   steps, `$border-radius`, `$border-radius-lg`, `$box-shadow-sm`, `$font-weight-semibold`,
-  `$h*-font-size`, `$body-bg`, `$border-color`.
+  `$font-size-sm`, `$font-size-lg`, `$body-bg`, `$border-color`.
 - **When in doubt, stay with Bootstrap and the current HumHub design.** The prototype's exact
   pixel values (8px grid, 6px radii, its shadows) are not a reason to deviate. A component takes
-  the **nearest existing value**, e.g. `$spacer * .5` for the prototype's 8px (7px at
-  `$font-size-root` 14px). Only structure, behaviour and the parts of a component come from the
+  the **nearest existing value**, e.g. `$spacer * .5` for the prototype's 8px. Only structure, behaviour and the parts of a component come from the
   design. Visual details that differ are collected as open questions and decided for the whole
   design, not per component.
 - **No pixel values in rules.** Everything goes through the variables. Layout widths that define
@@ -89,9 +88,9 @@ New classes follow Bootstrap's naming, so they read like the classes around them
   `$dropdown-*`, `$modal-*`, `$input-*`). Only a customisation scoped to one selector sets
   `--bs-<component>-*` in a component file (as `.btn-ghost` does). This is the rule from the head
   of `variables.scss`.
-- Global Bootstrap and HumHub values (e.g. `$btn-border-radius`, today 3px against the
-  prototype's 6px) are **not** changed per component. Whether and when they move is decided for
-  the whole design (see Open questions).
+- Global Bootstrap values (`$btn-*`, `$input-*`, `$border-radius`) are **not** changed per
+  component. HumHub takes Bootstrap's defaults; the few overrides are listed in
+  [Where HumHub differs from Bootstrap](#where-humhub-differs-from-bootstrap).
 
 ### 4. Each component declares its own CSS variables
 
@@ -168,6 +167,67 @@ filled from the Sass variables. Its rules only use these variables:
 - Bootstrap's viewport breakpoints (`media-breakpoint-up()`) are only for the app shell (top bar,
   mobile navigation).
 
+## Where HumHub differs from Bootstrap
+
+HumHub takes Bootstrap's defaults for type, spacing, control sizes and radii. `1rem` is the
+browser's font size, as the Bootstrap docs assume. These are all the size overrides
+(`variables.scss`); a new one needs a reason as good as these:
+
+| Variable | HumHub | Bootstrap | Why |
+|---|---|---|---|
+| `$font-size-base` | `.875rem` | `1rem` | 14px text: the density of the UI. The one knob for a theme's text size. |
+| `$input-btn-padding-y` | `.5rem` | `.375rem` | Buttons and fields 39px high instead of 35px. |
+| `$btn-font-weight`, `$nav-link-font-weight` | 500 | 400, none | The Control text style of a button's, tab's or menu entry's label. |
+| `$h5-font-size`, `$h4-font-size` | `1rem`, `$font-size-lg` | `$font-size-lg`, `$font-size-base * 1.5` | `h5`/`.fs-5` give the Title and `h4`/`.fs-4` the Large title text style ([Typography](typography.md#bootstraps-names)). |
+| `$headings-font-weight`, `$headings-color` (`-dark`) | 600, `var(--bs-emphasis-color)` | 500, `inherit` | A heading tag has the weight and colour of the title styles. |
+| `$table-th-font-weight` | 600 | none (the browser's bold) | A column's header, at Meta's size ([Typography](typography.md#special-cases-of-components)). |
+| `$badge-font-size` | `.875em` | `.75em` | As secondary text; Bootstrap's 10.5px is below the smallest text. |
+| `$badge-font-weight`, `$badge-border-radius` | 600, `50rem` (`$border-radius-pill`) | 700, `$border-radius` | A chip is semibold, one of the three weights, and fully rounded ([Badges](badges.md)). |
+| `$dropdown-padding-x` | `.5rem` | `0` | A menu's rows are inset, with rounded corners. |
+| `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (37px), their content half a spacer from the row's rounded edge. |
+| `$dropdown-min-width` | `15rem` | `10rem` | Menus hold labels with icons and hints. |
+| `$tooltip-max-width` | `400px` | `200px` | Tooltips show cut-off text in full. |
+| `$form-check-padding-start` | `2em` | `1.5em` | Labels with several lines. |
+
+Own additions:
+
+- A component sets the size of its title (`.card-title`, `.modal-title`, the page header's title,
+  see [Typography](typography.md)).
+- Rendered rich text has a heading scale of its own (`_richtext.scss`).
+- Six text styles (`$hh-text-styles`, `hh-text-style()`, see [Typography](typography.md)): size, weight, line
+  height and colour together, taken by the components instead of single properties.
+- `--hh-topbar-height` (`3.5rem`, as Bootstrap's navbar) is the height of one top bar; `--hh-fixed-header-height` is
+  derived from it.
+
+Not Bootstrap's yet: the container widths (`$container-max-widths`).
+
+### Spacing
+
+Bootstrap's `$spacers`, as `$spacer * n` in SCSS and `p-1` … `p-5`, `gap-*`, `m*-*` in markup:
+
+| Step | Size | Use it for |
+|---|---|---|
+| `$spacer * .25` (1) | 4px | Icon to text, between badges |
+| `$spacer * .5` (2) | 8px | Inside a component: between its rows and controls |
+| `$spacer` (3) | 16px | Padding of cards, panels and dialogs; between the rows of a form |
+| `$spacer * 1.5` (4) | 24px | Between columns (the gutter) |
+| `$spacer * 3` (5) | 48px | Between the sections of a page |
+
+A value between two steps is not written; take the nearer step.
+
+### Radii
+
+`$border-radius-sm` (4px): checkboxes, small controls, legacy panels. `$border-radius`
+(6px): buttons, fields, dropdowns. `$border-radius-lg` (8px): cards, dialogs, popovers.
+`$border-radius-pill`: badges and chips, pill tabs, avatars, counters.
+
+### What stays in px
+
+Border widths, shadows, the focus ring; image and avatar sizes and an indent beside them; drawn
+shapes (arrows, dots); breakpoints and container widths; fixed sizes not tied to text (the
+`max-height` of a list, preview tiles, menu widths). A fixed `height` around text is a
+`min-height` in rem, so that nothing is cut off with a larger font.
+
 ## Components and their classes
 
 The class names each component gets. Details are on the component pages.
@@ -203,8 +263,8 @@ The class names each component gets. Details are on the component pages.
 | [Item Browser](item-browser.md) | path bar on `.breadcrumb`, view switch on `.btn-check`, checkbox `.form-check-input`, skeleton `.placeholder` | `.path-bar`, `.selection-menu`, `.tile-grid`, `.tile`, `.drop-zone`, `.progress-frame` |
 | [Settings Page](settings-page.md) | `.card`, `.accordion`, `.alert` | `.settings-page`, `.settings-control` |
 
-The content card is Bootstrap's `.card`. It replaces the Bootstrap 3 `.panel` / `.panel-heading`
-that core still renders through `_bootstrap3.scss` (see [Content Card](card.md)).
+The content card is Bootstrap's `.card`. It replaces the Bootstrap 3 `.panel` / `.panel-heading`,
+which only modules still render, styled by `_bootstrap3.scss` until 1.21 (see [Content Card](card.md)).
 
 ## Migrating the 1.20 classes
 
@@ -233,9 +293,6 @@ content card, the entity card and the item browser.
 
 ## Open questions
 
-1. **Design scale:** the prototype works on an 8px grid, while `$spacer` is 14px (`1rem` at
-   `$font-size-root` 14px). Until decided, components use the Bootstrap scale (see rule 3).
-   Later options: keep it, or introduce a HumHub spacing map on the 8px grid.
-2. **Global alignment:** do Bootstrap's and HumHub's global values (button and badge radius,
+1. **Global alignment:** do Bootstrap's and HumHub's global values (button and badge radius,
    shadows, `$secondary`, dialog widths) move to the prototype's values, and when? Until decided,
    they stay as they are.

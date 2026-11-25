@@ -57,7 +57,7 @@ class SearchCest
         $I->amGoingTo('test content search');
         $I->amOnPage('/content/search');
         $I->waitForText('Search', 10, '.form-search-filter-keyword');
-        $I->dontSee('No results found!', '.panel');
+        $I->dontSee('No results found!', '.content-card');
 
         $I->fillField('.form-search [name=keyword]', 'Post');
         $I->click('.form-button-search');

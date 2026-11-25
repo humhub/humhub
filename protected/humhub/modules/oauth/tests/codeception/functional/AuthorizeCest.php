@@ -65,7 +65,7 @@ class AuthorizeCest
         $I->amAdmin();
         $I->amOnRoute('/oauth/authorize/index', $this->params());
         $I->see('Sign in to the app on this device?');
-        $I->see(Yii::$app->name, '#oauth-authorize .panel-body');
+        $I->see(Yii::$app->name, '#oauth-authorize .card-body');
 
         $grants = Grant::find()->where(['user_id' => 1])->count();
         $I->stopFollowingRedirects();

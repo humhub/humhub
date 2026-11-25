@@ -5,7 +5,6 @@
 // Pill tabs (`.nav-scroller > .nav-pills`, see docs/ui/tabs.md): outlined pills, the active one
 // filled and with a darker outline; the secondary variant without outlines
 $nav-pills-gap: $spacer * .5 !default;
-$nav-pills-font-weight: $font-weight-medium !default;
 $nav-pills-color: var(--bs-body-color) !default;
 $nav-pills-hover-color: var(--bs-emphasis-color) !default;
 $nav-pills-hover-bg: var(--bs-tertiary-bg) !default;
@@ -20,15 +19,16 @@ $nav-pills-secondary-hover-bg: $nav-pills-hover-bg !default;
 $nav-link-dot-size: 6px !default;
 $nav-link-dot-gap: $spacer * .5 !default;
 
-// The ⋮ of a legacy `.nav-pills.preferences` menu
-$preferences-toggle-size: 2rem !default;
+// The ⋮ of a legacy `.nav-pills.preferences` menu: 28px, the size of a small icon-only button
+$preferences-toggle-size: 1.75rem !default;
 $preferences-toggle-icon-size: $font-size-lg !default;
 
 @if not $prev-nav {
     // Bootstrap overwrite: see the nav Sass variables in variables.scss
 
+    // The icon's fixed-width box (as `.icon-fw`), so the labels line up
     .nav, .list-group {
-        --hh-nav-icon-width: 20px;
+        --hh-nav-icon-width: 1.25em;
     }
 
     .nav .nav-item > .nav-link > i {
@@ -62,7 +62,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     .nav-scroller > .nav-pills {
         --bs-nav-link-color: #{$nav-pills-color};
         --bs-nav-link-hover-color: #{$nav-pills-hover-color};
-        --bs-nav-link-font-weight: #{$nav-pills-font-weight};
         --bs-nav-pills-link-active-color: #{$nav-pills-active-color};
         --bs-nav-pills-link-active-bg: #{$nav-pills-active-bg};
         --hh-nav-pills-border-color: #{$nav-pills-border-color};
@@ -108,12 +107,13 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         --hh-nav-pills-hover-bg: #{$nav-pills-secondary-hover-bg};
     }
 
+    // Between a module panel's heading and body, as between a content card's header and body (`.card-tabs`)
     .panel > .nav-scroller {
-        padding: 0 10px 10px;
+        padding: $spacer * .5 $card-spacer-x 0;
     }
 
     .tab-sub-menu {
-        padding-left: 10px;
+        padding-left: $spacer * .5;
 
         .nav-link {
             &:hover,
@@ -129,23 +129,23 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
     }
 
+    // Legacy tabs (`Tabs`, `SettingsTabs`): a hovered or active tab's top border is 3px, it takes the 2px it adds
+    // from the padding, so the tab keeps its height
     .tab-menu {
-        padding-top: 10px;
+        padding-top: $spacer * .5;
         background-color: var(--bs-body-bg);
 
         .nav-tabs {
-            padding-left: 10px;
+            padding-left: $spacer * .5;
 
             .nav-link {
-                padding-top: 12px;
                 border-color: var(--bs-nav-tabs-border-color);
                 border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
                 background-color: var(--bs-tertiary-bg);
-                max-height: 41px;
 
                 &:hover,
                 &:focus {
-                    padding-top: 10px;
+                    padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                     border-top: 3px solid var(--bs-nav-tabs-border-color);
                 }
 
@@ -154,7 +154,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
                 }
 
                 &.active {
-                    padding-top: 10px;
+                    padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                     border-top: 3px solid var(--bs-accent);
                     background-color: var(--bs-body-bg);
                     border-bottom-color: transparent;
@@ -164,23 +164,21 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     }
 
     ul.tab-menu {
-        padding-top: 10px;
+        padding-top: $spacer * .5;
         background-color: var(--bs-body-bg);
 
-        padding-left: 10px;
+        padding-left: $spacer * .5;
     }
 
     ul.tab-menu-settings {
         .nav-link {
-            padding-top: 12px;
             border-color: var(--bs-nav-tabs-border-color);
             border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
             background-color: var(--bs-tertiary-bg);
-            max-height: 41px;
 
             &:hover,
             &:focus {
-                padding-top: 10px;
+                padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                 border-top: 3px solid var(--bs-nav-tabs-border-color) !important;
             }
 
@@ -189,7 +187,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
             }
 
             &.active {
-                padding-top: 10px;
+                padding-top: calc(var(--bs-nav-link-padding-y) - 2px);
                 border-top: 3px solid var(--bs-accent) !important;
                 background-color: var(--bs-body-bg);
                 border-bottom-color: transparent !important;
@@ -201,9 +199,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     .nav-tabs,
     .account {
         .nav-link.dropdown-toggle {
-            font-size: 16px; // Size of the dropdown caret
-            padding-top: 0.2em;
-            padding-bottom: 0.2em;
+            font-size: $font-size-lg; // Size of the dropdown caret
+            padding-top: $spacer * .25;
+            padding-bottom: $spacer * .25;
         }
     }
 
@@ -212,8 +210,9 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     // menus of headers and tables (`.btn.btn-ghost.btn-icon-only`)
     .nav-pills.preferences {
         position: absolute;
-        right: 10px;
-        top: 10px;
+        // In a card's corner, centred on the first line of its title (the line of a legacy entry's author is as high)
+        right: $card-spacer-x;
+        top: $card-spacer-y + ($h5-font-size * $headings-line-height - $preferences-toggle-size) * .5;
 
         .dropdown .dropdown-toggle {
             display: inline-flex;
@@ -266,7 +265,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     // Nav-Tabs
     .nav-tabs {
-        margin-bottom: 10px;
+        margin-bottom: $spacer * .5;
 
         &.tabs-center {
             li {
@@ -276,13 +275,12 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
 
         > li.nav-item {
-            font-weight: 600;
-            font-size: 12px;
+            @include hh-text-style(control, $color: false);
 
             > a.nav-link {
                 &,
                 &[data-bs-toggle] {
-                    margin-right: 2px;
+                    margin-right: $spacer * .25;
                     color: var(--bs-body-color);
                 }
 
@@ -301,12 +299,6 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         a [class*=" fa-"] {
             display: inline-block;
             width: var(--hh-nav-icon-width);
-        }
-    }
-
-    .tab-content .tab-pane {
-        .mb-3 {
-            margin-bottom: 5px;
         }
     }
 
@@ -339,7 +331,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
 
     .footer-nav {
         filter: opacity(.6);
-        font-size: 12px;
+        @include hh-text-style(meta, $color: false);
         text-align: center;
 
         .picker {
@@ -358,7 +350,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         display: none;
 
         &.menu-without-form a {
-            border-radius: 4px;
+            border-radius: $border-radius-sm;
         }
 
         .nav-tabs {
@@ -389,13 +381,11 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         }
 
         .content-create-menu-more {
-            padding-right: 3px;
-
             > i {
-                border-radius: 4px 4px 0 0;
+                border-radius: $border-radius-sm $border-radius-sm 0 0;
                 background: var(--bs-body-bg);
-                padding: 10px 15px 11px;
-                font-size: 18px;
+                padding: $spacer * .5 $spacer;
+                font-size: $font-size-lg;
 
                 &:hover {
                     color: color-mix(in srgb, var(--bs-emphasis-color) 80%, var(--bs-body-bg)); // #333 on white

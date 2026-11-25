@@ -17,7 +17,6 @@ $entity-card-gap: $spacer * .5 !default;
 $entity-card-image-size: 80px !default;
 $entity-card-image-border-radius: var(--bs-border-radius) !default;
 $entity-card-cover-bg: var(--bs-secondary-bg) !default;
-$entity-card-title-font-size: $font-size-lg !default;
 // The height of a footer button, and of the skeleton's
 $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-padding-y * 2} + #{$btn-border-width} * 2) !default;
 
@@ -131,11 +130,9 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
         padding: $entity-card-padding;
     }
 
+    // The name: the title of the card's piece of content
     .entity-card-title {
-        color: var(--bs-emphasis-color);
-        font-size: $entity-card-title-font-size;
-        font-weight: $font-weight-bold;
-        line-height: $headings-line-height;
+        @include hh-text-style(title-lg);
         text-decoration: none;
         overflow-wrap: anywhere;
         @include transition(color .15s ease-in-out);
@@ -247,7 +244,7 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
     .entity-card-skeleton-title {
         width: 60%;
         margin: $spacer * .25 0;
-        font-size: $entity-card-title-font-size;
+        @include hh-text-style(title-lg, $color: false);
     }
 
     .entity-card-skeleton-subtitle {
@@ -264,8 +261,8 @@ $entity-card-action-height: calc(#{$btn-line-height * $btn-font-size} + #{$btn-p
     }
 
     .entity-card-skeleton .entity-card-skeleton-tag {
-        width: 4rem;
-        font-size: $font-size-sm;
+        width: 4rem; // About a short tag
+        font-size: $font-size-sm; // As high as a badge (`$badge-font-size` of the text)
     }
 
     .entity-card-skeleton-action {

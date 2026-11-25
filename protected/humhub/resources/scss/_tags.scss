@@ -4,10 +4,9 @@
 
 @if not $prev-tags {
     .tags {
+        // A small button (`.btn.btn-light.btn-sm`), its padding and radius Bootstrap's
         .tag {
-            margin-top: 5px;
-            border-radius: 2px;
-            padding: 4px 8px;
+            margin-top: $spacer * .25;
             text-transform: uppercase;
             max-width: 150px;
             white-space: nowrap;
