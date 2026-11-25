@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.21.0 (Unreleased)
+-------------------
+- Enh: Removed the Bootstrap 3 panels (`_bootstrap3.scss`) and `PanelMenu`, deprecated in 1.20
+
 1.20.0 (Unreleased)
 -------------------
 - Enh: The sections of the "My Data" account settings as an accordion

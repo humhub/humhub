@@ -118,7 +118,7 @@ style is set through `$dropdown-*` variables. Class names and SCSS follow [Styli
   rows in core: content "Delete" (`DeleteLink`), comment "Delete", module "Uninstall", data
   table row actions with `destructive`.
 - **PHP:** `humhub\widgets\menu\DropdownMenu` (Bootstrap dropdown with `MenuEntry` / `MenuLink`
-  entries), used e.g. by `WallEntryControls` and `PanelMenu`. A destructive entry sets
+  entries), used e.g. by `WallEntryControls` and `SidebarCard`. A destructive entry sets
   `'class' => 'dropdown-item-danger'` in its `htmlOptions`.
 - **Vue:** `DropdownMenu.vue` with a free slot or data-driven entries (`menuId`, `entries`),
   extensible through `registerMenuEntry()` / `removeMenuEntry()`. It opens at the pointer via

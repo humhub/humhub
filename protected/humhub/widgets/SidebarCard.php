@@ -116,7 +116,7 @@ class SidebarCard extends Widget
     }
 
     /**
-     * The id of the collapsing body: as `PanelMenu` derived it from the widget whose view renders
+     * The id of the collapsing body: as the former `PanelMenu` derived it from the widget whose view renders
      * the card, so that a remembered state survives the change from a panel to a sidebar card
      */
     private function getCollapseId(): string

@@ -107,9 +107,16 @@ $preferences-toggle-icon-size: $font-size-lg !default;
         --hh-nav-pills-hover-bg: #{$nav-pills-secondary-hover-bg};
     }
 
-    // Between a module panel's heading and body, as between a content card's header and body (`.card-tabs`)
-    .panel > .nav-scroller {
-        padding: $spacer * .5 $card-spacer-x 0;
+    // A module's legacy tabs (`.tab-menu`) in a card's body: over its padding, to its edges; the first tab in line with
+    // the content
+    .card-body > .tab-menu {
+        margin-left: -$card-spacer-x;
+        margin-right: -$card-spacer-x;
+
+        &.nav-tabs,
+        > .nav-tabs {
+            padding-left: $card-spacer-x;
+        }
     }
 
     .tab-sub-menu {
@@ -206,7 +213,7 @@ $preferences-toggle-icon-size: $font-size-lg !default;
     }
 
     // The ⋮ of a legacy menu (`ul.nav.nav-pills.preferences` > `.dropdown` > `.dropdown-toggle`,
-    // e.g. WallEntryControls, PanelMenu): a ghost icon button with the vertical dots, as the
+    // e.g. WallEntryControls): a ghost icon button with the vertical dots, as the
     // menus of headers and tables (`.btn.btn-ghost.btn-icon-only`)
     .nav-pills.preferences {
         position: absolute;

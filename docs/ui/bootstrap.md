@@ -64,7 +64,7 @@ New classes follow Bootstrap's naming, so they read like the classes around them
 - No `c-` prefix and no BEM (`__part`, `--modifier`).
 - A modifier always comes **with** its component class: `.btn.btn-ghost`, `.nav.nav-pills.nav-pills-secondary`.
 - Never reuse a Bootstrap class name for something else. Before adding a class, check that
-  Bootstrap 5 (and `_bootstrap3.scss`, the compatibility layer) doesn't define it.
+  Bootstrap 5 doesn't define it.
 
 ### 3. Values come from Sass variables
 
@@ -263,8 +263,8 @@ The class names each component gets. Details are on the component pages.
 | [Item Browser](item-browser.md) | path bar on `.breadcrumb`, view switch on `.btn-check`, checkbox `.form-check-input`, skeleton `.placeholder` | `.path-bar`, `.selection-menu`, `.tile-grid`, `.tile`, `.drop-zone`, `.progress-frame` |
 | [Settings Page](settings-page.md) | `.card`, `.accordion`, `.alert` | `.settings-page`, `.settings-control` |
 
-The content card is Bootstrap's `.card`. It replaces the Bootstrap 3 `.panel` / `.panel-heading`,
-which only modules still render, styled by `_bootstrap3.scss` until 1.21 (see [Content Card](card.md)).
+The content card is Bootstrap's `.card`. It replaced the Bootstrap 3 `.panel` / `.panel-heading`, whose styles were
+removed in 1.21 (see [Content Card](card.md)).
 
 ## Migrating the 1.20 classes
 

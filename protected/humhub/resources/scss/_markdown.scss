@@ -189,6 +189,11 @@
         }
     }
 
+    // Images in user content of older editors (TinyMCE) with Bootstrap 3's class
+    .img-responsive {
+        @include img-fluid();
+    }
+
     // Floated images in user content
     .markdown-render, [data-ui-markdown], [data-ui-richtext] {
         img.pull-right {

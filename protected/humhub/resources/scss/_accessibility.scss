@@ -34,8 +34,7 @@
                 }
             }
 
-            // Surfaces: the same clear edge for the old panels and the new cards
-            .panel,
+            // Surfaces: the same clear edge for the cards
             .cards .card .card-panel {
                 box-shadow: $hh-surface-box-shadow-contrast;
             }

@@ -3,14 +3,6 @@
 // --------------------------------------------------
 
 @if not $prev-sidebar {
-    // A column (`.col-lg-3`, `.col-lg-4`): its side padding is Bootstrap's half gutter
-    .layout-sidebar-container {
-        // A module's panel: clear of its PanelMenu's ⋮ in the corner (`_nav.scss`)
-        > .panel > .panel-heading {
-            padding-right: $card-spacer-x + $preferences-toggle-size + $spacer * .5;
-        }
-    }
-
     // A card in the sidebar (`humhub\widgets\SidebarCard`, docs/ui/sidebar-card.md). Its ⋮ as small as a stream
     // entry's (`_nav.scss`), as the sidebar is narrow, and reaching over the header's padding instead of making the header
     // higher than the title's line

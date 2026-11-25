@@ -2,10 +2,6 @@
 @import "mixins";
 @import "root";
 
-// TODO: Remove this when Bootstrap 3 is no longer supported
-$prev-bootstrap3: false !default;
-@import "bootstrap3";
-
 // Import base components. Components can be deactivated by $prev-* variables.
 $prev-base: false !default;
 @import "base";

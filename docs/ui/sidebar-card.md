@@ -2,8 +2,7 @@
 
 > Found in the design: the column beside the stream of the dashboard, a space and a profile
 > (latest activities, members, tags, upcoming events, a module's snippet)
-> · Core: `humhub\widgets\SidebarCard` (since 1.20); `humhub\widgets\PanelMenu` on a `.panel`
-> (deprecated, until 1.21)
+> · Core: `humhub\widgets\SidebarCard` (since 1.20)
 > · Technology: **PHP**
 
 A card in the sidebar of a page: the column of `BaseSidebar` widgets beside the stream of the
@@ -102,5 +101,5 @@ modifier **`.sidebar-card`**.
   spaces, a space's members, followers, tags and the membership, a profile's followers,
   spaces, tags and friends, open member requests and the administrators' warnings.
 - **Instead of:** a hand-written `.panel` with `PanelMenu` (`extraMenus` HTML,
-  `enableCollapseOption`, `collapseId`). `PanelMenu` and `ui.panel.PanelMenu` keep working for
-  a module's panel until 1.21. The remembered state carries over (`pm_<collapseId>`).
+  `enableCollapseOption`, `collapseId`), removed in 1.21. The remembered state carries over
+  (`pm_<collapseId>`).
