@@ -50662,6 +50662,9 @@
     }
     add(presetId, plugin, options) {
       options = options || {};
+      if ((this.map[presetId] || []).includes(plugin)) {
+        return;
+      }
       const preset = this.map[presetId] ? this.map[presetId].slice() : [];
       if (options["before"] && this.pluginRegistry.pluginMap[options["before"]]) {
         let index = preset.indexOf(this.pluginRegistry.pluginMap[options["before"]]);
@@ -50685,7 +50688,7 @@
       this.map[presetId] = preset;
       Object.keys(this.extensions).forEach((derivedId) => {
         const { extend, exclude } = this.extensions[derivedId];
-        if (extend === presetId && !exclude.includes(plugin.id) && !(this.map[derivedId] || []).includes(plugin)) {
+        if (extend === presetId && !exclude.includes(plugin.id)) {
           this.add(derivedId, plugin, options);
         }
       });
