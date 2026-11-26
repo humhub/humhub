@@ -92,4 +92,10 @@ class IncompleteSetupWarningTest extends Unit
 
         $this->assertSame([], IncompleteSetupWarning::getDocumentRootProblems($documentRoot, $probe));
     }
+
+    public function testProblemKeysAreTheDocumentRootFindings()
+    {
+        $this->assertSame(\humhub\components\health\checks\DocumentRootCheck::FINDING_LEGACY_ENTRY_SCRIPT, IncompleteSetupWarning::PROBLEM_LEGACY_ENTRY_SCRIPT);
+        $this->assertSame(\humhub\components\health\checks\DocumentRootCheck::FINDING_DOCUMENT_ROOT_EXPOSED, IncompleteSetupWarning::PROBLEM_DOCUMENT_ROOT_EXPOSED);
+    }
 }
