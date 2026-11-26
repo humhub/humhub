@@ -87,9 +87,10 @@ All controls are Bootstrap's **`.form-check`** family. The look is set through B
   HumHub checkbox and radio (`input[type=checkbox|radio]`, since 1.20); Bootstrap's
   `$form-check-input-width`, `$form-check-input-border-radius`,
   `$form-check-input-checked-bg-color` (accent), `$form-switch-width`, `$form-switch-color`,
-  `$form-switch-checked-color`. The border of a checkbox and a radio, and the track and knob of a switch
-  that is off, are `--hh-input-border-color` (3:1 on the fill, WCAG 1.4.11). Radio cards use `$spacer`, `--bs-border-*` and the accent; no own
-  variables.
+  `$form-switch-checked-color`. The border of a checkbox and a radio, and the edge of a switch's track,
+  are `--hh-input-border-color` (3:1 on the surface, WCAG 1.4.11); the knob of a switch that is off is
+  that grey made 3:1 on the track's fill (`--bs-secondary-bg`) too. Radio cards use `$spacer`,
+  `--bs-border-*` and the accent; no own variables.
 
 ## Implementation in core
 
