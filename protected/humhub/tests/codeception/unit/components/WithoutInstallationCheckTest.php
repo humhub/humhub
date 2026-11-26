@@ -22,10 +22,19 @@ use yii\web\Controller;
  */
 class WithoutInstallationCheckTest extends Unit
 {
+    private ?InstallationState $originalState = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $instances = (new ReflectionProperty(InstallationState::class, '_instances'))->getValue();
+        $this->originalState = $instances[InstallationState::class] ?? null;
+    }
+
     protected function tearDown(): void
     {
-        $this->setInstallationState(null);
-        InstallationState::instance(true);
+        // Restore exactly the instance that existed before, never rebuild it from the (possibly empty) database
+        $this->setInstallationState($this->originalState);
         parent::tearDown();
     }
 
