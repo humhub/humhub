@@ -10,6 +10,7 @@ namespace humhub\modules\notification\targets;
 
 use humhub\components\InstallationState;
 use humhub\modules\user\models\User;
+use RuntimeException;
 use Yii;
 use yii\helpers\Url;
 
@@ -53,15 +54,17 @@ final class MailTarget extends BaseTarget
     }
 
     /**
-     * Composes the mail in the recipient's language; a recipient without an e-mail address gets nothing.
+     * Composes the mail in the recipient's language.
      *
      * @inheritdoc
+     * @throws RuntimeException when the recipient has no e-mail address or the mailer did not send the mail,
+     * so the delivery is marked as failed instead of sent
      */
     public function deliver(DeliveryBatch $batch): void
     {
         $user = $batch->recipient;
         if (empty($user->email)) {
-            return;
+            throw new RuntimeException('User ' . $user->id . ' has no e-mail address');
         }
 
         Yii::$app->i18n->setUserLocale($user);
@@ -84,7 +87,7 @@ final class MailTarget extends BaseTarget
             }
 
             if (!$mail->send()) {
-                Yii::warning('Notification mail to ' . $user->email . ' (' . $batch->getSubject() . ') was not sent', 'notification');
+                throw new RuntimeException('Notification mail to ' . $user->email . ' (' . $batch->getSubject() . ') was not sent');
             }
         } finally {
             unset(Yii::$app->view->params['showUnsubscribe'], Yii::$app->view->params['unsubscribeUrl']);
@@ -93,12 +96,16 @@ final class MailTarget extends BaseTarget
     }
 
     /**
-     * No mails before the installation is finished, e.g. for the example content.
+     * No mails before the installation is finished, e.g. for the example content, and none for a
+     * user without an e-mail address: the channel is not offered to them, schedules nothing and
+     * skips what is pending. Without a user, the global defaults, the channel is available.
      *
      * @inheritdoc
      */
     public function isActive(?User $user = null): bool
     {
-        return parent::isActive($user) && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);
+        return parent::isActive($user)
+            && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)
+            && ($user === null || !empty($user->email));
     }
 }
