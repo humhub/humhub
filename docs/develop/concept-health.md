@@ -33,7 +33,7 @@ orchestrator. Alert on `state` if you want to know about it. Maintenance mode is
 
 | Check | Level | Notes |
 |---|---|---|
-| `filesystem:runtime`, `filesystem:assets`, `filesystem:logs` | live | writable; logs only when outside runtime |
+| `filesystem:runtime`, `filesystem:assets`, `filesystem:logs` | live | writable; assets and logs may be missing if the parent is writable; logs only when outside runtime |
 | `database` | ready | `SELECT 1` |
 | `installation` | ready | lifecycle state; explains a not completed installation or maintenance mode |
 | `migrations:core` | ready | pending core migrations: failure |

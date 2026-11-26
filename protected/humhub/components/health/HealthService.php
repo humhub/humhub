@@ -160,7 +160,7 @@ class HealthService extends Component
 
         $assetsMount = Yii::$app->fs->getAssetsMountConfig();
         if ($assetsMount instanceof LocalMountConfig) {
-            $checks[] = new FilesystemCheck(['id' => 'filesystem:assets', 'level' => HealthLevel::Live, 'paths' => [$assetsMount->path]]);
+            $checks[] = new FilesystemCheck(['id' => 'filesystem:assets', 'level' => HealthLevel::Live, 'paths' => [$assetsMount->path], 'allowMissing' => true]);
         }
 
         $logs = Yii::getAlias('@logs');

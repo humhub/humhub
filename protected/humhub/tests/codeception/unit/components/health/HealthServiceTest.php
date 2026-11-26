@@ -9,6 +9,7 @@
 namespace humhub\tests\codeception\unit\components\health;
 
 use Closure;
+use humhub\components\fs\LocalMountConfig;
 use humhub\components\health\CollectChecksEvent;
 use humhub\components\health\HealthCheck;
 use humhub\components\health\HealthLevel;
@@ -253,6 +254,20 @@ class HealthServiceTest extends HumHubDbTestCase
         );
         $this->assertSame(HealthStatus::Ok, $report->results['database']->status);
         $this->assertSame(HealthStatus::Ok, $report->results['migrations:core']->status);
+    }
+
+    public function testAMissingAssetsDirectoryIsOkWhenItCanBeCreated(): void
+    {
+        $fs = Yii::$app->fs;
+        $original = $fs->getAssetsMountConfig();
+        $fs->mounts['assets'] = new LocalMountConfig();
+        $fs->mounts['assets']->path = Yii::getAlias('@runtime') . '/health-missing-assets-' . uniqid();
+
+        try {
+            $this->assertSame(HealthStatus::Ok, Yii::$app->health->runCheck('filesystem:assets')->status);
+        } finally {
+            $fs->mounts['assets'] = $original;
+        }
     }
 
     public function testRunCheck(): void
