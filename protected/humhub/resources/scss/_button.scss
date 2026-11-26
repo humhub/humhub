@@ -160,8 +160,11 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
 
     // Temporary exceptions for "active" Primary and Info buttons to display as outlined
     // See https://github.com/humhub/humhub-internal/issues/661#issuecomment-2968279827
+    // Primary: the colour itself on its contrast colour, readable in both colour modes (`--hh-primary-fg` is lightened
+    // in the dark mode, WCAG 1.4.3)
     .btn-primary {
-        --bs-btn-active-color: var(--hh-primary-fg);
+        // stylelint-disable-next-line declaration-property-value-disallowed-list -- on its contrast colour, not a surface
+        --bs-btn-active-color: var(--bs-primary);
         --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-primary);
     }
