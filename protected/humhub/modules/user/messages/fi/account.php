@@ -37,7 +37,7 @@ return [
     'Username has been changed' => 'Käyttäjätunnus on vaihdettu',
     'Users' => 'Käyttäjät',
     'Visible for all (also unregistered users)' => 'Näkyy kaikille (myös rekisteröimätömille)',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Lähetimme juuri vahvistussähköpostin uuteen osoitteeseen. <br /> Noudata viestissä olevia ohjeita.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'Lähetimme juuri vahvistussähköpostin uuteen osoitteeseen. Noudata viestissä olevia ohjeita.',
     'You are currently the owner of following spaces:' => 'Omistat tällä hetkellä seuraavat sivut:',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Olet pyytänyt sähköpostiosoitettasi vaihtoa.<br />Uusi sähköpostiosoitteesi on {newemail}.<br /><br />Vahvista uusi sähköpostiosoitteesi napsauttamalla alla olevaa painiketta.',
     'You must transfer ownership or delete these spaces before you can delete your account.' => 'Sinun pitää siirtä omistamiesi sivujen',
@@ -107,5 +107,5 @@ return [
     'You cannot use this username.' => '',
     'You have successfully changed your username.<br>Your new username is {newUsername}.' => '',
     'You will stay logged in on this device only.' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];

@@ -92,7 +92,7 @@ return [
     'Username has been changed' => 'Benutzername wurde geändert',
     'Users' => 'Benutzer',
     'Visible for all (also unregistered users)' => 'Sichtbar für alle (auch unregistrierte Benutzer)',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Wir haben soeben eine Bestätigungs-E-Mail an deine neue Adresse geschickt.<br />Bitte folge den darin enthaltenen Anweisungen.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'Wir haben soeben eine Bestätigungs-E-Mail an deine neue Adresse geschickt. Bitte folge den darin enthaltenen Anweisungen.',
     'You are currently the owner of following spaces:' => 'Du bist derzeit Besitzer von folgenden Spaces:',
     'You cannot use this username.' => 'Du kannst diesen Benutzernamen nicht verwenden.',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Du hast die Änderung deiner E-Mail-Adresse beantragt.<br />Deine neue E-Mail-Adresse ist {newemail}.<br /><br />Um die neue E-Mail-Adresse zu bestätigen, klicke bitte auf den Button unten.',
@@ -105,7 +105,7 @@ return [
     'Your friends' => 'Deine Freunde',
     'Your password has been successfully changed!' => 'Dein Passwort wurde erfolgreich geändert!',
     'Your username has been changed' => 'Dein Benutzername wurde geändert',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Dein Benutzername wurde erfolgreich geändert.<br />Wir haben dir gerade eine E-Mail mit neuer Information gesandt.',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => 'Dein Benutzername wurde erfolgreich geändert. Wir haben dir gerade eine E-Mail mit neuer Information gesandt.',
     'Keep messages open' => '',
     'Messages such as "Saved" stay until you close them, instead of disappearing after a few seconds.' => '',
 ];

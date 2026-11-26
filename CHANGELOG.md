@@ -181,6 +181,7 @@ HumHub Changelog
 - Fix #8784: The title of a link of an unavailable rich text extension is not shown as a tooltip
 - Fix #8784: The plain text of a link of an unavailable rich text extension contains the url it carries
 - Fix #8786: No e-mail deliveries for users without an address; a mail that is not sent is marked as failed, not as sent
+- Fix #8790: The toast after changing the username or e-mail address no longer shows a literal `<br />` and has corrected wording
 
 1.19.5 (November 25, 2026)
 --------------------------

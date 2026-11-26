@@ -41,7 +41,7 @@ return [
     'Username has been changed' => 'ชื่อผู้ใช้มีการเปลี่ยนแปลง',
     'Users' => 'ผู้ใช้',
     'Visible for all (also unregistered users)' => 'ปรากฏแก่ทุกคน (รวมถึงผู้ใช้ที่ไม่ได้ลงทะเบียนด้วย)',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'เราเพิ่งส่งอีเมลยืนยันไปยังที่อยู่ใหม่ของคุณ <br> โปรดปฏิบัติตามคำแนะนำด้านใน',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'เราเพิ่งส่งอีเมลยืนยันไปยังที่อยู่ใหม่ของคุณ โปรดปฏิบัติตามคำแนะนำด้านใน',
     'You are currently the owner of following spaces:' => 'คุณเป็นเจ้าของพื้นที่ต่อไปนี้:',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'คุณเป็นเจ้าของพื้นที่ต่อไปนี้:
 คุณได้ร้องขอให้เปลี่ยนที่อยู่อีเมลของคุณ<br>ที่อยู่อีเมลใหม่ของคุณคือ {newemail}.<br><br>เพื่อยืนยันที่อยู่อีเมลใหม่ของคุณ โปรดคลิกที่ปุ่มด้านล่าง',
@@ -53,7 +53,7 @@ return [
     'Your friends' => 'เพื่อนของคุณ',
     'Your password has been successfully changed!' => 'รหัสผ่านของคุณถูกเปลี่ยนเรียบร้อยแล้ว!',
     'Your username has been changed' => 'ชื่อผู้ใช้ของคุณมีการเปลี่ยนแปลง',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'ชื่อผู้ใช้ของคุณได้รับการเปลี่ยนเรียบร้อยแล้ว <br> เราเพิ่งส่งอีเมลแจ้งข้อมูลใหม่ถึงคุณ',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => 'ชื่อผู้ใช้ของคุณได้รับการเปลี่ยนเรียบร้อยแล้ว เราเพิ่งส่งอีเมลแจ้งข้อมูลใหม่ถึงคุณ',
     '<strong>Account</strong> Settings' => '',
     'A new address is used once you have confirmed it by the link we send to it.' => '',
     'Accessibility' => '',

@@ -157,17 +157,17 @@ class AccountController extends BaseAccountController
         // Before saving: afterwards the new username is the current one
         $messages = [];
         if ($model->isUsernameChanged()) {
-            $messages[] = Yii::t('UserModule.account', 'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.');
+            $messages[] = Yii::t('UserModule.account', 'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.');
         }
         if ($model->isEmailChanged()) {
-            $messages[] = Yii::t('UserModule.account', 'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.');
+            $messages[] = Yii::t('UserModule.account', 'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.');
         }
 
         if (!$model->save()) {
             return $this->render('editSettings', ['model' => $model]);
         }
 
-        $messages === [] ? $this->view->saved() : $this->view->success(implode('<br>', $messages));
+        $messages === [] ? $this->view->saved() : $this->view->success(implode(' ', $messages));
 
         return $this->redirect(['edit-settings']);
     }
