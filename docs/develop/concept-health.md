@@ -74,7 +74,8 @@ HEALTHCHECK CMD php yii health/status --check=ready --fail-on=failure
 HTTP 200 for ok and warning, 503 for failure and unknown. Responses are `no-store`, set no cookie and start no
 session. Failed token attempts are counted per client IP (`Yii::$app->request->getUserIP()`) and rate limited
 (policy `health.auth`, 10 per minute and 100 per hour). A blocked client gets 429 for the rest of the block, also
-with a valid token.
+with a valid token. The block only applies to requests that carry a Bearer token: requests without an
+`Authorization` header, or with another scheme such as `Basic`, are never counted and never blocked.
 
 Use `/health/ready` for uptime monitors: `/health` answers "is everything in order" and returns 503 for any
 failure, e.g. cron not running for a day.
@@ -86,6 +87,9 @@ not stored in the database, so it also works during a database outage:
 HUMHUB_CONFIG__COMPONENTS__HEALTH__TOKEN=<random string of 32+ characters>
 ```
 
+The token must contain letters, e.g. generate it with `openssl rand -hex 32`: a value of digits only is converted
+to a number by the environment config and never matches.
+
 Without a token, `live` and `ready` still answer minimally.
 
 Operator notes:
@@ -96,6 +100,47 @@ Operator notes:
 - Behind a reverse proxy, configure the proxy as trusted (Yii request `trustedHosts`), so that the client IP is
   used for the failed attempt limit. Otherwise all clients share the proxy's IP, and failed attempts of one client
   block token requests of all clients for up to the block duration.
+
+## Probe examples
+
+Kubernetes:
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /health/live
+    port: 80
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+readinessProbe:
+  httpGet:
+    path: /health/ready
+    port: 80
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+```
+
+Docker Compose:
+
+```yaml
+healthcheck:
+  test: ["CMD", "php", "yii", "health/status", "--check=ready", "--fail-on=failure"]
+  interval: 10s
+  timeout: 5s
+  retries: 3
+```
+
+Uptime Kuma should monitor `/health/ready` (HTTP keyword or status), Zabbix and Icinga can run the CLI as a Nagios
+plugin.
+
+## Limits
+
+Errors during application bootstrap (e.g. an invalid stored installation state or a module breaking the
+bootstrap) happen before the health code runs: HTTP answers 500, the CLI exits 1. With a cold settings cache the
+installation state is read from the database even for `live`, so set the liveness timeout above the database
+connect timeout.
 
 ## Output format
 

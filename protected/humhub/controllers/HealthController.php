@@ -11,6 +11,7 @@ namespace humhub\controllers;
 use humhub\components\health\HealthLevel;
 use humhub\components\WithoutInstallationCheck;
 use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -33,6 +34,18 @@ class HealthController extends Controller
     public const RATE_LIMIT_POLICY = 'health.auth';
 
     public $enableCsrfValidation = false;
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    '*' => ['GET', 'HEAD'],
+                ],
+            ],
+        ];
+    }
 
     public function actionIndex(): Response
     {
@@ -60,11 +73,16 @@ class HealthController extends Controller
         $header = Yii::$app->request->headers->get('Authorization');
         $detailed = false;
 
-        if ($header !== null) {
+        // Only the Bearer scheme is a token attempt; other schemes (e.g. Basic of a web server) count as no token.
+        if ($header !== null && preg_match('/^Bearer(\s|$)/i', $header)) {
             if ($this->isBlocked()) {
                 $response->statusCode = 429;
                 $response->data = ['error' => 'too many failed attempts'];
                 return $response;
+            }
+
+            if ($health->token === null || $health->token === '') {
+                Yii::warning('Health check token sent, but no health token is configured.', 'health');
             }
 
             if (!preg_match('/^Bearer\s+(\S+)$/i', $header, $matches) || !$health->validateToken($matches[1])) {

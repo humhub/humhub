@@ -35,6 +35,8 @@ class WithoutInstallationCheckTest extends Unit
     {
         // Restore exactly the instance that existed before, never rebuild it from the (possibly empty) database
         $this->setInstallationState($this->originalState);
+        Yii::$app->controller = null;
+        Yii::$app->response->clear();
         parent::tearDown();
     }
 

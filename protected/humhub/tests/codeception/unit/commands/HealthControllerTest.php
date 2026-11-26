@@ -18,6 +18,20 @@ use yii\console\ExitCode;
  */
 class HealthControllerTest extends HumHubDbTestCase
 {
+    private array $disabledChecks = [];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->disabledChecks = Yii::$app->health->disabledChecks;
+    }
+
+    protected function tearDown(): void
+    {
+        Yii::$app->health->disabledChecks = $this->disabledChecks;
+        parent::tearDown();
+    }
+
     private function createController(array $options = []): HealthController
     {
         $controller = new class ('health', Yii::$app) extends HealthController {
@@ -68,13 +82,17 @@ class HealthControllerTest extends HumHubDbTestCase
 
     public function testFailOnFailureMapsWarningsToZero(): void
     {
+        $all = ['filesystem:runtime', 'filesystem:assets', 'filesystem:logs', 'database', 'installation',
+            'migrations:core', 'migrations:module', 'filesystem:uploads', 'filesystem:modules', 'queue',
+            'document-root', 'maintenance'];
+        Yii::$app->health->disabledChecks = $all; // only cron runs
         Yii::$app->settings->set('cronLastRun', 0); // cron never ran: warning
 
         $default = $this->createController(['check' => 'all']);
         $failureOnly = $this->createController(['check' => 'all', 'failOn' => 'failure']);
 
-        $this->assertGreaterThanOrEqual(1, $default->actionStatus());
-        $this->assertContains($failureOnly->actionStatus(), [0, 1]);
+        $this->assertSame(1, $default->actionStatus());
+        $this->assertSame(0, $failureOnly->actionStatus());
     }
 
     public function testInvalidOptions(): void

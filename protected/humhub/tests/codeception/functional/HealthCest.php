@@ -22,6 +22,7 @@ class HealthCest
 
     public function _before(FunctionalTester $I)
     {
+        Yii::$app->cache->flush();
         Yii::$app->health->token = self::TOKEN;
     }
 
@@ -71,7 +72,7 @@ class HealthCest
         $I->haveHttpHeader('Authorization', 'Bearer ' . self::TOKEN);
         $I->amOnRoute('/health/index');
 
-        $I->seeResponseCodeIsBetween(200, 503);
+        $I->assertContains(Yii::$app->response->statusCode, [200, 503]);
         $I->assertSame('all', $this->json($I)['level']);
     }
 
@@ -101,6 +102,40 @@ class HealthCest
         }
 
         $I->seeResponseCodeIs(429);
+        Yii::$app->cache->flush();
+    }
+
+    public function testAnotherAuthorizationSchemeCountsAsNoToken(FunctionalTester $I)
+    {
+        $I->haveHttpHeader('Authorization', 'Basic dXNlcjpwYXNz');
+        $I->amOnRoute('/health/ready');
+
+        $I->seeResponseCodeIs(200);
+        $I->assertSame(['format', 'status', 'state'], array_keys($this->json($I)));
+    }
+
+    public function testAnotherAuthorizationSchemeIsNeverBlocked(FunctionalTester $I)
+    {
+        $I->haveHttpHeader('Authorization', 'Basic dXNlcjpwYXNz');
+        for ($i = 0; $i < 12; $i++) {
+            $I->amOnRoute('/health/ready');
+            $I->seeResponseCodeIs(200);
+        }
+    }
+
+    public function testABlockedClientWithoutTokenStillGetsTheMinimalAnswer(FunctionalTester $I)
+    {
+        $I->haveHttpHeader('Authorization', 'Bearer wrong-token-wrong-token-wrong-token');
+        for ($i = 0; $i < 12; $i++) {
+            $I->amOnRoute('/health/ready');
+        }
+        $I->seeResponseCodeIs(429);
+
+        $I->deleteHeader('Authorization');
+        $I->amOnRoute('/health/ready');
+
+        $I->seeResponseCodeIs(200);
+        $I->assertSame(['format', 'status', 'state'], array_keys($this->json($I)));
         Yii::$app->cache->flush();
     }
 

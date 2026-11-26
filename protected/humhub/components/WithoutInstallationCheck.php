@@ -13,6 +13,8 @@ namespace humhub\components;
  * the installer, no 503 on an unreachable database. The controller must handle a missing or unreachable
  * database itself.
  *
+ * The attribute is not inherited: a subclass of an attributed controller must declare it again.
+ *
  * The web counterpart of the console attribute {@see \humhub\components\console\WithoutModuleAutoload}.
  *
  * ```php

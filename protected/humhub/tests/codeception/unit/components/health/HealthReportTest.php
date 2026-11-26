@@ -38,6 +38,11 @@ class HealthReportTest extends Unit
         $this->assertSame(HealthStatus::Ok, $this->report([])->getStatus());
     }
 
+    public function testEmptyChecksEncodeAsObject(): void
+    {
+        $this->assertStringContainsString('"checks":{}', json_encode($this->report([])->toArray()));
+    }
+
     public function testNotesListProblemsAndNotableOkResults(): void
     {
         $report = $this->report([

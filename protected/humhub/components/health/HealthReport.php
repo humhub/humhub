@@ -70,7 +70,7 @@ final class HealthReport
             'version' => $this->version,
             'time' => gmdate('Y-m-d\TH:i:s\Z', $this->time),
             'notes' => $this->getNotes(),
-            'checks' => array_map(fn(HealthResult $r) => $r->toArray(), $this->results),
+            'checks' => $this->results === [] ? new \stdClass() : array_map(fn(HealthResult $r) => $r->toArray(), $this->results),
         ];
     }
 
