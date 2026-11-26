@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: Initials of a space without a colour readable in high contrast (WCAG 1.4.3)
 - Fix: A filter select is named by its label and the option it shows (WCAG 2.5.3)
 - Fix: The toast at the limit of pinned items no longer shows a literal `<br>`
 - Fix: Space initials in white or black, whichever is readable on the space's colour (WCAG 1.4.3)

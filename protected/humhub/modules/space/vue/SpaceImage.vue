@@ -87,7 +87,7 @@ export default {
             return {
                 ...this.sizeStyle,
                 // Same fallback the widget uses when a space has no colour of its own.
-                backgroundColor: this.color || 'var(--bs-border-color)',
+                backgroundColor: this.color || 'var(--hh-space-acronym-bg, var(--bs-border-color))',
                 // White or black, whichever is readable on the colour, as the widget (WCAG 1.4.3)
                 color: this.color ? (colorContrast(this.color) || 'var(--bs-white)') : 'var(--bs-body-color)',
                 borderRadius: this.borderRadius + 'px',

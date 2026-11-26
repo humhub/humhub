@@ -62,7 +62,8 @@ A colour picked at runtime, a space's, gets its text the same way: the initials 
 image are white or black on its colour, through `ScssHelper::getColorContrast()` in
 `space\widgets\Image` and `colorContrast()` of `@humhub/vue` in the islands (`SpaceImage.vue`, the
 data table's tiles). The islands always take 4.5:1, not a theme's own ratio. Without a colour, the
-initials are in the text colour on the border colour.
+initials are in the text colour on the border colour, in high contrast (which darkens the border
+colour) on `--bs-secondary-bg`, every tile there with the 1px edge of the surfaces.
 
 ### A theme colour as text: class or token
 

@@ -23,8 +23,4 @@ return [
         'reason' => '2.5.3: a space image link shows the initials, its name is the space\'s name'],
     ['rule' => 'label-content-name-mismatch', 'target' => 'a[href$="space-',
         'reason' => '2.5.3: a space image link shows the initials, its name is the space\'s name'],
-
-    // WCAG 1.4.3
-    ['rule' => 'color-contrast', 'target' => 'space-profile-acronym-', 'modes' => ['light-hc', 'dark-hc'],
-        'reason' => '1.4.3: space initials in high contrast (e.g. #464646 on #757575)'],
 ];
