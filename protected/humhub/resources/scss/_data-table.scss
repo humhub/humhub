@@ -417,6 +417,12 @@ $data-table-page-size-width: 5rem !default; // Three digits and the chevron
             border-radius: var(--bs-pagination-border-radius);
             @include hh-text-style(control, $color: false);
         }
+
+        // The current page also in the weight of Strong text: its light fill alone sets it apart too little (1.17:1,
+        // WCAG 1.4.11)
+        .page-item.active .page-link {
+            font-weight: $font-weight-semibold;
+        }
     }
 
     // The selection menu's toggle: the count and ⋮

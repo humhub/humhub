@@ -80,7 +80,8 @@ class TablerIconProvider implements IconProvider
             $options['role'] = 'img';
             Html::addTooltip($options, $icon->tooltip);
             $ariaElement = Html::tag('span', $icon->ariaLabel ?? $icon->tooltip, ['class' => 'visually-hidden']);
-        } else {
+        } elseif (!isset($options['aria-label'])) {
+            // Decorative. An icon its caller names (`aria-label`: an icon that is a control itself) stays perceivable
             $options['aria-hidden'] = 'true';
         }
 

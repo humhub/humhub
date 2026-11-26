@@ -1,0 +1,20 @@
+# Accessibility checks with axe-core (WCAG 2.2 A/AA) on a fixed set of pages (see docs/develop/intro-testing.md).
+# The suite is skipped unless HUMHUB_A11Y is `report` or `fail`.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver
+        - tests\codeception\_support\WebHelper
+        - tests\codeception\_support\DynamicFixtureHelper:
+              loadDefaultFixtures: true
+    config:
+        WebDriver:
+            url: 'http://localhost:8080/'
+            browser: chrome
+            port: 4444
+            window_size: 1280x900
+            restart: true
+            capabilities:
+                goog:chromeOptions:
+                    args: [ "--headless", "--lang=en-US", "--force-device-scale-factor=1" ]

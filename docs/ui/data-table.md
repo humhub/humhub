@@ -141,7 +141,8 @@ inline editing. See Open questions.
   while there are no more than 25 rows, where it would change nothing.
 - The pager shows at most 5 slots: `1 2 3 … 12`, `1 … 6 … 12` or `1 … 10 11 12`. Previous and
   next keep their place even when they can't act, so the numbers never jump. The pager is hidden
-  when there is only one page.
+  when there is only one page. The current page is filled and in semibold: the light fill alone
+  doesn't set it apart enough (WCAG 1.4.11).
 - Count text: "1–25 of 35 users". When everything fits on one page it reads "8 users", and an
   empty table shows no count.
 - A page change fades the rows (about 140ms) and scrolls the table's top into view.

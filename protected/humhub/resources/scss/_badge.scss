@@ -97,4 +97,16 @@ $badge-dot-size: .5rem !default; // 8px, grows with the text it stands beside
         background: var(--bs-accent);
         color: var(--hh-accent-contrast);
     }
+
+    // Forced colours (e.g. a Windows contrast theme) drop the fill, the dot would vanish: in the system's text colour,
+    // in an active entry (the system's colours of a selection, see `_nav.scss`) in its text colour
+    @media (forced-colors: active) {
+        .badge-dot {
+            background-color: CanvasText;
+        }
+
+        .nav-link.active .badge-dot {
+            background-color: HighlightText;
+        }
+    }
 }

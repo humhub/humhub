@@ -55,6 +55,20 @@
             &.user-is-offline {
                 // Invisible but a color can be added in a custom theme
             }
+
+            // Forced colours (e.g. a Windows contrast theme) drop the fill and paint the border, offline looked as
+            // online: online a dot in the system's text colour, offline still invisible
+            @media (forced-colors: active) {
+                &.user-is-online {
+                    background-color: CanvasText;
+                    border-color: Canvas;
+                }
+
+                &.user-is-offline {
+                    border-color: transparent;
+                    forced-color-adjust: none;
+                }
+            }
         }
 
         &.img-size-small {
