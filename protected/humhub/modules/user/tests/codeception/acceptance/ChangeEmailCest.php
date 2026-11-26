@@ -29,7 +29,7 @@ class ChangeEmailCest
         $I->fillField('#accountsettings-email', 'new@email.com');
         $I->click('Save', '#account-settings-form');
         $I->expectTo('see no errors after saving');
-        $I->waitForText('We´ve just sent an confirmation e-mail to your new address.', 20);
+        $I->waitForText('We\'ve just sent a confirmation e-mail to your new address.', 20);
         $I->dontSee('E-Mail address is not a valid email address.');
     }
 }

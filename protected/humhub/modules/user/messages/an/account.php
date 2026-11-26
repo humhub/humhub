@@ -22,7 +22,7 @@ return [
     'The entered e-mail address is already in use by another user.' => ' ',
     'TimeZone' => 'Zona horaria',
     'Users' => 'Usuarios',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Acabamos de ninviar-te un correu de confirmación a la nueva dirección de correu-e. <br />Per favor, sigue as instruccions.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'Acabamos de ninviar-te un correu de confirmación a la nueva dirección de correu-e. Per favor, sigue as instruccions.',
     'Your current password can be changed here.' => 'A clau actual se puet cambiar aquí.',
     'Your e-mail address has been successfully changed to {email}.' => 'A dirección de correu s\'ha cambiau correctament a {email}.',
     'Your friends' => 'Os tuyos amigos',
@@ -107,5 +107,5 @@ return [
     'You will stay logged in on this device only.' => '',
     'Your account cannot be deleted!' => '',
     'Your username has been changed' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];

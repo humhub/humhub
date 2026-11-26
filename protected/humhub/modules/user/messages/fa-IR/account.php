@@ -32,7 +32,7 @@ return [
     'Username has been changed' => 'نام کاربری تغییر کرده است',
     'Users' => 'کاربران',
     'Visible for all (also unregistered users)' => 'نمایان برای همه (همچنین کاربران ثبت‌نام‌نشده)',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'یک ایمیل برای تایید به آدرس ایمیل جدید شما فرستاده‌ایم. <br /> لطفا دستورهای داخل آن‌ را دنبال کنید.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'یک ایمیل برای تایید به آدرس ایمیل جدید شما فرستاده‌ایم. لطفا دستورهای داخل آن‌ را دنبال کنید.',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'شما درخواست تغییر ایمیل خود را داده‌اید.<br /> ایمیل جدید شما {newemail} است.<br /><br /> برای تایید آدرس ایمیل خود روی دکمه‌ی زیر کلیک کنید.',
     'Your current password can be changed here.' => 'پسورد كنوني شما از اينجا قابل تغيير است',
     'Your e-mail address has been successfully changed to {email}.' => 'آدرس ایمیل شما با موفقیت به {email} تغییر یافت.',
@@ -107,5 +107,5 @@ return [
     'You will stay logged in on this device only.' => '',
     'Your account cannot be deleted!' => '',
     'Your username has been changed' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];
