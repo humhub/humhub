@@ -64,16 +64,16 @@ depends on another one *and must stay visible* is disabled instead, and its help
 ### Explicit save or autosave?
 
 The design uses an **explicit Save**. Core's new notification settings (`NotificationSettings.vue`)
-**save automatically** on every change and show the state next to the title ("Saving…",
-"Saved", "Not saved").
+**save automatically** on every change. Like any other save, a save says "Saved" in the status bar
+([Toast](toast.md)), and a failed one shows its error there, or at its field for a validation error.
 
 **Proposal:**
 
 - **Explicit Save** is the default for settings pages. Settings often depend on each other, need
   validation, or affect everyone.
 - **Autosave** is allowed for pages that consist only of independent switches with immediate
-  effect for the current user (personal notification settings). It must show its save state
-  next to the title.
+  effect for the current user (personal notification settings). Its saves are confirmed in the
+  status bar, as an explicit save is.
 - A page never mixes the two.
 
 ## Mobile

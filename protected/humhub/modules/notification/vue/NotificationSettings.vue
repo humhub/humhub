@@ -3,12 +3,6 @@
         <section v-if="showProfiles" class="card content-card notification-settings-intro">
             <div class="card-header">
                 <h2 class="card-title notification-settings-title">{{ labels.profile }}</h2>
-                <span
-                    class="notification-settings-status"
-                    :class="`is-${saveState}`"
-                    role="status"
-                    aria-live="polite"
-                ><template v-if="statusLabel"><span v-if="saveState === 'saving'" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
             </div>
             <div class="card-body">
                 <p class="notification-settings-lead">{{ labels.intro }}</p>
@@ -35,13 +29,6 @@
         <section class="notification-settings-categories" :class="{ 'card content-card': showProfiles }">
             <div class="notification-settings-head" :class="{ 'card-header': showProfiles }">
                 <h3 class="notification-settings-subtitle" :class="{ 'card-title': showProfiles }">{{ labels.categories }}</h3>
-                <span
-                    v-if="!showProfiles"
-                    class="notification-settings-status"
-                    :class="`is-${saveState}`"
-                    role="status"
-                    aria-live="polite"
-                ><template v-if="statusLabel"><span v-if="saveState === 'saving'" class="spinner-border spinner-border-sm" aria-hidden="true"></span><i v-else class="ti" :class="statusIcon" aria-hidden="true"></i>{{ statusLabel }}</template></span>
             </div>
             <template v-for="group in categoryGroups" :key="group.module ? 'modules' : 'core'">
                 <h4 v-if="group.module" class="notification-settings-divider">{{ labels.fromModules }}</h4>
@@ -178,7 +165,7 @@
 </template>
 
 <script>
-import { apiUrl, client, i18n, log, modal } from '@humhub/vue';
+import { apiUrl, client, i18n, log, modal, status } from '@humhub/vue';
 
 const clone = (value) => JSON.parse(JSON.stringify(value));
 
@@ -233,8 +220,8 @@ let radioUid = 0;
  *   `SPACES_DEBOUNCE_MS`, a profile as one request. Requests run one after another; changes
  *   made meanwhile are merged into the next one (the latest value of a switch wins). A failed
  *   request puts the switches it carried back to the last saved state; a `422` lands on the
- *   fields (or the form's error summary), any other failure is logged. The state of the saving
- *   shows next to the title (*Saving…*, *Saved*, *Not saved*), not in the status bar.
+ *   fields (or the form's error summary), any other failure in the status bar. Once nothing
+ *   waits to be sent any more, the status bar says *Saved*, as after any other save.
  * - A reset is confirmed, posts and replaces the state with the answer.
  *
  * @since 1.20
@@ -253,7 +240,6 @@ export default {
         return {
             ...this.stateOf(this.initial),
             expanded: {},
-            saveState: 'idle',
             resetting: false,
             spacesInputId: 'notificationsettings-spaces',
             radioName: `notificationsettings-${++radioUid}`,
@@ -284,9 +270,7 @@ export default {
                 off: i18n.t('NotificationModule.base', 'off'),
                 spaces: i18n.t('NotificationModule.base', 'From these Spaces'),
                 spacesPlaceholder: i18n.t('NotificationModule.base', 'Add a Space…'),
-                saving: i18n.t('NotificationModule.base', 'Saving…'),
                 saved: i18n.t('base', 'Saved'),
-                notSaved: i18n.t('NotificationModule.base', 'Not saved'),
                 autosave: i18n.t('NotificationModule.base', 'Changes are saved right away.'),
                 reset: i18n.t('NotificationModule.base', 'Reset to defaults'),
                 resetConfirm: i18n.t('NotificationModule.base', 'Do you want to reset your notification settings to the defaults?'),
@@ -337,12 +321,6 @@ export default {
                 .find((id) => this.categories.every((category) => Object.keys(category.channels)
                     .every((channelId) => current[category.id][channelId] === this.profileValue(id, category, channelId))));
             return match || 'custom';
-        },
-        statusLabel() {
-            return { saving: this.labels.saving, saved: this.labels.saved, error: this.labels.notSaved }[this.saveState] || '';
-        },
-        statusIcon() {
-            return { saved: 'ti-check', error: 'ti-alert-circle' }[this.saveState] || '';
         },
         // The core's categories, then those of modules under their own heading; each an accordion.
         categoryGroups() {
@@ -461,7 +439,6 @@ export default {
         },
         enqueue(patch) {
             this.pending = mergePatch(this.pending || {}, patch);
-            this.saveState = 'saving';
             this.flush();
         },
         flush() {
@@ -477,16 +454,15 @@ export default {
                 if (this.pending) {
                     return this.flush();
                 }
-                this.saveState = 'saved';
+                status('success', this.labels.saved);
                 return null;
             }).catch((response) => {
                 this.inFlight = null;
                 this.revert(patch);
-                this.saveState = 'error';
                 if (response && response.status === 422) {
                     this.$refs.form?.setErrors(response);
                 } else {
-                    log.error(response);
+                    log.error(response, true);
                 }
                 return this.pending ? this.flush() : null;
             });
@@ -551,18 +527,16 @@ export default {
                     return null;
                 }
                 this.resetting = true;
-                this.saveState = 'saving';
                 this.$refs.form.clearErrors();
                 return client.post(url).then((response) => {
                     this.resetting = false;
                     if (replace) {
                         this.applyState(response);
                     }
-                    this.saveState = 'saved';
+                    status('success', this.labels.saved);
                 }).catch((response) => {
                     this.resetting = false;
-                    this.saveState = 'error';
-                    log.error(response);
+                    log.error(response, true);
                 });
             });
         },
