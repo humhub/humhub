@@ -3181,3 +3181,7 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 - **The container widths are Bootstrap's** (`$container-max-widths`: `md` 720px, `lg` 960px, `xl` 1140px, `xxl`
   1320px) instead of Bootstrap 3's 770/970/1170/1200px; below `md` the container keeps the full width. A theme or
   module that lined something up with the old widths (e.g. a fixed `width: 1170px`) takes the container's width instead.
+- **Health check** (new, nothing to migrate): modules can add monitoring checks through
+  `humhub\components\health\HealthService::EVENT_COLLECT_CHECKS` (`CollectChecksEvent::addCheck()`), see
+  [Health check](concept-health.md). New attribute `humhub\components\WithoutInstallationCheck` exempts a web
+  controller from the installer redirect.
