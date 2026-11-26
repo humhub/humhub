@@ -35,10 +35,9 @@ class AuthClientService
      * Lookup paths:
      *  - for the Password client by the user's PK in attributes['id'], if the
      *    user's source allows password login (the user may belong to any source)
-     *  - via the user_auth table (source + source_id) for clients that record
-     *    an external identity (OAuth, SAML, LDAP)
-     *  - via user.user_source matching the AuthClient ID (any other
-     *    source-owning client whose attributes['id'] is the user's PK)
+     *  - via the user_auth table (source + source_id) for all other clients
+     *    (OAuth, SAML, LDAP), whose attributes['id'] is an external identity
+     *    and never the user's PK
      */
     public function getUser(): ?User
     {
@@ -59,13 +58,6 @@ class AuthClientService
             if ($auth !== null) {
                 return $auth->user;
             }
-        }
-
-        // Other source-owning clients store the HumHub user.id as attributes['id']
-        // and don't use the user_auth table.
-        $source = UserSourceService::getCollection()->findUserSourceForAuthClient($clientId);
-        if ($source->getId() === $clientId && isset($attributes['id'])) {
-            return User::findOne(['id' => $attributes['id'], 'user_source' => $clientId]);
         }
 
         return null;

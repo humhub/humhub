@@ -2,6 +2,9 @@
 // Richtext
 // --------------------------------------------------
 
+// The radius inside the editor's frame (`.ProseMirror-menubar-wrapper`), as Bootstrap's `$card-inner-border-radius`
+$richtext-frame-inner-border-radius: subtract($input-border-radius, $input-border-width) !default;
+
 @if not $prev-richtext {
     // The height limit of an editor (`pluginOptions.maxHeight`, set by the max_height plugin)
     .humhub-ui-richtext {
@@ -246,8 +249,8 @@
             border-top-left-radius: 0;
             border-top-right-radius: 0;
             border-top-width: 1px;
-            // Room for a few lines
-            min-height: 6.25rem;
+            // Room for a few lines, unless the form sets another height (e.g. `.content-form-body`, `_stream.scss`)
+            min-height: var(--hh-richtext-min-height, 6.25rem);
         }
 
         .ProseMirror-menu-group,
@@ -295,10 +298,12 @@
             }
         }
 
-        // The frame is the wrapper's
+        // Frame and background are the wrapper's: a background of its own would cover the inner edge of the
+        // frame's rounded corners
         .ProseMirror.form-control {
             border: 0;
-            border-radius: $input-border-radius;
+            border-radius: $richtext-frame-inner-border-radius;
+            background-color: transparent;
             box-shadow: none;
 
             &:focus-visible {
@@ -306,11 +311,12 @@
             }
         }
 
+        // Along the inner edge of the frame's top corners: rounder, the frame's background would show between them
         .ProseMirror-menubar {
             background: var(--bs-secondary-bg);
             border: 0;
             border-bottom: $input-border-width solid var(--bs-border-color);
-            border-radius: $input-border-radius $input-border-radius 0 0;
+            border-radius: $richtext-frame-inner-border-radius $richtext-frame-inner-border-radius 0 0;
             color: var(--bs-body-color);
             padding: $spacer * .25;
             position: relative;

@@ -9,6 +9,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\helpers\Html;
+use humhub\helpers\ScssHelper;
 use humhub\modules\space\models\Space;
 use humhub\widgets\BaseImage;
 
@@ -43,10 +44,14 @@ class Image extends BaseImage
             $this->linkOptions['aria-label'] = $this->space->name;
         }
 
+        // The initials in white or black, whichever is readable on the space's colour (WCAG 1.4.3), as on a theme
+        // colour as fill; without a colour in the text colour, on the border colour
         if ($this->space->color != null) {
             $color = Html::encode($this->space->color);
+            $textColor = ScssHelper::getColorContrast($this->space->color) ?? 'var(--bs-white)';
         } else {
             $color = 'var(--bs-border-color)';
+            $textColor = 'var(--bs-body-color)';
         }
 
         if (!isset($this->htmlOptions['class'])) {
@@ -61,7 +66,7 @@ class Image extends BaseImage
         $imageHtmlOptions = $this->htmlOptions;
 
         $acronymHtmlOptions['class'] .= " space-profile-acronym-" . $this->space->id . " space-acronym d-inline-flex justify-content-center align-items-center";
-        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; " . static::getSizeStyle($this->width, $this->height);
+        $acronymHtmlOptions['style'] .= " background-color: " . $color . "; color: " . $textColor . "; " . static::getSizeStyle($this->width, $this->height);
         $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
         $acronymHtmlOptions['aria-hidden'] = 'true';

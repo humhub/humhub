@@ -2992,6 +2992,10 @@
     computed: {
       chips() {
         return Array.isArray(this.cell) ? this.cell : [this.cell];
+      },
+      // The icon or the initials on the record's colour: in white or black, whichever is readable (WCAG 1.4.3)
+      tileStyle() {
+        return this.cell.color ? { backgroundColor: this.cell.color, color: vue$1.colorContrast(this.cell.color) || void 0 } : null;
       }
     },
     methods: {
@@ -3035,7 +3039,7 @@
         {
           key: 1,
           class: vue.normalizeClass(["data-table-main-image data-table-main-icon", { "has-color": !!$props.cell.color }]),
-          style: vue.normalizeStyle($props.cell.color ? { backgroundColor: $props.cell.color } : null),
+          style: vue.normalizeStyle($options.tileStyle),
           "aria-hidden": "true"
         },
         [
@@ -3056,7 +3060,7 @@
         {
           key: 2,
           class: "data-table-main-image data-table-main-initials",
-          style: vue.normalizeStyle($props.cell.color ? { backgroundColor: $props.cell.color } : null),
+          style: vue.normalizeStyle($options.tileStyle),
           "aria-hidden": "true"
         },
         vue.toDisplayString($props.cell.initials),
@@ -8794,7 +8798,7 @@
     ref: "handlers",
     class: "d-none"
   };
-  const _hoisted_4$6 = ["id", "name", "title", "aria-describedby"];
+  const _hoisted_4$6 = ["id", "name", "aria-label", "aria-describedby"];
   const _hoisted_5$4 = ["id"];
   function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_FileHandlerItems = vue.resolveComponent("FileHandlerItems");
@@ -8854,7 +8858,7 @@
           id: $data.editorId + "_input",
           name: _ctx.fieldName,
           class: "d-none",
-          title: _ctx.placeholder,
+          "aria-label": _ctx.placeholder,
           "aria-describedby": _ctx.describedBy
         }, null, 8, _hoisted_4$6),
         _ctx.hasError ? (vue.openBlock(), vue.createElementBlock("div", {

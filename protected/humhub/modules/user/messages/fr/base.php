@@ -125,6 +125,7 @@ return [
     'Person' => '',
     'Search people...' => '',
     'User not found.' => '',
+    'Your account could not be created. Please contact the administrator.' => '',
     '{count} Followers' => '',
     '{count} Friends' => '',
 ];

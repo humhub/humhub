@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { colorContrast } from '@humhub/vue';
+
 /**
  * Renders a space's profile image — `<space-image>`, provided by the space module
  * (`humhub\modules\space\assets\SpaceVueAsset`) and, like every registered Vue component,
@@ -86,6 +88,8 @@ export default {
                 ...this.sizeStyle,
                 // Same fallback the widget uses when a space has no colour of its own.
                 backgroundColor: this.color || 'var(--bs-border-color)',
+                // White or black, whichever is readable on the colour, as the widget (WCAG 1.4.3)
+                color: this.color ? (colorContrast(this.color) || 'var(--bs-white)') : 'var(--bs-body-color)',
                 borderRadius: this.borderRadius + 'px',
             };
         },

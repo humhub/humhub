@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 /* jshint -W024 */
 /* jshint expr:true */
 
+import {PluginRegistry} from '../../../../resources/js/richtext/core/plugins/registry.js';
 import {initEditor, expectMenuItemVisible, expectMenuItemNotVisible, clickMenuItem, toHtml} from '../testEditor.js';
 
 describe("Core:presets", () => {
@@ -101,5 +102,55 @@ describe("Core:presets", () => {
         expectMenuItemVisible('testItem');
         clickMenuItem('testItem');
         expect(toHtml()).to.equal('<p>test!</p>');
+    });
+
+    it("test plugin added to a preset is added to the presets extending it", () => {
+        window.humhub.richtext.plugin.registerPlugin({id: 'derivedTest'}, 'normal');
+
+        ['normal', 'full', 'document'].forEach(preset => {
+            expectContextContainsPlugin(initEditor({preset: preset}), 'derivedTest');
+        });
+        expectContextNotContainsPlugin(initEditor({preset: 'markdown'}), 'derivedTest');
+    });
+
+    it("test plugin added to a preset is not added to a preset excluding it", () => {
+        window.humhub.richtext.plugin.registerPreset('derivedExcluding', {extend: 'normal', exclude: ['derivedExcludedTest']});
+        window.humhub.richtext.plugin.registerPlugin({id: 'derivedExcludedTest'}, 'normal');
+
+        expectContextContainsPlugin(initEditor({preset: 'normal'}), 'derivedExcludedTest');
+        expectContextNotContainsPlugin(initEditor({preset: 'derivedExcluding'}), 'derivedExcludedTest');
+    });
+
+    describe("plugin registered in a preset and in a derived preset", () => {
+        function createRegistry() {
+            const registry = new PluginRegistry();
+            registry.registerPreset('base', []);
+            registry.registerPreset('derived', {extend: 'base'});
+            return registry;
+        }
+
+        const count = (registry, preset, id) => registry.editorPresets.get(preset).filter(p => p.id === id).length;
+
+        it("is added only once when registered in the base preset first", () => {
+            const registry = createRegistry();
+            const plugin = {id: 'twiceTest'};
+
+            registry.register(plugin, 'base');
+            registry.register(plugin, 'derived');
+
+            expect(count(registry, 'base', plugin.id)).to.equal(1);
+            expect(count(registry, 'derived', plugin.id)).to.equal(1);
+        });
+
+        it("is added only once when registered in the derived preset first", () => {
+            const registry = createRegistry();
+            const plugin = {id: 'twiceReverseTest'};
+
+            registry.register(plugin, 'derived');
+            registry.register(plugin, 'base');
+
+            expect(count(registry, 'base', plugin.id)).to.equal(1);
+            expect(count(registry, 'derived', plugin.id)).to.equal(1);
+        });
     });
 });

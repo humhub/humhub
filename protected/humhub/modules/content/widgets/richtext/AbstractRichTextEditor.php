@@ -226,7 +226,11 @@ class AbstractRichTextEditor extends JsInputWidget
         return [
             'id' => $this->getId(true) . '_input',
             'style' => 'display:none;',
-            'title' => $this->placeholder,
+            // Hidden behind the editor, named for checkers that also look at hidden fields (WAVE): the field's label
+            // is for the editor
+            'aria-label' => $this->placeholder ?: ($this->model !== null && $this->attribute !== null
+                ? $this->model->getAttributeLabel(Html::getAttributeName($this->attribute))
+                : null),
         ];
     }
 

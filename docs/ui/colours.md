@@ -58,6 +58,12 @@ white. Before 1.20 it was 3:1, which left white text at 3.1 to 3.7:1 on accent, 
 danger. A theme or the Custom SCSS can set it back (`$min-contrast-ratio: 3`), below AA. A mail
 takes the same ratio through `ScssHelper::getColorContrast()`.
 
+A colour picked at runtime, a space's, gets its text the same way: the initials of a space without an
+image are white or black on its colour, through `ScssHelper::getColorContrast()` in
+`space\widgets\Image` and `colorContrast()` of `@humhub/vue` in the islands (`SpaceImage.vue`, the
+data table's tiles). The islands always take 4.5:1, not a theme's own ratio. Without a colour, the
+initials are in the text colour on the border colour.
+
 ### A theme colour as text: class or token
 
 | Where | Use | Example |

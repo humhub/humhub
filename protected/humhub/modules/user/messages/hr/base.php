@@ -124,6 +124,7 @@ return [
     'View profile image of {name}' => '',
     'Whenever a user follows another user.' => '',
     'You tried registering an account with %appName%, but already have an account associated with this email address.' => '',
+    'Your account could not be created. Please contact the administrator.' => '',
     'Your are already logged in! - Logout first!' => '',
     '{count} Followers' => '',
     '{count} Friends' => '',

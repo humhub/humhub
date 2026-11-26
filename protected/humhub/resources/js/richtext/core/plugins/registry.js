@@ -72,6 +72,8 @@ export class PresetRegistry {
     constructor(pluginRegistry) {
         this.pluginRegistry = pluginRegistry;
         this.map = {};
+        // Presets extending another preset: presetId => {extend, exclude}
+        this.extensions = {};
     }
 
     get(presetId) {
@@ -118,10 +120,21 @@ export class PresetRegistry {
         }
 
         this.map[id] = result;
+
+        if (!Array.isArray(plugins) && plugins.extend) {
+            this.extensions[id] = {extend: plugins.extend, exclude: Array.isArray(plugins.exclude) ? plugins.exclude : []};
+        } else {
+            delete this.extensions[id];
+        }
     }
 
     add(presetId, plugin, options) {
         options = options || {};
+
+        if ((this.map[presetId] || []).includes(plugin)) {
+            return;
+        }
+
         const preset = this.map[presetId] ? this.map[presetId].slice() : [];
 
         if (options['before'] && this.pluginRegistry.pluginMap[options['before']]) {
@@ -145,5 +158,14 @@ export class PresetRegistry {
         }
 
         this.map[presetId] = preset;
+
+        // Presets extending this preset are a copy made on registration, so they get the plugin as well
+        Object.keys(this.extensions).forEach((derivedId) => {
+            const {extend, exclude} = this.extensions[derivedId];
+
+            if (extend === presetId && !exclude.includes(plugin.id)) {
+                this.add(derivedId, plugin, options);
+            }
+        });
     }
 }

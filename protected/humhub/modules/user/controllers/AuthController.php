@@ -500,6 +500,14 @@ class AuthController extends Controller
             return $this->login($user, $authClient);
         }
 
+        // The registration page would be empty without its form, e.g. for an
+        // auth client of a user source while the self-registration is disabled.
+        if (!self::isRegistrationFormVisible()) {
+            Yii::warning('Could not register user automatically: The user could not be created and the registration form is not visible. AuthClient: ' . $authClient::class, 'user');
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Your account could not be created. Please contact the administrator.'));
+            return $this->redirect(['/user/auth/login']);
+        }
+
         // Start Registration — hand the auth state to the registration
         // form via a DTO (id + already-normalised attributes), so the
         // AuthClient instance itself never enters the session.

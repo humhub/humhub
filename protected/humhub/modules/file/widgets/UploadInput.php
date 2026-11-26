@@ -245,7 +245,8 @@ class UploadInput extends JsWidget
     {
         return [
             'multiple' => !! $this->multiple,
-            'title' => Yii::t('base', 'Upload file'),
+            // Hidden behind its button, named for checkers that also look at hidden fields (WAVE)
+            'aria-label' => Yii::t('base', 'Upload file'),
         ];
     }
 

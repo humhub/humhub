@@ -125,6 +125,7 @@ return [
     'User not found.' => '',
     'View profile image of {name}' => '',
     'You tried registering an account with %appName%, but already have an account associated with this email address.' => '',
+    'Your account could not be created. Please contact the administrator.' => '',
     '{count} Followers' => '',
     '{count} Friends' => '',
 ];

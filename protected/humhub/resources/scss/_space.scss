@@ -2,6 +2,10 @@
 // Space
 // --------------------------------------------------
 
+// The smallest initials of a space without image (`.space-acronym`), on a small one (20px on an avatar, 18px in a
+// chip): WAVE takes 10px and below as very small text
+$space-acronym-min-font-size: .6875rem !default; // 11px
+
 @if not $prev-space {
     // The pictures of the "New spaces" card, a row apart when they wrap
     #new-spaces-panel .card-body a img {
@@ -69,12 +73,12 @@
     }
 
     .space-acronym {
-        color: var(--bs-white); // TODO auto-contrast via PHP from the background color
+        color: var(--bs-white); // `Image` and `SpaceImage.vue` set white or black, whichever is readable on the colour
         container-type: size; // allow dynamic font size to adjust the container
         overflow: hidden;
 
         span {
-            font-size: 50cqw; // 50% of container's width
+            font-size: max(50cqw, #{$space-acronym-min-font-size}); // 50% of container's width
             white-space: nowrap;
         }
     }

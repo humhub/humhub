@@ -108,7 +108,7 @@ The profile images and space images of the core (`user\widgets\Image`, `space\wi
 }
 ```
 
-The height limit of a richtext editor (`pluginOptions.maxHeight`) is the variable `--hh-richtext-max-height` in the same way.
+The height limit of a richtext editor (`pluginOptions.maxHeight`) is the variable `--hh-richtext-max-height` in the same way, the height of an empty one with its menu `--hh-richtext-min-height` (6.25rem; 4.5em in the form for new content).
 
 ## Icons
 

@@ -246,5 +246,42 @@ describe('ui.tooltip', () => {
 
             expect(TooltipStub.instances.size).toBe(0);
         });
+
+        it('leaves the other tooltips when the text fits and shows none', () => {
+            fire(byId('dot'), 'mouseover');
+            size(byId('name'), 150, 200);
+            fire(byId('name'), 'mouseover');
+
+            expect(TooltipStub.getInstance(byId('dot')).shown).toBe(true);
+        });
+    });
+
+    describe('one at a time', () => {
+        beforeEach(() => {
+            html('<button id="b" class="tt" title="Name">x</button><button id="c" class="tt" title="Other">y</button>');
+        });
+
+        it('closes the others at once, without fading out, when a tooltip shows', () => {
+            fire(byId('b'), 'mouseover');
+            const first = TooltipStub.getInstance(byId('b'));
+            first.tip = document.createElement('div');
+            first.tip.className = 'tooltip fade show';
+
+            // Before its hide delay is over
+            fire(byId('c'), 'mouseover');
+
+            expect(first.shown).toBe(false);
+            expect(first.tip.classList.contains('fade')).toBe(false);
+            expect(TooltipStub.getInstance(byId('c')).shown).toBe(true);
+        });
+
+        it('closes the tooltip of the pointer when one shows on keyboard focus', () => {
+            fire(byId('b'), 'mouseover');
+            pressTab();
+            fire(byId('c'), 'focusin');
+
+            expect(TooltipStub.getInstance(byId('b')).shown).toBe(false);
+            expect(TooltipStub.getInstance(byId('c')).shown).toBe(true);
+        });
     });
 });

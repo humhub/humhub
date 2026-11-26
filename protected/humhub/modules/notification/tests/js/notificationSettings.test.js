@@ -74,6 +74,7 @@ let wrapper;
 let ajaxCalls;
 let postCalls;
 let statuses;
+let logErrors;
 let answer;
 
 const sent = () => ajaxCalls.map((call) => JSON.parse(call.cfg.data));
@@ -82,6 +83,8 @@ beforeEach(() => {
     ajaxCalls = [];
     postCalls = [];
     statuses = [];
+    logErrors = [];
+    vi.spyOn(globalThis.humhub.modules.vue.log, 'error').mockImplementation((...args) => logErrors.push(args));
     answer = () => Promise.resolve({});
     globalThis.humhubStubs.client.ajax = (url, cfg) => {
         ajaxCalls.push({ url, cfg });
@@ -100,8 +103,14 @@ afterEach(() => {
     wrapper?.unmount();
     wrapper = undefined;
     vi.useRealTimers();
+    vi.restoreAllMocks();
     globalThis.humhub.modules.vue.setStatusHandler(null);
 });
+
+// The status bar's messages, `[level, message]`
+const toasts = () => statuses.map(({ level, message }) => [level, message]);
+// The errors logged into the status bar (`log.error(…, true)`)
+const statusErrors = () => logErrors.filter((args) => args[1] === true).map((args) => args[0]);
 
 const row = (id) => wrapper.find(`[data-category="${id}"]`);
 const checkbox = (categoryId, channelId) => wrapper.find(`input[name="NotificationSettings[categories.${categoryId}.${channelId}]"]`);
@@ -208,8 +217,7 @@ describe('NotificationSettings', () => {
             },
         });
         expect(row('social').findAll('.notification-settings-badges .badge-accent').map((badge) => badge.attributes('data-channel'))).toEqual(['web']);
-        expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
-        expect(statuses).toHaveLength(0);
+        expect(toasts()).toEqual([['success', 'Saved']]);
     });
 
     it('applies Recommended by following the defaults again', async () => {
@@ -249,7 +257,7 @@ describe('NotificationSettings', () => {
 
         expect(sent()).toEqual([{ categories: { social: { email: false } } }]);
         expect(selectedProfile()).toBe('custom');
-        expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
+        expect(toasts()).toEqual([['success', 'Saved']]);
     });
 
     it('sends the requests one after another, merging what changed meanwhile', async () => {
@@ -264,7 +272,7 @@ describe('NotificationSettings', () => {
         await checkbox('social', 'mobile').setValue(true);
         await checkbox('social', 'email').setValue(true);
         expect(ajaxCalls).toHaveLength(1);
-        expect(wrapper.find('.notification-settings-status').text()).toBe('Saving…');
+        expect(toasts()).toEqual([]);
 
         release({});
         await flushPromises();
@@ -273,9 +281,11 @@ describe('NotificationSettings', () => {
             { categories: { social: { email: false } } },
             { categories: { social: { mobile: true, email: true } } },
         ]);
+        expect(toasts()).toEqual([]);
         release({});
         await flushPromises();
-        expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
+        // Once, when nothing waits to be sent any more
+        expect(toasts()).toEqual([['success', 'Saved']]);
     });
 
     it('saves the spaces after a pause', async () => {
@@ -306,7 +316,9 @@ describe('NotificationSettings', () => {
 
         expect(checkbox('social', 'email').element.checked).toBe(true);
         expect(row('social').find('.invalid-feedback').text()).toBe('Not today.');
-        expect(wrapper.find('.notification-settings-status').text()).toBe('Not saved');
+        // At the field, not in the status bar
+        expect(toasts()).toEqual([]);
+        expect(statusErrors()).toEqual([]);
         expect(selectedProfile()).toBe('recommended');
     });
 
@@ -318,7 +330,8 @@ describe('NotificationSettings', () => {
         await flushPromises();
 
         expect(selectedProfile()).toBe('recommended');
-        expect(wrapper.find('.notification-settings-status').text()).toBe('Not saved');
+        expect(statusErrors()).toEqual([{ status: 500 }]);
+        expect(toasts()).toEqual([]);
     });
 
     it('resets after a confirmation and replaces the state with the answer', async () => {
@@ -343,6 +356,7 @@ describe('NotificationSettings', () => {
         expect(postCalls).toEqual(['/api/v2/notification/settings/reset']);
         expect(row('social').find('[data-channel="email"]').classes()).not.toContain('badge-accent');
         expect(wrapper.vm.spaceIds).toEqual([]);
+        expect(toasts()).toEqual([['success', 'Saved']]);
         expect(wrapper.find('.notification-settings-reset-all').exists()).toBe(false);
     });
 
@@ -417,7 +431,7 @@ describe('NotificationSettings', () => {
             expect(sent()).toEqual([{ privacy: 'minimal' }]);
             expect(ajaxCalls[0].url).toBe('/api/v2/notification/settings');
             expect(selectedPrivacy()).toBe('minimal');
-            expect(wrapper.find('.notification-settings-status').text()).toBe('Saved');
+            expect(toasts()).toEqual([['success', 'Saved']]);
         });
 
         it('is a native radio group, so the arrow keys move the choice', () => {
@@ -436,7 +450,7 @@ describe('NotificationSettings', () => {
             await flushPromises();
 
             expect(selectedPrivacy()).toBe('full');
-            expect(wrapper.find('.notification-settings-status').text()).toBe('Not saved');
+            expect(statusErrors()).toEqual([{ status: 500 }]);
         });
 
         it('is read-only when the configuration file sets it', async () => {

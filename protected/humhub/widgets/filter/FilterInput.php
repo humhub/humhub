@@ -69,6 +69,13 @@ class FilterInput extends Widget
     public $view;
 
     /**
+     * @var bool whether the input is named by its [[title]] (`aria-label`): a field doesn't show its title, and its
+     * placeholder is no name. A [[FilterBlock]] gives a filter without a title its own.
+     * @since 1.20
+     */
+    protected bool $nameByTitle = true;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -107,6 +114,10 @@ class FilterInput extends Widget
 
         if ($this->multiple) {
             $this->options['data-filter-multiple'] = 1;
+        }
+
+        if ($this->nameByTitle && $this->title && !isset($this->options['aria-label'])) {
+            $this->options['aria-label'] = $this->title;
         }
     }
 

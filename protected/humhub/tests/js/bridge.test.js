@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
 
+const { default: colorContrastTable } = await import('../codeception/_data/color-contrast.json');
+
 const vueModule = globalThis.humhub.modules.vue;
 
 // DOM fixture helper: build elements without HTML-string parsing (copied
@@ -204,6 +206,21 @@ describe('humhub.vue bridge additions', () => {
             const third = vi.fn();
             vueModule.setStatusHandler(third);
             expect(third).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('colorContrast export', () => {
+        it('gives white or black, whichever is readable, as ScssHelper::getColorContrast()', () => {
+            // Shared with ScssHelperTest, which must give the same
+            Object.entries(colorContrastTable.colors).forEach(([color, expected]) => {
+                expect(vueModule.colorContrast(color), color).toBe(expected);
+            });
+        });
+
+        it('gives nothing for what is no colour', () => {
+            expect(vueModule.colorContrast(null)).toBeNull();
+            expect(vueModule.colorContrast('')).toBeNull();
+            expect(vueModule.colorContrast('var(--bs-primary)')).toBeNull();
         });
     });
 });

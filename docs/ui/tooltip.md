@@ -26,6 +26,8 @@ person or space, use the [Hover Card](hover-card.md).
   own: `Icon::focusable()`, named by its tooltip.
 - **Hoverable:** the tooltip stays while the pointer is on it, so it can be read and enlarged. It hides
   150ms after the pointer left the control, time enough to move onto the tooltip (WCAG 1.4.13).
+- **One at a time:** a tooltip that shows closes any other at once, without fading out, also one
+  still waiting out those 150ms.
 - **Touch:** no tooltips. A tap triggers the control.
 - **Closes** on leaving, on a click, on Escape and on scrolling.
 - **Placement:** above the control by default, otherwise where there is room, and always inside
