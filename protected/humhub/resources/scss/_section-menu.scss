@@ -90,6 +90,18 @@ $nav-section-icon-font-size: $font-size-lg !default;
             &:focus-visible {
                 @include hh-focus-ring(true);
             }
+
+            // Forced colours (e.g. a Windows contrast theme) drop the fill: the active entry in the system's colours
+            // of a selection, set as they are (no backplate behind the text in the canvas colour), the focus ring in
+            // its text colour
+            @media (forced-colors: active) {
+                &.active {
+                    --bs-focus-ring-color: HighlightText;
+                    forced-color-adjust: none;
+                    background-color: Highlight;
+                    color: HighlightText;
+                }
+            }
         }
     }
 

@@ -84,6 +84,13 @@ In high contrast (the user's *Accessibility* option or `prefers-contrast: more`)
 it too; the buttons follow. Panels, cards and the page header get the same 1px edge in
 `--bs-border-color` (`$hh-surface-box-shadow-contrast`) instead of their soft shadow.
 
+In forced colours (a Windows contrast theme, `@media (forced-colors: active)`) the browser replaces
+every colour with one of the system's few and drops fills and shadows. A state shown only by a fill
+or a shadow disappears with them, so its component adds a rule of its own in system colours: an
+active entry in the colours of a selection (`Highlight`, `HighlightText`, with
+`forced-color-adjust: none`, else Chromium lays a backplate in the canvas colour behind the text),
+a dot in `CanvasText`. See the section menu, the pill tabs, `.badge-dot` and the online status.
+
 ## Backgrounds
 
 | Job | Token | Utility | Light | Dark |
