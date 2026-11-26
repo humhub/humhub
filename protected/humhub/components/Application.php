@@ -101,10 +101,12 @@ class Application extends \yii\web\Application implements ApplicationInterface
     {
         /**
          * Check if it's already installed - if not force controller module
+         * Controllers marked with #[WithoutInstallationCheck] (e.g. the health check) handle a missing installation themselves.
          */
         if (
-            !$this->installationState->hasState(InstallationState::STATE_INSTALLED)
-            && $this->controller && $this->controller->id != 'error'
+            $this->controller && !WithoutInstallationCheck::isPresentOn($this->controller)
+            && !$this->installationState->hasState(InstallationState::STATE_INSTALLED)
+            && $this->controller->id != 'error'
             && $this->controller->module != null && $this->controller->module->id != 'installer'
         ) {
             // A configured but unreachable database must surface as a service
