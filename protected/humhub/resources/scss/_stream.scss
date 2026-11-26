@@ -230,6 +230,17 @@
         .wall-entry-meta {
             @include hh-text-style(meta);
 
+            // The names of author and space in the weight of Strong text (docs/ui/typography.md), which also tells them
+            // apart from the text around them without their colour (WCAG 1.4.1); underlined under the pointer and focus
+            .wall-entry-container-link {
+                font-weight: $font-weight-semibold;
+
+                &:hover,
+                &:focus-visible {
+                    text-decoration: underline;
+                }
+            }
+
             a .time {
                 color: var(--bs-body-color);
                 white-space: nowrap;
