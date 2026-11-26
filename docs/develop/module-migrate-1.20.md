@@ -279,9 +279,10 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   mid-tone colours of its own gets black text on them; to keep white it darkens the colour, or sets
   `$min-contrast-ratio: 3`, below AA.
 - **The theme colours are stored as deviations from the theme only:** a colour of *Administration →
-  Appearance → Theme* equal to the theme's own is not stored, so it keeps following the theme. The
-  `useDefaultTheme{Color}Color` settings and `ThemeSettingsForm::defaultAttribute()` are removed (a
-  migration drops the settings; a colour kept at its "Default" is dropped with them). A colour is
+  Appearance → Theme* equal to the theme's own is not stored, so it keeps following the theme, also to
+  another theme chosen in the form. The `useDefaultTheme{Color}Color` settings and
+  `ThemeSettingsForm::defaultAttribute()` are removed (a migration drops the settings; a colour kept at
+  its "Default" is dropped with them). A colour is
   edited with the new `humhub\widgets\form\ColorInput` widget (`ColorInput.vue`, `ColorField.vue`
   in Vue forms): the browser's own colour picker as the swatch beside a hex field. The `light` and
   `dark` colours are no settings any more: `$light` (the neutral button) is derived from `$body-bg`,

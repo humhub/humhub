@@ -20,7 +20,7 @@ use yii\helpers\Inflector;
  *
  * Each colour is the Sass variable of its name, stored in the setting `theme{Color}Color` (e.g. `themeBodyBgDarkColor`
  * for `body-bg-dark`) while it differs from the theme's own value. A colour equal to the theme's is not stored, so it
- * keeps following the theme.
+ * keeps following the theme, also to another one chosen in the form.
  *
  * @since 1.20
  */
@@ -83,6 +83,37 @@ class ThemeSettingsForm extends Model
             [$colorAttributes, 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             [array_map(static::colorAttribute(...), array_keys(static::SURFACE_TEXT_COLORS)), 'validateSurfaceContrast'],
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeValidate()
+    {
+        $this->followSelectedTheme();
+
+        return parent::beforeValidate();
+    }
+
+    /**
+     * The form shows the colours of the active theme. On a switch to another theme, a colour left at the active
+     * theme's own takes the new theme's own, so it keeps following the theme instead of being stored as a deviation
+     */
+    private function followSelectedTheme(): void
+    {
+        $theme = $this->getSelectedTheme();
+        if ($theme->isActive()) {
+            return;
+        }
+
+        $activeVariables = Yii::$app->view->theme->variables;
+        foreach (static::COLORS as $color) {
+            $attribute = static::colorAttribute($color);
+            $value = ScssHelper::normalizeHexColor((string)$this->$attribute);
+            if ($value !== null && $value === ScssHelper::normalizeHexColor((string)$activeVariables->getThemeDefault($color))) {
+                $this->$attribute = $theme->variables->getThemeDefault($color);
+            }
+        }
     }
 
     /**
