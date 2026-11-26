@@ -20,6 +20,7 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "@vue/test-utils": "^2.4.6",
     "@web-alchemy/fonttools": "^1.4.0",
+    "axe-core": "4.14.0",
     "crelt": "^1.0.6",
     "emoji-picker-element": "^1.29.1",
     "emojibase-data": "^18.0.0",
