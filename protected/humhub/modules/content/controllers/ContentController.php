@@ -332,7 +332,7 @@ class ContentController extends Controller
             $json['success'] = true;
             $json['contentId'] = $content->id;
         } else {
-            $json['info'] = Yii::t('ContentModule.base', "Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.", ['count' => $maxPinnedContent]);
+            $json['info'] = Yii::t('ContentModule.base', 'Maximum number of pinned items reached! You can only pin up to {count} items at once.', ['count' => $maxPinnedContent]);
         }
 
         return $this->asJson($json);

@@ -36,7 +36,7 @@ return [
     'Last updated {time}' => 'Son güncelleme {time}',
     'Load more' => 'Daha fazla yükle',
     'Lock comments' => 'Yorumları kilitle',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Maksimum sabitlenmiş öğe sayısına ulaşıldı!<br>Tek seferde yalnızca {count} öğeye kadar sabitleyebilirsiniz.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Maksimum sabitlenmiş öğe sayısına ulaşıldı! Tek seferde yalnızca {count} öğeye kadar sabitleyebilirsiniz.',
     'Move content' => 'İçeriği taşı',
     'Move to archive' => 'Arşive taşı',
     'No matches with your selected filters!' => 'Seçili filtreler ile eşleşir.',

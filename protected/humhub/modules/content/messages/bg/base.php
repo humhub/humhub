@@ -33,7 +33,7 @@ return [
     'Last update' => 'Последна промяна',
     'Last updated {time}' => 'Последно променен {time}',
     'Load more' => 'Зареди повече',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Достигнат е максимален брой фиксирани елементи!<br>Можете да фиксирате само до {count} елемента наведнъж.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Достигнат е максимален брой фиксирани елементи! Можете да фиксирате само до {count} елемента наведнъж.',
     'Move content' => 'Премести съдържание',
     'Move to archive' => 'Преместване в архив',
     'No matches with your selected filters!' => 'Няма съвпадения с избраните филтри!',

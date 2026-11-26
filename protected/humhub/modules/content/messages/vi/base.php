@@ -85,7 +85,7 @@ return [
     'Hidden' => '',
     'Last updated {time}' => '',
     'Lock comments' => '',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => '',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => '',
     'New Updates Available!' => '',
     'No tags found for the given query' => '',
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',

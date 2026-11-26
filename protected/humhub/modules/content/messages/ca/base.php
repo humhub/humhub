@@ -45,7 +45,7 @@ return [
     'Last updated {time}' => 'Última actualització {time}',
     'Load more' => 'Carregar més',
     'Lock comments' => 'Bloquejar comentaris',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'S\'ha assolit el nombre màxim d\'elements fixats!<br>Només pot fixar {count} elements al mateix temps.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'S\'ha assolit el nombre màxim d\'elements fixats! Només pot fixar {count} elements al mateix temps.',
     'Move content' => 'Mou el contingut',
     'Move to archive' => 'Arxiva-la',
     'New Updates Available!' => 'Noves actualitzacions disponibles!',

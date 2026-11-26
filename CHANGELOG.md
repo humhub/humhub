@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: The toast at the limit of pinned items no longer shows a literal `<br>`
 - Fix: Space initials in white or black, whichever is readable on the space's colour (WCAG 1.4.3)
 - Fix: Form fields without a name (WAVE): filter fields by their block's title, the post form's pickers, hidden upload and editor inputs
 - Enh: The sections of the "My Data" account settings as an accordion

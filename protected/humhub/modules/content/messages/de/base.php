@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Zuletzt aktualisiert {time}',
     'Load more' => 'Mehr laden',
     'Lock comments' => 'Kommentarsektion sperren',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Maximale Anzahl angehefteter Inhalte erreicht!<br />Du kannst bist zu {count} Inhalte gleichzeitig anheften.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Maximale Anzahl angehefteter Inhalte erreicht! Du kannst bist zu {count} Inhalte gleichzeitig anheften.',
     'Move content' => 'Inhalt verschieben',
     'Move to archive' => 'Ins Archiv',
     'New Updates Available!' => 'Neue Updates verfügbar!',

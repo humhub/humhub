@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Senast uppdaterad {time}',
     'Load more' => 'Ladda mer',
     'Lock comments' => 'Lås kommentarer',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Maximalt antal nålade objekt har uppnåtts! <br> Du kan bara fästa upp till {count} objekt samtidigt.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Maximalt antal nålade objekt har uppnåtts! Du kan bara fästa upp till {count} objekt samtidigt.',
     'Move content' => 'Flytta inehåll',
     'Move to archive' => 'Arkivera',
     'New Updates Available!' => 'Nya uppdateringar tillgängliga!',
