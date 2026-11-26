@@ -119,6 +119,7 @@ return [
     'You tried registering an account with %appName%, but already have an account associated with this email address.' => '',
     'You\'re not registered.' => '',
     'You\'ve been invited to join {space} on {appName}' => '',
+    'Your account could not be created. Please contact the administrator.' => '',
     'Your account is disabled!' => '',
     'Your account is not approved yet!' => '',
     'Your are already logged in! - Logout first!' => '',

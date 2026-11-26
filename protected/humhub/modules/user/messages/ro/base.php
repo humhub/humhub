@@ -120,6 +120,7 @@ return [
     'You got an invite' => '',
     'You tried registering an account with %appName%, but already have an account associated with this email address.' => '',
     'You\'ve been invited to join {space} on {appName}' => '',
+    'Your account could not be created. Please contact the administrator.' => '',
     'Your are already logged in! - Logout first!' => '',
     'Your new password must not be equal your current password!' => '',
     'invited you to join {name}.' => '',

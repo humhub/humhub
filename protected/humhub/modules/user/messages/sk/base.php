@@ -125,6 +125,7 @@ return [
     'User actions' => '',
     'User not found.' => '',
     'View profile image of {name}' => '',
+    'Your account could not be created. Please contact the administrator.' => '',
     '{count} Followers' => '',
     '{count} Friends' => '',
 ];
