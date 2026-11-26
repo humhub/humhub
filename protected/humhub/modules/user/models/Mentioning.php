@@ -13,6 +13,7 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\user\notifications\MentionedNotification;
+use ArrayObject;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
@@ -32,6 +33,12 @@ class Mentioning extends ActiveRecord
      * @var int how deep the current call is nested in {@see withoutNotification()}
      */
     private static int $silenced = 0;
+
+    /**
+     * @var array<array{record: ContentActiveRecord|ContentAddonActiveRecord, userIds: ArrayObject}> the records
+     * whose mentions are notified by the caller, see {@see withoutNotificationFor()}
+     */
+    private static array $deferred = [];
 
     /**
      * Runs the callback without sending a {@see MentionedNotification} for the mentions it creates
@@ -61,6 +68,85 @@ class Mentioning extends ActiveRecord
         } finally {
             self::$silenced--;
         }
+    }
+
+    /**
+     * Runs the callback - e.g. the saving of the record - without sending a {@see MentionedNotification}
+     * for the mentions it creates for the given record, as {@see withoutNotification()} does, but not
+     * for the mentions of any other record. The caller notifies the mentioned users itself, together with
+     * the other notifications of the same event; their ids are returned in `$userIds`.
+     *
+     * @template T
+     * @param ContentActiveRecord|ContentAddonActiveRecord $record
+     * @param callable(): T $callback
+     * @param int[] $userIds the ids of the users mentioned for the record by the callback
+     * @return T the result of the callback
+     * @internal
+     * @since 1.20
+     */
+    public static function withoutNotificationFor(ContentActiveRecord|ContentAddonActiveRecord $record, callable $callback, ?array &$userIds = null): mixed
+    {
+        self::startDeferring($record);
+        try {
+            return $callback();
+        } finally {
+            $userIds = self::stopDeferring($record);
+        }
+    }
+
+    /**
+     * Like {@see withoutNotificationFor()}, but for a caller that cannot wrap the code which creates the
+     * mentions, e.g. because it is finished by the code that called it. The mentions of the record are
+     * collected - not notified - until {@see stopDeferring()} is called.
+     *
+     * @param ContentActiveRecord|ContentAddonActiveRecord $record
+     * @internal
+     * @since 1.20
+     */
+    public static function startDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): void
+    {
+        self::$deferred[] = ['record' => $record, 'userIds' => new ArrayObject()];
+    }
+
+    /**
+     * Ends {@see startDeferring()}.
+     *
+     * @param ContentActiveRecord|ContentAddonActiveRecord $record
+     * @return int[] the ids of the users mentioned for the record meanwhile
+     * @internal
+     * @since 1.20
+     */
+    public static function stopDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): array
+    {
+        foreach (self::$deferred as $i => $entry) {
+            if ($entry['record'] === $record) {
+                unset(self::$deferred[$i]);
+                self::$deferred = array_values(self::$deferred);
+
+                return array_values(array_unique($entry['userIds']->getArrayCopy()));
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Remembers the mention for the caller of {@see withoutNotificationFor()}, if the source is its record.
+     *
+     * @return bool whether the notification is left to the caller
+     */
+    private function isDeferred(ContentActiveRecord|ContentAddonActiveRecord $source): bool
+    {
+        foreach (self::$deferred as $entry) {
+            $record = $entry['record'];
+            if ($record::class === $source::class && (string)$record->getPrimaryKey() === (string)$source->getPrimaryKey()) {
+                $entry['userIds'][] = (int)$this->user_id;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -109,7 +195,7 @@ class Mentioning extends ActiveRecord
             throw new Exception("Invalid polymorphic relation for Mentioning!");
         }
 
-        if (self::$silenced === 0) {
+        if (self::$silenced === 0 && !$this->isDeferred($mentionedSource)) {
             MentionedNotification::send($this->user, $mentionedSource, $originator);
         }
 

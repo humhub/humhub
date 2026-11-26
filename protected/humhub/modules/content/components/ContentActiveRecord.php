@@ -22,6 +22,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
 use Throwable;
@@ -403,6 +404,46 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         $this->content->setAttribute('stream_channel', $this->streamChannel);
         return parent::beforeSave($insert);
+    }
+
+    /**
+     * Inserts the record and, once it is saved completely, notifies about the new content: its
+     * `afterSave()` processes the rich text and stores the mentions after the content was saved, so
+     * the mentioned users are only known at the end, see {@see Content::notifyNewContent()}.
+     *
+     * @inheritdoc
+     */
+    public function insert($runValidation = true, $attributes = null)
+    {
+        if (Content::notifiesNewContentAtRequestEnd()) {
+            // The mentions are known only when the code that saves the record has also processed its rich text
+            Mentioning::startDeferring($this);
+            $result = false;
+            try {
+                $result = parent::insert($runValidation, $attributes);
+            } finally {
+                if ($result) {
+                    Content::notifyNewContentAtRequestEnd($this);
+                } else {
+                    Mentioning::stopDeferring($this);
+                }
+            }
+
+            return $result;
+        }
+
+        $mentionedUserIds = [];
+        $result = Mentioning::withoutNotificationFor(
+            $this,
+            fn() => parent::insert($runValidation, $attributes),
+            $mentionedUserIds,
+        );
+
+        if ($result) {
+            $this->content->notifyNewContent($mentionedUserIds);
+        }
+
+        return $result;
     }
 
     /**

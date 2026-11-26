@@ -17,7 +17,7 @@ Core examples:
 - `humhub\modules\comment\notifications\NewCommentNotification` — a new comment on followed content
 - `humhub\modules\comment\notifications\CommentReplyNotification` — a reply to the user's comment
 - `humhub\modules\like\notifications\NewLikeNotification` — somebody liked a post or comment
-- `humhub\modules\content\notifications\ContentCreatedNotification` — new content in a space the user receives notifications for
+- `humhub\modules\content\notifications\ContentCreatedNotification` — new content in a space the user receives notifications for; a user mentioned in it gets the `MentionedNotification` only
 
 ## Implementing a notification
 
@@ -321,6 +321,13 @@ content), but no `MentionedNotification` is sent, and the result's `mentioning` 
 $result = Mentioning::withoutNotification(fn() => RichText::postProcess($this->message, $this, 'message'));
 $mentionedUsers = $result['mentioning'] ?? [];
 ```
+
+A new content needs nothing of this: whatever its type, `Content::notifyNewContent()` sends one
+set — the `MentionedNotification`, then the `ContentCreatedNotification` for the users picked in
+the content form, then for the followers. A user mentioned in a new content therefore gets the
+mention only. In a web request the set is sent when the request ends, so that a content type which
+processes its rich text (`RichText::postProcess()`) after saving the record is covered, too; in
+the console and in a job it is sent as soon as the record is inserted.
 
 ### Revoking and marking seen
 

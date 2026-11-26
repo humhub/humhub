@@ -4,6 +4,7 @@ namespace tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreatedNotification;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
@@ -14,6 +15,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\user\notifications\MentionedNotification;
 
 class ContentCreatedTest extends HumHubDbTestCase
 {
@@ -149,6 +151,113 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->assertStringContainsString('notifies you about', $notification->asMailSubject());
         $this->assertStringContainsString('Space 2', $notification->asMailSubject());
         $this->assertMailSent(1);
+    }
+
+    /**
+     * A follower who is mentioned in the new content gets the mention only, however the post is saved
+     * (here without a transaction, so nothing waits for a commit).
+     */
+    public function testMentionedUserGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+
+        // Admin follows Space 2 and is mentioned
+        $post = $this->createPost('[](mention:' . User::findOne(['id' => 1])->guid . ') MyTestContent');
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+        $this->assertMailSent(1);
+    }
+
+    /**
+     * The same for a user picked in the content form.
+     */
+    public function testMentionedUserPickedInTheFormGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+
+        $post = $this->createPost('[](mention:' . User::findOne(['id' => 1])->guid . ') MyTestContent', [User::findOne(['id' => 1])]);
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * In a web request the content is notified when the request ends, so a content type that processes
+     * its rich text after saving the record (e.g. the tasks) is covered, too.
+     */
+    public function testMentionAfterTheRecordWasSavedGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+        $admin = User::findOne(['id' => 1]);
+
+        Content::$notifyNewContentAtRequestEnd = true;
+        try {
+            $post = $this->createPost('Nobody is mentioned while saving');
+            RichText::postProcess('[](mention:' . $admin->guid . ') mentioned later', $post);
+
+            // Nothing is sent before the request ends
+            $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
+            $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+
+            Content::flushNewContentNotifications();
+        } finally {
+            Content::$notifyNewContentAtRequestEnd = null;
+        }
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * Without a mention the followers are still notified at the end of the request.
+     */
+    public function testContentOfARequestStillNotifiesTheFollowerAtTheEnd()
+    {
+        $this->becomeUser('User2');
+
+        Content::$notifyNewContentAtRequestEnd = true;
+        try {
+            $post = $this->createPost('Nobody is mentioned');
+            $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+
+            Content::flushNewContentNotifications();
+        } finally {
+            Content::$notifyNewContentAtRequestEnd = null;
+        }
+
+        $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * Content published later (e.g. a draft) is notified when it is published, and the mentioned
+     * users still get the mention only.
+     */
+    public function testMentionedUserOfAPublishedDraftGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+
+        $post = $this->createPost('[](mention:' . User::findOne(['id' => 1])->guid . ') MyTestContent', [], Content::STATE_DRAFT);
+        $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+
+        $this->assertTrue($post->content->getStateService()->publish());
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * Only the mentioned ones are left out: the other follower is notified as before.
+     */
+    public function testContentWithoutMentionStillNotifiesTheFollower()
+    {
+        $this->becomeUser('User2');
+
+        $post = $this->createPost('MyTestContent');
+
+        $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
+        $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
     }
 
     public function testPostOnTheRecipientsProfileHasTheProfileWording()
@@ -436,6 +545,25 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(2);
+    }
+
+    /**
+     * Creates a public post in Space 2.
+     *
+     * @param User[] $notifyUsers users picked in the content form
+     */
+    private function createPost(string $message, array $notifyUsers = [], ?int $state = null): Post
+    {
+        $post = new Post(['message' => $message]);
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $post->content->notifyUsersOfNewContent = $notifyUsers;
+        if ($state !== null) {
+            $post->content->state = $state;
+        }
+        $this->assertTrue($post->save());
+
+        return $post;
     }
 
     /**
