@@ -9128,6 +9128,7 @@
   };
   const MIN_READING_MS = 5e3;
   const READING_MS_PER_CHAR = 60;
+  const CLEARANCE_PROPERTY = "--hh-toast-clearance";
   const ICONS = {
     info: "ti ti-info-circle",
     success: "ti ti-circle-check",
@@ -9193,14 +9194,45 @@
         return !!this.detailsText;
       }
     },
+    watch: {
+      // The container comes and goes with the entry; its size changes with the text and the details.
+      entry() {
+        this.$nextTick(this.trackClearance);
+      }
+    },
     mounted() {
       vue$1.setStatusHandler(this.handle);
     },
     unmounted() {
       vue$1.setStatusHandler(null);
       this.clearTimers();
+      this.untrackClearance();
     },
     methods: {
+      /** Publishes the room the shown toast takes at the bottom of the window, as long as one is shown. */
+      trackClearance() {
+        this.untrackClearance();
+        const container = this.$refs.container;
+        if (!container) {
+          return;
+        }
+        const update = () => {
+          const room = Math.ceil(window.innerHeight - container.getBoundingClientRect().top);
+          document.documentElement.style.setProperty(CLEARANCE_PROPERTY, Math.max(room, 0) + "px");
+        };
+        update();
+        if (typeof ResizeObserver === "function") {
+          this.clearanceObserver = new ResizeObserver(update);
+          this.clearanceObserver.observe(container);
+        }
+      },
+      untrackClearance() {
+        if (this.clearanceObserver) {
+          this.clearanceObserver.disconnect();
+          this.clearanceObserver = null;
+        }
+        document.documentElement.style.removeProperty(CLEARANCE_PROPERTY);
+      },
       /** Bridge handler - see humhub.vue.js `status()`. */
       handle(message) {
         const entry = {
@@ -9315,6 +9347,7 @@
   };
   const _hoisted_3$5 = {
     key: 0,
+    ref: "container",
     class: "toast-container position-fixed bottom-0 start-50 translate-middle-x p-3"
   };
   const _hoisted_4$4 = { class: "toast-body" };
@@ -9344,80 +9377,86 @@
           1
           /* TEXT */
         ),
-        $data.entry ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$5, [
-          vue.createElementVNode(
-            "div",
-            {
-              ref: "toast",
-              class: vue.normalizeClass(["toast fade show", [$options.toneClass, { showing: !$data.visible }]]),
-              onMouseenter: _cache[3] || (_cache[3] = ($event) => $options.interact("hovered", true)),
-              onMouseleave: _cache[4] || (_cache[4] = ($event) => $options.interact("hovered", false)),
-              onFocusin: _cache[5] || (_cache[5] = ($event) => $options.interact("focused", true)),
-              onFocusout: _cache[6] || (_cache[6] = (...args) => $options.onFocusOut && $options.onFocusOut(...args))
-            },
-            [
-              vue.createElementVNode("div", _hoisted_4$4, [
-                vue.createElementVNode(
-                  "i",
-                  {
-                    class: vue.normalizeClass(["toast-icon", $options.iconClass]),
-                    "aria-hidden": "true"
-                  },
-                  null,
-                  2
-                  /* CLASS */
-                ),
-                vue.createElementVNode(
-                  "span",
-                  {
-                    class: vue.normalizeClass(["toast-message", { "is-toggle": $options.hasDetails }]),
-                    onClick: _cache[0] || (_cache[0] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
-                  },
-                  vue.toDisplayString($data.entry.message),
-                  3
-                  /* TEXT, CLASS */
-                ),
-                $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("button", {
-                  key: 0,
-                  type: "button",
-                  class: "btn btn-ghost btn-icon-only btn-sm toast-details-toggle",
-                  "aria-expanded": $data.detailsOpen ? "true" : "false",
-                  "aria-label": $props.detailsLabel,
-                  title: $props.detailsLabel,
-                  onClick: _cache[1] || (_cache[1] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
-                }, [
+        $data.entry ? (vue.openBlock(), vue.createElementBlock(
+          "div",
+          _hoisted_3$5,
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                ref: "toast",
+                class: vue.normalizeClass(["toast fade show", [$options.toneClass, { showing: !$data.visible }]]),
+                onMouseenter: _cache[3] || (_cache[3] = ($event) => $options.interact("hovered", true)),
+                onMouseleave: _cache[4] || (_cache[4] = ($event) => $options.interact("hovered", false)),
+                onFocusin: _cache[5] || (_cache[5] = ($event) => $options.interact("focused", true)),
+                onFocusout: _cache[6] || (_cache[6] = (...args) => $options.onFocusOut && $options.onFocusOut(...args))
+              },
+              [
+                vue.createElementVNode("div", _hoisted_4$4, [
                   vue.createElementVNode(
                     "i",
                     {
-                      class: vue.normalizeClass(["ti", $data.detailsOpen ? "ti-chevron-down" : "ti-chevron-up"]),
+                      class: vue.normalizeClass(["toast-icon", $options.iconClass]),
                       "aria-hidden": "true"
                     },
                     null,
                     2
                     /* CLASS */
+                  ),
+                  vue.createElementVNode(
+                    "span",
+                    {
+                      class: vue.normalizeClass(["toast-message", { "is-toggle": $options.hasDetails }]),
+                      onClick: _cache[0] || (_cache[0] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
+                    },
+                    vue.toDisplayString($data.entry.message),
+                    3
+                    /* TEXT, CLASS */
+                  ),
+                  $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("button", {
+                    key: 0,
+                    type: "button",
+                    class: "btn btn-ghost btn-icon-only btn-sm toast-details-toggle",
+                    "aria-expanded": $data.detailsOpen ? "true" : "false",
+                    "aria-label": $props.detailsLabel,
+                    title: $props.detailsLabel,
+                    onClick: _cache[1] || (_cache[1] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
+                  }, [
+                    vue.createElementVNode(
+                      "i",
+                      {
+                        class: vue.normalizeClass(["ti", $data.detailsOpen ? "ti-chevron-down" : "ti-chevron-up"]),
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      2
+                      /* CLASS */
+                    )
+                  ], 8, _hoisted_5$2)) : vue.createCommentVNode("v-if", true),
+                  vue.createElementVNode("button", {
+                    type: "button",
+                    class: "btn-close toast-close",
+                    "aria-label": $props.closeLabel,
+                    onClick: _cache[2] || (_cache[2] = (...args) => $options.close && $options.close(...args))
+                  }, null, 8, _hoisted_6$2)
+                ]),
+                $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$2, [
+                  vue.createElementVNode(
+                    "pre",
+                    null,
+                    vue.toDisplayString($options.detailsText),
+                    1
+                    /* TEXT */
                   )
-                ], 8, _hoisted_5$2)) : vue.createCommentVNode("v-if", true),
-                vue.createElementVNode("button", {
-                  type: "button",
-                  class: "btn-close toast-close",
-                  "aria-label": $props.closeLabel,
-                  onClick: _cache[2] || (_cache[2] = (...args) => $options.close && $options.close(...args))
-                }, null, 8, _hoisted_6$2)
-              ]),
-              $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$2, [
-                vue.createElementVNode(
-                  "pre",
-                  null,
-                  vue.toDisplayString($options.detailsText),
-                  1
-                  /* TEXT */
-                )
-              ])) : vue.createCommentVNode("v-if", true)
-            ],
-            34
-            /* CLASS, NEED_HYDRATION */
-          )
-        ])) : vue.createCommentVNode("v-if", true)
+                ])) : vue.createCommentVNode("v-if", true)
+              ],
+              34
+              /* CLASS, NEED_HYDRATION */
+            )
+          ],
+          512
+          /* NEED_PATCH */
+        )) : vue.createCommentVNode("v-if", true)
       ],
       64
       /* STABLE_FRAGMENT */

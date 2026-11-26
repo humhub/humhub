@@ -8,6 +8,8 @@
 
 $toast-icon-size: $font-size-lg !default;
 $toast-details-max-height: 200px !default;
+// The room a toast of up to two lines takes at the bottom of the window, until StatusBar.vue has measured it
+$toast-clearance: 7rem !default;
 // Tone => the colour whose `--bs-<colour>` and `--bs-<colour>-border-subtle` it uses
 $toast-tones: (
     "info": "accent",
@@ -20,6 +22,18 @@ $toast-tones: (
     // Clear of the safe area of mobile devices
     .toast-container.position-fixed {
         margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
+    }
+
+    // While a toast is shown, the page keeps clear of the room it takes at the bottom of the window
+    // (`--hh-toast-clearance`, set by StatusBar.vue): the focus scrolls an element above it, and the page gets that
+    // room at its end, so its last elements can get there too (WCAG 2.4.11). A page that fits the window scrolls by
+    // that room for the time
+    html:has(.toast-container.position-fixed) {
+        scroll-padding-bottom: var(--hh-toast-clearance, #{$toast-clearance});
+
+        > body {
+            padding-bottom: var(--hh-toast-clearance, #{$toast-clearance});
+        }
     }
 
     // Tone: border and icon in the colour of the message level

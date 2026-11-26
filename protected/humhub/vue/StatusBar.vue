@@ -4,7 +4,7 @@
     <div class="visually-hidden" role="status" aria-atomic="true">{{ entry && !isError ? entry.message : '' }}</div>
     <div class="visually-hidden" role="alert" aria-atomic="true">{{ entry && isError ? entry.message : '' }}</div>
 
-    <div v-if="entry" class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div v-if="entry" ref="container" class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
         <div
             ref="toast"
             class="toast fade show"
@@ -90,6 +90,10 @@
  * Bootstrap's `autohide`, the timer pauses while the pointer is on the toast or
  * the focus in it, and starts over once both have left.
  *
+ * While a toast is shown, the room it takes at the bottom of the window is the root's
+ * `--hh-toast-clearance`: the page keeps clear of it, so that the focus never hides behind it
+ * (WCAG 2.4.11, see `_toast.scss`).
+ *
  * The labels of the close and details buttons come from
  * `humhub\widgets\StatusBar` (props `closeLabel`, `detailsLabel`).
  *
@@ -123,6 +127,9 @@ const AUTOCLOSE = {
 // The time to read a message: at least 5 s, 60 ms per character beyond that (about 200 words a minute)
 const MIN_READING_MS = 5000;
 const READING_MS_PER_CHAR = 60;
+
+// The root's custom property for the room a shown toast takes at the bottom of the window (see _toast.scss).
+const CLEARANCE_PROPERTY = '--hh-toast-clearance';
 
 // Tabler names, the same four `humhub.ui.status.js` rendered before it forwarded to this island.
 const ICONS = {
@@ -208,6 +215,12 @@ export default {
             return !!this.detailsText;
         },
     },
+    watch: {
+        // The container comes and goes with the entry; its size changes with the text and the details.
+        entry() {
+            this.$nextTick(this.trackClearance);
+        },
+    },
     mounted() {
         // Registering also drains whatever was queued before this island mounted
         // (a flash message from the page that is loading right now, typically).
@@ -216,8 +229,35 @@ export default {
     unmounted() {
         setStatusHandler(null);
         this.clearTimers();
+        this.untrackClearance();
     },
     methods: {
+        /** Publishes the room the shown toast takes at the bottom of the window, as long as one is shown. */
+        trackClearance() {
+            this.untrackClearance();
+            const container = this.$refs.container;
+            if (!container) {
+                return;
+            }
+
+            const update = () => {
+                const room = Math.ceil(window.innerHeight - container.getBoundingClientRect().top);
+                document.documentElement.style.setProperty(CLEARANCE_PROPERTY, Math.max(room, 0) + 'px');
+            };
+            update();
+
+            if (typeof ResizeObserver === 'function') {
+                this.clearanceObserver = new ResizeObserver(update);
+                this.clearanceObserver.observe(container);
+            }
+        },
+        untrackClearance() {
+            if (this.clearanceObserver) {
+                this.clearanceObserver.disconnect();
+                this.clearanceObserver = null;
+            }
+            document.documentElement.style.removeProperty(CLEARANCE_PROPERTY);
+        },
         /** Bridge handler - see humhub.vue.js `status()`. */
         handle(message) {
             const entry = {
