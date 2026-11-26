@@ -179,6 +179,7 @@ HumHub Changelog
 - Fix #8784: A plugin added to a rich text preset is also added to the presets extending it (`full`, `document`), but only once
 - Fix #8784: The title of a link of an unavailable rich text extension is not shown as a tooltip
 - Fix #8784: The plain text of a link of an unavailable rich text extension contains the url it carries
+- Fix #8789: Grouped "new entries" notifications link to the stream of the space and show no preview of only the last entry
 
 1.19.5 (November 25, 2026)
 --------------------------

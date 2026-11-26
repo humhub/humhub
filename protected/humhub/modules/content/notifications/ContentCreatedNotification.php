@@ -10,6 +10,7 @@ namespace humhub\modules\content\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\components\Grouping;
+use humhub\modules\notification\components\NotificationContext;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\user\models\User;
 use Yii;
@@ -95,6 +96,34 @@ final class ContentCreatedNotification extends BaseNotification
         return $explicit
             ? Yii::t('ContentModule.notifications', '{originator} notifies you about {contentInfo}', $params)
             : Yii::t('ContentModule.notifications', '{originator} just wrote {contentInfo}', $params);
+    }
+
+    /**
+     * Several new entries lead to the stream of the container, not to the last of them.
+     *
+     * @inheritdoc
+     */
+    public function getUrl(bool $scheme = false): ?string
+    {
+        if ($this->groupCount > 1) {
+            return $this->contentContainer?->polymorphicRelation?->getUrl($scheme);
+        }
+
+        return parent::getUrl($scheme);
+    }
+
+    /**
+     * Several new entries show no preview, which would be that of the last one: only the "View online" button.
+     *
+     * @inheritdoc
+     */
+    public function getBlocks(NotificationContext $context): array
+    {
+        if ($this->groupCount > 1) {
+            return $this->getViewOnlineBlocks();
+        }
+
+        return parent::getBlocks($context);
     }
 
     /**

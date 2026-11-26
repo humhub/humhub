@@ -391,6 +391,12 @@ Grouping happens when a notification is written, so the list reads the groups as
 stored. A group is one entry in the list, a mail or push sent for a grouped notification carries
 the grouped sentence, and marking it as seen marks every member.
 
+A group links to the target of its newest member and previews its subject. When the members have
+no common target, the class overrides `getUrl()` and `getBlocks()` for `groupCount > 1`:
+`ContentCreatedNotification` links to the stream of the container and shows the "View online"
+button only. `notification/entry`, the link of the mail and of the web list, loads the notification
+as a group, so these overrides apply there, too.
+
 ### Content blocks
 
 Everything shown below the sentence is a list of **content blocks**, returned by
