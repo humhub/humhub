@@ -27,6 +27,8 @@ use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use Yii;
 use yii\log\Logger;
+use yii\mail\BaseMailer;
+use yii\mail\MailEvent;
 
 /**
  * {@see DeliverJob} with the base timings of a target on the mail channel (delays 0/300/900/1800 s,
@@ -288,6 +290,72 @@ class DeliverJobTest extends HumHubDbTestCase
 
         $this->assertCount(1, $this->mails());
         $this->assertSame(NotificationDelivery::STATE_SKIPPED, (int)$this->lastDelivery()->state);
+    }
+
+    public function testRecipientWithoutEmailGetsNoDelivery()
+    {
+        User::updateAll(['email' => null], ['id' => 1]);
+
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin(NotificationPriority::High);
+
+        // the web list has them, the mail channel nothing
+        $this->assertCount(2, Notification::findAll(['user_id' => 1, 'class' => TestNotification::class]));
+        $this->assertSame([], $this->deliveries());
+        $this->assertCount(0, $this->mails());
+    }
+
+    public function testPendingRowsOfARecipientWhoLostTheAddressAreSkipped()
+    {
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        User::updateAll(['email' => null], ['id' => 1]);
+
+        $this->now += 300;
+        $this->runDeliverJob();
+
+        $this->assertCount(1, $this->mails());
+        $this->assertSame(NotificationDelivery::STATE_SKIPPED, (int)$this->lastDelivery()->state);
+    }
+
+    public function testAddressAddedLaterGetsNothingFromBefore()
+    {
+        $this->dispatchToAdmin();
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        User::updateAll(['email' => null], ['id' => 1]);
+        $this->now += 300;
+        $this->runDeliverJob();
+        $this->now += 10;
+        $this->dispatchToAdmin();
+        $this->assertCount(1, $this->mails());
+
+        User::updateAll(['email' => 'admin@example.com'], ['id' => 1]);
+        $this->now += 3600;
+        $this->runDeliverJob();
+
+        // neither the skipped row nor the notification written without an address is mailed
+        $this->assertCount(1, $this->mails());
+        $this->assertCount(2, $this->deliveries());
+        $this->assertSame(NotificationDelivery::STATE_SKIPPED, (int)$this->lastDelivery()->state);
+    }
+
+    public function testMailThatIsNotSentMarksTheRowFailed()
+    {
+        static::logInitialize();
+        $cancel = static fn(MailEvent $event) => $event->isValid = false;
+        Yii::$app->mailer->on(BaseMailer::EVENT_BEFORE_SEND, $cancel);
+        try {
+            $this->dispatchToAdmin();
+        } finally {
+            Yii::$app->mailer->off(BaseMailer::EVENT_BEFORE_SEND, $cancel);
+        }
+
+        $this->assertCount(0, $this->mails());
+        $this->assertSame(NotificationDelivery::STATE_FAILED, (int)$this->lastDelivery()->state);
+        static::assertLogRegexCount(1, '/for user 1: delivery through email failed: .*was not sent/s', Logger::LEVEL_ERROR, ['notification']);
     }
 
     public function testNotificationThatNoLongerLoadsIsSkipped()
