@@ -47,8 +47,7 @@ return [
     'Username has been changed' => 'تم تغيير اسم المستخدم',
     'Users' => 'المستخدمون',
     'Visible for all (also unregistered users)' => 'مرئي للجميع (أيضًا المستخدمين غير المسجلين)',
-    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'لقد أرسلنا للتو رسالة بريد إلكتروني للتأكيد إلى عنوانك الجديد. 
-<br> يرجى اتباع التعليمات في الداخل.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'لقد أرسلنا للتو رسالة بريد إلكتروني للتأكيد إلى عنوانك الجديد. يرجى اتباع التعليمات في الداخل.',
     'You are currently the owner of following spaces:' => 'أنت حاليًا المالك للباحات التالية:',
     'You cannot use this username.' => 'لا يمكنك استخدام اسم المستخدم هذا.',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'لقد طلبت تغيير عنوان بريدك الإلكتروني.<br>عنوان بريدك الإلكتروني الجديد هو {newemail}.<br><br>لتأكيد عنوان بريدك الإلكتروني الجديد، يرجى النقر على الزر أدناه.',
