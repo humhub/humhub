@@ -74,7 +74,9 @@ tooltip "Filter by Marketing". Elsewhere chips are not interactive.
 | Unsaved | accent | Accordion groups, role tabs, any section with unsaved changes |
 
 Every dot carries visually hidden text ("4 waiting", "unread messages", "unsaved changes").
-Colour is never the only signal.
+Colour is never the only signal. In the dark mode and in high contrast a dot takes its colour as text
+(`--hh-danger-fg`, `--hh-accent-fg`): the fill is made readable for white text, which leaves it
+below 3:1 on a dark surface (WCAG 1.4.11).
 
 ## Mobile
 
