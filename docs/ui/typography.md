@@ -19,15 +19,18 @@ them are twice as large. Never write a `font-size` or `line-height` in px; Style
 
 | Style | Size | Weight | Line height | Colour | Use it for |
 |---|---|---|---|---|---|
-| **Text** | 14px | 400 | 1.5 | `--bs-body-color` | Running text, descriptions, table cells, list rows |
-| **Strong text** | 14px | 600 | 1.5 | `--bs-emphasis-color` | A name (person, space, content), emphasis in a sentence, a section inside a card or dialog |
-| **Control** | 14px | 500 | 1.5 | the control's | The label of a button, tab, menu entry or form field |
-| **Meta** | 12.25px | 400 | 1.5 | `--bs-body-color` | Time, author line, hint below a field, label of a count, any secondary detail |
-| **Title** | 16px | 600 | 1.2 | `--bs-emphasis-color` | The title of a page, card, panel, dialog, widget or menu |
-| **Large title** | 17.5px | 600 | 1.2 | `--bs-emphasis-color` | The title of a piece of content: a post with a title, a wiki page, an entity card |
+| **Text** | 14px | 400 | 22px | `--bs-body-color` | Running text, descriptions, table cells, list rows |
+| **Strong text** | 14px | 600 | 22px | `--bs-emphasis-color` | A name (person, space, content), emphasis in a sentence, a section inside a card or dialog |
+| **Control** | 14px | 500 | 22px | the control's | The label of a button, tab, menu entry or form field |
+| **Meta** | 12px | 400 | 18px | `--bs-body-color` | Time, author line, hint below a field, label of a count, any secondary detail |
+| **Title** | 16px | 600 | 24px | `--bs-emphasis-color` | The title of a page, card, panel, dialog, widget or menu |
+| **Large title** | 18px | 600 | 28px | `--bs-emphasis-color` | The title of a piece of content: a post with a title, a wiki page, an entity card |
 
 Rules:
 
+- Size and line height are the design system's pairs (12/18, 14/22, 16/24, 18/28 px at the browser's default font
+  size). Line heights are ratios (`$line-height-base` is `divide(22, 14)`), so they grow with the text, and text of
+  another size inside has a line of its own.
 - Three weights, each with its job: 400 for text and meta, 500 for controls, 600 for names and
   titles.
 - Nothing is smaller than Meta.
@@ -49,7 +52,8 @@ The styles are one Sass map, `$hh-text-styles` (`_mixins.scss`); `hh-text-style(
 properties, `$color: false` leaves the colour to the element (a button, a link).
 
 A heading tag has the weight and colour of a title (`$headings-font-weight`, `$headings-color`), and
-`.fs-5`/`.fs-4` set only the size. So `.fs-5` on a `div` is not a Title; put it on the heading.
+`.fs-5`/`.fs-4` set only the size; `h4` and `.fs-4` also have the Large title's line height, `.small` Meta's
+(`_base.scss`). So `.fs-5` on a `div` is not a Title; put it on the heading.
 
 ## Bootstrap's names
 
@@ -63,10 +67,10 @@ gives a text style:
 | `h1`, `.fs-1` | 35px | (login page only) |
 | `h2`, `.fs-2` | 28px | (error page only) |
 | `h3`, `.fs-3` | 24.5px | (the header's name, a special case) |
-| `h4`, `.fs-4`, `$font-size-lg` | 17.5px | Large title |
+| `h4`, `.fs-4`, `$font-size-lg` | 18px | Large title |
 | `h5`, `.fs-5` | 16px | Title |
 | `h6`, `.fs-6`, `$font-size-base` | 14px | Text |
-| `.small`, `$font-size-sm` | 12.25px | Meta |
+| `.small`, `$font-size-sm` | 12px | Meta |
 
 Bootstrap 6 replaces both names with one scale (`xs` … `6xl`); the text styles stay the
 interface's vocabulary across that change.
@@ -91,9 +95,9 @@ These belong to one component and are documented with it, not used elsewhere:
 | [Space & profile header](container-header.md) | The name on the cover image | 24.5px, 600 (`$container-header-title-font-size`) |
 | [Space & profile header](container-header.md) | The numbers of the counters | 21px, 600 (`$container-header-count-font-size`) |
 | [Top bar](top-bar.md) | The network's name | 21px (`$topbar-brand-font-size`) |
-| [Top bar](top-bar.md) | The labels of the main navigation | 12.25px, 600, capitals |
+| [Top bar](top-bar.md) | The labels of the main navigation | 12px, 600, capitals |
 | Table ([Data table](data-table.md), grid view, `.table`) | A column's header (`th`) | Meta, but 600 (`$table-th-font-weight`); in a data table, the sorted column's in the emphasis colour |
-| [Badges & status](badges.md) | A badge | `.875em`, 600, capitals (`$badge-font-size`, `$badge-font-weight`) |
+| [Badges & status](badges.md) | A badge | Meta's size in `em`, 600, capitals (`$badge-font-size`, `$badge-font-weight`) |
 
 ## Content: rich text and Markdown
 

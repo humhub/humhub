@@ -23,7 +23,7 @@ The other form pages build on this one: [Select & Pickers](select-pickers.md),
 | # | Part | Notes |
 |---|---|---|
 | 1 | **Label** | Always visible, above the field. A red `*` marks required fields. |
-| 2 | **Field** | 39px high and fully rounded corners (6px). **Grey when empty, white when filled.** |
+| 2 | **Field** | 38px high and fully rounded corners (6px). **Grey when empty, white when filled.** |
 | 3 | **Hint** | Optional. One line on what the field is for or what format it expects. |
 | 4 | **Invalid** | Red edge (also on hover and focus) plus a warning icon inside the field |
 | 5 | **Error message** | Below the field, in red. It says what is wrong and how to fix it ("This URL is already taken."). |
@@ -123,7 +123,7 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 
 | Design | Bootstrap variable |
 |---|---|
-| Height 39px | `$input-btn-padding-y` (`.5rem`), `$input-line-height` — done since 1.20 |
+| Height 38px | `$input-btn-padding-y` (`.4375rem`), `$input-line-height` — done since 1.20 |
 | 1px edge, 3:1 on the field (WCAG 1.4.11) | `$input-border-width`, `$input-border-color` (`--hh-input-border-color`) — done since 1.20 |
 | Radius 6px | `$input-border-radius` (still Bootstrap's `$border-radius`) |
 | White when filled | `$input-bg` |
@@ -131,7 +131,7 @@ and `$form-*` variables**, so it reaches every existing form at once. Class name
 | Accent edge on hover and focus | `$input-hover-border-color` (HumHub), `$input-focus-border-color` — done since 1.20 |
 | Glow on focus: a 2px accent ring (50 %) | `$input-focus-box-shadow` (no inner shadow: `$input-box-shadow`) — done since 1.20 |
 | Keyboard focus: the focus ring instead of the glow | `hh-focus-ring` on `:focus-visible` unless `data-hh-input-modality` is `pointer` ([Colours](colours.md)) — done since 1.20 |
-| A button beside a field as high as it (39px) | `$input-btn-padding-y`, shared by both — done since 1.20 |
+| A button beside a field as high as it (38px) | `$input-btn-padding-y`, shared by both — done since 1.20 |
 | Red edge and icon | `$form-feedback-invalid-color`, `$form-feedback-icon-invalid` |
 
 - **File:** `_form.scss`, behind `$prev-form`. The field styles of the filter bar

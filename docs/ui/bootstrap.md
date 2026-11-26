@@ -176,16 +176,19 @@ browser's font size, as the Bootstrap docs assume. These are all the size overri
 | Variable | HumHub | Bootstrap | Why |
 |---|---|---|---|
 | `$font-size-base` | `.875rem` | `1rem` | 14px text: the density of the UI. The one knob for a theme's text size. |
-| `$input-btn-padding-y` | `.5rem` | `.375rem` | Buttons and fields 39px high instead of 35px. |
+| `$font-size-sm`, `$font-size-lg` | `.75rem`, `1.125rem` | `$font-size-base * .875`, `* 1.25` | 12px and 18px, the design system's steps next to 14px text; Bootstrap's 12.25px and 17.5px are not on its scale ([Typography](typography.md#text-styles)). |
+| `$small-font-size` | `divide(12, 14) * 1em` | `.875em` | `.small` and `<small>` are Meta's 12px in 14px text, still relative to the text around them. |
+| `$line-height-base`, `$headings-line-height` | `divide(22, 14)`, `1.5` | `1.5`, `1.2` | The design system's pairs: a 22px line for 14px text, 24px for a 16px title. |
+| `$input-btn-padding-y` | `.4375rem` | `.375rem` | Buttons and fields 38px high (7 + 22 + 7 and the border), as menu rows, instead of 36px. |
 | `$btn-font-weight`, `$nav-link-font-weight` | 500 | 400, none | The Control text style of a button's, tab's or menu entry's label. |
 | `$h5-font-size`, `$h4-font-size` | `1rem`, `$font-size-lg` | `$font-size-lg`, `$font-size-base * 1.5` | `h5`/`.fs-5` give the Title and `h4`/`.fs-4` the Large title text style ([Typography](typography.md#bootstraps-names)). |
 | `$headings-font-weight`, `$headings-color` (`-dark`) | 600, `var(--bs-emphasis-color)` | 500, `inherit` | A heading tag has the weight and colour of the title styles. |
 | `$table-th-font-weight` | 600 | none (the browser's bold) | A column's header, at Meta's size ([Typography](typography.md#special-cases-of-components)). |
-| `$badge-font-size` | `.875em` | `.75em` | As secondary text; Bootstrap's 10.5px is below the smallest text. |
+| `$badge-font-size` | `$small-font-size` | `.75em` | Meta's 12px in 14px text; Bootstrap's 10.5px is below the smallest text. |
 | `$badge-font-weight`, `$badge-border-radius` | 600, `50rem` (`$border-radius-pill`) | 700, `$border-radius` | A chip is semibold, one of the three weights, and fully rounded ([Badges](badges.md)). |
 | `$container-max-widths` | Bootstrap's, without `sm` | with `sm: 540px` | The full width below `md` (phones, also in landscape), as the mobile layout's cards from edge to edge. |
 | `$dropdown-padding-x` | `.5rem` | `0` | A menu's rows are inset, with rounded corners. |
-| `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (37px), their content half a spacer from the row's rounded edge. |
+| `$dropdown-item-padding-x`, `-y` | `.5rem` | `1rem`, `.25rem` | Rows as high as a button (38px), their content half a spacer from the row's rounded edge. |
 | `$dropdown-min-width` | `15rem` | `10rem` | Menus hold labels with icons and hints. |
 | `$tooltip-max-width` | `400px` | `200px` | Tooltips show cut-off text in full. |
 | `$form-check-padding-start` | `2em` | `1.5em` | Labels with several lines. |
@@ -196,7 +199,8 @@ Own additions:
   see [Typography](typography.md)).
 - Rendered rich text has a heading scale of its own (`_richtext.scss`).
 - Six text styles (`$hh-text-styles`, `hh-text-style()`, see [Typography](typography.md)): size, weight, line
-  height and colour together, taken by the components instead of single properties.
+  height and colour together, taken by the components instead of single properties. `.small` and `h4`/`.fs-4`,
+  where Bootstrap sets only a size, have the line height of their style (`_base.scss`).
 - `--hh-topbar-height` (`3.5rem`, as Bootstrap's navbar) is the height of one top bar; `--hh-fixed-header-height` is
   derived from it.
 

@@ -51,6 +51,16 @@
         font-weight: $font-weight-semibold;
     }
 
+    // The line heights of Meta for `.small` and of Large title for `h4`/`.fs-4`, where Bootstrap sets only the size
+    // (docs/ui/typography.md)
+    small, .small {
+        line-height: map-get(map-get($hh-text-styles, meta), line-height);
+    }
+
+    h4, .h4, .fs-4 {
+        line-height: map-get(map-get($hh-text-styles, title-lg), line-height);
+    }
+
     a:hover {
         text-decoration: none;
     }

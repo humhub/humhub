@@ -3045,16 +3045,19 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - rem values written against 14px are 14 % larger now. Use Bootstrap's steps instead (`$spacer * .5`, `p-2`,
     `$font-size-sm`, `.small`). px values keep working but don't follow the browser's font size.
   - The interface has six text styles (`docs/ui/typography.md`). The core's SCSS takes one with
-    `@include hh-text-style(<name>)`; `h5`/`.fs-5` is a title (16px) and `h4`/`.fs-4` a large title (17.5px), one step
-    below Bootstrap's sizes. A module's own stylesheet takes a style's size from `var(--hh-font-size-meta)`,
-    `var(--hh-font-size-title)` or `var(--hh-font-size-title-lg)`. Buttons, tabs, menu entries (`.nav-link`,
-    `.dropdown-item`) and form labels are weight 500; heading tags are 600 in the emphasis colour, `strong`/`b` 600.
+    `@include hh-text-style(<name>)`; `h5`/`.fs-5` is a title (16px) and `h4`/`.fs-4` a large title (18px), one step
+    below Bootstrap's sizes. Sizes and line heights are the design system's pairs: 12/18 (`$font-size-sm`, was
+    12.25px), 14/22 (`$line-height-base: divide(22, 14)`), 16/24 and 18/28 (`$font-size-lg`, was 17.5px);
+    headings have a line height of 1.5 (was 1.2). A module's own stylesheet takes a style's size from
+    `var(--hh-font-size-meta)`, `var(--hh-font-size-title)` or `var(--hh-font-size-title-lg)`. Buttons, tabs, menu
+    entries (`.nav-link`, `.dropdown-item`) and form labels are weight 500; heading tags are 600 in the emphasis
+    colour, `strong`/`b` 600.
   - A theme that set `$font-size-root` sets `$font-size-base` instead.
   - These overrides are gone, Bootstrap's defaults apply: `$grid-gutter-width` (`1.5rem`), `$btn-padding-*`,
     `$btn-font-size-lg`, `$btn-border-radius*` (6px), `$input-padding-y`, `$badge-font-weight`, `$badge-padding-*`,
     `$badge-border-radius`, `$dropdown-padding-y`, `$popover-border-radius`,
-    `$progress-height`, `$progress-border-radius`, `$toast-font-size`, `$tooltip-font-size`, `$line-height-base`.
-    Buttons and fields are 39px high (`$input-btn-padding-y: .5rem`).
+    `$progress-height`, `$progress-border-radius`, `$toast-font-size`, `$tooltip-font-size`.
+    Buttons and fields are 38px high (`$input-btn-padding-y: .4375rem`).
   - Removed: `$select-menu-option-padding-y`, `$data-table-actions-toggle-size`, `$data-table-actions-toggle-icon-size`,
     `.badge-space-chooser`, `.module-controls`.
   - No rule sizes `h1`–`h6` by their context any more (`.panel h1`, `.hh-list h4`, `.wall-entry h4`/`h5`, a plain `h3`
