@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: Checked boxes, radios and switches at 3:1 on dark surfaces in high contrast (WCAG 1.4.11)
 - Fix: Dots in the dark mode and in high contrast at 3:1 on dark surfaces (WCAG 1.4.11)
 - Fix: Initials of a space without a colour readable in high contrast (WCAG 1.4.3)
 - Fix: A filter select is named by its label and the option it shows (WCAG 2.5.3)

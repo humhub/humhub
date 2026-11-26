@@ -89,7 +89,10 @@ All controls are Bootstrap's **`.form-check`** family. The look is set through B
   `$form-check-input-checked-bg-color` (accent), `$form-switch-width`, `$form-switch-color`,
   `$form-switch-checked-color`. The border of a checkbox and a radio, and the edge of a switch's track,
   are `--hh-input-border-color` (3:1 on the surface, WCAG 1.4.11); the knob of a switch that is off is
-  that grey made 3:1 on the track's fill (`--bs-secondary-bg`) too. Radio cards use `$spacer`,
+  that grey made 3:1 on the track's fill (`--bs-secondary-bg`) too. In high contrast a checked box, the
+  dot of a radio and a switch that is on take the accent as text (`--hh-accent-fg`), the check (in the
+  dark mode the knob too) in the surface colour: the accent as a fill is darkened for a white check
+  there, which leaves it at 2.3:1 on a dark surface (WCAG 1.4.11). Radio cards use `$spacer`,
   `--bs-border-*` and the accent; no own variables.
 
 ## Implementation in core

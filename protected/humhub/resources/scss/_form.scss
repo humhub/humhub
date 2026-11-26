@@ -296,6 +296,22 @@ $form-choice-border-radius: $border-radius-sm !default;
         }
     }
 
+    // High contrast darkens the accent as a fill for its white check, in both colour modes: a checked box, the dot of a
+    // radio and the track of a switch that is on fall to 2.3:1 on a dark surface (WCAG 1.4.11). There they take the
+    // accent as text, 7:1 on the surfaces, the check in the surface colour; in the dark mode the knob too
+    :root {
+        @include hh-high-contrast {
+            input[type=checkbox], input[type=radio] {
+                --bs-accent: var(--hh-accent-fg);
+                --hh-accent-contrast: var(--bs-body-bg);
+            }
+
+            &[data-bs-theme="dark"] .form-switch input.form-check-input[type=checkbox]:checked {
+                --bs-form-switch-bg: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$body-bg-dark}'/></svg>"))};
+            }
+        }
+    }
+
     // Radio cards (`.form-check-cards` > `label.form-check-card`): a choice with a title and a
     // description, e.g. a notification profile. On wider screens the card's border shows the
     // choice and the radio stays hidden (focusable); on a phone the cards stack and show it.
