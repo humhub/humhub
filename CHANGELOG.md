@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: Tooltips close on scrolling instead of moving with their trigger out of a list such as the activity box
 - Fix: Checked boxes, radios and switches at 3:1 on dark surfaces in high contrast (WCAG 1.4.11)
 - Fix: Dots in the dark mode and in high contrast at 3:1 on dark surfaces (WCAG 1.4.11)
 - Fix: Initials of a space without a colour readable in high contrast (WCAG 1.4.3)

@@ -5,7 +5,7 @@
  * (`ui.appearance.keyboardModality()`), not after a click; a link or button shows the tooltip of the
  * one trigger inside it (the date in a permalink). One shows at a time. It stays while the pointer is on it, and hides
  * when the focus leaves and on Escape, which then closes nothing else (WCAG 1.4.13,
- * docs/ui/keyboard.md, docs/ui/tooltip.md).
+ * docs/ui/keyboard.md, docs/ui/tooltip.md). Scrolling closes it, except the tooltip of the keyboard focus.
  *
  * @since 1.20
  */
@@ -136,6 +136,18 @@ humhub.module('ui.tooltip', function (module, require, $) {
     };
 
     /**
+     * Closes the tooltips when the page or a list scrolls, so none travels with its trigger out of the list.
+     * The tooltip of the keyboard focus stays: Tab scrolls the focused control into view, the tooltip hides only
+     * while that control is out of view (`data-popper-reference-hidden`, _tooltip.scss).
+     */
+    var hideOnScroll = function () {
+        if (!document.querySelector('.tooltip.show')) {
+            return;
+        }
+        hideAll(appearance.keyboardModality() ? focusTarget(document.activeElement) : null, true);
+    };
+
+    /**
      * Removes tooltip elements whose trigger left the document (replaced by ajax, or removed while
      * it was focused, which fires no focusout), as the old click handler swept every tooltip away
      */
@@ -188,6 +200,9 @@ humhub.module('ui.tooltip', function (module, require, $) {
             hideAll();
             removeOrphans();
         });
+
+        // Capturing, as the scroll of a list does not bubble
+        document.addEventListener('scroll', hideOnScroll, {capture: true, passive: true});
     };
 
     module.export({
