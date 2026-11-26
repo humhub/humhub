@@ -19,6 +19,10 @@ $nav-section-link-hover-bg: var(--bs-primary-bg-subtle) !default;
 $nav-section-link-hover-color: var(--bs-emphasis-color) !default;
 $nav-section-link-active-bg: var(--bs-primary) !default;
 $nav-section-link-active-color: var(--hh-primary-contrast) !default;
+// In the dark mode the primary colour can be as dark as the card (1.14:1 with `#272d30`, WCAG 1.4.11): its readable
+// shade, with the text in the card's colour
+$nav-section-link-active-bg-dark: var(--hh-primary-fg) !default;
+$nav-section-link-active-color-dark: var(--bs-body-bg) !default;
 $nav-section-icon-font-size: $font-size-lg !default;
 
 @if not $prev-section-menu {
@@ -40,6 +44,11 @@ $nav-section-icon-font-size: $font-size-lg !default;
             .section-menu {
                 --bs-card-box-shadow: #{$section-menu-box-shadow-dark};
             }
+
+            .nav-section {
+                --hh-nav-section-active-bg: #{$nav-section-link-active-bg-dark};
+                --hh-nav-section-active-color: #{$nav-section-link-active-color-dark};
+            }
         }
     }
 
@@ -56,6 +65,8 @@ $nav-section-icon-font-size: $font-size-lg !default;
         --bs-nav-link-padding-y: #{$nav-section-link-padding};
         --bs-nav-link-color: #{$nav-section-link-color};
         --bs-nav-link-hover-color: #{$nav-section-link-hover-color};
+        --hh-nav-section-active-bg: #{$nav-section-link-active-bg};
+        --hh-nav-section-active-color: #{$nav-section-link-active-color};
 
         // With the title's padding 1rem between title and first entry, as between a page header's title and its tabs
         padding: var(--hh-section-menu-padding);
@@ -79,11 +90,18 @@ $nav-section-icon-font-size: $font-size-lg !default;
             }
 
             &.active {
-                color: $nav-section-link-active-color;
-                background-color: $nav-section-link-active-bg;
+                color: var(--hh-nav-section-active-color);
+                background-color: var(--hh-nav-section-active-bg);
                 // The focus ring on the fill in the fill's text colour: the accent reaches only about 2:1 there
                 // (WCAG 1.4.11)
-                --bs-focus-ring-color: #{$nav-section-link-active-color};
+                --bs-focus-ring-color: var(--hh-nav-section-active-color);
+
+                // A dot (something waits) in the fill's text colour too: red on the fill reaches 1.73:1 in the dark
+                // mode (WCAG 1.4.11)
+                .badge-dot {
+                    background-color: var(--hh-nav-section-active-color);
+                    color: var(--hh-nav-section-active-bg);
+                }
             }
 
             // Keyboard focus: the ring inside the row, which fills its box
@@ -100,6 +118,10 @@ $nav-section-icon-font-size: $font-size-lg !default;
                     forced-color-adjust: none;
                     background-color: Highlight;
                     color: HighlightText;
+
+                    .badge-dot {
+                        background-color: HighlightText;
+                    }
                 }
             }
         }
