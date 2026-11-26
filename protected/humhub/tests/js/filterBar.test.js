@@ -40,7 +40,9 @@ describe('FilterBar', () => {
         expect(search.attributes('aria-label')).toBe('Search');
         expect(wrapper.find('.search-field .ti-search').exists()).toBe(true);
         expect(wrapper.find('.select-menu [aria-haspopup="listbox"]').exists()).toBe(true);
-        expect(wrapper.find('#filter-categoryId').attributes('aria-label')).toBe('Category');
+        // Named by its label and the shown "All" (FilterSelect)
+        expect(wrapper.find('#filter-categoryId').attributes('aria-labelledby').split(' ')
+            .map((id) => wrapper.find('#' + id).text()).join(' ')).toBe('Category All');
         expect(wrapper.findAll('[role="group"] button').map((b) => b.text())).toEqual(['All', 'A', 'B']);
         expect(wrapper.find('input[type="checkbox"]').exists()).toBe(true);
         expect(wrapper.find('#filter-id').exists()).toBe(false);

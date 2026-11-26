@@ -23,8 +23,6 @@ return [
         'reason' => '2.5.3: a space image link shows the initials, its name is the space\'s name'],
     ['rule' => 'label-content-name-mismatch', 'target' => 'a[href$="space-',
         'reason' => '2.5.3: a space image link shows the initials, its name is the space\'s name'],
-    ['rule' => 'label-content-name-mismatch', 'target' => '#filter-select-',
-        'reason' => '2.5.3: a filter of the module list'],
 
     // WCAG 1.4.3
     ['rule' => 'color-contrast', 'target' => 'space-profile-acronym-', 'modes' => ['light-hc', 'dark-hc'],
