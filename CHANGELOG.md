@@ -12,7 +12,7 @@ HumHub Changelog
 - Enh: Six text styles for the interface (`hh-text-style()`, docs/ui/typography.md)
 - Fix: The like notification says "likes your post" in the web list and mail text, as in the mail subject
 - Enh #8777: Sizes in rem on Bootstrap's defaults; text follows the browser's font size
-- Fix: Text sizes and line heights are the design system's pairs (12/18, 14/22, 16/24, 18/28 px), buttons and fields 38px high
+- Fix #8787: Text sizes and line heights are the design system's pairs (12/18, 14/22, 16/24, 18/28 px), buttons and fields 38px high
 - Fix #8778: Picker chips sit as far from the start of the field as from its top and bottom
 - Fix #8783: Badges are one component, fully rounded and semibold as chips in the design system; `.badge-icon-only` is as high as a badge with text
 - Fix: The search field and the directory link of the space chooser have a name, the confirm dialog's title is never empty
