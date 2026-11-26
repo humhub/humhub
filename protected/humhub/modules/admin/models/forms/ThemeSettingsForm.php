@@ -106,14 +106,33 @@ class ThemeSettingsForm extends Model
             return;
         }
 
-        $activeVariables = Yii::$app->view->theme->variables;
         foreach (static::COLORS as $color) {
-            $attribute = static::colorAttribute($color);
-            $value = ScssHelper::normalizeHexColor((string)$this->$attribute);
-            if ($value !== null && $value === ScssHelper::normalizeHexColor((string)$activeVariables->getThemeDefault($color))) {
-                $this->$attribute = $theme->variables->getThemeDefault($color);
+            if ($this->isActiveThemeColor($color)) {
+                $this->{static::colorAttribute($color)} = $theme->variables->getThemeDefault($color);
             }
         }
+    }
+
+    /**
+     * Whether a colour of the form differs from the active theme's own, which the fields show
+     */
+    public function hasCustomColors(): bool
+    {
+        foreach (static::COLORS as $color) {
+            if (!$this->isActiveThemeColor($color)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isActiveThemeColor(string $color): bool
+    {
+        $value = ScssHelper::normalizeHexColor((string)$this->{static::colorAttribute($color)});
+
+        return $value !== null
+            && $value === ScssHelper::normalizeHexColor((string)Yii::$app->view->theme->variables->getThemeDefault($color));
     }
 
     /**

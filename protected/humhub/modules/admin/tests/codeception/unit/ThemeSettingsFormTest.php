@@ -61,6 +61,24 @@ class ThemeSettingsFormTest extends HumHubDbTestCase
         $this->assertSame('#1700c7', $model->themeAccentColor);
     }
 
+    /**
+     * "Reset colors" is shown while a colour of the form differs from the theme's own
+     */
+    public function testHasCustomColors()
+    {
+        $model = new ThemeSettingsForm();
+        $this->assertFalse($model->hasCustomColors());
+
+        $model->themeBodyBgColor = '#FFFFFF'; // The core theme's `#fff`, written differently
+        $this->assertFalse($model->hasCustomColors());
+
+        $model->themeAccentColor = '#1700c7';
+        $this->assertTrue($model->hasCustomColors());
+
+        Yii::$app->settings->set('themeDangerColor', '#b00020');
+        $this->assertTrue((new ThemeSettingsForm())->hasCustomColors());
+    }
+
     public function testSurfaceColorKeepsTheTextReadable()
     {
         $model = new ThemeSettingsForm();
