@@ -81,6 +81,9 @@ $nav-section-icon-font-size: $font-size-lg !default;
             &.active {
                 color: $nav-section-link-active-color;
                 background-color: $nav-section-link-active-bg;
+                // The focus ring on the fill in the fill's text colour: the accent reaches only about 2:1 there
+                // (WCAG 1.4.11)
+                --bs-focus-ring-color: #{$nav-section-link-active-color};
             }
 
             // Keyboard focus: the ring inside the row, which fills its box

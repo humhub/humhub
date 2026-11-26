@@ -119,7 +119,7 @@ The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring
 (`hh-focus-ring(true)` draws it inside the edge, for a box that clips or a row that fills its box).
 `_base.scss` draws it on every `:focus-visible`; a component only adds it where Bootstrap turned it
 off (`outline: 0`), or redefines `--bs-focus-ring-color` on a surface in another colour (the top
-bar: `--hh-topbar-color`). High contrast makes it 3px in `--bs-emphasis-color`. A text field shows
+bar: `--hh-topbar-color`; the active entry of the section menu: its text colour on the fill). High contrast makes it 3px in `--bs-emphasis-color`. A text field shows
 it after Tab only; a click shows the field's glow (`$input-focus-box-shadow`): `ui.appearance` keeps
 `data-hh-input-modality` (`keyboard`, `pointer`) on `<html>`.
 
