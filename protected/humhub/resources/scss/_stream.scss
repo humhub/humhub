@@ -20,11 +20,29 @@
     }
 
     .content-form-body {
+        // The text of the new content: room for three lines; while the form is collapsed, the post's text is one line
+        // without the editor's menu, until the form expands (`contentForm-expanded`, `content.form.js`)
+        --hh-richtext-min-height: 4.5em;
+
+        &:not(.contentForm-expanded) #contentForm_message {
+            --hh-richtext-min-height: 0;
+
+            .ProseMirror-menubar {
+                display: none;
+            }
+        }
+
         .mb-3, .invalid-feedback {
             margin: 0 !important;
         }
         .field-contentForm_postTopicInput {
             margin-bottom: 0 !important;
+        }
+
+        // The fields revealed when the form expands (e.g. the post's title) keep the gap below them, which the rule
+        // above takes from their `.mb-3`
+        [data-content-form-expand] {
+            margin-bottom: $spacer;
         }
 
         .contentForm_options {
