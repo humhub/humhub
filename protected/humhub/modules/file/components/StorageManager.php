@@ -126,6 +126,13 @@ class StorageManager extends Component implements StorageManagerInterface
 
     public function delete($variant = null, array $except = []): void
     {
+        // One variant: only that file, never the directory with the content and the other variants
+        if ($variant !== null) {
+            $this->fs->delete($this->get($variant));
+
+            return;
+        }
+
         $cleanedExcept = array_map(fn($e) => str_replace('*', '', $e), $except);
 
         $files = $this->fs->listContents($this->getPath(), false)
