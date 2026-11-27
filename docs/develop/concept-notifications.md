@@ -396,7 +396,8 @@ no common target, the class overrides `getUrl()` and `getBlocks()` for `groupCou
 `ContentCreatedNotification` links to the stream of the container and shows the "View online"
 button only. `notification/entry`, the link of the mail and of the web list, loads the clicked
 notification as it is, with the size of its group, so these overrides apply there, too, while a
-member of a group keeps its own target (the profile of an older follower stays his).
+member of a group keeps its own target (an older follower's notification still leads to that
+follower's profile).
 
 ### Content blocks
 
