@@ -113,6 +113,11 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
   and lists the other files as read-only file rows (the core `FileRow.vue`): download as the trailing action, "Show
   all" from four files on. An audio file's row has play / pause before the download, the time and a seek line while it
   plays; one player serves the page and plays the next audio file of the list when one ends.
+- **Subtitles:** video and audio files can have subtitles or captions per language (WebVTT variants of the file). Users
+  who may edit the file manage them in the "Subtitles" dialog (Open file → Subtitles; in the media viewer through
+  "Open"): add a language, edit the WebVTT text, load a .vtt or .srt file, download, delete. The media viewer's player
+  offers them in its CC menu (the page language preselected); an audio row shows the current line below its seek line,
+  with a toggle and, for several languages, a select.
 
 **Gaps:**
 

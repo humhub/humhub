@@ -5,6 +5,7 @@ use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\modules\file\Events;
+use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
@@ -21,6 +22,9 @@ return [
         ['pattern' => 'api/v2/file', 'route' => 'file/api/file/create', 'verb' => 'POST'],
         ['pattern' => 'api/v2/file/<id:\d+>', 'route' => 'file/api/file/delete', 'verb' => 'DELETE'],
         ['pattern' => 'api/v2/file/<id:\d+>/versions', 'route' => 'file/api/file/versions', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/file/<id:\d+>/variants', 'route' => 'file/api/file/variants', 'verb' => ['GET', 'HEAD']],
+        ['pattern' => 'api/v2/file/<id:\d+>/variants/<name:[A-Za-z0-9._-]+>', 'route' => 'file/api/file/put-variant', 'verb' => 'PUT'],
+        ['pattern' => 'api/v2/file/<id:\d+>/variants/<name:[A-Za-z0-9._-]+>', 'route' => 'file/api/file/delete-variant', 'verb' => 'DELETE'],
     ],
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],
@@ -29,5 +33,6 @@ return [
         ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onBeforeActiveRecordDelete']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => File::class, 'event' => File::EVENT_AFTER_NEW_STORED_FILE, 'callback' => [Events::class, 'onAfterNewStoredFile']],
+        ['class' => FileHandlerCollection::class, 'event' => FileHandlerCollection::EVENT_INIT, 'callback' => [Events::class, 'onFileHandlerCollectionInit']],
     ],
 ];

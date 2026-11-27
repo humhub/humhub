@@ -230,6 +230,43 @@ components:
             is what tells a client to render the coloured acronym tile instead.
         contentContainerId:
           type: [integer, 'null']
+    FileVariant:
+      title: FileVariant
+      type: object
+      description: A persistent variant of a file, the subtitles of one language of a video or audio file
+      properties:
+        name:
+          type: string
+          description: Name of the variant, `subtitles-<language>.vtt`
+        type:
+          type: string
+          enum:
+            - subtitles
+        language:
+          type: string
+          description: BCP 47 language tag (`de`, `pt-BR`)
+        label:
+          type: string
+          description: The language's name in that language, first letter upper case
+        kind:
+          type: string
+          enum:
+            - subtitles
+            - captions
+          description: '`captions` also describe the sounds (WCAG 1.2.2)'
+        generated:
+          type: boolean
+          description: Whether the text was generated automatically; a manual save sets `false`
+        size:
+          type: integer
+          description: Size of the text in bytes
+        updatedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+          description: |
+            Absolute download URL of the variant (`text/vtt`), with the time of the last change as `v` for cache busting
     File:
       title: File
       type: object

@@ -9,6 +9,7 @@
 namespace humhub\modules\file\controllers\api;
 
 use humhub\components\api\BaseController;
+use humhub\modules\file\libs\FileVariants;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileUpload;
@@ -22,7 +23,8 @@ use yii\web\UploadedFile;
 
 /**
  * The file API (see `docs/develop/concept-api.md`): uploads files, deletes them again and
- * lists the versions of one.
+ * lists the versions of one and manages its persistent variants (the subtitles of a media
+ * file, see {@see FileVariants}).
  *
  * This is what the Vue `UploadField` posts to (see `docs/develop/ui-js-vuejs-forms.md`), and
  * the API counterpart of the legacy {@see \humhub\modules\file\actions\UploadAction} the
@@ -66,12 +68,12 @@ class FileController extends BaseController
     /**
      * @inheritdoc
      */
-    protected array $scopes = ['versions' => 'content:read', '*' => 'content:write'];
+    protected array $scopes = ['versions' => 'content:read', 'variants' => 'content:read', '*' => 'content:write'];
 
     /**
      * @inheritdoc
      */
-    protected array $guestAllowedActions = ['versions'];
+    protected array $guestAllowedActions = ['versions', 'variants'];
 
     /**
      * @var string the request field name carrying the uploaded files
@@ -90,6 +92,9 @@ class FileController extends BaseController
                     'create' => ['POST'],
                     'delete' => ['DELETE'],
                     'versions' => ['GET', 'HEAD'],
+                    'variants' => ['GET', 'HEAD'],
+                    'put-variant' => ['PUT'],
+                    'delete-variant' => ['DELETE'],
                 ],
             ],
         ]);
@@ -154,6 +159,91 @@ class FileController extends BaseController
         }
 
         return ['results' => FileSerializer::versions($file)];
+    }
+
+    /**
+     * The persistent variants of a file the caller may see, ordered by label (see
+     * {@see FileSerializer::variants()}).
+     */
+    public function actionVariants($id)
+    {
+        $file = File::findOne(['id' => (int)$id]);
+
+        if ($file === null) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$file->canView()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return ['results' => FileSerializer::variants($file)];
+    }
+
+    /**
+     * Creates or replaces a persistent variant of a file the caller may delete. The body is
+     * `{"content": "…", "kind": "subtitles"|"captions"}`; `201` for a new variant, `200` for a
+     * replaced one, `422 {"errors": {field: [messages]}}` for an invalid one.
+     */
+    public function actionPutVariant($id, $name)
+    {
+        $file = $this->findEditableFile($id);
+        $variants = new FileVariants($file);
+        $request = Yii::$app->request;
+
+        $content = $request->getBodyParam('content');
+        $kind = $request->getBodyParam('kind');
+        $existed = $variants->has($name);
+
+        if (!is_string($content)) {
+            $errors = ['content' => [Yii::t('FileModule.base', 'The text is required.')]];
+        } else {
+            $errors = $variants->put($name, $content, is_string($kind) ? $kind : '');
+        }
+
+        if ($errors !== []) {
+            Yii::$app->response->setStatusCode(422);
+
+            return ['errors' => $errors];
+        }
+
+        Yii::$app->response->setStatusCode($existed ? 200 : 201);
+
+        return FileSerializer::variant($file, $name, $variants->getEntries()[$name], FileVariants::parseName($name));
+    }
+
+    /**
+     * Deletes a persistent variant of a file the caller may delete.
+     */
+    public function actionDeleteVariant($id, $name)
+    {
+        if (!(new FileVariants($this->findEditableFile($id)))->delete($name)) {
+            throw new NotFoundHttpException();
+        }
+
+        Yii::$app->response->setStatusCode(204);
+
+        return null;
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     * @throws ForbiddenHttpException when the caller may not delete the file
+     */
+    private function findEditableFile($id): File
+    {
+        $file = File::findOne(['id' => (int)$id]);
+
+        if ($file === null) {
+            throw new NotFoundHttpException();
+        }
+
+        // The rule of the edit handlers of the "Open file" modal
+        if (!$file->canDelete()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return $file;
     }
 
     /**

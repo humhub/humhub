@@ -193,6 +193,7 @@ class CoreJsConfig extends Widget
                         'next' => Yii::t('base', 'Next'),
                         'zoom' => Yii::t('base', 'Zoom'),
                         'download' => Yii::t('base', 'Download'),
+                        'open' => Yii::t('base', 'Open'),
                         'position' => Yii::t('base', '{index} of {count}'),
                         'imageError' => Yii::t('base', 'The image cannot be loaded.'),
                         'videoError' => Yii::t('base', 'The video cannot be played in this browser.'),

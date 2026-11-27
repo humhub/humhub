@@ -148,7 +148,7 @@
     nearCallbacks.delete(el);
   }
   const hasSize = (file) => file.width > 0 && file.height > 0;
-  const _sfc_main$2 = {
+  const _sfc_main$3 = {
     name: "AttachedMedia",
     props: {
       // The images and the videos, see AttachedFiles.vue
@@ -231,6 +231,11 @@
       videoType(file) {
         return VIDEO_TYPES[extensionOf(file)];
       },
+      // The viewer adds the subtitles of a video to its player, see humhub.ui.gallery.js
+      // A file the API knows (with an id) may have subtitles
+      subtitlesUrl(file) {
+        return this.isVideo(file) && file.id ? vue.apiUrl(`file/${file.id}/variants`) : null;
+      },
       ratioOf(file) {
         var _a;
         if (hasSize(file)) {
@@ -311,35 +316,35 @@
       }
     }
   };
-  const _hoisted_1$2 = { class: "post-files-images" };
-  const _hoisted_2$2 = ["data-ui-gallery", "href", "type", "title", "aria-label"];
-  const _hoisted_3$2 = ["src", "preload", "onLoadedmetadata", "onError"];
-  const _hoisted_4$2 = {
+  const _hoisted_1$3 = { class: "post-files-images" };
+  const _hoisted_2$3 = ["data-ui-gallery", "href", "data-ui-gallery-open-url", "data-ui-gallery-subtitles-url", "type", "title", "aria-label"];
+  const _hoisted_3$3 = ["src", "preload", "onLoadedmetadata", "onError"];
+  const _hoisted_4$3 = {
     key: 1,
     class: "ti ti-movie post-files-video-icon",
     "aria-hidden": "true"
   };
-  const _hoisted_5$2 = {
+  const _hoisted_5$3 = {
     key: 0,
     class: "post-files-video-duration",
     "aria-hidden": "true"
   };
-  const _hoisted_6$2 = {
+  const _hoisted_6$3 = {
     key: 3,
     class: "post-files-image-more",
     "aria-hidden": "true"
   };
-  const _hoisted_7$2 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title", "aria-label"];
-  const _hoisted_8$2 = ["src", "alt", "width", "height"];
-  const _hoisted_9$1 = {
+  const _hoisted_7$3 = ["data-ui-gallery", "href", "data-ui-gallery-open-url", "data-ui-gallery-src", "title", "aria-label"];
+  const _hoisted_8$3 = ["src", "alt", "width", "height"];
+  const _hoisted_9$2 = {
     key: 0,
     class: "post-files-image-more",
     "aria-hidden": "true"
   };
-  const _hoisted_10$1 = ["data-ui-gallery", "href", "type", "data-ui-gallery-src", "title"];
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_10$2 = ["data-ui-gallery", "href", "data-ui-gallery-open-url", "data-ui-gallery-subtitles-url", "type", "data-ui-gallery-src", "title"];
+  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_watch_video = vue$1.resolveDirective("watch-video");
-    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$2, [
+    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$3, [
       (vue$1.openBlock(true), vue$1.createElementBlock(
         vue$1.Fragment,
         null,
@@ -368,6 +373,8 @@
                         style: vue$1.normalizeStyle({ width: $options.px(item.width) }),
                         "data-ui-gallery": $props.galleryId,
                         href: $props.media[item.index].url,
+                        "data-ui-gallery-open-url": $props.media[item.index].viewUrl || null,
+                        "data-ui-gallery-subtitles-url": $options.subtitlesUrl($props.media[item.index]),
                         type: $options.videoType($props.media[item.index]),
                         title: $props.media[item.index].fileName,
                         "aria-label": $options.isMoreTile(item.index) ? $options.moreLabel() : $options.videoLabel($props.media[item.index])
@@ -382,9 +389,9 @@
                           tabindex: "-1",
                           onLoadedmetadata: ($event) => $options.measured($event.target, $props.media[item.index]),
                           onError: ($event) => $data.failed[$props.media[item.index].guid] = true
-                        }, null, 40, _hoisted_3$2)), [
+                        }, null, 40, _hoisted_3$3)), [
                           [_directive_watch_video, $props.media[item.index].guid]
-                        ]) : (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_4$2)),
+                        ]) : (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_4$3)),
                         !$options.isMoreTile(item.index) && !$data.failed[$props.media[item.index].guid] ? (vue$1.openBlock(), vue$1.createElementBlock(
                           vue$1.Fragment,
                           { key: 2 },
@@ -403,7 +410,7 @@
                             )),
                             $options.durationText($props.media[item.index]) ? (vue$1.openBlock(), vue$1.createElementBlock(
                               "span",
-                              _hoisted_5$2,
+                              _hoisted_5$3,
                               vue$1.toDisplayString($options.durationText($props.media[item.index])),
                               1
                               /* TEXT */
@@ -414,17 +421,18 @@
                         )) : vue$1.createCommentVNode("v-if", true),
                         $options.isMoreTile(item.index) ? (vue$1.openBlock(), vue$1.createElementBlock(
                           "span",
-                          _hoisted_6$2,
+                          _hoisted_6$3,
                           "+" + vue$1.toDisplayString($options.layout.hidden),
                           1
                           /* TEXT */
                         )) : vue$1.createCommentVNode("v-if", true)
-                      ], 14, _hoisted_2$2)) : (vue$1.openBlock(), vue$1.createElementBlock("a", {
+                      ], 14, _hoisted_2$3)) : (vue$1.openBlock(), vue$1.createElementBlock("a", {
                         key: 1,
                         class: "post-files-tile post-files-image",
                         style: vue$1.normalizeStyle({ width: $options.px(item.width) }),
                         "data-ui-gallery": $props.galleryId,
                         href: $props.media[item.index].url,
+                        "data-ui-gallery-open-url": $props.media[item.index].viewUrl || null,
                         "data-ui-gallery-src": $props.media[item.index].displayUrl || null,
                         title: $props.media[item.index].fileName,
                         "aria-label": $options.isMoreTile(item.index) ? $options.moreLabel() : null
@@ -436,15 +444,15 @@
                           alt: $props.media[item.index].fileName,
                           width: Math.round(item.width),
                           height: Math.round(row.height)
-                        }, null, 8, _hoisted_8$2),
+                        }, null, 8, _hoisted_8$3),
                         $options.isMoreTile(item.index) ? (vue$1.openBlock(), vue$1.createElementBlock(
                           "span",
-                          _hoisted_9$1,
+                          _hoisted_9$2,
                           "+" + vue$1.toDisplayString($options.layout.hidden),
                           1
                           /* TEXT */
                         )) : vue$1.createCommentVNode("v-if", true)
-                      ], 12, _hoisted_7$2))
+                      ], 12, _hoisted_7$3))
                     ],
                     64
                     /* STABLE_FRAGMENT */
@@ -470,21 +478,23 @@
             hidden: "",
             "data-ui-gallery": $props.galleryId,
             href: file.url,
+            "data-ui-gallery-open-url": file.viewUrl || null,
+            "data-ui-gallery-subtitles-url": $options.subtitlesUrl(file),
             type: $options.isVideo(file) ? $options.videoType(file) : null,
             "data-ui-gallery-src": file.displayUrl || null,
             title: file.fileName
-          }, vue$1.toDisplayString(file.fileName), 9, _hoisted_10$1);
+          }, vue$1.toDisplayString(file.fileName), 9, _hoisted_10$2);
         }),
         128
         /* KEYED_FRAGMENT */
       ))
     ]);
   }
-  const AttachedMedia = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const AttachedMedia = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
   const LIST_HEAD = 2;
   const COLLAPSE_FROM = 4;
   let uid = 0;
-  const _sfc_main$1 = {
+  const _sfc_main$2 = {
     components: { AttachedMedia },
     i18nCategories: ["FileModule.base"],
     props: {
@@ -586,27 +596,27 @@
       }
     }
   };
-  const _hoisted_1$1 = {
+  const _hoisted_1$2 = {
     key: 0,
     class: "post-files"
   };
-  const _hoisted_2$1 = {
+  const _hoisted_2$2 = {
     key: 1,
     class: "list-group file-list"
   };
-  const _hoisted_3$1 = ["id"];
-  const _hoisted_4$1 = ["inert"];
-  const _hoisted_5$1 = {
+  const _hoisted_3$2 = ["id"];
+  const _hoisted_4$2 = ["inert"];
+  const _hoisted_5$2 = {
     class: "file-list-more-inner",
     role: "none"
   };
-  const _hoisted_6$1 = {
+  const _hoisted_6$2 = {
     key: 0,
     class: "list-group-item file-row file-list-toggle"
   };
-  const _hoisted_7$1 = ["id"];
-  const _hoisted_8$1 = ["aria-expanded", "aria-controls", "aria-describedby"];
-  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_7$2 = ["id"];
+  const _hoisted_8$2 = ["aria-expanded", "aria-controls", "aria-describedby"];
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_AttachedMedia = vue$1.resolveComponent("AttachedMedia");
     const _component_FileRow = vue$1.resolveComponent("FileRow");
     const _directive_additions = vue$1.resolveDirective("additions");
@@ -614,13 +624,13 @@
       vue$1.Fragment,
       null,
       [
-        $options.media.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$1, [
+        $options.media.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$2, [
           vue$1.createVNode(_component_AttachedMedia, {
             media: $options.media,
             "gallery-id": $props.galleryId
           }, null, 8, ["media", "gallery-id"])
         ])) : vue$1.createCommentVNode("v-if", true),
-        $options.listed.length ? vue$1.withDirectives((vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$1, [
+        $options.listed.length ? vue$1.withDirectives((vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$2, [
           vue$1.createElementVNode("div", {
             id: $options.collapsible ? $options.listId : null,
             class: "file-list-rows",
@@ -647,7 +657,7 @@
               inert: !$data.expanded,
               role: "none"
             }, [
-              vue$1.createElementVNode("div", _hoisted_5$1, [
+              vue$1.createElementVNode("div", _hoisted_5$2, [
                 (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
                   null,
@@ -664,9 +674,9 @@
                   /* KEYED_FRAGMENT */
                 ))
               ])
-            ], 10, _hoisted_4$1)) : vue$1.createCommentVNode("v-if", true)
-          ], 8, _hoisted_3$1),
-          $options.collapsible ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_6$1, [
+            ], 10, _hoisted_4$2)) : vue$1.createCommentVNode("v-if", true)
+          ], 8, _hoisted_3$2),
+          $options.collapsible ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_6$2, [
             _cache[2] || (_cache[2] = vue$1.createElementVNode(
               "i",
               {
@@ -680,7 +690,7 @@
             vue$1.createElementVNode("span", {
               id: $options.countId,
               class: "file-row-text"
-            }, vue$1.toDisplayString($options.countLabel), 9, _hoisted_7$1),
+            }, vue$1.toDisplayString($options.countLabel), 9, _hoisted_7$2),
             vue$1.createElementVNode("button", {
               ref: "toggle",
               type: "button",
@@ -705,7 +715,7 @@
                 2
                 /* CLASS */
               )
-            ], 8, _hoisted_8$1)
+            ], 8, _hoisted_8$2)
           ])) : vue$1.createCommentVNode("v-if", true)
         ])), [
           [_directive_additions]
@@ -715,9 +725,9 @@
       /* STABLE_FRAGMENT */
     );
   }
-  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const C0 = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const SIZE_UNITS = ["B", "KB", "MB", "GB", "TB"];
-  const _sfc_main = {
+  const _sfc_main$1 = {
     i18nCategories: ["FileModule.base", "base"],
     props: {
       /** The id of the platform file (not of the record it is attached to). */
@@ -773,36 +783,36 @@
       }
     }
   };
-  const _hoisted_1 = { class: "file-versions" };
-  const _hoisted_2 = {
+  const _hoisted_1$1 = { class: "file-versions" };
+  const _hoisted_2$1 = {
     key: 0,
     class: "text-center p-2"
   };
-  const _hoisted_3 = {
+  const _hoisted_3$1 = {
     class: "visually-hidden",
     role: "status"
   };
-  const _hoisted_4 = {
+  const _hoisted_4$1 = {
     key: 1,
     class: "text-danger m-0"
   };
-  const _hoisted_5 = {
+  const _hoisted_5$1 = {
     key: 2,
     class: "list-group list-group-flush file-versions-list"
   };
-  const _hoisted_6 = { class: "file-version-body" };
-  const _hoisted_7 = { class: "file-version-title" };
-  const _hoisted_8 = {
+  const _hoisted_6$1 = { class: "file-version-body" };
+  const _hoisted_7$1 = { class: "file-version-title" };
+  const _hoisted_8$1 = {
     key: 0,
     class: "badge"
   };
-  const _hoisted_9 = { class: "file-version-meta" };
-  const _hoisted_10 = ["datetime"];
-  const _hoisted_11 = ["href", "aria-label", "title"];
-  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _hoisted_9$1 = { class: "file-version-meta" };
+  const _hoisted_10$1 = ["datetime"];
+  const _hoisted_11$1 = ["href", "aria-label", "title"];
+  function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_UserImage = vue$1.resolveComponent("UserImage");
-    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
-      $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2, [
+    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$1, [
+      $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$1, [
         _cache[0] || (_cache[0] = vue$1.createElementVNode(
           "span",
           {
@@ -815,18 +825,18 @@
         )),
         vue$1.createElementVNode(
           "span",
-          _hoisted_3,
+          _hoisted_3$1,
           vue$1.toDisplayString($options.loadingLabel),
           1
           /* TEXT */
         )
       ])) : $data.failed ? (vue$1.openBlock(), vue$1.createElementBlock(
         "p",
-        _hoisted_4,
+        _hoisted_4$1,
         vue$1.toDisplayString($options.errorLabel),
         1
         /* TEXT */
-      )) : (vue$1.openBlock(), vue$1.createElementBlock("ol", _hoisted_5, [
+      )) : (vue$1.openBlock(), vue$1.createElementBlock("ol", _hoisted_5$1, [
         (vue$1.openBlock(true), vue$1.createElementBlock(
           vue$1.Fragment,
           null,
@@ -848,8 +858,8 @@
                 16
                 /* FULL_PROPS */
               )) : vue$1.createCommentVNode("v-if", true),
-              vue$1.createElementVNode("div", _hoisted_6, [
-                vue$1.createElementVNode("div", _hoisted_7, [
+              vue$1.createElementVNode("div", _hoisted_6$1, [
+                vue$1.createElementVNode("div", _hoisted_7$1, [
                   vue$1.createTextVNode(
                     vue$1.toDisplayString($options.titleOf(entry)) + " ",
                     1
@@ -857,16 +867,16 @@
                   ),
                   entry.current ? (vue$1.openBlock(), vue$1.createElementBlock(
                     "span",
-                    _hoisted_8,
+                    _hoisted_8$1,
                     vue$1.toDisplayString($options.currentLabel),
                     1
                     /* TEXT */
                   )) : vue$1.createCommentVNode("v-if", true)
                 ]),
-                vue$1.createElementVNode("div", _hoisted_9, [
+                vue$1.createElementVNode("div", _hoisted_9$1, [
                   vue$1.createElementVNode("time", {
                     datetime: entry.createdAt
-                  }, vue$1.toDisplayString($options.formatDate(entry.createdAt)), 9, _hoisted_10),
+                  }, vue$1.toDisplayString($options.formatDate(entry.createdAt)), 9, _hoisted_10$1),
                   vue$1.createTextVNode(
                     " · " + vue$1.toDisplayString($options.shortSize(entry.size)),
                     1
@@ -890,7 +900,7 @@
                   -1
                   /* CACHED */
                 )
-              ])], 8, _hoisted_11)
+              ])], 8, _hoisted_11$1)
             ]);
           }),
           128
@@ -899,8 +909,736 @@
       ]))
     ]);
   }
-  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+  const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const LANGUAGE_CODES = "aa ab ae af ak am an ar as av ay az ba be bg bh bi bm bn bo br bs ca ce ch co cr cs cu cv cy da de dv dz ee el en eo es et eu fa ff fi fj fo fr fy ga gd gl gn gu gv ha he hi ho hr ht hu hy hz ia id ie ig ii ik io is it iu ja jv ka kg ki kj kk kl km kn ko kr ks ku kv kw ky la lb lg li ln lo lt lu lv mg mh mi mk ml mn mr ms mt my na nb nd ne ng nl nn no nr nv ny oc oj om or os pa pi pl ps pt qu rm rn ro ru rw sa sc sd se sg si sk sl sm sn so sq sr ss st su sv sw ta te tg th ti tk tl tn to tr ts tt tw ty ug uk ur uz ve vi vo wa wo xh yi yo za zh zu".split(" ");
+  function languageName(code, locale) {
+    let name = code;
+    try {
+      name = new Intl.DisplayNames([locale || "en"], { type: "language" }).of(code) || code;
+    } catch (e) {
+    }
+    return name.charAt(0).toLocaleUpperCase(locale || void 0) + name.slice(1);
+  }
+  const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+  const _sfc_main = {
+    i18nCategories: ["FileModule.base", "base"],
+    props: {
+      /** The id of the platform file. */
+      fileId: { type: Number, required: true },
+      /** Its name, for the messages. */
+      fileName: { type: String, default: "" }
+    },
+    data() {
+      return {
+        variants: [],
+        loading: true,
+        failed: false,
+        loadError: "",
+        busy: false,
+        // The open form: `{name, language, kind, content}`, `name` is empty for a new language
+        form: null,
+        errors: {}
+      };
+    },
+    computed: {
+      uiLanguage() {
+        return (document.documentElement.lang || "en").split("-")[0].toLowerCase();
+      },
+      /** All languages with their names, the UI language first, the languages that exist left out when adding. */
+      languageOptions() {
+        const existing = new Set(this.variants.map((variant) => variant.language));
+        const locale = document.documentElement.lang || "en";
+        return LANGUAGE_CODES.filter((code) => !existing.has(code)).map((code) => ({ value: code, label: languageName(code, locale) })).sort((a, b) => (b.value === this.uiLanguage) - (a.value === this.uiLanguage) || a.label.localeCompare(b.label, locale));
+      },
+      contentErrors() {
+        return this.errors.content || [];
+      },
+      /** Messages of the other fields (an unknown name, ...), shown above the form. */
+      otherErrors() {
+        return Object.keys(this.errors).filter((key) => key !== "content").flatMap((key) => this.errors[key]);
+      },
+      loadingLabel: () => vue.i18n.t("base", "Loading..."),
+      errorLabel: () => vue.i18n.t("FileModule.base", "The subtitles could not be loaded."),
+      emptyLabel: () => vue.i18n.t("FileModule.base", "No subtitles yet."),
+      addLabel: () => vue.i18n.t("FileModule.base", "Add language"),
+      automaticLabel: () => vue.i18n.t("FileModule.base", "automatic"),
+      subtitlesLabel: () => vue.i18n.t("FileModule.base", "Subtitles"),
+      captionsLabel: () => vue.i18n.t("FileModule.base", "Captions (with sound descriptions)"),
+      languageLabel: () => vue.i18n.t("FileModule.base", "Language"),
+      kindLabel: () => vue.i18n.t("FileModule.base", "Type"),
+      contentLabel: () => vue.i18n.t("FileModule.base", "WebVTT text"),
+      contentHint: () => vue.i18n.t("FileModule.base", "WebVTT, or SRT, which is converted when saving."),
+      loadFileLabel: () => vue.i18n.t("FileModule.base", "Load file"),
+      saveLabel: () => vue.i18n.t("base", "Save"),
+      cancelLabel: () => vue.i18n.t("base", "Cancel")
+    },
+    mounted() {
+      this.load();
+    },
+    methods: {
+      id(name) {
+        return `subtitle-${this.fileId}-${name}`;
+      },
+      endpoint(name) {
+        return vue.apiUrl("file/" + this.fileId + "/variants" + (name ? "/" + encodeURIComponent(name) : ""));
+      },
+      labelOf(code) {
+        return languageName(code, document.documentElement.lang || "en");
+      },
+      kindOf(variant) {
+        return variant.kind === "captions" ? vue.i18n.t("FileModule.base", "Captions") : vue.i18n.t("FileModule.base", "Subtitles");
+      },
+      editLabelOf: (variant) => vue.i18n.t("FileModule.base", "Edit {language}", { language: variant.label }),
+      downloadLabelOf: (variant) => vue.i18n.t("FileModule.base", "Download {language}", { language: variant.label }),
+      deleteLabelOf: (variant) => vue.i18n.t("FileModule.base", "Delete {language}", { language: variant.label }),
+      load() {
+        return vue.client.get(this.endpoint()).then((response) => {
+          const results = Array.isArray(response.results) ? response.results : [];
+          this.variants = results.filter((variant) => variant.type === "subtitles");
+          this.loading = false;
+        }).catch((e) => {
+          this.failed = true;
+          this.loading = false;
+          vue.log.error(e);
+        });
+      },
+      /** Moves the focus to an element once the view has rendered it. */
+      focusAfterRender(find) {
+        return this.$nextTick(() => {
+          const target = find();
+          if (target) {
+            target.focus();
+          }
+        });
+      },
+      focusEdit(name) {
+        return this.focusAfterRender(() => Array.from(this.$el.querySelectorAll(".subtitle-manager-edit")).find((button) => button.dataset.name === name) || this.$el.querySelector(".subtitle-manager-add") || this.$refs.error);
+      },
+      focusButton(selector, name) {
+        return this.focusAfterRender(() => Array.from(this.$el.querySelectorAll(selector)).find((button) => button.dataset.name === name));
+      },
+      /** The list of the subtitles of the file is out of date: the viewer and the audio player ask again. */
+      announceChange() {
+        document.dispatchEvent(new CustomEvent("humhub:file:variants-changed", { detail: { fileId: this.fileId } }));
+      },
+      add() {
+        if (this.busy) {
+          return;
+        }
+        const first = this.languageOptions[0];
+        this.errors = {};
+        this.loadError = "";
+        this.form = { name: "", language: first ? first.value : "", kind: "subtitles", content: "" };
+        this.focusAfterRender(() => this.$refs.language);
+      },
+      edit(variant) {
+        if (this.busy) {
+          return Promise.resolve();
+        }
+        this.errors = {};
+        this.loadError = "";
+        this.busy = true;
+        return fetch(variant.url, { credentials: "same-origin" }).then((response) => {
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+          return response.text();
+        }).then((content) => {
+          this.form = { name: variant.name, language: variant.language, kind: variant.kind, content };
+          this.busy = false;
+          this.focusAfterRender(() => this.$refs.kind);
+        }).catch((e) => {
+          this.busy = false;
+          this.loadError = vue.i18n.t("FileModule.base", "The subtitles of {language} could not be loaded.", {
+            language: variant.label
+          });
+          vue.log.error(e);
+          this.focusButton(".subtitle-manager-edit", variant.name);
+        });
+      },
+      cancel() {
+        if (this.busy) {
+          return;
+        }
+        const name = this.form.name;
+        this.form = null;
+        this.errors = {};
+        this.focusEdit(name);
+      },
+      loadFile(event) {
+        const input = event.target;
+        const file = input.files && input.files[0];
+        if (!file) {
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.form.content = String(reader.result);
+          this.errors = {};
+          input.value = "";
+          this.focusAfterRender(() => this.$refs.content);
+        };
+        reader.onerror = () => {
+          input.value = "";
+          vue.log.error(reader.error);
+        };
+        reader.readAsText(file);
+      },
+      save() {
+        if (this.busy || !this.form) {
+          return Promise.resolve();
+        }
+        const { language, kind, content } = this.form;
+        const name = this.form.name || `subtitles-${language}.vtt`;
+        this.busy = true;
+        this.errors = {};
+        return vue.client.put(this.endpoint(name), {
+          data: JSON.stringify({ content, kind }),
+          contentType: "application/json"
+        }).then(() => {
+          this.announceChange();
+          return this.load();
+        }).then(() => {
+          this.busy = false;
+          this.form = null;
+          vue.announce(vue.i18n.t("FileModule.base", "Subtitles saved: {language}", { language: this.labelOf(language) }));
+          this.focusEdit(name);
+        }).catch((response) => {
+          this.busy = false;
+          if (response && response.status === 422) {
+            this.errors = this.errorsOf(response);
+            this.focusAfterRender(() => this.$refs.content);
+          } else {
+            this.errors = { save: [vue.i18n.t("FileModule.base", "The subtitles could not be saved.")] };
+            vue.log.error(response);
+            this.focusAfterRender(() => this.$refs.submit);
+          }
+        });
+      },
+      /** `{field: [messages]}` of a 422, whichever shape the client hands over. */
+      errorsOf(response) {
+        const errors = response.errors || response.error && response.error.errors || {};
+        const result = {};
+        Object.keys(errors).forEach((key) => {
+          result[key] = [].concat(errors[key]);
+        });
+        return result;
+      },
+      remove(variant) {
+        if (this.busy) {
+          return Promise.resolve();
+        }
+        return vue.modal.confirm({
+          body: vue.i18n.t("FileModule.base", "Do you want to delete the subtitles {language}?", {
+            language: escapeHtml(variant.label)
+          })
+        }).then((confirmed) => {
+          if (!confirmed) {
+            return null;
+          }
+          const index = this.variants.indexOf(variant);
+          const neighbour = this.variants[index + 1] || this.variants[index - 1];
+          this.busy = true;
+          return vue.client.del(this.endpoint(variant.name)).then(() => {
+            this.announceChange();
+            return this.load();
+          }).then(() => {
+            this.busy = false;
+            vue.announce(vue.i18n.t("FileModule.base", "Subtitles deleted: {language}", { language: variant.label }));
+            this.focusEdit(neighbour ? neighbour.name : "");
+          }).catch((response) => {
+            this.busy = false;
+            this.loadError = vue.i18n.t("FileModule.base", "The subtitles could not be deleted.");
+            vue.log.error(response);
+            this.focusButton(".subtitle-manager-delete", variant.name);
+          });
+        });
+      }
+    }
+  };
+  const _hoisted_1 = { class: "subtitle-manager" };
+  const _hoisted_2 = {
+    key: 0,
+    class: "text-center p-2"
+  };
+  const _hoisted_3 = {
+    class: "visually-hidden",
+    role: "status"
+  };
+  const _hoisted_4 = {
+    key: 0,
+    class: "alert alert-danger",
+    role: "alert"
+  };
+  const _hoisted_5 = {
+    key: 1,
+    class: "mb-3"
+  };
+  const _hoisted_6 = { class: "form-label d-block" };
+  const _hoisted_7 = { class: "subtitle-manager-language" };
+  const _hoisted_8 = {
+    key: 2,
+    class: "mb-3 field-language required"
+  };
+  const _hoisted_9 = ["for"];
+  const _hoisted_10 = ["id"];
+  const _hoisted_11 = ["value"];
+  const _hoisted_12 = { class: "mb-3 field-kind" };
+  const _hoisted_13 = ["for"];
+  const _hoisted_14 = ["id"];
+  const _hoisted_15 = { value: "subtitles" };
+  const _hoisted_16 = { value: "captions" };
+  const _hoisted_17 = { class: "mb-3 field-content required" };
+  const _hoisted_18 = ["for"];
+  const _hoisted_19 = ["id", "aria-invalid", "aria-describedby"];
+  const _hoisted_20 = ["id"];
+  const _hoisted_21 = ["id"];
+  const _hoisted_22 = { class: "d-flex flex-wrap gap-2" };
+  const _hoisted_23 = ["aria-disabled", "aria-busy"];
+  const _hoisted_24 = {
+    key: 0,
+    class: "hh-loader text-center"
+  };
+  const _hoisted_25 = {
+    role: "status",
+    class: "visually-hidden"
+  };
+  const _hoisted_26 = ["aria-disabled"];
+  const _hoisted_27 = ["aria-disabled"];
+  const _hoisted_28 = {
+    key: 0,
+    class: "text-danger",
+    role: "alert"
+  };
+  const _hoisted_29 = {
+    key: 1,
+    class: "text-muted subtitle-manager-empty"
+  };
+  const _hoisted_30 = {
+    key: 2,
+    class: "list-group list-group-flush subtitle-manager-list"
+  };
+  const _hoisted_31 = { class: "flex-grow-1" };
+  const _hoisted_32 = { class: "subtitle-manager-label" };
+  const _hoisted_33 = { class: "text-body-secondary" };
+  const _hoisted_34 = {
+    key: 0,
+    class: "badge ms-1"
+  };
+  const _hoisted_35 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
+  const _hoisted_36 = ["href", "download", "aria-label", "data-bs-title"];
+  const _hoisted_37 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
+  const _hoisted_38 = ["aria-disabled"];
+  function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
+      $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2, [
+        _cache[9] || (_cache[9] = vue$1.createElementVNode(
+          "span",
+          {
+            class: "spinner-border spinner-border-sm",
+            "aria-hidden": "true"
+          },
+          null,
+          -1
+          /* CACHED */
+        )),
+        vue$1.createElementVNode(
+          "span",
+          _hoisted_3,
+          vue$1.toDisplayString($options.loadingLabel),
+          1
+          /* TEXT */
+        )
+      ])) : $data.failed ? (vue$1.openBlock(), vue$1.createElementBlock(
+        "p",
+        {
+          key: 1,
+          ref: "error",
+          tabindex: "-1",
+          class: "text-danger m-0",
+          role: "alert"
+        },
+        vue$1.toDisplayString($options.errorLabel),
+        513
+        /* TEXT, NEED_PATCH */
+      )) : $data.form ? (vue$1.openBlock(), vue$1.createElementBlock(
+        "form",
+        {
+          key: 2,
+          class: "subtitle-manager-form",
+          novalidate: "",
+          onSubmit: _cache[7] || (_cache[7] = vue$1.withModifiers((...args) => $options.save && $options.save(...args), ["prevent"]))
+        },
+        [
+          $options.otherErrors.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_4, [
+            (vue$1.openBlock(true), vue$1.createElementBlock(
+              vue$1.Fragment,
+              null,
+              vue$1.renderList($options.otherErrors, (message, index) => {
+                return vue$1.openBlock(), vue$1.createElementBlock(
+                  "div",
+                  { key: index },
+                  vue$1.toDisplayString(message),
+                  1
+                  /* TEXT */
+                );
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])) : vue$1.createCommentVNode("v-if", true),
+          $data.form.name ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_5, [
+            vue$1.createElementVNode(
+              "span",
+              _hoisted_6,
+              vue$1.toDisplayString($options.languageLabel),
+              1
+              /* TEXT */
+            ),
+            vue$1.createElementVNode(
+              "span",
+              _hoisted_7,
+              vue$1.toDisplayString($options.labelOf($data.form.language)),
+              1
+              /* TEXT */
+            )
+          ])) : (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_8, [
+            vue$1.createElementVNode("label", {
+              for: $options.id("language"),
+              class: "form-label"
+            }, vue$1.toDisplayString($options.languageLabel), 9, _hoisted_9),
+            vue$1.withDirectives(vue$1.createElementVNode("select", {
+              id: $options.id("language"),
+              ref: "language",
+              "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $data.form.language = $event),
+              class: "form-select",
+              "aria-required": "true"
+            }, [
+              (vue$1.openBlock(true), vue$1.createElementBlock(
+                vue$1.Fragment,
+                null,
+                vue$1.renderList($options.languageOptions, (option) => {
+                  return vue$1.openBlock(), vue$1.createElementBlock("option", {
+                    key: option.value,
+                    value: option.value
+                  }, vue$1.toDisplayString(option.label), 9, _hoisted_11);
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ], 8, _hoisted_10), [
+              [vue$1.vModelSelect, $data.form.language]
+            ])
+          ])),
+          vue$1.createElementVNode("div", _hoisted_12, [
+            vue$1.createElementVNode("label", {
+              for: $options.id("kind"),
+              class: "form-label"
+            }, vue$1.toDisplayString($options.kindLabel), 9, _hoisted_13),
+            vue$1.withDirectives(vue$1.createElementVNode("select", {
+              id: $options.id("kind"),
+              ref: "kind",
+              "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => $data.form.kind = $event),
+              class: "form-select"
+            }, [
+              vue$1.createElementVNode(
+                "option",
+                _hoisted_15,
+                vue$1.toDisplayString($options.subtitlesLabel),
+                1
+                /* TEXT */
+              ),
+              vue$1.createElementVNode(
+                "option",
+                _hoisted_16,
+                vue$1.toDisplayString($options.captionsLabel),
+                1
+                /* TEXT */
+              )
+            ], 8, _hoisted_14), [
+              [vue$1.vModelSelect, $data.form.kind]
+            ])
+          ]),
+          vue$1.createElementVNode("div", _hoisted_17, [
+            vue$1.createElementVNode("label", {
+              for: $options.id("content"),
+              class: "form-label"
+            }, vue$1.toDisplayString($options.contentLabel), 9, _hoisted_18),
+            vue$1.createCommentVNode(" Own markup instead of `TextareaField`: the text is WebVTT, set in a monospace font "),
+            vue$1.withDirectives(vue$1.createElementVNode("textarea", {
+              id: $options.id("content"),
+              ref: "content",
+              "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => $data.form.content = $event),
+              class: vue$1.normalizeClass(["form-control font-monospace", { "is-invalid": $options.contentErrors.length }]),
+              rows: "12",
+              spellcheck: "false",
+              "aria-required": "true",
+              "aria-invalid": $options.contentErrors.length ? "true" : null,
+              "aria-describedby": $options.id("content-hint") + ($options.contentErrors.length ? " " + $options.id("content-error") : ""),
+              onInput: _cache[3] || (_cache[3] = ($event) => $data.errors = {})
+            }, null, 42, _hoisted_19), [
+              [vue$1.vModelText, $data.form.content]
+            ]),
+            vue$1.createElementVNode("div", {
+              id: $options.id("content-hint"),
+              class: "form-text text-muted"
+            }, vue$1.toDisplayString($options.contentHint), 9, _hoisted_20),
+            $options.contentErrors.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
+              key: 0,
+              id: $options.id("content-error"),
+              class: "invalid-feedback"
+            }, [
+              (vue$1.openBlock(true), vue$1.createElementBlock(
+                vue$1.Fragment,
+                null,
+                vue$1.renderList($options.contentErrors, (message, index) => {
+                  return vue$1.openBlock(), vue$1.createElementBlock(
+                    "div",
+                    { key: index },
+                    vue$1.toDisplayString(message),
+                    1
+                    /* TEXT */
+                  );
+                }),
+                128
+                /* KEYED_FRAGMENT */
+              ))
+            ], 8, _hoisted_21)) : vue$1.createCommentVNode("v-if", true)
+          ]),
+          vue$1.createElementVNode("div", _hoisted_22, [
+            vue$1.createElementVNode("button", {
+              ref: "submit",
+              type: "submit",
+              class: "btn btn-primary",
+              "aria-disabled": $data.busy ? "true" : null,
+              "aria-busy": $data.busy ? "true" : null
+            }, [
+              $data.busy ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_24, [
+                _cache[10] || (_cache[10] = vue$1.createElementVNode(
+                  "span",
+                  {
+                    class: "spinner-border spinner-border-sm",
+                    "aria-hidden": "true"
+                  },
+                  null,
+                  -1
+                  /* CACHED */
+                )),
+                vue$1.createElementVNode(
+                  "span",
+                  _hoisted_25,
+                  vue$1.toDisplayString($options.loadingLabel),
+                  1
+                  /* TEXT */
+                )
+              ])) : (vue$1.openBlock(), vue$1.createElementBlock(
+                vue$1.Fragment,
+                { key: 1 },
+                [
+                  vue$1.createTextVNode(
+                    vue$1.toDisplayString($options.saveLabel),
+                    1
+                    /* TEXT */
+                  )
+                ],
+                64
+                /* STABLE_FRAGMENT */
+              ))
+            ], 8, _hoisted_23),
+            vue$1.createElementVNode("button", {
+              type: "button",
+              class: "btn btn-ghost",
+              "aria-disabled": $data.busy ? "true" : null,
+              onClick: _cache[4] || (_cache[4] = (...args) => $options.cancel && $options.cancel(...args))
+            }, vue$1.toDisplayString($options.cancelLabel), 9, _hoisted_26),
+            vue$1.createElementVNode("button", {
+              type: "button",
+              class: "btn btn-ghost ms-auto subtitle-manager-load",
+              "aria-disabled": $data.busy ? "true" : null,
+              onClick: _cache[5] || (_cache[5] = ($event) => $data.busy || _ctx.$refs.file.click())
+            }, [
+              _cache[11] || (_cache[11] = vue$1.createElementVNode(
+                "i",
+                {
+                  class: "ti ti-upload",
+                  "aria-hidden": "true"
+                },
+                null,
+                -1
+                /* CACHED */
+              )),
+              vue$1.createTextVNode(
+                " " + vue$1.toDisplayString($options.loadFileLabel),
+                1
+                /* TEXT */
+              )
+            ], 8, _hoisted_27),
+            vue$1.createElementVNode(
+              "input",
+              {
+                ref: "file",
+                type: "file",
+                class: "d-none",
+                accept: ".vtt,.srt,text/vtt",
+                tabindex: "-1",
+                "aria-hidden": "true",
+                onChange: _cache[6] || (_cache[6] = (...args) => $options.loadFile && $options.loadFile(...args))
+              },
+              null,
+              544
+              /* NEED_HYDRATION, NEED_PATCH */
+            )
+          ])
+        ],
+        32
+        /* NEED_HYDRATION */
+      )) : (vue$1.openBlock(), vue$1.createElementBlock(
+        vue$1.Fragment,
+        { key: 3 },
+        [
+          $data.loadError ? (vue$1.openBlock(), vue$1.createElementBlock(
+            "p",
+            _hoisted_28,
+            vue$1.toDisplayString($data.loadError),
+            1
+            /* TEXT */
+          )) : vue$1.createCommentVNode("v-if", true),
+          !$data.variants.length ? (vue$1.openBlock(), vue$1.createElementBlock(
+            "p",
+            _hoisted_29,
+            vue$1.toDisplayString($options.emptyLabel),
+            1
+            /* TEXT */
+          )) : (vue$1.openBlock(), vue$1.createElementBlock("ul", _hoisted_30, [
+            (vue$1.openBlock(true), vue$1.createElementBlock(
+              vue$1.Fragment,
+              null,
+              vue$1.renderList($data.variants, (variant) => {
+                return vue$1.openBlock(), vue$1.createElementBlock("li", {
+                  key: variant.name,
+                  class: "list-group-item d-flex align-items-center gap-2 subtitle-manager-item"
+                }, [
+                  vue$1.createElementVNode("div", _hoisted_31, [
+                    vue$1.createElementVNode(
+                      "span",
+                      _hoisted_32,
+                      vue$1.toDisplayString(variant.label),
+                      1
+                      /* TEXT */
+                    ),
+                    vue$1.createElementVNode(
+                      "span",
+                      _hoisted_33,
+                      " · " + vue$1.toDisplayString($options.kindOf(variant)),
+                      1
+                      /* TEXT */
+                    ),
+                    variant.generated ? (vue$1.openBlock(), vue$1.createElementBlock(
+                      "span",
+                      _hoisted_34,
+                      vue$1.toDisplayString($options.automaticLabel),
+                      1
+                      /* TEXT */
+                    )) : vue$1.createCommentVNode("v-if", true)
+                  ]),
+                  vue$1.createElementVNode("button", {
+                    type: "button",
+                    class: "btn btn-ghost btn-sm btn-icon-only subtitle-manager-edit",
+                    "data-name": variant.name,
+                    "aria-disabled": $data.busy ? "true" : null,
+                    "aria-label": $options.editLabelOf(variant),
+                    "data-bs-title": $options.editLabelOf(variant),
+                    "data-bs-toggle": "tooltip",
+                    onClick: ($event) => $options.edit(variant)
+                  }, [..._cache[12] || (_cache[12] = [
+                    vue$1.createElementVNode(
+                      "i",
+                      {
+                        class: "ti ti-edit",
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      -1
+                      /* CACHED */
+                    )
+                  ])], 8, _hoisted_35),
+                  vue$1.createElementVNode("a", {
+                    class: "btn btn-ghost btn-sm btn-icon-only subtitle-manager-download",
+                    href: variant.url,
+                    download: variant.name,
+                    "aria-label": $options.downloadLabelOf(variant),
+                    "data-bs-title": $options.downloadLabelOf(variant),
+                    "data-bs-toggle": "tooltip"
+                  }, [..._cache[13] || (_cache[13] = [
+                    vue$1.createElementVNode(
+                      "i",
+                      {
+                        class: "ti ti-download",
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      -1
+                      /* CACHED */
+                    )
+                  ])], 8, _hoisted_36),
+                  vue$1.createElementVNode("button", {
+                    type: "button",
+                    class: "btn btn-ghost btn-ghost-danger btn-sm btn-icon-only subtitle-manager-delete",
+                    "data-name": variant.name,
+                    "aria-disabled": $data.busy ? "true" : null,
+                    "aria-label": $options.deleteLabelOf(variant),
+                    "data-bs-title": $options.deleteLabelOf(variant),
+                    "data-bs-toggle": "tooltip",
+                    onClick: ($event) => $options.remove(variant)
+                  }, [..._cache[14] || (_cache[14] = [
+                    vue$1.createElementVNode(
+                      "i",
+                      {
+                        class: "ti ti-trash",
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      -1
+                      /* CACHED */
+                    )
+                  ])], 8, _hoisted_37)
+                ]);
+              }),
+              128
+              /* KEYED_FRAGMENT */
+            ))
+          ])),
+          vue$1.createElementVNode("button", {
+            type: "button",
+            class: "btn btn-primary btn-sm subtitle-manager-add",
+            "aria-disabled": $data.busy ? "true" : null,
+            onClick: _cache[8] || (_cache[8] = (...args) => $options.add && $options.add(...args))
+          }, [
+            _cache[15] || (_cache[15] = vue$1.createElementVNode(
+              "i",
+              {
+                class: "ti ti-plus",
+                "aria-hidden": "true"
+              },
+              null,
+              -1
+              /* CACHED */
+            )),
+            vue$1.createTextVNode(
+              " " + vue$1.toDisplayString($options.addLabel),
+              1
+              /* TEXT */
+            )
+          ], 8, _hoisted_38)
+        ],
+        64
+        /* STABLE_FRAGMENT */
+      ))
+    ]);
+  }
+  const C2 = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
   vue.register("AttachedFiles", C0);
   vue.register("FileVersions", C1);
+  vue.register("SubtitleManager", C2);
 })(humhub.modules.vue, Vue);
 //# sourceMappingURL=humhub.file.vue.js.map

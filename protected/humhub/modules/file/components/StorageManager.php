@@ -82,6 +82,21 @@ class StorageManager extends Component implements StorageManagerInterface
         return $this->fs->checksum($this->get($variant), ['checksum_algo' => $algo]);
     }
 
+    /**
+     * @param string[] $patterns names, or prefixes when they end in `*`
+     */
+    private static function matchesAny(string $name, array $patterns): bool
+    {
+        foreach ($patterns as $pattern) {
+            $pattern = (string)$pattern;
+            if (str_ends_with($pattern, '*') ? str_starts_with($name, substr($pattern, 0, -1)) : $name === $pattern) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function getVariants(array $except = []): array
     {
         return $this->fs->listContents($this->getPath())
@@ -91,13 +106,7 @@ class StorageManager extends Component implements StorageManagerInterface
                 if ($name === $this->originalFileName) {
                     return false;
                 }
-                foreach ($except as $e) {
-                    $e = str_replace('*', '', $e);
-                    if (str_contains($name, $e)) {
-                        return false;
-                    }
-                }
-                return true;
+                return !self::matchesAny($name, $except);
             })
             ->map(fn($f) => basename($f->path()))
             ->toArray();
@@ -126,18 +135,15 @@ class StorageManager extends Component implements StorageManagerInterface
 
     public function delete($variant = null, array $except = []): void
     {
-        $cleanedExcept = array_map(fn($e) => str_replace('*', '', $e), $except);
+        if ($variant !== null) {
+            $this->fs->delete($this->get($variant));
+
+            return;
+        }
 
         $files = $this->fs->listContents($this->getPath(), false)
             ->filter(fn(StorageAttributes $attributes) => $attributes->isFile())
-            ->filter(
-                fn(StorageAttributes $attribute) => empty(
-                    array_filter(
-                        $cleanedExcept,
-                        fn($e) => str_contains(basename($attribute->path()), (string) $e),
-                    )
-                ),
-            )
+            ->filter(fn(StorageAttributes $attribute) => !self::matchesAny(basename($attribute->path()), $except))
             ->map(fn(StorageAttributes $attributes) => $attributes->path())
             ->toArray();
 

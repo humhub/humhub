@@ -25,13 +25,13 @@ use Yii;
  * island; the markup lives in `file/vue/AttachedFiles.vue`, which the comment island
  * renders its attachments with as well.
  *
- * Beside the serialized {@see FileSerializer::file()} shape - which is exactly what the
- * HTTP API ships - each file carries two presentation hints only a server-side caller
- * can resolve, and which the API therefore does not carry:
+ * Beside the serialized {@see FileSerializer::file()} shape - which is what the HTTP API
+ * ships - each file carries two presentation hints that depend on the caller:
  *
  *  - `viewUrl` ({@see FileHelper::getViewUrl()}) depends on the file handlers modules
- *    contributed for this file, which may be permission dependent - it must not end up
- *    in a caller-neutral, cacheable payload (see docs/develop/concept-api.md).
+ *    contributed for this file, which may be permission dependent. It is not part of the
+ *    shared serialization: this widget resolves it, and the comment API adds it per
+ *    caller after its payload cache (see docs/develop/concept-api.md).
  *  - `highlight` ({@see FileHelper::isSearchHighlighted()}) only means anything while
  *    rendering a search result page.
  *

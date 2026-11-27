@@ -199,3 +199,37 @@ describe('AttachedMedia "+N"', () => {
         expect(hidden.every((link) => link.attributes('data-ui-gallery') === 'gallery-1')).toBe(true);
     });
 });
+
+describe('AttachedMedia viewer attributes', () => {
+    afterEach(() => vi.restoreAllMocks());
+
+    const files = () => [
+        media('v1', { id: 7, viewUrl: '/file/view?guid=v1' }),
+        { ...image('p1'), id: 8, viewUrl: '/file/view?guid=p1' },
+        media('v2', { id: 9 }),
+    ];
+
+    it('hands tiles the open url, and a video tile its variants url', () => {
+        const wrapper = render(files());
+        const [video, photo, plain] = wrapper.findAll('a.post-files-tile');
+
+        expect(video.attributes('data-ui-gallery-open-url')).toBe('/file/view?guid=v1');
+        expect(video.attributes('data-ui-gallery-subtitles-url')).toMatch(/\/api\/v2\/file\/7\/variants$/);
+        expect(photo.attributes('data-ui-gallery-open-url')).toBe('/file/view?guid=p1');
+        expect(photo.attributes('data-ui-gallery-subtitles-url')).toBeUndefined();
+        expect(plain.attributes('data-ui-gallery-open-url')).toBeUndefined();
+        expect(plain.attributes('data-ui-gallery-subtitles-url')).toMatch(/\/file\/9\/variants$/);
+    });
+
+    it('hands the hidden links the same attributes', () => {
+        const six = Array.from({ length: 6 }, (_, n) => image(`i${n}`));
+        const wrapper = render([...six, ...files()]);
+        const hidden = wrapper.findAll('a[hidden]');
+
+        expect(hidden).toHaveLength(3);
+        expect(hidden[0].attributes('data-ui-gallery-open-url')).toBe('/file/view?guid=v1');
+        expect(hidden[0].attributes('data-ui-gallery-subtitles-url')).toMatch(/\/file\/7\/variants$/);
+        expect(hidden[1].attributes('data-ui-gallery-open-url')).toBe('/file/view?guid=p1');
+        expect(hidden[1].attributes('data-ui-gallery-subtitles-url')).toBeUndefined();
+    });
+});

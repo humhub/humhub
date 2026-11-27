@@ -13,6 +13,7 @@ use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\serializers\CommentSerializer;
 use humhub\modules\comment\services\CommentDeleteService;
+use humhub\modules\comment\services\CommentFileViewUrls;
 use humhub\modules\comment\services\CommentListService;
 use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\models\Content;
@@ -129,7 +130,7 @@ class CommentController extends BaseController
 
         // Cached: a live update has every client with this thread open fetch the same comment.
         // Authorization happened above, on this request — see CommentPayloadCache.
-        return CommentPayloadCache::comment($comment);
+        return CommentFileViewUrls::forComment(CommentPayloadCache::comment($comment));
     }
 
     /**
@@ -194,7 +195,7 @@ class CommentController extends BaseController
 
         Yii::$app->response->setStatusCode(201);
 
-        return CommentSerializer::comment($comment);
+        return CommentFileViewUrls::forComment(CommentSerializer::comment($comment));
     }
 
     /**
@@ -215,7 +216,7 @@ class CommentController extends BaseController
             return $this->validationErrors($comment);
         }
 
-        return CommentSerializer::comment($comment);
+        return CommentFileViewUrls::forComment(CommentSerializer::comment($comment));
     }
 
     /**
@@ -275,14 +276,14 @@ class CommentController extends BaseController
         $limit = $request->get('limit');
         $limit = $limit !== null ? max(1, min((int)$limit, $this->getCommentModule()->commentsBlockLoadSize)) : null;
 
-        return CommentPayloadCache::window(
+        return CommentFileViewUrls::forWindow(CommentPayloadCache::window(
             $content,
             $parentComment,
             $anchor !== null ? (int)$anchor : null,
             $isPaging ? $direction : null,
             $limit,
             $limit,
-        );
+        ));
     }
 
     protected function findComment(int $id): Comment

@@ -70,15 +70,16 @@ interface StorageManagerInterface
     /**
      * Deletes a stored file (-variant)
      *
-     * If not variant is given, also all file variants will be deleted
+     * If not variant is given, also all file variants will be deleted. With a variant only that one is deleted and
+     * `$except` is ignored.
      * @param string|null $variant the variant identifier
-     * @param string[] $except exclude following variants from deletion
+     * @param string[] $except variants to keep when no variant is given: names, or prefixes when they end in `*`
      */
     public function delete(?string $variant = null, array $except = []): void;
 
     /**
      * Get file variants
-     * @param string[] $except exclude following variants from deletion
+     * @param string[] $except variants to leave out: names, or prefixes when they end in `*`
      * @return array Returns the stored variants of the file
      */
     public function getVariants(array $except = []): array;

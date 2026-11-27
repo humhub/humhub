@@ -7,6 +7,7 @@
             'is-invalid': invalid,
             'is-current': current,
             'is-failed': failed,
+            'has-subtitles': hasTracks,
         }"
         role="listitem"
         :data-preview-guid="file.guid"
@@ -44,6 +45,28 @@
             :indeterminate="processing"
             :label="uploadingLabel"
         />
+        <span v-if="hasTracks" class="file-row-subtitles">
+            <select
+                v-if="tracks.length > 1"
+                ref="track"
+                class="form-select form-select-sm file-row-track"
+                :aria-label="trackLabel"
+                :value="selectedLanguage"
+                @change="onTrack"
+            >
+                <option v-for="track in tracks" :key="track.language" :value="track.language">{{ track.label }}</option>
+            </select>
+            <button
+                ref="captions"
+                type="button"
+                class="btn btn-ghost btn-sm btn-icon-only file-row-captions"
+                :aria-label="captionsLabel"
+                :aria-pressed="captionsOn ? 'true' : 'false'"
+                :data-bs-title="captionsLabel"
+                data-bs-toggle="tooltip"
+                @click="onCaptions"
+            ><i class="ti ti-badge-cc" aria-hidden="true"></i></button>
+        </span>
         <button
             v-if="canPlay"
             ref="play"
@@ -88,6 +111,7 @@
             @input="onSeek"
             @keydown="onSeekKey"
         >
+        <div v-if="hasTracks && captionsOn" class="file-row-caption">{{ cue }}</div>
     </div>
 </template>
 
@@ -108,6 +132,9 @@
  * - `playable`: an audio file: a play/pause button before the download, and, while the file is the current track of
  *   the shared `audioPlayer`, the position as "1:12 / 3:24" and a seek line (`.file-row-seek`) below the name. A file
  *   the browser can't play shows the reason instead and loses the button. `file.duration` (seconds) is shown when known.
+ *   While the file has subtitles (`audioPlayer` fetches them on its first play), the current row also shows a CC
+ *   toggle (`.file-row-captions`, named "Subtitles", `aria-pressed`), with several languages a select (`.file-row-track`), and the active cue below the
+ *   seek line (`.file-row-caption`; no live region: captions would flood a screen reader).
  * - `playlist`: the playable files of the row's list, in order: the next one plays when the file ends. The row emits
  *   `current` when its file becomes the current track (e.g. by following the previous one), so a list can reveal it.
  * - `popoverPlacement`: where the image preview opens on hover (`right`, `top`, …); empty for none.
@@ -172,6 +199,10 @@ export default {
             }
         },
     },
+    data() {
+        // The language last shown, which the CC toggle brings back
+        return { lastLanguage: null };
+    },
     mounted() {
         if (this.playable) {
             audioPlayer.register(this.file.guid);
@@ -188,6 +219,30 @@ export default {
         },
         playing() {
             return this.current && audioPlayer.state.playing;
+        },
+        // The subtitles of the current file
+        tracks() {
+            return this.current ? audioPlayer.state.tracks : [];
+        },
+        hasTracks() {
+            return this.tracks.length > 0;
+        },
+        captionsOn() {
+            return audioPlayer.state.trackLanguage !== null;
+        },
+        cue() {
+            return audioPlayer.state.cue;
+        },
+        // What the select shows while the captions are off: the one a toggle would turn on
+        selectedLanguage() {
+            return audioPlayer.state.trackLanguage ?? this.lastLanguage ?? this.tracks[0]?.language;
+        },
+        // A fixed name: `aria-pressed` tells whether they are on
+        captionsLabel() {
+            return i18n.t('FileModule.base', 'Subtitles');
+        },
+        trackLabel() {
+            return i18n.t('FileModule.base', 'Subtitle language');
         },
         failed() {
             return this.playable && audioPlayer.isFailed(this.file.guid);
@@ -306,7 +361,7 @@ export default {
         // the update of the DOM, so the focus is still where it was.
         keepFocus() {
             const active = document.activeElement;
-            const lost = (this.$refs.seek && active === this.$refs.seek) || (this.$refs.play && active === this.$refs.play);
+            const lost = ['seek', 'play', 'captions', 'track'].some((ref) => this.$refs[ref] && active === this.$refs[ref]);
 
             if (!lost) {
                 return;
@@ -320,6 +375,18 @@ export default {
         },
         onPlay() {
             audioPlayer.toggle(this.file, this.playlist || [this.file]);
+        },
+        onCaptions() {
+            if (this.captionsOn) {
+                this.lastLanguage = audioPlayer.state.trackLanguage;
+                audioPlayer.setTrack(null);
+            } else {
+                audioPlayer.setTrack(this.selectedLanguage);
+            }
+        },
+        onTrack(event) {
+            this.lastLanguage = event.target.value;
+            audioPlayer.setTrack(event.target.value);
         },
         onSeek(event) {
             audioPlayer.seek(Number(event.target.value));

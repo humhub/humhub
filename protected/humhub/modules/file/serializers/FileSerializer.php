@@ -15,6 +15,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\libs\FileVariants;
 use humhub\modules\file\libs\MediaHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileHistory;
@@ -156,5 +157,60 @@ class FileSerializer
         }
 
         return $versions;
+    }
+
+    /**
+     * The persistent variants of a file (see {@see FileVariants}), ordered by label
+     *
+     * @return array{
+     *     name: string,
+     *     type: string,
+     *     language: string,
+     *     label: string,
+     *     kind: string,
+     *     generated: bool,
+     *     size: int,
+     *     updatedAt: string,
+     *     url: string,
+     * }[]
+     */
+    public static function variants(File $file): array
+    {
+        $variants = [];
+
+        foreach ((new FileVariants($file))->getEntries() as $name => $entry) {
+            $parsed = FileVariants::parseName((string)$name);
+            if ($parsed !== null) {
+                $variants[] = static::variant($file, (string)$name, $entry, $parsed);
+            }
+        }
+
+        usort($variants, fn(array $a, array $b) => mb_strtolower($a['label']) <=> mb_strtolower($b['label']));
+
+        return $variants;
+    }
+
+    /**
+     * One persistent variant of a file
+     *
+     * @param array{kind: string, generated: bool, size: int, updatedAt: int} $entry the entry of the file's metadata
+     * @param array{type: string, language: string} $parsed the name's parts
+     */
+    public static function variant(File $file, string $name, array $entry, array $parsed): array
+    {
+        $label = (string)\Locale::getDisplayName($parsed['language'], $parsed['language']);
+        $updatedAt = (int)$entry['updatedAt'];
+
+        return [
+            'name' => $name,
+            'type' => $parsed['type'],
+            'language' => $parsed['language'],
+            'label' => mb_strtoupper(mb_substr($label, 0, 1)) . mb_substr($label, 1),
+            'kind' => $entry['kind'],
+            'generated' => (bool)$entry['generated'],
+            'size' => (int)$entry['size'],
+            'updatedAt' => gmdate('c', $updatedAt),
+            'url' => $file->getUrl(['variant' => $name, 'v' => $updatedAt], true),
+        ];
     }
 }

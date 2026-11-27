@@ -231,6 +231,203 @@ describe('audioPlayer', () => {
     });
 });
 
+describe('audioPlayer subtitles', () => {
+    const variant = (language, kind = 'subtitles') => ({
+        name: `subtitles-${language}.vtt`, type: 'subtitles', language, label: language.toUpperCase(), kind, url: `/v/${language}.vtt`,
+    });
+    const file = (guid) => ({ ...track(guid), id: guid === 'a' ? 5 : 6 });
+    const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+    const { lang } = document.documentElement;
+    let get;
+
+    // jsdom has no text tracks: every `<track>` gets a stand-in with a mode and cues
+    const fakeTracks = new WeakMap();
+    const fake = (el) => {
+        if (!fakeTracks.has(el)) {
+            const textTrack = new EventTarget();
+            Object.assign(textTrack, { mode: 'disabled', activeCues: [] });
+            fakeTracks.set(el, textTrack);
+        }
+        return fakeTracks.get(el);
+    };
+    const trackEls = () => [...audioEl().querySelectorAll('track')];
+
+    beforeEach(() => {
+        vi.spyOn(HTMLMediaElement.prototype, 'play').mockImplementation(() => Promise.resolve());
+        vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {});
+        vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
+        Object.defineProperty(HTMLElement.prototype, 'track', { configurable: true, get() { return fake(this); } });
+        get = vi.fn(() => Promise.resolve({ results: [variant('de'), variant('en', 'captions')] }));
+        globalThis.humhubStubs.client.get = get;
+    });
+
+    afterEach(() => {
+        document.documentElement.lang = lang;
+        delete HTMLElement.prototype.track;
+    });
+
+    it('fetches the variants on the first play, once per file, and adds the tracks', async () => {
+        player.toggle(file('a'));
+        await flush();
+
+        expect(get).toHaveBeenCalledTimes(1);
+        expect(get.mock.calls[0][0]).toMatch(/\/api\/v2\/file\/5\/variants$/);
+        expect(trackEls().map((el) => [el.getAttribute('kind'), el.getAttribute('srclang'), el.getAttribute('label'), el.getAttribute('src')]))
+            .toEqual([['subtitles', 'de', 'DE', '/v/de.vtt'], ['captions', 'en', 'EN', '/v/en.vtt']]);
+        expect(player.state.tracks).toEqual([
+            { language: 'de', label: 'DE', kind: 'subtitles' },
+            { language: 'en', label: 'EN', kind: 'captions' },
+        ]);
+
+        // Played again after another file: from memory
+        player.toggle(file('b'));
+        await flush();
+        player.toggle(file('a'));
+        await flush();
+        expect(get.mock.calls.filter(([url]) => url.endsWith('/file/5/variants'))).toHaveLength(1);
+        expect(trackEls()).toHaveLength(2);
+    });
+
+    it('shows the page language, the others stay disabled; none when no language matches', async () => {
+        document.documentElement.lang = 'en-GB';
+        player.toggle(file('a'));
+        await flush();
+
+        expect(player.state.trackLanguage).toBe('en');
+        expect(trackEls().map((el) => el.track.mode)).toEqual(['disabled', 'hidden']);
+
+        player.toggle(file('b'));
+        document.documentElement.lang = 'fr';
+        await flush();
+        expect(player.state.trackLanguage).toBeNull();
+        expect(trackEls().map((el) => el.track.mode)).toEqual(['disabled', 'disabled']);
+    });
+
+    it('switches the track with setTrack and off with null', async () => {
+        document.documentElement.lang = 'de';
+        player.toggle(file('a'));
+        await flush();
+
+        player.setTrack('en');
+        expect(player.state.trackLanguage).toBe('en');
+        expect(trackEls().map((el) => el.track.mode)).toEqual(['disabled', 'hidden']);
+
+        player.setTrack('xx');
+        expect(player.state.trackLanguage).toBeNull();
+
+        player.setTrack('de');
+        player.setTrack(null);
+        expect(player.state.trackLanguage).toBeNull();
+        expect(trackEls().map((el) => el.track.mode)).toEqual(['disabled', 'disabled']);
+    });
+
+    it('takes the active cue as plain text, never HTML', async () => {
+        document.documentElement.lang = 'de';
+        player.toggle(file('a'));
+        await flush();
+        const [de, en] = trackEls().map((el) => el.track);
+
+        de.activeCues = [{ text: '<v Anna><b>Hi</b> &lt;you&gt; &amp; me</v>' }, { text: '<i>Second</i>' }];
+        de.dispatchEvent(new Event('cuechange'));
+        expect(player.state.cue).toBe('Hi <you> & me\nSecond');
+
+        // A cue of a track that is not shown is ignored
+        en.activeCues = [{ text: 'Other' }];
+        en.dispatchEvent(new Event('cuechange'));
+        expect(player.state.cue).toBe('Hi <you> & me\nSecond');
+
+        de.activeCues = [];
+        de.dispatchEvent(new Event('cuechange'));
+        expect(player.state.cue).toBe('');
+    });
+
+    it('resets on stop and on the next file', async () => {
+        document.documentElement.lang = 'de';
+        player.toggle(file('a'));
+        await flush();
+        trackEls()[0].track.activeCues = [{ text: 'Hi' }];
+        trackEls()[0].track.dispatchEvent(new Event('cuechange'));
+        expect(player.state.cue).toBe('Hi');
+
+        get.mockImplementation(() => new Promise(() => {}));
+        player.toggle(file('b'));
+        expect(trackEls()).toHaveLength(0);
+        expect(player.state).toMatchObject({ tracks: [], trackLanguage: null, cue: '' });
+
+        player.release('b');
+        player.register('b');
+        player.toggle(file('b'));
+        player.release('b');
+        expect(player.state.guid).toBeNull();
+        expect(player.state.tracks).toEqual([]);
+    });
+
+    it('ignores the answer for a file the player has left', async () => {
+        let answer;
+        get.mockImplementation(() => new Promise((resolve) => { answer = resolve; }));
+        player.toggle(file('a'));
+        get.mockImplementation(() => new Promise(() => {}));
+        player.toggle(file('b'));
+        answer({ results: [variant('de')] });
+        await flush();
+
+        expect(trackEls()).toHaveLength(0);
+        expect(player.state.tracks).toEqual([]);
+    });
+
+    it('plays without subtitles when the request fails, and asks again next time', async () => {
+        get.mockImplementation(() => Promise.reject(new Error('boom')));
+        player.toggle(file('a'));
+        await flush();
+
+        expect(player.state).toMatchObject({ guid: 'a', tracks: [], trackLanguage: null });
+        expect(trackEls()).toHaveLength(0);
+
+        get.mockImplementation(() => Promise.resolve({ results: [variant('de')] }));
+        player.toggle(file('b'));
+        player.toggle(file('a'));
+        await flush();
+        expect(trackEls()).toHaveLength(1);
+    });
+
+    it('forgets the variants of a file on humhub:file:variants-changed and reloads the tracks of the loaded one', async () => {
+        player.toggle(file('a'));
+        await flush();
+        expect(trackEls()).toHaveLength(2);
+
+        get.mockImplementation(() => Promise.resolve({ results: [variant('fr')] }));
+        document.dispatchEvent(new CustomEvent('humhub:file:variants-changed', { detail: { fileId: 5 } }));
+        await flush();
+
+        expect(get).toHaveBeenCalledTimes(2);
+        expect(trackEls().map((el) => el.getAttribute('srclang'))).toEqual(['fr']);
+
+        // Another file's change leaves the loaded one and its list alone
+        document.dispatchEvent(new CustomEvent('humhub:file:variants-changed', { detail: { fileId: 6 } }));
+        await flush();
+        expect(get).toHaveBeenCalledTimes(2);
+        expect(trackEls()).toHaveLength(1);
+
+        // A file that is not loaded asks again on its next play
+        player.toggle(file('b'));
+        await flush();
+        expect(get).toHaveBeenCalledTimes(3);
+        document.dispatchEvent(new CustomEvent('humhub:file:variants-changed', { detail: { fileId: 6 } }));
+        player.toggle(file('a'));
+        await flush();
+        player.toggle(file('b'));
+        await flush();
+        expect(get.mock.calls.filter(([url]) => url.endsWith('/file/6/variants'))).toHaveLength(2);
+    });
+
+    it('asks for nothing without a file id', async () => {
+        player.toggle(track('a'));
+        await flush();
+
+        expect(get).not.toHaveBeenCalled();
+    });
+});
+
 describe('formatDuration', () => {
     it('formats minutes and hours', () => {
         expect(formatDuration(0)).toBe('0:00');

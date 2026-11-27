@@ -440,3 +440,145 @@ describe('FileRow playable', () => {
         expect(audioPlayer.state.guid).toBeNull();
     });
 });
+
+describe('FileRow subtitles', () => {
+    const song = () => file({ guid: 'song', fileName: 'song.mp3', mimeType: 'audio/mpeg', icon: 'music', duration: 204 });
+    const variant = (language, label) => ({ name: `subtitles-${language}.vtt`, type: 'subtitles', language, label, kind: 'subtitles', url: `/v/${language}.vtt` });
+    const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+    const { lang } = document.documentElement;
+
+    // jsdom has no text tracks
+    const fakeTracks = new WeakMap();
+    const textTrack = (el) => {
+        if (!fakeTracks.has(el)) {
+            fakeTracks.set(el, Object.assign(new EventTarget(), { mode: 'disabled', activeCues: [] }));
+        }
+        return fakeTracks.get(el);
+    };
+
+    // Plays the song with the given languages and waits for its tracks
+    const play = async (languages, options = {}) => {
+        globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ results: languages.map((l) => variant(l, l.toUpperCase())) }));
+        const row = render({ file: { ...song(), id: 3 }, playable: true }, options);
+        await row.find('.file-row-play').trigger('click');
+        await flush();
+        await row.vm.$nextTick();
+        return row;
+    };
+
+    beforeEach(() => {
+        vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
+        vi.spyOn(HTMLMediaElement.prototype, 'play').mockImplementation(function () {
+            Object.defineProperty(this, 'paused', { value: false, configurable: true });
+            this.dispatchEvent(new Event('play'));
+            return Promise.resolve();
+        });
+        vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(function () {
+            Object.defineProperty(this, 'paused', { value: true, configurable: true });
+            this.dispatchEvent(new Event('pause'));
+        });
+        Object.defineProperty(HTMLElement.prototype, 'track', { configurable: true, get() { return textTrack(this); } });
+        document.documentElement.lang = 'de';
+    });
+
+    afterEach(() => {
+        delete HTMLElement.prototype.track;
+        document.documentElement.lang = lang;
+        vi.unstubAllGlobals();
+    });
+
+    it('shows nothing before the file plays or without subtitles', async () => {
+        expect(render({ file: { ...song(), id: 3 }, playable: true }).find('.file-row-captions').exists()).toBe(false);
+
+        const row = await play([]);
+        expect(row.find('.file-row-captions').exists()).toBe(false);
+        expect(row.find('.file-row-caption').exists()).toBe(false);
+        expect(row.classes()).not.toContain('has-subtitles');
+    });
+
+    it('toggles the subtitles with the CC button and its labels', async () => {
+        const row = await play(['de']);
+        const cc = row.find('button.file-row-captions');
+
+        expect(row.classes()).toContain('has-subtitles');
+        expect(cc.find('.ti-badge-cc').exists()).toBe(true);
+        expect(cc.classes()).toEqual(expect.arrayContaining(['btn', 'btn-ghost', 'btn-sm', 'btn-icon-only']));
+        expect(cc.attributes('data-bs-toggle')).toBe('tooltip');
+        // The page language is on from the start
+        expect(cc.attributes('aria-pressed')).toBe('true');
+        expect(cc.attributes('aria-label')).toBe('Subtitles');
+        expect(cc.attributes('data-bs-title')).toBe('Subtitles');
+        // One language: no select
+        expect(row.find('.file-row-track').exists()).toBe(false);
+
+        await cc.trigger('click');
+        expect(audioPlayer.state.trackLanguage).toBeNull();
+        expect(row.find('.file-row-captions').attributes('aria-pressed')).toBe('false');
+        expect(row.find('.file-row-captions').attributes('aria-label')).toBe('Subtitles');
+        expect(row.find('.file-row-caption').exists()).toBe(false);
+
+        await row.find('.file-row-captions').trigger('click');
+        expect(audioPlayer.state.trackLanguage).toBe('de');
+        row.unmount();
+    });
+
+    it('offers a language select for several tracks, and the toggle brings back the last one', async () => {
+        const row = await play(['de', 'en']);
+        const select = row.find('select.file-row-track');
+
+        expect(select.classes()).toEqual(expect.arrayContaining(['form-select', 'form-select-sm']));
+        expect(select.attributes('aria-label')).toBe('Subtitle language');
+        expect(select.findAll('option').map((o) => [o.attributes('value'), o.text()])).toEqual([['de', 'DE'], ['en', 'EN']]);
+        expect(select.element.value).toBe('de');
+
+        await select.setValue('en');
+        expect(audioPlayer.state.trackLanguage).toBe('en');
+
+        await row.find('.file-row-captions').trigger('click');
+        expect(audioPlayer.state.trackLanguage).toBeNull();
+        expect(row.find('select').element.value).toBe('en');
+
+        await row.find('.file-row-captions').trigger('click');
+        expect(audioPlayer.state.trackLanguage).toBe('en');
+        row.unmount();
+    });
+
+    it('shows the active cue as text in the caption line, which is no live region', async () => {
+        const row = await play(['de']);
+        const de = document.querySelector('audio track').track;
+
+        de.activeCues = [{ text: '<b>Hello</b> <img src=x onerror=alert(1)>' }];
+        de.dispatchEvent(new Event('cuechange'));
+        await row.vm.$nextTick();
+
+        const line = row.find('.file-row-caption');
+        expect(line.text()).toBe('Hello');
+        expect(line.html()).not.toContain('<img');
+        expect(line.attributes('aria-live')).toBeUndefined();
+        expect(line.attributes('role')).toBeUndefined();
+        row.unmount();
+    });
+
+    it('is only on the current row', async () => {
+        const row = await play(['de']);
+        const other = render({ file: { ...song(), guid: 'other', id: 4 }, playable: true });
+
+        expect(row.find('.file-row-captions').exists()).toBe(true);
+        expect(other.find('.file-row-captions').exists()).toBe(false);
+        expect(other.find('.file-row-caption').exists()).toBe(false);
+        row.unmount();
+    });
+
+    it('hands the focus from the CC toggle to the play button when the track ends', async () => {
+        const row = await play(['de'], { attachTo: document.body });
+        row.find('.file-row-captions').element.focus();
+
+        document.querySelector('audio').dispatchEvent(new Event('ended'));
+        await row.vm.$nextTick();
+        await row.vm.$nextTick();
+
+        expect(row.find('.file-row-captions').exists()).toBe(false);
+        expect(document.activeElement).toBe(row.find('.file-row-play').element);
+        row.unmount();
+    });
+});

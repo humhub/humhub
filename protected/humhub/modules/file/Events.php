@@ -10,9 +10,12 @@ namespace humhub\modules\file;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\handler\SubtitlesFileHandler;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\libs\MediaHelper;
 use humhub\modules\file\models\File;
+use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
 use yii\helpers\Console;
@@ -112,5 +115,27 @@ class Events extends BaseObject
     {
         ImageHelper::collectDimensions($event->sender);
         MediaHelper::collectMediaInfo($event->sender);
+    }
+
+    /**
+     * Registers the file module's own handlers (the subtitles editor of audio and video files)
+     *
+     * @since 1.20
+     */
+    public static function onFileHandlerCollectionInit(Event $event): void
+    {
+        /** @var FileHandlerCollection $collection */
+        $collection = $event->sender;
+        $file = $collection->file;
+
+        if ($collection->type !== FileHandlerCollection::TYPE_EDIT
+            || !$file instanceof File
+            || Yii::$app->user->isGuest
+            || !(str_starts_with((string)$file->mime_type, 'video/') || str_starts_with((string)$file->mime_type, 'audio/'))
+            || !$file->canDelete()) {
+            return;
+        }
+
+        $collection->register(new SubtitlesFileHandler());
     }
 }

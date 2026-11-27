@@ -36,6 +36,9 @@ use Yii;
  *   menu opens, which is the only place they are used.
  * - the author's online status — presence is volatile and per viewer; a client resolves it
  *   separately.
+ * - the `viewUrl` of an attached file (`FileHelper::getViewUrl()`) — the file handlers of
+ *   modules may differ per user, so it is added to a payload per caller, after the cache, by
+ *   {@see \humhub\modules\comment\services\CommentFileViewUrls}.
  *
  * Deliberately NOT anywhere, because a client derives it from what is here:
  *

@@ -29,6 +29,9 @@ class FakePhotoSwipe {
                 if (def.title) {
                     el.setAttribute('aria-label', def.ariaLabel || def.title);
                 }
+                if (typeof def.html === 'string') {
+                    el.innerHTML = def.html;
+                }
                 (def.appendTo === 'root' ? this.element : this.bar).appendChild(el);
                 if (def.onInit) {
                     def.onInit(el, this);
@@ -127,6 +130,7 @@ const TEXTS = {
     next: 'Next',
     zoom: 'Zoom',
     download: 'Download',
+    open: 'Open',
     position: '{index} of {count}',
     imageError: 'The image cannot be loaded.',
     videoError: 'The video cannot be played in this browser.',
@@ -328,6 +332,85 @@ describe('ui.gallery', () => {
             expect(download.getAttribute('href')).toBe('/file/2.png');
         });
 
+        describe('Open', () => {
+            const markup = groupMarkup.replace('<a id="a2"', '<a id="a2" data-ui-gallery-open-url="/file/view?guid=2"');
+
+            it('replaces the download for a slide with an open url', () => {
+                html(markup);
+                gallery.open(group(), 0);
+                const { download, open } = viewer().uiElements;
+
+                expect(open.getAttribute('aria-label')).toBe('Open');
+                expect(open.querySelector('.ti-dots')).not.toBeNull();
+                expect(open.hidden).toBe(true);
+                expect(download.hidden).toBe(false);
+
+                viewer().goTo(1);
+                expect(open.hidden).toBe(false);
+                expect(download.hidden).toBe(true);
+
+                viewer().goTo(2);
+                expect(open.hidden).toBe(true);
+                expect(download.hidden).toBe(false);
+            });
+
+            it('closes the viewer, then loads the url in the global modal', () => {
+                const load = vi.fn();
+                globalThis.humhubStubs.modal.global.load = load;
+                html(markup);
+                gallery.open(group(), 1);
+                const pswp = viewer();
+                const order = [];
+                pswp.on('close', () => order.push('close'));
+                load.mockImplementation(() => order.push('load'));
+                pswp.uiElements.open.click();
+
+                expect(order).toEqual(['close', 'load']);
+                expect(load).toHaveBeenCalledWith('/file/view?guid=2');
+                expect(pswp.element.isConnected).toBe(false);
+            });
+        });
+
+        describe('focus', () => {
+            const markup = groupMarkup.replace('<a id="a2"', '<a id="a2" data-ui-gallery-open-url="/file/view?guid=2"');
+
+            it('moves it to the tile of the slide before Open loads the modal', () => {
+                const seen = [];
+                globalThis.humhubStubs.modal.global.load = () => seen.push(document.activeElement && document.activeElement.id);
+                html(markup);
+                gallery.open(group(), 1);
+                viewer().uiElements.open.focus();
+                viewer().uiElements.open.click();
+
+                expect(seen).toEqual(['a2']);
+            });
+
+            it('moves it to the other button when a slide change hides the one that has it', () => {
+                html(markup);
+                gallery.open(group(), 0);
+                const { download, open } = viewer().uiElements;
+                download.focus();
+                expect(document.activeElement).toBe(download);
+
+                viewer().goTo(1);
+                expect(document.activeElement).toBe(open);
+
+                viewer().goTo(2);
+                expect(document.activeElement).toBe(download);
+            });
+
+            it('leaves it alone when it is elsewhere', () => {
+                html(markup);
+                gallery.open(group(), 0);
+                const outside = document.createElement('button');
+                document.body.appendChild(outside);
+                outside.focus();
+
+                viewer().goTo(1);
+                expect(document.activeElement).toBe(outside);
+            });
+        });
+
         it('offers the download when an image cannot be loaded', () => {
             html(groupMarkup);
             gallery.open(group(), 0);
@@ -506,6 +589,96 @@ describe('ui.gallery', () => {
             expect(key('ArrowLeft')).toBe(true);
             expect(key(' ')).toBe(true);
             expect(key('Escape')).toBe(false);
+        });
+
+        describe('subtitles', () => {
+            const variants = [
+                { name: 'subtitles-de.vtt', type: 'subtitles', language: 'de', label: 'Deutsch', kind: 'subtitles', url: '/v/de.vtt' },
+                { name: 'subtitles-en.vtt', type: 'subtitles', language: 'en', label: 'English', kind: 'captions', url: '/v/en.vtt' },
+            ];
+            const markup = groupMarkup.replace('<a id="a3"', '<a id="a3" data-ui-gallery-subtitles-url="/api/v2/file/3/variants"');
+            const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+            const { lang } = document.documentElement;
+            const forget = () => document.dispatchEvent(new CustomEvent('humhub:file:variants-changed', { detail: { fileId: 3 } }));
+
+            beforeEach(forget);
+
+            afterEach(() => {
+                document.documentElement.lang = lang;
+            });
+
+            it('asks once per url, until the file reports changed variants', async () => {
+                const get = vi.fn(() => Promise.resolve({ results: variants }));
+                globalThis.humhubStubs.client.get = get;
+                html(markup);
+                gallery.open(group(), 2);
+                loadVideo();
+                loadVideo();
+                await flush();
+                expect(get).toHaveBeenCalledTimes(1);
+
+                forget();
+                loadVideo();
+                await flush();
+                expect(get).toHaveBeenCalledTimes(2);
+
+                // Another file's change keeps it
+                document.dispatchEvent(new CustomEvent('humhub:file:variants-changed', { detail: { fileId: 33 } }));
+                loadVideo();
+                await flush();
+                expect(get).toHaveBeenCalledTimes(2);
+            });
+
+            it('adds a track per language and defaults the one of the page language', async () => {
+                const get = vi.fn(() => Promise.resolve({ results: variants }));
+                globalThis.humhubStubs.client.get = get;
+                document.documentElement.lang = 'de-AT';
+                html(markup);
+                gallery.open(group(), 2);
+                const { video } = loadVideo();
+                await flush();
+
+                expect(get).toHaveBeenCalledWith('/api/v2/file/3/variants');
+                const tracks = [...video.querySelectorAll('track')];
+                expect(tracks.map((t) => [t.getAttribute('kind'), t.getAttribute('srclang'), t.getAttribute('label'), t.getAttribute('src'), t.default]))
+                    .toEqual([
+                        ['subtitles', 'de', 'Deutsch', '/v/de.vtt', true],
+                        ['captions', 'en', 'English', '/v/en.vtt', false],
+                    ]);
+            });
+
+            it('has no default track when no language matches', async () => {
+                globalThis.humhubStubs.client.get = vi.fn(() => Promise.resolve({ results: variants }));
+                document.documentElement.lang = 'fr';
+                html(markup);
+                gallery.open(group(), 2);
+                const { video } = loadVideo();
+                await flush();
+
+                expect(video.querySelectorAll('track')).toHaveLength(2);
+                expect(video.querySelector('track[default]')).toBeNull();
+            });
+
+            it('logs a failed request and leaves the video alone', async () => {
+                globalThis.humhubStubs.client.get = vi.fn(() => Promise.reject(new Error('boom')));
+                html(markup);
+                gallery.open(group(), 2);
+                const { video } = loadVideo();
+                await flush();
+
+                expect(video.querySelectorAll('track')).toHaveLength(0);
+                expect(video.getAttribute('src')).toBe('/file/3.mp4');
+            });
+
+            it('asks for nothing without the attribute', () => {
+                const get = vi.fn(() => Promise.resolve({ results: [] }));
+                globalThis.humhubStubs.client.get = get;
+                html(groupMarkup);
+                gallery.open(group(), 2);
+                loadVideo();
+
+                expect(get).not.toHaveBeenCalled();
+            });
         });
 
         it('offers the download when the browser cannot play the video', () => {

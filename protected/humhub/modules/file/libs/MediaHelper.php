@@ -190,24 +190,13 @@ class MediaHelper
      */
     private static function updateMetadata(File $file, array $set, array $drop): void
     {
-        $metadata = $file->getMetadata();
-        $changed = false;
-
-        foreach ($set as $key => $value) {
-            if (!isset($metadata->$key) || $metadata->$key !== $value) {
+        FileMetadata::update($file, static function (Metadata $metadata) use ($set, $drop): void {
+            foreach ($set as $key => $value) {
                 $metadata->$key = $value;
-                $changed = true;
             }
-        }
-        foreach ($drop as $key) {
-            if (isset($metadata->$key)) {
+            foreach ($drop as $key) {
                 unset($metadata->$key);
-                $changed = true;
             }
-        }
-
-        if ($changed) {
-            $file->updateAttributes(['metadata' => count($metadata) > 0 ? (string)$metadata : null]);
-        }
+        });
     }
 }

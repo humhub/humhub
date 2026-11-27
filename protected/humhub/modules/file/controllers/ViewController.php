@@ -9,10 +9,8 @@
 namespace humhub\modules\file\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\file\components\RedirectsToFileModal;
 use Yii;
-use yii\helpers\Json;
-use yii\helpers\Url;
 use yii\web\HttpException;
 use yii\web\Response;
 use humhub\components\behaviors\AccessControl;
@@ -26,6 +24,8 @@ use humhub\modules\file\handler\FileHandlerCollection;
  */
 class ViewController extends Controller
 {
+    use RedirectsToFileModal;
+
     /**
      * @inheritdoc
      */
@@ -84,20 +84,7 @@ class ViewController extends Controller
      */
     protected function redirectToModal(File $file)
     {
-        $url = Url::home();
-        $record = $file->getPolymorphicRelation();
-        if ($record instanceof ContentActiveRecord && $record->content->canView()) {
-            $url = $record->content->getUrl();
-        }
-
-        $modalUrl = Json::htmlEncode(Url::to(['/file/view', 'guid' => $file->guid]));
-        Yii::$app->session->setFlash(
-            'executeJavascript',
-            'var openFileModal = function () { humhub.require("ui.modal").global.load(' . $modalUrl . '); };'
-            . 'humhub.initialized ? openFileModal() : $(document).one("humhub:ready", openFileModal);',
-        );
-
-        return $this->redirect($url);
+        return $this->redirectToFileModal($file, ['/file/view', 'guid' => $file->guid]);
     }
 
 }

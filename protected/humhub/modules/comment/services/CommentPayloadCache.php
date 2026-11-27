@@ -21,7 +21,9 @@ use Yii;
  * identical for everyone who may read the content, so one serialization can be handed to all
  * of them (see `docs/develop/concept-api.md`, "Caller context is not part of a payload").
  * Everything caller-specific - like state, edit/delete permissions - is fetched separately and
- * never cached here.
+ * never cached here. That includes the `viewUrl` of the attached files (the file handlers may
+ * differ per user): whoever hands a payload out adds it per caller with
+ * {@see CommentFileViewUrls}.
  *
  * What it saves: serializing a window costs a handful of queries per comment (child counts,
  * attached files, the rich-text extension pipeline). That price is paid on **every page
