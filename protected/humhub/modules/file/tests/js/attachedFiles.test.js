@@ -256,23 +256,33 @@ describe('AttachedFiles', () => {
         expect(single.find('img').attributes('height')).toBe('50');
     });
 
-    it('renders videos as native players and audio as labelled native audio elements', () => {
+    it('renders a video as a tile that only opens the media viewer, and audio as a playable row', () => {
         const video = file({ guid: 'vid-1', fileName: 'clip.mp4', mimeType: 'video/mp4', mimeIcon: 'mime-video' });
         const audio = file({ guid: 'aud-1', fileName: 'song.mp3', mimeType: 'audio/mpeg', mimeIcon: 'mime-audio' });
 
         const wrapper = render([video, audio]);
 
-        const videoEl = wrapper.find('.post-files-videos video');
-        expect(videoEl.attributes('src')).toBe(video.url + '#t=0.001');
-        expect(videoEl.attributes('controls')).toBeDefined();
+        const tile = wrapper.find('.post-files-images a.post-files-tile.post-files-video');
         // without the type the media viewer shows the video as an image
-        expect(wrapper.find('.post-files-videos a').attributes('type')).toBe('video/mp4');
-        expect(wrapper.find('.post-files-videos a').attributes('href')).toBe(video.url);
+        expect(tile.attributes('type')).toBe('video/mp4');
+        expect(tile.attributes('href')).toBe(video.url);
+        expect(tile.attributes('data-ui-gallery')).toBe('gallery-post-7');
+        expect(tile.attributes('title')).toBe('clip.mp4');
+        const videoEl = tile.find('video');
+        expect(videoEl.attributes('controls')).toBeUndefined();
+        expect(videoEl.attributes('autoplay')).toBeUndefined();
+        expect(videoEl.attributes('aria-hidden')).toBe('true');
+        expect(videoEl.attributes('tabindex')).toBe('-1');
+        expect(videoEl.attributes('playsinline')).toBeDefined();
+        expect(videoEl.element.muted).toBe(true);
+        expect(tile.find('.post-files-video-play').exists()).toBe(true);
 
-        const audioBucket = wrapper.find('.post-files-audio-item');
-        expect(audioBucket.find('audio').attributes('src')).toBe(audio.url);
-        expect(audioBucket.find('audio').attributes('aria-label')).toBe('song.mp3');
-        expect(audioBucket.text()).toContain('song.mp3');
+        // The audio file is a row of the list, not a tile
+        expect(wrapper.findAll('.post-files-images a')).toHaveLength(1);
+        const rows = wrapper.findAllComponents(FileRow);
+        expect(rows.map((row) => [row.props('file').guid, row.props('playable')])).toEqual([['vid-1', false], ['aud-1', true]]);
+        expect(wrapper.find('audio').exists()).toBe(false);
+        expect(wrapper.find('video[controls]').exists()).toBe(false);
     });
 
     it('renders a file row with icon, name, size and a download button', () => {
@@ -453,7 +463,7 @@ describe('AttachedFiles', () => {
         const wrapper = render(files);
 
         expect(wrapper.findAll('.post-files-images img')).toHaveLength(1);
-        expect(wrapper.findAll('.post-files-videos video')).toHaveLength(1);
+        expect(wrapper.findAll('.post-files-video video')).toHaveLength(1);
         expect(wrapper.findAll('.file-row[data-preview-guid]')).toHaveLength(3);
     });
 
@@ -470,29 +480,68 @@ describe('AttachedFiles', () => {
         expect(wrapper.find('.file-row[data-preview-guid]').attributes('data-preview-guid')).toBe('doc');
     });
 
-    it('renders the audio formats browsers play natively as audio players', () => {
+    it('keeps every audio file in the list with excludeMedia, playable', () => {
         const files = ['a.mp3', 'b.wav', 'c.m4a', 'd.aac', 'e.FLAC'].map((fileName) =>
             file({ guid: fileName, fileName, mimeIcon: 'mime-audio' }));
 
         const wrapper = render(files, { excludeMedia: true });
 
-        expect(wrapper.findAll('.post-files-audio audio')).toHaveLength(5);
-        expect(wrapper.find('.file-list').exists()).toBe(false);
+        expect(wrapper.find('.post-files').exists()).toBe(false);
+        const rows = wrapper.findAllComponents(FileRow);
+        expect(rows).toHaveLength(5);
+        expect(rows.every((row) => row.props('playable'))).toBe(true);
+        expect(wrapper.find('audio').exists()).toBe(false);
     });
 
-    it('keeps media files without a preview in the list when excludeMedia is set', () => {
+    it('gives the audio rows the audio files of the list as playlist, and shows a hidden one that starts', async () => {
+        const files = [
+            file({ guid: 'a', fileName: 'a.mp3' }),
+            file({ guid: 'doc', fileName: 'doc.pdf' }),
+            file({ guid: 'b', fileName: 'b.mp3' }),
+            file({ guid: 'c', fileName: 'c.mp3' }),
+        ];
+
+        const wrapper = render(files);
+        const rows = wrapper.findAllComponents(FileRow);
+
+        expect(rows[0].props('playlist').map((f) => f.guid)).toEqual(['a', 'b', 'c']);
+        expect(rows[3].props('playlist')).toBe(rows[0].props('playlist'));
+
+        // "c" is behind "Show all": following "b", it opens the list
+        expect(wrapper.find('.file-list-more').classes()).not.toContain('show');
+        rows[3].vm.$emit('current');
+        await wrapper.vm.$nextTick();
+        expect(wrapper.find('.file-list-more').classes()).toContain('show');
+    });
+
+    it('drops images and videos but not audio from the list with excludeMedia', () => {
         const files = [
             file({ guid: 'mp3', fileName: 'a.mp3', mimeIcon: 'mime-audio' }),
-            file({ guid: 'ogg', fileName: 'b.ogg', mimeIcon: 'mime-audio' }),
+            file({ guid: 'vid', fileName: 'b.mp4', mimeIcon: 'mime-video' }),
             file({ guid: 'avi', fileName: 'c.avi', mimeIcon: 'mime-video' }),
-            file({ guid: 'img', fileName: 'd.tiff', mimeIcon: 'mime-image', previewUrl: null }),
+            file({ guid: 'img', fileName: 'd.png', previewUrl: '/p/d.png' }),
+            file({ guid: 'tiff', fileName: 'e.tiff', previewUrl: null }),
         ];
 
         const wrapper = render(files, { excludeMedia: true });
 
-        expect(wrapper.findAll('.post-files-audio audio')).toHaveLength(1);
-        expect(wrapper.findAll('.file-row[data-preview-guid]').map((item) => item.attributes('data-preview-guid')))
-            .toEqual(['ogg', 'avi', 'img']);
+        expect(wrapper.findAll('.post-files-tile')).toHaveLength(2);
+        const rows = wrapper.findAllComponents(FileRow);
+        expect(rows.map((row) => [row.props('file').guid, row.props('playable')]))
+            .toEqual([['mp3', true], ['avi', false], ['tiff', false]]);
+    });
+
+    it('lays out images and videos in the order of the files', () => {
+        const files = [
+            image('a', 400, 300),
+            file({ guid: 'v', fileName: 'v.webm', mimeIcon: 'mime-video', width: 300, height: 400 }),
+            image('b', 400, 300),
+        ];
+
+        const wrapper = render(files);
+
+        expect(wrapper.findAll('.post-files-tile').map((tile) => tile.attributes('title'))).toEqual(['a.jpg', 'v.webm', 'b.jpg']);
+        expect(wrapper.findAll('.post-files-tile').map((tile) => tile.classes('post-files-video'))).toEqual([false, true, false]);
     });
 
     it('renders no media area at all when preview is off, and lists everything', () => {
@@ -505,5 +554,6 @@ describe('AttachedFiles', () => {
 
         expect(wrapper.find('.post-files').exists()).toBe(false);
         expect(wrapper.findAll('.file-row[data-preview-guid]')).toHaveLength(2);
+        expect(wrapper.findAllComponents(FileRow).some((row) => row.props('playable'))).toBe(false);
     });
 });

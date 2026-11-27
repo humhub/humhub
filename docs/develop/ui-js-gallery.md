@@ -33,6 +33,11 @@ An `img[data-ui-gallery]` inside a link is opened through the link. Images of mo
 `<video>` plays (mp4, webm, ogv; mov where the codec is supported) are shown; a video the browser can't play, or an
 image that can't be loaded, offers its download instead.
 
+A video opened by a click on its element starts playing (the click is the user gesture; a browser that refuses leaves
+the native controls). A "+N" tile (an element
+containing `.post-files-image-more`) and other slides don't autoplay. Only one medium plays at a time: a video
+starting in the viewer pauses every other playing `<video>` and `<audio>` of the page.
+
 ## Display version of an image
 
 The file module scales a large JPEG, PNG or WebP image down for the viewer: `humhub\modules\file\converter\DisplayImage`

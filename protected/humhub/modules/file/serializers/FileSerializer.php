@@ -15,7 +15,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
-use humhub\modules\file\libs\ImageHelper;
+use humhub\modules\file\libs\MediaHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileHistory;
 use humhub\modules\user\models\User;
@@ -64,13 +64,14 @@ class FileSerializer
      *     displayUrl: string|null,
      *     width: int|null,
      *     height: int|null,
+     *     duration: float|null,
      * }
      */
     public static function file(File $file): array
     {
         $previewImage = new PreviewImage();
         $displayImage = new DisplayImage();
-        $dimensions = ImageHelper::getDimensions($file);
+        $mediaInfo = MediaHelper::getMediaInfo($file);
 
         return [
             'id' => $file->id,
@@ -98,10 +99,12 @@ class FileSerializer
             // What the media viewer shows of an image: the display version (`DisplayImage`, the original when it is
             // small enough), `null` for files it doesn't apply to. @since 1.20
             'displayUrl' => $displayImage->applyFile($file) ? $displayImage->getUrl() : null,
-            // The image as shown (after the EXIF rotation), `null` when unknown. Collected when stored, older files
-            // by the `CollectFileMetadata` job. @since 1.20
-            'width' => $dimensions[0] ?? null,
-            'height' => $dimensions[1] ?? null,
+            // The image or video as shown (after the EXIF or display rotation) and the duration in seconds of a video or
+            // audio file, `null` when unknown. Collected when stored, older files by the `CollectFileMetadata` job.
+            // @since 1.20
+            'width' => $mediaInfo?->width,
+            'height' => $mediaInfo?->height,
+            'duration' => $mediaInfo?->duration,
         ];
     }
 

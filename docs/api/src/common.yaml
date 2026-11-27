@@ -274,8 +274,12 @@ components:
         width:
           type: [integer, 'null']
           description: |
-            Width in pixels of an image as shown (after its EXIF rotation). `null` for other files, and for an image
-            stored before 1.20 until a background job has read it.
+            Width in pixels of an image (after its EXIF rotation) or video (as displayed, with its rotation applied).
+            `null` for other files, and until it has been collected: a background job reads files stored before 1.20.
         height:
           type: [integer, 'null']
           description: Height in pixels, see `width`
+        duration:
+          type: [number, 'null']
+          description: |
+            Duration in seconds of a video or audio file. `null` for other files, and until it has been collected.

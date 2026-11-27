@@ -164,6 +164,35 @@ humhub.module('ui.gallery', function (module, require, $) {
         });
     };
 
+    // Only one medium plays at a time: a video starting here pauses the others of the page
+    var pauseOtherMedia = function (except) {
+        $('video, audio').each(function () {
+            if (this !== except && !this.paused) {
+                this.pause();
+            }
+        });
+    };
+
+    // The click opening a video starts it (a user gesture), except on the "+N" tile, which stands for the rest.
+    // A browser refusing play() leaves the native controls.
+    var shouldAutoplay = function (el) {
+        return !!el && (el.getAttribute('type') || '').indexOf('video/') === 0
+            && !el.querySelector('.post-files-image-more');
+    };
+
+    var play = function (video) {
+        try {
+            var promise = video.play();
+            if (promise && typeof promise.catch === 'function') {
+                promise.catch(function (e) {
+                    module.log.debug('The video does not autoplay', e);
+                });
+            }
+        } catch (e) {
+            module.log.debug('The video does not autoplay', e);
+        }
+    };
+
     var videoElement = function (data) {
         // Without a parent: PhotoSwipe appends custom content only then, jQuery would leave it in a fragment
         var wrapper = document.createElement('div');
@@ -179,6 +208,9 @@ humhub.module('ui.gallery', function (module, require, $) {
         // The native controls get the pointer, PhotoSwipe would take it for a swipe
         video.addEventListener('pointerdown', function (evt) {
             evt.stopPropagation();
+        });
+        video.addEventListener('play', function () {
+            pauseOtherMedia(video);
         });
         video.addEventListener('error', function () {
             wrapper.replaceChildren(errorElement(text('videoError'), data.download));
@@ -343,6 +375,25 @@ humhub.module('ui.gallery', function (module, require, $) {
         pswp.on('change', function () {
             pauseVideos(pswp, pswp.currSlide && pswp.currSlide.container);
         });
+
+        // Only the slide that was clicked autoplays, not its neighbours or a slide reached later. Its video comes after
+        // the opening animation: PhotoSwipe announces it before appending it, it plays once it is in the page.
+        if (shouldAutoplay(trigger)) {
+            var autoplayed = false;
+            pswp.on('contentAppend', function (evt) {
+                var content = evt.content;
+                if (autoplayed || !content || content.index !== start || content.type !== 'video') {
+                    return;
+                }
+                setTimeout(function () {
+                    var video = content.element && content.element.querySelector('video');
+                    if (!autoplayed && video && video.isConnected && pswp.currIndex === start) {
+                        autoplayed = true;
+                        play(video);
+                    }
+                });
+            });
+        }
 
         pswp.on('close', function () {
             pauseVideos(pswp);

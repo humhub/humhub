@@ -1,6 +1,7 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import FileRow from '../../vue/FileRow.vue';
+import * as audioPlayer from '../../vue/audio/audioPlayer.js';
 
 await import('../../resources/js/humhub/humhub.url.js');
 await import('../../resources/js/humhub/humhub.vue.js');
@@ -22,12 +23,13 @@ const file = (overrides = {}) => ({
 // A file picked in a form, before the server answered
 const staged = () => ({ fileName: 'report.pdf', size: 3 * 1024 * 1024 });
 
-const render = (props) => mount(FileRow, { props });
+const render = (props, options = {}) => mount(FileRow, { props, ...options });
 
 // The name shortened in the middle, as text
 const nameOf = (row) => row.find('.file-row-name-head').text() + row.find('.file-row-name-tail').text();
 
 afterEach(() => {
+    audioPlayer._reset();
     vi.restoreAllMocks();
 });
 
@@ -212,5 +214,229 @@ describe('FileRow', () => {
         const none = render({ file: photo, popoverPlacement: '' }).find('.file-row-text');
         expect(none.classes()).not.toContain('po');
         expect(none.attributes('data-bs-toggle')).toBeUndefined();
+    });
+});
+
+describe('FileRow playable', () => {
+    const song = (overrides = {}) => file({ guid: 'song', fileName: 'song.mp3', mimeType: 'audio/mpeg', icon: 'music', duration: 204, ...overrides });
+
+    beforeEach(() => {
+        vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
+        vi.spyOn(HTMLMediaElement.prototype, 'play').mockImplementation(function () {
+            Object.defineProperty(this, 'paused', { value: false, configurable: true });
+            this.dispatchEvent(new Event('play'));
+            return Promise.resolve();
+        });
+        vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(function () {
+            Object.defineProperty(this, 'paused', { value: true, configurable: true });
+            this.dispatchEvent(new Event('pause'));
+        });
+    });
+
+    it('renders no play button unless playable', () => {
+        const row = render({ file: song() });
+
+        expect(row.find('.file-row-play').exists()).toBe(false);
+        // The duration is shown for any file that has one
+        expect(row.find('.file-row-meta').text()).toBe('(3:24 · 2 KB)');
+        expect(render({ file: file() }).find('.file-row-meta').text()).toBe('(2 KB)');
+    });
+
+    it('renders the play button before the download, with labels', async () => {
+        const row = render({ file: song(), playable: true });
+        const play = row.find('button.file-row-play');
+
+        expect(play.attributes('aria-label')).toBe('Play song.mp3');
+        expect(play.attributes('data-bs-title')).toBe('Play song.mp3');
+        expect(play.find('.ti-player-play').exists()).toBe(true);
+        expect(row.find('.file-row-action').exists()).toBe(true);
+        expect(row.find('.file-row-seek').exists()).toBe(false);
+
+        await play.trigger('click');
+
+        expect(row.find('.file-row-play').attributes('aria-label')).toBe('Pause song.mp3');
+        expect(row.find('.file-row-play .ti-player-pause').exists()).toBe(true);
+    });
+
+    it('has no play button while the file is uploading or refused', () => {
+        expect(render({ file: song(), playable: true, progress: 40 }).find('.file-row-play').exists()).toBe(false);
+        expect(render({ file: song(), playable: true, error: 'Too big' }).find('.file-row-play').exists()).toBe(false);
+    });
+
+    it('shows time, seek line and aria while current', async () => {
+        const row = render({ file: song(), playable: true });
+        await row.find('.file-row-play').trigger('click');
+
+        document.querySelector('audio').currentTime = 72;
+        document.querySelector('audio').dispatchEvent(new Event('timeupdate'));
+        await row.vm.$nextTick();
+
+        const seek = row.find('input.file-row-seek');
+        expect(row.classes()).toContain('is-current');
+        expect(row.find('.file-row-meta').text()).toBe('(1:12 / 3:24)');
+        expect(seek.attributes('min')).toBe('0');
+        expect(seek.attributes('max')).toBe('204');
+        expect(seek.attributes('step')).toBe('any');
+        expect(seek.element.value).toBe('72');
+        expect(seek.attributes('aria-label')).toBe('Position in song.mp3');
+        expect(seek.attributes('aria-valuetext')).toBe('1:12 of 3:24');
+    });
+
+    it("prefers the server's duration to the browser's estimate", async () => {
+        const browserSays = async (row, seconds) => {
+            const audio = document.querySelector('audio');
+            Object.defineProperty(audio, 'duration', { value: seconds, configurable: true });
+            audio.dispatchEvent(new Event('durationchange'));
+            await row.vm.$nextTick();
+        };
+
+        const known = render({ file: song(), playable: true });
+        await known.find('.file-row-play').trigger('click');
+        await browserSays(known, 188);
+        expect(known.find('.file-row-meta').text()).toBe('(0:00 / 3:24)');
+        expect(known.find('.file-row-seek').attributes('max')).toBe('204');
+        known.unmount();
+
+        const unknown = render({ file: song({ guid: 'other', duration: null }), playable: true });
+        await unknown.find('.file-row-play').trigger('click');
+        await browserSays(unknown, 188);
+        expect(unknown.find('.file-row-meta').text()).toBe('(0:00 / 3:08)');
+    });
+
+    it('hands its playlist to the player and says when it becomes the current track', async () => {
+        const next = song({ guid: 'next', fileName: 'next.mp3' });
+        const first = render({ file: song(), playable: true, playlist: [song(), next] });
+        const second = render({ file: next, playable: true, playlist: [song(), next] });
+
+        await first.find('.file-row-play').trigger('click');
+        expect(second.emitted('current')).toBeUndefined();
+
+        vi.spyOn(globalThis.humhub.modules.vue, 'announce').mockImplementation(() => {});
+        document.querySelector('audio').dispatchEvent(new Event('ended'));
+        await second.vm.$nextTick();
+
+        expect(audioPlayer.state.guid).toBe('next');
+        expect(second.emitted('current')).toHaveLength(1);
+        expect(second.classes()).toContain('is-current');
+    });
+
+    it('seeks by 5 seconds with the arrow keys and on input', async () => {
+        const row = render({ file: song(), playable: true });
+        await row.find('.file-row-play').trigger('click');
+        const seek = row.find('.file-row-seek');
+
+        await seek.trigger('keydown', { key: 'ArrowRight' });
+        expect(audioPlayer.state.time).toBe(5);
+        await seek.trigger('keydown', { key: 'ArrowRight' });
+        await seek.trigger('keydown', { key: 'ArrowLeft' });
+        expect(audioPlayer.state.time).toBe(5);
+
+        seek.element.value = '100';
+        await seek.trigger('input');
+        expect(audioPlayer.state.time).toBe(100);
+    });
+
+    it('shows the reason for a file that can not be played, keeps the download, no invalid border', async () => {
+        const row = render({ file: song(), playable: true });
+        await row.find('.file-row-play').trigger('click');
+        document.querySelector('audio').dispatchEvent(new Event('error'));
+        await row.vm.$nextTick();
+
+        expect(row.find('.file-row-reason').text()).toBe("This file can't be played.");
+        expect(row.find('.file-row-play').exists()).toBe(false);
+        expect(row.find('a.file-row-action').exists()).toBe(true);
+        expect(row.classes()).not.toContain('is-invalid');
+        expect(row.find('.file-row-seek').exists()).toBe(false);
+    });
+
+    it('reads the time alone without a duration', async () => {
+        const row = render({ file: song({ duration: null }), playable: true });
+        await row.find('.file-row-play').trigger('click');
+
+        expect(row.find('.file-row-seek').attributes('aria-valuetext')).toBe('0:00');
+    });
+
+    it('seeks with the up and down arrows, and swaps left and right in a right-to-left layout', async () => {
+        const row = render({ file: song(), playable: true }, { attachTo: document.body });
+        await row.find('.file-row-play').trigger('click');
+        const seek = row.find('.file-row-seek');
+
+        await seek.trigger('keydown', { key: 'ArrowUp' });
+        await seek.trigger('keydown', { key: 'ArrowUp' });
+        expect(audioPlayer.state.time).toBe(10);
+        await seek.trigger('keydown', { key: 'ArrowDown' });
+        expect(audioPlayer.state.time).toBe(5);
+
+        seek.element.style.direction = 'rtl';
+        await seek.trigger('keydown', { key: 'ArrowLeft' });
+        expect(audioPlayer.state.time).toBe(10);
+        await seek.trigger('keydown', { key: 'ArrowRight' });
+        expect(audioPlayer.state.time).toBe(5);
+        row.unmount();
+    });
+
+    it('hands the focus from the seek line to the play button when the track ends', async () => {
+        const row = render({ file: song() , playable: true }, { attachTo: document.body });
+        await row.find('.file-row-play').trigger('click');
+        row.find('.file-row-seek').element.focus();
+
+        document.querySelector('audio').dispatchEvent(new Event('ended'));
+        await row.vm.$nextTick();
+        await row.vm.$nextTick();
+
+        expect(row.find('.file-row-seek').exists()).toBe(false);
+        expect(document.activeElement).toBe(row.find('.file-row-play').element);
+        row.unmount();
+    });
+
+    it('hands the focus to the name link when the file fails, and announces it', async () => {
+        const announce = vi.spyOn(globalThis.humhub.modules.vue, 'announce').mockImplementation(() => {});
+        const row = render({ file: song(), playable: true }, { attachTo: document.body });
+        await row.find('.file-row-play').trigger('click');
+        row.find('.file-row-seek').element.focus();
+
+        document.querySelector('audio').dispatchEvent(new Event('error'));
+        await row.vm.$nextTick();
+        await row.vm.$nextTick();
+
+        expect(row.find('.file-row-play').exists()).toBe(false);
+        expect(document.activeElement).toBe(row.find('a.file-row-name').element);
+        expect(announce).toHaveBeenCalledExactlyOnceWith("song.mp3 can't be played.");
+        row.unmount();
+    });
+
+    it('moves the focus off the play button of a file that fails', async () => {
+        vi.spyOn(globalThis.humhub.modules.vue, 'announce').mockImplementation(() => {});
+        const row = render({ file: song(), playable: true }, { attachTo: document.body });
+        await row.find('.file-row-play').trigger('click');
+        row.find('.file-row-play').element.focus();
+
+        document.querySelector('audio').dispatchEvent(new Event('error'));
+        await row.vm.$nextTick();
+        await row.vm.$nextTick();
+
+        expect(document.activeElement).toBe(row.find('a.file-row-name').element);
+        row.unmount();
+    });
+
+    it('updates the tooltip of the play button when the label changes', async () => {
+        const setContent = vi.fn();
+        vi.stubGlobal('bootstrap', { Tooltip: { getInstance: () => ({ setContent }) } });
+        const row = render({ file: song(), playable: true });
+
+        await row.find('.file-row-play').trigger('click');
+
+        expect(setContent).toHaveBeenCalledWith({ '.tooltip-inner': 'Pause song.mp3' });
+        vi.unstubAllGlobals();
+    });
+
+    it('stops playing when the row unmounts', async () => {
+        const row = render({ file: song(), playable: true });
+        await row.find('.file-row-play').trigger('click');
+        expect(audioPlayer.state.playing).toBe(true);
+
+        row.unmount();
+
+        expect(audioPlayer.state.guid).toBeNull();
     });
 });

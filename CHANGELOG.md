@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #TBD: Attached videos as tiles beside the images, audio files as playable file rows; video and audio metadata (getID3, optional ffprobe)
 - Enh #8793: Upload rows: files show as rows with progress while uploading, one request per file
 - Fix: Image dimensions got lost on the first read of file metadata in a web request (deprecation in `StdClass`)
 - Enh #8791: Attached files: images in left-aligned justified rows, file rows with a download button and "Show all", image dimensions as file metadata

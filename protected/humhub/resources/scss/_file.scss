@@ -10,7 +10,7 @@ $attached-images-single-height: 20rem !default;
 $attached-images-comment-row-height: 10rem !default;
 $attached-images-comment-single-height: 15rem !default;
 $attached-images-gap: $spacer * .5 !default;
-$attached-media-max-width: 36rem !default;
+$attached-video-play-size: 3rem !default;
 $file-list-gap: $spacer * .25 !default;
 $file-list-transition: .2s ease-in-out !default;
 
@@ -54,7 +54,7 @@ $file-list-transition: .2s ease-in-out !default;
         overflow: hidden;
     }
 
-    // The media of attached files: images in justified rows (laid out by the component), videos and audio players
+    // The media of attached files: images and video tiles in justified rows (laid out by the component)
     .post-files {
         --hh-attached-images-row-height: #{$attached-images-row-height};
         --hh-attached-images-single-height: #{$attached-images-single-height};
@@ -82,7 +82,8 @@ $file-list-transition: .2s ease-in-out !default;
         gap: var(--hh-attached-images-gap);
     }
 
-    .post-files-image {
+    // Image and video tile; the video tile only ever opens the media viewer, it never plays
+    .post-files-tile {
         position: relative;
         flex: 0 1 auto;
         min-width: 0;
@@ -111,36 +112,56 @@ $file-list-transition: .2s ease-in-out !default;
         font-weight: $font-weight-bold;
     }
 
-    .post-files-videos,
-    .post-files-audio {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--hh-attached-images-gap);
-    }
-
-    // As high as a single image at most
     .post-files-video {
-        display: block;
-        max-width: 100%;
-
         video {
             display: block;
-            max-width: 100%;
-            max-height: var(--hh-attached-images-single-height);
-            border-radius: $border-radius;
-            background-color: var(--bs-secondary-bg);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
         }
     }
 
-    .post-files-audio-item {
-        width: 100%;
-        max-width: $attached-media-max-width;
+    // Centred on the tile, on the tile surface even where there is no frame to show
+    .post-files-video-play {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $attached-video-play-size;
+        height: $attached-video-play-size;
+        border-radius: 50%;
+        background-color: rgba($black, .55);
+        color: $white;
+        font-size: $font-size-lg * 1.5;
+        pointer-events: none;
+    }
 
-        audio {
-            display: block;
-            width: 100%;
-        }
+    .post-files-video-duration {
+        position: absolute;
+        inset-block-end: $spacer * .25;
+        inset-inline-start: $spacer * .25;
+        padding: 0 $spacer * .25;
+        border-radius: $border-radius-sm;
+        background-color: rgba($black, .55);
+        color: $white;
+        font-size: $font-size-sm;
+        line-height: 1.5;
+        pointer-events: none;
+    }
+
+    // A video the browser can't load: its icon on the tile surface, the ratio stays
+    .post-files-video.is-unplayable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--bs-secondary-color);
+    }
+
+    .post-files-video-icon {
+        font-size: $h1-font-size;
     }
 
     // The file list of attached files: the file row of docs/ui/file-upload.md. The rows are a list
@@ -251,6 +272,70 @@ $file-list-transition: .2s ease-in-out !default;
         .file-row-action {
             grid-row: 1;
             grid-column: 4;
+        }
+    }
+
+    // The audio row: play and download stay together at the end, the second line is the seek line (area `seek`; a
+    // caption line can follow below as its own row). Like the refused row, the text is taken apart for the grid
+    .file-row-play + .file-row-action {
+        margin-inline-start: 0;
+    }
+
+    .file-row-play {
+        flex: 0 0 auto;
+        margin-inline-start: auto;
+    }
+
+    .file-row-reason {
+        color: var(--bs-danger-text-emphasis);
+        font-size: $font-size-sm;
+    }
+
+    .file-list .file-row.is-current,
+    .file-list .file-row.is-failed {
+        display: grid;
+        grid-template-columns: auto minmax(0, max-content) 1fr auto auto;
+        grid-template-areas:
+            "icon name meta play action"
+            "seek seek seek seek seek";
+        row-gap: 0;
+
+        .file-row-icon {
+            grid-area: icon;
+        }
+
+        .file-row-text {
+            display: contents;
+        }
+
+        .file-row-name {
+            grid-area: name;
+        }
+
+        // The gap of the text instead of the row's
+        .file-row-meta {
+            grid-area: meta;
+            justify-self: start;
+            margin-inline-start: $spacer * .25 - $spacer * .5;
+        }
+
+        .file-row-reason {
+            grid-row: 2;
+            grid-column: 2 / 4;
+        }
+
+        .file-row-play {
+            grid-area: play;
+            margin-inline-start: 0;
+        }
+
+        .file-row-action {
+            grid-area: action;
+        }
+
+        .file-row-seek {
+            grid-area: seek;
+            width: 100%;
         }
     }
 

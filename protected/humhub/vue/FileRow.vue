@@ -1,7 +1,13 @@
 <template>
     <div
         class="list-group-item file-row"
-        :class="{ 'is-uploading': uploading, 'is-processing': processing, 'is-invalid': invalid }"
+        :class="{
+            'is-uploading': uploading,
+            'is-processing': processing,
+            'is-invalid': invalid,
+            'is-current': current,
+            'is-failed': failed,
+        }"
         role="listitem"
         :data-preview-guid="file.guid"
     >
@@ -27,8 +33,9 @@
                 rel="noopener"
                 v-bind="downloadAttributes"
             ><span class="file-row-name-head">{{ name.head }}</span><span class="file-row-name-tail">{{ name.tail }}</span></a>
-            <span class="file-row-meta">({{ size }})</span>
+            <span class="file-row-meta">({{ meta }})</span>
             <span v-if="invalid" class="invalid-feedback d-block">{{ error }}</span>
+            <span v-if="failed" class="file-row-reason">{{ failedLabel }}</span>
         </span>
         <ProgressFrame
             v-if="uploading"
@@ -37,6 +44,16 @@
             :indeterminate="processing"
             :label="uploadingLabel"
         />
+        <button
+            v-if="canPlay"
+            ref="play"
+            type="button"
+            class="btn btn-ghost btn-sm btn-icon-only file-row-play"
+            :aria-label="playLabel"
+            :data-bs-title="playLabel"
+            data-bs-toggle="tooltip"
+            @click="onPlay"
+        ><i class="ti" :class="playing ? 'ti-player-pause' : 'ti-player-play'" aria-hidden="true"></i></button>
         <button
             v-if="action === 'remove'"
             type="button"
@@ -57,6 +74,20 @@
             :data-bs-title="downloadLabel"
             data-bs-toggle="tooltip"
         ><i class="ti ti-download" aria-hidden="true"></i></a>
+        <input
+            v-if="current"
+            ref="seek"
+            type="range"
+            class="form-range file-row-seek"
+            min="0"
+            :max="duration || 0"
+            step="any"
+            :value="time"
+            :aria-label="seekLabel"
+            :aria-valuetext="seekValueText"
+            @input="onSeek"
+            @keydown="onSeekKey"
+        >
     </div>
 </template>
 
@@ -74,6 +105,11 @@
  * - `error`: the reason a file was refused, shown in the row (`.is-invalid`); it ends the progress.
  * - `busy`: the removal is under way (the file is being deleted): remove shows a spinner and does nothing meanwhile.
  *   `aria-disabled`, not `disabled`, so the button keeps the focus.
+ * - `playable`: an audio file: a play/pause button before the download, and, while the file is the current track of
+ *   the shared `audioPlayer`, the position as "1:12 / 3:24" and a seek line (`.file-row-seek`) below the name. A file
+ *   the browser can't play shows the reason instead and loses the button. `file.duration` (seconds) is shown when known.
+ * - `playlist`: the playable files of the row's list, in order: the next one plays when the file ends. The row emits
+ *   `current` when its file becomes the current track (e.g. by following the previous one), so a list can reveal it.
  * - `popoverPlacement`: where the image preview opens on hover (`right`, `top`, …); empty for none.
  *
  * The labels come from `FileModule.base`, remove's from `base`: an island nesting the row preloads these categories.
@@ -82,7 +118,11 @@
  */
 import { i18n } from '@humhub/vue';
 import ProgressFrame from './ProgressFrame.vue';
+import { formatDuration } from './audio/formatDuration.js';
+import * as audioPlayer from './audio/audioPlayer.js';
 import { formatFileSize } from './upload/fileSize.js';
+
+const SEEK_STEP = 5;
 
 function escapeHtml(value) {
     return String(value ?? '')
@@ -101,10 +141,96 @@ export default {
         progress: { type: Number, default: null },
         error: { type: String, default: null },
         busy: { type: Boolean, default: false },
+        playable: { type: Boolean, default: false },
+        playlist: { type: Array, default: null },
         popoverPlacement: { type: String, default: 'right' },
     },
-    emits: ['remove'],
+    emits: ['remove', 'current'],
+    watch: {
+        current(value) {
+            if (value) {
+                this.$emit('current');
+            } else {
+                this.keepFocus();
+            }
+        },
+        failed(value) {
+            if (value) {
+                this.keepFocus();
+            }
+        },
+        // The tooltip of Bootstrap reads its title once, so a created one is told the new label
+        playLabel(label) {
+            globalThis.bootstrap?.Tooltip?.getInstance(this.$refs.play)?.setContent({ '.tooltip-inner': label });
+        },
+        playable(value) {
+            if (value) {
+                audioPlayer.register(this.file.guid);
+                this.registeredGuid = this.file.guid;
+            } else {
+                this.unregister();
+            }
+        },
+    },
+    mounted() {
+        if (this.playable) {
+            audioPlayer.register(this.file.guid);
+            this.registeredGuid = this.file.guid;
+        }
+    },
+    beforeUnmount() {
+        this.unregister();
+    },
     computed: {
+        // The file is the track of the shared player, playing or paused
+        current() {
+            return this.playable && audioPlayer.state.guid === this.file.guid;
+        },
+        playing() {
+            return this.current && audioPlayer.state.playing;
+        },
+        failed() {
+            return this.playable && audioPlayer.isFailed(this.file.guid);
+        },
+        canPlay() {
+            return this.playable && this.linked && !this.failed;
+        },
+        time() {
+            return audioPlayer.state.time;
+        },
+        // The server's value first: it read the whole file, a browser only estimates the length of an MP3 with a
+        // variable bitrate and no header
+        duration() {
+            return this.file.duration || audioPlayer.state.duration || null;
+        },
+        meta() {
+            if (this.current) {
+                const duration = formatDuration(this.duration);
+
+                return duration ? `${formatDuration(this.time)} / ${duration}` : formatDuration(this.time);
+            }
+
+            const duration = formatDuration(this.file.duration);
+
+            return duration ? `${duration} · ${this.size}` : this.size;
+        },
+        playLabel() {
+            return this.playing
+                ? i18n.t('FileModule.base', 'Pause {fileName}', { fileName: this.file.fileName })
+                : i18n.t('FileModule.base', 'Play {fileName}', { fileName: this.file.fileName });
+        },
+        failedLabel() {
+            return i18n.t('FileModule.base', "This file can't be played.");
+        },
+        seekLabel() {
+            return i18n.t('FileModule.base', 'Position in {fileName}', { fileName: this.file.fileName });
+        },
+        seekValueText() {
+            const time = formatDuration(this.time);
+            const duration = formatDuration(this.duration);
+
+            return duration ? i18n.t('FileModule.base', '{time} of {duration}', { time, duration }) : time;
+        },
         invalid() {
             return Boolean(this.error);
         },
@@ -169,6 +295,45 @@ export default {
         },
     },
     methods: {
+        unregister() {
+            if (this.registeredGuid) {
+                audioPlayer.release(this.registeredGuid);
+                this.registeredGuid = null;
+            }
+        },
+        // The seek line and the play button go away on their own (the track ends, the file fails): when one holds the
+        // focus, it moves on to the play button, or to the name link when the file can't be played. Watchers run before
+        // the update of the DOM, so the focus is still where it was.
+        keepFocus() {
+            const active = document.activeElement;
+            const lost = (this.$refs.seek && active === this.$refs.seek) || (this.$refs.play && active === this.$refs.play);
+
+            if (!lost) {
+                return;
+            }
+
+            this.$nextTick(() => {
+                const target = this.failed ? 'a.file-row-name' : '.file-row-play';
+
+                this.$el.querySelector(target)?.focus();
+            });
+        },
+        onPlay() {
+            audioPlayer.toggle(this.file, this.playlist || [this.file]);
+        },
+        onSeek(event) {
+            audioPlayer.seek(Number(event.target.value));
+        },
+        // Arrow keys step by seconds instead of the range's tiny native step (left and right swap in right-to-left layouts); Page keys, Home and End stay native
+        onSeekKey(event) {
+            const rtl = getComputedStyle(event.target).direction === 'rtl';
+            const direction = { ArrowLeft: rtl ? 1 : -1, ArrowRight: rtl ? -1 : 1, ArrowUp: 1, ArrowDown: -1 }[event.key];
+
+            if (direction && !event.altKey && !event.ctrlKey && !event.metaKey) {
+                event.preventDefault();
+                audioPlayer.seek(this.time + direction * SEEK_STEP);
+            }
+        },
         onRemove() {
             if (!this.busy) {
                 this.$emit('remove');
