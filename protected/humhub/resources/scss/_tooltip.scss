@@ -16,4 +16,10 @@
     .tooltip.in {
         opacity: 1;
     }
+
+    // Not next to a trigger scrolled out of view, e.g. of a list: Popper keeps it there and marks it so
+    .tooltip[data-popper-reference-hidden] {
+        visibility: hidden;
+        pointer-events: none;
+    }
 }

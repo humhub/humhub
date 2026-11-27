@@ -26,8 +26,12 @@ person or space, use the [Hover Card](hover-card.md).
   own: `Icon::focusable()`, named by its tooltip.
 - **Hoverable:** the tooltip stays while the pointer is on it, so it can be read and enlarged. It hides
   150ms after the pointer left the control, time enough to move onto the tooltip (WCAG 1.4.13).
+- **One at a time:** a tooltip that shows closes any other at once, without fading out, also one
+  still waiting out those 150ms.
 - **Touch:** no tooltips. A tap triggers the control.
-- **Closes** on leaving, on a click, on Escape and on scrolling.
+- **Closes** on leaving, on a click, on Escape and on scrolling. The tooltip of the keyboard focus
+  stays when scrolling, as Tab scrolls the focused control into view; it hides only while its control
+  is scrolled out of view (in the activity box, for example).
 - **Placement:** above the control by default, otherwise where there is room, and always inside
   the window.
 - **Cut-off text:** only shows when the text is actually truncated.
@@ -53,7 +57,9 @@ own. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 - **Options:** `delay: { show: 0, hide: 150 }` today, `{ show: 500, hide: 150 }` planned (`$tooltip-delay` as a CSS variable read by the
   JS), `trigger: 'hover'` plus the keyboard focus from `humhub.ui.tooltip`, which shows a tooltip
   on `focusin` only while `humhub.ui.appearance` reports keyboard modality, hides it on `focusout`
-  and on Escape ([Keyboard](keyboard.md#popups-and-escape)); no tooltip on touch.
+  and on Escape ([Keyboard](keyboard.md#popups-and-escape)), and on any scroll hides all but that one;
+  no tooltip on touch. A tooltip whose trigger is scrolled out of view is hidden by
+  `.tooltip[data-popper-reference-hidden]`, the attribute Popper sets.
 - **Truncated text:** `data-tooltip="overflow"` on the element that cuts its text off with an ellipsis
   shows the full text as tooltip, only while it is cut off; a focused link or button around it shows
   it too (the name in the top bar's account menu, the site name, the space description in its

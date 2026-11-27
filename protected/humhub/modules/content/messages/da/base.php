@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Sidst opdateret {time}',
     'Load more' => 'Læs mere',
     'Lock comments' => 'Lås kommentarer',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Maksimalt antal fastgjorte elementer nået!<br>Du kan kun fastgøre op til {count} elementer på én gang.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Maksimalt antal fastgjorte elementer nået! Du kan kun fastgøre op til {count} elementer på én gang.',
     'Move content' => 'Flyt indhold',
     'Move to archive' => 'Flyt til arkiv',
     'New Updates Available!' => 'Nye opdateringer er tilgængelige!',

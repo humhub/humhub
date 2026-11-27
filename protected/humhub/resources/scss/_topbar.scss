@@ -37,14 +37,11 @@ $topbar-brand-font-size: $font-size-base * 1.5 !default; // 21px: the network's 
             @include hh-text-style(title);
             margin-bottom: $spacer * .5;
 
+            // Buttons (`Button::light()` …), hovered in their own colours
             .dropdown-header-actions {
                 float: right;
 
                 a, button {
-                    &:hover {
-                        background: var(--bs-light);
-                    }
-
                     i {
                         margin: 0;
                     }
@@ -399,8 +396,6 @@ $topbar-brand-font-size: $font-size-base * 1.5 !default; // 21px: the network's 
                     }
 
                     &#space-menu {
-                        // Starts where the logo above it starts (`a.navbar-brand`)
-                        padding-left: $spacer * .25;
                         border-right: 1px solid var(--bs-secondary-bg);
 
                         .no-space {

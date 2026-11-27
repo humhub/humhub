@@ -246,5 +246,99 @@ describe('ui.tooltip', () => {
 
             expect(TooltipStub.instances.size).toBe(0);
         });
+
+        it('leaves the other tooltips when the text fits and shows none', () => {
+            fire(byId('dot'), 'mouseover');
+            size(byId('name'), 150, 200);
+            fire(byId('name'), 'mouseover');
+
+            expect(TooltipStub.getInstance(byId('dot')).shown).toBe(true);
+        });
+    });
+
+    describe('scrolling', () => {
+        beforeEach(() => {
+            html('<div id="list"><button id="b" class="tt" title="Name">x</button></div>');
+        });
+
+        // Bootstrap's tooltip element, which Popper keeps next to its trigger while that scrolls
+        const showWithTip = () => {
+            const tooltip = TooltipStub.getInstance(byId('b'));
+            tooltip.tip = document.createElement('div');
+            tooltip.tip.className = 'tooltip fade show';
+            document.body.appendChild(tooltip.tip);
+            return tooltip;
+        };
+        // A scroll event does not bubble
+        const scroll = (el) => el.dispatchEvent(new Event('scroll'));
+
+        it('hides the tooltip at once when a list scrolls under it', () => {
+            fire(byId('b'), 'mouseover');
+            const tooltip = showWithTip();
+
+            scroll(byId('list'));
+
+            expect(tooltip.shown).toBe(false);
+            expect(tooltip.tip.classList.contains('fade')).toBe(false);
+        });
+
+        it('hides the tooltip when the page scrolls', () => {
+            fire(byId('b'), 'mouseover');
+            const tooltip = showWithTip();
+
+            scroll(document);
+
+            expect(tooltip.shown).toBe(false);
+        });
+
+        it('keeps the tooltip of the keyboard focus, as Tab scrolls the focused control into view', () => {
+            pressTab();
+            byId('b').focus();
+            const tooltip = showWithTip();
+
+            scroll(byId('list'));
+
+            expect(tooltip.shown).toBe(true);
+        });
+
+        it('hides the tooltip of a control focused by a click', () => {
+            pointerDown();
+            byId('b').focus();
+            fire(byId('b'), 'mouseover');
+            const tooltip = showWithTip();
+
+            scroll(byId('list'));
+
+            expect(tooltip.shown).toBe(false);
+        });
+    });
+
+    describe('one at a time', () => {
+        beforeEach(() => {
+            html('<button id="b" class="tt" title="Name">x</button><button id="c" class="tt" title="Other">y</button>');
+        });
+
+        it('closes the others at once, without fading out, when a tooltip shows', () => {
+            fire(byId('b'), 'mouseover');
+            const first = TooltipStub.getInstance(byId('b'));
+            first.tip = document.createElement('div');
+            first.tip.className = 'tooltip fade show';
+
+            // Before its hide delay is over
+            fire(byId('c'), 'mouseover');
+
+            expect(first.shown).toBe(false);
+            expect(first.tip.classList.contains('fade')).toBe(false);
+            expect(TooltipStub.getInstance(byId('c')).shown).toBe(true);
+        });
+
+        it('closes the tooltip of the pointer when one shows on keyboard focus', () => {
+            fire(byId('b'), 'mouseover');
+            pressTab();
+            fire(byId('c'), 'focusin');
+
+            expect(TooltipStub.getInstance(byId('b')).shown).toBe(false);
+            expect(TooltipStub.getInstance(byId('c')).shown).toBe(true);
+        });
     });
 });

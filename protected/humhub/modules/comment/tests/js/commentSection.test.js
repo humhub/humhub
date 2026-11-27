@@ -304,7 +304,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
 
-            await wrapper.find('.showMore a').trigger('click');
+            await wrapper.find('.showMore button').trigger('click');
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
                 '/api/v2/content/42/comments?cursor=5&direction=previous&limit=2',
@@ -336,7 +336,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
 
-            await wrapper.find('.showMore a').trigger('click');
+            await wrapper.find('.showMore button').trigger('click');
 
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledWith(
                 '/api/v2/content/42/comments?cursor=6&direction=next&limit=2',
@@ -361,8 +361,8 @@ describe('CommentSection', () => {
                 props: { contentId: 42, initial, initialLikeStates: { 100: { total: 0, liked: false, canLike: true } } },
             });
 
-            await wrapper.find('.showMore a').trigger('click');
-            await wrapper.find('.showMore a').trigger('click');
+            await wrapper.find('.showMore button').trigger('click');
+            await wrapper.find('.showMore button').trigger('click');
             expect(globalThis.humhubStubs.client.get).toHaveBeenCalledTimes(1);
 
             // total: 1 (not 3) - the response confirms nothing remains before item 5 in
@@ -384,6 +384,28 @@ describe('CommentSection', () => {
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial } });
 
             expect(wrapper.find('.showMore').exists()).toBe(false);
+        });
+
+        it('is a button that stays focusable while its request runs', async () => {
+            let resolveGet;
+            globalThis.humhubStubs.client.get = vi.fn(() => new Promise((resolve) => { resolveGet = resolve; }));
+            const initial = { results: [makeComment({ id: 5 })], prevCount: 2, nextCount: 0, total: 3, rootTotal: 3 };
+            const wrapper = mount(CommentSection, {
+                ...mountOptions(),
+                props: { contentId: 42, initial, initialLikeStates: { 100: { total: 0, liked: false, canLike: true } } },
+            });
+
+            const button = wrapper.find('.showMore button');
+            expect(button.attributes('type')).toBe('button');
+            await button.trigger('click');
+
+            // Busy without the `disabled` attribute, which would take the focus (and the feed keys) away
+            expect(button.classes()).toContain('disabled');
+            expect(button.attributes('aria-disabled')).toBe('true');
+            expect(button.attributes('disabled')).toBeUndefined();
+
+            resolveGet({ results: [makeComment({ id: 4 })], prevCount: 1, nextCount: 0, total: 3, rootTotal: 3 });
+            await vi.waitFor(() => expect(wrapper.find('.showMore button').attributes('aria-disabled')).toBeUndefined());
         });
     });
 
@@ -438,7 +460,7 @@ describe('CommentSection', () => {
 
             const wrapper = mount(CommentSection, { ...mountOptions(), props: { contentId: 42, initial, pageSize: 2 } });
 
-            await wrapper.find('.showMore a').trigger('click');
+            await wrapper.find('.showMore button').trigger('click');
 
             await vi.waitFor(() => expect(wrapper.findAll('.single-comment').length).toBe(3));
             expect(wrapper.vm.rootTotal).toBe(3);
@@ -487,7 +509,7 @@ describe('CommentSection', () => {
             // Pinned here is the message KEY - "previous", not "next" - plus the remaining
             // count the label interpolates (the i18n test stub substitutes ICU placeholders
             // like the real humhub.i18n.t(), see protected/humhub/tests/js/support/setup.mjs).
-            expect(nested.find('.showMore a').text()).toBe('Show previous 2 comments');
+            expect(nested.find('.showMore button').text()).toBe('Show more (2)');
 
             // The link is the FIRST child of the container - i.e. rendered ABOVE the replies
             // (chronologically correct: older, hidden replies belong above the newest-first
@@ -498,7 +520,7 @@ describe('CommentSection', () => {
             expect(showMoreIndex).toBe(0);
             expect(showMoreIndex).toBeLessThan(feedIndex);
 
-            await nested.find('.showMore a').trigger('click');
+            await nested.find('.showMore button').trigger('click');
 
             // Both params asserted: direction=previous (not next), cursored from 15 - the
             // oldest currently-SHOWN reply, not 16 (the newest).
@@ -511,7 +533,8 @@ describe('CommentSection', () => {
                 // Prepended in correct chronological order: [13,14,15,16].
                 expect(ids).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16']);
             });
-            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+            // All there: the button folds the loaded ones away again
+            expect(wrapper.find('.nested-comments-root .showMore button').text()).toBe('Show less');
         });
 
         it('does not show a reply toggle on an already-nested reply', () => {
@@ -1478,6 +1501,119 @@ describe('focus hand-over when a comment is deleted (docs/ui/keyboard.md)', () =
         await flushPromises();
 
         expect(document.activeElement).toBe(document.querySelector('#comment_4 .comment-heading a'));
+        wrapper.unmount();
+    });
+});
+
+describe('"Show more" and "Show less": focus and folding', () => {
+    const likeStates = { 100: { total: 0, liked: false, canLike: true } };
+    const mountWindow = (initial) => mount(CommentSection, {
+        ...mountOptions(),
+        attachTo: document.body,
+        props: { contentId: 42, initial, initialLikeStates: likeStates },
+    });
+    // The window for the comments and replies, nothing for the like states of the loaded ones
+    const answer = (window) => {
+        globalThis.humhubStubs.client.get = vi.fn((url) => Promise.resolve(/\/(comments|replies)/.test(String(url)) ? window : {}));
+    };
+    const windowCalls = () => globalThis.humhubStubs.client.get.mock.calls.filter(([url]) => /\/(comments|replies)/.test(String(url))).length;
+    const shownIds = (scope = document) => [...scope.querySelectorAll('.single-comment')].map((entry) => entry.id);
+    const olderWindow = () => ({ results: [makeComment({ id: 5 })], prevCount: 2, nextCount: 0, total: 3, rootTotal: 3 });
+    const newerWindow = () => ({ results: [makeComment({ id: 5 })], prevCount: 0, nextCount: 2, total: 3, rootTotal: 3 });
+
+    it('keeps the focus on the button while more remain', async () => {
+        answer({ results: [makeComment({ id: 4 })], prevCount: 1, nextCount: 0, total: 3, rootTotal: 3 });
+        const wrapper = mountWindow(olderWindow());
+        const button = document.querySelector('.showMore button');
+        button.focus();
+
+        button.click();
+        await vi.waitFor(() => expect(document.querySelector('#comment_4')).not.toBeNull());
+        await flushPromises();
+
+        expect(document.activeElement).toBe(button);
+        wrapper.unmount();
+    });
+
+    it('turns into "Show less" once all older comments are there, and keeps the focus', async () => {
+        answer({ results: [makeComment({ id: 3 }), makeComment({ id: 4 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 });
+        const wrapper = mountWindow(olderWindow());
+        const button = document.querySelector('.showMore button');
+        button.focus();
+
+        button.click();
+        await vi.waitFor(() => expect(document.querySelector('#comment_3')).not.toBeNull());
+        await flushPromises();
+
+        expect(document.querySelector('.showMore button').textContent).toBe('Show less');
+        expect(document.activeElement).toBe(document.querySelector('.showMore button'));
+        wrapper.unmount();
+    });
+
+    it('folds the loaded older comments away with "Show less" and brings them back without a request', async () => {
+        answer({ results: [makeComment({ id: 3 }), makeComment({ id: 4 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 });
+        const wrapper = mountWindow(olderWindow());
+        const button = () => document.querySelector('.showMore button');
+
+        button().click();
+        await vi.waitFor(() => expect(shownIds()).toEqual(['comment_3', 'comment_4', 'comment_5']));
+
+        button().click();
+        await vi.waitFor(() => expect(shownIds()).toEqual(['comment_5']));
+        expect(button().textContent).toBe('Show more (2)');
+
+        button().click();
+        await vi.waitFor(() => expect(shownIds()).toEqual(['comment_3', 'comment_4', 'comment_5']));
+        expect(button().textContent).toBe('Show less');
+        expect(windowCalls()).toBe(1);
+        wrapper.unmount();
+    });
+
+    it('folds loaded older replies away the same way', async () => {
+        const reply = (id) => makeComment({ id, parentCommentId: 4, replies: null });
+        answer({ results: [reply(13), reply(14)], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 });
+        const root = makeComment({ id: 4, replies: { total: 4, items: [reply(15), reply(16)], hasMore: true } });
+        const wrapper = mountWindow({ results: [root], prevCount: 0, nextCount: 0, total: 5, rootTotal: 1 });
+        const nested = () => document.querySelector('.nested-comments-root');
+        const button = () => nested().querySelector('.showMore button');
+
+        button().click();
+        await vi.waitFor(() => expect(shownIds(nested())).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16']));
+        expect(button().textContent).toBe('Show less');
+
+        button().click();
+        await vi.waitFor(() => expect(shownIds(nested())).toEqual(['comment_15', 'comment_16']));
+        expect(button().textContent).toBe('Show more (2)');
+
+        button().click();
+        await vi.waitFor(() => expect(shownIds(nested())).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16']));
+        expect(windowCalls()).toBe(1);
+        wrapper.unmount();
+    });
+
+    it('moves the focus to the first loaded comment when the button that had it is gone', async () => {
+        answer({ results: [makeComment({ id: 6 }), makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 });
+        const wrapper = mountWindow(newerWindow());
+        const button = document.querySelector('.showMore button');
+        button.focus();
+
+        button.click();
+        await vi.waitFor(() => expect(document.querySelector('.showMore')).toBeNull());
+        await flushPromises();
+
+        expect(document.activeElement).toBe(document.querySelector('#comment_6 .comment-heading a'));
+        wrapper.unmount();
+    });
+
+    it('leaves the focus alone when the button did not have it (a click without focus)', async () => {
+        answer({ results: [makeComment({ id: 6 }), makeComment({ id: 7 })], prevCount: 0, nextCount: 0, total: 3, rootTotal: 3 });
+        const wrapper = mountWindow(newerWindow());
+
+        document.querySelector('.showMore button').click();
+        await vi.waitFor(() => expect(document.querySelector('.showMore')).toBeNull());
+        await flushPromises();
+
+        expect(document.activeElement).toBe(document.body);
         wrapper.unmount();
     });
 });

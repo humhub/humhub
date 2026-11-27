@@ -45,12 +45,13 @@ class Image extends BaseImage
         }
 
         // The initials in white or black, whichever is readable on the space's colour (WCAG 1.4.3), as on a theme
-        // colour as fill; without a colour in the text colour, on the border colour
+        // colour as fill; without a colour in the text colour, on the border colour (in high contrast on a lighter fill,
+        // `--hh-space-acronym-bg` in _space.scss)
         if ($this->space->color != null) {
             $color = Html::encode($this->space->color);
             $textColor = ScssHelper::getColorContrast($this->space->color) ?? 'var(--bs-white)';
         } else {
-            $color = 'var(--bs-border-color)';
+            $color = 'var(--hh-space-acronym-bg, var(--bs-border-color))';
             $textColor = 'var(--bs-body-color)';
         }
 

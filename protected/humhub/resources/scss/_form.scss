@@ -296,6 +296,22 @@ $form-choice-border-radius: $border-radius-sm !default;
         }
     }
 
+    // High contrast darkens the accent as a fill for its white check, in both colour modes: a checked box, the dot of a
+    // radio and the track of a switch that is on fall to 2.3:1 on a dark surface (WCAG 1.4.11). There they take the
+    // accent as text, 7:1 on the surfaces, the check in the surface colour; in the dark mode the knob too
+    :root {
+        @include hh-high-contrast {
+            input[type=checkbox], input[type=radio] {
+                --bs-accent: var(--hh-accent-fg);
+                --hh-accent-contrast: var(--bs-body-bg);
+            }
+
+            &[data-bs-theme="dark"] .form-switch input.form-check-input[type=checkbox]:checked {
+                --bs-form-switch-bg: #{escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$body-bg-dark}'/></svg>"))};
+            }
+        }
+    }
+
     // Radio cards (`.form-check-cards` > `label.form-check-card`): a choice with a title and a
     // description, e.g. a notification profile. On wider screens the card's border shows the
     // choice and the radio stays hidden (focusable); on a phone the cards stack and show it.
@@ -404,11 +420,12 @@ $form-choice-border-radius: $border-radius-sm !default;
         }
     }
 
-    // Radio pills
+    // Radio pills: hovered and checked on the hover fill, where the text reads in both colour modes; the checked one
+    // also shows its check icon, so its state isn't told by the fill alone (WCAG 1.4.3, 1.4.11)
     .radio-pills {
         display: flex;
         flex-wrap: wrap;
-        border: 1px solid var(--bs-light);
+        border: 1px solid var(--bs-border-color);
         border-radius: $border-radius-sm;
         width: fit-content;
 
@@ -423,7 +440,7 @@ $form-choice-border-radius: $border-radius-sm !default;
             white-space: nowrap;
 
             &:hover, &.active {
-                background: var(--bs-light);
+                background: var(--bs-secondary-bg);
             }
 
             .ti {
@@ -434,13 +451,23 @@ $form-choice-border-radius: $border-radius-sm !default;
                 }
             }
 
+            &.active .ti.radio-pill-active-icon {
+                display: inline-block;
+            }
+
+            // The radio has the keyboard focus (arrow keys within the group); the ring inside the pill, as its
+            // neighbours would cover one outside
+            &:has(> input:focus-visible) {
+                @include hh-focus-ring(true);
+            }
+
             label {
                 padding: $spacer * .25 $spacer;
             }
 
             &::after {
                 content: ' ';
-                border-right: 1px solid var(--bs-light);
+                border-right: 1px solid var(--bs-border-color);
                 position: absolute;
                 top: 20%;
                 height: 60%;
@@ -455,8 +482,9 @@ $form-choice-border-radius: $border-radius-sm !default;
             }
         }
 
+        // Hidden from sight only: the radios stay reachable by keyboard and screen readers (WCAG 2.1.1, 4.1.2)
         input[type=radio] {
-            display: none;
+            @include visually-hidden;
         }
     }
 

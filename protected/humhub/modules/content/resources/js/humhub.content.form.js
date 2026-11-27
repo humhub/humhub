@@ -73,8 +73,9 @@ humhub.module('content.form', function (module, require, $) {
 
     /**
      * Expands the create form: marks it as expanded (which reveals the fixed
-     * editor toolbar, see post form.php) and reveals additional fields hidden
-     * until the user starts interacting with the form (e.g. the post title).
+     * editor toolbar, see `.content-form-body` in _stream.scss) and reveals
+     * additional fields hidden until the user starts interacting with the form
+     * (e.g. the post title).
      *
      * @param {boolean} [focusFirst=true] whether the first revealed text field takes the focus
      */
@@ -107,6 +108,8 @@ humhub.module('content.form', function (module, require, $) {
                 event.trigger('humhub:content:newEntry', response.output, this);
                 event.trigger('humhub:content:afterSubmit', response.output, this);
                 if ($('#share-intend-modal').length) {
+                    // The form is not reset, so its sent text must not come back as a draft
+                    that.$.find('.humhub-ui-richtext').trigger('discardBackup');
                     modal.global.close();
                     // If the dashboard stream is not displayed on the current page, redirect to the content container, to make sure the user sees the new content
                     if (response.url && !$('.dashboard-wall-stream').length) {

@@ -30,8 +30,9 @@ and the chosen section's page in the main pane.
   People, Spaces, Content, Communication, Security, Appearance, Integrations, Modules, System.
 - **Sub-pages are not nested in the menu.** They are [Pill Tabs](tabs.md) in the section's
   [Page Header](page-header.md).
-- The **active entry** is filled with the primary colour, in both colour modes. Hover is a tint
-  of it.
+- The **active entry** is filled with the primary colour; in the dark mode, where the primary colour
+  can be as dark as the card, with its readable shade (`--hh-primary-fg`) and the text in the card's
+  colour (WCAG 1.4.11). Hover is a tint of it.
 - **Count badges** show what waits inside a section, as the **sum** of its sub-pages: People ⑦ =
   4 invitations + 3 approvals. The tabs inside show only dots
   ([Badges & Status](badges.md#count-badges-one-number-per-place)).
@@ -103,7 +104,8 @@ The layout is its own component; the section menu is a Bootstrap **`.nav`**. Cla
 - **Sass variables:** `$section-menu-padding` (`$spacer * .5`, as the page header),
   `$nav-section-link-padding` (`$spacer * .5`), `$nav-section-link-hover-bg` (`var(--bs-primary-bg-subtle)`),
   `$nav-section-link-active-bg` (`var(--bs-primary)`), `$nav-section-link-active-color`
-  (`var(--hh-primary-contrast)`), `$nav-section-icon-font-size` (`$font-size-lg`);
+  (`var(--hh-primary-contrast)`), `$nav-section-link-active-bg-dark` (`var(--hh-primary-fg)`),
+  `$nav-section-link-active-color-dark` (`var(--bs-body-bg)`), `$nav-section-icon-font-size` (`$font-size-lg`);
   `$pane-split-side-width` (400px), `$pane-split-side-width-slim` (280px),
   `$pane-split-fold-width` (816px), `$pane-split-gap`.
 - **Text:** the title is a Title, the entries are Controls ([Typography](typography.md)).

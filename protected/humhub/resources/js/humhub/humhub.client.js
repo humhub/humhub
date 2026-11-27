@@ -481,7 +481,12 @@ humhub.module('client', function (module, require, $) {
         });
 
         var confirmFormChanges = function (evt, message) {
-            if (unloadForm($form, message)) {
+            var changed = formStateChanged($form);
+            if (!changed || confirmUnload(message)) {
+                if (changed) {
+                    // The user chose to lose the changes, so no draft backup brings them back
+                    $form.find('.humhub-ui-richtext').trigger('discardBackup');
+                }
                 $form.resetChanges();
             } else {
                 evt.preventDefault();

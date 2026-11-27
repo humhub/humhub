@@ -19,7 +19,7 @@
             :data-mentioning-url="mentioningUrl"
             :data-placeholder="placeholder"
             :data-focus="autofocus ? 'true' : null"
-            data-backup-interval="0"
+            :data-backup-interval="instanceKey ? backupInterval : 0"
             :data-backup-cookie-key="backupKey"
         ></div>
         <input
@@ -88,12 +88,13 @@
  *
  * ## Draft backup
  *
- * The editor keeps an unsaved text in `sessionStorage`, keyed by its input's id. That id
+ * The editor keeps an unsent text in `sessionStorage` (see "Draft backup" in
+ * docs/develop/concept-richtext.md), keyed by its input's id, the page and the user. That id
  * comes from `instanceKey` - pass one that is unique among the fields mounted at once and
  * stable across page loads for the same logical form (see `CommentForm.vue`), or the draft of
- * one form turns up in another. Without a key the field keeps no backup. The backup runs on
- * this field's own timer (`backupInterval` seconds), which stops when the field unmounts -
- * the widget's own would run for the rest of the page.
+ * one form turns up in another. Without a key the field keeps no backup. The editor backs up
+ * every `backupInterval` seconds until the field unmounts. `setValue()` sets the text a
+ * draft is restored onto, `clear()` drops the draft.
  *
  * ## API
  *
@@ -185,18 +186,8 @@ export default {
         jQuery(this.$refs.editor)
             .on('scrollActive.richtextField', () => this.$emit('scroll-active'))
             .on('scrollInactive.richtextField', () => this.$emit('scroll-inactive'));
-
-        if (this.instanceKey && this.backupInterval > 0) {
-            this.backupTimer = setInterval(() => {
-                const editor = this.getEditorInstance();
-                if (editor) {
-                    editor.backup();
-                }
-            }, this.backupInterval * 1000);
-        }
     },
     beforeUnmount() {
-        clearInterval(this.backupTimer);
         jQuery(this.$refs.editor).off('.richtextField');
 
         const editor = this.getEditorInstance();
@@ -213,11 +204,12 @@ export default {
             const editor = this.getEditorInstance();
             return editor ? editor.editor.serialize() : '';
         },
-        /** Replaces the editor's content (e.g. to edit an existing text). */
+        /** Replaces the editor's content (e.g. to edit an existing text), a draft typed onto it is restored. */
         setValue(markdown) {
             const editor = this.getEditorInstance();
             if (editor) {
                 editor.editor.init(markdown || '');
+                editor.$.trigger('restoreBackup');
             }
         },
         /** Empties the editor and drops its draft. */

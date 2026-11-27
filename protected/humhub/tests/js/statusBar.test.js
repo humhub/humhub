@@ -342,4 +342,26 @@ describe('StatusBar', () => {
         await vi.advanceTimersByTimeAsync(AUTOCLOSE.info);
         expect(shown()).toBe(false);
     });
+
+    it('publishes the room a shown toast takes at the bottom of the window, for the page to keep clear of it (WCAG 2.4.11)', async () => {
+        const clearance = () => document.documentElement.style.getPropertyValue('--hh-toast-clearance');
+        mountBar();
+        expect(clearance()).toBe('');
+
+        vueModule.status('error', 'stays open');
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+        expect(clearance()).toMatch(/^\d+px$/);
+
+        await content().find('button.toast-close').trigger('click');
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+        await flushPromises();
+        expect(clearance()).toBe('');
+
+        vueModule.status('error', 'gone with the bar');
+        await vi.advanceTimersByTimeAsync(TRANSITION);
+        expect(clearance()).not.toBe('');
+        wrapper.unmount();
+        wrapper = undefined;
+        expect(clearance()).toBe('');
+    });
 });

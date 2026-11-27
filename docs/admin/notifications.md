@@ -257,9 +257,14 @@ run. Both are properties of the notification module:
   wait in the queue.
 - **Web notifications arrive, mails do not:** check the user's switches for the category, the
   mailer settings, the delivery records below, and the application log (*Administration →
-  Information → Logging*) for entries of the category `notification` — a failing channel is
-  logged as `Notification #… for user …: delivery through email failed`, a mail the mailer
-  refused as `Notification mail to … was not sent`.
+  Information → Logging*). A failing channel is logged in the category `notification` as
+  `Notification #… for user …: delivery through email failed`; its delivery record is `failed`.
+  With `Notification mail to … was not sent` as the reason the mailer refused the mail, mostly
+  because of a transport error (wrong SMTP settings, the mail server is not reachable). That
+  message does not say why: the cause is in the mailer's own log entry, category
+  `yii\symfonymailer\Mailer::sendMessage`, not in the category `notification`. Users without an
+  e-mail address get no mail deliveries at all, and the *E-Mail* column is not shown on their
+  notification settings.
 - **Mails arrive although the user is on the site:** by default only what the user has not seen
   within a minute (or the delay of the message) is mailed. With `skipWhenOnline` switched on,
   check that the queue worker shares the cache with the web server (see

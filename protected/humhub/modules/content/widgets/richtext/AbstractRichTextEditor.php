@@ -80,7 +80,8 @@ class AbstractRichTextEditor extends JsInputWidget
     protected $mentioningRoute = '/user/mentioning';
 
     /**
-     * Back up content each X seconds, 0 - to don't back up
+     * Back up an unsent text each X seconds, 0 - to don't back up. The draft is restored after a reload or a click away,
+     * onto the same text only, see "Draft backup" in docs/develop/concept-richtext.md.
      * NOTE: If id is not specified for this editor
      *       then interval will be forced to 0,
      *       so back up will be disabled,

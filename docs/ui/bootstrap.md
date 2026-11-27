@@ -242,7 +242,7 @@ The class names each component gets. Details are on the component pages.
 | [Space & Profile Header](container-header.md) | tabs on `.nav-pills`, ⋮ on `.dropdown` | `.container-header`, `-compact`, `-cover`, `-image`, `-counters`, `-title`, `-subtitle`, `-actions`, `-nav` |
 | [Mobile Navigation](mobile-navigation.md) | sheet and drawer on `.offcanvas.offcanvas-bottom` | `.mobile-nav`, `-item`, `-sheet`; `.mobile-widgets` |
 | [Sidebar](sidebar.md) (Enterprise theme) | `.nav.flex-column`, `.collapse` | `.sidebar`, `.sidebar-group` |
-| [Buttons](buttons.md) | `.btn`, `.btn-check` | `.btn-icon-only`, `.btn-ghost`, `.btn-ghost-danger`, `.btn-reveal` |
+| [Buttons](buttons.md) | `.btn`, `.btn-check` | `.btn-icon-only`, `.btn-ghost`, `.btn-ghost-danger`, `.btn-more`, `.btn-reveal` |
 | [Badges & Status](badges.md) | `.badge` (neutral) | `.badge-<tone>`, `.badge-count`, `.badge-dot`, `-waiting`, `-unsaved` |
 | [Accordion](accordion.md) | `.accordion` | `.accordion-icon`, `-title`, `-subtitle`, `-footer`, `-header-actions`, `-dot`, `-compact` |
 | [Dialog](dialog.md) | `.modal`, `.modal-dialog-scrollable`, `.progress-stacked` | `.modal-body-fades`, `.modal-footer-fill`, `.modal-steps` |

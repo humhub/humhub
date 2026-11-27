@@ -40,7 +40,7 @@
         </div>
         <div v-else-if="hasMore" ref="sentinel" class="entity-grid-more cards-more">
             <span v-if="loading" class="spinner-border spinner-border-sm" role="status" :aria-label="loadingLabel"></span>
-            <button v-else type="button" class="btn btn-light btn-sm" @click="$emit('load-more')">{{ moreLabel }}</button>
+            <button v-else type="button" class="btn btn-more" @click="$emit('load-more')">{{ moreLabel }}</button>
         </div>
     </div>
 </template>

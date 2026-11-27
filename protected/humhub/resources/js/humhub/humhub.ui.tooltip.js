@@ -3,9 +3,9 @@
  * added later get one too. A text cut off with an ellipsis (`data-tooltip="overflow"`) shows its full
  * text as tooltip, only while it is cut off (WCAG 1.4.12). A tooltip shows on hover, and on focus when the focus moves by keyboard
  * (`ui.appearance.keyboardModality()`), not after a click; a link or button shows the tooltip of the
- * one trigger inside it (the date in a permalink). It stays while the pointer is on it, and hides
+ * one trigger inside it (the date in a permalink). One shows at a time. It stays while the pointer is on it, and hides
  * when the focus leaves and on Escape, which then closes nothing else (WCAG 1.4.13,
- * docs/ui/keyboard.md, docs/ui/tooltip.md).
+ * docs/ui/keyboard.md, docs/ui/tooltip.md). Scrolling closes it, except the tooltip of the keyboard focus.
  *
  * @since 1.20
  */
@@ -73,21 +73,36 @@ humhub.module('ui.tooltip', function (module, require, $) {
         }
     };
 
+    /**
+     * One tooltip at a time: a tooltip that shows closes the others at once, also those still waiting out
+     * their hide delay after the pointer moved on
+     */
+    var hideOthers = function (e) {
+        if (!e.defaultPrevented) {
+            hideAll(e.target, true);
+        }
+    };
+
     var isShown = function (tooltip) {
         return tooltip._isShown();
     };
 
     /**
+     * @param {Element} [except] the trigger whose tooltip stays
+     * @param {boolean} [instantly] without fading out
      * @returns {boolean} whether any tooltip was shown
      */
-    var hideAll = function () {
+    var hideAll = function (except, instantly) {
         var hidden = false;
         dismissing = true;
         // Bootstrap marks any element whose tooltip is shown with aria-describedby, so tooltips
         // created by other modules outside the selector are dismissed too
         document.querySelectorAll(SELECTOR + ', [aria-describedby]').forEach(function (el) {
             var tooltip = get(el);
-            if (tooltip && isShown(tooltip)) {
+            if (el !== except && tooltip && isShown(tooltip)) {
+                if (instantly && tooltip.tip) {
+                    tooltip.tip.classList.remove('fade');
+                }
                 tooltip.hide();
                 hidden = true;
             }
@@ -118,6 +133,18 @@ humhub.module('ui.tooltip', function (module, require, $) {
                 }
             }, {once: true});
         }
+    };
+
+    /**
+     * Closes the tooltips when the page or a list scrolls, so none travels with its trigger out of the list.
+     * The tooltip of the keyboard focus stays: Tab scrolls the focused control into view, the tooltip hides only
+     * while that control is out of view (`data-popper-reference-hidden`, _tooltip.scss).
+     */
+    var hideOnScroll = function () {
+        if (!document.querySelector('.tooltip.show')) {
+            return;
+        }
+        hideAll(appearance.keyboardModality() ? focusTarget(document.activeElement) : null, true);
     };
 
     /**
@@ -158,6 +185,8 @@ humhub.module('ui.tooltip', function (module, require, $) {
 
         document.addEventListener('hide.bs.tooltip', keepWhileHovered);
         document.addEventListener('show.bs.tooltip', showOnlyWhenCutOff);
+        // After the one above, which may cancel the showing
+        document.addEventListener('show.bs.tooltip', hideOthers);
 
         // Capturing, so Escape dismisses any visible tooltip first (WCAG 1.4.13) and then closes nothing else
         document.addEventListener('keydown', function (e) {
@@ -171,6 +200,9 @@ humhub.module('ui.tooltip', function (module, require, $) {
             hideAll();
             removeOrphans();
         });
+
+        // Capturing, as the scroll of a list does not bubble
+        document.addEventListener('scroll', hideOnScroll, {capture: true, passive: true});
     };
 
     module.export({

@@ -743,7 +743,7 @@
     key: 1,
     class: "dropdown-divider"
   };
-  const _hoisted_9$9 = ["href", "onClick"];
+  const _hoisted_9$a = ["href", "onClick"];
   const _hoisted_10$8 = ["href", "onClick"];
   function _sfc_render$y(_ctx, _cache, $props, $setup, $data, $options) {
     const _directive_additions = vue.resolveDirective("additions");
@@ -837,7 +837,7 @@
                             1
                             /* TEXT */
                           )
-                        ], 16, _hoisted_9$9)) : (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
+                        ], 16, _hoisted_9$a)) : (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
                           key: 3,
                           ref_for: true
                         }, entry.htmlOptions, {
@@ -1631,7 +1631,7 @@
   const _hoisted_6$e = ["disabled", "aria-hidden", "aria-label", "title"];
   const _hoisted_7$c = ["id", "aria-label", "aria-multiselectable", "aria-busy"];
   const _hoisted_8$b = ["id", "aria-selected", "onClick", "onMousemove"];
-  const _hoisted_9$8 = { class: "picker-option-label" };
+  const _hoisted_9$9 = { class: "picker-option-label" };
   const _hoisted_10$7 = {
     key: 0,
     class: "picker-option-count"
@@ -1774,7 +1774,7 @@
               }, [
                 vue.createElementVNode(
                   "span",
-                  _hoisted_9$8,
+                  _hoisted_9$9,
                   vue.toDisplayString(option.custom ? $options.customLabel(option.value) : option.label),
                   1
                   /* TEXT */
@@ -1833,6 +1833,8 @@
         open: false,
         activeIndex: -1,
         listboxId: `filter-select-${key}-listbox`,
+        nameId: `filter-select-${key}-name`,
+        valueId: `filter-select-${key}-value`,
         fallbackId: `filter-select-${key}`
       };
     },
@@ -1867,6 +1869,13 @@
       },
       accessibleName() {
         return this.label || this.placeholderText || null;
+      },
+      // The toggle's name is the field's name and the text it shows, where that text does not contain the name as
+      // words (a chosen option, the rows per page, "All"): what can be read on it is part of its name (WCAG 2.5.3)
+      nameIds() {
+        const words = (text) => ` ${String(text || "").toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean).join(" ")} `;
+        const shown = words(this.displayLabel);
+        return this.accessibleName && shown.trim() && !shown.includes(words(this.accessibleName)) ? `${this.nameId} ${this.valueId}` : null;
       },
       isDisabled() {
         return this.disabled || this.loading;
@@ -2044,18 +2053,19 @@
       }
     }
   };
-  const _hoisted_1$r = ["id", "aria-expanded", "aria-controls", "aria-label", "aria-busy", "disabled"];
-  const _hoisted_2$n = { class: "select-menu-value" };
-  const _hoisted_3$k = ["aria-label"];
-  const _hoisted_4$i = {
-    key: 1,
+  const _hoisted_1$r = ["id", "aria-expanded", "aria-controls", "aria-label", "aria-labelledby", "aria-busy", "disabled"];
+  const _hoisted_2$n = ["id"];
+  const _hoisted_3$k = ["id"];
+  const _hoisted_4$i = ["aria-label"];
+  const _hoisted_5$e = {
+    key: 2,
     class: "ti ti-chevron-up select-menu-chevron",
     "aria-hidden": "true"
   };
-  const _hoisted_5$e = ["disabled", "aria-hidden", "aria-label", "title"];
-  const _hoisted_6$d = ["id", "aria-label", "aria-activedescendant"];
-  const _hoisted_7$b = ["id", "aria-selected", "onClick", "onMousemove"];
-  const _hoisted_8$a = {
+  const _hoisted_6$d = ["disabled", "aria-hidden", "aria-label", "title"];
+  const _hoisted_7$b = ["id", "aria-label", "aria-activedescendant"];
+  const _hoisted_8$a = ["id", "aria-selected", "onClick", "onMousemove"];
+  const _hoisted_9$8 = {
     key: 0,
     class: "dropdown-item-text select-menu-feedback",
     role: "presentation"
@@ -2076,28 +2086,31 @@
           "aria-haspopup": "listbox",
           "aria-expanded": $data.open ? "true" : "false",
           "aria-controls": $data.listboxId,
-          "aria-label": $options.accessibleName,
+          "aria-label": $options.nameIds ? null : $options.accessibleName,
+          "aria-labelledby": $options.nameIds,
           "aria-busy": $props.loading ? "true" : null,
           disabled: $options.isDisabled,
           onClick: _cache[0] || (_cache[0] = (...args) => $options.toggle && $options.toggle(...args)),
           onKeydown: _cache[1] || (_cache[1] = (...args) => $options.onButtonKeydown && $options.onButtonKeydown(...args))
         }, [
-          vue.createElementVNode(
-            "span",
-            _hoisted_2$n,
-            vue.toDisplayString($options.displayLabel),
-            1
-            /* TEXT */
-          )
+          vue.createElementVNode("span", {
+            id: $data.valueId,
+            class: "select-menu-value"
+          }, vue.toDisplayString($options.displayLabel), 9, _hoisted_2$n)
         ], 40, _hoisted_1$r),
-        $props.loading ? (vue.openBlock(), vue.createElementBlock("span", {
+        $options.nameIds ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 0,
+          id: $data.nameId,
+          hidden: ""
+        }, vue.toDisplayString($options.accessibleName), 9, _hoisted_3$k)) : vue.createCommentVNode("v-if", true),
+        $props.loading ? (vue.openBlock(), vue.createElementBlock("span", {
+          key: 1,
           class: "spinner-border spinner-border-sm select-menu-spinner",
           role: "status",
           "aria-label": $options.loadingLabel
-        }, null, 8, _hoisted_3$k)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_4$i)),
+        }, null, 8, _hoisted_4$i)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_5$e)),
         $props.clearable ? (vue.openBlock(), vue.createElementBlock("button", {
-          key: 2,
+          key: 3,
           type: "button",
           class: "select-menu-clear",
           disabled: !$options.hasSelection || $options.isDisabled,
@@ -2116,7 +2129,7 @@
             -1
             /* CACHED */
           )
-        ])], 8, _hoisted_5$e)) : vue.createCommentVNode("v-if", true),
+        ])], 8, _hoisted_6$d)) : vue.createCommentVNode("v-if", true),
         vue.createElementVNode("ul", {
           id: $data.listboxId,
           ref: "listbox",
@@ -2140,19 +2153,19 @@
                 "aria-selected": option.value === $props.modelValue ? "true" : "false",
                 onClick: ($event) => $options.select(option),
                 onMousemove: ($event) => $data.activeIndex = index
-              }, vue.toDisplayString(option.label), 43, _hoisted_7$b);
+              }, vue.toDisplayString(option.label), 43, _hoisted_8$a);
             }),
             128
             /* KEYED_FRAGMENT */
           )),
           !$options.choices.length ? (vue.openBlock(), vue.createElementBlock(
             "li",
-            _hoisted_8$a,
+            _hoisted_9$8,
             vue.toDisplayString($options.emptyLabel),
             1
             /* TEXT */
           )) : vue.createCommentVNode("v-if", true)
-        ], 42, _hoisted_6$d)
+        ], 42, _hoisted_7$b)
       ],
       2
       /* CLASS */
@@ -5302,7 +5315,7 @@
               {
                 key: 1,
                 type: "button",
-                class: "btn btn-light btn-sm",
+                class: "btn btn-more",
                 onClick: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("load-more"))
               },
               vue.toDisplayString($options.moreLabel),
@@ -8705,17 +8718,8 @@
     },
     mounted() {
       jQuery(this.$refs.editor).on("scrollActive.richtextField", () => this.$emit("scroll-active")).on("scrollInactive.richtextField", () => this.$emit("scroll-inactive"));
-      if (this.instanceKey && this.backupInterval > 0) {
-        this.backupTimer = setInterval(() => {
-          const editor = this.getEditorInstance();
-          if (editor) {
-            editor.backup();
-          }
-        }, this.backupInterval * 1e3);
-      }
     },
     beforeUnmount() {
-      clearInterval(this.backupTimer);
       jQuery(this.$refs.editor).off(".richtextField");
       const editor = this.getEditorInstance();
       if (editor && editor.editor && typeof editor.editor.destroy === "function") {
@@ -8731,11 +8735,12 @@
         const editor = this.getEditorInstance();
         return editor ? editor.editor.serialize() : "";
       },
-      /** Replaces the editor's content (e.g. to edit an existing text). */
+      /** Replaces the editor's content (e.g. to edit an existing text), a draft typed onto it is restored. */
       setValue(markdown) {
         const editor = this.getEditorInstance();
         if (editor) {
           editor.editor.init(markdown || "");
+          editor.$.trigger("restoreBackup");
         }
       },
       /** Empties the editor and drops its draft. */
@@ -8791,7 +8796,7 @@
       }
     }
   };
-  const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-cookie-key"];
+  const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-interval", "data-backup-cookie-key"];
   const _hoisted_2$8 = ["accept", "aria-label"];
   const _hoisted_3$7 = {
     key: 1,
@@ -8825,7 +8830,7 @@
           "data-mentioning-url": $props.mentioningUrl,
           "data-placeholder": _ctx.placeholder,
           "data-focus": $props.autofocus ? "true" : null,
-          "data-backup-interval": "0",
+          "data-backup-interval": $props.instanceKey ? $props.backupInterval : 0,
           "data-backup-cookie-key": $data.backupKey
         }, null, 10, _hoisted_1$8), [
           [_directive_editor_options, {
@@ -9128,6 +9133,7 @@
   };
   const MIN_READING_MS = 5e3;
   const READING_MS_PER_CHAR = 60;
+  const CLEARANCE_PROPERTY = "--hh-toast-clearance";
   const ICONS = {
     info: "ti ti-info-circle",
     success: "ti ti-circle-check",
@@ -9193,14 +9199,45 @@
         return !!this.detailsText;
       }
     },
+    watch: {
+      // The container comes and goes with the entry; its size changes with the text and the details.
+      entry() {
+        this.$nextTick(this.trackClearance);
+      }
+    },
     mounted() {
       vue$1.setStatusHandler(this.handle);
     },
     unmounted() {
       vue$1.setStatusHandler(null);
       this.clearTimers();
+      this.untrackClearance();
     },
     methods: {
+      /** Publishes the room the shown toast takes at the bottom of the window, as long as one is shown. */
+      trackClearance() {
+        this.untrackClearance();
+        const container = this.$refs.container;
+        if (!container) {
+          return;
+        }
+        const update = () => {
+          const room = Math.ceil(window.innerHeight - container.getBoundingClientRect().top);
+          document.documentElement.style.setProperty(CLEARANCE_PROPERTY, Math.max(room, 0) + "px");
+        };
+        update();
+        if (typeof ResizeObserver === "function") {
+          this.clearanceObserver = new ResizeObserver(update);
+          this.clearanceObserver.observe(container);
+        }
+      },
+      untrackClearance() {
+        if (this.clearanceObserver) {
+          this.clearanceObserver.disconnect();
+          this.clearanceObserver = null;
+        }
+        document.documentElement.style.removeProperty(CLEARANCE_PROPERTY);
+      },
       /** Bridge handler - see humhub.vue.js `status()`. */
       handle(message) {
         const entry = {
@@ -9315,6 +9352,7 @@
   };
   const _hoisted_3$5 = {
     key: 0,
+    ref: "container",
     class: "toast-container position-fixed bottom-0 start-50 translate-middle-x p-3"
   };
   const _hoisted_4$4 = { class: "toast-body" };
@@ -9344,80 +9382,86 @@
           1
           /* TEXT */
         ),
-        $data.entry ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_3$5, [
-          vue.createElementVNode(
-            "div",
-            {
-              ref: "toast",
-              class: vue.normalizeClass(["toast fade show", [$options.toneClass, { showing: !$data.visible }]]),
-              onMouseenter: _cache[3] || (_cache[3] = ($event) => $options.interact("hovered", true)),
-              onMouseleave: _cache[4] || (_cache[4] = ($event) => $options.interact("hovered", false)),
-              onFocusin: _cache[5] || (_cache[5] = ($event) => $options.interact("focused", true)),
-              onFocusout: _cache[6] || (_cache[6] = (...args) => $options.onFocusOut && $options.onFocusOut(...args))
-            },
-            [
-              vue.createElementVNode("div", _hoisted_4$4, [
-                vue.createElementVNode(
-                  "i",
-                  {
-                    class: vue.normalizeClass(["toast-icon", $options.iconClass]),
-                    "aria-hidden": "true"
-                  },
-                  null,
-                  2
-                  /* CLASS */
-                ),
-                vue.createElementVNode(
-                  "span",
-                  {
-                    class: vue.normalizeClass(["toast-message", { "is-toggle": $options.hasDetails }]),
-                    onClick: _cache[0] || (_cache[0] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
-                  },
-                  vue.toDisplayString($data.entry.message),
-                  3
-                  /* TEXT, CLASS */
-                ),
-                $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("button", {
-                  key: 0,
-                  type: "button",
-                  class: "btn btn-ghost btn-icon-only btn-sm toast-details-toggle",
-                  "aria-expanded": $data.detailsOpen ? "true" : "false",
-                  "aria-label": $props.detailsLabel,
-                  title: $props.detailsLabel,
-                  onClick: _cache[1] || (_cache[1] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
-                }, [
+        $data.entry ? (vue.openBlock(), vue.createElementBlock(
+          "div",
+          _hoisted_3$5,
+          [
+            vue.createElementVNode(
+              "div",
+              {
+                ref: "toast",
+                class: vue.normalizeClass(["toast fade show", [$options.toneClass, { showing: !$data.visible }]]),
+                onMouseenter: _cache[3] || (_cache[3] = ($event) => $options.interact("hovered", true)),
+                onMouseleave: _cache[4] || (_cache[4] = ($event) => $options.interact("hovered", false)),
+                onFocusin: _cache[5] || (_cache[5] = ($event) => $options.interact("focused", true)),
+                onFocusout: _cache[6] || (_cache[6] = (...args) => $options.onFocusOut && $options.onFocusOut(...args))
+              },
+              [
+                vue.createElementVNode("div", _hoisted_4$4, [
                   vue.createElementVNode(
                     "i",
                     {
-                      class: vue.normalizeClass(["ti", $data.detailsOpen ? "ti-chevron-down" : "ti-chevron-up"]),
+                      class: vue.normalizeClass(["toast-icon", $options.iconClass]),
                       "aria-hidden": "true"
                     },
                     null,
                     2
                     /* CLASS */
+                  ),
+                  vue.createElementVNode(
+                    "span",
+                    {
+                      class: vue.normalizeClass(["toast-message", { "is-toggle": $options.hasDetails }]),
+                      onClick: _cache[0] || (_cache[0] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
+                    },
+                    vue.toDisplayString($data.entry.message),
+                    3
+                    /* TEXT, CLASS */
+                  ),
+                  $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("button", {
+                    key: 0,
+                    type: "button",
+                    class: "btn btn-ghost btn-icon-only btn-sm toast-details-toggle",
+                    "aria-expanded": $data.detailsOpen ? "true" : "false",
+                    "aria-label": $props.detailsLabel,
+                    title: $props.detailsLabel,
+                    onClick: _cache[1] || (_cache[1] = (...args) => $options.toggleDetails && $options.toggleDetails(...args))
+                  }, [
+                    vue.createElementVNode(
+                      "i",
+                      {
+                        class: vue.normalizeClass(["ti", $data.detailsOpen ? "ti-chevron-down" : "ti-chevron-up"]),
+                        "aria-hidden": "true"
+                      },
+                      null,
+                      2
+                      /* CLASS */
+                    )
+                  ], 8, _hoisted_5$2)) : vue.createCommentVNode("v-if", true),
+                  vue.createElementVNode("button", {
+                    type: "button",
+                    class: "btn-close toast-close",
+                    "aria-label": $props.closeLabel,
+                    onClick: _cache[2] || (_cache[2] = (...args) => $options.close && $options.close(...args))
+                  }, null, 8, _hoisted_6$2)
+                ]),
+                $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$2, [
+                  vue.createElementVNode(
+                    "pre",
+                    null,
+                    vue.toDisplayString($options.detailsText),
+                    1
+                    /* TEXT */
                   )
-                ], 8, _hoisted_5$2)) : vue.createCommentVNode("v-if", true),
-                vue.createElementVNode("button", {
-                  type: "button",
-                  class: "btn-close toast-close",
-                  "aria-label": $props.closeLabel,
-                  onClick: _cache[2] || (_cache[2] = (...args) => $options.close && $options.close(...args))
-                }, null, 8, _hoisted_6$2)
-              ]),
-              $data.detailsOpen ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_7$2, [
-                vue.createElementVNode(
-                  "pre",
-                  null,
-                  vue.toDisplayString($options.detailsText),
-                  1
-                  /* TEXT */
-                )
-              ])) : vue.createCommentVNode("v-if", true)
-            ],
-            34
-            /* CLASS, NEED_HYDRATION */
-          )
-        ])) : vue.createCommentVNode("v-if", true)
+                ])) : vue.createCommentVNode("v-if", true)
+              ],
+              34
+              /* CLASS, NEED_HYDRATION */
+            )
+          ],
+          512
+          /* NEED_PATCH */
+        )) : vue.createCommentVNode("v-if", true)
       ],
       64
       /* STABLE_FRAGMENT */
@@ -9878,7 +9922,7 @@
         vue.createElementVNode("button", {
           ref: "sentinel",
           type: "button",
-          class: "btn btn-light",
+          class: "btn btn-more",
           disabled: $props.loadingMore,
           onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("load-more"))
         }, vue.toDisplayString($props.loadingMore ? $options.loadingLabel : $options.moreLabel), 9, _hoisted_12$1)

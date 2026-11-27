@@ -177,7 +177,7 @@
   const _hoisted_1$3 = ["id", "innerHTML"];
   const _hoisted_2$3 = ["aria-label"];
   const _hoisted_3$2 = { key: 1 };
-  const _hoisted_4$1 = ["disabled"];
+  const _hoisted_4$2 = ["disabled"];
   function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_TextareaField = vue$1.resolveComponent("TextareaField");
     const _component_CheckboxField = vue$1.resolveComponent("CheckboxField");
@@ -219,7 +219,7 @@
           class: "btn btn-danger",
           disabled: $options.confirmDisabled,
           onClick: _cache[4] || (_cache[4] = (...args) => $options.confirm && $options.confirm(...args))
-        }, vue$1.toDisplayString($options.confirmLabel), 9, _hoisted_4$1)
+        }, vue$1.toDisplayString($options.confirmLabel), 9, _hoisted_4$2)
       ]),
       default: vue$1.withCtx(() => [
         $props.adminMode ? (vue$1.openBlock(), vue$1.createBlock(_component_HumHubForm, {
@@ -282,9 +282,9 @@
     };
   };
   const isAdminDelete = (comment, canDelete) => !!(canDelete && comment && comment.author && currentUserId() !== null && comment.author.id !== currentUserId());
-  const mapWindow = (window) => ({
-    ...window,
-    results: (window.results || []).map(mapComment)
+  const mapWindow = (window2) => ({
+    ...window2,
+    results: (window2.results || []).map(mapComment)
   });
   const fetchWindow = ({ contentId, parentCommentId, ...params }) => {
     const path = parentCommentId ? `comment/${parentCommentId}/replies` : `content/${contentId}/comments`;
@@ -612,6 +612,106 @@
     }
     target.focus({ preventScroll: true });
   }
+  const GROW_MS = 200;
+  const GROW_MAX_MS = 400;
+  const running = /* @__PURE__ */ new WeakMap();
+  const reducedMotion = () => {
+    const motion = document.documentElement.getAttribute("data-hh-motion");
+    return motion ? motion === "reduce" : typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
+  const durationFor = (height) => Math.min(GROW_MAX_MS, GROW_MS + height / 10);
+  const finishRunning = (feed) => {
+    const previous = running.get(feed);
+    if (previous) {
+      previous.finish();
+    }
+  };
+  function growIn(feed) {
+    const area = feed ? feed.parentElement : null;
+    if (!area || typeof feed.animate !== "function" || reducedMotion()) {
+      return () => {
+      };
+    }
+    finishRunning(feed);
+    const before = area.getBoundingClientRect().height;
+    return (ids, side) => {
+      const entries = ids.map((id) => document.getElementById("comment_" + id)).filter((entry) => entry && feed.contains(entry));
+      if (!entries.length) {
+        return;
+      }
+      entries.forEach((entry) => entry.animate([{ opacity: 0 }, { opacity: 1 }], { duration: GROW_MS, easing: "ease" }));
+      const articles = feed.querySelectorAll(':scope > [role="article"]');
+      const edge = side === "start" ? entries[0] : entries[entries.length - 1];
+      const delta = area.getBoundingClientRect().height - before;
+      if (delta <= 0 || edge !== (side === "start" ? articles[0] : articles[articles.length - 1])) {
+        return;
+      }
+      const property = side === "start" ? "marginTop" : "marginBottom";
+      const rest = parseFloat(getComputedStyle(edge)[property]) || 0;
+      const frames = (height) => [{ [property]: `${rest - height}px` }, { [property]: `${rest}px` }];
+      let added = delta;
+      feed.style.overflow = "hidden";
+      const motion = edge.animate(frames(added), { duration: durationFor(delta), easing: "ease-out" });
+      running.set(feed, motion);
+      const resized = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
+        const pulled = rest - (parseFloat(getComputedStyle(edge)[property]) || 0);
+        const now = area.getBoundingClientRect().height - before + pulled;
+        if (Math.abs(now - added) >= 1 && motion.effect && typeof motion.effect.setKeyframes === "function") {
+          added = now;
+          motion.effect.setKeyframes(frames(added));
+        }
+      }) : null;
+      if (resized) {
+        resized.observe(feed);
+      }
+      const done = () => {
+        if (resized) {
+          resized.disconnect();
+        }
+        if (running.get(feed) === motion) {
+          running.delete(feed);
+          feed.style.overflow = "";
+        }
+      };
+      motion.onfinish = done;
+      motion.oncancel = done;
+    };
+  }
+  function shrinkOut(feed, ids) {
+    const area = feed ? feed.parentElement : null;
+    if (!area || typeof feed.animate !== "function" || reducedMotion()) {
+      return Promise.resolve();
+    }
+    finishRunning(feed);
+    const entries = ids.map((id) => document.getElementById("comment_" + id)).filter((entry) => entry && feed.contains(entry));
+    const articles = feed.querySelectorAll(':scope > [role="article"]');
+    const kept = articles[entries.length];
+    if (!entries.length || entries[0] !== articles[0] || !kept) {
+      return Promise.resolve();
+    }
+    const first = entries[0];
+    const height = kept.getBoundingClientRect().top - first.getBoundingClientRect().top;
+    const rest = parseFloat(getComputedStyle(first).marginTop) || 0;
+    const duration = durationFor(height);
+    entries.forEach((entry) => entry.animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: "ease", fill: "forwards" }));
+    feed.style.overflow = "hidden";
+    const motion = first.animate(
+      [{ marginTop: `${rest}px` }, { marginTop: `${rest - height}px` }],
+      { duration, easing: "ease-out", fill: "forwards" }
+    );
+    running.set(feed, motion);
+    return new Promise((resolve) => {
+      const done = () => {
+        if (running.get(feed) === motion) {
+          running.delete(feed);
+          feed.style.overflow = "";
+        }
+        resolve();
+      };
+      motion.onfinish = done;
+      motion.oncancel = done;
+    });
+  }
   const _sfc_main$2 = {
     name: "CommentEntry",
     components: { CommentControls, CommentDeleteModal, CommentForm },
@@ -675,6 +775,11 @@
         // hydration or a loadMoreReplies() response) - deliberately never touched by
         // onReplyCreated()'s own/live append, see "Previous-direction pagination fix" below.
         childFirstCursorId: this.comment.replies && this.comment.replies.items.length ? this.comment.replies.items[0].id : null,
+        // The first reply shown at first: "Show less" folds away the older ones "Show more" added,
+        // as in CommentList
+        childFirstShownId: this.comment.replies && this.comment.replies.items.length ? this.comment.replies.items[0].id : null,
+        childFolded: false,
+        foldingReplies: false,
         busyReplies: false,
         busyEdit: false,
         // Drives the native <CommentDeleteModal> (see its own docblock) — one modal
@@ -720,7 +825,7 @@
       cancelEditLabel() {
         return vue.i18n.t("CommentModule.base", "Cancel Edit");
       },
-      // Single derived count driving BOTH the `v-if="childHasMore"` gate and this label's
+      // Single derived count driving BOTH the show-more gate (with "Show less") and this label's
       // `{count}` (previously two independently-mutated fields that could desync) -
       // `childTotal` is kept correct by every mutation (onReplyCreated/onChildRemoved),
       // so this can never show a nonzero gate with a stale/zero label or vice versa.
@@ -730,14 +835,26 @@
       childHasMore() {
         return this.childRemaining > 0;
       },
-      // Same wording/category/key as CommentList's own "show previous" link
-      // (`prevLabel`), not "show next": the hidden replies are always the OLDER ones (the
-      // preview shows the NEWEST N, see "Previous-direction pagination fix" above), so this
-      // is symmetric with the root list's own loadPrev()/prevLabel, not loadNext()/
-      // nextLabel. The legacy nested Comments::widget() reused these exact same ShowMore
-      // strings for children too - there never was a distinct "replies" message key.
+      // "Show less" of the replies, as CommentList's foldable/shownItems/prevHidden/canShowLess
+      childFoldable() {
+        return this.childFirstShownId === null ? [] : this.childItems.filter((child) => child.id < this.childFirstShownId);
+      },
+      childShown() {
+        return this.childFolded ? this.childItems.filter((child) => child.id >= this.childFirstShownId) : this.childItems;
+      },
+      childHidden() {
+        return this.childRemaining + (this.childFolded ? this.childFoldable.length : 0);
+      },
+      canShowLessReplies() {
+        return !this.childFolded && this.childRemaining === 0 && this.childFoldable.length > 0;
+      },
+      showLessLabel() {
+        return vue.i18n.t("base", "Show less");
+      },
+      // Same label as CommentList's: the hidden replies are always the OLDER ones (the preview shows
+      // the NEWEST N, see "Previous-direction pagination fix" above), above the list
       moreRepliesLabel() {
-        return vue.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.childRemaining });
+        return vue.i18n.t("CommentModule.base", "Show more ({count})", { count: this.childHidden });
       },
       // The adapted comment shape carries real `Date`s (DB-format wire timestamps
       // parsed with the announced server timezone, see commentApi.js/
@@ -811,8 +928,9 @@
         this.ensureLikeStates([comment]);
       },
       onChildRemoved(id) {
-        const index = this.childItems.findIndex((child) => child.id === id);
-        const neighbour = index === -1 ? null : this.childItems[index + 1] || this.childItems[index - 1] || null;
+        const shown = this.childShown;
+        const index = shown.findIndex((child) => child.id === id);
+        const neighbour = index === -1 ? null : shown[index + 1] || shown[index - 1] || null;
         const removed = document.getElementById("comment_" + id);
         this.childItems = this.childItems.filter((child) => child.id !== id);
         this.childTotal = Math.max(0, this.childTotal - 1);
@@ -869,13 +987,46 @@
       // from `childFirstCursorId` (the HEAD of the last SERVER-PAGINATED window), mirroring
       // CommentList's own loadPrev() exactly - a straight prepend, no dedup, no total
       // resync (see the docblock for why none of those are needed here).
-      // PageUp before the first shown reply (ui.feed): the hidden replies are the older ones, above
+      // PageUp before the first shown reply (ui.feed): the hidden replies are the older ones, above.
+      // Without the grow, as CommentList's onFeedMore().
       onFeedMore(evt) {
-        if (evt.detail && evt.detail.direction === "prev" && this.childHasMore) {
+        if (!evt.detail || evt.detail.direction !== "prev") {
+          return;
+        }
+        if (this.childFolded && this.childFoldable.length > 0) {
+          this.unfoldReplies(false);
+        } else if (this.childHasMore) {
+          this.loadMoreReplies(false);
+        }
+      },
+      onMoreRepliesClick() {
+        if (this.busyReplies || this.foldingReplies) {
+          return;
+        }
+        if (this.canShowLessReplies) {
+          this.foldReplies();
+        } else if (this.childFolded && this.childFoldable.length > 0) {
+          this.unfoldReplies();
+        } else {
           this.loadMoreReplies();
         }
       },
-      loadMoreReplies() {
+      foldReplies() {
+        this.foldingReplies = true;
+        shrinkOut(this.$refs.replyFeed, this.childFoldable.map((child) => child.id)).then(() => {
+          this.childFolded = true;
+          this.foldingReplies = false;
+        });
+      },
+      unfoldReplies(animate = true) {
+        const grow = animate ? growIn(this.$refs.replyFeed) : () => {
+        };
+        const ids = this.childFoldable.map((child) => child.id);
+        this.childFolded = false;
+        this.$nextTick(() => grow(ids, "start"));
+      },
+      // The loaded replies grow in as CommentList's presentLoaded()
+      loadMoreReplies(animate = true) {
         if (this.busyReplies || this.childItems.length === 0 || this.childFirstCursorId === null) {
           return;
         }
@@ -888,7 +1039,17 @@
           direction: "previous",
           limit: this.pageSize
         }).then((response) => {
+          const grow = animate ? growIn(this.$refs.replyFeed) : () => {
+          };
+          const hadFocus = !!this.$refs.moreRepliesButton && document.activeElement === this.$refs.moreRepliesButton;
           this.childItems = [...response.results, ...this.childItems];
+          this.$nextTick(() => {
+            const ids = response.results.map((child) => child.id);
+            grow(ids, "start");
+            if (hadFocus && ids.length) {
+              handOverFocus(null, ids[0], this.$refs.replyFeed);
+            }
+          });
           this.ensureLikeStates(response.results);
           if (response.results.length > 0) {
             this.childFirstCursorId = response.results[0].id;
@@ -919,8 +1080,8 @@
   const _hoisted_1$1 = ["id", "aria-label"];
   const _hoisted_2$1 = { class: "flex-grow-1 overflow-hidden" };
   const _hoisted_3$1 = ["id", "aria-labelledby"];
-  const _hoisted_4 = { class: "flex-shrink-0 comment-header-image" };
-  const _hoisted_5 = { class: "flex-grow-1" };
+  const _hoisted_4$1 = { class: "flex-shrink-0 comment-header-image" };
+  const _hoisted_5$1 = { class: "flex-grow-1" };
   const _hoisted_6 = ["id"];
   const _hoisted_7 = ["href", "data-contentcontainer-id", "data-guid"];
   const _hoisted_8 = ["datetime", "title"];
@@ -936,7 +1097,8 @@
     key: 0,
     class: "showMore"
   };
-  const _hoisted_15 = ["role", "aria-label", "aria-busy"];
+  const _hoisted_15 = ["aria-disabled"];
+  const _hoisted_16 = ["role", "aria-label", "aria-busy"];
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CommentControls = vue$1.resolveComponent("CommentControls");
     const _component_UserImage = vue$1.resolveComponent("UserImage");
@@ -1001,7 +1163,7 @@
         onDelete: $options.onDelete,
         onAdminDelete: $options.onAdminDelete
       }, null, 8, ["comment", "permalink", "can-edit", "can-delete", "can-admin-delete", "loading-permissions", "onOpen", "onEdit", "onDelete", "onAdminDelete"]),
-      vue$1.createElementVNode("div", _hoisted_4, [
+      vue$1.createElementVNode("div", _hoisted_4$1, [
         vue$1.createCommentVNode(" The name next to it is the same link: one tab stop per author "),
         vue$1.createVNode(
           _component_UserImage,
@@ -1014,7 +1176,7 @@
           /* FULL_PROPS */
         )
       ]),
-      vue$1.createElementVNode("div", _hoisted_5, [
+      vue$1.createElementVNode("div", _hoisted_5$1, [
         vue$1.createCommentVNode(" Below the entry's h2 "),
         vue$1.createElementVNode("h3", {
           class: "h4 comment-heading",
@@ -1155,22 +1317,19 @@
               class: vue$1.normalizeClass(["bg-light p-2 mt-3 comment-container", { "d-none": !$data.childItems.length && !$data.replyOpen }])
             },
             [
-              $options.childHasMore ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_14, [
-                vue$1.createElementVNode(
-                  "a",
-                  {
-                    href: "#",
-                    class: vue$1.normalizeClass({ disabled: $data.busyReplies }),
-                    onClick: _cache[3] || (_cache[3] = vue$1.withModifiers((...args) => $options.loadMoreReplies && $options.loadMoreReplies(...args), ["prevent"]))
-                  },
-                  vue$1.toDisplayString($options.moreRepliesLabel),
-                  3
-                  /* TEXT, CLASS */
-                )
+              $options.childHidden > 0 || $options.canShowLessReplies ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_14, [
+                vue$1.createElementVNode("button", {
+                  ref: "moreRepliesButton",
+                  type: "button",
+                  class: vue$1.normalizeClass(["btn btn-more", { disabled: $data.busyReplies }]),
+                  "aria-disabled": $data.busyReplies ? "true" : null,
+                  onClick: _cache[3] || (_cache[3] = ($event) => $options.onMoreRepliesClick())
+                }, vue$1.toDisplayString($options.canShowLessReplies ? $options.showLessLabel : $options.moreRepliesLabel), 11, _hoisted_15)
               ])) : vue$1.createCommentVNode("v-if", true),
               vue$1.createElementVNode("div", {
+                ref: "replyFeed",
                 class: "comment",
-                role: $data.childItems.length ? "feed" : null,
+                role: $options.childShown.length ? "feed" : null,
                 "aria-label": $options.repliesLabel,
                 "aria-busy": $data.busyReplies ? "true" : null,
                 "onHumhub:feed:more": _cache[4] || (_cache[4] = vue$1.withModifiers((...args) => $options.onFeedMore && $options.onFeedMore(...args), ["self"]))
@@ -1178,7 +1337,7 @@
                 (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
                   null,
-                  vue$1.renderList($data.childItems, (child) => {
+                  vue$1.renderList($options.childShown, (child) => {
                     return vue$1.openBlock(), vue$1.createElementBlock(
                       vue$1.Fragment,
                       {
@@ -1211,7 +1370,7 @@
                   128
                   /* KEYED_FRAGMENT */
                 ))
-              ], 40, _hoisted_15),
+              ], 40, _hoisted_16),
               $data.replyOpen ? (vue$1.openBlock(), vue$1.createBlock(_component_CommentForm, {
                 key: 1,
                 ref: "replyForm",
@@ -1283,6 +1442,11 @@
         // loadNext() response) - deliberately never touched by appendRoot()/replaceRoot()
         // (own/live creates), see the docblock below.
         lastCursorId: this.comments.length ? this.comments[this.comments.length - 1].id : null,
+        // The first comment shown at first: "Show less" folds away the older ones "Show more" added
+        firstShownId: this.comments.length ? this.comments[0].id : null,
+        folded: false,
+        // While "Show less" folds (not busy: nothing loads)
+        folding: false,
         busyPrev: false,
         busyNext: false
       };
@@ -1302,8 +1466,28 @@
       commentsAreaId() {
         return "comments_area_" + getId(this.contentId);
       },
+      // The older comments "Show more" added above the ones shown at first
+      foldable() {
+        return this.firstShownId === null ? [] : this.items.filter((comment) => comment.id < this.firstShownId);
+      },
+      shownItems() {
+        return this.folded ? this.items.filter((comment) => comment.id >= this.firstShownId) : this.items;
+      },
+      // Before the shown comments: not loaded yet, or folded away by "Show less"
+      prevHidden() {
+        return this.remainingPrev + (this.folded ? this.foldable.length : 0);
+      },
+      // Once all older comments are there, the button folds the added ones away again
+      canShowLess() {
+        return !this.folded && this.remainingPrev === 0 && this.foldable.length > 0;
+      },
+      // One label for both directions, as in the design: the button's place above or below the list
+      // tells which
       prevLabel() {
-        return vue.i18n.t("CommentModule.base", "Show previous {count} comments", { count: this.remainingPrev });
+        return vue.i18n.t("CommentModule.base", "Show more ({count})", { count: this.prevHidden });
+      },
+      showLessLabel() {
+        return vue.i18n.t("base", "Show less");
       },
       // Single derived count (see this component's own docblock) instead of a second,
       // independently-mutated `remainingNext` field: `rootTotal` already accounts for
@@ -1317,7 +1501,7 @@
         return Math.max(0, this.rootTotal - this.items.length - this.remainingPrev);
       },
       nextLabel() {
-        return vue.i18n.t("CommentModule.base", "Show next {count} comments", { count: this.remainingNext });
+        return vue.i18n.t("CommentModule.base", "Show more ({count})", { count: this.remainingNext });
       }
     },
     watch: {
@@ -1327,6 +1511,8 @@
       comments(value) {
         this.items = [...value];
         this.lastCursorId = value.length ? value[value.length - 1].id : null;
+        this.firstShownId = value.length ? value[0].id : null;
+        this.folded = false;
       },
       prevCount(value) {
         this.remainingPrev = value;
@@ -1341,8 +1527,9 @@
         this.items.push(comment);
       },
       removeRoot(id) {
-        const index = this.items.findIndex((comment) => comment.id === id);
-        const neighbour = index === -1 ? null : this.items[index + 1] || this.items[index - 1] || null;
+        const shown = this.shownItems;
+        const index = shown.findIndex((comment) => comment.id === id);
+        const neighbour = index === -1 ? null : shown[index + 1] || shown[index - 1] || null;
         const removed = document.getElementById("comment_" + id);
         this.items = this.items.filter((comment) => comment.id !== id);
         this.pruneCommentRevision(id);
@@ -1362,16 +1549,59 @@
         this.bumpCommentRevision(id);
       },
       // PageUp before the first or PageDown after the last comment (ui.feed): `.self`, as the event
-      // bubbles up from the replies of an entry as well; `aria-busy` tells ui.feed when to follow
+      // bubbles up from the replies of an entry as well; `aria-busy` tells ui.feed when to follow.
+      // Without the grow, so ui.feed scrolls to the new comment where it stays.
       onFeedMore(evt) {
         const direction = evt.detail ? evt.detail.direction : null;
-        if (direction === "prev" && this.remainingPrev > 0) {
-          this.loadPrev();
+        if (direction === "prev" && this.folded && this.foldable.length > 0) {
+          this.unfoldPrev(false);
+        } else if (direction === "prev" && this.remainingPrev > 0) {
+          this.loadPrev(false);
         } else if (direction === "next" && this.remainingNext > 0) {
-          this.loadNext();
+          this.loadNext(false);
         }
       },
-      loadPrev() {
+      // After "Show more": the loaded comments grow in (listMotion.js), and if the button had the focus
+      // and is gone, the focus goes to the first of them, which now stands in its place
+      presentLoaded(grow, loaded, side, button) {
+        const hadFocus = !!button && document.activeElement === button;
+        this.$nextTick(() => {
+          const ids = loaded.map((comment) => comment.id);
+          grow(ids, side);
+          if (hadFocus && ids.length) {
+            handOverFocus(null, ids[0], this.$refs.feed);
+          }
+        });
+      },
+      onPrevClick() {
+        if (this.busyPrev || this.folding) {
+          return;
+        }
+        if (this.canShowLess) {
+          this.foldPrev();
+        } else if (this.folded && this.foldable.length > 0) {
+          this.unfoldPrev();
+        } else {
+          this.loadPrev();
+        }
+      },
+      // "Show less": the added older comments shrink out; the button stays and brings them back
+      // without a request
+      foldPrev() {
+        this.folding = true;
+        shrinkOut(this.$refs.feed, this.foldable.map((comment) => comment.id)).then(() => {
+          this.folded = true;
+          this.folding = false;
+        });
+      },
+      unfoldPrev(animate = true) {
+        const grow = animate ? growIn(this.$refs.feed) : () => {
+        };
+        const shown = this.foldable;
+        this.folded = false;
+        this.presentLoaded(grow, shown, "start", this.$refs.prevButton);
+      },
+      loadPrev(animate = true) {
         if (this.busyPrev || this.items.length === 0) {
           return;
         }
@@ -1383,7 +1613,10 @@
           direction: "previous",
           limit: this.pageSize
         }).then((response) => {
+          const grow = animate ? growIn(this.$refs.feed) : () => {
+          };
           this.items = [...response.results, ...this.items];
+          this.presentLoaded(grow, response.results, "start", this.$refs.prevButton);
           this.ensureLikeStates(response.results);
           this.remainingPrev = response.prevCount;
           this.adjustTotal(response.total - this.total);
@@ -1401,7 +1634,7 @@
       // the shared `isKnownId()`/`registerKnownId()` mechanism - and genuinely new ones are
       // spliced in right before the first item newer than the cursor, i.e. before that
       // appended tail, not blindly at the end.
-      loadNext() {
+      loadNext(animate = true) {
         if (this.busyNext || this.items.length === 0 || this.lastCursorId === null) {
           return;
         }
@@ -1420,7 +1653,10 @@
           if (insertIndex === -1) {
             insertIndex = this.items.length;
           }
+          const grow = animate ? growIn(this.$refs.feed) : () => {
+          };
           this.items.splice(insertIndex, 0, ...newComments);
+          this.presentLoaded(grow, newComments, "end", this.$refs.nextButton);
           if (response.results.length > 0) {
             this.lastCursorId = response.results[response.results.length - 1].id;
           }
@@ -1438,36 +1674,34 @@
     key: 0,
     class: "showMore"
   };
-  const _hoisted_2 = ["id", "role", "aria-label", "aria-busy"];
-  const _hoisted_3 = {
+  const _hoisted_2 = ["aria-disabled"];
+  const _hoisted_3 = ["id", "role", "aria-label", "aria-busy"];
+  const _hoisted_4 = {
     key: 1,
     class: "showMore"
   };
+  const _hoisted_5 = ["aria-disabled"];
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_CommentEntry = vue$1.resolveComponent("CommentEntry");
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
       null,
       [
-        vue$1.createCommentVNode(' The "Show more" links are beside the feed, which may only hold its articles (ARIA `feed`) '),
-        $data.remainingPrev > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
-          vue$1.createElementVNode(
-            "a",
-            {
-              href: "#",
-              class: vue$1.normalizeClass({ disabled: $data.busyPrev }),
-              onClick: _cache[0] || (_cache[0] = vue$1.withModifiers((...args) => $options.loadPrev && $options.loadPrev(...args), ["prevent"]))
-            },
-            vue$1.toDisplayString($options.prevLabel),
-            3
-            /* TEXT, CLASS */
-          )
+        vue$1.createCommentVNode(' The "Show more" buttons are beside the feed, which may only hold its articles (ARIA `feed`) '),
+        ($options.prevHidden > 0 || $options.canShowLess) && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
+          vue$1.createElementVNode("button", {
+            ref: "prevButton",
+            type: "button",
+            class: vue$1.normalizeClass(["btn btn-more", { disabled: $data.busyPrev }]),
+            "aria-disabled": $data.busyPrev ? "true" : null,
+            onClick: _cache[0] || (_cache[0] = ($event) => $options.onPrevClick())
+          }, vue$1.toDisplayString($options.canShowLess ? $options.showLessLabel : $options.prevLabel), 11, _hoisted_2)
         ])) : vue$1.createCommentVNode("v-if", true),
         vue$1.createElementVNode("div", {
           ref: "feed",
           class: vue$1.normalizeClass(["comment", { "guest-mode": $options.guest }]),
           id: $options.commentsAreaId,
-          role: $data.items.length ? "feed" : null,
+          role: $options.shownItems.length ? "feed" : null,
           "aria-label": $options.feedLabel,
           "aria-busy": $data.busyPrev || $data.busyNext ? "true" : null,
           "onHumhub:feed:more": _cache[1] || (_cache[1] = vue$1.withModifiers((...args) => $options.onFeedMore && $options.onFeedMore(...args), ["self"]))
@@ -1475,7 +1709,7 @@
           (vue$1.openBlock(true), vue$1.createElementBlock(
             vue$1.Fragment,
             null,
-            vue$1.renderList($data.items, (comment) => {
+            vue$1.renderList($options.shownItems, (comment) => {
               return vue$1.openBlock(), vue$1.createElementBlock(
                 vue$1.Fragment,
                 {
@@ -1508,8 +1742,8 @@
             128
             /* KEYED_FRAGMENT */
           ))
-        ], 42, _hoisted_2),
-        $options.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_3, [
+        ], 42, _hoisted_3),
+        $options.remainingNext > 0 && $data.items.length > 0 ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_4, [
           _cache[4] || (_cache[4] = vue$1.createElementVNode(
             "hr",
             { class: "comment-separator" },
@@ -1517,17 +1751,13 @@
             -1
             /* CACHED */
           )),
-          vue$1.createElementVNode(
-            "a",
-            {
-              href: "#",
-              class: vue$1.normalizeClass({ disabled: $data.busyNext }),
-              onClick: _cache[2] || (_cache[2] = vue$1.withModifiers((...args) => $options.loadNext && $options.loadNext(...args), ["prevent"]))
-            },
-            vue$1.toDisplayString($options.nextLabel),
-            3
-            /* TEXT, CLASS */
-          )
+          vue$1.createElementVNode("button", {
+            ref: "nextButton",
+            type: "button",
+            class: vue$1.normalizeClass(["btn btn-more", { disabled: $data.busyNext }]),
+            "aria-disabled": $data.busyNext ? "true" : null,
+            onClick: _cache[2] || (_cache[2] = ($event) => $options.loadNext())
+          }, vue$1.toDisplayString($options.nextLabel), 11, _hoisted_5)
         ])) : vue$1.createCommentVNode("v-if", true)
       ],
       64

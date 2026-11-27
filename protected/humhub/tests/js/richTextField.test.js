@@ -21,7 +21,7 @@ const additionsDirective = {
 // What booting the real `ui.richtext.prosemirror.RichTextEditor` leaves behind: its instance
 // cached on its node, with the editor's serialize()/init() and the 'clear' event handler.
 const bootFakeEditor = (node) => {
-    const fake = { value: '', $: jQuery(node), focus: vi.fn(), backup: vi.fn() };
+    const fake = { value: '', $: jQuery(node), focus: vi.fn() };
     fake.editor = {
         serialize: () => fake.value,
         init: vi.fn((markdown) => { fake.value = markdown; }),
@@ -100,9 +100,13 @@ describe('RichTextField', () => {
 
     it('reads, sets and clears the editor\'s markdown and focuses it', () => {
         const wrapper = field();
+        const restore = vi.fn();
+        editorOf(wrapper).$.on('restoreBackup', restore);
 
         wrapper.vm.setValue('**bold**');
         expect(wrapper.vm.getValue()).toBe('**bold**');
+        // The text set is the one a draft is restored onto
+        expect(restore).toHaveBeenCalledTimes(1);
 
         wrapper.vm.clear();
         expect(wrapper.vm.getValue()).toBe('');
@@ -111,26 +115,18 @@ describe('RichTextField', () => {
         expect(editorOf(wrapper).focus).toHaveBeenCalledTimes(1);
     });
 
-    it('backs up the draft on its own timer, and stops it and the editor when it unmounts', () => {
-        vi.useFakeTimers();
+    it('hands the editor its backup interval, and stops the editor when it unmounts', () => {
         const wrapper = field({ instanceKey: 'c42', backupInterval: 2 });
         const editor = editorOf(wrapper);
 
-        vi.advanceTimersByTime(4000);
-        expect(editor.backup).toHaveBeenCalledTimes(2);
+        expect(editorNode(wrapper).dataset.backupInterval).toBe('2');
 
         wrapper.unmount();
-        vi.advanceTimersByTime(4000);
-        expect(editor.backup).toHaveBeenCalledTimes(2);
         expect(editor.editor.destroy).toHaveBeenCalledTimes(1);
     });
 
     it('keeps no backup without an instance key', () => {
-        vi.useFakeTimers();
-        const wrapper = field();
-
-        vi.advanceTimersByTime(10000);
-        expect(editorOf(wrapper).backup).not.toHaveBeenCalled();
+        expect(editorNode(field({ backupInterval: 2 })).dataset.backupInterval).toBe('0');
     });
 
     describe('files in the text', () => {

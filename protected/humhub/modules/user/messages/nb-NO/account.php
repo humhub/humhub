@@ -36,7 +36,7 @@ return [
     'TimeZone' => 'Tidssone',
     'Users' => 'Brukere',
     'Visible for all (also unregistered users)' => 'Synlig for alle (også uregistrerte brukere)',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Vi har akkurat sendt deg en e-post for bekreftelse.<br>Vennligst følg instruksjonene i e-posten.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'Vi har akkurat sendt deg en e-post for bekreftelse. Vennligst følg instruksjonene i e-posten.',
     'You are currently the owner of following spaces:' => 'Du er oppført som eier av disse gruppene:',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Du har bedt om å endre din e-post adresse.<br>
 Din nye e-post adresse er {newemail}.<br><br>
@@ -109,5 +109,5 @@ For å bekrefte den nye e-post adressen, vennligst klikk knappen nedenfor.',
     'You have successfully changed your username.<br>Your new username is {newUsername}.' => '',
     'You will stay logged in on this device only.' => '',
     'Your username has been changed' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];

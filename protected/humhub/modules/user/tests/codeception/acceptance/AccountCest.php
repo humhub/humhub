@@ -72,7 +72,7 @@ class AccountCest
         $I->waitForElementVisible('[name="NotificationSettings[categories.social.email]"]');
         $I->jsClick('[name="NotificationSettings[categories.social.email]"]');
 
-        $I->waitForText('Saved', 10, '.notification-settings-status');
+        $I->seeSuccess('Saved');
         $I->seeCheckboxIsChecked('[role="radiogroup"] [data-profile="custom"]');
     }
 }

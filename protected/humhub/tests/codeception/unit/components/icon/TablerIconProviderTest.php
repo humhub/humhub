@@ -59,6 +59,17 @@ class TablerIconProviderTest extends HumHubDbTestCase
         $this->assertStringContainsString('aria-hidden="true"', $html);
     }
 
+    public function testAnIconNamedByItsCallerIsNotHidden()
+    {
+        $html = (string)Icon::get('caret-up-filled', ['htmlOptions' => [
+            'role' => 'button',
+            'tabindex' => '0',
+            'aria-label' => 'Toggle task list',
+        ]]);
+        $this->assertStringContainsString('aria-label="Toggle task list"', $html);
+        $this->assertStringNotContainsString('aria-hidden', $html);
+    }
+
     public function testResolvesFontAwesomeNames()
     {
         $this->assertStringContainsString('ti ti-settings', (string)Icon::get('cog'));

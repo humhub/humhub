@@ -1,8 +1,8 @@
 //
 // Notification settings island (protected/humhub/modules/notification/vue/NotificationSettings.vue):
 // the profile radio cards (`.form-check-card`, `_form.scss`) and the categories (a Bootstrap
-// `.accordion`, `_accordion.scss`, with `.badge` channels) in content cards, the privacy mode
-// (global scope) and the autosave state. The space picker comes from `_filter-bar.scss`.
+// `.accordion`, `_accordion.scss`, with `.badge` channels) in content cards and the privacy mode
+// (global scope). The space picker comes from `_filter-bar.scss`.
 // @since 1.20
 // --------------------------------------------------
 
@@ -32,23 +32,6 @@ $notification-settings-gap: $spacer !default;
     .notification-settings-subtitle {
         margin: 0;
         @include hh-text-style(strong);
-    }
-
-    // The autosave state, right of the title
-    .notification-settings-status {
-        display: inline-flex;
-        align-items: center;
-        gap: $spacer * .25;
-        margin-left: auto;
-        @include hh-text-style(meta);
-
-        &.is-saved {
-            color: var(--hh-success-fg);
-        }
-
-        &.is-error {
-            color: var(--hh-danger-fg);
-        }
     }
 
     .notification-settings-lead {
