@@ -394,8 +394,9 @@ the grouped sentence, and marking it as seen marks every member.
 A group links to the target of its newest member and previews its subject. When the members have
 no common target, the class overrides `getUrl()` and `getBlocks()` for `groupCount > 1`:
 `ContentCreatedNotification` links to the stream of the container and shows the "View online"
-button only. `notification/entry`, the link of the mail and of the web list, loads the notification
-as a group, so these overrides apply there, too.
+button only. `notification/entry`, the link of the mail and of the web list, loads the clicked
+notification as it is, with the size of its group, so these overrides apply there, too, while a
+member of a group keeps its own target (the profile of an older follower stays his).
 
 ### Content blocks
 

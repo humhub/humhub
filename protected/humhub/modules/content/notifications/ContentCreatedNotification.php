@@ -113,14 +113,15 @@ final class ContentCreatedNotification extends BaseNotification
     }
 
     /**
-     * Several new entries show no preview, which would be that of the last one: only the "View online" button.
+     * Several new entries show no preview, which would be that of the last one; the "View online" button
+     * is added to the empty blocks, see {@see getRenderedBlocks()}.
      *
      * @inheritdoc
      */
     public function getBlocks(NotificationContext $context): array
     {
         if ($this->groupCount > 1) {
-            return $this->getViewOnlineBlocks();
+            return [];
         }
 
         return parent::getBlocks($context);
