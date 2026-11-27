@@ -25,6 +25,18 @@ use yii\imagine\Image;
 class ImageHelper
 {
     /**
+     * The image types whose dimensions are collected, see [[collectDimensions()]]
+     * @since 1.20
+     */
+    public const DIMENSION_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+    /**
+     * Bytes read for the dimensions: enough for the header of nearly every image, the whole file is read only when
+     * they don't suffice
+     */
+    private const DIMENSION_HEADER_BYTES = 262144;
+
+    /**
      * Fix orientation of JPEG images based on EXIF information
      *
      * @see https://github.com/yiisoft/yii2-imagine/issues/44
@@ -151,6 +163,12 @@ class ImageHelper
         if ($isModified) {
             $file->store->setContent($image->get($imagineOptions['format'], $imagineOptions));
             $file->updateAttributes(['size' => $file->store->fileSize()]);
+            // Re-encoded after the EXIF rotation and any resize: the stored image has these dimensions
+            try {
+                self::storeDimensions($file, $image->getSize()->getWidth(), $image->getSize()->getHeight());
+            } catch (\Throwable $e) {
+                Yii::warning('Could not store the dimensions of file ' . $file->id . ': ' . $e->getMessage(), 'file');
+            }
         }
 
     }
@@ -178,4 +196,101 @@ class ImageHelper
         return true;
     }
 
+    /**
+     * Stores the width and height of an image in its metadata, as the platform shows it: after the EXIF rotation
+     * [[fixJpegOrientation()]] applies. Content that can't be measured drops the dimensions of the previous one.
+     *
+     * @since 1.20
+     */
+    public static function collectDimensions(File $file): void
+    {
+        try {
+            $size = null;
+            if (in_array($file->mime_type, self::DIMENSION_MIME_TYPES, true)) {
+                $size = self::readImageSize($file);
+                if ($size === null) {
+                    Yii::info('Could not read the dimensions of file ' . $file->id, 'file');
+                } elseif ($file->mime_type === 'image/jpeg' && in_array(self::readExifOrientation($file), [6, 8], true)) {
+                    $size = [$size[1], $size[0]];
+                }
+            }
+
+            if ($size !== null) {
+                self::storeDimensions($file, $size[0], $size[1]);
+            } elseif (self::getDimensions($file) !== null) {
+                self::removeDimensions($file);
+            }
+        } catch (\Throwable $e) {
+            Yii::warning('Could not collect the dimensions of file ' . $file->id . ': ' . $e->getMessage(), 'file');
+        }
+    }
+
+    /**
+     * @return array{0: int, 1: int}|null width and height of an image, `null` when not collected (yet)
+     * @since 1.20
+     */
+    public static function getDimensions(File $file): ?array
+    {
+        $metadata = $file->getAttribute('metadata');
+        if ($metadata === null || $metadata === '') {
+            return null;
+        }
+
+        // Parsed into a copy, the record keeps its attribute as loaded. Runs on every render: metadata that can't be
+        // parsed has no dimensions.
+        if (!$metadata instanceof Metadata) {
+            try {
+                $metadata = new Metadata($metadata);
+            } catch (\Throwable) {
+                return null;
+            }
+        }
+
+        return isset($metadata->width, $metadata->height) ? [(int)$metadata->width, (int)$metadata->height] : null;
+    }
+
+    private static function storeDimensions(File $file, int $width, int $height): void
+    {
+        $file->setMetadata(['width' => $width, 'height' => $height]);
+        $file->updateAttributes(['metadata' => (string)$file->getMetadata()]);
+    }
+
+    private static function removeDimensions(File $file): void
+    {
+        $metadata = $file->getMetadata();
+        unset($metadata->width, $metadata->height);
+        $file->updateAttributes(['metadata' => count($metadata) > 0 ? (string)$metadata : null]);
+    }
+
+    /**
+     * @return array{0: int, 1: int}|null
+     */
+    private static function readImageSize(File $file): ?array
+    {
+        $stream = $file->store->getContentStream();
+        $head = (string)stream_get_contents($stream, self::DIMENSION_HEADER_BYTES);
+        fclose($stream);
+
+        $size = @getimagesizefromstring($head);
+        if ($size === false && strlen($head) >= self::DIMENSION_HEADER_BYTES) {
+            $size = @getimagesizefromstring($file->store->getContent());
+        }
+
+        return $size === false || empty($size[0]) || empty($size[1]) ? null : [(int)$size[0], (int)$size[1]];
+    }
+
+    private static function readExifOrientation(File $file): int
+    {
+        if (!function_exists('exif_read_data')) {
+            return 1;
+        }
+
+        $stream = $file->store->getContentStream();
+        $exif = @exif_read_data($stream);
+        if (is_resource($stream)) {
+            fclose($stream);
+        }
+
+        return (int)($exif['Orientation'] ?? 1);
+    }
 }

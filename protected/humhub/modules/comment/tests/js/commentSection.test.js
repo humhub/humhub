@@ -1031,11 +1031,11 @@ describe('CommentSection', () => {
         // The file module's `excludeMediaFilesPreview` setting (core JS config) reaches every
         // entry through CommentSection's provide(), the same way the like states do.
         it('leaves media out of the list below the grid when the setting says so', () => {
-            expect(mountWith().findAll('.post-file-list li')).toHaveLength(1);
+            expect(mountWith().findAll('.file-row[data-preview-guid]')).toHaveLength(1);
 
             globalThis.humhub.config.module('file').excludeMediaFilesPreview = true;
             try {
-                expect(mountWith().find('.post-file-list').exists()).toBe(false);
+                expect(mountWith().find('.file-list').exists()).toBe(false);
             } finally {
                 delete globalThis.humhub.config.module('file').excludeMediaFilesPreview;
             }

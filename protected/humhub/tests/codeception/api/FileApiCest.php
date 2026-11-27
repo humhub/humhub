@@ -82,6 +82,8 @@ class FileApiCest
                     'size' => 12,
                     'previewUrl' => null,
                     'displayUrl' => null,
+                    'width' => null,
+                    'height' => null,
                 ],
             ],
         ]);

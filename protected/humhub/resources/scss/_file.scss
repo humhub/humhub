@@ -4,6 +4,16 @@
 
 $file-version-gap: $spacer * .5 !default;
 
+// Attached files (`file/vue/AttachedFiles.vue`); the image sizes reach the layout as CSS variables, in rem
+$attached-images-row-height: 12rem !default;
+$attached-images-single-height: 20rem !default;
+$attached-images-comment-row-height: 10rem !default;
+$attached-images-comment-single-height: 15rem !default;
+$attached-images-gap: $spacer * .5 !default;
+$attached-media-max-width: 36rem !default;
+$file-list-gap: $spacer * .25 !default;
+$file-list-transition: .2s ease-in-out !default;
+
 @if not $prev-file {
     .files {
         padding-left: 0;
@@ -44,60 +54,189 @@ $file-version-gap: $spacer * .5 !default;
         overflow: hidden;
     }
 
+    // The media of attached files: images in justified rows (laid out by the component), videos and audio players
     .post-files {
-        margin-top: $spacer * .5;
-        margin-bottom: $spacer * .5;
+        --hh-attached-images-row-height: #{$attached-images-row-height};
+        --hh-attached-images-single-height: #{$attached-images-single-height};
+        --hh-attached-images-gap: #{$attached-images-gap};
 
-        .col-media {
-            padding: $spacer * .25;
-        }
+        display: flex;
+        flex-direction: column;
+        gap: var(--hh-attached-images-gap);
+        margin: $spacer * .5 0;
+    }
 
-        img, video {
-            vertical-align: top;
-            border-radius: $border-radius-sm;
-            width: 100%;
-            height: 100%;
-        }
+    .comment-container .post-files {
+        --hh-attached-images-row-height: #{$attached-images-comment-row-height};
+        --hh-attached-images-single-height: #{$attached-images-comment-single-height};
+    }
+
+    .post-files-images {
+        display: flex;
+        flex-direction: column;
+        gap: var(--hh-attached-images-gap);
+    }
+
+    .post-files-images-row {
+        display: flex;
+        gap: var(--hh-attached-images-gap);
+    }
+
+    .post-files-image {
+        position: relative;
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        border-radius: $border-radius;
+        background-color: var(--bs-secondary-bg);
 
         img {
-            height: 150px;
+            display: block;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
         }
+    }
+
+    // "+N" on the last tile: white on a dark scrim, large text (3:1 on any image)
+    .post-files-image-more {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba($black, .55);
+        color: $white;
+        font-size: $h3-font-size;
+        font-weight: $font-weight-bold;
+    }
+
+    .post-files-videos,
+    .post-files-audio {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--hh-attached-images-gap);
+    }
+
+    // As high as a single image at most
+    .post-files-video {
+        display: block;
+        max-width: 100%;
 
         video {
-            max-height: 576px;
-            max-width: 1024px;
+            display: block;
+            max-width: 100%;
+            max-height: var(--hh-attached-images-single-height);
+            border-radius: $border-radius;
             background-color: var(--bs-secondary-bg);
         }
+    }
 
-        .col-12 img { // One image
-            height: 300px;
+    .post-files-audio-item {
+        width: 100%;
+        max-width: $attached-media-max-width;
+
+        audio {
+            display: block;
+            width: 100%;
         }
+    }
 
-        // Medium (see the column buckets of protected/humhub/modules/file/vue/AttachedFiles.vue)
-        @include media-breakpoint-only(md) {
-            img,
-            .col-12 img {
-                height: 150px;
-            }
+    // The file list of attached files: the file row of docs/ui/file-upload.md. The rows are a list
+    // (`.file-list-rows`), "Show all" a row after it
+    .file-list {
+        --bs-list-group-bg: var(--bs-tertiary-bg);
+        --bs-list-group-item-padding-x: #{$spacer * .5};
+        // The trailing button gives the row its height
+        --bs-list-group-item-padding-y: #{$spacer * .25};
 
-            .col-lg-12 img { // One image
-                height: 300px;
-            }
+        gap: $file-list-gap;
+
+        .file-row {
+            display: flex;
+            align-items: center;
+            gap: $spacer * .5;
+            border-radius: var(--bs-border-radius);
         }
+    }
 
-        // Large and over (see the column buckets of protected/humhub/modules/file/vue/AttachedFiles.vue)
-        @include media-breakpoint-up(lg) {
-            img,
-            .col-12 img {
-                height: 200px;
-            }
+    .comment-container .file-list {
+        --bs-list-group-bg: color-mix(in srgb, var(--bs-emphasis-color) 2%, var(--bs-tertiary-bg));
+    }
 
-            .col-xl-6 img { // One or two images
-                height: 300px;
-            }
+    .file-list-rows,
+    .file-list-more-inner {
+        display: flex;
+        flex-direction: column;
+        gap: $file-list-gap;
+    }
+
+    .file-row-icon {
+        flex: 0 0 auto;
+        color: var(--hh-accent-fg);
+        font-size: $font-size-lg;
+    }
+
+    .file-row-text {
+        display: flex;
+        align-items: baseline;
+        gap: $spacer * .25;
+        min-width: 0;
+    }
+
+    .file-row-name {
+        display: flex;
+        min-width: 0;
+        color: var(--hh-accent-fg);
+    }
+
+    .file-row-name-head {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .file-row-name-tail,
+    .file-row-meta {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    .file-row-meta {
+        color: var(--bs-secondary-color);
+    }
+
+    .file-row-action {
+        flex: 0 0 auto;
+        margin-inline-start: auto;
+    }
+
+    .file-list-toggle {
+        color: var(--bs-secondary-color);
+    }
+
+    // "Show all": the height slides open and the rows fade in (the user's reduced motion shortens it, see
+    // _accessibility.scss); collapsed it takes back the gap before it. Hidden rows are `inert`, not `visibility:
+    // hidden`, which would still hide them while fading in, when the first one takes the focus
+    .file-list-more {
+        display: grid;
+        grid-template-rows: 0fr;
+        margin-top: -$file-list-gap;
+        opacity: 0;
+        transition: grid-template-rows $file-list-transition, margin-top $file-list-transition,
+            opacity $file-list-transition;
+
+        &.show {
+            grid-template-rows: 1fr;
+            margin-top: 0;
+            opacity: 1;
         }
+    }
 
+    .file-list-more-inner {
+        min-height: 0;
+        overflow: hidden;
     }
 
     // At the bottom the margin of the list and the padding of its rows
@@ -110,20 +249,6 @@ $file-version-gap: $spacer * .5 !default;
         }
     }
 
-
-    body.device-mobile #wallStream {
-        .post-files {
-            margin-top: $spacer * .5;
-            display: flex;
-            overflow-x: auto;
-
-            img {
-                max-width: 190px;
-                height: 100px;
-                width: auto;
-            }
-        }
-    }
 
     .file-preview-content {
         cursor: pointer;

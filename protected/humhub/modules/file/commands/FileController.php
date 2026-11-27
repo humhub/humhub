@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\commands;
 
+use humhub\modules\file\jobs\CollectFileMetadata;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileHistory;
@@ -96,5 +97,22 @@ class FileController extends Controller
         }
 
         $this->stdout("OK!\n\n");
+    }
+
+    /**
+     * Collects the metadata of uploaded files that lack it (the dimensions of images).
+     *
+     * @since 1.20
+     */
+    public function actionCollectMetadata()
+    {
+        $this->stdout("*** File module console\n\n");
+        $this->stdout('Collecting metadata:');
+
+        $count = CollectFileMetadata::collect(function (): void {
+            $this->stdout('.');
+        });
+
+        $this->stdout("OK! ($count files)\n\n");
     }
 }

@@ -99,6 +99,8 @@ paths:
                     downloadUrl: https://example.com/file/file/download?download=1&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
                     previewUrl: https://example.com/file/file/download?variant=preview-image&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
                     displayUrl: https://example.com/file/file/download?variant=display-image&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+                    width: 1200
+                    height: 800
                 errors:
                   - fileName: huge.zip
                     messages:

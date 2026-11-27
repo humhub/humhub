@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8791: Attached files: images in left-aligned justified rows, file rows with a download button and "Show all", image dimensions as file metadata
 - Enh: "Show more" as a pill button (`.btn-more`) for comments, replies, card and tile browsers and notifications; comments get "Show less" and grow in and out
 - Fix: The richtext draft backup no longer restores discarded or outdated text, or text typed in another space
 - Fix: Tooltips close on scrolling instead of moving with their trigger out of a list such as the activity box
