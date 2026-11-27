@@ -194,8 +194,8 @@ HumHub Changelog
 - Fix #8788: A user mentioned in a new content gets the mention notification only, not also the "created" one
 - Fix #8789: Grouped "new entries" notifications link to the stream of the space or profile and no longer preview only the last entry
 - Fix #8790: The toast after changing the username or e-mail address no longer shows a literal `<br />` and has corrected wording
-- Enh #nnnn: Health check for container probes and monitoring (`yii health/status`, `/health/live`, `/health/ready`, `/health`), extensible by modules
-- Fix #nnnn: Requests without a session cookie no longer start a session (e.g. API and health check requests)
+- Enh #8795: Health check for container probes and monitoring (`yii health/status`, `/health/live`, `/health/ready`, `/health`), extensible by modules
+- Fix #8795: Requests without a session cookie no longer start a session (e.g. API and health check requests)
 
 1.19.5 (November 25, 2026)
 --------------------------
