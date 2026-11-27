@@ -198,7 +198,9 @@ class FileSerializer
      */
     public static function variant(File $file, string $name, array $entry, array $parsed): array
     {
-        $label = (string)\Locale::getDisplayName($parsed['language'], $parsed['language']);
+        // The platform's languages carry the name of the language picker; any other language the locale data's name
+        $label = (string)(\Yii::$app->params['availableLanguages'][$parsed['language']]
+            ?? \Locale::getDisplayName($parsed['language'], $parsed['language']));
         $updatedAt = (int)$entry['updatedAt'];
 
         return [

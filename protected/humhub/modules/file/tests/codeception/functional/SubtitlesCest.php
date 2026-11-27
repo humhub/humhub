@@ -59,6 +59,9 @@ class SubtitlesCest
         Assert::assertStringContainsString('<subtitle-manager', $source);
         Assert::assertStringContainsString('file-id="' . $file->id . '"', $source);
         Assert::assertStringContainsString('file-name="Holiday &lt;b&gt;clip&lt;/b&gt;.mp4"', $source);
+        // The platform's languages, the language picker's names, and the UI language
+        Assert::assertStringContainsString('&quot;code&quot;:&quot;de&quot;,&quot;name&quot;:&quot;Deutsch&quot;', $source);
+        Assert::assertStringContainsString('ui-language="', $source);
         // The title is encoded
         Assert::assertStringContainsString('Subtitles of Holiday &lt;b&gt;clip&lt;/b&gt;.mp4', $source);
         Assert::assertStringNotContainsString('<b>clip</b>', $source);

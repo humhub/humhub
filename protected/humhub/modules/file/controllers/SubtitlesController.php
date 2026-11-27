@@ -10,6 +10,7 @@ namespace humhub\modules\file\controllers;
 
 use humhub\components\Controller;
 use humhub\modules\file\components\RedirectsToFileModal;
+use Collator;
 use humhub\modules\file\models\File;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -41,7 +42,53 @@ class SubtitlesController extends Controller
             return $this->redirectToFileModal($file, ['/file/subtitles', 'guid' => $file->guid]);
         }
 
-        return $this->renderAjax('index', ['file' => $file]);
+        return $this->renderAjax('index', [
+            'file' => $file,
+            'languages' => $this->getLanguages(),
+            'uiLanguage' => $this->getUiLanguage(),
+        ]);
+    }
+
+    /**
+     * The platform's languages as the language field of the appearance settings lists them (names sorted in the
+     * UI language)
+     *
+     * @return array<int, array{code: string, name: string}>
+     */
+    private function getLanguages(): array
+    {
+        $names = Yii::$app->i18n->getAllowedLanguages();
+        (new Collator(Yii::$app->language))->asort($names);
+
+        $languages = [];
+        foreach ($names as $code => $name) {
+            $languages[] = ['code' => (string)$code, 'name' => (string)$name];
+        }
+
+        return $languages;
+    }
+
+    /**
+     * The code of the platform language that is the current UI language: the exact one, else the first with the
+     * same primary language (`en` for `en-US`); an empty string if there is none
+     */
+    private function getUiLanguage(): string
+    {
+        $language = strtolower(str_replace('_', '-', Yii::$app->language));
+        $primary = strtok($language, '-');
+        $match = '';
+
+        foreach (array_keys(Yii::$app->i18n->getAllowedLanguages()) as $code) {
+            $code = (string)$code;
+            if (strtolower($code) === $language) {
+                return $code;
+            }
+            if ($match === '' && strtolower(strtok($code, '-')) === $primary) {
+                $match = $code;
+            }
+        }
+
+        return $match;
     }
 
     private function isMedia(File $file): bool

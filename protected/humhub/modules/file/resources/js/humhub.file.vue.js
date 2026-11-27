@@ -910,15 +910,6 @@
     ]);
   }
   const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
-  const LANGUAGE_CODES = "aa ab ae af ak am an ar as av ay az ba be bg bh bi bm bn bo br bs ca ce ch co cr cs cu cv cy da de dv dz ee el en eo es et eu fa ff fi fj fo fr fy ga gd gl gn gu gv ha he hi ho hr ht hu hy hz ia id ie ig ii ik io is it iu ja jv ka kg ki kj kk kl km kn ko kr ks ku kv kw ky la lb lg li ln lo lt lu lv mg mh mi mk ml mn mr ms mt my na nb nd ne ng nl nn no nr nv ny oc oj om or os pa pi pl ps pt qu rm rn ro ru rw sa sc sd se sg si sk sl sm sn so sq sr ss st su sv sw ta te tg th ti tk tl tn to tr ts tt tw ty ug uk ur uz ve vi vo wa wo xh yi yo za zh zu".split(" ");
-  function languageName(code, locale) {
-    let name = code;
-    try {
-      name = new Intl.DisplayNames([locale || "en"], { type: "language" }).of(code) || code;
-    } catch (e) {
-    }
-    return name.charAt(0).toLocaleUpperCase(locale || void 0) + name.slice(1);
-  }
   const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
   const _sfc_main = {
     i18nCategories: ["FileModule.base", "base"],
@@ -926,7 +917,11 @@
       /** The id of the platform file. */
       fileId: { type: Number, required: true },
       /** Its name, for the messages. */
-      fileName: { type: String, default: "" }
+      fileName: { type: String, default: "" },
+      /** The languages to choose from, in the order to list them: `[{code, name}]`, `code` the language of the variants. */
+      languages: { type: Array, default: () => [] },
+      /** The code (of `languages`) of the current UI language, offered first; empty if the platform has none. */
+      uiLanguage: { type: String, default: "" }
     },
     data() {
       return {
@@ -941,14 +936,10 @@
       };
     },
     computed: {
-      uiLanguage() {
-        return (document.documentElement.lang || "en").split("-")[0].toLowerCase();
-      },
-      /** All languages with their names, the UI language first, the languages that exist left out when adding. */
+      /** The `PickerInput` options: the languages, the UI language first, the languages that exist left out when adding. */
       languageOptions() {
         const existing = new Set(this.variants.map((variant) => variant.language));
-        const locale = document.documentElement.lang || "en";
-        return LANGUAGE_CODES.filter((code) => !existing.has(code)).map((code) => ({ value: code, label: languageName(code, locale) })).sort((a, b) => (b.value === this.uiLanguage) - (a.value === this.uiLanguage) || a.label.localeCompare(b.label, locale));
+        return this.languages.filter((language) => !existing.has(language.code)).map((language) => ({ id: language.code, text: language.name })).sort((a, b) => (b.id === this.uiLanguage) - (a.id === this.uiLanguage));
       },
       contentErrors() {
         return this.errors.content || [];
@@ -983,7 +974,9 @@
         return vue.apiUrl("file/" + this.fileId + "/variants" + (name ? "/" + encodeURIComponent(name) : ""));
       },
       labelOf(code) {
-        return languageName(code, document.documentElement.lang || "en");
+        const language = this.languages.find((item) => item.code === code);
+        const variant = this.variants.find((item) => item.language === code);
+        return language ? language.name : variant ? variant.label : code;
       },
       kindOf(variant) {
         return variant.kind === "captions" ? vue.i18n.t("FileModule.base", "Captions") : vue.i18n.t("FileModule.base", "Subtitles");
@@ -1028,8 +1021,8 @@
         const first = this.languageOptions[0];
         this.errors = {};
         this.loadError = "";
-        this.form = { name: "", language: first ? first.value : "", kind: "subtitles", content: "" };
-        this.focusAfterRender(() => this.$refs.language);
+        this.form = { name: "", language: first ? first.id : "", kind: "subtitles", content: "" };
+        this.focusAfterRender(() => this.$refs.language && this.$refs.language.$refs.input);
       },
       edit(variant) {
         if (this.busy) {
@@ -1181,55 +1174,54 @@
     class: "mb-3 field-language required"
   };
   const _hoisted_9 = ["for"];
-  const _hoisted_10 = ["id"];
-  const _hoisted_11 = ["value"];
-  const _hoisted_12 = { class: "mb-3 field-kind" };
-  const _hoisted_13 = ["for"];
-  const _hoisted_14 = ["id"];
-  const _hoisted_15 = { value: "subtitles" };
-  const _hoisted_16 = { value: "captions" };
-  const _hoisted_17 = { class: "mb-3 field-content required" };
-  const _hoisted_18 = ["for"];
-  const _hoisted_19 = ["id", "aria-invalid", "aria-describedby"];
-  const _hoisted_20 = ["id"];
-  const _hoisted_21 = ["id"];
-  const _hoisted_22 = { class: "d-flex flex-wrap gap-2" };
-  const _hoisted_23 = ["aria-disabled", "aria-busy"];
-  const _hoisted_24 = {
+  const _hoisted_10 = { class: "mb-3 field-kind" };
+  const _hoisted_11 = ["for"];
+  const _hoisted_12 = ["id"];
+  const _hoisted_13 = { value: "subtitles" };
+  const _hoisted_14 = { value: "captions" };
+  const _hoisted_15 = { class: "mb-3 field-content required" };
+  const _hoisted_16 = ["for"];
+  const _hoisted_17 = ["id", "aria-invalid", "aria-describedby"];
+  const _hoisted_18 = ["id"];
+  const _hoisted_19 = ["id"];
+  const _hoisted_20 = { class: "d-flex flex-wrap gap-2" };
+  const _hoisted_21 = ["aria-disabled", "aria-busy"];
+  const _hoisted_22 = {
     key: 0,
     class: "hh-loader text-center"
   };
-  const _hoisted_25 = {
+  const _hoisted_23 = {
     role: "status",
     class: "visually-hidden"
   };
-  const _hoisted_26 = ["aria-disabled"];
-  const _hoisted_27 = ["aria-disabled"];
-  const _hoisted_28 = {
+  const _hoisted_24 = ["aria-disabled"];
+  const _hoisted_25 = ["aria-disabled"];
+  const _hoisted_26 = {
     key: 0,
     class: "text-danger",
     role: "alert"
   };
-  const _hoisted_29 = {
+  const _hoisted_27 = {
     key: 1,
     class: "text-muted subtitle-manager-empty"
   };
-  const _hoisted_30 = {
+  const _hoisted_28 = {
     key: 2,
     class: "list-group list-group-flush subtitle-manager-list"
   };
-  const _hoisted_31 = { class: "flex-grow-1" };
-  const _hoisted_32 = { class: "subtitle-manager-label" };
-  const _hoisted_33 = { class: "text-body-secondary" };
-  const _hoisted_34 = {
+  const _hoisted_29 = { class: "flex-grow-1" };
+  const _hoisted_30 = { class: "subtitle-manager-label" };
+  const _hoisted_31 = { class: "text-body-secondary" };
+  const _hoisted_32 = {
     key: 0,
     class: "badge ms-1"
   };
+  const _hoisted_33 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
+  const _hoisted_34 = ["href", "download", "aria-label", "data-bs-title"];
   const _hoisted_35 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
-  const _hoisted_36 = ["href", "download", "aria-label", "data-bs-title"];
-  const _hoisted_37 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
-  const _hoisted_38 = ["aria-disabled"];
+  const _hoisted_36 = ["aria-disabled"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+    const _component_PickerInput = vue$1.resolveComponent("PickerInput");
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
       $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2, [
         _cache[9] || (_cache[9] = vue$1.createElementVNode(
@@ -1307,34 +1299,23 @@
               for: $options.id("language"),
               class: "form-label"
             }, vue$1.toDisplayString($options.languageLabel), 9, _hoisted_9),
-            vue$1.withDirectives(vue$1.createElementVNode("select", {
+            vue$1.createVNode(_component_PickerInput, {
               id: $options.id("language"),
               ref: "language",
+              modelValue: $data.form.language,
               "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => $data.form.language = $event),
-              class: "form-select",
-              "aria-required": "true"
-            }, [
-              (vue$1.openBlock(true), vue$1.createElementBlock(
-                vue$1.Fragment,
-                null,
-                vue$1.renderList($options.languageOptions, (option) => {
-                  return vue$1.openBlock(), vue$1.createElementBlock("option", {
-                    key: option.value,
-                    value: option.value
-                  }, vue$1.toDisplayString(option.label), 9, _hoisted_11);
-                }),
-                128
-                /* KEYED_FRAGMENT */
-              ))
-            ], 8, _hoisted_10), [
-              [vue$1.vModelSelect, $data.form.language]
-            ])
+              options: $options.languageOptions,
+              label: $options.languageLabel,
+              search: 0,
+              "allow-clear": false,
+              required: ""
+            }, null, 8, ["id", "modelValue", "options", "label"])
           ])),
-          vue$1.createElementVNode("div", _hoisted_12, [
+          vue$1.createElementVNode("div", _hoisted_10, [
             vue$1.createElementVNode("label", {
               for: $options.id("kind"),
               class: "form-label"
-            }, vue$1.toDisplayString($options.kindLabel), 9, _hoisted_13),
+            }, vue$1.toDisplayString($options.kindLabel), 9, _hoisted_11),
             vue$1.withDirectives(vue$1.createElementVNode("select", {
               id: $options.id("kind"),
               ref: "kind",
@@ -1343,27 +1324,27 @@
             }, [
               vue$1.createElementVNode(
                 "option",
-                _hoisted_15,
+                _hoisted_13,
                 vue$1.toDisplayString($options.subtitlesLabel),
                 1
                 /* TEXT */
               ),
               vue$1.createElementVNode(
                 "option",
-                _hoisted_16,
+                _hoisted_14,
                 vue$1.toDisplayString($options.captionsLabel),
                 1
                 /* TEXT */
               )
-            ], 8, _hoisted_14), [
+            ], 8, _hoisted_12), [
               [vue$1.vModelSelect, $data.form.kind]
             ])
           ]),
-          vue$1.createElementVNode("div", _hoisted_17, [
+          vue$1.createElementVNode("div", _hoisted_15, [
             vue$1.createElementVNode("label", {
               for: $options.id("content"),
               class: "form-label"
-            }, vue$1.toDisplayString($options.contentLabel), 9, _hoisted_18),
+            }, vue$1.toDisplayString($options.contentLabel), 9, _hoisted_16),
             vue$1.createCommentVNode(" Own markup instead of `TextareaField`: the text is WebVTT, set in a monospace font "),
             vue$1.withDirectives(vue$1.createElementVNode("textarea", {
               id: $options.id("content"),
@@ -1376,13 +1357,13 @@
               "aria-invalid": $options.contentErrors.length ? "true" : null,
               "aria-describedby": $options.id("content-hint") + ($options.contentErrors.length ? " " + $options.id("content-error") : ""),
               onInput: _cache[3] || (_cache[3] = ($event) => $data.errors = {})
-            }, null, 42, _hoisted_19), [
+            }, null, 42, _hoisted_17), [
               [vue$1.vModelText, $data.form.content]
             ]),
             vue$1.createElementVNode("div", {
               id: $options.id("content-hint"),
               class: "form-text text-muted"
-            }, vue$1.toDisplayString($options.contentHint), 9, _hoisted_20),
+            }, vue$1.toDisplayString($options.contentHint), 9, _hoisted_18),
             $options.contentErrors.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", {
               key: 0,
               id: $options.id("content-error"),
@@ -1403,9 +1384,9 @@
                 128
                 /* KEYED_FRAGMENT */
               ))
-            ], 8, _hoisted_21)) : vue$1.createCommentVNode("v-if", true)
+            ], 8, _hoisted_19)) : vue$1.createCommentVNode("v-if", true)
           ]),
-          vue$1.createElementVNode("div", _hoisted_22, [
+          vue$1.createElementVNode("div", _hoisted_20, [
             vue$1.createElementVNode("button", {
               ref: "submit",
               type: "submit",
@@ -1413,7 +1394,7 @@
               "aria-disabled": $data.busy ? "true" : null,
               "aria-busy": $data.busy ? "true" : null
             }, [
-              $data.busy ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_24, [
+              $data.busy ? (vue$1.openBlock(), vue$1.createElementBlock("span", _hoisted_22, [
                 _cache[10] || (_cache[10] = vue$1.createElementVNode(
                   "span",
                   {
@@ -1426,7 +1407,7 @@
                 )),
                 vue$1.createElementVNode(
                   "span",
-                  _hoisted_25,
+                  _hoisted_23,
                   vue$1.toDisplayString($options.loadingLabel),
                   1
                   /* TEXT */
@@ -1444,13 +1425,13 @@
                 64
                 /* STABLE_FRAGMENT */
               ))
-            ], 8, _hoisted_23),
+            ], 8, _hoisted_21),
             vue$1.createElementVNode("button", {
               type: "button",
               class: "btn btn-ghost",
               "aria-disabled": $data.busy ? "true" : null,
               onClick: _cache[4] || (_cache[4] = (...args) => $options.cancel && $options.cancel(...args))
-            }, vue$1.toDisplayString($options.cancelLabel), 9, _hoisted_26),
+            }, vue$1.toDisplayString($options.cancelLabel), 9, _hoisted_24),
             vue$1.createElementVNode("button", {
               type: "button",
               class: "btn btn-ghost ms-auto subtitle-manager-load",
@@ -1472,7 +1453,7 @@
                 1
                 /* TEXT */
               )
-            ], 8, _hoisted_27),
+            ], 8, _hoisted_25),
             vue$1.createElementVNode(
               "input",
               {
@@ -1498,18 +1479,18 @@
         [
           $data.loadError ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
-            _hoisted_28,
+            _hoisted_26,
             vue$1.toDisplayString($data.loadError),
             1
             /* TEXT */
           )) : vue$1.createCommentVNode("v-if", true),
           !$data.variants.length ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
-            _hoisted_29,
+            _hoisted_27,
             vue$1.toDisplayString($options.emptyLabel),
             1
             /* TEXT */
-          )) : (vue$1.openBlock(), vue$1.createElementBlock("ul", _hoisted_30, [
+          )) : (vue$1.openBlock(), vue$1.createElementBlock("ul", _hoisted_28, [
             (vue$1.openBlock(true), vue$1.createElementBlock(
               vue$1.Fragment,
               null,
@@ -1518,24 +1499,24 @@
                   key: variant.name,
                   class: "list-group-item d-flex align-items-center gap-2 subtitle-manager-item"
                 }, [
-                  vue$1.createElementVNode("div", _hoisted_31, [
+                  vue$1.createElementVNode("div", _hoisted_29, [
                     vue$1.createElementVNode(
                       "span",
-                      _hoisted_32,
+                      _hoisted_30,
                       vue$1.toDisplayString(variant.label),
                       1
                       /* TEXT */
                     ),
                     vue$1.createElementVNode(
                       "span",
-                      _hoisted_33,
+                      _hoisted_31,
                       " · " + vue$1.toDisplayString($options.kindOf(variant)),
                       1
                       /* TEXT */
                     ),
                     variant.generated ? (vue$1.openBlock(), vue$1.createElementBlock(
                       "span",
-                      _hoisted_34,
+                      _hoisted_32,
                       vue$1.toDisplayString($options.automaticLabel),
                       1
                       /* TEXT */
@@ -1561,7 +1542,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_35),
+                  ])], 8, _hoisted_33),
                   vue$1.createElementVNode("a", {
                     class: "btn btn-ghost btn-sm btn-icon-only subtitle-manager-download",
                     href: variant.url,
@@ -1580,7 +1561,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_36),
+                  ])], 8, _hoisted_34),
                   vue$1.createElementVNode("button", {
                     type: "button",
                     class: "btn btn-ghost btn-ghost-danger btn-sm btn-icon-only subtitle-manager-delete",
@@ -1601,7 +1582,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_37)
+                  ])], 8, _hoisted_35)
                 ]);
               }),
               128
@@ -1629,7 +1610,7 @@
               1
               /* TEXT */
             )
-          ], 8, _hoisted_38)
+          ], 8, _hoisted_36)
         ],
         64
         /* STABLE_FRAGMENT */

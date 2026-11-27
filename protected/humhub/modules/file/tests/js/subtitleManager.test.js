@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import SubtitleManager from '../../vue/SubtitleManager.vue';
-import { LANGUAGE_CODES } from '../../vue/languages.js';
+import PickerInput from '../../../../vue/PickerInput.vue';
 
 await import('../../../../resources/js/humhub/humhub.url.js');
 const vueModule = await import('../../../../resources/js/humhub/humhub.vue.js');
@@ -23,10 +23,24 @@ const stubs = () => globalThis.humhubStubs;
 let announce;
 let lastPut;
 
-const manager = () => mount(SubtitleManager, {
-    props: { fileId: 7, fileName: 'talk.mp4' },
+// The platform's languages, as the controller passes them (names sorted by the server)
+const LANGUAGES = [
+    { code: 'de', name: 'Deutsch' },
+    { code: 'en-GB', name: 'English (UK)' },
+    { code: 'en-US', name: 'English (US)' },
+    { code: 'fr', name: 'Français' },
+    { code: 'pt-BR', name: 'Português do Brasil' },
+];
+
+// `global.components` stands in for the registry the core `PickerInput` resolves through.
+const manager = (props = {}) => mount(SubtitleManager, {
+    props: { fileId: 7, fileName: 'talk.mp4', languages: LANGUAGES, uiLanguage: 'de', ...props },
+    global: { components: { PickerInput } },
     attachTo: document.body,
 });
+
+const languageField = (wrapper) => wrapper.findComponent(PickerInput);
+const optionTexts = (wrapper) => languageField(wrapper).props('options').map((option) => option.text);
 
 const rejection422 = (errors) => Promise.reject({ status: 422, errors });
 
@@ -76,17 +90,49 @@ describe('SubtitleManager', () => {
         expect(wrapper.find('.subtitle-manager-empty').text()).toBe('No subtitles yet.');
     });
 
-    it('offers the UI language first and leaves out the languages that exist', async () => {
-        variants = [variant('en')];
+    it('offers the languages of the prop, the UI language first and the existing ones left out', async () => {
+        variants = [variant('en-US')];
+        const wrapper = manager({ uiLanguage: 'fr' });
+        await flushPromises();
+        await wrapper.find('.subtitle-manager-add').trigger('click');
+
+        expect(languageField(wrapper).props('options')).toEqual([
+            { id: 'fr', text: 'Français' },
+            { id: 'de', text: 'Deutsch' },
+            { id: 'en-GB', text: 'English (UK)' },
+            { id: 'pt-BR', text: 'Português do Brasil' },
+        ]);
+        expect(wrapper.find('select#subtitle-7-language').exists()).toBe(false);
+    });
+
+    it('preselects the UI language, else the first language that is left', async () => {
+        variants = [];
+        const wrapper = manager();
+        await flushPromises();
+        await wrapper.find('.subtitle-manager-add').trigger('click');
+        expect(languageField(wrapper).props('modelValue')).toBe('de');
+
+        document.body.innerHTML = '';
+        variants = [variant('de')];
+        const other = manager({ uiLanguage: '' });
+        await flushPromises();
+        await other.find('.subtitle-manager-add').trigger('click');
+        expect(languageField(other).props('modelValue')).toBe('en-GB');
+        expect(optionTexts(other)).not.toContain('Deutsch');
+    });
+
+    it('is a single, searchable choice with a label', async () => {
         const wrapper = manager();
         await flushPromises();
         await wrapper.find('.subtitle-manager-add').trigger('click');
 
-        const values = wrapper.findAll('select#subtitle-7-language option').map((option) => option.element.value);
-        expect(values[0]).toBe('de');
-        expect(values).not.toContain('en');
-        expect(values).toHaveLength(LANGUAGE_CODES.length - 1);
-        expect(wrapper.find('select#subtitle-7-language option').text()).toBe('Deutsch');
+        const picker = languageField(wrapper);
+        expect(picker.props('multiple')).toBe(false);
+        expect(picker.props('search')).toBe(0);
+        expect(picker.props('required')).toBe(true);
+        const input = wrapper.find('input#subtitle-7-language');
+        expect(input.exists()).toBe(true);
+        expect(wrapper.find('label[for="subtitle-7-language"]').text()).toBe('Language');
     });
 
     it('adds a language with a PUT of content and kind', async () => {
@@ -95,8 +141,8 @@ describe('SubtitleManager', () => {
         await flushPromises();
         await wrapper.find('.subtitle-manager-add').trigger('click');
 
-        // The UI language exists, so the first option is the next one by name
-        await wrapper.find('select#subtitle-7-language').setValue('fr');
+        // The UI language exists, so the first option is the next one
+        await languageField(wrapper).vm.$emit('update:modelValue', 'fr');
         await wrapper.find('select#subtitle-7-kind').setValue('captions');
         await wrapper.find('textarea').setValue('WEBVTT\n\n00:00.000 --> 00:01.000\nHi\n');
         await wrapper.find('form').trigger('submit');
@@ -107,7 +153,7 @@ describe('SubtitleManager', () => {
         expect(JSON.parse(lastPut.cfg.data)).toEqual({ content: 'WEBVTT\n\n00:00.000 --> 00:01.000\nHi\n', kind: 'captions' });
         expect(wrapper.find('form').exists()).toBe(false);
         expect(stubs().client.get).toHaveBeenCalledTimes(2);
-        expect(announce).toHaveBeenCalledWith('Subtitles saved: Französisch');
+        expect(announce).toHaveBeenCalledWith('Subtitles saved: Français');
     });
 
     it('edits a variant: loads its text, the language is fixed', async () => {
@@ -118,7 +164,7 @@ describe('SubtitleManager', () => {
 
         expect(fetch).toHaveBeenCalledWith(variants[0].url, { credentials: 'same-origin' });
         expect(wrapper.find('textarea').element.value).toBe('WEBVTT\n\n1\n');
-        expect(wrapper.find('select#subtitle-7-language').exists()).toBe(false);
+        expect(wrapper.findComponent(PickerInput).exists()).toBe(false);
         expect(wrapper.find('.subtitle-manager-language').text()).toBe('Deutsch');
 
         await wrapper.find('form').trigger('submit');
@@ -196,7 +242,7 @@ describe('SubtitleManager', () => {
         expect(document.activeElement.dataset.name).toBe('subtitles-en.vtt');
 
         await wrapper.find('.subtitle-manager-add').trigger('click');
-        expect(document.activeElement).toBe(wrapper.find('select#subtitle-7-language').element);
+        expect(document.activeElement).toBe(wrapper.find('input#subtitle-7-language').element);
     });
 
     describe('busy states and errors', () => {

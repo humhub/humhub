@@ -8,6 +8,8 @@ use humhub\widgets\modal\ModalButton;
 use humhub\widgets\VueComponent;
 
 /* @var $file File */
+/* @var $languages array<int, array{code: string, name: string}> */
+/* @var $uiLanguage string */
 ?>
 
 <?php Modal::beginDialog([
@@ -18,7 +20,12 @@ use humhub\widgets\VueComponent;
     <?= VueComponent::widget([
         'name' => 'SubtitleManager',
         'assetBundle' => FileVueAsset::class,
-        'props' => ['fileId' => (int)$file->id, 'fileName' => $file->file_name],
+        'props' => [
+            'fileId' => (int)$file->id,
+            'fileName' => $file->file_name,
+            'languages' => $languages,
+            'uiLanguage' => $uiLanguage,
+        ],
     ]) ?>
 
 <?php Modal::endDialog(); ?>

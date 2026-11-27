@@ -18,17 +18,16 @@
             </div>
             <div v-else class="mb-3 field-language required">
                 <label :for="id('language')" class="form-label">{{ languageLabel }}</label>
-                <select
+                <PickerInput
                     :id="id('language')"
                     ref="language"
                     v-model="form.language"
-                    class="form-select"
-                    aria-required="true"
-                >
-                    <option v-for="option in languageOptions" :key="option.value" :value="option.value">
-                        {{ option.label }}
-                    </option>
-                </select>
+                    :options="languageOptions"
+                    :label="languageLabel"
+                    :search="0"
+                    :allow-clear="false"
+                    required
+                />
             </div>
 
             <div class="mb-3 field-kind">
@@ -157,10 +156,11 @@
 /**
  * The subtitles of an audio or video file: one entry per language with its kind (subtitles, or
  * captions with sound descriptions) and, for a generated one, an "automatic" badge, and the actions
- * Edit, Download and Delete (confirmed). A form adds a language or edits one: the language (all
- * ISO 639-1 languages in the UI language, the UI language first, the languages that exist left
- * out; fixed while editing), the kind and the WebVTT text, which "Load file" fills from a .vtt or
- * .srt file read in the browser (an SRT text is converted by the server on save).
+ * Edit, Download and Delete (confirmed). A form adds a language or edits one: the language (a searchable
+ * core `PickerInput` of the platform's languages, the `languages` prop; the UI language first, the languages that
+ * exist left out; fixed while editing), the kind and the WebVTT text, which "Load file" fills from a .vtt or
+ * .srt file read in the browser (an SRT text is converted by the server on save). The API accepts any language,
+ * only the choice here is limited.
  *
  * Opened by the "Subtitles" file handler's modal (`file\controllers\SubtitlesController`), which mounts
  * `<subtitle-manager file-id="..." file-name="...">` in its body.
@@ -184,7 +184,6 @@
  * @since 1.20
  */
 import { apiUrl, announce, client, i18n, log, modal } from '@humhub/vue';
-import { LANGUAGE_CODES, languageName } from './languages.js';
 
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
@@ -195,6 +194,10 @@ export default {
         fileId: { type: Number, required: true },
         /** Its name, for the messages. */
         fileName: { type: String, default: '' },
+        /** The languages to choose from, in the order to list them: `[{code, name}]`, `code` the language of the variants. */
+        languages: { type: Array, default: () => [] },
+        /** The code (of `languages`) of the current UI language, offered first; empty if the platform has none. */
+        uiLanguage: { type: String, default: '' },
     },
     data() {
         return {
@@ -209,21 +212,14 @@ export default {
         };
     },
     computed: {
-        uiLanguage() {
-            return (document.documentElement.lang || 'en').split('-')[0].toLowerCase();
-        },
-        /** All languages with their names, the UI language first, the languages that exist left out when adding. */
+        /** The `PickerInput` options: the languages, the UI language first, the languages that exist left out when adding. */
         languageOptions() {
             const existing = new Set(this.variants.map((variant) => variant.language));
-            const locale = document.documentElement.lang || 'en';
 
-            return LANGUAGE_CODES
-                .filter((code) => !existing.has(code))
-                .map((code) => ({ value: code, label: languageName(code, locale) }))
-                .sort((a, b) => (
-                    (b.value === this.uiLanguage) - (a.value === this.uiLanguage)
-                    || a.label.localeCompare(b.label, locale)
-                ));
+            return this.languages
+                .filter((language) => !existing.has(language.code))
+                .map((language) => ({ id: language.code, text: language.name }))
+                .sort((a, b) => (b.id === this.uiLanguage) - (a.id === this.uiLanguage));
         },
         contentErrors() {
             return this.errors.content || [];
@@ -260,7 +256,10 @@ export default {
             return apiUrl('file/' + this.fileId + '/variants' + (name ? '/' + encodeURIComponent(name) : ''));
         },
         labelOf(code) {
-            return languageName(code, document.documentElement.lang || 'en');
+            const language = this.languages.find((item) => item.code === code);
+            const variant = this.variants.find((item) => item.language === code);
+
+            return language ? language.name : (variant ? variant.label : code);
         },
         kindOf(variant) {
             return variant.kind === 'captions'
@@ -314,8 +313,8 @@ export default {
             const first = this.languageOptions[0];
             this.errors = {};
             this.loadError = '';
-            this.form = { name: '', language: first ? first.value : '', kind: 'subtitles', content: '' };
-            this.focusAfterRender(() => this.$refs.language);
+            this.form = { name: '', language: first ? first.id : '', kind: 'subtitles', content: '' };
+            this.focusAfterRender(() => this.$refs.language && this.$refs.language.$refs.input);
         },
         edit(variant) {
             if (this.busy) {

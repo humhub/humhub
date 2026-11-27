@@ -267,13 +267,15 @@ class FileVariantsTest extends HumHubDbTestCase
     {
         $file = $this->prepareFile('video/mp4');
         $variants = new FileVariants($file);
-        foreach (['pt-BR', 'zh-Hant', 'zh-Hans'] as $language) {
+        foreach (['pt-BR', 'zh-Hant', 'zh-Hans', 'en'] as $language) {
             $variants->put('subtitles-' . $language . '.vtt', self::VTT, 'subtitles');
         }
 
         $labels = array_column(FileSerializer::variants($file), 'label', 'language');
 
-        $this->assertSame('Português (Brasil)', $labels['pt-BR']);
+        // A platform language has the name of the language picker, another one the name of the locale data
+        $this->assertSame('Português do Brasil', $labels['pt-BR']);
+        $this->assertSame('English', $labels['en']);
         $this->assertNotSame($labels['zh-Hant'], $labels['zh-Hans']);
     }
 
@@ -287,15 +289,15 @@ class FileVariantsTest extends HumHubDbTestCase
 
         $list = FileSerializer::variants($file);
 
-        // By label: Deutsch, English, Português (Brasil)
+        // By label: Deutsch, English, Português do Brasil
         $this->assertSame(['subtitles-de.vtt', 'subtitles-en.vtt', 'subtitles-pt-BR.vtt'], array_column($list, 'name'));
         $this->assertSame('Deutsch', $list[0]['label']);
-        $this->assertSame('Português (Brasil)', $list[2]['label']);
+        $this->assertSame('Português do Brasil', $list[2]['label']);
         $this->assertSame([
             'name' => 'subtitles-pt-BR.vtt',
             'type' => 'subtitles',
             'language' => 'pt-BR',
-            'label' => 'Português (Brasil)',
+            'label' => 'Português do Brasil',
             'kind' => 'captions',
             'generated' => false,
             'size' => strlen(self::VTT),
