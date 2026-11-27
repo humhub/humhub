@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.19.6 (Unreleased)
 -------------------
-
+- Fix #8796: Space invite links are only shown to Space admins and create a membership request on "Invite and request" Spaces
 - Fix #8799: Deleting a file version (e.g. in the Files module) deleted the file's content and all its other versions
 
 1.19.5 (November 25, 2026)

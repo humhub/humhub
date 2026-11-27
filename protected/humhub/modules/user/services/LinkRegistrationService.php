@@ -152,15 +152,26 @@ final class LinkRegistrationService
     }
 
     /**
+     * Lets a registered user join the space of the invite link.
+     *
+     * On spaces with the join policy "Invite and request" only a membership
+     * request is created, an existing request or invitation is not changed.
+     *
      * @throws Exception
      */
     public function inviteToSpace(?User $user): bool
     {
-        if ($this->space && $user) {
-            $this->space->inviteMember($user->id, $this->space->ownerUser->id, false);
-            return true;
+        if (!$this->space || !$user) {
+            return false;
         }
-        return false;
+
+        if ($this->space->join_policy != Space::JOIN_POLICY_APPLICATION) {
+            $this->space->inviteMember($user->id, $this->space->ownerUser->id, false);
+        } elseif ($this->space->getMembership($user->id) === null && $this->space->canJoin($user->id)) {
+            $this->space->requestMembership($user->id);
+        }
+
+        return true;
     }
 
     public function getSpace(): ?Space

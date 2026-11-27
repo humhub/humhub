@@ -257,6 +257,8 @@ class SpaceModelMembership extends Behavior
             // Unfortunately there are no multiple workspace invites supported
             // So we take the last one
         } else {
+            // A personal invite replaces e.g. a pending registration by invite link
+            $userInvite->source = Invite::SOURCE_INVITE;
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
         }
@@ -440,8 +442,9 @@ class SpaceModelMembership extends Behavior
                 return true;
             }
 
-            // User requested membership
-            if ($membership->status == Membership::STATUS_APPLICANT && !$silent) {
+            // User requested membership. Guests are no approver, this happens
+            // e.g. by a default space of the group selected on registration.
+            if ($membership->status == Membership::STATUS_APPLICANT && !$silent && !Yii::$app->user->isGuest) {
                 ApprovalRequestAccepted::instance()
                     ->from(Yii::$app->user->getIdentity())->about($this->owner)->send($user);
             }
