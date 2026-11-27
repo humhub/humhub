@@ -19,7 +19,7 @@ class ContentHelperTest extends HumHubDbTestCase
     {
         $post = Post::findOne(['id' => 1]);
 
-        $this->assertEquals('post "' . $post->message . '"', ContentHelper::getContentInfo($post));
+        $this->assertEquals('Post "' . $post->message . '"', ContentHelper::getContentInfo($post));
         $this->assertEquals($post->message, ContentHelper::getContentInfo($post, false));
     }
 
@@ -28,8 +28,8 @@ class ContentHelperTest extends HumHubDbTestCase
         $post = Post::findOne(['id' => 1]);
         $post->updateAttributes(['message' => '']);
 
-        $this->assertEquals('post', ContentHelper::getContentInfo($post));
-        $this->assertEquals('post', ContentHelper::getContentInfo($post, false));
+        $this->assertEquals('Post', ContentHelper::getContentInfo($post));
+        $this->assertEquals('Post', ContentHelper::getContentInfo($post, false));
     }
 
     public function testGetContentPlainTextInfoFallsBackToContentNameOnEmptyPreview()
@@ -37,7 +37,7 @@ class ContentHelperTest extends HumHubDbTestCase
         $post = Post::findOne(['id' => 1]);
         $post->updateAttributes(['message' => '']);
 
-        $this->assertEquals('post', ContentHelper::getContentPlainTextInfo($post));
-        $this->assertEquals('post', ContentHelper::getContentPlainTextInfo($post, false));
+        $this->assertEquals('Post', ContentHelper::getContentPlainTextInfo($post));
+        $this->assertEquals('Post', ContentHelper::getContentPlainTextInfo($post, false));
     }
 }

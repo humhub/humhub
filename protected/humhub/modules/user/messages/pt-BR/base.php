@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Seguidores</strong>',
     '<strong>Following</strong>' => '<strong>Seguindo</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Membro</strong> nesses espaços',
+    '<strong>Member</strong> in these Spaces' => '<strong>Membro</strong> nesses espaços',
     '<strong>Member</strong> of these Spaces' => '<strong>Membro</strong> destes Espaços',
     '<strong>User</strong> tags' => '<strong>Tags</strong> de usuário',
     'Action' => 'Ação',
@@ -110,7 +110,7 @@ return [
     'Connect {provider} account' => '',
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Local' => '',

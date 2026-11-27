@@ -93,5 +93,5 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => '',
     'Your MySQL password.' => '',
     'Your MySQL username' => '',
-    'Your first sample space to discover the platform.' => '',
+    'Your first sample Space to discover the platform.' => '',
 ];

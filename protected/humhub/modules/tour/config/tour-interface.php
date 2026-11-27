@@ -44,9 +44,9 @@ return [
                 'popover' => [
                     'title' => Yii::t('TourModule.base', '<strong>Space</strong> Menu'),
                     'description'
-                        => Yii::t('TourModule.base', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')
+                        => Yii::t('TourModule.base', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the Spaces you have joined and create new Spaces here.<br><br>The next guide will show you how:')
                         . '<br><br>'
-                        . Link::to(Yii::t("TourModule.base", "<strong>Start</strong> space guide"))
+                        . Link::to(Yii::t("TourModule.base", "<strong>Start</strong> Space guide"))
                             ->encodeLabel(false)
                             ->action('tour.next')
                         . '<br><br>',

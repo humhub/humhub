@@ -69,9 +69,9 @@ class SpaceTable extends DataTableWidget
     protected function getCountLabels(): array
     {
         return [
-            'one' => Yii::t('AdminModule.space', '{count} space'),
-            'other' => Yii::t('AdminModule.space', '{count} spaces'),
-            'range' => Yii::t('AdminModule.space', '{from}–{to} of {total} spaces'),
+            'one' => Yii::t('AdminModule.space', '{count} Space'),
+            'other' => Yii::t('AdminModule.space', '{count} Spaces'),
+            'range' => Yii::t('AdminModule.space', '{from}–{to} of {total} Spaces'),
         ];
     }
 

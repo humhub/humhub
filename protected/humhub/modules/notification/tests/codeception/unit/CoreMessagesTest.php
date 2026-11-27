@@ -36,8 +36,8 @@ class CoreMessagesTest extends HumHubDbTestCase
         $this->assertStringContainsString(' like your ', $grouped->asWeb());
 
         // the sentences without content
-        $this->assertSame($this->name(2) . ' likes your post.', $this->load(NewLikeNotification::class, [2])->asRedactedText());
-        $this->assertSame($this->name(2) . ' and ' . $this->name(3) . ' like your post.', $grouped->asRedactedText());
+        $this->assertSame($this->name(2) . ' likes your Post.', $this->load(NewLikeNotification::class, [2])->asRedactedText());
+        $this->assertSame($this->name(2) . ' and ' . $this->name(3) . ' like your Post.', $grouped->asRedactedText());
     }
 
     public function testNewComment()
@@ -49,9 +49,9 @@ class CoreMessagesTest extends HumHubDbTestCase
         );
 
         // the sentences without content; user 1 is the author of post 1
-        $this->assertSame($this->name(2) . ' commented on your post.', $this->load(NewCommentNotification::class, [2])->asRedactedText());
+        $this->assertSame($this->name(2) . ' commented on your Post.', $this->load(NewCommentNotification::class, [2])->asRedactedText());
         $this->assertSame(
-            '<strong>' . $this->name(2) . '</strong> and <strong>' . $this->name(3) . '</strong> commented on your post.',
+            '<strong>' . $this->name(2) . '</strong> and <strong>' . $this->name(3) . '</strong> commented on your Post.',
             $this->load(NewCommentNotification::class, [3, 2])->asRedactedHtml(),
         );
     }
@@ -74,7 +74,7 @@ class CoreMessagesTest extends HumHubDbTestCase
         $this->assertStringStartsWith($this->name(2) . ' created ', $this->load(ContentCreatedNotification::class, [2])->asMailText());
         $this->assertSame($this->name(2) . ' created 2 new entries.', $this->load(ContentCreatedNotification::class, [2, 2])->asMailText());
 
-        $this->assertSame($this->name(2) . ' created a new post.', $this->load(ContentCreatedNotification::class, [2])->asRedactedText());
+        $this->assertSame($this->name(2) . ' created a new Post.', $this->load(ContentCreatedNotification::class, [2])->asRedactedText());
         $this->assertSame($this->name(2) . ' created 2 new entries.', $this->load(ContentCreatedNotification::class, [2, 2])->asRedactedText());
     }
 
@@ -85,7 +85,7 @@ class CoreMessagesTest extends HumHubDbTestCase
 
         $spacePost = Post::find()->joinWith('content')->andWhere(['content.contentcontainer_id' => 4])->one();
         $notification = $this->loadInContainer($spacePost);
-        $this->assertSame($this->name(2) . ' created a new post.', $notification->asRedactedText());
+        $this->assertSame($this->name(2) . ' created a new Post.', $notification->asRedactedText());
         $this->assertStringContainsString('Space 1', $notification->asMailSubject());
     }
 

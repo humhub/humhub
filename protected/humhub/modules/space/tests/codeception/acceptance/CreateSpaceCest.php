@@ -58,10 +58,10 @@ class CreateSpaceCest
 
         $I->click('Done', '#globalModal');
         $I->waitForText('MySpace');
-        $I->waitForText('This space is still empty!');
+        $I->waitForText('This Space is still empty!');
 
         $I->amUser1(true);
-        $I->seeInNotifications('invited you to the space MySpace');
+        $I->seeInNotifications('invited you to the Space MySpace');
 
         //TODO: Test private space
         // User Approval

@@ -121,12 +121,12 @@ class NotificationPrivacyTest extends HumHubDbTestCase
 
         [$mail] = $this->mails(1);
         $notification = $this->notification(TestContentNotification::class);
-        $this->assertSame('Peter Tester created post', $mail->getSubject());
+        $this->assertSame('Peter Tester created Post', $mail->getSubject());
 
         $html = $mail->getSymfonyEmail()->getHtmlBody();
         $text = $mail->getSymfonyEmail()->getTextBody();
-        $this->assertStringContainsString('<strong>Peter Tester</strong> created post', $html);
-        $this->assertStringContainsString("Peter Tester created post\n\nView online: " . $notification->getEntryUrl(), $text);
+        $this->assertStringContainsString('<strong>Peter Tester</strong> created Post', $html);
+        $this->assertStringContainsString("Peter Tester created Post\n\nView online: " . $notification->getEntryUrl(), $text);
         $this->assertNoContent($html, $text);
     }
 
@@ -153,7 +153,7 @@ class NotificationPrivacyTest extends HumHubDbTestCase
         $this->dispatch(TestRedactedNotification::class);
 
         [$mail] = $this->mails(1);
-        $this->assertSame('Peter Tester shared a post with Sara Tester', $mail->getSubject());
+        $this->assertSame('Peter Tester shared a Post with Sara Tester', $mail->getSubject());
         $this->assertSame(
             ['displayName', 'displayNames', 'namedCount', 'groupCount', 'contentType', 'other'],
             array_keys(TestRedactedNotification::$redactedParams),
@@ -161,12 +161,12 @@ class NotificationPrivacyTest extends HumHubDbTestCase
 
         $html = $mail->getSymfonyEmail()->getHtmlBody();
         $text = $mail->getSymfonyEmail()->getTextBody();
-        $this->assertStringContainsString('<strong>Peter Tester</strong> shared a post with <strong>Sara Tester</strong>', $html);
-        $this->assertStringContainsString('Peter Tester shared a post with Sara Tester', $text);
+        $this->assertStringContainsString('<strong>Peter Tester</strong> shared a Post with <strong>Sara Tester</strong>', $html);
+        $this->assertStringContainsString('Peter Tester shared a Post with Sara Tester', $text);
         $this->assertNoContent($html, $text, $mail->getSubject());
 
         $batch = new DeliveryBatch($this->recipient(), [$this->notification(TestRedactedNotification::class)], 'mobile');
-        $this->assertSame('Peter Tester shared a post with Sara Tester', $batch->getPushBody());
+        $this->assertSame('Peter Tester shared a Post with Sara Tester', $batch->getPushBody());
     }
 
     public function testRedactedMailShowsNoBlocks()
@@ -219,7 +219,7 @@ class NotificationPrivacyTest extends HumHubDbTestCase
             $this->assertStringContainsString(Html::encode($notification->getEntryUrl()), $html);
             $this->assertStringContainsString($notification->asRedactedText() . "\n" . $notification->getEntryUrl(), $text);
         }
-        $this->assertStringContainsString("Peter Tester created post\n", $text);
+        $this->assertStringContainsString("Peter Tester created Post\n", $text);
         $this->assertStringContainsString("Peter Tester did a thing\n", $text);
         $this->assertNoContent($html, $text);
         $this->assertStringNotContainsString('Space 1', $html);

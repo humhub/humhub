@@ -191,6 +191,7 @@ HumHub Changelog
 - Fix #8786: No e-mail deliveries for users without an address; a mail that is not sent is marked as failed, not as sent
 - Fix #8789: Grouped "new entries" notifications link to the stream of the space or profile and no longer preview only the last entry
 - Fix #8790: The toast after changing the username or e-mail address no longer shows a literal `<br />` and has corrected wording
+- Fix #8792: Notification wording: "commented on", the content types "Post" and "Comment" and the word "Space" always start with a capital letter
 
 1.19.5 (November 25, 2026)
 --------------------------

@@ -43,7 +43,7 @@ class CommentTest extends HumHubDbTestCase
         $comment->save();
 
         $this->assertMailSent(1);
-        $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in Space Space 2');
+        $this->assertEqualsLastEmailSubject('Sara Tester commented on Post "User 2 Space 2 Post Private" in Space Space 2');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
 
@@ -121,7 +121,7 @@ class CommentTest extends HumHubDbTestCase
         $html = $this->buildNotification($comment)->asWeb();
 
         $this->assertStringNotContainsString('[Deleted]', $html);
-        $this->assertStringEndsWith('commented post.', $html);
+        $this->assertStringEndsWith('commented on Post.', $html);
     }
 
     public function testNotificationHtmlForDeletedRecord()
@@ -243,10 +243,10 @@ class CommentTest extends HumHubDbTestCase
         $author = $this->load(NewCommentNotification::class, 1);
         $follower = $this->load(NewCommentNotification::class, 2);
         $name = User::findOne(['id' => 3])->displayName;
-        $this->assertSame($name . ' commented your post "' . $post->message . '".', $author->asMailText());
-        $this->assertSame($name . ' commented post "' . $post->message . '".', $follower->asMailText());
-        $this->assertSame($name . ' just commented your post "' . $post->message . '"', $author->asMailSubject());
-        $this->assertSame($name . ' commented post "' . $post->message . '"', $follower->asMailSubject());
+        $this->assertSame($name . ' commented on your Post "' . $post->message . '".', $author->asMailText());
+        $this->assertSame($name . ' commented on Post "' . $post->message . '".', $follower->asMailText());
+        $this->assertSame($name . ' just commented on your Post "' . $post->message . '"', $author->asMailSubject());
+        $this->assertSame($name . ' commented on Post "' . $post->message . '"', $follower->asMailSubject());
     }
 
     public function testReplyNotification()
@@ -262,8 +262,8 @@ class CommentTest extends HumHubDbTestCase
 
         $notification = $this->load(CommentReplyNotification::class, 2);
         $this->assertTrue($notification::category()->equals(NotificationCategory::direct()));
-        $this->assertSame(User::findOne(['id' => 3])->displayName . ' replied to your comment "Root comment".', $notification->asMailText());
-        $this->assertSame(User::findOne(['id' => 3])->displayName . ' replied to your comment.', $notification->asRedactedText());
+        $this->assertSame(User::findOne(['id' => 3])->displayName . ' replied to your Comment "Root comment".', $notification->asMailText());
+        $this->assertSame(User::findOne(['id' => 3])->displayName . ' replied to your Comment.', $notification->asRedactedText());
         // links to the reply, highlighted by the comment permalink
         $this->assertSame($first->getUrl(), $notification->getUrl());
         $this->assertSame($first->id, $notification->getReply()->id);
@@ -281,7 +281,7 @@ class CommentTest extends HumHubDbTestCase
 
         $head = NotificationManager::load(Notification::find()->forUser(2)->grouped()->andWhere(['notification.class' => CommentReplyNotification::class])->one());
         $this->assertSame(3, $head->groupCount);
-        $this->assertStringContainsString(' replied to your comment "Root comment".', $head->asMailText());
+        $this->assertStringContainsString(' replied to your Comment "Root comment".', $head->asMailText());
 
         // a deleted reply takes its notification along; the others stay
         $second->delete();
@@ -315,7 +315,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertCount(2, $rendered);
         $this->assertEquals(NotificationBlock::button('View online', $notification->getEntryUrl()), $rendered[1]);
         $this->assertStringContainsString(Post::findOne(['id' => 2])->message, $notification->asWeb());
-        $this->assertStringContainsString('just commented your', $notification->asMailSubject());
+        $this->assertStringContainsString('just commented on your', $notification->asMailSubject());
         $this->assertSame($second->getUrl(), $notification->getUrl());
     }
 
@@ -337,7 +337,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertTrue($record->save());
 
         $this->assertSame(
-            User::findOne(['id' => 3])->displayName . ' commented post "' . Post::findOne(['id' => 2])->message . '"',
+            User::findOne(['id' => 3])->displayName . ' commented on Post "' . Post::findOne(['id' => 2])->message . '"',
             NotificationManager::fromRecord($record)->asMailSubject(),
         );
     }

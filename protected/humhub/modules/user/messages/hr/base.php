@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Korisnikovi</strong> pratitelji',
     '<strong>Following</strong>' => '<strong>Prati</strong> korisnika',
-    '<strong>Member</strong> in these spaces' => '<strong>Član</strong> u ovim prostorima',
+    '<strong>Member</strong> in these Spaces' => '<strong>Član</strong> u ovim prostorima',
     '<strong>User</strong> tags' => '<strong>Korisnikovi</strong> tagovi',
     'Action' => 'Akcijski',
     'Allows access to your about page with personal information' => 'Dopusti pristup stranici o sebi s osobnim informacijama',
@@ -90,7 +90,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

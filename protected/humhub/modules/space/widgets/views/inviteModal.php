@@ -86,7 +86,7 @@ $form = Modal::beginFormDialog([
 
             <?= Yii::t(
                 'SpaceModule.base',
-                'To invite users to this space, please type their names below to find and pick them.',
+                'To invite users to this Space, please type their names below to find and pick them.',
             ); ?>
 
             <br><br>

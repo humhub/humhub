@@ -42,7 +42,7 @@ return [
                 'element' => ".layout-nav-container .panel",
                 'popover' => [
                     'title' => Yii::t('TourModule.profile', '<strong>Profile</strong> menu'),
-                    'description' => Yii::t('TourModule.profile', 'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.'),
+                    'description' => Yii::t('TourModule.profile', 'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.'),
                 ],
             ],
             [

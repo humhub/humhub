@@ -92,6 +92,6 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Vous avez presque fini. Lors de cette étape, vous devez remplir le formulaire pour créer le compte administrateur. Avec ce compte, vous pouvez gérer la totalité du réseau.',
     'Your MySQL password.' => 'Votre mot de passe MySQL',
     'Your MySQL username' => 'Votre nom d\'utilisateur MySQL',
-    'Your first sample space to discover the platform.' => 'Votre premier espace de test pour découvrir la plateforme.',
+    'Your first sample Space to discover the platform.' => 'Votre premier espace de test pour découvrir la plateforme.',
     'The <strong>.htaccess</strong> file is missing from the <strong>public</strong> directory. It is part of HumHub - restore it from the release package.' => '',
 ];

@@ -7,8 +7,7 @@ return [
   'Post' => 'نشر',
   'Post could not be saved!' => 'لم يتم حفظ المنشور!',
   'The post must not be empty!' => 'يجب ألا يكون المنشور فارغاً',
-  'This space is archived.' => 'تمت أرشفة هذه المساحة.',
+  'This Space is archived.' => 'تمت أرشفة هذه المساحة.',
   'Title' => 'العنوان',
   'What\'s on your mind?' => 'ماذا يخطر ببالك؟',
-  'post' => 'نشر',
 ];

@@ -24,7 +24,7 @@ return [
     'Important only' => 'Nur Wichtiges',
     'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'In dieser Ansicht kannst du die Standardeinstellungen der Benutzer definieren. Die Einstellungen können vom Benutzer in den Einstellungen seines Accounts überschrieben werden.',
     'Invalid categories.' => 'Ungültige Kategorien.',
-    'Invalid spaces.' => 'Ungültige Spaces.',
+    'Invalid Spaces.' => 'Ungültige Spaces.',
     'Invalid value.' => 'Ungültiger Wert.',
     'Jane Doe commented on your post “Budget 2027”.' => 'Jane Doe hat Deinen Beitrag „Budget 2027“ kommentiert.',
     'Jane Doe commented on your post.' => 'Jane Doe hat Deinen Beitrag kommentiert.',

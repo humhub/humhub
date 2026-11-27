@@ -2,7 +2,7 @@
 return array (
   'Allows the user to create private content' => 'يسمح للمستخدم بإنشاء محتوى خاص',
   'Allows the user to create public content' => 'يسمح للمستخدم بإنشاء محتوى عام',
-  'Allows the user to invite new members to the space' => 'يسمح للمستخدم بدعوة أعضاء جدد إلى الباحة',
+  'Allows the user to invite new members to the Space' => 'يسمح للمستخدم بدعوة أعضاء جدد إلى الباحة',
   'Can Access \'Spaces\'' => 'يمكن الوصول إلى "الباحات"',
   'Can access the \'Spaces\' section.' => 'يمكن الوصول إلى قسم \'الباحات\'.',
   'Can create Spaces visible to all members.' => 'يمكن إنشاء باحات مرئية عامة. (مدرج في الدليل)',

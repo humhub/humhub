@@ -364,7 +364,7 @@ class NotificationSettingsServiceTest extends HumHubDbTestCase
             'categories.admin' => ['Unknown category.'],
             'categories.content.mobile' => ['This channel is not available for the category.'],
             'categories.followers' => ['Invalid value.'],
-            'spaces' => ['Invalid spaces.'],
+            'spaces' => ['Invalid Spaces.'],
         ], $errors);
         $this->assertTrue($service->isCategoryEnabled(new MailTarget(), NotificationCategory::social()), 'nothing is written');
         $this->assertFalse(NotificationSpaceService::isTouchedSettings($this->user(2)));

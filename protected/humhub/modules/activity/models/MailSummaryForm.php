@@ -104,8 +104,8 @@ class MailSummaryForm extends Model
     public function getLimitSpaceModes()
     {
         return [
-            static::LIMIT_MODE_EXCLUDE => Yii::t('ActivityModule.base', 'Exclude spaces below from the mail summary'),
-            static::LIMIT_MODE_INCLUDE => Yii::t('ActivityModule.base', 'Only include spaces below to the mail summary'),
+            static::LIMIT_MODE_EXCLUDE => Yii::t('ActivityModule.base', 'Exclude Spaces below from the mail summary'),
+            static::LIMIT_MODE_INCLUDE => Yii::t('ActivityModule.base', 'Only include Spaces below to the mail summary'),
         ];
     }
 

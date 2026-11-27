@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Last opp et nytt profilbilde ved å klikke her eller dra og slipp. Du kan gjøre det samme med bakgrunnsbildet.',
     'You\'ve completed the user profile guide!' => 'Du har fullført veiledningen for profiler!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Du har fullført veiledningen for profiler.<br /><br />Klikk her for å fortsette med administrasjonsveiledningen:<br /><br />',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

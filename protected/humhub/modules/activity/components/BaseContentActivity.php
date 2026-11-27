@@ -13,7 +13,7 @@ use yii\base\InvalidValueException;
 
 /**
  * Base class of an activity about a content, see {@see BaseActivity}. Adds the built-in message
- * parameters `content` (type and preview of the content: post "Release notes") and `contentTitle`
+ * parameters `content` (type and preview of the content: Post "Release notes") and `contentTitle`
  * (the preview alone).
  *
  * @template T of ContentActiveRecord

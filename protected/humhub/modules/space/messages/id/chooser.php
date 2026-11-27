@@ -1,18 +1,18 @@
 <?php
 
 return [
-    'My spaces' => 'Ruang Saya',
+    'My Spaces' => 'Ruang Saya',
     'Search' => 'Cari',
     'Add Space' => '',
     'Create Space' => '',
     'You are not a member of or following any Spaces.' => '',
     'No Spaces found.' => '',
-    'No spaces found for the given query' => '',
-    'Search for spaces' => '',
+    'No Spaces found for the given query' => '',
+    'Search for Spaces' => '',
     'Select {n,plural,=1{space} other{spaces}}' => '',
     'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}' => '',
-    'This space is archived' => '',
+    'This Space is archived' => '',
     'Please enter at least {count} characters to search Spaces.' => '',
-    'You are following this space' => '',
+    'You are following this Space' => '',
     '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '',
 ];

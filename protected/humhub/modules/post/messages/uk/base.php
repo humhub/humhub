@@ -7,8 +7,7 @@ return [
   'Post' => '',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => '',
+  'This Space is archived.' => '',
   'Title' => 'Заголовок',
   'What\'s on your mind?' => '',
-  'post' => '',
 ];

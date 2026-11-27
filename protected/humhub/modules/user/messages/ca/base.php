@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Seguidors</strong>',
     '<strong>Following</strong>' => '<strong>Seguint</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Col·labora</strong> en aquests espais',
+    '<strong>Member</strong> in these Spaces' => '<strong>Col·labora</strong> en aquests espais',
     '<strong>User</strong> tags' => '<strong>Etiquetes</strong>',
     'Action' => 'Acció',
     'Confirm new password' => 'Confirma la nova contrasenya',
@@ -69,7 +69,7 @@ return [
     'Did you forget your password?' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

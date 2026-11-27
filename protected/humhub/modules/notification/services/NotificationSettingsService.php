@@ -257,7 +257,7 @@ final readonly class NotificationSettingsService
         if (array_key_exists('spaces', $data)) {
             $ids = is_array($data['spaces']) ? $data['spaces'] : null;
             if ($ids === null || array_filter($ids, fn($id) => !is_int($id) && !(is_string($id) && ctype_digit($id))) !== []) {
-                $errors['spaces'][] = Yii::t('NotificationModule.base', 'Invalid spaces.');
+                $errors['spaces'][] = Yii::t('NotificationModule.base', 'Invalid Spaces.');
             } else {
                 $query = Space::find()->andWhere(['space.id' => array_map('intval', $ids)]);
                 if ($this->user !== null) {

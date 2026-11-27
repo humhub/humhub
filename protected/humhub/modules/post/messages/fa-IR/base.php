@@ -7,8 +7,7 @@ return [
   'Post' => 'پست',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'این انجمن بایگانی شده است.',
+  'This Space is archived.' => 'این انجمن بایگانی شده است.',
   'Title' => 'عنوان',
   'What\'s on your mind?' => 'به چه چیزی فکر می‌کنید؟',
-  'post' => 'پست',
 ];

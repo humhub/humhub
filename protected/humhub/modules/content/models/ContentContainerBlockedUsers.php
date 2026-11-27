@@ -63,7 +63,7 @@ class ContentContainerBlockedUsers extends ActiveRecord
         }
 
         if (($contentContainer instanceof Space) && $contentContainer->isSpaceOwner($blockingUser)) {
-            $this->addError('user_id', Yii::t('ContentModule.base', 'You cannot block the space owner!'));
+            $this->addError('user_id', Yii::t('ContentModule.base', 'You cannot block the Space owner!'));
         }
     }
 

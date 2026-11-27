@@ -95,7 +95,7 @@ describe('SpaceChooser', () => {
     it('renders the menu without asking for anything until it is opened', () => {
         wrapper = mountInDropdown({ createSpaceUrl: '/space/create', directoryUrl: '/spaces', directoryLabel: 'Spaces' });
 
-        expect(wrapper.find('#space-menu-search').attributes('aria-label')).toBe('Search for spaces');
+        expect(wrapper.find('#space-menu-search').attributes('aria-label')).toBe('Search for Spaces');
         expect(wrapper.find('#space-menu-spaces.hh-list').exists()).toBe(true);
         expect(wrapper.find('#space-directory-link a').attributes('href')).toBe('/spaces');
         // An icon only: the link is named for screen readers
@@ -155,7 +155,7 @@ describe('SpaceChooser', () => {
         expect(item.attributes('data-space-following')).toBeDefined();
         expect(item.find('.ti-star-filled').exists()).toBe(true);
         // ... in words for a screen reader too
-        expect(item.find('.visually-hidden').text()).toBe('You are following this space');
+        expect(item.find('.visually-hidden').text()).toBe('You are following this Space');
         // No count without a membership - "new since your last visit" has no meaning then.
         expect(item.find('[data-message-count]').exists()).toBe(false);
     });
@@ -279,7 +279,7 @@ describe('SpaceChooserToggle', () => {
         await flushPromises();
 
         expect(wrapper.find('img.current-space-image').exists()).toBe(false);
-        expect(wrapper.find('.no-space').text()).toContain('My spaces');
+        expect(wrapper.find('.no-space').text()).toContain('My Spaces');
     });
 
     it('follows a pjax navigation into another space', async () => {

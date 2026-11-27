@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Pengguna</strong> diikuti',
     '<strong>Following</strong>' => '<strong>Mengikuti</strong> pengguna',
-    '<strong>Member</strong> in these spaces' => '<strong>Member</strong> di grup ini',
+    '<strong>Member</strong> in these Spaces' => '<strong>Member</strong> di grup ini',
     'Action' => 'Tindakan',
     'Description' => 'Deskripsi',
     'Edit' => 'Ubah',
@@ -44,7 +44,7 @@ return [
     'Email' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following' => '',

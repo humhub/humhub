@@ -26,7 +26,7 @@ return [
     'Important only' => '',
     'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => '',
     'Invalid categories.' => '',
-    'Invalid spaces.' => '',
+    'Invalid Spaces.' => '',
     'Invalid value.' => '',
     'Jane Doe commented on your post “Budget 2027”.' => '',
     'Jane Doe commented on your post.' => '',

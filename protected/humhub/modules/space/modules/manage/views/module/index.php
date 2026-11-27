@@ -17,7 +17,7 @@ use yii\web\View;
     <p><?= Yii::t('SpaceModule.manage', 'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.') ?></p>
 
     <?php if (empty($availableModules)) : ?>
-        <p><?= Yii::t('SpaceModule.manage', 'Currently there are no modules available for this space!'); ?></p>
+        <p><?= Yii::t('SpaceModule.manage', 'Currently there are no modules available for this Space!'); ?></p>
     <?php endif; ?>
 
     <div class="modules-group">

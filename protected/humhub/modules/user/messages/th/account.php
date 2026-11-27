@@ -42,11 +42,11 @@ return [
     'Users' => 'ผู้ใช้',
     'Visible for all (also unregistered users)' => 'ปรากฏแก่ทุกคน (รวมถึงผู้ใช้ที่ไม่ได้ลงทะเบียนด้วย)',
     'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'เราเพิ่งส่งอีเมลยืนยันไปยังที่อยู่ใหม่ของคุณ โปรดปฏิบัติตามคำแนะนำด้านใน',
-    'You are currently the owner of following spaces:' => 'คุณเป็นเจ้าของพื้นที่ต่อไปนี้:',
+    'You are currently the owner of following Spaces:' => 'คุณเป็นเจ้าของพื้นที่ต่อไปนี้:',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'คุณเป็นเจ้าของพื้นที่ต่อไปนี้:
 คุณได้ร้องขอให้เปลี่ยนที่อยู่อีเมลของคุณ<br>ที่อยู่อีเมลใหม่ของคุณคือ {newemail}.<br><br>เพื่อยืนยันที่อยู่อีเมลใหม่ของคุณ โปรดคลิกที่ปุ่มด้านล่าง',
     'You have successfully changed your username.<br>Your new username is {newUsername}.' => 'คุณเปลี่ยนชื่อผู้ใช้สำเร็จแล้ว<br>ชื่อผู้ใช้ใหม่ของคุณคือ {newUsername}',
-    'You must transfer ownership or delete these spaces before you can delete your account.' => 'คุณต้องโอนความเป็นเจ้าของหรือลบพื้นที่เหล่านี้ก่อนจึงจะสามารถลบบัญชีของคุณได้',
+    'You must transfer ownership or delete these Spaces before you can delete your account.' => 'คุณต้องโอนความเป็นเจ้าของหรือลบพื้นที่เหล่านี้ก่อนจึงจะสามารถลบบัญชีของคุณได้',
     'Your account cannot be deleted!' => 'บัญชีของคุณไม่สามารถลบได้!',
     'Your current password can be changed here.' => 'รหัสผ่านปัจจุบันของคุณสามารถเปลี่ยนได้ที่นี่',
     'Your e-mail address has been successfully changed to {email}.' => 'ที่อยู่อีเมลของคุณเปลี่ยนเป็น {email} สำเร็จแล้ว',

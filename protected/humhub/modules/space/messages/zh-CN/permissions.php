@@ -2,7 +2,7 @@
 
 return [
     'Allows the user to create public content' => '允许用户创建公共内容',
-    'Allows the user to invite new members to the space' => '允许用户邀请新成员进空间',
+    'Allows the user to invite new members to the Space' => '允许用户邀请新成员进空间',
     'Can create Spaces visible to all members.' => '可以创建公共空间。(展示在目录)',
     'Create Private Spaces' => '创建私有空间',
     'Create Public Spaces' => '创建公共空间',

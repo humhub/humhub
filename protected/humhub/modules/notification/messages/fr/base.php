@@ -42,7 +42,7 @@ return [
     'How much notification e-mails, push messages and the activity summary e-mail (E-Mail Summaries) show. They leave the network and may be read on a lock screen or in a shared mailbox. The notifications in the network always show everything.' => '',
     'Important only' => '',
     'Invalid categories.' => '',
-    'Invalid spaces.' => '',
+    'Invalid Spaces.' => '',
     'Jane Doe commented on your post “Budget 2027”.' => '',
     'Jane Doe commented on your post.' => '',
     'Mentions, invitations and requests.' => '',

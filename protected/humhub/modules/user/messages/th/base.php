@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>ผู้ติดตาม</strong>',
     '<strong>Following</strong>' => '<strong>กำลังติดตาม</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>สมาชิก</strong> ในช่องว่างเหล่านี้',
+    '<strong>Member</strong> in these Spaces' => '<strong>สมาชิก</strong> ในช่องว่างเหล่านี้',
     '<strong>Member</strong> of these Spaces' => '<strong>สมาชิก</strong> ของ Spaces เหล่านี้',
     '<strong>User</strong> tags' => 'แท็ก<strong>ผู้ใช้</strong>',
     'Action' => 'การกระทำ',
@@ -94,7 +94,7 @@ return [
     'Did you forget your password?' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

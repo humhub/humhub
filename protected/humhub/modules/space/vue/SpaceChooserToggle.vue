@@ -12,7 +12,7 @@
 
 <script>
 /**
- * What the space menu's button shows: the current space's image, or the "My spaces" placeholder
+ * What the space menu's button shows: the current space's image, or the "My Spaces" placeholder
  * outside a space.
  *
  * Its own island rather than part of `SpaceChooser`, because the two sit in different places:
@@ -42,7 +42,7 @@ export default {
     props: {
         // Rendered image of the space currently shown, empty outside a space.
         initialImageHtml: { type: String, default: '' },
-        // Rendered icon of the "My spaces" state.
+        // Rendered icon of the "My Spaces" state.
         noSpaceIconHtml: { type: String, default: '' },
     },
     data() {
@@ -52,7 +52,7 @@ export default {
     },
     computed: {
         noSpaceLabel() {
-            return i18n.t('SpaceModule.chooser', 'My spaces');
+            return i18n.t('SpaceModule.chooser', 'My Spaces');
         },
     },
     mounted() {

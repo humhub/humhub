@@ -56,7 +56,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => '你几乎完成了安装。在这一步中，您必须填写表单，以创建一个管理帐户。有了这个帐户，你可以管理整个平台。',
     'Your MySQL password.' => '数据库存密码。',
     'Your MySQL username' => '数据库用户名',
-    'Your first sample space to discover the platform.' => '你的第一个样本空间发现平台。',
+    'Your first sample Space to discover the platform.' => '你的第一个样本空间发现平台。',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

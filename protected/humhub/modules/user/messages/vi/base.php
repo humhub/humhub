@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => 'Người theo <strong>User</strong>',
     '<strong>Following</strong>' => '<strong>Theo</strong> user',
-    '<strong>Member</strong> in these spaces' => '<strong>Thành viên</strong> trong những diễn đàn này',
+    '<strong>Member</strong> in these Spaces' => '<strong>Thành viên</strong> trong những diễn đàn này',
     '<strong>User</strong> tags' => 'Thẻ <strong>Người dùng</strong> (tags)',
     'Action' => 'Hoạt động',
     'Allows access to your about page with personal information' => 'Cho phép truy cập tới trang giới thiệu của bạn kèm thông tin cá nhân',
@@ -86,7 +86,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

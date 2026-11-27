@@ -56,7 +56,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Du er nesten ferdig. Her må du fylle ut feltene for å opprette en administrator-konto som kan administrere hele nettverket.',
     'Your MySQL password.' => 'Ditt MySQL passord',
     'Your MySQL username' => 'Ditt MySQL brukernavn',
-    'Your first sample space to discover the platform.' => 'Your first sample space to discover the platform.',
+    'Your first sample Space to discover the platform.' => 'Your first sample space to discover the platform.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

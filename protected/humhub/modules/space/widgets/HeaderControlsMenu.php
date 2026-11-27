@@ -135,7 +135,7 @@ class HeaderControlsMenu extends DropdownMenu
                         'data-method' => 'POST',
                         'data-bs-toggle' => 'tooltip',
                         'data-bs-placement' => 'left',
-                        'data-bs-title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard'),
+                        'data-bs-title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this Space at your dashboard'),
                     ],
                 ]));
             } else {
@@ -147,7 +147,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'htmlOptions' => ['data-method' => 'POST',
                         'data-bs-toggle' => 'tooltip',
                         'data-bs-placement' => 'left',
-                        'data-bs-title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard'),
+                        'data-bs-title' => Yii::t('SpaceModule.manage', 'This option will show new content from this Space at your dashboard'),
                     ],
                 ]));
             }

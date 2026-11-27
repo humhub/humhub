@@ -55,7 +55,7 @@ bold, in plain text they are not. The built-in parameters:
 | `displayName` | the user who caused the activity |
 | `displayNames` | the users of a grouped activity: "Anna, Bob and 2 more" (empty when ungrouped) |
 | `groupCount` | how many activities the entry stands for (1 when ungrouped) |
-| `content` | type and preview of the content: *post "Release notes"* (`BaseContentActivity` only) |
+| `content` | type and preview of the content: *Post "Release notes"* (`BaseContentActivity` only) |
 | `contentTitle` | the preview alone (`BaseContentActivity` only) |
 | `spaceName` | the name of the space (only for an activity that belongs to a space) |
 

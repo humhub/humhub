@@ -60,7 +60,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'เกือบเสร็จแล้ว ในขั้นตอนนี้ คุณต้องกรอกแบบฟอร์มเพื่อสร้างบัญชีผู้ดูแลระบบ ด้วยบัญชีนี้ คุณสามารถจัดการเครือข่ายทั้งหมดได้',
     'Your MySQL password.' => 'รหัสผ่าน MySQL ของคุณ',
     'Your MySQL username' => 'ชื่อผู้ใช้ MySQL ของคุณ',
-    'Your first sample space to discover the platform.' => 'พื้นที่ตัวอย่างแรกของคุณในการค้นพบแพลตฟอร์ม',
+    'Your first sample Space to discover the platform.' => 'พื้นที่ตัวอย่างแรกของคุณในการค้นพบแพลตฟอร์ม',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

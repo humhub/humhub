@@ -18,7 +18,7 @@ return [
 
     // WCAG 2.5.3: the visible text is not part of the accessible name
     ['rule' => 'label-content-name-mismatch', 'target' => '#space-menu',
-        'reason' => '2.5.3: the space menu\'s button shows the space\'s initials, its name is "My spaces"'],
+        'reason' => '2.5.3: the space menu\'s button shows the space\'s initials, its name is "My Spaces"'],
     ['rule' => 'label-content-name-mismatch', 'target' => 'a[aria-label="Space ',
         'reason' => '2.5.3: a space image link shows the initials, its name is the space\'s name'],
     ['rule' => 'label-content-name-mismatch', 'target' => 'a[href$="space-',

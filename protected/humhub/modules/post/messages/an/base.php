@@ -7,8 +7,7 @@ return [
   'Post' => 'Publicar',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'Iste espacio ye archivau.',
+  'This Space is archived.' => 'Iste espacio ye archivau.',
   'Title' => 'Titulek',
   'What\'s on your mind?' => 'En que yes pensando?',
-  'post' => 'publicación',
 ];

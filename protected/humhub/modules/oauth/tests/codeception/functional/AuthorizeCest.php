@@ -100,7 +100,7 @@ class AuthorizeCest
         $I->amOnRoute('/oauth/authorize/index', $this->params('agent', 'content:read', 'http://127.0.0.1:43123/callback'));
         $I->see('Research Agent');
         $I->see('Read content, comments and likes');
-        $I->dontSee('Read spaces and memberships');
+        $I->dontSee('Read Spaces and memberships');
     }
 
     public function testNoAuthorizationWhileImpersonating(FunctionalTester $I)

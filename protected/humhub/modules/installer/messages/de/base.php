@@ -92,5 +92,5 @@ return [
   'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Fast geschafft! Fülle in diesem Schritt das Eingabeformular aus, um das Administrator-Konto zu erstellen. Mit diesem Konto kannst du das ganze Netzwerk verwalten.',
   'Your MySQL password.' => 'Dein MySQL Passwort',
   'Your MySQL username' => 'Dein MySQL Benutzername',
-  'Your first sample space to discover the platform.' => 'Dein erstes Beispiel, um die Plattform zu entdecken',
+  'Your first sample Space to discover the platform.' => 'Dein erstes Beispiel, um die Plattform zu entdecken',
 ];

@@ -76,7 +76,7 @@ class ContentVisibilitySelect extends InputWidget
 
         if ($this->getContentContainer() instanceof Space) {
             $this->options['label'] .= ' '
-                . Yii::t('ContentModule.base', '(Also visible to non-members of this space)');
+                . Yii::t('ContentModule.base', '(Also visible to non-members of this Space)');
         }
 
         if (

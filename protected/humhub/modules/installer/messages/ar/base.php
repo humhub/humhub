@@ -68,7 +68,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'أنت على وشك الإنتهاء. في هذه الخطوة يجب عليك ملء النموذج لإنشاء حساب مسؤول. باستخدام هذا الحساب ، يمكنك إدارة الشبكة بالكامل.',
     'Your MySQL password.' => 'كلمة السر الخاصة بك MySQL.',
     'Your MySQL username' => 'اسم مستخدم MySQL الخاص بك',
-    'Your first sample space to discover the platform.' => 'باحة العينة الأولى لاكتشاف النظام الأساسي.',
+    'Your first sample Space to discover the platform.' => 'باحة العينة الأولى لاكتشاف النظام الأساسي.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

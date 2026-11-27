@@ -44,7 +44,7 @@ final class SpaceApprovalDeclinedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('SpaceModule.notification', '{displayName} declined your membership request for the space {spaceName}', [
+        return Yii::t('SpaceModule.notification', '{displayName} declined your membership request for the Space {spaceName}', [
             'displayName' => $params['displayName'],
             'spaceName' => $params['spaceName'],
         ]);

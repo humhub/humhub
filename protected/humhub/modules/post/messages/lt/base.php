@@ -7,8 +7,7 @@ return [
   'Post' => 'Skelbimas',
   'Post could not be saved!' => 'Įrašas nebuvo išsaugotas',
   'The post must not be empty!' => 'Įrašas negali būti tuščias!',
-  'This space is archived.' => 'Erdvė archyvuota',
+  'This Space is archived.' => 'Erdvė archyvuota',
   'Title' => 'Pavadinimas',
   'What\'s on your mind?' => 'Ką turime omenyje?',
-  'post' => 'Įrašas',
 ];

@@ -7,7 +7,7 @@ use humhub\modules\space\widgets\Image;
 <?php $this->beginContent('@user/views/security/_layout.php') ?>
 <strong><?= Yii::t('UserModule.account', 'Your account cannot be deleted!'); ?></strong><br/>
 <br/>
-<?= Yii::t('UserModule.account', 'You are currently the owner of following spaces:'); ?><br/>
+<?= Yii::t('UserModule.account', 'You are currently the owner of following Spaces:'); ?><br/>
 
 <div class="hh-list">
     <?php foreach ($ownSpaces as $space): ?>
@@ -24,7 +24,7 @@ use humhub\modules\space\widgets\Image;
 </div>
 <br/>
 
-<strong><?= Yii::t('UserModule.account', 'You must transfer ownership or delete these spaces before you can delete your account.'); ?></strong>
+<strong><?= Yii::t('UserModule.account', 'You must transfer ownership or delete these Spaces before you can delete your account.'); ?></strong>
 <br/>
 <br/>
 <?php $this->endContent(); ?>

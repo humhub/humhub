@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '被关注',
     '<strong>Following</strong>' => '关注',
-    '<strong>Member</strong> in these spaces' => '空间列表',
+    '<strong>Member</strong> in these Spaces' => '空间列表',
     '<strong>User</strong> tags' => '<strong>用户</strong> 标签',
     'Action' => '行动',
     'Allows access to your about page with personal information' => '允许访问您的关于页面的个人信息',
@@ -75,7 +75,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

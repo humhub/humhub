@@ -76,7 +76,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'これで最後です。管理者アカウントを作成してください。このアカウントがSNSを管理します。',
     'Your MySQL password.' => 'MySQLのパスワードを入力してください。',
     'Your MySQL username' => 'MySQLのユーザー名を入力してください。',
-    'Your first sample space to discover the platform.' => 'プラットフォームを発見するための最初のサンプルスペース。',
+    'Your first sample Space to discover the platform.' => 'プラットフォームを発見するための最初のサンプルスペース。',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     'Could not send the test email.' => '',

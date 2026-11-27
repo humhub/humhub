@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '',
     '<strong>Following</strong>' => '',
-    '<strong>Member</strong> in these spaces' => '',
+    '<strong>Member</strong> in these Spaces' => '',
     '<strong>Member</strong> of these Spaces' => '',
     '<strong>User</strong> tags' => '',
     'Action' => '',
@@ -30,7 +30,7 @@ return [
     'Email' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Follow' => '',

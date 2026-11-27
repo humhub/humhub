@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Wczytaj nową fotografię profilową, przez proste kliknięcie tutaj lub przez przeciągnięcie. Zrób to samo podczas aktualizacji fotografii okładki.',
     'You\'ve completed the user profile guide!' => 'Zakończyłeś przewodnik po profilu użytkownika! ',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Zakończyłeś przewodnik po profilu użytkownika!<br><br>Aby zapoznać się z przewodnikiem administratora, kliknij tutaj:<br /><br />',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

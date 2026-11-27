@@ -7,8 +7,7 @@ return [
   'Post' => 'Запись',
   'Post could not be saved!' => 'Запись не удаётся сохранить!',
   'The post must not be empty!' => 'Запись не может быть абсолютно пустой!',
-  'This space is archived.' => 'Это сообщество архивировано',
+  'This Space is archived.' => 'Это сообщество архивировано',
   'Title' => 'Заголовок',
   'What\'s on your mind?' => 'Есть о чём рассказать?',
-  'post' => 'запись',
 ];

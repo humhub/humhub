@@ -19,7 +19,7 @@ AdminSpaceAsset::register($this);
 
 <?php ContentCard::begin([
     'title' => Yii::t('AdminModule.space', 'Settings'),
-    'description' => Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'),
+    'description' => Yii::t('AdminModule.space', 'Here you can define your default settings for new Spaces. These settings can be overwritten for each individual Space.'),
 ]) ?>
 <?php $form = ActiveForm::begin(['id' => 'space-settings-form', 'acknowledge' => true]); ?>
 

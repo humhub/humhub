@@ -37,11 +37,11 @@ return [
     'Users' => 'Brukere',
     'Visible for all (also unregistered users)' => 'Synlig for alle (også uregistrerte brukere)',
     'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'Vi har akkurat sendt deg en e-post for bekreftelse. Vennligst følg instruksjonene i e-posten.',
-    'You are currently the owner of following spaces:' => 'Du er oppført som eier av disse gruppene:',
+    'You are currently the owner of following Spaces:' => 'Du er oppført som eier av disse gruppene:',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Du har bedt om å endre din e-post adresse.<br>
 Din nye e-post adresse er {newemail}.<br><br>
 For å bekrefte den nye e-post adressen, vennligst klikk knappen nedenfor.',
-    'You must transfer ownership or delete these spaces before you can delete your account.' => 'Før du kan slette kontoen din må du overføre eierskapet eller slette disse gruppene.',
+    'You must transfer ownership or delete these Spaces before you can delete your account.' => 'Før du kan slette kontoen din må du overføre eierskapet eller slette disse gruppene.',
     'Your account cannot be deleted!' => 'Din konto kan ikke bli slettet.',
     'Your current password can be changed here.' => 'Ditt nåværende passord kan endres her.',
     'Your e-mail address has been successfully changed to {email}.' => 'Din e-post adresse er nå endret til {email}.',

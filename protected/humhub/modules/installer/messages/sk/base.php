@@ -71,7 +71,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Si takmer hotový.  V tomto kroku musíte vyplniť formulár na vytvorenie účtu správcu.  Pomocou tohto účtu môžete spravovať celú sieť.',
     'Your MySQL password.' => 'Vaše heslo MySQL.',
     'Your MySQL username' => 'Vaše užívateľské meno MySQL',
-    'Your first sample space to discover the platform.' => 'Váš prvý vzorový priestor na objavenie platformy.',
+    'Your first sample Space to discover the platform.' => 'Váš prvý vzorový priestor na objavenie platformy.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

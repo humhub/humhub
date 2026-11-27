@@ -113,7 +113,7 @@ HTML mail, plain text for the text mail, the mail subject and push. The built-in
 | `displayNames` | the originators of a grouped notification: "Anna, Bob and 2 more" (empty for a single one) |
 | `groupCount` | how many notifications the entry stands for (1 when ungrouped) |
 | `namedCount` | how many people `displayNames` names: 0 when empty, 1 when the group collapses to one person (e.g. one originator's notifications), 2 for "Anna and Bob" as well as "Anna, Bob and 2 more" |
-| `content` | type and preview of the `getSubjectRecord()`: *post "Release notes"* (only for a notification about a content; "[Deleted]" when the content's record is gone) |
+| `content` | type and preview of the `getSubjectRecord()`: *Post "Release notes"* (only for a notification about a content; "[Deleted]" when the content's record is gone) |
 | `contentTitle` | the preview alone ("[Deleted]" as well when the record is gone) |
 | `spaceName` | the name of the `getSpace()`, emphasized (only for a notification that belongs to a space) |
 
@@ -125,7 +125,7 @@ is a plain string — plain text, encoded for HTML — or a `humhub\modules\noti
 | `MessageParam::text($text, ?$maxLength)` | encoded | as is |
 | `MessageParam::emphasis($text, ?$maxLength)` | encoded in `<strong>` | in “quotes” |
 | `MessageParam::user($user)` | the display name, encoded in `<strong>` | the display name |
-| `MessageParam::content($record, ?$withType)` | type and preview of a content or comment: *post "Release notes…"*, the preview as short HTML (in `<strong>` in a mail) | the same as plain text |
+| `MessageParam::content($record, ?$withType)` | type and preview of a content or comment: *Post "Release notes…"*, the preview as short HTML (in `<strong>` in a mail) | the same as plain text |
 
 `$maxLength` cuts the text (with an ellipsis) before it is encoded. Numbers stay numbers, for
 ICU `plural` and `select`. `MessageParam::content()` takes the preview length of the channel

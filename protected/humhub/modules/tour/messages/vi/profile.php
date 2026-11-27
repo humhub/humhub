@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Upload ảnh đại diện mới bằng cách click vào đây hoặc kéo & thả ảnh.',
     'You\'ve completed the user profile guide!' => 'Bạn đã hoàn thành khóa hướng dẫn về hồ sơ cá nhân!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Bạn đã hoàn thành khóa hướng dẫn về hồ sơ cá nhân! <br /><br />Để tiếp tục khóa hướng dẫn về quản trị hệ thống, vui lòng click vào đây: <br /><br />',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

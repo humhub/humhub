@@ -63,7 +63,7 @@ class MoveContentForm extends Model
         $targetContainer = $this->getTargetContainer();
 
         if (!$targetContainer) {
-            $this->addError($attribute, Yii::t('ContentModule.base', 'Invalid space selection.'));
+            $this->addError($attribute, Yii::t('ContentModule.base', 'Invalid Space selection.'));
         } else {
             $result = $this->content->canMove($targetContainer);
             if ($result !== true) {

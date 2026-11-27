@@ -217,6 +217,9 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * Returns the name of this type of content.
      * You need to override this method in your content implementation.
      *
+     * The name is a fixed term that starts with a capital letter (e.g. "Post"), as it is inserted into
+     * sentences like "Anna likes your Post" as it is.
+     *
      * @return string the name of the content
      */
     public function getContentName()
@@ -604,7 +607,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         if ($container && is_string($this->canMove) && is_subclass_of($this->canMove, BasePermission::class)) {
             $ownerPermissions = $container->getPermissionManager($this->content->createdBy);
             if (!$ownerPermissions->can($this->canMove)) {
-                return Yii::t('ContentModule.base', 'The author of this content is not allowed to create this type of content within this space.');
+                return Yii::t('ContentModule.base', 'The author of this content is not allowed to create this type of content within this Space.');
             }
         }
 

@@ -220,7 +220,7 @@ class SpaceList extends FilterableList
         $archived = $this->value($values, 'archived');
 
         if ($scope === self::SCOPE_ARCHIVED && $archived === false) {
-            throw new ListValidationException(['archived' => [Yii::t('SpaceModule.base', 'Archived spaces cannot be left out of the archived scope.')]]);
+            throw new ListValidationException(['archived' => [Yii::t('SpaceModule.base', 'Archived Spaces cannot be left out of the archived scope.')]]);
         }
 
         if ($scope !== self::SCOPE_ARCHIVED && $archived !== true) {

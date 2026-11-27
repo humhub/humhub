@@ -164,7 +164,7 @@ class UserController extends BaseController
             $params,
             self::PICKER_PARAMS,
             ['q', 'ids', 'spaceId'],
-            Yii::t('UserModule.base', 'Enter a search, or name users or a space.'),
+            Yii::t('UserModule.base', 'Enter a search, or name users or a Space.'),
             self::PICKER_PAGE_SIZE,
         );
 

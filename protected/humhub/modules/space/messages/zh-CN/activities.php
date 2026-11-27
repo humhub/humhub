@@ -19,10 +19,10 @@
 return [
     'Space has been archived' => '',
     'Space has been unarchived' => '',
-    'Whenever a space is archived.' => '',
-    'Whenever a space is unarchived.' => '',
+    'Whenever a Space is archived.' => '',
+    'Whenever a Space is unarchived.' => '',
     'Space member joined' => '空间成员加入',
     'Space member left' => '空间成员离开',
-    'Whenever a member leaves one of your spaces.' => '每当有成员离开你的空间。',
-    'Whenever a new member joined one of your spaces.' => '每当有新成员加入你的空间。',
+    'Whenever a member leaves one of your Spaces.' => '每当有成员离开你的空间。',
+    'Whenever a new member joined one of your Spaces.' => '每当有新成员加入你的空间。',
 ];

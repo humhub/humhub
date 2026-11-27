@@ -7,8 +7,7 @@ return [
   'Post' => 'Post',
   'Post could not be saved!' => 'Nie udało się zapisać postu!',
   'The post must not be empty!' => 'Post nie może być pusty!',
-  'This space is archived.' => 'Ta strefa jest zarchiwizowana.',
+  'This Space is archived.' => 'Ta strefa jest zarchiwizowana.',
   'Title' => 'Tytuł',
   'What\'s on your mind?' => 'Co ci chodzi po głowie?',
-  'post' => 'post',
 ];

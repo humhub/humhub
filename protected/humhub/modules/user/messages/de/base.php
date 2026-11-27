@@ -2,7 +2,7 @@
 return [
   '<strong>Followers</strong>' => '<strong>Mir folgen</strong>',
   '<strong>Following</strong>' => '<strong>Ich folge</strong>',
-  '<strong>Member</strong> in these spaces' => '<strong>Mitgliedschaften</strong>',
+  '<strong>Member</strong> in these Spaces' => '<strong>Mitgliedschaften</strong>',
   '<strong>Member</strong> of these Spaces' => '<strong>Mitgliedschaften</strong>',
   '<strong>User</strong> tags' => '<strong>Tags</strong>',
   'Action' => 'Handlung',
@@ -29,7 +29,7 @@ return [
   'Email' => 'E-Mail',
   'Empty password cannot be saved!' => 'Ein leeres Passwortfeld kann nicht gespeichert werden!',
   'Enable Notifications' => 'Benachrichtigungen aktivieren',
-  'Enter a search, or name users or a space.' => 'Gib einen Suchbegriff ein oder nenne Benutzer oder einen Space.',
+  'Enter a search, or name users or a Space.' => 'Gib einen Suchbegriff ein oder nenne Benutzer oder einen Space.',
   'Filter by module' => 'Nach Modul filtern',
   'Filter by {tag}' => 'Nach {tag} filtern',
   'Follow' => 'Folgen',

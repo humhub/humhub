@@ -169,7 +169,11 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
 
     public function getContentName()
     {
-        return Yii::t('CommentModule.base', 'comment');
+        // Not the key "Comment": it is the label of the comment action and translated as a verb in several languages.
+        // The content type is a fixed term that starts with a capital letter.
+        $name = Yii::t('CommentModule.base', 'comment');
+
+        return mb_strtoupper(mb_substr($name, 0, 1)) . mb_substr($name, 1);
     }
 
     public function getContentDescription()

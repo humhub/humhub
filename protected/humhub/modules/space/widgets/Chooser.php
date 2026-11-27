@@ -84,7 +84,7 @@ class Chooser extends Widget
                 ],
                 'content' => $imageHtml !== ''
                     ? $imageHtml
-                    : Html::tag('div', $noSpaceIconHtml . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces'), ['class' => 'no-space']),
+                    : Html::tag('div', $noSpaceIconHtml . '<br>' . Yii::t('SpaceModule.chooser', 'My Spaces'), ['class' => 'no-space']),
             ]),
             '#',
             [
@@ -92,7 +92,7 @@ class Chooser extends Widget
                 'class' => 'nav-link dropdown-toggle',
                 'data-bs-toggle' => 'dropdown',
                 // Its content is an image or decorative initials inside a space
-                'aria-label' => Yii::t('SpaceModule.chooser', 'My spaces'),
+                'aria-label' => Yii::t('SpaceModule.chooser', 'My Spaces'),
             ],
         );
     }

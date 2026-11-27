@@ -7,8 +7,7 @@ return [
   'Post' => 'Beitrag',
   'Post could not be saved!' => 'Beitrag konnte nicht gespeichert werden!',
   'The post must not be empty!' => 'Der Beitrag darf nicht leer sein!',
-  'This space is archived.' => 'Dieser Space ist archiviert.',
+  'This Space is archived.' => 'Dieser Space ist archiviert.',
   'Title' => 'Titel',
   'What\'s on your mind?' => 'Was möchtest du mitteilen?',
-  'post' => 'Beitrag',
 ];

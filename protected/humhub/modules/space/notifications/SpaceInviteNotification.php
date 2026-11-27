@@ -44,7 +44,7 @@ final class SpaceInviteNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('SpaceModule.notification', '{displayName} invited you to the space {spaceName}', [
+        return Yii::t('SpaceModule.notification', '{displayName} invited you to the Space {spaceName}', [
             'displayName' => $params['displayName'],
             'spaceName' => $params['spaceName'],
         ]);

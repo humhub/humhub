@@ -7,8 +7,7 @@ return [
   'Post' => '게시물',
   'Post could not be saved!' => '게시물을 저장할 수 없습니다!',
   'The post must not be empty!' => '게시물이 비어 있으면 안 됩니다!',
-  'This space is archived.' => '이 공간은 보관됩니다.',
+  'This Space is archived.' => '이 공간은 보관됩니다.',
   'Title' => '제목',
   'What\'s on your mind?' => '무슨 생각을 하고 계신가요?',
-  'post' => '게시물',
 ];

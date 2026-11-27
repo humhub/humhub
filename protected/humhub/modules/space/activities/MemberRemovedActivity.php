@@ -16,7 +16,7 @@ class MemberRemovedActivity extends BaseActivity implements ConfigurableActivity
 
     public static function getDescription(): string
     {
-        return Yii::t('SpaceModule.activities', 'Whenever a member leaves one of your spaces.');
+        return Yii::t('SpaceModule.activities', 'Whenever a member leaves one of your Spaces.');
     }
 
     protected function getMessage(array $params): string

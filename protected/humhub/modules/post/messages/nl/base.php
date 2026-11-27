@@ -7,8 +7,7 @@ return [
   'Post' => 'Bericht',
   'Post could not be saved!' => 'Het bericht kan niet worden opgeslagen!',
   'The post must not be empty!' => 'Het bericht mag niet leeg zijn!',
-  'This space is archived.' => 'Deze ruimte is gearchiveerd.',
+  'This Space is archived.' => 'Deze ruimte is gearchiveerd.',
   'Title' => 'Titel',
   'What\'s on your mind?' => 'Plaats een bericht',
-  'post' => 'Bericht',
 ];

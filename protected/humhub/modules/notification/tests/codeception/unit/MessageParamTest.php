@@ -74,18 +74,18 @@ class MessageParamTest extends HumHubDbTestCase
         $post = $this->createPost('Tom & <Jerry> are friends');
 
         $param = MessageParam::content($post);
-        $this->assertSame('post "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html));
-        $this->assertSame('post "Tom & <Jerry> are friends"', $param->render(MessageFormat::Text));
-        $this->assertSame('<strong>post</strong> "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html, emphasizeContent: true));
-        $this->assertSame('post "Tom & <Jerry>..."', $param->render(MessageFormat::Text, 13));
+        $this->assertSame('Post "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html));
+        $this->assertSame('Post "Tom & <Jerry> are friends"', $param->render(MessageFormat::Text));
+        $this->assertSame('<strong>Post</strong> "Tom &amp; &lt;Jerry&gt; are friends"', $param->render(MessageFormat::Html, emphasizeContent: true));
+        $this->assertSame('Post "Tom & <Jerry>..."', $param->render(MessageFormat::Text, 13));
         $this->assertSame('Tom & <Jerry> are friends', MessageParam::content($post, withType: false)->render(MessageFormat::Text));
     }
 
     public function testRedactedContentIsTheType()
     {
         $param = MessageParam::content($this->createPost('Secret plans'));
-        $this->assertSame('post', $param->render(MessageFormat::Text, redacted: true));
-        $this->assertSame('<strong>post</strong>', $param->render(MessageFormat::Html, emphasizeContent: true, redacted: true));
+        $this->assertSame('Post', $param->render(MessageFormat::Text, redacted: true));
+        $this->assertSame('<strong>Post</strong>', $param->render(MessageFormat::Html, emphasizeContent: true, redacted: true));
     }
 
     public function testRenderRedactedKeepsNamesNumbersAndContentTypes()
@@ -102,7 +102,7 @@ class MessageParamTest extends HumHubDbTestCase
         ]);
 
         $this->assertSame(
-            'Admin Tester commented your post (2)',
+            'Admin Tester commented your Post (2)',
             MessageParam::renderRedacted($message('{user} commented your {content} ({count}){empty}'), $params, MessageFormat::Text),
             'a value the sentence does not use does not matter',
         );

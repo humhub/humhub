@@ -208,7 +208,7 @@ class StreamCest
         $I->amOnSpace3();
         $I->wantToTest('the empty stream message and filter');
 
-        $I->waitForText('This space is still empty!');
+        $I->waitForText('This Space is still empty!');
         $I->dontSeeElement('#wall-stream-filter-nav');
 
         $I->amGoingTo('create a new post and delete it afterwards');
@@ -219,7 +219,7 @@ class StreamCest
 
         $I->amGoingTo('Delete my new post again.');
         $I->waitForElementVisible('#wall-stream-filter-nav');
-        $I->dontSee('This space is still empty!');
+        $I->dontSee('This Space is still empty!');
         $I->click('.preferences .dropdown-toggle', '[data-stream-entry]:nth-of-type(1)');
         $I->wait(1);
         $I->click('Delete');
@@ -228,7 +228,7 @@ class StreamCest
         $I->see('Delete content?');
         $I->click('Delete', '#globalModalConfirm');
 
-        $I->waitForText('This space is still empty!');
+        $I->waitForText('This Space is still empty!');
         $I->dontSeeElement('#wall-stream-filter-nav');
     }
 

@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Användarens</strong> följare',
     '<strong>Following</strong>' => '<strong>Följer</strong> användare',
-    '<strong>Member</strong> in these spaces' => '<strong>Medlem</strong> i dessa forum',
+    '<strong>Member</strong> in these Spaces' => '<strong>Medlem</strong> i dessa forum',
     '<strong>Member</strong> of these Spaces' => '<strong>Medlem</strong> av dessa forum',
     '<strong>User</strong> tags' => '<strong>Användar</strong> taggar',
     'Action' => 'Handling',
@@ -112,7 +112,7 @@ return [
     'Connect {provider} account' => '',
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Person' => '',

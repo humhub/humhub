@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => 'Persone che <strong>mi seguono</strong>',
     '<strong>Following</strong>' => 'Persone che <strong>seguo io</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Partecipa</strong> in questi space',
+    '<strong>Member</strong> in these Spaces' => '<strong>Partecipa</strong> in questi space',
     '<strong>Member</strong> of these Spaces' => '<strong>Membro</strong> di questi Spazi',
     '<strong>User</strong> tags' => 'Tag dell\'<strong>utente</strong>',
     'Action' => 'Azione',
@@ -102,7 +102,7 @@ return [
     'Did you forget your password?' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',

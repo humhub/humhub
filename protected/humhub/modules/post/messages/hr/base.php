@@ -7,8 +7,7 @@ return [
   'Post' => '',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'Prostor je arhiviran.',
+  'This Space is archived.' => 'Prostor je arhiviran.',
   'Title' => 'Naziv',
   'What\'s on your mind?' => 'Što vam je na umu?',
-  'post' => 'objava',
 ];

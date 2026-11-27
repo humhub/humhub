@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Volgers</strong>',
     '<strong>Following</strong>' => '<strong>Volgt</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Lid</strong> van deze ruimten',
+    '<strong>Member</strong> in these Spaces' => '<strong>Lid</strong> van deze ruimten',
     '<strong>Member</strong> of these Spaces' => '<strong>Lid</strong> van deze Ruimten',
     '<strong>User</strong> tags' => '<strong>Gebruiker</strong> labels',
     'Action' => 'Actie',
@@ -119,7 +119,7 @@ return [
     'invited you to join {space} on {name}.' => 'nodigt u uit om deel te nemen aan {space} op {name}.',
     'or' => 'of',
     'Could not load the user list.' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Person' => '',

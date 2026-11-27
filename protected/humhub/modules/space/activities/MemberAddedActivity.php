@@ -16,7 +16,7 @@ class MemberAddedActivity extends BaseActivity implements ConfigurableActivityIn
 
     public static function getDescription(): string
     {
-        return Yii::t('SpaceModule.activities', 'Whenever a new member joined one of your spaces.');
+        return Yii::t('SpaceModule.activities', 'Whenever a new member joined one of your Spaces.');
     }
 
     protected function getMessage(array $params): string

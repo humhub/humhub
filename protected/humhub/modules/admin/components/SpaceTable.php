@@ -63,7 +63,7 @@ class SpaceTable extends DataTable
             new RowAction('members', Yii::t('AdminModule.space', 'Manage members'), RowAction::KIND_LINK, $open('members'), icon: 'users', sortOrder: 200),
             new RowAction('owner', Yii::t('AdminModule.space', 'Change owner'), RowAction::KIND_LINK, $open('owner'), icon: 'user-share', sortOrder: 300),
             new RowAction('modules', Yii::t('AdminModule.space', 'Manage modules'), RowAction::KIND_LINK, $open('modules'), icon: 'puzzle', sortOrder: 400),
-            new RowAction('open', Yii::t('AdminModule.space', 'Open space'), RowAction::KIND_LINK, static fn(Space $space) => $space->getUrl(), icon: 'external-link', sortOrder: 500),
+            new RowAction('open', Yii::t('AdminModule.space', 'Open Space'), RowAction::KIND_LINK, static fn(Space $space) => $space->getUrl(), icon: 'external-link', sortOrder: 500),
             new RowAction('delete', Yii::t('base', 'Delete'), RowAction::KIND_LINK, $open('delete'), icon: 'trash', destructive: true, sortOrder: 100),
         ];
     }

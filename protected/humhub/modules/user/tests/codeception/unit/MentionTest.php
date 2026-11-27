@@ -38,8 +38,8 @@ class MentionTest extends HumHubDbTestCase
         $this->assertMailSent(1);
 
         $notification = NotificationManager::load(Notification::findOne(['class' => MentionedNotification::class, 'user_id' => 1]));
-        $this->assertStringContainsString('mentioned you in post', $notification->asWeb());
-        $this->assertStringContainsString('just mentioned you in post "', $notification->asMailSubject());
+        $this->assertStringContainsString('mentioned you in Post', $notification->asWeb());
+        $this->assertStringContainsString('just mentioned you in Post "', $notification->asMailSubject());
         $this->assertSame($post->content->getUrl(), $notification->getUrl());
     }
 
@@ -98,7 +98,7 @@ class MentionTest extends HumHubDbTestCase
         $this->assertSame(1, (int)$record->listed);
 
         $notification = NotificationManager::load($record);
-        $this->assertSame(User::findOne(['id' => 3])->displayName . ' mentioned you in a comment.', $notification->asRedactedText());
+        $this->assertSame(User::findOne(['id' => 3])->displayName . ' mentioned you in a Comment.', $notification->asRedactedText());
         $blocks = $notification->getBlocks(new NotificationContext(MailTarget::ID));
         $this->assertCount(2, $blocks);
         $this->assertSame(NotificationBlock::TYPE_CONTENT_PREVIEW, $blocks[0]->getType());
@@ -107,7 +107,7 @@ class MentionTest extends HumHubDbTestCase
         $this->assertInstanceOf(Comment::class, $mailRecord);
         $this->assertSame((int)$comment->id, (int)$mailRecord->id);
         $this->assertSame($comment->getUrl(), $notification->getUrl());
-        $this->assertStringContainsString('mentioned you in comment', $notification->asWeb());
-        $this->assertStringContainsString('just mentioned you in comment "Hi', $notification->asMailSubject());
+        $this->assertStringContainsString('mentioned you in Comment', $notification->asWeb());
+        $this->assertStringContainsString('just mentioned you in Comment "Hi', $notification->asMailSubject());
     }
 }

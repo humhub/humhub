@@ -7,8 +7,7 @@ return [
   'Post' => 'Gönderi',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'Bu alan arşivlenmektedir.',
+  'This Space is archived.' => 'Bu alan arşivlenmektedir.',
   'Title' => 'Başlık',
   'What\'s on your mind?' => 'Aklında neler var?',
-  'post' => 'Gönderi',
 ];

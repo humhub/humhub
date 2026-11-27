@@ -10,7 +10,7 @@ return [
   '<strong>User profile</strong>' => '<strong>ユーザープロフィール</strong>',
   'Click on this button to update your profile and account settings. You can also add more information to your profile.' => 'このボタンをクリックして、プロフィールやアカウントの設定を更新してください。また、プロフィールにさらに情報を追加することもできます。',
   'Each profile has its own pin board. Your posts will also appear on the dashboards of those users who are following you.' => '各プロフィールにはそれぞれ独自のピンボードがあります。あなたの投稿は、あなたをフォローしているユーザーのダッシュボードにも表示されます。',
-  'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+  'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
   'This is your public user profile, which can be seen by any registered user.' => 'これはあなたの公開ユーザープロフィールで、登録したユーザーなら誰でも見ることができます。',
   'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'ここをクリックするか、ドラッグ＆ドロップするだけで新しいプロフィール写真をアップロードできます。カバー写真の更新も同じように行ってください。',
   'You\'ve completed the user profile guide!' => 'ユーザープロフィールガイドを完了しました。',

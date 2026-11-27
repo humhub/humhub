@@ -71,7 +71,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Вы почти закончили. На этом этапе вы должны заполнить форму, чтобы создать учётную запись главного администратора. С помощью этой учётной записи вы сможете управлять всем сайтом.',
     'Your MySQL password.' => 'Пароль MySQL',
     'Your MySQL username' => 'Имя пользователя MySQL',
-    'Your first sample space to discover the platform.' => 'Ваша первое пробное сообщество для знакомства с платформой.',
+    'Your first sample Space to discover the platform.' => 'Ваша первое пробное сообщество для знакомства с платформой.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

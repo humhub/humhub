@@ -5,7 +5,7 @@ return [
     'Activities' => 'Veiklos',
     'Daily' => 'Kartą per dieną',
     'E-Mail Summaries' => 'Pranešimai el.paštu',
-    'Exclude spaces below from the mail summary' => 'Į pranešimus el.paštu neįtraukti',
+    'Exclude Spaces below from the mail summary' => 'Į pranešimus el.paštu neįtraukti',
     'Hourly' => 'Kartą per valandą',
     'Interval' => 'Dažnumas',
     'Latest news' => 'Naujienos',
@@ -14,7 +14,7 @@ return [
     'Notifications' => 'Pranešimai',
     'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'Šiame puslapyje galite parinkti numatytuosius nustatymus. 
 Šiuos nustatymus naudotojai galės pakeisti savo paskyros nustatymuose.',
-    'Only include spaces below to the mail summary' => 'Į pranešimus el.paštu įtraukti tik',
+    'Only include Spaces below to the mail summary' => 'Į pranešimus el.paštu įtraukti tik',
     'See online:' => 'Žr. internete:',
     'Spaces' => 'Paskyros',
     'There are no activities yet.' => 'Kol kas nėra jokių naujienų',

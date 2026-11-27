@@ -21,7 +21,7 @@ use Yii;
  * Notifies the followers of a content - its author included - about a new comment. The source is
  * the {@see Comment}.
  *
- * The sentence is about the commented content ("commented your …" for its author), the mail
+ * The sentence is about the commented content ("commented on your …" for its author), the mail
  * previews the comment and the notification links to it. The comments on one content are grouped.
  *
  * Sent by the comment as the last entry of a {@see \humhub\modules\notification\components\NotificationSet}:
@@ -77,8 +77,8 @@ final class NewCommentNotification extends BaseNotification
     protected function getMessage(array $params): string
     {
         return $this->isContentAuthor()
-            ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented your {content}.', $params)
-            : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}.', $params);
+            ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on your {content}.', $params)
+            : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on {content}.', $params);
     }
 
     /**
@@ -105,13 +105,13 @@ final class NewCommentNotification extends BaseNotification
 
         if ($this->isContentAuthor()) {
             return $space
-                ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content} in Space {space}', $params)
-                : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented your {content}', $params);
+                ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented on your {content} in Space {space}', $params)
+                : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} just commented on your {content}', $params);
         }
 
         return $space
-            ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content} in Space {space}', $params)
-            : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented {content}', $params);
+            ? Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on {content} in Space {space}', $params)
+            : Yii::t('CommentModule.notification', '{groupCount, plural, =1{{displayName}} other{{displayNames}}} commented on {content}', $params);
     }
 
     /**

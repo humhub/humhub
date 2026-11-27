@@ -7,8 +7,7 @@ return [
   'Post' => 'Mezua',
   'Post could not be saved!' => 'Ezin izan da mezua gorde!',
   'The post must not be empty!' => 'Mezuak ez du hutsik egon behar!',
-  'This space is archived.' => 'Espazio hau artxibatuta dago.',
+  'This Space is archived.' => 'Espazio hau artxibatuta dago.',
   'Title' => 'Izenburua',
   'What\'s on your mind?' => 'Zer duzu buruan?',
-  'post' => 'mezua',
 ];

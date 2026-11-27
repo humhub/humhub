@@ -460,11 +460,11 @@ class Space extends ContentContainerActiveRecord
         }
 
         if ($visibility == self::VISIBILITY_NONE && !Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
-            $this->addError($attribute, Yii::t('SpaceModule.base', 'You cannot create private visible spaces!'));
+            $this->addError($attribute, Yii::t('SpaceModule.base', 'You cannot create private visible Spaces!'));
         }
 
         if (($visibility == self::VISIBILITY_REGISTERED_ONLY || $visibility == self::VISIBILITY_ALL) && !Yii::$app->user->permissionManager->can(new CreatePublicSpace())) {
-            $this->addError($attribute, Yii::t('SpaceModule.base', 'You cannot create public visible spaces!'));
+            $this->addError($attribute, Yii::t('SpaceModule.base', 'You cannot create public visible Spaces!'));
         }
     }
 

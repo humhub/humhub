@@ -7,8 +7,7 @@ return [
   'Post' => 'Inlägg',
   'Post could not be saved!' => 'Inlägget kunde inte sparas!',
   'The post must not be empty!' => 'Inlägget får inte vara tomt!',
-  'This space is archived.' => 'Forumet är arkiverat.',
+  'This Space is archived.' => 'Forumet är arkiverat.',
   'Title' => 'Titel',
   'What\'s on your mind?' => 'Vad tänker du på?',
-  'post' => 'inlägg',
 ];

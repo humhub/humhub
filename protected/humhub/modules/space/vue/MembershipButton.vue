@@ -257,7 +257,7 @@ export default {
             );
         },
         requestSentLabel() {
-            return i18n.t('SpaceModule.base', 'Your request was successfully submitted to the space administrators.');
+            return i18n.t('SpaceModule.base', 'Your request was successfully submitted to the Space administrators.');
         },
         messageLabel() {
             return i18n.t('SpaceModule.base', 'Your Message');

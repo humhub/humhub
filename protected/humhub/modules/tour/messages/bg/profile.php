@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Качете нова снимка на потребителския профил, като просто щракнете тук или чрез плъзгане и пускане. Направете същото, за да актуализирате снимката на корицата си.',
     'You\'ve completed the user profile guide!' => 'Изпълнихте ръководството за потребителския профил!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Изпълнихте ръководството за потребителския профил!<br><br>За да продължите с ръководството за администриране, щракнете тук:<br><br>',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

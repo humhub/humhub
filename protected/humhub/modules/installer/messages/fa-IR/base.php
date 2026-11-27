@@ -57,7 +57,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'تقريبا به اتمام رسيد.....ايجاد كاربري ادمين',
     'Your MySQL password.' => 'گذرواژه‌ی MySQL شما.',
     'Your MySQL username' => 'نام کاربری MySQL شما.',
-    'Your first sample space to discover the platform.' => 'اولين انجمني كه شما عضويد',
+    'Your first sample Space to discover the platform.' => 'اولين انجمني كه شما عضويد',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

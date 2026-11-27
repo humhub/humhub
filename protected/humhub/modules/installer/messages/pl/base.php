@@ -73,7 +73,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Prawie gotowe. Wypełnij formularz dla utworzenia konta Administratora. Tym kontem można zarządzać całą siecią.',
     'Your MySQL password.' => 'Hasło MySQL',
     'Your MySQL username' => 'użytkownik MySQL',
-    'Your first sample space to discover the platform.' => 'Twoja pierwsza, przykładowa strefa do odkrywania platformy.',
+    'Your first sample Space to discover the platform.' => 'Twoja pierwsza, przykładowa strefa do odkrywania platformy.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     'Could not send the test email.' => '',

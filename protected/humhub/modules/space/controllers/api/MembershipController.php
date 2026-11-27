@@ -114,7 +114,7 @@ class MembershipController extends BaseController
 
         if (!$space->canJoin()) {
             throw new ForbiddenHttpException(
-                Yii::t('SpaceModule.base', 'You are not allowed to join this space!'),
+                Yii::t('SpaceModule.base', 'You are not allowed to join this Space!'),
             );
         }
 
@@ -158,7 +158,7 @@ class MembershipController extends BaseController
 
         if (!$space->canLeave()) {
             throw new ForbiddenHttpException(
-                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this space!'),
+                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this Space!'),
             );
         }
 

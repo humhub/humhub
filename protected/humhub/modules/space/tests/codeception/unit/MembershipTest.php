@@ -54,7 +54,7 @@ class MembershipTest extends HumHubDbTestCase
             $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)),
         ));
         $this->assertSame($space->createUrl('/space/manage/member/pending-approvals'), $notification->getUrl());
-        $this->assertSame($user1->displayName . ' requests membership for the space “Space 1”', $notification->asMailSubject());
+        $this->assertSame($user1->displayName . ' requests membership for the Space “Space 1”', $notification->asMailSubject());
         // without content: no Space name
         $this->assertSame($user1->displayName . ' requests membership for a Space.', $notification->asRedactedText());
 
@@ -156,11 +156,11 @@ class MembershipTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 3]);
         $this->assertSame($space->getUrl(), $notification->getUrl());
         $this->assertSame(
-            '<strong>' . User::findOne(['id' => 1])->displayName . '</strong> changed your role to <strong>Moderators</strong> in the space <strong>Space 3</strong>.',
+            '<strong>' . User::findOne(['id' => 1])->displayName . '</strong> changed your role to <strong>Moderators</strong> in the Space <strong>Space 3</strong>.',
             $notification->asWeb(),
         );
         $this->assertSame(
-            User::findOne(['id' => 1])->displayName . ' changed your role to “Moderators” in the space “Space 3”.',
+            User::findOne(['id' => 1])->displayName . ' changed your role to “Moderators” in the Space “Space 3”.',
             $notification->asMailSubject(),
         );
     }

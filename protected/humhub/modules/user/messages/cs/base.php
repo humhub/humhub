@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Kdo</strong> mě sleduje',
     '<strong>Following</strong>' => '<strong>Koho</strong> sleduji',
-    '<strong>Member</strong> in these spaces' => '<strong>Členem</strong> prostorů',
+    '<strong>Member</strong> in these Spaces' => '<strong>Členem</strong> prostorů',
     '<strong>Member</strong> of these Spaces' => '<strong>Člen</strong> těchto prostorů',
     '<strong>User</strong> tags' => '<strong>Štítky</strong> uživatele',
     'Action' => 'Akce',
@@ -104,7 +104,7 @@ return [
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',

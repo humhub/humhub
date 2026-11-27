@@ -83,7 +83,7 @@ $profileImageHeight = $container->image->defaultOptions['height'];
                 'deleteUrl' => $coverDeleteUrl,
                 'dropZone' => '.profile-banner-image-container',
                 'confirmBody' => $container instanceof Space
-                    ? Yii::t('SpaceModule.base', 'Do you really want to delete the space title image?')
+                    ? Yii::t('SpaceModule.base', 'Do you really want to delete the Space title image?')
                     : Yii::t('SpaceModule.base', 'Do you really want to delete your title image?'),
             ]) ?>
         <?php endif; ?>
@@ -96,7 +96,7 @@ $profileImageHeight = $container->image->defaultOptions['height'];
             <a data-ui-gallery="spaceHeader"
                href="<?= $container->image->getUrl([]) ?>"
                aria-label="<?= Html::encode($container instanceof Space
-                       ? Yii::t('SpaceModule.base', 'View space image of {name}', ['name' => $container->displayName])
+                       ? Yii::t('SpaceModule.base', 'View Space image of {name}', ['name' => $container->displayName])
                        : Yii::t('UserModule.base', 'View profile image of {name}', ['name' => $container->displayName])) ?>">
                 <?= $container->getProfileImage()->render($profileImageWidth - 10, [
                     'class' => 'img-profile-header-background profile-user-photo',
@@ -120,7 +120,7 @@ $profileImageHeight = $container->image->defaultOptions['height'];
                 'cropUrl' => $imageCropUrl,
                 'dropZone' => '.profile-user-photo-container',
                 'confirmBody' => $container instanceof Space
-                    ? Yii::t('SpaceModule.base', 'Do you really want to delete the space image?')
+                    ? Yii::t('SpaceModule.base', 'Do you really want to delete the Space image?')
                     : Yii::t('SpaceModule.base', 'Do you really want to delete your profile image?'),
             ]) ?>
         <?php endif; ?>

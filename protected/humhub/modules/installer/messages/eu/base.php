@@ -68,7 +68,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Ia amaitu duzu. Urrats honetan, admin kontua sortzeko formularioa bete behar da. Kontu honekin sare osoa kudeatu daiteke.',
     'Your MySQL password.' => 'MySQL pasahitza.',
     'Your MySQL username' => 'MySQL zure erabiltzaile izena',
-    'Your first sample space to discover the platform.' => 'Zure lehen lagin-espazioa plataforma aurkitzeko.',
+    'Your first sample Space to discover the platform.' => 'Zure lehen lagin-espazioa plataforma aurkitzeko.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

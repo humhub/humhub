@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => 'دنبال‌کننده‌های <strong>کاربر</strong>',
     '<strong>Following</strong>' => 'کاربر <strong>دنبال شونده</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>عضو</strong> در این انجمن',
+    '<strong>Member</strong> in these Spaces' => '<strong>عضو</strong> در این انجمن',
     '<strong>User</strong> tags' => 'تگ‌های <strong>کاربر</strong>',
     'Action' => 'عمل',
     'Confirm new password' => 'تاييد پسورد جديد',
@@ -76,7 +76,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

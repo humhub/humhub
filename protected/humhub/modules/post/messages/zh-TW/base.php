@@ -7,8 +7,7 @@ return [
   'Post' => '貼文',
   'Post could not be saved!' => '貼文無法儲存!',
   'The post must not be empty!' => '貼文不能是空的!',
-  'This space is archived.' => '此Space已經被封存。',
+  'This Space is archived.' => '此Space已經被封存。',
   'Title' => '稱謂',
   'What\'s on your mind?' => '有些什麼想法嗎?',
-  'post' => '貼文',
 ];

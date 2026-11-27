@@ -96,7 +96,7 @@ class SpaceMemberTable extends DataTable
 
         $actions[] = new RowAction(
             'remove',
-            Yii::t('SpaceModule.manage', 'Remove from space'),
+            Yii::t('SpaceModule.manage', 'Remove from Space'),
             RowAction::KIND_REQUEST,
             $member('/space/api/member/remove'),
             icon: 'user-minus',

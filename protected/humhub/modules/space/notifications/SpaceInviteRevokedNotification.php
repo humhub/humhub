@@ -44,7 +44,7 @@ final class SpaceInviteRevokedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('SpaceModule.notification', '{displayName} revoked your invitation for the space {spaceName}', [
+        return Yii::t('SpaceModule.notification', '{displayName} revoked your invitation for the Space {spaceName}', [
             'displayName' => $params['displayName'],
             'spaceName' => $params['spaceName'],
         ]);

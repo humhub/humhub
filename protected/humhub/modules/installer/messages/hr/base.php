@@ -57,7 +57,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Skoro si gotov. U ovom koraku morate ispuniti obrazac za izradu računa administratora. Pomoću ovog računa možete upravljati cijelom mrežom.',
     'Your MySQL password.' => 'Vaša MySQL lozinka.',
     'Your MySQL username' => 'Vaše MySQL korisničko ime',
-    'Your first sample space to discover the platform.' => 'Vaš prvi primjer prostora za otkrivanje platforme.',
+    'Your first sample Space to discover the platform.' => 'Vaš prvi primjer prostora za otkrivanje platforme.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',
