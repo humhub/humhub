@@ -25,7 +25,7 @@ AdminAsset::register($this);
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')) . ' ' . ModalButton::primary(Yii::t('AdminModule.modules', 'Save'))->action('admin.moduleSetAsDefault', Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id])),
 ]) ?>
 
-    <p><?= Yii::t('AdminModule.modules', 'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".'); ?></p>
+    <p><?= Yii::t('AdminModule.modules', 'Here you can choose whether or not a module should be automatically activated on a Space or user profile. If the module should be activated, choose "always activated".'); ?></p>
     <br>
 
     <div class="row">

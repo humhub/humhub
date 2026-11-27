@@ -29,7 +29,7 @@ class InviteCest
         $I->click('Send', '#globalModal');
 
         $I->amUser2(true);
-        $I->seeInNotifications('Peter Tester invited you to the space Space 2', true);
+        $I->seeInNotifications('Peter Tester invited you to the Space Space 2', true);
         $I->waitForText('Accept Invite', 10, '.controls-header');
         $I->dontSee('Admin Space 2 Post Private', '#wallStream');
         $I->click('Accept Invite', '.controls-header');
@@ -41,7 +41,7 @@ class InviteCest
         $I->dontSee('Accept Invite');
 
         $I->amUser1(true);
-        $I->seeInNotifications('Sara Tester accepted your invite for the space Space 2', true);
+        $I->seeInNotifications('Sara Tester accepted your invite for the Space Space 2', true);
         $I->waitForText('Sara Tester joined this Space.');
     }
 
@@ -61,7 +61,7 @@ class InviteCest
         $I->click('Send', '#globalModal');
 
         $I->amUser2(true);
-        $I->seeInNotifications('Peter Tester invited you to the space Space 2', true);
+        $I->seeInNotifications('Peter Tester invited you to the Space Space 2', true);
         $I->waitForText('Accept Invite', 10, '.controls-header');
 
         $I->click('.dropdown-toggle', '.controls-header');
@@ -70,7 +70,7 @@ class InviteCest
         $I->waitForText('Join');
 
         $I->amUser1(true);
-        $I->seeInNotifications('Sara Tester declined your invite for the space Space 2');
+        $I->seeInNotifications('Sara Tester declined your invite for the Space Space 2');
     }
 
     /**
@@ -101,7 +101,7 @@ class InviteCest
         $I->waitForTableRowRemoved('Sara Tester');
 
         $I->amUser2(true);
-        $I->seeInNotifications('Peter Tester revoked your invitation for the space Space 2');
+        $I->seeInNotifications('Peter Tester revoked your invitation for the Space Space 2');
 
     }
 }

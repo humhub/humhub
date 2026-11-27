@@ -34,7 +34,7 @@ class AdminSpaceCardActions extends CardHeaderActions
         if (Yii::$app->user->can([CreatePublicSpace::class, CreatePrivateSpace::class])) {
             $this->addEntry(new MenuLink([
                 'id' => 'add-space',
-                'label' => Yii::t('AdminModule.space', 'Add new space'),
+                'label' => Yii::t('AdminModule.space', 'Add new Space'),
                 'url' => ['/space/create'],
                 'icon' => 'plus',
                 'isPrimary' => true,

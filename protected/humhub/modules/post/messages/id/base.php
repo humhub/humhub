@@ -7,8 +7,7 @@ return [
   'Post' => 'Kirim',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'Ruang ini di arsipkan',
+  'This Space is archived.' => 'Ruang ini di arsipkan',
   'Title' => 'Gelar',
   'What\'s on your mind?' => '',
-  'post' => 'Kirim',
 ];

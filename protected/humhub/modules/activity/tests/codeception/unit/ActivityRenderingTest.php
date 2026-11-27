@@ -77,10 +77,10 @@ class ActivityRenderingTest extends HumHubDbTestCase
 
         $activity = TestLegacyContentActivity::send($post);
 
-        $this->assertSame('<strong>Sara Tester</strong> post "Tom &amp; Jerry" [web]', $activity->asWeb());
-        $this->assertSame('<strong>Sara Tester</strong> <strong>post</strong> "Tom &amp; Jerry" [html]', $activity->asMailHtml());
+        $this->assertSame('<strong>Sara Tester</strong> Post "Tom &amp; Jerry" [web]', $activity->asWeb());
+        $this->assertSame('<strong>Sara Tester</strong> <strong>Post</strong> "Tom &amp; Jerry" [html]', $activity->asMailHtml());
         // decoded since 1.20, like notifications
-        $this->assertSame('Sara Tester post "Tom & Jerry" [text]', $activity->asMailText());
+        $this->assertSame('Sara Tester Post "Tom & Jerry" [text]', $activity->asMailText());
     }
 
     public function testPlainTextMailsDecodeTheContentInfo()
@@ -91,14 +91,14 @@ class ActivityRenderingTest extends HumHubDbTestCase
         $this->assertTrue($post->save());
 
         $created = ActivityManager::load(Activity::findOne(['class' => ContentCreatedActivity::class, 'content_id' => $post->content->id]));
-        $this->assertSame('Sara Tester created a new post "Tom <b>& "Jerry"</b>".', $created->asMailText());
+        $this->assertSame('Sara Tester created a new Post "Tom <b>& "Jerry"</b>".', $created->asMailText());
         $this->assertStringContainsString('Tom &lt;b&gt;&amp; &quot;Jerry&quot;&lt;/b&gt;', $created->asWeb());
         $this->assertStringContainsString('Tom &lt;b&gt;&amp; &quot;Jerry&quot;&lt;/b&gt;', $created->asMailHtml());
 
         $this->becomeUser('User3');
         (new LikeService($post))->like();
         $like = ActivityManager::load(Activity::findOne(['class' => LikeActivity::class, 'content_id' => $post->content->id]));
-        $this->assertSame('Andreas Tester likes post "Tom <b>& "Jerry"</b>".', $like->asMailText());
+        $this->assertSame('Andreas Tester likes Post "Tom <b>& "Jerry"</b>".', $like->asMailText());
         $this->assertStringContainsString('Tom &lt;b&gt;&amp; &quot;Jerry&quot;&lt;/b&gt;', $like->asWeb());
     }
 
@@ -146,18 +146,18 @@ class ActivityRenderingTest extends HumHubDbTestCase
         $this->assertTrue($post->save());
 
         $created = ActivityManager::load(Activity::findOne(['class' => ContentCreatedActivity::class, 'content_id' => $post->content->id]));
-        $this->assertSame('Sara Tester created a new post.', $created->asRedactedText());
-        $this->assertSame('<strong>Sara Tester</strong> created a new post.', $created->asRedactedHtml());
+        $this->assertSame('Sara Tester created a new Post.', $created->asRedactedText());
+        $this->assertSame('<strong>Sara Tester</strong> created a new Post.', $created->asRedactedHtml());
 
         $this->becomeUser('User3');
         (new LikeService($post))->like();
         $like = ActivityManager::load(Activity::findOne(['class' => LikeActivity::class, 'content_id' => $post->content->id]));
-        $this->assertSame('Andreas Tester likes a post.', $like->asRedactedText());
+        $this->assertSame('Andreas Tester likes a Post.', $like->asRedactedText());
 
         $comment = new Comment(['message' => 'Secret comment', 'content_id' => $post->content->id]);
         $this->assertTrue($comment->save());
         $commented = ActivityManager::load(Activity::findOne(['class' => NewCommentActivity::class, 'content_id' => $post->content->id]));
-        $this->assertSame('Andreas Tester commented on a post.', $commented->asRedactedText());
+        $this->assertSame('Andreas Tester commented on a Post.', $commented->asRedactedText());
 
         (new LikeService($comment))->like();
         $commentLike = ActivityManager::load(Activity::find()->andWhere(['class' => LikeActivity::class, 'content_id' => $post->content->id])->orderBy(['id' => SORT_DESC])->one());

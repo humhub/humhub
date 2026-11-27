@@ -87,14 +87,14 @@ export default {
                 return {
                     // The solid star Font Awesome drew: Tabler's plain `star` is an outline.
                     icon: 'ti ti-star-filled',
-                    title: i18n.t('SpaceModule.chooser', 'You are following this space'),
+                    title: i18n.t('SpaceModule.chooser', 'You are following this Space'),
                 };
             }
 
             if (this.space.archived) {
                 return {
                     icon: 'ti ti-history',
-                    title: i18n.t('SpaceModule.chooser', 'This space is archived'),
+                    title: i18n.t('SpaceModule.chooser', 'This Space is archived'),
                 };
             }
 

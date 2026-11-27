@@ -7,8 +7,7 @@ return [
   'Post' => 'Postează',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'Acest spațiu este arhivat.',
+  'This Space is archived.' => 'Acest spațiu este arhivat.',
   'Title' => 'Titlul',
   'What\'s on your mind?' => '',
-  'post' => '',
 ];

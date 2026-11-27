@@ -7,8 +7,7 @@ return [
   'Post' => 'Publicació',
   'Post could not be saved!' => 'La publicació no es pot desar!',
   'The post must not be empty!' => 'La publicació no pot estar buída!',
-  'This space is archived.' => 'Aquest espai ha sigut arxivat',
+  'This Space is archived.' => 'Aquest espai ha sigut arxivat',
   'Title' => 'Títol',
   'What\'s on your mind?' => 'Què et passa pel cap?',
-  'post' => 'la publicació',
 ];

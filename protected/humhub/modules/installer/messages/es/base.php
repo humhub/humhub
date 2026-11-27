@@ -71,7 +71,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Casi has terminado. En este paso tienes que rellenar el formulario para crear una cuenta de administrador. Con esta cuenta podrás gestionar todo el sistema.',
     'Your MySQL password.' => 'Tu contraseña MySQL',
     'Your MySQL username' => 'Tu nombre de usuario MySQL',
-    'Your first sample space to discover the platform.' => 'Tu primer espacio para descubrir la plataforma.',
+    'Your first sample Space to discover the platform.' => 'Tu primer espacio para descubrir la plataforma.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

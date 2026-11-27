@@ -61,21 +61,21 @@ return [
             [
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Space</strong>'),
-                    'description' => Yii::t('TourModule.spaces', "Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive."),
+                    'description' => Yii::t('TourModule.spaces', "Once you have joined or created a new Space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a Space, thereby making the work process more productive."),
                 ],
             ],
             [
                 'element' => ".layout-nav-container .panel",
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Space</strong> navigation menu'),
-                    'description' => Yii::t('TourModule.spaces', 'This is where you can navigate the space – where you find which modules are active or available for the particular space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the space admin can manage the space\'s modules.'),
+                    'description' => Yii::t('TourModule.spaces', 'This is where you can navigate the Space – where you find which modules are active or available for the particular Space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the Space admin can manage the space\'s modules.'),
                 ],
             ],
             [
                 'element' => "#space-header-controls-menu",
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Space</strong> preferences'),
-                    'description' => Yii::t('TourModule.spaces', 'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.'),
+                    'description' => Yii::t('TourModule.spaces', 'This menu is only visible for Space admins. Here you can manage your Space settings, add/block members and activate/deactivate tools for this Space.'),
                 ],
             ],
             [
@@ -96,21 +96,21 @@ return [
                 'element' => ".panel-activities",
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Most recent</strong> activities'),
-                    'description' => Yii::t('TourModule.spaces', 'To keep you up to date, other users\' most recent activities in this space will be displayed here.'),
+                    'description' => Yii::t('TourModule.spaces', 'To keep you up to date, other users\' most recent activities in this Space will be displayed here.'),
                 ],
             ],
             [
                 'element' => "#space-members-panel",
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Space</strong> members'),
-                    'description' => Yii::t('TourModule.spaces', 'All users who are a member of this space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.'),
+                    'description' => Yii::t('TourModule.spaces', 'All users who are a member of this Space will be displayed here.<br /><br />New members can be added by anyone who has been given access rights by the admin.'),
                 ],
             ],
             [
                 'popover' => [
                     'title' => Yii::t('TourModule.spaces', '<strong>Yay! You\'re done.</strong>'),
                     'description'
-                        => Yii::t('TourModule.spaces', "That's it for the space guide.<br><br>To carry on with the user profile guide, click here: ")
+                        => Yii::t('TourModule.spaces', "That's it for the Space guide.<br><br>To carry on with the user profile guide, click here: ")
                         . Link::to(Yii::t("TourModule.spaces", "<strong>Profile Guide</strong>"))
                             ->encodeLabel(false)
                             ->action('tour.next')

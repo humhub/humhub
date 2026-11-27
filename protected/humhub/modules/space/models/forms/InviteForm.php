@@ -275,7 +275,7 @@ class InviteForm extends Model
                         $attribute,
                         Yii::t(
                             'SpaceModule.base',
-                            "User '{username}' is already a member of this space!",
+                            "User '{username}' is already a member of this Space!",
                             ['username' => $user->getDisplayName()],
                         ),
                     );

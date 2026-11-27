@@ -94,7 +94,7 @@ final readonly class MessageParam
 
     /**
      * A content (or content addon, e.g. a comment): its type and a preview of its text, e.g.
-     * `post "Release notes…"` - the preview as short HTML for HTML, as plain text for plain text,
+     * `Post "Release notes…"` - the preview as short HTML for HTML, as plain text for plain text,
      * as long as the channel allows (short in the web, longer in a mail). Its type alone when it
      * has no text (e.g. a post of an image only) and in a privacy mode that hides content.
      *

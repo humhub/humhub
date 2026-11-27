@@ -35,7 +35,7 @@ final class SpaceApprovalAcceptedNotification extends BaseNotification
      */
     protected function getMessage(array $params): string
     {
-        return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the space {spaceName}', [
+        return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the Space {spaceName}', [
             'displayName' => $params['displayName'],
             'spaceName' => $params['spaceName'],
         ]);

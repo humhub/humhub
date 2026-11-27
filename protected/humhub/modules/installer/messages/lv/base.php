@@ -13,7 +13,7 @@ return [
     'We\'re looking for great slogans of famous brands. Maybe you can come up with some samples?' => 'Mēs meklējam lieliskus saukļus slaveniem brendiem. Varbūt tu vari izdomāt dažus paraugus?',
     'Welcome Space' => 'Laipni Lūdzu',
     'Yay! I\'ve just installed HumHub :sunglasses:' => 'Jēē! Es tikko uzinstalēju HumHub :sunglasses:',
-    'Your first sample space to discover the platform.' => 'Tava pirmā parauga vieta lai izpētītu platformu.',
+    'Your first sample Space to discover the platform.' => 'Tava pirmā parauga vieta lai izpētītu platformu.',
     '<strong>Admin</strong> Account' => '',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Configuration</strong>' => '',

@@ -194,7 +194,7 @@ class ActivityTest extends HumHubDbTestCase
         $this->assertNotNull($record, 'Activity record persisted');
 
         $this->assertEquals(
-            '<strong>Sara Tester</strong> created a new <strong>post</strong> "Hello World!".',
+            '<strong>Sara Tester</strong> created a new <strong>Post</strong> "Hello World!".',
             ActivityManager::load($record)->asMailHtml(),
         );
     }

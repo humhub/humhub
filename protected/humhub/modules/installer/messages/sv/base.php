@@ -71,7 +71,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Du är nästan klar. I detta steg måste du fylla i formuläret för att skapa ett administratörskonto. Med detta konto kan du hantera hela forumet.',
     'Your MySQL password.' => 'Ditt MySQL-lösenord.',
     'Your MySQL username' => 'Ditt MySQL-användarnamn',
-    'Your first sample space to discover the platform.' => 'Ditt första provforum för att upptäcka plattformen.',
+    'Your first sample Space to discover the platform.' => 'Ditt första provforum för att upptäcka plattformen.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

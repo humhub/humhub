@@ -14,6 +14,6 @@ return [
     'This is your public user profile, which can be seen by any registered user.' => 'Tämä on sinun julkinen profiilisi, jonka voi nähdä jokainen rekisteröitynyt käyttäjä.',
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Lataa uusi profiilikuva napsauttamalla tätä tai vetämällä ja pudottamalla se tähän. Samalla tavalla voit päivittää kansikuvasi.',
     'You\'ve completed the user profile guide!' => 'Olet suorittanut kierroksen!',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => '',
 ];

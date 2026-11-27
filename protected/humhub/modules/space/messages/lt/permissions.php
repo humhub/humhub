@@ -2,7 +2,7 @@
 return array (
   'Allows the user to create private content' => 'Leidžia naudotojui kurti privatų turinį',
   'Allows the user to create public content' => 'Leidžia naudotojui kurti viešąjį turinį',
-  'Allows the user to invite new members to the space' => 'Leidžia naudotojui pakviesti naujus narius į erdvę',
+  'Allows the user to invite new members to the Space' => 'Leidžia naudotojui pakviesti naujus narius į erdvę',
   'Can Access \'Spaces\'' => 'Gali pasiekti "Erdves"',
   'Can access the \'Spaces\' section.' => 'Galite patekti į skyrių "Erdvės".',
   'Can create Spaces visible to all members.' => 'Gali kurti visiems nariams matomas Erdves.',

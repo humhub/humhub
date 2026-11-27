@@ -7,8 +7,7 @@ return [
   'Post' => '投稿',
   'Post could not be saved!' => '投稿を保存出来ませんでした',
   'The post must not be empty!' => '投稿は空にしないでください',
-  'This space is archived.' => 'このスペースはアーカイブされています。',
+  'This Space is archived.' => 'このスペースはアーカイブされています。',
   'Title' => 'タイトル',
   'What\'s on your mind?' => '何を考えてる？',
-  'post' => '投稿',
 ];

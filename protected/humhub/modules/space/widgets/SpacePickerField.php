@@ -36,7 +36,7 @@ class SpacePickerField extends ContentContainerPickerField
         $allowMultiple = $this->maxSelection !== 1;
         $result['placeholder'] = Yii::t('SpaceModule.chooser', 'Select {n,plural,=1{space} other{spaces}}', ['n' => ($allowMultiple) ? 2 : 1]);
         $result['placeholder-more'] = Yii::t('SpaceModule.chooser', 'Add Space');
-        $result['no-result'] = Yii::t('SpaceModule.chooser', 'No spaces found for the given query');
+        $result['no-result'] = Yii::t('SpaceModule.chooser', 'No Spaces found for the given query');
 
         if ($this->maxSelection) {
             $result['maximum-selected'] = Yii::t('SpaceModule.chooser', 'This field only allows a maximum of {n,plural,=1{# space} other{# spaces}}', ['n' => $this->maxSelection]);

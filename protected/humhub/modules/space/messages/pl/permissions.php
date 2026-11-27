@@ -2,7 +2,7 @@
 return array (
   'Allows the user to create private content' => 'Zezwól użytkownikowi na tworzenie prywatnych treści',
   'Allows the user to create public content' => 'Zezwól użytkownikowi na tworzenie publicznych treści',
-  'Allows the user to invite new members to the space' => 'Zezwól użytkownikowi na zapraszanie nowych członków do strefy',
+  'Allows the user to invite new members to the Space' => 'Zezwól użytkownikowi na zapraszanie nowych członków do strefy',
   'Can Access \'Spaces\'' => 'Ma dostęp do "Stref"',
   'Can access the \'Spaces\' section.' => 'Ma dostęp do sekcji "Strefy".',
   'Can create Spaces visible to all members.' => 'Może tworzyć publiczne strefy. (Wyświetlane w katalogu)',

@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>フォロワー</strong>',
     '<strong>Following</strong>' => '<strong>フォロー中</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>スペース</strong> 一覧',
+    '<strong>Member</strong> in these Spaces' => '<strong>スペース</strong> 一覧',
     '<strong>Member</strong> of these Spaces' => '<strong>スペース</strong>',
     '<strong>User</strong> tags' => '<strong>ユーザー</strong> タグ',
     'Action' => 'アクション',
@@ -111,7 +111,7 @@ return [
     'Connect {provider} account' => '',
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Local' => '',

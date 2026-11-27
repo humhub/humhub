@@ -7,7 +7,7 @@
 return [
     'Allows the user to create private content' => 'Дозволити користувачу створювати приватний зміст',
     'Allows the user to create public content' => 'Дозволити користувачу створювати публічний зміст',
-    'Allows the user to invite new members to the space' => 'Дозволити користувачю запрошувати нових членів до спільноти',
+    'Allows the user to invite new members to the Space' => 'Дозволити користувачю запрошувати нових членів до спільноти',
     'Can Access \'Spaces\'' => 'Має Доступ \'Спільноти\'',
     'Can access the \'Spaces\' section.' => 'Має доступ до секції \'Спільноти\'.',
     'Can create Spaces visible to all members.' => 'Може створювати Спільноти видимі всім членам.',

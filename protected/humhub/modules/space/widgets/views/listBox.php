@@ -21,7 +21,7 @@ use yii\data\Pagination;
 ]) ?>
 
     <?php if (count($spaces) === 0) : ?>
-        <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
+        <p><?= Yii::t('SpaceModule.base', 'No Spaces found.'); ?></p>
     <?php endif; ?>
 
     <div id="spacelist-content" class="hh-list">

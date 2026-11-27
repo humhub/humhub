@@ -4,8 +4,8 @@ return [
     'Space has been unarchived' => 'Сообщество было разархивировано',
     'Space member joined' => 'Пользователь присоединился к сообществу',
     'Space member left' => 'Пользователь покинул сообщество',
-    'Whenever a member leaves one of your spaces.' => 'Всякий раз, когда пользователь покидает одно из ваших сообществ.',
-    'Whenever a new member joined one of your spaces.' => 'Всякий раз, когда пользователь присоединяется к одному из ваших сообществ.',
-    'Whenever a space is archived.' => 'Всякий раз, когда сообщество архивируется.',
-    'Whenever a space is unarchived.' => 'Всякий раз, когда сообщество разархивируется.',
+    'Whenever a member leaves one of your Spaces.' => 'Всякий раз, когда пользователь покидает одно из ваших сообществ.',
+    'Whenever a new member joined one of your Spaces.' => 'Всякий раз, когда пользователь присоединяется к одному из ваших сообществ.',
+    'Whenever a Space is archived.' => 'Всякий раз, когда сообщество архивируется.',
+    'Whenever a Space is unarchived.' => 'Всякий раз, когда сообщество разархивируется.',
 ];

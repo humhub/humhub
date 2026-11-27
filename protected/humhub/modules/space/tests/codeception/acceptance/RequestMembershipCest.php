@@ -42,13 +42,13 @@ class RequestMembershipCest
         $I->waitForText('Request Membership', 10, self::REQUEST_MODAL);
         $I->fillField('#requestmembershipform-message', 'Hi, I want to join this space.');
         $I->click('Send', self::REQUEST_MODAL);
-        $I->waitForText('Your request was successfully submitted to the space administrators.');
+        $I->waitForText('Your request was successfully submitted to the Space administrators.');
         $I->click('Close', self::REQUEST_MODAL);
 
         $I->waitForText('Pending');
 
         $I->amAdmin(true);
-        $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
+        $I->seeInNotifications('Peter Tester requests membership for the Space Space 1', true);
 
         $I->waitForText('Pending Approvals', 10, '.nav-pills .active');
         $I->waitForText('Hi, I want to join this space.', 10, '.data-table');
@@ -57,7 +57,7 @@ class RequestMembershipCest
 
         $I->amUser1(true);
 
-        $I->seeInNotifications('Admin Tester approved your membership for the space Space 1', true);
+        $I->seeInNotifications('Admin Tester approved your membership for the Space Space 1', true);
         $I->waitForText('User 1 Space 1 Post Private', 10, '#wallStream');
     }
 
@@ -77,13 +77,13 @@ class RequestMembershipCest
         $I->waitForText('Request Membership', 10, self::REQUEST_MODAL);
         $I->fillField('#requestmembershipform-message', 'Hi, I want to join this space.');
         $I->click('Send', self::REQUEST_MODAL);
-        $I->waitForText('Your request was successfully submitted to the space administrators.');
+        $I->waitForText('Your request was successfully submitted to the Space administrators.');
         $I->click('Close', self::REQUEST_MODAL);
 
         $I->waitForText('Pending');
 
         $I->amAdmin(true);
-        $I->seeInNotifications('Peter Tester requests membership for the space Space 1', true);
+        $I->seeInNotifications('Peter Tester requests membership for the Space Space 1', true);
 
         $I->waitForText('Pending Approvals', 10, '.nav-pills .active');
 
@@ -97,11 +97,11 @@ class RequestMembershipCest
 
         $I->runTableRowAction('Peter Tester', 'Decline', true);
         $I->waitForTableRowRemoved('Peter Tester');
-        $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
+        $I->dontSeeInNotifications('Peter Tester requests membership for the Space Space 1');
 
         $I->amUser1(true);
 
-        $I->seeInNotifications('Admin Tester declined your membership request for the space Space 1', true);
+        $I->seeInNotifications('Admin Tester declined your membership request for the Space Space 1', true);
         $I->waitForElementVisible(self::JOIN_BUTTON);
     }
 
@@ -121,7 +121,7 @@ class RequestMembershipCest
         $I->waitForText('Request Membership', 10, self::REQUEST_MODAL);
         $I->fillField('#requestmembershipform-message', 'Hi, I want to join this space.');
         $I->click('Send', self::REQUEST_MODAL);
-        $I->waitForText('Your request was successfully submitted to the space administrators.');
+        $I->waitForText('Your request was successfully submitted to the Space administrators.');
         $I->click('Close', self::REQUEST_MODAL);
 
         $I->waitForText('Pending');
@@ -133,7 +133,7 @@ class RequestMembershipCest
         $I->waitForText('Join', 10, self::JOIN_BUTTON);
 
         $I->amAdmin(true);
-        $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
+        $I->dontSeeInNotifications('Peter Tester requests membership for the Space Space 1');
         $I->amOnSpace1();
         $I->dontSeeElement('.content-card-danger');
 

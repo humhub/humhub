@@ -77,7 +77,7 @@ class MembershipController extends ContentContainerController
             'fillUser' => true,
             'disabledText' => Yii::t(
                 'SpaceModule.base',
-                'This user is not a member of this space.',
+                'This user is not a member of this Space.',
             ),
         ]);
     }
@@ -116,7 +116,7 @@ class MembershipController extends ContentContainerController
             'fillUser' => true,
             'disabledText' => Yii::t(
                 'SpaceModule.base',
-                'This user is already a member of this space.',
+                'This user is already a member of this Space.',
             ),
         ]));
     }

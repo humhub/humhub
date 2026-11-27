@@ -19,12 +19,12 @@ use humhub\widgets\form\ActiveForm;
     'tabs' => new DefaultMenu(['space' => $space]),
 ]) ?>
 <?php ContentCard::begin([
-    'title' => Yii::t('SpaceModule.manage', 'Delete space'),
+    'title' => Yii::t('SpaceModule.manage', 'Delete Space'),
     'backUrl' => $space->createUrl('advanced'),
     'backLabel' => Yii::t('SpaceModule.manage', 'Back to advanced settings'),
 ]) ?>
-    <p><?= Yii::t('SpaceModule.manage', 'Are you sure, that you want to delete this space? All published content will be removed!'); ?></p>
-    <p><?= Yii::t('SpaceModule.manage', 'Please type the name of the space to proceed.'); ?></p>
+    <p><?= Yii::t('SpaceModule.manage', 'Are you sure, that you want to delete this Space? All published content will be removed!'); ?></p>
+    <p><?= Yii::t('SpaceModule.manage', 'Please type the name of the Space to proceed.'); ?></p>
 
     <?php $form = ActiveForm::begin(); ?>
 

@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Usuarios</strong> que le siguen',
     '<strong>Following</strong>' => '<strong>Usuarios</strong> que sigue',
-    '<strong>Member</strong> in these spaces' => '<strong>Espacios</strong> d\'os que ye miembro',
+    '<strong>Member</strong> in these Spaces' => '<strong>Espacios</strong> d\'os que ye miembro',
     '<strong>User</strong> tags' => '<strong>Etiquetas</strong> de l\'usuario',
     'Confirm new password' => 'Confirmar a nueva clau',
     'Connect account' => 'Conectar cuenta',
@@ -63,7 +63,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

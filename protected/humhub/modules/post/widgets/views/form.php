@@ -34,7 +34,7 @@ $titleMode = Yii::$app->getModule('post')->getTitleMode();
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',
     'disabled' => (property_exists(Yii::$app->controller, 'contentContainer') && Yii::$app->controller->contentContainer->isArchived()),
-    'disabledText' => Yii::t("PostModule.base", "This space is archived."),
+    'disabledText' => Yii::t("PostModule.base", "This Space is archived."),
     'mentioningUrl' => $mentioningUrl,
 ])->label(false) ?>
 

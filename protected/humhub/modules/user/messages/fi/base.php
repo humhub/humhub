@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Nämä</strong> käyttäjät seuraavat',
     '<strong>Following</strong>' => '<strong>Seuraa</strong> näitä käyttäjiä',
-    '<strong>Member</strong> in these spaces' => '<strong>Jäsenenä</strong> näillä sivuilla',
+    '<strong>Member</strong> in these Spaces' => '<strong>Jäsenenä</strong> näillä sivuilla',
     '<strong>User</strong> tags' => '<strong>Käyttäjän</strong> tägit',
     'Action' => 'Toiminta',
     'Allows access to your about page with personal information' => 'Antaa pääsyn sivusi tietoja osioon',
@@ -86,7 +86,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

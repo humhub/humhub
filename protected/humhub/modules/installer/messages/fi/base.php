@@ -56,7 +56,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Melkein valmista. Sinun on vielä luotava ylläpitäjälle tili. Sillä voit hallita koko sivustoasi.',
     'Your MySQL password.' => 'MySQL salasana.',
     'Your MySQL username' => 'MySQL käyttäjätunnuksesi',
-    'Your first sample space to discover the platform.' => 'Tämä on ensimmäinen sivusi, täällä voit tutustua alustaan.',
+    'Your first sample Space to discover the platform.' => 'Tämä on ensimmäinen sivusi, täällä voit tutustua alustaan.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

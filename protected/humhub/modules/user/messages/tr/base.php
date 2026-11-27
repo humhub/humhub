@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Kullanıcı</strong> takipçileri',
     '<strong>Following</strong>' => '<strong>Takip edilen</strong> kullanıcı',
-    '<strong>Member</strong> in these spaces' => '<strong>Üye</strong> mekanları',
+    '<strong>Member</strong> in these Spaces' => '<strong>Üye</strong> mekanları',
     '<strong>User</strong> tags' => '<strong>Kullanıcı</strong> etiketler',
     'Action' => 'Eylem',
     'Allows access to your about page with personal information' => 'Kişisel bilgileriniz ile ilgili sayfanıza erişime izin verir',
@@ -76,7 +76,7 @@ return [
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

@@ -18,7 +18,7 @@ use humhub\widgets\form\ActiveForm;
 ]) ?>
 <?php ContentCard::begin([
     'title' => Yii::t('SpaceModule.manage', 'Owner'),
-    'description' => Yii::t('SpaceModule.manage', 'As owner of this space you can transfer this role to another administrator in space.'),
+    'description' => Yii::t('SpaceModule.manage', 'As owner of this Space you can transfer this role to another administrator in Space.'),
 ]) ?>
 
     <?php $form = ActiveForm::begin([]); ?>

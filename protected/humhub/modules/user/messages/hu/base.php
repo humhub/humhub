@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => 'A felhasználót <strong>követi</strong>',
     '<strong>Following</strong>' => 'A felhasználó <strong>követi</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Tag</strong> ezekben a közösségekben',
+    '<strong>Member</strong> in these Spaces' => '<strong>Tag</strong> ezekben a közösségekben',
     '<strong>Member</strong> of these Spaces' => 'Ezeknek a Közösségeknek a <strong>tagja</strong>',
     '<strong>User</strong> tags' => '<strong>Felhasználó</strong> cimkék',
     'Action' => 'Akció',
@@ -111,7 +111,7 @@ return [
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Local' => '',

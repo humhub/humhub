@@ -115,7 +115,7 @@ class Post extends ContentActiveRecord
      */
     public function getContentName()
     {
-        return Yii::t('PostModule.base', 'post');
+        return Yii::t('PostModule.base', 'Post');
     }
 
     /**

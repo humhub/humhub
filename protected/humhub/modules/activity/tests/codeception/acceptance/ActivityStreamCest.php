@@ -46,7 +46,7 @@ class ActivityStreamCest
 
         $I->waitForElementVisible('.activity-box-entry');
         $I->wait(1);
-        $I->see('Peter Tester created a new post "Activity test post!"', '.panel-activities');
+        $I->see('Peter Tester created a new Post "Activity test post!"', '.panel-activities');
 
         // ToDo: Reimplement click on Activity
         /*

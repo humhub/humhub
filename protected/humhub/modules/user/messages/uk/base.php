@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Послідовники</strong>',
     '<strong>Following</strong>' => '<strong>Слідую</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Член</strong> в цих спільнотах',
+    '<strong>Member</strong> in these Spaces' => '<strong>Член</strong> в цих спільнотах',
     '<strong>Member</strong> of these Spaces' => '<strong>Член</strong> цих Спільнот',
     '<strong>User</strong> tags' => '<strong>Користувача</strong> теги',
     'Action' => 'Дія',
@@ -94,7 +94,7 @@ return [
     'Did you forget your password?' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

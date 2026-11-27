@@ -19,10 +19,10 @@
 return [
     'Space has been archived' => '',
     'Space has been unarchived' => '',
-    'Whenever a space is archived.' => '',
-    'Whenever a space is unarchived.' => '',
+    'Whenever a Space is archived.' => '',
+    'Whenever a Space is unarchived.' => '',
     'Space member joined' => 'Anggota ruang bergabung',
     'Space member left' => 'Anggota ruang keluar',
-    'Whenever a member leaves one of your spaces.' => 'Kapanpun anggota dapat meninggalkan ruang kamu.',
-    'Whenever a new member joined one of your spaces.' => 'Kapanpun anggota dapat bergabung dengan ruang kamu',
+    'Whenever a member leaves one of your Spaces.' => 'Kapanpun anggota dapat meninggalkan ruang kamu.',
+    'Whenever a new member joined one of your Spaces.' => 'Kapanpun anggota dapat bergabung dengan ruang kamu',
 ];

@@ -155,7 +155,7 @@ export default {
             return i18n.t('SpaceModule.chooser', 'Search');
         },
         searchTitle() {
-            return i18n.t('SpaceModule.chooser', 'Search for spaces');
+            return i18n.t('SpaceModule.chooser', 'Search for Spaces');
         },
         createLabel() {
             return i18n.t('SpaceModule.chooser', 'Create Space');

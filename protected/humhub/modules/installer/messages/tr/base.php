@@ -56,7 +56,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Neredeyse bitti. Bu adımda bir yönetici hesabı oluşturmak için formu doldurmanız gerekmektedir. Bu hesapla tüm sosyal ağı yönetebilirsiniz.',
     'Your MySQL password.' => 'MySQL şifre',
     'Your MySQL username' => 'MySQL kullanıcı adı',
-    'Your first sample space to discover the platform.' => 'Platformu keşfetmek için ilk örnek mekanınız.',
+    'Your first sample Space to discover the platform.' => 'Platformu keşfetmek için ilk örnek mekanınız.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

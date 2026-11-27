@@ -3,7 +3,7 @@
 return [
     'Allows the user to create private content' => '',
     'Allows the user to create public content' => '',
-    'Allows the user to invite new members to the space' => '',
+    'Allows the user to invite new members to the Space' => '',
     'Can Access \'Spaces\'' => '',
     'Can access the \'Spaces\' section.' => '',
     'Can create Spaces visible to all members.' => '',

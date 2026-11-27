@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Buraya tıklayarak veya sürükle&bırak ile kolayca profil fotoğrafı yükleyebilirsin. Aynı şeyi kapak fotoğrafın için de yapabilirsin.',
     'You\'ve completed the user profile guide!' => 'Kullanıcı profil rehberini bitirdin!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Kullanıcı profil rehberini bitirdin!<br><br> Yönetim rehberine devam etmek için, buraya tıkla:<br /><br />',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Įkelkite profilio nuotrauką paspausdami čia arba drag&drop. Lygiai taip pat atnaujinkite ir viršelio nuotrauką.',
     'You\'ve completed the user profile guide!' => 'Jūs perskaitėte vartotojo profilio vadovą!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'Jūs perskaitėte vartotojo profilio vadovą!<br><br>Norint pereiti prie administravimo vadovo, spauskite čia:<br /><br />',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

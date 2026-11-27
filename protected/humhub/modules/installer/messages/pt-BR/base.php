@@ -83,7 +83,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Você está quase pronto. Nesta etapa, você deve preencher o formulário para criar uma conta de administrador. Com esta conta você pode gerenciar toda a rede.',
     'Your MySQL password.' => 'Senha do usuário do MySQL.',
     'Your MySQL username' => 'Usuário do MySQL criado para utilização pelo sistema.',
-    'Your first sample space to discover the platform.' => 'Seu primeiro espaço de exemplo para descobrir a plataforma.',
+    'Your first sample Space to discover the platform.' => 'Seu primeiro espaço de exemplo para descobrir a plataforma.',
     'Could not send the test email.' => '',
     'E-Mail <strong>Delivery</strong>' => '',
     'Please enter an email address to send the test message to.' => '',

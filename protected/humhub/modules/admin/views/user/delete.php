@@ -31,7 +31,7 @@ use humhub\widgets\Icon;
 
     <?php if (count($model->getOwningSpaces()) !== 0): ?>
 
-        <p><b><?= Yii::t('AdminModule.user', 'The user is the owner of these spaces:') ?></b></p>
+        <p><b><?= Yii::t('AdminModule.user', 'The user is the owner of these Spaces:') ?></b></p>
 
         <?php foreach ($model->getOwningSpaces() as $space): ?>
             <div class="d-flex">
@@ -45,7 +45,7 @@ use humhub\widgets\Icon;
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p><?= Yii::t('AdminModule.user', 'This user owns no spaces.'); ?></p>
+        <p><?= Yii::t('AdminModule.user', 'This user owns no Spaces.'); ?></p>
     <?php endif; ?>
 </div>
 

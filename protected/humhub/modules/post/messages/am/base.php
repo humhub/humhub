@@ -7,8 +7,7 @@ return [
   'Post' => '',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'ይህ ምህዳር ማህደር ላይ ሰፍሯል',
+  'This Space is archived.' => 'ይህ ምህዳር ማህደር ላይ ሰፍሯል',
   'Title' => 'ርዕስ',
   'What\'s on your mind?' => '',
-  'post' => '',
 ];

@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Pratioci</strong>',
     '<strong>Following</strong>' => '<strong>Prati</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>Član</strong> u ovim prostorima',
+    '<strong>Member</strong> in these Spaces' => '<strong>Član</strong> u ovim prostorima',
     '<strong>Member</strong> of these Spaces' => '<strong>Član</strong> ovog prostora Spaces',
     '<strong>User</strong> tags' => '<strong>Korisnikovi</strong> tagovi',
     'Action' => 'Akcija',
@@ -105,7 +105,7 @@ return [
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',

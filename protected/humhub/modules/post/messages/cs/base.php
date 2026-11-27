@@ -7,8 +7,7 @@ return [
   'Post' => 'Příspěvek',
   'Post could not be saved!' => 'Příspěvek nelze uložit!',
   'The post must not be empty!' => 'The post must not be empty!',
-  'This space is archived.' => 'Tento prostor archivován.',
+  'This Space is archived.' => 'Tento prostor archivován.',
   'Title' => 'Název',
   'What\'s on your mind?' => 'Co se vám honí hlavou?',
-  'post' => 'Příspěvek',
 ];

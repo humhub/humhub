@@ -117,7 +117,7 @@ class SpaceSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default space'),
+            'defaultSpaceGuid' => Yii::t('AdminModule.space', 'Default Space'),
             'defaultVisibility' => Yii::t('AdminModule.space', 'Default Visibility'),
             'defaultJoinPolicy' => Yii::t('AdminModule.space', 'Default Join Policy'),
             'defaultContentVisibility' => Yii::t('AdminModule.space', 'Default Content Visiblity'),
@@ -146,7 +146,7 @@ class SpaceSettingsForm extends Model
                 if ($spaceGuid != "") {
                     $space = Space::findOne(['guid' => $spaceGuid]);
                     if ($space == null) {
-                        $this->addError($attribute, Yii::t('AdminModule.space', "Invalid space"));
+                        $this->addError($attribute, Yii::t('AdminModule.space', "Invalid Space"));
                     }
                 }
             }

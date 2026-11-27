@@ -68,7 +68,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Már majdnem kész vagy. Ebben a lépésben ki kell töltened az adminisztrátori fiók létrehozásához szükséges űrlapot. A létrejött fiókkal az egész közösséget kezelheted.',
     'Your MySQL password.' => 'MySQL jelszó',
     'Your MySQL username' => 'MySQL felhasználónév',
-    'Your first sample space to discover the platform.' => 'Az első mintaközösséged a platform felfedezéséhez.',
+    'Your first sample Space to discover the platform.' => 'Az első mintaközösséged a platform felfedezéséhez.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     '<strong>Pretty URLs</strong>' => '',

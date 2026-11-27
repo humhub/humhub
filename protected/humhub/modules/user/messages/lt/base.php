@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Vartotojo</strong> sekėjai',
     '<strong>Following</strong>' => '<strong>Sekamas</strong> vartotojas',
-    '<strong>Member</strong> in these spaces' => '<strong>Narys</strong> šiose erdvėse',
+    '<strong>Member</strong> in these Spaces' => '<strong>Narys</strong> šiose erdvėse',
     '<strong>Member</strong> of these Spaces' => '<strong>Erdvių narys </strong>',
     '<strong>User</strong> tags' => '<strong>Vartotojo</strong> žymės',
     'Action' => 'Veiksmas',
@@ -110,7 +110,7 @@ return [
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Group Manager(s)' => '',

@@ -7,8 +7,7 @@ return [
   'Post' => '文章',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => '该空间已归档。',
+  'This Space is archived.' => '该空间已归档。',
   'Title' => '标题',
   'What\'s on your mind?' => '你想说些什么？',
-  'post' => '文章',
 ];

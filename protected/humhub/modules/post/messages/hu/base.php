@@ -7,8 +7,7 @@ return [
   'Post' => 'Bejegyzés',
   'Post could not be saved!' => 'A bejegyzést nem lehetett elmenteni!',
   'The post must not be empty!' => 'A bejegyzés nem lehet üres!',
-  'This space is archived.' => 'Ez egy archivált közösség.',
+  'This Space is archived.' => 'Ez egy archivált közösség.',
   'Title' => 'Megnevezés',
   'What\'s on your mind?' => 'Mi jár a fejedben?',
-  'post' => 'bejegyzés',
 ];

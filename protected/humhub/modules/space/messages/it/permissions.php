@@ -2,7 +2,7 @@
 return array (
   'Allows the user to create private content' => 'Permetti all\'utente di creare contenuti privati.',
   'Allows the user to create public content' => 'Consenti agli utenti di creare contenuti pubblici',
-  'Allows the user to invite new members to the space' => 'Consenti agli utenti di invitare nuovi membri a questo spazio',
+  'Allows the user to invite new members to the Space' => 'Consenti agli utenti di invitare nuovi membri a questo spazio',
   'Can Access \'Spaces\'' => 'Può accedere a "Spazi"',
   'Can access the \'Spaces\' section.' => 'Può accedere alla sezione \'Spazi\'.',
   'Can create Spaces visible to all members.' => 'Può creare spazi pubblici e visibili. (Elencati nella directory)',

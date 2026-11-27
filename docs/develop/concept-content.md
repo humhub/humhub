@@ -56,7 +56,7 @@ classes should be put under the `models` namespace of your module. Beside the ba
 your `ContentActiveRecord` class should at least implement the following fields and methods:
 
 - `moduleId` - id of the related module
-- `getContentName()` - short name/type of content
+- `getContentName()` - short name/type of content. It is a fixed term that starts with a capital letter ("Post", "Task", "Event"), because it is inserted into sentences as it is, e.g. "Anna likes your Post".
 - `getContentDescription()` - returns a short description of the content instance used to preview the content for example in activities etc.
 
 ```php

@@ -38,7 +38,7 @@ class InviteTest extends HumHubDbTestCase
         // the about page, which the invited user may open
         $this->assertSame($space->createUrl('/space/space/about'), $notification->getUrl());
         $this->assertSame(
-            '<strong>' . Yii::$app->user->identity->displayName . '</strong> invited you to the space <strong>Space 1</strong>',
+            '<strong>' . Yii::$app->user->identity->displayName . '</strong> invited you to the Space <strong>Space 1</strong>',
             $notification->asWeb(),
         );
         $this->assertEquals([NotificationBlock::button('View online', $notification->getEntryUrl())], $notification->getBlocks(new NotificationContext(MailTarget::ID)));

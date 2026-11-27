@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>يتابعه</strong>',
     '<strong>Following</strong>' => '<strong>يتابع</strong>',
-    '<strong>Member</strong> in these spaces' => '<strong>عضو</strong> في هذه المساحات',
+    '<strong>Member</strong> in these Spaces' => '<strong>عضو</strong> في هذه المساحات',
     '<strong>Member</strong> of these Spaces' => '<strong>عضو</strong> في هذه الباحات',
     '<strong>User</strong> tags' => 'علامات <strong>المستخدم</strong>',
     'Action' => 'عمل',
@@ -112,7 +112,7 @@ return [
     'Connect {provider} account' => '',
     'Could not load the user list.' => '',
     'Disconnect {provider} account' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Person' => '',

@@ -554,10 +554,10 @@ class MailSummaryTest extends HumHubDbTestCase
         $html = $mail->getSymfonyEmail()->getHtmlBody();
         $text = (string)$mail->getSymfonyEmail()->getTextBody();
 
-        $this->assertStringContainsString('<strong>Admin Tester</strong> created a new post.', $html);
-        $this->assertStringContainsString('<strong>Sara Tester</strong> commented on a post.', $html);
-        $this->assertStringContainsString('Admin Tester created a new post.', $text);
-        $this->assertStringContainsString('Sara Tester commented on a post.', $text);
+        $this->assertStringContainsString('<strong>Admin Tester</strong> created a new Post.', $html);
+        $this->assertStringContainsString('<strong>Sara Tester</strong> commented on a Post.', $html);
+        $this->assertStringContainsString('Admin Tester created a new Post.', $text);
+        $this->assertStringContainsString('Sara Tester commented on a Post.', $text);
         $this->assertStringContainsString('You have 1 unread notification', $text);
         foreach ([$html, $text] as $body) {
             $this->assertStringNotContainsString('Secret plans', $body);

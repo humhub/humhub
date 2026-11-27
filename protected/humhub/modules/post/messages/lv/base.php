@@ -7,8 +7,7 @@ return [
   'Post' => '',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'Šī vieta ir arhivēta.',
+  'This Space is archived.' => 'Šī vieta ir arhivēta.',
   'Title' => 'Nosaukums',
   'What\'s on your mind?' => '',
-  'post' => 'ieraksts',
 ];

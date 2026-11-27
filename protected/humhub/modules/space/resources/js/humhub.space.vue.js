@@ -347,7 +347,7 @@
         );
       },
       requestSentLabel() {
-        return vue.i18n.t("SpaceModule.base", "Your request was successfully submitted to the space administrators.");
+        return vue.i18n.t("SpaceModule.base", "Your request was successfully submitted to the Space administrators.");
       },
       messageLabel() {
         return vue.i18n.t("SpaceModule.base", "Your Message");
@@ -764,13 +764,13 @@
           return {
             // The solid star Font Awesome drew: Tabler's plain `star` is an outline.
             icon: "ti ti-star-filled",
-            title: vue.i18n.t("SpaceModule.chooser", "You are following this space")
+            title: vue.i18n.t("SpaceModule.chooser", "You are following this Space")
           };
         }
         if (this.space.archived) {
           return {
             icon: "ti ti-history",
-            title: vue.i18n.t("SpaceModule.chooser", "This space is archived")
+            title: vue.i18n.t("SpaceModule.chooser", "This Space is archived")
           };
         }
         return null;
@@ -948,7 +948,7 @@
         return vue.i18n.t("SpaceModule.chooser", "Search");
       },
       searchTitle() {
-        return vue.i18n.t("SpaceModule.chooser", "Search for spaces");
+        return vue.i18n.t("SpaceModule.chooser", "Search for Spaces");
       },
       createLabel() {
         return vue.i18n.t("SpaceModule.chooser", "Create Space");
@@ -1358,7 +1358,7 @@
     props: {
       // Rendered image of the space currently shown, empty outside a space.
       initialImageHtml: { type: String, default: "" },
-      // Rendered icon of the "My spaces" state.
+      // Rendered icon of the "My Spaces" state.
       noSpaceIconHtml: { type: String, default: "" }
     },
     data() {
@@ -1368,7 +1368,7 @@
     },
     computed: {
       noSpaceLabel() {
-        return vue.i18n.t("SpaceModule.chooser", "My spaces");
+        return vue.i18n.t("SpaceModule.chooser", "My Spaces");
       }
     },
     mounted() {

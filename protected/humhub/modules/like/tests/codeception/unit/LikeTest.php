@@ -58,7 +58,7 @@ class LikeTest extends HumHubDbTestCase
         $this->assertTrue($record->save());
         $html = NotificationManager::fromRecord($record)->asWeb();
 
-        $this->assertStringEndsWith('likes your post.', $html);
+        $this->assertStringEndsWith('likes your Post.', $html);
     }
 
     public function testLikesOnOnePostGroup()
@@ -129,7 +129,7 @@ class LikeTest extends HumHubDbTestCase
         $this->assertTrue((new LikeService($comment))->like());
 
         $this->assertEqualsLastEmailTo('user1@example.com');
-        $this->assertEqualsLastEmailSubject('Sara Tester likes your comment "Test comment".');
+        $this->assertEqualsLastEmailSubject('Sara Tester likes your Comment "Test comment".');
     }
 
     public function testDeleteLikesOnContentHardDelete()

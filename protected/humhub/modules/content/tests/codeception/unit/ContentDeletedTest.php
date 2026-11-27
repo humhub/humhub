@@ -44,13 +44,13 @@ class ContentDeletedTest extends HumHubDbTestCase
      */
     public function testContentTitleIsEncoded()
     {
-        $notification = $this->buildNotification('a reason', 'post "<img src=x onerror=alert(1)>"');
+        $notification = $this->buildNotification('a reason', 'Post "<img src=x onerror=alert(1)>"');
         $html = $notification->asWeb();
 
         $this->assertStringNotContainsString('<img src=x onerror=alert(1)>', $html);
         $this->assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $html);
         // plain text channels carry it unencoded
-        $this->assertStringContainsString('post "<img src=x onerror=alert(1)>"', $notification->asMailSubject());
+        $this->assertStringContainsString('Post "<img src=x onerror=alert(1)>"', $notification->asMailSubject());
         $this->assertSame('Your content has been deleted by ' . $notification->originator->displayName . '.', $notification->asRedactedText());
         // nothing to link to: no "View online" button
         $this->assertSame([], $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)));

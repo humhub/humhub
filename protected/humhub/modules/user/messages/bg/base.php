@@ -3,7 +3,7 @@
 return [
     '<strong>Followers</strong>' => '<strong>Последователи</strong>',
     '<strong>Following</strong>' => '<strong>Следващ</strong> потребител',
-    '<strong>Member</strong> in these spaces' => '<strong>Членува</strong> в тези потоци',
+    '<strong>Member</strong> in these Spaces' => '<strong>Членува</strong> в тези потоци',
     '<strong>User</strong> tags' => '<strong>Потребителски</strong> етикети',
     'Action' => 'Действие',
     'Allows access to your about page with personal information' => 'Позволи достъп до твоята страница с лична информация',
@@ -94,7 +94,7 @@ return [
     'Did you forget your password?' => '',
     'Disconnect {provider} account' => '',
     'Empty password cannot be saved!' => '',
-    'Enter a search, or name users or a space.' => '',
+    'Enter a search, or name users or a Space.' => '',
     'Filter by module' => '',
     'Filter by {tag}' => '',
     'Following (User)' => '',

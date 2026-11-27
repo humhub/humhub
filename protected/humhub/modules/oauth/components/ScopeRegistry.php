@@ -121,8 +121,8 @@ final class ScopeRegistry
             new Scope('notifications:write', Yii::t('OauthModule.base', 'Mark notifications as seen')),
             new Scope('users:read', Yii::t('OauthModule.base', 'Read people and profiles')),
             new Scope('users:write', Yii::t('OauthModule.base', 'Follow people and manage friendships')),
-            new Scope('spaces:read', Yii::t('OauthModule.base', 'Read spaces and memberships')),
-            new Scope('spaces:write', Yii::t('OauthModule.base', 'Join, leave and follow spaces')),
+            new Scope('spaces:read', Yii::t('OauthModule.base', 'Read Spaces and memberships')),
+            new Scope('spaces:write', Yii::t('OauthModule.base', 'Join, leave and follow Spaces')),
             new Scope('content:read', Yii::t('OauthModule.base', 'Read content, comments and likes')),
             new Scope('content:write', Yii::t('OauthModule.base', 'Write comments, like, upload files')),
         ];

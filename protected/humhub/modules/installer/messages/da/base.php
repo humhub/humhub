@@ -74,7 +74,7 @@ return [
     'You\'re almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network.' => 'Du er næsten færdig. I dette trin skal du udfylde formularen for at oprette en administratorkonto. Med denne konto kan du administrere hele netværket.',
     'Your MySQL password.' => 'Din MySQL-adgangskode.',
     'Your MySQL username' => 'Dit MySQL-brugernavn',
-    'Your first sample space to discover the platform.' => 'Din første rum til at opdage platformen.',
+    'Your first sample Space to discover the platform.' => 'Din første rum til at opdage platformen.',
     '<strong>Apache</strong> web server detected.' => '',
     '<strong>Nginx</strong> web server detected.' => '',
     'Could not send the test email.' => '',

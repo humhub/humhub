@@ -15,7 +15,7 @@ class SpaceArchivedActivity extends BaseActivity implements ConfigurableActivity
 
     public static function getDescription(): string
     {
-        return Yii::t('SpaceModule.activities', 'Whenever a space is archived.');
+        return Yii::t('SpaceModule.activities', 'Whenever a Space is archived.');
     }
 
     protected function getMessage(array $params): string

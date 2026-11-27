@@ -7,8 +7,7 @@ return [
   'Post' => '',
   'Post could not be saved!' => '',
   'The post must not be empty!' => '',
-  'This space is archived.' => 'พื้นที่นี้ถูกเก็บถาวร',
+  'This Space is archived.' => 'พื้นที่นี้ถูกเก็บถาวร',
   'Title' => 'หัวข้อ',
   'What\'s on your mind?' => 'เธอคิดอะไรอยู่',
-  'post' => 'โพสต์',
 ];

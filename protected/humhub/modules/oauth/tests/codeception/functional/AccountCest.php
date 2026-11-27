@@ -116,7 +116,7 @@ class AccountCest
         $I->see('Connected apps');
         $I->see('Research Agent');
         $I->see('Read content, comments and likes');
-        $I->dontSee('Read spaces and memberships');
+        $I->dontSee('Read Spaces and memberships');
         $I->dontSee('unknown:scope');
         $I->dontSee('Devices signed in with the HumHub app.');
 

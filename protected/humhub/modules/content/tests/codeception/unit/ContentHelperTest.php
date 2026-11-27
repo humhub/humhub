@@ -19,7 +19,7 @@ class ContentHelperTest extends HumHubDbTestCase
     {
         $post = Post::findOne(['id' => 1]);
 
-        $this->assertEquals('post "' . $post->message . '"', ContentHelper::getContentInfo($post));
+        $this->assertEquals('Post "' . $post->message . '"', ContentHelper::getContentInfo($post));
         $this->assertEquals($post->message, ContentHelper::getContentInfo($post, false));
     }
 

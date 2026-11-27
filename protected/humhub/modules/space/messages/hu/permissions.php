@@ -2,7 +2,7 @@
 return array (
   'Allows the user to create private content' => 'Engedélyezze a felhasználóknak, hogy zárt tartalmat hozhassanak létre',
   'Allows the user to create public content' => 'Engedélyezze a felhasználóknak, hogy nyilvános tartalmakat hozhassanak létre',
-  'Allows the user to invite new members to the space' => 'Engedélyezze a felhasználóknak, hogy új tagokat hívhassanak meg a közösségbe',
+  'Allows the user to invite new members to the Space' => 'Engedélyezze a felhasználóknak, hogy új tagokat hívhassanak meg a közösségbe',
   'Can Access \'Spaces\'' => 'Hozzáférhet a "Közösséghez"',
   'Can access the \'Spaces\' section.' => 'Hozzáférhet a "Közösség" részhez.',
   'Can create Spaces visible to all members.' => 'Létrehozhat nyilvánosan elérhető közösségeket. (Szerepelnek a listában)',

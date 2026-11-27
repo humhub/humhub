@@ -118,7 +118,7 @@ class ProfileController extends ContentContainerController
             $query->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
         }
 
-        $title = Yii::t('UserModule.base', '<strong>Member</strong> in these spaces');
+        $title = Yii::t('UserModule.base', '<strong>Member</strong> in these Spaces');
         return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
     }
 

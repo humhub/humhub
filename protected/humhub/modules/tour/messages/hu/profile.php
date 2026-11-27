@@ -15,5 +15,5 @@ return [
     'Upload a new profile photo by simply clicking here or by drag&drop. Do just the same for updating your cover photo.' => 'Tölts fel egy profilképet, úgy, hogy idekattintasz vagy idehúzol egy képet. Ugyanezt kell tenned a borítókép beállításához is',
     'You\'ve completed the user profile guide!' => 'A felhasználói profil bemutatása befejeződött!',
     'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />' => 'A felhasználói profil bemutatása befejeződött!<br><br> Az adminisztráció bemutatásának folytatásához kattints ide:<br><br>',
-    'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
+    'Just like in the Space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in "Modules" in the account settings menu.' => '',
 ];

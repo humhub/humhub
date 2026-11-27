@@ -46,9 +46,9 @@ class AutoTourCest
 
         $I->waitForText('Space Menu', 10, '.popover.tour');
         $I->wait(1);
-        $I->click('Start space guide', '.popover.tour');
+        $I->click('Start Space guide', '.popover.tour');
 
-        $I->waitForText('Once you have joined or created a new space', 10, '.popover.tour');
+        $I->waitForText('Once you have joined or created a new Space', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 

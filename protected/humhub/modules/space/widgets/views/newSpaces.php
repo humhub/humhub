@@ -10,7 +10,7 @@ use humhub\widgets\SidebarCard;
 ?>
 
 <?php SidebarCard::begin([
-    'title' => Yii::t('SpaceModule.base', '<strong>New</strong> spaces'),
+    'title' => Yii::t('SpaceModule.base', '<strong>New</strong> Spaces'),
     'encodeTitle' => false,
     'options' => ['id' => 'new-spaces-panel', 'class' => 'spaces'],
 ]) ?>

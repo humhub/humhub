@@ -29,7 +29,7 @@ class DashboardContent extends Widget
         if ($this->contentContainer === null) {
             $messageStreamEmpty = Yii::t('DashboardModule.base', '<b>No public contents to display found!</b>');
         } else {
-            $messageStreamEmpty = Yii::t('DashboardModule.base', '<b>Your dashboard is empty!</b><br>Post something on your profile or join some spaces!');
+            $messageStreamEmpty = Yii::t('DashboardModule.base', '<b>Your dashboard is empty!</b><br>Post something on your profile or join some Spaces!');
         }
 
         echo StreamViewer::widget([
