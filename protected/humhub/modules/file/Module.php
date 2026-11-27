@@ -150,7 +150,7 @@ class Module extends \humhub\components\Module
      * `php yii file/delete-variants`. Modules may add patterns for their own variants.
      * @since 1.20
      */
-    public array $persistentVariants = ['old-*', 'subtitles-*'];
+    public array $persistentVariants = ['old-*', 'subtitles-*', 'captions-*'];
 
     /**
      * Whether a record's attachment list leaves out the media files its preview above shows (setting

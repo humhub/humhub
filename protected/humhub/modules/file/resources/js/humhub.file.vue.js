@@ -910,6 +910,25 @@
     ]);
   }
   const C1 = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render$1]]);
+  const NAME = /^(subtitles|captions)-([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.vtt$/;
+  function parseSubtitleName(name) {
+    const match = NAME.exec(String(name || ""));
+    return match ? { kind: match[1], language: match[2] } : null;
+  }
+  function subtitleTracks(variants) {
+    return (Array.isArray(variants) ? variants : []).flatMap((variant) => {
+      const parsed = variant && variant.url ? parseSubtitleName(variant.name) : null;
+      return parsed ? [{ ...variant, ...parsed }] : [];
+    });
+  }
+  function languageLabel(language, locale = document.documentElement.lang) {
+    try {
+      const name = new Intl.DisplayNames([locale || "en"], { type: "language" }).of(language);
+      return name ? name.charAt(0).toLocaleUpperCase(locale || "en") + name.slice(1) : language;
+    } catch (e) {
+      return language;
+    }
+  }
   const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
   const _sfc_main = {
     i18nCategories: ["FileModule.base", "base"],
@@ -918,6 +937,9 @@
       fileId: { type: Number, required: true },
       /** Its name, for the messages. */
       fileName: { type: String, default: "" },
+      /** The URLs the modal's controller saves and deletes a variant at (POST, JSON `{name, content}` and `{name}`). */
+      saveUrl: { type: String, required: true },
+      deleteUrl: { type: String, required: true },
       /** The languages to choose from, in the order to list them: `[{code, name}]`, `code` the language of the variants. */
       languages: { type: Array, default: () => [] },
       /** The code (of `languages`) of the current UI language, offered first; empty if the platform has none. */
@@ -952,7 +974,6 @@
       errorLabel: () => vue.i18n.t("FileModule.base", "The subtitles could not be loaded."),
       emptyLabel: () => vue.i18n.t("FileModule.base", "No subtitles yet."),
       addLabel: () => vue.i18n.t("FileModule.base", "Add language"),
-      automaticLabel: () => vue.i18n.t("FileModule.base", "automatic"),
       subtitlesLabel: () => vue.i18n.t("FileModule.base", "Subtitles"),
       captionsLabel: () => vue.i18n.t("FileModule.base", "Captions (with sound descriptions)"),
       languageLabel: () => vue.i18n.t("FileModule.base", "Language"),
@@ -970,13 +991,16 @@
       id(name) {
         return `subtitle-${this.fileId}-${name}`;
       },
-      endpoint(name) {
-        return vue.apiUrl("file/" + this.fileId + "/variants" + (name ? "/" + encodeURIComponent(name) : ""));
+      /** A JSON POST to the controller of the modal (the platform client sends the CSRF token). */
+      post(url, data) {
+        return vue.client.post(url, { data: JSON.stringify(data), contentType: "application/json" });
+      },
+      endpoint() {
+        return vue.apiUrl("file/" + this.fileId + "/variants");
       },
       labelOf(code) {
         const language = this.languages.find((item) => item.code === code);
-        const variant = this.variants.find((item) => item.language === code);
-        return language ? language.name : variant ? variant.label : code;
+        return language ? language.name : languageLabel(code);
       },
       kindOf(variant) {
         return variant.kind === "captions" ? vue.i18n.t("FileModule.base", "Captions") : vue.i18n.t("FileModule.base", "Subtitles");
@@ -987,7 +1011,7 @@
       load() {
         return vue.client.get(this.endpoint()).then((response) => {
           const results = Array.isArray(response.results) ? response.results : [];
-          this.variants = results.filter((variant) => variant.type === "subtitles");
+          this.variants = subtitleTracks(results).map((variant) => ({ ...variant, label: this.labelOf(variant.language) }));
           this.loading = false;
         }).catch((e) => {
           this.failed = true;
@@ -1082,13 +1106,11 @@
           return Promise.resolve();
         }
         const { language, kind, content } = this.form;
-        const name = this.form.name || `subtitles-${language}.vtt`;
+        const name = `${kind}-${language}.vtt`;
+        const oldName = this.form.name && this.form.name !== name ? this.form.name : "";
         this.busy = true;
         this.errors = {};
-        return vue.client.put(this.endpoint(name), {
-          data: JSON.stringify({ content, kind }),
-          contentType: "application/json"
-        }).then(() => {
+        return this.post(this.saveUrl, { name, content }).then(() => oldName && this.post(this.deleteUrl, { name: oldName })).then(() => {
           this.announceChange();
           return this.load();
         }).then(() => {
@@ -1132,7 +1154,7 @@
           const index = this.variants.indexOf(variant);
           const neighbour = this.variants[index + 1] || this.variants[index - 1];
           this.busy = true;
-          return vue.client.del(this.endpoint(variant.name)).then(() => {
+          return this.post(this.deleteUrl, { name: variant.name }).then(() => {
             this.announceChange();
             return this.load();
           }).then(() => {
@@ -1212,14 +1234,10 @@
   const _hoisted_29 = { class: "flex-grow-1" };
   const _hoisted_30 = { class: "subtitle-manager-label" };
   const _hoisted_31 = { class: "text-body-secondary" };
-  const _hoisted_32 = {
-    key: 0,
-    class: "badge ms-1"
-  };
-  const _hoisted_33 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
-  const _hoisted_34 = ["href", "download", "aria-label", "data-bs-title"];
-  const _hoisted_35 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
-  const _hoisted_36 = ["aria-disabled"];
+  const _hoisted_32 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
+  const _hoisted_33 = ["href", "download", "aria-label", "data-bs-title"];
+  const _hoisted_34 = ["data-name", "aria-disabled", "aria-label", "data-bs-title", "onClick"];
+  const _hoisted_35 = ["aria-disabled"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PickerInput = vue$1.resolveComponent("PickerInput");
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
@@ -1513,14 +1531,7 @@
                       " · " + vue$1.toDisplayString($options.kindOf(variant)),
                       1
                       /* TEXT */
-                    ),
-                    variant.generated ? (vue$1.openBlock(), vue$1.createElementBlock(
-                      "span",
-                      _hoisted_32,
-                      vue$1.toDisplayString($options.automaticLabel),
-                      1
-                      /* TEXT */
-                    )) : vue$1.createCommentVNode("v-if", true)
+                    )
                   ]),
                   vue$1.createElementVNode("button", {
                     type: "button",
@@ -1542,7 +1553,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_33),
+                  ])], 8, _hoisted_32),
                   vue$1.createElementVNode("a", {
                     class: "btn btn-ghost btn-sm btn-icon-only subtitle-manager-download",
                     href: variant.url,
@@ -1561,7 +1572,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_34),
+                  ])], 8, _hoisted_33),
                   vue$1.createElementVNode("button", {
                     type: "button",
                     class: "btn btn-ghost btn-ghost-danger btn-sm btn-icon-only subtitle-manager-delete",
@@ -1582,7 +1593,7 @@
                       -1
                       /* CACHED */
                     )
-                  ])], 8, _hoisted_35)
+                  ])], 8, _hoisted_34)
                 ]);
               }),
               128
@@ -1610,7 +1621,7 @@
               1
               /* TEXT */
             )
-          ], 8, _hoisted_36)
+          ], 8, _hoisted_35)
         ],
         64
         /* STABLE_FRAGMENT */

@@ -6,6 +6,7 @@ use humhub\modules\file\models\File;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use humhub\widgets\VueComponent;
+use yii\helpers\Url;
 
 /* @var $file File */
 /* @var $languages array<int, array{code: string, name: string}> */
@@ -23,6 +24,8 @@ use humhub\widgets\VueComponent;
         'props' => [
             'fileId' => (int)$file->id,
             'fileName' => $file->file_name,
+            'saveUrl' => Url::to(['/file/subtitles/save', 'guid' => $file->guid]),
+            'deleteUrl' => Url::to(['/file/subtitles/delete', 'guid' => $file->guid]),
             'languages' => $languages,
             'uiLanguage' => $uiLanguage,
         ],

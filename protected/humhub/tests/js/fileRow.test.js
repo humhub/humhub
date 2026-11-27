@@ -443,7 +443,7 @@ describe('FileRow playable', () => {
 
 describe('FileRow subtitles', () => {
     const song = () => file({ guid: 'song', fileName: 'song.mp3', mimeType: 'audio/mpeg', icon: 'music', duration: 204 });
-    const variant = (language, label) => ({ name: `subtitles-${language}.vtt`, type: 'subtitles', language, label, kind: 'subtitles', url: `/v/${language}.vtt` });
+    const variant = (language) => ({ name: `subtitles-${language}.vtt`, persistent: true, url: `/v/${language}.vtt` });
     const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
     const { lang } = document.documentElement;
 
@@ -528,7 +528,7 @@ describe('FileRow subtitles', () => {
 
         expect(select.classes()).toEqual(expect.arrayContaining(['form-select', 'form-select-sm']));
         expect(select.attributes('aria-label')).toBe('Subtitle language');
-        expect(select.findAll('option').map((o) => [o.attributes('value'), o.text()])).toEqual([['de', 'DE'], ['en', 'EN']]);
+        expect(select.findAll('option').map((o) => [o.attributes('value'), o.text()])).toEqual([['de', 'Deutsch'], ['en', 'Englisch']]);
         expect(select.element.value).toBe('de');
 
         await select.setValue('en');

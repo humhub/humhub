@@ -2,25 +2,30 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
-- **Subtitles and persistent file variants** (see [File Upload](../ui/file-upload.md)):
+- **File variants and subtitles** (see [File Upload](../ui/file-upload.md)):
+  - `StorageManagerInterface` gets `listVariants()` (name => size and time of the last change, one storage listing). A
+    storage manager of your own implements it.
   - A file keeps *persistent variants* next to its content: patterns in `file\Module::$persistentVariants` (default
-    `old-*` for versions and `subtitles-*`). New content and `php yii file/delete-variants` keep them; they go with the
-    file. A module with variants of its own that must survive adds its pattern there. A pattern ending in `*` is a
-    prefix, anything else an exact name; `StorageManager::delete()` and `getVariants()` match their `$except` the
-    same way (before, any name that contained the pattern without its `*` matched).
+    `old-*` for versions, `subtitles-*` and `captions-*`). New content and `php yii file/delete-variants` keep them; they
+    go with the file. A module with variants of its own that must survive adds its pattern there. A pattern ending in
+    `*` is a prefix, anything else an exact name; `StorageManager::delete()` and `getVariants()` match their `$except`
+    the same way (before, any name that contained the pattern without its `*` matched).
   - `StorageManager::delete($variant)` deletes that variant only. It used to ignore `$variant` and delete the file's
     whole directory, also through `FileHistory::delete()` (deleting one version deleted the file's content and all its
-    versions).
-  - Subtitles are variants `subtitles-<language>.vtt` (WebVTT; SRT is converted), with their kind (`subtitles` or
-    `captions`) in `file.metadata` (`variants`, kept compact as `[kind, generated, size, updatedAt]` per name: the column
-    is `varchar(4000)`, a PUT beyond it answers `422` on `name`). Handled by `file\libs\FileVariants` and
-    `file\libs\WebVtt`.
+    versions). `StorageManager::listVariants()` lists the variants with size and time.
+  - Variants are neutral and told apart by their name only: previews, the display image, conversions, versions,
+    subtitles. `file\libs\FileVariants` lists them from the storage (`getAll()`) and writes the names of a registered
+    writable type (`registerType()`; core registers the WebVTT subtitles `subtitles-<language>.vtt` and
+    `captions-<language>.vtt`, the kind is in the name; SRT is converted, at most 1 MB, media files only). Nothing is
+    kept in `file.metadata` for them.
   - `file\libs\FileMetadata::update()` changes `file.metadata` under a lock per file on the current database value;
-    `ImageHelper`, `MediaHelper` and `FileVariants` use it so concurrent writers no longer drop each other's keys. A
-    module that writes its own metadata keys should too.
-  - HTTP API: `GET /api/v2/file/{id}/variants`, `PUT` / `DELETE /api/v2/file/{id}/variants/{name}` (writes need
-    `File::canDelete()`). The file shape has no new field; clients fetch the variants when they need them. A
-    subtitles variant downloads as `text/vtt`, inline, through PHP (no redirect to a temporary storage URL).
+    `ImageHelper` and `MediaHelper` use it so concurrent writers no longer drop each other's keys. A module that
+    writes its own metadata keys should too.
+  - HTTP API: `GET /api/v2/file/{id}/variants` lists all variants (`name`, `persistent`, `mimeType`, `size`,
+    `updatedAt`, `url`), read-only. The file shape has no new field; clients fetch the variants when they need them.
+    Writers are the features that know the content, e.g. the subtitles manager (`file/subtitles/save` and
+    `file/subtitles/delete`, POST, `File::canDelete()`). A subtitles or captions variant downloads as `text/vtt`,
+    inline, through PHP (no redirect to a temporary storage URL).
   - The core edit file handler `file\handler\SubtitlesFileHandler` ("Subtitles", for video and audio files of users
     who may edit them) opens `/file/subtitles` with the `SubtitleManager` island. With it such files get a `viewUrl`.
   - Media viewer: an element may carry `data-ui-gallery-open-url` (an "Open" button replaces the download and loads

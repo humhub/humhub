@@ -214,6 +214,23 @@ humhub.module('ui.gallery', function (module, require, $) {
         return variantRequests.get(url);
     };
 
+    // A variant is a track by its name: `subtitles-<language>.vtt` or `captions-<language>.vtt`
+    var parseSubtitleName = function (name) {
+        var match = /^(subtitles|captions)-([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.vtt$/.exec(String(name || ''));
+        return match ? {kind: match[1], language: match[2]} : null;
+    };
+
+    // The name of a language in the page language, first letter upper case; the code if the browser has none
+    var languageLabel = function (language) {
+        try {
+            var locale = document.documentElement.lang || 'en';
+            var name = new Intl.DisplayNames([locale], {type: 'language'}).of(language);
+            return name ? name.charAt(0).toLocaleUpperCase(locale) + name.slice(1) : language;
+        } catch (e) {
+            return language;
+        }
+    };
+
     // The subtitles of a file (the variants API) as tracks of the video. A failed request leaves the video without.
     var addTracks = function (video, url) {
         fetchVariants(url).then(function (response) {
@@ -221,16 +238,17 @@ humhub.module('ui.gallery', function (module, require, $) {
             var defaulted = false;
 
             $.each((response && response.results) || [], function (i, variant) {
-                if (variant.type !== 'subtitles' || !variant.language || !variant.url) {
+                var parsed = parseSubtitleName(variant.name);
+                if (!parsed || !variant.url) {
                     return;
                 }
 
                 var track = document.createElement('track');
-                track.kind = variant.kind === 'captions' ? 'captions' : 'subtitles';
-                track.srclang = variant.language;
-                track.label = variant.label || variant.language;
+                track.kind = parsed.kind === 'captions' ? 'captions' : 'subtitles';
+                track.srclang = parsed.language;
+                track.label = languageLabel(parsed.language);
                 track.src = variant.url;
-                if (!defaulted && pageLanguage && primaryLanguage(variant.language) === pageLanguage) {
+                if (!defaulted && pageLanguage && primaryLanguage(parsed.language) === pageLanguage) {
                     track.default = true;
                     defaulted = true;
                 }

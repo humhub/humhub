@@ -5830,6 +5830,25 @@
     const secs = String(whole % 60).padStart(2, "0");
     return hours > 0 ? `${hours}:${String(minutes).padStart(2, "0")}:${secs}` : `${minutes}:${secs}`;
   }
+  const NAME = /^(subtitles|captions)-([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.vtt$/;
+  function parseSubtitleName(name) {
+    const match = NAME.exec(String(name || ""));
+    return match ? { kind: match[1], language: match[2] } : null;
+  }
+  function subtitleTracks(variants2) {
+    return (Array.isArray(variants2) ? variants2 : []).flatMap((variant) => {
+      const parsed = variant && variant.url ? parseSubtitleName(variant.name) : null;
+      return parsed ? [{ ...variant, ...parsed }] : [];
+    });
+  }
+  function languageLabel(language, locale = document.documentElement.lang) {
+    try {
+      const name = new Intl.DisplayNames([locale || "en"], { type: "language" }).of(language);
+      return name ? name.charAt(0).toLocaleUpperCase(locale || "en") + name.slice(1) : language;
+    } catch (e) {
+      return language;
+    }
+  }
   const state = vue.reactive({ guid: null, playing: false, time: 0, duration: null, tracks: [], trackLanguage: null, cue: "" });
   const failed = vue.reactive({});
   const rows = /* @__PURE__ */ new Map();
@@ -5950,7 +5969,7 @@
   }
   function fetchVariants(file) {
     if (!variants.has(file.id)) {
-      const request = vue$1.client.get(vue$1.apiUrl(`file/${file.id}/variants`)).then((response) => (response && response.results || []).filter((variant) => variant.type === "subtitles" && variant.url)).catch(() => {
+      const request = vue$1.client.get(vue$1.apiUrl(`file/${file.id}/variants`)).then((response) => subtitleTracks(response && response.results)).catch(() => {
         variants.delete(file.id);
         return [];
       });
@@ -5999,13 +6018,13 @@
         const track = document.createElement("track");
         track.kind = variant.kind === "captions" ? "captions" : "subtitles";
         track.srclang = variant.language;
-        track.label = variant.label || variant.language;
+        track.label = languageLabel(variant.language);
         track.src = variant.url;
         element.appendChild(track);
         (_a = track.track) == null ? void 0 : _a.addEventListener("cuechange", () => updateCue(variant.language, track.track));
         trackElements.set(variant.language, track);
       });
-      state.tracks = list.map(({ language, label, kind }) => ({ language, label: label || language, kind }));
+      state.tracks = list.map(({ language, kind }) => ({ language, label: languageLabel(language), kind }));
       setTrack(preferred ? preferred.language : null);
     });
   }

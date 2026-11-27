@@ -23,8 +23,6 @@ return [
         ['pattern' => 'api/v2/file/<id:\d+>', 'route' => 'file/api/file/delete', 'verb' => 'DELETE'],
         ['pattern' => 'api/v2/file/<id:\d+>/versions', 'route' => 'file/api/file/versions', 'verb' => ['GET', 'HEAD']],
         ['pattern' => 'api/v2/file/<id:\d+>/variants', 'route' => 'file/api/file/variants', 'verb' => ['GET', 'HEAD']],
-        ['pattern' => 'api/v2/file/<id:\d+>/variants/<name:[A-Za-z0-9._-]+>', 'route' => 'file/api/file/put-variant', 'verb' => 'PUT'],
-        ['pattern' => 'api/v2/file/<id:\d+>/variants/<name:[A-Za-z0-9._-]+>', 'route' => 'file/api/file/delete-variant', 'verb' => 'DELETE'],
     ],
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],

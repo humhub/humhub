@@ -233,40 +233,30 @@ components:
     FileVariant:
       title: FileVariant
       type: object
-      description: A persistent variant of a file, the subtitles of one language of a video or audio file
+      description: |
+        A file variant: a file stored next to the original — derived (previews, conversions; regenerated, dropped
+        with new content) or persistent (versions, subtitles; kept until deleted). Told apart by its name only
+        (`preview-image`, `display-image`, `old-<id>` for an earlier version, `subtitles-<language>.vtt` and
+        `captions-<language>.vtt` for WebVTT subtitles and captions).
       properties:
         name:
           type: string
-          description: Name of the variant, `subtitles-<language>.vtt`
-        type:
-          type: string
-          enum:
-            - subtitles
-        language:
-          type: string
-          description: BCP 47 language tag (`de`, `pt-BR`)
-        label:
-          type: string
-          description: The language's name in that language, first letter upper case
-        kind:
-          type: string
-          enum:
-            - subtitles
-            - captions
-          description: '`captions` also describe the sounds (WCAG 1.2.2)'
-        generated:
+          description: Name of the variant
+        persistent:
           type: boolean
-          description: Whether the text was generated automatically; a manual save sets `false`
+          description: Whether the variant is kept when the file gets a new content
+        mimeType:
+          type: string
         size:
           type: integer
-          description: Size of the text in bytes
+          description: Size in bytes
         updatedAt:
           type: string
           format: date-time
         url:
           type: string
           description: |
-            Absolute download URL of the variant (`text/vtt`), with the time of the last change as `v` for cache busting
+            Absolute download URL of the variant, with the time of the last change as `v` for cache busting
     File:
       title: File
       type: object

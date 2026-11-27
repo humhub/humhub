@@ -10,7 +10,7 @@
  * announced, as it happens without the user's doing. After the last file, or a file that fails, the player stops.
  *
  * Subtitles: on the first play of a file the player fetches its variants (`GET /api/v2/file/{id}/variants`, once per
- * file) and adds a `<track>` per subtitles variant. `state.tracks` lists them, `state.trackLanguage` is the shown one
+ * file) and adds a `<track>` per variant named `subtitles-<language>.vtt` or `captions-<language>.vtt`. `state.tracks` lists them, `state.trackLanguage` is the shown one
  * (by default the page language's, else null: off), `state.cue` the text of the active cue as plain text. Reset when
  * the file stops or another one starts. The `humhub:file:variants-changed` event on `document` (`detail: {fileId}`, fired
  * by the subtitle manager) drops the list of that file and, if it is loaded, fetches its tracks again.
@@ -19,10 +19,11 @@
  */
 import { reactive } from 'vue';
 import { announce, apiUrl, client, i18n } from '@humhub/vue';
+import { languageLabel, subtitleTracks } from './subtitleVariants.js';
 
 /**
  * The current track: `guid` is null while nothing is loaded for playback. `time` and `duration` are seconds. `tracks` are
- * the subtitles of the file (`{language, label, kind}`), `trackLanguage` the shown one (null: none), `cue` the text of
+ * the subtitles of the file (`{language, label, kind}`, the label is the language's name in the page language), `trackLanguage` the shown one (null: none), `cue` the text of
  * the active cue.
  */
 export const state = reactive({ guid: null, playing: false, time: 0, duration: null, tracks: [], trackLanguage: null, cue: '' });
@@ -191,7 +192,7 @@ function fetchVariants(file) {
     if (!variants.has(file.id)) {
         const request = client
             .get(apiUrl(`file/${file.id}/variants`))
-            .then((response) => ((response && response.results) || []).filter((variant) => variant.type === 'subtitles' && variant.url))
+            .then((response) => subtitleTracks(response && response.results))
             .catch(() => {
                 variants.delete(file.id);
                 return [];
@@ -262,14 +263,14 @@ function addTracks(element, file) {
 
             track.kind = variant.kind === 'captions' ? 'captions' : 'subtitles';
             track.srclang = variant.language;
-            track.label = variant.label || variant.language;
+            track.label = languageLabel(variant.language);
             track.src = variant.url;
             element.appendChild(track);
             track.track?.addEventListener('cuechange', () => updateCue(variant.language, track.track));
             trackElements.set(variant.language, track);
         });
 
-        state.tracks = list.map(({ language, label, kind }) => ({ language, label: label || language, kind }));
+        state.tracks = list.map(({ language, kind }) => ({ language, label: languageLabel(language), kind }));
         setTrack(preferred ? preferred.language : null);
     });
 }

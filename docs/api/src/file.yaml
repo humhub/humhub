@@ -154,12 +154,14 @@ paths:
     get:
       tags:
         - File
-      summary: List the persistent variants of a file
+      summary: List the variants of a file
       operationId: listFileVariants
       description: |
-        The variants that go with the file — the subtitles of a video or audio file for now —
-        ordered by label. Versions are not listed here, they have their own endpoint. Everybody
-        who may see the file may read them; guests too, when they may see the file.
+        The variants of the file: the files stored next to its content, everything but the content itself. They are
+        derived (previews, the display image, conversions: made from the content and dropped with a new content) or
+        persistent (earlier versions, subtitles and captions: kept until deleted). Variants are told apart by their
+        name only. Ordered by name. Everybody who may see the file may read them; guests too, when they may see the
+        file. The list is read-only: variants are written by the features that know their content.
       parameters:
         - name: id
           in: path
@@ -181,133 +183,24 @@ paths:
                       $ref: "common.yaml#/components/schemas/FileVariant"
               example:
                 results:
-                  - name: subtitles-de.vtt
-                    type: subtitles
-                    language: de
-                    label: Deutsch
-                    kind: captions
-                    generated: false
+                  - name: captions-de.vtt
+                    persistent: true
+                    mimeType: text/vtt
                     size: 1204
                     updatedAt: "2026-11-27T10:15:30+00:00"
-                    url: https://example.com/file/file/download?variant=subtitles-de.vtt&v=1795774530&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
-        "401":
-          $ref: "common.yaml#/components/responses/Unauthorized"
-        "403":
-          $ref: "common.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "common.yaml#/components/responses/NotFound"
-  "/file/{id}/variants/{name}":
-    put:
-      tags:
-        - File
-      summary: Create or replace a persistent variant
-      operationId: putFileVariant
-      description: |
-        Stores the subtitles of one language of a video or audio file, replacing those that exist. The caller
-        needs the right to edit the file (the right to delete it). The name is
-        `subtitles-<language>.vtt` with a BCP 47 language tag (`de`, `pt-BR`, `zh-Hant`). The content is
-        WebVTT, at most 1 MB; a text that is SRT (no `WEBVTT` header) is converted. A save through this endpoint
-        is a manual one, `generated` is `false`.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id of the file
-          schema:
-            type: integer
-        - name: name
-          in: path
-          required: true
-          description: Name of the variant, e.g. `subtitles-de.vtt`
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - content
-                - kind
-              properties:
-                content:
-                  type: string
-                  description: The WebVTT (or SRT) text
-                kind:
-                  type: string
-                  enum:
-                    - subtitles
-                    - captions
-                  description: |
-                    `captions` also describe the sounds (WCAG 1.2.2), `subtitles` render the speech only
-            example:
-              kind: subtitles
-              content: |
-                WEBVTT
-
-                00:00:01.000 --> 00:00:03.500
-                Hallo zusammen.
-      responses:
-        "200":
-          description: An existing variant was replaced
-          content:
-            application/json:
-              schema:
-                $ref: "common.yaml#/components/schemas/FileVariant"
-        "201":
-          description: The variant was created
-          content:
-            application/json:
-              schema:
-                $ref: "common.yaml#/components/schemas/FileVariant"
-        "401":
-          $ref: "common.yaml#/components/responses/Unauthorized"
-        "403":
-          $ref: "common.yaml#/components/responses/Forbidden"
-        "404":
-          $ref: "common.yaml#/components/responses/NotFound"
-        "422":
-          description: |
-            The content is not valid (`content`, with the number of the line of each error), the kind is
-            invalid (`kind`), the name is no variant name or the file is no video or audio file (`name`)
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errors:
-                    type: object
-                    additionalProperties:
-                      type: array
-                      items:
-                        type: string
-                examples:
-                  - errors:
-                      content:
-                        - "Line 3: The start of the cue must be before its end."
-    delete:
-      tags:
-        - File
-      summary: Delete a persistent variant
-      operationId: deleteFileVariant
-      description: Deletes the variant. The caller needs the right to edit the file (the right to delete it).
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: Id of the file
-          schema:
-            type: integer
-        - name: name
-          in: path
-          required: true
-          description: Name of the variant, e.g. `subtitles-de.vtt`
-          schema:
-            type: string
-      responses:
-        "204":
-          description: The variant was deleted
+                    url: https://example.com/file/file/download?variant=captions-de.vtt&v=1795774530&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+                  - name: old-7
+                    persistent: true
+                    mimeType: video/mp4
+                    size: 5242880
+                    updatedAt: "2026-11-20T08:00:00+00:00"
+                    url: https://example.com/file/file/download?variant=old-7&v=1795161600&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+                  - name: preview-image
+                    persistent: false
+                    mimeType: image/jpeg
+                    size: 18311
+                    updatedAt: "2026-11-27T10:00:00+00:00"
+                    url: https://example.com/file/file/download?variant=preview-image&v=1795773600&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
         "401":
           $ref: "common.yaml#/components/responses/Unauthorized"
         "403":

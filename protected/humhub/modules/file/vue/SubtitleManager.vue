@@ -109,7 +109,6 @@
                     <div class="flex-grow-1">
                         <span class="subtitle-manager-label">{{ variant.label }}</span>
                         <span class="text-body-secondary"> · {{ kindOf(variant) }}</span>
-                        <span v-if="variant.generated" class="badge ms-1">{{ automaticLabel }}</span>
                     </div>
                     <button
                         type="button"
@@ -155,7 +154,7 @@
 <script>
 /**
  * The subtitles of an audio or video file: one entry per language with its kind (subtitles, or
- * captions with sound descriptions) and, for a generated one, an "automatic" badge, and the actions
+ * captions with sound descriptions), and the actions
  * Edit, Download and Delete (confirmed). A form adds a language or edits one: the language (a searchable
  * core `PickerInput` of the platform's languages, the `languages` prop; the UI language first, the languages that
  * exist left out; fixed while editing), the kind and the WebVTT text, which "Load file" fills from a .vtt or
@@ -167,10 +166,12 @@
  *
  * Endpoints (see `file\controllers\api\FileController`), `<name>` being `subtitles-<language>.vtt`:
  *
- * - `GET api/v2/file/<id>/variants` lists the variants, the `type` `subtitles` ones are shown.
- * - `PUT api/v2/file/<id>/variants/<name>` with the JSON `{content, kind}` saves one; a `422` carries
+ * - `GET api/v2/file/<id>/variants` lists the variants, the ones named `subtitles-<language>.vtt` or
+ *   `captions-<language>.vtt` are shown (the name carries kind and language).
+ * - `POST <saveUrl>` with the JSON `{name, content}` saves one; a `422` carries
  *   the messages under `errors.content` (or `errors.name`, shown above the form).
- * - `DELETE api/v2/file/<id>/variants/<name>` removes one.
+ * - `POST <deleteUrl>` with the JSON `{name}` removes one. Changing the kind of a language saves the new name, then
+ *   deletes the old one.
  * - The text of a variant to edit is its `url`, fetched from the same origin.
  *
  * Focus: into the form when it opens, back to the language's Edit button after save and cancel, to
@@ -184,6 +185,7 @@
  * @since 1.20
  */
 import { apiUrl, announce, client, i18n, log, modal } from '@humhub/vue';
+import { languageLabel, subtitleTracks } from '../../../vue/audio/subtitleVariants.js';
 
 const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
@@ -194,6 +196,9 @@ export default {
         fileId: { type: Number, required: true },
         /** Its name, for the messages. */
         fileName: { type: String, default: '' },
+        /** The URLs the modal's controller saves and deletes a variant at (POST, JSON `{name, content}` and `{name}`). */
+        saveUrl: { type: String, required: true },
+        deleteUrl: { type: String, required: true },
         /** The languages to choose from, in the order to list them: `[{code, name}]`, `code` the language of the variants. */
         languages: { type: Array, default: () => [] },
         /** The code (of `languages`) of the current UI language, offered first; empty if the platform has none. */
@@ -234,7 +239,6 @@ export default {
         errorLabel: () => i18n.t('FileModule.base', 'The subtitles could not be loaded.'),
         emptyLabel: () => i18n.t('FileModule.base', 'No subtitles yet.'),
         addLabel: () => i18n.t('FileModule.base', 'Add language'),
-        automaticLabel: () => i18n.t('FileModule.base', 'automatic'),
         subtitlesLabel: () => i18n.t('FileModule.base', 'Subtitles'),
         captionsLabel: () => i18n.t('FileModule.base', 'Captions (with sound descriptions)'),
         languageLabel: () => i18n.t('FileModule.base', 'Language'),
@@ -252,14 +256,17 @@ export default {
         id(name) {
             return `subtitle-${this.fileId}-${name}`;
         },
-        endpoint(name) {
-            return apiUrl('file/' + this.fileId + '/variants' + (name ? '/' + encodeURIComponent(name) : ''));
+        /** A JSON POST to the controller of the modal (the platform client sends the CSRF token). */
+        post(url, data) {
+            return client.post(url, { data: JSON.stringify(data), contentType: 'application/json' });
+        },
+        endpoint() {
+            return apiUrl('file/' + this.fileId + '/variants');
         },
         labelOf(code) {
             const language = this.languages.find((item) => item.code === code);
-            const variant = this.variants.find((item) => item.language === code);
 
-            return language ? language.name : (variant ? variant.label : code);
+            return language ? language.name : languageLabel(code);
         },
         kindOf(variant) {
             return variant.kind === 'captions'
@@ -273,7 +280,7 @@ export default {
             return client.get(this.endpoint())
                 .then((response) => {
                     const results = Array.isArray(response.results) ? response.results : [];
-                    this.variants = results.filter((variant) => variant.type === 'subtitles');
+                    this.variants = subtitleTracks(results).map((variant) => ({ ...variant, label: this.labelOf(variant.language) }));
                     this.loading = false;
                 })
                 .catch((e) => {
@@ -383,14 +390,14 @@ export default {
             }
 
             const { language, kind, content } = this.form;
-            const name = this.form.name || `subtitles-${language}.vtt`;
+            const name = `${kind}-${language}.vtt`;
+            // The kind is part of the name: another kind saves the new name and removes the old one
+            const oldName = this.form.name && this.form.name !== name ? this.form.name : '';
             this.busy = true;
             this.errors = {};
 
-            return client.put(this.endpoint(name), {
-                data: JSON.stringify({ content, kind }),
-                contentType: 'application/json',
-            })
+            return this.post(this.saveUrl, { name, content })
+                .then(() => oldName && this.post(this.deleteUrl, { name: oldName }))
                 .then(() => {
                     this.announceChange();
                     return this.load();
@@ -441,7 +448,7 @@ export default {
                 const neighbour = this.variants[index + 1] || this.variants[index - 1];
                 this.busy = true;
 
-                return client.del(this.endpoint(variant.name))
+                return this.post(this.deleteUrl, { name: variant.name })
                     .then(() => {
                         this.announceChange();
                         return this.load();

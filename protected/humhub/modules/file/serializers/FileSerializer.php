@@ -160,15 +160,12 @@ class FileSerializer
     }
 
     /**
-     * The persistent variants of a file (see {@see FileVariants}), ordered by label
+     * All variants of a file, the files stored next to its content (see {@see FileVariants}), ordered by name
      *
      * @return array{
      *     name: string,
-     *     type: string,
-     *     language: string,
-     *     label: string,
-     *     kind: string,
-     *     generated: bool,
+     *     persistent: bool,
+     *     mimeType: string,
      *     size: int,
      *     updatedAt: string,
      *     url: string,
@@ -176,43 +173,25 @@ class FileSerializer
      */
     public static function variants(File $file): array
     {
-        $variants = [];
-
-        foreach ((new FileVariants($file))->getEntries() as $name => $entry) {
-            $parsed = FileVariants::parseName((string)$name);
-            if ($parsed !== null) {
-                $variants[] = static::variant($file, (string)$name, $entry, $parsed);
-            }
-        }
-
-        usort($variants, fn(array $a, array $b) => mb_strtolower($a['label']) <=> mb_strtolower($b['label']));
-
-        return $variants;
+        return array_map(static fn(array $variant) => static::variant($file, $variant), (new FileVariants($file))->getAll());
     }
 
     /**
-     * One persistent variant of a file
+     * One variant of a file
      *
-     * @param array{kind: string, generated: bool, size: int, updatedAt: int} $entry the entry of the file's metadata
-     * @param array{type: string, language: string} $parsed the name's parts
+     * @param array{name: string, persistent: bool, mimeType: string, size: int, updatedAt: int} $variant see
+     * {@see FileVariants::getAll()}
      */
-    public static function variant(File $file, string $name, array $entry, array $parsed): array
+    public static function variant(File $file, array $variant): array
     {
-        // The platform's languages carry the name of the language picker; any other language the locale data's name
-        $label = (string)(\Yii::$app->params['availableLanguages'][$parsed['language']]
-            ?? \Locale::getDisplayName($parsed['language'], $parsed['language']));
-        $updatedAt = (int)$entry['updatedAt'];
-
         return [
-            'name' => $name,
-            'type' => $parsed['type'],
-            'language' => $parsed['language'],
-            'label' => mb_strtoupper(mb_substr($label, 0, 1)) . mb_substr($label, 1),
-            'kind' => $entry['kind'],
-            'generated' => (bool)$entry['generated'],
-            'size' => (int)$entry['size'],
-            'updatedAt' => gmdate('c', $updatedAt),
-            'url' => $file->getUrl(['variant' => $name, 'v' => $updatedAt], true),
+            'name' => $variant['name'],
+            'persistent' => $variant['persistent'],
+            'mimeType' => $variant['mimeType'],
+            'size' => $variant['size'],
+            'updatedAt' => gmdate('c', $variant['updatedAt']),
+            // The time of the last change busts the cache of a variant that is rewritten
+            'url' => $file->getUrl(['variant' => $variant['name'], 'v' => $variant['updatedAt']], true),
         ];
     }
 }

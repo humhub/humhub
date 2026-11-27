@@ -233,8 +233,10 @@ describe('audioPlayer', () => {
 
 describe('audioPlayer subtitles', () => {
     const variant = (language, kind = 'subtitles') => ({
-        name: `subtitles-${language}.vtt`, type: 'subtitles', language, label: language.toUpperCase(), kind, url: `/v/${language}.vtt`,
+        name: `${kind}-${language}.vtt`, persistent: true, url: `/v/${language}.vtt`,
     });
+    // Other variants of the file, ignored by the player
+    const other = (name) => ({ name, persistent: name !== 'preview-image', url: `/v/${name}` });
     const file = (guid) => ({ ...track(guid), id: guid === 'a' ? 5 : 6 });
     const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
     const { lang } = document.documentElement;
@@ -257,7 +259,7 @@ describe('audioPlayer subtitles', () => {
         vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => {});
         vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
         Object.defineProperty(HTMLElement.prototype, 'track', { configurable: true, get() { return fake(this); } });
-        get = vi.fn(() => Promise.resolve({ results: [variant('de'), variant('en', 'captions')] }));
+        get = vi.fn(() => Promise.resolve({ results: [other('preview-image'), variant('de'), other('old-12'), variant('en', 'captions')] }));
         globalThis.humhubStubs.client.get = get;
     });
 
@@ -273,10 +275,10 @@ describe('audioPlayer subtitles', () => {
         expect(get).toHaveBeenCalledTimes(1);
         expect(get.mock.calls[0][0]).toMatch(/\/api\/v2\/file\/5\/variants$/);
         expect(trackEls().map((el) => [el.getAttribute('kind'), el.getAttribute('srclang'), el.getAttribute('label'), el.getAttribute('src')]))
-            .toEqual([['subtitles', 'de', 'DE', '/v/de.vtt'], ['captions', 'en', 'EN', '/v/en.vtt']]);
+            .toEqual([['subtitles', 'de', 'German', '/v/de.vtt'], ['captions', 'en', 'English', '/v/en.vtt']]);
         expect(player.state.tracks).toEqual([
-            { language: 'de', label: 'DE', kind: 'subtitles' },
-            { language: 'en', label: 'EN', kind: 'captions' },
+            { language: 'de', label: 'German', kind: 'subtitles' },
+            { language: 'en', label: 'English', kind: 'captions' },
         ]);
 
         // Played again after another file: from memory

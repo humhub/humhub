@@ -85,6 +85,14 @@ interface StorageManagerInterface
     public function getVariants(array $except = []): array;
 
     /**
+     * The variants of the file with their size and time of the last change, in one listing
+     *
+     * @return array<string, array{size: int, updatedAt: int}> by name
+     * @since 1.20
+     */
+    public function listVariants(): array;
+
+    /**
      * Sets the file for this storage manager instance
      *
      * @param File $file

@@ -8,71 +8,91 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\models\File;
-use LengthException;
 use Yii;
 use yii\base\Exception;
 
 /**
- * The writable persistent variants of a file (see {@see \humhub\modules\file\Module::$persistentVariants}), the
- * subtitles of a video or audio file for now.
+ * The variants of a file: the files stored next to its content, in its storage directory
  *
- * A variant is stored next to the file's content, like its versions, and goes with the file. What the API lists is kept
- * in the file's metadata (`variants`), so a listing needs no look into the storage. The column is short, so an entry
- * is kept as the list `[kind, generated, size, updatedAt]` and a file takes a limited number of variants.
+ * A variant is either *derived* (previews, the display image, conversions: made on demand from the content, dropped
+ * with a new content) or *persistent* (versions, subtitles: kept until deleted, see
+ * {@see \humhub\modules\file\Module::$persistentVariants}). Variants are told apart by their name only; the storage
+ * is the source of truth for what exists, with its size and time.
+ *
+ * Only names that match a writable type ({@see self::getTypes()}, the subtitles and captions for now) can be written
+ * and deleted through this class.
  *
  * ```php
  * $variants = new FileVariants($file);
- * $errors = $variants->put('subtitles-de.vtt', $vtt, 'captions');
+ * $all = $variants->getAll();
+ * $errors = $variants->put('subtitles-de.vtt', $vtt);
  * $variants->delete('subtitles-de.vtt');
  * ```
  *
- * A further type needs an entry in {@see self::TYPES} and, for the name patterns it uses, one in
- * `Module::$persistentVariants`.
+ * A module adds a writable type with {@see self::registerType()}; it also needs its pattern in
+ * `Module::$persistentVariants` to survive a new content.
  *
  * @since 1.20
  */
 class FileVariants
 {
-    public const TYPE_SUBTITLES = 'subtitles';
-
-    public const KIND_SUBTITLES = 'subtitles';
-    public const KIND_CAPTIONS = 'captions';
-
     /**
-     * @var string the key in the file's metadata
+     * @var array[]|null the writable types by key (see {@see self::getTypes()})
      */
-    public const METADATA_KEY = 'variants';
-
-    /**
-     * @var array[] the writable types: the pattern of the names (the first group is the language), the mime type
-     * prefixes of the files that may carry them, the maximum size of the content in bytes, the content type of the
-     * download and the kinds
-     */
-    private const TYPES = [
-        self::TYPE_SUBTITLES => [
-            'pattern' => '/^subtitles-([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.vtt$/',
-            'mimeTypes' => ['video/', 'audio/'],
-            'maxSize' => 1048576,
-            'contentType' => 'text/vtt; charset=utf-8',
-            'kinds' => [self::KIND_SUBTITLES, self::KIND_CAPTIONS],
-        ],
-    ];
+    private static ?array $types = null;
 
     public function __construct(private readonly File $file)
     {
     }
 
     /**
-     * The type and the language of a variant name
+     * The writable types. A type is an array with
      *
-     * @return array{type: string, language: string}|null null when the name belongs to no writable type
+     * - `pattern`: the regular expression of the names it takes
+     * - `mimeTypes`: the mime type prefixes of the files that may carry it
+     * - `maxSize`: the maximum size of the content in bytes
+     * - `contentType`: the content type it is served with, inline
+     * - `prepare` (optional): `fn(string $content): string`, normalizes the content (e.g. converts a format)
+     * - `validate` (optional): `fn(string $content): string[]`, the errors of the prepared content
+     *
+     * @return array<string, array>
      */
-    public static function parseName(string $name): ?array
+    public static function getTypes(): array
     {
-        foreach (self::TYPES as $type => $definition) {
-            if (preg_match($definition['pattern'], $name, $m)) {
-                return ['type' => $type, 'language' => $m[1]];
+        if (self::$types === null) {
+            self::$types = [
+                'subtitles' => [
+                    'pattern' => '/^(?:subtitles|captions)-[a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*\.vtt$/',
+                    'mimeTypes' => ['video/', 'audio/'],
+                    'maxSize' => 1048576,
+                    'contentType' => 'text/vtt; charset=utf-8',
+                    'prepare' => WebVtt::prepare(...),
+                    'validate' => WebVtt::validate(...),
+                ],
+            ];
+        }
+
+        return self::$types;
+    }
+
+    /**
+     * Adds or replaces a writable type, see {@see self::getTypes()} for its definition
+     */
+    public static function registerType(string $key, array $definition): void
+    {
+        self::$types = [...self::getTypes(), $key => $definition];
+    }
+
+    /**
+     * The writable type a variant name belongs to, null when it is none
+     */
+    private static function findType(string $name): ?array
+    {
+        foreach (self::getTypes() as $definition) {
+            if (preg_match($definition['pattern'], $name)) {
+                return $definition;
             }
         }
 
@@ -80,120 +100,119 @@ class FileVariants
     }
 
     /**
-     * The content type a variant is served with, null when it is none of the writable types
+     * Whether the name belongs to a writable type, which can be written and deleted
+     */
+    public static function isWritable(string $name): bool
+    {
+        return self::findType($name) !== null;
+    }
+
+    /**
+     * Whether a variant is kept with the file ({@see \humhub\modules\file\Module::$persistentVariants})
+     */
+    public static function isPersistent(string $name): bool
+    {
+        return StorageManager::matchesAny($name, Yii::$app->getModule('file')->persistentVariants);
+    }
+
+    /**
+     * The content type a variant is served with, null when it belongs to no writable type
      */
     public static function getContentType(string $name): ?string
     {
-        $parsed = self::parseName($name);
-
-        return $parsed === null ? null : self::TYPES[$parsed['type']]['contentType'];
+        return self::findType($name)['contentType'] ?? null;
     }
 
     /**
-     * The entries of the file's variants, as kept in the metadata
+     * The variants of the file found in its storage (all but the content itself), ordered by name
      *
-     * @return array<string, array{kind: string, generated: bool, size: int, updatedAt: int}> by name
+     * @return array<int, array{name: string, persistent: bool, mimeType: string, size: int, updatedAt: int}>
      */
-    public function getEntries(): array
+    public function getAll(): array
     {
-        $metadata = $this->file->getMetadata();
+        $variants = [];
 
-        return self::readEntries(isset($metadata->{self::METADATA_KEY}) ? $metadata->{self::METADATA_KEY} : null);
-    }
+        foreach ($this->file->getStore()->listVariants() as $name => $info) {
+            $name = (string)$name;
+            $type = self::findType($name);
 
-    /**
-     * @return array<string, array{kind: string, generated: bool, size: int, updatedAt: int}>
-     */
-    private static function readEntries(mixed $stored): array
-    {
-        $entries = [];
-
-        foreach (is_array($stored) ? $stored : [] as $name => $entry) {
-            if (!is_array($entry)) {
-                continue;
-            }
-
-            // The list form is the stored one, the keyed one is tolerated
-            $entry = isset($entry['kind']) ? $entry : array_combine(
-                ['kind', 'generated', 'size', 'updatedAt'],
-                array_pad(array_slice(array_values($entry), 0, 4), 4, null),
-            );
-
-            $entries[(string)$name] = [
-                'kind' => (string)$entry['kind'],
-                'generated' => (bool)$entry['generated'],
-                'size' => (int)$entry['size'],
-                'updatedAt' => (int)$entry['updatedAt'],
+            $variants[] = [
+                'name' => $name,
+                'persistent' => self::isPersistent($name),
+                'mimeType' => $type !== null
+                    ? explode(';', $type['contentType'])[0]
+                    : $this->file->getStore()->mimeType($name),
+                'size' => $info['size'],
+                'updatedAt' => $info['updatedAt'],
             ];
         }
 
-        return $entries;
+        usort($variants, static fn(array $a, array $b) => strcmp($a['name'], $b['name']));
+
+        return $variants;
+    }
+
+    /**
+     * One variant of the file, null when it doesn't exist
+     *
+     * @see self::getAll()
+     */
+    public function get(string $name): ?array
+    {
+        foreach ($this->getAll() as $variant) {
+            if ($variant['name'] === $name) {
+                return $variant;
+            }
+        }
+
+        return null;
     }
 
     public function has(string $name): bool
     {
-        return isset($this->getEntries()[$name]);
+        return $this->file->getStore()->has($name);
     }
 
     /**
-     * Stores a variant, a manual save, which replaces an existing one
+     * Stores a variant of a writable type, replacing an existing one
      *
      * @param string $name the name of the variant
-     * @param string $content the content, converted to WebVTT when it is SRT
-     * @param string $kind the kind, one of the type's kinds
-     * @return array<string, string[]> the errors by field (`name`, `content`, `kind`), empty when it was stored
+     * @param string $content the content, normalized by the type (subtitles: converted to WebVTT when it is SRT)
+     * @return array<string, string[]> the errors by field (`name`, `content`), empty when it was stored
      * @throws Exception when the content could not be written to the storage
      */
-    public function put(string $name, string $content, string $kind): array
+    public function put(string $name, string $content): array
     {
-        $parsed = self::parseName($name);
-        if ($parsed === null) {
-            return ['name' => [Yii::t('FileModule.base', 'The name of the variant is invalid.')]];
+        $type = self::findType($name);
+        if ($type === null) {
+            return ['name' => [Yii::t('FileModule.base', 'A variant of this name can\'t be written.')]];
         }
 
-        $definition = self::TYPES[$parsed['type']];
-
-        if (!$this->isMediaFor($definition)) {
-            return ['name' => [Yii::t('FileModule.base', 'This file cannot have subtitles.')]];
+        if (!$this->isMediaFor($type)) {
+            return ['name' => [Yii::t('FileModule.base', 'This file cannot have a variant of this name.')]];
         }
 
-        if (!in_array($kind, $definition['kinds'], true)) {
-            return ['kind' => [Yii::t('FileModule.base', 'The kind is invalid.')]];
-        }
-
-        if (strlen($content) > $definition['maxSize']) {
-            return ['content' => [Yii::t('FileModule.base', 'The text is too large, the maximum is {size} MB.', ['size' => $definition['maxSize'] / 1048576])]];
+        if (strlen($content) > $type['maxSize']) {
+            return ['content' => [Yii::t('FileModule.base', 'The text is too large, the maximum is {size} MB.', ['size' => $type['maxSize'] / 1048576])]];
         }
 
         if (!mb_check_encoding($content, 'UTF-8')) {
             return ['content' => [Yii::t('FileModule.base', 'The text must be UTF-8 encoded.')]];
         }
 
-        $content = WebVtt::prepare($content);
-        $errors = WebVtt::validate($content);
+        if (isset($type['prepare'])) {
+            $content = $type['prepare']($content);
+        }
+
+        $errors = isset($type['validate']) ? $type['validate']($content) : [];
         if ($errors !== []) {
             return ['content' => $errors];
         }
 
-        $entry = [
-            'kind' => $kind,
-            'generated' => false,
-            'size' => strlen($content),
-            'updatedAt' => time(),
-        ];
+        $store = $this->file->getStore();
+        $store->setContent($content, $name);
 
-        try {
-            $stored = $this->saveEntry($name, $entry, function () use ($name, $content): bool {
-                $store = $this->file->getStore();
-                $store->setContent($content, $name);
-
-                return $store->has($name);
-            });
-        } catch (LengthException) {
-            return ['name' => [Yii::t('FileModule.base', 'There are too many variants, delete one first.')]];
-        }
-
-        if (!$stored) {
+        if (!$store->has($name)) {
             throw new Exception('Could not store the variant ' . $name . ' of file ' . $this->file->id);
         }
 
@@ -201,58 +220,29 @@ class FileVariants
     }
 
     /**
-     * Deletes a variant
+     * Deletes a variant of a writable type
      *
-     * @return bool false when there is none of that name
+     * @return bool false when the name is no writable type's or there is none of that name
      */
     public function delete(string $name): bool
     {
-        if (!$this->has($name)) {
+        if (!self::isWritable($name) || !$this->has($name)) {
             return false;
         }
 
         $this->file->getStore()->delete($name);
-        $this->saveEntry($name, null);
 
         return true;
     }
 
-    private function isMediaFor(array $definition): bool
+    private function isMediaFor(array $type): bool
     {
-        foreach ($definition['mimeTypes'] as $prefix) {
+        foreach ($type['mimeTypes'] as $prefix) {
             if (str_starts_with((string)$this->file->mime_type, $prefix)) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * @param array|null $entry null removes the entry
-     * @param (callable(): bool)|null $commit see [[FileMetadata::update()]]
-     * @throws LengthException when the entries don't fit the metadata
-     */
-    private function saveEntry(string $name, ?array $entry, ?callable $commit = null): bool
-    {
-        return FileMetadata::update($this->file, function (Metadata $metadata) use ($name, $entry): void {
-            // The entries as they are now, not as the record loaded them
-            $entries = self::readEntries(isset($metadata->{self::METADATA_KEY}) ? $metadata->{self::METADATA_KEY} : null);
-
-            if ($entry === null) {
-                unset($entries[$name]);
-            } else {
-                $entries[$name] = $entry;
-            }
-
-            if ($entries === []) {
-                unset($metadata->{self::METADATA_KEY});
-            } else {
-                $metadata->{self::METADATA_KEY} = array_map(
-                    static fn(array $e): array => [$e['kind'], (int)$e['generated'], $e['size'], $e['updatedAt']],
-                    $entries,
-                );
-            }
-        }, $commit);
     }
 }

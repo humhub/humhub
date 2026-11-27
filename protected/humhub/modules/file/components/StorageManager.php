@@ -84,8 +84,9 @@ class StorageManager extends Component implements StorageManagerInterface
 
     /**
      * @param string[] $patterns names, or prefixes when they end in `*`
+     * @since 1.20
      */
-    private static function matchesAny(string $name, array $patterns): bool
+    public static function matchesAny(string $name, array $patterns): bool
     {
         foreach ($patterns as $pattern) {
             $pattern = (string)$pattern;
@@ -110,6 +111,29 @@ class StorageManager extends Component implements StorageManagerInterface
             })
             ->map(fn($f) => basename($f->path()))
             ->toArray();
+    }
+
+    /**
+     * The variants of the file with their size and time of the last change
+     *
+     * @return array<string, array{size: int, updatedAt: int}> by name
+     * @since 1.20
+     */
+    public function listVariants(): array
+    {
+        $variants = [];
+
+        foreach ($this->fs->listContents($this->getPath()) as $attributes) {
+            $name = basename($attributes->path());
+            if ($attributes->isFile() && $name !== $this->originalFileName) {
+                $variants[$name] = [
+                    'size' => (int)$attributes->fileSize(),
+                    'updatedAt' => (int)$attributes->lastModified(),
+                ];
+            }
+        }
+
+        return $variants;
     }
 
     public function set(UploadedFile $file, ?string $variant = null): void

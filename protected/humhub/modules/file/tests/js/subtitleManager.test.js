@@ -6,22 +6,19 @@ import PickerInput from '../../../../vue/PickerInput.vue';
 await import('../../../../resources/js/humhub/humhub.url.js');
 const vueModule = await import('../../../../resources/js/humhub/humhub.vue.js');
 
-const variant = (language, over = {}) => ({
-    name: `subtitles-${language}.vtt`,
-    type: 'subtitles',
-    language,
-    label: language === 'de' ? 'Deutsch' : 'English',
-    kind: 'subtitles',
-    generated: false,
+// A subtitle track is a variant by its name: `<kind>-<language>.vtt`
+const variant = (language, kind = 'subtitles') => ({
+    name: `${kind}-${language}.vtt`,
+    persistent: true,
+    mimeType: 'text/vtt',
     size: 40,
     updatedAt: '2026-11-27T10:00:00+00:00',
-    url: `/file/file/download?guid=g&variant=subtitles-${language}.vtt`,
-    ...over,
+    url: `/file/file/download?guid=g&variant=${kind}-${language}.vtt`,
 });
 
 const stubs = () => globalThis.humhubStubs;
 let announce;
-let lastPut;
+let lastPost;
 
 // The platform's languages, as the controller passes them (names sorted by the server)
 const LANGUAGES = [
@@ -34,7 +31,7 @@ const LANGUAGES = [
 
 // `global.components` stands in for the registry the core `PickerInput` resolves through.
 const manager = (props = {}) => mount(SubtitleManager, {
-    props: { fileId: 7, fileName: 'talk.mp4', languages: LANGUAGES, uiLanguage: 'de', ...props },
+    props: { fileId: 7, saveUrl: '/file/subtitles/save?guid=g', deleteUrl: '/file/subtitles/delete?guid=g', fileName: 'talk.mp4', languages: LANGUAGES, uiLanguage: 'de', ...props },
     global: { components: { PickerInput } },
     attachTo: document.body,
 });
@@ -49,11 +46,11 @@ describe('SubtitleManager', () => {
 
     beforeEach(() => {
         document.documentElement.lang = 'de';
-        variants = [variant('de'), variant('en', { kind: 'captions', generated: true })];
-        stubs().client.get = vi.fn(() => Promise.resolve({ results: [...variants, { name: 'old-1', type: 'version' }] }));
-        lastPut = null;
-        stubs().client.ajax = vi.fn((url, cfg) => {
-            lastPut = { url, cfg };
+        variants = [variant('de'), variant('en', 'captions')];
+        stubs().client.get = vi.fn(() => Promise.resolve({ results: [...variants, { name: 'preview-image', persistent: false, url: '/p.jpg' }, { name: 'old-12', persistent: true, url: '/old' }, { name: 'subtitles-de.vtt.bak', persistent: true, url: '/x' }] }));
+        lastPost = null;
+        stubs().client.post = vi.fn((url, cfg) => {
+            lastPost = { url, cfg };
             return Promise.resolve({});
         });
         stubs().modal.confirm = vi.fn(() => Promise.resolve(true));
@@ -67,7 +64,7 @@ describe('SubtitleManager', () => {
         vi.restoreAllMocks();
     });
 
-    it('lists the languages with kind and the automatic badge', async () => {
+    it('lists the languages with kind', async () => {
         const wrapper = manager();
         await flushPromises();
 
@@ -78,7 +75,8 @@ describe('SubtitleManager', () => {
         expect(rows[0].text()).toContain('Subtitles');
         expect(rows[0].find('.badge').exists()).toBe(false);
         expect(rows[1].text()).toContain('Captions');
-        expect(rows[1].find('.badge').text()).toBe('automatic');
+        // Not in the platform's languages: the browser's name for it
+        expect(rows[1].text()).toContain('Englisch');
         expect(rows[0].find('a.subtitle-manager-download').attributes('href')).toContain('variant=subtitles-de.vtt');
     });
 
@@ -135,7 +133,7 @@ describe('SubtitleManager', () => {
         expect(wrapper.find('label[for="subtitle-7-language"]').text()).toBe('Language');
     });
 
-    it('adds a language with a PUT of content and kind', async () => {
+    it('adds a language with a POST of name and content', async () => {
         variants = [variant('de')];
         const wrapper = manager();
         await flushPromises();
@@ -148,9 +146,8 @@ describe('SubtitleManager', () => {
         await wrapper.find('form').trigger('submit');
         await flushPromises();
 
-        expect(lastPut.url).toContain('file/7/variants/subtitles-fr.vtt');
-        expect(lastPut.cfg.method).toBe('PUT');
-        expect(JSON.parse(lastPut.cfg.data)).toEqual({ content: 'WEBVTT\n\n00:00.000 --> 00:01.000\nHi\n', kind: 'captions' });
+        expect(lastPost.url).toBe('/file/subtitles/save?guid=g');
+        expect(JSON.parse(lastPost.cfg.data)).toEqual({ name: 'captions-fr.vtt', content: 'WEBVTT\n\n00:00.000 --> 00:01.000\nHi\n' });
         expect(wrapper.find('form').exists()).toBe(false);
         expect(stubs().client.get).toHaveBeenCalledTimes(2);
         expect(announce).toHaveBeenCalledWith('Subtitles saved: Français');
@@ -170,11 +167,29 @@ describe('SubtitleManager', () => {
         await wrapper.find('form').trigger('submit');
         await flushPromises();
 
-        expect(lastPut.url).toContain('file/7/variants/subtitles-de.vtt');
+        expect(lastPost.url).toBe('/file/subtitles/save?guid=g');
+        expect(JSON.parse(lastPost.cfg.data).name).toBe('subtitles-de.vtt');
+    });
+
+    it('changing the kind saves the new name, then deletes the old one, announcing the change once', async () => {
+        const changed = vi.fn();
+        document.addEventListener('humhub:file:variants-changed', changed);
+        const wrapper = manager();
+        await flushPromises();
+        await wrapper.find('.subtitle-manager-edit').trigger('click');
+        await flushPromises();
+        await wrapper.find('select#subtitle-7-kind').setValue('captions');
+        await wrapper.find('form').trigger('submit');
+        await flushPromises();
+        document.removeEventListener('humhub:file:variants-changed', changed);
+
+        const calls = stubs().client.post.mock.calls.map(([url, cfg]) => [url, JSON.parse(cfg.data).name]);
+        expect(calls).toEqual([['/file/subtitles/save?guid=g', 'captions-de.vtt'], ['/file/subtitles/delete?guid=g', 'subtitles-de.vtt']]);
+        expect(changed).toHaveBeenCalledTimes(1);
     });
 
     it('deletes after a confirmation only', async () => {
-        stubs().client.ajax = vi.fn(() => {
+        stubs().client.post = vi.fn(() => {
             variants = [variants[1]];
             return Promise.resolve();
         });
@@ -184,23 +199,23 @@ describe('SubtitleManager', () => {
 
         await wrapper.find('.subtitle-manager-delete').trigger('click');
         await flushPromises();
-        expect(stubs().client.ajax).not.toHaveBeenCalled();
+        expect(stubs().client.post).not.toHaveBeenCalled();
 
         stubs().modal.confirm = vi.fn(() => Promise.resolve(true));
         await wrapper.find('.subtitle-manager-delete').trigger('click');
         await flushPromises();
 
         expect(stubs().modal.confirm.mock.calls[0][0].body).toContain('Deutsch');
-        expect(stubs().client.ajax.mock.calls[0][0]).toContain('file/7/variants/subtitles-de.vtt');
-        expect(stubs().client.ajax.mock.calls[0][1].method).toBe('DELETE');
+        expect(stubs().client.post.mock.calls[0][0]).toBe('/file/subtitles/delete?guid=g');
+        expect(JSON.parse(stubs().client.post.mock.calls[0][1].data)).toEqual({ name: 'subtitles-de.vtt' });
         expect(wrapper.findAll('.subtitle-manager-item')).toHaveLength(1);
         expect(announce).toHaveBeenCalledWith('Subtitles deleted: Deutsch');
         // The neighbouring entry's Edit button takes the focus
-        expect(document.activeElement.dataset.name).toBe('subtitles-en.vtt');
+        expect(document.activeElement.dataset.name).toBe('captions-en.vtt');
     });
 
     it('shows the server errors under the field', async () => {
-        stubs().client.ajax = vi.fn(() => rejection422({ content: ['Line 3: Invalid cue timing.'] }));
+        stubs().client.post = vi.fn(() => rejection422({ content: ['Line 3: Invalid cue timing.'] }));
         const wrapper = manager();
         await flushPromises();
         await wrapper.find('.subtitle-manager-add').trigger('click');
@@ -239,7 +254,7 @@ describe('SubtitleManager', () => {
         const cancel = wrapper.findAll('button').find((button) => button.text() === 'Cancel');
         await cancel.trigger('click');
         await flushPromises();
-        expect(document.activeElement.dataset.name).toBe('subtitles-en.vtt');
+        expect(document.activeElement.dataset.name).toBe('captions-en.vtt');
 
         await wrapper.find('.subtitle-manager-add').trigger('click');
         expect(document.activeElement).toBe(wrapper.find('input#subtitle-7-language').element);
@@ -250,7 +265,7 @@ describe('SubtitleManager', () => {
 
         it('uses aria-disabled and aria-busy and ignores clicks while a save runs', async () => {
             let finish;
-            stubs().client.ajax = vi.fn(() => new Promise((resolve) => { finish = resolve; }));
+            stubs().client.post = vi.fn(() => new Promise((resolve) => { finish = resolve; }));
             const wrapper = manager();
             await flushPromises();
             await wrapper.find('.subtitle-manager-add').trigger('click');
@@ -265,7 +280,7 @@ describe('SubtitleManager', () => {
             expect(document.activeElement).toBe(submit.element);
 
             await wrapper.find('form').trigger('submit');
-            expect(stubs().client.ajax).toHaveBeenCalledTimes(1);
+            expect(stubs().client.post).toHaveBeenCalledTimes(1);
             finish({});
             await flushPromises();
         });
@@ -284,7 +299,7 @@ describe('SubtitleManager', () => {
         });
 
         it('keeps the focus on Save when saving fails without field errors', async () => {
-            stubs().client.ajax = vi.fn(() => Promise.reject({ status: 500 }));
+            stubs().client.post = vi.fn(() => Promise.reject({ status: 500 }));
             const wrapper = manager();
             await flushPromises();
             await wrapper.find('.subtitle-manager-add').trigger('click');
@@ -297,7 +312,7 @@ describe('SubtitleManager', () => {
         });
 
         it('returns the focus to Delete when deleting fails', async () => {
-            stubs().client.ajax = vi.fn(() => Promise.reject({ status: 500 }));
+            stubs().client.post = vi.fn(() => Promise.reject({ status: 500 }));
             const wrapper = manager();
             await flushPromises();
             await removeButton(wrapper).trigger('click');
@@ -314,12 +329,12 @@ describe('SubtitleManager', () => {
             const wrapper = manager();
             await flushPromises();
 
-            stubs().client.ajax = vi.fn(() => Promise.reject({ status: 500 }));
+            stubs().client.post = vi.fn(() => Promise.reject({ status: 500 }));
             await removeButton(wrapper).trigger('click');
             await flushPromises();
             expect(seen).toEqual([]);
 
-            stubs().client.ajax = vi.fn(() => Promise.resolve({}));
+            stubs().client.post = vi.fn(() => Promise.resolve({}));
             await removeButton(wrapper).trigger('click');
             await flushPromises();
             await wrapper.find('.subtitle-manager-add').trigger('click');

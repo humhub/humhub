@@ -68,7 +68,7 @@ class SubtitlesDownloadCest
 
         Post::findOne(['id' => 1])->fileManager->attach($file);
         $file->setStoredFileContent('video');
-        (new FileVariants($file))->put('subtitles-de.vtt', self::VTT, 'subtitles');
+        (new FileVariants($file))->put('subtitles-de.vtt', self::VTT);
 
         return $file;
     }

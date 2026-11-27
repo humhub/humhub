@@ -593,8 +593,10 @@ describe('ui.gallery', () => {
 
         describe('subtitles', () => {
             const variants = [
-                { name: 'subtitles-de.vtt', type: 'subtitles', language: 'de', label: 'Deutsch', kind: 'subtitles', url: '/v/de.vtt' },
-                { name: 'subtitles-en.vtt', type: 'subtitles', language: 'en', label: 'English', kind: 'captions', url: '/v/en.vtt' },
+                { name: 'preview-image', persistent: false, url: '/v/preview.jpg' },
+                { name: 'old-12', persistent: true, url: '/v/old-12' },
+                { name: 'subtitles-de.vtt', persistent: true, url: '/v/de.vtt' },
+                { name: 'captions-en.vtt', persistent: true, url: '/v/en.vtt' },
             ];
             const markup = groupMarkup.replace('<a id="a3"', '<a id="a3" data-ui-gallery-subtitles-url="/api/v2/file/3/variants"');
             const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
@@ -643,7 +645,7 @@ describe('ui.gallery', () => {
                 expect(tracks.map((t) => [t.getAttribute('kind'), t.getAttribute('srclang'), t.getAttribute('label'), t.getAttribute('src'), t.default]))
                     .toEqual([
                         ['subtitles', 'de', 'Deutsch', '/v/de.vtt', true],
-                        ['captions', 'en', 'English', '/v/en.vtt', false],
+                        ['captions', 'en', 'Englisch', '/v/en.vtt', false],
                     ]);
             });
 
