@@ -10,6 +10,9 @@ namespace humhub\tests\codeception\api;
 
 use ApiTester;
 use humhub\modules\file\models\File;
+use humhub\modules\file\tests\codeception\models\HistoryPost;
+use humhub\modules\post\models\Post;
+use humhub\modules\user\models\User;
 use PHPUnit\Framework\Assert;
 use Yii;
 
@@ -59,6 +62,23 @@ class FileApiCest
         $file->created_by = $userId;
         $file->updated_by = $userId;
         $file->save(false);
+
+        return $file->id;
+    }
+
+    /**
+     * A file of `$userId` attached to a new post (of `$postClass`) on their own profile.
+     *
+     * @param class-string<Post> $postClass
+     */
+    private function seedAttachedFile(int $userId, string $postClass): int
+    {
+        $post = new $postClass(['message' => 'API test content']);
+        $post->content->container = User::findOne(['id' => $userId]);
+        Assert::assertTrue($post->save(), implode(' ', $post->getFirstErrors()));
+
+        $file = File::findOne(['id' => $this->seedFile($userId)]);
+        $file->updateAttributes(['object_model' => $post::class, 'object_id' => $post->id]);
 
         return $file->id;
     }
@@ -189,8 +209,8 @@ class FileApiCest
     public function testListsTheVersionsOfAFile(ApiTester $I)
     {
         $I->wantTo('read the versions of a file, newest first');
-        // An unattached file is viewable by its creator only (see File::canView()).
-        $id = $this->seedFile(1);
+        $I->amLoggedInAs(1);
+        $id = $this->seedAttachedFile(1, HistoryPost::class);
         Yii::$app->db->createCommand()->insert('file_history', [
             'file_id' => $id,
             'size' => 3,
@@ -200,7 +220,6 @@ class FileApiCest
         ])->execute();
         $historyId = (int)Yii::$app->db->getLastInsertID();
 
-        $I->amLoggedInAs(1);
         $I->sendGet("file/$id/versions");
 
         $I->seeResponseCodeIs(200);
@@ -221,6 +240,19 @@ class FileApiCest
         $I->seeResponseCodeIs(403);
 
         $I->sendGet('file/999999/versions');
+        $I->seeResponseCodeIs(404);
+    }
+
+    public function testFindsNoVersionsOfAFileWithoutHistory(ApiTester $I)
+    {
+        $I->wantTo('find no versions of a file whose record keeps no history, so they do not name its uploader');
+        $I->amLoggedInAs(1);
+
+        $I->sendGet('file/' . $this->seedAttachedFile(1, Post::class) . '/versions');
+        $I->seeResponseCodeIs(404);
+
+        // An unattached file belongs to no record yet.
+        $I->sendGet('file/' . $this->seedFile(1) . '/versions');
         $I->seeResponseCodeIs(404);
     }
 

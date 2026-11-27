@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------
 - Enh #8798: Subtitles for video and audio files (persistent WebVTT variants per language), "Open" in the media viewer
 - Fix #8798: Deleting a file version or a file variant deleted the file's whole directory
+- Fix: The versions API of a file answers only for records that keep a file history; it named the uploader of any attachment
 - Enh #8797: Attached videos as tiles beside the images, audio files as playable file rows; video and audio metadata (getID3, optional ffprobe)
 - Enh #8793: Upload rows: files show as rows with progress while uploading, one request per file
 - Fix: Image dimensions got lost on the first read of file metadata in a web request (deprecation in `StdClass`)

@@ -12,6 +12,7 @@ use humhub\components\api\BaseController;
 use humhub\modules\file\libs\FileVariants;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\file\models\FileHistory;
 use humhub\modules\file\models\FileUpload;
 use humhub\modules\file\serializers\FileSerializer;
 use Yii;
@@ -142,6 +143,9 @@ class FileController extends BaseController
     /**
      * The versions of a file the caller may see, newest first (see
      * {@see FileSerializer::versions()}).
+     *
+     * Only for a file of a record that keeps a history ({@see FileHistory::isEnabled()}): any
+     * other file has no versions, and the list would only name who uploaded it.
      */
     public function actionVersions($id)
     {
@@ -153,6 +157,10 @@ class FileController extends BaseController
 
         if (!$file->canView()) {
             throw new ForbiddenHttpException();
+        }
+
+        if (!FileHistory::isEnabled($file)) {
+            throw new NotFoundHttpException();
         }
 
         return ['results' => FileSerializer::versions($file)];
