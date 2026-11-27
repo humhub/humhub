@@ -183,49 +183,18 @@ class ContentCreatedTest extends HumHubDbTestCase
     }
 
     /**
-     * In a web request the content is notified when the request ends, so a content type that processes
-     * its rich text after saving the record (e.g. the tasks) is covered, too.
+     * A mention created after the record was saved - the code that saves the content processes its rich text
+     * itself, e.g. the tasks - is notified on its own: the mentioned user gets the "created" notification, too.
      */
-    public function testMentionAfterTheRecordWasSavedGetsNoContentCreatedNotification()
+    public function testMentionAfterTheRecordWasSavedIsNotifiedSeparately()
     {
         $this->becomeUser('User2');
         $admin = User::findOne(['id' => 1]);
 
-        Content::$notifyNewContentAtRequestEnd = true;
-        try {
-            $post = $this->createPost('Nobody is mentioned while saving');
-            RichText::postProcess('[](mention:' . $admin->guid . ') mentioned later', $post);
-
-            // Nothing is sent before the request ends
-            $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
-            $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
-
-            Content::flushNewContentNotifications();
-        } finally {
-            Content::$notifyNewContentAtRequestEnd = null;
-        }
+        $post = $this->createPost('Nobody is mentioned while saving');
+        RichText::postProcess('[](mention:' . $admin->guid . ') mentioned later', $post);
 
         $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
-        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
-    }
-
-    /**
-     * Without a mention the followers are still notified at the end of the request.
-     */
-    public function testContentOfARequestStillNotifiesTheFollowerAtTheEnd()
-    {
-        $this->becomeUser('User2');
-
-        Content::$notifyNewContentAtRequestEnd = true;
-        try {
-            $post = $this->createPost('Nobody is mentioned');
-            $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
-
-            Content::flushNewContentNotifications();
-        } finally {
-            Content::$notifyNewContentAtRequestEnd = null;
-        }
-
         $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
     }
 

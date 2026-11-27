@@ -8,12 +8,12 @@
 
 namespace humhub\modules\user\models;
 
+use ArrayObject;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\user\notifications\MentionedNotification;
-use ArrayObject;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
@@ -95,15 +95,9 @@ class Mentioning extends ActiveRecord
     }
 
     /**
-     * Like {@see withoutNotificationFor()}, but for a caller that cannot wrap the code which creates the
-     * mentions, e.g. because it is finished by the code that called it. The mentions of the record are
-     * collected - not notified - until {@see stopDeferring()} is called.
-     *
-     * @param ContentActiveRecord|ContentAddonActiveRecord $record
-     * @internal
-     * @since 1.20
+     * The mentions of the record are collected - not notified - until {@see stopDeferring()} is called.
      */
-    public static function startDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): void
+    private static function startDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): void
     {
         self::$deferred[] = ['record' => $record, 'userIds' => new ArrayObject()];
     }
@@ -111,12 +105,9 @@ class Mentioning extends ActiveRecord
     /**
      * Ends {@see startDeferring()}.
      *
-     * @param ContentActiveRecord|ContentAddonActiveRecord $record
      * @return int[] the ids of the users mentioned for the record meanwhile
-     * @internal
-     * @since 1.20
      */
-    public static function stopDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): array
+    private static function stopDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): array
     {
         foreach (self::$deferred as $i => $entry) {
             if ($entry['record'] === $record) {

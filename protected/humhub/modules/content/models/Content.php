@@ -121,10 +121,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public $notifyUsersOfNewContent = [];
 
     /**
-     * @var bool whether the {@see ContentCreatedNotification}s of this new content wait for the end of saving the
-     * record, see {@see notifyNewContent()}
+     * @var array<int, true> the ids of the new contents whose {@see ContentCreatedNotification}s wait for the end of
+     * saving the record, see {@see notifyNewContent()}. By id: a `refresh()` of the record loads its content anew
      */
-    private bool $contentCreatedPending = false;
+    private static array $contentCreatedPending = [];
 
     /**
      * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
@@ -406,84 +406,26 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
-        $this->contentCreatedPending = true;
+        self::$contentCreatedPending[$this->id] = true;
 
         ContentCreatedActivity::send($contentSource, $this->createdBy);
-    }
-
-    /**
-     * @var bool|null forces {@see notifiesNewContentAtRequestEnd()}, for tests; null decides by the environment
-     * @internal
-     */
-    public static ?bool $notifyNewContentAtRequestEnd = null;
-
-    /**
-     * @var ContentActiveRecord[] the new contents whose notifications wait for the end of the request
-     */
-    private static array $newContentAtRequestEnd = [];
-
-    private static bool $requestEndRegistered = false;
-
-    /**
-     * In a web request a content is notified when the request ends. The code that saves a content normally
-     * processes its rich text - and so creates the mentions - after the record was saved, and that is
-     * up to every content type, so the mentioned users are not known any earlier. In the console and in
-     * the queue the content is notified as soon as it is saved.
-     *
-     * @internal
-     */
-    public static function notifiesNewContentAtRequestEnd(): bool
-    {
-        return self::$notifyNewContentAtRequestEnd
-            ?? (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' && Yii::$app instanceof \yii\web\Application);
-    }
-
-    /**
-     * @param ContentActiveRecord $model a new content, saved just now
-     * @internal
-     */
-    public static function notifyNewContentAtRequestEnd(ContentActiveRecord $model): void
-    {
-        self::$newContentAtRequestEnd[] = $model;
-
-        if (!self::$requestEndRegistered) {
-            self::$requestEndRegistered = true;
-            Yii::$app->on(\yii\base\Application::EVENT_AFTER_REQUEST, [self::class, 'flushNewContentNotifications']);
-        }
-    }
-
-    /**
-     * Notifies the new contents of the request, see {@see notifiesNewContentAtRequestEnd()}.
-     *
-     * @internal
-     */
-    public static function flushNewContentNotifications(): void
-    {
-        while (($model = array_shift(self::$newContentAtRequestEnd)) !== null) {
-            $mentionedUserIds = Mentioning::stopDeferring($model);
-
-            try {
-                $model->content->notifyNewContent($mentionedUserIds);
-            } catch (\Throwable $e) {
-                Yii::error('Could not notify the new content: ' . $e->getMessage(), 'content');
-            }
-        }
     }
 
     /**
      * Notifies everyone concerned by this new content once, by the best-matching notification: the
      * mentioned users, then the users picked in the content form, then the followers.
      *
-     * It is called when the record has been saved completely: every content type processes its rich text
-     * itself, after the content was saved, and only then the mentioned users are known.
+     * It is called right after the record was inserted, or when a draft or scheduled content is published: the
+     * rich text is processed in the `afterSave()` of the record, so the mentioned users are known then. A mention
+     * created later is notified on its own.
      *
      * @param int[] $mentionedUserIds the users mentioned by the new content
      * @internal
      */
     public function notifyNewContent(array $mentionedUserIds): void
     {
-        $contentCreated = $this->contentCreatedPending;
-        $this->contentCreatedPending = false;
+        $contentCreated = isset(self::$contentCreatedPending[$this->id]);
+        unset(self::$contentCreatedPending[$this->id]);
 
         if (!$contentCreated && $mentionedUserIds === []) {
             return;

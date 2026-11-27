@@ -34,7 +34,9 @@ use yii\base\InvalidConfigException;
  *
  * After saving the related record of a rich text the [[postProcess()]] function should be called manually in order to
  * parse the rich text e.g. for _Mentionings_ or other features etc.
- * This usually happens in the [[ContentActiveRecord::afterSave()]] function of the record.
+ * This should happen in the [[ContentActiveRecord::afterSave()]] function of the record: the notifications about the
+ * mentions of a new content are then sent together with the ones of the content itself (a mentioned user gets the
+ * mention only). A mention created after the record was saved is notified on its own.
  *
  * Furthermore the [[output()]] function can be used as convenience function to render a given text.
  *

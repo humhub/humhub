@@ -407,31 +407,18 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
-     * Inserts the record and, once it is saved completely, notifies about the new content: its
-     * `afterSave()` processes the rich text and stores the mentions after the content was saved, so
-     * the mentioned users are only known at the end, see {@see Content::notifyNewContent()}.
+     * Inserts the record and notifies about the new content right after, see {@see Content::notifyNewContent()}.
+     *
+     * The mentions the record creates while it is inserted (in its `afterSave()`, see
+     * {@see \humhub\modules\content\widgets\richtext\RichText::postProcess()}) are not notified one by
+     * one: the mentioned users get the {@see \humhub\modules\user\notifications\MentionedNotification}
+     * within the one set of the new content, and no "created" notification.
+     * A mention created after `insert()` has returned is notified on its own.
      *
      * @inheritdoc
      */
     public function insert($runValidation = true, $attributes = null)
     {
-        if (Content::notifiesNewContentAtRequestEnd()) {
-            // The mentions are known only when the code that saves the record has also processed its rich text
-            Mentioning::startDeferring($this);
-            $result = false;
-            try {
-                $result = parent::insert($runValidation, $attributes);
-            } finally {
-                if ($result) {
-                    Content::notifyNewContentAtRequestEnd($this);
-                } else {
-                    Mentioning::stopDeferring($this);
-                }
-            }
-
-            return $result;
-        }
-
         $mentionedUserIds = [];
         $result = Mentioning::withoutNotificationFor(
             $this,
