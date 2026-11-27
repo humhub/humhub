@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.19.6 (Unreleased)
+-------------------
+
+- Fix #XXXX: Forms of a page that stayed open while the user logged in again in another browser tab failed with an unexpected error until the page was reloaded
+
 1.19.5 (November 25, 2026)
 --------------------------
 

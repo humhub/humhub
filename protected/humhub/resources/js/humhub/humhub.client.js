@@ -11,6 +11,7 @@ humhub.module('client', function (module, require, $) {
     var i18n = require('i18n');
 
     var HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
+    var HEADER_CSRF_TOKEN = 'X-CSRF-Token';
 
     module.requiredI18nCategories = ['base'];
 
@@ -420,7 +421,10 @@ humhub.module('client', function (module, require, $) {
     };
 
     var serializeFormState = function ($form) {
-        const allElements = $form.find('input, select, textarea').not('[data-prevent-statechange]');
+        const allElements = $form.find('input, select, textarea')
+            .not('[data-prevent-statechange]')
+            // The CSRF token may be replaced in the background, see updateCsrfToken()
+            .not('[name="' + yii.getCsrfParam() + '"]');
 
         // Enable all disabled elements only for serialization time
         const disabledElements = allElements.filter(':disabled');
@@ -546,6 +550,23 @@ humhub.module('client', function (module, require, $) {
         }
     };
 
+    /**
+     * Replaces the CSRF token of the page and its forms with the current token provided by an AJAX response,
+     * so that a page which is open for a longer time keeps working, e.g. after a re-login in another browser tab.
+     */
+    var updateCsrfToken = function (evt, xhr, settings) {
+        // The 'ajaxComplete' event is also triggered manually without a request, see ajax()
+        if (!xhr || !settings || settings.crossDomain) {
+            return;
+        }
+
+        var token = xhr.getResponseHeader(HEADER_CSRF_TOKEN);
+        if (token) {
+            yii.setCsrfToken(yii.getCsrfParam(), token);
+            yii.refreshCsrfToken();
+        }
+    };
+
     module.initOnPjaxLoad = true;
 
     var init = function (isPjax) {
@@ -569,6 +590,8 @@ humhub.module('client', function (module, require, $) {
             });
 
             checkContentSecurityPolicyViolation();
+
+            $(document).on('ajaxComplete.humhub_client', updateCsrfToken);
         } else {
             offBeforeLoad();
         }

@@ -8,6 +8,10 @@
 
 namespace humhub\components;
 
+use Yii;
+use yii\web\Controller;
+use yii\web\Request;
+
 /**
  * Response
  *
@@ -22,6 +26,30 @@ class Response extends \yii\web\Response
         }
 
         parent::init();
+
+        $this->on(self::EVENT_BEFORE_SEND, function () {
+            $this->addCsrfTokenHeader();
+        });
+    }
+
+    /**
+     * Provides the current CSRF token to AJAX requests, so that pages which are open for a longer time
+     * can replace an outdated token, e.g. after a re-login in another browser tab.
+     */
+    private function addCsrfTokenHeader(): void
+    {
+        $request = Yii::$app->request;
+        $controller = Yii::$app->controller;
+
+        if (
+            $request instanceof Request
+            && $request->enableCsrfValidation
+            && $request->getIsAjax()
+            && $controller instanceof Controller
+            && $controller->enableCsrfValidation
+        ) {
+            $this->headers->set(Request::CSRF_HEADER, $request->getCsrfToken());
+        }
     }
 
     /**
