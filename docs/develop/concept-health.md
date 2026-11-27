@@ -38,7 +38,7 @@ orchestrator. Alert on `state` if you want to know about it. Maintenance mode is
 | `installation` | ready | lifecycle state; explains a not completed installation or maintenance mode |
 | `migrations:core` | ready | pending core migrations: failure |
 | `migrations:module` | ready | pending migrations of enabled modules: warning |
-| `filesystem:uploads` | all | local data mount only |
+| `filesystem:uploads` | all | local data mount only; subdirectories may be missing if the parent is writable |
 | `filesystem:modules` | all | warning only |
 | `cron` | all | warning after `cronWarningAge`, failure after `cronFailureAge` |
 | `queue` | all | database queue only |

@@ -270,6 +270,22 @@ class HealthServiceTest extends HumHubDbTestCase
         }
     }
 
+    public function testMissingUploadDirectoriesAreOkWhenTheyCanBeCreated(): void
+    {
+        $fs = Yii::$app->fs;
+        $original = $fs->getDataMountConfig();
+        $fs->mounts['data'] = new LocalMountConfig();
+        $fs->mounts['data']->path = Yii::getAlias('@runtime') . '/health-empty-uploads-' . uniqid();
+        mkdir($fs->mounts['data']->path);
+
+        try {
+            $this->assertSame(HealthStatus::Ok, Yii::$app->health->runCheck('filesystem:uploads')->status);
+        } finally {
+            rmdir($fs->mounts['data']->path);
+            $fs->mounts['data'] = $original;
+        }
+    }
+
     public function testRunCheck(): void
     {
         Yii::$app->settings->set('cronLastRun', time());

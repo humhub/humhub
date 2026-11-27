@@ -177,7 +177,7 @@ class HealthService extends Component
         $dataMount = Yii::$app->fs->getDataMountConfig();
         if ($dataMount instanceof LocalMountConfig) {
             $uploads = Yii::getAlias($dataMount->path);
-            $checks[] = new FilesystemCheck(['id' => 'filesystem:uploads', 'paths' => [$uploads, $uploads . '/file', $uploads . '/profile_image']]);
+            $checks[] = new FilesystemCheck(['id' => 'filesystem:uploads', 'paths' => [$uploads, $uploads . '/file', $uploads . '/profile_image'], 'allowMissing' => true]);
         }
 
         $marketplace = Yii::$app->getModule('marketplace');
