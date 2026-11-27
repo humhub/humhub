@@ -19,8 +19,14 @@ For plain Docker (one `HEALTHCHECK`, also used by Compose `depends_on: condition
 
 ## State and status
 
-`state` is the lifecycle position and is informational: `unavailable`, `invalid`, `not-installed`,
-`database-configured`, `database-created`, `installed`, `maintenance`. New values may be added.
+`state` is the lifecycle position and is informational. New values may be added.
+
+An installation passes `not-installed`, `database-configured`, `database-created` and `installed`, in this
+order. `not-installed` only shows while no database is configured, e.g. before the database step of the web
+installer. Docker images usually configure the database through environment variables and start at
+`database-configured`. Besides these, `maintenance` is an installed instance in maintenance mode,
+`database-unavailable` means the database cannot be reached or does not answer, and `invalid` means the stored
+installation state is inconsistent.
 
 `status` is the health and drives exit and HTTP codes: `ok`, `warning`, `unknown`, `failure` (in this order of
 severity). The status of a report is the worst status of its checks.

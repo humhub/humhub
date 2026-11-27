@@ -80,7 +80,7 @@ class HealthService extends Component
         }
 
         if (!$databaseOk && HealthState::isInstalled($state)) {
-            $state = HealthState::UNAVAILABLE;
+            $state = HealthState::DATABASE_UNAVAILABLE;
         }
 
         if ($level === HealthLevel::All && $databaseOk && HealthState::isInstalled($state)) {
@@ -246,7 +246,7 @@ class HealthService extends Component
             if ($state === HealthState::INVALID) {
                 return HealthResult::unknown('skipped: invalid installation state');
             }
-            if (!$databaseOk || $state === HealthState::UNAVAILABLE) {
+            if (!$databaseOk || $state === HealthState::DATABASE_UNAVAILABLE) {
                 return HealthResult::unknown('skipped: database unavailable');
             }
             if (!HealthState::isInstalled($state)) {

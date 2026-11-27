@@ -100,7 +100,7 @@ class BasicChecksTest extends HumHubDbTestCase
         $db = $this->createMock(Connection::class);
         $db->expects($this->never())->method('createCommand');
 
-        $result = (new DatabaseCheck(['state' => HealthState::UNAVAILABLE, 'db' => $db]))->run();
+        $result = (new DatabaseCheck(['state' => HealthState::DATABASE_UNAVAILABLE, 'db' => $db]))->run();
 
         $this->assertSame(HealthStatus::Failure, $result->status);
     }
@@ -113,7 +113,7 @@ class BasicChecksTest extends HumHubDbTestCase
             HealthState::NOT_INSTALLED => [HealthStatus::Ok, true],
             HealthState::DATABASE_CONFIGURED => [HealthStatus::Ok, true],
             HealthState::DATABASE_CREATED => [HealthStatus::Ok, true],
-            HealthState::UNAVAILABLE => [HealthStatus::Unknown, false],
+            HealthState::DATABASE_UNAVAILABLE => [HealthStatus::Unknown, false],
             HealthState::INVALID => [HealthStatus::Failure, false],
         ];
 

@@ -37,7 +37,7 @@ class DatabaseCheck extends HealthCheck
             return HealthResult::ok('Database not configured yet');
         }
 
-        if ($this->state === HealthState::UNAVAILABLE) {
+        if ($this->state === HealthState::DATABASE_UNAVAILABLE) {
             return HealthResult::failure('Database not reachable');
         }
 

@@ -35,7 +35,7 @@ class InstallationCheck extends HealthCheck
             HealthState::NOT_INSTALLED,
             HealthState::DATABASE_CONFIGURED,
             HealthState::DATABASE_CREATED => HealthResult::ok('Installation not completed, setup wizard pending', notable: true),
-            HealthState::UNAVAILABLE => HealthResult::unknown('Installation state unknown: database unavailable'),
+            HealthState::DATABASE_UNAVAILABLE => HealthResult::unknown('Installation state unknown: database unavailable'),
             default => HealthResult::failure('Invalid installation state'),
         };
     }

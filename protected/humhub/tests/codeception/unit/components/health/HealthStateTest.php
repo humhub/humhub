@@ -48,7 +48,7 @@ class HealthStateTest extends Unit
 
     public function testUnreachableDatabaseWins(): void
     {
-        $this->assertSame(HealthState::UNAVAILABLE, $this->resolve($this->installationState(InstallationState::STATE_DATABASE_CONFIGURED, true), true));
+        $this->assertSame(HealthState::DATABASE_UNAVAILABLE, $this->resolve($this->installationState(InstallationState::STATE_DATABASE_CONFIGURED, true), true));
     }
 
     public function testInvalidState(): void
@@ -64,6 +64,6 @@ class HealthStateTest extends Unit
         $this->assertTrue(HealthState::isInstalled(HealthState::INSTALLED));
         $this->assertTrue(HealthState::isInstalled(HealthState::MAINTENANCE));
         $this->assertFalse(HealthState::isInstalled(HealthState::DATABASE_CREATED));
-        $this->assertFalse(HealthState::isInstalled(HealthState::UNAVAILABLE));
+        $this->assertFalse(HealthState::isInstalled(HealthState::DATABASE_UNAVAILABLE));
     }
 }

@@ -78,9 +78,9 @@ class HealthReportTest extends Unit
 
     public function testMinimalArrayHidesDetails(): void
     {
-        $report = $this->report(['database' => HealthResult::failure('down')], 'unavailable', HealthLevel::Ready);
+        $report = $this->report(['database' => HealthResult::failure('down')], 'database-unavailable', HealthLevel::Ready);
 
-        $this->assertSame(['format' => 1, 'status' => 'failure', 'state' => 'unavailable'], $report->toArray(false));
+        $this->assertSame(['format' => 1, 'status' => 'failure', 'state' => 'database-unavailable'], $report->toArray(false));
     }
 
     public function testText(): void

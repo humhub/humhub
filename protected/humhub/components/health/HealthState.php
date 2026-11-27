@@ -19,7 +19,7 @@ use yii\base\InvalidConfigException;
  */
 final class HealthState
 {
-    public const UNAVAILABLE = 'unavailable';
+    public const DATABASE_UNAVAILABLE = 'database-unavailable';
     public const INVALID = 'invalid';
     public const NOT_INSTALLED = 'not-installed';
     public const DATABASE_CONFIGURED = 'database-configured';
@@ -41,7 +41,7 @@ final class HealthState
         }
 
         if ($state->isDatabaseUnreachable()) {
-            return self::UNAVAILABLE;
+            return self::DATABASE_UNAVAILABLE;
         }
 
         if ($state->hasState(InstallationState::STATE_INSTALLED)) {

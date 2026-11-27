@@ -111,7 +111,7 @@ class HealthServiceTest extends HumHubDbTestCase
         $this->assertSame(0, $dependent->calls);
         $this->assertSame(HealthStatus::Unknown, $report->results['migrations:core']->status);
         $this->assertSame('skipped: database unavailable', $report->results['migrations:core']->output);
-        $this->assertSame(HealthState::UNAVAILABLE, $report->state);
+        $this->assertSame(HealthState::DATABASE_UNAVAILABLE, $report->state);
         $this->assertSame(HealthStatus::Failure, $report->getStatus());
     }
 
