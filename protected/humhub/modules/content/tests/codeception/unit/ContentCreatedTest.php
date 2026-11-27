@@ -154,8 +154,7 @@ class ContentCreatedTest extends HumHubDbTestCase
     }
 
     /**
-     * A follower who is mentioned in the new content gets the mention only, however the post is saved
-     * (here without a transaction, so nothing waits for a commit).
+     * A follower who is mentioned in the new content gets the mention only.
      */
     public function testMentionedUserGetsNoContentCreatedNotification()
     {
@@ -226,6 +225,26 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post = $this->createPost('MyTestContent');
 
         $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
+        $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * A record without a content row gets it when it is updated, outside of `insert()`: the follower is
+     * notified then, too.
+     */
+    public function testRecordGettingItsContentOnUpdateNotifiesTheFollower()
+    {
+        $this->becomeUser('User2');
+
+        Yii::$app->db->createCommand()->insert(Post::tableName(), ['message' => 'MyTestContent'])->execute();
+        $post = Post::findOne(['id' => Yii::$app->db->getLastInsertID()]);
+        $this->assertTrue($post->content->isNewRecord);
+
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $this->assertTrue($post->save());
+
+        $this->assertFalse($post->content->isNewRecord);
         $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
     }
 

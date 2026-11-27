@@ -322,10 +322,10 @@ $result = Mentioning::withoutNotification(fn() => RichText::postProcess($this->m
 $mentionedUsers = $result['mentioning'] ?? [];
 ```
 
-A new content needs nothing of this: whatever its type, `Content::notifyNewContent()` sends one
-set right after the record was inserted — the `MentionedNotification`, then the
-`ContentCreatedNotification` for the users picked in the content form, then for the followers. A
-user mentioned in a new content therefore gets the mention only.
+A new content needs nothing of this: `Content::notifyNewContent()` sends one set right after the
+record was inserted — the `MentionedNotification`, then the `ContentCreatedNotification` for the
+users picked in the content form, then for the followers. A user mentioned in a new content
+therefore gets the mention only.
 
 This holds when the content type processes its rich text (`RichText::postProcess()`) in the
 `afterSave()` of its record, as the core's post does. A module should do the same: a mention created

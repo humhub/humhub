@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\models;
 
-use ArrayObject;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -35,8 +34,8 @@ class Mentioning extends ActiveRecord
     private static int $silenced = 0;
 
     /**
-     * @var array<array{record: ContentActiveRecord|ContentAddonActiveRecord, userIds: ArrayObject}> the records
-     * whose mentions are notified by the caller, see {@see withoutNotificationFor()}
+     * @var list<array{record: ContentActiveRecord|ContentAddonActiveRecord, userIds: int[]}> the records
+     * whose mentions are notified by the caller, innermost last, see {@see withoutNotificationFor()}
      */
     private static array $deferred = [];
 
@@ -86,52 +85,27 @@ class Mentioning extends ActiveRecord
      */
     public static function withoutNotificationFor(ContentActiveRecord|ContentAddonActiveRecord $record, callable $callback, ?array &$userIds = null): mixed
     {
-        self::startDeferring($record);
+        self::$deferred[] = ['record' => $record, 'userIds' => []];
         try {
             return $callback();
         } finally {
-            $userIds = self::stopDeferring($record);
+            // The calls nest strictly, so the last entry is the one of this call
+            $userIds = array_values(array_unique(array_pop(self::$deferred)['userIds']));
         }
     }
 
     /**
-     * The mentions of the record are collected - not notified - until {@see stopDeferring()} is called.
-     */
-    private static function startDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): void
-    {
-        self::$deferred[] = ['record' => $record, 'userIds' => new ArrayObject()];
-    }
-
-    /**
-     * Ends {@see startDeferring()}.
-     *
-     * @return int[] the ids of the users mentioned for the record meanwhile
-     */
-    private static function stopDeferring(ContentActiveRecord|ContentAddonActiveRecord $record): array
-    {
-        foreach (self::$deferred as $i => $entry) {
-            if ($entry['record'] === $record) {
-                unset(self::$deferred[$i]);
-                self::$deferred = array_values(self::$deferred);
-
-                return array_values(array_unique($entry['userIds']->getArrayCopy()));
-            }
-        }
-
-        return [];
-    }
-
-    /**
-     * Remembers the mention for the caller of {@see withoutNotificationFor()}, if the source is its record.
+     * Leaves the notification of this mention to the caller of {@see withoutNotificationFor()} if the
+     * source is its record, and remembers the mentioned user for it. The innermost call wins.
      *
      * @return bool whether the notification is left to the caller
      */
-    private function isDeferred(ContentActiveRecord|ContentAddonActiveRecord $source): bool
+    private function deferNotification(ContentActiveRecord|ContentAddonActiveRecord $source): bool
     {
-        foreach (self::$deferred as $entry) {
-            $record = $entry['record'];
+        for ($i = count(self::$deferred) - 1; $i >= 0; $i--) {
+            $record = self::$deferred[$i]['record'];
             if ($record::class === $source::class && (string)$record->getPrimaryKey() === (string)$source->getPrimaryKey()) {
-                $entry['userIds'][] = (int)$this->user_id;
+                self::$deferred[$i]['userIds'][] = (int)$this->user_id;
 
                 return true;
             }
@@ -186,7 +160,7 @@ class Mentioning extends ActiveRecord
             throw new Exception("Invalid polymorphic relation for Mentioning!");
         }
 
-        if (self::$silenced === 0 && !$this->isDeferred($mentionedSource)) {
+        if (self::$silenced === 0 && !$this->deferNotification($mentionedSource)) {
             MentionedNotification::send($this->user, $mentionedSource, $originator);
         }
 

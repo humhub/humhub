@@ -121,8 +121,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public $notifyUsersOfNewContent = [];
 
     /**
-     * @var array<int, true> the ids of the new contents whose {@see ContentCreatedNotification}s wait for the end of
-     * saving the record, see {@see notifyNewContent()}. By id: a `refresh()` of the record loads its content anew
+     * @var array<int, int[]> the new contents whose {@see ContentCreatedNotification}s wait for the end of saving the
+     * record, see {@see notifyNewContent()}: content id => ids of the users picked in the content form. By id: a
+     * `refresh()` of the record loads its content anew
      */
     private static array $contentCreatedPending = [];
 
@@ -406,7 +407,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         /** @var ContentProvider $contentSource */
         $contentSource = $this->getPolymorphicRelation();
 
-        self::$contentCreatedPending[$this->id] = true;
+        self::$contentCreatedPending[$this->id] = array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent);
 
         ContentCreatedActivity::send($contentSource, $this->createdBy);
     }
@@ -421,10 +422,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      *
      * @param int[] $mentionedUserIds the users mentioned by the new content
      * @internal
+     * @since 1.20
      */
     public function notifyNewContent(array $mentionedUserIds): void
     {
-        $contentCreated = isset(self::$contentCreatedPending[$this->id]);
+        $contentCreated = array_key_exists($this->id, self::$contentCreatedPending);
+        $pickedUserIds = self::$contentCreatedPending[$this->id] ?? [];
         unset(self::$contentCreatedPending[$this->id]);
 
         if (!$contentCreated && $mentionedUserIds === []) {
@@ -441,10 +444,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
         if ($contentCreated) {
             // A follower picked in the form keeps the explicit wording, the followers' entry skips them
-            if (!empty($this->notifyUsersOfNewContent)) {
+            if ($pickedUserIds !== []) {
                 $set->add(
                     ContentCreatedNotification::class,
-                    User::find()->active()->where(['IN', 'user.id', array_map(fn(User $user) => $user->id, $this->notifyUsersOfNewContent)]),
+                    User::find()->active()->where(['IN', 'user.id', $pickedUserIds]),
                     payload: ['explicit' => true],
                 );
             }

@@ -453,7 +453,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
             // Save a Content only on each update of this Record or when the Content is creating first time.
             // Don't update the Content twice during inserting of this Record
             //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $contentCreatedOnUpdate = !$insert && $this->content->isNewRecord;
             $this->content->save();
+
+            if ($contentCreatedOnUpdate) {
+                // A record without a content row gets it now, outside of insert()
+                $this->content->notifyNewContent([]);
+            }
         }
 
         parent::afterSave($insert, $changedAttributes);
