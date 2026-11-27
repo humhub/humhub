@@ -94,7 +94,7 @@ return [
     'Username has been changed' => '',
     'Users' => '',
     'Visible for all (also unregistered users)' => '',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => '',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => '',
     'You are currently the owner of following spaces:' => '',
     'You cannot use this username.' => '',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '',
@@ -107,5 +107,5 @@ return [
     'Your friends' => '',
     'Your password has been successfully changed!' => '',
     'Your username has been changed' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];

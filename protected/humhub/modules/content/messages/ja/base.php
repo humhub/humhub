@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => '最終更新時間 {time}',
     'Load more' => 'さらに読み込む',
     'Lock comments' => 'コメントをロック',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => '固定できるアイテム数の上限に達しました！<br>一度に固定できるアイテム数は最大{count}個です',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => '固定できるアイテム数の上限に達しました！一度に固定できるアイテム数は最大{count}個です',
     'Move content' => '移動',
     'Move to archive' => 'アーカイブへ移動',
     'New Updates Available!' => '新しいアップデートが利用可能です',

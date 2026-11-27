@@ -37,7 +37,7 @@ return [
     'Last updated {time}' => 'Update terakhir {time}',
     'Load more' => 'Buka lagi',
     'Lock comments' => 'Kunci komentar',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Jumlah maksimum item yang disematkan tercapai!<br>Anda hanya dapat menyematkan hingga {count} item sekaligus.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Jumlah maksimum item yang disematkan tercapai! Anda hanya dapat menyematkan hingga {count} item sekaligus.',
     'Move content' => 'Pindah konten',
     'Move to archive' => 'Pindahkan ke arsip',
     'New Updates Available!' => 'Tersedia Pembaruan Baru!',

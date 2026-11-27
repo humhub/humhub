@@ -62,7 +62,7 @@
             <button
                 ref="sentinel"
                 type="button"
-                class="btn btn-light"
+                class="btn btn-more"
                 :disabled="loadingMore"
                 @click="$emit('load-more')"
             >{{ loadingMore ? loadingLabel : moreLabel }}</button>

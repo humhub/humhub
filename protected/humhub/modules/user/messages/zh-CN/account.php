@@ -31,7 +31,7 @@ return [
     'TimeZone' => '时区',
     'Users' => '用户',
     'Visible for all (also unregistered users)' => '所有人可见（包括未注册用户）',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => '刚刚发送确认邮件到您的新地址。<br />请按照指示操作',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => '刚刚发送确认邮件到您的新地址。 请按照指示操作',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => '您已经请求更改您的电子邮件地址。<BR>您的新电子邮件地址是{newemail}。<br> <br>确认你的新的电子邮件地址，请单击下面的按钮。',
     'Your current password can be changed here.' => '你可以在这里修改当前密码。',
     'Your e-mail address has been successfully changed to {email}.' => '你的电子邮箱已成功修改为{email}',
@@ -107,5 +107,5 @@ return [
     'You will stay logged in on this device only.' => '',
     'Your account cannot be deleted!' => '',
     'Your username has been changed' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];

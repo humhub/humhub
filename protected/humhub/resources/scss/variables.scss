@@ -369,10 +369,11 @@ $component-active-color: $hh-primary-contrast !default; // Because $component-ac
 // As a token, not compiled in: a checked box follows `--bs-primary` wherever that is redefined (high contrast)
 $form-check-input-checked-bg-color: var(--bs-primary) !default;
 $form-check-input-indeterminate-bg-color: var(--bs-primary) !default;
-// The track and the knob of a switch (`.form-switch`) that is off, as the border of a checkbox. The knob is drawn
-// in an SVG and takes the compiled colors, the dark one is `$form-switch-color-dark`
+// The track and the knob of a switch (`.form-switch`) that is off, as the border of a checkbox; the knob 3:1 on the
+// track's fill (`--bs-secondary-bg`, WCAG 1.4.11). The knob is drawn in an SVG and takes the compiled colors, the dark
+// one is `$form-switch-color-dark`
 $form-check-input-border: var(--bs-border-width) solid var(--hh-input-border-color) !default;
-$form-switch-color: $hh-input-border-color !default;
+$form-switch-color: hh-readable($hh-input-border-color, $body-secondary-bg, 3) !default;
 
 //
 // Dark color mode (`[data-bs-theme="dark"]`)
@@ -446,7 +447,7 @@ $hh-fg-dark: (
 
 $border-color-dark: mix(white, $body-bg-dark, 13.1%) !default;
 $hh-input-border-color-dark: hh-readable($border-color-dark, $body-bg-dark, 3) !default;
-$form-switch-color-dark: $hh-input-border-color-dark !default;
+$form-switch-color-dark: hh-readable($hh-input-border-color-dark, $body-secondary-bg-dark, 3) !default;
 $hh-topbar-bg-dark: mix(black, $body-bg-dark, 50%) !default; // Darker than the surfaces, as the primary color in the light mode
 $hh-topbar-color-dark: var(--bs-emphasis-color) !default;
 

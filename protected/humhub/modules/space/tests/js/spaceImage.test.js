@@ -49,7 +49,7 @@ describe('SpaceImage', () => {
     it('falls back to the theme background and the text colour when the space has no colour', () => {
         const style = mountImage({ color: null }).find('.space-acronym').attributes('style');
 
-        expect(style).toContain('background-color: var(--bs-border-color)');
+        expect(style).toContain('background-color: var(--hh-space-acronym-bg, var(--bs-border-color))');
         expect(style).toContain('color: var(--bs-body-color)');
     });
 

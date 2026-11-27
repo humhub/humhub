@@ -51,7 +51,7 @@ messages are announced (4.1.3).
   heading below it, never an `<h1>`.
 - The current page in a navigation carries `aria-current="page"`.
 - An icon-only control has a name: the tooltip text becomes its `aria-label`
-  ([Icon-only buttons](../develop/wcag/button-icon-aria-label.md)). A link that shows only an icon
+  ([Icon-only buttons](../develop/accessibility.md#names)). A link that shows only an icon
   or an image has a name too (`aria-label`, or the image's `alt`). A count on a control is part of
   its name ("Notifications, 3 unread").
 

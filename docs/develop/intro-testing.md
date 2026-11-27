@@ -242,6 +242,33 @@ jobs:
             theme: ${{ matrix.theme }}
 ```
 
+## Accessibility checks
+
+The `a11y` suite (`protected/humhub/tests/codeception/a11y/A11yCest.php`) checks a fixed set of pages with [axe-core](https://github.com/dequelabs/axe-core) (an npm dev dependency, nothing of it is shipped) against WCAG 2.2 A/AA: the login page, dashboard, space, profile, the directories, account and administration pages, the opened menus of the top bar and two pages at phone width, each in the light and the dark colour mode, with and without high contrast. It writes `codeception/_output/a11y/report.json` and `summary.md`; the CI workflow `.github/workflows/a11y.yml` runs it for a pull request that changes the core and puts the summary into the job summary.
+
+A violation listed in `a11y/known.php` (rule, a part of the element's selector, the planned fix, optionally the modes) is reported as known, every other one as new. `HUMHUB_A11Y=report` only reports, `HUMHUB_A11Y=fail` fails on a new violation; the workflow reports for now and is to fail from the next release cycle on. A fix removes its entry from the list. Locally, with the test server and ChromeDriver or Selenium running as for the [acceptance tests](#acceptance-tests):
+
+```sh
+cd protected/humhub/tests
+HUMHUB_A11Y=report php ../../vendor/bin/codecept run a11y
+cat codeception/_output/a11y/summary.md
+```
+
+`HUMHUB_A11Y_PAGES` adds pages (comma-separated paths), `HUMHUB_A11Y_THEME` takes another theme. A module checks its pages by calling the workflow of the core; the module is checked out into the core (`develop` by default, `core-ref`) and enabled:
+
+```yaml
+# .github/workflows/a11y.yml of the module
+name: Accessibility Checks
+on:
+    pull_request:
+jobs:
+    check:
+        uses: humhub/humhub/.github/workflows/a11y.yml@develop
+        with:
+            module: calendar
+            pages: /calendar/global/index
+```
+
 ## Linting the SCSS
 
 [Stylelint](https://stylelint.io/) checks the core's SCSS with the correctness rules of `stylelint-config-recommended-scss` (`.stylelintrc.json`), in CI by `.github/workflows/stylelint.yml`:

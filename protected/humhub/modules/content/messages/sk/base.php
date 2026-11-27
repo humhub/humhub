@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Naposledy aktualizované {time}',
     'Load more' => 'Načítať viac',
     'Lock comments' => 'Zamknúť komentáre',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Dosiahli ste maximálny počet pripnutých položiek!<br>Naraz môžete pripnúť maximálne {count} položiek.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Dosiahli ste maximálny počet pripnutých položiek! Naraz môžete pripnúť maximálne {count} položiek.',
     'Move content' => 'Presunúť obsah',
     'Move to archive' => 'Presunúť do archívu',
     'New Updates Available!' => 'Dostupné nové aktualizácie!',

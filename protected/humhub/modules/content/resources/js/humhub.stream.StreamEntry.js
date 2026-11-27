@@ -165,6 +165,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
      */
     StreamEntry.prototype.cancelEdit = function () {
         var that = this;
+        this.discardEditBackup();
         this.loader();
         this.reload().then(function () {
             that.$.find('.stream-entry-edit-link').show();
@@ -174,6 +175,14 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         }).finally(function () {
             that.loader(false);
         });
+    };
+
+    /**
+     * The edit form is saved or cancelled: the draft backup of its text is not needed anymore. Only the edit form's,
+     * the comments of the entry keep theirs.
+     */
+    StreamEntry.prototype.discardEditBackup = function () {
+        this.$.find('.content_edit .humhub-ui-richtext').trigger('discardBackup');
     };
 
     /**
@@ -196,6 +205,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             dataType: 'html',
         }).status({
             200: function (response) {
+                that.discardEditBackup();
                 const updatedEntry = $(response.html)
                 that.$.replaceWith(updatedEntry);
                 that.$ = updatedEntry;

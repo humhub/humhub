@@ -60,6 +60,11 @@ deleted."). There are no buttons inside the toast.
 - Toasts are announced in a live region: `polite` for success, info and notification;
   `assertive` for danger.
 - Pausing on focus gives keyboard users time to read.
+- The focus doesn't hide behind a toast (WCAG 2.4.11): `StatusBar.vue` sets the room the shown
+  toast takes at the bottom of the window as `--hh-toast-clearance` on the root, `_toast.scss`
+  makes it the root's `scroll-padding-bottom` and the body's `padding-bottom`. An element that
+  gets the focus scrolls above the toast, the last ones of the page too; a page that fits the
+  window scrolls by that room while the toast is shown.
 - Information that matters later must not only be in a toast (e.g. a failed save also marks the
   form).
 - Reduced motion: no slide or stack animation.

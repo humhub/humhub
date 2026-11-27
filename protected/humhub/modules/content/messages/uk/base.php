@@ -53,7 +53,7 @@ return [
     'Last update' => '',
     'Last updated {time}' => '',
     'Lock comments' => '',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => '',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => '',
     'Move content' => '',
     'Move to archive' => '',
     'New Updates Available!' => '',

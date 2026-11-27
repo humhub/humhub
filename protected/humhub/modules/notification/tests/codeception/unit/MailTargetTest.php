@@ -24,9 +24,12 @@ use humhub\modules\notification\tests\codeception\unit\notifications\TestMultili
 use humhub\modules\notification\tests\codeception\unit\notifications\TestNotification;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
+use RuntimeException;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\helpers\Url;
+use yii\mail\BaseMailer;
+use yii\mail\MailEvent;
 use yii\symfonymailer\Message;
 
 /**
@@ -95,6 +98,54 @@ class MailTargetTest extends HumHubDbTestCase
         $this->assertCount(1, Notification::findAll(['class' => TestContentNotification::class]));
         $this->assertCount(0, $this->mails());
         static::assertLogRegexCount(0, '/delivery through email failed/', null, ['notification']);
+    }
+
+    public function testChannelIsInactiveForAUserWithoutEmail()
+    {
+        $target = new MailTarget();
+        $this->assertTrue($target->isActive(), 'the global defaults');
+        $this->assertTrue($target->isActive($this->recipient()));
+
+        User::updateAll(['email' => null], ['id' => 1]);
+
+        $this->assertFalse($target->isActive($this->recipient()));
+        $this->assertTrue($target->isActive(User::findOne(['id' => 2])));
+        $this->assertNotContains($target->id, array_map(fn($t) => $t->id, Yii::$app->notification->getTargets($this->recipient())));
+        $this->assertContains($target->id, array_map(fn($t) => $t->id, Yii::$app->notification->getTargets()));
+        $this->assertFalse($target->isEnabled(TestContentNotification::class, $this->recipient()));
+    }
+
+    public function testDeliveringToAUserWithoutEmailFails()
+    {
+        User::updateAll(['email' => null], ['id' => 1]);
+        $this->dispatch(TestDirectNotification::class);
+        $batch = new DeliveryBatch($this->recipient(), [$this->notification(TestDirectNotification::class)], 'email');
+
+        try {
+            $this->expectException(RuntimeException::class);
+            (new MailTarget())->deliver($batch);
+        } finally {
+            $this->assertCount(0, $this->mails());
+        }
+    }
+
+    public function testMailThatIsNotSentFails()
+    {
+        $this->stopMailing();
+        $this->dispatch(TestDirectNotification::class);
+        $batch = new DeliveryBatch($this->recipient(), [$this->notification(TestDirectNotification::class)], 'email');
+
+        // e.g. a listener of the mailer cancels the mail: send() returns false
+        $cancel = static fn(MailEvent $event) => $event->isValid = false;
+        Yii::$app->mailer->on(BaseMailer::EVENT_BEFORE_SEND, $cancel);
+        try {
+            $this->expectException(RuntimeException::class);
+            $this->expectExceptionMessage('was not sent');
+            (new MailTarget())->deliver($batch);
+        } finally {
+            Yii::$app->mailer->off(BaseMailer::EVENT_BEFORE_SEND, $cancel);
+            $this->assertCount(0, $this->mails());
+        }
     }
 
     public function testLocaleOfTheRecipientIsRestored()

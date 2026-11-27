@@ -47,8 +47,7 @@ return [
     'Username has been changed' => 'تم تغيير اسم المستخدم',
     'Users' => 'المستخدمون',
     'Visible for all (also unregistered users)' => 'مرئي للجميع (أيضًا المستخدمين غير المسجلين)',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'لقد أرسلنا للتو رسالة بريد إلكتروني للتأكيد إلى عنوانك الجديد. 
-<br> يرجى اتباع التعليمات في الداخل.',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'لقد أرسلنا للتو رسالة بريد إلكتروني للتأكيد إلى عنوانك الجديد. يرجى اتباع التعليمات في الداخل.',
     'You are currently the owner of following spaces:' => 'أنت حاليًا المالك للباحات التالية:',
     'You cannot use this username.' => 'لا يمكنك استخدام اسم المستخدم هذا.',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'لقد طلبت تغيير عنوان بريدك الإلكتروني.<br>عنوان بريدك الإلكتروني الجديد هو {newemail}.<br><br>لتأكيد عنوان بريدك الإلكتروني الجديد، يرجى النقر على الزر أدناه.',
@@ -60,7 +59,7 @@ return [
     'Your friends' => 'أصدقاؤك',
     'Your password has been successfully changed!' => 'كلمة السر الخاصة بك تم تغييرها بنجاح!',
     'Your username has been changed' => 'تم تغيير اسم المستخدم الخاص بك',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'تم تغيير اسم المستخدم الخاص بك بنجاح. <br> لقد أرسلنا لك للتو رسالة بريد إلكتروني تحتوي على معلومات جديدة.',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => 'تم تغيير اسم المستخدم الخاص بك بنجاح. لقد أرسلنا لك للتو رسالة بريد إلكتروني تحتوي على معلومات جديدة.',
     'A new address is used once you have confirmed it by the link we send to it.' => '',
     'Accessibility' => '',
     'All other sessions have been logged out.' => '',

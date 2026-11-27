@@ -85,7 +85,7 @@ return [
     'Invalid space selection.' => '',
     'Last update' => '',
     'Last updated {time}' => '',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => '',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => '',
     'New Updates Available!' => '',
     'No matches with your selected filters!' => '',
     'No tags found for the given query' => '',

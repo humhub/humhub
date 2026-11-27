@@ -2,6 +2,10 @@
 // Space
 // --------------------------------------------------
 
+// The smallest initials of a space without image (`.space-acronym`), on a small one (20px on an avatar, 18px in a
+// chip): WAVE takes 10px and below as very small text
+$space-acronym-min-font-size: .6875rem !default; // 11px
+
 @if not $prev-space {
     // The pictures of the "New spaces" card, a row apart when they wrap
     #new-spaces-panel .card-body a img {
@@ -74,8 +78,20 @@
         overflow: hidden;
 
         span {
-            font-size: 50cqw; // 50% of container's width
+            font-size: max(50cqw, #{$space-acronym-min-font-size}); // 50% of container's width
             white-space: nowrap;
+        }
+    }
+
+    // High contrast darkens the border colour to 4.5:1 on the surface, the text colour would not read on it: the initials
+    // of a space without a colour of its own on the fill of a hovered item instead (WCAG 1.4.3). The edge of a surface
+    // in high contrast around every tile, which keeps it apart from a hovered row or a light space colour
+    :root {
+        @include hh-high-contrast {
+            .space-acronym {
+                --hh-space-acronym-bg: var(--bs-secondary-bg);
+                box-shadow: inset 0 0 0 1px var(--bs-border-color);
+            }
         }
     }
 

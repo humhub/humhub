@@ -73,9 +73,10 @@ Widgets, menus, theming, and the HumHub JavaScript layer.
 
 ## Accessibility (WCAG)
 
-Guidelines and widget conventions for meeting WCAG 2.1 AA conformance.
+HumHub aims for WCAG 2.2 AA.
 
-- [Icon-only buttons: accessible name via tooltip](wcag/button-icon-aria-label.md) — `aria-label` derivation, tooltip requirement, dev-mode warning
+- [Accessibility](accessibility.md) — names (icon-only buttons, icons, fields), announcements, colour modes, the automated and manual checks, the workflow for modules
+- [Accessibility in the styleguide](../ui/accessibility.md) — the target, the user's options and the rules in short
 - [Keyboard](../ui/keyboard.md) — the keyboard rules of the UI styleguide: reach, landmarks, focus handling, Escape, tooltips, the editor
 
 ## Theming

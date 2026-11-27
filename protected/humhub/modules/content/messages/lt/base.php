@@ -46,7 +46,7 @@ return [
     'Last updated {time}' => 'Paskutinį kartą atnaujinta {time}',
     'Load more' => 'Įkelti daugiau',
     'Lock comments' => 'Užrakinti komentarus',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Pasiektas maksimalus prisegtų elementų skaičius!<br>Vienu metu galite prisegti iki {count} priedų.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Pasiektas maksimalus prisegtų elementų skaičius! Vienu metu galite prisegti iki {count} priedų.',
     'Move content' => 'Perkelti turinį',
     'Move to archive' => 'Archyvuoti',
     'New Updates Available!' => 'Galimi atnaujinimai!',

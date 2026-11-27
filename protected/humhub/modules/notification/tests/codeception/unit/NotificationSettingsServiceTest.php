@@ -168,6 +168,25 @@ class NotificationSettingsServiceTest extends HumHubDbTestCase
         $this->assertIsArray($data['spaces']['selected']);
     }
 
+    public function testToArrayLeavesOutTheMailChannelForAUserWithoutEmailButKeepsItsSwitches()
+    {
+        (new NotificationSettingsService($this->user(2)))->setCategory(new MailTarget(), NotificationCategory::social(), false);
+        User::updateAll(['email' => null], ['id' => 2]);
+
+        $data = (new NotificationSettingsService($this->user(2)))->toArray();
+
+        $this->assertSame([['id' => 'web', 'title' => 'Web']], $data['channels']);
+        foreach ($data['categories'] as $category) {
+            $this->assertEquals(['web'], array_keys((array)$category['channels']), $category['id']);
+        }
+
+        // the address is back: the column and the stored switch too
+        User::updateAll(['email' => 'user1@example.com'], ['id' => 2]);
+        $data = (new NotificationSettingsService($this->user(2)))->toArray();
+        $this->assertSame(['web', 'email'], array_column($data['channels'], 'id'));
+        $this->assertEquals((object)['web' => true, 'email' => false], $this->category($data, 'social')['channels']);
+    }
+
     public function testToArrayGlobalShowsEveryCategoryAndTheDefaultSpaces()
     {
         $space = Space::findOne(['id' => 1]);

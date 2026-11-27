@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Ultima atualização {time}',
     'Load more' => 'Carregar mais',
     'Lock comments' => 'Bloquear comentários',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Número máximo de itens fixados atingido!<br>Você só pode fixar até {count} itens de uma vez.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Número máximo de itens fixados atingido! Você só pode fixar até {count} itens de uma vez.',
     'Move content' => 'Mover conteúdo',
     'Move to archive' => 'Mover para arquivar',
     'New Updates Available!' => 'Novas atualizações disponíveis!',
