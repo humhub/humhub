@@ -108,6 +108,8 @@ humhub.module('content.form', function (module, require, $) {
                 event.trigger('humhub:content:newEntry', response.output, this);
                 event.trigger('humhub:content:afterSubmit', response.output, this);
                 if ($('#share-intend-modal').length) {
+                    // The form is not reset, so its sent text must not come back as a draft
+                    that.$.find('.humhub-ui-richtext').trigger('discardBackup');
                     modal.global.close();
                     // If the dashboard stream is not displayed on the current page, redirect to the content container, to make sure the user sees the new content
                     if (response.url && !$('.dashboard-wall-stream').length) {

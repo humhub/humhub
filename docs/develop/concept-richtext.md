@@ -93,8 +93,8 @@ that shape it: `preset`, `include`, `exclude` and `pluginOptions` select and con
 client plugins (see [Plugins](#plugins-javascript)); `placeholder`, `layout` (block or inline
 menu), `focus`, `disabled`/`disabledText`, `label` and `fieldOptions` shape the field;
 `mentioningUrl` (default route `/user/mentioning`) is the search the mention autocomplete
-queries; `backupInterval` (seconds, default 3) drives the draft backup in `sessionStorage`,
-keyed by the field's `id` — set an explicit `id` when a draft should survive a reload.
+queries; `backupInterval` (seconds, default 3, `0` switches it off) drives the draft backup, see
+[Draft backup](#draft-backup).
 
 Server-side the editor renders the current value through `RichText::output()` with
 `edit = true` — a hidden `[data-ui-richtext]` element holding the raw markdown, so the same
@@ -106,6 +106,20 @@ autocomplete, file upload, paste and drop, the emoji picker, a link paste turnin
 embedded preview when a provider matches, and a source (markdown) mode are plugins of the
 editor bundle. Inside a Vue island the same editor is hosted by the form suite's
 `RichTextField` component, see [Vue.js form suite](ui-js-vuejs-forms.md).
+
+### Draft backup
+
+The editor keeps an unsent text in the tab's `sessionStorage`, so a reload or a click away does not
+lose it. It needs a field `id` that is stable across page loads (without one the backup is
+off). A draft belongs to its field `id`, the page path and the user, and is restored only onto the
+text the editor opened with: once that text has been saved, by anyone, the draft is outdated and
+the saved text shows. Submitting the editor's form drops the draft (the text is saved, or comes back
+with the form's errors), so does a deliberate discard — the editor's `clear` event (a create form
+resets after the submit) and its `discardBackup` event, which a cancelled or saved inline edit and a
+confirmed "Unsaved changes" question (`acknowledge` forms) trigger. A form with its own cancel
+action triggers it too: `$form.find('.humhub-ui-richtext').trigger('discardBackup')`. Code that sets
+the text after the editor booted triggers `restoreBackup` on the editor's element, which takes that
+text as the one the editor opened with (`RichTextField.vue`'s `setValue()` does).
 
 ### Post-processing: after save
 
@@ -349,8 +363,8 @@ The bundle has to depend on `ProseMirrorRichTextAsset`, see above.
   `UrlOembed::EVENT_FETCH` lets a module supply or override an oEmbed provider, see
   [OEmbed providers](advanced-oembed.md).
 - JavaScript: `afterRender` (jQuery event on the rendered element; the content module's
-  syntax highlighting listens to it), `humhub:content:afterSubmit` (resets the editor's draft
-  backup).
+  syntax highlighting listens to it); `clear`, `discardBackup` and `restoreBackup` on the editor's
+  element, see [Draft backup](#draft-backup).
 
 ## Settings
 

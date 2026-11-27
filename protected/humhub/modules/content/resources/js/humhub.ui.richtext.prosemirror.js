@@ -10,7 +10,6 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
     const client = require('client');
     const Widget = require('ui.widget').Widget;
     const additions = require('ui.additions');
-    const event = require('event');
     const i18n = require('i18n');
 
     const MarkdownEditor = prosemirror.MarkdownEditor;
@@ -150,11 +149,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
         // const options = $.extend({}, this.options, {exclude: ['blockquote', 'bullet_list', 'strong', 'code', 'code_block', 'em', 'image', 'list_item', 'ordered_list', 'heading', 'link', 'clipboard']});
 
         this.editor = new MarkdownEditor(this.$, this.options);
-        this.editor.init(this.getInitValue());
-
-        if (this.options.focus) {
-            this.editor.view.focus();
-        }
+        this.editor.init(this.$.find('[data-ui-richtext]').text());
 
         const that = this;
         this.$.on('focusout', function () {
@@ -163,11 +158,18 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             that.editor.clear();
             that.getInput().val('').trigger('blur');
             that.resetBackup();
+        }).on('restoreBackup', function () {
+            that.restoreBackup();
+        }).on('discardBackup', function () {
+            that.discardBackup();
         });
 
         if (this.options.backupInterval) {
-            setInterval(() => this.backup(), this.options.backupInterval * 1000);
-            event.on('humhub:content:afterSubmit', () => this.resetBackup());
+            this.initBackup();
+        }
+
+        if (this.options.focus) {
+            this.editor.view.focus();
         }
 
         if (this.options.markdownEditorMode) {
@@ -175,71 +177,120 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
         }
     };
 
-    RichTextEditor.prototype.getInitValue = function () {
-        const inputId = this.getInput().attr('id');
-        const backup = this.getBackup();
+    /**
+     * The draft backup keeps an unsent text in the `sessionStorage` of the tab, so a reload or a click away does not
+     * lose it. It is restored into the same form, on the same page, for the same user, and only onto the
+     * text the editor opened with: once that text was saved (by anyone), the draft is outdated.
+     * Submitting its form drops it, so does a deliberate discard: an emptied editor (`clear`), a cancel or a confirmed
+     * "Unsaved changes" question (`discardBackup`).
+     */
+    RichTextEditor.prototype.initBackup = function () {
+        // The same form on another page (another space's stream) or for another user is another draft
+        this.backupKey = [require('user').guid(), window.location.pathname, this.getInput().attr('id')].join('|');
+        this.restoreBackup();
 
-        if (typeof backup[inputId] === 'string' && backup[inputId] !== '') {
-            // Sync the restored content to the input right away — the form can be
-            // submitted without the editor ever gaining focus, and the input is
-            // otherwise only updated on focusout. Marking it as the backuped value
-            // lets resetBackup() clear the stored entry even before the first
-            // backup interval tick (e.g. submitting right after the reload)
-            this.getInput().val(backup[inputId]);
-            this.backupedValue = backup[inputId];
-            return backup[inputId];
-        }
+        // A submitted text is saved, or comes back with the form's errors and is still in the editor
+        this.$.closest('form')
+            .on('submit', () => this.resetBackup())
+            .on('click', '[type="submit"]', () => this.resetBackup());
 
-        return this.$.find('[data-ui-richtext]').text();
-    }
+        this.backupTimer = setInterval(() => {
+            if (!this.$[0].isConnected) {
+                // The form is gone (another page, a replaced form), its draft stays for it
+                clearInterval(this.backupTimer);
+                return;
+            }
+            this.backup();
+        }, this.options.backupInterval * 1000);
+    };
 
-    RichTextEditor.prototype.getBackup = function () {
-        const backup = sessionStorage.getItem(this.options.backupCookieKey);
-
-        if (typeof backup === 'string' && backup !== '') {
-            return JSON.parse(backup);
-        }
-
-        return {};
-    }
-
-    RichTextEditor.prototype.backup = function (currentValue) {
-        const inputId = this.getInput().attr('id');
-        const isBackuped = typeof this.backupedValue !== 'undefined';
-
-        if (typeof currentValue === 'undefined') {
-            currentValue = this.editor.serialize();
-        }
-
-        if (!isBackuped && currentValue === '') {
-            // Don't back up first empty value
+    /**
+     * Takes the current text as the one the editor opened with and restores a draft typed onto it. Also called
+     * through the `restoreBackup` event when the text is set after the editor booted (RichTextField.vue).
+     */
+    RichTextEditor.prototype.restoreBackup = function () {
+        if (!this.backupKey) {
             return;
         }
 
-        if (isBackuped && currentValue === this.backupedValue) {
-            // Don't back up same content twice
-            return;
-        }
+        // Both as the editor writes them, so a text it rewrites (e.g. other list markers) still matches
+        this.backupBase = this.editor.serialize();
+        this.backupedValue = this.backupBase;
 
-        this.backupedValue = currentValue;
-
-        const backup = this.getBackup();
-        if (this.backupedValue === '' && typeof backup[inputId] !== 'undefined') {
-            delete backup[inputId];
-        } else {
-            backup[inputId] = this.backupedValue;
-        }
-
-        if (Object.keys(backup).length) {
-            sessionStorage.setItem(this.options.backupCookieKey, JSON.stringify(backup));
-        } else {
-            sessionStorage.removeItem(this.options.backupCookieKey);
+        const draft = this.getBackup()[this.backupKey];
+        if (draft && typeof draft.text === 'string' && draft.base === this.backupBase && draft.text !== this.backupBase) {
+            this.editor.init(draft.text);
+            // The form can be submitted without the editor ever losing the focus, which updates the input
+            this.getInput().val(draft.text);
+            this.backupedValue = draft.text;
         }
     };
 
+    RichTextEditor.prototype.getBackup = function () {
+        try {
+            const backup = JSON.parse(sessionStorage.getItem(this.options.backupCookieKey));
+            return backup && typeof backup === 'object' ? backup : {};
+        } catch (e) {
+            // Site data blocked by the browser, or not ours
+            return {};
+        }
+    };
+
+    RichTextEditor.prototype.setBackup = function (backup) {
+        try {
+            if (Object.keys(backup).length) {
+                sessionStorage.setItem(this.options.backupCookieKey, JSON.stringify(backup));
+            } else {
+                sessionStorage.removeItem(this.options.backupCookieKey);
+            }
+        } catch (e) {
+            // Site data blocked by the browser, or the storage is full: no backup
+        }
+    };
+
+    RichTextEditor.prototype.backup = function () {
+        if (!this.backupKey) {
+            return;
+        }
+
+        const text = this.editor.serialize();
+        if (text === this.backupedValue) {
+            return;
+        }
+        this.backupedValue = text;
+
+        const backup = this.getBackup();
+        if (text === '' || text === this.backupBase) {
+            // Nothing the saved text does not have
+            delete backup[this.backupKey];
+        } else {
+            backup[this.backupKey] = {text: text, base: this.backupBase};
+        }
+        this.setBackup(backup);
+    };
+
+    /**
+     * Drops the draft of an emptied editor
+     */
     RichTextEditor.prototype.resetBackup = function () {
-        this.backup('');
-    }
+        if (!this.backupKey) {
+            return;
+        }
+
+        this.backupedValue = this.editor.serialize();
+        const backup = this.getBackup();
+        delete backup[this.backupKey];
+        this.setBackup(backup);
+    };
+
+    /**
+     * Drops the draft of a text the user discarded, and backs up no more: the form goes away
+     */
+    RichTextEditor.prototype.discardBackup = function () {
+        this.resetBackup();
+        clearInterval(this.backupTimer);
+        this.backupKey = null;
+    };
 
     RichTextEditor.prototype.focus = function () {
         this.editor.view.focus();

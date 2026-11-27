@@ -2,6 +2,12 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **The richtext draft backup is restored only onto the text it was typed on** (see
+  [Draft backup](concept-richtext.md#draft-backup)): in the same form (field `id`), on the same page and for the same
+  user; once the text has been saved, the draft is outdated. `humhub:content:afterSubmit` no longer resets drafts,
+  submitting the editor's form (`submit`, or a click on a `[type="submit"]`) does. A deliberate discard drops a draft: an emptied editor (`clear`) and the new `discardBackup` event on the editor's
+  element, which inline edit forms (cancel and save) and a confirmed "Unsaved changes" question trigger. A module form
+  with its own cancel action triggers it too: `$form.find('.humhub-ui-richtext').trigger('discardBackup')`.
 - **jQuery NiceScroll is removed** (unmaintained since 2017). Lists scroll natively, with the browser's scrollbar.
   - The results of the header search and the richtext editor at its maximum height scroll natively.
   - Removed: `humhub\assets\JqueryNiceScrollAsset` (also from `CoreBundleAsset`) and

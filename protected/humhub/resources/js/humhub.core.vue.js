@@ -8718,17 +8718,8 @@
     },
     mounted() {
       jQuery(this.$refs.editor).on("scrollActive.richtextField", () => this.$emit("scroll-active")).on("scrollInactive.richtextField", () => this.$emit("scroll-inactive"));
-      if (this.instanceKey && this.backupInterval > 0) {
-        this.backupTimer = setInterval(() => {
-          const editor = this.getEditorInstance();
-          if (editor) {
-            editor.backup();
-          }
-        }, this.backupInterval * 1e3);
-      }
     },
     beforeUnmount() {
-      clearInterval(this.backupTimer);
       jQuery(this.$refs.editor).off(".richtextField");
       const editor = this.getEditorInstance();
       if (editor && editor.editor && typeof editor.editor.destroy === "function") {
@@ -8744,11 +8735,12 @@
         const editor = this.getEditorInstance();
         return editor ? editor.editor.serialize() : "";
       },
-      /** Replaces the editor's content (e.g. to edit an existing text). */
+      /** Replaces the editor's content (e.g. to edit an existing text), a draft typed onto it is restored. */
       setValue(markdown) {
         const editor = this.getEditorInstance();
         if (editor) {
           editor.editor.init(markdown || "");
+          editor.$.trigger("restoreBackup");
         }
       },
       /** Empties the editor and drops its draft. */
@@ -8804,7 +8796,7 @@
       }
     }
   };
-  const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-cookie-key"];
+  const _hoisted_1$8 = ["id", "data-preset", "data-include", "data-exclude", "data-plugin-options", "data-context-id", "data-mentioning-url", "data-placeholder", "data-focus", "data-backup-interval", "data-backup-cookie-key"];
   const _hoisted_2$8 = ["accept", "aria-label"];
   const _hoisted_3$7 = {
     key: 1,
@@ -8838,7 +8830,7 @@
           "data-mentioning-url": $props.mentioningUrl,
           "data-placeholder": _ctx.placeholder,
           "data-focus": $props.autofocus ? "true" : null,
-          "data-backup-interval": "0",
+          "data-backup-interval": $props.instanceKey ? $props.backupInterval : 0,
           "data-backup-cookie-key": $data.backupKey
         }, null, 10, _hoisted_1$8), [
           [_directive_editor_options, {
