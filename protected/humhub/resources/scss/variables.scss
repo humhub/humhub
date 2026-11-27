@@ -214,10 +214,18 @@ $font-family-sans-serif: $font-family-base !default;
 // 14px at the browser's default font size. No $font-size-root: `1rem` is the browser's font size, as in
 // Bootstrap. This is the one variable a theme sets for its text size (docs/ui/typography.md)
 $font-size-base: .875rem !default;
+// The size and line height pairs of the design system (docs/ui/typography.md): 12/18, 14/22, 16/24, 18/28 px. Line
+// heights are ratios, so that text of another size inside has a line of its own
+$font-size-sm: .75rem !default;
+$font-size-lg: 1.125rem !default;
+// `.small` and `<small>`: in `em` as Bootstrap's, 12px in 14px text
+$small-font-size: divide(12, 14) * 1em !default;
+$line-height-base: divide(22, 14) !default;
+$headings-line-height: 1.5 !default;
 // Bootstrap's heading scale shifted down by one step at the bottom, so that its habitual classes give HumHub's text
-// styles (docs/ui/typography.md): `h5`/`.fs-5` a title (16px), `h4`/`.fs-4` a large title (17.5px)
+// styles (docs/ui/typography.md): `h5`/`.fs-5` a title (16px), `h4`/`.fs-4` a large title (18px)
 $h5-font-size: 1rem !default;
-$h4-font-size: $font-size-base * 1.25 !default;
+$h4-font-size: $font-size-lg !default;
 // A heading tag in the weight and colour of a title, so that `h5` and `h4` are the Title and Large title styles
 // ($font-weight-semibold, not defined yet here; the dark mode's colour below)
 $headings-font-weight: 600 !default;
@@ -245,8 +253,8 @@ $container-max-widths: (
 // Badges
 //
 
-// As secondary text (12.25px beside 14px text); Bootstrap's .75em is 10.5px, below the smallest text
-$badge-font-size: .875em !default;
+// Meta's size in `em` (12px beside 14px text); Bootstrap's .75em is 10.5px, below the smallest text
+$badge-font-size: $small-font-size !default;
 // A chip is semibold and fully rounded (docs/ui/badges.md): Bootstrap's $font-weight-semibold and $border-radius-pill
 // (neither defined yet here)
 $badge-font-weight: 600 !default;
@@ -260,9 +268,9 @@ $badge-color: var(--hh-secondary-fg) !default;
 // Buttons
 // --------------------------------------------------
 
-// Buttons and form fields are 39px high (1.5 × 14px line + 2 × .5rem + 2 × 1px border); Bootstrap's .375rem
-// gives 35px at 14px text
-$input-btn-padding-y: .5rem !default;
+// Buttons and form fields are 38px high (22px line + 2 × 7px + 2 × 1px border), as menu rows; Bootstrap's .375rem
+// gives 36px
+$input-btn-padding-y: .4375rem !default;
 $btn-font-weight: 500 !default; // $font-weight-medium (not defined yet here): the text style of a control
 $btn-white-space: nowrap !default;
 $btn-transition: color 0.3s, background-color 0.3s, border-color 0.3s !default;
@@ -276,8 +284,8 @@ $btn-transition: color 0.3s, background-color 0.3s, border-color 0.3s !default;
 // a light accent fill on hover and while pressed
 $dropdown-min-width: 15rem !default;
 $dropdown-padding-x: .5rem !default; // $spacer * .5 (not defined yet here): the rows are inset, with rounded corners
-// Rows as high as a button (37px) and their content half a spacer from the row's rounded edge; Bootstrap's rows are
-// 29px and made for a menu without inset
+// Rows as high as a button (38px) and their content half a spacer from the row's rounded edge; Bootstrap's rows are
+// 30px and made for a menu without inset
 $dropdown-item-padding-x: .5rem !default;
 $dropdown-item-padding-y: .5rem !default;
 $dropdown-link-hover-bg: var(--bs-accent-bg-subtle) !default;

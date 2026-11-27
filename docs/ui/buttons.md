@@ -36,8 +36,8 @@ footers and card actions use **full-width** buttons.
 
 | Form | Use | Notes |
 |---|---|---|
-| **Text** | Default | 39px high, optional leading icon |
-| **Icon button** | Header actions, row actions | Square 39px. The label is the accessible name **and** the tooltip, so it is never missing. |
+| **Text** | Default | 38px high, optional leading icon |
+| **Icon button** | Header actions, row actions | Square 38px. The label is the accessible name **and** the tooltip, so it is never missing. |
 | **Full width** | Dialog footers, card footers, button rows | Buttons share the width equally. Confirm sits on the right (Cancel · Save). |
 | **Choice row** | Pick one of a few options in place (RSVP) | Options are secondary, and the chosen one turns accent with a check. It is a row of buttons with `aria-pressed`, not a separate segmented control. |
 | **Reveal action** | Save / Reset in a card or accordion header | Hidden until it can act, then slides in (see below) |
@@ -60,7 +60,7 @@ there are no general `sm` / `lg` button sizes.
 
 ## Mobile
 
-- Same sizes. Icon buttons keep their 39px square, which is enough as a touch target.
+- Same sizes. Icon buttons keep their 38px square, which is enough as a touch target.
 - Full-width rows share the width. Choice rows wrap when the labels don't fit; labels are never
   cut.
 
