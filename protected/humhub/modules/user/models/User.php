@@ -676,13 +676,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     private function setUpApproved()
     {
         $userInvite = Invite::findOne(['email' => $this->email]);
+        $spaceToRequest = null;
 
         if ($userInvite !== null) {
             // User was invited to a space
             if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
                 $space = $userInvite->space;
                 if ($space !== null) {
-                    $space->addMember($this->id);
+                    if ($userInvite->source === Invite::SOURCE_INVITE_BY_LINK
+                        && $space->join_policy == Space::JOIN_POLICY_APPLICATION) {
+                        $spaceToRequest = $space;
+                    } else {
+                        $space->addMember($this->id);
+                    }
                     Yii::$app->user->setReturnUrl($space->createUrl());
                 }
             }
@@ -702,6 +708,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         // Add User to the default group if no yet
         if ($this->allowAssignDefaultGroup() && ($defaultGroup = $userModule->getDefaultGroup())) {
             $defaultGroup->addUser($this);
+        }
+
+        // Requested last, the user may have become a member of a default space meanwhile
+        if ($spaceToRequest !== null && $spaceToRequest->getMembership($this->id) === null) {
+            $spaceToRequest->requestMembership($this->id);
         }
     }
 
