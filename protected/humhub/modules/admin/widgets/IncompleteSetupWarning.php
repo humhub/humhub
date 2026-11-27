@@ -105,6 +105,10 @@ class IncompleteSetupWarning extends Widget
         ?DocumentRootService $documentRoot = null,
         ?DocumentRootProbeService $probe = null,
     ): array {
+        if (Yii::$app->health->isDisabled('document-root')) {
+            return [];
+        }
+
         $documentRoot ??= DocumentRootService::instance();
 
         $finding = (new DocumentRootCheck(['documentRoot' => $documentRoot, 'probe' => $probe]))->getFinding();

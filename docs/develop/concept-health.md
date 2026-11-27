@@ -75,12 +75,12 @@ HEALTHCHECK CMD php yii health/status --check=ready --fail-on=failure
 | any endpoint with a valid token | full report |
 | any endpoint with an invalid token | 401 |
 | `GET /health` without token | 401 |
-| any endpoint, client blocked after too many failed attempts | 429, also with a valid token |
+| any endpoint with an invalid token, client blocked after too many failed attempts | 429 |
 
 HTTP 200 for ok and warning, 503 for failure and unknown. Responses are `no-store`, set no cookie and start no
 session. Failed token attempts are counted per client IP (`Yii::$app->request->getUserIP()`) and rate limited
-(policy `health.auth`, 10 per minute and 100 per hour). A blocked client gets 429 for the rest of the block, also
-with a valid token. The block only applies to requests that carry a Bearer token: requests without an
+(policy `health.auth`, 10 per minute and 100 per hour). A blocked client gets 429 for invalid tokens for the rest
+of the block; a valid token always passes. The block only applies to requests that carry a Bearer token: requests without an
 `Authorization` header, or with another scheme such as `Basic`, are never counted and never blocked.
 
 Use `/health/ready` for uptime monitors: `/health` answers "is everything in order" and returns 503 for any
@@ -104,8 +104,8 @@ Operator notes:
   `CGIPassAuth On`), otherwise a valid token is ignored: `live` and `ready` answer minimally and `/health`
   answers 401.
 - Behind a reverse proxy, configure the proxy as trusted (Yii request `trustedHosts`), so that the client IP is
-  used for the failed attempt limit. Otherwise all clients share the proxy's IP, and failed attempts of one client
-  block token requests of all clients for up to the block duration.
+  used for the failed attempt limit. Otherwise all clients share the proxy's IP and one counter of failed attempts.
+  Valid tokens still pass.
 
 ## Probe examples
 

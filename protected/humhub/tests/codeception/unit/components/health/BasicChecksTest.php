@@ -68,11 +68,24 @@ class BasicChecksTest extends HumHubDbTestCase
         $this->assertSame(HealthStatus::Warning, $check->run()->status);
     }
 
-    public function testMissingDirectoryWithWritableParentIsOkWhenAllowed(): void
+    public function testAMissingDirectoryCreatedOnUseIsOkWithAWritableParent(): void
     {
-        $check = new FilesystemCheck(['id' => 'filesystem:test', 'paths' => [$this->dir . '/missing'], 'allowMissing' => true]);
+        $check = new FilesystemCheck(['id' => 'filesystem:test', 'createdOnUse' => [$this->dir . '/missing']]);
 
         $this->assertSame(HealthStatus::Ok, $check->run()->status);
+    }
+
+    public function testAMissingRequiredDirectoryFailsEvenWithAWritableParent(): void
+    {
+        $check = new FilesystemCheck([
+            'id' => 'filesystem:test',
+            'paths' => [$this->dir . '/missing'],
+            'createdOnUse' => [$this->dir . '/missing/sub'],
+        ]);
+        $result = $check->run();
+
+        $this->assertSame(HealthStatus::Failure, $result->status);
+        $this->assertSame([$this->dir . '/missing', $this->dir . '/missing/sub'], $result->data['notWritable']);
     }
 
     public function testDatabaseOk(): void

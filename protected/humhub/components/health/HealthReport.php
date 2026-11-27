@@ -50,7 +50,8 @@ final class HealthReport
             }
         }
 
-        return $notes;
+        // The same reason from two checks (e.g. maintenance mode) is listed once
+        return array_values(array_unique($notes));
     }
 
     public function toArray(bool $detailed = true): array
@@ -65,12 +66,20 @@ final class HealthReport
             return $data;
         }
 
+        $checks = array_map(fn(HealthResult $r) => $r->toArray(), $this->results);
+        // Check output may carry messages of external systems (e.g. a database error) that are not valid UTF-8
+        array_walk_recursive($checks, function (&$value) {
+            if (is_string($value)) {
+                $value = mb_scrub($value, 'UTF-8');
+            }
+        });
+
         return $data + [
             'level' => $this->level->value,
             'version' => $this->version,
             'time' => gmdate('Y-m-d\TH:i:s\Z', $this->time),
-            'notes' => $this->getNotes(),
-            'checks' => $this->results === [] ? new \stdClass() : array_map(fn(HealthResult $r) => $r->toArray(), $this->results),
+            'notes' => array_map(fn(string $note) => mb_scrub($note, 'UTF-8'), $this->getNotes()),
+            'checks' => $checks === [] ? new \stdClass() : $checks,
         ];
     }
 

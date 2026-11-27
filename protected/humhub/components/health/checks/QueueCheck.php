@@ -45,6 +45,9 @@ class QueueCheck extends HealthCheck
             ->from($queue->tableName)
             ->andWhere(['channel' => $queue->channel, 'reserved_at' => null]);
 
+        // Delayed jobs that are not due yet do not count as waiting
+        $waitingQuery->andWhere('[[pushed_at]] <= :now - [[delay]]', [':now' => time()]);
+
         $waiting = (int)(clone $waitingQuery)->count('*', $queue->db);
         $stale = (int)(clone $waitingQuery)
             ->andWhere('[[pushed_at]] <= :time - [[delay]]', [':time' => time() - $this->waitThreshold])

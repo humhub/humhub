@@ -121,4 +121,23 @@ class HealthReportTest extends Unit
         $this->assertSame(503, $this->report(['x' => HealthResult::failure('f')])->getHttpStatusCode());
         $this->assertSame(503, $this->report(['x' => HealthResult::unknown('u')])->getHttpStatusCode());
     }
+
+    public function testTheSameNoteIsListedOnce(): void
+    {
+        $report = $this->report([
+            'installation' => HealthResult::ok('Maintenance mode enabled', notable: true),
+            'maintenance' => HealthResult::warning('Maintenance mode enabled'),
+        ]);
+
+        $this->assertSame(['Maintenance mode enabled'], $report->getNotes());
+    }
+
+    public function testInvalidUtf8IsReplacedInTheOutput(): void
+    {
+        $report = $this->report(['database' => HealthResult::failure("Verbindung fehlgeschlagen: \xE4", ['detail' => "\xFF"])]);
+
+        $json = json_encode($report->toArray(), JSON_THROW_ON_ERROR);
+
+        $this->assertStringContainsString('Verbindung fehlgeschlagen', $json);
+    }
 }

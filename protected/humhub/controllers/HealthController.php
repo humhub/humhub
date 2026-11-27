@@ -75,17 +75,19 @@ class HealthController extends Controller
 
         // Only the Bearer scheme is a token attempt; other schemes (e.g. Basic of a web server) count as no token.
         if ($header !== null && preg_match('/^Bearer(\s|$)/i', $header)) {
-            if ($this->isBlocked()) {
-                $response->statusCode = 429;
-                $response->data = ['error' => 'too many failed attempts'];
-                return $response;
-            }
-
             if ($health->token === null || $health->token === '') {
                 Yii::warning('Health check token sent, but no health token is configured.', 'health');
             }
 
+            // A valid token always passes, so failed attempts of others (e.g. behind a shared proxy IP) cannot
+            // lock out monitoring. Only failed attempts are blocked.
             if (!preg_match('/^Bearer\s+(\S+)$/i', $header, $matches) || !$health->validateToken($matches[1])) {
+                if ($this->isBlocked()) {
+                    $response->statusCode = 429;
+                    $response->data = ['error' => 'too many failed attempts'];
+                    return $response;
+                }
+
                 $this->countFailedAttempt();
                 return $this->unauthorized($response);
             }

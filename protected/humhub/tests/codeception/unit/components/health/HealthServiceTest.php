@@ -10,6 +10,7 @@ namespace humhub\tests\codeception\unit\components\health;
 
 use Closure;
 use humhub\components\fs\LocalMountConfig;
+use humhub\components\health\checks\InstallationCheck;
 use humhub\components\health\CollectChecksEvent;
 use humhub\components\health\HealthCheck;
 use humhub\components\health\HealthLevel;
@@ -286,11 +287,64 @@ class HealthServiceTest extends HumHubDbTestCase
         }
     }
 
+    public function testAMissingUploadsDirectoryFails(): void
+    {
+        $fs = Yii::$app->fs;
+        $original = $fs->getDataMountConfig();
+        $fs->mounts['data'] = new LocalMountConfig();
+        $fs->mounts['data']->path = Yii::getAlias('@runtime') . '/health-missing-uploads-' . uniqid();
+
+        try {
+            $result = Yii::$app->health->runCheck('filesystem:uploads');
+            $this->assertSame(HealthStatus::Failure, $result->status);
+            $this->assertContains($fs->mounts['data']->path, $result->data['notWritable']);
+        } finally {
+            $fs->mounts['data'] = $original;
+        }
+    }
+
     public function testRunCheck(): void
     {
         Yii::$app->settings->set('cronLastRun', time());
 
         $this->assertSame(HealthStatus::Ok, Yii::$app->health->runCheck('cron')->status);
         $this->assertNull(Yii::$app->health->runCheck('nope'));
+    }
+
+    public function testRunCheckDoesNotJudgeTheDuration(): void
+    {
+        $slow = fn() => $this->check('slow', HealthLevel::Ready, function () {
+            usleep(5000);
+            return HealthResult::ok();
+        }, ['timeout' => 0]);
+
+        $this->assertSame(HealthStatus::Ok, $this->service([$slow()])->runCheck('slow')->status);
+        $this->assertSame(HealthStatus::Warning, $this->service([$slow()])->run(HealthLevel::Ready)->results['slow']->status);
+    }
+
+    public function testAFailedDatabaseMakesTheInstallationCheckUnknown(): void
+    {
+        $report = $this->service([
+            $this->check('database', HealthLevel::Ready, HealthResult::failure('down')),
+            new InstallationCheck(),
+        ])->run(HealthLevel::Ready);
+
+        $this->assertSame(HealthState::DATABASE_UNAVAILABLE, $report->state);
+        $this->assertSame(HealthStatus::Unknown, $report->results['installation']->status);
+    }
+
+    public function testAConfigurationErrorBecomesAnUnknownCheck(): void
+    {
+        $fs = Yii::$app->fs;
+        $original = $fs->getAssetsMountConfig();
+        unset($fs->mounts['assets']);
+
+        try {
+            $report = Yii::$app->health->run(HealthLevel::Live);
+            $this->assertSame(HealthStatus::Unknown, $report->results['filesystem:assets']->status);
+            $this->assertStringStartsWith('Check could not be set up', $report->results['filesystem:assets']->output);
+        } finally {
+            $fs->mounts['assets'] = $original;
+        }
     }
 }

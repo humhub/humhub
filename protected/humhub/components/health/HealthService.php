@@ -73,14 +73,17 @@ class HealthService extends Component
             if (!$level->includes($check->level) || $this->isDisabled($check->id)) {
                 continue;
             }
+            if ($check instanceof InstallationCheck) {
+                $check->state = $state;
+            }
             $results[$check->id] = $this->execute($check, $check->id, $state, $databaseOk, $level, false);
             if ($check->id === 'database' && $results[$check->id]->status !== HealthStatus::Ok) {
                 $databaseOk = false;
+                // Switch at once, so the following checks report against the same state as the report
+                if (HealthState::isInstalled($state)) {
+                    $state = HealthState::DATABASE_UNAVAILABLE;
+                }
             }
-        }
-
-        if (!$databaseOk && HealthState::isInstalled($state)) {
-            $state = HealthState::DATABASE_UNAVAILABLE;
         }
 
         if ($level === HealthLevel::All && $databaseOk && HealthState::isInstalled($state)) {
@@ -91,7 +94,8 @@ class HealthService extends Component
     }
 
     /**
-     * Runs a single core check regardless of its level, e.g. for the dashboard warning.
+     * Runs a single core check regardless of its level, e.g. for the dashboard warning. A slow check is not
+     * turned into a warning here: the caller asks about the checked condition, not about the response time.
      *
      * @return HealthResult|null null if the check does not exist or is disabled
      */
@@ -104,7 +108,7 @@ class HealthService extends Component
         $state = $this->resolveState();
         foreach ($this->getCoreChecks($state) as $check) {
             if ($check->id === $id) {
-                return $this->execute($check, $check->id, $state, true, HealthLevel::Ready, false);
+                return $this->execute($check, $check->id, $state, true, HealthLevel::Ready, false, false);
             }
         }
 
@@ -158,15 +162,19 @@ class HealthService extends Component
             new FilesystemCheck(['id' => 'filesystem:runtime', 'level' => HealthLevel::Live, 'paths' => ['@runtime']]),
         ];
 
-        $assetsMount = Yii::$app->fs->getAssetsMountConfig();
-        if ($assetsMount instanceof LocalMountConfig) {
-            $checks[] = new FilesystemCheck(['id' => 'filesystem:assets', 'level' => HealthLevel::Live, 'paths' => [$assetsMount->path], 'allowMissing' => true]);
-        }
+        $checks[] = $this->guarded('filesystem:assets', HealthLevel::Live, function () {
+            $assetsMount = Yii::$app->fs->getAssetsMountConfig();
+            return $assetsMount instanceof LocalMountConfig
+                ? new FilesystemCheck(['id' => 'filesystem:assets', 'level' => HealthLevel::Live, 'createdOnUse' => [$assetsMount->path]])
+                : null;
+        });
 
-        $logs = Yii::getAlias('@logs');
-        if (!str_starts_with($logs . DIRECTORY_SEPARATOR, Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR)) {
-            $checks[] = new FilesystemCheck(['id' => 'filesystem:logs', 'level' => HealthLevel::Live, 'paths' => [$logs], 'allowMissing' => true]);
-        }
+        $checks[] = $this->guarded('filesystem:logs', HealthLevel::Live, function () {
+            $logs = Yii::getAlias('@logs');
+            return !str_starts_with($logs . DIRECTORY_SEPARATOR, Yii::getAlias('@runtime') . DIRECTORY_SEPARATOR)
+                ? new FilesystemCheck(['id' => 'filesystem:logs', 'level' => HealthLevel::Live, 'createdOnUse' => [$logs]])
+                : null;
+        });
 
         $migrations = new PendingMigrations();
         $checks[] = new DatabaseCheck(['state' => $state]);
@@ -174,16 +182,21 @@ class HealthService extends Component
         $checks[] = new CoreMigrationsCheck(['migrations' => $migrations]);
         $checks[] = new ModuleMigrationsCheck(['migrations' => $migrations]);
 
-        $dataMount = Yii::$app->fs->getDataMountConfig();
-        if ($dataMount instanceof LocalMountConfig) {
+        $checks[] = $this->guarded('filesystem:uploads', HealthLevel::All, function () {
+            $dataMount = Yii::$app->fs->getDataMountConfig();
+            if (!$dataMount instanceof LocalMountConfig) {
+                return null;
+            }
             $uploads = Yii::getAlias($dataMount->path);
-            $checks[] = new FilesystemCheck(['id' => 'filesystem:uploads', 'paths' => [$uploads, $uploads . '/file', $uploads . '/profile_image'], 'allowMissing' => true]);
-        }
+            return new FilesystemCheck(['id' => 'filesystem:uploads', 'paths' => [$uploads], 'createdOnUse' => [$uploads . '/file', $uploads . '/profile_image']]);
+        });
 
-        $marketplace = Yii::$app->getModule('marketplace');
-        if ($marketplace !== null && !empty($marketplace->modulesPath)) {
-            $checks[] = new FilesystemCheck(['id' => 'filesystem:modules', 'paths' => [$marketplace->modulesPath], 'failStatus' => HealthStatus::Warning]);
-        }
+        $checks[] = $this->guarded('filesystem:modules', HealthLevel::All, function () {
+            $marketplace = Yii::$app->getModule('marketplace');
+            return $marketplace !== null && !empty($marketplace->modulesPath)
+                ? new FilesystemCheck(['id' => 'filesystem:modules', 'paths' => [$marketplace->modulesPath], 'failStatus' => HealthStatus::Warning])
+                : null;
+        });
 
         if ($this->cronWarningAge > 0) {
             $checks[] = new CronCheck(['warningAge' => $this->cronWarningAge, 'failureAge' => $this->cronFailureAge]);
@@ -192,7 +205,32 @@ class HealthService extends Component
         $checks[] = new DocumentRootCheck();
         $checks[] = new MaintenanceCheck();
 
-        return $checks;
+        return array_values(array_filter($checks));
+    }
+
+    /**
+     * Builds a check that depends on configuration. A configuration error becomes an `unknown` result of this
+     * check instead of breaking the whole report.
+     *
+     * @param callable(): ?HealthCheck $factory null if the check does not apply
+     */
+    private function guarded(string $id, HealthLevel $level, callable $factory): ?HealthCheck
+    {
+        try {
+            return $factory();
+        } catch (\Throwable $e) {
+            Yii::error($e, 'health');
+            $message = 'Check could not be set up: ' . ($e->getMessage() !== '' ? $e->getMessage() : $e::class);
+
+            return new class (['id' => $id, 'level' => $level, 'message' => $message]) extends HealthCheck {
+                public string $message = '';
+
+                public function run(): HealthResult
+                {
+                    return HealthResult::unknown($this->message);
+                }
+            };
+        }
     }
 
     /**
@@ -240,8 +278,15 @@ class HealthService extends Component
         return $results;
     }
 
-    private function execute(HealthCheck $check, string $reportId, string $state, bool $databaseOk, HealthLevel $level, bool $isModuleCheck): HealthResult
-    {
+    private function execute(
+        HealthCheck $check,
+        string $reportId,
+        string $state,
+        bool $databaseOk,
+        HealthLevel $level,
+        bool $isModuleCheck,
+        bool $judgeDuration = true,
+    ): HealthResult {
         if ($check->requiresInstallation || $isModuleCheck) {
             if ($state === HealthState::INVALID) {
                 return HealthResult::unknown('skipped: invalid installation state');
@@ -280,7 +325,7 @@ class HealthService extends Component
         $ms = intdiv(hrtime(true) - $start, 1_000_000);
         $result = $result->withDuration($ms);
 
-        if ($result->status === HealthStatus::Ok && $ms > $check->timeout * 1000) {
+        if ($judgeDuration && $result->status === HealthStatus::Ok && $ms > $check->timeout * 1000) {
             $result = $result->withStatus(HealthStatus::Warning, sprintf('slow (%d ms > %d ms)', $ms, $check->timeout * 1000));
         }
 
@@ -295,7 +340,10 @@ class HealthService extends Component
         return $result;
     }
 
-    private function isDisabled(string $id): bool
+    /**
+     * Whether a check id is listed in [[disabledChecks]].
+     */
+    public function isDisabled(string $id): bool
     {
         return in_array($id, $this->disabledChecks, true);
     }

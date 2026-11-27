@@ -96,6 +96,26 @@ class OperationalChecksTest extends HumHubDbTestCase
         $this->assertSame(HealthStatus::Ok, (new QueueCheck(['queue' => $queue, 'waitThreshold' => 3600]))->run()->status);
     }
 
+    public function testDelayedJobsThatAreNotDueAreNotWaiting(): void
+    {
+        $queue = new MySQL();
+        $queue->db->createCommand()->delete($queue->tableName, ['channel' => $queue->channel])->execute();
+        $queue->db->createCommand()->insert($queue->tableName, [
+            'channel' => $queue->channel,
+            'job' => 'x',
+            'pushed_at' => time(),
+            'ttr' => 300,
+            'delay' => 86400,
+            'priority' => 1024,
+            'attempt' => 0,
+        ])->execute();
+
+        $result = (new QueueCheck(['queue' => $queue]))->run();
+
+        $this->assertSame(HealthStatus::Ok, $result->status);
+        $this->assertSame(0, $result->data['waiting']);
+    }
+
     private function probe(DocumentRootService $documentRoot, string $baseUrl, ?bool $served): DocumentRootProbeService
     {
         return new DocumentRootProbeService(

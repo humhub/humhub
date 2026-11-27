@@ -21,23 +21,24 @@ use Yii;
 class FilesystemCheck extends HealthCheck
 {
     /**
-     * @var string[] paths or aliases
+     * @var string[] paths or aliases of directories that must exist and be writable
      */
     public array $paths = [];
 
     /**
-     * @var bool whether a missing directory counts as writable when its parent is (created on first use)
+     * @var string[] paths or aliases of directories created at runtime on first use: a missing one counts as
+     * writable when its parent directory is
      */
-    public bool $allowMissing = false;
+    public array $createdOnUse = [];
 
     public HealthStatus $failStatus = HealthStatus::Failure;
 
     public function run(): HealthResult
     {
         $notWritable = [];
-        foreach ($this->paths as $path) {
+        foreach ([...$this->paths, ...$this->createdOnUse] as $i => $path) {
             $path = Yii::getAlias($path, false) ?: $path;
-            if (!$this->isWritable($path)) {
+            if (!$this->isWritable($path, $i >= count($this->paths))) {
                 $notWritable[] = $path;
             }
         }
@@ -49,12 +50,12 @@ class FilesystemCheck extends HealthCheck
         return new HealthResult($this->failStatus, 'Not writable: ' . implode(', ', $notWritable), ['notWritable' => $notWritable]);
     }
 
-    private function isWritable(string $path): bool
+    private function isWritable(string $path, bool $createdOnUse): bool
     {
         if (is_dir($path)) {
             return is_writable($path);
         }
 
-        return $this->allowMissing && !file_exists($path) && is_writable(dirname($path));
+        return $createdOnUse && !file_exists($path) && is_dir(dirname($path)) && is_writable(dirname($path));
     }
 }

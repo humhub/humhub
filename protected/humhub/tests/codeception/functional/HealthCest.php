@@ -105,6 +105,22 @@ class HealthCest
         Yii::$app->cache->flush();
     }
 
+    public function testABlockedClientWithAValidTokenStillGetsTheReport(FunctionalTester $I)
+    {
+        $I->haveHttpHeader('Authorization', 'Bearer wrong-token-wrong-token-wrong-token');
+        for ($i = 0; $i < 12; $i++) {
+            $I->amOnRoute('/health/ready');
+        }
+        $I->seeResponseCodeIs(429);
+
+        $I->haveHttpHeader('Authorization', 'Bearer ' . self::TOKEN);
+        $I->amOnRoute('/health/ready');
+
+        $I->seeResponseCodeIs(200);
+        $I->assertArrayHasKey('checks', $this->json($I));
+        Yii::$app->cache->flush();
+    }
+
     public function testAnotherAuthorizationSchemeCountsAsNoToken(FunctionalTester $I)
     {
         $I->haveHttpHeader('Authorization', 'Basic dXNlcjpwYXNz');
