@@ -8,10 +8,13 @@
 
 namespace tests\codeception\unit\modules\file;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\file\Events;
 use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -131,6 +134,102 @@ class FileAccessTest extends HumHubDbTestCase
 
         $this->assertNotNull(File::findOne(['id' => $standalone->id]));
         $this->assertNull(File::findOne(['id' => $unassigned->id]));
+    }
+
+    public function testPrivateSpaceFileIsOnlyViewableWithSpaceAccess()
+    {
+        self::allowGuestAccess();
+        $space = Space::findOne(5);
+        $file = $this->createContainerFile($space);
+
+        // User1 is a member, User2 is not
+        $this->assertTrue($file->canView(User::findOne(2)));
+        $this->assertFalse($file->canView(User::findOne(3)));
+        $this->assertFalse($file->canView(3));
+        $this->assertFalse($file->canView());
+
+        self::becomeUser('User2');
+        $this->assertFalse($file->canView());
+        self::logout();
+
+        // Invited users can open the pages of a private Space
+        $this->assertNotFalse($space->inviteMember(3, 1, false));
+        $this->assertTrue($file->canView(User::findOne(3)));
+    }
+
+    public function testPrivateSpaceFileIsNotViewableByFormerMember()
+    {
+        $space = Space::findOne(5);
+        $file = $this->createContainerFile($space);
+
+        self::becomeUser('Admin');
+        $this->assertTrue($space->removeMember(2));
+        self::logout();
+
+        $this->assertFalse($file->canView(User::findOne(2)));
+    }
+
+    public function testPrivateSpaceFileIsViewableBySystemAdmin()
+    {
+        $space = Space::findOne(5);
+        $file = $this->createContainerFile($space);
+        Membership::findOne(['space_id' => 5, 'user_id' => 1])->delete();
+
+        $this->assertTrue($file->canView(User::findOne(1)));
+    }
+
+    public function testRegisteredOnlySpaceFileIsNotViewableByGuests()
+    {
+        self::allowGuestAccess();
+        $file = $this->createContainerFile(Space::findOne(1));
+
+        // User3 (ID 4) is no member of Space 1
+        $this->assertTrue($file->canView(User::findOne(4)));
+        $this->assertFalse($file->canView());
+    }
+
+    public function testPublicSpaceFileFollowsGuestAccessSetting()
+    {
+        $file = $this->createContainerFile(Space::findOne(2));
+
+        $this->assertTrue($file->canView(User::findOne(3)));
+        $this->assertFalse($file->canView());
+
+        self::allowGuestAccess();
+        $this->assertTrue($file->canView());
+    }
+
+    public function testSpaceFileIsNotViewableByBlockedUser()
+    {
+        $space = Space::findOne(2);
+        $file = $this->createContainerFile($space);
+        ContentContainerBlockedUsers::updateByContainer($space, [User::findOne(3)->guid]);
+
+        $this->assertFalse($file->canView(User::findOne(3)));
+    }
+
+    public function testUserFileFollowsProfileVisibility()
+    {
+        self::allowGuestAccess();
+        $user = User::findOne(2);
+        $file = $this->createContainerFile($user);
+
+        $this->assertTrue($file->canView(User::findOne(3)));
+        $this->assertFalse($file->canView());
+
+        $user->updateAttributes(['visibility' => User::VISIBILITY_ALL]);
+        // Reload to drop the cached parent record
+        $this->assertTrue(File::findOne($file->id)->canView());
+    }
+
+    private function createContainerFile(ContentContainerActiveRecord $container): File
+    {
+        $file = $this->createFile();
+        $container->fileManager->attach($file, true);
+        $file->refresh();
+        $this->assertTrue($file->isAssignedTo($container));
+
+        return $file;
     }
 
     private function createFile(array $attributes = []): File

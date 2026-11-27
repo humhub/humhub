@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.19.6 (Unreleased)
+-------------------
+
+- Fix #8794: Files in a Space's about text were accessible to users who cannot view the Space
+
 1.19.5 (November 25, 2026)
 --------------------------
 

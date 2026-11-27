@@ -16,9 +16,12 @@ use humhub\libs\StdClass;
 use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\file\libs\Metadata;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\helpers\UserHelper;
 use humhub\modules\user\models\User;
 use Throwable;
@@ -299,6 +302,40 @@ class File extends ActiveRecord implements ViewableInterface
 
         if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
             return $object->content->canView($user);
+        }
+
+        if ($object instanceof ContentContainerActiveRecord) {
+            return $this->canViewContainerFile($object, UserHelper::getUserByParam($user));
+        }
+
+        return true;
+    }
+
+    /**
+     * Files attached directly to a Space or User (e.g. embedded in the Space about text)
+     * follow the access rules of the container's pages.
+     *
+     * @see \humhub\modules\space\behaviors\SpaceController::beforeAction()
+     * @see \humhub\modules\user\behaviors\ProfileController::beforeAction()
+     */
+    private function canViewContainerFile(ContentContainerActiveRecord $container, ?User $user): bool
+    {
+        if ($user === null) {
+            // Space::VISIBILITY_ALL and User::VISIBILITY_ALL
+            return AuthHelper::isGuestAccessEnabled() && $container->visibility == Space::VISIBILITY_ALL;
+        }
+
+        if ($container->isBlockedForUser($user)) {
+            return false;
+        }
+
+        if ($container instanceof Space && $container->visibility == Space::VISIBILITY_NONE) {
+            if ($user->isCurrentUser() && !Yii::$app->user->impersonation->canAccessPrivateContent()) {
+                return false;
+            }
+
+            // Like the Space pages, this includes invited users and system administrators
+            return $user->isSystemAdmin() || $container->getMembership($user->id) !== null;
         }
 
         return true;
