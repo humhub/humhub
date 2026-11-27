@@ -21,7 +21,8 @@ use yii\helpers\ArrayHelper;
  *
  * This will render a rich text editor field related to the globally configured rich text implementation.
  * After submitting and saving the model record holding the rich text, the [[postProcess()]] function should be called
- * usually within the `afterSave()` function of the content record:
+ * within the `afterSave()` function of the content record, so that the mentions of a new content are notified
+ * together with the content itself:
  *
  * ```php
  * RichText::postProcess($this->richTextField, $this);

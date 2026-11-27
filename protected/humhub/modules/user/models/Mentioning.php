@@ -34,6 +34,12 @@ class Mentioning extends ActiveRecord
     private static int $silenced = 0;
 
     /**
+     * @var list<array{record: ContentActiveRecord|ContentAddonActiveRecord, userIds: int[]}> the records
+     * whose mentions are notified by the caller, innermost last, see {@see withoutNotificationFor()}
+     */
+    private static array $deferred = [];
+
+    /**
      * Runs the callback without sending a {@see MentionedNotification} for the mentions it creates
      * - for a caller that notifies the mentioned users itself, e.g. together with other
      * notifications of the same event in a {@see \humhub\modules\notification\components\NotificationSet}.
@@ -61,6 +67,51 @@ class Mentioning extends ActiveRecord
         } finally {
             self::$silenced--;
         }
+    }
+
+    /**
+     * Runs the callback - e.g. the saving of the record - without sending a {@see MentionedNotification}
+     * for the mentions it creates for the given record, as {@see withoutNotification()} does, but not
+     * for the mentions of any other record. The caller notifies the mentioned users itself, together with
+     * the other notifications of the same event; their ids are returned in `$userIds`.
+     *
+     * @template T
+     * @param ContentActiveRecord|ContentAddonActiveRecord $record
+     * @param callable(): T $callback
+     * @param int[] $userIds the ids of the users mentioned for the record by the callback
+     * @return T the result of the callback
+     * @internal
+     * @since 1.20
+     */
+    public static function withoutNotificationFor(ContentActiveRecord|ContentAddonActiveRecord $record, callable $callback, ?array &$userIds = null): mixed
+    {
+        self::$deferred[] = ['record' => $record, 'userIds' => []];
+        try {
+            return $callback();
+        } finally {
+            // The calls nest strictly, so the last entry is the one of this call
+            $userIds = array_values(array_unique(array_pop(self::$deferred)['userIds']));
+        }
+    }
+
+    /**
+     * Leaves the notification of this mention to the caller of {@see withoutNotificationFor()} if the
+     * source is its record, and remembers the mentioned user for it. The innermost call wins.
+     *
+     * @return bool whether the notification is left to the caller
+     */
+    private function deferNotification(ContentActiveRecord|ContentAddonActiveRecord $source): bool
+    {
+        for ($i = count(self::$deferred) - 1; $i >= 0; $i--) {
+            $record = self::$deferred[$i]['record'];
+            if ($record::class === $source::class && (string)$record->getPrimaryKey() === (string)$source->getPrimaryKey()) {
+                self::$deferred[$i]['userIds'][] = (int)$this->user_id;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -109,7 +160,7 @@ class Mentioning extends ActiveRecord
             throw new Exception("Invalid polymorphic relation for Mentioning!");
         }
 
-        if (self::$silenced === 0) {
+        if (self::$silenced === 0 && !$this->deferNotification($mentionedSource)) {
             MentionedNotification::send($this->user, $mentionedSource, $originator);
         }
 

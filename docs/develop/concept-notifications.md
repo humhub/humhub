@@ -17,7 +17,7 @@ Core examples:
 - `humhub\modules\comment\notifications\NewCommentNotification` — a new comment on followed content
 - `humhub\modules\comment\notifications\CommentReplyNotification` — a reply to the user's comment
 - `humhub\modules\like\notifications\NewLikeNotification` — somebody liked a post or comment
-- `humhub\modules\content\notifications\ContentCreatedNotification` — new content in a space the user receives notifications for
+- `humhub\modules\content\notifications\ContentCreatedNotification` — new content in a space the user receives notifications for; a user mentioned in it gets the `MentionedNotification` only
 
 ## Implementing a notification
 
@@ -321,6 +321,16 @@ content), but no `MentionedNotification` is sent, and the result's `mentioning` 
 $result = Mentioning::withoutNotification(fn() => RichText::postProcess($this->message, $this, 'message'));
 $mentionedUsers = $result['mentioning'] ?? [];
 ```
+
+A new content needs nothing of this: `Content::notifyNewContent()` sends one set right after the
+record was inserted — the `MentionedNotification`, then the `ContentCreatedNotification` for the
+users picked in the content form, then for the followers. A user mentioned in a new content
+therefore gets the mention only.
+
+This holds when the content type processes its rich text (`RichText::postProcess()`) in the
+`afterSave()` of its record, as the core's post does. A module should do the same: a mention created
+after `save()` has returned is notified on its own, so the mentioned user gets the mention and the
+"created" notification.
 
 ### Revoking and marking seen
 

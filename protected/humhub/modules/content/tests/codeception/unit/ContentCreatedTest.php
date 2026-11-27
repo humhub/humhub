@@ -4,6 +4,7 @@ namespace tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreatedNotification;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\components\NotificationContext;
@@ -17,6 +18,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use humhub\modules\user\notifications\MentionedNotification;
 
 class ContentCreatedTest extends HumHubDbTestCase
 {
@@ -152,6 +154,101 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->assertStringContainsString('notifies you about', $notification->asMailSubject());
         $this->assertStringContainsString('Space 2', $notification->asMailSubject());
         $this->assertMailSent(1);
+    }
+
+    /**
+     * A follower who is mentioned in the new content gets the mention only.
+     */
+    public function testMentionedUserGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+
+        // Admin follows Space 2 and is mentioned
+        $post = $this->createPost('[](mention:' . User::findOne(['id' => 1])->guid . ') MyTestContent');
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+        $this->assertMailSent(1);
+    }
+
+    /**
+     * The same for a user picked in the content form.
+     */
+    public function testMentionedUserPickedInTheFormGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+
+        $post = $this->createPost('[](mention:' . User::findOne(['id' => 1])->guid . ') MyTestContent', [User::findOne(['id' => 1])]);
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * A mention created after the record was saved - the code that saves the content processes its rich text
+     * itself, e.g. the tasks - is notified on its own: the mentioned user gets the "created" notification, too.
+     */
+    public function testMentionAfterTheRecordWasSavedIsNotifiedSeparately()
+    {
+        $this->becomeUser('User2');
+        $admin = User::findOne(['id' => 1]);
+
+        $post = $this->createPost('Nobody is mentioned while saving');
+        RichText::postProcess('[](mention:' . $admin->guid . ') mentioned later', $post);
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * Content published later (e.g. a draft) is notified when it is published, and the mentioned
+     * users still get the mention only.
+     */
+    public function testMentionedUserOfAPublishedDraftGetsNoContentCreatedNotification()
+    {
+        $this->becomeUser('User2');
+
+        $post = $this->createPost('[](mention:' . User::findOne(['id' => 1])->guid . ') MyTestContent', [], Content::STATE_DRAFT);
+        $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+
+        $this->assertTrue($post->content->getStateService()->publish());
+
+        $this->assertEqualsNotificationCount(1, MentionedNotification::class, $post, null, 1);
+        $this->assertHasNoNotification(ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * Only the mentioned ones are left out: the other follower is notified as before.
+     */
+    public function testContentWithoutMentionStillNotifiesTheFollower()
+    {
+        $this->becomeUser('User2');
+
+        $post = $this->createPost('MyTestContent');
+
+        $this->assertHasNoNotification(MentionedNotification::class, $post, null, 1);
+        $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
+    }
+
+    /**
+     * A record without a content row gets it when it is updated, outside of `insert()`: the follower is
+     * notified then, too.
+     */
+    public function testRecordGettingItsContentOnUpdateNotifiesTheFollower()
+    {
+        $this->becomeUser('User2');
+
+        Yii::$app->db->createCommand()->insert(Post::tableName(), ['message' => 'MyTestContent'])->execute();
+        $post = Post::findOne(['id' => Yii::$app->db->getLastInsertID()]);
+        $this->assertTrue($post->content->isNewRecord);
+
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $this->assertTrue($post->save());
+
+        $this->assertFalse($post->content->isNewRecord);
+        $this->assertEqualsNotificationCount(1, ContentCreatedNotification::class, $post, null, 1);
     }
 
     public function testPostOnTheRecipientsProfileHasTheProfileWording()
@@ -496,6 +593,25 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(2);
+    }
+
+    /**
+     * Creates a public post in Space 2.
+     *
+     * @param User[] $notifyUsers users picked in the content form
+     */
+    private function createPost(string $message, array $notifyUsers = [], ?int $state = null): Post
+    {
+        $post = new Post(['message' => $message]);
+        $post->content->setContainer(Space::findOne(['id' => 2]));
+        $post->content->visibility = Content::VISIBILITY_PUBLIC;
+        $post->content->notifyUsersOfNewContent = $notifyUsers;
+        if ($state !== null) {
+            $post->content->state = $state;
+        }
+        $this->assertTrue($post->save());
+
+        return $post;
     }
 
     /**

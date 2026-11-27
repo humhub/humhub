@@ -22,6 +22,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
 use Throwable;
@@ -406,6 +407,33 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
+     * Inserts the record and notifies about the new content right after, see {@see Content::notifyNewContent()}.
+     *
+     * The mentions the record creates while it is inserted (in its `afterSave()`, see
+     * {@see \humhub\modules\content\widgets\richtext\RichText::postProcess()}) are not notified one by
+     * one: the mentioned users get the {@see \humhub\modules\user\notifications\MentionedNotification}
+     * within the one set of the new content, and no "created" notification.
+     * A mention created after `insert()` has returned is notified on its own.
+     *
+     * @inheritdoc
+     */
+    public function insert($runValidation = true, $attributes = null)
+    {
+        $mentionedUserIds = [];
+        $result = Mentioning::withoutNotificationFor(
+            $this,
+            fn() => parent::insert($runValidation, $attributes),
+            $mentionedUserIds,
+        );
+
+        if ($result) {
+            $this->content->notifyNewContent($mentionedUserIds);
+        }
+
+        return $result;
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
@@ -425,7 +453,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
             // Save a Content only on each update of this Record or when the Content is creating first time.
             // Don't update the Content twice during inserting of this Record
             //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $contentCreatedOnUpdate = !$insert && $this->content->isNewRecord;
             $this->content->save();
+
+            if ($contentCreatedOnUpdate) {
+                // A record without a content row gets it now, outside of insert()
+                $this->content->notifyNewContent([]);
+            }
         }
 
         parent::afterSave($insert, $changedAttributes);
