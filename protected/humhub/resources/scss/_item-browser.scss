@@ -431,7 +431,8 @@ $tile-border-radius: var(--bs-border-radius) !default;
     }
 
     // Progress frame: the outline of its (positioned) container, the stroke straddling a line
-    // 1px inside the edge
+    // 1px inside the edge, so a container that clips its content keeps all of it. The upload
+    // progress of a tile and of a file row (`FileRow`, _file.scss)
     .progress-frame {
         position: absolute;
         top: 1px;
@@ -456,6 +457,31 @@ $tile-border-radius: var(--bs-border-radius) !default;
         stroke: var(--bs-accent);
         stroke-dasharray: 100;
         @include transition(stroke-dashoffset .12s linear);
+    }
+
+    // Indeterminate (e.g. the server processes an upload): a quarter of the frame runs around it
+    .progress-frame.is-indeterminate .progress-frame-bar {
+        stroke-dasharray: 25 75;
+        animation: hh-progress-frame-run 1.2s linear infinite;
+    }
+
+    // With reduced motion the animation stops at once (_accessibility.scss): the whole frame stands instead
+    :root {
+        @include hh-reduced-motion {
+            .progress-frame.is-indeterminate .progress-frame-bar {
+                stroke-dasharray: none;
+            }
+        }
+    }
+
+    @keyframes hh-progress-frame-run {
+        from {
+            stroke-dashoffset: 100;
+        }
+
+        to {
+            stroke-dashoffset: 0;
+        }
     }
 
     // Drop zone

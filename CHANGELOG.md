@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8793: Upload rows: files show as rows with progress while uploading, one request per file
 - Fix: Image dimensions got lost on the first read of file metadata in a web request (deprecation in `StdClass`)
 - Enh #8791: Attached files: images in left-aligned justified rows, file rows with a download button and "Show all", image dimensions as file metadata
 - Enh: "Show more" as a pill button (`.btn-more`) for comments, replies, card and tile browsers and notifications; comments get "Show less" and grow in and out

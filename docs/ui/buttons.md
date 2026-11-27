@@ -20,7 +20,7 @@ footers and card actions use **full-width** buttons.
 | **Secondary** (grey) | Neutral: dismiss, reset, an established state | Cancel, Close, Reset, Member, Following |
 | **Danger** (red) | Confirm a destructive step, mostly in a confirm dialog | Delete, Remove, Leave space |
 | **Ghost** (no fill) | Quiet chrome: card header tools, row actions, pager, chevrons | Columns, ⋮, ‹ › |
-| **Ghost danger** | The quiet form of delete, for rows and messages: red icon, red hover fill | Delete message |
+| **Ghost danger** | The quiet form of delete, for rows and messages: neutral like ghost at rest, red with a red fill on hover, keyboard focus and press | Delete message, remove a file |
 | **Show more** (small pill with a border) | Load further entries of a list in place, centred above or below it; the accent on hover. In the comments it turns into "Show less" once all are there. | Show more (3), Show less, Show more (cards, tiles, notifications) |
 
 **Rules of thumb:**
@@ -83,7 +83,7 @@ of it. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 | Primary, Accent, Danger | `.btn.btn-primary`, `.btn-accent`, `.btn-danger` | Bootstrap's `button-variant()` loop over `$theme-colors` (`accent` is in the map, see `maps.scss`) |
 | Secondary (grey) | `.btn.btn-secondary` | `button-variant()` with `$btn-secondary-bg`, `$btn-secondary-color` (see Open questions: `$secondary`) |
 | Ghost | `.btn.btn-ghost` | Like Bootstrap's `.btn-link`: the class sets its `--bs-btn-*` variables (transparent, hover fill `var(--bs-secondary-bg)`) |
-| Ghost danger | `.btn.btn-ghost.btn-ghost-danger` | Ghost with `--bs-btn-color` / `--bs-btn-hover-*` from `var(--bs-danger)` and `var(--bs-danger-bg-subtle)` |
+| Ghost danger | `.btn.btn-ghost.btn-ghost-danger` | Ghost with `--bs-btn-color` as ghost (`var(--bs-body-color)`), `--bs-btn-hover-*` and `--bs-btn-active-*` from `var(--hh-danger-fg)` and `var(--bs-danger-bg-subtle)`; Bootstrap's `:focus-visible` takes the hover colours |
 | Icon button | `.btn.btn-<variant>.btn-icon-only` | Square: `width` = `height` = `$btn-icon-only-size`, no horizontal padding, icon size `$btn-icon-only-icon-size` |
 | Full width | `.btn.w-100` in a `.d-flex.gap-2` row | Bootstrap utilities; buttons of a row share the width |
 | Choice row | `.btn-check` + `label.btn.btn-secondary` per option | Bootstrap's radio toggle buttons; the checked option renders accent with a check |

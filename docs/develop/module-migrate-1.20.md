@@ -2,12 +2,48 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **Upload rows** (see [File Upload](../ui/file-upload.md)): files of a form show as file rows with progress while
+  they upload, each in its own request.
+  - `file\widgets\FilePreview` renders an `<upload-list>` island of file rows. Gone: `ul.files > li.file-preview-item`,
+    `.file-preview-content`, `.file_upload_remove_link`, `.file-fileInfo` and `data-preview-guid` (the row has it).
+    The container keeps `id`, `jsWidget`, `options` and the class `post-file-list` (no `.well` anymore). Its
+    `data-ui-init` is `true` in a form (`edit`) and absent otherwise, no longer the list of files: the files come with
+    the island's props. Removed: the protected `getFileData()` (`getItems()` builds the rows).
+  - The `file.Preview` JsWidget is a facade over the island. Kept: `add`, `reset`, `getFileCount`, `hasFiles`, `delete`,
+    `remove`, `show`, `hide`; `remove()` and `delete()` return promises, `reset()` clears the rows (and cancels running
+    uploads), `getFileCount()` counts files still uploading. Removed: `Preview.template` and `$list`; a subclass that
+    rendered its own rows has to render them elsewhere. New: the event `fileRemoved` (`[file]`), to be used instead of
+    listening to clicks on the remove link, and the methods `addPending`, `progress`, `done` and `fail` that
+    `file.Upload` feeds it with.
+  - `file.Upload` with such a preview sends one request per file (at most 3 in parallel): `uploadEnd` and
+    `humhub:file:uploadEnd` fire once per file, so batch-level work belongs on `uploadFinish`; `uploadStart` and
+    `uploadFinish` still fire once. Without such a preview (e.g. the richtext's own upload) nothing changes. Of a
+    selection over the maximum, the files up to it are taken, with one warning naming the maximum (`UploadField` does
+    the same now, instead of refusing the whole selection). New: `Upload.lockWhileUploading(button)` keeps a submit
+    button disabled from `uploadStart` until no request of the widget runs or waits, and
+    `file.lockFormWhileUploading($container, button)` does so for every upload widget in a form (the post create and
+    edit forms use it).
+  - Core forms (post create and edit) no longer render `UploadProgress`; the widget itself stays.
+  - `FileHelper::getFileInfos()` has the new keys `icon` and `downloadUrl`.
+  - Vue: `FileRow` (moved from the file module) and the new `UploadList` are core components. `UploadField` uploads one
+    file per request (`upload/uploadQueue.js`), has no batch progress bar and shows rows with progress and error;
+    `uploadFiles()` stays for the richtext. `UploadField.addFiles()` no longer returns a promise. New: `v-additions`
+    takes an optional value (`v-additions="file"`): an update applies the additions again only when it changed.
+  - New: `util.string.decodeEntities()` decodes HTML entities without parsing markup (`ui.status` and the rows use it).
+  - The core JS config has `file.upload.maxFileSize`, the size limit in bytes uploads are validated against (the
+    file module's `maxFileSize` capped by PHP's limits, `FileValidator::getSizeLimit()`): both upload paths refuse a
+    larger file in its row before sending it. A refused request names its reason (the server's message, else by
+    status: 413, no answer, 5xx). `UploadAction` reports the validation errors of all attributes when the uploaded
+    file itself has none.
+  - `ActiveFileUpload` renders its own preview container (a `JsWidget`, no `FilePreview`).
+  - Modules: replace DOM access to the old list with the facade methods and `fileRemoved`, and move batch-level work
+    from `uploadEnd` to `uploadFinish`.
 - **Attached files restyled** (`AttachedFiles`, `ShowFiles`): images in left-aligned justified rows (at most two, the
   last tile shows "+N"), the file list as the file row of [File Upload](../ui/file-upload.md) with a download button and
   "Show all" from four files on.
   - Theme CSS for the island's old markup no longer applies: the column buckets (`.col-media`, `col-*`) and the list
-    `.well.post-file-list > ul.files > li.file-preview-item` are gone from attachments. The upload preview in forms
-    (`file.Preview`) keeps that markup.
+    `.well.post-file-list > ul.files > li.file-preview-item` are gone from attachments, and from the upload preview in
+    forms (see **Upload rows**).
   - Kept: `.post-files`, `.post-files-images`, `.post-files-videos`, `.post-files-audio`. Images are
     `a.post-files-image` in `.post-files-images-row`, sized by the component; a rule setting the height of
     `.post-files-images img` fights the layout and has to go.

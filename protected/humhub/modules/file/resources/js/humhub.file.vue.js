@@ -98,7 +98,7 @@
     changed.delete(el);
   }
   const ratioOf = (file) => file.width > 0 && file.height > 0 ? file.width / file.height : 1;
-  const _sfc_main$3 = {
+  const _sfc_main$2 = {
     name: "AttachedImages",
     props: {
       // The files with a preview, see AttachedFiles.vue
@@ -191,17 +191,17 @@
       }
     }
   };
-  const _hoisted_1$3 = { class: "post-files-images" };
-  const _hoisted_2$3 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title", "aria-label"];
-  const _hoisted_3$3 = ["src", "alt", "width", "height"];
-  const _hoisted_4$3 = {
+  const _hoisted_1$2 = { class: "post-files-images" };
+  const _hoisted_2$2 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title", "aria-label"];
+  const _hoisted_3$2 = ["src", "alt", "width", "height"];
+  const _hoisted_4$2 = {
     key: 0,
     class: "post-files-image-more",
     "aria-hidden": "true"
   };
-  const _hoisted_5$3 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title"];
-  function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$3, [
+  const _hoisted_5$2 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title"];
+  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$2, [
       (vue$1.openBlock(true), vue$1.createElementBlock(
         vue$1.Fragment,
         null,
@@ -235,15 +235,15 @@
                       alt: $props.images[item.index].fileName,
                       width: Math.round(item.width),
                       height: Math.round(row.height)
-                    }, null, 8, _hoisted_3$3),
+                    }, null, 8, _hoisted_3$2),
                     $options.isMoreTile(item.index) ? (vue$1.openBlock(), vue$1.createElementBlock(
                       "span",
-                      _hoisted_4$3,
+                      _hoisted_4$2,
                       "+" + vue$1.toDisplayString($options.layout.hidden),
                       1
                       /* TEXT */
                     )) : vue$1.createCommentVNode("v-if", true)
-                  ], 12, _hoisted_2$3);
+                  ], 12, _hoisted_2$2);
                 }),
                 128
                 /* KEYED_FRAGMENT */
@@ -267,176 +267,14 @@
             href: file.url,
             "data-ui-gallery-src": file.displayUrl || null,
             title: file.fileName
-          }, vue$1.toDisplayString(file.fileName), 9, _hoisted_5$3);
+          }, vue$1.toDisplayString(file.fileName), 9, _hoisted_5$2);
         }),
         128
         /* KEYED_FRAGMENT */
       ))
     ]);
   }
-  const AttachedImages = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render$3]]);
-  const SIZE_UNITS$1 = ["B", "KB", "MB", "GB", "TB"];
-  function escapeHtml(value) {
-    return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
-  const _sfc_main$2 = {
-    name: "FileRow",
-    props: {
-      // The file shape, see AttachedFiles.vue
-      file: { type: Object, required: true }
-    },
-    computed: {
-      // Head and tail, so the head can be cut off and the extension stays
-      name() {
-        const fileName = String(this.file.fileName || "");
-        const dot = fileName.lastIndexOf(".");
-        return dot > 0 ? { head: fileName.slice(0, dot), tail: fileName.slice(dot) } : { head: fileName, tail: "" };
-      },
-      size() {
-        let value = Number(this.file.size) || 0;
-        let unit = 0;
-        while (value >= 1024 && unit < SIZE_UNITS$1.length - 1) {
-          value /= 1024;
-          unit++;
-        }
-        const formatted = value.toLocaleString(void 0, { maximumFractionDigits: unit === 0 ? 0 : 1 });
-        return `${formatted} ${SIZE_UNITS$1[unit]}`;
-      },
-      downloadLabel() {
-        return vue.i18n.t("FileModule.base", "Download {fileName}", { fileName: this.file.fileName });
-      },
-      // What the mobile app reads off a download link (FileDownload::getFileDataAttributes())
-      downloadAttributes() {
-        return {
-          "data-pjax-prevent": "",
-          "data-file-download": "",
-          "data-file-url": this.file.downloadUrl || this.file.url,
-          "data-file-name": this.file.fileName,
-          "data-file-mime": this.file.mimeType
-        };
-      },
-      // The thumbnail popover, initialized by the core `popover` addition (selector `.po`)
-      popoverAttributes() {
-        if (!this.file.previewUrl) {
-          return {};
-        }
-        return {
-          class: "po",
-          "data-bs-toggle": "popover",
-          "data-bs-trigger": "hover",
-          "data-bs-placement": "right",
-          "data-bs-container": "body",
-          "data-bs-delay": "100",
-          "data-bs-html": "true",
-          "data-bs-content": `<img alt="${escapeHtml(this.file.fileName)}" src="${escapeHtml(this.file.previewUrl)}" />`
-        };
-      }
-    }
-  };
-  const _hoisted_1$2 = ["data-preview-guid"];
-  const _hoisted_2$2 = ["href"];
-  const _hoisted_3$2 = { class: "file-row-name-head" };
-  const _hoisted_4$2 = { class: "file-row-name-tail" };
-  const _hoisted_5$2 = ["href"];
-  const _hoisted_6$2 = { class: "file-row-name-head" };
-  const _hoisted_7$2 = { class: "file-row-name-tail" };
-  const _hoisted_8$2 = { class: "file-row-meta" };
-  const _hoisted_9$2 = ["href", "aria-label", "data-bs-title"];
-  function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
-    return vue$1.openBlock(), vue$1.createElementBlock("div", {
-      class: "list-group-item file-row",
-      role: "listitem",
-      "data-preview-guid": $props.file.guid
-    }, [
-      vue$1.createElementVNode(
-        "i",
-        {
-          class: vue$1.normalizeClass(["ti file-row-icon", "ti-" + ($props.file.icon || "file")]),
-          "aria-hidden": "true"
-        },
-        null,
-        2
-        /* CLASS */
-      ),
-      vue$1.createElementVNode(
-        "span",
-        vue$1.mergeProps({ class: "file-row-text" }, $options.popoverAttributes),
-        [
-          $props.file.viewUrl ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
-            key: 0,
-            class: vue$1.normalizeClass(["file-row-name", { highlight: !!$props.file.highlight }]),
-            href: $props.file.viewUrl,
-            "data-bs-target": "#globalModal"
-          }, [
-            vue$1.createElementVNode(
-              "span",
-              _hoisted_3$2,
-              vue$1.toDisplayString($options.name.head),
-              1
-              /* TEXT */
-            ),
-            vue$1.createElementVNode(
-              "span",
-              _hoisted_4$2,
-              vue$1.toDisplayString($options.name.tail),
-              1
-              /* TEXT */
-            )
-          ], 10, _hoisted_2$2)) : (vue$1.openBlock(), vue$1.createElementBlock("a", vue$1.mergeProps({
-            key: 1,
-            class: ["file-row-name", { highlight: !!$props.file.highlight }],
-            href: $props.file.url,
-            target: "_blank",
-            rel: "noopener"
-          }, $options.downloadAttributes), [
-            vue$1.createElementVNode(
-              "span",
-              _hoisted_6$2,
-              vue$1.toDisplayString($options.name.head),
-              1
-              /* TEXT */
-            ),
-            vue$1.createElementVNode(
-              "span",
-              _hoisted_7$2,
-              vue$1.toDisplayString($options.name.tail),
-              1
-              /* TEXT */
-            )
-          ], 16, _hoisted_5$2)),
-          vue$1.createElementVNode(
-            "span",
-            _hoisted_8$2,
-            "(" + vue$1.toDisplayString($options.size) + ")",
-            1
-            /* TEXT */
-          )
-        ],
-        16
-        /* FULL_PROPS */
-      ),
-      vue$1.createElementVNode("a", vue$1.mergeProps({
-        class: "btn btn-ghost btn-sm btn-icon-only file-row-action",
-        href: $props.file.downloadUrl || $props.file.url
-      }, $options.downloadAttributes, {
-        "aria-label": $options.downloadLabel,
-        "data-bs-title": $options.downloadLabel,
-        "data-bs-toggle": "tooltip"
-      }), [..._cache[0] || (_cache[0] = [
-        vue$1.createElementVNode(
-          "i",
-          {
-            class: "ti ti-download",
-            "aria-hidden": "true"
-          },
-          null,
-          -1
-          /* CACHED */
-        )
-      ])], 16, _hoisted_9$2)
-    ], 8, _hoisted_1$2);
-  }
-  const FileRow = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
+  const AttachedImages = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const VIDEO_TYPES = {
     webm: "video/webm",
     mp4: "video/mp4",
@@ -449,7 +287,7 @@
   const COLLAPSE_FROM = 4;
   let uid = 0;
   const _sfc_main$1 = {
-    components: { AttachedImages, FileRow },
+    components: { AttachedImages },
     i18nCategories: ["FileModule.base"],
     props: {
       // File shapes, see the class docblock.

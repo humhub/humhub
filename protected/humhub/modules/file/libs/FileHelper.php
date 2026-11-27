@@ -231,6 +231,9 @@ class FileHelper extends \yii\helpers\FileHelper
             'relUrl' => $file->getUrl(null, false),
             'openLink' => FileHelper::createLink($file),
             'thumbnailUrl' => $thumbnailUrl,
+            // As the API's file shape has them (`FileSerializer::file()`), for the file rows of a form. @since 1.20
+            'icon' => MimeHelper::getIconNameByExtension(self::getExtension($file->file_name)),
+            'downloadUrl' => $file->getUrl(['download' => true], true),
         ];
     }
 

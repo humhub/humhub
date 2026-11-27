@@ -1,8 +1,6 @@
 humhub.module('ActiveFileUpload', function (module, require, $) {
     const Widget = require('ui.widget').Widget;
     const object = require('util').object;
-    const string = require('util').string;
-    const BasePreview = require('file').Preview
 
     const Upload = function (node, options) {
         Widget.call(this, node, options);
@@ -53,28 +51,50 @@ humhub.module('ActiveFileUpload', function (module, require, $) {
         this.previewWidget.reset();
     };
 
+    /**
+     * The image of the field. `ActiveFileUpload` renders the container with the current file as the init data (as the
+     * upload response has it, `FileHelper::getFileInfos()`).
+     */
     const Preview = function (node, options) {
         Widget.call(this, node, options);
     };
 
-    object.inherits(Preview, BasePreview);
+    object.inherits(Preview, Widget);
 
-    Preview.prototype.add = function (file) {
-        file.name = string.encode(file.name);
-        file.galleryId = this.$.attr('id') + '_file_preview_gallery';
+    Preview.prototype.init = function (files) {
+        this.$list = $('<ul class="files"></ul>').appendTo(this.$);
+        (Array.isArray(files) ? files : []).forEach((file) => {
+            this.add(file);
+        });
 
-        if (file.highlight) {
-            file.highlight = 'highlight';
+        if (this.hasFiles()) {
+            this.$.show();
         } else {
-            file.highlight = '';
+            this.$.hide();
         }
+    };
 
+    // A single image: a new one replaces the one before
+    Preview.prototype.add = function (file) {
         this.$list.html(
             $('<li></li>')
                 .addClass('file-preview-item')
                 .attr('data-guid', file.guid)
-                .html(string.template(Preview.template.popover, file))
+                .append($('<img>').attr({alt: file.name, src: file.thumbnailUrl}))
         );
+    };
+
+    Preview.prototype.getFileCount = function () {
+        return this.$list.find('.file-preview-item').length;
+    };
+
+    Preview.prototype.hasFiles = function () {
+        return this.getFileCount() > 0;
+    };
+
+    Preview.prototype.reset = function () {
+        this.$list.empty();
+        this.$.hide();
     };
 
     module.export({

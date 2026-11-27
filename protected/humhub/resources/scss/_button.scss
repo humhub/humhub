@@ -167,8 +167,10 @@ $btn-more-border-radius: $border-radius-pill !default;
         }
     }
 
+    // Ghost danger: neutral as a ghost at rest, so a list of rows doesn't show a red action in each; red on hover,
+    // keyboard focus and press (Bootstrap's `:focus-visible` takes the hover colours)
     .btn-ghost-danger {
-        --bs-btn-color: var(--hh-danger-fg);
+        --bs-btn-color: var(--bs-body-color);
         --bs-btn-hover-color: var(--hh-danger-fg);
         --bs-btn-hover-bg: var(--bs-danger-bg-subtle);
         --bs-btn-active-color: var(--hh-danger-fg);

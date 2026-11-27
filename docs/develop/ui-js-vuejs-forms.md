@@ -22,7 +22,7 @@ All components below are top-level in `protected/humhub/vue/` and therefore auto
 | `PickerField` | Picker / enhanced select, see [Picker](ui-js-vuejs-picker.md) | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue`; every `PickerInput` prop (`multiple`, `source`, `url`, `options`, `initialItems`, `maxSelection`, `listed`, …) | `update:modelValue` |
 | `ColorField` | A colour as `#rrggbb` with the browser's own picker as the swatch (`ColorInput`, see its docblock; over a native input it is mounted by `humhub\widgets\form\ColorInput`) | `attribute`*, `label`, `hint`, `placeholder`, `required`, `disabled`, `modelValue` | `update:modelValue`, `change` |
 | `SubmitButton` | `type="submit"` button | `disabled`, `loader` (default `true`) | default slot = label/icon |
-| `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlersHtml`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |
+| `UploadField` | File uploads, see [File uploads](#file-uploads) | `attribute`*, `modelValue` (file shapes), `max`, `accept`, `multiple`, `title`, `handlers`, `triggerTarget` | `update:modelValue`, `busy`; exposes `addFiles()`, `openPicker()`, `clear()` |
 | `RichTextField` | The richtext editor, see [Rich text](#rich-text) | `attribute`*, `instanceKey`, `mentioningUrl`, `pluginOptions`, `exclude` | exposes `getValue()`, `setValue()`, `clear()`, `focus()` |
 
 \* `attribute` is required on every field — it is both the Yii model attribute this field maps to and the key its server-side errors are read from.
@@ -145,12 +145,15 @@ sends the guids with its own request (`fileList` for a comment). Two consequence
   `attach()` on the model side never detaches — a record's existing attachments survive an
   edit untouched.
 
-**Batch semantics.** One request carries the whole selection, and the response reports per
-file (`{results, errors}`), so one rejected file does not discard the accepted ones — the field
-renders each rejected file's messages and keeps the rest. A non-validation failure goes to the
-platform's error surface (the status bar) like everywhere else in the islands.
+**One request per file.** Each added file shows as a file row at once (`UploadList`, see
+[File Upload](../ui/file-upload.md)) and is uploaded in its own request, at most 3 at a time
+(`upload/uploadQueue.js`), with a progress line around its row. An uploaded file joins
+`modelValue`; a refused file keeps its row with the reason until it is removed. Removing a row
+cancels its upload. `max` counts the uploaded files and those still uploading. `busy` is `true`
+while files upload; the form's `busy` state does not disable the field during its own uploads,
+so a form that gates on it (the comment form) still lets the user add and remove files.
 
-**Placement.** Progress and the file list render where the field sits; the trigger button group
+**Placement.** The file rows render where the field sits; the trigger button group
 can be Teleported elsewhere via `triggerTarget` — the comment form puts it in the same
 `.richtext-create-buttons` row as its submit button. Drop and paste work on the field's own
 root; a caller with a larger drop zone (the comment form: the whole comment box) forwards those

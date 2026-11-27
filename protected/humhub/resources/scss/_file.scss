@@ -212,6 +212,48 @@ $file-list-transition: .2s ease-in-out !default;
         margin-inline-start: auto;
     }
 
+    // The anchor of the progress frame while the file uploads
+    .file-row {
+        position: relative;
+    }
+
+    .file-row.is-uploading .file-row-name {
+        color: var(--bs-secondary-color);
+    }
+
+    // A refused file: the edge drawn inside, so the row keeps its size. Icon, name, size and remove stay on the first
+    // line as in any row, the name shortened; the reason goes below the name. A grid of the row's parts takes the text
+    // apart for this (`display: contents`)
+    .file-list .file-row.is-invalid {
+        display: grid;
+        grid-template-columns: auto minmax(0, max-content) 1fr auto;
+        row-gap: 0;
+        box-shadow: inset 0 0 0 var(--bs-border-width) var(--bs-form-invalid-border-color);
+
+        .file-row-text {
+            display: contents;
+        }
+
+        .file-row-name {
+            color: inherit;
+        }
+
+        // The gap of the text instead of the row's
+        .file-row-meta {
+            justify-self: start;
+            margin-inline-start: $spacer * .25 - $spacer * .5;
+        }
+
+        .invalid-feedback {
+            grid-column: 2 / 4;
+        }
+
+        .file-row-action {
+            grid-row: 1;
+            grid-column: 4;
+        }
+    }
+
     .file-list-toggle {
         color: var(--bs-secondary-color);
     }
@@ -239,14 +281,46 @@ $file-list-transition: .2s ease-in-out !default;
         overflow: hidden;
     }
 
-    // At the bottom the margin of the list and the padding of its rows
-    .post-file-list {
-        padding: $spacer * .5 $spacer * .5 0;
-        margin-bottom: $spacer * .5;
+    // The rows of an upload list (`UploadList.vue`) grow in and collapse out, to and from the height the component
+    // measures, so the rows below follow; collapsed a row takes back the gap after it. The user's reduced motion
+    // shortens it (_accessibility.scss)
+    .file-row-enter-active,
+    .file-row-leave-active {
+        max-height: var(--hh-file-row-height);
+        overflow: hidden;
+        transition: max-height $file-list-transition, padding $file-list-transition, border-width $file-list-transition,
+            margin-bottom $file-list-transition, opacity $file-list-transition, transform $file-list-transition;
+    }
 
-        a, a:active, a:focus, a:hover {
-            color: var(--hh-accent-fg);
+    .file-row-leave-active {
+        pointer-events: none;
+    }
+
+    .file-row-enter-from,
+    .file-row-leave-to {
+        max-height: 0;
+        padding-block: 0;
+        border-block-width: 0;
+        margin-bottom: -$file-list-gap;
+        opacity: 0;
+    }
+
+    .file-row-enter-from {
+        transform: translateY(-$spacer * .5);
+    }
+
+    // Out in the writing direction
+    .file-row-leave-to {
+        transform: translateX($spacer * .5);
+
+        &:dir(rtl) {
+            transform: translateX(-$spacer * .5);
         }
+    }
+
+    // The files of a form (`FilePreview`): the rows bring their surface and colours, flush with the form's fields
+    .post-file-list {
+        margin-bottom: $spacer * .5;
     }
 
 

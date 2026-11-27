@@ -797,9 +797,17 @@ humhub.module('vue', function (module, require, $) {
             //    on island-rendered content, and already carry the same
             //    repeat-apply exposure today wherever legacy code reloads DOM
             //    via ui.additions (e.g. Widget.prototype.replace()).
+            //  - With a value (`v-additions="file"`), an update applies them
+            //    again only when the value changed: for content that renders
+            //    often without new markup, e.g. a file row on each upload
+            //    progress tick.
             app.directive('additions', {
                 mounted: function (el) { additions.applyTo($(el)); },
-                updated: function (el) { additions.applyTo($(el)); },
+                updated: function (el, binding) {
+                    if (binding.value === undefined || binding.value !== binding.oldValue) {
+                        additions.applyTo($(el));
+                    }
+                },
             });
 
             app.config.errorHandler = function (err, instance, info) {

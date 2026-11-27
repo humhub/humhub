@@ -80,6 +80,40 @@ describe('humhub.vue bridge additions', () => {
 
             applyTo.mockRestore();
         });
+
+        it('with a value, re-applies ui.additions on an update only when the value changed', async () => {
+            let state;
+            vueModule.register('TestAdditionsGamma', {
+                data() {
+                    return { n: 0, file: { guid: 'a' } };
+                },
+                created() {
+                    state = this;
+                },
+                render() {
+                    return Vue.withDirectives(
+                        Vue.h('div', { class: 'target' }, String(this.n)),
+                        [[Vue.resolveDirective('additions'), this.file]],
+                    );
+                },
+            });
+
+            const el = createTag('test-additions-gamma');
+            await vueModule.mountElement(el);
+
+            const applyTo = vi.spyOn(globalThis.humhubStubs.additions, 'applyTo');
+            state.n++;
+            await Vue.nextTick();
+            expect(el.querySelector('.target').textContent).toBe('1');
+            expect(applyTo).not.toHaveBeenCalled();
+
+            state.file = { guid: 'b' };
+            await Vue.nextTick();
+            expect(applyTo).toHaveBeenCalledOnce();
+            expect(applyTo.mock.calls[0][0][0]).toBe(el.querySelector('.target'));
+
+            applyTo.mockRestore();
+        });
     });
 
     describe('modal export', () => {

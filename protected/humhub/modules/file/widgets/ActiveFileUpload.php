@@ -5,7 +5,9 @@ namespace humhub\modules\file\widgets;
 use humhub\helpers\ArrayHelper;
 use humhub\helpers\Html;
 use humhub\modules\file\assets\ActiveFileUploadAsset;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use humhub\widgets\JsWidget;
 use yii\bootstrap5\InputWidget;
 use yii\helpers\Url;
 
@@ -107,13 +109,14 @@ class ActiveFileUpload extends InputWidget
             ]),
         ]);
 
-        $uploadPreview = FilePreview::widget([
+        // The image of the field, no file rows: the JS widget shows the file it starts with and an uploaded one
+        $file = File::findOne(['guid' => $this->model->{$this->attribute}]);
+        $uploadPreview = JsWidget::widget([
             'jsWidget' => 'ActiveFileUpload.Preview',
             'id' => "$this->id-preview",
-            'items' => [File::findOne(['guid' => $this->model->{$this->attribute}])],
+            'init' => $file ? [FileHelper::getFileInfos($file)] : [],
+            'visible' => $file !== null,
             'options' => ArrayHelper::merge($this->previewOptions, ['class' => 'img-uploader-preview mt-3']),
-            'edit' => true,
-            'preventPopover' => true,
         ]);
 
         $uploadProgress = UploadProgress::widget(['id' => "$this->id-progress", 'options' => $this->progressOptions]);

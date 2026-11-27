@@ -2,13 +2,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { nextTick } from 'vue';
 import { mount } from '@vue/test-utils';
 import AttachedFiles from '../../vue/AttachedFiles.vue';
+import FileRow from '../../../../vue/FileRow.vue';
 
 await import('../../../../resources/js/humhub/humhub.url.js');
 await import('../../../../resources/js/humhub/humhub.vue.js');
 
 // v-additions is registered per Vue *app* by the island mounter, not globally —
 // see the note in coreInterop.test.js. Here the component only needs it to resolve.
-const global = { directives: { additions: {} } };
+// `global.components` stands in for the registry the core `FileRow` resolves through.
+const global = { directives: { additions: {} }, components: { FileRow } };
 
 // jsdom has no `inert` property, so Vue would render `inert="false"`; a browser's reflects the attribute
 Object.defineProperty(HTMLElement.prototype, 'inert', {

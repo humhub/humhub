@@ -158,7 +158,8 @@ class UploadAction extends Action
         $errorMessage = Yii::t('FileModule.base', 'File {fileName} could not be uploaded!', ['fileName' => Html::encode($file->file_name)]);
 
         if ($file->getErrors()) {
-            $errorMessage = $file->getErrors('uploadedFile');
+            // The reasons of the uploaded file, else those of the other attributes (e.g. the name), as the file API
+            $errorMessage = $file->getErrors('uploadedFile') ?: array_merge(...array_values($file->getErrors()));
         }
 
         return [

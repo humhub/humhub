@@ -9,6 +9,7 @@ import DropdownMenu from '../../../../vue/DropdownMenu.vue';
 import ExtensionSlot from '../../../../vue/ExtensionSlot.vue';
 import UserImage from '../../../../modules/user/vue/UserImage.vue';
 import AttachedFiles from '../../../../modules/file/vue/AttachedFiles.vue';
+import FileRow from '../../../../vue/FileRow.vue';
 import HumHubForm from '../../../../vue/HumHubForm.vue';
 import RichTextField from '../../../../vue/RichTextField.vue';
 import UploadField from '../../../../vue/UploadField.vue';
@@ -43,12 +44,13 @@ const additionsDirective = {
 // directly (they now resolve through the global Vue component registry - see their own
 // docblocks) - @vue/test-utils' `global.components` stands in for that registry here, the
 // same way it already does for LikeButton below. UiModal/UserList are needed too - nested
-// two levels down, inside LikeButton's own (always-rendered) user-list modal.
+// two levels down, inside LikeButton's own (always-rendered) user-list modal; FileRow is the
+// core row AttachedFiles nests.
 const mountOptions = () => ({
     global: {
         directives: { additions: additionsDirective },
         components: {
-            LikeButton, RichTextOutput, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles,
+            LikeButton, RichTextOutput, DropdownMenu, ExtensionSlot, UserImage, AttachedFiles, FileRow,
             HumHubForm, RichTextField, SubmitButton, UploadField, UiModal, UserList, TextareaField, CheckboxField,
         },
     },
