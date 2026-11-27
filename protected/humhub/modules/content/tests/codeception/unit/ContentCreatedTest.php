@@ -4,10 +4,13 @@ namespace tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\notifications\ContentCreatedNotification;
+use humhub\modules\notification\components\NotificationBlock;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationContext;
 use humhub\modules\notification\components\NotificationManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\services\NotificationSettingsService;
+use humhub\modules\notification\targets\MailTarget;
 use humhub\modules\post\models\Post;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -182,6 +185,63 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->assertSame(2, $notification->groupCount);
         $this->assertStringContainsString('created 2 new entries.', $notification->asWeb());
         $this->assertSame($name . ' created 2 new entries.', $notification->asMailSubject());
+    }
+
+    /**
+     * Several new entries have no single content to show or to link: the mail has only the "View online"
+     * button, which leads to the stream of the container.
+     */
+    public function testGroupedNotificationLeadsToTheContainerWithoutPreview()
+    {
+        $first = $this->createRecord(2, 1, Post::findOne(['id' => 1]));
+        $second = $this->createRecord(2, 1, Post::findOne(['id' => 2]));
+        Notification::updateAll(['grouping_key' => $second->id], ['id' => [$first->id, $second->id]]);
+
+        $row = Notification::find()->forUser(2)->grouped()->andWhere(['notification.class' => ContentCreatedNotification::class])->one();
+        $notification = NotificationManager::load($row);
+        $container = Post::findOne(['id' => 2])->content->container;
+
+        $this->assertSame(2, $notification->groupCount);
+        $this->assertSame($container->getUrl(), $notification->getUrl());
+        $this->assertEquals(
+            [NotificationBlock::button('View online', $notification->getEntryUrl())],
+            $notification->getRenderedBlocks(new NotificationContext(MailTarget::ID)),
+        );
+    }
+
+    /**
+     * A single new entry is unchanged: the preview of the content and a link to it.
+     */
+    public function testSingleNotificationLinksToTheContentWithPreview()
+    {
+        $post = Post::findOne(['id' => 1]);
+        $notification = NotificationManager::fromRecord($this->createRecord(2, 1, $post));
+
+        $this->assertSame(1, $notification->groupCount);
+        $this->assertSame($post->content->getUrl(), $notification->getUrl());
+        $this->assertEquals(
+            [NotificationBlock::contentPreview($post), NotificationBlock::button('View online', $notification->getEntryUrl())],
+            $notification->getBlocks(new NotificationContext(MailTarget::ID)),
+        );
+    }
+
+    /**
+     * The link of the mail and of the web list, `notification/entry`, knows the group, so it redirects
+     * to the container, whichever member of the group it names.
+     */
+    public function testEntryOfAGroupRedirectsToTheContainer()
+    {
+        $first = $this->createRecord(2, 1, Post::findOne(['id' => 1]));
+        $second = $this->createRecord(2, 1, Post::findOne(['id' => 2]));
+        Notification::updateAll(['grouping_key' => $second->id], ['id' => [$first->id, $second->id]]);
+        $container = Post::findOne(['id' => 2])->content->container;
+
+        $this->becomeUser('User1');
+
+        foreach ([$second, $first] as $record) {
+            $response = Yii::$app->runAction('notification/entry/index', ['id' => $record->id]);
+            $this->assertSame($container->getUrl(true), $response->headers->get('Location'));
+        }
     }
 
     /**
