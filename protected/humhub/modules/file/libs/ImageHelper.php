@@ -214,20 +214,22 @@ class ImageHelper
     /**
      * Stores the width and height of an image in its metadata, as the platform shows it: after the EXIF rotation
      * [[fixJpegOrientation()]] applies. Content that can't be measured drops the dimensions of the previous one.
+     * Other types are left alone: the dimensions of a video belong to [[MediaHelper]].
      *
      * @since 1.20
      */
     public static function collectDimensions(File $file): void
     {
+        if (!in_array($file->mime_type, self::DIMENSION_MIME_TYPES, true)) {
+            return;
+        }
+
         try {
-            $size = null;
-            if (in_array($file->mime_type, self::DIMENSION_MIME_TYPES, true)) {
-                $size = self::readImageSize($file);
-                if ($size === null) {
-                    Yii::info('Could not read the dimensions of file ' . $file->id, 'file');
-                } elseif ($file->mime_type === 'image/jpeg' && in_array(self::readExifOrientation($file), [6, 8], true)) {
-                    $size = [$size[1], $size[0]];
-                }
+            $size = self::readImageSize($file);
+            if ($size === null) {
+                Yii::info('Could not read the dimensions of file ' . $file->id, 'file');
+            } elseif ($file->mime_type === 'image/jpeg' && in_array(self::readExifOrientation($file), [6, 8], true)) {
+                $size = [$size[1], $size[0]];
             }
 
             if ($size !== null) {

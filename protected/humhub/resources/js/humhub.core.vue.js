@@ -675,15 +675,15 @@
         if (!Dropdown) {
           return null;
         }
-        const toggle = this.$refs.toggle;
-        const current = Dropdown.getInstance(toggle);
-        if (current && current === this.ownDropdown) {
-          return current;
+        const toggle2 = this.$refs.toggle;
+        const current2 = Dropdown.getInstance(toggle2);
+        if (current2 && current2 === this.ownDropdown) {
+          return current2;
         }
-        if (current) {
-          current.dispose();
+        if (current2) {
+          current2.dispose();
         }
-        this.ownDropdown = new Dropdown(toggle, {
+        this.ownDropdown = new Dropdown(toggle2, {
           reference: { getBoundingClientRect: this.referenceRect },
           // A context menu opens down and to the right of the cursor, whatever
           // `alignEnd` says about where the menu sits under its toggle.
@@ -1490,14 +1490,14 @@
         this.loading = true;
         this.searchTimer = setTimeout(() => this.load(term), SEARCH_DEBOUNCE_MS$2);
       },
-      show(activeIndex = -1, load = true) {
+      show(activeIndex = -1, load2 = true) {
         if (this.disabled || this.open) {
           return;
         }
         this.open = true;
         this.activeIndex = activeIndex;
         this.bindOutside();
-        if (load && this.optionsUrl && this.remoteTerm !== this.term && !this.loading) {
+        if (load2 && this.optionsUrl && this.remoteTerm !== this.term && !this.loading) {
           this.load(this.term);
         }
       },
@@ -1915,8 +1915,8 @@
         if (this.isDisabled || this.open) {
           return;
         }
-        const current = this.choices.findIndex((option) => option.value === this.modelValue);
-        this.activeIndex = activeIndex !== void 0 ? activeIndex : Math.max(current, 0);
+        const current2 = this.choices.findIndex((option) => option.value === this.modelValue);
+        this.activeIndex = activeIndex !== void 0 ? activeIndex : Math.max(current2, 0);
         if (!this.choices.length) {
           this.activeIndex = -1;
         }
@@ -2194,16 +2194,16 @@
         return this.modelValue === value;
       },
       toggleTag(value) {
-        const current = this.modelValue;
+        const current2 = this.modelValue;
         if (this.filter.multiple !== true) {
-          this.$emit("update:modelValue", current === value ? "" : value);
+          this.$emit("update:modelValue", current2 === value ? "" : value);
           return;
         }
         if (value === "") {
           this.$emit("update:modelValue", []);
           return;
         }
-        this.$emit("update:modelValue", current.includes(value) ? current.filter((v) => v !== value) : [...current, value]);
+        this.$emit("update:modelValue", current2.includes(value) ? current2.filter((v) => v !== value) : [...current2, value]);
       }
     }
   };
@@ -2580,9 +2580,9 @@
           return false;
         }
         if (add && Array.isArray(this.draft[key])) {
-          const current = this.draft[key];
-          const added = (Array.isArray(value) ? value : [value]).map(String).filter((entry) => entry !== "" && !current.includes(entry));
-          value = [...current, ...added];
+          const current2 = this.draft[key];
+          const added = (Array.isArray(value) ? value : [value]).map(String).filter((entry) => entry !== "" && !current2.includes(entry));
+          value = [...current2, ...added];
         }
         this.applyNow = true;
         this.update(key, sanitizeValue(filter, value));
@@ -2687,15 +2687,15 @@
       // from before this change. Any other kind of state (none, or a plain object without a
       // `url` string) is passed through unchanged - it is none of this component's business.
       nextHistoryState(path) {
-        const state = window.history.state;
-        if (!state || typeof state !== "object" || typeof state.url !== "string") {
-          return state;
+        const state2 = window.history.state;
+        if (!state2 || typeof state2 !== "object" || typeof state2.url !== "string") {
+          return state2;
         }
-        return { ...state, url: window.location.origin + path };
+        return { ...state2, url: window.location.origin + path };
       },
       toggleElement() {
-        const toggle = this.$refs.toggle;
-        return Array.isArray(toggle) ? toggle[0] : toggle;
+        const toggle2 = this.$refs.toggle;
+        return Array.isArray(toggle2) ? toggle2[0] : toggle2;
       },
       // CSS owns the breakpoint (a container query), so "does the bar collapse right now?" is
       // answered by whether it shows the funnel toggle, not by a width kept in step with the
@@ -2704,8 +2704,8 @@
         if (this.hasPanel) {
           return true;
         }
-        const toggle = this.toggleElement();
-        return Boolean(toggle) && window.getComputedStyle(toggle).display !== "none";
+        const toggle2 = this.toggleElement();
+        return Boolean(toggle2) && window.getComputedStyle(toggle2).display !== "none";
       },
       onToggle() {
         if (this.collapsesNow()) {
@@ -3846,17 +3846,17 @@
       // A row's checkbox; with Shift every row between the last one clicked and this one.
       onSelect(row, index, event) {
         const on = event.target.checked;
-        const rows = event.shiftKey && this.lastSelectedIndex !== null ? this.rows.slice(Math.min(this.lastSelectedIndex, index), Math.max(this.lastSelectedIndex, index) + 1) : [row];
-        this.setSelected(rows, on);
+        const rows2 = event.shiftKey && this.lastSelectedIndex !== null ? this.rows.slice(Math.min(this.lastSelectedIndex, index), Math.max(this.lastSelectedIndex, index) + 1) : [row];
+        this.setSelected(rows2, on);
         this.lastSelectedIndex = index;
       },
       selectPage(on) {
         this.setSelected(this.rows, on);
       },
-      setSelected(rows, on) {
+      setSelected(rows2, on) {
         const selected = this.allSelected ? Object.fromEntries(this.rows.map((row) => [row.id, row])) : { ...this.selected };
         this.allSelected = false;
-        rows.forEach((row) => {
+        rows2.forEach((row) => {
           if (on) {
             selected[row.id] = row;
           } else {
@@ -4025,9 +4025,9 @@
       closeMenus() {
         var _a, _b;
         const Dropdown = typeof bootstrap === "undefined" ? null : bootstrap.Dropdown;
-        (_b = (_a = this.$el).querySelectorAll) == null ? void 0 : _b.call(_a, '[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach((toggle) => {
+        (_b = (_a = this.$el).querySelectorAll) == null ? void 0 : _b.call(_a, '[data-bs-toggle="dropdown"][aria-expanded="true"]').forEach((toggle2) => {
           var _a2;
-          (_a2 = Dropdown == null ? void 0 : Dropdown.getInstance(toggle)) == null ? void 0 : _a2.hide();
+          (_a2 = Dropdown == null ? void 0 : Dropdown.getInstance(toggle2)) == null ? void 0 : _a2.hide();
         });
       },
       submitPost(url) {
@@ -4115,12 +4115,12 @@
     key: 1,
     class: "data-table-col-details"
   };
-  const _hoisted_17$1 = { class: "visually-hidden" };
-  const _hoisted_18$1 = {
+  const _hoisted_17$2 = { class: "visually-hidden" };
+  const _hoisted_18$2 = {
     key: 2,
     class: "data-table-col-actions"
   };
-  const _hoisted_19$1 = { class: "visually-hidden" };
+  const _hoisted_19$2 = { class: "visually-hidden" };
   const _hoisted_20$1 = { key: 0 };
   const _hoisted_21$1 = {
     key: 0,
@@ -4423,16 +4423,16 @@
                   $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_16$2, [
                     vue.createElementVNode(
                       "span",
-                      _hoisted_17$1,
+                      _hoisted_17$2,
                       vue.toDisplayString($options.texts.details),
                       1
                       /* TEXT */
                     )
                   ])) : vue.createCommentVNode("v-if", true),
-                  $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_18$1, [
+                  $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("th", _hoisted_18$2, [
                     vue.createElementVNode(
                       "span",
-                      _hoisted_19$1,
+                      _hoisted_19$2,
                       vue.toDisplayString($options.texts.actions),
                       1
                       /* TEXT */
@@ -5103,13 +5103,13 @@
     },
     methods: {
       staggerIndex(index) {
-        let start = 0;
+        let start2 = 0;
         for (const offset of this.pageStarts) {
-          if (offset <= index && offset > start) {
-            start = offset;
+          if (offset <= index && offset > start2) {
+            start2 = offset;
           }
         }
-        return index - start;
+        return index - start2;
       },
       observe() {
         if (typeof IntersectionObserver === "undefined") {
@@ -5819,6 +5819,162 @@
     ], 10, _hoisted_1$j);
   }
   const C22 = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["render", _sfc_render$m]]);
+  function formatDuration(seconds) {
+    const total = Number(seconds);
+    if (seconds === null || seconds === void 0 || !Number.isFinite(total) || total < 0) {
+      return "";
+    }
+    const whole = Math.floor(total);
+    const hours = Math.floor(whole / 3600);
+    const minutes = Math.floor(whole % 3600 / 60);
+    const secs = String(whole % 60).padStart(2, "0");
+    return hours > 0 ? `${hours}:${String(minutes).padStart(2, "0")}:${secs}` : `${minutes}:${secs}`;
+  }
+  const state = vue.reactive({ guid: null, playing: false, time: 0, duration: null });
+  const failed = vue.reactive({});
+  const rows = /* @__PURE__ */ new Map();
+  let playlist = [];
+  let audio = null;
+  let current = null;
+  let durationKnown = false;
+  let pendingAnnouncement = null;
+  const MEDIA_EVENTS = {
+    play: syncPlaying,
+    pause: syncPlaying,
+    playing: onPlaying,
+    timeupdate: () => {
+      state.time = audio.currentTime;
+    },
+    durationchange: onDuration,
+    loadedmetadata: onDuration,
+    ended: playNext,
+    error: onError
+  };
+  function syncPlaying() {
+    state.playing = state.guid !== null && !audio.paused;
+  }
+  function onPlaying() {
+    syncPlaying();
+    if (pendingAnnouncement !== null) {
+      vue$1.announce(vue$1.i18n.t("FileModule.base", "Now playing {fileName}", { fileName: pendingAnnouncement }));
+      pendingAnnouncement = null;
+    }
+  }
+  function onDuration() {
+    if (!durationKnown && Number.isFinite(audio.duration)) {
+      state.duration = audio.duration;
+    }
+  }
+  function onError() {
+    if (state.guid === null) {
+      return;
+    }
+    failed[state.guid] = true;
+    vue$1.announce(vue$1.i18n.t("FileModule.base", "{fileName} can't be played.", { fileName: current.fileName }));
+    stop();
+  }
+  function onOtherPlay(event) {
+    if (audio && event.target !== audio && !audio.paused) {
+      audio.pause();
+    }
+  }
+  function playNext() {
+    const index = playlist.findIndex((file) => file.guid === state.guid);
+    const next = index === -1 ? null : playlist.slice(index + 1).find((file) => !failed[file.guid]);
+    if (!next) {
+      stop();
+      return;
+    }
+    play(audio, next);
+    pendingAnnouncement = next.fileName;
+  }
+  function stop() {
+    state.guid = null;
+    current = null;
+    pendingAnnouncement = null;
+    durationKnown = false;
+    if (audio) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+    state.playing = false;
+    state.time = 0;
+    state.duration = null;
+  }
+  function ensureAudio() {
+    if (!audio) {
+      audio = document.createElement("audio");
+      audio.hidden = true;
+      audio.preload = "none";
+      document.body.appendChild(audio);
+      Object.entries(MEDIA_EVENTS).forEach(([name, handler]) => audio.addEventListener(name, handler));
+      document.addEventListener("play", onOtherPlay, true);
+    }
+    return audio;
+  }
+  function toggle(file, list = [file]) {
+    if (failed[file.guid]) {
+      return;
+    }
+    const element = ensureAudio();
+    if (state.guid === file.guid) {
+      if (element.paused) {
+        start(element);
+      } else {
+        element.pause();
+      }
+      return;
+    }
+    playlist = list;
+    play(element, file);
+  }
+  function play(element, file) {
+    element.pause();
+    load(element, file);
+    state.guid = file.guid;
+    current = file;
+    pendingAnnouncement = null;
+    state.time = 0;
+    state.duration = file.duration || null;
+    durationKnown = state.duration !== null;
+    start(element);
+  }
+  function load(element, file) {
+    element.src = file.url;
+  }
+  function start(element) {
+    const promise = element.play();
+    if (promise && typeof promise.catch === "function") {
+      promise.catch(syncPlaying);
+    }
+  }
+  function seek(seconds) {
+    if (!audio || state.guid === null) {
+      return;
+    }
+    const max = state.duration ?? Infinity;
+    const time = Math.min(Math.max(Number(seconds) || 0, 0), max);
+    audio.currentTime = time;
+    state.time = time;
+  }
+  function register(guid) {
+    rows.set(guid, (rows.get(guid) || 0) + 1);
+  }
+  function release(guid) {
+    const count = (rows.get(guid) || 0) - 1;
+    if (count > 0) {
+      rows.set(guid, count);
+      return;
+    }
+    rows.delete(guid);
+    if (state.guid === guid) {
+      stop();
+    }
+  }
+  function isFailed(guid) {
+    return failed[guid] === true;
+  }
   const SIZE_UNITS = ["B", "KB", "MB", "GB", "TB"];
   function formatFileSize(bytes) {
     let value = Number(bytes) || 0;
@@ -5837,6 +5993,7 @@
   function tooLargeMessage(limit = maxFileSize()) {
     return limit > 0 ? vue$1.i18n.t("FileModule.base", "The file is too large. Maximum: {size}", { size: formatFileSize(limit) }) : vue$1.i18n.t("FileModule.base", "The file is too large.");
   }
+  const SEEK_STEP = 5;
   function escapeHtml(value) {
     return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
@@ -5849,10 +6006,91 @@
       progress: { type: Number, default: null },
       error: { type: String, default: null },
       busy: { type: Boolean, default: false },
+      playable: { type: Boolean, default: false },
+      playlist: { type: Array, default: null },
       popoverPlacement: { type: String, default: "right" }
     },
-    emits: ["remove"],
+    emits: ["remove", "current"],
+    watch: {
+      current(value) {
+        if (value) {
+          this.$emit("current");
+        } else {
+          this.keepFocus();
+        }
+      },
+      failed(value) {
+        if (value) {
+          this.keepFocus();
+        }
+      },
+      // The tooltip of Bootstrap reads its title once, so a created one is told the new label
+      playLabel(label) {
+        var _a, _b, _c;
+        (_c = (_b = (_a = globalThis.bootstrap) == null ? void 0 : _a.Tooltip) == null ? void 0 : _b.getInstance(this.$refs.play)) == null ? void 0 : _c.setContent({ ".tooltip-inner": label });
+      },
+      playable(value) {
+        if (value) {
+          register(this.file.guid);
+          this.registeredGuid = this.file.guid;
+        } else {
+          this.unregister();
+        }
+      }
+    },
+    mounted() {
+      if (this.playable) {
+        register(this.file.guid);
+        this.registeredGuid = this.file.guid;
+      }
+    },
+    beforeUnmount() {
+      this.unregister();
+    },
     computed: {
+      // The file is the track of the shared player, playing or paused
+      current() {
+        return this.playable && state.guid === this.file.guid;
+      },
+      playing() {
+        return this.current && state.playing;
+      },
+      failed() {
+        return this.playable && isFailed(this.file.guid);
+      },
+      canPlay() {
+        return this.playable && this.linked && !this.failed;
+      },
+      time() {
+        return state.time;
+      },
+      // The server's value first: it read the whole file, a browser only estimates the length of an MP3 with a
+      // variable bitrate and no header
+      duration() {
+        return this.file.duration || state.duration || null;
+      },
+      meta() {
+        if (this.current) {
+          const duration2 = formatDuration(this.duration);
+          return duration2 ? `${formatDuration(this.time)} / ${duration2}` : formatDuration(this.time);
+        }
+        const duration = formatDuration(this.file.duration);
+        return duration ? `${duration} · ${this.size}` : this.size;
+      },
+      playLabel() {
+        return this.playing ? vue$1.i18n.t("FileModule.base", "Pause {fileName}", { fileName: this.file.fileName }) : vue$1.i18n.t("FileModule.base", "Play {fileName}", { fileName: this.file.fileName });
+      },
+      failedLabel() {
+        return vue$1.i18n.t("FileModule.base", "This file can't be played.");
+      },
+      seekLabel() {
+        return vue$1.i18n.t("FileModule.base", "Position in {fileName}", { fileName: this.file.fileName });
+      },
+      seekValueText() {
+        const time = formatDuration(this.time);
+        const duration = formatDuration(this.duration);
+        return duration ? vue$1.i18n.t("FileModule.base", "{time} of {duration}", { time, duration }) : time;
+      },
       invalid() {
         return Boolean(this.error);
       },
@@ -5913,6 +6151,42 @@
       }
     },
     methods: {
+      unregister() {
+        if (this.registeredGuid) {
+          release(this.registeredGuid);
+          this.registeredGuid = null;
+        }
+      },
+      // The seek line and the play button go away on their own (the track ends, the file fails): when one holds the
+      // focus, it moves on to the play button, or to the name link when the file can't be played. Watchers run before
+      // the update of the DOM, so the focus is still where it was.
+      keepFocus() {
+        const active = document.activeElement;
+        const lost = this.$refs.seek && active === this.$refs.seek || this.$refs.play && active === this.$refs.play;
+        if (!lost) {
+          return;
+        }
+        this.$nextTick(() => {
+          var _a;
+          const target = this.failed ? "a.file-row-name" : ".file-row-play";
+          (_a = this.$el.querySelector(target)) == null ? void 0 : _a.focus();
+        });
+      },
+      onPlay() {
+        toggle(this.file, this.playlist || [this.file]);
+      },
+      onSeek(event) {
+        seek(Number(event.target.value));
+      },
+      // Arrow keys step by seconds instead of the range's tiny native step (left and right swap in right-to-left layouts); Page keys, Home and End stay native
+      onSeekKey(event) {
+        const rtl = getComputedStyle(event.target).direction === "rtl";
+        const direction = { ArrowLeft: rtl ? 1 : -1, ArrowRight: rtl ? -1 : 1, ArrowUp: 1, ArrowDown: -1 }[event.key];
+        if (direction && !event.altKey && !event.ctrlKey && !event.metaKey) {
+          event.preventDefault();
+          seek(this.time + direction * SEEK_STEP);
+        }
+      },
       onRemove() {
         if (!this.busy) {
           this.$emit("remove");
@@ -5938,22 +6212,34 @@
     key: 3,
     class: "invalid-feedback d-block"
   };
-  const _hoisted_13$1 = ["aria-label", "aria-disabled", "aria-busy", "data-bs-title"];
-  const _hoisted_14$1 = {
+  const _hoisted_13$1 = {
+    key: 4,
+    class: "file-row-reason"
+  };
+  const _hoisted_14$1 = ["aria-label", "data-bs-title"];
+  const _hoisted_15$1 = ["aria-label", "aria-disabled", "aria-busy", "data-bs-title"];
+  const _hoisted_16$1 = {
     key: 0,
     class: "spinner-border spinner-border-sm",
     "aria-hidden": "true"
   };
-  const _hoisted_15$1 = {
+  const _hoisted_17$1 = {
     key: 1,
     class: "ti ti-trash",
     "aria-hidden": "true"
   };
-  const _hoisted_16$1 = ["href", "aria-label", "data-bs-title"];
+  const _hoisted_18$1 = ["href", "aria-label", "data-bs-title"];
+  const _hoisted_19$1 = ["max", "value", "aria-label", "aria-valuetext"];
   function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ProgressFrame = vue.resolveComponent("ProgressFrame");
     return vue.openBlock(), vue.createElementBlock("div", {
-      class: vue.normalizeClass(["list-group-item file-row", { "is-uploading": $options.uploading, "is-processing": $options.processing, "is-invalid": $options.invalid }]),
+      class: vue.normalizeClass(["list-group-item file-row", {
+        "is-uploading": $options.uploading,
+        "is-processing": $options.processing,
+        "is-invalid": $options.invalid,
+        "is-current": $options.current,
+        "is-failed": $options.failed
+      }]),
       role: "listitem",
       "data-preview-guid": $props.file.guid
     }, [
@@ -6031,7 +6317,7 @@
           vue.createElementVNode(
             "span",
             _hoisted_11$3,
-            "(" + vue.toDisplayString($options.size) + ")",
+            "(" + vue.toDisplayString($options.meta) + ")",
             1
             /* TEXT */
           ),
@@ -6039,6 +6325,13 @@
             "span",
             _hoisted_12$3,
             vue.toDisplayString($props.error),
+            1
+            /* TEXT */
+          )) : vue.createCommentVNode("v-if", true),
+          $options.failed ? (vue.openBlock(), vue.createElementBlock(
+            "span",
+            _hoisted_13$1,
+            vue.toDisplayString($options.failedLabel),
             1
             /* TEXT */
           )) : vue.createCommentVNode("v-if", true)
@@ -6053,8 +6346,29 @@
         indeterminate: $options.processing,
         label: $options.uploadingLabel
       }, null, 8, ["value", "indeterminate", "label"])) : vue.createCommentVNode("v-if", true),
-      $props.action === "remove" ? (vue.openBlock(), vue.createElementBlock("button", {
+      $options.canPlay ? (vue.openBlock(), vue.createElementBlock("button", {
         key: 1,
+        ref: "play",
+        type: "button",
+        class: "btn btn-ghost btn-sm btn-icon-only file-row-play",
+        "aria-label": $options.playLabel,
+        "data-bs-title": $options.playLabel,
+        "data-bs-toggle": "tooltip",
+        onClick: _cache[0] || (_cache[0] = (...args) => $options.onPlay && $options.onPlay(...args))
+      }, [
+        vue.createElementVNode(
+          "i",
+          {
+            class: vue.normalizeClass(["ti", $options.playing ? "ti-player-pause" : "ti-player-play"]),
+            "aria-hidden": "true"
+          },
+          null,
+          2
+          /* CLASS */
+        )
+      ], 8, _hoisted_14$1)) : vue.createCommentVNode("v-if", true),
+      $props.action === "remove" ? (vue.openBlock(), vue.createElementBlock("button", {
+        key: 2,
         type: "button",
         class: "btn btn-ghost btn-ghost-danger btn-sm btn-icon-only file-row-action",
         "aria-label": $options.removeLabel,
@@ -6062,18 +6376,18 @@
         "aria-busy": $props.busy ? "true" : null,
         "data-bs-title": $options.removeLabel,
         "data-bs-toggle": "tooltip",
-        onClick: _cache[0] || (_cache[0] = (...args) => $options.onRemove && $options.onRemove(...args))
+        onClick: _cache[1] || (_cache[1] = (...args) => $options.onRemove && $options.onRemove(...args))
       }, [
-        $props.busy ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_14$1)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_15$1))
-      ], 8, _hoisted_13$1)) : $options.linked ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
-        key: 2,
+        $props.busy ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_16$1)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_17$1))
+      ], 8, _hoisted_15$1)) : $options.linked ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
+        key: 3,
         class: "btn btn-ghost btn-sm btn-icon-only file-row-action",
         href: $props.file.downloadUrl || $props.file.url
       }, $options.downloadAttributes, {
         "aria-label": $options.downloadLabel,
         "data-bs-title": $options.downloadLabel,
         "data-bs-toggle": "tooltip"
-      }), [..._cache[1] || (_cache[1] = [
+      }), [..._cache[4] || (_cache[4] = [
         vue.createElementVNode(
           "i",
           {
@@ -6084,7 +6398,21 @@
           -1
           /* CACHED */
         )
-      ])], 16, _hoisted_16$1)) : vue.createCommentVNode("v-if", true)
+      ])], 16, _hoisted_18$1)) : vue.createCommentVNode("v-if", true),
+      $options.current ? (vue.openBlock(), vue.createElementBlock("input", {
+        key: 4,
+        ref: "seek",
+        type: "range",
+        class: "form-range file-row-seek",
+        min: "0",
+        max: $options.duration || 0,
+        step: "any",
+        value: $options.time,
+        "aria-label": $options.seekLabel,
+        "aria-valuetext": $options.seekValueText,
+        onInput: _cache[2] || (_cache[2] = (...args) => $options.onSeek && $options.onSeek(...args)),
+        onKeydown: _cache[3] || (_cache[3] = (...args) => $options.onSeekKey && $options.onSeekKey(...args))
+      }, null, 40, _hoisted_19$1)) : vue.createCommentVNode("v-if", true)
     ], 10, _hoisted_1$i);
   }
   const C11 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);
@@ -7093,7 +7421,7 @@
         return this.choices.some((item) => item.subText) ? 40 : 32;
       },
       rows() {
-        const rows = [];
+        const rows2 = [];
         let group = null;
         this.choices.forEach((item, index) => {
           if (index >= this.renderLimit) {
@@ -7101,11 +7429,11 @@
           }
           if (item.group && item.group !== group) {
             group = item.group;
-            rows.push({ key: `group:${group}`, header: group });
+            rows2.push({ key: `group:${group}`, header: group });
           }
-          rows.push({ key: `${item.isNew ? "new" : "item"}:${item.id}`, item, index });
+          rows2.push({ key: `${item.isNew ? "new" : "item"}:${item.id}`, item, index });
         });
-        return rows;
+        return rows2;
       },
       feedback() {
         if (this.limitReached) {
@@ -10248,7 +10576,7 @@
       }
       next();
     };
-    const start = (item) => {
+    const start2 = (item) => {
       running.set(item.key, item);
       const promise = upload(item.file, (percent) => {
         if (!item.aborted && item.handlers.onProgress && percent !== item.percent) {
@@ -10275,7 +10603,7 @@
     };
     function next() {
       while (running.size < concurrency && waiting.length) {
-        start(waiting.shift());
+        start2(waiting.shift());
       }
     }
     return {
@@ -10322,8 +10650,8 @@
   });
   const toRow = (item, progress) => vue.shallowReactive(toItem(item, progress));
   function connectUploadBridge(host, items = []) {
-    const rows = vue.shallowReactive(items.map((item) => toRow(item, null)));
-    const find = (key) => rows.find((row) => row.key === key);
+    const rows2 = vue.shallowReactive(items.map((item) => toRow(item, null)));
+    const find = (key) => rows2.find((row) => row.key === key);
     const update = (key, changes, applies = () => true) => {
       const row = find(key);
       if (row && applies(row)) {
@@ -10332,14 +10660,14 @@
     };
     const handlers = {
       [UPLOAD_EVENTS.ITEMS]: (detail) => {
-        rows.splice(0, rows.length, ...(Array.isArray(detail) ? detail : []).map((item) => toRow(item, null)));
+        rows2.splice(0, rows2.length, ...(Array.isArray(detail) ? detail : []).map((item) => toRow(item, null)));
       },
       [UPLOAD_EVENTS.ADD]: (detail) => {
         const row = find(detail.key);
         if (row) {
           Object.assign(row, toItem(detail, 0));
         } else {
-          rows.push(toRow(detail, 0));
+          rows2.push(toRow(detail, 0));
         }
       },
       // Whole percents, each once. Only while it uploads: a late progress must not start a finished file again
@@ -10356,7 +10684,7 @@
         progress: null,
         error: detail.message || vue$1.i18n.t("FileModule.base", "The upload failed.")
       }),
-      [UPLOAD_EVENTS.RESET]: () => rows.splice(0)
+      [UPLOAD_EVENTS.RESET]: () => rows2.splice(0)
     };
     const listeners = Object.entries(handlers).map(([type, handler]) => {
       const listener = (event) => handler(event.detail || {});
@@ -10366,7 +10694,7 @@
     host.setAttribute("data-upload-ready", "");
     host.dispatchEvent(new CustomEvent(UPLOAD_EVENTS.READY, { bubbles: true }));
     return {
-      items: rows,
+      items: rows2,
       remove(item) {
         host.dispatchEvent(new CustomEvent(UPLOAD_EVENTS.REMOVE, {
           bubbles: true,
@@ -10483,9 +10811,9 @@
         }
         this.$emit("remove", item);
       },
-      handOverFocus(rows) {
+      handOverFocus(rows2) {
         const active = document.activeElement;
-        const remaining = new Set(rows.map((item) => item.key));
+        const remaining = new Set(rows2.map((item) => item.key));
         const index = this.keys.findIndex((key) => {
           var _a;
           return !remaining.has(key) && ((_a = this.rowElement(key)) == null ? void 0 : _a.contains(active));
@@ -10499,8 +10827,8 @@
           return;
         }
         this.$nextTick(() => {
-          const current = document.activeElement;
-          if (current && current !== document.body && current.isConnected && !removed.contains(current)) {
+          const current2 = document.activeElement;
+          if (current2 && current2 !== document.body && current2.isConnected && !removed.contains(current2)) {
             return;
           }
           const row = this.rowElement(neighbour);
@@ -10514,21 +10842,21 @@
           target.focus({ preventScroll: true });
         });
       },
-      announceChanges(rows) {
+      announceChanges(rows2) {
         const states = /* @__PURE__ */ new Map();
-        rows.forEach((item) => {
-          const state = stateOf(item);
+        rows2.forEach((item) => {
+          const state2 = stateOf(item);
           const previous = this.states.get(item.key);
           const fileName = item.file && item.file.fileName;
-          if (state === "done" && previous === "uploading") {
+          if (state2 === "done" && previous === "uploading") {
             this.queueAnnouncement(vue$1.i18n.t("FileModule.base", "Uploaded {fileName}", { fileName }));
-          } else if (state === "failed" && previous !== "failed") {
+          } else if (state2 === "failed" && previous !== "failed") {
             this.queueAnnouncement(vue$1.i18n.t("FileModule.base", "Could not upload {fileName}: {error}", {
               fileName,
               error: item.error
             }));
           }
-          states.set(item.key, state);
+          states.set(item.key, state2);
         });
         this.states = states;
       },
@@ -10837,8 +11165,8 @@
         }
         if (hadFocus && !this.entries.length) {
           this.$nextTick(() => {
-            const current = document.activeElement;
-            if (!current || current === document.body || !current.isConnected || list.contains(current)) {
+            const current2 = document.activeElement;
+            if (!current2 || current2 === document.body || !current2.isConnected || list.contains(current2)) {
               this.focus();
             }
           });

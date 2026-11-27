@@ -11,6 +11,7 @@ namespace humhub\modules\file;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\file\libs\ImageHelper;
+use humhub\modules\file\libs\MediaHelper;
 use humhub\modules\file\models\File;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -102,12 +103,14 @@ class Events extends BaseObject
     }
 
     /**
-     * Collects the metadata of a file that got new content: the dimensions of an image
+     * Collects the metadata of a file that got new content: the dimensions of an image,
+     * the size and duration of a video, the duration of an audio file
      *
      * @since 1.20
      */
     public static function onAfterNewStoredFile(Event $event): void
     {
         ImageHelper::collectDimensions($event->sender);
+        MediaHelper::collectMediaInfo($event->sender);
     }
 }

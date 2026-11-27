@@ -74,6 +74,7 @@ class FilePreviewTest extends HumHubDbTestCase
             'displayUrl',
             'width',
             'height',
+            'duration',
         ], array_keys($props['items'][0]['file']));
         $this->assertSame('notes.txt', $props['items'][0]['file']['fileName']);
     }

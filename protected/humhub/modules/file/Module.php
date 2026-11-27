@@ -11,6 +11,10 @@ namespace humhub\modules\file;
 use humhub\modules\file\handler\UploadAudioFileHandler;
 use humhub\modules\file\handler\UploadImageFileHandler;
 use humhub\modules\file\handler\UploadVideoFileHandler;
+use humhub\modules\file\media\FfprobeReader;
+use humhub\modules\file\media\GetId3Reader;
+use humhub\modules\file\media\MediaInfoReaderInterface;
+use yii\di\Instance;
 
 /**
  * File Module
@@ -127,6 +131,20 @@ class Module extends \humhub\components\Module
     public $defaultFileHandlers = [UploadAudioFileHandler::class, UploadImageFileHandler::class, UploadVideoFileHandler::class];
 
     /**
+     * @var string|null Path of the ffprobe binary. When set, the metadata of video and audio files is read with
+     * ffprobe, otherwise with getID3.
+     * @since 1.20
+     */
+    public ?string $ffprobePath = null;
+
+    /**
+     * @var MediaInfoReaderInterface|array|string|null Reader for the metadata of video and audio files (an object, a
+     * configuration or a class name), instead of the one [[$ffprobePath]] selects
+     * @since 1.20
+     */
+    public $mediaInfoReader = null;
+
+    /**
      * Whether a record's attachment list leaves out the media files its preview above shows (setting
      * `excludeMediaFilesPreview`, on unless an admin switched it off)
      *
@@ -135,5 +153,19 @@ class Module extends \humhub\components\Module
     public function getExcludeMediaFilesPreview(): bool
     {
         return (bool)$this->settings->get('excludeMediaFilesPreview', 1);
+    }
+
+    /**
+     * The reader for the metadata of video and audio files
+     *
+     * @since 1.20
+     */
+    public function getMediaInfoReader(): MediaInfoReaderInterface
+    {
+        if ($this->mediaInfoReader !== null) {
+            return $this->mediaInfoReader = Instance::ensure($this->mediaInfoReader, MediaInfoReaderInterface::class);
+        }
+
+        return $this->ffprobePath ? new FfprobeReader($this->ffprobePath) : new GetId3Reader();
     }
 }

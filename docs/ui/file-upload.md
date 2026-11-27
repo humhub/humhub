@@ -55,6 +55,15 @@ submits references to them.
   report.pdf").
 - "Show all" uses `aria-expanded`. Hidden rows are removed from the tab order.
 - Dropping is never the only way: the buttons always work.
+- An audio file's play button is labelled "Play song.mp3" / "Pause song.mp3" (the tooltip follows the label). While the
+  file is the current track, the seek line is a range labelled "Position in song.mp3" with the text "1:12 of 3:24"
+  (just the time when the length is unknown). Left/right and up/down step 5 seconds (left and right swap in
+  right-to-left layouts); Page keys, Home and End are the range's own.
+- When the player moves on to the next file of the list by itself, "Now playing next.mp3" is announced once the file
+  plays. A file that can't be played is announced ("song.mp3 can't be played.") and the row shows the reason.
+- The focus never lands on `<body>`: when the seek line (the track ended, a file failed, another one started) or the
+  play button (the file failed) holds the focus and goes away, the focus moves to the row's play button, or to the
+  name link when the file can't be played. See [Keyboard](keyboard.md), "Moving the focus".
 
 ## Markup and styles
 
@@ -72,6 +81,9 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
 | `.file-row.is-uploading` | The file is uploading: the name is no link yet, the progress line runs |
 | `.file-row.is-processing` | With `.is-uploading`: the file is sent, the server processes it; the line runs as a segment (`.progress-frame.is-indeterminate`) |
 | `.file-row.is-invalid` + `.invalid-feedback` | The error state and its reason |
+| `.file-row-play` | The play / pause button of an audio file, before the download |
+| `.file-row.is-current` + `.file-row-seek` | The file is the current track of the shared player: the position as "1:12 / 3:24" and the seek line (a `.form-range`) below the name |
+| `.file-row.is-failed` + `.file-row-reason` | The browser can't play the file: the reason replaces the play button, the download stays |
 | `.file-row-enter-*` / `.file-row-leave-*` | The transition classes of `UploadList`: a row grows in and collapses out |
 | `.image-setting` | Preview plus Upload / Delete |
 
@@ -79,7 +91,7 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
 - **File:** `_file.scss`, behind `$prev-file`.
 - **Sass variables:** `$dropzone-border-style` (dashed), `$dropzone-padding`, `$dropzone-bg`,
   `$attached-images-row-height`, `$attached-images-single-height`, `$attached-images-comment-row-height`,
-  `$attached-images-comment-single-height`, `$attached-images-gap`, `$attached-media-max-width`, `$file-list-gap`,
+  `$attached-images-comment-single-height`, `$attached-images-gap`, `$attached-video-play-size`, `$file-list-gap`,
   `$file-list-transition`; rows from Bootstrap's `$list-group-*`. The progress line is the `ProgressFrame`
   (`.progress-frame` in `_item-browser.scss`).
 
@@ -97,8 +109,10 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
   (`ProgressFrame`), the error in the row, remove as the trailing action.
 - **Item browser:** `DropZone` (desktop drop overlay) and `ProgressFrame` (progress along an
   outline).
-- **Attached files:** `AttachedFiles.vue` lists a record's files as read-only file rows
-  (the core `FileRow.vue`): download as the trailing action, "Show all" from four files on.
+- **Attached files:** `AttachedFiles.vue` shows images and videos as tiles (a video plays in the media viewer only)
+  and lists the other files as read-only file rows (the core `FileRow.vue`): download as the trailing action, "Show
+  all" from four files on. An audio file's row has play / pause before the download, the time and a seek line while it
+  plays; one player serves the page and plays the next audio file of the list when one ends.
 
 **Gaps:**
 

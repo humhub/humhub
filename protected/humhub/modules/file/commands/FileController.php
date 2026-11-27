@@ -100,7 +100,7 @@ class FileController extends Controller
     }
 
     /**
-     * Collects the metadata of uploaded files that lack it (the dimensions of images).
+     * Collects the metadata of uploaded files that lack it (the dimensions of images, the size and duration of videos and audio files).
      *
      * @since 1.20
      */

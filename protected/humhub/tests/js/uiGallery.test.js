@@ -395,6 +395,108 @@ describe('ui.gallery', () => {
             expect(pause).toHaveBeenCalledTimes(2);
         });
 
+        describe('autoplay', () => {
+            let played;
+            const { play, pause } = HTMLMediaElement.prototype;
+            afterEach(() => Object.assign(HTMLMediaElement.prototype, { play, pause }));
+            beforeEach(() => {
+                played = [];
+                HTMLMediaElement.prototype.play = function () {
+                    played.push(this);
+                    this.dispatchEvent(new Event('play'));
+                    return Promise.resolve();
+                };
+                HTMLMediaElement.prototype.pause = function () {};
+            });
+
+            // As PhotoSwipe: the opening animation ends before the slide's video is appended; `contentAppend` is
+            // announced before the element goes into the page
+            const openAt = async (target, markup = groupMarkup) => {
+                html(markup);
+                const el = typeof target === 'string' ? byId(target) : target;
+                const open = FakePhotoSwipe.prototype.init;
+                FakePhotoSwipe.prototype.init = function () {
+                    this.dispatch('uiRegister');
+                    document.body.appendChild(this.element);
+                    this.dispatch('change');
+                    this.dispatch('openingAnimationEnd');
+                    loadVideoInto(this);
+                };
+                try {
+                    click(el);
+                } finally {
+                    FakePhotoSwipe.prototype.init = open;
+                }
+                await tick();
+            };
+            const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
+            const loadVideoInto = (pswp) => {
+                // Create the video of the current slide, as PhotoSwipe does
+                const data = pswp.getItemData(pswp.currIndex);
+                if (data.type === 'video') {
+                    const content = { type: 'video', data, index: pswp.currIndex };
+                    pswp.dispatch('contentLoad', { content });
+                    pswp.dispatch('contentAppend', { content });
+                    pswp.currSlide.container.appendChild(content.element);
+                }
+            };
+
+            it('starts the video opened by a click, once it is in the page', async () => {
+                await openAt('a3');
+
+                expect(played).toHaveLength(1);
+                expect(played[0].getAttribute('src')).toBe('/file/3.mp4');
+            });
+
+            it('does not start a "+N" tile', async () => {
+                await openAt('a3', groupMarkup.replace('<video></video>', '<video></video><span class="post-files-image-more">+3</span>'));
+
+                expect(played).toHaveLength(0);
+            });
+
+            it('does not start an image, nor a video of another slide', async () => {
+                await openAt('a1');
+                expect(played).toHaveLength(0);
+
+                // A video slide reached later does not start either
+                const slide = viewer();
+                slide.goTo(2);
+                loadVideoInto(slide);
+                await tick();
+                expect(played).toHaveLength(0);
+            });
+
+            it('leaves the controls when the browser refuses to play', async () => {
+                HTMLMediaElement.prototype.play = () => Promise.reject(new DOMException('refused', 'NotAllowedError'));
+                const unhandled = vi.fn();
+                process.on('unhandledRejection', unhandled);
+                await openAt('a3');
+                await tick();
+                process.off('unhandledRejection', unhandled);
+
+                expect(unhandled).not.toHaveBeenCalled();
+                expect(viewer().currSlide.container.querySelector('video').controls).toBe(true);
+            });
+
+            it('pauses other playing media when a viewer video plays', () => {
+                html(groupMarkup + '<video id="v"></video><audio id="s"></audio><audio id="idle"></audio>');
+                const pause = vi.fn();
+                ['v', 's'].forEach((id) => {
+                    Object.defineProperty(byId(id), 'paused', { value: false });
+                    byId(id).pause = pause;
+                });
+                byId('idle').pause = vi.fn();
+                gallery.open(group(), 2);
+                const { video } = loadVideo();
+                video.pause = vi.fn();
+                video.dispatchEvent(new Event('play'));
+
+                expect(pause).toHaveBeenCalledTimes(2);
+                expect(byId('idle').pause).not.toHaveBeenCalled();
+                expect(video.pause).not.toHaveBeenCalled();
+            });
+        });
+
         it('leaves the keys in a video to the player, but Escape', () => {
             html(groupMarkup);
             gallery.open(group(), 2);

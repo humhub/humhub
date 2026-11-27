@@ -70,6 +70,7 @@ class ShowFilesTest extends HumHubDbTestCase
             'displayUrl',
             'width',
             'height',
+            'duration',
         ], array_keys($props['files'][0]));
         $this->assertSame($file->guid, $props['files'][0]['guid']);
         $this->assertSame('notes.txt', $props['files'][0]['fileName']);

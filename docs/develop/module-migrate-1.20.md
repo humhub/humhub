@@ -38,24 +38,36 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - `ActiveFileUpload` renders its own preview container (a `JsWidget`, no `FilePreview`).
   - Modules: replace DOM access to the old list with the facade methods and `fileRemoved`, and move batch-level work
     from `uploadEnd` to `uploadFinish`.
-- **Attached files restyled** (`AttachedFiles`, `ShowFiles`): images in left-aligned justified rows (at most two, the
-  last tile shows "+N"), the file list as the file row of [File Upload](../ui/file-upload.md) with a download button and
+- **Attached files restyled** (`AttachedFiles`, `ShowFiles`): images and videos in left-aligned justified rows (at most
+  two, the last tile shows "+N"), the file list as the file row of [File Upload](../ui/file-upload.md) with a download button and
   "Show all" from four files on.
   - Theme CSS for the island's old markup no longer applies: the column buckets (`.col-media`, `col-*`) and the list
     `.well.post-file-list > ul.files > li.file-preview-item` are gone from attachments, and from the upload preview in
     forms (see **Upload rows**).
-  - Kept: `.post-files`, `.post-files-images`, `.post-files-videos`, `.post-files-audio`. Images are
-    `a.post-files-image` in `.post-files-images-row`, sized by the component; a rule setting the height of
-    `.post-files-images img` fights the layout and has to go.
+  - Kept: `.post-files`, `.post-files-images`. Images and videos are tiles (`a.post-files-tile`, plus
+    `.post-files-image` or `.post-files-video`) in `.post-files-images-row`, sized by the component; a rule setting
+    the height of `.post-files-images img` fights the layout and has to go. A video tile shows its first frame, a play
+    symbol (`.post-files-video-play`) and the duration (`.post-files-video-duration`); it plays in the media viewer
+    only, which starts the video opened from its tile. A video the browser can't load is `.post-files-video.is-unplayable`
+    with the icon `.post-files-video-icon` instead of the frame.
+  - Removed: `.post-files-videos` and `.post-files-audio` with their native players. Audio files are rows of the file
+    list with play / pause (`FileRow` prop `playable`, `.file-row-play`, `.file-row-seek` and `.is-current` while it
+    is the current track, `.is-failed` with `.file-row-reason` for a file the browser can't play, `playlist` for the
+    next file); one shared player (`protected/humhub/vue/audio/audioPlayer.js`) serves the page.
   - New: `.list-group.file-list`, `.file-list-rows`, `.file-list-more`, `.file-list-more-inner`, `.file-list-toggle`,
     `.file-row`, `.file-row-icon`, `.file-row-text`, `.file-row-name` (with `-head` / `-tail`), `.file-row-meta`,
-    `.file-row-action`, `.post-files-video`, `.post-files-audio-item`, `.post-files-image-more`. The image sizes are the CSS variables `--hh-attached-images-row-height`,
+    `.file-row-action`, `.post-files-image-more`. The image sizes are the CSS variables `--hh-attached-images-row-height`,
     `--hh-attached-images-single-height` and `--hh-attached-images-gap` (rem or px).
   - `ShowFiles` no longer passes `fluid`.
-  - The file shape (`FileSerializer::file()`, API) has `width` and `height`. They are collected into `file.metadata`
-    when a file gets new content (`ImageHelper::collectDimensions()`, on `File::EVENT_AFTER_NEW_STORED_FILE`), for
-    older files by the queue job `file\jobs\CollectFileMetadata` (enqueued by a migration; `php yii file/collect-metadata`
-    runs the same).
+  - The file shape (`FileSerializer::file()`, API) has `width` and `height` (images and videos, as shown) and
+    `duration` (videos and audio, seconds). They are collected into `file.metadata` when a file gets new content
+    (`ImageHelper::collectDimensions()` and `MediaHelper::collectMediaInfo()`, on `File::EVENT_AFTER_NEW_STORED_FILE`),
+    for older files by the queue job `file\jobs\CollectFileMetadata` (enqueued by migrations; `php yii
+    file/collect-metadata` runs the same). On a data mount that isn't local, the media info of an upload is read by the
+    queue job `file\jobs\CollectMediaInfo`.
+  - Video and audio metadata is read by a `file\media\MediaInfoReaderInterface`: getID3 (new dependency
+    `james-heinrich/getid3`, pure PHP) by default, ffprobe when `file` module's `ffprobePath` is set (e.g.
+    `HUMHUB_CONFIG__MODULES__FILE__FFPROBE_PATH=/usr/bin/ffprobe`); `mediaInfoReader` takes a reader of your own.
   - `FileContent` stores its content through `setStoredFileContent()`, so files created from a string (imports, copies)
     fire `File::EVENT_AFTER_NEW_STORED_FILE` and get a `hash_sha1` like uploaded ones.
   - `excludeMediaFilesPreview` is switched on by a migration, and an unsaved value counts as on. Read it with

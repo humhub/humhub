@@ -9,6 +9,7 @@
 namespace humhub\modules\file\jobs;
 
 use humhub\modules\file\libs\ImageHelper;
+use humhub\modules\file\libs\MediaHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
@@ -16,7 +17,8 @@ use Yii;
 use yii\queue\RetryableJobInterface;
 
 /**
- * Collects the metadata of files stored before it was collected on upload: the dimensions of images. Enqueued by a
+ * Collects the metadata of files stored before it was collected on upload: the dimensions of images and the
+ * size and duration of videos and audio files. Enqueued by a
  * migration, `php yii file/collect-metadata` runs the same.
  *
  * @since 1.20
@@ -26,7 +28,7 @@ class CollectFileMetadata extends LongRunningActiveJob implements ExclusiveJobIn
     private const BATCH_SIZE = 100;
 
     /**
-     * Attempts of a run that fails or exceeds its TTR: each one resumes, as it skips the files that have dimensions
+     * Attempts of a run that fails or exceeds its TTR: each one resumes, as it skips the files that have their metadata
      */
     private const MAX_ATTEMPTS = 5;
 
@@ -74,10 +76,17 @@ class CollectFileMetadata extends LongRunningActiveJob implements ExclusiveJobIn
         do {
             // Batches by id: no result set of the whole table in memory, and a file that can't be read isn't retried
             $files = File::find()
-                ->where(['mime_type' => ImageHelper::DIMENSION_MIME_TYPES])
-                ->andWhere(['>', 'id', $lastId])
-                // The serialized key: a value mentioning "width" doesn't count
-                ->andWhere(['or', ['metadata' => null], ['not like', 'metadata', 's:5:"width";']])
+                ->where(['>', 'id', $lastId])
+                // The serialized keys: a value mentioning "width" doesn't count
+                ->andWhere([
+                    'or',
+                    ['and', ['mime_type' => ImageHelper::DIMENSION_MIME_TYPES], self::lacks('width')],
+                    [
+                        'and',
+                        ['or', ['like', 'mime_type', 'video/%', false], ['like', 'mime_type', 'audio/%', false]],
+                        self::lacks('duration'),
+                    ],
+                ])
                 ->orderBy(['id' => SORT_ASC])
                 ->limit(self::BATCH_SIZE)
                 ->all();
@@ -85,7 +94,11 @@ class CollectFileMetadata extends LongRunningActiveJob implements ExclusiveJobIn
             foreach ($files as $file) {
                 // Without stored content (an orphaned record) there is nothing to read
                 if ($file->store->has()) {
-                    ImageHelper::collectDimensions($file);
+                    if (in_array($file->mime_type, ImageHelper::DIMENSION_MIME_TYPES, true)) {
+                        ImageHelper::collectDimensions($file);
+                    } else {
+                        MediaHelper::collectMediaInfo($file, true);
+                    }
                 }
                 $lastId = $file->id;
                 $count++;
@@ -97,5 +110,13 @@ class CollectFileMetadata extends LongRunningActiveJob implements ExclusiveJobIn
         } while (count($files) === self::BATCH_SIZE);
 
         return $count;
+    }
+
+    /**
+     * @return array Condition: the metadata has no serialized key of that name
+     */
+    private static function lacks(string $key): array
+    {
+        return ['or', ['metadata' => null], ['not like', 'metadata', 's:' . strlen($key) . ':"' . $key . '";']];
     }
 }

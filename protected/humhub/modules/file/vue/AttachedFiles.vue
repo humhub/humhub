@@ -1,32 +1,17 @@
 <template>
-    <div v-if="hasMedia" class="post-files">
-        <div v-if="audios.length" class="post-files-audio">
-            <div v-for="file in audios" :key="file.guid" class="post-files-audio-item">
-                <div class="text-truncate small">{{ file.fileName }}</div>
-                <audio :src="file.url" controls preload="metadata" :aria-label="file.fileName"></audio>
-            </div>
-        </div>
-
-        <div v-if="videos.length" class="post-files-videos">
-            <a
-                v-for="file in videos"
-                :key="file.guid"
-                class="post-files-video"
-                :data-ui-gallery="galleryId"
-                :href="file.url"
-                :type="videoType(file)"
-                :title="file.fileName"
-            >
-                <video :src="file.url + '#t=0.001'" controls preload="metadata"></video>
-            </a>
-        </div>
-
-        <AttachedImages v-if="images.length" :images="images" :gallery-id="galleryId" />
+    <div v-if="media.length" class="post-files">
+        <AttachedMedia :media="media" :gallery-id="galleryId" />
     </div>
 
     <div v-if="listed.length" v-additions class="list-group file-list">
         <div :id="collapsible ? listId : null" class="file-list-rows" role="list">
-            <FileRow v-for="file in listedHead" :key="file.guid" :file="file" />
+            <FileRow
+                v-for="file in listedHead"
+                :key="file.guid"
+                :file="file"
+                :playable="isPlayable(file)"
+                :playlist="playlist"
+            />
             <div
                 v-if="collapsible"
                 ref="more"
@@ -36,7 +21,14 @@
                 role="none"
             >
                 <div class="file-list-more-inner" role="none">
-                    <FileRow v-for="file in listedTail" :key="file.guid" :file="file" />
+                    <FileRow
+                        v-for="file in listedTail"
+                        :key="file.guid"
+                        :file="file"
+                        :playable="isPlayable(file)"
+                        :playlist="playlist"
+                        @current="expanded = true"
+                    />
                 </div>
             </div>
         </div>
@@ -61,36 +53,28 @@
 
 <script>
 /**
- * Renders the files attached to a record: the media area (audio and video players, the images in
- * `components/AttachedImages.vue`) followed by the list of the files. Mounted as island by `file\widgets\ShowFiles`,
+ * Renders the files attached to a record: the media grid (images and video tiles in `components/AttachedMedia.vue`)
+ * followed by the list of the files. Mounted as island by `file\widgets\ShowFiles`,
  * and nested in other islands such as the comment section (`CommentEntry.vue`).
  *
- * Files are the API's file shape (`humhub\modules\file\serializers\FileSerializer::file()`), including `width` and
- * `height` of an image for the layout. A server-side caller can add two presentation hints the API doesn't carry
+ * Files are the API's file shape (`humhub\modules\file\serializers\FileSerializer::file()`), including `width`,
+ * `height` and `duration` of the media for the layout. A server-side caller can add two presentation hints the API doesn't carry
  * (see `ShowFiles`):
  *
  *  - `viewUrl` - open the file in the global modal under this URL instead of downloading it.
  *  - `highlight` - mark the file as a search hit.
  *
  * The list rows are the core `FileRow`, the file row of docs/ui/file-upload.md, resolved through the global component
- * registry (`FileVueAsset` depends on the core bundle); a long list shows three rows and "Show all". The list runs
+ * registry (`FileVueAsset` depends on the core bundle). Audio files are rows of the list too, with a play button
+ * (`FileRow` `playable`) while the media is shown (`preview`): one plays after the other, and "Show all" opens when the
+ * next one is hidden. A long list shows two rows and "Show all". The list runs
  * `v-additions` for the thumbnail popovers of its rows; the media viewer and the tooltips bind by delegation.
  *
  * @since 1.20
  */
 import { i18n } from '@humhub/vue';
-import AttachedImages from './components/AttachedImages.vue';
-
-// The media viewer needs the type, otherwise it shows a video as an image
-const VIDEO_TYPES = {
-    webm: 'video/webm',
-    mp4: 'video/mp4',
-    ogv: 'video/ogg',
-    mov: 'video/quicktime',
-};
-const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
-// Formats every current browser plays in `<audio>` - Ogg is left out, Safari's support is unreliable
-const AUDIO_EXTENSIONS = ['mp3', 'wav', 'm4a', 'aac', 'flac'];
+import AttachedMedia from './components/AttachedMedia.vue';
+import { AUDIO_EXTENSIONS, VIDEO_EXTENSIONS, extensionOf } from './mediaTypes.js';
 
 // A long list shows LIST_HEAD rows and the rest behind "Show all", from COLLAPSE_FROM files on (never hides one row)
 const LIST_HEAD = 2;
@@ -99,16 +83,17 @@ const COLLAPSE_FROM = 4;
 let uid = 0;
 
 export default {
-    components: { AttachedImages },
+    components: { AttachedMedia },
     i18nCategories: ['FileModule.base'],
     props: {
         // File shapes, see the class docblock.
         files: { type: Array, required: true },
         // Scopes the media viewer's gallery to this record's media.
         galleryId: { type: String, required: true },
-        // Render the media area at all (`ShowFiles::$preview`).
+        // Render the media grid and the audio players at all (`ShowFiles::$preview`).
         preview: { type: Boolean, default: true },
-        // Drop media files from the list below - they are already in the media area
+        // Drop the images and videos from the list below - they are already tiles of the media grid. Audio files stay:
+        // the list is where they play
         // (the `excludeMediaFilesPreview` setting of the file module).
         excludeMedia: { type: Boolean, default: false },
     },
@@ -116,28 +101,24 @@ export default {
         return { expanded: false };
     },
     computed: {
-        images() {
-            return this.preview ? this.files.filter((file) => !!file.previewUrl) : [];
+        // The tiles of the media grid in the files' order: the images, and the videos the browser can play
+        media() {
+            return this.preview ? this.files.filter((file) => this.isImage(file) || this.isVideo(file)) : [];
         },
-        videos() {
-            return this.preview ? this.mediaBucket(VIDEO_EXTENSIONS) : [];
-        },
-        audios() {
-            return this.preview ? this.mediaBucket(AUDIO_EXTENSIONS) : [];
-        },
-        hasMedia() {
-            return this.images.length > 0 || this.videos.length > 0 || this.audios.length > 0;
-        },
-        // Without `excludeMedia` all files, otherwise those the media area doesn't render -
-        // a media file it has no preview for (an AVI video, an Ogg audio) stays in the list.
+        // Without `excludeMedia` all files, otherwise those the grid doesn't render - a media file it has no tile
+        // for (an AVI video) stays in the list, so does every audio file.
         listed() {
             if (!this.excludeMedia) {
                 return this.files;
             }
 
-            const rendered = new Set([...this.images, ...this.videos, ...this.audios]);
+            const rendered = new Set(this.media);
 
             return this.files.filter((file) => !rendered.has(file));
+        },
+        // The audio files of the list in its order: the next one plays when one ends
+        playlist() {
+            return this.preview ? this.listed.filter((file) => this.isAudio(file)) : [];
         },
         collapsible() {
             return this.listed.length >= COLLAPSE_FROM;
@@ -180,19 +161,18 @@ export default {
         this.expanded = this.listedTail.some((file) => file.highlight);
     },
     methods: {
-        extension(file) {
-            const name = String(file.fileName || '');
-            const dot = name.lastIndexOf('.');
-
-            return dot === -1 ? '' : name.slice(dot + 1).toLowerCase();
+        isImage(file) {
+            return !!file.previewUrl;
         },
-        videoType(file) {
-            return VIDEO_TYPES[this.extension(file)];
+        // A video by its extension, but only without an image preview - an image preview always wins
+        isVideo(file) {
+            return !file.previewUrl && VIDEO_EXTENSIONS.includes(extensionOf(file));
         },
-        // A file belongs to a media bucket by its extension, but only when it has no
-        // image preview - an image preview always wins.
-        mediaBucket(extensions) {
-            return this.files.filter((file) => !file.previewUrl && extensions.includes(this.extension(file)));
+        isAudio(file) {
+            return !file.previewUrl && AUDIO_EXTENSIONS.includes(extensionOf(file));
+        },
+        isPlayable(file) {
+            return this.preview && this.isAudio(file);
         },
         // "Show all" hands the focus on to the first revealed row (docs/ui/keyboard.md, "Moving the focus"),
         // "Show less" keeps it on the button

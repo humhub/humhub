@@ -47,6 +47,30 @@
     const shown = rows.reduce((count, { items }) => count + items.length, 0);
     return { rows, hidden: ratios.length - shown };
   }
+  const VIDEO_TYPES = {
+    webm: "video/webm",
+    mp4: "video/mp4",
+    ogv: "video/ogg",
+    mov: "video/quicktime"
+  };
+  const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
+  const AUDIO_EXTENSIONS = ["mp3", "wav", "m4a", "aac", "flac"];
+  function extensionOf(file) {
+    const name = String(file.fileName || "");
+    const dot = name.lastIndexOf(".");
+    return dot === -1 ? "" : name.slice(dot + 1).toLowerCase();
+  }
+  function formatDuration(seconds) {
+    const total = Number(seconds);
+    if (seconds === null || seconds === void 0 || !Number.isFinite(total) || total < 0) {
+      return "";
+    }
+    const whole = Math.floor(total);
+    const hours = Math.floor(whole / 3600);
+    const minutes = Math.floor(whole % 3600 / 60);
+    const secs = String(whole % 60).padStart(2, "0");
+    return hours > 0 ? `${hours}:${String(minutes).padStart(2, "0")}:${secs}` : `${minutes}:${secs}`;
+  }
   const _export_sfc = (sfc, props) => {
     const target = sfc.__vccOpts || sfc;
     for (const [key, val] of props) {
@@ -97,17 +121,54 @@
     areas.delete(el);
     changed.delete(el);
   }
-  const ratioOf = (file) => file.width > 0 && file.height > 0 ? file.width / file.height : 1;
+  const NEAR_VIEWPORT = "200px";
+  const VIDEO_FALLBACK_RATIO = 16 / 9;
+  const nearCallbacks = /* @__PURE__ */ new Map();
+  let nearObserver = null;
+  function whenNear(el, callback) {
+    if (typeof IntersectionObserver === "undefined") {
+      callback();
+      return;
+    }
+    nearObserver ?? (nearObserver = new IntersectionObserver(
+      (entries) => entries.forEach(({ target, isIntersecting }) => {
+        var _a;
+        if (isIntersecting) {
+          (_a = nearCallbacks.get(target)) == null ? void 0 : _a();
+          unwatch(target);
+        }
+      }),
+      { rootMargin: NEAR_VIEWPORT }
+    ));
+    nearCallbacks.set(el, callback);
+    nearObserver.observe(el);
+  }
+  function unwatch(el) {
+    nearObserver == null ? void 0 : nearObserver.unobserve(el);
+    nearCallbacks.delete(el);
+  }
+  const hasSize = (file) => file.width > 0 && file.height > 0;
   const _sfc_main$2 = {
-    name: "AttachedImages",
+    name: "AttachedMedia",
     props: {
-      // The files with a preview, see AttachedFiles.vue
-      images: { type: Array, required: true },
+      // The images and the videos, see AttachedFiles.vue
+      media: { type: Array, required: true },
       // The record's group in the media viewer
       galleryId: { type: String, required: true }
     },
+    directives: {
+      // A video element is watched from its mount to its unmount: a tile that moves to another row gets a new element
+      watchVideo: {
+        mounted(el, { value, instance }) {
+          instance.watchVideo(el, value);
+        },
+        beforeUnmount(el, { instance }) {
+          instance.unwatchVideo(el);
+        }
+      }
+    },
     data() {
-      return { box: null };
+      return { box: null, sizes: {}, active: {}, failed: {} };
     },
     computed: {
       layout() {
@@ -117,17 +178,18 @@
           singleHeight: SIZES.singleHeight * 16,
           gap: SIZES.gap * 16
         };
-        return justify(this.images.map(ratioOf), { ...box, maxRows: MAX_ROWS });
+        return justify(this.media.map((file) => this.ratioOf(file)), { ...box, maxRows: MAX_ROWS });
       },
       shownCount() {
         return this.layout.rows.reduce((count, row) => count + row.items.length, 0);
       },
-      hiddenImages() {
-        return this.images.slice(this.shownCount);
+      hiddenMedia() {
+        return this.media.slice(this.shownCount);
       }
     },
     created() {
       this.displayed = /* @__PURE__ */ new Set();
+      this.videos = /* @__PURE__ */ new Set();
     },
     mounted() {
       const width = this.$el.clientWidth;
@@ -138,6 +200,8 @@
     },
     beforeUnmount() {
       unobserve(this.$el);
+      this.videos.forEach((el) => unwatch(el));
+      this.videos.clear();
     },
     methods: {
       // The width and the sizes of _file.scss (CSS variables in rem or px), in px
@@ -161,14 +225,70 @@
       px(value) {
         return `${value}px`;
       },
+      isVideo(file) {
+        return !file.previewUrl;
+      },
+      videoType(file) {
+        return VIDEO_TYPES[extensionOf(file)];
+      },
+      ratioOf(file) {
+        var _a;
+        if (hasSize(file)) {
+          return file.width / file.height;
+        }
+        return ((_a = this.sizes[file.guid]) == null ? void 0 : _a.ratio) ?? (this.isVideo(file) ? VIDEO_FALLBACK_RATIO : 1);
+      },
+      // From the file, else what the tile measured
+      durationText(file) {
+        var _a;
+        return formatDuration(file.duration ?? ((_a = this.sizes[file.guid]) == null ? void 0 : _a.duration));
+      },
+      measured(video, file) {
+        const known = this.sizes[file.guid];
+        const size = { ...known };
+        if (video.videoWidth > 0 && video.videoHeight > 0) {
+          size.ratio = video.videoWidth / video.videoHeight;
+        }
+        if (Number.isFinite(video.duration)) {
+          size.duration = video.duration;
+        }
+        if (size.ratio !== (known == null ? void 0 : known.ratio) || size.duration !== (known == null ? void 0 : known.duration)) {
+          this.sizes[file.guid] = size;
+        }
+      },
+      // A video element mounted: loads the frame once the tile is near the viewport
+      watchVideo(el, guid) {
+        if (this.videos.has(el)) {
+          return;
+        }
+        this.videos.add(el);
+        whenNear(el, () => {
+          this.active[guid] = true;
+        });
+      },
+      unwatchVideo(el) {
+        this.videos.delete(el);
+        unwatch(el);
+      },
+      videoLabel(file) {
+        const duration = this.durationText(file);
+        const fileName = file.fileName;
+        return duration ? vue.i18n.t("FileModule.base", "{fileName}, video, {duration}", { fileName, duration }) : vue.i18n.t("FileModule.base", "{fileName}, video", { fileName });
+      },
       isMoreTile(index) {
         return this.layout.hidden > 0 && index === this.shownCount - 1;
       },
-      moreLabel(file) {
-        return vue.i18n.t("FileModule.base", "{fileName}, {count,plural,=1{one more image} other{# more images}}", {
-          fileName: file.fileName,
-          count: this.layout.hidden
-        });
+      moreLabel() {
+        const fileName = this.media[this.shownCount - 1].fileName;
+        const count = this.layout.hidden;
+        return this.hiddenMedia.every((file) => !this.isVideo(file)) ? vue.i18n.t("FileModule.base", "{fileName}, {count,plural,=1{one more image} other{# more images}}", {
+          fileName,
+          count
+        }) : vue.i18n.t(
+          "FileModule.base",
+          "{fileName}, {count,plural,=1{one more image or video} other{# more images and videos}}",
+          { fileName, count }
+        );
       },
       // The preview fits into PREVIEW_SIZE², a larger tile (or a sharper screen) gets the display version and keeps
       // it while the area shrinks. An original that fits into the preview is the preview.
@@ -176,11 +296,11 @@
         if (this.displayed.has(file.guid)) {
           return file.displayUrl;
         }
-        const fits = file.width > 0 && file.height > 0 && file.width <= PREVIEW_SIZE && file.height <= PREVIEW_SIZE;
+        const fits = hasSize(file) && file.width <= PREVIEW_SIZE && file.height <= PREVIEW_SIZE;
         if (!file.displayUrl || fits) {
           return file.previewUrl;
         }
-        const previewWidth = Math.min(PREVIEW_SIZE, PREVIEW_SIZE * ratioOf(file));
+        const previewWidth = Math.min(PREVIEW_SIZE, PREVIEW_SIZE * this.ratioOf(file));
         if (width * (window.devicePixelRatio || 1) <= previewWidth * 1.25) {
           return file.previewUrl;
         }
@@ -192,15 +312,33 @@
     }
   };
   const _hoisted_1$2 = { class: "post-files-images" };
-  const _hoisted_2$2 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title", "aria-label"];
-  const _hoisted_3$2 = ["src", "alt", "width", "height"];
+  const _hoisted_2$2 = ["data-ui-gallery", "href", "type", "title", "aria-label"];
+  const _hoisted_3$2 = ["src", "preload", "onLoadedmetadata", "onError"];
   const _hoisted_4$2 = {
+    key: 1,
+    class: "ti ti-movie post-files-video-icon",
+    "aria-hidden": "true"
+  };
+  const _hoisted_5$2 = {
+    key: 0,
+    class: "post-files-video-duration",
+    "aria-hidden": "true"
+  };
+  const _hoisted_6$2 = {
+    key: 3,
+    class: "post-files-image-more",
+    "aria-hidden": "true"
+  };
+  const _hoisted_7$2 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title", "aria-label"];
+  const _hoisted_8$2 = ["src", "alt", "width", "height"];
+  const _hoisted_9$1 = {
     key: 0,
     class: "post-files-image-more",
     "aria-hidden": "true"
   };
-  const _hoisted_5$2 = ["data-ui-gallery", "href", "data-ui-gallery-src", "title"];
+  const _hoisted_10$1 = ["data-ui-gallery", "href", "type", "data-ui-gallery-src", "title"];
   function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
+    const _directive_watch_video = vue$1.resolveDirective("watch-video");
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$2, [
       (vue$1.openBlock(true), vue$1.createElementBlock(
         vue$1.Fragment,
@@ -218,32 +356,99 @@
                 vue$1.Fragment,
                 null,
                 vue$1.renderList(row.items, (item) => {
-                  return vue$1.openBlock(), vue$1.createElementBlock("a", {
-                    key: $props.images[item.index].guid,
-                    class: "post-files-image",
-                    style: vue$1.normalizeStyle({ width: $options.px(item.width) }),
-                    "data-ui-gallery": $props.galleryId,
-                    href: $props.images[item.index].url,
-                    "data-ui-gallery-src": $props.images[item.index].displayUrl || null,
-                    title: $props.images[item.index].fileName,
-                    "aria-label": $options.isMoreTile(item.index) ? $options.moreLabel($props.images[item.index]) : null
-                  }, [
-                    vue$1.createElementVNode("img", {
-                      loading: "lazy",
-                      decoding: "async",
-                      src: $options.source($props.images[item.index], item.width),
-                      alt: $props.images[item.index].fileName,
-                      width: Math.round(item.width),
-                      height: Math.round(row.height)
-                    }, null, 8, _hoisted_3$2),
-                    $options.isMoreTile(item.index) ? (vue$1.openBlock(), vue$1.createElementBlock(
-                      "span",
-                      _hoisted_4$2,
-                      "+" + vue$1.toDisplayString($options.layout.hidden),
-                      1
-                      /* TEXT */
-                    )) : vue$1.createCommentVNode("v-if", true)
-                  ], 12, _hoisted_2$2);
+                  return vue$1.openBlock(), vue$1.createElementBlock(
+                    vue$1.Fragment,
+                    {
+                      key: $props.media[item.index].guid
+                    },
+                    [
+                      $options.isVideo($props.media[item.index]) ? (vue$1.openBlock(), vue$1.createElementBlock("a", {
+                        key: 0,
+                        class: vue$1.normalizeClass(["post-files-tile post-files-video", { "is-unplayable": $data.failed[$props.media[item.index].guid] }]),
+                        style: vue$1.normalizeStyle({ width: $options.px(item.width) }),
+                        "data-ui-gallery": $props.galleryId,
+                        href: $props.media[item.index].url,
+                        type: $options.videoType($props.media[item.index]),
+                        title: $props.media[item.index].fileName,
+                        "aria-label": $options.isMoreTile(item.index) ? $options.moreLabel() : $options.videoLabel($props.media[item.index])
+                      }, [
+                        !$data.failed[$props.media[item.index].guid] ? vue$1.withDirectives((vue$1.openBlock(), vue$1.createElementBlock("video", {
+                          key: 0,
+                          src: $data.active[$props.media[item.index].guid] ? $props.media[item.index].url + "#t=0.001" : null,
+                          preload: $data.active[$props.media[item.index].guid] ? "metadata" : null,
+                          muted: "",
+                          playsinline: "",
+                          "aria-hidden": "true",
+                          tabindex: "-1",
+                          onLoadedmetadata: ($event) => $options.measured($event.target, $props.media[item.index]),
+                          onError: ($event) => $data.failed[$props.media[item.index].guid] = true
+                        }, null, 40, _hoisted_3$2)), [
+                          [_directive_watch_video, $props.media[item.index].guid]
+                        ]) : (vue$1.openBlock(), vue$1.createElementBlock("i", _hoisted_4$2)),
+                        !$options.isMoreTile(item.index) && !$data.failed[$props.media[item.index].guid] ? (vue$1.openBlock(), vue$1.createElementBlock(
+                          vue$1.Fragment,
+                          { key: 2 },
+                          [
+                            _cache[0] || (_cache[0] = vue$1.createElementVNode(
+                              "span",
+                              {
+                                class: "post-files-video-play",
+                                "aria-hidden": "true"
+                              },
+                              [
+                                vue$1.createElementVNode("i", { class: "ti ti-player-play-filled" })
+                              ],
+                              -1
+                              /* CACHED */
+                            )),
+                            $options.durationText($props.media[item.index]) ? (vue$1.openBlock(), vue$1.createElementBlock(
+                              "span",
+                              _hoisted_5$2,
+                              vue$1.toDisplayString($options.durationText($props.media[item.index])),
+                              1
+                              /* TEXT */
+                            )) : vue$1.createCommentVNode("v-if", true)
+                          ],
+                          64
+                          /* STABLE_FRAGMENT */
+                        )) : vue$1.createCommentVNode("v-if", true),
+                        $options.isMoreTile(item.index) ? (vue$1.openBlock(), vue$1.createElementBlock(
+                          "span",
+                          _hoisted_6$2,
+                          "+" + vue$1.toDisplayString($options.layout.hidden),
+                          1
+                          /* TEXT */
+                        )) : vue$1.createCommentVNode("v-if", true)
+                      ], 14, _hoisted_2$2)) : (vue$1.openBlock(), vue$1.createElementBlock("a", {
+                        key: 1,
+                        class: "post-files-tile post-files-image",
+                        style: vue$1.normalizeStyle({ width: $options.px(item.width) }),
+                        "data-ui-gallery": $props.galleryId,
+                        href: $props.media[item.index].url,
+                        "data-ui-gallery-src": $props.media[item.index].displayUrl || null,
+                        title: $props.media[item.index].fileName,
+                        "aria-label": $options.isMoreTile(item.index) ? $options.moreLabel() : null
+                      }, [
+                        vue$1.createElementVNode("img", {
+                          loading: "lazy",
+                          decoding: "async",
+                          src: $options.source($props.media[item.index], item.width),
+                          alt: $props.media[item.index].fileName,
+                          width: Math.round(item.width),
+                          height: Math.round(row.height)
+                        }, null, 8, _hoisted_8$2),
+                        $options.isMoreTile(item.index) ? (vue$1.openBlock(), vue$1.createElementBlock(
+                          "span",
+                          _hoisted_9$1,
+                          "+" + vue$1.toDisplayString($options.layout.hidden),
+                          1
+                          /* TEXT */
+                        )) : vue$1.createCommentVNode("v-if", true)
+                      ], 12, _hoisted_7$2))
+                    ],
+                    64
+                    /* STABLE_FRAGMENT */
+                  );
                 }),
                 128
                 /* KEYED_FRAGMENT */
@@ -259,44 +464,38 @@
       (vue$1.openBlock(true), vue$1.createElementBlock(
         vue$1.Fragment,
         null,
-        vue$1.renderList($options.hiddenImages, (file) => {
+        vue$1.renderList($options.hiddenMedia, (file) => {
           return vue$1.openBlock(), vue$1.createElementBlock("a", {
             key: file.guid,
             hidden: "",
             "data-ui-gallery": $props.galleryId,
             href: file.url,
+            type: $options.isVideo(file) ? $options.videoType(file) : null,
             "data-ui-gallery-src": file.displayUrl || null,
             title: file.fileName
-          }, vue$1.toDisplayString(file.fileName), 9, _hoisted_5$2);
+          }, vue$1.toDisplayString(file.fileName), 9, _hoisted_10$1);
         }),
         128
         /* KEYED_FRAGMENT */
       ))
     ]);
   }
-  const AttachedImages = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
-  const VIDEO_TYPES = {
-    webm: "video/webm",
-    mp4: "video/mp4",
-    ogv: "video/ogg",
-    mov: "video/quicktime"
-  };
-  const VIDEO_EXTENSIONS = Object.keys(VIDEO_TYPES);
-  const AUDIO_EXTENSIONS = ["mp3", "wav", "m4a", "aac", "flac"];
+  const AttachedMedia = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["render", _sfc_render$2]]);
   const LIST_HEAD = 2;
   const COLLAPSE_FROM = 4;
   let uid = 0;
   const _sfc_main$1 = {
-    components: { AttachedImages },
+    components: { AttachedMedia },
     i18nCategories: ["FileModule.base"],
     props: {
       // File shapes, see the class docblock.
       files: { type: Array, required: true },
       // Scopes the media viewer's gallery to this record's media.
       galleryId: { type: String, required: true },
-      // Render the media area at all (`ShowFiles::$preview`).
+      // Render the media grid and the audio players at all (`ShowFiles::$preview`).
       preview: { type: Boolean, default: true },
-      // Drop media files from the list below - they are already in the media area
+      // Drop the images and videos from the list below - they are already tiles of the media grid. Audio files stay:
+      // the list is where they play
       // (the `excludeMediaFilesPreview` setting of the file module).
       excludeMedia: { type: Boolean, default: false }
     },
@@ -304,26 +503,22 @@
       return { expanded: false };
     },
     computed: {
-      images() {
-        return this.preview ? this.files.filter((file) => !!file.previewUrl) : [];
+      // The tiles of the media grid in the files' order: the images, and the videos the browser can play
+      media() {
+        return this.preview ? this.files.filter((file) => this.isImage(file) || this.isVideo(file)) : [];
       },
-      videos() {
-        return this.preview ? this.mediaBucket(VIDEO_EXTENSIONS) : [];
-      },
-      audios() {
-        return this.preview ? this.mediaBucket(AUDIO_EXTENSIONS) : [];
-      },
-      hasMedia() {
-        return this.images.length > 0 || this.videos.length > 0 || this.audios.length > 0;
-      },
-      // Without `excludeMedia` all files, otherwise those the media area doesn't render -
-      // a media file it has no preview for (an AVI video, an Ogg audio) stays in the list.
+      // Without `excludeMedia` all files, otherwise those the grid doesn't render - a media file it has no tile
+      // for (an AVI video) stays in the list, so does every audio file.
       listed() {
         if (!this.excludeMedia) {
           return this.files;
         }
-        const rendered = /* @__PURE__ */ new Set([...this.images, ...this.videos, ...this.audios]);
+        const rendered = new Set(this.media);
         return this.files.filter((file) => !rendered.has(file));
+      },
+      // The audio files of the list in its order: the next one plays when one ends
+      playlist() {
+        return this.preview ? this.listed.filter((file) => this.isAudio(file)) : [];
       },
       collapsible() {
         return this.listed.length >= COLLAPSE_FROM;
@@ -364,18 +559,18 @@
       this.expanded = this.listedTail.some((file) => file.highlight);
     },
     methods: {
-      extension(file) {
-        const name = String(file.fileName || "");
-        const dot = name.lastIndexOf(".");
-        return dot === -1 ? "" : name.slice(dot + 1).toLowerCase();
+      isImage(file) {
+        return !!file.previewUrl;
       },
-      videoType(file) {
-        return VIDEO_TYPES[this.extension(file)];
+      // A video by its extension, but only without an image preview - an image preview always wins
+      isVideo(file) {
+        return !file.previewUrl && VIDEO_EXTENSIONS.includes(extensionOf(file));
       },
-      // A file belongs to a media bucket by its extension, but only when it has no
-      // image preview - an image preview always wins.
-      mediaBucket(extensions) {
-        return this.files.filter((file) => !file.previewUrl && extensions.includes(this.extension(file)));
+      isAudio(file) {
+        return !file.previewUrl && AUDIO_EXTENSIONS.includes(extensionOf(file));
+      },
+      isPlayable(file) {
+        return this.preview && this.isAudio(file);
       },
       // "Show all" hands the focus on to the first revealed row (docs/ui/keyboard.md, "Moving the focus"),
       // "Show less" keeps it on the button
@@ -396,101 +591,36 @@
     class: "post-files"
   };
   const _hoisted_2$1 = {
-    key: 0,
-    class: "post-files-audio"
-  };
-  const _hoisted_3$1 = { class: "text-truncate small" };
-  const _hoisted_4$1 = ["src", "aria-label"];
-  const _hoisted_5$1 = {
-    key: 1,
-    class: "post-files-videos"
-  };
-  const _hoisted_6$1 = ["data-ui-gallery", "href", "type", "title"];
-  const _hoisted_7$1 = ["src"];
-  const _hoisted_8$1 = {
     key: 1,
     class: "list-group file-list"
   };
-  const _hoisted_9$1 = ["id"];
-  const _hoisted_10$1 = ["inert"];
-  const _hoisted_11$1 = {
+  const _hoisted_3$1 = ["id"];
+  const _hoisted_4$1 = ["inert"];
+  const _hoisted_5$1 = {
     class: "file-list-more-inner",
     role: "none"
   };
-  const _hoisted_12 = {
+  const _hoisted_6$1 = {
     key: 0,
     class: "list-group-item file-row file-list-toggle"
   };
-  const _hoisted_13 = ["id"];
-  const _hoisted_14 = ["aria-expanded", "aria-controls", "aria-describedby"];
+  const _hoisted_7$1 = ["id"];
+  const _hoisted_8$1 = ["aria-expanded", "aria-controls", "aria-describedby"];
   function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
-    const _component_AttachedImages = vue$1.resolveComponent("AttachedImages");
+    const _component_AttachedMedia = vue$1.resolveComponent("AttachedMedia");
     const _component_FileRow = vue$1.resolveComponent("FileRow");
     const _directive_additions = vue$1.resolveDirective("additions");
     return vue$1.openBlock(), vue$1.createElementBlock(
       vue$1.Fragment,
       null,
       [
-        $options.hasMedia ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$1, [
-          $options.audios.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$1, [
-            (vue$1.openBlock(true), vue$1.createElementBlock(
-              vue$1.Fragment,
-              null,
-              vue$1.renderList($options.audios, (file) => {
-                return vue$1.openBlock(), vue$1.createElementBlock("div", {
-                  key: file.guid,
-                  class: "post-files-audio-item"
-                }, [
-                  vue$1.createElementVNode(
-                    "div",
-                    _hoisted_3$1,
-                    vue$1.toDisplayString(file.fileName),
-                    1
-                    /* TEXT */
-                  ),
-                  vue$1.createElementVNode("audio", {
-                    src: file.url,
-                    controls: "",
-                    preload: "metadata",
-                    "aria-label": file.fileName
-                  }, null, 8, _hoisted_4$1)
-                ]);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            ))
-          ])) : vue$1.createCommentVNode("v-if", true),
-          $options.videos.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_5$1, [
-            (vue$1.openBlock(true), vue$1.createElementBlock(
-              vue$1.Fragment,
-              null,
-              vue$1.renderList($options.videos, (file) => {
-                return vue$1.openBlock(), vue$1.createElementBlock("a", {
-                  key: file.guid,
-                  class: "post-files-video",
-                  "data-ui-gallery": $props.galleryId,
-                  href: file.url,
-                  type: $options.videoType(file),
-                  title: file.fileName
-                }, [
-                  vue$1.createElementVNode("video", {
-                    src: file.url + "#t=0.001",
-                    controls: "",
-                    preload: "metadata"
-                  }, null, 8, _hoisted_7$1)
-                ], 8, _hoisted_6$1);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            ))
-          ])) : vue$1.createCommentVNode("v-if", true),
-          $options.images.length ? (vue$1.openBlock(), vue$1.createBlock(_component_AttachedImages, {
-            key: 2,
-            images: $options.images,
+        $options.media.length ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1$1, [
+          vue$1.createVNode(_component_AttachedMedia, {
+            media: $options.media,
             "gallery-id": $props.galleryId
-          }, null, 8, ["images", "gallery-id"])) : vue$1.createCommentVNode("v-if", true)
+          }, null, 8, ["media", "gallery-id"])
         ])) : vue$1.createCommentVNode("v-if", true),
-        $options.listed.length ? vue$1.withDirectives((vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_8$1, [
+        $options.listed.length ? vue$1.withDirectives((vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2$1, [
           vue$1.createElementVNode("div", {
             id: $options.collapsible ? $options.listId : null,
             class: "file-list-rows",
@@ -502,8 +632,10 @@
               vue$1.renderList($options.listedHead, (file) => {
                 return vue$1.openBlock(), vue$1.createBlock(_component_FileRow, {
                   key: file.guid,
-                  file
-                }, null, 8, ["file"]);
+                  file,
+                  playable: $options.isPlayable(file),
+                  playlist: $options.playlist
+                }, null, 8, ["file", "playable", "playlist"]);
               }),
               128
               /* KEYED_FRAGMENT */
@@ -515,24 +647,27 @@
               inert: !$data.expanded,
               role: "none"
             }, [
-              vue$1.createElementVNode("div", _hoisted_11$1, [
+              vue$1.createElementVNode("div", _hoisted_5$1, [
                 (vue$1.openBlock(true), vue$1.createElementBlock(
                   vue$1.Fragment,
                   null,
                   vue$1.renderList($options.listedTail, (file) => {
                     return vue$1.openBlock(), vue$1.createBlock(_component_FileRow, {
                       key: file.guid,
-                      file
-                    }, null, 8, ["file"]);
+                      file,
+                      playable: $options.isPlayable(file),
+                      playlist: $options.playlist,
+                      onCurrent: _cache[0] || (_cache[0] = ($event) => $data.expanded = true)
+                    }, null, 8, ["file", "playable", "playlist"]);
                   }),
                   128
                   /* KEYED_FRAGMENT */
                 ))
               ])
-            ], 10, _hoisted_10$1)) : vue$1.createCommentVNode("v-if", true)
-          ], 8, _hoisted_9$1),
-          $options.collapsible ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_12, [
-            _cache[1] || (_cache[1] = vue$1.createElementVNode(
+            ], 10, _hoisted_4$1)) : vue$1.createCommentVNode("v-if", true)
+          ], 8, _hoisted_3$1),
+          $options.collapsible ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_6$1, [
+            _cache[2] || (_cache[2] = vue$1.createElementVNode(
               "i",
               {
                 class: "ti ti-files file-row-icon",
@@ -545,7 +680,7 @@
             vue$1.createElementVNode("span", {
               id: $options.countId,
               class: "file-row-text"
-            }, vue$1.toDisplayString($options.countLabel), 9, _hoisted_13),
+            }, vue$1.toDisplayString($options.countLabel), 9, _hoisted_7$1),
             vue$1.createElementVNode("button", {
               ref: "toggle",
               type: "button",
@@ -553,7 +688,7 @@
               "aria-expanded": $data.expanded ? "true" : "false",
               "aria-controls": $options.listId,
               "aria-describedby": $options.countId,
-              onClick: _cache[0] || (_cache[0] = (...args) => $options.toggle && $options.toggle(...args))
+              onClick: _cache[1] || (_cache[1] = (...args) => $options.toggle && $options.toggle(...args))
             }, [
               vue$1.createTextVNode(
                 vue$1.toDisplayString($data.expanded ? $options.showLessLabel : $options.showAllLabel) + " ",
@@ -570,7 +705,7 @@
                 2
                 /* CLASS */
               )
-            ], 8, _hoisted_14)
+            ], 8, _hoisted_8$1)
           ])) : vue$1.createCommentVNode("v-if", true)
         ])), [
           [_directive_additions]

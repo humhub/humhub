@@ -44,3 +44,5 @@
 /index-test.php
 /public/index-test.php
 /protected/vendor/codeception/codeception/tests/
+# getID3's Windows helper programs (not used by HumHub)
+/protected/vendor/james-heinrich/getid3/helperapps/
