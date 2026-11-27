@@ -13,6 +13,7 @@ use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidArgumentValueException;
 use humhub\libs\StdClass;
 use humhub\libs\StdClassConfigurable;
+use WeakReference;
 
 /**
  * Class MimeHelperTest
@@ -160,5 +161,16 @@ class StdClassTest extends Unit
         static::assertEquals(['foo' => 'foo'], $instance->fields());
         static::assertTrue($instance->isFixed(), 'StdClassConfigurable object is not fixated!');
         static::assertEquals($serialized, $instance->serialize());
+    }
+
+    public function testStdClassConfigurableIsFreedWhenUnset()
+    {
+        $instance = new StdClassConfigurable(['foo' => 'bar']);
+        $reference = WeakReference::create($instance);
+
+        unset($instance);
+        gc_collect_cycles();
+
+        static::assertNull($reference->get(), 'The config storage must not keep the instance alive');
     }
 }

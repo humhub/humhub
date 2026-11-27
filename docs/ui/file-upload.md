@@ -21,7 +21,7 @@ submits references to them.
 | **File rows** | Icon or thumbnail, name (shortened in the middle, keeping the extension and size), and remove (trash) or download as the trailing action |
 | **Progress** | A line runs around the file row while it uploads, and fades when done |
 | **Error** | Red edge and the reason in the row ("File type not allowed", "Too large") |
-| **Long lists** | Show the first few rows, then "3 of 12 files · Show all". Never hide just one row. |
+| **Long lists** | Show the first few rows, then "2 of 12 files · Show all". Never hide just one row. |
 | **Image setting** | Preview plus Upload / Delete, for logo, icon, avatar and cover. Avatar and cover open the crop dialog. |
 
 ## Behaviour
@@ -61,6 +61,8 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
 | `.dropzone` | The dashed area; `.is-dragover` while files are dragged over it, `.is-refused` for a type that is not allowed |
 | `.list-group` > `.list-group-item.file-row` | A file row |
 | `.file-row-icon`, `.file-row-name`, `.file-row-meta` | Icon or thumbnail, name (shortened in the middle), size |
+| `.file-list` > `.file-list-rows[role=list]` | The rows; in a long list `.file-list-more` (`.show` when open) holds the rows behind "Show all" |
+| `.file-list-toggle` | The last row of a long list: "2 of 12 files" and the "Show all" button |
 | `.file-row-progress` | The line running around the row while it uploads |
 | `.file-row.is-invalid` + `.invalid-feedback` | The error state and its reason |
 | `.image-setting` | Preview plus Upload / Delete |
@@ -68,7 +70,9 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
 - The trailing action is a `.btn.btn-ghost.btn-icon-only` (`.btn-ghost-danger` for remove).
 - **File:** `_file.scss`, behind `$prev-file`.
 - **Sass variables:** `$dropzone-border-style` (dashed), `$dropzone-padding`, `$dropzone-bg`,
-  `$file-row-progress-width`; rows from Bootstrap's `$list-group-*`.
+  `$file-row-progress-width`, `$attached-images-row-height`, `$attached-images-single-height`,
+  `$attached-images-comment-row-height`, `$attached-images-comment-single-height`, `$attached-images-gap`,
+  `$attached-media-max-width`, `$file-list-gap`, `$file-list-transition`; rows from Bootstrap's `$list-group-*`.
 
 ## Implementation in core
 
@@ -81,12 +85,14 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
   [Vue.js Form Suite](../develop/ui-js-vuejs-forms.md#file-uploads).
 - **Item browser:** `DropZone` (desktop drop overlay) and `ProgressFrame` (progress along an
   outline).
+- **Attached files:** `AttachedFiles.vue` lists a record's files as read-only file rows
+  (`components/FileRow.vue`): download as the trailing action, "Show all" from four files on.
 
 **Gaps:**
 
 | Gap | Proposal |
 |---|---|
-| Dropzone look and file rows | One file-row style for PHP and Vue: progress around the row, error in the row, "Show all" for long lists |
+| Dropzone look and upload rows | The file row of attached files for the upload rows too, with progress around the row and the error in the row |
 | "From Files" source | A files picker dialog (from the Files module) as an optional second source, offered when the module is active |
 | Image setting | A shared image control (preview plus Upload / Delete, crop for avatar and cover) for admin settings and profiles |
 | Two implementations | Render the PHP upload widgets as Vue islands over time, so `UploadField` is the single implementation |

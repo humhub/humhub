@@ -9,7 +9,6 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
-use humhub\helpers\ThemeHelper;
 use humhub\modules\file\assets\FileVueAsset;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
@@ -18,7 +17,7 @@ use humhub\widgets\VueWidget;
 use Yii;
 
 /**
- * Shows the files attached to a record - the media grid (audio/video/image previews)
+ * Shows the files attached to a record - the media (audio and video players, images in justified rows)
  * followed by the list of all attachments. Used as a wall entry addon for content, and
  * directly by modules rendering a record's attachments elsewhere.
  *
@@ -104,9 +103,7 @@ class ShowFiles extends VueWidget
             'files' => array_map($this->serializeFile(...), $this->files),
             'galleryId' => 'gallery-' . $this->object->getUniqueId(),
             'preview' => $this->preview,
-            'excludeMedia' => $this->preview
-                && (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
-            'fluid' => ThemeHelper::isFluid(),
+            'excludeMedia' => $this->preview && Yii::$app->getModule('file')->getExcludeMediaFilesPreview(),
         ];
     }
 

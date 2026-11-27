@@ -54,6 +54,12 @@ class EntryController extends Controller
 
         if ($record) {
             try {
+                // The clicked record keeps its own target; only the size of its group is set,
+                // as some notifications lead elsewhere when they stand for several
+                $record->group_count = (int)Notification::find()
+                    ->forUser($record->user_id)
+                    ->andWhere(['notification.grouping_key' => $record->grouping_key ?? $record->id])
+                    ->count();
                 $notification = NotificationManager::load($record);
             } catch (IntegrityException) {
                 throw new HttpException(404, Yii::t('NotificationModule.base', 'The requested content is not valid or was removed!'));
