@@ -229,6 +229,8 @@ class FileHelperTest extends HumHubDbTestCase
             'relUrl' => '/index-test.php?r=file%2Ffile%2Fdownload&guid=' . $guid . '&hash_sha1=' . $hash,
             'openLink' => '<a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" target="_blank" data-pjax-prevent data-file-download data-file-url="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;download=1&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" data-file-name="' . $path . '">' . $path . '</a>',
             'thumbnailUrl' => '',
+            'icon' => 'file-type-jpg',
+            'downloadUrl' => 'http://localhost/index-test.php?r=file%2Ffile%2Fdownload&download=1&guid=' . $guid . '&hash_sha1=' . $hash,
         ];
 
         static::assertEquals($expected, FileHelper::getFileInfos($file));
@@ -248,6 +250,8 @@ class FileHelperTest extends HumHubDbTestCase
             'relUrl' => '/index-test.php?r=file%2Ffile%2Fdownload&guid=' . $guid . '&hash_sha1=' . $hash,
             'openLink' => '<a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" target="_blank" data-pjax-prevent data-file-download data-file-url="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;download=1&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" data-file-name="' . $path . '">' . $path . '</a>',
             'thumbnailUrl' => '',
+            'icon' => 'file-type-jpg',
+            'downloadUrl' => 'http://localhost/index-test.php?r=file%2Ffile%2Fdownload&download=1&guid=' . $guid . '&hash_sha1=' . $hash,
         ];
 
         static::assertEquals($expected, FileHelper::getFileInfos($file));
@@ -265,6 +269,8 @@ class FileHelperTest extends HumHubDbTestCase
             'relUrl' => '/index-test.php?r=file%2Ffile%2Fdownload&guid=' . $guid . '&hash_sha1=' . $hash,
             'openLink' => '<a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" target="_blank" data-pjax-prevent data-file-download data-file-url="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;download=1&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" data-file-name="' . $path . '" data-file-mime="' . $mimeType . '">' . $path . '</a>',
             'thumbnailUrl' => 'http://localhost/index-test.php?r=file%2Ffile%2Fdownload&variant=preview-image&guid=' . $guid . '&hash_sha1=' . $hash,
+            'icon' => 'file-type-jpg',
+            'downloadUrl' => 'http://localhost/index-test.php?r=file%2Ffile%2Fdownload&download=1&guid=' . $guid . '&hash_sha1=' . $hash,
         ];
 
         static::assertEquals($expected, FileHelper::getFileInfos($file));

@@ -124,7 +124,17 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         this.replaceContent(content);
         this.$.find('.stream-entry-addons > .hideOnEdit').remove();
         this.apply();
+        this.initEditUpload();
         this.$.find('input[type="text"]:visible, textarea:visible, [contenteditable="true"]:visible').first().focus();
+    };
+
+    /**
+     * The edit form is not sent while its files are still uploading: its submit button waits for the uploads of its
+     * upload widgets (`file.Upload`).
+     */
+    StreamEntry.prototype.initEditUpload = function () {
+        var $form = this.getContent();
+        require('file').lockFormWhileUploading($form, $form.find('[data-action-click="editSubmit"]'));
     };
 
     /**
@@ -215,6 +225,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
             400: function (response) {
                 that.replaceContent(response.html);
                 that.apply();
+                that.initEditUpload();
             }
         }).catch(function (e) {
             module.log.error(e, true);

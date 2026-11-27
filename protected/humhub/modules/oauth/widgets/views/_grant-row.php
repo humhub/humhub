@@ -29,7 +29,7 @@ use humhub\widgets\TimeAgo;
     </div>
     <?= Button::none()
         ->icon($actionIcon ?? 'trash')
-        ->cssClass(['btn-ghost-danger', 'btn-icon-only'])
+        ->cssClass(['btn', 'btn-ghost', 'btn-ghost-danger', 'btn-icon-only'])
         ->link(['/oauth/account/revoke', 'id' => $grant->id])
         ->options(['data-method' => 'POST', 'aria-label' => $actionLabel . ': ' . $title])
         ->tooltip($actionLabel)

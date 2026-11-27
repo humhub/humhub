@@ -12,7 +12,6 @@ use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
@@ -65,7 +64,6 @@ use humhub\widgets\bootstrap\Link;
         <?php $uploadButton = UploadButton::widget([
             'id' => 'contentFormFiles' . ($isModal ? 'Modal' : ''),
             'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
-            'progress' => '#contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
             'preview' => '#contentFormFiles_preview' . ($isModal ? 'Modal' : ''),
             'dropZone' => '#contentFormBody' . ($isModal ? 'Modal' : ''),
             'max' => Yii::$app->getModule('content')->maxAttachedFiles,
@@ -131,9 +129,6 @@ use humhub\widgets\bootstrap\Link;
         </div>
     </div>
 
-    <?= UploadProgress::widget([
-        'id' => 'contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
-    ]) ?>
     <?= FilePreview::widget([
         'id' => 'contentFormFiles_preview' . ($isModal ? 'Modal' : ''),
         'edit' => true,

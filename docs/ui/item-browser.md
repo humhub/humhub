@@ -107,7 +107,7 @@ tiles are an own component. Class names and SCSS follow [Styling with Bootstrap 
 | `.is-selected`, `.is-uploading`, `.is-drop-target` | Tile states |
 | `.tile-skeleton`, `-thumb`, `-name` | A skeleton tile of `.placeholder` blocks (`.placeholder-glow`) |
 | `.drop-zone`, `-overlay`, `-label` | The desktop drop overlay |
-| `.progress-frame`, `-track`, `-bar` | Progress drawn along the outline |
+| `.progress-frame`, `-track`, `-bar` | Progress drawn along the outline; `.is-indeterminate` (prop `indeterminate`): a segment runs around it, without a value (the whole frame with reduced motion) |
 
 - **File:** `_item-browser.scss`, behind `$prev-item-browser`.
 - **Sass variables:** `$item-browser-gap` (`$spacer * .5`), `$item-browser-hover-bg`,

@@ -27,7 +27,7 @@ use humhub\widgets\TimeAgo;
                 <?php $label = Yii::t('UserModule.account', 'Log out') ?>
                 <?= Button::none()
                     ->icon('logout')
-                    ->cssClass(['btn-ghost-danger', 'btn-icon-only'])
+                    ->cssClass(['btn', 'btn-ghost', 'btn-ghost-danger', 'btn-icon-only'])
                     ->link(['/user/security/terminate-session', 'key' => $session->key])
                     ->options(['data-method' => 'POST', 'aria-label' => $label . ': ' . $session->device])
                     ->tooltip($label)

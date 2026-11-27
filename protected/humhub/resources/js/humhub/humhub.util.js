@@ -218,6 +218,8 @@ humhub.module('util', function(module, require, $) {
         '=': '&#x3D;'
     };
 
+    var namedEntities = {amp: '&', lt: '<', gt: '>', quot: '"', apos: '\'', nbsp: '\u00a0'};
+
     var string = {
         escapeHtml: function(string, simple) {
             var $regex = simple ? /[&<>"']/g : /[&<>"'`=\/]/g;
@@ -277,6 +279,26 @@ humhub.module('util', function(module, require, $) {
         },
         decode: function(value) {
             return $('<div/>').html(value).text();
+        },
+        /**
+         * Decodes the entities `Html::encode()` writes, `&nbsp;` and numeric ones, in a single pass (`&amp;lt;` becomes
+         * `&lt;`) and without parsing anything as markup, unlike `decode()`. Other values are returned as they are.
+         *
+         * @since 1.20
+         */
+        decodeEntities: function(value) {
+            if (!object.isString(value) || value.indexOf('&') === -1) {
+                return value;
+            }
+
+            return value.replace(/&(?:#(\d+)|#[xX]([0-9a-fA-F]+)|(amp|lt|gt|quot|apos|nbsp));/g, function(match, dec, hex, name) {
+                if (name) {
+                    return namedEntities[name];
+                }
+
+                var code = dec !== undefined ? parseInt(dec, 10) : parseInt(hex, 16);
+                return code > 0 && code <= 0x10FFFF ? String.fromCodePoint(code) : match;
+            });
         },
         template: function(tmpl, config) {
             return tmpl.replace(/{(.*?)}/g, function(match, contents, offset, s) {

@@ -9,11 +9,17 @@ Every island app registers a small custom directive, `v-additions`, that hands i
 ```js
 app.directive('additions', {
     mounted: function (el) { additions.applyTo($(el)); },
-    updated: function (el) { additions.applyTo($(el)); },
+    updated: function (el, binding) {
+        if (binding.value === undefined || binding.value !== binding.oldValue) {
+            additions.applyTo($(el));
+        }
+    },
 });
 ```
 
 It runs on **both** `mounted` and `updated`, not just once on mount — genuinely changed content (e.g. an edited comment's re-rendered richtext output) needs the enhancers re-applied, which is the point of the `updated` hook, not just a safety margin.
+
+**With a value** (`v-additions="file"`, since 1.20), an update re-applies them only when the value changed — for content that renders often without new markup to enhance. `UploadList`'s rows bind the row's file: a progress tick renders the row, a new file (an upload that is done) gets its image preview popover.
 
 **Idempotency expectations.** Because `v-additions` can legitimately fire many times against the same element, every addition it triggers needs to tolerate repeat application:
 

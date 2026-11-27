@@ -72,15 +72,14 @@
  *  - `viewUrl` - open the file in the global modal under this URL instead of downloading it.
  *  - `highlight` - mark the file as a search hit.
  *
- * The list rows are `components/FileRow.vue`, the file row of docs/ui/file-upload.md; a long list shows three rows
- * and "Show all". The list runs `v-additions` for the thumbnail popovers of its rows; the media viewer and the
- * tooltips bind by delegation.
+ * The list rows are the core `FileRow`, the file row of docs/ui/file-upload.md, resolved through the global component
+ * registry (`FileVueAsset` depends on the core bundle); a long list shows three rows and "Show all". The list runs
+ * `v-additions` for the thumbnail popovers of its rows; the media viewer and the tooltips bind by delegation.
  *
  * @since 1.20
  */
 import { i18n } from '@humhub/vue';
 import AttachedImages from './components/AttachedImages.vue';
-import FileRow from './components/FileRow.vue';
 
 // The media viewer needs the type, otherwise it shows a video as an image
 const VIDEO_TYPES = {
@@ -100,7 +99,7 @@ const COLLAPSE_FROM = 4;
 let uid = 0;
 
 export default {
-    components: { AttachedImages, FileRow },
+    components: { AttachedImages },
     i18nCategories: ['FileModule.base'],
     props: {
         // File shapes, see the class docblock.

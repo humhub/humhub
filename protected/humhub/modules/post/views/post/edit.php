@@ -6,7 +6,6 @@ use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\Module;
 use humhub\widgets\bootstrap\Button;
@@ -49,7 +48,6 @@ $titleMode = Yii::$app->getModule('post')->getTitleMode();
                     'model' => $model,
                     'dropZone' => '#post_edit_' . $model->post->id . ':parent',
                     'preview' => '#post_upload_preview_' . $model->post->id,
-                    'progress' => '#post_upload_progress_' . $model->post->id,
                     'max' => Yii::$app->getModule('content')->maxAttachedFiles,
                     'cssButtonClass' => 'btn-sm btn-light',
                 ]),
@@ -65,8 +63,6 @@ $titleMode = Yii::$app->getModule('post')->getTitleMode();
                 ->submit() ?>
         </div>
     </div>
-
-    <?= UploadProgress::widget(['id' => 'post_upload_progress_' . $model->post->id]) ?>
 
     <?= FilePreview::widget([
         'id' => 'post_upload_preview_' . $model->post->id,

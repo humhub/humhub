@@ -78,37 +78,18 @@ humhub.module('ui.status', function (module, require, $) {
         }
     };
 
-    var HTML_ENTITIES = {
-        '&amp;': '&',
-        '&lt;': '<',
-        '&gt;': '>',
-        '&quot;': '"',
-        '&#39;': '\'',
-        '&#039;': '\'',
-        '&apos;': '\'',
-        '&nbsp;': ' ',
-    };
-
     /**
      * Legacy message argument handling: callers historically passed a string the
      * jQuery bar injected with `.html()`, so some of them (module inline scripts,
      * and this core's own View::endBody() before it switched to a JSON payload)
      * hand over HTML-encoded text. The island renders text, so the entities
-     * `Html::encode()`/`htmlspecialchars(ENT_QUOTES)` produces are decoded here.
-     *
-     * Deliberately a fixed table rather than a DOM round-trip: it decodes exactly
-     * those entities, in a single pass (so `&amp;lt;` decodes to `&lt;`, not `<`),
-     * and cannot interpret markup. Tags a caller passes literally therefore show
-     * up as text now - see docs/develop/module-migrate.md.
+     * `Html::encode()`/`htmlspecialchars(ENT_QUOTES)` produces are decoded here
+     * (`util.string.decodeEntities()`): in a single pass (so `&amp;lt;` decodes to
+     * `&lt;`, not `<`), and without interpreting markup. Tags a caller passes
+     * literally therefore show up as text now - see docs/develop/module-migrate.md.
      */
     var decodeEntities = function (message) {
-        if (!object.isString(message) || message.indexOf('&') === -1) {
-            return message;
-        }
-
-        return message.replace(/&(?:amp|lt|gt|quot|#0?39|apos|nbsp);/g, function (entity) {
-            return HTML_ENTITIES[entity];
-        });
+        return util.string.decodeEntities(message);
     };
 
     /**

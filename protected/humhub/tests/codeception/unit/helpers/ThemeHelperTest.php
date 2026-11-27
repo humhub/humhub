@@ -86,7 +86,7 @@ class ThemeHelperTest extends HumHubDbTestCase
         $this->assertMatchesRegularExpression('/:root\{[^}]*--hh-accent-fg: ?#176e7b/', $css);
         $this->assertMatchesRegularExpression('/\.text-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
         $this->assertMatchesRegularExpression('/\.link-accent\{[^}]*color: ?var\(--hh-accent-fg\)/', $css);
-        $this->assertMatchesRegularExpression('/\.btn-ghost-danger\{[^}]*--bs-btn-color: ?var\(--hh-danger-fg\)/', $css);
+        $this->assertMatchesRegularExpression('/\.btn-ghost-danger\{[^}]*--bs-btn-hover-color: ?var\(--hh-danger-fg\)/', $css);
         $this->assertMatchesRegularExpression('/\.btn-outline-accent\{[^}]*--bs-btn-color: ?var\(--hh-accent-fg\)/', $css);
         // High contrast: the body text and its rgb twin, a fill and the pressed button from it
         $this->assertMatchesRegularExpression('/\[data-hh-contrast=more\]\{[^}]*--bs-body-color: ?#[0-9a-f]{6};--bs-body-color-rgb: ?\d/', $css);

@@ -134,6 +134,21 @@ class ImageHelper
             return;
         }
 
+        // Without a quality option only a resize changes the image: no decoding (the slow part of an upload) when the
+        // dimensions stored on upload are within the maximum. They are after the EXIF rotation, as compared below
+        if (!$isModified) {
+            if ($module->imageMaxResolution === null) {
+                return;
+            }
+
+            $maxResolution = explode('x', (string)$module->imageMaxResolution, 2);
+            $dimensions = self::getDimensions($file);
+            if ($dimensions !== null && isset($maxResolution[1])
+                && $dimensions[0] <= $maxResolution[0] && $dimensions[1] <= $maxResolution[1]) {
+                return;
+            }
+        }
+
         try {
             $image = Image::getImagine()->load($file->store->getContent());
         } catch (\Exception $ex) {

@@ -1,13 +1,14 @@
 /**
- * The single place that talks to the file API for `UploadField.vue` — internal building
- * block of the upload field (a subdirectory of `vue/`, so `vue.build.mjs`'s
- * auto-registration scan skips it; see `form/formContext.js`'s docblock on that).
+ * The single place that uploads to the file API (`POST /api/v2/file`): `uploadFile()` for the
+ * upload queue (`uploadQueue.js`, one request per file, used by `UploadField.vue`) and
+ * `uploadFiles()` for the richtext field (`RichTextField.vue`). Internal (a subdirectory of
+ * `vue/`, so `vue.build.mjs`'s auto-registration scan skips it; see `form/formContext.js`'s
+ * docblock on that).
  *
  * Endpoint contract (see `docs/develop/concept-api.md` and
- * `humhub\modules\file\controllers\api\FileController`): one multipart POST carries the
- * whole batch and answers per file —
- * `{results: [<file>, …], errors: [{fileName, messages}]}` — or `422 {errors: {files: […]}}`
- * when the request carried no file at all.
+ * `humhub\modules\file\controllers\api\FileController`): a multipart POST of one or more
+ * files answers per file — `{results: [<file>, …], errors: [{fileName, messages}]}` — or
+ * `422 {errors: {files: […]}}` when the request carried no file at all.
  *
  * @since 1.20
  */
@@ -19,6 +20,21 @@ import { apiUrl, client } from '@humhub/vue';
  * @returns {Promise} resolves with the client Response, rejects with it on an HTTP error
  */
 export function uploadFiles(files, onProgress) {
+    return post(files, onProgress);
+}
+
+/**
+ * Uploads one file in its own request, e.g. for `uploadQueue.js`.
+ *
+ * @param {File} file the browser File object to upload
+ * @param {(percent: number) => void} [onProgress] called with 0..100 while the body uploads
+ * @returns {Promise} like `uploadFiles()`; its `abort()` cancels the running request
+ */
+export function uploadFile(file, onProgress) {
+    return post([file], onProgress);
+}
+
+function post(files, onProgress) {
     const formData = new FormData();
     files.forEach((file) => formData.append('files[]', file));
 

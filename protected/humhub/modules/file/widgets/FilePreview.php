@@ -2,15 +2,23 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\assets\CoreVueAsset;
 use humhub\components\ActiveRecord;
 use humhub\helpers\Html;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\file\serializers\FileSerializer;
 use humhub\widgets\JsWidget;
+use humhub\widgets\VueComponent;
 use yii\base\Model;
-use yii\helpers\ArrayHelper;
 
 /**
+ * Lists files as file rows (docs/ui/file-upload.md): the files of a form, with remove (`edit`), or a list of files
+ * to download.
+ *
+ * The container is the root of the `file.Preview` widget (`humhub.file.js`); the rows are the core `<upload-list>`
+ * Vue island inside it, which starts with the files given here. In a form the widget feeds the island with the
+ * files being uploaded and removes files (see `vue/upload/uploadBridge.js`).
  *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
@@ -38,12 +46,12 @@ class FilePreview extends JsWidget
     public $attribute;
 
     /**
-     * @var bool weather or not to hide media files
+     * @var bool whether or not to hide media files; only applies without [[edit]], a form shows every file
      */
     public $excludeMediaFilesPreview = false;
 
     /**
-     * @var bool weather or not the file previe is editable
+     * @var bool whether or not the files can be removed (the files of a form)
      */
     public $edit = false;
 
@@ -77,10 +85,29 @@ class FilePreview extends JsWidget
             $this->id = $this->getId(true);
         }
 
-        // Initialize preview if data is given.
-        $this->init = $this->getFileData();
+        $items = $this->getItems();
 
-        return Html::tag('div', '', $this->getOptions());
+        // The container shows while it has rows; in a form the widget shows and hides it
+        $this->visible = $items !== [];
+
+        // In a form the widget answers the island's remove requests, also without an upload button
+        if ($this->edit) {
+            $this->init = true;
+        }
+
+        $island = VueComponent::widget([
+            'name' => 'UploadList',
+            'assetBundle' => CoreVueAsset::class,
+            'props' => [
+                'items' => $items,
+                'action' => $this->edit ? 'remove' : 'download',
+                // An empty placement turns the image preview on hover off
+                'popoverPlacement' => $this->preventPopover ? '' : $this->popoverPosition,
+            ],
+            'options' => ['data-upload-bridge' => true],
+        ]);
+
+        return Html::tag('div', $island, $this->getOptions());
     }
 
     public function getData()
@@ -96,26 +123,60 @@ class FilePreview extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => 'well post-file-list',
+            'class' => 'post-file-list',
         ];
     }
 
-    protected function getFileData()
+    /**
+     * The rows the island starts with: the files in the API's shape ({@see FileSerializer::file()}), keyed by guid.
+     *
+     * @return array[]
+     */
+    protected function getItems(): array
     {
-        $files = $this->getFiles();
+        $items = [];
 
-        $result = [];
+        foreach ($this->getFiles() as $file) {
+            if (is_string($file)) {
+                $file = File::findOne(['guid' => $file]);
+            }
 
-        foreach ($files as $file) {
-            if ($file) {
-                if (is_string($file)) {
-                    $file = File::findOne(['guid' => $file]);
-                }
-                $result[] = ArrayHelper::merge(FileHelper::getFileInfos($file), ['highlight' => FileHelper::isSearchHighlighted($file)]);
+            if (!$file instanceof File) {
+                continue;
+            }
+
+            $data = $this->serializeFile($file);
+            if (!$this->edit && $this->excludeMediaFilesPreview
+                && in_array($data['mimeIcon'], ['mime-image', 'mime-video', 'mime-audio'], true)) {
+                continue;
+            }
+
+            $items[] = ['key' => $file->guid, 'file' => $data];
+        }
+
+        return $items;
+    }
+
+    /**
+     * The API's shape, plus the hints of a list to download (see {@see ShowFiles}): the view of the file and the
+     * search highlight. A form's row links the file itself.
+     */
+    private function serializeFile(File $file): array
+    {
+        $data = FileSerializer::file($file);
+
+        if (!$this->edit) {
+            $viewUrl = FileHelper::getViewUrl($file);
+            if ($viewUrl !== null) {
+                $data['viewUrl'] = $viewUrl;
+            }
+
+            if (FileHelper::isSearchHighlighted($file)) {
+                $data['highlight'] = true;
             }
         }
 
-        return $result;
+        return $data;
     }
 
     protected function getFiles()

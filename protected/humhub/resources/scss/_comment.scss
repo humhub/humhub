@@ -157,14 +157,17 @@
 
         // Show the upload/submit buttons only once the input is focused, already
         // has content (e.g. a prefilled mention), or has an attached file; before
-        // the richtext is initialized (no .ProseMirror yet) they stay hidden.
+        // the richtext is initialized (no .ProseMirror yet) they stay hidden. The
+        // file rows of the Vue form (`UploadField`) follow the input, those of a
+        // legacy form are inside it.
         .comment_create {
             .richtext-create-buttons {
                 display: none;
             }
 
             &:focus-within,
-            &:has(.file-preview-item),
+            &:has(.file-row),
+            &:has(~ .vue-upload-field .file-row),
             &:has(.ProseMirror):not(:has(.atwho-placeholder)) {
                 .richtext-create-buttons {
                     display: block;

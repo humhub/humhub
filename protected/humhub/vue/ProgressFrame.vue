@@ -1,10 +1,11 @@
 <template>
     <svg
         class="progress-frame"
+        :class="{ 'is-indeterminate': indeterminate }"
         role="progressbar"
         aria-valuemin="0"
         aria-valuemax="100"
-        :aria-valuenow="clamped"
+        :aria-valuenow="indeterminate ? null : clamped"
         :aria-label="label"
     >
         <rect class="progress-frame-track" width="100%" height="100%" rx="6" pathLength="100" />
@@ -14,7 +15,7 @@
             height="100%"
             rx="6"
             pathLength="100"
-            :style="{ strokeDashoffset: 100 - clamped }"
+            :style="indeterminate ? null : { strokeDashoffset: 100 - clamped }"
         />
     </svg>
 </template>
@@ -30,6 +31,9 @@
  *
  * - `value`: 0–100, clamped.
  * - `label`: accessible name.
+ * - `indeterminate`: work without a known share is under way (e.g. the server processes an upload): a segment runs
+ *   around the container (`.is-indeterminate`; the whole frame stands still with reduced motion), and the
+ *   progressbar has no value, as WAI-ARIA has it for an indeterminate one.
  *
  * @since 1.20
  */
@@ -38,6 +42,7 @@ export default {
     props: {
         value: { type: Number, default: 0 },
         label: { type: String, default: null },
+        indeterminate: { type: Boolean, default: false },
     },
     computed: {
         clamped() {

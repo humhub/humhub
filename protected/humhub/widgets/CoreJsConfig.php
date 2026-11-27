@@ -47,6 +47,9 @@ class CoreJsConfig extends Widget
         $userConfig['locale'] = Yii::$app->formatter->locale;
         $userConfig['loginUrl'] = Url::to(Yii::$app->user->loginUrl);
 
+        // The size limit an upload is validated against: the file module's setting, capped by PHP's limits
+        $maxFileSize = (int)(new FileValidator())->getSizeLimit();
+
         $this->getView()->registerJsConfig(
             [
                 'user' => $userConfig,
@@ -82,6 +85,9 @@ class CoreJsConfig extends Widget
                         // The most files a content's form may attach (`UploadField`'s `max`).
                         // @since 1.20
                         'maxAttachedFiles' => (int)Yii::$app->getModule('content')->maxAttachedFiles,
+                        // The largest file in bytes the server takes, so the upload widgets refuse a larger one
+                        // before sending it; 0 if unknown. @since 1.20
+                        'maxFileSize' => max(0, $maxFileSize),
                     ],
                     // The file handlers the user may add a file with, for the Vue islands'
                     // upload and editor menus (see FileHandlerSerializer). Taken per page, not
@@ -98,7 +104,7 @@ class CoreJsConfig extends Widget
                         'view' => Url::to(['/file/view', 'guid' => '-guid-'], true),
                     ],
                     'text' => [
-                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize((new FileValidator())->getSizeLimit())]) . (Yii::$app->user->isAdmin()
+                        'error.unknown' => Yii::t('base', 'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.', ['maxUploadSize' => Yii::$app->formatter->asShortSize($maxFileSize)]) . (Yii::$app->user->isAdmin()
                                 ? '(' . Yii::t('base', 'verify your upload_max_filesize and post_max_size php settings.') . ')' : ''),
                     ],
                 ],

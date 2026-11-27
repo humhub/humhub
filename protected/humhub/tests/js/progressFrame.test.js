@@ -27,6 +27,26 @@ describe('ProgressFrame', () => {
         expect(mount(ProgressFrame, { props: { value: -5 } }).attributes('aria-valuenow')).toBe('0');
     });
 
+    it('runs a segment without a value while indeterminate', () => {
+        const wrapper = mount(ProgressFrame, { props: { value: 100, label: 'Processing', indeterminate: true } });
+        const bar = wrapper.find('.progress-frame-bar');
+
+        // An indeterminate progressbar has no value (WAI-ARIA), it keeps its role and name
+        expect(wrapper.attributes('role')).toBe('progressbar');
+        expect(wrapper.attributes('aria-valuenow')).toBeUndefined();
+        expect(wrapper.attributes('aria-label')).toBe('Processing');
+        expect(wrapper.classes()).toContain('is-indeterminate');
+        // The segment runs by its CSS animation, not by the value
+        expect(bar.attributes('style')).toBeUndefined();
+    });
+
+    it('is determinate by default', () => {
+        const wrapper = mount(ProgressFrame, { props: { value: 100 } });
+
+        expect(wrapper.classes()).not.toContain('is-indeterminate');
+        expect(wrapper.attributes('aria-valuenow')).toBe('100');
+    });
+
     it('rounds to whole percent', () => {
         const wrapper = mount(ProgressFrame, { props: { value: 39.6 } });
         const bar = wrapper.find('.progress-frame-bar');

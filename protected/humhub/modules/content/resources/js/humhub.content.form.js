@@ -59,6 +59,18 @@ humhub.module('content.form', function (module, require, $) {
         } else {
             this.$.find('.humhub-ui-richtext').trigger('disable');
         }
+
+        this.initFileUpload();
+    };
+
+    // A post can't be sent while its files are still uploading: the submit button waits for the uploads of the
+    // attachments and of the richtext
+    CreateForm.prototype.initFileUpload = function () {
+        require('file').lockFormWhileUploading(this.$, this.getSubmitButton());
+    };
+
+    CreateForm.prototype.getSubmitButton = function () {
+        return $('#post_submit_button' + (this.isModal ? '_modal' : ''));
     };
 
     CreateForm.prototype.showMenu = function () {
@@ -181,6 +193,7 @@ humhub.module('content.form', function (module, require, $) {
         if (upload) {
             upload.reset();
         }
+        this.getSubmitButton().prop('disabled', false);
     };
 
     CreateForm.prototype.handleError = function (response) {
