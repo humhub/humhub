@@ -150,6 +150,63 @@ paths:
           $ref: "common.yaml#/components/responses/Forbidden"
         "404":
           $ref: "common.yaml#/components/responses/NotFound"
+  "/file/{id}/variants":
+    get:
+      tags:
+        - File
+      summary: List the variants of a file
+      operationId: listFileVariants
+      description: |
+        The variants of the file: the files stored next to its content, everything but the content itself. They are
+        derived (previews, the display image, conversions: made from the content and dropped with a new content) or
+        persistent (earlier versions, subtitles and captions: kept until deleted). Variants are told apart by their
+        name only. Ordered by name. Everybody who may see the file may read them; guests too, when they may see the
+        file. The list is read-only: variants are written by the features that know their content.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the file
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The variants of the file
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: "common.yaml#/components/schemas/FileVariant"
+              example:
+                results:
+                  - name: captions-de.vtt
+                    persistent: true
+                    mimeType: text/vtt
+                    size: 1204
+                    updatedAt: "2026-11-27T10:15:30+00:00"
+                    url: https://example.com/file/file/download?variant=captions-de.vtt&v=1795774530&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+                  - name: old-7
+                    persistent: true
+                    mimeType: video/mp4
+                    size: 5242880
+                    updatedAt: "2026-11-20T08:00:00+00:00"
+                    url: https://example.com/file/file/download?variant=old-7&v=1795161600&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+                  - name: preview-image
+                    persistent: false
+                    mimeType: image/jpeg
+                    size: 18311
+                    updatedAt: "2026-11-27T10:00:00+00:00"
+                    url: https://example.com/file/file/download?variant=preview-image&v=1795773600&guid=6e45b887-1cad-4209-a317-ffa5278c5a2f&hash_sha1=1a2b3c4d
+        "401":
+          $ref: "common.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "common.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "common.yaml#/components/responses/NotFound"
 components:
   securitySchemes:
     Bearer:

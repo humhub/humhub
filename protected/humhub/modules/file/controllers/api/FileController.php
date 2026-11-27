@@ -9,6 +9,7 @@
 namespace humhub\modules\file\controllers\api;
 
 use humhub\components\api\BaseController;
+use humhub\modules\file\libs\FileVariants;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileUpload;
@@ -22,7 +23,7 @@ use yii\web\UploadedFile;
 
 /**
  * The file API (see `docs/develop/concept-api.md`): uploads files, deletes them again and
- * lists the versions of one.
+ * lists the versions and the variants of one (see {@see FileVariants}).
  *
  * This is what the Vue `UploadField` posts to (see `docs/develop/ui-js-vuejs-forms.md`), and
  * the API counterpart of the legacy {@see \humhub\modules\file\actions\UploadAction} the
@@ -66,12 +67,12 @@ class FileController extends BaseController
     /**
      * @inheritdoc
      */
-    protected array $scopes = ['versions' => 'content:read', '*' => 'content:write'];
+    protected array $scopes = ['versions' => 'content:read', 'variants' => 'content:read', '*' => 'content:write'];
 
     /**
      * @inheritdoc
      */
-    protected array $guestAllowedActions = ['versions'];
+    protected array $guestAllowedActions = ['versions', 'variants'];
 
     /**
      * @var string the request field name carrying the uploaded files
@@ -90,6 +91,7 @@ class FileController extends BaseController
                     'create' => ['POST'],
                     'delete' => ['DELETE'],
                     'versions' => ['GET', 'HEAD'],
+                    'variants' => ['GET', 'HEAD'],
                 ],
             ],
         ]);
@@ -154,6 +156,25 @@ class FileController extends BaseController
         }
 
         return ['results' => FileSerializer::versions($file)];
+    }
+
+    /**
+     * All variants of a file the caller may see, ordered by name (see {@see FileSerializer::variants()}).
+     * Read-only: variants are written by the features that know their content.
+     */
+    public function actionVariants($id)
+    {
+        $file = File::findOne(['id' => (int)$id]);
+
+        if ($file === null) {
+            throw new NotFoundHttpException();
+        }
+
+        if (!$file->canView()) {
+            throw new ForbiddenHttpException();
+        }
+
+        return ['results' => FileSerializer::variants($file)];
     }
 
     /**

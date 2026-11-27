@@ -11,7 +11,6 @@ namespace humhub\modules\file\commands;
 use humhub\modules\file\jobs\CollectFileMetadata;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
-use humhub\modules\file\models\FileHistory;
 use Yii;
 use yii\console\Controller;
 use yii\console\widgets\Table;
@@ -63,7 +62,8 @@ class FileController extends Controller
     }
 
     /**
-     * Deletes all automatically generated file variants (previews, converted versions).
+     * Deletes all automatically generated file variants (previews, converted versions); the persistent ones
+     * ({@see \humhub\modules\file\Module::$persistentVariants}) stay.
      */
     public function actionDeleteVariants()
     {
@@ -72,7 +72,7 @@ class FileController extends Controller
 
         /** @var File $file */
         foreach (File::find()->each() as $file) {
-            foreach ($file->store->getVariants([FileHistory::VARIANT_PREFIX . '*']) as $variant) {
+            foreach ($file->store->getVariants(Yii::$app->getModule('file')->persistentVariants) as $variant) {
                 $file->store->delete($variant);
                 $this->stdout('.');
             }

@@ -251,7 +251,9 @@ TTL).
 
 Because they are caller-neutral, one serialization serves everyone:
 `comment\services\CommentPayloadCache` wraps `CommentSerializer::window()`/`comment()` and is
-what the comment widget and the API controller call.
+what the comment widget and the API controller call. What depends on the caller is added
+after the cache: `comment\services\CommentFileViewUrls` gives the attached files their `viewUrl`
+(the modal of the file handlers, which may differ per user) with one query per payload.
 
 - **Key**: content id + a per-content invalidation token + the language + what distinguishes
   the payload within its content (parent comment, cursor, direction, page size, limit).

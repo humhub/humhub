@@ -553,7 +553,7 @@ class File extends ActiveRecord implements ViewableInterface
             FileHistory::createEntryForFile($this);
         }
 
-        $store->delete(null, ['file', FileHistory::VARIANT_PREFIX . '*']);
+        $store->delete(null, ['file', ...Yii::$app->getModule('file')->persistentVariants]);
     }
 
     /**

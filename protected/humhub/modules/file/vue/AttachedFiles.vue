@@ -58,8 +58,8 @@
  * and nested in other islands such as the comment section (`CommentEntry.vue`).
  *
  * Files are the API's file shape (`humhub\modules\file\serializers\FileSerializer::file()`), including `width`,
- * `height` and `duration` of the media for the layout. A server-side caller can add two presentation hints the API doesn't carry
- * (see `ShowFiles`):
+ * `height` and `duration` of the media for the layout. A server-side caller can add two presentation hints (`ShowFiles`; the
+ * comment payloads carry `viewUrl` per caller):
  *
  *  - `viewUrl` - open the file in the global modal under this URL instead of downloading it.
  *  - `highlight` - mark the file as a search hit.

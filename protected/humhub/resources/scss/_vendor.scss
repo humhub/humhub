@@ -47,6 +47,20 @@ $prev-richtext: false !default;
         box-shadow: none;
     }
 
+    // The "Open" button: an icon font glyph instead of PhotoSwipe's SVG
+    .hh-gallery-open {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--pswp-icon-color);
+        font-size: 1.5rem;
+    }
+
+    // A button of the viewer that is off for the slide ("Open" or download)
+    .pswp__button[hidden] {
+        display: none;
+    }
+
     // Below the image, in the room `paddingFn` keeps free for it
     .hh-gallery-caption {
         position: absolute;

@@ -339,6 +339,38 @@ $file-list-transition: .2s ease-in-out !default;
         }
     }
 
+    // Subtitles of the current audio file: the CC toggle (and the language select) before play, the active cue in a
+    // row of its own below the seek line
+    .file-list .file-row.is-current.has-subtitles {
+        grid-template-columns: auto minmax(0, max-content) 1fr auto auto auto;
+        grid-template-areas:
+            "icon name meta subs play action"
+            "seek seek seek seek seek seek"
+            "caption caption caption caption caption caption";
+
+        .file-row-subtitles {
+            grid-area: subs;
+            display: flex;
+            align-items: center;
+            gap: $spacer * .25;
+        }
+
+        .file-row-track {
+            inline-size: auto;
+            max-inline-size: 10rem;
+        }
+
+        .file-row-caption {
+            grid-area: caption;
+            min-block-size: $line-height-base * 1em;
+            padding-block: $spacer * .25;
+            font-size: $font-size-sm;
+            overflow-wrap: anywhere;
+            text-align: center;
+            white-space: pre-line;
+        }
+    }
+
     .file-list-toggle {
         color: var(--bs-secondary-color);
     }

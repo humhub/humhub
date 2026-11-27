@@ -14,6 +14,8 @@
                     :style="{ width: px(item.width) }"
                     :data-ui-gallery="galleryId"
                     :href="media[item.index].url"
+                    :data-ui-gallery-open-url="media[item.index].viewUrl || null"
+                    :data-ui-gallery-subtitles-url="subtitlesUrl(media[item.index])"
                     :type="videoType(media[item.index])"
                     :title="media[item.index].fileName"
                     :aria-label="isMoreTile(item.index) ? moreLabel() : videoLabel(media[item.index])"
@@ -47,6 +49,7 @@
                     :style="{ width: px(item.width) }"
                     :data-ui-gallery="galleryId"
                     :href="media[item.index].url"
+                    :data-ui-gallery-open-url="media[item.index].viewUrl || null"
                     :data-ui-gallery-src="media[item.index].displayUrl || null"
                     :title="media[item.index].fileName"
                     :aria-label="isMoreTile(item.index) ? moreLabel() : null"
@@ -69,6 +72,8 @@
             hidden
             :data-ui-gallery="galleryId"
             :href="file.url"
+            :data-ui-gallery-open-url="file.viewUrl || null"
+            :data-ui-gallery-subtitles-url="subtitlesUrl(file)"
             :type="isVideo(file) ? videoType(file) : null"
             :data-ui-gallery-src="file.displayUrl || null"
             :title="file.fileName"
@@ -87,9 +92,12 @@
  * tile is near the viewport), a click anywhere on the tile opens the media viewer, which plays it. A video the
  * browser can't load shows an icon on the tile surface instead.
  *
+ * The tiles and the hidden links hand the media viewer `file.viewUrl` (its "Open" button) and, for a video, the URL
+ * of the file's variants (its subtitles).
+ *
  * @since 1.20
  */
-import { i18n } from '@humhub/vue';
+import { apiUrl, i18n } from '@humhub/vue';
 import { justify } from '../justify.js';
 import { VIDEO_TYPES, extensionOf } from '../mediaTypes.js';
 import { formatDuration } from '../../../../vue/audio/formatDuration.js';
@@ -275,6 +283,11 @@ export default {
         },
         videoType(file) {
             return VIDEO_TYPES[extensionOf(file)];
+        },
+        // The viewer adds the subtitles of a video to its player, see humhub.ui.gallery.js
+        // A file the API knows (with an id) may have subtitles
+        subtitlesUrl(file) {
+            return this.isVideo(file) && file.id ? apiUrl(`file/${file.id}/variants`) : null;
         },
         ratioOf(file) {
             if (hasSize(file)) {

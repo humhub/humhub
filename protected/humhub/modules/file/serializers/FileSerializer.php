@@ -15,6 +15,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\libs\FileVariants;
 use humhub\modules\file\libs\MediaHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileHistory;
@@ -156,5 +157,41 @@ class FileSerializer
         }
 
         return $versions;
+    }
+
+    /**
+     * All variants of a file, the files stored next to its content (see {@see FileVariants}), ordered by name
+     *
+     * @return array{
+     *     name: string,
+     *     persistent: bool,
+     *     mimeType: string,
+     *     size: int,
+     *     updatedAt: string,
+     *     url: string,
+     * }[]
+     */
+    public static function variants(File $file): array
+    {
+        return array_map(static fn(array $variant) => static::variant($file, $variant), (new FileVariants($file))->getAll());
+    }
+
+    /**
+     * One variant of a file
+     *
+     * @param array{name: string, persistent: bool, mimeType: string, size: int, updatedAt: int} $variant see
+     * {@see FileVariants::getAll()}
+     */
+    public static function variant(File $file, array $variant): array
+    {
+        return [
+            'name' => $variant['name'],
+            'persistent' => $variant['persistent'],
+            'mimeType' => $variant['mimeType'],
+            'size' => $variant['size'],
+            'updatedAt' => gmdate('c', $variant['updatedAt']),
+            // The time of the last change busts the cache of a variant that is rewritten
+            'url' => $file->getUrl(['variant' => $variant['name'], 'v' => $variant['updatedAt']], true),
+        ];
     }
 }

@@ -145,6 +145,14 @@ class Module extends \humhub\components\Module
     public $mediaInfoReader = null;
 
     /**
+     * @var string[] Variants that go with the file, by exact name or, when the pattern ends in `*`, by
+     * prefix (`subtitles-*`; a `*` elsewhere is no wildcard): they are kept when a new content is stored and by
+     * `php yii file/delete-variants`. Modules may add patterns for their own variants.
+     * @since 1.20
+     */
+    public array $persistentVariants = ['old-*', 'subtitles-*', 'captions-*'];
+
+    /**
      * Whether a record's attachment list leaves out the media files its preview above shows (setting
      * `excludeMediaFilesPreview`, on unless an admin switched it off)
      *

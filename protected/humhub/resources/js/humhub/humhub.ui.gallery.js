@@ -1,6 +1,6 @@
 /**
  * The media viewer: opens the images and videos marked with `data-ui-gallery` in an accessible dialog with zoom,
- * swipe, a video player and a download button. See docs/develop/ui-js-gallery.md for the contract.
+ * swipe, a video player and a download button (or an "Open" button, for files that offer more). See docs/develop/ui-js-gallery.md for the contract.
  *
  * PhotoSwipe (the global `PhotoSwipe`, PhotoSwipeAsset) is the engine and stays internal: modules use the markup,
  * `open()` and the events `humhub:ui:gallery:opened` / `humhub:ui:gallery:closed` only.
@@ -58,8 +58,8 @@ humhub.module('ui.gallery', function (module, require, $) {
      * The viewer's item of a `[data-ui-gallery]` element
      *
      * @param {Element} el a link to the file, or an image
-     * @returns {{type: string, src: string, download: string, alt: string, caption: string, msrc: (string|undefined),
-     *     width: number, height: number, element: Element}}
+     * @returns {{type: string, src: string, download: string, open: string, subtitles: string, alt: string,
+     *     caption: string, msrc: (string|undefined), width: number, height: number, element: Element}}
      */
     var item = function (el) {
         var original = el.getAttribute('href') || el.getAttribute('src') || '';
@@ -71,6 +71,8 @@ humhub.module('ui.gallery', function (module, require, $) {
             type: isVideo ? 'video' : 'image',
             src: el.getAttribute('data-ui-gallery-src') || original,
             download: original,
+            open: el.getAttribute('data-ui-gallery-open-url') || '',
+            subtitles: el.getAttribute('data-ui-gallery-subtitles-url') || '',
             alt: thumb ? thumb.getAttribute('alt') || '' : '',
             caption: el.getAttribute('title') || '',
             msrc: thumb && thumb !== el ? (thumb.currentSrc || thumb.src) : undefined,
@@ -193,6 +195,82 @@ humhub.module('ui.gallery', function (module, require, $) {
         }
     };
 
+    // The page language's primary subtag ("pt-BR" and "pt" are both "pt")
+    var primaryLanguage = function (language) {
+        return String(language || '').toLowerCase().split(/[-_]/)[0];
+    };
+
+    // The variants request per URL, one for the page: slides, reopened viewers and neighbour preloads share it. A failed
+    // request is forgotten, the next slide asks again.
+    var variantRequests = new Map();
+
+    var fetchVariants = function (url) {
+        if (!variantRequests.has(url)) {
+            variantRequests.set(url, require('client').get(url).catch(function (e) {
+                variantRequests.delete(url);
+                throw e;
+            }));
+        }
+        return variantRequests.get(url);
+    };
+
+    // A variant is a track by its name: `subtitles-<language>.vtt` or `captions-<language>.vtt`
+    var parseSubtitleName = function (name) {
+        var match = /^(subtitles|captions)-([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.vtt$/.exec(String(name || ''));
+        return match ? {kind: match[1], language: match[2]} : null;
+    };
+
+    // The name of a language in the page language, first letter upper case; the code if the browser has none
+    var languageLabel = function (language) {
+        try {
+            var locale = document.documentElement.lang || 'en';
+            var name = new Intl.DisplayNames([locale], {type: 'language'}).of(language);
+            return name ? name.charAt(0).toLocaleUpperCase(locale) + name.slice(1) : language;
+        } catch (e) {
+            return language;
+        }
+    };
+
+    // The subtitles of a file (the variants API) as tracks of the video. A failed request leaves the video without.
+    var addTracks = function (video, url) {
+        fetchVariants(url).then(function (response) {
+            var pageLanguage = primaryLanguage(document.documentElement.lang);
+            var defaulted = false;
+
+            $.each((response && response.results) || [], function (i, variant) {
+                var parsed = parseSubtitleName(variant.name);
+                if (!parsed || !variant.url) {
+                    return;
+                }
+
+                var track = document.createElement('track');
+                track.kind = parsed.kind === 'captions' ? 'captions' : 'subtitles';
+                track.srclang = parsed.language;
+                track.label = languageLabel(parsed.language);
+                track.src = variant.url;
+                if (!defaulted && pageLanguage && primaryLanguage(parsed.language) === pageLanguage) {
+                    track.default = true;
+                    defaulted = true;
+                }
+                video.appendChild(track);
+            });
+        }).catch(function (e) {
+            module.log.warn('The subtitles of the video cannot be loaded', e);
+        });
+    };
+
+    // The subtitles of a file changed (the manager saved or deleted one): the next slide asks again
+    var forgetVariants = function (evt) {
+        var fileId = evt.detail && evt.detail.fileId;
+        variantRequests.forEach(function (request, url) {
+            if (new RegExp('(^|[/=])file/' + fileId + '/variants').test(url)) {
+                variantRequests.delete(url);
+            }
+        });
+    };
+
+    document.addEventListener('humhub:file:variants-changed', forgetVariants);
+
     var videoElement = function (data) {
         // Without a parent: PhotoSwipe appends custom content only then, jQuery would leave it in a fragment
         var wrapper = document.createElement('div');
@@ -216,6 +294,9 @@ humhub.module('ui.gallery', function (module, require, $) {
             wrapper.replaceChildren(errorElement(text('videoError'), data.download));
         });
         wrapper.appendChild(video);
+        if (data.subtitles) {
+            addTracks(video, data.subtitles);
+        }
         return wrapper;
     };
 
@@ -223,6 +304,32 @@ humhub.module('ui.gallery', function (module, require, $) {
     var registerUi = function (pswp) {
         pswp.element.setAttribute('aria-modal', 'true');
         pswp.element.setAttribute('aria-label', text('dialog'));
+
+        // Download and Open take turns per slide; a slide change that hides the button with the focus moves it to the other
+        var buttons = {};
+        var slideData = function () {
+            return (pswp.currSlide ? pswp.currSlide.data : pswp.getItemData(pswp.currIndex)) || {};
+        };
+        var syncButtons = function () {
+            var data = slideData();
+            var focused = document.activeElement;
+
+            if (buttons.download) {
+                buttons.download.setAttribute('href', data.download);
+                // A file with an "Open" button has no download button
+                buttons.download.hidden = !!data.open;
+            }
+            if (buttons.open) {
+                buttons.open.hidden = !data.open;
+            }
+            if (buttons.download && buttons.open) {
+                if (focused === buttons.download && buttons.download.hidden) {
+                    buttons.open.focus();
+                } else if (focused === buttons.open && buttons.open.hidden) {
+                    buttons.download.focus();
+                }
+            }
+        };
 
         pswp.ui.registerElement({
             name: 'download',
@@ -234,11 +341,40 @@ humhub.module('ui.gallery', function (module, require, $) {
             onInit: function (el, pswp) {
                 el.setAttribute('download', '');
                 el.setAttribute('rel', 'noopener');
-                var update = function () {
-                    el.setAttribute('href', pswp.currSlide ? pswp.currSlide.data.download : pswp.getItemData(pswp.currIndex).download);
-                };
-                pswp.on('change', update);
-                update();
+                buttons.download = el;
+
+                pswp.on('change', syncButtons);
+                syncButtons();
+            }
+        });
+
+        // A file that offers more than the download (the "Open file" modal) gets "Open" in its place, per slide
+        pswp.ui.registerElement({
+            name: 'open',
+            className: 'hh-gallery-open',
+            order: 8,
+            isButton: true,
+            title: text('open'),
+            html: '<i class="ti ti-dots" aria-hidden="true"></i>',
+            onInit: function (el, pswp) {
+                buttons.open = el;
+
+                el.addEventListener('click', function () {
+                    var data = slideData();
+                    if (!data.open) {
+                        return;
+                    }
+                    // The modal returns the focus to what has it when it opens: the tile of the slide, as the
+                    // button of the viewer is gone by then
+                    var tile = data.element;
+                    if (tile && tile.isConnected && typeof tile.focus === 'function') {
+                        tile.focus();
+                    }
+                    pswp.close();
+                    require('ui.modal').global.load(data.open);
+                });
+                pswp.on('change', syncButtons);
+                syncButtons();
             }
         });
 

@@ -7,6 +7,7 @@ use humhub\modules\comment\helpers\IdHelper;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\serializers\CommentSerializer;
+use humhub\modules\comment\services\CommentFileViewUrls;
 use humhub\modules\comment\services\CommentPayloadCache;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
@@ -98,12 +99,12 @@ class Comments extends VueWidget
         // Serialized by the same code the island's own API calls go through
         // (`CommentSerializer`), so embedding the first window here purely saves the
         // island its initial request - shape and semantics are identical.
-        $initial = CommentPayloadCache::window(
+        $initial = CommentFileViewUrls::forWindow(CommentPayloadCache::window(
             $this->content,
             null,
             commentId: $anchorCommentId,
             limit: $anchorCommentId ? $this->module->commentsPreviewMax : $this->getLimit(),
-        );
+        ));
 
         return [
             'contentId' => $this->content->id,

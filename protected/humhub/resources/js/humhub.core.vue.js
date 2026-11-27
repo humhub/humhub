@@ -4121,20 +4121,20 @@
     class: "data-table-col-actions"
   };
   const _hoisted_19$2 = { class: "visually-hidden" };
-  const _hoisted_20$1 = { key: 0 };
-  const _hoisted_21$1 = {
+  const _hoisted_20$2 = { key: 0 };
+  const _hoisted_21$2 = {
     key: 0,
     class: "data-table-col-select"
   };
-  const _hoisted_22$1 = {
+  const _hoisted_22$2 = {
     key: 0,
     class: "data-table-main"
   };
-  const _hoisted_23$1 = {
+  const _hoisted_23$2 = {
     key: 1,
     class: "placeholder col-6"
   };
-  const _hoisted_24 = {
+  const _hoisted_24$1 = {
     key: 1,
     class: "data-table-col-details"
   };
@@ -4440,7 +4440,7 @@
                   ])) : vue.createCommentVNode("v-if", true)
                 ])
               ]),
-              $data.loading && !$data.rows.length && !$data.error ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_20$1, [
+              $data.loading && !$data.rows.length && !$data.error ? (vue.openBlock(), vue.createElementBlock("tbody", _hoisted_20$2, [
                 (vue.openBlock(true), vue.createElementBlock(
                   vue.Fragment,
                   null,
@@ -4450,7 +4450,7 @@
                       class: "data-table-skeleton placeholder-glow",
                       "aria-hidden": "true"
                     }, [
-                      $options.showSelect ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_21$1)) : vue.createCommentVNode("v-if", true),
+                      $options.showSelect ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_21$2)) : vue.createCommentVNode("v-if", true),
                       (vue.openBlock(true), vue.createElementBlock(
                         vue.Fragment,
                         null,
@@ -4462,7 +4462,7 @@
                               class: vue.normalizeClass(`data-table-col-${column.type}`)
                             },
                             [
-                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_22$1, [..._cache[15] || (_cache[15] = [
+                              column.type === "main" ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_22$2, [..._cache[15] || (_cache[15] = [
                                 vue.createElementVNode(
                                   "span",
                                   { class: "placeholder data-table-main-image" },
@@ -4480,7 +4480,7 @@
                                   -1
                                   /* CACHED */
                                 )
-                              ])])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_23$1))
+                              ])])) : (vue.openBlock(), vue.createElementBlock("span", _hoisted_23$2))
                             ],
                             2
                             /* CLASS */
@@ -4489,7 +4489,7 @@
                         128
                         /* KEYED_FRAGMENT */
                       )),
-                      $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_24)) : vue.createCommentVNode("v-if", true),
+                      $options.hasDetails ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_24$1)) : vue.createCommentVNode("v-if", true),
                       $options.hasActionsColumn ? (vue.openBlock(), vue.createElementBlock("td", _hoisted_25)) : vue.createCommentVNode("v-if", true)
                     ]);
                   }),
@@ -5830,7 +5830,26 @@
     const secs = String(whole % 60).padStart(2, "0");
     return hours > 0 ? `${hours}:${String(minutes).padStart(2, "0")}:${secs}` : `${minutes}:${secs}`;
   }
-  const state = vue.reactive({ guid: null, playing: false, time: 0, duration: null });
+  const NAME = /^(subtitles|captions)-([a-z]{2,3}(?:-[A-Za-z0-9]{2,8})*)\.vtt$/;
+  function parseSubtitleName(name) {
+    const match = NAME.exec(String(name || ""));
+    return match ? { kind: match[1], language: match[2] } : null;
+  }
+  function subtitleTracks(variants2) {
+    return (Array.isArray(variants2) ? variants2 : []).flatMap((variant) => {
+      const parsed = variant && variant.url ? parseSubtitleName(variant.name) : null;
+      return parsed ? [{ ...variant, ...parsed }] : [];
+    });
+  }
+  function languageLabel(language, locale = document.documentElement.lang) {
+    try {
+      const name = new Intl.DisplayNames([locale || "en"], { type: "language" }).of(language);
+      return name ? name.charAt(0).toLocaleUpperCase(locale || "en") + name.slice(1) : language;
+    } catch (e) {
+      return language;
+    }
+  }
+  const state = vue.reactive({ guid: null, playing: false, time: 0, duration: null, tracks: [], trackLanguage: null, cue: "" });
   const failed = vue.reactive({});
   const rows = /* @__PURE__ */ new Map();
   let playlist = [];
@@ -5838,6 +5857,8 @@
   let current = null;
   let durationKnown = false;
   let pendingAnnouncement = null;
+  const variants = /* @__PURE__ */ new Map();
+  let trackElements = /* @__PURE__ */ new Map();
   const MEDIA_EVENTS = {
     play: syncPlaying,
     pause: syncPlaying,
@@ -5893,6 +5914,7 @@
     current = null;
     pendingAnnouncement = null;
     durationKnown = false;
+    clearTracks();
     if (audio) {
       audio.pause();
       audio.removeAttribute("src");
@@ -5941,12 +5963,88 @@
     start(element);
   }
   function load(element, file) {
+    clearTracks();
     element.src = file.url;
+    addTracks(element, file);
+  }
+  function fetchVariants(file) {
+    if (!variants.has(file.id)) {
+      const request = vue$1.client.get(vue$1.apiUrl(`file/${file.id}/variants`)).then((response) => subtitleTracks(response && response.results)).catch(() => {
+        variants.delete(file.id);
+        return [];
+      });
+      variants.set(file.id, request);
+    }
+    return variants.get(file.id);
+  }
+  document.addEventListener("humhub:file:variants-changed", (event) => {
+    var _a;
+    const fileId = Number((_a = event.detail) == null ? void 0 : _a.fileId);
+    variants.forEach((request, id) => Number(id) === fileId && variants.delete(id));
+    if (audio && current && Number(current.id) === fileId) {
+      clearTracks();
+      addTracks(audio, current);
+    }
+  });
+  const primaryLanguage = (language) => String(language || "").toLowerCase().split(/[-_]/)[0];
+  function plainText(text) {
+    const entities = { "&amp;": "&", "&lt;": "<", "&gt;": ">", "&nbsp;": " ", "&lrm;": "‎", "&rlm;": "‏" };
+    return String(text ?? "").replace(/<[^>]*>/g, "").replace(/&(amp|lt|gt|nbsp|lrm|rlm);/g, (entity) => entities[entity]);
+  }
+  function updateCue(language, track) {
+    if (state.trackLanguage !== language) {
+      return;
+    }
+    state.cue = Array.from(track.activeCues || [], (cue) => plainText(cue.text)).join("\n");
+  }
+  function clearTracks() {
+    trackElements.forEach((element) => element.remove());
+    trackElements = /* @__PURE__ */ new Map();
+    state.tracks = [];
+    state.trackLanguage = null;
+    state.cue = "";
+  }
+  function addTracks(element, file) {
+    if (!file.id) {
+      return;
+    }
+    fetchVariants(file).then((list) => {
+      if (current !== file || trackElements.size > 0 || list.length === 0) {
+        return;
+      }
+      const preferred = list.find((variant) => primaryLanguage(variant.language) === primaryLanguage(document.documentElement.lang));
+      list.forEach((variant) => {
+        var _a;
+        const track = document.createElement("track");
+        track.kind = variant.kind === "captions" ? "captions" : "subtitles";
+        track.srclang = variant.language;
+        track.label = languageLabel(variant.language);
+        track.src = variant.url;
+        element.appendChild(track);
+        (_a = track.track) == null ? void 0 : _a.addEventListener("cuechange", () => updateCue(variant.language, track.track));
+        trackElements.set(variant.language, track);
+      });
+      state.tracks = list.map(({ language, kind }) => ({ language, label: languageLabel(language), kind }));
+      setTrack(preferred ? preferred.language : null);
+    });
   }
   function start(element) {
     const promise = element.play();
     if (promise && typeof promise.catch === "function") {
       promise.catch(syncPlaying);
+    }
+  }
+  function setTrack(language) {
+    const shown = language !== null && trackElements.has(language) ? language : null;
+    state.trackLanguage = shown;
+    state.cue = "";
+    trackElements.forEach((element, key) => {
+      if (element.track) {
+        element.track.mode = key === shown ? "hidden" : "disabled";
+      }
+    });
+    if (shown !== null) {
+      updateCue(shown, trackElements.get(shown).track || {});
     }
   }
   function seek(seconds) {
@@ -6038,6 +6136,9 @@
         }
       }
     },
+    data() {
+      return { lastLanguage: null };
+    },
     mounted() {
       if (this.playable) {
         register(this.file.guid);
@@ -6054,6 +6155,31 @@
       },
       playing() {
         return this.current && state.playing;
+      },
+      // The subtitles of the current file
+      tracks() {
+        return this.current ? state.tracks : [];
+      },
+      hasTracks() {
+        return this.tracks.length > 0;
+      },
+      captionsOn() {
+        return state.trackLanguage !== null;
+      },
+      cue() {
+        return state.cue;
+      },
+      // What the select shows while the captions are off: the one a toggle would turn on
+      selectedLanguage() {
+        var _a;
+        return state.trackLanguage ?? this.lastLanguage ?? ((_a = this.tracks[0]) == null ? void 0 : _a.language);
+      },
+      // A fixed name: `aria-pressed` tells whether they are on
+      captionsLabel() {
+        return vue$1.i18n.t("FileModule.base", "Subtitles");
+      },
+      trackLabel() {
+        return vue$1.i18n.t("FileModule.base", "Subtitle language");
       },
       failed() {
         return this.playable && isFailed(this.file.guid);
@@ -6162,7 +6288,7 @@
       // the update of the DOM, so the focus is still where it was.
       keepFocus() {
         const active = document.activeElement;
-        const lost = this.$refs.seek && active === this.$refs.seek || this.$refs.play && active === this.$refs.play;
+        const lost = ["seek", "play", "captions", "track"].some((ref) => this.$refs[ref] && active === this.$refs[ref]);
         if (!lost) {
           return;
         }
@@ -6174,6 +6300,18 @@
       },
       onPlay() {
         toggle(this.file, this.playlist || [this.file]);
+      },
+      onCaptions() {
+        if (this.captionsOn) {
+          this.lastLanguage = state.trackLanguage;
+          setTrack(null);
+        } else {
+          setTrack(this.selectedLanguage);
+        }
+      },
+      onTrack(event) {
+        this.lastLanguage = event.target.value;
+        setTrack(event.target.value);
       },
       onSeek(event) {
         seek(Number(event.target.value));
@@ -6216,20 +6354,31 @@
     key: 4,
     class: "file-row-reason"
   };
-  const _hoisted_14$1 = ["aria-label", "data-bs-title"];
-  const _hoisted_15$1 = ["aria-label", "aria-disabled", "aria-busy", "data-bs-title"];
-  const _hoisted_16$1 = {
+  const _hoisted_14$1 = {
+    key: 1,
+    class: "file-row-subtitles"
+  };
+  const _hoisted_15$1 = ["aria-label", "value"];
+  const _hoisted_16$1 = ["value"];
+  const _hoisted_17$1 = ["aria-label", "aria-pressed", "data-bs-title"];
+  const _hoisted_18$1 = ["aria-label", "data-bs-title"];
+  const _hoisted_19$1 = ["aria-label", "aria-disabled", "aria-busy", "data-bs-title"];
+  const _hoisted_20$1 = {
     key: 0,
     class: "spinner-border spinner-border-sm",
     "aria-hidden": "true"
   };
-  const _hoisted_17$1 = {
+  const _hoisted_21$1 = {
     key: 1,
     class: "ti ti-trash",
     "aria-hidden": "true"
   };
-  const _hoisted_18$1 = ["href", "aria-label", "data-bs-title"];
-  const _hoisted_19$1 = ["max", "value", "aria-label", "aria-valuetext"];
+  const _hoisted_22$1 = ["href", "aria-label", "data-bs-title"];
+  const _hoisted_23$1 = ["max", "value", "aria-label", "aria-valuetext"];
+  const _hoisted_24 = {
+    key: 6,
+    class: "file-row-caption"
+  };
   function _sfc_render$l(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_ProgressFrame = vue.resolveComponent("ProgressFrame");
     return vue.openBlock(), vue.createElementBlock("div", {
@@ -6238,7 +6387,8 @@
         "is-processing": $options.processing,
         "is-invalid": $options.invalid,
         "is-current": $options.current,
-        "is-failed": $options.failed
+        "is-failed": $options.failed,
+        "has-subtitles": $options.hasTracks
       }]),
       role: "listitem",
       "data-preview-guid": $props.file.guid
@@ -6346,15 +6496,59 @@
         indeterminate: $options.processing,
         label: $options.uploadingLabel
       }, null, 8, ["value", "indeterminate", "label"])) : vue.createCommentVNode("v-if", true),
+      $options.hasTracks ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_14$1, [
+        $options.tracks.length > 1 ? (vue.openBlock(), vue.createElementBlock("select", {
+          key: 0,
+          ref: "track",
+          class: "form-select form-select-sm file-row-track",
+          "aria-label": $options.trackLabel,
+          value: $options.selectedLanguage,
+          onChange: _cache[0] || (_cache[0] = (...args) => $options.onTrack && $options.onTrack(...args))
+        }, [
+          (vue.openBlock(true), vue.createElementBlock(
+            vue.Fragment,
+            null,
+            vue.renderList($options.tracks, (track) => {
+              return vue.openBlock(), vue.createElementBlock("option", {
+                key: track.language,
+                value: track.language
+              }, vue.toDisplayString(track.label), 9, _hoisted_16$1);
+            }),
+            128
+            /* KEYED_FRAGMENT */
+          ))
+        ], 40, _hoisted_15$1)) : vue.createCommentVNode("v-if", true),
+        vue.createElementVNode("button", {
+          ref: "captions",
+          type: "button",
+          class: "btn btn-ghost btn-sm btn-icon-only file-row-captions",
+          "aria-label": $options.captionsLabel,
+          "aria-pressed": $options.captionsOn ? "true" : "false",
+          "data-bs-title": $options.captionsLabel,
+          "data-bs-toggle": "tooltip",
+          onClick: _cache[1] || (_cache[1] = (...args) => $options.onCaptions && $options.onCaptions(...args))
+        }, [..._cache[6] || (_cache[6] = [
+          vue.createElementVNode(
+            "i",
+            {
+              class: "ti ti-badge-cc",
+              "aria-hidden": "true"
+            },
+            null,
+            -1
+            /* CACHED */
+          )
+        ])], 8, _hoisted_17$1)
+      ])) : vue.createCommentVNode("v-if", true),
       $options.canPlay ? (vue.openBlock(), vue.createElementBlock("button", {
-        key: 1,
+        key: 2,
         ref: "play",
         type: "button",
         class: "btn btn-ghost btn-sm btn-icon-only file-row-play",
         "aria-label": $options.playLabel,
         "data-bs-title": $options.playLabel,
         "data-bs-toggle": "tooltip",
-        onClick: _cache[0] || (_cache[0] = (...args) => $options.onPlay && $options.onPlay(...args))
+        onClick: _cache[2] || (_cache[2] = (...args) => $options.onPlay && $options.onPlay(...args))
       }, [
         vue.createElementVNode(
           "i",
@@ -6366,9 +6560,9 @@
           2
           /* CLASS */
         )
-      ], 8, _hoisted_14$1)) : vue.createCommentVNode("v-if", true),
+      ], 8, _hoisted_18$1)) : vue.createCommentVNode("v-if", true),
       $props.action === "remove" ? (vue.openBlock(), vue.createElementBlock("button", {
-        key: 2,
+        key: 3,
         type: "button",
         class: "btn btn-ghost btn-ghost-danger btn-sm btn-icon-only file-row-action",
         "aria-label": $options.removeLabel,
@@ -6376,18 +6570,18 @@
         "aria-busy": $props.busy ? "true" : null,
         "data-bs-title": $options.removeLabel,
         "data-bs-toggle": "tooltip",
-        onClick: _cache[1] || (_cache[1] = (...args) => $options.onRemove && $options.onRemove(...args))
+        onClick: _cache[3] || (_cache[3] = (...args) => $options.onRemove && $options.onRemove(...args))
       }, [
-        $props.busy ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_16$1)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_17$1))
-      ], 8, _hoisted_15$1)) : $options.linked ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
-        key: 3,
+        $props.busy ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_20$1)) : (vue.openBlock(), vue.createElementBlock("i", _hoisted_21$1))
+      ], 8, _hoisted_19$1)) : $options.linked ? (vue.openBlock(), vue.createElementBlock("a", vue.mergeProps({
+        key: 4,
         class: "btn btn-ghost btn-sm btn-icon-only file-row-action",
         href: $props.file.downloadUrl || $props.file.url
       }, $options.downloadAttributes, {
         "aria-label": $options.downloadLabel,
         "data-bs-title": $options.downloadLabel,
         "data-bs-toggle": "tooltip"
-      }), [..._cache[4] || (_cache[4] = [
+      }), [..._cache[7] || (_cache[7] = [
         vue.createElementVNode(
           "i",
           {
@@ -6398,9 +6592,9 @@
           -1
           /* CACHED */
         )
-      ])], 16, _hoisted_18$1)) : vue.createCommentVNode("v-if", true),
+      ])], 16, _hoisted_22$1)) : vue.createCommentVNode("v-if", true),
       $options.current ? (vue.openBlock(), vue.createElementBlock("input", {
-        key: 4,
+        key: 5,
         ref: "seek",
         type: "range",
         class: "form-range file-row-seek",
@@ -6410,9 +6604,16 @@
         value: $options.time,
         "aria-label": $options.seekLabel,
         "aria-valuetext": $options.seekValueText,
-        onInput: _cache[2] || (_cache[2] = (...args) => $options.onSeek && $options.onSeek(...args)),
-        onKeydown: _cache[3] || (_cache[3] = (...args) => $options.onSeekKey && $options.onSeekKey(...args))
-      }, null, 40, _hoisted_19$1)) : vue.createCommentVNode("v-if", true)
+        onInput: _cache[4] || (_cache[4] = (...args) => $options.onSeek && $options.onSeek(...args)),
+        onKeydown: _cache[5] || (_cache[5] = (...args) => $options.onSeekKey && $options.onSeekKey(...args))
+      }, null, 40, _hoisted_23$1)) : vue.createCommentVNode("v-if", true),
+      $options.hasTracks && $options.captionsOn ? (vue.openBlock(), vue.createElementBlock(
+        "div",
+        _hoisted_24,
+        vue.toDisplayString($options.cue),
+        1
+        /* TEXT */
+      )) : vue.createCommentVNode("v-if", true)
     ], 10, _hoisted_1$i);
   }
   const C11 = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["render", _sfc_render$l]]);

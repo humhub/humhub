@@ -372,9 +372,17 @@ components:
           type: array
           description: |
             The attachments listed below the comment. A file the message embeds (`file-guid:`)
-            is not among them.
+            is not among them. Each file may carry `viewUrl`, which is not part of the `File`
+            schema: the URL a file handler contributed to open the file in a modal (an office or
+            subtitles editor), absolute, only when there is one for this file and the caller.
+            It depends on the caller, so a client must not cache it across users.
           items:
-            $ref: "common.yaml#/components/schemas/File"
+            allOf:
+              - $ref: "common.yaml#/components/schemas/File"
+              - type: object
+                properties:
+                  viewUrl:
+                    type: string
         childCount:
           type: integer
           description: Number of replies

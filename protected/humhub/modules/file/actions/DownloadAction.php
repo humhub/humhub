@@ -16,6 +16,7 @@ use humhub\components\fs\MountConfigInterface;
 use humhub\modules\file\converter\DisplayImage;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\libs\FileVariants;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
@@ -108,9 +109,14 @@ class DownloadAction extends Action
         $fileName = $this->getFileName();
         $mimeType = $this->file->store->mimeType($this->variant);
 
+        // The subtitles of a `<track>`: shown inline and streamed from here, a redirect to a storage URL would need CORS
+        $variantContentType = $this->variant !== null ? FileVariants::getContentType($this->variant) : null;
+
         $options = [
-            'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes, true)),
-            'mimeType' => $mimeType,
+            'inline' => $variantContentType !== null
+                ? !$this->download
+                : (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes, true)),
+            'mimeType' => $variantContentType ?? $mimeType,
         ];
 
         $dataMountConfig = Yii::$app->fs->getDataMountConfig();
@@ -120,7 +126,7 @@ class DownloadAction extends Action
                 $fileName,
                 $options,
             );
-        } elseif ($dataMountConfig->useTemporaryUrls()) {
+        } elseif ($variantContentType === null && $dataMountConfig->useTemporaryUrls()) {
             // The object key ends in `file`, so the backend has to be told the real file name and
             // mime type - otherwise the browser derives both from the redirect target's path.
             $url = Yii::$app->fs->getDataMount()->temporaryUrl(

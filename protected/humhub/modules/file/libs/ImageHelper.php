@@ -268,15 +268,17 @@ class ImageHelper
 
     private static function storeDimensions(File $file, int $width, int $height): void
     {
-        $file->setMetadata(['width' => $width, 'height' => $height]);
-        $file->updateAttributes(['metadata' => (string)$file->getMetadata()]);
+        FileMetadata::update($file, static function (Metadata $metadata) use ($width, $height): void {
+            $metadata->width = $width;
+            $metadata->height = $height;
+        });
     }
 
     private static function removeDimensions(File $file): void
     {
-        $metadata = $file->getMetadata();
-        unset($metadata->width, $metadata->height);
-        $file->updateAttributes(['metadata' => count($metadata) > 0 ? (string)$metadata : null]);
+        FileMetadata::update($file, static function (Metadata $metadata): void {
+            unset($metadata->width, $metadata->height);
+        });
     }
 
     /**

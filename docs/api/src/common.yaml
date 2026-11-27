@@ -230,6 +230,33 @@ components:
             is what tells a client to render the coloured acronym tile instead.
         contentContainerId:
           type: [integer, 'null']
+    FileVariant:
+      title: FileVariant
+      type: object
+      description: |
+        A file variant: a file stored next to the original — derived (previews, conversions; regenerated, dropped
+        with new content) or persistent (versions, subtitles; kept until deleted). Told apart by its name only
+        (`preview-image`, `display-image`, `old-<id>` for an earlier version, `subtitles-<language>.vtt` and
+        `captions-<language>.vtt` for WebVTT subtitles and captions).
+      properties:
+        name:
+          type: string
+          description: Name of the variant
+        persistent:
+          type: boolean
+          description: Whether the variant is kept when the file gets a new content
+        mimeType:
+          type: string
+        size:
+          type: integer
+          description: Size in bytes
+        updatedAt:
+          type: string
+          format: date-time
+        url:
+          type: string
+          description: |
+            Absolute download URL of the variant, with the time of the last change as `v` for cache busting
     File:
       title: File
       type: object
