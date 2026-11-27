@@ -208,6 +208,12 @@ abstract class BaseController extends Controller
             // the web UI (irrelevant for the session-less token methods).
             'authTimeout' => $appUser->authTimeout,
             'absoluteAuthTimeout' => $appUser->absoluteAuthTimeout,
+            // The configured impersonation restrictions (e.g. hidden private content) apply to
+            // API requests as well
+            'impersonation' => [
+                'allowPrivateContentAccess' => $appUser->getImpersonation()->allowPrivateContentAccess,
+                'log' => $appUser->getImpersonation()->log,
+            ],
         ], $this->getUserComponentConfig()));
 
         Yii::$app->response->format = 'json';

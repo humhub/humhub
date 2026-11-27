@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Fix: API requests keep the impersonation settings of the user component, e.g. `allowPrivateContentAccess => false` hides private content during an impersonation in API calls as well
 - Enh #8798: Subtitles for video and audio files (persistent WebVTT variants per language), "Open" in the media viewer
 - Fix #8798: Deleting a file version or a file variant deleted the file's whole directory
 - Fix: The versions API of a file answers only for records that keep a file history; it named the uploader of any attachment
