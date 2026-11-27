@@ -14,7 +14,7 @@
         </div>
 
         <div v-if="showMoreButton && hasMore && !loading" class="text-center p-2">
-            <button type="button" class="btn btn-light btn-sm" @click="loadMore">{{ showMoreLabel }}</button>
+            <button type="button" class="btn btn-more" @click="loadMore">{{ showMoreLabel }}</button>
         </div>
     </div>
 </template>

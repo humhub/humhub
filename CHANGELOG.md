@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: "Show more" as a pill button (`.btn-more`) for comments, replies, card and tile browsers and notifications; comments get "Show less" and grow in and out
 - Fix: Tooltips close on scrolling instead of moving with their trigger out of a list such as the activity box
 - Fix: Checked boxes, radios and switches at 3:1 on dark surfaces in high contrast (WCAG 1.4.11)
 - Fix: Dots in the dark mode and in high contrast at 3:1 on dark surfaces (WCAG 1.4.11)

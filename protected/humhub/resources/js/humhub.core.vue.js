@@ -5315,7 +5315,7 @@
               {
                 key: 1,
                 type: "button",
-                class: "btn btn-light btn-sm",
+                class: "btn btn-more",
                 onClick: _cache[2] || (_cache[2] = ($event) => _ctx.$emit("load-more"))
               },
               vue.toDisplayString($options.moreLabel),
@@ -9930,7 +9930,7 @@
         vue.createElementVNode("button", {
           ref: "sentinel",
           type: "button",
-          class: "btn btn-light",
+          class: "btn btn-more",
           disabled: $props.loadingMore,
           onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$emit("load-more"))
         }, vue.toDisplayString($props.loadingMore ? $options.loadingLabel : $options.moreLabel), 9, _hoisted_12$1)

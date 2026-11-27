@@ -10,6 +10,12 @@
 $btn-icon-size: $font-size-lg !default;
 $btn-icon-only-icon-size: $btn-icon-size !default;
 
+// "Show more" of a list (`.btn-more`): a small pill
+$btn-more-padding-y: $btn-padding-y-sm !default;
+$btn-more-padding-x: $btn-padding-x !default;
+$btn-more-font-size: $btn-font-size-sm !default;
+$btn-more-border-radius: $border-radius-pill !default;
+
 @if not $prev-button {
     .btn {
         --hh-btn-gap: #{$spacer * .5};
@@ -115,6 +121,29 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
         --bs-btn-disabled-color: var(--bs-tertiary-color);
         --bs-btn-disabled-bg: transparent;
         --bs-btn-disabled-border-color: transparent;
+        --bs-btn-box-shadow: none;
+        --bs-btn-active-shadow: none;
+    }
+
+    // "Show more" above or below a list (comments, replies, cards, notifications): a small pill on the surface
+    // with a border, which reads on a card, a tinted area and the page in every colour mode; the accent on hover
+    .btn-more {
+        --bs-btn-padding-y: #{$btn-more-padding-y};
+        --bs-btn-padding-x: #{$btn-more-padding-x};
+        --bs-btn-font-size: #{$btn-more-font-size};
+        --bs-btn-border-radius: #{$btn-more-border-radius};
+        --bs-btn-color: var(--bs-body-color);
+        --bs-btn-bg: var(--bs-body-bg);
+        --bs-btn-border-color: var(--bs-border-color);
+        --bs-btn-hover-color: var(--hh-accent-fg);
+        --bs-btn-hover-bg: var(--bs-body-bg);
+        --bs-btn-hover-border-color: var(--hh-accent-fg);
+        --bs-btn-active-color: var(--hh-accent-fg);
+        --bs-btn-active-bg: var(--bs-body-bg);
+        --bs-btn-active-border-color: var(--hh-accent-fg);
+        --bs-btn-disabled-color: var(--bs-body-color);
+        --bs-btn-disabled-bg: var(--bs-body-bg);
+        --bs-btn-disabled-border-color: var(--bs-border-color);
         --bs-btn-box-shadow: none;
         --bs-btn-active-shadow: none;
     }
