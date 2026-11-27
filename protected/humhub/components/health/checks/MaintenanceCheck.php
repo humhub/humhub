@@ -33,6 +33,6 @@ class MaintenanceCheck extends HealthCheck
     {
         return ($this->active ?? MaintenanceModeGate::isActive())
             ? HealthResult::warning('Maintenance mode enabled')
-            : HealthResult::ok();
+            : HealthResult::ok('off');
     }
 }

@@ -134,7 +134,10 @@ class OperationalChecksTest extends HumHubDbTestCase
 
     public function testMaintenance(): void
     {
-        $this->assertSame(HealthStatus::Ok, (new MaintenanceCheck(['active' => false]))->run()->status);
+        $off = (new MaintenanceCheck(['active' => false]))->run();
+        $this->assertSame(HealthStatus::Ok, $off->status);
+        $this->assertSame('off', $off->output);
+        $this->assertFalse($off->notable);
         $this->assertSame(HealthStatus::Warning, (new MaintenanceCheck(['active' => true]))->run()->status);
     }
 }
