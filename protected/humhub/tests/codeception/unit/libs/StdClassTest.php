@@ -13,7 +13,9 @@ use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidArgumentValueException;
 use humhub\libs\StdClass;
 use humhub\libs\StdClassConfigurable;
+use humhub\modules\file\libs\Metadata;
 use WeakReference;
+use Yii;
 
 /**
  * Class MimeHelperTest
@@ -172,5 +174,23 @@ class StdClassTest extends Unit
         gc_collect_cycles();
 
         static::assertNull($reference->get(), 'The config storage must not keep the instance alive');
+    }
+
+    /**
+     * A deprecation while the class is declared becomes an exception under Yii's error handler in debug mode, so the
+     * first use of a `StdClass` in a web request failed (e.g. reading file metadata)
+     */
+    public function testDeclaringTheClassesRaisesNoDeprecation()
+    {
+        $vendor = Yii::getAlias('@humhub/../vendor');
+        $code = 'require ' . var_export($vendor . '/autoload.php', true) . ';'
+            . 'require ' . var_export($vendor . '/yiisoft/yii2/Yii.php', true) . ';'
+            . 'Yii::setAlias("@humhub", ' . var_export(Yii::getAlias('@humhub'), true) . ');'
+            . 'exit(class_exists(' . var_export(Metadata::class, true) . ') ? 0 : 2);';
+
+        exec(escapeshellarg(PHP_BINARY) . ' -d error_reporting=-1 -d display_errors=stderr -r ' . escapeshellarg($code) . ' 2>&1', $output, $status);
+
+        static::assertSame(0, $status);
+        static::assertSame([], $output, implode("\n", $output));
     }
 }

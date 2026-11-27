@@ -464,6 +464,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
      * @inheritdoc
      * @noinspection PhpParamsInspection
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this);
@@ -474,6 +475,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
      * @return string|int|null
      * @noinspection PhpParamsInspection
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this);
@@ -483,6 +485,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
      * @inheritdoc
      * @noinspection PhpParamsInspection
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         next($this);
@@ -495,6 +498,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
         return $this->__isset($offset);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get(
@@ -502,6 +506,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
         );
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         return $this->__set(
@@ -510,6 +515,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
         );
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         return $this->__unset(
@@ -523,6 +529,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
      * @noinspection PhpParamsInspection
      * @noinspection PhpMissingReturnTypeInspection
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this);
@@ -535,6 +542,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
      * @return string|int the current key after seek
      * @noinspection PhpParamsInspection
      */
+    #[\ReturnTypeWillChange]
     public function seek($position)
     {
         if (
