@@ -167,7 +167,8 @@ How components combine into a whole page.
 
 These appear in the design but have no page yet. They follow when their implementation starts:
 
-- **Stream:** wall entry, composer, comments, topic chips, embedded media
+- **Stream:** wall entry, composer, comments, topic chips, embedded media (attached files use the file row of
+  [File Upload](file-upload.md))
 - **Module views:** tasks board, calendar, messages, notifications, marketplace dialogs
 
 ## Conventions

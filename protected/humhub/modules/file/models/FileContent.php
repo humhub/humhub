@@ -52,7 +52,7 @@ class FileContent extends File
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        $this->store->setContent($this->newFileContent);
+        $this->setStoredFileContent($this->newFileContent, true);
     }
 
     /**

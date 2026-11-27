@@ -8,15 +8,13 @@
 
 namespace humhub\libs;
 
-use Error;
 use humhub\exceptions\InvalidConfigTypeException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
 use RuntimeException;
-use SplObjectStorage;
 use Throwable;
-use UnexpectedValueException;
+use WeakMap;
 use WeakReference;
 use yii\base\UnknownPropertyException;
 
@@ -62,7 +60,10 @@ class StdClassConfig extends StdClass
      */
     protected bool $__StdClassConfig_isFixed = false;
 
-    private static SplObjectStorage $__StdClassConfig_config;
+    /**
+     * @var WeakMap The config of each parent, freed together with the parent
+     */
+    private static WeakMap $__StdClassConfig_config;
 
     /**
      * @var WeakReference Holding a reference to teh parent objet without increasing the reference count
@@ -287,21 +288,11 @@ class StdClassConfig extends StdClass
             ));
         }
 
-        try {
-            $config = self::$__StdClassConfig_config[$parent];
-        } catch (UnexpectedValueException) {
-            $config = null;
-        } catch (Error $e) {
-            if ($e->getMessage() === 'Typed static property ' . self::class . '::$__StdClassConfig_config must not be accessed before initialization') {
-                self::$__StdClassConfig_config = new SplObjectStorage();
-                $config = null;
-            }
-        }
+        self::$__StdClassConfig_config ??= new WeakMap();
+        $config = self::$__StdClassConfig_config[$parent] ?? null;
 
         if ($destroy) {
-            if ($config) {
-                unset(self::$__StdClassConfig_config[$parent]);
-            }
+            unset(self::$__StdClassConfig_config[$parent]);
         } elseif ($config === null) {
             self::$__StdClassConfig_config[$parent] = $config = new static($parent);
         }

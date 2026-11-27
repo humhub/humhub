@@ -5,6 +5,7 @@ use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\modules\file\Events;
+use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
 use humhub\components\ActiveRecord;
 
@@ -27,5 +28,6 @@ return [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onBeforeActiveRecordDelete']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
+        ['class' => File::class, 'event' => File::EVENT_AFTER_NEW_STORED_FILE, 'callback' => [Events::class, 'onAfterNewStoredFile']],
     ],
 ];

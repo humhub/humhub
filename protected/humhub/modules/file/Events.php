@@ -10,6 +10,7 @@ namespace humhub\modules\file;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\models\File;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -98,5 +99,15 @@ class Events extends BaseObject
             $file->delete();
         }
         return true;
+    }
+
+    /**
+     * Collects the metadata of a file that got new content: the dimensions of an image
+     *
+     * @since 1.20
+     */
+    public static function onAfterNewStoredFile(Event $event): void
+    {
+        ImageHelper::collectDimensions($event->sender);
     }
 }

@@ -89,7 +89,7 @@ class CoreJsConfig extends Widget
                     'handlers' => Yii::$app->user->isGuest ? [] : FileHandlerSerializer::addHandlers(),
                     // Whether a content's attachment list leaves out what its media preview
                     // shows (the file module's `excludeMediaFilesPreview`). @since 1.20
-                    'excludeMediaFilesPreview' => (bool)Yii::$app->getModule('file')->settings->get('excludeMediaFilesPreview'),
+                    'excludeMediaFilesPreview' => Yii::$app->getModule('file')->getExcludeMediaFilesPreview(),
                     'url' => [
                         'download' => Url::to(['/file/file/download', 'download' => true, 'guid' => '-guid-'], true),
                         'load' => Url::to(['/file/file/download', 'guid' => '-guid-'], true),

@@ -68,6 +68,8 @@ class ShowFilesTest extends HumHubDbTestCase
             'downloadUrl',
             'previewUrl',
             'displayUrl',
+            'width',
+            'height',
         ], array_keys($props['files'][0]));
         $this->assertSame($file->guid, $props['files'][0]['guid']);
         $this->assertSame('notes.txt', $props['files'][0]['fileName']);
@@ -85,7 +87,7 @@ class ShowFilesTest extends HumHubDbTestCase
         Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
         $this->assertStringContainsString('exclude-media="true"', ShowFiles::widget(['object' => $post]));
 
-        // Without the media grid there is nothing the list would be duplicating.
+        // Without the media area there is nothing the list would be duplicating.
         $html = ShowFiles::widget(['object' => $post, 'preview' => false]);
         $this->assertStringContainsString('preview="false"', $html);
         $this->assertStringContainsString('exclude-media="false"', $html);

@@ -149,10 +149,6 @@
                     filter: grayscale(100%);
                 }
             }
-
-            .post-file-list {
-                background-color: color-mix(in srgb, var(--bs-emphasis-color) 2%, var(--bs-tertiary-bg));
-            }
         }
 
         .d-flex {
@@ -185,12 +181,6 @@
         // inside a "Show next" .showMore box
         .comment > hr.comment-separator:first-of-type {
             display: none;
-        }
-
-        @include media-breakpoint-down(md) {
-            .comment .post-files img {
-                height: 100px;
-            }
         }
     }
 }

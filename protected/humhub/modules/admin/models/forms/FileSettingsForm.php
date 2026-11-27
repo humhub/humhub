@@ -34,7 +34,7 @@ class FileSettingsForm extends Model
         $settingsManager = Yii::$app->getModule('file')->settings;
 
         $this->maxFileSize = ($settingsManager->get('maxFileSize') / 1024 / 1024) ?: $defaultValue;
-        $this->excludeMediaFilesPreview = $settingsManager->get('excludeMediaFilesPreview');
+        $this->excludeMediaFilesPreview = (int)Yii::$app->getModule('file')->getExcludeMediaFilesPreview();
         $this->useXSendfile = $settingsManager->get('useXSendfile');
         $this->allowedExtensions = $settingsManager->get('allowedExtensions');
     }

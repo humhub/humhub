@@ -125,4 +125,15 @@ class Module extends \humhub\components\Module
      * @var string[] List of file types added to the upload dropdown button (must be classes extending the BaseFileHandler class)
      */
     public $defaultFileHandlers = [UploadAudioFileHandler::class, UploadImageFileHandler::class, UploadVideoFileHandler::class];
+
+    /**
+     * Whether a record's attachment list leaves out the media files its preview above shows (setting
+     * `excludeMediaFilesPreview`, on unless an admin switched it off)
+     *
+     * @since 1.20
+     */
+    public function getExcludeMediaFilesPreview(): bool
+    {
+        return (bool)$this->settings->get('excludeMediaFilesPreview', 1);
+    }
 }

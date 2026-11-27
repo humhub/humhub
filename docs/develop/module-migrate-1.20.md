@@ -2,6 +2,30 @@
 
 Breaking changes, new APIs and deprecations of the 1.20 release cycle.
 
+- **Attached files restyled** (`AttachedFiles`, `ShowFiles`): images in left-aligned justified rows (at most two, the
+  last tile shows "+N"), the file list as the file row of [File Upload](../ui/file-upload.md) with a download button and
+  "Show all" from four files on.
+  - Theme CSS for the island's old markup no longer applies: the column buckets (`.col-media`, `col-*`) and the list
+    `.well.post-file-list > ul.files > li.file-preview-item` are gone from attachments. The upload preview in forms
+    (`file.Preview`) keeps that markup.
+  - Kept: `.post-files`, `.post-files-images`, `.post-files-videos`, `.post-files-audio`. Images are
+    `a.post-files-image` in `.post-files-images-row`, sized by the component; a rule setting the height of
+    `.post-files-images img` fights the layout and has to go.
+  - New: `.list-group.file-list`, `.file-list-rows`, `.file-list-more`, `.file-list-more-inner`, `.file-list-toggle`,
+    `.file-row`, `.file-row-icon`, `.file-row-text`, `.file-row-name` (with `-head` / `-tail`), `.file-row-meta`,
+    `.file-row-action`, `.post-files-video`, `.post-files-audio-item`, `.post-files-image-more`. The image sizes are the CSS variables `--hh-attached-images-row-height`,
+    `--hh-attached-images-single-height` and `--hh-attached-images-gap` (rem or px).
+  - `ShowFiles` no longer passes `fluid`.
+  - The file shape (`FileSerializer::file()`, API) has `width` and `height`. They are collected into `file.metadata`
+    when a file gets new content (`ImageHelper::collectDimensions()`, on `File::EVENT_AFTER_NEW_STORED_FILE`), for
+    older files by the queue job `file\jobs\CollectFileMetadata` (enqueued by a migration; `php yii file/collect-metadata`
+    runs the same).
+  - `FileContent` stores its content through `setStoredFileContent()`, so files created from a string (imports, copies)
+    fire `File::EVENT_AFTER_NEW_STORED_FILE` and get a `hash_sha1` like uploaded ones.
+  - `excludeMediaFilesPreview` is switched on by a migration, and an unsaved value counts as on. Read it with
+    `file\Module::getExcludeMediaFilesPreview()`.
+  - `humhub\libs\StdClassConfig` keeps its configs in a `WeakMap`: a `StdClassConfigurable` (e.g. the file `Metadata`)
+    is freed again when it is no longer used.
 - **The richtext draft backup is restored only onto the text it was typed on** (see
   [Draft backup](concept-richtext.md#draft-backup)): in the same form (field `id`), on the same page and for the same
   user; once the text has been saved, the draft is outdated. `humhub:content:afterSubmit` no longer resets drafts,
@@ -1657,9 +1681,8 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     `file\serializers\FileSerializer` and hands them over as props. The six modules calling
     `ShowFiles::widget(['object' => $record])` (`humhub/mail`, `cuzy-app/mail`,
     `cuzy-app/events-manager`, `cuzy-app/post-to-wiki`, `cuzy-app/survey`,
-    `cuzy-app/survey-advanced`) need no change. `.hideOnEdit`, `.post-files`,
-    `.post-files-audio|-videos|-images`, `.col-media`, `.well.post-file-list`, `ul.files` and
-    `li.file-preview-item.mime.<mimeIcon>` are unchanged, so theme CSS still applies; the
+    `cuzy-app/survey-advanced`) need no change. `.hideOnEdit` is unchanged; the
+    markup changed later in 1.20, see *Attached files restyled*. The
     comment island renders its attachments with the same component now, which is what the
     change is really for — the two used to be separate implementations of the same visual.
     Details:
