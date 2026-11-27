@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Laatst bijgewerkt {time}',
     'Load more' => 'Meer laden',
     'Lock comments' => 'Reacties vergrendelen',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Het maximaal aantal vastgezette items bereikt! <br /> U kunt maximaal {count} items tegelijk vastzetten.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Het maximaal aantal vastgezette items bereikt! U kunt maximaal {count} items tegelijk vastzetten.',
     'Move content' => 'Verplaats inhoud',
     'Move to archive' => 'Verplaats naar archief',
     'New Updates Available!' => 'Nieuwe updates beschikbaar!',

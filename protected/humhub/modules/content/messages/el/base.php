@@ -34,7 +34,7 @@ return [
     'Last update' => 'Τελευταία ενημέρωση',
     'Last updated {time}' => 'Τελευταία ενημέρωση {time}',
     'Load more' => 'Φόρτωσε περισσότερα',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Μέγιστος αριθμός καρφιτσωμένων αντικειμένων! <br>Μπορείτε να καρφιτσώσετε έως {count} αντικείμενα ταυτόχρονα.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Μέγιστος αριθμός καρφιτσωμένων αντικειμένων! Μπορείτε να καρφιτσώσετε έως {count} αντικείμενα ταυτόχρονα.',
     'Move content' => 'Μετακίνηση περιεχομένου',
     'Move to archive' => 'Μετακίνηση στην αρχειοθέτηση',
     'No matches with your selected filters!' => 'Δεν υπάρχουν αντιστοιχίες με τα επιλεγμένα φίλτρα σας!',

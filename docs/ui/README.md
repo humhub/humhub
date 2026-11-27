@@ -49,6 +49,10 @@ get their size.
 what hover and focus share, where the focus goes after a dialog, a deletion or a reload, and what
 Escape closes.
 
+**Accessibility:** [Accessibility](accessibility.md). The target (WCAG 2.2 AA), what users can set
+(dark mode, high contrast, reduced motion, readable font) and the rules every component follows, in
+short.
+
 ## Where things live
 
 ![Where the components live on a page](images/overview-map.svg)

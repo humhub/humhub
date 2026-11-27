@@ -62,7 +62,8 @@ A colour picked at runtime, a space's, gets its text the same way: the initials 
 image are white or black on its colour, through `ScssHelper::getColorContrast()` in
 `space\widgets\Image` and `colorContrast()` of `@humhub/vue` in the islands (`SpaceImage.vue`, the
 data table's tiles). The islands always take 4.5:1, not a theme's own ratio. Without a colour, the
-initials are in the text colour on the border colour.
+initials are in the text colour on the border colour, in high contrast (which darkens the border
+colour) on `--bs-secondary-bg`, every tile there with the 1px edge of the surfaces.
 
 ### A theme colour as text: class or token
 
@@ -83,6 +84,13 @@ In high contrast (the user's *Accessibility* option or `prefers-contrast: more`)
 `--bs-{color}` as a fill is darkened (or lightened) until its `--hh-{color}-contrast` text reaches
 it too; the buttons follow. Panels, cards and the page header get the same 1px edge in
 `--bs-border-color` (`$hh-surface-box-shadow-contrast`) instead of their soft shadow.
+
+In forced colours (a Windows contrast theme, `@media (forced-colors: active)`) the browser replaces
+every colour with one of the system's few and drops fills and shadows. A state shown only by a fill
+or a shadow disappears with them, so its component adds a rule of its own in system colours: an
+active entry in the colours of a selection (`Highlight`, `HighlightText`, with
+`forced-color-adjust: none`, else Chromium lays a backplate in the canvas colour behind the text),
+a dot in `CanvasText`. See the section menu, the pill tabs, `.badge-dot` and the online status.
 
 ## Backgrounds
 
@@ -119,7 +127,7 @@ The focus ring is `outline: var(--bs-focus-ring-width) solid var(--bs-focus-ring
 (`hh-focus-ring(true)` draws it inside the edge, for a box that clips or a row that fills its box).
 `_base.scss` draws it on every `:focus-visible`; a component only adds it where Bootstrap turned it
 off (`outline: 0`), or redefines `--bs-focus-ring-color` on a surface in another colour (the top
-bar: `--hh-topbar-color`). High contrast makes it 3px in `--bs-emphasis-color`. A text field shows
+bar: `--hh-topbar-color`; the active entry of the section menu: its text colour on the fill). High contrast makes it 3px in `--bs-emphasis-color`. A text field shows
 it after Tab only; a click shows the field's glow (`$input-focus-box-shadow`): `ui.appearance` keeps
 `data-hh-input-modality` (`keyboard`, `pointer`) on `<html>`.
 

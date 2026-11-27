@@ -27,7 +27,7 @@ class ImageTest extends HumHubDbTestCase
     public function testInitialsWithoutColourAreInTheTextColour()
     {
         $this->assertStringContainsString(
-            'background-color: var(--bs-border-color); color: var(--bs-body-color);',
+            'background-color: var(--hh-space-acronym-bg, var(--bs-border-color)); color: var(--bs-body-color);',
             $this->initials(null),
         );
     }

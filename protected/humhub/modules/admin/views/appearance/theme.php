@@ -71,7 +71,8 @@ foreach ($groups as $id => $group) {
 <hr>
 <div class="d-flex flex-wrap gap-2">
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
-    <?= Button::none(Yii::t('AdminModule.settings', 'Reset colors'))->icon('arrow-back-up')->cssClass(['btn', 'btn-ghost'])->id('theme-colors-reset') ?>
+    <?= Button::none(Yii::t('AdminModule.settings', 'Reset colors'))->icon('arrow-back-up')->cssClass(['btn', 'btn-ghost'])->id('theme-colors-reset')
+        ->options(['hidden' => !$model->hasCustomColors()]) ?>
 </div>
 
 <?php ActiveForm::end(); ?>
@@ -79,13 +80,29 @@ foreach ($groups as $id => $group) {
 
 <script <?= Html::nonce() ?>>
     $(function () {
+        var $reset = $('#theme-colors-reset');
+        var inputs = document.querySelectorAll('#theme-colors input[data-color-default]');
+        var hex = function (value) {
+            var text = String(value || '').trim().toLowerCase();
+            return /^#[0-9a-f]{3}$/.test(text) ? '#' + text[1] + text[1] + text[2] + text[2] + text[3] + text[3] : text;
+        };
+
+        // "Reset colors" only while a colour differs from the theme's own (docs/ui/buttons.md: hide, don't disable)
+        $('#theme-colors').on('input change', 'input[data-color-default]', function () {
+            $reset.prop('hidden', !Array.prototype.some.call(inputs, function (input) {
+                return hex(input.value) !== hex(input.dataset.colorDefault);
+            }));
+        });
+
         // Every colour back to the theme's own, in the form: saved with "Save". The colour inputs follow the event
-        $('#theme-colors-reset').on('click', function () {
-            document.querySelectorAll('#theme-colors input[data-color-default]').forEach(function (input) {
+        $reset.on('click', function () {
+            inputs.forEach(function (input) {
                 input.value = input.dataset.colorDefault;
                 input.dispatchEvent(new Event('input', {bubbles: true}));
                 input.dispatchEvent(new Event('change', {bubbles: true}));
             });
+            // The button has hidden itself: the focus goes on to "Save"
+            $reset.closest('form').find('[type=submit]').trigger('focus');
         });
     });
 </script>

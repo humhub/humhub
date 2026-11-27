@@ -33,7 +33,7 @@ return [
     'TimeZone' => 'Zaman Dilimi',
     'Users' => 'Kullanıcılar',
     'Visible for all (also unregistered users)' => 'Görünürlük tüm (ayrıca kayıtsız kullanıcılar için) ',
-    'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Yeni mail adresine bir doğrulama maili gönderdik. <br /> Lütfen içindeki adımları takip et',
+    'We\'ve just sent a confirmation e-mail to your new address. Please follow the instructions inside.' => 'Yeni mail adresine bir doğrulama maili gönderdik. Lütfen içindeki adımları takip et',
     'You are currently the owner of following spaces:' => 'Şu anda aşağıdaki mekanların sahibi sizsiniz:',
     'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Email adresini değiştirmek için istek yolladın.<br> Yeni mail adresin {newemail}.<br><br> Yeni mail adresini kabul etmek için aşağıdaki butona tıkla.',
     'You must transfer ownership or delete these spaces before you can delete your account.' => 'Hesabınızı silmeden önce sahipliği aktarmanız veya bu mekanları silmeniz gerekir.',
@@ -107,5 +107,5 @@ return [
     'You will stay logged in on this device only.' => '',
     'Your current password can be changed here.' => '',
     'Your username has been changed' => '',
-    'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => '',
+    'Your username has been successfully changed. We\'ve just sent an e-mail to you with new information.' => '',
 ];

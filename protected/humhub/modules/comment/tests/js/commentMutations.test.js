@@ -560,7 +560,7 @@ describe('Comment mutations + live updates', () => {
                 rootTotal: 1,
             }));
 
-            await wrapper.find('.nested-comments-root .showMore a').trigger('click');
+            await wrapper.find('.nested-comments-root .showMore button').trigger('click');
 
             // The cursor is still 15 - the pre-append oldest SHOWN reply - never the
             // own-appended one (20), which is now the array's tail.
@@ -574,7 +574,8 @@ describe('Comment mutations + live updates', () => {
                 // front of the already-loaded window (15, 16, 20).
                 expect(ids).toEqual(['comment_13', 'comment_14', 'comment_15', 'comment_16', 'comment_20']);
             });
-            expect(wrapper.find('.nested-comments-root .showMore').exists()).toBe(false);
+            // Caught up: no "Show previous" left, only "Show less"
+            expect(wrapper.find('.nested-comments-root .showMore button').text()).toBe('Show less');
         });
 
         // Covers the delete side: `onChildRemoved()` keeps `childTotal` and `childItems`
@@ -596,7 +597,7 @@ describe('Comment mutations + live updates', () => {
                 },
             });
 
-            const showMoreLink = () => wrapper.find('.nested-comments-root .showMore a');
+            const showMoreLink = () => wrapper.find('.nested-comments-root .showMore button');
             // The root CommentEntry (index 0 - see findAllComponents() order: the outer
             // entry renders before its own recursively-nested reply entries) owns the
             // childRemaining/childHasMore this parent's link is derived from.
@@ -655,7 +656,7 @@ describe('Comment mutations + live updates', () => {
                 rootTotal: 4,
             }));
 
-            await wrapper.find('.showMore a').trigger('click');
+            await wrapper.find('.showMore button').trigger('click');
 
             // The cursor is the pre-append last loaded comment (6), never the
             // own-appended one (10) that is now items' tail.

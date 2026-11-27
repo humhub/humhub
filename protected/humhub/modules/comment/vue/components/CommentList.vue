@@ -1,7 +1,14 @@
 <template>
-    <!-- The "Show more" links are beside the feed, which may only hold its articles (ARIA `feed`) -->
-    <div v-if="remainingPrev > 0 && items.length > 0" class="showMore">
-        <a href="#" :class="{ disabled: busyPrev }" @click.prevent="loadPrev">{{ prevLabel }}</a>
+    <!-- The "Show more" buttons are beside the feed, which may only hold its articles (ARIA `feed`) -->
+    <div v-if="(prevHidden > 0 || canShowLess) && items.length > 0" class="showMore">
+        <button
+            ref="prevButton"
+            type="button"
+            class="btn btn-more"
+            :class="{ disabled: busyPrev }"
+            :aria-disabled="busyPrev ? 'true' : null"
+            @click="onPrevClick()"
+        >{{ canShowLess ? showLessLabel : prevLabel }}</button>
     </div>
 
     <div
@@ -9,12 +16,12 @@
         class="comment"
         :class="{ 'guest-mode': guest }"
         :id="commentsAreaId"
-        :role="items.length ? 'feed' : null"
+        :role="shownItems.length ? 'feed' : null"
         :aria-label="feedLabel"
         :aria-busy="busyPrev || busyNext ? 'true' : null"
         @humhub:feed:more.self="onFeedMore"
     >
-        <template v-for="comment in items" :key="revisionKey(comment)">
+        <template v-for="comment in shownItems" :key="revisionKey(comment)">
             <hr class="comment-separator" aria-hidden="true">
             <CommentEntry
                 :comment="comment"
@@ -29,7 +36,14 @@
 
     <div v-if="remainingNext > 0 && items.length > 0" class="showMore">
         <hr class="comment-separator">
-        <a href="#" :class="{ disabled: busyNext }" @click.prevent="loadNext">{{ nextLabel }}</a>
+        <button
+            ref="nextButton"
+            type="button"
+            class="btn btn-more"
+            :class="{ disabled: busyNext }"
+            :aria-disabled="busyNext ? 'true' : null"
+            @click="loadNext()"
+        >{{ nextLabel }}</button>
     </div>
 </template>
 
@@ -99,6 +113,7 @@ import CommentEntry from './CommentEntry.vue';
 import { fetchWindow } from './commentApi.js';
 import { getId } from './commentIdHelper.js';
 import { handOverFocus } from '../focusHandOver.js';
+import { growIn, shrinkOut } from '../listMotion.js';
 
 export default {
     components: { CommentEntry },
@@ -140,6 +155,11 @@ export default {
             // loadNext() response) - deliberately never touched by appendRoot()/replaceRoot()
             // (own/live creates), see the docblock below.
             lastCursorId: this.comments.length ? this.comments[this.comments.length - 1].id : null,
+            // The first comment shown at first: "Show less" folds away the older ones "Show more" added
+            firstShownId: this.comments.length ? this.comments[0].id : null,
+            folded: false,
+            // While "Show less" folds (not busy: nothing loads)
+            folding: false,
             busyPrev: false,
             busyNext: false,
         };
@@ -159,8 +179,28 @@ export default {
         commentsAreaId() {
             return 'comments_area_' + getId(this.contentId, null);
         },
+        // The older comments "Show more" added above the ones shown at first
+        foldable() {
+            return this.firstShownId === null ? [] : this.items.filter((comment) => comment.id < this.firstShownId);
+        },
+        shownItems() {
+            return this.folded ? this.items.filter((comment) => comment.id >= this.firstShownId) : this.items;
+        },
+        // Before the shown comments: not loaded yet, or folded away by "Show less"
+        prevHidden() {
+            return this.remainingPrev + (this.folded ? this.foldable.length : 0);
+        },
+        // Once all older comments are there, the button folds the added ones away again
+        canShowLess() {
+            return !this.folded && this.remainingPrev === 0 && this.foldable.length > 0;
+        },
+        // One label for both directions, as in the design: the button's place above or below the list
+        // tells which
         prevLabel() {
-            return i18n.t('CommentModule.base', 'Show previous {count} comments', { count: this.remainingPrev });
+            return i18n.t('CommentModule.base', 'Show more ({count})', { count: this.prevHidden });
+        },
+        showLessLabel() {
+            return i18n.t('base', 'Show less');
         },
         // Single derived count (see this component's own docblock) instead of a second,
         // independently-mutated `remainingNext` field: `rootTotal` already accounts for
@@ -174,7 +214,7 @@ export default {
             return Math.max(0, this.rootTotal - this.items.length - this.remainingPrev);
         },
         nextLabel() {
-            return i18n.t('CommentModule.base', 'Show next {count} comments', { count: this.remainingNext });
+            return i18n.t('CommentModule.base', 'Show more ({count})', { count: this.remainingNext });
         },
     },
     watch: {
@@ -184,6 +224,8 @@ export default {
         comments(value) {
             this.items = [...value];
             this.lastCursorId = value.length ? value[value.length - 1].id : null;
+            this.firstShownId = value.length ? value[0].id : null;
+            this.folded = false;
         },
         prevCount(value) {
             this.remainingPrev = value;
@@ -198,8 +240,9 @@ export default {
             this.items.push(comment);
         },
         removeRoot(id) {
-            const index = this.items.findIndex((comment) => comment.id === id);
-            const neighbour = index === -1 ? null : (this.items[index + 1] || this.items[index - 1] || null);
+            const shown = this.shownItems;
+            const index = shown.findIndex((comment) => comment.id === id);
+            const neighbour = index === -1 ? null : (shown[index + 1] || shown[index - 1] || null);
             const removed = document.getElementById('comment_' + id);
 
             this.items = this.items.filter((comment) => comment.id !== id);
@@ -222,16 +265,58 @@ export default {
             this.bumpCommentRevision(id);
         },
         // PageUp before the first or PageDown after the last comment (ui.feed): `.self`, as the event
-        // bubbles up from the replies of an entry as well; `aria-busy` tells ui.feed when to follow
+        // bubbles up from the replies of an entry as well; `aria-busy` tells ui.feed when to follow.
+        // Without the grow, so ui.feed scrolls to the new comment where it stays.
         onFeedMore(evt) {
             const direction = evt.detail ? evt.detail.direction : null;
-            if (direction === 'prev' && this.remainingPrev > 0) {
-                this.loadPrev();
+            if (direction === 'prev' && this.folded && this.foldable.length > 0) {
+                this.unfoldPrev(false);
+            } else if (direction === 'prev' && this.remainingPrev > 0) {
+                this.loadPrev(false);
             } else if (direction === 'next' && this.remainingNext > 0) {
-                this.loadNext();
+                this.loadNext(false);
             }
         },
-        loadPrev() {
+        // After "Show more": the loaded comments grow in (listMotion.js), and if the button had the focus
+        // and is gone, the focus goes to the first of them, which now stands in its place
+        presentLoaded(grow, loaded, side, button) {
+            const hadFocus = !!button && document.activeElement === button;
+            this.$nextTick(() => {
+                const ids = loaded.map((comment) => comment.id);
+                grow(ids, side);
+                if (hadFocus && ids.length) {
+                    handOverFocus(null, ids[0], this.$refs.feed);
+                }
+            });
+        },
+        onPrevClick() {
+            if (this.busyPrev || this.folding) {
+                return;
+            }
+            if (this.canShowLess) {
+                this.foldPrev();
+            } else if (this.folded && this.foldable.length > 0) {
+                this.unfoldPrev();
+            } else {
+                this.loadPrev();
+            }
+        },
+        // "Show less": the added older comments shrink out; the button stays and brings them back
+        // without a request
+        foldPrev() {
+            this.folding = true;
+            shrinkOut(this.$refs.feed, this.foldable.map((comment) => comment.id)).then(() => {
+                this.folded = true;
+                this.folding = false;
+            });
+        },
+        unfoldPrev(animate = true) {
+            const grow = animate ? growIn(this.$refs.feed) : () => {};
+            const shown = this.foldable;
+            this.folded = false;
+            this.presentLoaded(grow, shown, 'start', this.$refs.prevButton);
+        },
+        loadPrev(animate = true) {
             if (this.busyPrev || this.items.length === 0) {
                 return;
             }
@@ -244,7 +329,9 @@ export default {
                 direction: 'previous',
                 limit: this.pageSize,
             }).then((response) => {
+                const grow = animate ? growIn(this.$refs.feed) : () => {};
                 this.items = [...response.results, ...this.items];
+                this.presentLoaded(grow, response.results, 'start', this.$refs.prevButton);
                 this.ensureLikeStates(response.results);
                 this.remainingPrev = response.prevCount;
                 this.adjustTotal(response.total - this.total);
@@ -265,7 +352,7 @@ export default {
         // the shared `isKnownId()`/`registerKnownId()` mechanism - and genuinely new ones are
         // spliced in right before the first item newer than the cursor, i.e. before that
         // appended tail, not blindly at the end.
-        loadNext() {
+        loadNext(animate = true) {
             if (this.busyNext || this.items.length === 0 || this.lastCursorId === null) {
                 return;
             }
@@ -286,7 +373,9 @@ export default {
                 if (insertIndex === -1) {
                     insertIndex = this.items.length;
                 }
+                const grow = animate ? growIn(this.$refs.feed) : () => {};
                 this.items.splice(insertIndex, 0, ...newComments);
+                this.presentLoaded(grow, newComments, 'end', this.$refs.nextButton);
 
                 if (response.results.length > 0) {
                     this.lastCursorId = response.results[response.results.length - 1].id;

@@ -72,7 +72,8 @@ class FontAwesomeIconProvider implements IconProvider
             Html::addTooltip($options, $icon->tooltip);
             $ariaLabel = $icon->ariaLabel ?? $icon->tooltip;
             $ariaElement = Html::tag('span', $ariaLabel, ['class' => 'visually-hidden']);
-        } else {
+        } elseif (!isset($options['aria-label'])) {
+            // Decorative. An icon its caller names (`aria-label`: an icon that is a control itself) stays perceivable
             $options['aria-hidden'] = 'true';
         }
 

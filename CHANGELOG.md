@@ -3,6 +3,14 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh: "Show more" as a pill button (`.btn-more`) for comments, replies, card and tile browsers and notifications; comments get "Show less" and grow in and out
+- Fix: The richtext draft backup no longer restores discarded or outdated text, or text typed in another space
+- Fix: Tooltips close on scrolling instead of moving with their trigger out of a list such as the activity box
+- Fix: Checked boxes, radios and switches at 3:1 on dark surfaces in high contrast (WCAG 1.4.11)
+- Fix: Dots in the dark mode and in high contrast at 3:1 on dark surfaces (WCAG 1.4.11)
+- Fix: Initials of a space without a colour readable in high contrast (WCAG 1.4.3)
+- Fix: A filter select is named by its label and the option it shows (WCAG 2.5.3)
+- Fix: The toast at the limit of pinned items no longer shows a literal `<br>`
 - Fix: Space initials in white or black, whichever is readable on the space's colour (WCAG 1.4.3)
 - Fix: Form fields without a name (WAVE): filter fields by their block's title, the post form's pickers, hidden upload and editor inputs
 - Enh: The sections of the "My Data" account settings as an accordion
@@ -179,7 +187,9 @@ HumHub Changelog
 - Fix #8784: A plugin added to a rich text preset is also added to the presets extending it (`full`, `document`), but only once
 - Fix #8784: The title of a link of an unavailable rich text extension is not shown as a tooltip
 - Fix #8784: The plain text of a link of an unavailable rich text extension contains the url it carries
+- Fix #8786: No e-mail deliveries for users without an address; a mail that is not sent is marked as failed, not as sent
 - Fix #8789: Grouped "new entries" notifications link to the stream of the space and show no preview of only the last entry
+- Fix #8790: The toast after changing the username or e-mail address no longer shows a literal `<br />` and has corrected wording
 
 1.19.5 (November 25, 2026)
 --------------------------

@@ -7,6 +7,17 @@ $badge-tones: accent, success, info, warning, danger !default;
 
 $badge-dot-size: .5rem !default; // 8px, grows with the text it stands beside
 
+// A dot in its colour as text, its hidden text in the surface colour; as tokens, so that forced colours and an active
+// entry still set the dot's own colour
+@mixin hh-badge-dot-fg {
+    .badge-dot {
+        --bs-danger: var(--hh-danger-fg);
+        --hh-danger-contrast: var(--bs-body-bg);
+        --bs-accent: var(--hh-accent-fg);
+        --hh-accent-contrast: var(--bs-body-bg);
+    }
+}
+
 @if not $prev-badge {
     .badge-space {
         margin-top: $spacer * .25;
@@ -96,5 +107,32 @@ $badge-dot-size: .5rem !default; // 8px, grows with the text it stands beside
     .badge-dot-unsaved {
         background: var(--bs-accent);
         color: var(--hh-accent-contrast);
+    }
+
+    // A colour as a fill is made readable for its white text, which leaves a dot on a dark surface below 3:1 (WCAG
+    // 1.4.11): in the dark mode at 2.5:1 on a hovered or active item, in high contrast (the fills darkened in both colour
+    // modes) at 2.3:1. There the dot takes the colour as text, 4.5:1 on the surfaces (7:1 in high contrast)
+    @if $enable-dark-mode {
+        @include color-mode(dark) {
+            @include hh-badge-dot-fg;
+        }
+    }
+
+    :root {
+        @include hh-high-contrast {
+            @include hh-badge-dot-fg;
+        }
+    }
+
+    // Forced colours (e.g. a Windows contrast theme) drop the fill, the dot would vanish: in the system's text colour,
+    // in an active entry (the system's colours of a selection, see `_nav.scss`) in its text colour
+    @media (forced-colors: active) {
+        .badge-dot {
+            background-color: CanvasText;
+        }
+
+        .nav-link.active .badge-dot {
+            background-color: HighlightText;
+        }
     }
 }

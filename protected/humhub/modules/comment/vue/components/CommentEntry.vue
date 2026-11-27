@@ -104,18 +104,26 @@
 
             <div v-if="comment.replies" class="nested-comments-root">
                 <div class="bg-light p-2 mt-3 comment-container" :class="{ 'd-none': !childItems.length && !replyOpen }">
-                    <div v-if="childHasMore" class="showMore">
-                        <a href="#" :class="{ disabled: busyReplies }" @click.prevent="loadMoreReplies">{{ moreRepliesLabel }}</a>
+                    <div v-if="childHidden > 0 || canShowLessReplies" class="showMore">
+                        <button
+                            ref="moreRepliesButton"
+                            type="button"
+                            class="btn btn-more"
+                            :class="{ disabled: busyReplies }"
+                            :aria-disabled="busyReplies ? 'true' : null"
+                            @click="onMoreRepliesClick()"
+                        >{{ canShowLessReplies ? showLessLabel : moreRepliesLabel }}</button>
                     </div>
 
                     <div
+                        ref="replyFeed"
                         class="comment"
-                        :role="childItems.length ? 'feed' : null"
+                        :role="childShown.length ? 'feed' : null"
                         :aria-label="repliesLabel"
                         :aria-busy="busyReplies ? 'true' : null"
                         @humhub:feed:more.self="onFeedMore"
                     >
-                        <template v-for="child in childItems" :key="revisionKey(child)">
+                        <template v-for="child in childShown" :key="revisionKey(child)">
                             <hr class="comment-separator" aria-hidden="true">
                             <CommentEntry
                                 :comment="child"
@@ -300,6 +308,7 @@ import CommentDeleteModal from './CommentDeleteModal.vue';
 import CommentForm from './CommentForm.vue';
 import { deleteComment, fetchComment, fetchCommentPermissions, fetchWindow, isAdminDelete } from './commentApi.js';
 import { handOverFocus } from '../focusHandOver.js';
+import { growIn, shrinkOut } from '../listMotion.js';
 
 // RichTextOutput/UserImage are NOT imported here — RichTextOutput lives at
 // protected/humhub/vue/ (core component set) and UserImage at
@@ -367,6 +376,13 @@ export default {
             childFirstCursorId: this.comment.replies && this.comment.replies.items.length
                 ? this.comment.replies.items[0].id
                 : null,
+            // The first reply shown at first: "Show less" folds away the older ones "Show more" added,
+            // as in CommentList
+            childFirstShownId: this.comment.replies && this.comment.replies.items.length
+                ? this.comment.replies.items[0].id
+                : null,
+            childFolded: false,
+            foldingReplies: false,
             busyReplies: false,
             busyEdit: false,
             // Drives the native <CommentDeleteModal> (see its own docblock) — one modal
@@ -412,7 +428,7 @@ export default {
         cancelEditLabel() {
             return i18n.t('CommentModule.base', 'Cancel Edit');
         },
-        // Single derived count driving BOTH the `v-if="childHasMore"` gate and this label's
+        // Single derived count driving BOTH the show-more gate (with "Show less") and this label's
         // `{count}` (previously two independently-mutated fields that could desync) -
         // `childTotal` is kept correct by every mutation (onReplyCreated/onChildRemoved),
         // so this can never show a nonzero gate with a stale/zero label or vice versa.
@@ -422,14 +438,26 @@ export default {
         childHasMore() {
             return this.childRemaining > 0;
         },
-        // Same wording/category/key as CommentList's own "show previous" link
-        // (`prevLabel`), not "show next": the hidden replies are always the OLDER ones (the
-        // preview shows the NEWEST N, see "Previous-direction pagination fix" above), so this
-        // is symmetric with the root list's own loadPrev()/prevLabel, not loadNext()/
-        // nextLabel. The legacy nested Comments::widget() reused these exact same ShowMore
-        // strings for children too - there never was a distinct "replies" message key.
+        // "Show less" of the replies, as CommentList's foldable/shownItems/prevHidden/canShowLess
+        childFoldable() {
+            return this.childFirstShownId === null ? [] : this.childItems.filter((child) => child.id < this.childFirstShownId);
+        },
+        childShown() {
+            return this.childFolded ? this.childItems.filter((child) => child.id >= this.childFirstShownId) : this.childItems;
+        },
+        childHidden() {
+            return this.childRemaining + (this.childFolded ? this.childFoldable.length : 0);
+        },
+        canShowLessReplies() {
+            return !this.childFolded && this.childRemaining === 0 && this.childFoldable.length > 0;
+        },
+        showLessLabel() {
+            return i18n.t('base', 'Show less');
+        },
+        // Same label as CommentList's: the hidden replies are always the OLDER ones (the preview shows
+        // the NEWEST N, see "Previous-direction pagination fix" above), above the list
         moreRepliesLabel() {
-            return i18n.t('CommentModule.base', 'Show previous {count} comments', { count: this.childRemaining });
+            return i18n.t('CommentModule.base', 'Show more ({count})', { count: this.childHidden });
         },
         // The adapted comment shape carries real `Date`s (DB-format wire timestamps
         // parsed with the announced server timezone, see commentApi.js/
@@ -516,8 +544,9 @@ export default {
             this.ensureLikeStates([comment]);
         },
         onChildRemoved(id) {
-            const index = this.childItems.findIndex((child) => child.id === id);
-            const neighbour = index === -1 ? null : (this.childItems[index + 1] || this.childItems[index - 1] || null);
+            const shown = this.childShown;
+            const index = shown.findIndex((child) => child.id === id);
+            const neighbour = index === -1 ? null : (shown[index + 1] || shown[index - 1] || null);
             const removed = document.getElementById('comment_' + id);
 
             this.childItems = this.childItems.filter((child) => child.id !== id);
@@ -593,13 +622,45 @@ export default {
         // from `childFirstCursorId` (the HEAD of the last SERVER-PAGINATED window), mirroring
         // CommentList's own loadPrev() exactly - a straight prepend, no dedup, no total
         // resync (see the docblock for why none of those are needed here).
-        // PageUp before the first shown reply (ui.feed): the hidden replies are the older ones, above
+        // PageUp before the first shown reply (ui.feed): the hidden replies are the older ones, above.
+        // Without the grow, as CommentList's onFeedMore().
         onFeedMore(evt) {
-            if (evt.detail && evt.detail.direction === 'prev' && this.childHasMore) {
+            if (!evt.detail || evt.detail.direction !== 'prev') {
+                return;
+            }
+            if (this.childFolded && this.childFoldable.length > 0) {
+                this.unfoldReplies(false);
+            } else if (this.childHasMore) {
+                this.loadMoreReplies(false);
+            }
+        },
+        onMoreRepliesClick() {
+            if (this.busyReplies || this.foldingReplies) {
+                return;
+            }
+            if (this.canShowLessReplies) {
+                this.foldReplies();
+            } else if (this.childFolded && this.childFoldable.length > 0) {
+                this.unfoldReplies();
+            } else {
                 this.loadMoreReplies();
             }
         },
-        loadMoreReplies() {
+        foldReplies() {
+            this.foldingReplies = true;
+            shrinkOut(this.$refs.replyFeed, this.childFoldable.map((child) => child.id)).then(() => {
+                this.childFolded = true;
+                this.foldingReplies = false;
+            });
+        },
+        unfoldReplies(animate = true) {
+            const grow = animate ? growIn(this.$refs.replyFeed) : () => {};
+            const ids = this.childFoldable.map((child) => child.id);
+            this.childFolded = false;
+            this.$nextTick(() => grow(ids, 'start'));
+        },
+        // The loaded replies grow in as CommentList's presentLoaded()
+        loadMoreReplies(animate = true) {
             if (this.busyReplies || this.childItems.length === 0 || this.childFirstCursorId === null) {
                 return;
             }
@@ -613,7 +674,16 @@ export default {
                 direction: 'previous',
                 limit: this.pageSize,
             }).then((response) => {
+                const grow = animate ? growIn(this.$refs.replyFeed) : () => {};
+                const hadFocus = !!this.$refs.moreRepliesButton && document.activeElement === this.$refs.moreRepliesButton;
                 this.childItems = [...response.results, ...this.childItems];
+                this.$nextTick(() => {
+                    const ids = response.results.map((child) => child.id);
+                    grow(ids, 'start');
+                    if (hadFocus && ids.length) {
+                        handOverFocus(null, ids[0], this.$refs.replyFeed);
+                    }
+                });
                 this.ensureLikeStates(response.results);
                 if (response.results.length > 0) {
                     this.childFirstCursorId = response.results[0].id;

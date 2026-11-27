@@ -698,6 +698,10 @@ target:
 Yii::$app->notification->getTarget(MailTarget::ID)->isEnabled(MailNotification::class, $user);
 ```
 
+The e-mail channel is not active for a user without an e-mail address, so `isEnabled(…, $user)` is
+`false` for them whatever their switches say; the settings page hides the *E-Mail* column for such
+a user and keeps the stored switches, which apply again once an address is set.
+
 ## API and live updates
 
 - `GET /api/v2/notification` — the caller's own list, one entry per group, newest group first,

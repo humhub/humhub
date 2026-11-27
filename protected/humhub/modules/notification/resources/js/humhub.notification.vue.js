@@ -325,7 +325,7 @@
             "button",
             {
               type: "button",
-              class: "btn btn-light btn-sm",
+              class: "btn btn-more",
               onClick: _cache[0] || (_cache[0] = (...args) => $options.loadMore && $options.loadMore(...args))
             },
             vue$1.toDisplayString($options.showMoreLabel),

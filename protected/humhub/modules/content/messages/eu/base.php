@@ -47,7 +47,7 @@ return [
     'Last updated {time}' => 'Azken eguneratzea {time}',
     'Load more' => 'Kargatu gehiago',
     'Lock comments' => 'Blokeatu iruzkinak',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Ainguratutako elementuen gehienezko kopurura iritsi zara!<br>{count} elementu bakarrik aingura ditzakezu aldi berean.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Ainguratutako elementuen gehienezko kopurura iritsi zara! {count} elementu bakarrik aingura ditzakezu aldi berean.',
     'Move content' => 'Edukia mugitu',
     'Move to archive' => 'Mugitu artxibora',
     'New Updates Available!' => 'Eguneratze berriak eskuragarri!',

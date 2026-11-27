@@ -46,7 +46,7 @@ return [
     'Last updated {time}' => 'Posljednji put ažurirano {time}',
     'Load more' => 'Učitaj još',
     'Lock comments' => 'Zaključaj komentare',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'Dosegnut je maksimalan broj dodanih stavki!<br>Odjednom možete dodati najviše {count} stavki.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'Dosegnut je maksimalan broj dodanih stavki! Odjednom možete dodati najviše {count} stavki.',
     'Move content' => 'Premjesti sadržaj',
     'Move to archive' => 'Premjesti u arhivu',
     'New Updates Available!' => 'Nove nadogradnje su dostupne!',

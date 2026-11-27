@@ -37,7 +37,7 @@ return [
     'Last updated {time}' => 'อัปเดตล่าสุด {time}',
     'Load more' => 'โหลดเพิ่ม',
     'Lock comments' => 'Lock ความคิดเห็น',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'ถึงจำนวนสูงสุดของรายการที่ตรึงแล้ว!<br>คุณสามารถตรึงรายการได้สูงสุด {count} รายการในครั้งเดียวเท่านั้น',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'ถึงจำนวนสูงสุดของรายการที่ตรึงแล้ว! คุณสามารถตรึงรายการได้สูงสุด {count} รายการในครั้งเดียวเท่านั้น',
     'Move content' => 'ย้ายเนื้อหา',
     'Move to archive' => 'ย้ายไปเก็บถาวร',
     'No matches with your selected filters!' => 'ไม่ตรงกับตัวกรองที่คุณเลือก!',

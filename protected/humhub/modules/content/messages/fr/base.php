@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'Dernière mise à jour: {time}',
     'Load more' => 'Afficher plus',
     'Lock comments' => 'Désactiver les commentaires',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'La limite des publications mises en avant est atteinte.<br>Vous ne pouvez mettre en avant que {count} publications maximum.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'La limite des publications mises en avant est atteinte. Vous ne pouvez mettre en avant que {count} publications maximum.',
     'Move content' => 'Déplacer le contenu',
     'Move to archive' => 'Archiver',
     'New Updates Available!' => 'Nouvelles mises à jour disponibles !',

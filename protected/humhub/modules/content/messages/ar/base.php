@@ -48,7 +48,7 @@ return [
     'Last updated {time}' => 'آخر تحديث {time}',
     'Load more' => 'تحميل المزيد',
     'Lock comments' => 'قفل التعليقات',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'تم الوصول إلى الحد الأقصى لعدد العناصر المثبتة!<br>يمكنك فقط تثبيت ما يصل إلى {count} من العناصر مرة واحدة.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'تم الوصول إلى الحد الأقصى لعدد العناصر المثبتة! يمكنك فقط تثبيت ما يصل إلى {count} من العناصر مرة واحدة.',
     'Move content' => 'انقل المحتوى',
     'Move to archive' => 'نقل للأرشيف',
     'New Updates Available!' => 'تحديثات جديدة متاحة!',

@@ -47,7 +47,7 @@ return [
     'Last updated {time}' => 'Utolsó frissítés: {time}',
     'Load more' => 'Továbbiak betöltése',
     'Lock comments' => 'Zárolt hozzászólások',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => 'A rögzített elemek maximális száma elérve! <br> Egyszerre legfeljebb {count} elemet lehet rögzíteni.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => 'A rögzített elemek maximális száma elérve! Egyszerre legfeljebb {count} elemet lehet rögzíteni.',
     'Move content' => 'Tartalom áthelyezése',
     'Move to archive' => 'Archiválás',
     'New Updates Available!' => 'Új bejegyzések érkeztek!',

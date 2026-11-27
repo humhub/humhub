@@ -12,14 +12,16 @@
             aria-haspopup="listbox"
             :aria-expanded="open ? 'true' : 'false'"
             :aria-controls="listboxId"
-            :aria-label="accessibleName"
+            :aria-label="nameIds ? null : accessibleName"
+            :aria-labelledby="nameIds"
             :aria-busy="loading ? 'true' : null"
             :disabled="isDisabled"
             @click="toggle"
             @keydown="onButtonKeydown"
         >
-            <span class="select-menu-value">{{ displayLabel }}</span>
+            <span :id="valueId" class="select-menu-value">{{ displayLabel }}</span>
         </button>
+        <span v-if="nameIds" :id="nameId" hidden>{{ accessibleName }}</span>
         <span v-if="loading" class="spinner-border spinner-border-sm select-menu-spinner" role="status" :aria-label="loadingLabel"></span>
         <i v-else class="ti ti-chevron-up select-menu-chevron" aria-hidden="true"></i>
         <button
@@ -82,7 +84,8 @@ let uid = 0;
  *   value can be cleared with the X; off for a value that is always set, e.g. the rows per page),
  *   `dropUp` (opens above the field, e.g. at the bottom of a card).
  * - Emits `update:modelValue` with the chosen value, or `''` when cleared.
- * - Keyboard and ARIA: the toggle is a button with `aria-haspopup="listbox"`/`aria-expanded`;
+ * - Keyboard and ARIA: the toggle is a button with `aria-haspopup="listbox"`/`aria-expanded`,
+ *   named by `label`, followed by the shown option where that is another text (WCAG 2.5.3);
  *   Enter, Space, ArrowDown and ArrowUp open it and move focus into the listbox, where the arrow
  *   keys, Home/End and the first letter of a label move the active option
  *   (`aria-activedescendant`), Enter/Space choose it, Escape closes it — focus returns to the
@@ -112,6 +115,8 @@ export default {
             open: false,
             activeIndex: -1,
             listboxId: `filter-select-${key}-listbox`,
+            nameId: `filter-select-${key}-name`,
+            valueId: `filter-select-${key}-value`,
             fallbackId: `filter-select-${key}`,
         };
     },
@@ -149,6 +154,15 @@ export default {
         },
         accessibleName() {
             return this.label || this.placeholderText || null;
+        },
+        // The toggle's name is the field's name and the text it shows, where that text does not contain the name as
+        // words (a chosen option, the rows per page, "All"): what can be read on it is part of its name (WCAG 2.5.3)
+        nameIds() {
+            const words = (text) => ` ${String(text || '').toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean).join(' ')} `;
+            const shown = words(this.displayLabel);
+            return this.accessibleName && shown.trim() && !shown.includes(words(this.accessibleName))
+                ? `${this.nameId} ${this.valueId}`
+                : null;
         },
         isDisabled() {
             return this.disabled || this.loading;

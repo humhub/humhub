@@ -21,6 +21,7 @@ footers and card actions use **full-width** buttons.
 | **Danger** (red) | Confirm a destructive step, mostly in a confirm dialog | Delete, Remove, Leave space |
 | **Ghost** (no fill) | Quiet chrome: card header tools, row actions, pager, chevrons | Columns, ⋮, ‹ › |
 | **Ghost danger** | The quiet form of delete, for rows and messages: red icon, red hover fill | Delete message |
+| **Show more** (small pill with a border) | Load further entries of a list in place, centred above or below it; the accent on hover. In the comments it turns into "Show less" once all are there. | Show more (3), Show less, Show more (cards, tiles, notifications) |
 
 **Rules of thumb:**
 
@@ -87,6 +88,7 @@ of it. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 | Full width | `.btn.w-100` in a `.d-flex.gap-2` row | Bootstrap utilities; buttons of a row share the width |
 | Choice row | `.btn-check` + `label.btn.btn-secondary` per option | Bootstrap's radio toggle buttons; the checked option renders accent with a check |
 | Reveal action | `.btn` inside `.btn-reveal` | Own wrapper for the slot that grows and the scale-in |
+| Show more | `.btn.btn-more` | Like ghost, the class sets its `--bs-btn-*` variables: the surface (`--bs-body-bg`), `--bs-border-color`, the accent (`--hh-accent-fg`) on hover; small and fully rounded |
 
 ```html
 <a class="btn btn-accent btn-icon-only" href="…" aria-label="Add user"><i class="ti ti-plus" aria-hidden="true"></i></a>
@@ -99,13 +101,18 @@ of it. Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 </div>
 ```
 
-- **File:** `_button.scss`, behind `$prev-button`, with the icon button and the ghost variants.
+- **File:** `_button.scss`, behind `$prev-button`, with the icon button, the ghost variants and Show more.
+- **Show more in the comments** is busy with `.disabled` and `aria-disabled` while it loads, not with
+  the attribute, which would take the focus away. Where it is gone afterwards, the focus goes to the
+  first loaded entry ([Keyboard](keyboard.md)). "Show less" folds the loaded older ones away again
+  without a request; they grow in and shrink out (`listMotion.js` of the comment module).
 - **Size:** the icon button is a square of the button's own height, computed from its
   `--bs-btn-*` variables, so it lines up with fields and works for `.btn-sm` too. A dropdown
   toggle keeps its padding for the caret.
 - **Sass variables:** `$btn-icon-size` (`$font-size-lg`, regular size only), the icon beside a
-  label, and `$btn-icon-only-icon-size` (the same by default); the ghost
-  colours are theme variables (`--bs-body-color`, `--bs-secondary-bg`). Bootstrap's
+  label, and `$btn-icon-only-icon-size` (the same by default); `$btn-more-padding-y`, `-padding-x`,
+  `-font-size` and `-border-radius` for Show more (Bootstrap's small button, fully rounded); the ghost
+  and Show more colours are theme variables (`--bs-body-color`, `--bs-secondary-bg`). Bootstrap's
   `$btn-padding-*`, `$btn-border-radius` and `$btn-font-weight` stay the base.
 - **HumHub's `.btn-icon-only`** (`Button::icon()` without text) is the square icon button; the
   Vue-only `.c-icon-button` of the 1.20 development line is gone.

@@ -45,7 +45,7 @@ return [
     'Last updated {time}' => '최근 업데이트 {time}',
     'Load more' => '더 보기',
     'Lock comments' => '댓글 잠그기',
-    'Maximum number of pinned items reached!<br>You can only pin up to {count} items at once.' => '최대 고정 항목 수에 도달했습니다!<br>한 번에 {count} 항목까지만 고정할 수 있습니다.',
+    'Maximum number of pinned items reached! You can only pin up to {count} items at once.' => '최대 고정 항목 수에 도달했습니다! 한 번에 {count} 항목까지만 고정할 수 있습니다.',
     'Move content' => '콘텐츠 이동',
     'Move to archive' => '아카이브로 이동',
     'New Updates Available!' => '새로운 업데이트가 있습니다',

@@ -10,6 +10,12 @@
 $btn-icon-size: $font-size-lg !default;
 $btn-icon-only-icon-size: $btn-icon-size !default;
 
+// "Show more" of a list (`.btn-more`): a small pill
+$btn-more-padding-y: $btn-padding-y-sm !default;
+$btn-more-padding-x: $btn-padding-x !default;
+$btn-more-font-size: $btn-font-size-sm !default;
+$btn-more-border-radius: $border-radius-pill !default;
+
 @if not $prev-button {
     .btn {
         --hh-btn-gap: #{$spacer * .5};
@@ -119,6 +125,29 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
         --bs-btn-active-shadow: none;
     }
 
+    // "Show more" above or below a list (comments, replies, cards, notifications): a small pill on the surface
+    // with a border, which reads on a card, a tinted area and the page in every colour mode; the accent on hover
+    .btn-more {
+        --bs-btn-padding-y: #{$btn-more-padding-y};
+        --bs-btn-padding-x: #{$btn-more-padding-x};
+        --bs-btn-font-size: #{$btn-more-font-size};
+        --bs-btn-border-radius: #{$btn-more-border-radius};
+        --bs-btn-color: var(--bs-body-color);
+        --bs-btn-bg: var(--bs-body-bg);
+        --bs-btn-border-color: var(--bs-border-color);
+        --bs-btn-hover-color: var(--hh-accent-fg);
+        --bs-btn-hover-bg: var(--bs-body-bg);
+        --bs-btn-hover-border-color: var(--hh-accent-fg);
+        --bs-btn-active-color: var(--hh-accent-fg);
+        --bs-btn-active-bg: var(--bs-body-bg);
+        --bs-btn-active-border-color: var(--hh-accent-fg);
+        --bs-btn-disabled-color: var(--bs-body-color);
+        --bs-btn-disabled-bg: var(--bs-body-bg);
+        --bs-btn-disabled-border-color: var(--bs-border-color);
+        --bs-btn-box-shadow: none;
+        --bs-btn-active-shadow: none;
+    }
+
     // The neutral button (`Button::light()`): Bootstrap keeps `.btn-light` light in the dark mode, a light fill
     // there looks like a highlight
     @include color-mode(dark) {
@@ -160,8 +189,11 @@ $btn-icon-only-icon-size: $btn-icon-size !default;
 
     // Temporary exceptions for "active" Primary and Info buttons to display as outlined
     // See https://github.com/humhub/humhub-internal/issues/661#issuecomment-2968279827
+    // Primary: the colour itself on its contrast colour, readable in both colour modes (`--hh-primary-fg` is lightened
+    // in the dark mode, WCAG 1.4.3)
     .btn-primary {
-        --bs-btn-active-color: var(--hh-primary-fg);
+        // stylelint-disable-next-line declaration-property-value-disallowed-list -- on its contrast colour, not a surface
+        --bs-btn-active-color: var(--bs-primary);
         --bs-btn-active-bg: var(--hh-primary-contrast);
         --bs-btn-active-border-color: var(--bs-primary);
     }

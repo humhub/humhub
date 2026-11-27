@@ -77,7 +77,7 @@ Class names and SCSS follow [Styling with Bootstrap 5](bootstrap.md).
 | `.entity-grid`, `.is-loading` | The grid; dimmed while a reload takes a moment |
 | `.entity-grid-cells`, `.entity-grid-cell` | `repeat(auto-fill, minmax(264px, 1fr))` cells, each holding a card; `.entity-grid-cell-skeleton` for a skeleton card |
 | `.entity-grid-message`, `-message-empty`, `-message-error`, `-message-text` | The empty state and the error of the first page |
-| `.entity-grid-error`, `.entity-grid-more` | The error of a later page, and the "Show more" row (`.btn.btn-light.btn-sm`) |
+| `.entity-grid-error`, `.entity-grid-more` | The error of a later page, and the "Show more" row (`.btn.btn-more`) |
 
 - Skeleton cards are the entity card's markup with Bootstrap `.placeholder` blocks (see
   [Loading, Empty & Error](loading-empty-error.md)).

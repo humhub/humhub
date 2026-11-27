@@ -46,6 +46,28 @@ describe('FilterSelect', () => {
         expect(button(mountSelect({ placeholder: '' })).text()).toBe('All');
     });
 
+    it('is named by its label and the shown text where that does not contain the label', async () => {
+        const name = (wrapper) => button(wrapper).attributes('aria-labelledby').split(' ')
+            .map((id) => document.getElementById(id).textContent).join(' ');
+
+        // "Status (All)" contains the label
+        expect(button(mountSelect()).attributes('aria-labelledby')).toBeUndefined();
+        expect(name(mountSelect({ placeholder: '' }))).toBe('Status All');
+        // A word, not a part of one
+        expect(name(mountSelect({ label: 'Tag', options: [{ value: 'mo', label: 'Montag' }], modelValue: 'mo' }))).toBe('Tag Montag');
+        expect(name(mountSelect({ label: 'Rows per page', options: [{ value: '25', label: '25' }], modelValue: '25', clearable: false })))
+            .toBe('Rows per page 25');
+
+        const wrapper = mountSelect({ modelValue: 'installed' });
+        expect(button(wrapper).attributes('aria-label')).toBeUndefined();
+        expect(name(wrapper)).toBe('Status Installed');
+        expect(listbox(wrapper).attributes('aria-label')).toBe('Status');
+
+        await wrapper.setProps({ modelValue: '' });
+        expect(button(wrapper).attributes('aria-label')).toBe('Status');
+        expect(button(wrapper).attributes('aria-labelledby')).toBeUndefined();
+    });
+
     it('falls back to its label as placeholder without a placeholder or an empty option', () => {
         const withoutEmpty = options.filter((option) => option.value !== '');
         const wrapper = mountSelect({ placeholder: '', options: withoutEmpty });
