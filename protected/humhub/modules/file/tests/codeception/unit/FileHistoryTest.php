@@ -47,6 +47,23 @@ class FileHistoryTest extends HumHubDbTestCase
     }
 
 
+    public function testDeletingAVersionKeepsTheFileAndTheOtherVersions()
+    {
+        $file = $this->prepareFile();
+        $file->getPolymorphicRelation()->fileManagerEnableHistory = true;
+
+        $file->setStoredFileContent('V1');
+        $file->setStoredFileContent('V2');
+        $file->setStoredFileContent('V3');
+
+        [$newest, $oldest] = $file->getHistoryFiles()->orderBy(['id' => SORT_DESC])->all();
+        $oldest->delete();
+
+        $this->assertFalse($file->store->has($oldest->getFileVariantId()));
+        $this->assertSame('V2', $file->store->getContent($newest->getFileVariantId()));
+        $this->assertSame('V3', $file->store->getContent());
+    }
+
     public function testRecordWithDisabledHistory()
     {
         $file = $this->prepareFile();

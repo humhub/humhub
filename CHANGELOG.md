@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.19.6 (Unreleased)
+-------------------
+
+- Fix #TBD: Deleting a file version (e.g. in the Files module) deleted the file's content and all its other versions
+
 1.19.5 (November 25, 2026)
 --------------------------
 
