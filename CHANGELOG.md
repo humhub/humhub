@@ -202,6 +202,11 @@ HumHub Changelog
 - Fix #8789: Grouped "new entries" notifications link to the stream of the space or profile and no longer preview only the last entry
 - Fix #8790: The toast after changing the username or e-mail address no longer shows a literal `<br />` and has corrected wording
 
+1.19.6 (Unreleased)
+-------------------
+- Fix #8796: Space invite links are only shown to Space admins and create a membership request on "Invite and request" Spaces
+- Fix #8799: Deleting a file version (e.g. in the Files module) deleted the file's content and all its other versions
+
 1.19.5 (November 25, 2026)
 --------------------------
 
