@@ -107,6 +107,381 @@ humhub.module('file', function (module, require, $) {
         return typeof humhub.prosemirrorFileHandler !== 'undefined' && humhub.prosemirrorFileHandler !== false;
     };
 
+    // Numbers the transports of inputs without an id
+    var transports = 0;
+
+    /**
+     * Sends the files of an upload widget (`file.Upload`) to the server: the files picked in its file input, dropped on
+     * its drop zone, pasted into its paste zone or given to `add()`. The requests are XMLHttpRequests with FormData,
+     * sent through jQuery's ajax for the CSRF header and the global ajax events, as the Vue `uploadClient.js` does.
+     *
+     * It reports through the callbacks in `options`, each with an event and the upload's `data`:
+     * - `add(e, data)` for each request to be, with `data.files`; `data.submit()` sends it, `data.abort()` cancels it
+     * - `start(e)` when a request is submitted while none runs or waits, `stop(e)` when the last one ended
+     * - `progress(e, data)` per request and `progressall(e, {loaded, total})` for all of them, in bytes of the files
+     * - `done(e, data)` with `data.result` (also in `data._response`), `fail(e, data)` with `data.textStatus` and
+     *   `data.errorThrown` ('abort' when cancelled), and before it `error(jqXHR, textStatus, errorThrown)` for a request
+     *   that was sent, as jQuery's ajax setting
+     *
+     * Further options: `url`, `formData` (an object), `singleFileUploads` (one request per file, else one for all
+     * files added at once), `limitConcurrentUploads` (the others wait), `dropZone` and `pasteZone` (jQuery objects).
+     * The files go in the field named as the input, `files[]` without a name.
+     *
+     * @param {jQuery} $input the file input
+     * @param {Object} options the zones are taken at once, the rest when files are added
+     */
+    var UploadTransport = function ($input, options) {
+        this.$input = $input;
+        this.options = options;
+        this.waiting = [];
+        this.running = [];
+        this.progressAll = {loaded: 0, total: 0};
+        // One per input: a widget created again for it replaces the handlers of the one before
+        this.namespace = '.humhubUpload-' + String($input.attr('id') || ++transports).replace(/[^\w-]/g, '_');
+        this.bind();
+    };
+
+    UploadTransport.prototype.bind = function () {
+        var that = this;
+        var ns = this.namespace;
+
+        // Unbound first, all of them: the drop and the paste zone may be the same element
+        this.$input.off(ns);
+        $(this.options.dropZone).off(ns);
+        $(this.options.pasteZone).off(ns);
+
+        this.$input.on('change' + ns, function (evt) {
+            var files = Array.from(this.files || []);
+            // Lets the same file be picked again
+            this.value = '';
+            that.add(files, evt);
+        });
+
+        // Only files dragged over the drop zone are taken, as a copy
+        $(this.options.dropZone).on('dragover' + ns + ' dragenter' + ns + ' dragleave' + ns, function (evt) {
+            var dataTransfer = evt.originalEvent && evt.originalEvent.dataTransfer;
+            if (that.isBound() && dataTransfer && Array.prototype.indexOf.call(dataTransfer.types || [], 'Files') !== -1) {
+                evt.preventDefault();
+                if (evt.type === 'dragover') {
+                    dataTransfer.dropEffect = 'copy';
+                }
+            }
+        }).on('drop' + ns, function (evt) {
+            var dataTransfer = evt.originalEvent && evt.originalEvent.dataTransfer;
+            if (that.isBound() && dataTransfer && dataTransfer.files && dataTransfer.files.length) {
+                evt.preventDefault();
+                var files = droppedFiles(dataTransfer);
+                if (object.isArray(files)) {
+                    that.add(files, evt);
+                } else {
+                    files.then(function (found) {
+                        that.add(found, evt);
+                    });
+                }
+            }
+        });
+
+        $(this.options.pasteZone).on('paste' + ns, function (evt) {
+            var clipboardData = evt.originalEvent && evt.originalEvent.clipboardData;
+            if (that.isBound() && clipboardData) {
+                that.add(Array.from(clipboardData.items || []).map(function (item) {
+                    return item.getAsFile ? item.getAsFile() : null;
+                }).filter(Boolean), evt);
+            }
+        });
+    };
+
+    // A zone may outlive the input (e.g. the body as paste zone, across pjax): then its handlers go
+    UploadTransport.prototype.isBound = function () {
+        if (this.$input[0].isConnected) {
+            return true;
+        }
+
+        $(this.options.dropZone).off(this.namespace);
+        $(this.options.pasteZone).off(this.namespace);
+        return false;
+    };
+
+    /**
+     * Adds files as one request each or as one request for all, see `singleFileUploads`.
+     *
+     * @param {File[]|FileList} files
+     * @param {Event} [e] the event that brought them
+     */
+    UploadTransport.prototype.add = function (files, e) {
+        files = Array.from(files || []);
+        if (!files.length) {
+            return;
+        }
+
+        var that = this;
+        var sets = this.options.singleFileUploads ? files.map(function (file) {
+            return [file];
+        }) : [files];
+
+        sets.forEach(function (set) {
+            var data = that.createData(set, files);
+            if (object.isFunction(that.options.add)) {
+                that.options.add.call(that.$input[0], e || null, data);
+            } else {
+                data.submit();
+            }
+        });
+    };
+
+    // The data of a request; `_state` is internal: undefined until submitted, then 'waiting', 'running' and 'done'
+    UploadTransport.prototype.createData = function (files, originalFiles) {
+        var that = this;
+        var data = {
+            files: files,
+            originalFiles: originalFiles,
+            loaded: 0,
+            total: 0,
+            _response: {},
+            process: function () {
+                return $.Deferred().resolveWith(data, [data]).promise();
+            },
+            submit: function () {
+                that.submit(data);
+            },
+            abort: function () {
+                that.abort(data);
+            }
+        };
+
+        return data;
+    };
+
+    // The number of requests that run or wait
+    UploadTransport.prototype.active = function () {
+        return this.running.length + this.waiting.length;
+    };
+
+    UploadTransport.prototype.submit = function (data) {
+        if (data._state) {
+            return;
+        }
+
+        var first = !this.active();
+        if (first) {
+            this.progressAll = {loaded: 0, total: 0};
+        }
+
+        // The size of the files that are left, e.g. after refusing those that are too large; at least 1 byte each
+        data.total = data.files.reduce(function (total, file) {
+            return total + (file.size || 1);
+        }, 0);
+        data.loaded = 0;
+        this.progressAll.total += data.total;
+        data._state = 'waiting';
+        this.waiting.push(data);
+
+        // A failing `start` handler must not leave the request queued
+        try {
+            if (first) {
+                this.callback('start');
+            }
+        } finally {
+            this.next();
+        }
+    };
+
+    UploadTransport.prototype.next = function () {
+        var limit = this.options.limitConcurrentUploads;
+        while (this.waiting.length && (!limit || this.running.length < limit)) {
+            this.send(this.waiting.shift());
+        }
+    };
+
+    UploadTransport.prototype.send = function (data) {
+        var that = this;
+        var formData = new FormData();
+        $.each(this.options.formData || {}, function (name, value) {
+            if (value !== undefined) {
+                formData.append(name, value);
+            }
+        });
+
+        var field = this.$input.attr('name') || 'files[]';
+        data.files.forEach(function (file) {
+            formData.append(field, file);
+        });
+
+        data._state = 'running';
+        this.running.push(data);
+        data.jqXHR = $.ajax({
+            url: this.options.url,
+            type: 'POST',
+            data: formData,
+            // The FormData goes as it is: jQuery must neither serialize it nor set a Content-Type
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            // Upload progress is an event of the XMLHttpRequest that jQuery does not pass on
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function (evt) {
+                        if (evt.lengthComputable && evt.total && data._state === 'running') {
+                            that.progress(data, Math.floor(evt.loaded / evt.total * data.total));
+                        }
+                    });
+                }
+                return xhr;
+            }
+        }).done(function (result, textStatus, jqXHR) {
+            that.end(data, function () {
+                // The files are sent completely
+                if (data.loaded < data.total) {
+                    that.progress(data, data.total);
+                }
+
+                data.result = data._response.result = result;
+                data.textStatus = data._response.textStatus = textStatus;
+                data.jqXHR = data._response.jqXHR = jqXHR;
+                that.callback('done', data);
+            });
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            that.end(data, function () {
+                if (object.isFunction(that.options.error)) {
+                    that.options.error.call(that.$input[0], jqXHR, textStatus, errorThrown);
+                }
+                that.failed(data, jqXHR, textStatus, errorThrown);
+            });
+        });
+    };
+
+    UploadTransport.prototype.progress = function (data, loaded) {
+        this.progressAll.loaded += loaded - data.loaded;
+        data.loaded = loaded;
+        this.callback('progress', data);
+        this.callback('progressall', {loaded: this.progressAll.loaded, total: this.progressAll.total});
+    };
+
+    // A failed or cancelled request no longer counts for the progress of all
+    UploadTransport.prototype.failed = function (data, jqXHR, textStatus, errorThrown) {
+        this.progressAll.loaded -= data.loaded;
+        this.progressAll.total -= data.total;
+        data.jqXHR = data._response.jqXHR = jqXHR;
+        data.textStatus = data._response.textStatus = textStatus;
+        data.errorThrown = data._response.errorThrown = errorThrown;
+        this.callback('fail', data);
+    };
+
+    // Reports the end of a request, then frees its place for the next one; after the last one the uploads stop
+    UploadTransport.prototype.end = function (data, report) {
+        try {
+            report();
+        } finally {
+            data._state = 'done';
+            this.running = this.running.filter(function (other) {
+                return other !== data;
+            });
+            this.waiting = this.waiting.filter(function (other) {
+                return other !== data;
+            });
+            this.next();
+
+            if (!this.active()) {
+                this.callback('stop');
+            }
+        }
+    };
+
+    UploadTransport.prototype.abort = function (data) {
+        var that = this;
+
+        if (data._state === 'running') {
+            // Ends through the request's failure, as 'abort'
+            data.jqXHR.abort();
+        } else if (data._state === 'waiting') {
+            this.end(data, function () {
+                that.failed(data, undefined, 'abort', 'abort');
+            });
+        } else if (!data._state) {
+            data._state = 'done';
+            data.errorThrown = 'abort';
+            this.callback('fail', data);
+        }
+    };
+
+    UploadTransport.prototype.callback = function (name, data) {
+        if (object.isFunction(this.options[name])) {
+            this.options[name].call(this.$input[0], $.Event(name, {target: this.$input[0]}), data);
+        }
+    };
+
+    /**
+     * The files of a drop. A dropped folder gives the files in it and in its folders, later: then the result is a
+     * promise.
+     *
+     * @returns {File[]|Promise<File[]>}
+     */
+    var droppedFiles = function (dataTransfer) {
+        var items = Array.from(dataTransfer.items || []);
+        var entries = items.map(function (item) {
+            return item.webkitGetAsEntry ? item.webkitGetAsEntry() : null;
+        });
+
+        if (!entries.some(function (entry) {
+            return entry && entry.isDirectory;
+        })) {
+            return Array.from(dataTransfer.files);
+        }
+
+        // The items are only readable during the drop event
+        var files = items.map(function (item) {
+            return item.getAsFile ? item.getAsFile() : null;
+        });
+
+        return Promise.all(entries.map(function (entry, i) {
+            if (entry && entry.isDirectory) {
+                return readDirectory(entry);
+            }
+            return files[i] ? [files[i]] : [];
+        })).then(function (lists) {
+            return lists.flat();
+        });
+    };
+
+    // The files in a folder of a drop and in its folders; what can't be read is left out
+    var readDirectory = function (directory) {
+        return new Promise(function (resolve) {
+            var reader = directory.createReader();
+            var entries = [];
+            var readAll = function () {
+                resolve(Promise.all(entries.map(function (entry) {
+                    return entry.isDirectory ? readDirectory(entry) : new Promise(function (resolveFile) {
+                        entry.file(function (file) {
+                            resolveFile([file]);
+                        }, function () {
+                            resolveFile([]);
+                        });
+                    });
+                })).then(function (lists) {
+                    return lists.flat();
+                }));
+            };
+            // The entries come in parts, the last one is empty
+            var readPart = function () {
+                reader.readEntries(function (part) {
+                    if (part.length) {
+                        entries = entries.concat(part);
+                        readPart();
+                    } else {
+                        readAll();
+                    }
+                }, readAll);
+            };
+            readPart();
+        });
+    };
+
+    /**
+     * The upload of a file input (`file\widgets\UploadInput`, e.g. behind `UploadButton`): sends the files the user
+     * picks, drops or pastes (`UploadTransport`) and hands the uploaded files to the form and its preview.
+     */
     var Upload = function (node, options) {
         Widget.call(this, node, options);
     };
@@ -147,6 +522,16 @@ humhub.module('file', function (module, require, $) {
         this.$.trigger('click');
     };
 
+    /**
+     * Uploads files as if the user had picked them, e.g. files dropped onto or pasted into a richtext.
+     *
+     * @param {File[]|FileList} files
+     * @since 1.20
+     */
+    Upload.prototype.addFiles = function (files) {
+        this.transport.add(files);
+    };
+
     Upload.prototype.validate = function () {
         return this.$.is('[type="file"]');
     };
@@ -166,9 +551,7 @@ humhub.module('file', function (module, require, $) {
             url: this.$.data('url') || this.$.data('upload-url') || module.config.upload.url,
             dropZone: this.getDropZone(),
             pasteZone: this.getPasteZone(),
-            dataType: 'json',
             formData: data,
-            autoUpload: false,
             singleFileUploads: !this.$.prop('multiple'),
             add: function (e, data) {
                 if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
@@ -266,8 +649,6 @@ humhub.module('file', function (module, require, $) {
 
     // Enables the upload again once there is room for more files; uploads still running count against the maximum
     Upload.prototype.enableBelowMax = function () {
-        // The input was replaced after the selection, see finish()
-        this.$ = $(this.getIdSelector());
         if (this.$.prop('disabled') && this.canUploadMore()) {
             this.enable();
         }
@@ -275,7 +656,6 @@ humhub.module('file', function (module, require, $) {
 
     Upload.prototype.handleMaxFileReached = function (message) {
         module.log.warn(message, true);
-        this.$ = $(this.getIdSelector());
         if (!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
         }
@@ -409,7 +789,7 @@ humhub.module('file', function (module, require, $) {
             stop: $.proxy(this.finish, this)
         });
 
-        this.$.fileupload(this.options);
+        this.transport = new UploadTransport(this.$, this.options);
     };
 
     // The request's error; a cancelled upload is none, and with rows the row tells the user
@@ -592,10 +972,6 @@ humhub.module('file', function (module, require, $) {
             this.callbacks.stop(e);
         }
 
-        // We have to reselect the input node since it was replaced by blueimp
-        // https://github.com/blueimp/jQuery-File-Upload/wiki/Frequently-Asked-Questions#why-is-the-file-input-field-cloned-and-replaced-after-each-selection
-        this.$ = $(this.getIdSelector());
-
         if (!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
         }
@@ -635,14 +1011,18 @@ humhub.module('file', function (module, require, $) {
             })
             // Modules and the `humhub:file:created` handler call finish() while requests may still run
             .on('uploadFinish.humhubUploadLock', function () {
-                toggle(hasActiveRequests(that));
+                toggle(that.isActive());
             });
     };
 
-    // Requests of the widget that run or wait. The input was replaced after the selection: its clone carries the plugin
-    var hasActiveRequests = function (upload) {
-        var $input = $(upload.getIdSelector());
-        return !!$input.fileupload('instance') && $input.fileupload('active') > 0;
+    /**
+     * Whether requests of this widget run or wait.
+     *
+     * @returns {boolean}
+     * @since 1.20
+     */
+    Upload.prototype.isActive = function () {
+        return !!this.transport && this.transport.active() > 0;
     };
 
     /**

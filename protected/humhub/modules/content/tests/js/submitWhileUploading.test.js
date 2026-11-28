@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Widget } from '../../../../tests/js/support/legacyWidget.mjs';
 
 /**
@@ -32,43 +32,35 @@ await import('../../resources/js/humhub.stream.StreamEntry.js');
 
 // `module.export = StreamEntry` replaces the export function of the module stand-in
 const StreamEntry = globalThis.humhub.modules['stream.StreamEntry'].export;
+const { Upload } = globalThis.humhub.modules.file;
 
-// The blueimp options of each upload widget, by the id of its input
-let fileuploads;
-// Requests each upload widget has running or waiting, by the id of its input (blueimp's `active`)
+// Requests each upload widget has running or waiting, by the id of its input
 let active;
 
 const render = (html) => {
     document.body.replaceChildren(document.createRange().createContextualFragment(html));
 };
 
-// blueimp's callbacks: the first upload of a selection starts, the last one stops
+// The callbacks of the widget's transport: the first upload of a selection starts, the last one stops
 const start = (id) => {
     active.set(id, 1);
-    fileuploads.get(id).start({}, {});
+    Widget.instance('#' + id).options.start({});
 };
 const stop = (id) => {
     active.set(id, 0);
-    fileuploads.get(id).stop({});
+    Widget.instance('#' + id).options.stop({});
 };
 
 beforeEach(() => {
     jQuery.fx.off = true;
-    fileuploads = new Map();
     active = new Map();
-    jQuery.fn.fileupload = function (options) {
-        if (options === 'instance') {
-            return fileuploads.get(this.attr('id'));
-        }
-        if (options === 'active') {
-            return active.get(this.attr('id')) || 0;
-        }
-        fileuploads.set(this.attr('id'), options);
-        return this;
-    };
+    vi.spyOn(Upload.prototype, 'isActive').mockImplementation(function () {
+        return (active.get(this.$.attr('id')) || 0) > 0;
+    });
 });
 
 afterEach(() => {
+    vi.restoreAllMocks();
     document.body.replaceChildren();
 });
 
