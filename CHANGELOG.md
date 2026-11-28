@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
-- Enh #TBD: Audio track of video and audio files for speech recognition (`AudioTrack` converter, ffmpeg) and the extension slot `file.subtitles` in the subtitles dialog
+- Enh #8803: Audio track of video and audio files for speech recognition (`AudioTrack` converter, ffmpeg) and the extension slot `file.subtitles` in the subtitles dialog
 - Enh: The preview image of an upload is created when it is first shown, not in the upload request
 - Fix: Translation categories without translations in the user's language are no longer requested on every page and reported as not preloaded
 - Fix: API requests keep the impersonation settings of the user component, e.g. `allowPrivateContentAccess => false` hides private content during an impersonation in API calls as well
