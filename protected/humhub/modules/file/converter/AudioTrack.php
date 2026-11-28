@@ -11,6 +11,7 @@ namespace humhub\modules\file\converter;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
+use InvalidArgumentException;
 use Symfony\Component\Process\Process;
 use Throwable;
 use Yii;
@@ -25,10 +26,22 @@ use Yii;
  * its time (at most [[TIMEOUT]]), so a queue job should ask for it, not a web request. A file without an audio stream
  * gets none, as does a failed conversion (logged).
  *
+ * For a speech-to-text server that takes WAV only (e.g. Ollama, which returns times for WAV only), [[exportWav()]]
+ * writes the audio, or a part of it, as WAV into a temporary file instead (not stored, about 115 MB per hour).
+ *
  * ```php
  * $track = new AudioTrack();
  * if ($track->applyFile($file) && $track->prepare()) {
  *     $stream = $file->store->getContentStream(AudioTrack::VARIANT);
+ * }
+ *
+ * $wav = $track->exportWav(30, 30); // seconds 30 to 60
+ * try {
+ *     // send $wav
+ * } finally {
+ *     if ($wav !== null) {
+ *         unlink($wav);
+ *     }
  * }
  * ```
  *
@@ -68,6 +81,38 @@ class AudioTrack extends BaseConverter
     }
 
     /**
+     * The audio of the file, or a part of it, as WAV in a temporary file: the first audio stream, mono 16 kHz, 16-bit
+     * PCM (about 115 MB per hour). Not stored with the file: the caller deletes the temporary file.
+     *
+     * @param float $start where the part starts, in seconds
+     * @param float|null $duration the length of the part in seconds, null for up to the end
+     * @return string|null the path of the temporary file; null when the file has no audio there or ffmpeg failed (logged)
+     * @since 1.20
+     */
+    public function exportWav(float $start = 0.0, ?float $duration = null): ?string
+    {
+        if ($start < 0 || ($duration !== null && $duration <= 0)) {
+            throw new InvalidArgumentException('The start must not be negative and the duration must be positive.');
+        }
+
+        if ($this->file === null || !$this->canConvert($this->file)) {
+            return null;
+        }
+
+        $output = $this->runFfmpeg(
+            fn(string $input, string $output): array => $this->buildWavCommand($input, $output, $start, $duration),
+        );
+
+        // A part after the end of the audio gives a WAV file without samples
+        if ($output !== null && !$this->hasSamples($output)) {
+            unlink($output);
+            return null;
+        }
+
+        return $output;
+    }
+
+    /**
      * @inheritdoc
      */
     protected function convert($fileName)
@@ -76,6 +121,28 @@ class AudioTrack extends BaseConverter
             return;
         }
 
+        $output = $this->runFfmpeg(fn(string $input, string $output): array => $this->buildCommand($input, $output));
+        if ($output === null) {
+            return;
+        }
+
+        try {
+            $this->file->store->setByPath($output, $fileName);
+        } catch (Throwable $e) {
+            $this->logFailure($e->getMessage());
+        } finally {
+            @unlink($output);
+        }
+    }
+
+    /**
+     * Runs ffmpeg on the content of the file (a temporary copy when the store has no local path)
+     *
+     * @param callable(string $input, string $output): string[] $command
+     * @return string|null the temporary output file, null when ffmpeg failed (logged)
+     */
+    private function runFfmpeg(callable $command): ?string
+    {
         $tempInput = null;
         $output = null;
 
@@ -99,19 +166,23 @@ class AudioTrack extends BaseConverter
             }
 
             $output = FileHelper::getTempFile();
-            $process = new Process($this->buildCommand($input, $output), null, null, null, self::TIMEOUT);
+            $process = new Process($command($input, $output), null, null, null, self::TIMEOUT);
             $process->run();
 
             clearstatcache(true, $output);
             if (!$process->isSuccessful() || !is_file($output) || filesize($output) === 0) {
                 $error = trim(preg_replace('/\s*\R\s*/', ' ', $process->getErrorOutput()));
                 $this->logFailure($error !== '' ? $error : 'exit code ' . $process->getExitCode());
-                return;
+                return null;
             }
 
-            $this->file->store->setByPath($output, $fileName);
+            $result = $output;
+            $output = null;
+
+            return $result;
         } catch (Throwable $e) {
             $this->logFailure($e->getMessage());
+            return null;
         } finally {
             foreach ([$tempInput, $output] as $path) {
                 if ($path !== null) {
@@ -140,6 +211,26 @@ class AudioTrack extends BaseConverter
     }
 
     /**
+     * The ffmpeg command of [[exportWav()]]: like [[buildCommand()]], from `$start` (seeking in the input) for at most
+     * `$duration` seconds, as 16-bit PCM in a WAV container
+     *
+     * @return string[]
+     */
+    protected function buildWavCommand(string $input, string $output, float $start, ?float $duration): array
+    {
+        return [
+            $this->getModule()->ffmpegPath, '-nostdin', '-hide_banner', '-loglevel', 'error', '-y',
+            ...($start > 0 ? ['-ss', sprintf('%.3F', $start)] : []),
+            '-i', $input,
+            ...($duration !== null ? ['-t', sprintf('%.3F', $duration)] : []),
+            '-map', '0:a:0', '-map_metadata', '-1',
+            '-ac', '1', '-ar', '16000',
+            '-c:a', 'pcm_s16le',
+            '-f', 'wav', $output,
+        ];
+    }
+
+    /**
      * The content of the file as stream
      *
      * @return resource
@@ -159,6 +250,19 @@ class AudioTrack extends BaseConverter
         return !empty($this->getModule()->ffmpegPath)
             && (str_starts_with($mimeType, 'video/') || str_starts_with($mimeType, 'audio/'))
             && $file->store->has();
+    }
+
+    /**
+     * Whether the `data` chunk of a WAV file written by ffmpeg has samples
+     */
+    private function hasSamples(string $wavPath): bool
+    {
+        $head = (string)file_get_contents($wavPath, false, null, 0, 512);
+        $position = strpos($head, 'data', 12);
+
+        return $position !== false
+            && strlen($head) >= $position + 8
+            && unpack('V', substr($head, $position + 4, 4))[1] > 0;
     }
 
     private function logFailure(string $reason): void

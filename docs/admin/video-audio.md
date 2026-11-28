@@ -52,6 +52,10 @@ return [
 
 or as environment variable: `HUMHUB_CONFIG__MODULES__FILE__FFMPEG_PATH=/usr/bin/ffmpeg`.
 
+A speech recognition server that takes WAV only (e.g. Ollama, which returns timings for WAV only) gets the audio as
+WAV instead (mono, 16 kHz, 16-bit PCM, about 115 MB per hour), or a part of it. This WAV is written to a temporary
+file for the request and deleted afterwards, never stored with the file.
+
 - `ffmpeg` needs the Opus encoder (`libopus`); the distribution packages have it (`ffmpeg -encoders | grep opus`).
 - A conversion that fails (no audio track, no encoder, more than 10 minutes) leaves no audio track and is logged in
   the category `file`.
