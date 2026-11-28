@@ -49661,7 +49661,7 @@
         removeLoader(context, id2, true);
       });
       if (files) {
-        uploadWidget.$.fileupload("add", { files });
+        uploadWidget.addFiles(files);
       } else {
         uploadWidget.run();
       }

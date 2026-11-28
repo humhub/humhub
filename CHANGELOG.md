@@ -4,6 +4,7 @@ HumHub Changelog
 1.20.0 (Unreleased)
 -------------------
 - Enh #8803: Audio track of video and audio files for speech recognition (`AudioTrack` converter, ffmpeg) and the extension slot `file.subtitles` in the subtitles dialog
+- Enh #8802: Removed the unmaintained blueimp jQuery-File-Upload plugin; uploads use the core's own transport
 - Enh: The preview image of an upload is created when it is first shown, not in the upload request
 - Fix: Translation categories without translations in the user's language are no longer requested on every page and reported as not preloaded
 - Fix: API requests keep the impersonation settings of the user component, e.g. `allowPrivateContentAccess => false` hides private content during an impersonation in API calls as well
@@ -202,6 +203,11 @@ HumHub Changelog
 - Fix #8788: A user mentioned in a new content gets the mention notification only, not also the "created" one
 - Fix #8789: Grouped "new entries" notifications link to the stream of the space or profile and no longer preview only the last entry
 - Fix #8790: The toast after changing the username or e-mail address no longer shows a literal `<br />` and has corrected wording
+
+1.19.6 (Unreleased)
+-------------------
+- Fix #8796: Space invite links are only shown to Space admins and create a membership request on "Invite and request" Spaces
+- Fix #8799: Deleting a file version (e.g. in the Files module) deleted the file's content and all its other versions
 
 1.19.5 (November 25, 2026)
 --------------------------

@@ -101,7 +101,9 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
 
 - **PHP:** `UploadButton` + `UploadInput` + `FilePreview`, driven by `humhub.file.js`, plus `ActiveFileUpload` for
   model fields. `FilePreview` renders the upload rows as an `<upload-list>` island (`file.Preview` is its facade);
-  `UploadProgress` is no longer used by core forms.
+  `UploadProgress` is no longer used by core forms. `file.Upload` sends the files itself (XMLHttpRequest with
+  FormData, no upload plugin): one request per file with upload rows (at most 3 at a time) or from an input without
+  `multiple`, else one for the files added at once. It takes files dropped on the upload button or its `dropZone`, and pasted into its `pasteZone`.
 - **Vue:** `UploadField` (form suite) uploads to `POST /api/v2/file` as soon as files are added, one request per
   file (at most 3 at a time), keeps the guid list and exposes `addFiles()`, `openPicker()` and `clear()`. See
   [Vue.js Form Suite](../develop/ui-js-vuejs-forms.md#file-uploads).

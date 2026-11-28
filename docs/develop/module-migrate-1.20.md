@@ -74,6 +74,32 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
   - `ActiveFileUpload` renders its own preview container (a `JsWidget`, no `FilePreview`).
   - Modules: replace DOM access to the old list with the facade methods and `fileRemoved`, and move batch-level work
     from `uploadEnd` to `uploadFinish`.
+- **The blueimp jQuery-File-Upload plugin is removed** (unmaintained, its repository is archived). `file.Upload` sends
+  the files itself, with XMLHttpRequest and FormData through jQuery's ajax: the same request to the same URL, the same
+  drop and paste zones; one request per file with a preview of rows (at most 3 at a time) or from an input without
+  `multiple`, else one for the files added at once.
+  - Unchanged: the `file.Upload` facade (methods and options), its events `uploadStart`, `uploadEnd` /
+    `humhub:file:uploadEnd` (`response.result.files`, `response._response.result.files`) and `uploadFinish`, and the
+    callbacks a module passes as options (`start`, `progress`, `progressall`, `done`, `fail`, `stop`). `start` and
+    `stop` get the event only; the others the event and the upload's `data`: `files`, `originalFiles`, `loaded` and
+    `total`, then `result`, `jqXHR`, `textStatus` and `errorThrown` (`'abort'` when cancelled); `progressall` gets
+    `{loaded, total}`.
+  - `data` has no plugin internals any more: `submit()` returns nothing, `state()`, `progress()`, `response()`,
+    `bitrate` and `delegatedEvent` are gone, and an `add` callback returning `false` no longer stops the rest of a
+    selection.
+  - The input is no longer replaced by a clone after each selection, it is emptied instead: `Upload.$` stays the same
+    element, and the DOM events of the widget fire on the input in the page.
+  - New: `Upload.addFiles(files)` uploads files as if they were picked (the richtext editor uses it for dropped and
+    pasted files), `Upload.isActive()` tells whether requests run or wait.
+  - Removed: `$.fn.fileupload()` and its events on the input (`fileuploadadd`, `fileuploaddone`, …),
+    `humhub\assets\BlueimpFileUploadAsset` (also from `CoreBundleAsset`), the Composer package
+    `npm-asset/blueimp-file-upload` with `blueimp-canvas-to-blob`, `blueimp-load-image` and `blueimp-tmpl`, and the
+    unused legacy scripts `resources/file/fileuploader.js`, `resources/space/spaceHeaderImageUpload.js` and
+    `resources/user/profileHeaderImageUpload.js` in `protected/humhub/resources`, and the views
+    `file/widgets/views/fileUploadButton.php` / `fileUploadList.php` of widgets removed in 1.19.
+    `humhub\assets\JqueryWidgetAsset` stays.
+  - A module that calls the plugin directly switches to the facade: `Upload.addFiles()` or `run()`, and the events
+    above.
 - **Attached files restyled** (`AttachedFiles`, `ShowFiles`): images and videos in left-aligned justified rows (at most
   two, the last tile shows "+N"), the file list as the file row of [File Upload](../ui/file-upload.md) with a download button and
   "Show all" from four files on.

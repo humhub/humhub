@@ -212,7 +212,8 @@ class InviteForm extends Model
     }
 
     /**
-     * Checks if external user invitation setting is enabled
+     * Checks if invitation by link is enabled and the current user may see the link.
+     * The link can be reused by anybody, so it is limited to space administrators.
      *
      * @return bool
      */
@@ -220,7 +221,9 @@ class InviteForm extends Model
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
-        return !Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink');
+        return !Yii::$app->user->isGuest
+            && $module->settings->get('auth.internalUsersCanInviteByLink')
+            && $this->space->isAdmin();
     }
 
     /**

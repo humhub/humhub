@@ -106,12 +106,12 @@ const removeRow = (tag, key, file) => {
 
 const lastItems = (sent) => sent.filter(([type]) => type === UPLOAD_EVENTS.ITEMS).pop()[1];
 
-// The blueimp options the upload widget passed to `$.fn.fileupload()`, with its callbacks
+// The options of the upload widget, with the callbacks its transport calls
 let fileupload;
 
 /**
- * Files the user picked, as blueimp hands them to the `add` callback with one request per file: one call per file,
- * all of the same selection. `submit()` sends the request, `abort()` cancels it.
+ * Files the user picked, as the transport hands them to the `add` callback with one request per file: one call per
+ * file, all of the same selection. `submit()` sends the request, `abort()` cancels it.
  */
 const pick = (files) => files.map((file) => {
     const data = {
@@ -138,10 +138,11 @@ beforeAll(() => {
 
 beforeEach(() => {
     fileupload = null;
-    jQuery.fn.fileupload = function (options) {
-        fileupload = options;
-        return this;
-    };
+    const initFileUpload = fileModule.Upload.prototype.initFileUpload;
+    vi.spyOn(fileModule.Upload.prototype, 'initFileUpload').mockImplementation(function () {
+        initFileUpload.call(this);
+        fileupload = this.options;
+    });
     fileModule.log.success = vi.fn();
     delete globalThis.humhub.prosemirrorFileHandler;
     progressBars.clear();

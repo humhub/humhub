@@ -95,7 +95,7 @@ const triggerUpload = function(state, view, context, files) {
         });
 
         if (files) {
-            uploadWidget.$.fileupload('add', {files: files});
+            uploadWidget.addFiles(files);
         } else {
             uploadWidget.run();
         }

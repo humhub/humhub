@@ -1,6 +1,6 @@
 
 /**
- * USED in  fileuploader.js
+ * Encodes a text for HTML
  */
 function htmlEncode(value) {
     //create a in-memory div, set it's inner text(which jQuery automatically encodes)

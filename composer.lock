@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "983f5398f5cf0d25aa4d781417785cdb",
+    "content-hash": "cb29261d14dd7be4d38d20524dd0cfb8",
     "packages": [
         {
             "name": "altcha-org/altcha",
@@ -4556,59 +4556,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/blueimp-canvas-to-blob",
-            "version": "3.5.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.5.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/blueimp-file-upload",
-            "version": "9.34.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/blueimp-file-upload/-/blueimp-file-upload-9.34.0.tgz"
-            },
-            "require": {
-                "npm-asset/blueimp-canvas-to-blob": "3.5.0",
-                "npm-asset/blueimp-load-image": "2.12.2",
-                "npm-asset/blueimp-tmpl": "3.6.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/blueimp-load-image",
-            "version": "2.12.2",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/blueimp-load-image/-/blueimp-load-image-2.12.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/blueimp-tmpl",
-            "version": "3.6.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/blueimp-tmpl/-/blueimp-tmpl-3.6.0.tgz"
             },
             "type": "npm-asset",
             "license": [

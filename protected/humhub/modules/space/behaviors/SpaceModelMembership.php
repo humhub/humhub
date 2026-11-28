@@ -256,6 +256,8 @@ class SpaceModelMembership extends Behavior
             // Unfortunately there are no multiple workspace invites supported
             // So we take the last one
         } else {
+            // A personal invite replaces e.g. a pending registration by invite link
+            $userInvite->source = Invite::SOURCE_INVITE;
             $userInvite->user_originator_id = $originatorUserId;
             $userInvite->space_invite_id = $this->owner->id;
         }
@@ -445,7 +447,8 @@ class SpaceModelMembership extends Behavior
                 return true;
             }
 
-            // User requested membership - without an approver (e.g. in a queue job) nobody to name
+            // User requested membership - without an approver nobody to name: a queue job, or a guest (e.g. a default
+            // space of the group selected on registration)
             $approver = $originator ?? Yii::$app->user->getIdentity();
             if ($membership->status == Membership::STATUS_APPLICANT && !$silent && $approver !== null) {
                 SpaceApprovalAcceptedNotification::send(
