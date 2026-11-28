@@ -118,18 +118,21 @@ humhub.module('i18n', function(module, require, $) {
             data: {category: categoriesLoadingKey},
             method: 'GET'
         }).then(function(data) {
-            if (data && data.messages) {
-                $.each(data.messages, function(category, messages) {
-                    updateIntlMessages(category, messages);
-                    loadedCategories.add(category);
+            var messagesByCategory = (data && data.messages) || {};
 
-                    if (!coreConfig.debug) {
-                        try {
-                            localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
-                        } catch (e) {}
-                    }
-                });
-            }
+            // A category the server has no translations for is loaded too (empty), so it is neither
+            // reported as not preloaded nor requested again
+            categoriesToLoad.forEach(function(category) {
+                var messages = messagesByCategory[category] || {};
+                updateIntlMessages(category, messages);
+                loadedCategories.add(category);
+
+                if (!coreConfig.debug) {
+                    try {
+                        localStorage.setItem(getStorageKey(category), JSON.stringify(messages));
+                    } catch (e) {}
+                }
+            });
             module.log.debug('i18n categories loaded', {categories: categoriesToLoad});
         }).always(function() {
             pendingLoads.delete(categoriesLoadingKey);
