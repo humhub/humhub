@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
+import { h } from 'vue';
 import SubtitleManager from '../../vue/SubtitleManager.vue';
 import PickerInput from '../../../../vue/PickerInput.vue';
+import ExtensionSlot from '../../../../vue/ExtensionSlot.vue';
 
 await import('../../../../resources/js/humhub/humhub.url.js');
 const vueModule = await import('../../../../resources/js/humhub/humhub.vue.js');
@@ -17,6 +19,8 @@ const variant = (language, kind = 'subtitles') => ({
 });
 
 const stubs = () => globalThis.humhubStubs;
+// The registry of the core bridge (`register()`, `registerSlotComponent()`)
+const humhubVue = () => globalThis.humhub.modules.vue;
 let announce;
 let lastPost;
 
@@ -29,10 +33,23 @@ const LANGUAGES = [
     { code: 'pt-BR', name: 'Português do Brasil' },
 ];
 
-// `global.components` stands in for the registry the core `PickerInput` resolves through.
+// An extension of the `file.subtitles` slot: shows its context, its button calls `reload()`
+const TestSubtitlesExtension = {
+    name: 'TestSubtitlesExtension',
+    props: { fileId: Number, fileName: String, variants: Array, reload: Function },
+    render() {
+        return h('button', {
+            type: 'button',
+            class: 'test-subtitles-extension',
+            onClick: () => this.reload(),
+        }, `${this.fileId} ${this.fileName} ${this.variants.map((variant) => variant.name).join(',')}`);
+    },
+};
+
+// `global.components` stands in for the registry the core `PickerInput` and `ExtensionSlot` resolve through.
 const manager = (props = {}) => mount(SubtitleManager, {
     props: { fileId: 7, saveUrl: '/file/subtitles/save?guid=g', deleteUrl: '/file/subtitles/delete?guid=g', fileName: 'talk.mp4', languages: LANGUAGES, uiLanguage: 'de', ...props },
-    global: { components: { PickerInput } },
+    global: { components: { PickerInput, ExtensionSlot, TestSubtitlesExtension } },
     attachTo: document.body,
 });
 
@@ -62,6 +79,7 @@ describe('SubtitleManager', () => {
         document.body.innerHTML = '';
         vi.unstubAllGlobals();
         vi.restoreAllMocks();
+        humhubVue().resetSlotRegistry();
     });
 
     it('lists the languages with kind', async () => {
@@ -355,6 +373,50 @@ describe('SubtitleManager', () => {
                 expect(button.attributes('data-bs-toggle')).toBe('tooltip');
                 expect(button.attributes('data-bs-title')).toBe(button.attributes('aria-label'));
             });
+        });
+    });
+
+    describe('extension slot file.subtitles', () => {
+        beforeEach(() => {
+            humhubVue().register('TestSubtitlesExtension', TestSubtitlesExtension);
+        });
+
+        it('renders a registered extension above the list with the file and its subtitle tracks', async () => {
+            humhubVue().registerSlotComponent('file.subtitles', 'TestSubtitlesExtension');
+            const wrapper = manager();
+            await flushPromises();
+
+            const extension = wrapper.find('.test-subtitles-extension');
+            expect(extension.text()).toBe('7 talk.mp4 subtitles-de.vtt,captions-en.vtt');
+            expect(wrapper.element.firstElementChild).toBe(extension.element);
+            expect(wrapper.find('.subtitle-manager-list').exists()).toBe(true);
+        });
+
+        it('reloads the list on reload() and tells the viewer and the audio player', async () => {
+            humhubVue().registerSlotComponent('file.subtitles', 'TestSubtitlesExtension');
+            const seen = [];
+            const listener = (event) => seen.push(event.detail.fileId);
+            document.addEventListener('humhub:file:variants-changed', listener);
+            const wrapper = manager();
+            await flushPromises();
+
+            variants = [variant('de'), variant('en', 'captions'), variant('fr')];
+            await wrapper.find('.test-subtitles-extension').trigger('click');
+            await flushPromises();
+            document.removeEventListener('humhub:file:variants-changed', listener);
+
+            expect(stubs().client.get).toHaveBeenCalledTimes(2);
+            expect(seen).toEqual([7]);
+            expect(wrapper.findAll('.subtitle-manager-item')).toHaveLength(3);
+            expect(wrapper.find('.test-subtitles-extension').text()).toContain('subtitles-fr.vtt');
+        });
+
+        it('renders nothing without a registration', async () => {
+            const wrapper = manager();
+            await flushPromises();
+
+            expect(wrapper.find('.test-subtitles-extension').exists()).toBe(false);
+            expect(wrapper.element.firstElementChild.classList.contains('subtitle-manager-list')).toBe(true);
         });
     });
 });

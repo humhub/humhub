@@ -96,6 +96,8 @@
         </form>
 
         <template v-else>
+            <ExtensionSlot name="file.subtitles" :context="slotContext" />
+
             <p v-if="loadError" class="text-danger" role="alert">{{ loadError }}</p>
 
             <p v-if="!variants.length" class="text-muted subtitle-manager-empty">{{ emptyLabel }}</p>
@@ -182,6 +184,10 @@
  * After a save or delete the manager dispatches `humhub:file:variants-changed` on `document` with
  * `detail: {fileId}`, for the media viewer and the audio player to forget the subtitles they have cached.
  *
+ * Extension slot `file.subtitles`, above the list: `{fileId, fileName, variants, reload}`, `variants` the subtitle
+ * tracks as listed, `reload()` for an extension that changed them (reads the list again and dispatches
+ * `humhub:file:variants-changed`, returns a promise).
+ *
  * @since 1.20
  */
 import { apiUrl, announce, client, i18n, log, modal } from '@humhub/vue';
@@ -191,6 +197,7 @@ const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.char
 
 export default {
     i18nCategories: ['FileModule.base', 'base'],
+    // `PickerInput` and `ExtensionSlot` are core components, resolved through the global registry
     props: {
         /** The id of the platform file. */
         fileId: { type: Number, required: true },
@@ -225,6 +232,15 @@ export default {
                 .filter((language) => !existing.has(language.code))
                 .map((language) => ({ id: language.code, text: language.name }))
                 .sort((a, b) => (b.id === this.uiLanguage) - (a.id === this.uiLanguage));
+        },
+        /** The read-only context of the `file.subtitles` extension slot. */
+        slotContext() {
+            return {
+                fileId: this.fileId,
+                fileName: this.fileName,
+                variants: this.variants,
+                reload: this.reload,
+            };
         },
         contentErrors() {
             return this.errors.content || [];
@@ -288,6 +304,11 @@ export default {
                     this.loading = false;
                     log.error(e);
                 });
+        },
+        /** For an extension that changed the variants: reads the list again and tells the viewer and the audio player. */
+        reload() {
+            this.announceChange();
+            return this.load();
         },
         /** Moves the focus to an element once the view has rendered it. */
         focusAfterRender(find) {

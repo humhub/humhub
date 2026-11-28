@@ -932,6 +932,7 @@
   const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
   const _sfc_main = {
     i18nCategories: ["FileModule.base", "base"],
+    // `PickerInput` and `ExtensionSlot` are core components, resolved through the global registry
     props: {
       /** The id of the platform file. */
       fileId: { type: Number, required: true },
@@ -962,6 +963,15 @@
       languageOptions() {
         const existing = new Set(this.variants.map((variant) => variant.language));
         return this.languages.filter((language) => !existing.has(language.code)).map((language) => ({ id: language.code, text: language.name })).sort((a, b) => (b.id === this.uiLanguage) - (a.id === this.uiLanguage));
+      },
+      /** The read-only context of the `file.subtitles` extension slot. */
+      slotContext() {
+        return {
+          fileId: this.fileId,
+          fileName: this.fileName,
+          variants: this.variants,
+          reload: this.reload
+        };
       },
       contentErrors() {
         return this.errors.content || [];
@@ -1018,6 +1028,11 @@
           this.loading = false;
           vue.log.error(e);
         });
+      },
+      /** For an extension that changed the variants: reads the list again and tells the viewer and the audio player. */
+      reload() {
+        this.announceChange();
+        return this.load();
       },
       /** Moves the focus to an element once the view has rendered it. */
       focusAfterRender(find) {
@@ -1240,6 +1255,7 @@
   const _hoisted_35 = ["aria-disabled"];
   function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     const _component_PickerInput = vue$1.resolveComponent("PickerInput");
+    const _component_ExtensionSlot = vue$1.resolveComponent("ExtensionSlot");
     return vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_1, [
       $data.loading ? (vue$1.openBlock(), vue$1.createElementBlock("div", _hoisted_2, [
         _cache[9] || (_cache[9] = vue$1.createElementVNode(
@@ -1495,6 +1511,10 @@
         vue$1.Fragment,
         { key: 3 },
         [
+          vue$1.createVNode(_component_ExtensionSlot, {
+            name: "file.subtitles",
+            context: $options.slotContext
+          }, null, 8, ["context"]),
           $data.loadError ? (vue$1.openBlock(), vue$1.createElementBlock(
             "p",
             _hoisted_26,

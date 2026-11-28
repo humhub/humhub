@@ -138,6 +138,13 @@ class Module extends \humhub\components\Module
     public ?string $ffprobePath = null;
 
     /**
+     * @var string|null Path of the ffmpeg binary (e.g. `HUMHUB_CONFIG__MODULES__FILE__FFMPEG_PATH=/usr/bin/ffmpeg`). When
+     * set, video and audio files get the speech audio track of [[\humhub\modules\file\converter\AudioTrack]] on request.
+     * @since 1.20
+     */
+    public ?string $ffmpegPath = null;
+
+    /**
      * @var MediaInfoReaderInterface|array|string|null Reader for the metadata of video and audio files (an object, a
      * configuration or a class name), instead of the one [[$ffprobePath]] selects
      * @since 1.20

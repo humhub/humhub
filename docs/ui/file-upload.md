@@ -119,7 +119,8 @@ File rows are a Bootstrap **`.list-group`**; errors use Bootstrap's `.is-invalid
   who may edit the file manage them in the "Subtitles" dialog (Open file → Subtitles; in the media viewer through
   "Open"): add a language, edit the WebVTT text, load a .vtt or .srt file, download, delete. The media viewer's player
   offers them in its CC menu (the page language preselected); an audio row shows the current line below its seek line,
-  with a toggle and, for several languages, a select.
+  with a toggle and, for several languages, a select. A module adds to the dialog, above its list, through the
+  extension slot `file.subtitles` (e.g. creating subtitles).
 
 **Gaps:**
 
