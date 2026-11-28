@@ -217,7 +217,8 @@ class FileHelper extends \yii\helpers\FileHelper
         $thumbnailUrl = '';
         $previewImage = new PreviewImage();
         if ($previewImage->applyFile($file)) {
-            $thumbnailUrl = $previewImage->getUrl();
+            // Lazy: the download action creates the preview on its first request, not in the upload request
+            $thumbnailUrl = $previewImage->getLazyUrl();
         }
 
         return [

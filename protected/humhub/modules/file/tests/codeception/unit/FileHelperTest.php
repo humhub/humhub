@@ -10,6 +10,7 @@ namespace tests\codeception\unit\modules\file;
 
 use Exception;
 use humhub\components\fs\LocalMountConfig;
+use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use SplFileInfo;
@@ -282,6 +283,39 @@ class FileHelperTest extends HumHubDbTestCase
         $expected['openLink'] = '<a href="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" target="_blank" data-pjax-prevent data-file-download data-file-url="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;download=1&amp;guid=' . $guid . '&amp;hash_sha1=' . $hash . '" data-file-name="' . $path . '" data-file-mime="' . $mimeType . '">' . $path . '</a>';
 
         static::assertEquals($expected, FileHelper::getFileInfos($file));
+    }
+
+    public function testGetFileInfosDoesNotCreateThePreview()
+    {
+        $file = new File();
+        $file->file_name = 'large.jpeg';
+        $file->mime_type = 'image/jpeg';
+        static::assertTrue($file->save());
+        $file->setStoredFileContent($this->createJpeg(4000, 3000));
+
+        $infos = FileHelper::getFileInfos($file);
+
+        static::assertSame($file->getUrl(PreviewImage::VARIANT), $infos['thumbnailUrl']);
+        static::assertStringContainsString('variant=' . PreviewImage::VARIANT, $infos['thumbnailUrl']);
+        static::assertFalse($file->store->has(PreviewImage::VARIANT), 'The upload response creates no preview');
+
+        // The first request of the URL creates it
+        $preview = new PreviewImage();
+        static::assertTrue($preview->applyFile($file));
+        $preview->getUrl();
+        static::assertTrue($file->store->has(PreviewImage::VARIANT));
+    }
+
+    private function createJpeg(int $width, int $height): string
+    {
+        $image = imagecreatetruecolor($width, $height);
+        for ($i = 0; $i < 200; $i++) {
+            imagefilledellipse($image, random_int(0, $width), random_int(0, $height), 300, 300, random_int(0, 0xFFFFFF));
+        }
+        ob_start();
+        imagejpeg($image, null, 90);
+
+        return (string)ob_get_clean();
     }
 
     public function testExistsStreamFile()
