@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.20.0 (Unreleased)
 -------------------
+- Enh #8804: Export the audio track of a file, or a part of it, as WAV for speech-to-text servers (`AudioTrack::exportWav()`)
 - Enh #8803: Audio track of video and audio files for speech recognition (`AudioTrack` converter, ffmpeg) and the extension slot `file.subtitles` in the subtitles dialog
 - Enh #8802: Removed the unmaintained blueimp jQuery-File-Upload plugin; uploads use the core's own transport
 - Enh: The preview image of an upload is created when it is first shown, not in the upload request
