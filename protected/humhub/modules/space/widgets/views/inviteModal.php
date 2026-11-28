@@ -28,9 +28,10 @@ if ($canInviteByEmail && $model->hasErrors('inviteEmails')) {
     $isInviteTabActiveClass = ' active';
 }
 
-$footer =
-    '<a id="space-invite-submit-btn" href="#" data-action-click="ui.modal.submit" data-action-submit class="btn btn-primary" data-ui-loader>' . $submitText . '</a>' .
-    Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
+$footer = '<a id="space-invite-submit-btn" href="#" data-action-click="ui.modal.submit" data-action-submit class="btn btn-primary" data-ui-loader>' . $submitText . '</a>';
+
+if ($canInviteByLink) {
+    $footer .= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
         ->link('mailto:' .
             '?subject=' . rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])) .
             '&body=' . rawurlencode((string) $this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
@@ -42,6 +43,7 @@ $footer =
         ->id('space-invite-send-link-by-email-btn')
         ->icon('paper-plane')
         ->loader(false);
+}
 
 $form = Modal::beginFormDialog([
     'title' => Yii::t('SpaceModule.base', '<strong>Invite</strong> members'),
