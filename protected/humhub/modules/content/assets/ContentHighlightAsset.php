@@ -46,7 +46,8 @@ class ContentHighlightAsset extends AssetBundle
             return null;
         }
 
-        $keyword = Yii::$app->session->get('contentHighlight');
+        $session = Yii::$app->session;
+        $keyword = $session->getIsActive() || $session->getHasSessionId() ? $session->get('contentHighlight') : null;
         if ($keyword !== null && $keyword !== '') {
             Yii::$app->session->remove('contentHighlight');
             return $keyword;

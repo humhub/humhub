@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\components\gates\GateManager;
+use humhub\components\health\HealthService;
 use humhub\components\rateLimit\RateLimiter;
 use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
@@ -21,6 +22,7 @@ use yii\i18n\Formatter;
 
 /**
  * @property-read InstallationState $installationState
+ * @property-read HealthService $health
  * @property-read GateManager $gateManager
  * @property-read RateLimiter $rateLimiter
  */

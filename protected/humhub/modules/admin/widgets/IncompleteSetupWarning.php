@@ -9,6 +9,8 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
+use humhub\components\health\checks\DocumentRootCheck;
+use humhub\components\health\HealthStatus;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\libs\SelfTest;
 use humhub\modules\admin\Module;
@@ -16,8 +18,6 @@ use humhub\services\DocumentRootProbeService;
 use humhub\services\DocumentRootService;
 use humhub\widgets\bootstrap\Link;
 use Yii;
-use yii\db\Query;
-use yii\queue\db\Queue;
 
 /**
  * IncompleteSetupWarning shows a snippet in the dashboard
@@ -30,8 +30,8 @@ class IncompleteSetupWarning extends Widget
     public const PROBLEM_QUEUE_RUNNER = 'queue-runner';
     public const PROBLEM_CRON_JOBS = 'cron-jobs';
     public const PROBLEM_MOBILE_APP_PUSH_SERVICE = 'mobile-app-push-service';
-    public const PROBLEM_LEGACY_ENTRY_SCRIPT = 'legacy-entry-script';
-    public const PROBLEM_DOCUMENT_ROOT_EXPOSED = 'document-root-exposed';
+    public const PROBLEM_LEGACY_ENTRY_SCRIPT = DocumentRootCheck::FINDING_LEGACY_ENTRY_SCRIPT;
+    public const PROBLEM_DOCUMENT_ROOT_EXPOSED = DocumentRootCheck::FINDING_DOCUMENT_ROOT_EXPOSED;
 
 
     /**
@@ -105,17 +105,15 @@ class IncompleteSetupWarning extends Widget
         ?DocumentRootService $documentRoot = null,
         ?DocumentRootProbeService $probe = null,
     ): array {
-        $documentRoot ??= DocumentRootService::instance();
-
-        if ($documentRoot->isLegacyEntryScript()) {
-            return [static::PROBLEM_LEGACY_ENTRY_SCRIPT];
+        if (Yii::$app->health->isDisabled('document-root')) {
+            return [];
         }
 
-        $probe ??= DocumentRootProbeService::instance();
+        $documentRoot ??= DocumentRootService::instance();
 
-        return $probe->getState() === DocumentRootProbeService::STATE_EXPOSED
-            ? [static::PROBLEM_DOCUMENT_ROOT_EXPOSED]
-            : [];
+        $finding = (new DocumentRootCheck(['documentRoot' => $documentRoot, 'probe' => $probe]))->getFinding();
+
+        return $finding === null ? [] : [$finding];
     }
 
     /**
@@ -123,28 +121,9 @@ class IncompleteSetupWarning extends Widget
      */
     protected function checkQueue()
     {
+        $result = Yii::$app->health->runCheck('queue');
 
-        // Only for database queue
-        if (Yii::$app->queue instanceof Queue) {
-            /** @var Queue $queue */
-            $queue = Yii::$app->queue;
-
-            $time = time() - 60 * 20;
-
-            $counter = (new Query())
-                ->select('count(*) as jobCount')
-                ->from($queue->tableName)
-                ->andWhere(['channel' => $queue->channel, 'reserved_at' => null])
-                ->andWhere('[[pushed_at]] <= :time - delay', [':time' => $time])
-                ->one($queue->db);
-
-
-            if (is_array($counter) && array_key_exists('jobCount', $counter) && $counter['jobCount'] > 0) {
-                return false;
-            }
-        }
-
-        return true;
+        return $result === null || $result->status === HealthStatus::Ok;
     }
 
     /**
@@ -152,12 +131,9 @@ class IncompleteSetupWarning extends Widget
      */
     protected function checkCron()
     {
-        $lastRun = (int)Yii::$app->settings->getUncached('cronLastRun');
-        if (empty($lastRun) || $lastRun < time() - 60 * 60) {
-            return false;
-        }
+        $result = Yii::$app->health->runCheck('cron');
 
-        return true;
+        return $result === null || $result->status === HealthStatus::Ok;
     }
 
     public static function docBtn(string $url): string
