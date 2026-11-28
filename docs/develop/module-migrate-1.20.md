@@ -28,6 +28,11 @@ Breaking changes, new APIs and deprecations of the 1.20 release cycle.
     inline, through PHP (no redirect to a temporary storage URL).
   - The core edit file handler `file\handler\SubtitlesFileHandler` ("Subtitles", for video and audio files of users
     who may edit them) opens `/file/subtitles` with the `SubtitleManager` island. With it such files get a `viewUrl`.
+  - The `SubtitleManager` island has the extension slot `file.subtitles` above its list, context `{fileId, fileName,
+    variants, reload}` (see [Extension slots](ui-js-vuejs-extensions.md#extension-slots)).
+  - New converter `file\converter\AudioTrack` (variant `audio-track`, derived): the audio of a video or audio file for
+    speech recognition (mono 16 kHz Opus in Ogg), made with ffmpeg on request only (`prepare()`), when the new `file`
+    module option `ffmpegPath` is set (e.g. `HUMHUB_CONFIG__MODULES__FILE__FFMPEG_PATH=/usr/bin/ffmpeg`).
   - Media viewer: an element may carry `data-ui-gallery-open-url` (an "Open" button replaces the download and loads
     the URL in the global modal) and `data-ui-gallery-subtitles-url` (the variants API URL, the video gets a `<track>`
     per subtitles variant). `AttachedMedia` sets both.

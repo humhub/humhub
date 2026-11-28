@@ -1,6 +1,6 @@
 # Media fixtures
 
-Tiny files for `MediaInfoReaderTest`, generated with ffmpeg (run in this directory):
+Tiny files for `MediaInfoReaderTest`, `MediaHelperTest` and `AudioTrackTest`, generated with ffmpeg (run in this directory):
 
 ```bash
 Q="-hide_banner -loglevel error -y"
@@ -10,6 +10,9 @@ ffmpeg $Q -f lavfi -i testsrc=size=64x36:rate=10:duration=1 -c:v libx264 -pix_fm
 
 # same stream, display rotation 90 degrees: shown as 36x64
 ffmpeg $Q -display_rotation 90 -i landscape.mp4 -c copy rotated.mp4
+
+# 64x36, 1 s, with a mono AAC audio stream (landscape.mp4 has none)
+ffmpeg $Q -f lavfi -i testsrc=size=64x36:rate=10:duration=1 -f lavfi -i "sine=frequency=440:duration=1" -c:v libx264 -pix_fmt yuv420p -preset veryslow -crf 40 -c:a aac -b:a 16k -ar 16000 -ac 1 -shortest with-audio.mp4
 
 # 48x32, 1 s
 ffmpeg $Q -f lavfi -i testsrc=size=48x32:rate=10:duration=1 -c:v libvpx -b:v 20k -an clip.webm
